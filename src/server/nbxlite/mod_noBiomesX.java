@@ -40,7 +40,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoaderMp.SendPacketTo(this, entityplayermp, packet);
     }
 
-    public void HandlePacket(Packet230ModLoader packet, EntityPlayerMP player)
+    public void handlePacket(Packet230ModLoader packet, EntityPlayerMP player)
     {
         switch(packet.packetType){
             case 1:{
@@ -49,7 +49,7 @@ public class mod_noBiomesX extends BaseModMp{
         }
     }
 
-    public void HandleLogin(EntityPlayerMP entityplayermp)
+    public void handleLogin(EntityPlayerMP entityplayermp)
     {
         SendGeneratorInfo(entityplayermp);
     }

@@ -122,7 +122,7 @@ public class mod_noBiomesX extends BaseModMp{
         return "1.2.3";
     }
 
-    public void HandlePacket(Packet230ModLoader packet)
+    public void handlePacket(Packet230ModLoader packet)
     {
         Generator=packet.dataInt[0];
         MapFeatures=packet.dataInt[1];
@@ -170,7 +170,7 @@ public class mod_noBiomesX extends BaseModMp{
     {
         Packet230ModLoader packet = new Packet230ModLoader();
         packet.packetType = 1;
-        ModLoaderMp.SendPacket(this,packet);
+        ModLoaderMp.sendPacket(this,packet);
     }
 
     public void addRenderer(Map map){   
