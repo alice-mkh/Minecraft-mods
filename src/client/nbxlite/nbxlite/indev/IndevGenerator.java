@@ -963,10 +963,10 @@ label0:
                 for(int l2 = k1 - j4; l2 <= k1 + j4; l2++)
                 {
                     int i5 = l2 - k1;
-//                     if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0) && !x.e[a(l4, i3, l2)])
-//                     {
+                    if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0)/* && !x.e[a(l4, i3, l2)]*/)
+                    {
                         b(l4, i3, l2, Block.leaves.blockID);
-//                     }
+                    }
                 }
 
             }
