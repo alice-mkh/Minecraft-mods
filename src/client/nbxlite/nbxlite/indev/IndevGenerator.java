@@ -64,9 +64,12 @@ public final class IndevGenerator
         g world = new g();
         world.s = k;
         world.t = l;
-        f = i1;
-        g = j1;
-        h = k1;
+        world.a = i1;
+        world.b = j1;
+        world.c = k1;
+        this.f = i1;
+        this.g = j1;
+        this.h = k1;
         j = new byte[(i1 * j1 * k1)];
         for(int i2 = 0; i2 < l1; i2++)
         {
@@ -455,12 +458,12 @@ label0:
             generateGrass(world);
         }
         nextPhase();
-        c(world);
+        generateTrees(world);
         if(theme == 3)
         {
             for(l1 = 0; l1 < 50; l1++)
             {
-                c(world);
+                generateTrees(world);
             }
 
         }
@@ -568,7 +571,7 @@ label0:
 
     }
 
-    private void c(g world)
+    private void generateTrees(g world)
     {
         int i1 = (f * g * h) / 0x13880;
         for(int j1 = 0; j1 < i1; j1++)
@@ -592,7 +595,7 @@ label0:
                     i3 += rand.nextInt(12) - rand.nextInt(12);
                     if(k2 >= 0 && l2 >= 0 && i3 >= 0 && k2 < f && l2 < h && i3 < g)
                     {
-                        world.h(k2, l2, i3);
+                        generateTree(world, k2, l2, i3);
                     }
                 }
 
@@ -604,6 +607,7 @@ label0:
 
     private void generateFlowers(g world, BlockFlower flower, int i1)
     {
+        if (true){return;}
         i1 = (int)(((long)f * (long)g * (long)h * (long)i1) / 0x186a00L);
         for(int j1 = 0; j1 < i1; j1++)
         {
@@ -897,5 +901,96 @@ label0:
             }
         }
         return l3;
+    }
+
+    public final boolean generateTree(g world, int i1, int j1, int k1)
+    {
+        int l1 = rand.nextInt(3) + 4;
+        boolean flag = true;
+        if(j1 <= 0 || j1 + l1 + 1 > world.c)
+        {
+            return false;
+        }
+        for(int j2 = j1; j2 <= j1 + 1 + l1; j2++)
+        {
+            byte byte0 = 1;
+            if(j2 == j1)
+            {
+                byte0 = 0;
+            }
+            if(j2 >= (j1 + 1 + l1) - 2)
+            {
+                byte0 = 2;
+            }
+            for(int k3 = i1 - byte0; k3 <= i1 + byte0 && flag; k3++)
+            {
+                for(int i4 = k1 - byte0; i4 <= k1 + byte0 && flag; i4++)
+                {
+                    int k4;
+                    if(k3 >= 0 && j2 >= 0 && i4 >= 0 && k3 < world.a && j2 < world.c && i4 < world.b)
+                    {
+                        if((k4 = this.j[(j2 * world.b + i4) * world.a + k3] & 0xff) != 0)
+                        {
+                            flag = false;
+                        }
+                    } else
+                    {
+                        flag = false;
+                    }
+                }
+
+            }
+
+        }
+
+        if(!flag)
+        {
+            return false;
+        }
+        int k2;
+        if((k2 = this.j[((j1 - 1) * world.b + k1) * world.a + i1] & 0xff) != Block.grass.blockID && k2 != Block.dirt.blockID || j1 >= world.c - l1 - 1)
+        {
+            return false;
+        }
+        b(i1, j1 - 1, k1, Block.dirt.blockID);
+        for(int i3 = (j1 - 3) + l1; i3 <= j1 + l1; i3++)
+        {
+            int l3 = i3 - (j1 + l1);
+            int j4 = 1 - l3 / 2;
+            for(int l4 = i1 - j4; l4 <= i1 + j4; l4++)
+            {
+                int i2 = l4 - i1;
+                for(int l2 = k1 - j4; l2 <= k1 + j4; l2++)
+                {
+                    int i5 = l2 - k1;
+//                     if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0) && !x.e[a(l4, i3, l2)])
+//                     {
+                        b(l4, i3, l2, Block.leaves.blockID);
+//                     }
+                }
+
+            }
+
+        }
+
+        for(int j3 = 0; j3 < l1; j3++)
+        {
+//             if(!x.e[world.a(i1, j1 + j3, k1)])
+//             {
+                b(i1, j1 + j3, k1, Block.wood.blockID);
+//             }
+        }
+
+        return true;
+    }
+    
+    private void b(int i, int j, int k, int id){
+        int x = i;
+        int y = j;
+        int z = k;
+        int length = 256;
+        int width = 256;
+        int index = x+(y*length+z)*width;
+        this.j[index]=(byte)id;
     }
 }

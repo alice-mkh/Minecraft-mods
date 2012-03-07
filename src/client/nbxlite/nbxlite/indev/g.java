@@ -97,7 +97,7 @@ public class g{
 
     public void f(int i, int j, int k, int l){}
 
-    public void h(int i, int j, int k){}
+    public void generateTree(int i, int j, int k){}
 
     private void h(int i1, int j1, int k1, int l1)
     {
