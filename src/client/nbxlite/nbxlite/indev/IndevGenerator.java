@@ -234,7 +234,7 @@ public final class IndevGenerator
             IndevNoiseGeneratorOctaves c2 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             c3 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             int i6 = a2.k - 1;
-            if(a2.theme == 2)
+            if(a2.theme == 3)
             {
                 i6 += 2;
             }
@@ -248,12 +248,12 @@ public final class IndevGenerator
                     {
                         flag = c2.a(l6, l7) > -8D;
                     }
-                    if(a2.theme == 2)
+                    if(a2.theme == 3)
                     {
                         flag = c2.a(l6, l7) > -32D;
                     }
                     boolean flag1 = c3.a(l6, l7) > 12D;
-                    if(a2.theme == 1 || a2.theme == 3)
+                    if(a2.theme == 1 || a2.theme == 2)
                     {
                         flag = c2.a(l6, l7) > -8D;
                     }
@@ -424,7 +424,7 @@ label0:
                 k = -16;
             }
         }
-        if(theme == 2)
+        if(theme == 3)
         {
             world.v = 0xc6deff;
             world.w = 0xc6deff;
@@ -433,7 +433,7 @@ label0:
             world.A = 16;
             world.u = k1 + 64;
         }
-        if(theme == 3)
+        if(theme == 2)
         {
             world.v = 0x757d87;
             world.w = 0x4d5a5b;
@@ -468,7 +468,7 @@ label0:
 
         }
         l1 = 100;
-        if(theme == 2)
+        if(theme == 3)
         {
             l1 = 1000;
         }
