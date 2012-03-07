@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class mod_CrackedSand extends BaseMod
 {
-   public static Block crackedSand = new BlockCrackedSand(151, 0).setHardness(1.2F).setResistance(0F).setBlockName("crackedSand").setStepSound(Block.soundStoneFootstep);
+   public static Block crackedSand = new BlockCrackedSand(126, 0).setHardness(1.2F).setResistance(0F).setBlockName("crackedSand").setStepSound(Block.soundStoneFootstep);
    
    public String getVersion()
    {

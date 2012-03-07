@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class mod_CoverGrass extends BaseMod
 {
-   public static Block coverGrass = new BlockCoverGrass(126, 0).setHardness(0F).setResistance(0F).setBlockName("shortGrass").setStepSound(Block.soundGrassFootstep);
+   public static Block coverGrass = new BlockCoverGrass(151, 0).setHardness(0F).setResistance(0F).setBlockName("shortGrass").setStepSound(Block.soundGrassFootstep);
    
    public String getVersion()
    {
