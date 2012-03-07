@@ -459,7 +459,7 @@ label0:
         }
         nextPhase();
         generateTrees(world);
-        if(theme == 3)
+        if(theme == 2)
         {
             for(l1 = 0; l1 < 50; l1++)
             {
