@@ -66,9 +66,9 @@ public class GuiNBXliteSettings extends GuiScreen
 
     public void initGui()
     {
-//         if (mc.getSaveLoader().getSaveLoader(selectedWorld, false).loadWorldInfo().getMapGen() != 0){
-//             selectWorld();
-//         }
+        if (mc.getSaveLoader().getSaveLoader(selectedWorld, false).loadWorldInfo().getMapGen() != 0){
+            selectWorld();
+        }
         GeneratorList.gencurrent=GeneratorList.gendefault;
         GeneratorList.feat1current=GeneratorList.feat1default;
         GeneratorList.feat2current=GeneratorList.feat2default;
@@ -197,7 +197,7 @@ public class GuiNBXliteSettings extends GuiScreen
             }
 
         } else if(guibutton.id == 8) {
-            
+            mc.displayGuiScreen(new GuiIndevSettings(this));
         } else if(guibutton.id == 7) {
             StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){

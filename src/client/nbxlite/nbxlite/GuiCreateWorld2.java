@@ -334,7 +334,8 @@ public class GuiCreateWorld2 extends GuiScreen
                 generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
         } else if(guibutton.id == 8) {
-            
+            mc.displayGuiScreen(new GuiIndevSettings(this));
+            moreOptions = false;
         } else if(guibutton.id == 7) {
             StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
