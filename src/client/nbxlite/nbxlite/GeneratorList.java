@@ -8,11 +8,12 @@ public class GeneratorList{
     public static int genlength = 4;
     public static String[] genid = {"infdev0227", "infdev0420", "alpha", "beta", "release"};
     public static String[] genname = {"nbxlite.genInfdev0227", "nbxlite.genInfdev0420", "nbxlite.genAlpha", "nbxlite.genBeta", "nbxlite.genRelease"};
-    public static String[] gendesc = {"nbxlite.descriptionGenInfdev0227", "nbxlite.descriptionGenInfdev0420", "nbxlite.descriptionGenAlpha", 
-                                      "nbxlite.descriptionGenBeta", "nbxlite.descriptionGenRelease"};
+    public static String[] gendesc = {"nbxlite.descriptionGenInfdev0227", "nbxlite.descriptionGenInfdev0420",
+                                      "nbxlite.descriptionGenAlpha", "nbxlite.descriptionGenBeta", "nbxlite.descriptionGenRelease"};
     public static boolean[] genstructures = {false, false, false, false, true};
     public static int[] genfeatures = {0, 0, 0, 1, 2};
     public static int[] genfeats = {2, 1, 0, 0, 0};
+    public static boolean[] genplus = {false, false, false, false, false};
 
     public static int feat1default = 4;
     public static int feat1current;

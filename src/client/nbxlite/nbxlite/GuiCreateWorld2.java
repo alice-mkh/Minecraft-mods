@@ -30,6 +30,7 @@ public class GuiCreateWorld2 extends GuiScreen
     
     private GuiButton generatorButton;
     private GuiButton generatorExtraButton;
+    private GuiButton indevButton;
     private String generatorDescription;
     private String generatorExtraDescription;
     private String generator;
@@ -96,6 +97,8 @@ public class GuiCreateWorld2 extends GuiScreen
         controlList.add(generatorExtraButton = new GuiButton(7, width / 2 + 5, 135, 150, 20, stringtranslate.translateKey(extraname)));
         generatorExtraButton.drawButton = false;
         generateStructuresButton.drawButton = false;
+        controlList.add(indevButton = new GuiButton(8, width / 2 + 154, 135, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
+        indevButton.drawButton = false;
         controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         worldTypeButton.drawButton = false;
         textboxWorldName = new GuiTextField(this, fontRenderer, width / 2 - 100, 60, 200, 20, localizedNewWorldText);
@@ -313,6 +316,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 field_46030_z = 0;
             }
             func_35363_g();
+            indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
                 GeneratorList.themecurrent = GeneratorList.themedefault;
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
@@ -329,9 +333,9 @@ public class GuiCreateWorld2 extends GuiScreen
                 generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
                 generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
-        } else
-        if(guibutton.id == 7)
-        {
+        } else if(guibutton.id == 8) {
+            
+        } else if(guibutton.id == 7) {
             StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 if (GeneratorList.feat1current<GeneratorList.feat1length){

@@ -28,6 +28,7 @@ public class GuiNBXliteSettings extends GuiScreen
     private String localizedNewWorldText;
     private GuiButton generatorButton;
     private GuiButton generatorExtraButton;
+    private GuiButton indevButton;
     private String generatorDescription;
     private String generatorExtraDescription;
     private String generator;
@@ -65,6 +66,9 @@ public class GuiNBXliteSettings extends GuiScreen
 
     public void initGui()
     {
+//         if (mc.getSaveLoader().getSaveLoader(selectedWorld, false).loadWorldInfo().getMapGen() != 0){
+//             selectWorld();
+//         }
         GeneratorList.gencurrent=GeneratorList.gendefault;
         GeneratorList.feat1current=GeneratorList.feat1default;
         GeneratorList.feat2current=GeneratorList.feat2default;
@@ -85,10 +89,9 @@ public class GuiNBXliteSettings extends GuiScreen
         controlList.add(generateStructuresButton = new GuiButton(4, width / 2 - 75, 65, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
         controlList.add(generatorButton = new GuiButton(6, width / 2 - 75, 110, 150, 20, stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent])));
         controlList.add(generatorExtraButton = new GuiButton(7, width / 2 - 75, 155, 150, 20, stringtranslate.translateKey(extraname)));
+        controlList.add(indevButton = new GuiButton(8, width / 2 + 74, 155, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
+        indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
         func_35363_g();
-        if (mc.getSaveLoader().getSaveLoader(selectedWorld, false).loadWorldInfo().getMapGen() != 0){
-            selectWorld();
-        }
     }
 
     private void func_35363_g()
@@ -175,6 +178,7 @@ public class GuiNBXliteSettings extends GuiScreen
             generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
             field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
             func_35363_g();
+            indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
                 GeneratorList.themecurrent = GeneratorList.themedefault;
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
@@ -191,9 +195,10 @@ public class GuiNBXliteSettings extends GuiScreen
                 generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
                 generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
-        } else
-        if(guibutton.id == 7)
-        {
+
+        } else if(guibutton.id == 8) {
+            
+        } else if(guibutton.id == 7) {
             StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 if (GeneratorList.feat1current<GeneratorList.feat1length){
