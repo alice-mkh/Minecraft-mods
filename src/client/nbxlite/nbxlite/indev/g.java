@@ -13,7 +13,7 @@ public class g{
     public String g;
     public long h;
     public int i = 70;
-    public int j = 110;
+    public int j = 90;
     public int k = 70;
     public int m = Block.waterMoving.blockID;
     List n = new ArrayList();
@@ -33,6 +33,56 @@ public class g{
     public byte a(int i, int j, int k){
         return 0;
     }
+/*
+    public final void b()
+        Random random;
+        int i1;
+        random = new Random();
+        i1 = 0;
+        int j1;
+        int k1;
+        int l1;
+        int j2;
+        int l2;
+        int j3;
+        g g1;
+        do
+        {
+            i1++;
+            j1 = random.nextInt(a / 2) + a / 4;
+            k1 = random.nextInt(b / 2) + b / 4;
+            l1 = a(j1, k1) + 1;
+            if(i1 == 0xf4240)
+            {
+                i = j1;
+                j = c + 100;
+                k = k1;
+                l = 180F;
+                return;
+            }
+        } while(l1 < 4 || l1 <= (g1 = this).s);
+        for(int i2 = j1 - 3; i2 <= j1 + 3; i2++)
+        {
+            for(int k2 = l1 - 1; k2 <= l1 + 2; k2++)
+            {
+                for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++)
+                {
+                    if(f(i2, k2, i3).a())
+                    {
+                        continue;
+                    }
+                }
+
+            }
+
+        }
+
+        j2 = l1 - 2;
+        l2 = j1 - 3;
+//           goto _L1
+        continue;
+        l2++;
+    }*/
 
     public final boolean a(int paramInt1, int paramInt2, int paramInt3, int paramInt4)
     {
@@ -70,15 +120,6 @@ public class g{
 
 
     public void a(int i, int j, int k, byte[] abyte0, byte[] abyte1){}
-
-    public boolean b(int i, int j, int k, int l){
-        if(a(i, j, k, l)){
-            c(i, j, k, l);
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     public final void c(int i1, int j1, int k1, int l1){
         h(i1 - 1, j1, k1, l1);

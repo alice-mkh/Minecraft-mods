@@ -104,7 +104,10 @@ public abstract class WorldProvider
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
         if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
-            return i == Block.dirt.blockID;
+            if (mod_noBiomesX.MapTheme==1){
+                return i == Block.dirt.blockID;
+            }
+            return i == Block.grass.blockID;
         }
         if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
             return i == Block.grass.blockID;

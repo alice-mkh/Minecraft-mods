@@ -536,7 +536,7 @@ label0:
                         k2 = 0;
                     }
 //                     this.j[l1+(i2*this.h+j2)*this.g]=(byte)k2;
-//                     world.b(l1, i2, j2, k2);
+                    setBlock(l1, i2, j2, k2);
                 }
 
             }
@@ -545,8 +545,8 @@ label0:
 
 //         this.j[(i1-3)+1+(j1*this.h+k1)*this.g]=(byte)Block.torchWood.blockID;
 //         this.j[(i1+3)-1+(j1*this.h+k1)*this.g]=(byte)Block.torchWood.blockID;
-//         world.b((i1 - 3) + 1, j1, k1, Block.torchWood.blockID);
-//         world.b((i1 + 3) - 1, j1, k1, Block.torchWood.blockID);
+        setBlock((i1 - 3) + 1, j1, k1, Block.torchWood.blockID);
+        setBlock((i1 + 3) - 1, j1, k1, Block.torchWood.blockID);
     }
 
     private void generateGrass(g world)
@@ -558,10 +558,10 @@ label0:
             {
                 for(int k1 = 0; k1 < g; k1++)
                 {
-                    if(world.a(i1, j1, k1) == Block.dirt.blockID && world.d(i1, j1 + 1, k1) >= 4/* && !world.f(i1, j1 + 1, k1).b()*/)
+                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID /*&& world.d(i1, j1 + 1, k1) >= 4*/ && getBlockId(i1, j1 + 1, k1) == 0)
                     {
-                        world.a(i1, j1, k1, Block.grass.blockID);
-//                         x+(y*length+z)*width;
+//                         world.a(i1, j1, k1, Block.grass.blockID);
+                        setBlock(i1, j1, k1, Block.grass.blockID);
                     }
                 }
 
@@ -607,7 +607,9 @@ label0:
 
     private void generateFlowers(g world, BlockFlower flower, int i1)
     {
-        if (true){return;}
+        if(true){
+            return;
+        }
         i1 = (int)(((long)f * (long)g * (long)h * (long)i1) / 0x186a00L);
         for(int j1 = 0; j1 < i1; j1++)
         {
@@ -628,9 +630,9 @@ label0:
                     k2 += rand.nextInt(4) - rand.nextInt(4);
                     l2 += rand.nextInt(2) - rand.nextInt(2);
                     i3 += rand.nextInt(4) - rand.nextInt(4);
-                    if(k2 >= 0 && i3 >= 0 && l2 > 0 && k2 < f && i3 < g && l2 < h && world.a(k2, l2, i3) == 0/* && flower.e(world, k2, l2, i3)*/)
+                    if(k2 >= 0 && i3 >= 0 && l2 > 0 && k2 < f && i3 < g && l2 < h && world.a(k2, l2, i3) == 0/* && flower.e(world, k2, l2, i3)*/ && canFlowerStay(world, k2, l2, i3));
                     {
-                        world.b(k2, l2, i3, flower.blockID);
+                        setBlock(k2, l2, i3, flower.blockID);
                     }
                 }
 
@@ -894,6 +896,11 @@ label0:
                         }
                         p[j2++] = j1 - i1;
                     }
+                    if (byte1 == 0){
+                        flag2 = false;
+                    }else{
+                        flag2 = true;
+                    }
 //                     flag2 = byte1;
                 }
                 j1++;
@@ -952,7 +959,7 @@ label0:
         {
             return false;
         }
-        b(i1, j1 - 1, k1, Block.dirt.blockID);
+        setBlock(i1, j1 - 1, k1, Block.dirt.blockID);
         for(int i3 = (j1 - 3) + l1; i3 <= j1 + l1; i3++)
         {
             int l3 = i3 - (j1 + l1);
@@ -965,7 +972,7 @@ label0:
                     int i5 = l2 - k1;
                     if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0)/* && !x.e[a(l4, i3, l2)]*/)
                     {
-                        b(l4, i3, l2, Block.leaves.blockID);
+                        setBlock(l4, i3, l2, Block.leaves.blockID);
                     }
                 }
 
@@ -977,14 +984,14 @@ label0:
         {
 //             if(!x.e[world.a(i1, j1 + j3, k1)])
 //             {
-                b(i1, j1 + j3, k1, Block.wood.blockID);
+                setBlock(i1, j1 + j3, k1, Block.wood.blockID);
 //             }
         }
 
         return true;
     }
     
-    private void b(int i, int j, int k, int id){
+    private void setBlock(int i, int j, int k, int id){
         int x = i;
         int y = j;
         int z = k;
@@ -992,5 +999,19 @@ label0:
         int width = 256;
         int index = x+(y*length+z)*width;
         this.j[index]=(byte)id;
+    }
+
+    private boolean canFlowerStay(g world, int i, int j, int k){
+        return (/*(g.d(i, j, k) >= 8)*/true || (/*(g.d(i, j, k) >= 4)*/true && /*(g.l(i, j, k)))*/true) && (/*b(g.a(i, j - 1, k)*/true));
+    }
+    
+    private byte getBlockId(int i, int j, int k){
+        int x = i;
+        int y = j;
+        int z = k;
+        int length = 256;
+        int width = 256;
+        int index = x+(y*length+z)*width;
+        return this.j[index];
     }
 }
