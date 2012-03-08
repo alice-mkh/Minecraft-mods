@@ -39,11 +39,23 @@ public class GuiCreateWorld2 extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         gameMode = "survival";
-        generator = "beta2";
-        generatorExtra = "12";
-        generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeatures12");
-        generatorDescription = stringtranslate.translateKey("nbxlite.descriptionGenRelease");
-        field_35365_g = true;
+        GeneratorList.gencurrent=GeneratorList.gendefault;
+        GeneratorList.feat1current=GeneratorList.feat1default;
+        GeneratorList.feat2current=GeneratorList.feat2default;
+        GeneratorList.themecurrent=GeneratorList.themedefault;
+        generator = GeneratorList.genid[GeneratorList.gencurrent];
+        generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
+        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+            generatorExtra = GeneratorList.feat1id[GeneratorList.feat1default];
+            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1default]);
+        }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+            generatorExtra = GeneratorList.feat2id[GeneratorList.feat2default];
+            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2default]);
+        }else{
+            generatorExtra = GeneratorList.themeid[GeneratorList.themedefault];
+            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themedefault]);
+        }
+        field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
         field_40232_h = false;
         field_46030_z = 0;
         parentGuiScreen = guiscreen;
@@ -59,6 +71,18 @@ public class GuiCreateWorld2 extends GuiScreen
 
     public void initGui()
     {
+        GeneratorList.gencurrent=GeneratorList.gendefault;
+        GeneratorList.feat1current=GeneratorList.feat1default;
+        GeneratorList.feat2current=GeneratorList.feat2default;
+        GeneratorList.themecurrent=GeneratorList.themedefault;
+        String extraname;
+        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+            extraname = GeneratorList.feat1name[GeneratorList.feat1current];
+        }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+            extraname = GeneratorList.feat2name[GeneratorList.feat2current];
+        }else{
+            extraname = GeneratorList.themename[GeneratorList.themecurrent];
+        }
         StringTranslate stringtranslate = StringTranslate.getInstance();
         Keyboard.enableRepeatEvents(true);
         controlList.clear();
@@ -67,9 +91,9 @@ public class GuiCreateWorld2 extends GuiScreen
         controlList.add(gameModeButton = new GuiButton(2, width / 2 - 75, 100, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
         controlList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 172, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
         controlList.add(generateStructuresButton = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
-        controlList.add(generatorButton = new GuiButton(6, width / 2 - 155, 135, 150, 20, stringtranslate.translateKey("nbxlite.genRelease")));
+        controlList.add(generatorButton = new GuiButton(6, width / 2 - 155, 135, 150, 20, stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent])));
         generatorButton.drawButton = false;
-        controlList.add(generatorExtraButton = new GuiButton(7, width / 2 + 5, 135, 150, 20, stringtranslate.translateKey("nbxlite.features12")));
+        controlList.add(generatorExtraButton = new GuiButton(7, width / 2 + 5, 135, 150, 20, stringtranslate.translateKey(extraname)));
         generatorExtraButton.drawButton = false;
         generateStructuresButton.drawButton = false;
         controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
@@ -176,40 +200,17 @@ public class GuiCreateWorld2 extends GuiScreen
             {
                 mc.playerController = new PlayerControllerSP(mc);
             }
-            if(generator.equals("beta")){
-                mod_noBiomesX.Generator=1;
-            }else if(generator.equals("beta2")){
-                mod_noBiomesX.Generator=2;
-            }else if(generator.equals("alpha")){
-                mod_noBiomesX.Generator=0;
-                mod_noBiomesX.MapFeatures=0;
-            }else if (generator.equals("infdev0420")){
-                mod_noBiomesX.Generator=0;
-                mod_noBiomesX.MapFeatures=1;
-            }else{
-                mod_noBiomesX.Generator=0;
-                mod_noBiomesX.MapFeatures=2;
+            mod_noBiomesX.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
+                mod_noBiomesX.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
             }
-            if(generatorExtra.equals("hell")){
-                mod_noBiomesX.MapTheme=1;
-            }else if(generatorExtra.equals("woods")){
-                mod_noBiomesX.MapTheme=2;
-            }else if(generatorExtra.equals("paradise")){
-                mod_noBiomesX.MapTheme=3;
-            }else{
-                mod_noBiomesX.MapTheme=0;
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+                mod_noBiomesX.MapFeatures=GeneratorList.feat1current;
             }
-            if(generatorExtra.equals("173")){
-                mod_noBiomesX.MapFeatures=4;
-            }else if(generatorExtra.equals("15") || generatorExtra.equals("12")){
-                mod_noBiomesX.MapFeatures=3;
-            }else if(generatorExtra.equals("14") || generatorExtra.equals("11")){
-                mod_noBiomesX.MapFeatures=2;
-            }else if(generatorExtra.equals("beta12") || generatorExtra.equals("100")){
-                mod_noBiomesX.MapFeatures=1;
-            }else if(generatorExtra.equals("120") || generatorExtra.equals("181")){
-                mod_noBiomesX.MapFeatures=0;
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
             }
+            mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
 //             MinecraftHook.startWorldHook(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, EnumWorldType.values()[field_46030_z]));
             mc.startWorld(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, WorldType.field_48637_a[field_46030_z]));
             mc.displayGuiScreen(null);
@@ -291,150 +292,87 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         else if(guibutton.id == 6)
         {
+            if (GeneratorList.gencurrent<GeneratorList.genlength){
+                GeneratorList.gencurrent++;
+            }else{
+                GeneratorList.gencurrent=0;
+            }
             StringTranslate stringtranslate = StringTranslate.getInstance();
-            if(generator.equals("beta"))
-            {
-                generator = "beta2";
-                generatorButton.displayString = stringtranslate.translateKey("nbxlite.genRelease");
-                generatorDescription = stringtranslate.translateKey("nbxlite.descriptionGenRelease");
-                generatorExtra = "12";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.features12");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeatures12");
-                field_35365_g = true;
-                worldTypeButton.enabled = true;
-                func_35363_g();
-            } else if(generator.equals("beta2"))
-            {
-                generator = "infdev0227";
-                generatorButton.displayString = stringtranslate.translateKey("nbxlite.genInfdev0227");
-                generatorDescription = stringtranslate.translateKey("nbxlite.descriptionGenInfdev0227");
-                generatorExtra = "normal";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.themeNormal");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionThemeNormal");
-                field_35365_g = false;
+            generator=GeneratorList.genid[GeneratorList.gencurrent];
+            generatorButton.displayString = stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent]);
+            generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
+            field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
+            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+                worldTypeButton.enabled = (GeneratorList.feat1worldtype[GeneratorList.feat1default]);
+            }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                worldTypeButton.enabled = (GeneratorList.feat2worldtype[GeneratorList.feat2default]);
+            }else{
                 worldTypeButton.enabled = false;
+            }
+            if (!worldTypeButton.enabled){
                 field_46030_z = 0;
-                func_35363_g();
-            } else if(generator.equals("alpha"))
-            {
-                generator = "beta";
-                generatorButton.displayString = stringtranslate.translateKey("nbxlite.genBeta");
-                generatorDescription = stringtranslate.translateKey("nbxlite.descriptionGenBeta");
-                generatorExtra = "173";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresBeta173");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesBeta173");
-                field_35365_g = false;
-                worldTypeButton.enabled = false;
-                field_46030_z = 0;
-                func_35363_g();
-            } else if(generator.equals("infdev0420"))
-            {
-                generator = "alpha";
-                generatorButton.displayString = stringtranslate.translateKey("nbxlite.genAlpha");
-                generatorDescription = stringtranslate.translateKey("nbxlite.descriptionGenAlpha");
-                field_35365_g = false;
-                worldTypeButton.enabled = false;
-                field_46030_z = 0;
-                func_35363_g();
-            } else if(generator.equals("infdev0227"))
-            {
-                generator = "infdev0420";
-                generatorButton.displayString = stringtranslate.translateKey("nbxlite.genInfdev0420");
-                generatorDescription = stringtranslate.translateKey("nbxlite.descriptionGenInfdev0420");
-                generatorExtra = "normal";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.themeNormal");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionThemeNormal");
-                field_35365_g = false;
-                worldTypeButton.enabled = false;
-                field_46030_z = 0;
-                func_35363_g();
+            }
+            func_35363_g();
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
+                GeneratorList.themecurrent = GeneratorList.themedefault;
+                generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
+                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.themename[GeneratorList.themecurrent]);
+                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themecurrent]);
+            }else if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+                GeneratorList.feat1current = GeneratorList.feat1default;
+                generatorExtra = GeneratorList.feat1id[GeneratorList.feat1current];
+                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat1name[GeneratorList.feat1current]);
+                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1current]);
+            }else{
+                GeneratorList.feat2current = GeneratorList.feat2default;
+                generatorExtra = GeneratorList.feat2id[GeneratorList.feat2current];
+                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
+                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
         } else
         if(guibutton.id == 7)
         {
             StringTranslate stringtranslate = StringTranslate.getInstance();
-            if(generatorExtra.equals("normal"))
-            {
-                generatorExtra = "hell";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.themeHell");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionThemeHell");
-            } else
-            if(generatorExtra.equals("hell"))
-            {
-                generatorExtra = "woods";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.themeWoods");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionThemeWoods");
-            } else
-            if(generatorExtra.equals("woods"))
-            {
-                generatorExtra = "paradise";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.themeParadise");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionThemeParadise");
-            } else
-            if(generatorExtra.equals("paradise"))
-            {
-                generatorExtra = "normal";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.themeNormal");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionThemeNormal");
-            } else
-            if(generatorExtra.equals("120"))
-            {
-                generatorExtra = "beta12";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresBeta12");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesBeta12");
-            } else
-            if(generatorExtra.equals("beta12"))
-            {
-                generatorExtra = "14";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresBeta14");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesBeta14");
-            } else
-            if(generatorExtra.equals("14"))
-            {
-                generatorExtra = "15";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresBeta15");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesBeta15");
-            } else
-            if(generatorExtra.equals("15"))
-            {
-                generatorExtra = "173";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresBeta173");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesBeta173");
-            }  else
-            if(generatorExtra.equals("173"))
-            {
-                generatorExtra = "120";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresHalloween");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesHalloween");
-            } else
-            if(generatorExtra.equals("181"))
-            {
-                generatorExtra = "100";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.features10");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeatures10");
-            } else
-            if(generatorExtra.equals("12"))
-            {
-                generatorExtra = "181";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.featuresBeta181");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeaturesBeta181");
+            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+                if (GeneratorList.feat1current<GeneratorList.feat1length){
+                    GeneratorList.feat1current++;
+                }else{
+                    GeneratorList.feat1current=0;
+                }
+                generatorExtra = GeneratorList.feat1id[GeneratorList.feat1current];
+                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat1name[GeneratorList.feat1current]);
+                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1current]);
+                worldTypeButton.enabled = GeneratorList.feat1worldtype[GeneratorList.feat1current];
+                if (!worldTypeButton.enabled){
+                    field_46030_z = 0;
+                }
+                func_35363_g();
+            }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                if (GeneratorList.feat2current<GeneratorList.feat2length){
+                    GeneratorList.feat2current++;
+                }else{
+                    GeneratorList.feat2current=0;
+                }
+                generatorExtra = GeneratorList.feat2id[GeneratorList.feat2current];
+                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
+                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
+                worldTypeButton.enabled = (GeneratorList.feat2worldtype[GeneratorList.feat2current]);
+                if (!worldTypeButton.enabled){
+                    field_46030_z = 0;
+                }
+                func_35363_g();
+            }else{
+                if (GeneratorList.themecurrent<GeneratorList.themelength){
+                    GeneratorList.themecurrent++;
+                }else{
+                    GeneratorList.themecurrent=0;
+                }
+                generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
+                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.themename[GeneratorList.themecurrent]);
+                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themecurrent]);
                 worldTypeButton.enabled = false;
                 field_46030_z = 0;
                 func_35363_g();
-            } else
-            if(generatorExtra.equals("11"))
-            {
-                generatorExtra = "12";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.features12");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeatures12");
-                worldTypeButton.enabled = true;
-            } else
-            if(generatorExtra.equals("100"))
-            {
-                generatorExtra = "11";
-                generatorExtraButton.displayString = stringtranslate.translateKey("nbxlite.features11");
-                generatorExtraDescription = stringtranslate.translateKey("nbxlite.descriptionFeatures11");
-                worldTypeButton.enabled = true;
             }
         }
     }
