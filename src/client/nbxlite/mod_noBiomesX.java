@@ -69,6 +69,18 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("nbxlite.descriptionThemeParadise", "Eternal day, large beaches");
         ModLoader.addLocalization("nbxlite.convert", "Select world settings");
         ModLoader.addLocalization("nbxlite.continue", "Continue");
+        ModLoader.addLocalization("nbxlite.indev.raising", "Raising..");
+        ModLoader.addLocalization("nbxlite.indev.eroding", "Eroding..");
+        ModLoader.addLocalization("nbxlite.indev.soiling", "Soiling..");
+        ModLoader.addLocalization("nbxlite.indev.growing", "Growing..");
+        ModLoader.addLocalization("nbxlite.indev.carving", "Carving..");
+        ModLoader.addLocalization("nbxlite.indev.melting", "Melting..");
+        ModLoader.addLocalization("nbxlite.indev.watering", "Watering..");
+        ModLoader.addLocalization("nbxlite.indev.assembling", "Assembling..");
+        ModLoader.addLocalization("nbxlite.indev.building", "Building..");
+        ModLoader.addLocalization("nbxlite.indev.planting", "Planting..");
+        ModLoader.addLocalization("nbxlite.indev.lighting", "Lighting..");
+        ModLoader.addLocalization("nbxlite.indev.spawning", "Spawning..");
         replaceBlocks();
 //         replaceHoes();
     }
