@@ -558,7 +558,7 @@ label0:
             {
                 for(int k1 = 0; k1 < g; k1++)
                 {
-                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID /*&& world.d(i1, j1 + 1, k1) >= 4*/ && getBlockId(i1, j1 + 1, k1) == 0)
+                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID && world.d(i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
                     {
 //                         world.a(i1, j1, k1, Block.grass.blockID);
                         setBlock(i1, j1, k1, Block.grass.blockID);
@@ -607,9 +607,6 @@ label0:
 
     private void generateFlowers(g world, BlockFlower flower, int i1)
     {
-        if(true){
-            return;
-        }
         i1 = (int)(((long)f * (long)g * (long)h * (long)i1) / 0x186a00L);
         for(int j1 = 0; j1 < i1; j1++)
         {
@@ -630,7 +627,7 @@ label0:
                     k2 += rand.nextInt(4) - rand.nextInt(4);
                     l2 += rand.nextInt(2) - rand.nextInt(2);
                     i3 += rand.nextInt(4) - rand.nextInt(4);
-                    if(k2 >= 0 && i3 >= 0 && l2 > 0 && k2 < f && i3 < g && l2 < h && world.a(k2, l2, i3) == 0/* && flower.e(world, k2, l2, i3)*/ && canFlowerStay(world, k2, l2, i3));
+                    if(k2 >= 0 && i3 >= 0 && l2 > 0 && k2 < f && i3 < g && l2 < h && getBlockId(k2, l2, i3) == 0 && canFlowerStay(flower, world, k2, l2, i3))
                     {
                         setBlock(k2, l2, i3, flower.blockID);
                     }
@@ -1001,8 +998,19 @@ label0:
         this.j[index]=(byte)id;
     }
 
-    private boolean canFlowerStay(g world, int i, int j, int k){
-        return (/*(g.d(i, j, k) >= 8)*/true || (/*(g.d(i, j, k) >= 4)*/true && /*(g.l(i, j, k)))*/true) && (/*b(g.a(i, j - 1, k)*/true));
+    private boolean canFlowerStay(BlockFlower flower, g world, int i, int j, int k){
+        if (flower==Block.plantYellow || flower==Block.plantRed){
+            return (((world.d(i, j, k) >= 8) || ((world.d(i, j, k) >= 4) && /*(world.l(i, j, k)))*/true)) && (canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k))));
+        }
+        return world.d(i, j, k) < 13 && canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k));
+    }
+
+    private boolean canThisPlantGrowOnThisBlockID(BlockFlower flower, int par1)
+    {
+        if (flower==Block.plantYellow || flower==Block.plantRed){
+            return par1 == Block.grass.blockID || par1 == Block.dirt.blockID || par1 == Block.tilledField.blockID;
+        }
+        return Block.opaqueCubeLookup[par1];
     }
     
     private byte getBlockId(int i, int j, int k){
