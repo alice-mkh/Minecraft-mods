@@ -37,7 +37,7 @@ public class mod_noBiomesX extends BaseModMp{
         Packet230ModLoader packet = new Packet230ModLoader();
         packet.packetType = 0;
         packet.dataInt = dataInt;
-        ModLoaderMp.SendPacketTo(this, entityplayermp, packet);
+        ModLoaderMp.sendPacketTo(this, entityplayermp, packet);
     }
 
     public void handlePacket(Packet230ModLoader packet, EntityPlayerMP player)
