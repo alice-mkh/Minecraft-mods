@@ -31,6 +31,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public void load(){
+        ModLoader.addLocalization("nbxlite.genIndev", "Generator: Indev");
         ModLoader.addLocalization("nbxlite.genInfdev0227", "Generator: Infdev (02.27)");
         ModLoader.addLocalization("nbxlite.genInfdev0420", "Generator: Infdev (04.20)");
         ModLoader.addLocalization("nbxlite.genAlpha", "Generator: Alpha");
@@ -49,6 +50,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("nbxlite.themeHell", "Theme: Hell");
         ModLoader.addLocalization("nbxlite.themeWoods", "Theme: Woods");
         ModLoader.addLocalization("nbxlite.themeParadise", "Theme: Paradise");
+        ModLoader.addLocalization("nbxlite.descriptionGenIndev", "Finite map, many options");
         ModLoader.addLocalization("nbxlite.descriptionGenInfdev0227", "No trees, obsidian lines");
         ModLoader.addLocalization("nbxlite.descriptionGenInfdev0420", "No biomes, large trees");
         ModLoader.addLocalization("nbxlite.descriptionGenAlpha", "No biomes, low clouds");
@@ -67,6 +69,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("nbxlite.descriptionThemeHell", "Dark world with lava oceans");
         ModLoader.addLocalization("nbxlite.descriptionThemeWoods", "Cloudy sky, many trees");
         ModLoader.addLocalization("nbxlite.descriptionThemeParadise", "Eternal day, large beaches");
+        ModLoader.addLocalization("nbxlite.plus", "+");
         ModLoader.addLocalization("nbxlite.convert", "Select world settings");
         ModLoader.addLocalization("nbxlite.continue", "Continue");
         ModLoader.addLocalization("nbxlite.indev.raising", "Raising..");
