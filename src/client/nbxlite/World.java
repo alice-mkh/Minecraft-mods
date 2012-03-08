@@ -371,7 +371,7 @@ public class World implements IBlockAccess
                 }
                 gen2.theme=mod_noBiomesX.MapTheme;
                 gen2.generateLevel("OMG", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                mod_noBiomesX.IndevWorld = gen2.j;
+                mod_noBiomesX.IndevWorld = gen2.blocks;
                 for (int x=0; x<mod_noBiomesX.IndevWidthX/16; x++){
                     for (int z=0; z<mod_noBiomesX.IndevWidthZ/16; z++){
                         chunkProvider.provideChunk(x,z);

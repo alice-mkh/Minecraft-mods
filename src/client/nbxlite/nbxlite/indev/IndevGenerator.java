@@ -1,14 +1,8 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src.nbxlite.indev;
 
-//import a.b;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
-//import net.minecraft.src.nbxlite.indev.g;
 import net.minecraft.src.nbxlite.indev.noise.*;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Block;
@@ -20,11 +14,11 @@ import net.minecraft.src.ModLoader;
 public final class IndevGenerator
 {
     private IProgressUpdate progressupdate;
-    private int f;
-    private int g;
-    private int h;
+    private int width;
+    private int length;
+    private int height;
     private Random rand;
-    public byte j[];
+    public byte blocks[];
     private int k;
     private int l;
     public boolean island;
@@ -67,10 +61,10 @@ public final class IndevGenerator
         world.a = i1;
         world.b = j1;
         world.c = k1;
-        this.f = i1;
-        this.g = j1;
-        this.h = k1;
-        j = new byte[(i1 * j1 * k1)];
+        this.width = i1;
+        this.length = j1;
+        this.height = k1;
+        blocks = new byte[(i1 * j1 * k1)];
         for(int i2 = 0; i2 < l1; i2++)
         {
             k = k1 - 32 - i2 * 48;
@@ -95,14 +89,14 @@ public final class IndevGenerator
                 IndevNoiseGenerator2 d2 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
                 Object obj = new IndevNoiseGeneratorOctaves(a1.rand, 6);
                 IndevNoiseGeneratorOctaves c1 = new IndevNoiseGeneratorOctaves(a1.rand, 2);
-                int ai3[] = new int[a1.f * a1.g];
-                for(int j7 = 0; j7 < a1.f; j7++)
+                int ai3[] = new int[a1.width * a1.length];
+                for(int j7 = 0; j7 < a1.width; j7++)
                 {
-                    double d5 = Math.abs(((double)j7 / ((double)a1.f - 1.0D) - 0.5D) * 2D);
-                    a1.a(((float)j7 * 100F) / (float)(a1.f - 1));
-                    for(int k8 = 0; k8 < a1.g; k8++)
+                    double d5 = Math.abs(((double)j7 / ((double)a1.width - 1.0D) - 0.5D) * 2D);
+                    a1.a(((float)j7 * 100F) / (float)(a1.width - 1));
+                    for(int k8 = 0; k8 < a1.length; k8++)
                     {
-                        double d7 = Math.abs(((double)k8 / ((double)a1.g - 1.0D) - 0.5D) * 2D);
+                        double d7 = Math.abs(((double)k8 / ((double)a1.length - 1.0D) - 0.5D) * 2D);
                         double d9 = d1.a((float)j7 * 1.3F, (float)k8 * 1.3F) / 6D + -4D;
                         double d10 = d2.a((float)j7 * 1.3F, (float)k8 * 1.3F) / 5D + 10D + -4D;
                         double d11;
@@ -133,7 +127,7 @@ public final class IndevGenerator
                         {
                             d13 *= 0.80000000000000004D;
                         }
-                        ai3[j7 + k8 * a1.f] = (int)d13;
+                        ai3[j7 + k8 * a1.width] = (int)d13;
                     }
 
                 }
@@ -145,18 +139,18 @@ public final class IndevGenerator
                 a1 = this;
                 d2 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
                 obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
-                for(int l4 = 0; l4 < a1.f; l4++)
+                for(int l4 = 0; l4 < a1.width; l4++)
                 {
-                    a1.a(((float)l4 * 100F) / (float)(a1.f - 1));
-                    for(int k5 = 0; k5 < a1.g; k5++)
+                    a1.a(((float)l4 * 100F) / (float)(a1.width - 1));
+                    for(int k5 = 0; k5 < a1.length; k5++)
                     {
                         double d3 = d2.a(l4 << 1, k5 << 1) / 8D;
                         int k7 = ((IndevNoiseGenerator) (obj)).a(l4 << 1, k5 << 1) <= 0.0D ? 0 : 1;
                         if(d3 > 2D)
                         {
                             int i8;
-                            i8 = (((i8 = ai1[l4 + k5 * a1.f]) - k7) / 2 << 1) + k7;
-                            ai1[l4 + k5 * a1.f] = i8;
+                            i8 = (((i8 = ai1[l4 + k5 * a1.width]) - k7) / 2 << 1) + k7;
+                            ai1[l4 + k5 * a1.width] = i8;
                         }
                     }
 
@@ -167,9 +161,9 @@ public final class IndevGenerator
             nextPhase();
             int ai2[] = ai;
             IndevGenerator a2 = this;
-            int i4 = f;
-            int j4 = a2.g;
-            int i5 = a2.h;
+            int i4 = a2.width;
+            int j4 = a2.length;
+            int i5 = a2.height;
             IndevNoiseGeneratorOctaves c3 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             IndevNoiseGeneratorOctaves c4 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             for(int k6 = 0; k6 < i4; k6++)
@@ -195,13 +189,13 @@ public final class IndevGenerator
                     }
                     double d12;
                     int i11;
-                    if((i11 = (int)((double)(i11 = (int)(Math.sqrt(Math.abs(d12 = c4.a((double)k6 * 2.2999999999999998D, (double)j8 * 2.2999999999999998D) / 24D)) * Math.signum(d12) * 20D) + a2.k) * (1.0D - d8) + d8 * (double)a2.h)) > a2.k)
+                    if((i11 = (int)((double)(i11 = (int)(Math.sqrt(Math.abs(d12 = c4.a((double)k6 * 2.2999999999999998D, (double)j8 * 2.2999999999999998D) / 24D)) * Math.signum(d12) * 20D) + a2.k) * (1.0D - d8) + d8 * (double)a2.height)) > a2.k)
                     {
-                        i11 = a2.h;
+                        i11 = a2.height;
                     }
                     for(int j11 = 0; j11 < i5; j11++)
                     {
-                        int k11 = (j11 * a2.g + j8) * a2.f + k6;
+                        int k11 = (j11 * a2.length + j8) * a2.width + k6;
                         int l11 = 0;
                         if(j11 <= j10)
                         {
@@ -215,9 +209,9 @@ public final class IndevGenerator
                         {
                             l11 = 0;
                         }
-                        if(a2.j[k11] == 0)
+                        if(a2.blocks[k11] == 0)
                         {
-                            a2.j[k11] = (byte)l11;
+                            a2.blocks[k11] = (byte)l11;
                         }
                     }
 
@@ -229,8 +223,8 @@ public final class IndevGenerator
             nextPhase();
             ai2 = ai;
             a2 = this;
-            i4 = f;
-            j4 = a2.g;
+            i4 = a2.width;
+            j4 = a2.length;
             IndevNoiseGeneratorOctaves c2 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             c3 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             int i6 = a2.k - 1;
@@ -258,11 +252,11 @@ public final class IndevGenerator
                         flag = c2.a(l6, l7) > -8D;
                     }
                     int l8;
-                    int j9 = ((l8 = ai2[l6 + l7 * i4]) * a2.g + l7) * a2.f + l6;
+                    int j9 = ((l8 = ai2[l6 + l7 * i4]) * a2.length + l7) * a2.width + l6;
                     int k9;
-                    if(((k9 = a2.j[((l8 + 1) * a2.g + l7) * a2.f + l6] & 0xff) == Block.waterMoving.blockID || k9 == Block.waterStill.blockID || k9 == 0) && l8 <= a2.k - 1 && flag1)
+                    if(((k9 = a2.blocks[((l8 + 1) * a2.length + l7) * a2.width + l6] & 0xff) == Block.waterMoving.blockID || k9 == Block.waterStill.blockID || k9 == 0) && l8 <= a2.k - 1 && flag1)
                     {
-                        a2.j[j9] = (byte)Block.gravel.blockID;
+                        a2.blocks[j9] = (byte)Block.gravel.blockID;
                     }
                     if(k9 != 0)
                     {
@@ -277,9 +271,9 @@ public final class IndevGenerator
                             l9 = Block.grass.blockID;
                         }
                     }
-                    if(a2.j[j9] != 0 && l9 > 0)
+                    if(a2.blocks[j9] != 0 && l9 > 0)
                     {
-                        a2.j[j9] = (byte)l9;
+                        a2.blocks[j9] = (byte)l9;
                     }
                 }
 
@@ -289,10 +283,10 @@ public final class IndevGenerator
 
         progressupdate.displayLoadingString("Carving..");
         nextPhase();
-        IndevGenerator a3;
-        int k4 = (a3 = this).f;
-        int j5 = a3.g;
-        int l5 = a3.h;
+        IndevGenerator a3 = this;
+        int k4 = a3.width;
+        int j5 = a3.length;
+        int l5 = a3.height;
         int j6 = (k4 * j5 * l5) / 256 / 64 << 1;
         for(int i7 = 0; i7 < j6; i7++)
         {
@@ -323,7 +317,7 @@ label0:
                 float f12 = f4 + (a3.rand.nextFloat() * 4F - 2.0F) * 0.2F;
                 float f13 = f5 + (a3.rand.nextFloat() * 4F - 2.0F) * 0.2F;
                 float f14 = f6 + (a3.rand.nextFloat() * 4F - 2.0F) * 0.2F;
-                float f15 = ((float)a3.h - f13) / (float)a3.h;
+                float f15 = ((float)a3.height - f13) / (float)a3.height;
                 float f16 = 1.2F + (f15 * 3.5F + 1.0F) * f11;
                 float f17 = MathHelper.sin(((float)l10 * 3.141593F) / (float)i9) * f16;
                 l1 = (int)(f12 - f17);
@@ -340,14 +334,14 @@ label0:
                             float f1 = (float)l1 - f12;
                             float f2 = (float)i12 - f13;
                             float f3 = (float)j12 - f14;
-                            if((f1 = f1 * f1 + f2 * f2 * 2.0F + f3 * f3) >= f17 * f17 || l1 <= 0 || i12 <= 0 || j12 <= 0 || l1 >= a3.f - 1 || i12 >= a3.h - 1 || j12 >= a3.g - 1)
+                            if((f1 = f1 * f1 + f2 * f2 * 2.0F + f3 * f3) >= f17 * f17 || l1 <= 0 || i12 <= 0 || j12 <= 0 || l1 >= a3.width - 1 || i12 >= a3.height - 1 || j12 >= a3.length - 1)
                             {
                                 continue;
                             }
-                            f1 = (i12 * a3.g + j12) * a3.f + l1;
-                            if(a3.j[(int)f1] == Block.stone.blockID)
+                            f1 = (i12 * a3.length + j12) * a3.width + l1;
+                            if(a3.blocks[(int)f1] == Block.stone.blockID)
                             {
-                                a3.j[(int)f1] = 0;
+                                a3.blocks[(int)f1] = 0;
                             }
                         }
 
@@ -445,7 +439,7 @@ label0:
         progressupdate.displayLoadingString("Assembling..");
         nextPhase();
         a(0.0F);
-        world.a(i1, k1, j1, j, null);
+        world.a(i1, k1, j1, blocks, null);
         progressupdate.displayLoadingString("Building..");
         nextPhase();
         a(0.0F);
@@ -535,7 +529,6 @@ label0:
                     {
                         k2 = 0;
                     }
-//                     this.j[l1+(i2*this.h+j2)*this.g]=(byte)k2;
                     setBlock(l1, i2, j2, k2);
                 }
 
@@ -543,20 +536,18 @@ label0:
 
         }
 
-//         this.j[(i1-3)+1+(j1*this.h+k1)*this.g]=(byte)Block.torchWood.blockID;
-//         this.j[(i1+3)-1+(j1*this.h+k1)*this.g]=(byte)Block.torchWood.blockID;
         setBlock((i1 - 3) + 1, j1, k1, Block.torchWood.blockID);
         setBlock((i1 + 3) - 1, j1, k1, Block.torchWood.blockID);
     }
 
     private void generateGrass(g world)
     {
-        for(int i1 = 0; i1 < f; i1++)
+        for(int i1 = 0; i1 < width; i1++)
         {
-            a(((float)i1 * 100F) / (float)(f - 1));
-            for(int j1 = 0; j1 < h; j1++)
+            a(((float)i1 * 100F) / (float)(width - 1));
+            for(int j1 = 0; j1 < height; j1++)
             {
-                for(int k1 = 0; k1 < g; k1++)
+                for(int k1 = 0; k1 < length; k1++)
                 {
                     if(getBlockId(i1, j1, k1) == Block.dirt.blockID && world.d(i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
                     {
@@ -573,16 +564,16 @@ label0:
 
     private void generateTrees(g world)
     {
-        int i1 = (f * g * h) / 0x13880;
+        int i1 = (width * length * height) / 0x13880;
         for(int j1 = 0; j1 < i1; j1++)
         {
             if(j1 % 100 == 0)
             {
                 a(((float)j1 * 100F) / (float)(i1 - 1));
             }
-            int k1 = rand.nextInt(f);
-            int l1 = rand.nextInt(h);
-            int i2 = rand.nextInt(g);
+            int k1 = rand.nextInt(width);
+            int l1 = rand.nextInt(height);
+            int i2 = rand.nextInt(length);
             for(int j2 = 0; j2 < 25; j2++)
             {
                 int k2 = k1;
@@ -593,7 +584,7 @@ label0:
                     k2 += rand.nextInt(12) - rand.nextInt(12);
                     l2 += rand.nextInt(3) - rand.nextInt(6);
                     i3 += rand.nextInt(12) - rand.nextInt(12);
-                    if(k2 >= 0 && l2 >= 0 && i3 >= 0 && k2 < f && l2 < h && i3 < g)
+                    if(k2 >= 0 && l2 >= 0 && i3 >= 0 && k2 < width && l2 < height && i3 < length)
                     {
                         generateTree(world, k2, l2, i3);
                     }
@@ -607,16 +598,16 @@ label0:
 
     private void generateFlowers(g world, BlockFlower flower, int i1)
     {
-        i1 = (int)(((long)f * (long)g * (long)h * (long)i1) / 0x186a00L);
+        i1 = (int)(((long)width * (long)length * (long)height * (long)i1) / 0x186a00L);
         for(int j1 = 0; j1 < i1; j1++)
         {
             if(j1 % 100 == 0)
             {
                 a(((float)j1 * 100F) / (float)(i1 - 1));
             }
-            int k1 = rand.nextInt(f);
-            int l1 = rand.nextInt(h);
-            int i2 = rand.nextInt(g);
+            int k1 = rand.nextInt(width);
+            int l1 = rand.nextInt(height);
+            int i2 = rand.nextInt(length);
             for(int j2 = 0; j2 < 10; j2++)
             {
                 int k2 = k1;
@@ -627,7 +618,7 @@ label0:
                     k2 += rand.nextInt(4) - rand.nextInt(4);
                     l2 += rand.nextInt(2) - rand.nextInt(2);
                     i3 += rand.nextInt(4) - rand.nextInt(4);
-                    if(k2 >= 0 && i3 >= 0 && l2 > 0 && k2 < f && i3 < g && l2 < h && getBlockId(k2, l2, i3) == 0 && canFlowerStay(flower, world, k2, l2, i3))
+                    if(k2 >= 0 && i3 >= 0 && l2 > 0 && k2 < width && i3 < length && l2 < height && getBlockId(k2, l2, i3) == 0 && canFlowerStay(flower, world, k2, l2, i3))
                     {
                         setBlock(k2, l2, i3, flower.blockID);
                     }
@@ -643,9 +634,9 @@ label0:
     {
         int i2 = 0;
         i1 = (byte)i1;
-        int j2 = f;
-        int k2 = g;
-        int l2 = h;
+        int j2 = width;
+        int k2 = length;
+        int l2 = height;
         j1 = (((j2 * k2 * l2) / 256 / 64) * j1) / 100;
 label0:
         for(int i3 = 0; i3 < j1; i3++)
@@ -687,14 +678,14 @@ label0:
                             float f9 = (float)l3 - f1;
                             float f10 = (float)i4 - f2;
                             float f11 = (float)j4 - f3;
-                            if((f9 = f9 * f9 + f10 * f10 * 2.0F + f11 * f11) >= f8 * f8 || l3 <= 0 || i4 <= 0 || j4 <= 0 || l3 >= f - 1 || i4 >= h - 1 || j4 >= g - 1)
+                            if((f9 = f9 * f9 + f10 * f10 * 2.0F + f11 * f11) >= f8 * f8 || l3 <= 0 || i4 <= 0 || j4 <= 0 || l3 >= width - 1 || i4 >= height - 1 || j4 >= length - 1)
                             {
                                 continue;
                             }
-                            f9 = (i4 * g + j4) * f + l3;
-                            if(j[(int)f9] == Block.stone.blockID)
+                            f9 = (i4 * length + j4) * width + l3;
+                            if(blocks[(int)f9] == Block.stone.blockID)
                             {
-                                j[(int)f9] = (byte)i1;
+                                blocks[(int)f9] = (byte)i1;
                                 i2++;
                             }
                         }
@@ -717,17 +708,17 @@ label0:
         {
             i1 = Block.lavaStill.blockID;
         }
-        int j1 = (f * g * h) / 1000;
+        int j1 = (width * length * height) / 1000;
         for(int k1 = 0; k1 < j1; k1++)
         {
             if(k1 % 100 == 0)
             {
                 a(((float)k1 * 100F) / (float)(j1 - 1));
             }
-            int l1 = rand.nextInt(f);
-            int i2 = rand.nextInt(h);
-            int j2 = rand.nextInt(g);
-            if(j[(i2 * g + j2) * f + l1] != 0)
+            int l1 = rand.nextInt(width);
+            int i2 = rand.nextInt(height);
+            int j2 = rand.nextInt(length);
+            if(blocks[(i2 * length + j2) * width + l1] != 0)
             {
                 continue;
             }
@@ -766,7 +757,7 @@ label0:
 
     private void c()
     {
-        int i1 = (f * g * h) / 2000;
+        int i1 = (width * length * height) / 2000;
         int j1 = l;
         for(int k1 = 0; k1 < i1; k1++)
         {
@@ -774,10 +765,10 @@ label0:
             {
                 a(((float)k1 * 100F) / (float)(i1 - 1));
             }
-            int l1 = rand.nextInt(f);
+            int l1 = rand.nextInt(width);
             int i2 = Math.min(Math.min(rand.nextInt(j1), rand.nextInt(j1)), Math.min(rand.nextInt(j1), rand.nextInt(j1)));
-            int j2 = rand.nextInt(g);
-            if(j[(i2 * g + j2) * f + l1] != 0)
+            int j2 = rand.nextInt(length);
+            if(blocks[(i2 * length + j2) * width + l1] != 0)
             {
                 continue;
             }
@@ -802,14 +793,14 @@ label0:
         int j2 = 0;
         int k2 = 1;
         int l2 = 1;
-        for(; 1 << k2 < f; k2++) { }
-        for(; 1 << l2 < g; l2++) { }
-        int i3 = g - 1;
-        int j3 = f - 1;
+        for(; 1 << k2 < width; k2++) { }
+        for(; 1 << l2 < length; l2++) { }
+        int i3 = length - 1;
+        int j3 = width - 1;
         j2++;
         p[0] = ((j1 << l2) + k1 << k2) + i1;
         long l3 = 0L;
-        i1 = f * g;
+        i1 = width * length;
         while(j2 > 0) 
         {
             j1 = p[--j2];
@@ -822,15 +813,15 @@ label0:
             int k3 = j1 >> k2 + l2;
             int i4;
             int j4 = i4 = j1 & j3;
-            for(; i4 > 0 && j[j1 - 1] == l1; j1--)
+            for(; i4 > 0 && blocks[j1 - 1] == l1; j1--)
             {
                 i4--;
             }
 
-            for(; j4 < f && j[(j1 + j4) - i4] == l1; j4++) { }
+            for(; j4 < width && blocks[(j1 + j4) - i4] == l1; j4++) { }
             int k4 = j1 >> k2 & i3;
             int l4 = j1 >> k2 + l2;
-            if(i2 == 255 && (i4 == 0 || j4 == f - 1 || k3 == 0 || k3 == h - 1 || k1 == 0 || k1 == g - 1))
+            if(i2 == 255 && (i4 == 0 || j4 == width - 1 || k3 == 0 || k3 == height - 1 || k1 == 0 || k1 == length - 1))
             {
                 return -1L;
             }
@@ -845,11 +836,11 @@ label0:
             i4 = i4;
             while(i4 < j4) 
             {
-                j[j1] = byte0;
+                blocks[j1] = byte0;
                 if(k1 > 0)
                 {
                     boolean flag3;
-                    if((flag3 = j[j1 - f] == l1) && !flag)
+                    if((flag3 = blocks[j1 - width] == l1) && !flag)
                     {
                         if(j2 == p.length)
                         {
@@ -857,14 +848,14 @@ label0:
                             p = new int[0x100000];
                             j2 = 0;
                         }
-                        p[j2++] = j1 - f;
+                        p[j2++] = j1 - width;
                     }
                     flag = flag3;
                 }
-                if(k1 < g - 1)
+                if(k1 < length - 1)
                 {
                     boolean flag4;
-                    if((flag4 = j[j1 + f] == l1) && !flag1)
+                    if((flag4 = blocks[j1 + width] == l1) && !flag1)
                     {
                         if(j2 == p.length)
                         {
@@ -872,16 +863,16 @@ label0:
                             p = new int[0x100000];
                             j2 = 0;
                         }
-                        p[j2++] = j1 + f;
+                        p[j2++] = j1 + width;
                     }
                     flag1 = flag4;
                 }
                 if(k3 > 0)
                 {
-                    byte byte1 = j[j1 - i1];
+                    byte byte1 = blocks[j1 - i1];
                     if((byte0 == Block.lavaMoving.blockID || byte0 == Block.lavaStill.blockID) && (byte1 == Block.waterMoving.blockID || byte1 == Block.waterStill.blockID))
                     {
-                        j[j1 - i1] = (byte)Block.stone.blockID;
+                        blocks[j1 - i1] = (byte)Block.stone.blockID;
                     }
                     if((byte1 == ((byte)(byte1 != l1 ? 0 : 1))) && !flag2)
                     {
@@ -933,7 +924,7 @@ label0:
                     int k4;
                     if(k3 >= 0 && j2 >= 0 && i4 >= 0 && k3 < world.a && j2 < world.c && i4 < world.b)
                     {
-                        if((k4 = this.j[(j2 * world.b + i4) * world.a + k3] & 0xff) != 0)
+                        if((k4 = this.blocks[(j2 * world.b + i4) * world.a + k3] & 0xff) != 0)
                         {
                             flag = false;
                         }
@@ -952,7 +943,7 @@ label0:
             return false;
         }
         int k2;
-        if((k2 = this.j[((j1 - 1) * world.b + k1) * world.a + i1] & 0xff) != Block.grass.blockID && k2 != Block.dirt.blockID || j1 >= world.c - l1 - 1)
+        if((k2 = this.blocks[((j1 - 1) * world.b + k1) * world.a + i1] & 0xff) != Block.grass.blockID && k2 != Block.dirt.blockID || j1 >= world.c - l1 - 1)
         {
             return false;
         }
@@ -992,10 +983,8 @@ label0:
         int x = i;
         int y = j;
         int z = k;
-        int length = 256;
-        int width = 256;
         int index = x+(y*length+z)*width;
-        this.j[index]=(byte)id;
+        this.blocks[index]=(byte)id;
     }
 
     private boolean canFlowerStay(BlockFlower flower, g world, int i, int j, int k){
@@ -1017,9 +1006,7 @@ label0:
         int x = i;
         int y = j;
         int z = k;
-        int length = 256;
-        int width = 256;
         int index = x+(y*length+z)*width;
-        return this.j[index];
+        return this.blocks[index];
     }
 }
