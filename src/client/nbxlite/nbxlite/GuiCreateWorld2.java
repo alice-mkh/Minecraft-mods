@@ -62,6 +62,8 @@ public class GuiCreateWorld2 extends GuiScreen
         parentGuiScreen = guiscreen;
         seed = "";
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
+        mod_noBiomesX.IndevWidthX = 256;
+        mod_noBiomesX.IndevWidthZ = 256;
     }
 
     public void updateScreen()
