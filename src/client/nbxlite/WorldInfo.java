@@ -57,6 +57,7 @@ public class WorldInfo
     private int mapTheme;
     private int mapGen;
     private int mapGenExtra;
+    private int mapType;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
@@ -114,6 +115,7 @@ public class WorldInfo
         mapTheme = par1NBTTagCompound.getInteger("mapTheme");
         mapGen = par1NBTTagCompound.getInteger("mapGen");
         mapGenExtra = par1NBTTagCompound.getInteger("mapGenExtra");
+        mapType = par1NBTTagCompound.getInteger("indevMapType");
 
         if (par1NBTTagCompound.hasKey("Player"))
         {
@@ -161,6 +163,7 @@ public class WorldInfo
         mapTheme = par1WorldInfo.mapTheme;
         mapGen = par1WorldInfo.mapGen;
         mapGenExtra = par1WorldInfo.mapGenExtra;
+        mapType = par1WorldInfo.mapType;
     }
 
     /**
@@ -221,6 +224,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("mapTheme", mapTheme);
         par1NBTTagCompound.setInteger("mapGen", mapGen);
         par1NBTTagCompound.setInteger("mapGenExtra", mapGenExtra);
+        par1NBTTagCompound.setInteger("indevMapType", mapType);
 
         if (par2NBTTagCompound != null)
         {
@@ -506,6 +510,16 @@ public class WorldInfo
     public int getMapGenExtra()
     {
         return mapGenExtra;
+    }
+
+    public int getIndevMapType()
+    {
+        return mapType;
+    }
+
+    public void setIndevMapType(int i)
+    {
+        mapType = i;
     }
 
     public void setSizeOnDisk(long l){

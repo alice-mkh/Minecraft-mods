@@ -267,7 +267,7 @@ public class mod_noBiomesX extends BaseModMp{
         }
     }
 
-    public static void SetGenerator(World world, int gen, int features, int theme, boolean snow){
+    public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow){
         Generator=gen;
         MapFeatures=features;
         MobSpawning=gen;
@@ -333,6 +333,11 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             LeavesDecay=true;
         }
+        if (gen==0 && features==3){
+            IndevMapType=type;
+        }else{
+            IndevMapType=0;
+        }
     }
 
     public static int Generator = 2; //0 - alpha/infdev/indev; 1 - halloween/beta; 2 - 1.0
@@ -356,7 +361,7 @@ public class mod_noBiomesX extends BaseModMp{
     //Release: 0 - Beta 1.8; 1 - 1.0; 2 - 1.1;
     public static int MapFeatures = 3;
     public static boolean UseNewSpawning = false;
-    public static int IndevMapType=1;//0 - inland; 1 - island; 2 - floating; 3 - flat
+    public static int IndevMapType=0;//0 - inland; 1 - island; 2 - floating; 3 - flat
     public static int IndevHeight = 96;
     public static int IndevWidthX = 256;
     public static int IndevWidthZ = 256;

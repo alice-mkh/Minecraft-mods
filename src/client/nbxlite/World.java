@@ -135,6 +135,7 @@ public class World implements IBlockAccess
     public boolean isHotWorld;
     public int mapGen;
     public int mapGenExtra;
+    public int mapTypeIndev;
     private OldSpawnerAnimals animalSpawner;
     private OldSpawnerMonsters monsterSpawner;
     private OldSpawnerAnimals waterMobSpawner;
@@ -255,7 +256,7 @@ public class World implements IBlockAccess
         mapGen = worldInfo.getMapGen();
         mapGenExtra = worldInfo.getMapGenExtra();
         snowCovered = worldInfo.getSnowCovered();
-        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, snowCovered);
+        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, 0, snowCovered);
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -339,7 +340,7 @@ public class World implements IBlockAccess
             worldInfo.setMapTheme(mod_noBiomesX.MapTheme);
             mapGen=mod_noBiomesX.Generator+1;
             mapGenExtra=mod_noBiomesX.MapFeatures;
-            mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, false);
+            mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false);
             if(mod_noBiomesX.Generator==0 && !isHotWorld && mod_noBiomesX.MapFeatures==0)
             {
                 byte byte0 = 4;
@@ -378,6 +379,12 @@ public class World implements IBlockAccess
                         chunkProvider.provideChunk(x,z);
                     }
                 }
+                mod_noBiomesX.IndevWorld = null;
+                mapTypeIndev=mod_noBiomesX.IndevMapType;
+                worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
+            }else{
+                mapTypeIndev=0;
+                worldInfo.setIndevMapType(0);
             }
             generateSpawnPoint();
         } else
@@ -385,7 +392,11 @@ public class World implements IBlockAccess
             mapGen = worldInfo.getMapGen();
             mapGenExtra = worldInfo.getMapGenExtra();
             snowCovered = worldInfo.getSnowCovered();
-            mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), snowCovered);
+            mapTypeIndev = worldInfo.getIndevMapType();
+            System.out.println(mapGen-1);
+            System.out.println(mapGenExtra);
+            System.out.println(mapTypeIndev);
+            mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered);
         }
         calculateInitialSkylight();
         calculateInitialWeather();
