@@ -360,7 +360,7 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SnowCovered=false;
             }
             if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
-                IndevGenerator gen2 = new IndevGenerator(getSeed());
+                IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
                 if (mod_noBiomesX.IndevMapType==1){
                     gen2.island=true;
                 }
