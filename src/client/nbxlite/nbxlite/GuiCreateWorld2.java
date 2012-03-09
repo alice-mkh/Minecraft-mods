@@ -236,6 +236,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 StringTranslate stringtranslate1 = StringTranslate.getInstance();
                 moreWorldOptions.displayString = stringtranslate1.translateKey("selectWorld.moreWorldOptions");
             }
+            indevButton.drawButton = moreOptions && GeneratorList.genplus[GeneratorList.gencurrent];
         }
         else if (guibutton.id == 2)
         {
