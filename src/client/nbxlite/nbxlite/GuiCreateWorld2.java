@@ -44,6 +44,7 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.feat1current=GeneratorList.feat1default;
         GeneratorList.feat2current=GeneratorList.feat2default;
         GeneratorList.themecurrent=GeneratorList.themedefault;
+        GeneratorList.typecurrent=GeneratorList.typedefault;
         generator = GeneratorList.genid[GeneratorList.gencurrent];
         generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){

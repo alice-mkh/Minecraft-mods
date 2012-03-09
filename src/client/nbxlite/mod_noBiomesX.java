@@ -78,6 +78,8 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("nbxlite.continue", "Continue");
         ModLoader.addLocalization("nbxlite.width", "Width: ");
         ModLoader.addLocalization("nbxlite.length", "Length: ");
+        ModLoader.addLocalization("nbxlite.one", "One layer");
+        ModLoader.addLocalization("nbxlite.two", "Two layers");
         ModLoader.addLocalization("nbxlite.indev.raising", "Raising..");
         ModLoader.addLocalization("nbxlite.indev.eroding", "Eroding..");
         ModLoader.addLocalization("nbxlite.indev.soiling", "Soiling..");
@@ -367,9 +369,9 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevHeight = 96;
     public static int IndevWidthX = 256;
     public static int IndevWidthZ = 256;
-    public static int IndevSpawnX = 256;
-    public static int IndevSpawnY = 256;
-    public static int IndevSpawnZ = 256;
+    public static int IndevSpawnX;
+    public static int IndevSpawnY;
+    public static int IndevSpawnZ;
     public static byte[] IndevWorld;
 //     public static float Strafe = 0F;
 //     public static float Lol = 0F;
