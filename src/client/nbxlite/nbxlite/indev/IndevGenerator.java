@@ -2,6 +2,7 @@ package net.minecraft.src.nbxlite.indev;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import net.minecraft.src.nbxlite.indev.noise.*;
 import net.minecraft.src.MathHelper;
@@ -11,6 +12,7 @@ import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.LoadingScreenRenderer;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.StatCollector;
+import net.minecraft.src.Material;
 
 public final class IndevGenerator
 {
@@ -20,6 +22,7 @@ public final class IndevGenerator
     private int height;
     private Random rand;
     public byte blocks[];
+    private byte[] e;
     private int k;
     private int l;
     public boolean island;
@@ -68,10 +71,8 @@ public final class IndevGenerator
         this.width = i1;
         this.length = j1;
         this.height = k1;
-        world.i = i1/2;
-        world.j = k1-30;
-        world.k = j1/2;
         blocks = new byte[(i1 * j1 * k1)];
+//         e = new byte[blocks.length];
         for(int i2 = 0; i2 < l1; i2++)
         {
             k = k1 - 32 - i2 * 48;
@@ -446,7 +447,7 @@ label0:
         progressupdate.displayLoadingString(StatCollector.translateToLocal("nbxlite.indev.assembling"));
         nextPhase();
         a(0.0F);
-        world.a(i1, k1, j1, blocks, null);
+        /*world.*/a(world, i1, k1, j1, blocks, null);
         progressupdate.displayLoadingString(StatCollector.translateToLocal("nbxlite.indev.building"));
         nextPhase();
         a(0.0F);
@@ -1011,21 +1012,10 @@ label0:
         }
         return Block.opaqueCubeLookup[par1];
     }
-    
-    private byte getBlockId(int i, int j, int k){
-        int x = i;
-        int y = j;
-        int z = k;
-        int index = x+(y*length+z)*width;
-        return this.blocks[index];
-    }
 
     public final byte getLightLevel(int i1, int j1, int k1)
     {
-        if (true){
-            return 15;
-        }
-        byte[] e = new byte[blocks.length];
+        
         if(i1 < 0)
         {
             i1 = 0;
@@ -1063,5 +1053,233 @@ label0:
         {
             return (byte)(e[(j1 * length + k1) * width + i1] & 0xf);
         }
+    }
+
+  public final void a(g world, int paramInt1, int paramInt2, int paramInt3, byte[] paramArrayOfByte1, byte[] paramArrayOfByte2)
+  {
+    if ((paramArrayOfByte2 != null) && (paramArrayOfByte2.length == 0))
+      paramArrayOfByte2 = null;
+    world.a = paramInt1;
+    world.b = paramInt3;
+    world.c = paramInt2;
+    world.d = paramArrayOfByte1;
+    int i1;
+    byte[] arrayOfByte;
+    int i3;
+    for (paramInt2 = 0; paramInt2 < world.a; paramInt2++)
+      for (i1 = 0; i1 < world.b; i1++)
+        for (int arrayOfByte2 = 0; arrayOfByte2 < world.c; arrayOfByte2++)
+        {
+          i3 = 0;
+          if (arrayOfByte2 <= 1)
+          {
+            g localg = world;
+            if ((arrayOfByte2 < world.t - 1) && (paramArrayOfByte1[(((arrayOfByte2 + 1) * world.b + i1) * world.a + paramInt2)] == 0))
+            {
+              i3 = Block.lavaStill.blockID;
+              break/* label235*/;
+            }
+          }
+          g localg = world;
+          if (arrayOfByte2 < world.t - 1)
+          {
+            i3 = Block.bedrock.blockID;
+          }
+          else
+          {
+            localg = world;
+            if (arrayOfByte2 < world.t)
+            {
+              localg = world;
+              localg = world;
+              if ((world.t > world.s) && (world.m == Block.waterMoving.blockID))
+                i3 = Block.grass.blockID;
+              else
+                i3 = Block.dirt.blockID;
+            }
+            else
+            {
+              localg = world;
+              if (arrayOfByte2 < world.s)
+                i3 = world.m;
+            }
+          }
+          label235: paramArrayOfByte1[((arrayOfByte2 * world.b + i1) * world.a + paramInt2)] = (byte)i3;
+          if ((arrayOfByte2 != 1) || (paramInt2 == 0) || (i1 == 0) || (paramInt2 == world.a - 1) || (i1 == world.b - 1))
+            continue;
+          arrayOfByte2 = world.c - 2;
+        }
+    world.p = new int[paramInt1 * paramInt3];
+    Arrays.fill(world.p, world.c);
+    if (paramArrayOfByte2 == null)
+    {
+      e = new byte[paramArrayOfByte1.length];
+//       world.M = new h(world);
+      paramInt1 = 1;
+      g gparamInt1 = world;
+      paramInt2 = world.B;
+      for (paramInt3 = 0; paramInt3 < gparamInt1.a; paramInt3++)
+        for (int iparamArrayOfByte1 = 0; iparamArrayOfByte1 < gparamInt1.b; iparamArrayOfByte1++)
+        {
+          for (int iparamArrayOfByte2 = gparamInt1.c - 1; (iparamArrayOfByte2 > 0) && (Block.lightOpacity[gparamInt1.a(paramInt3, iparamArrayOfByte2, iparamArrayOfByte1)] == 0); iparamArrayOfByte2--){
+            gparamInt1.p[(paramInt3 + iparamArrayOfByte1 * gparamInt1.a)] = (iparamArrayOfByte2 + 1);
+          }       
+          for (int iiparamArrayOfByte2 = 0; iiparamArrayOfByte2 < gparamInt1.c; iiparamArrayOfByte2++)
+          {
+            i1 = (iiparamArrayOfByte2 * gparamInt1.b + iparamArrayOfByte1) * gparamInt1.a + paramInt3;
+            int aarrayOfByte = gparamInt1.p[(paramInt3 + iparamArrayOfByte1 * gparamInt1.a)];
+            int i2 = iiparamArrayOfByte2 >= aarrayOfByte ? paramInt2 : 0;
+            i3 = gparamInt1.d[i1];
+            if (i2 < Block.lightValue          [i3])
+              i2 = Block.lightValue          [i3];
+            e[i1] = (byte)((e[i1] & 0xF0) + i2);
+          }
+        }
+//       gparamInt1.M.a(0, 0, 0, gparamInt1.a, gparamInt1.c, gparamInt1.b);
+    }
+    else
+    {
+      e = paramArrayOfByte2;
+//       world.M = new h(world);
+    }
+//     for (int iparamInt2 = 0; iparamInt2 < world.n.size(); iparamInt2++)
+//       ((d)world.n.get(iparamInt2)).a();
+//     world.G.clear();
+    b(world);
+    world.a();
+    System.gc();
+  }
+
+    public final void b(g world)
+    {
+        Random random = rand;
+        int i1;
+        i1 = 0;
+        int j1;
+        int k1;
+        int l1;
+        int j2;
+        int l2;
+        int j3;
+        g g1 = world;
+        do
+        {
+            i1++;
+            j1 = random.nextInt(world.a / 2) + world.a / 4;
+            k1 = random.nextInt(world.b / 2) + world.b / 4;
+            l1 = getFirstUncoveredBlock(world, j1, k1) + 1;
+            if (i1 != 1000000){
+                continue;
+            }
+        } while(l1 < 4 || l1 <= g1.s);
+        for(int i2 = j1 - 3; i2 <= j1 + 3; i2++)
+        {
+            for(int k2 = l1 - 1; k2 <= l1 + 2; k2++)
+            {
+                for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++)
+                {
+                    if(getBlockMaterial(i2, k2, i3).isSolid())
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
+        j2 = l1 - 2;
+        l2 = j1 - 3;
+        l2++;
+        world.i = j1;
+        world.j = l1;
+        world.k = k1;
+        world.l = 180F;
+        /*Random localRandom = rand;
+        int i1 = 0;
+        int i2;
+        int i3;
+        int i4;
+        do
+        {
+            do
+            {
+                i1++;
+                i2 = localRandom.nextInt(world.a / 2) + world.a / 4;
+                i3 = localRandom.nextInt(world.b / 2) + world.b / 4;
+                i4 = getFirstUncoveredBlock(world, i2, i3) + 1;
+                if (i1 != 1000000){
+                    continue;
+                }
+                world.i = i2;
+                world.j = (world.c + 100);
+                world.k = i3;
+                world.l = 180.0F;
+    //             return;
+            }while (i4 < 4);
+            g localg = world;
+        }while (i4 <= world.s);
+        int i7;
+        int i5;
+        label181: label187: for (i5 = i2 - 3; true; i5++)
+        {
+            if (i5 > i2 + 3){
+                i5 = i4 - 2;
+            }
+            for (int i6 = i4 - 1; ; i6++)
+            {
+                if (i6 > i4 + 2){
+                    break label187;
+                }
+                for (i7 = i3 - 3 - 2; ; i7++){
+                    if (i7 > i3 + 3){
+                        break label181;
+                    }
+                    if (getBlockMaterial(i5, i6, i7).isSolid()){
+                        break;
+                    }
+                }
+            }
+        }
+        label252: for (int i6 = i2 - 3; ; i6++)
+        {
+            if (i6 > i2 + 3){
+                world.i = i2;
+            }
+            for (i7 = i3 - 3 - 2; ; i7++)
+            {
+                if (i7 > i3 + 3){
+                    break label252;
+                }
+//                 if (Block.opaqueCubeLookup[getBlockId(i6, i5, i7)] == false){
+//                     break;
+//                 }
+            }
+        }
+        world.i = i2;
+        world.j = i4;
+        world.k = i3;
+        world.l = 180.0F;*/
+//         System.out.println(new StringBuilder().append("i=").append(world.i).append(", j=").append(world.j).append(", k=").append(world.k).append(", l=").append(world.l).toString());
+    }
+    
+    private byte getBlockId(int i, int j, int k){
+        int x = i;
+        int y = j;
+        int z = k;
+        int index = x+(y*length+z)*width;
+        return this.blocks[index];
+    }
+    
+    private Material getBlockMaterial(int i, int j, int k){
+        if (getBlockId(i, j, k) == 0){
+            return Material.air;
+        }
+        return Block.blocksList[getBlockId(i, j, k)].blockMaterial;
+    }
+
+
+    public int getFirstUncoveredBlock(g world, int i1, int j1)
+    {
+        int k1;
+        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air) && k1 > 0; k1--) { }
+        return k1;
     }
 }
