@@ -45,6 +45,7 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.feat2current=GeneratorList.feat2default;
         GeneratorList.themecurrent=GeneratorList.themedefault;
         GeneratorList.typecurrent=GeneratorList.typedefault;
+        mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
         generator = GeneratorList.genid[GeneratorList.gencurrent];
         generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
@@ -96,7 +97,7 @@ public class GuiCreateWorld2 extends GuiScreen
         controlList.add(generatorExtraButton = new GuiButton(7, width / 2 + 5, 135, 150, 20, stringtranslate.translateKey(extraname)));
         generatorExtraButton.drawButton = false;
         generateStructuresButton.drawButton = false;
-        controlList.add(indevButton = new GuiButton(8, width / 2 + 154, 135, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
+        controlList.add(indevButton = new GuiButton(8, width / 2 + 156, 135, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
         indevButton.drawButton = false;
         controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         worldTypeButton.drawButton = false;

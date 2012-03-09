@@ -44,6 +44,8 @@ public class GuiNBXliteSettings extends GuiScreen
         GeneratorList.feat1current=GeneratorList.feat1default;
         GeneratorList.feat2current=GeneratorList.feat2default;
         GeneratorList.themecurrent=GeneratorList.themedefault;
+        GeneratorList.typecurrent=GeneratorList.themedefault;
+        mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
         generator = GeneratorList.genid[GeneratorList.gencurrent];
         generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
@@ -85,7 +87,7 @@ public class GuiNBXliteSettings extends GuiScreen
         controlList.add(generateStructuresButton = new GuiButton(4, width / 2 - 75, 65, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
         controlList.add(generatorButton = new GuiButton(6, width / 2 - 75, 110, 150, 20, stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent])));
         controlList.add(generatorExtraButton = new GuiButton(7, width / 2 - 75, 155, 150, 20, stringtranslate.translateKey(extraname)));
-        controlList.add(indevButton = new GuiButton(8, width / 2 + 74, 155, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
+        controlList.add(indevButton = new GuiButton(8, width / 2 + 76, 155, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
         indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
         func_35363_g();
     }
