@@ -367,6 +367,9 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevHeight = 96;
     public static int IndevWidthX = 256;
     public static int IndevWidthZ = 256;
+    public static int IndevSpawnX = 256;
+    public static int IndevSpawnY = 256;
+    public static int IndevSpawnZ = 256;
     public static byte[] IndevWorld;
 //     public static float Strafe = 0F;
 //     public static float Lol = 0F;

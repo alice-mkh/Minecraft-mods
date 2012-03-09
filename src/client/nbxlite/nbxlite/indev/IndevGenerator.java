@@ -30,6 +30,9 @@ public final class IndevGenerator
     private int n;
     private float o;
     private int p[];
+    public int spawnX;
+    public int spawnY;
+    public int spawnZ;
 
     public IndevGenerator(IProgressUpdate iprogressupdate, long seed)
     {
@@ -65,6 +68,9 @@ public final class IndevGenerator
         this.width = i1;
         this.length = j1;
         this.height = k1;
+        world.i = i1/2;
+        world.j = k1-30;
+        world.k = j1/2;
         blocks = new byte[(i1 * j1 * k1)];
         for(int i2 = 0; i2 < l1; i2++)
         {
@@ -539,6 +545,9 @@ label0:
 
         setBlock((i1 - 3) + 1, j1, k1, Block.torchWood.blockID);
         setBlock((i1 + 3) - 1, j1, k1, Block.torchWood.blockID);
+        spawnX = world.i;
+        spawnY = world.j-3;
+        spawnZ = world.k;
     }
 
     private void generateGrass(g world)
@@ -550,7 +559,7 @@ label0:
             {
                 for(int k1 = 0; k1 < length; k1++)
                 {
-                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID && world.d(i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
+                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID && getLightLevel(i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
                     {
 //                         world.a(i1, j1, k1, Block.grass.blockID);
                         setBlock(i1, j1, k1, Block.grass.blockID);
@@ -990,9 +999,9 @@ label0:
 
     private boolean canFlowerStay(BlockFlower flower, g world, int i, int j, int k){
         if (flower==Block.plantYellow || flower==Block.plantRed){
-            return (((world.d(i, j, k) >= 8) || ((world.d(i, j, k) >= 4) && /*(world.l(i, j, k)))*/true)) && (canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k))));
+            return (((getLightLevel(i, j, k) >= 8) || ((getLightLevel(i, j, k) >= 4) && /*(world.l(i, j, k)))*/true)) && (canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k))));
         }
-        return world.d(i, j, k) < 13 && canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k));
+        return getLightLevel(i, j, k) < 13 && canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k));
     }
 
     private boolean canThisPlantGrowOnThisBlockID(BlockFlower flower, int par1)
@@ -1009,5 +1018,50 @@ label0:
         int z = k;
         int index = x+(y*length+z)*width;
         return this.blocks[index];
+    }
+
+    public final byte getLightLevel(int i1, int j1, int k1)
+    {
+        if (true){
+            return 15;
+        }
+        byte[] e = new byte[blocks.length];
+        if(i1 < 0)
+        {
+            i1 = 0;
+        } else
+        if(i1 >= width)
+        {
+            i1 = width - 1;
+        }
+        if(j1 < 0)
+        {
+            j1 = 0;
+        } else
+        if(j1 >= height)
+        {
+            j1 = height - 1;
+        }
+        if(k1 < 0)
+        {
+            k1 = 0;
+        } else
+        if(k1 >= length)
+        {
+            k1 = length - 1;
+        }
+        if(blocks[(j1 * length + k1) * width + i1] == Block.stairSingle.blockID)
+        {
+            if(j1 < height - 1)
+            {
+                return (byte)(e[((j1 + 1) * length + k1) * width + i1] & 0xf);
+            } else
+            {
+                return 15;
+            }
+        } else
+        {
+            return (byte)(e[(j1 * length + k1) * width + i1] & 0xf);
+        }
     }
 }

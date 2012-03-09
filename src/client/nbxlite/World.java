@@ -377,8 +377,13 @@ public class World implements IBlockAccess
                 for (int x=0; x<mod_noBiomesX.IndevWidthX/16; x++){
                     for (int z=0; z<mod_noBiomesX.IndevWidthZ/16; z++){
                         chunkProvider.provideChunk(x,z);
+//                         updatingLighting();
                     }
                 }
+                
+                mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+                mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+                mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mod_noBiomesX.IndevWorld = null;
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
@@ -393,9 +398,6 @@ public class World implements IBlockAccess
             mapGenExtra = worldInfo.getMapGenExtra();
             snowCovered = worldInfo.getSnowCovered();
             mapTypeIndev = worldInfo.getIndevMapType();
-            System.out.println(mapGen-1);
-            System.out.println(mapGenExtra);
-            System.out.println(mapTypeIndev);
             mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered);
         }
         calculateInitialSkylight();
@@ -549,13 +551,7 @@ public class World implements IBlockAccess
             }
         }else if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
             findingSpawnPoint = true;
-            int i = rand.nextInt(mod_noBiomesX.IndevWidthZ);
-            int j;
-            for(j = rand.nextInt(mod_noBiomesX.IndevWidthZ); !worldProvider.canCoordinateBeSpawn(i, j); j = rand.nextInt(mod_noBiomesX.IndevWidthX)){
-                i = rand.nextInt(mod_noBiomesX.IndevWidthZ);
-            }
-            worldInfo.setSpawnPosition(i, getPrecipitationHeight(i, j), j);
-//             spawnHouse();
+            worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
             findingSpawnPoint = false;
         }else{
             findingSpawnPoint = true;
