@@ -72,10 +72,6 @@ public class GuiCreateWorld2 extends GuiScreen
 
     public void initGui()
     {
-        GeneratorList.gencurrent=GeneratorList.gendefault;
-        GeneratorList.feat1current=GeneratorList.feat1default;
-        GeneratorList.feat2current=GeneratorList.feat2default;
-        GeneratorList.themecurrent=GeneratorList.themedefault;
         String extraname;
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
             extraname = GeneratorList.feat1name[GeneratorList.feat1current];
