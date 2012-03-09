@@ -370,7 +370,8 @@ public class World implements IBlockAccess
                     gen2.flat=true;
                 }
                 gen2.theme=mod_noBiomesX.MapTheme;
-                gen2.generateLevel("OMG", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+                gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 mod_noBiomesX.IndevWorld = gen2.blocks;
                 for (int x=0; x<mod_noBiomesX.IndevWidthX/16; x++){
                     for (int z=0; z<mod_noBiomesX.IndevWidthZ/16; z++){
