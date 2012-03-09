@@ -20,7 +20,7 @@ public class GuiSliderCustom extends GuiButton
         dragging = false;
         name = par5Str;
         sliderValue = par6;
-        displayString = new StringBuilder().append(name).append(": ").append(getSizeValue()).toString();
+        displayString = new StringBuilder().append(name).append(getSizeValue()).toString();
     }
 
     /**
@@ -56,7 +56,7 @@ public class GuiSliderCustom extends GuiButton
                 sliderValue = 1.0F;
             }
 
-            displayString = new StringBuilder().append(name).append(": ").append(getSizeValue()).toString();
+            displayString = new StringBuilder().append(name).append(getSizeValue()).toString();
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -84,7 +84,7 @@ public class GuiSliderCustom extends GuiButton
                 sliderValue = 1.0F;
             }
 
-            displayString = new StringBuilder().append(name).append(": ").append(getSizeValue()).toString();
+            displayString = new StringBuilder().append(name).append(getSizeValue()).toString();
             dragging = true;
             return true;
         }

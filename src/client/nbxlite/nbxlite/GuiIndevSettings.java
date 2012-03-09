@@ -28,8 +28,8 @@ public class GuiIndevSettings extends GuiScreen
         controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("nbxlite.continue")));
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
         controlList.add(typeButton = new GuiButton(2, width / 2 - 75, 110, 150, 20, stringtranslate.translateKey(GeneratorList.typename[GeneratorList.typecurrent])));
-        controlList.add(widthxslider = new GuiSliderCustom(16, (width / 2 - 155), height / 6 + 24, "Width", GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthX)));
-        controlList.add(widthzslider = new GuiSliderCustom(16, (width / 2 + 5), height / 6 + 24, "Length", GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthZ)));
+        controlList.add(widthxslider = new GuiSliderCustom(16, (width / 2 - 155), height / 6 + 24, stringtranslate.translateKey("nbxlite.width"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthX)));
+        controlList.add(widthzslider = new GuiSliderCustom(16, (width / 2 + 5), height / 6 + 24, stringtranslate.translateKey("nbxlite.length"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthZ)));
     }
 
     protected void actionPerformed(GuiButton guibutton)

@@ -76,6 +76,8 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("nbxlite.plus", "+");
         ModLoader.addLocalization("nbxlite.convert", "Select world settings");
         ModLoader.addLocalization("nbxlite.continue", "Continue");
+        ModLoader.addLocalization("nbxlite.width", "Width: ");
+        ModLoader.addLocalization("nbxlite.length", "Length: ");
         ModLoader.addLocalization("nbxlite.indev.raising", "Raising..");
         ModLoader.addLocalization("nbxlite.indev.eroding", "Eroding..");
         ModLoader.addLocalization("nbxlite.indev.soiling", "Soiling..");
