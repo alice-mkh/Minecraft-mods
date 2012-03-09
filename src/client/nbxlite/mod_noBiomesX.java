@@ -50,6 +50,10 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("nbxlite.themeHell", "Theme: Hell");
         ModLoader.addLocalization("nbxlite.themeWoods", "Theme: Woods");
         ModLoader.addLocalization("nbxlite.themeParadise", "Theme: Paradise");
+        ModLoader.addLocalization("nbxlite.typeInland", "Type: Inland");
+        ModLoader.addLocalization("nbxlite.typeIsland", "Type: Island");
+        ModLoader.addLocalization("nbxlite.typeFloating", "Type: Floating");
+        ModLoader.addLocalization("nbxlite.typeFlat", "Type: Flat");
         ModLoader.addLocalization("nbxlite.descriptionGenIndev", "Finite map, many options");
         ModLoader.addLocalization("nbxlite.descriptionGenInfdev0227", "No trees, obsidian lines");
         ModLoader.addLocalization("nbxlite.descriptionGenInfdev0420", "No biomes, large trees");
