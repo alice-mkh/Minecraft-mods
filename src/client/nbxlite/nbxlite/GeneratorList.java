@@ -45,7 +45,7 @@ public class GeneratorList{
     public static int typedefault = 1;
     public static int typecurrent;
     public static int typelength = 3;
-    public static String[] typename = {"nbxlite.themeNormal", "nbxlite.themeHell", "nbxlite.themeWoods", "nbxlite.themeParadise"};
+    public static String[] typename = {"nbxlite.typeInland", "nbxlite.typeIsland", "nbxlite.typeFloating", "nbxlite.typeFlat"};
     public static String[] typedesc = {"nbxlite.descriptionThemeNormal", "nbxlite.descriptionThemeHell", "nbxlite.descriptionThemeWoods",
                                         "nbxlite.descriptionThemeParadise"};
 
