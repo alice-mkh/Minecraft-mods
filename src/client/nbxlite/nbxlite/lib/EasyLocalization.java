@@ -55,9 +55,9 @@ public class EasyLocalization {
                 mappings.clear();
                 try {
 //                         InputStream langStream = EasyLocalization.class.getResourceAsStream(
-//                                         "/" + modName + "/lang/" + newLanguage + ".lang", "UTF-8");
+//                                         "/" + modName + "/lang/" + newLanguage + ".lang");
 //                         InputStream defaultLangStream = EasyLocalization.class.getResourceAsStream(
-//                                         "/" + modName + "/lang/" + DEFAULT_LANGUAGE + ".lang", "UTF-8");
+//                                         "/" + modName + "/lang/" + DEFAULT_LANGUAGE + ".lang");
                         BufferedReader langStream = new BufferedReader(new InputStreamReader((EasyLocalization.class).getResourceAsStream(
                                         "/" + modName + "/lang/" + newLanguage + ".lang"), "UTF-8"));
                         BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader((EasyLocalization.class).getResourceAsStream(
@@ -70,7 +70,8 @@ public class EasyLocalization {
                         }
                         defaultLangStream.close();
                 } catch (Exception e) {
-                        e.printStackTrace();
+                    load(DEFAULT_LANGUAGE);
+//                         e.printStackTrace();
                 }
                 loadedLanguage = newLanguage;
         }
