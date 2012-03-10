@@ -1,0 +1,89 @@
+#Various UI elements
+convert=Укажите параметры мира
+continue=Продолжить
+plus=+
+
+#Indev settings
+oneLayer=Один слой
+twoLayers=Два слоя
+width=Ширина: 
+length=Длина: 
+
+#Indev loading screen
+indev.raising=Поднимаем..
+indev.eroding=Разрушаем..
+indev.soiling=Посыпаем..
+indev.growing=Наращиваем..
+indev.carving=Прорезаем..
+indev.melting=Плавим..
+indev.watering=Поливаем..
+indev.assembling=Собираем..
+indev.building=Строим..
+indev.planting=Сажаем..
+indev.lighting=Освещаем..
+indev.spawning=Заселяем..
+
+gen=Генератор: 
+features=Особенности: 
+theme=Тема: 
+indevType=Тип: 
+
+#Generators
+genIndev=Indev
+genInfdev0227=Infdev (27.02)
+genInfdev0420=Infdev (20.04)
+genAlpha=Альфа
+genBeta=Бета
+genRelease=Релиз
+
+#Beta features
+featuresHalloween=Альфа 1.2.0
+featuresBeta12=Бета 1.2
+featuresBeta14=Бета 1.4
+featuresBeta15=Бета 1.5
+featuresBeta173=Бета 1.7.3
+
+#Release features
+featuresBeta181=Бета 1.8.1
+features10=1.0
+features11=1.1
+features12=1.2
+
+#Themes
+themeNormal=Обычная
+themeHell=Ад
+themeWoods=Лес
+themeParadise=Рай
+
+#Indev types
+typeInland=Суша
+typeIsland=Остров
+typeFloating=Летающие острова
+typeFlat=Плоский
+
+#Generator descriptions
+descriptionGenIndev=Ограниченная территория, много опций
+descriptionGenInfdev0227=Пустошь, обсидиановые стены
+descriptionGenInfdev0420=Высокие горы, огромные деревья
+descriptionGenAlpha=Нет биомов, низкие облака
+descriptionGenBeta=Небольшие биомы, низкие облака
+descriptionGenRelease=Большие биомы, деревни
+
+#Beta features descriptions
+descriptionFeaturesHalloween=Ничего особенного
+descriptionFeaturesBeta12=Озера, березы, елки
+descriptionFeaturesBeta14=Песчаник
+descriptionFeaturesBeta15=Погода
+descriptionFeaturesBeta173=Высокая трава
+
+#Release feature descriptions
+descriptionFeaturesBeta181=Ничего особенного
+descriptionFeatures10=Снег, грибные биомы, темное болото
+descriptionFeatures11=Снег в тайге, пляжи, холмы
+descriptionFeatures12=Джунгли, колодцы в пустынях
+
+#Theme descriprions
+descriptionThemeNormal=Синее небо, зеленая трава
+descriptionThemeHell=Темный мир с океанами лавы
+descriptionThemeWoods=Пасмурное небо и много деревьев
+descriptionThemeParadise=Вечный день, много песка
