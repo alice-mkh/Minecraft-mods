@@ -36,8 +36,10 @@ public class ChunkProviderFinite
                 {
                     int i1 = 0;
                     if (mod_noBiomesX.IndevMapType==1){
-                        if (l < altitude-9){
+                        if (l < altitude-10){
                             i1 = Block.bedrock.blockID;
+                        }else  if (l = altitude-10){
+                            i1 = Block.dirt.blockID;
                         }else if (l < altitude){
                             if (mod_noBiomesX.MapTheme==1){
                                 i1 = Block.lavaStill.blockID;
