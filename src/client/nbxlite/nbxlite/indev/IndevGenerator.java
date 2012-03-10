@@ -73,7 +73,6 @@ public final class IndevGenerator
         this.length = j1;
         this.height = k1;
         blocks = new byte[(i1 * j1 * k1)];
-//         e = new byte[blocks.length];
         for(int i2 = 0; i2 < l1; i2++)
         {
             k = k1 - 32 - i2 * 48;
@@ -563,7 +562,6 @@ label0:
                 {
                     if(getBlockId(i1, j1, k1) == Block.dirt.blockID && getLightLevel(i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
                     {
-//                         world.a(i1, j1, k1, Block.grass.blockID);
                         setBlock(i1, j1, k1, Block.grass.blockID);
                     }
                 }
@@ -881,12 +879,14 @@ label0:
                 }
                 if(k3 > 0)
                 {
-                    byte byte1 = blocks[j1 - i1];
-                    if((byte0 == Block.lavaMoving.blockID || byte0 == Block.lavaStill.blockID) && (byte1 == Block.waterMoving.blockID || byte1 == Block.waterStill.blockID))
+                    boolean bbyte1;
+                    byte byte2 = blocks[j1 - i1];
+                    if((byte0 == Block.lavaMoving.blockID || byte0 == Block.lavaStill.blockID) && (byte2 == Block.waterMoving.blockID || byte2 == Block.waterStill.blockID))
                     {
                         blocks[j1 - i1] = (byte)Block.stone.blockID;
                     }
-                    if((byte1 == ((byte)(byte1 != l1 ? 0 : 1))) && !flag2)
+                    bbyte1 = byte2 != l1 ? false : true;
+                    if(bbyte1 && !flag2)
                     {
                         if(j2 == p.length)
                         {
@@ -896,12 +896,7 @@ label0:
                         }
                         p[j2++] = j1 - i1;
                     }
-                    if (byte1 == 0){
-                        flag2 = false;
-                    }else{
-                        flag2 = true;
-                    }
-//                     flag2 = byte1;
+                    flag2 = bbyte1;
                 }
                 j1++;
                 i4++;
@@ -970,7 +965,7 @@ label0:
                 for(int l2 = k1 - j4; l2 <= k1 + j4; l2++)
                 {
                     int i5 = l2 - k1;
-                    if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0)/* && !x.e[a(l4, i3, l2)]*/)
+                    if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0) && !Block.opaqueCubeLookup[getBlockId(l4, i3, l2)])
                     {
                         setBlock(l4, i3, l2, Block.leaves.blockID);
                     }
@@ -982,10 +977,10 @@ label0:
 
         for(int j3 = 0; j3 < l1; j3++)
         {
-//             if(!x.e[world.a(i1, j1 + j3, k1)])
-//             {
+            if(!Block.opaqueCubeLookup[getBlockId(i1, j1 + j3, k1)])
+            {
                 setBlock(i1, j1 + j3, k1, Block.wood.blockID);
-//             }
+            }
         }
 
         return true;
@@ -1052,6 +1047,7 @@ label0:
             }
         } else
         {
+//             System.out.println((byte)(e[(j1 * length + k1) * width + i1] & 0xf));
             return (byte)(e[(j1 * length + k1) * width + i1] & 0xf);
         }
     }
@@ -1131,8 +1127,9 @@ label0:
             int aarrayOfByte = gparamInt1.p[(paramInt3 + iparamArrayOfByte1 * gparamInt1.a)];
             int i2 = iiparamArrayOfByte2 >= aarrayOfByte ? paramInt2 : 0;
             i3 = gparamInt1.d[i1];
-            if (i2 < Block.lightValue          [i3])
-              i2 = Block.lightValue          [i3];
+            if (i2 < Block.lightValue[i3]){
+              i2 = Block.lightValue[i3];
+            }
             e[i1] = (byte)((e[i1] & 0xF0) + i2);
           }
         }
