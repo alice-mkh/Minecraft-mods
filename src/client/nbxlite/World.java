@@ -374,8 +374,8 @@ public class World implements IBlockAccess
                 ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
                 gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 mod_noBiomesX.IndevWorld = gen2.blocks;
-                for (int x=0; x<mod_noBiomesX.IndevWidthX/16; x++){
-                    for (int z=0; z<mod_noBiomesX.IndevWidthZ/16; z++){
+                for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
+                    for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
 //                         updatingLighting();
                     }
