@@ -38,7 +38,6 @@ public class GuiCreateWorld2 extends GuiScreen
 
     public GuiCreateWorld2(GuiScreen guiscreen)
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
         gameMode = "survival";
         GeneratorList.gencurrent=GeneratorList.gendefault;
         GeneratorList.feat1current=GeneratorList.feat1default;
@@ -47,16 +46,16 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.typecurrent=GeneratorList.typedefault;
         mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
         generator = GeneratorList.genid[GeneratorList.gencurrent];
-        generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
+        generatorDescription = mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
             generatorExtra = GeneratorList.feat1id[GeneratorList.feat1default];
-            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1default]);
+            generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat1desc[GeneratorList.feat1default]);
         }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
             generatorExtra = GeneratorList.feat2id[GeneratorList.feat2default];
-            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2default]);
+            generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2default]);
         }else{
             generatorExtra = GeneratorList.themeid[GeneratorList.themedefault];
-            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themedefault]);
+            generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themedefault]);
         }
         field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
         field_40232_h = false;
@@ -78,11 +77,11 @@ public class GuiCreateWorld2 extends GuiScreen
     {
         String extraname;
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-            extraname = GeneratorList.feat1name[GeneratorList.feat1current];
+            extraname = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]);
         }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-            extraname = GeneratorList.feat2name[GeneratorList.feat2current];
+            extraname = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]);
         }else{
-            extraname = GeneratorList.themename[GeneratorList.themecurrent];
+            extraname = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
         }
         StringTranslate stringtranslate = StringTranslate.getInstance();
         Keyboard.enableRepeatEvents(true);
@@ -92,12 +91,12 @@ public class GuiCreateWorld2 extends GuiScreen
         controlList.add(gameModeButton = new GuiButton(2, width / 2 - 75, 100, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
         controlList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 172, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
         controlList.add(generateStructuresButton = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
-        controlList.add(generatorButton = new GuiButton(6, width / 2 - 155, 135, 150, 20, stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent])));
+        controlList.add(generatorButton = new GuiButton(6, width / 2 - 155, 135, 150, 20, mod_noBiomesX.lang.get("gen")+mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent])));
         generatorButton.drawButton = false;
-        controlList.add(generatorExtraButton = new GuiButton(7, width / 2 + 5, 135, 150, 20, stringtranslate.translateKey(extraname)));
+        controlList.add(generatorExtraButton = new GuiButton(7, width / 2 + 5, 135, 150, 20, extraname));
         generatorExtraButton.drawButton = false;
         generateStructuresButton.drawButton = false;
-        controlList.add(indevButton = new GuiButton(8, width / 2 + 156, 135, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
+        controlList.add(indevButton = new GuiButton(8, width / 2 + 156, 135, 20, 20, mod_noBiomesX.lang.get("plus")));
         indevButton.drawButton = false;
         controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         worldTypeButton.drawButton = false;
@@ -301,10 +300,9 @@ public class GuiCreateWorld2 extends GuiScreen
             }else{
                 GeneratorList.gencurrent=0;
             }
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             generator=GeneratorList.genid[GeneratorList.gencurrent];
-            generatorButton.displayString = stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent]);
-            generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
+            generatorButton.displayString = mod_noBiomesX.lang.get("gen")+mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent]);
+            generatorDescription = mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]);
             field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 worldTypeButton.enabled = (GeneratorList.feat1worldtype[GeneratorList.feat1default]);
@@ -321,24 +319,23 @@ public class GuiCreateWorld2 extends GuiScreen
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
                 GeneratorList.themecurrent = GeneratorList.themedefault;
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.themename[GeneratorList.themecurrent]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themecurrent]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]);
             }else if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 GeneratorList.feat1current = GeneratorList.feat1default;
                 generatorExtra = GeneratorList.feat1id[GeneratorList.feat1current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat1name[GeneratorList.feat1current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat1desc[GeneratorList.feat1current]);
             }else{
                 GeneratorList.feat2current = GeneratorList.feat2default;
                 generatorExtra = GeneratorList.feat2id[GeneratorList.feat2current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
+                generatorExtraButton.displayString =mod_noBiomesX.lang.get("features")+ mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
         } else if(guibutton.id == 8) {
             mc.displayGuiScreen(new GuiIndevSettings(this));
             moreOptions = false;
         } else if(guibutton.id == 7) {
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 if (GeneratorList.feat1current<GeneratorList.feat1length){
                     GeneratorList.feat1current++;
@@ -346,8 +343,8 @@ public class GuiCreateWorld2 extends GuiScreen
                     GeneratorList.feat1current=0;
                 }
                 generatorExtra = GeneratorList.feat1id[GeneratorList.feat1current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat1name[GeneratorList.feat1current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat1desc[GeneratorList.feat1current]);
                 worldTypeButton.enabled = GeneratorList.feat1worldtype[GeneratorList.feat1current];
                 if (!worldTypeButton.enabled){
                     field_46030_z = 0;
@@ -360,8 +357,8 @@ public class GuiCreateWorld2 extends GuiScreen
                     GeneratorList.feat2current=0;
                 }
                 generatorExtra = GeneratorList.feat2id[GeneratorList.feat2current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2current]);
                 worldTypeButton.enabled = (GeneratorList.feat2worldtype[GeneratorList.feat2current]);
                 if (!worldTypeButton.enabled){
                     field_46030_z = 0;
@@ -374,8 +371,8 @@ public class GuiCreateWorld2 extends GuiScreen
                     GeneratorList.themecurrent=0;
                 }
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.themename[GeneratorList.themecurrent]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themecurrent]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]);
                 worldTypeButton.enabled = false;
                 field_46030_z = 0;
                 func_35363_g();

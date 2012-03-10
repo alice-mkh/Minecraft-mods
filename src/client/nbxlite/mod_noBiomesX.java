@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
+import net.minecraft.src.nbxlite.lib.EasyLocalization;
 
 public class mod_noBiomesX extends BaseModMp{
     public mod_noBiomesX(){
@@ -31,67 +32,6 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public void load(){
-        ModLoader.addLocalization("nbxlite.genIndev", "Generator: Indev");
-        ModLoader.addLocalization("nbxlite.genInfdev0227", "Generator: Infdev (02.27)");
-        ModLoader.addLocalization("nbxlite.genInfdev0420", "Generator: Infdev (04.20)");
-        ModLoader.addLocalization("nbxlite.genAlpha", "Generator: Alpha");
-        ModLoader.addLocalization("nbxlite.genBeta", "Generator: Beta");
-        ModLoader.addLocalization("nbxlite.genRelease", "Generator: Release");
-        ModLoader.addLocalization("nbxlite.featuresHalloween", "Features: Alpha 1.2.0");
-        ModLoader.addLocalization("nbxlite.featuresBeta12", "Features: Beta 1.2");
-        ModLoader.addLocalization("nbxlite.featuresBeta14", "Features: Beta 1.4");
-        ModLoader.addLocalization("nbxlite.featuresBeta15", "Features: Beta 1.5");
-        ModLoader.addLocalization("nbxlite.featuresBeta173", "Features: Beta 1.7.3");
-        ModLoader.addLocalization("nbxlite.featuresBeta181", "Features: Beta 1.8.1");
-        ModLoader.addLocalization("nbxlite.features10", "Features: 1.0");
-        ModLoader.addLocalization("nbxlite.features11", "Features: 1.1");
-        ModLoader.addLocalization("nbxlite.features12", "Features: 1.2");
-        ModLoader.addLocalization("nbxlite.themeNormal", "Theme: Normal");
-        ModLoader.addLocalization("nbxlite.themeHell", "Theme: Hell");
-        ModLoader.addLocalization("nbxlite.themeWoods", "Theme: Woods");
-        ModLoader.addLocalization("nbxlite.themeParadise", "Theme: Paradise");
-        ModLoader.addLocalization("nbxlite.typeInland", "Type: Inland");
-        ModLoader.addLocalization("nbxlite.typeIsland", "Type: Island");
-        ModLoader.addLocalization("nbxlite.typeFloating", "Type: Floating");
-        ModLoader.addLocalization("nbxlite.typeFlat", "Type: Flat");
-        ModLoader.addLocalization("nbxlite.descriptionGenIndev", "Finite map, many options");
-        ModLoader.addLocalization("nbxlite.descriptionGenInfdev0227", "No trees, obsidian lines");
-        ModLoader.addLocalization("nbxlite.descriptionGenInfdev0420", "No biomes, large trees");
-        ModLoader.addLocalization("nbxlite.descriptionGenAlpha", "No biomes, low clouds");
-        ModLoader.addLocalization("nbxlite.descriptionGenBeta", "Small biomes, low clouds");
-        ModLoader.addLocalization("nbxlite.descriptionGenRelease", "Large biomes, villages");
-        ModLoader.addLocalization("nbxlite.descriptionFeaturesHalloween", "No special features");
-        ModLoader.addLocalization("nbxlite.descriptionFeaturesBeta12", "Lakes, special trees");
-        ModLoader.addLocalization("nbxlite.descriptionFeaturesBeta14", "Sandstone");
-        ModLoader.addLocalization("nbxlite.descriptionFeaturesBeta15", "Weather");
-        ModLoader.addLocalization("nbxlite.descriptionFeaturesBeta173", "Tall grass");
-        ModLoader.addLocalization("nbxlite.descriptionFeaturesBeta181", "No special features");
-        ModLoader.addLocalization("nbxlite.descriptionFeatures10", "Snow, mushrooms, dark swamps");
-        ModLoader.addLocalization("nbxlite.descriptionFeatures11", "Snow in taiga, beaches, hills");
-        ModLoader.addLocalization("nbxlite.descriptionFeatures12", "Jungles, desert wells");
-        ModLoader.addLocalization("nbxlite.descriptionThemeNormal", "Blue sky, green grass");
-        ModLoader.addLocalization("nbxlite.descriptionThemeHell", "Dark world with lava oceans");
-        ModLoader.addLocalization("nbxlite.descriptionThemeWoods", "Cloudy sky, many trees");
-        ModLoader.addLocalization("nbxlite.descriptionThemeParadise", "Eternal day, large beaches");
-        ModLoader.addLocalization("nbxlite.plus", "+");
-        ModLoader.addLocalization("nbxlite.convert", "Select world settings");
-        ModLoader.addLocalization("nbxlite.continue", "Continue");
-        ModLoader.addLocalization("nbxlite.width", "Width: ");
-        ModLoader.addLocalization("nbxlite.length", "Length: ");
-        ModLoader.addLocalization("nbxlite.one", "One layer");
-        ModLoader.addLocalization("nbxlite.two", "Two layers");
-        ModLoader.addLocalization("nbxlite.indev.raising", "Raising..");
-        ModLoader.addLocalization("nbxlite.indev.eroding", "Eroding..");
-        ModLoader.addLocalization("nbxlite.indev.soiling", "Soiling..");
-        ModLoader.addLocalization("nbxlite.indev.growing", "Growing..");
-        ModLoader.addLocalization("nbxlite.indev.carving", "Carving..");
-        ModLoader.addLocalization("nbxlite.indev.melting", "Melting..");
-        ModLoader.addLocalization("nbxlite.indev.watering", "Watering..");
-        ModLoader.addLocalization("nbxlite.indev.assembling", "Assembling..");
-        ModLoader.addLocalization("nbxlite.indev.building", "Building..");
-        ModLoader.addLocalization("nbxlite.indev.planting", "Planting..");
-        ModLoader.addLocalization("nbxlite.indev.lighting", "Lighting..");
-        ModLoader.addLocalization("nbxlite.indev.spawning", "Spawning..");
         replaceBlocks();
 //         replaceHoes();
     }
@@ -373,4 +313,5 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnY;
     public static int IndevSpawnZ;
     public static byte[] IndevWorld;
+    public static EasyLocalization lang = new EasyLocalization("nbxlite");
 }

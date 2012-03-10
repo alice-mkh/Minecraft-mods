@@ -28,14 +28,14 @@ public class GuiIndevSettings extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         layers = mod_noBiomesX.IndevHeight==128;
-        String l = layers ? stringtranslate.translateKey("nbxlite.two") : stringtranslate.translateKey("nbxlite.one");
-        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("nbxlite.continue")));
+        String l = layers ? mod_noBiomesX.lang.get("twoLayers") : mod_noBiomesX.lang.get("oneLayer");
+        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_noBiomesX.lang.get("continue")));
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
-        controlList.add(typeButton = new GuiButton(2, width / 2 - 75, 110, 150, 20, stringtranslate.translateKey(GeneratorList.typename[GeneratorList.typecurrent])));
+        controlList.add(typeButton = new GuiButton(2, width / 2 - 75, 110, 150, 20, mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent])));
         controlList.add(layerButton = new GuiButton(3, width / 2 - 75, 140, 150, 20, l));
         layerButton.drawButton = GeneratorList.typecurrent == 2;
-        controlList.add(widthxslider = new GuiSliderCustom(16, (width / 2 - 155), height / 6 + 24, stringtranslate.translateKey("nbxlite.width"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthX)));
-        controlList.add(widthzslider = new GuiSliderCustom(16, (width / 2 + 5), height / 6 + 24, stringtranslate.translateKey("nbxlite.length"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthZ)));
+        controlList.add(widthxslider = new GuiSliderCustom(16, (width / 2 - 155), height / 6 + 24, mod_noBiomesX.lang.get("width"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthX)));
+        controlList.add(widthzslider = new GuiSliderCustom(16, (width / 2 + 5), height / 6 + 24, mod_noBiomesX.lang.get("length"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevWidthZ)));
     }
 
     protected void actionPerformed(GuiButton guibutton)
@@ -54,21 +54,19 @@ public class GuiIndevSettings extends GuiScreen
             mod_noBiomesX.IndevWidthZ=widthzslider.getSizeValue();
             mc.displayGuiScreen(parentGuiScreen);
         }else if (guibutton.id == 2){
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.typecurrent<GeneratorList.typelength){
                 GeneratorList.typecurrent++;
             }else{
                 GeneratorList.typecurrent=0;
             }
-            typeButton.displayString = stringtranslate.translateKey(GeneratorList.typename[GeneratorList.typecurrent]);
+            typeButton.displayString = mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
             layerButton.drawButton = GeneratorList.typecurrent == 2;
             layers = false;
-            layerButton.displayString = stringtranslate.translateKey("nbxlite.one");
+            layerButton.displayString = mod_noBiomesX.lang.get("oneLayer");
             mod_noBiomesX.IndevHeight = 96;
         }else if (guibutton.id == 3){
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             layers = !layers;
-            layerButton.displayString = layers ? stringtranslate.translateKey("nbxlite.two") : stringtranslate.translateKey("nbxlite.one");
+            layerButton.displayString = layers ? mod_noBiomesX.lang.get("twoLayers") : mod_noBiomesX.lang.get("oneLayer");
             mod_noBiomesX.IndevHeight = layers ? 128 : 96;
         }
     }

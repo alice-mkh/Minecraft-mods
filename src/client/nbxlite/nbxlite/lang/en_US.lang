@@ -1,0 +1,89 @@
+#Various UI elements
+convert=Select world settings
+continue=Continue
+plus=+
+
+#Indev settings
+oneLayer=One layer
+twoLayers=Two layers
+width=Width: 
+length=Length: 
+
+#Indev loading screen
+indev.raising=Raising..
+indev.eroding=Eroding..
+indev.soiling=Soiling..
+indev.growing=Growing..
+indev.carving=Carving..
+indev.melting=Melting..
+indev.watering=Watering..
+indev.assembling=Assembling..
+indev.building=Building..
+indev.planting=Planting..
+indev.lighting=Lighting..
+indev.spawning=Spawning..
+
+gen=Generator: 
+features=Features: 
+theme=Theme: 
+indevType=Type: 
+
+#Generators
+genIndev=Indev
+genInfdev0227=Infdev (02.27)
+genInfdev0420=Infdev (04.20)
+genAlpha=Alpha
+genBeta=Beta
+genRelease=Release
+
+#Beta features
+featuresHalloween=Alpha 1.2.0
+featuresBeta12=Beta 1.2
+featuresBeta14=Beta 1.4
+featuresBeta15=Beta 1.5
+featuresBeta173=Beta 1.7.3
+
+#Release features
+featuresBeta181=Beta 1.8.1
+features10=1.0
+features11=1.1
+features12=1.2
+
+#Themes
+themeNormal=Normal
+themeHell=Hell
+themeWoods=Woods
+themeParadise=Paradise
+
+#Indev types
+typeInland=Inland
+typeIsland=Island
+typeFloating=Floating
+typeFlat=Flat
+
+#Generator descriptions
+descriptionGenIndev=Finite map, many options
+descriptionGenInfdev0227=No trees, obsidian lines
+descriptionGenInfdev0420=No biomes, large trees
+descriptionGenAlpha=No biomes, low clouds
+descriptionGenBeta=Small biomes, low clouds
+descriptionGenRelease=Large biomes, villages
+
+#Beta features descriptions
+descriptionFeaturesHalloween=No special features
+descriptionFeaturesBeta12=Lakes, special trees
+descriptionFeaturesBeta14=Sandstone
+descriptionFeaturesBeta15=Weather
+descriptionFeaturesBeta173=Tall grass
+
+#Release feature descriptions
+descriptionFeaturesBeta181=No special features
+descriptionFeatures10=Snow, mushrooms, dark swamps
+descriptionFeatures11=Snow in taiga, beaches, hills
+descriptionFeatures12=Jungles, desert wells
+
+#Theme descriprions
+descriptionThemeNormal=Blue sky, green grass
+descriptionThemeHell=Dark world with lava oceans
+descriptionThemeWoods=Cloudy sky, many trees
+descriptionThemeParadise=Eternal day, large beaches

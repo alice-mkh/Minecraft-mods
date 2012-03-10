@@ -39,7 +39,6 @@ public class GuiNBXliteSettings extends GuiScreen
     public GuiNBXliteSettings(GuiScreen guiscreen, String world, int i)
     {
         selectedWorld = world;
-        StringTranslate stringtranslate = StringTranslate.getInstance();
         GeneratorList.gencurrent=GeneratorList.gendefault;
         GeneratorList.feat1current=GeneratorList.feat1default;
         GeneratorList.feat2current=GeneratorList.feat2default;
@@ -47,16 +46,16 @@ public class GuiNBXliteSettings extends GuiScreen
         GeneratorList.typecurrent=GeneratorList.themedefault;
         mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
         generator = GeneratorList.genid[GeneratorList.gencurrent];
-        generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
+        generatorDescription = mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
             generatorExtra = GeneratorList.feat1id[GeneratorList.feat1default];
-            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1default]);
+            generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat1desc[GeneratorList.feat1default]);
         }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
             generatorExtra = GeneratorList.feat2id[GeneratorList.feat2default];
-            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2default]);
+            generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2default]);
         }else{
             generatorExtra = GeneratorList.themeid[GeneratorList.themedefault];
-            generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themedefault]);
+            generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themedefault]);
         }
         field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
         field_40232_h = false;
@@ -73,29 +72,28 @@ public class GuiNBXliteSettings extends GuiScreen
         }
         String extraname;
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-            extraname = GeneratorList.feat1name[GeneratorList.feat1current];
+            extraname = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]);
         }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-            extraname = GeneratorList.feat2name[GeneratorList.feat2current];
+            extraname = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]);
         }else{
-            extraname = GeneratorList.themename[GeneratorList.themecurrent];
+            extraname = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
         }
         StringTranslate stringtranslate = StringTranslate.getInstance();
         Keyboard.enableRepeatEvents(true);
         controlList.clear();
-        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("nbxlite.continue")));
+        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_noBiomesX.lang.get("continue")));
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
         controlList.add(generateStructuresButton = new GuiButton(4, width / 2 - 75, 65, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
-        controlList.add(generatorButton = new GuiButton(6, width / 2 - 75, 110, 150, 20, stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent])));
-        controlList.add(generatorExtraButton = new GuiButton(7, width / 2 - 75, 155, 150, 20, stringtranslate.translateKey(extraname)));
-        controlList.add(indevButton = new GuiButton(8, width / 2 + 76, 155, 20, 20, stringtranslate.translateKey("nbxlite.plus")));
+        controlList.add(generatorButton = new GuiButton(6, width / 2 - 75, 110, 150, 20, mod_noBiomesX.lang.get("gen")+mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent])));
+        controlList.add(generatorExtraButton = new GuiButton(7, width / 2 - 75, 155, 150, 20, extraname));
+        controlList.add(indevButton = new GuiButton(8, width / 2 + 76, 155, 20, 20, mod_noBiomesX.lang.get("plus")));
         indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
         func_35363_g();
     }
 
     private void func_35363_g()
     {
-        StringTranslate stringtranslate;
-        stringtranslate = StringTranslate.getInstance();
+        StringTranslate stringtranslate = StringTranslate.getInstance();
         generateStructuresButton.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.mapFeatures")).append(" ").toString();
         if (field_35365_g)
         {
@@ -170,34 +168,32 @@ public class GuiNBXliteSettings extends GuiScreen
             }else{
                 GeneratorList.gencurrent=0;
             }
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             generator=GeneratorList.genid[GeneratorList.gencurrent];
-            generatorButton.displayString = stringtranslate.translateKey(GeneratorList.genname[GeneratorList.gencurrent]);
-            generatorDescription = stringtranslate.translateKey(GeneratorList.gendesc[GeneratorList.gencurrent]);
+            generatorButton.displayString = mod_noBiomesX.lang.get("gen")+mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent]);
+            generatorDescription = mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]);
             field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
             func_35363_g();
             indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
                 GeneratorList.themecurrent = GeneratorList.themedefault;
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.themename[GeneratorList.themecurrent]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themecurrent]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]);
             }else if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 GeneratorList.feat1current = GeneratorList.feat1default;
                 generatorExtra = GeneratorList.feat1id[GeneratorList.feat1current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat1name[GeneratorList.feat1current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat1desc[GeneratorList.feat1current]);
             }else{
                 GeneratorList.feat2current = GeneratorList.feat2default;
                 generatorExtra = GeneratorList.feat2id[GeneratorList.feat2current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
 
         } else if(guibutton.id == 8) {
             mc.displayGuiScreen(new GuiIndevSettings(this));
         } else if(guibutton.id == 7) {
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 if (GeneratorList.feat1current<GeneratorList.feat1length){
                     GeneratorList.feat1current++;
@@ -205,8 +201,8 @@ public class GuiNBXliteSettings extends GuiScreen
                     GeneratorList.feat1current=0;
                 }
                 generatorExtra = GeneratorList.feat1id[GeneratorList.feat1current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat1name[GeneratorList.feat1current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat1desc[GeneratorList.feat1current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat1desc[GeneratorList.feat1current]);
                 func_35363_g();
             }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
                 if (GeneratorList.feat2current<GeneratorList.feat2length){
@@ -215,8 +211,8 @@ public class GuiNBXliteSettings extends GuiScreen
                     GeneratorList.feat2current=0;
                 }
                 generatorExtra = GeneratorList.feat2id[GeneratorList.feat2current];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.feat2name[GeneratorList.feat2current]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.feat2desc[GeneratorList.feat2current]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("features")+mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2current]);
                 func_35363_g();
             }else{
                 if (GeneratorList.themecurrent<GeneratorList.themelength){
@@ -225,8 +221,8 @@ public class GuiNBXliteSettings extends GuiScreen
                     GeneratorList.themecurrent=0;
                 }
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
-                generatorExtraButton.displayString = stringtranslate.translateKey(GeneratorList.themename[GeneratorList.themecurrent]);
-                generatorExtraDescription = stringtranslate.translateKey(GeneratorList.themedesc[GeneratorList.themecurrent]);
+                generatorExtraButton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+                generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]);
                 func_35363_g();
             }
         }
@@ -241,7 +237,7 @@ public class GuiNBXliteSettings extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         drawDefaultBackground();
-        drawCenteredString(fontRenderer, stringtranslate.translateKey("nbxlite.convert"), width / 2, 20, 0xffffff);
+        drawCenteredString(fontRenderer, mod_noBiomesX.lang.get("convert"), width / 2, 20, 0xffffff);
         drawString(fontRenderer, stringtranslate.translateKey("selectWorld.mapFeatures.info"), width / 2 - 75, 87, 0xa0a0a0);
         drawString(fontRenderer, generatorDescription, width / 2 - 75, 132, 0xa0a0a0);
         drawString(fontRenderer, generatorExtraDescription, width / 2 - 75, 177, 0xa0a0a0);
