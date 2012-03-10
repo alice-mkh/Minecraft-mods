@@ -1,6 +1,6 @@
 package net.minecraft.src.nbxlite.lib;
 
-import java.io.InputStream;
+import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.Properties;
 import net.minecraft.src.StringTranslate;
@@ -54,10 +54,14 @@ public class EasyLocalization {
                 defaultMappings.clear();
                 mappings.clear();
                 try {
-                        InputStream langStream = EasyLocalization.class.getResourceAsStream(
-                                        "/" + modName + "/lang/" + newLanguage + ".lang");
-                        InputStream defaultLangStream = EasyLocalization.class.getResourceAsStream(
-                                        "/" + modName + "/lang/" + DEFAULT_LANGUAGE + ".lang");
+//                         InputStream langStream = EasyLocalization.class.getResourceAsStream(
+//                                         "/" + modName + "/lang/" + newLanguage + ".lang", "UTF-8");
+//                         InputStream defaultLangStream = EasyLocalization.class.getResourceAsStream(
+//                                         "/" + modName + "/lang/" + DEFAULT_LANGUAGE + ".lang", "UTF-8");
+                        BufferedReader langStream = new BufferedReader(new InputStreamReader((EasyLocalization.class).getResourceAsStream(
+                                        "/" + modName + "/lang/" + newLanguage + ".lang"), "UTF-8"));
+                        BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader((EasyLocalization.class).getResourceAsStream(
+                                        "/" + modName + "/lang/" + DEFAULT_LANGUAGE + ".lang"), "UTF-8"));
                         mappings.load((langStream == null) ? defaultLangStream : langStream);
                         defaultMappings.load(defaultLangStream);
 
