@@ -12,7 +12,6 @@ public class ChunkProviderFinite
     private World worldObj;
     public int xwidth;
     public int zwidth;
-    private IndevNoiseGeneratorOctaves d;
     private Random rand;
 
     public ChunkProviderFinite(World world, long l, boolean flag)
@@ -21,7 +20,6 @@ public class ChunkProviderFinite
         rand = new Random(l);
         xwidth = mod_noBiomesX.IndevWidthX/16;
         zwidth = mod_noBiomesX.IndevWidthZ/16;
-        d = new IndevNoiseGeneratorOctaves(rand,8);
     }
 
     private void generateBoundaries(byte abyte0[])
@@ -36,11 +34,11 @@ public class ChunkProviderFinite
                 {
                     int i1 = 0;
                     if (mod_noBiomesX.IndevMapType==1){
-                        if (l < altitude-10){
+                        if (l == altitude-11){
                             i1 = Block.bedrock.blockID;
                         }else  if (l == altitude-10){
                             i1 = Block.dirt.blockID;
-                        }else if (l < altitude){
+                        }else if (l < altitude && l > altitude-11){
                             if (mod_noBiomesX.MapTheme==1){
                                 i1 = Block.lavaStill.blockID;
                             }else{
@@ -49,7 +47,7 @@ public class ChunkProviderFinite
                         }
                     }
                     if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
-                        if (l < altitude){
+                        if (l == altitude-1){
                             i1 = Block.bedrock.blockID;
                         }else if (l == altitude){
                             if (mod_noBiomesX.MapTheme==1){
