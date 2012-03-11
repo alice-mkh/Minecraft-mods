@@ -1175,6 +1175,7 @@ label0:
             }
         } while(l1 < 4 || l1 <= g1.s);
         boolean found = false;
+        int count = 0;
         do{
             search: for(int i2 = j1 - 3; i2 <= j1 + 3; i2++){
                 for(int k2 = l1 - 1; k2 <= l1 + 2; k2++){
@@ -1185,8 +1186,25 @@ label0:
                     }
                 }
             }
-            found = true;
+            if (!getBlockMaterial(j1, l1-1, k1-4).isSolid() && getBlockMaterial(j1, l1-2, k1-4).isSolid()){
+                found = true;
+            }
+            count++;
+            if (count>600){
+                break;
+            }
         }while (!found);
+        if (count>=550){
+            for(int i2 = j1 - 3; i2 <= j1 + 3; i2++){
+                for(int k2 = l1 - 1; k2 <= l1 + 2; k2++){
+                    for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++){
+                        if(!getBlockMaterial(i2, k2, i3).isSolid()){
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
         j2 = l1 - 2;
         l2 = j1 - 3;
         l2++;
