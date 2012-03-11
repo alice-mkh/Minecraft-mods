@@ -402,7 +402,6 @@ public class World implements IBlockAccess
             mapTypeIndev = worldInfo.getIndevMapType();
             mod_noBiomesX.IndevWidthX = worldInfo.getIndevX();
             mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
-            System.out.println(mod_noBiomesX.IndevWidthX+", "+mod_noBiomesX.IndevWidthZ);
             mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered);
         }
         calculateInitialSkylight();
