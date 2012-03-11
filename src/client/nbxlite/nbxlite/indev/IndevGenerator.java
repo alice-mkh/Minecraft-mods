@@ -560,7 +560,7 @@ label0:
             {
                 for(int k1 = 0; k1 < length; k1++)
                 {
-                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID && getLightLevel(i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
+                    if(getBlockId(i1, j1, k1) == Block.dirt.blockID && getLightLevel(world, i1, j1 + 1, k1) >= 4 && getBlockId(i1, j1 + 1, k1) == 0)
                     {
                         setBlock(i1, j1, k1, Block.grass.blockID);
                     }
@@ -996,9 +996,9 @@ label0:
 
     private boolean canFlowerStay(BlockFlower flower, g world, int i, int j, int k){
         if (flower==Block.plantYellow || flower==Block.plantRed){
-            return (((getLightLevel(i, j, k) >= 8) || ((getLightLevel(i, j, k) >= 4) && /*(world.l(i, j, k)))*/true)) && (canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k))));
+            return (((getLightLevel(world, i, j, k) >= 8) || ((getLightLevel(world, i, j, k) >= 4) && /*(world.l(i, j, k)))*/true)) && (canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k))));
         }
-        return getLightLevel(i, j, k) < 13 && canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k));
+        return getLightLevel(world, i, j, k) < 13 && canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k));
     }
 
     private boolean canThisPlantGrowOnThisBlockID(BlockFlower flower, int par1)
@@ -1009,9 +1009,14 @@ label0:
         return Block.opaqueCubeLookup[par1];
     }
 
-    public final byte getLightLevel(int i1, int j1, int k1)
+    public final byte getLightLevel(g world, int i1, int j1, int k1)
     {
-        
+        if (true){
+            if (j1==getFirstUncoveredBlock(world, i1, k1)){
+                return (byte)world.A;
+            }
+            return 0;
+        }
         if(i1 < 0)
         {
             i1 = 0;
@@ -1277,7 +1282,7 @@ label0:
     public int getFirstUncoveredBlock(g world, int i1, int j1)
     {
         int k1;
-        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air) && k1 > 0; k1--) { }
+        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air) && k1 > 3; k1--) { }
         return k1;
     }
 }
