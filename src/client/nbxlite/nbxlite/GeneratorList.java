@@ -43,5 +43,11 @@ public class GeneratorList{
     public static String[] typename = {"typeInland", "typeIsland", "typeFloating", "typeFlat"};
     public static String[] typedesc = {"descriptionThemeNormal", "descriptionThemeHell", "descriptionThemeWoods", "descriptionThemeParadise"};
 
+    public static int xcurrent;
+    public static int zcurrent;
+    public static int xdefault = 2;
+    public static int zdefault = 2;
+    public static int[] sizes = {64, 128, 256, 512};
+
     public GeneratorList(){}
 }

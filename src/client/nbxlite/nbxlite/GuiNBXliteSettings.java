@@ -63,6 +63,10 @@ public class GuiNBXliteSettings extends GuiScreen
         seed = "";
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
         number = i;
+        GeneratorList.xcurrent = GeneratorList.xdefault;
+        GeneratorList.zcurrent = GeneratorList.zdefault;
+        mod_noBiomesX.IndevWidthX = GeneratorList.sizes[GeneratorList.xdefault];
+        mod_noBiomesX.IndevWidthZ = GeneratorList.sizes[GeneratorList.zdefault];
     }
 
     public void initGui()
