@@ -396,14 +396,14 @@ label0:
             }
             for(int k2 = 0; k2 < i1; k2++)
             {
-                a(k2, k - 1, 0, 0, l1);
-                a(k2, k - 1, j1 - 1, 0, l1);
+                fillWithLiquid(k2, k - 1, 0, 0, l1);
+                fillWithLiquid(k2, k - 1, j1 - 1, 0, l1);
             }
 
             for(int l2 = 0; l2 < j1; l2++)
             {
-                a(i1 - 1, k - 1, l2, 0, l1);
-                a(0, k - 1, l2, 0, l1);
+                fillWithLiquid(i1 - 1, k - 1, l2, 0, l1);
+                fillWithLiquid(0, k - 1, l2, 0, l1);
             }
 
         }
@@ -733,12 +733,12 @@ label0:
                 continue;
             }
             long l2;
-            if((l2 = a(l1, i2, j2, 0, 255)) > 0L && l2 < 640L)
+            if((l2 = fillWithLiquid(l1, i2, j2, 0, 255)) > 0L && l2 < 640L)
             {
-                a(l1, i2, j2, 255, i1);
+                fillWithLiquid(l1, i2, j2, 255, i1);
             } else
             {
-                a(l1, i2, j2, 255, 0);
+                fillWithLiquid(l1, i2, j2, 255, 0);
             }
         }
 
@@ -783,19 +783,19 @@ label0:
                 continue;
             }
             long l2;
-            if((l2 = a(l1, i2, j2, 0, 255)) > 0L && l2 < 640L)
+            if((l2 = fillWithLiquid(l1, i2, j2, 0, 255)) > 0L && l2 < 640L)
             {
-                a(l1, i2, j2, 255, Block.lavaStill.blockID);
+                fillWithLiquid(l1, i2, j2, 255, Block.lavaStill.blockID);
             } else
             {
-                a(l1, i2, j2, 255, 0);
+                fillWithLiquid(l1, i2, j2, 255, 0);
             }
         }
 
         a(100F);
     }
 
-    private long a(int i1, int j1, int k1, int l1, int i2)
+    private long fillWithLiquid(int i1, int j1, int k1, int l1, int i2)
     {
         byte byte0 = (byte)i2;
         l1 = (byte)l1;
