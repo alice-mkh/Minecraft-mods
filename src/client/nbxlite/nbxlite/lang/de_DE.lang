@@ -1,0 +1,89 @@
+#Various UI elements
+convert=Wähle deine Welteinstellungen
+continue=Fortsetzen
+plus=+
+
+#Indev settings
+oneLayer=Eine Schicht
+twoLayers=Zwei Schichten
+width=Breite: 
+length=Länge: 
+
+#Indev loading screen
+indev.raising=Erheben..
+indev.eroding=Aushöhlen..
+indev.soiling=Verschmutzen..
+indev.growing=Wachsen..
+indev.carving=Zerlegen..
+indev.melting=Schmelzen..
+indev.watering=Bewässern..
+indev.assembling=Zusammenfügen..
+indev.building=Bauen..
+indev.planting=Anpflanzen..
+indev.lighting=Ausleuchten..
+indev.spawning=Spawnen..
+
+gen=Generator: 
+features=Features: 
+theme=Thema: 
+indevType=Typ: 
+
+#Generators
+genIndev=Indev
+genInfdev0227=Infdev (02.27)
+genInfdev0420=Infdev (04.20)
+genAlpha=Alpha
+genBeta=Beta
+genRelease=Release
+
+#Beta features
+featuresHalloween=Alpha 1.2.0
+featuresBeta12=Beta 1.2
+featuresBeta14=Beta 1.4
+featuresBeta15=Beta 1.5
+featuresBeta173=Beta 1.7.3
+
+#Release features
+featuresBeta181=Beta 1.8.1
+features10=1.0
+features11=1.1
+features12=1.2
+
+#Themes
+themeNormal=Normal
+themeHell=Hölle
+themeWoods=Wälder
+themeParadise=Paradis
+
+#Indev types
+typeInland=Inland
+typeIsland=Insel
+typeFloating=Schwebend
+typeFlat=Flach
+
+#Generator descriptions
+descriptionGenIndev=Begrenzte Karte, Viele Optionen
+descriptionGenInfdev0227=Keine Bäume, Obsidian Linien
+descriptionGenInfdev0420=Keine Biome, Große Bäume
+descriptionGenAlpha=Keine Biome, Tiefe Wolken
+descriptionGenBeta=Kleine Biome, Tiefe Wolken
+descriptionGenRelease=Große Biome, Dörfer
+
+#Beta features descriptions
+descriptionFeaturesHalloween=Keine speziellen Features
+descriptionFeaturesBeta12=Seen, Spezielle Bäume
+descriptionFeaturesBeta14=Sandstein
+descriptionFeaturesBeta15=Wetter
+descriptionFeaturesBeta173=Hohes Gras
+
+#Release feature descriptions
+descriptionFeaturesBeta181=Keine speziellen Features
+descriptionFeatures10=Schnee, Pilze, Dunkle Sümpfe
+descriptionFeatures11=Schnee in Taiga, Strände, Hügel
+descriptionFeatures12=Dschungel, Wüstenbrunnen
+
+#Theme descriprions
+descriptionThemeNormal=Blauer Himmel, Grünes Gras
+descriptionThemeHell=Dunkle Welt mit Lavameeren
+descriptionThemeWoods=Bewölkter Himmel, Viele Bäume
+descriptionThemeParadise=Ewig Tag, Große Strände
