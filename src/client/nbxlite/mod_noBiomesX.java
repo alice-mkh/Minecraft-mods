@@ -32,8 +32,43 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public void load(){
+        ModLoader.setInGameHook(this, true, true);
         replaceBlocks();
 //         replaceHoes();
+    }
+
+    public boolean onTickInGame(float f, Minecraft minecraft){
+        if (Generator==0 && MapFeatures==3){
+            tickPushing(minecraft);
+        }
+        return true;
+    }
+
+    public boolean tickPushing(Minecraft minecraft){
+        Entity entity;
+        for (int k = 0; k < minecraft.theWorld.loadedEntityList.size(); k++)
+        {
+            entity = (Entity)minecraft.theWorld.loadedEntityList.get(k);
+            pushBack(entity);
+        }
+        return true;
+    }
+    
+    private void pushBack(Entity entity){
+        if (Generator==0 && MapFeatures==3){
+            if (entity.posX>IndevWidthX){
+                entity.motionX-=(entity.posX-IndevWidthX)/300;
+            }
+            if (entity.posX<0){
+                entity.motionX-=(entity.posX)/300;
+            }
+            if (entity.posZ>IndevWidthZ){
+                entity.motionZ-=(entity.posZ-IndevWidthZ)/300;
+            }
+            if (entity.posZ<0){
+                entity.motionZ-=(entity.posZ)/300;
+            }
+        }   
     }
 
     private static void replaceBlocks(){
