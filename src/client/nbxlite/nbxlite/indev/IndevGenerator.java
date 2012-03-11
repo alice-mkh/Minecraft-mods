@@ -1156,8 +1156,7 @@ label0:
     public final void b(g world)
     {
         Random random = rand;
-        int i1;
-        i1 = 0;
+        int i1 = 0;
         int j1;
         int k1;
         int l1;
@@ -1175,19 +1174,19 @@ label0:
                 continue;
             }
         } while(l1 < 4 || l1 <= g1.s);
-        for(int i2 = j1 - 3; i2 <= j1 + 3; i2++)
-        {
-            for(int k2 = l1 - 1; k2 <= l1 + 2; k2++)
-            {
-                for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++)
-                {
-                    if(getBlockMaterial(i2, k2, i3).isSolid())
-                    {
-                        continue;
+        boolean found = false;
+        do{
+            search: for(int i2 = j1 - 3; i2 <= j1 + 3; i2++){
+                for(int k2 = l1 - 1; k2 <= l1 + 2; k2++){
+                    for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++){
+                        if(!getBlockMaterial(i2, k2, i3).isSolid()){
+                            break search;
+                        }
                     }
                 }
             }
-        }
+            found = true;
+        }while (!found);
         j2 = l1 - 2;
         l2 = j1 - 3;
         l2++;
@@ -1282,7 +1281,7 @@ label0:
     public int getFirstUncoveredBlock(g world, int i1, int j1)
     {
         int k1;
-        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air) && k1 > 3; k1--) { }
+        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air) && k1 > 1; k1--) { }
         return k1;
     }
 }
