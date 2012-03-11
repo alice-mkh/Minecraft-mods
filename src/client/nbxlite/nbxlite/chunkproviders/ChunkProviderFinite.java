@@ -10,16 +10,12 @@ public class ChunkProviderFinite
     implements IChunkProvider
 {
     private World worldObj;
-    public int xwidth;
-    public int zwidth;
     private Random rand;
 
     public ChunkProviderFinite(World world, long l, boolean flag)
     {
         worldObj = world;
         rand = new Random(l);
-        xwidth = mod_noBiomesX.IndevWidthX/16;
-        zwidth = mod_noBiomesX.IndevWidthZ/16;
     }
 
     private void generateBoundaries(byte abyte0[])
@@ -71,7 +67,23 @@ public class ChunkProviderFinite
     public Chunk provideChunk(int i, int j)
     {
         Chunk chunk;
-        if (i>=0 && i<xwidth && j>=0 && j<zwidth){
+        if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
+            if (mod_noBiomesX.IndevWorld==null){
+                IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
+                if (mod_noBiomesX.IndevMapType==1){
+                    gen2.island=true;
+                }
+                if (mod_noBiomesX.IndevMapType==2){
+                    gen2.floating=true;
+                }
+                if (mod_noBiomesX.IndevMapType==3){
+                    gen2.flat=true;
+                }
+                gen2.theme=mod_noBiomesX.MapTheme;
+                ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+                gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                mod_noBiomesX.IndevWorld = gen2.blocks;
+            }
             Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
             chunk = new Chunk(worldObj, c.getChunkArray(i, j), i, j);
         }else{
