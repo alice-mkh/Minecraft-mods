@@ -512,6 +512,13 @@ label0:
             return;
         }
     }
+    
+    public boolean isOpaque(int id){
+        if (id == Block.leaves.blockID){
+            return false;
+        }
+        return Block.opaqueCubeLookup[id];
+    }
 
     public void spawnHouse(g world)
     {
@@ -965,7 +972,7 @@ label0:
                 for(int l2 = k1 - j4; l2 <= k1 + j4; l2++)
                 {
                     int i5 = l2 - k1;
-                    if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0) && !Block.opaqueCubeLookup[getBlockId(l4, i3, l2)])
+                    if((Math.abs(i2) != j4 || Math.abs(i5) != j4 || rand.nextInt(2) != 0 && l3 != 0) && !isOpaque(getBlockId(l4, i3, l2)))
                     {
                         setBlock(l4, i3, l2, Block.leaves.blockID);
                     }
@@ -977,7 +984,7 @@ label0:
 
         for(int j3 = 0; j3 < l1; j3++)
         {
-            if(!Block.opaqueCubeLookup[getBlockId(i1, j1 + j3, k1)])
+            if(!isOpaque(getBlockId(i1, j1 + j3, k1)))
             {
                 setBlock(i1, j1 + j3, k1, Block.wood.blockID);
             }
@@ -1006,7 +1013,7 @@ label0:
         if (flower==Block.plantYellow || flower==Block.plantRed){
             return par1 == Block.grass.blockID || par1 == Block.dirt.blockID || par1 == Block.tilledField.blockID;
         }
-        return Block.opaqueCubeLookup[par1];
+        return isOpaque(par1);
     }
 
     public final byte getLightLevel(g world, int i1, int j1, int k1)
@@ -1268,7 +1275,7 @@ label0:
                 if (i7 > i3 + 3){
                     break label252;
                 }
-//                 if (Block.opaqueCubeLookup[getBlockId(i6, i5, i7)] == false){
+//                 if (isOpaque(getBlockId(i6, i5, i7)) == false){
 //                     break;
 //                 }
             }
