@@ -56,17 +56,17 @@ public class mod_noBiomesX extends BaseModMp{
     
     private void pushBack(Entity entity){
         if (Generator==0 && MapFeatures==3){
-            if (entity.posX>IndevWidthX){
-                entity.motionX-=(entity.posX-IndevWidthX)/300;
+            if (entity.posX>IndevWidthX+8){
+                entity.motionX-=(entity.posX-IndevWidthX)/950;
             }
-            if (entity.posX<0){
-                entity.motionX-=(entity.posX)/300;
+            if (entity.posX<-8){
+                entity.motionX-=(entity.posX)/950;
             }
-            if (entity.posZ>IndevWidthZ){
-                entity.motionZ-=(entity.posZ-IndevWidthZ)/300;
+            if (entity.posZ>IndevWidthZ+8){
+                entity.motionZ-=(entity.posZ-IndevWidthZ)/950;
             }
-            if (entity.posZ<0){
-                entity.motionZ-=(entity.posZ)/300;
+            if (entity.posZ<-8){
+                entity.motionZ-=(entity.posZ)/950;
             }
         }   
     }
