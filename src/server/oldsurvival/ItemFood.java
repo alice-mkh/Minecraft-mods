@@ -43,6 +43,23 @@ public class ItemFood extends Item
         this(par1, par2, 0.6F, par3);
     }
 
+    public int getItemStackLimit(){
+        if (mod_OldSurvivalMode.DisableFoodStacking){
+            if (this.shiftedIndex==Item.cookie.shiftedIndex || this.shiftedIndex==Item.melon.shiftedIndex){
+                return 8;
+            }else{
+                return 1;
+            }
+        }else{
+            return maxStackSize;
+        }
+    }
+
+    public Item setMaxStackSize(int i){
+        maxStackSize = i;
+        return this;
+    }
+
     public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         par1ItemStack.stackSize--;
