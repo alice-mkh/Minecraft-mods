@@ -1152,8 +1152,7 @@ label0:
     System.gc();
   }
 
-    public final void b(g world)
-    {
+    public final void b(g world){
         Random random = rand;
         int i1 = 0;
         int j1;
@@ -1161,122 +1160,41 @@ label0:
         int l1;
         int j2;
         int l2;
-        int j3;
-        g g1 = world;
-        do
-        {
-            i1++;
-            j1 = random.nextInt(world.a / 2) + world.a / 4;
-            k1 = random.nextInt(world.b / 2) + world.b / 4;
-            l1 = getFirstUncoveredBlock(world, j1, k1, false) + 1;
-            if (i1 != 1000000){
-                continue;
-            }
-        } while(l1 < 4 || l1 <= g1.s);
-        boolean found = false;
-        int count = 0;
+        int j3 = 0;
         do{
-            search: for(int i2 = j1 - 3; i2 <= j1 + 3; i2++){
-                for(int k2 = l1 - 1; k2 <= l1 + 2; k2++){
-                    for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++){
-                        if(!getBlockMaterial(i2, k2, i3).isSolid()){
-                            break search;
-                        }
-                    }
+            do
+            {
+                i1++;
+                j1 = random.nextInt(world.a / 2) + world.a / 4;
+                k1 = random.nextInt(world.b / 2) + world.b / 4;
+                l1 = getFirstUncoveredBlock(world, j1, k1, true) + 1;
+                world.i = j1;
+                world.j = l1;
+                world.k = k1;
+                world.l = 180F;
+                if(i1 == 0xf4240)
+                {
+                    return;
                 }
-            }
-            if (!getBlockMaterial(j1, l1-1, k1-4).isSolid() && getBlockMaterial(j1, l1-2, k1-4).isSolid()){
-                found = true;
-            }
-            count++;
-            if (count>600){
-                break;
-            }
-        }while (!found);
-        if (count>=550){
-            for(int i2 = j1 - 3; i2 <= j1 + 3; i2++){
-                for(int k2 = l1 - 1; k2 <= l1 + 2; k2++){
+            } while(l1 < 4 || l1 <= world.s);
+            for(int i2 = j1 - 3; i2 <= j1 + 3; i2++)
+            {
+                for(int k2 = l1 - 1; k2 <= l1 + 2; k2++)
+                {
                     for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++){
-                        if(!getBlockMaterial(i2, k2, i3).isSolid()){
+                        if(getBlockMaterial(i2, k2, i3).isSolid()){
                             continue;
                         }
                     }
                 }
             }
-        }
-        j2 = l1 - 2;
-        l2 = j1 - 3;
-        l2++;
-        world.i = j1;
-        world.j = l1;
-        world.k = k1;
-        world.l = 180F;
-        /*Random localRandom = rand;
-        int i1 = 0;
-        int i2;
-        int i3;
-        int i4;
-        do
-        {
-            do
-            {
-                i1++;
-                i2 = localRandom.nextInt(world.a / 2) + world.a / 4;
-                i3 = localRandom.nextInt(world.b / 2) + world.b / 4;
-                i4 = getFirstUncoveredBlock(world, i2, i3, false) + 1;
-                if (i1 != 1000000){
-                    continue;
-                }
-                world.i = i2;
-                world.j = (world.c + 100);
-                world.k = i3;
-                world.l = 180.0F;
-    //             return;
-            }while (i4 < 4);
-            g world = world;
-        }while (i4 <= world.s);
-        int i7;
-        int i5;
-        label181: label187: for (i5 = i2 - 3; true; i5++)
-        {
-            if (i5 > i2 + 3){
-                i5 = i4 - 2;
-            }
-            for (int i6 = i4 - 1; ; i6++)
-            {
-                if (i6 > i4 + 2){
-                    break label187;
-                }
-                for (i7 = i3 - 3 - 2; ; i7++){
-                    if (i7 > i3 + 3){
-                        break label181;
-                    }
-                    if (getBlockMaterial(i5, i6, i7).isSolid()){
-                        break;
-                    }
-                }
-            }
-        }
-        label252: for (int i6 = i2 - 3; ; i6++)
-        {
-            if (i6 > i2 + 3){
-                world.i = i2;
-            }
-            for (i7 = i3 - 3 - 2; ; i7++)
-            {
-                if (i7 > i3 + 3){
-                    break label252;
-                }
-//                 if (isOpaque(getBlockId(i6, i5, i7)) == false){
-//                     break;
-//                 }
-            }
-        }
-        world.i = i2;
-        world.j = i4;
-        world.k = i3;
-        world.l = 180.0F;*/
-//         System.out.println(new StringBuilder().append("i=").append(world.i).append(", j=").append(world.j).append(", k=").append(world.k).append(", l=").append(world.l).toString());
+            j2 = l1 - 2;
+            l2 = j1 - 3;
+//             break;
+            j3++;
+            continue;
+        }while(j3<10);
+        //         System.out.println(new StringBuilder().append("i=").append(world.i).append(", j=").append(world.j).append(", k=").append(world.k).append(", l=").append(world.l).toString());
     }
     
     private byte getBlockId(int i, int j, int k){
