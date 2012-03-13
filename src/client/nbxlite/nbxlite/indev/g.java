@@ -34,6 +34,4 @@ public class g{
     public void a(){}
 
     public void d(){}
-
-    public void f(int i, int j, int k, int l){}
 }

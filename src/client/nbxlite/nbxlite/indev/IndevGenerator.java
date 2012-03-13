@@ -1072,88 +1072,80 @@ label0:
     world.b = paramInt3;
     world.c = paramInt2;
     world.d = paramArrayOfByte1;
-    int i1;
     byte[] arrayOfByte;
     int i3;
-    for (paramInt2 = 0; paramInt2 < world.a; paramInt2++)
-      for (i1 = 0; i1 < world.b; i1++)
-        for (int arrayOfByte2 = 0; arrayOfByte2 < world.c; arrayOfByte2++)
-        {
-          i3 = 0;
-          if (arrayOfByte2 <= 1)
-          {
-            g localg = world;
-            if ((arrayOfByte2 < world.t - 1) && (paramArrayOfByte1[(((arrayOfByte2 + 1) * world.b + i1) * world.a + paramInt2)] == 0))
-            {
-              i3 = Block.lavaStill.blockID;
-              break/* label235*/;
+    for (int j1 = 0; j1 < world.a; j1++){
+        for (int j2 = 0; j2 < world.b; j2++){
+            for (int j3 = 0; j3 < world.c; j3++){
+                i3 = 0;
+                if (j3 <= 1)
+                {
+                    if ((j3 < world.t - 1) && (paramArrayOfByte1[(((j3 + 1) * world.b + j2) * world.a + j1)] == 0))
+                    {
+                        i3 = Block.lavaStill.blockID;
+                        break/* label235*/;
+                    }
+                }
+                if (j3 < world.t - 1)
+                {
+                    i3 = Block.bedrock.blockID;
+                }
+                else
+                {
+                    if (j3 < world.t){
+                        if ((world.t > world.s) && (world.m == Block.waterMoving.blockID)){
+                            i3 = Block.grass.blockID;
+                        }else{
+                            i3 = Block.dirt.blockID;
+                        }
+                    }else if (j3 < world.s){
+                        i3 = world.m;
+                    }
+                }
+                label235: paramArrayOfByte1[((j3 * world.b + j2) * world.a + j1)] = (byte)i3;
+                if ((j3 != 1) || (j1 == 0) || (j2 == 0) || (j1 == world.a - 1) || (j2 == world.b - 1)){
+                    continue;
+                }
+                j3 = world.c - 2;
             }
-          }
-          g localg = world;
-          if (arrayOfByte2 < world.t - 1)
-          {
-            i3 = Block.bedrock.blockID;
-          }
-          else
-          {
-            localg = world;
-            if (arrayOfByte2 < world.t)
-            {
-              localg = world;
-              localg = world;
-              if ((world.t > world.s) && (world.m == Block.waterMoving.blockID))
-                i3 = Block.grass.blockID;
-              else
-                i3 = Block.dirt.blockID;
-            }
-            else
-            {
-              localg = world;
-              if (arrayOfByte2 < world.s)
-                i3 = world.m;
-            }
-          }
-          label235: paramArrayOfByte1[((arrayOfByte2 * world.b + i1) * world.a + paramInt2)] = (byte)i3;
-          if ((arrayOfByte2 != 1) || (paramInt2 == 0) || (i1 == 0) || (paramInt2 == world.a - 1) || (i1 == world.b - 1))
-            continue;
-          arrayOfByte2 = world.c - 2;
         }
-    world.p = new int[paramInt1 * paramInt3];
-    Arrays.fill(world.p, world.c);
-    if (paramArrayOfByte2 == null)
-    {
-      e = new byte[paramArrayOfByte1.length];
-//       world.M = new h(world);
-      paramInt1 = 1;
-      g gparamInt1 = world;
-      paramInt2 = world.B;
-      for (paramInt3 = 0; paramInt3 < gparamInt1.a; paramInt3++)
-        for (int iparamArrayOfByte1 = 0; iparamArrayOfByte1 < gparamInt1.b; iparamArrayOfByte1++)
-        {
-          for (int iparamArrayOfByte2 = gparamInt1.c - 1; (iparamArrayOfByte2 > 0) && (Block.lightOpacity[getBlockId(paramInt3, iparamArrayOfByte2, iparamArrayOfByte1)] == 0); iparamArrayOfByte2--){
-            gparamInt1.p[(paramInt3 + iparamArrayOfByte1 * gparamInt1.a)] = (iparamArrayOfByte2 + 1);
-          }       
-          for (int iiparamArrayOfByte2 = 0; iiparamArrayOfByte2 < gparamInt1.c; iiparamArrayOfByte2++)
-          {
-            i1 = (iiparamArrayOfByte2 * gparamInt1.b + iparamArrayOfByte1) * gparamInt1.a + paramInt3;
-            int aarrayOfByte = gparamInt1.p[(paramInt3 + iparamArrayOfByte1 * gparamInt1.a)];
-            int i2 = iiparamArrayOfByte2 >= aarrayOfByte ? paramInt2 : 0;
-            i3 = gparamInt1.d[i1];
-            if (i2 < Block.lightValue[i3]){
-              i2 = Block.lightValue[i3];
+    }
+//     world.p = new int[paramInt1 * paramInt3];
+//     Arrays.fill(world.p, world.c);
+    if (paramArrayOfByte2 == null){
+     /*   e = new byte[paramArrayOfByte1.length];
+//           world.M = new h(world);
+        int jj0 = 1;
+        int jj1 = world.B;
+        for (int j4 = 0; j4 < world.a; j4++){
+            for (int j5 = 0; j5 < world.b; j5++)
+            {
+//                 for (int j6 = world.c - 1; (j6 > 0) && (Block.lightOpacity[getBlockId(j4, j6, j5)] == 0); j6--){
+//                     world.p[(j4 + j5 * world.a)] = (j6 + 1);
+//                 }
+                for (int j7 = 0; j7 < world.c; j7++)
+                {
+                    int i1 = (j7 * world.b + j5) * world.a + j4;
+                    int i4 = getFirstUncoveredBlock(world, j4, j5);;
+                    int i2 = j7 >= i4 ? jj1 : 0;
+                    int i5 = world.d[i1];
+                    if (i2 < Block.lightValue[i5]){
+                        i2 = Block.lightValue[i5];
+                    }
+                    e[i1] = (byte)((e[i1] & 0xF0) + i2);
+                }
             }
-            e[i1] = (byte)((e[i1] & 0xF0) + i2);
-          }
-        }
-//       gparamInt1.M.a(0, 0, 0, gparamInt1.a, gparamInt1.c, gparamInt1.b);
+        }*/
+//         world.M.a(0, 0, 0, world.a, world.c, world.b);
     }
     else
     {
-      e = paramArrayOfByte2;
-//       world.M = new h(world);
+        e = paramArrayOfByte2;
+//         world.M = new h(world);
     }
-//     for (int iparamInt2 = 0; iparamInt2 < world.n.size(); iparamInt2++)
-//       ((d)world.n.get(iparamInt2)).a();
+//     for (int iparamInt2 = 0; iparamInt2 < world.n.size(); iparamInt2++){
+//         ((d)world.n.get(iparamInt2)).a();
+//     }
 //     world.G.clear();
     b(world);
     world.a();
@@ -1241,7 +1233,7 @@ label0:
                 world.l = 180.0F;
     //             return;
             }while (i4 < 4);
-            g localg = world;
+            g world = world;
         }while (i4 <= world.s);
         int i7;
         int i5;
