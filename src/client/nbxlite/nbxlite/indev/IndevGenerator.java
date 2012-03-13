@@ -1019,7 +1019,7 @@ label0:
     public final byte getLightLevel(g world, int i1, int j1, int k1)
     {
         if (true){
-            if (j1==getFirstUncoveredBlock(world, i1, k1)){
+            if (j1==getFirstUncoveredBlock(world, i1, k1, true)){
                 return (byte)world.A;
             }
             return 0;
@@ -1126,7 +1126,7 @@ label0:
                 for (int j7 = 0; j7 < world.c; j7++)
                 {
                     int i1 = (j7 * world.b + j5) * world.a + j4;
-                    int i4 = getFirstUncoveredBlock(world, j4, j5);;
+                    int i4 = getFirstUncoveredBlock(world, j4, j5, false);
                     int i2 = j7 >= i4 ? jj1 : 0;
                     int i5 = world.d[i1];
                     if (i2 < Block.lightValue[i5]){
@@ -1168,7 +1168,7 @@ label0:
             i1++;
             j1 = random.nextInt(world.a / 2) + world.a / 4;
             k1 = random.nextInt(world.b / 2) + world.b / 4;
-            l1 = getFirstUncoveredBlock(world, j1, k1) + 1;
+            l1 = getFirstUncoveredBlock(world, j1, k1, false) + 1;
             if (i1 != 1000000){
                 continue;
             }
@@ -1223,7 +1223,7 @@ label0:
                 i1++;
                 i2 = localRandom.nextInt(world.a / 2) + world.a / 4;
                 i3 = localRandom.nextInt(world.b / 2) + world.b / 4;
-                i4 = getFirstUncoveredBlock(world, i2, i3) + 1;
+                i4 = getFirstUncoveredBlock(world, i2, i3, false) + 1;
                 if (i1 != 1000000){
                     continue;
                 }
@@ -1294,11 +1294,10 @@ label0:
         return Block.blocksList[getBlockId(i, j, k)].blockMaterial;
     }
 
-
-    public int getFirstUncoveredBlock(g world, int i1, int j1)
+    public int getFirstUncoveredBlock(g world, int i1, int j1, boolean opaque)
     {
         int k1;
-        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air) && k1 > 1; k1--) { }
+        for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air || !isOpaque(getBlockId(i1, k1 - 1, j1))) && k1 > 1; k1--) { }
         return k1;
     }
 }
