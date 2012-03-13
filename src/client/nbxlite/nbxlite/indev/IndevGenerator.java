@@ -1130,7 +1130,7 @@ label0:
       for (paramInt3 = 0; paramInt3 < gparamInt1.a; paramInt3++)
         for (int iparamArrayOfByte1 = 0; iparamArrayOfByte1 < gparamInt1.b; iparamArrayOfByte1++)
         {
-          for (int iparamArrayOfByte2 = gparamInt1.c - 1; (iparamArrayOfByte2 > 0) && (Block.lightOpacity[gparamInt1.a(paramInt3, iparamArrayOfByte2, iparamArrayOfByte1)] == 0); iparamArrayOfByte2--){
+          for (int iparamArrayOfByte2 = gparamInt1.c - 1; (iparamArrayOfByte2 > 0) && (Block.lightOpacity[getBlockId(paramInt3, iparamArrayOfByte2, iparamArrayOfByte1)] == 0); iparamArrayOfByte2--){
             gparamInt1.p[(paramInt3 + iparamArrayOfByte1 * gparamInt1.a)] = (iparamArrayOfByte2 + 1);
           }       
           for (int iiparamArrayOfByte2 = 0; iiparamArrayOfByte2 < gparamInt1.c; iiparamArrayOfByte2++)
