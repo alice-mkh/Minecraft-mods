@@ -551,8 +551,8 @@ label0:
 
         }
 
-        setBlock((i1 - 3) + 1, j1, k1, Block.torchWood.blockID);
-        setBlock((i1 + 3) - 1, j1, k1, Block.torchWood.blockID);
+//         setBlock((i1 - 3) + 1, j1, k1, Block.torchWood.blockID);
+//         setBlock((i1 + 3) - 1, j1, k1, Block.torchWood.blockID);
         spawnX = world.i;
         spawnY = world.j-3;
         spawnZ = world.k;
