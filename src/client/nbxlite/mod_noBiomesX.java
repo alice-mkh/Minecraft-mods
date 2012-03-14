@@ -38,7 +38,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public boolean onTickInGame(float f, Minecraft minecraft){
-        if (Generator==0 && MapFeatures==3){
+        if (Generator==0 && MapFeatures==3 && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
             tickPushing(minecraft);
         }
         return true;
