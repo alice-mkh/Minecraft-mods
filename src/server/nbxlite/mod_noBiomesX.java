@@ -15,6 +15,12 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             SnowCovered = false;
         }
+        if (Generator==0 && MapFeatures==3){
+            IndevMapType = pmanager.getIntProperty("indev-map-type", 1);
+            IndevWidthX = pmanager.getIntProperty("indev-width", 256);
+            IndevWidthZ = pmanager.getIntProperty("indev-length", 256);
+            IndevHeight = pmanager.getIntProperty("indev-height", 96);
+        }
     }
 
     public void load(){}
@@ -68,5 +74,13 @@ public class mod_noBiomesX extends BaseModMp{
     public static int MobSpawning=0;
     public static int MapTheme = 0;
     public static int MapFeatures = 2;
+    public static int IndevMapType=0;//0 - inland; 1 - island; 2 - floating; 3 - flat
+    public static int IndevHeight = 96;
+    public static int IndevWidthX = 256;
+    public static int IndevWidthZ = 256;
+    public static int IndevSpawnX;
+    public static int IndevSpawnY;
+    public static int IndevSpawnZ;
+    public static byte[] IndevWorld;
     public static boolean UseNewSpawning;
 }

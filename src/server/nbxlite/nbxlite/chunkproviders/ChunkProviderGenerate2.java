@@ -8,6 +8,7 @@ public class ChunkProviderGenerate2
 {
     public ChunkProviderGenerateInfdev infdevGen;
     public ChunkProviderGenerateOldInfdev oldInfdevGen;
+    public ChunkProviderFinite indevGen;
     public ChunkProviderGenerateAlpha alphaGen;
     public ChunkProviderGenerateBeta betaGen;
     public ChunkProviderGenerateRelease releaseGen;
@@ -16,6 +17,7 @@ public class ChunkProviderGenerate2
     {
         infdevGen = new ChunkProviderGenerateInfdev(world, l, flag);
         oldInfdevGen = new ChunkProviderGenerateOldInfdev(world, l, flag);
+        indevGen = new ChunkProviderFinite(world, l, flag);
         alphaGen = new ChunkProviderGenerateAlpha(world, l, flag);
         betaGen = new ChunkProviderGenerateBeta(world, l, flag);
         releaseGen = new ChunkProviderGenerateRelease(world, l, flag);
@@ -34,8 +36,10 @@ public class ChunkProviderGenerate2
                 return alphaGen.provideChunk(i, j);
             }else if (mod_noBiomesX.MapFeatures==1){
                 return infdevGen.provideChunk(i, j);
-            }else{
+            }else if (mod_noBiomesX.MapFeatures==2){
                 return oldInfdevGen.provideChunk(i, j);
+            }else{
+                return indevGen.provideChunk(i, j);
             }
         } else if(mod_noBiomesX.Generator==1)
         {
@@ -59,8 +63,10 @@ public class ChunkProviderGenerate2
                 alphaGen.populate(ichunkprovider, i, j);
             }else if (mod_noBiomesX.MapFeatures==1){
                 infdevGen.populate(ichunkprovider, i, j);
-            }else{
+            }else if (mod_noBiomesX.MapFeatures==2){
                 oldInfdevGen.populate(ichunkprovider, i, j);
+            }else{
+                indevGen.populate(ichunkprovider, i, j);
             }
         } else if(mod_noBiomesX.Generator==1)
         {
@@ -99,8 +105,10 @@ public class ChunkProviderGenerate2
                 return alphaGen.findClosestStructure(world, s, i, j, k);
             }else if (mod_noBiomesX.MapFeatures==1){
                 return infdevGen.findClosestStructure(world, s, i, j, k);
-            }else{
+            }else if (mod_noBiomesX.MapFeatures==2){
                 return oldInfdevGen.findClosestStructure(world, s, i, j, k);
+            }else{
+                return indevGen.findClosestStructure(world, s, i, j, k);
             }
         } else if(mod_noBiomesX.Generator==1)
         {

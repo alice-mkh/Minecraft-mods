@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.*;
 import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.spawners.*;
+import net.minecraft.src.nbxlite.indev.*;
 
 public class World implements IBlockAccess
 {
@@ -126,6 +127,7 @@ public class World implements IBlockAccess
     public boolean isHotWorld;
     public int mapGen;
     public int mapGenExtra;
+    public int mapTypeIndev;
     private OldSpawnerAnimals animalSpawner;
     private OldSpawnerMonsters monsterSpawner;
     private OldSpawnerAnimals waterMobSpawner;
@@ -239,6 +241,37 @@ public class World implements IBlockAccess
             worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
             mapGenExtra=mod_noBiomesX.MapFeatures;
             worldInfo.setMapTheme(mapGenExtra);
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+                IndevGenerator gen2 = new IndevGenerator(getSeed());
+                if (mod_noBiomesX.IndevMapType==1){
+                    gen2.island=true;
+                }
+                if (mod_noBiomesX.IndevMapType==2){
+                    gen2.floating=true;
+                }
+                if (mod_noBiomesX.IndevMapType==3){
+                    gen2.flat=true;
+                }
+                gen2.theme=mod_noBiomesX.MapTheme;
+                gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                mod_noBiomesX.IndevWorld = gen2.blocks;
+                for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
+                    for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                        chunkProvider.provideChunk(x,z);
+                    }
+                }
+                mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+                mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+                mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
+                mod_noBiomesX.IndevWorld = null;
+                mapTypeIndev=mod_noBiomesX.IndevMapType;
+                worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
+                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
+                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
+            }else{
+                mapTypeIndev=0;
+                worldInfo.setIndevMapType(0);
+            }
             generateSpawnPoint();
         }else{
             snowCovered = worldInfo.getSnowCovered();
@@ -266,6 +299,7 @@ public class World implements IBlockAccess
             }else{
                 mod_noBiomesX.LeavesDecay=true;
             }
+            mapTypeIndev = worldInfo.getIndevMapType();
         }
         if(mod_noBiomesX.MobSpawning==0)
         {
@@ -374,13 +408,9 @@ public class World implements IBlockAccess
             }
         }else if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
             findingSpawnPoint = true;
-//             int i = rand.nextInt(mod_noBiomesX.IndevWidthZ);
-//             int j;
-//             for(j = rand.nextInt(mod_noBiomesX.IndevWidthZ); !worldProvider.canCoordinateBeSpawn(i, j); j = rand.nextInt(mod_noBiomesX.IndevWidthX)){
-//                 i = rand.nextInt(mod_noBiomesX.IndevWidthZ);
-//             }
-//             worldInfo.setSpawnPosition(i, getPrecipitationHeight(i, j), j);
-//             spawnHouse();
+            worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
+            setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
+            setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
             findingSpawnPoint = false;
         }else{
             findingSpawnPoint = true;
