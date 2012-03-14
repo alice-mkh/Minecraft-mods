@@ -241,7 +241,7 @@ public class World implements IBlockAccess
             worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
             mapGenExtra=mod_noBiomesX.MapFeatures;
             worldInfo.setMapTheme(mapGenExtra);
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3 && worldProvider.worldType == 0){
                 IndevGenerator gen2 = new IndevGenerator(getSeed());
                 if (mod_noBiomesX.IndevMapType==1){
                     gen2.island=true;
@@ -263,7 +263,6 @@ public class World implements IBlockAccess
                 mod_noBiomesX.IndevSpawnX = gen2.spawnX;
                 mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                 mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
-                mod_noBiomesX.IndevWorld = null;
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
