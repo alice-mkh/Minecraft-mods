@@ -1193,43 +1193,6 @@ label0:
         world.i = x;
         world.j = y;
         world.k = z;
-    /*    int i1 = 0;
-        int j1;
-        int k1;
-        int l1;
-        int j2;
-        int l2;
-        int j3 = 0;
-        search: do{
-            do{
-                i1++;
-                j1 = rand.nextInt(world.a / 2) + world.a / 4;
-                k1 = rand.nextInt(world.b / 2) + world.b / 4;
-                l1 = getFirstUncoveredBlock(world, j1, k1, true) + 1;
-                if(i1 == 0xf4240){
-                    break search;
-                }
-            } while(l1 < 4 || l1 <= world.s);
-            for(int i2 = j1 - 3; i2 <= j1 + 3; i2++){
-                for(int k2 = l1 - 1; k2 <= l1 + 2; k2++){
-                    for(int i3 = k1 - 3 - 2; i3 <= k1 + 3; i3++){
-                        if(!getBlockMaterial(i2, k2, i3).isSolid()){
-                            continue;
-                        }
-                    }
-                }
-            }
-//             j2 = l1 - 2;
-//             l2 = j1 - 3;
-            break search;
-//             j3++;
-//             continue;
-        }while(false);
-        world.i = j1;
-        world.j = l1;
-        world.k = k1;
-        world.l = 180F;
-        //         System.out.println(new StringBuilder().append("i=").append(world.i).append(", j=").append(world.j).append(", k=").append(world.k).append(", l=").append(world.l).toString());*/
     }
     
     private byte getBlockId(int i, int j, int k){
