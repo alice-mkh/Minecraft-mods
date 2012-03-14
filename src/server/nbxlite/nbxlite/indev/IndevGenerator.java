@@ -1156,7 +1156,7 @@ label0:
             check: for (int i1 = x - 3; i1 <= x + 3; i1++){
                 for (int i2 = y - 1; i2 <= y + 2; i2++){
                     for (int i3 = z - 3 - 2; i3 <= z + 3; i3++){
-                        if (getBlockMaterial(i1, i2, i3).isSolid()){
+                        if (getBlockId(i1, i2, i3) != 0){
                             fair = false;
                             break check;
                         }
