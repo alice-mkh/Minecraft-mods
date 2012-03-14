@@ -1153,6 +1153,9 @@ label0:
             x = rand.nextInt(world.a / 2) + world.a / 4;
             z = rand.nextInt(world.b / 2) + world.b / 4;
             y = getFirstUncoveredBlock(world, x, z, true) + 1;
+            if (y<5 || y>world.c){
+                y = world.c-29;
+            }
             check: for (int i1 = x - 3; i1 <= x + 3; i1++){
                 for (int i2 = y - 1; i2 <= y + 2; i2++){
                     for (int i3 = z - 3 - 2; i3 <= z + 3; i3++){
@@ -1170,6 +1173,16 @@ label0:
                         if (!getBlockMaterial(i1, y-2, i3).isSolid()){
                             fground = false;
                             break check2;
+                        }
+                    }
+                    fground = true;
+                }
+            }else{
+                check3: for (int i1 = x - 3; i1 <= x + 3; i1++){
+                    for (int i3 = z - 3 - 2; i3 <= z - 1; i3++){
+                        if (!getBlockMaterial(i1, y-2, i3).isSolid()){
+                            fground = false;
+                            break check3;
                         }
                     }
                     fground = true;
