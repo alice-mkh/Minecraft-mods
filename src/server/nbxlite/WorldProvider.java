@@ -89,6 +89,9 @@ public abstract class WorldProvider
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
+        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+            return i == Block.stone.blockID;
+        }
         if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
             return i == Block.grass.blockID;
         }
