@@ -76,23 +76,30 @@ public class ChunkProviderFinite
     {
         Chunk chunk;
         if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
-            if (mod_noBiomesX.IndevWorld==null && mod_noBiomesX.MapFeatures==3){
-                IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
-                if (mod_noBiomesX.IndevMapType==1){
-                    gen2.island=true;
+            if (mod_noBiomesX.IndevWorld==null){
+                if (mod_noBiomesX.MapFeatures==3){
+                    IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
+                    if (mod_noBiomesX.IndevMapType==1){
+                        gen2.island=true;
+                    }
+                    if (mod_noBiomesX.IndevMapType==2){
+                        gen2.floating=true;
+                    }
+                    if (mod_noBiomesX.IndevMapType==3){
+                        gen2.flat=true;
+                    }
+                    gen2.theme=mod_noBiomesX.MapTheme;
+                    ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                }else{
+                    mod_noBiomesX.IndevWidthX = 256;
+                    mod_noBiomesX.IndevWidthZ = 256;
+                    mod_noBiomesX.IndevHeight = 64;
+                    ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
+                    ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 }
-                if (mod_noBiomesX.IndevMapType==2){
-                    gen2.floating=true;
-                }
-                if (mod_noBiomesX.IndevMapType==3){
-                    gen2.flat=true;
-                }
-                gen2.theme=mod_noBiomesX.MapTheme;
-                ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
-                gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                mod_noBiomesX.IndevWorld = gen2.blocks;
             }
-            System.out.println(i+" "+j);
             Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
             if (mod_noBiomesX.MapFeatures==3){
                 chunk = new Chunk(worldObj, c.getChunkArrayIndev(i, j), i, j);
