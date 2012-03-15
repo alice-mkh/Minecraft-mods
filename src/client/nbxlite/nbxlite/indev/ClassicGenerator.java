@@ -194,26 +194,26 @@ label0:
         this.a(0);
         for(int intb1 = 0; intb1 < this.b; intb1++)
         {
-            this.a(intb1, this.d / 2 - 1, 0, 0, i2);
-            this.a(intb1, this.d / 2 - 1, this.c - 1, 0, i2);
+            fillWithLiquid(intb1, this.d / 2 - 1, 0, 0, i2);
+            fillWithLiquid(intb1, this.d / 2 - 1, this.c - 1, 0, i2);
         }
 
         for(int intb1 = 0; intb1 < this.c; intb1++)
         {
-            this.a(0, this.d / 2 - 1, intb1, 0, i2);
-            this.a(this.b - 1, this.d / 2 - 1, intb1, 0, i2);
+            fillWithLiquid(0, this.d / 2 - 1, intb1, 0, i2);
+            fillWithLiquid(this.b - 1, this.d / 2 - 1, intb1, 0, i2);
         }
 
         int intb1 = (this.b * this.c) / 8000;
         for(int l5 = 0; l5 < intb1; l5++)
         {
             if(l5 % 100 == 0)
-                this.a((l5 * 100) / (intb1 - 1));
+                a((l5 * 100) / (intb1 - 1));
             int l7 = rand.nextInt(this.b);
             int i4 = this.g - 1 - rand.nextInt(2);
             int k9 = rand.nextInt(this.c);
             if(this.f[(i4 * this.c + k9) * this.b + l7] == 0)
-                this.a(l7, i4, k9, 0, i2);
+                fillWithLiquid(l7, i4, k9, 0, i2);
         }
 
         this.a(100);
@@ -228,7 +228,7 @@ label0:
             int j2 = (int)(rand.nextFloat() * rand.nextFloat() * (float)(this.g - 3));
             int i6 = rand.nextInt(this.c);
             if(this.f[(j2 * this.c + i6) * this.b + i2] == 0){
-                this.a(i2, j2, i6, 0, Block.lavaStill.blockID);
+                fillWithLiquid(i2, j2, i6, 0, Block.lavaStill.blockID);
             }
         }
 
@@ -244,13 +244,14 @@ label0:
             {
                 boolean flag = j2.a(i8, j4) > 8D;
                 boolean flag1 = b2.a(i8, j4) > 12D;
-                int i12 = i12 = arrayf1[i8 + j4 * this.b];
-                int j13 = ((i12 = arrayf1[i8 + j4 * this.b]) * this.c + j4) * this.b + i8;
-                int k14;
-                if(((k14 = this.f[i12 * this.b + i8] & 0xff) == Block.waterMoving.blockID || k14 == Block.waterStill.blockID) && i12 <= this.d / 2 - 1 && flag1)
+                int i12 = arrayf1[i8 + j4 * this.b];
+                int j13 = (i12 * this.c + j4) * this.b + i8;
+                int k14 = this.f[i12 * this.b + i8] & 0xff;
+                if((k14 == Block.waterMoving.blockID || k14 == Block.waterStill.blockID) && i12 <= this.d / 2 - 1 && flag1)
                     this.f[j13] = (byte)Block.gravel.blockID;
-                if(k14 != 0)
+                if(k14 == 0){
                     continue;
+                }
                 int i15 = Block.grass.blockID;
                 if(i12 <= this.d / 2 - 1 && flag)
                     i15 = Block.sand.blockID;
@@ -536,99 +537,111 @@ label0:
         progressupdate.setLoadingProgress(j);
     }
 
-    private long a(int j, int k, int l, int i1, int j1)
+    private long fillWithLiquid(int i1, int j1, int k1, int l1, int i2)
     {
+        byte byte0 = (byte)i2;
+        l1 = (byte)l1;
         ArrayList arraylist = new ArrayList();
-        int k1 = 0;
-        int l1 = 1;
-        int i2 = 1;
-        for(; 1 << l1 < b; l1++);
-        for(; 1 << i2 < c; i2++);
-        int j2 = c - 1;
-        int k2 = b - 1;
-        k1++;
-        h[0] = ((k << i2) + l << l1) + j;
+        int j2 = 0;
+        int k2 = 1;
+        int l2 = 1;
+        for(; 1 << k2 < b; k2++) { }
+        for(; 1 << l2 < c; l2++) { }
+        int i3 = c - 1;
+        int j3 = b - 1;
+        j2++;
+        h[0] = ((j1 << l2) + k1 << k2) + i1;
         long l3 = 0L;
-        j = b * c;
-        while(k1 > 0) 
+        i1 = b * c;
+        while(j2 > 0) 
         {
-            k = h[--k1];
-            if(k1 == 0 && arraylist.size() > 0)
+            j1 = h[--j2];
+            if(j2 == 0 && arraylist.size() > 0)
             {
                 h = (int[])arraylist.remove(arraylist.size() - 1);
-                k1 = h.length;
+                j2 = h.length;
             }
-            l = k >> l1 & j2;
-            int l2 = k >> l1 + i2;
-            int i3;
-            int j3 = i3 = k & k2;
-            for(; i3 > 0 && f[k - 1] == 0; k--)
-                i3--;
+            k1 = j1 >> k2 & i3;
+            int k3 = j1 >> k2 + l2;
+            int i4;
+            int j4 = i4 = j1 & j3;
+            for(; i4 > 0 && f[j1 - 1] == l1; j1--)
+            {
+                i4--;
+            }
 
-            for(; j3 < b && f[(k + j3) - i3] == 0; j3++);
-            int k3 = k >> l1 & j2;
-            int i4 = k >> l1 + i2;
-            if(k3 != l || i4 != l2)
-                java.lang.System.out.println("Diagonal flood!?");
+            for(; j4 < b && f[(j1 + j4) - i4] == l1; j4++) { }
+            int k4 = j1 >> k2 & i3;
+            int l4 = j1 >> k2 + l2;
+            if(i2 == 255 && (i4 == 0 || j4 == b - 1 || k3 == 0 || k3 == d - 1 || k1 == 0 || k1 == c - 1))
+            {
+                return -1L;
+            }
+            if(k4 != k1 || l4 != k3)
+            {
+                System.out.println("Diagonal flood!?");
+            }
             boolean flag = false;
             boolean flag1 = false;
             boolean flag2 = false;
-            l3 += j3 - i3;
-            i3 = i3;
-            while(i3 < j3) 
+            l3 += j4 - i4;
+            i4 = i4;
+            while(i4 < j4) 
             {
-                f[k] = (byte)i1;
-                if(l > 0)
+                f[j1] = byte0;
+                if(k1 > 0)
                 {
                     boolean flag3;
-                    if((flag3 = f[k - b] == 0) && !flag)
+                    if((flag3 = f[j1 - b] == l1) && !flag)
                     {
-                        if(k1 == h.length)
+                        if(j2 == h.length)
                         {
                             arraylist.add(h);
                             h = new int[0x100000];
-                            k1 = 0;
+                            j2 = 0;
                         }
-                        h[k1++] = k - b;
+                        h[j2++] = j1 - b;
                     }
                     flag = flag3;
                 }
-                if(l < c - 1)
+                if(k1 < c - 1)
                 {
                     boolean flag4;
-                    if((flag4 = f[k + b] == 0) && !flag1)
+                    if((flag4 = f[j1 + b] == l1) && !flag1)
                     {
-                        if(k1 == h.length)
+                        if(j2 == h.length)
                         {
                             arraylist.add(h);
                             h = new int[0x100000];
-                            k1 = 0;
+                            j2 = 0;
                         }
-                        h[k1++] = k + b;
+                        h[j2++] = j1 + b;
                     }
                     flag1 = flag4;
                 }
-                if(l2 > 0)
+                if(k3 > 0)
                 {
-                    boolean bbyte0;
-                    byte byte0 = f[k - j];
-                    if((i1 == Block.lavaMoving.blockID || i1 == Block.lavaStill.blockID) && (byte0 == Block.waterMoving.blockID || byte0 == Block.waterStill.blockID))
-                        f[k - j] = (byte)Block.stone.blockID;
-                    bbyte0 = byte0 != 0 ? false : true;
-                    if(bbyte0 && !flag2)
+                    boolean bbyte1;
+                    byte byte2 = f[j1 - i1];
+                    if((byte0 == Block.lavaMoving.blockID || byte0 == Block.lavaStill.blockID) && (byte2 == Block.waterMoving.blockID || byte2 == Block.waterStill.blockID))
                     {
-                        if(k1 == h.length)
+                        f[j1 - i1] = (byte)Block.stone.blockID;
+                    }
+                    bbyte1 = byte2 != l1 ? false : true;
+                    if(bbyte1 && !flag2)
+                    {
+                        if(j2 == h.length)
                         {
                             arraylist.add(h);
                             h = new int[0x100000];
-                            k1 = 0;
+                            j2 = 0;
                         }
-                        h[k1++] = k - j;
+                        h[j2++] = j1 - i1;
                     }
-                    flag2 = bbyte0;
+                    flag2 = bbyte1;
                 }
-                k++;
-                i3++;
+                j1++;
+                i4++;
             }
         }
         return l3;
