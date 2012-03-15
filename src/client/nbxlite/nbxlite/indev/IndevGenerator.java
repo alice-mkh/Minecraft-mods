@@ -63,8 +63,8 @@ public final class IndevGenerator
         }
         n = 13 + l1 * 4;
         progressupdate.displaySavingString(StatCollector.translateToLocal("menu.generatingLevel"));
-        g world = new g();
-        world.s = k;
+        IndevLevel world = new IndevLevel();
+        world.waterLevel = k;
         world.t = l;
         world.a = i1;
         world.b = j1;
@@ -442,12 +442,12 @@ label0:
             world.x = 0x4d5a5b;
             world.B = world.A = 12;
         }
-        world.s = k;
+        world.waterLevel = k;
         world.t = l;
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.assembling"));
         nextPhase();
         a(0.0F);
-        /*world.*/a(world, i1, k1, j1, blocks, null);
+        /*world.*/setData(world, i1, k1, j1, blocks, null);
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.building"));
         nextPhase();
         a(0.0F);
@@ -500,9 +500,9 @@ label0:
             b1.a();
         }
 */
-        world.h = System.currentTimeMillis();
-        world.g = s;
-        world.f = "A Nice World";
+        world.createTime = System.currentTimeMillis();
+        world.creator = s;
+        world.name = "A Nice World";
         if(m != n)
         {
             throw new IllegalStateException((new StringBuilder()).append("Wrong number of phases! Wanted ").append(n).append(", got ").append(m).toString());
@@ -520,7 +520,7 @@ label0:
         return Block.opaqueCubeLookup[id];
     }
 
-    public void spawnHouse(g world)
+    public void spawnHouse(IndevLevel world)
     {
         int i1 = world.i;
         int j1 = world.j;
@@ -558,7 +558,7 @@ label0:
         spawnZ = world.k;
     }
 
-    private void generateGrass(g world)
+    private void generateGrass(IndevLevel world)
     {
         for(int i1 = 0; i1 < width; i1++)
         {
@@ -579,7 +579,7 @@ label0:
 
     }
 
-    private void generateTrees(g world)
+    private void generateTrees(IndevLevel world)
     {
         int i1 = (width * length * height) / 0x13880;
         for(int j1 = 0; j1 < i1; j1++)
@@ -603,7 +603,7 @@ label0:
                     i3 += rand.nextInt(12) - rand.nextInt(12);
                     if(k2 >= 0 && l2 >= 0 && i3 >= 0 && k2 < width && l2 < height && i3 < length)
                     {
-                        generateTree(world, k2, l2, i3);
+                        maybeGrowTree(world, k2, l2, i3);
                     }
                 }
 
@@ -613,7 +613,7 @@ label0:
 
     }
 
-    private void generateFlowers(g world, BlockFlower flower, int i1)
+    private void generateFlowers(IndevLevel world, BlockFlower flower, int i1)
     {
         i1 = (int)(((long)width * (long)length * (long)height * (long)i1) / 0x186a00L);
         for(int j1 = 0; j1 < i1; j1++)
@@ -912,7 +912,7 @@ label0:
         return l3;
     }
 
-    public final boolean generateTree(g world, int i1, int j1, int k1)
+    public final boolean maybeGrowTree(IndevLevel world, int i1, int j1, int k1)
     {
         int l1 = rand.nextInt(3) + 4;
         boolean flag = true;
@@ -992,7 +992,7 @@ label0:
 
         return true;
     }
-    
+
     private void setBlock(int i, int j, int k, int id){
         int x = i;
         int y = j;
@@ -1001,7 +1001,7 @@ label0:
         this.blocks[index]=(byte)id;
     }
 
-    private boolean canFlowerStay(BlockFlower flower, g world, int i, int j, int k){
+    private boolean canFlowerStay(BlockFlower flower, IndevLevel world, int i, int j, int k){
         if (flower==Block.plantYellow || flower==Block.plantRed){
             return (((getLightLevel(world, i, j, k) >= 8) || ((getLightLevel(world, i, j, k) >= 4) && /*(world.l(i, j, k)))*/true)) && (canThisPlantGrowOnThisBlockID(flower, getBlockId(i, j - 1, k))));
         }
@@ -1016,7 +1016,7 @@ label0:
         return isOpaque(par1);
     }
 
-    public final byte getLightLevel(g world, int i1, int j1, int k1)
+    public final byte getLightLevel(IndevLevel world, int i1, int j1, int k1)
     {
         if (true){
             if (j1==getFirstUncoveredBlock(world, i1, k1, true)){
@@ -1064,7 +1064,7 @@ label0:
         }
     }
 
-  public final void a(g world, int paramInt1, int paramInt2, int paramInt3, byte[] paramArrayOfByte1, byte[] paramArrayOfByte2)
+  public final void setData(IndevLevel world, int paramInt1, int paramInt2, int paramInt3, byte[] paramArrayOfByte1, byte[] paramArrayOfByte2)
   {
     if ((paramArrayOfByte2 != null) && (paramArrayOfByte2.length == 0))
       paramArrayOfByte2 = null;
@@ -1093,12 +1093,12 @@ label0:
                 else
                 {
                     if (j3 < world.t){
-                        if ((world.t > world.s) && (world.m == Block.waterMoving.blockID)){
+                        if ((world.t > world.waterLevel) && (world.m == Block.waterMoving.blockID)){
                             i3 = Block.grass.blockID;
                         }else{
                             i3 = Block.dirt.blockID;
                         }
-                    }else if (j3 < world.s){
+                    }else if (j3 < world.waterLevel){
                         i3 = world.m;
                     }
                 }
@@ -1152,7 +1152,7 @@ label0:
     System.gc();
   }
 
-    public final void b(g world){
+    public final void b(IndevLevel world){
         int x = 0;
         int y = 0;
         int z = 0;
@@ -1223,7 +1223,7 @@ label0:
         return Block.blocksList[getBlockId(i, j, k)].blockMaterial;
     }
 
-    public int getFirstUncoveredBlock(g world, int i1, int j1, boolean opaque)
+    public int getFirstUncoveredBlock(IndevLevel world, int i1, int j1, boolean opaque)
     {
         int k1;
         for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air || !isOpaque(getBlockId(i1, k1 - 1, j1))) && k1 > 1; k1--) { }
