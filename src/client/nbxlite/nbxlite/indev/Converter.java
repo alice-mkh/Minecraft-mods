@@ -18,16 +18,32 @@ public class Converter{
         return x+(y*length+z)*width;
     }
 
+    public int indexClassic(int x, int y, int z){
+        return x+(y*length+z)*width;
+    }
+
     public int indexChunk(int x, int y, int z){
         return y+z*chunky+x*chunky*chunkz;
     }
 
-    public byte[] getChunkArray(int x1, int z1){
+    public byte[] getChunkArrayIndev(int x1, int z1){
         byte[] result = new byte[32768];
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
                 for (int y=0; y<height; y++){
                     result[indexChunk(x,y,z)]=finiteWorld[indexIndev(x+(x1*16),y,z+(z1*16))];
+                }
+            }
+        }
+        return result;
+    }
+
+    public byte[] getChunkArrayClassic(int x1, int z1){
+        byte[] result = new byte[32768];
+        for (int x=0; x<16; x++){
+            for (int z=0; z<16; z++){
+                for (int y=0; y<height; y++){
+                    result[indexChunk(x,y,z)]=finiteWorld[indexClassic(x+(x1*16),y,z+(z1*16))];
                 }
             }
         }
