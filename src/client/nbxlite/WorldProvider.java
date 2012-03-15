@@ -241,7 +241,7 @@ public abstract class WorldProvider
         }
         if(worldObj.totalSkyLight == 16)
         {
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
                 return mod_noBiomesX.IndevHeight+64;
             }
             return 160F;
