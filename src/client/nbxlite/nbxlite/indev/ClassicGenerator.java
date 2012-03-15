@@ -14,6 +14,8 @@ import net.minecraft.src.nbxlite.indev.noise.*;
 import net.minecraft.src.Block;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.StatCollector;
+import net.minecraft.src.mod_noBiomesX;
 
 public final class ClassicGenerator
 {
@@ -36,13 +38,13 @@ public final class ClassicGenerator
 
     public final byte[] generateLevel(String s, int j, int k, int l)
     {
-        progressupdate.displaySavingString("Generating level");
+        progressupdate.displaySavingString(StatCollector.translateToLocal("menu.generatingLevel"));
         b = j;
         c = k;
         d = 64;
         g = 32;
         f = new byte[j * k << 6];
-        progressupdate.displayLoadingString("Raising..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.raising"));
         java.lang.Object obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         IndevNoiseGenerator2 c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         java.lang.Object obj1 = new IndevNoiseGeneratorOctaves(rand, 6);
@@ -66,7 +68,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString("Eroding..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.eroding"));
         int arrayf1[] = ai;
         c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         obj1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
@@ -87,7 +89,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString("Soiling..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.soiling"));
         arrayf1 = ai;
         int intf2 = b;
         int k1 = this.c;
@@ -123,7 +125,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString("Carving..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.carving"));
         float f2 = 4;
         float f1 = 0;
         int k5 = (this.b * this.c * this.d) / 256 / 64 << 1;
@@ -187,7 +189,7 @@ label0:
         a(Block.oreCoal.blockID, 90, 1, 4);
         a(Block.oreIron.blockID, 70, 2, 4);
         a(Block.oreGold.blockID, 50, 3, 4);
-        progressupdate.displayLoadingString("Watering..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.watering"));
         i2 = Block.waterStill.blockID;
         this.a(0);
         for(int intb1 = 0; intb1 < this.b; intb1++)
@@ -231,7 +233,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.displayLoadingString("Growing..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.growing"));
         arrayf1 = ai;
         IndevNoiseGeneratorOctaves j2 = new IndevNoiseGeneratorOctaves(rand, 8);
         IndevNoiseGeneratorOctaves b2 = new IndevNoiseGeneratorOctaves(rand, 8);
@@ -257,7 +259,7 @@ label0:
 
         }
 
-        progressupdate.displayLoadingString("Planting..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.planting"));
         arrayf1 = ai;
         k1 = (this.b * this.c) / 3000;
         for(i2 = 0; i2 < k1; i2++)
