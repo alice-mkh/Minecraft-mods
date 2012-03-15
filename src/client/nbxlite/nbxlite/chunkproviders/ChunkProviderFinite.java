@@ -95,7 +95,7 @@ public class ChunkProviderFinite
                     mod_noBiomesX.IndevWidthX = 256;
                     mod_noBiomesX.IndevWidthZ = 256;
                     mod_noBiomesX.IndevHeight = 64;
-                    ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
+                    ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
                     ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
                     mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 }
