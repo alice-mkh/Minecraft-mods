@@ -99,7 +99,7 @@ public abstract class WorldProvider
      */
     public boolean canCoordinateBeSpawn(int par1, int par2)
     {
-        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==2){
+        if (mod_noBiomesX.Generator==0 && (mod_noBiomesX.MapFeatures==2 || mod_noBiomesX.MapFeatures==4)){
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
