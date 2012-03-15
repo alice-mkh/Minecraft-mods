@@ -372,8 +372,7 @@ public class World implements IBlockAccess
                 }
                 gen2.theme=mod_noBiomesX.MapTheme;
                 ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
-                gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                mod_noBiomesX.IndevWorld = gen2.blocks;
+                mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
                     for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
@@ -387,6 +386,27 @@ public class World implements IBlockAccess
                 mod_noBiomesX.IndevWorld = null;
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
+                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
+                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
+            }if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
+                mod_noBiomesX.IndevWidthX = 256;
+                mod_noBiomesX.IndevWidthZ = 256;
+                mod_noBiomesX.IndevHeight = 64;
+                ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
+                ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+                mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
+                    for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                        chunkProvider.provideChunk(x,z);
+//                         updatingLighting();
+                    }
+                }
+                mod_noBiomesX.IndevSpawnX = mod_noBiomesX.IndevWidthX/2;
+                mod_noBiomesX.IndevSpawnY = 32;
+                mod_noBiomesX.IndevSpawnZ = mod_noBiomesX.IndevWidthZ/2;
+                mod_noBiomesX.IndevWorld = null;
+                mapTypeIndev=0;
+                worldInfo.setIndevMapType(0);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
             }else{
