@@ -29,27 +29,35 @@ public class ChunkProviderFinite
                 for (int l = 0; l < i; l++)
                 {
                     int i1 = 0;
-                    if (mod_noBiomesX.IndevMapType==1){
-                        if (l == altitude-11){
+                    if (mod_noBiomesX.MapFeatures==4){
+                        if (l <= altitude-3){
                             i1 = Block.bedrock.blockID;
-                        }else  if (l == altitude-10){
-                            i1 = Block.dirt.blockID;
-                        }else if (l < altitude && l > altitude-11){
-                            if (mod_noBiomesX.MapTheme==1){
-                                i1 = Block.lavaStill.blockID;
-                            }else{
-                                i1 = Block.waterStill.blockID;
+                        }else if (l < altitude && l > altitude-3){
+                            i1 = Block.waterStill.blockID;
+                        }
+                    }else{
+                        if (mod_noBiomesX.IndevMapType==1){
+                            if (l == altitude-11){
+                                i1 = Block.bedrock.blockID;
+                            }else  if (l == altitude-10){
+                                i1 = Block.dirt.blockID;
+                            }else if (l < altitude && l > altitude-11){
+                                if (mod_noBiomesX.MapTheme==1){
+                                    i1 = Block.lavaStill.blockID;
+                                }else{
+                                    i1 = Block.waterStill.blockID;
+                                }
                             }
                         }
-                    }
-                    if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
-                        if (l == altitude-1){
-                            i1 = Block.bedrock.blockID;
-                        }else if (l == altitude){
-                            if (mod_noBiomesX.MapTheme==1){
-                                i1 = Block.dirt.blockID;
-                            }else{
-                                i1 = Block.grass.blockID;
+                        if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
+                            if (l == altitude-1){
+                                i1 = Block.bedrock.blockID;
+                            }else if (l == altitude){
+                                if (mod_noBiomesX.MapTheme==1){
+                                    i1 = Block.dirt.blockID;
+                                }else{
+                                    i1 = Block.grass.blockID;
+                                }
                             }
                         }
                     }
@@ -68,7 +76,7 @@ public class ChunkProviderFinite
     {
         Chunk chunk;
         if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
-            if (mod_noBiomesX.IndevWorld==null){
+            if (mod_noBiomesX.IndevWorld==null && mod_noBiomesX.MapFeatures==3){
                 IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
                 if (mod_noBiomesX.IndevMapType==1){
                     gen2.island=true;
@@ -84,8 +92,13 @@ public class ChunkProviderFinite
                 gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 mod_noBiomesX.IndevWorld = gen2.blocks;
             }
+            System.out.println(i+" "+j);
             Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-            chunk = new Chunk(worldObj, c.getChunkArray(i, j), i, j);
+            if (mod_noBiomesX.MapFeatures==3){
+                chunk = new Chunk(worldObj, c.getChunkArrayIndev(i, j), i, j);
+            }else{
+                chunk = new Chunk(worldObj, c.getChunkArrayClassic(i, j), i, j);
+            }
         }else{
             byte abyte0[] = new byte[32768];
             generateBoundaries(abyte0);
