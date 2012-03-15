@@ -54,7 +54,7 @@ public final class IndevGenerator
         this(new LoadingScreenRenderer(ModLoader.getMinecraftInstance()), seed);
     }
 
-    public final void generateLevel(String s, int i1, int j1, int k1)
+    public final byte[] generateLevel(String s, int i1, int j1, int k1)
     {
         int l1 = 1;
         if(floating)
@@ -509,7 +509,7 @@ label0:
         } else
         {
 //             return world;
-            return;
+            return this.blocks;
         }
     }
     

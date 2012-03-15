@@ -34,7 +34,7 @@ public final class ClassicGenerator
         progressupdate = iprogressupdate;
     }
 
-    public final void a(java.lang.String s, int j, int k, int l)
+    public final byte[] generateLevel(String s, int j, int k, int l)
     {
         progressupdate.displaySavingString("Generating level");
         b = j;
@@ -369,7 +369,7 @@ label0:
         }
 
 //         return level;
-        return;
+        return this.f;
     }
 
     public final boolean maybeGrowTree(IndevLevel world, int i1, int j1, int k1)
