@@ -3,16 +3,16 @@ package net.minecraft.src.nbxlite;
 import net.minecraft.src.mod_noBiomesX;
 
 public class GeneratorList{
-    public static int gendefault = 5;
+    public static int gendefault = 6;
     public static int gencurrent;
-    public static int genlength = 5;
-    public static String[] genid = {"indev", "infdev0227", "infdev0420", "alpha", "beta", "release"};
-    public static String[] genname = {"genIndev", "genInfdev0227", "genInfdev0420", "genAlpha", "genBeta", "genRelease"};
-    public static String[] gendesc = {"descriptionGenIndev", "descriptionGenInfdev0227", "descriptionGenInfdev0420", "descriptionGenAlpha", "descriptionGenBeta", "descriptionGenRelease"};
-    public static boolean[] genstructures = {false, false, false, false, false, true};
-    public static int[] genfeatures = {0, 0, 0, 0, 1, 2};
-    public static int[] genfeats = {3, 2, 1, 0, 0, 0};
-    public static boolean[] genplus = {true, false, false, false, false, false};
+    public static int genlength = 6;
+    public static String[] genid = {"classic", "indev", "infdev0227", "infdev0420", "alpha", "beta", "release"};
+    public static String[] genname = {"genClassic", "genIndev", "genInfdev0227", "genInfdev0420", "genAlpha", "genBeta", "genRelease"};
+    public static String[] gendesc = {"descriptionGenClassic", "descriptionGenIndev", "descriptionGenInfdev0227", "descriptionGenInfdev0420", "descriptionGenAlpha", "descriptionGenBeta", "descriptionGenRelease"};
+    public static boolean[] genstructures = {false, false, false, false, false, false, true};
+    public static int[] genfeatures = {0, 0, 0, 0, 0, 1, 2};
+    public static int[] genfeats = {4, 3, 2, 1, 0, 0, 0};
+    public static boolean[] genplus = {false, true, false, false, false, false, false};
 
     public static int feat1default = 4;
     public static int feat1current;
