@@ -12,14 +12,14 @@ length=Длина:
 #Indev loading screen
 indev.raising=Поднимаем..
 indev.eroding=Разрушаем..
-indev.soiling=Посыпаем..
-indev.growing=Наращиваем..
+indev.soiling=Загрязняем..
+indev.growing=Посыпаем..
 indev.carving=Прорезаем..
-indev.melting=Плавим..
+indev.melting=Раскаляем..
 indev.watering=Поливаем..
 indev.assembling=Собираем..
 indev.building=Строим..
-indev.planting=Сажаем..
+indev.planting=Засеваем..
 indev.lighting=Освещаем..
 indev.spawning=Заселяем..
 
