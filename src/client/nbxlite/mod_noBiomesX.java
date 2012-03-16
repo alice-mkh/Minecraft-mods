@@ -71,16 +71,16 @@ public class mod_noBiomesX extends BaseModMp{
         }
         if (Generator==0 && MapFeatures==4){
             if (entity.posX>IndevWidthX){
-                entity.motionX-=1;
+                entity.motionX-=0.5;
             }
             if (entity.posX<0){
-                entity.motionX+=1;
+                entity.motionX+=0.5;
             }
             if (entity.posZ>IndevWidthZ){
-                entity.motionZ-=1;
+                entity.motionZ-=0.5;
             }
             if (entity.posZ<0){
-                entity.motionZ+=1;
+                entity.motionZ+=0.5;
             }
         }    
     }
