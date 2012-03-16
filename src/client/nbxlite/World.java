@@ -389,8 +389,6 @@ public class World implements IBlockAccess
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
-                mod_noBiomesX.IndevWidthX = 256;
-                mod_noBiomesX.IndevWidthZ = 256;
                 mod_noBiomesX.IndevHeight = 64;
                 ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
                 ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));

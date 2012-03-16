@@ -265,7 +265,11 @@ label0:
 
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.planting"));
         arrayf1 = ai;
-        k1 = (this.b * this.c) / 3000;
+        if (this.b==64 || this.c==64){
+            k1 = (this.b * this.c) / 2000;
+        }else{
+            k1 = (this.b * this.c) / 3000;
+        }
         for(i2 = 0; i2 < k1; i2++)
         {
             int k2 = rand.nextInt(2);
@@ -350,7 +354,11 @@ label0:
         level.creator = s;
         level.name = "A Nice World";
         arrayf1 = ai;
-        i2 = (this.b * this.c) / 4000;
+        if (this.b == 64 || this.c == 64){
+            i2 = (this.b * this.c) / 2000;
+        }else{
+            i2 = (this.b * this.c) / 4000;
+        }
         for(int i3 = 0; i3 < i2; i3++)
         {
             this.a((i3 * 50) / (i2 - 1) + 50);

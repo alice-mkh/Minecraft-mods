@@ -91,7 +91,7 @@ public class GuiNBXliteSettings extends GuiScreen
         controlList.add(generatorButton = new GuiButton(6, width / 2 - 75, 110, 150, 20, mod_noBiomesX.lang.get("gen")+mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent])));
         controlList.add(generatorExtraButton = new GuiButton(7, width / 2 - 75, 155, 150, 20, extraname));
         controlList.add(indevButton = new GuiButton(8, width / 2 + 76, 155, 20, 20, mod_noBiomesX.lang.get("plus")));
-        indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
+        indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]>0;
         func_35363_g();
     }
 
@@ -177,7 +177,7 @@ public class GuiNBXliteSettings extends GuiScreen
             generatorDescription = mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]);
             field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
             func_35363_g();
-            indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
+            indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]>0;
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
                 GeneratorList.themecurrent = GeneratorList.themedefault;
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
@@ -196,7 +196,11 @@ public class GuiNBXliteSettings extends GuiScreen
             }
 
         } else if(guibutton.id == 8) {
-            mc.displayGuiScreen(new GuiIndevSettings(this));
+            if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
+                mc.displayGuiScreen(new GuiIndevSettings(this));
+            }else{
+                mc.displayGuiScreen(new GuiClassicSettings(this));
+            }
         } else if(guibutton.id == 7) {
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
                 if (GeneratorList.feat1current<GeneratorList.feat1length){

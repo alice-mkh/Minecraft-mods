@@ -237,7 +237,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 StringTranslate stringtranslate1 = StringTranslate.getInstance();
                 moreWorldOptions.displayString = stringtranslate1.translateKey("selectWorld.moreWorldOptions");
             }
-            indevButton.drawButton = moreOptions && GeneratorList.genplus[GeneratorList.gencurrent];
+            indevButton.drawButton = moreOptions && GeneratorList.genplus[GeneratorList.gencurrent]>0;
         }
         else if (guibutton.id == 2)
         {
@@ -317,7 +317,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 field_46030_z = 0;
             }
             func_35363_g();
-            indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent];
+            indevButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]>0;
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
                 GeneratorList.themecurrent = GeneratorList.themedefault;
                 generatorExtra = GeneratorList.themeid[GeneratorList.themecurrent];
@@ -335,7 +335,11 @@ public class GuiCreateWorld2 extends GuiScreen
                 generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
         } else if(guibutton.id == 8) {
-            mc.displayGuiScreen(new GuiIndevSettings(this));
+            if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
+                mc.displayGuiScreen(new GuiIndevSettings(this));
+            }else{
+                mc.displayGuiScreen(new GuiClassicSettings(this));
+            }
             moreOptions = false;
         } else if(guibutton.id == 7) {
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
