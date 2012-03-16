@@ -579,6 +579,10 @@ public class World implements IBlockAccess
             setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
             setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
             findingSpawnPoint = false;
+        }else if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
+            findingSpawnPoint = true;
+            worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
+            findingSpawnPoint = false;
         }else{
             findingSpawnPoint = true;
             int i = 0;

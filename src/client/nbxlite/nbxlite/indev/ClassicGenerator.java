@@ -28,6 +28,9 @@ public final class ClassicGenerator
     private byte f[];
     private int g;
     private int h[];
+    public int spawnX;
+    public int spawnY;
+    public int spawnZ;
 
     public ClassicGenerator(IProgressUpdate iprogressupdate, long seed)
     {
@@ -42,7 +45,7 @@ public final class ClassicGenerator
         b = j;
         c = k;
         d = 64;
-        g = 32;
+        g = d - 32;
         f = new byte[j * k << 6];
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.raising"));
         java.lang.Object obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
@@ -342,6 +345,7 @@ label0:
         IndevLevel level = new IndevLevel();
         level.waterLevel = g;
 //         level.setData(j, 64, k, f);
+        findSpawn(level);
         level.createTime = java.lang.System.currentTimeMillis();
         level.creator = s;
         level.name = "A Nice World";
@@ -645,5 +649,43 @@ label0:
             }
         }
         return l3;
+    }
+
+    public int getFirstUncoveredBlock(IndevLevel world, int i1, int j1, boolean opaque)
+    {
+        int k1;
+        for(k1 = d; (getBlockId(i1, k1 - 1, j1) == 0 || !isOpaque(getBlockId(i1, k1 - 1, j1))) && k1 > 1; k1--) { }
+        return k1;
+    }
+
+    public void findSpawn(IndevLevel level)
+    {
+        int j = 0;
+        int i1;
+        int j1;
+        int k1;
+        do
+        {
+            j++;
+            i1 = rand.nextInt(b / 2) + b / 4;
+            j1 = rand.nextInt(d / 2) + d / 4;
+            k1 = getFirstUncoveredBlock(level, i1, j1, true) + 1;
+            if(j == 10000)
+            {
+                level.i = i1;
+                level.j = -100;
+                level.k = j1;
+                spawnX = i1;
+                spawnY = -100;
+                spawnZ = j1;
+                return;
+            }
+        } while(k1 <= g);
+        level.i = i1;
+        level.j = k1;
+        level.k = j1;
+        spawnX = i1;
+        spawnY = k1;
+        spawnZ = j1;
     }
 }
