@@ -101,11 +101,7 @@ public class ChunkProviderFinite
                 }
             }
             Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-            if (mod_noBiomesX.MapFeatures==3){
-                chunk = new Chunk(worldObj, c.getChunkArrayIndev(i, j), i, j);
-            }else{
-                chunk = new Chunk(worldObj, c.getChunkArrayClassic(i, j), i, j);
-            }
+            chunk = new Chunk(worldObj, c.getChunkArray(i, j), i, j);
         }else{
             byte abyte0[] = new byte[32768];
             generateBoundaries(abyte0);
