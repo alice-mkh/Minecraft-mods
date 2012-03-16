@@ -102,6 +102,9 @@ public class GuiCreateWorld2 extends GuiScreen
         indevButton.drawButton = false;
         controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         worldTypeButton.drawButton = false;
+        if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=2){
+            worldTypeButton.enabled = false;
+        }
         textboxWorldName = new GuiTextField(this, fontRenderer, width / 2 - 100, 60, 200, 20, localizedNewWorldText);
         textboxWorldName.isFocused = true;
         textboxWorldName.setMaxStringLength(32);
