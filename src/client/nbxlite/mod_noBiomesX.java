@@ -38,7 +38,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public boolean onTickInGame(float f, Minecraft minecraft){
-        if (Generator==0 && MapFeatures==3 && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
+        if (Generator==0 && MapFeatures>=3 && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
             tickPushing(minecraft);
         }
         return true;
@@ -68,7 +68,21 @@ public class mod_noBiomesX extends BaseModMp{
             if (entity.posZ<-8){
                 entity.motionZ-=(entity.posZ)/950;
             }
-        }   
+        }
+        if (Generator==0 && MapFeatures==4){
+            if (entity.posX>IndevWidthX){
+                entity.motionX-=1;
+            }
+            if (entity.posX<0){
+                entity.motionX+=1;
+            }
+            if (entity.posZ>IndevWidthZ){
+                entity.motionZ-=1;
+            }
+            if (entity.posZ<0){
+                entity.motionZ+=1;
+            }
+        }    
     }
 
     private static void replaceBlocks(){
