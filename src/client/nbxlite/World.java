@@ -388,7 +388,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+//                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
                 mod_noBiomesX.IndevWidthX = 256;
                 mod_noBiomesX.IndevWidthZ = 256;
@@ -402,15 +402,15 @@ public class World implements IBlockAccess
 //                         updatingLighting();
                     }
                 }
-                mod_noBiomesX.IndevSpawnX = mod_noBiomesX.IndevWidthX/2;
-                mod_noBiomesX.IndevSpawnY = 32;
-                mod_noBiomesX.IndevSpawnZ = mod_noBiomesX.IndevWidthZ/2;
+                mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+                mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+                mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mod_noBiomesX.IndevWorld = null;
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+//                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }else{
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);
