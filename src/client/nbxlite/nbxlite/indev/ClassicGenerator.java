@@ -246,10 +246,10 @@ label0:
                 boolean flag1 = b2.a(i8, j4) > 12D;
                 int i12 = arrayf1[i8 + j4 * this.b];
                 int j13 = (i12 * this.c + j4) * this.b + i8;
-                int k14 = this.f[i12 * this.b + i8] & 0xff;
+                int k14 = this.f[((i12+1) * this.c + j4) * this.b + i8] & 0xff;
                 if((k14 == Block.waterMoving.blockID || k14 == Block.waterStill.blockID) && i12 <= this.d / 2 - 1 && flag1)
                     this.f[j13] = (byte)Block.gravel.blockID;
-                if(k14 == 0){
+                if(k14 != 0){
                     continue;
                 }
                 int i15 = Block.grass.blockID;
