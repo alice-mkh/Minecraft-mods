@@ -376,7 +376,6 @@ public class World implements IBlockAccess
                 for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
                     for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
-//                         updatingLighting();
                     }
                 }
                 
@@ -388,7 +387,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-//                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
                 mod_noBiomesX.IndevWidthX = 256;
                 mod_noBiomesX.IndevWidthZ = 256;
@@ -399,7 +398,6 @@ public class World implements IBlockAccess
                 for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
                     for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
-//                         updatingLighting();
                     }
                 }
                 mod_noBiomesX.IndevSpawnX = gen2.spawnX;
@@ -410,7 +408,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevMapType(0);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-//                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }else{
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);

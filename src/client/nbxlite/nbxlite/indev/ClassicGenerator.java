@@ -44,7 +44,7 @@ public final class ClassicGenerator
         progressupdate.displaySavingString(StatCollector.translateToLocal("menu.generatingLevel"));
         b = j;
         c = k;
-        d = 64;
+        d = l;
         g = d - 32;
         f = new byte[j * k << 6];
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.raising"));
