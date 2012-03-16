@@ -92,7 +92,7 @@ public abstract class WorldProvider
         if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
             return i == Block.stone.blockID;
         }
-        if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
+        if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1 || (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4)){
             return i == Block.grass.blockID;
         }
         return i == Block.sand.blockID;

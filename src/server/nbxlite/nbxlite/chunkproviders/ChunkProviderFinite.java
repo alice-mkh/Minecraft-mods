@@ -29,27 +29,35 @@ public class ChunkProviderFinite
                 for (int l = 0; l < i; l++)
                 {
                     int i1 = 0;
-                    if (mod_noBiomesX.IndevMapType==1){
-                        if (l == altitude-11){
+                    if (mod_noBiomesX.MapFeatures==4){
+                        if (l <= altitude-3){
                             i1 = Block.bedrock.blockID;
-                        }else  if (l == altitude-10){
-                            i1 = Block.dirt.blockID;
-                        }else if (l < altitude && l > altitude-11){
-                            if (mod_noBiomesX.MapTheme==1){
-                                i1 = Block.lavaStill.blockID;
-                            }else{
-                                i1 = Block.waterStill.blockID;
+                        }else if (l < altitude && l > altitude-3){
+                            i1 = Block.waterStill.blockID;
+                        }
+                    }else{
+                        if (mod_noBiomesX.IndevMapType==1){
+                            if (l == altitude-11){
+                                i1 = Block.bedrock.blockID;
+                            }else  if (l == altitude-10){
+                                i1 = Block.dirt.blockID;
+                            }else if (l < altitude && l > altitude-11){
+                                if (mod_noBiomesX.MapTheme==1){
+                                    i1 = Block.lavaStill.blockID;
+                                }else{
+                                    i1 = Block.waterStill.blockID;
+                                }
                             }
                         }
-                    }
-                    if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
-                        if (l == altitude-1){
-                            i1 = Block.bedrock.blockID;
-                        }else if (l == altitude){
-                            if (mod_noBiomesX.MapTheme==1){
-                                i1 = Block.dirt.blockID;
-                            }else{
-                                i1 = Block.grass.blockID;
+                        if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
+                            if (l == altitude-1){
+                                i1 = Block.bedrock.blockID;
+                            }else if (l == altitude){
+                                if (mod_noBiomesX.MapTheme==1){
+                                    i1 = Block.dirt.blockID;
+                                }else{
+                                    i1 = Block.grass.blockID;
+                                }
                             }
                         }
                     }
@@ -69,19 +77,24 @@ public class ChunkProviderFinite
         Chunk chunk;
         if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
             if (mod_noBiomesX.IndevWorld==null){
-                IndevGenerator gen2 = new IndevGenerator(worldObj.getSeed());
-                if (mod_noBiomesX.IndevMapType==1){
-                    gen2.island=true;
+                if (mod_noBiomesX.MapFeatures==3){
+                    IndevGenerator gen2 = new IndevGenerator(worldObj.getSeed());
+                    if (mod_noBiomesX.IndevMapType==1){
+                        gen2.island=true;
+                    }
+                    if (mod_noBiomesX.IndevMapType==2){
+                        gen2.floating=true;
+                    }
+                    if (mod_noBiomesX.IndevMapType==3){
+                        gen2.flat=true;
+                    }
+                    gen2.theme=mod_noBiomesX.MapTheme;
+                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                }else{
+                    mod_noBiomesX.IndevHeight = 64;
+                    ClassicGenerator gen2 = new ClassicGenerator(worldObj.getSeed());
+                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 }
-                if (mod_noBiomesX.IndevMapType==2){
-                    gen2.floating=true;
-                }
-                if (mod_noBiomesX.IndevMapType==3){
-                    gen2.flat=true;
-                }
-                gen2.theme=mod_noBiomesX.MapTheme;
-                gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                mod_noBiomesX.IndevWorld = gen2.blocks;
             }
             Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
             chunk = new Chunk(worldObj, c.getChunkArray(i, j), i, j);

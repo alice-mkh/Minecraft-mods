@@ -5,21 +5,21 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.Block;
 
-public class g{
+public class IndevLevel{
     public int a;
     public int b;
     public int c;
     public byte d[];
-    public String f;
-    public String g;
-    public long h;
+    public String name;
+    public String creator;
+    public long createTime;
     public int i;
     public int j;
     public int k;
     public float l;
     public int m = Block.waterMoving.blockID;
     List n = new ArrayList();
-    public int s;
+    public int waterLevel;
     public int t;
     public int u;
     public int v = 10079487;
@@ -29,7 +29,7 @@ public class g{
     public int B = 15;
     int p[];
 
-    public g(){}
+    public IndevLevel(){}
 
     public void a(){}
 
