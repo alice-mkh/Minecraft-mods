@@ -220,7 +220,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.displayLoadingString("Melting..");
+        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.melting"));
         int intf22 = (this.b * this.c * this.d) / 20000;
         for(int intk1 = 0; intk1 < intf22; intk1++)
         {
