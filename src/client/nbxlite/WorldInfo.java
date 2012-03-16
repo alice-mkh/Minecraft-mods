@@ -59,6 +59,7 @@ public class WorldInfo
     private int mapGenExtra;
     private int mapType;
     private int indevX;
+    private int indevY;
     private int indevZ;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
@@ -119,6 +120,7 @@ public class WorldInfo
         mapGenExtra = par1NBTTagCompound.getInteger("mapGenExtra");
         mapType = par1NBTTagCompound.getInteger("indevMapType");
         indevX = par1NBTTagCompound.getInteger("indevX");
+        indevY = par1NBTTagCompound.getInteger("indevY");
         indevZ = par1NBTTagCompound.getInteger("indevZ");
 
         if (par1NBTTagCompound.hasKey("Player"))
@@ -169,6 +171,7 @@ public class WorldInfo
         mapGenExtra = par1WorldInfo.mapGenExtra;
         mapType = par1WorldInfo.mapType;
         indevX = par1WorldInfo.indevX;
+        indevY = par1WorldInfo.indevY;
         indevZ = par1WorldInfo.indevZ;
     }
 
@@ -232,6 +235,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("mapGenExtra", mapGenExtra);
         par1NBTTagCompound.setInteger("indevMapType", mapType);
         par1NBTTagCompound.setInteger("indevX", indevX);
+        par1NBTTagCompound.setInteger("indevY", indevY);
         par1NBTTagCompound.setInteger("indevZ", indevZ);
 
         if (par2NBTTagCompound != null)
@@ -538,6 +542,16 @@ public class WorldInfo
     public void setIndevX(int i)
     {
         indevX = i;
+    }
+
+    public int getIndevY()
+    {
+        return indevY;
+    }
+
+    public void setIndevY(int i)
+    {
+        indevY = i;
     }
 
     public int getIndevZ()

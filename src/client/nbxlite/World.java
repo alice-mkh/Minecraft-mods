@@ -388,6 +388,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
+                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
                 mod_noBiomesX.IndevWidthX = 256;
                 mod_noBiomesX.IndevWidthZ = 256;
@@ -409,6 +410,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevMapType(0);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
+                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
             }else{
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);
@@ -422,6 +424,7 @@ public class World implements IBlockAccess
             mapTypeIndev = worldInfo.getIndevMapType();
             mod_noBiomesX.IndevWidthX = worldInfo.getIndevX();
             mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
+            mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
             mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered);
         }
         calculateInitialSkylight();
