@@ -29,6 +29,7 @@ theme=Theme:
 indevType=Type: 
 
 #Generators
+genClassic=Classic
 genIndev=Indev
 genInfdev0227=Infdev (02.27)
 genInfdev0420=Infdev (04.20)
@@ -62,6 +63,7 @@ typeFloating=Floating
 typeFlat=Flat
 
 #Generator descriptions
+descriptionGenClassic=Finite map
 descriptionGenIndev=Finite map, many options
 descriptionGenInfdev0227=No trees, obsidian lines
 descriptionGenInfdev0420=No biomes, large trees

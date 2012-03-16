@@ -29,6 +29,7 @@ theme=Тема:
 indevType=Тип: 
 
 #Generators
+genClassic=Classic
 genIndev=Indev
 genInfdev0227=Infdev (27.02)
 genInfdev0420=Infdev (20.04)
@@ -62,6 +63,7 @@ typeFloating=Летающие острова
 typeFlat=Плоский
 
 #Generator descriptions
+descriptionGenClassic=Ограниченная территория
 descriptionGenIndev=Ограниченная территория, много опций
 descriptionGenInfdev0227=Пустошь, обсидиановые стены
 descriptionGenInfdev0420=Высокие горы, огромные деревья
