@@ -26,7 +26,6 @@ public class GuiClassicSettings extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         layers = mod_noBiomesX.IndevHeight==128;
-        String l = layers ? mod_noBiomesX.lang.get("twoLayers") : mod_noBiomesX.lang.get("oneLayer");
         controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_noBiomesX.lang.get("continue")));
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
         widthButton = new GuiButton[4];

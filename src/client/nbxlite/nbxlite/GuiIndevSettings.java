@@ -29,7 +29,7 @@ public class GuiIndevSettings extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         layers = mod_noBiomesX.IndevHeight==128;
-        String l = layers ? mod_noBiomesX.lang.get("twoLayers") : mod_noBiomesX.lang.get("oneLayer");
+//         String l = layers ? mod_noBiomesX.lang.get("2Layers") : mod_noBiomesX.lang.get("1Layer");
         controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_noBiomesX.lang.get("continue")));
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
         controlList.add(typeButton = new GuiButton(2, width / 2 - 75, height / 6 + 114, 150, 20, mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent])));
@@ -75,11 +75,11 @@ public class GuiIndevSettings extends GuiScreen
             typeButton.displayString = mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
 /*            layerButton.drawButton = GeneratorList.typecurrent == 2;
             layers = false;
-            layerButton.displayString = mod_noBiomesX.lang.get("oneLayer");
+            layerButton.displayString = mod_noBiomesX.lang.get("1Layer");
             mod_noBiomesX.IndevHeight = 96;
         }else if (guibutton.id == 3){
             layers = !layers;
-            layerButton.displayString = layers ? mod_noBiomesX.lang.get("twoLayers") : mod_noBiomesX.lang.get("oneLayer");
+            layerButton.displayString = layers ? mod_noBiomesX.lang.get("2Layers") : mod_noBiomesX.lang.get("1Layer");
             mod_noBiomesX.IndevHeight = layers ? 128 : 96;*/
         }else if (guibutton.id>=10 && guibutton.id<=14){
             GeneratorList.xcurrent = guibutton.id-10;
@@ -106,10 +106,9 @@ public class GuiIndevSettings extends GuiScreen
         if (GeneratorList.typecurrent==2){
             int count = (heightslider.getSizeValue() - 64) / 48 + 1;
             if (count==1){
-                drawCenteredString(fontRenderer, mod_noBiomesX.lang.get("oneLayer"), width / 2, height / 6 + 138, 0xa0a0a0);
-            }
-            if (count==2){
-                drawCenteredString(fontRenderer, mod_noBiomesX.lang.get("twoLayers"), width / 2, height / 6 + 138, 0xa0a0a0);
+                drawCenteredString(fontRenderer, mod_noBiomesX.lang.get("1Layer"), width / 2, height / 6 + 138, 0xa0a0a0);
+            }else{
+                drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(count+"Layers"), width / 2, height / 6 + 138, 0xa0a0a0);
             }
         }
         super.drawScreen(i, j, f);

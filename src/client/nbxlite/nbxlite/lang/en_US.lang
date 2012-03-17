@@ -4,8 +4,11 @@ continue=Continue
 plus=+
 
 #Indev settings
-oneLayer=One layer
-twoLayers=Two layers
+1Layer=One layer
+2Layers=Two layers
+3Layers=Three layers
+4Layers=Four layers
+5Layers=Five layers
 width=Width: 
 length=Length: 
 height=Height: 
