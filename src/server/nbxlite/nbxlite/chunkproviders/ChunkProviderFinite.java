@@ -37,7 +37,7 @@ public class ChunkProviderFinite
                         }
                     }else{
                         if (mod_noBiomesX.IndevMapType==1){
-                            if (l == altitude-11){
+                            if (l <= altitude-11){
                                 i1 = Block.bedrock.blockID;
                             }else  if (l == altitude-10){
                                 i1 = Block.dirt.blockID;
@@ -50,7 +50,7 @@ public class ChunkProviderFinite
                             }
                         }
                         if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
-                            if (l == altitude-1){
+                            if (l <= altitude-1){
                                 i1 = Block.bedrock.blockID;
                             }else if (l == altitude){
                                 if (mod_noBiomesX.MapTheme==1){
@@ -98,6 +98,9 @@ public class ChunkProviderFinite
             }
             Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
             chunk = new Chunk(worldObj, c.getChunkArray(i, j), i, j);
+            if (mod_noBiomesX.IndevHeight>128){
+                c.fixDeepMaps(chunk, i, j);
+            }
         }else{
             byte abyte0[] = new byte[32768];
             generateBoundaries(abyte0);
