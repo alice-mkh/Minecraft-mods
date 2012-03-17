@@ -26,7 +26,7 @@ public class Converter{
         byte[] result = new byte[32768];
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
-                for (int y=0; y<height; y++){
+                for (int y=0; y<Math.min(height, chunky); y++){
                     result[indexChunk(x,y,z)]=finiteWorld[indexIndev(x+(x1*16),y,z+(z1*16))];
                 }
             }
