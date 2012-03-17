@@ -65,6 +65,7 @@ public class GuiCreateWorld2 extends GuiScreen
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
         mod_noBiomesX.IndevWidthX = GeneratorList.sizes[GeneratorList.xdefault];
         mod_noBiomesX.IndevWidthZ = GeneratorList.sizes[GeneratorList.zdefault];
+        mod_noBiomesX.IndevHeight = 96;
         GeneratorList.xcurrent = GeneratorList.xdefault;
         GeneratorList.zcurrent = GeneratorList.zdefault;
     }

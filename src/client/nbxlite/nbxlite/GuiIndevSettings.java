@@ -56,7 +56,7 @@ public class GuiIndevSettings extends GuiScreen
             return;
         }if (guibutton.id == 1){
             GeneratorList.typecurrent = GeneratorList.typedefault;
-//             mod_noBiomesX.IndevHeight=96;
+            mod_noBiomesX.IndevHeight=96;
             GeneratorList.xcurrent = GeneratorList.xdefault;
             GeneratorList.zcurrent = GeneratorList.zdefault;
             mc.displayGuiScreen(parentGuiScreen);
