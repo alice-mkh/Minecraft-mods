@@ -608,7 +608,13 @@ public class World implements IBlockAccess
      */
     public void setSpawnLocation()
     {
-        if (mod_noBiomesX.Generator!=2){
+        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+            findingSpawnPoint = true;
+            worldInfo.setSpawnX(mod_noBiomesX.IndevSpawnX);
+            worldInfo.setSpawnY(mod_noBiomesX.IndevSpawnY);
+            worldInfo.setSpawnZ(mod_noBiomesX.IndevSpawnZ);
+            findingSpawnPoint = false;
+        }else if (mod_noBiomesX.Generator!=2){
             if(worldInfo.getSpawnY() <= 0)
             {
                 worldInfo.setSpawnY(64);
