@@ -183,6 +183,10 @@ label0:
         a(Block.oreGold.blockID, 50, 3, 4);
         MinecraftServer.logger.info("Watering..");
         i2 = Block.waterStill.blockID;
+        if(mod_noBiomesX.MapTheme == 1)
+            {
+            i2 = Block.lavaStill.blockID;
+        }
         this.a(0);
         for(int intb1 = 0; intb1 < this.b; intb1++)
         {
@@ -245,8 +249,17 @@ label0:
                     continue;
                 }
                 int i15 = Block.grass.blockID;
-                if(i12 <= this.d / 2 - 1 && flag)
+                if(mod_noBiomesX.MapTheme == 1)
+                {
+                    i15 = Block.dirt.blockID;
+                }
+                if(i12 <= this.d / 2 - 1 && flag){
                     i15 = Block.sand.blockID;
+                    if(mod_noBiomesX.MapTheme == 1)
+                    {
+                        i15 = Block.grass.blockID;
+                    }
+                }
                 this.f[j13] = (byte)i15;
             }
 
@@ -348,28 +361,34 @@ label0:
         }else{
             i2 = (this.b * this.c) / 4000;
         }
-        for(int i3 = 0; i3 < i2; i3++)
-        {
-            this.a((i3 * 50) / (i2 - 1) + 50);
-            int l6 = rand.nextInt(this.b);
-            int l8 = rand.nextInt(this.c);
-            for(int i5 = 0; i5 < 20; i5++)
+        int iii = 1;
+        if (mod_noBiomesX.MapTheme==2){
+            iii = 51;
+        }
+        for (int ii = 0; ii<iii; ii++){
+            for(int i3 = 0; i3 < i2; i3++)
             {
-                int j10 = l6;
-                int j11 = l8;
-                for(int l12 = 0; l12 < 20; l12++)
+                this.a((i3 * 50) / (i2 - 1) + 50);
+                int l6 = rand.nextInt(this.b);
+                int l8 = rand.nextInt(this.c);
+                for(int i5 = 0; i5 < 20; i5++)
                 {
-                    j10 += rand.nextInt(6) - rand.nextInt(6);
-                    j11 += rand.nextInt(6) - rand.nextInt(6);
-                    if(j10 < 0 || j11 < 0 || j10 >= this.b || j11 >= this.c)
-                        continue;
-                    int i14 = arrayf1[j10 + j11 * this.b] + 1;
-                    if(rand.nextInt(4) == 0)
-                        maybeGrowTree(level, j10, i14, j11);
+                    int j10 = l6;
+                    int j11 = l8;
+                    for(int l12 = 0; l12 < 20; l12++)
+                    {
+                        j10 += rand.nextInt(6) - rand.nextInt(6);
+                        j11 += rand.nextInt(6) - rand.nextInt(6);
+                        if(j10 < 0 || j11 < 0 || j10 >= this.b || j11 >= this.c)
+                            continue;
+                        int i14 = arrayf1[j10 + j11 * this.b] + 1;
+                        if(rand.nextInt(4) == 0)
+                            maybeGrowTree(level, j10, i14, j11);
+                    }
+
                 }
 
             }
-
         }
 
 //         return level;
