@@ -1,5 +1,8 @@
 package net.minecraft.src.nbxlite.indev;
 
+import net.minecraft.src.Chunk;
+import net.minecraft.src.ExtendedBlockStorage;
+
 public class Converter{
     public byte[] finiteWorld;
     public int height;
@@ -32,5 +35,20 @@ public class Converter{
             }
         }
         return result;
+    }
+
+    public void fixDeepMaps(Chunk chunk, int x1, int z1){
+        for (int x=0; x<16; x++){
+            for (int z=0; z<16; z++){
+                for (int y=128; y<height; y++){
+                    ExtendedBlockStorage extendedblockstorage = chunk.func_48495_i()[y >> 4];
+                    if (extendedblockstorage == null)
+                    {
+                        extendedblockstorage = chunk.func_48495_i()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
+                    }
+                    extendedblockstorage.func_48691_a(x, y & 0xf, z, finiteWorld[indexIndev(x+(x1*16), y, z+(z1*16))]);
+                }
+            }
+        }
     }
 }

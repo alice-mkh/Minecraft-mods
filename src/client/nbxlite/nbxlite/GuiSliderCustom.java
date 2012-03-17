@@ -93,21 +93,21 @@ public class GuiSliderCustom extends GuiButton
             return false;
         }
     }
-    
+
     public int getSizeValue(){
 //         return ((int)(sliderValue*28)*16)+64;
-        return (int)(sliderValue*64)+64;
+        return (int)(sliderValue*192)+64;
     }
-    
+
     public int getDisplayValue(){
 //         return ((int)(sliderValue*28)*16)+64;
-        return (int)(sliderValue*64)+32;
+        return (int)(sliderValue*192)+32;
     }
-    
+
     public static float setSizeValue(int i){
         i-=64;
         float f=(float)i;
-        f/=64;
+        f/=192;
         return f;
     }
 
