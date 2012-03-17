@@ -108,7 +108,9 @@ public class ItemFood extends Item
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         if(!mod_OldSurvivalMode.InstantFood){
-            par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
+            if (par3EntityPlayer.canEat(alwaysEdible)){
+                par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
+            }
         }else{
             if(!mod_OldSurvivalMode.DisableHunger){
                 if(par3EntityPlayer.canEat(alwaysEdible)){
