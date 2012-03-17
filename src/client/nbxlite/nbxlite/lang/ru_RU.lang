@@ -8,6 +8,8 @@ oneLayer=Один слой
 twoLayers=Два слоя
 width=Ширина: 
 length=Длина: 
+height=Высота: 
+depth=Глубина: 
 
 #Indev loading screen
 indev.raising=Поднимаем..

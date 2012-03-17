@@ -8,6 +8,8 @@ oneLayer=One layer
 twoLayers=Two layers
 width=Width: 
 length=Length: 
+height=Height: 
+depth=Depth: 
 
 #Indev loading screen
 indev.raising=Raising..
