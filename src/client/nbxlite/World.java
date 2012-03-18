@@ -762,6 +762,12 @@ public class World implements IBlockAccess
      */
     public int getBlockId(int par1, int par2, int par3)
     {
+        if (mod_noBiomesX.Generator == 0 && mod_noBiomesX.MapFeatures==4){
+            if (par2<0){
+                return (byte)Block.bedrock.blockID;
+            }
+        }
+
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return 0;
