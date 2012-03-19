@@ -30,7 +30,11 @@ public class Converter{
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
                 for (int y=0; y<Math.min(height, chunky); y++){
-                    result[indexChunk(x,y,z)]=finiteWorld[indexIndev(x+(x1*16),y,z+(z1*16))];
+                    byte block = finiteWorld[indexIndev(x+(x1*16), y, z+(z1*16))];
+                    if (block==0){
+                        continue;
+                    }
+                    result[indexChunk(x,y,z)]=block;
                 }
             }
         }
@@ -41,12 +45,16 @@ public class Converter{
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
                 for (int y=128; y<height; y++){
+                    byte block = finiteWorld[indexIndev(x+(x1*16), y, z+(z1*16))];
+                    if (block==0){
+                        continue;
+                    }
                     ExtendedBlockStorage extendedblockstorage = chunk.func_48495_i()[y >> 4];
                     if (extendedblockstorage == null)
                     {
                         extendedblockstorage = chunk.func_48495_i()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
                     }
-                    extendedblockstorage.func_48691_a(x, y & 0xf, z, finiteWorld[indexIndev(x+(x1*16), y, z+(z1*16))]);
+                    extendedblockstorage.func_48691_a(x, y & 0xf, z, block);
                 }
             }
         }
