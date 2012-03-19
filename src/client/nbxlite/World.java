@@ -1996,7 +1996,7 @@ public class World implements IBlockAccess
             int k;
             if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1){
                 if (mod_noBiomesX.Generator==2 || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
-                    if (mod_noBiomesX.ReleaseFixedSkyColor){
+                    if (mod_noBiomesX.MapFeatures<3){
                         f7 = 0.2146759F;
                         k = -8477697;
                     }else{
