@@ -6,7 +6,7 @@ import net.minecraft.src.StringTranslate;
 import net.minecraft.src.mod_noBiomesX;
 
 public class GuiNBXlite extends GuiScreen{
-    private int leftmargin = 70;
+    private int leftmargin = 90;
 //0-9 - generic; 10-29 - generators; 30-49 - indev
     private GuiScreen parent;
     private GuiButton[] genButtons;
@@ -31,7 +31,7 @@ public class GuiNBXlite extends GuiScreen{
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StringTranslate.getInstance().translateKey("gui.cancel")));
         genButtons = new GuiButton[GeneratorList.genlength+1];
         for (int i = 0; i<=GeneratorList.genlength; i++){
-            controlList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 180, height / 6 + (i * 21), 100, 20, mod_noBiomesX.lang.get(GeneratorList.genname[i])));
+            controlList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 170, height / 6 + (i * 21), 100, 20, mod_noBiomesX.lang.get(GeneratorList.genname[i])));
         }
         genButtons[GeneratorList.gendefault].enabled = false;
         GeneratorList.gencurrent = GeneratorList.gendefault;
