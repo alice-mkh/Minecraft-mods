@@ -147,11 +147,11 @@ public abstract class GenLayer
                         obj2 = new GenLayerIsland18(3L, ((GenLayer) (obj2)));
                     }
                 }
-                if(mod_noBiomesX.MapFeatures==1 && i == 0)
+                if(mod_noBiomesX.MapFeatures==1 || !mod_noBiomesX.ReleaseBeaches && i == 0)
                 {
                     obj2 = new GenLayerShore10(1000L, ((GenLayer) (obj2)));
                 }
-                if (mod_noBiomesX.MapFeatures>=2 && i == 1)
+                if (mod_noBiomesX.ReleaseBeaches && i == 1)
                 {
                     obj2 = new GenLayerShore(1000L, ((GenLayer) (obj2)));
                 }
