@@ -278,11 +278,14 @@ public class mod_noBiomesX extends BaseModMp{
                 BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;
             }
             if (features>=2){
-                BiomeGenBase.taiga.temperature = 0.05F;
                 BiomeGenBase.extremeHills.maxHeight = 1.3F;
             }else{
-                BiomeGenBase.taiga.temperature = 0.3F;
                 BiomeGenBase.extremeHills.maxHeight = 1.8F;
+            }
+            if (ReleaseColdTaiga){
+                BiomeGenBase.taiga.temperature = 0.05F;
+            }else{
+                BiomeGenBase.taiga.temperature = 0.3F;
             }
             if (ReleaseSwampColor==2){
                 BiomeGenBase.swampland.waterColorMultiplier = 0xe0ffae;
@@ -371,5 +374,6 @@ public class mod_noBiomesX extends BaseModMp{
 
     public static int ReleaseSwampColor = 1; //0 - green, 1 - harsh dark; 2 - smooth dark
     public static boolean ReleaseLilypads = true;
+    public static boolean ReleaseColdTaiga = true;
     public static boolean ReleaseDesertWells = true;
 }
