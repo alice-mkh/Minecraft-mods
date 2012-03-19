@@ -98,7 +98,7 @@ public abstract class GenLayer
             }else{
                 obj = new GenLayerIsland18(2L, ((GenLayer) (obj)));
             }
-            if (mod_noBiomesX.SnowPlains){
+            if (mod_noBiomesX.ReleaseSnowPlains){
                 obj = new GenLayerAddSnow(2L, ((GenLayer) (obj)));
             }
             obj = new GenLayerZoom(2002L, ((GenLayer) (obj)));
@@ -108,7 +108,7 @@ public abstract class GenLayer
                 obj = new GenLayerIsland18(3L, ((GenLayer) (obj)));
             }
             obj = new GenLayerZoom(2003L, ((GenLayer) (obj)));
-            if (mod_noBiomesX.MapFeatures!=0){
+            if (mod_noBiomesX.ReleaseMushroomBiomes){
                 obj = new GenLayerAddIsland(4L, ((GenLayer) (obj)));
                 obj = new GenLayerAddMushroomIsland(5L, ((GenLayer) (obj)));
             }else{
