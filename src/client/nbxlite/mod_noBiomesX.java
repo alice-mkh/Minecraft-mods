@@ -372,8 +372,9 @@ public class mod_noBiomesX extends BaseModMp{
     public static byte[] IndevWorld;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
 
-    public static int ReleaseSwampColor = 1; //0 - green, 1 - harsh dark; 2 - smooth dark
+    public static int ReleaseSwampColor = 2; //0 - green, 1 - harsh dark; 2 - smooth dark
     public static boolean ReleaseLilypads = true;
     public static boolean ReleaseColdTaiga = true;
     public static boolean ReleaseDesertWells = true;
+    public static boolean ReleaseFixedSkyColor = false;
 }
