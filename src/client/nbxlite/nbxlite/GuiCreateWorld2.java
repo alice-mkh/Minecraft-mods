@@ -339,10 +339,12 @@ public class GuiCreateWorld2 extends GuiScreen
                 generatorExtraDescription = mod_noBiomesX.lang.get(GeneratorList.feat2desc[GeneratorList.feat2current]);
             }
         } else if(guibutton.id == 8) {
-            if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
-                mc.displayGuiScreen(new GuiIndevSettings(this));
-            }else{
+            if (GeneratorList.genplus[GeneratorList.gencurrent]==3){
+                mc.displayGuiScreen(new GuiNBXlite(this));
+            }else if (GeneratorList.genplus[GeneratorList.gencurrent]==2){
                 mc.displayGuiScreen(new GuiClassicSettings(this));
+            }else{
+                mc.displayGuiScreen(new GuiIndevSettings(this));
             }
             moreOptions = false;
         } else if(guibutton.id == 7) {
