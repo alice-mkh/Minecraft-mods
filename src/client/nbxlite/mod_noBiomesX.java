@@ -204,7 +204,7 @@ public class mod_noBiomesX extends BaseModMp{
             return ColorizerFoliage.getFoliageColor(d, d1);
 //             return 0xffffff;
         }else{
-            if (mod_noBiomesX.MapFeatures>=2 && smooth){
+            if (ReleaseSwampColor==2 && smooth){
                 int i1 = 0;
                 int j1 = 0;
                 int k1 = 0;
@@ -239,7 +239,7 @@ public class mod_noBiomesX extends BaseModMp{
             double d1 = man.humidity[0];
             return ColorizerGrass.getGrassColor(d, d1);
         }else{
-            if (mod_noBiomesX.MapFeatures>=2 && smooth){
+            if (ReleaseSwampColor==2 && smooth){
                 int l = 0;
                 int i1 = 0;
                 int j1 = 0;
@@ -279,9 +279,9 @@ public class mod_noBiomesX extends BaseModMp{
                 BiomeGenBase.taiga.temperature = 0.3F;
                 BiomeGenBase.extremeHills.maxHeight = 1.8F;
             }
-            if (features>=2){
+            if (ReleaseSwampColor==2){
                 BiomeGenBase.swampland.waterColorMultiplier = 0xe0ffae;
-            }else if (features==1){
+            }else if (ReleaseSwampColor==1){
                 BiomeGenBase.swampland.waterColorMultiplier = 0xe0ff70;
             }else{
                 BiomeGenBase.swampland.waterColorMultiplier = 0xffffff;
@@ -363,4 +363,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnZ;
     public static byte[] IndevWorld;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
+
+    public static int ReleaseSwampColor = 1; //0 - green, 1 - harsh dark; 2 - smooth dark
 }

@@ -29,7 +29,7 @@ public class BiomeGenSwamp extends BiomeGenBase
     {
         double d = func_48411_i();
         double d1 = func_48414_h();
-        if (mod_noBiomesX.MapFeatures!=0){
+        if (mod_noBiomesX.ReleaseSwampColor!=0){
             return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
         }
         return ColorizerGrass.getGrassColor(d, d1);
@@ -39,7 +39,7 @@ public class BiomeGenSwamp extends BiomeGenBase
     {
         double d = func_48411_i();
         double d1 = func_48414_h();
-        if (mod_noBiomesX.MapFeatures!=0){
+        if (mod_noBiomesX.ReleaseSwampColor!=0){
             return ((ColorizerFoliage.getFoliageColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
         }
         return ColorizerFoliage.getFoliageColor(d, d1);
