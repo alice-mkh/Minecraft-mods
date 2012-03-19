@@ -95,11 +95,9 @@ public abstract class GenLayer
             obj = new GenLayerZoom(2001L, ((GenLayer) (obj)));
             if (mod_noBiomesX.MapFeatures!=0){
                 obj = new GenLayerAddIsland(2L, ((GenLayer) (obj)));
+                obj = new GenLayerAddSnow(2L, ((GenLayer) (obj)));
             }else{
                 obj = new GenLayerIsland18(2L, ((GenLayer) (obj)));
-            }
-            if (mod_noBiomesX.ReleaseSnowPlains){
-                obj = new GenLayerAddSnow(2L, ((GenLayer) (obj)));
             }
             obj = new GenLayerZoom(2002L, ((GenLayer) (obj)));
             if (mod_noBiomesX.MapFeatures!=0){
@@ -108,7 +106,7 @@ public abstract class GenLayer
                 obj = new GenLayerIsland18(3L, ((GenLayer) (obj)));
             }
             obj = new GenLayerZoom(2003L, ((GenLayer) (obj)));
-            if (mod_noBiomesX.ReleaseMushroomBiomes){
+            if (mod_noBiomesX.MapFeatures!=0){
                 obj = new GenLayerAddIsland(4L, ((GenLayer) (obj)));
                 obj = new GenLayerAddMushroomIsland(5L, ((GenLayer) (obj)));
             }else{
@@ -131,7 +129,7 @@ public abstract class GenLayer
                 obj2 = new GenLayerVillageLandscape18(200L, ((GenLayer) (obj2)));
             }
             obj2 = GenLayerZoom.func_35515_a(1000L, ((GenLayer) (obj2)), 2);
-            if (mod_noBiomesX.ReleaseHills){
+            if (mod_noBiomesX.MapFeatures>=2){
                 obj2 = new GenLayerHills(1000L, ((GenLayer) (obj2)));
             }
             GenLayer obj3 = new GenLayerTemperature11(((GenLayer) (obj2)));
@@ -147,11 +145,11 @@ public abstract class GenLayer
                         obj2 = new GenLayerIsland18(3L, ((GenLayer) (obj2)));
                     }
                 }
-                if(mod_noBiomesX.MapFeatures==1 || !mod_noBiomesX.ReleaseBeaches && i == 0)
+                if(mod_noBiomesX.MapFeatures==1 && i == 0)
                 {
                     obj2 = new GenLayerShore10(1000L, ((GenLayer) (obj2)));
                 }
-                if (mod_noBiomesX.ReleaseBeaches && i == 1)
+                if (mod_noBiomesX.MapFeatures>=2 && i == 1)
                 {
                     obj2 = new GenLayerShore(1000L, ((GenLayer) (obj2)));
                 }
