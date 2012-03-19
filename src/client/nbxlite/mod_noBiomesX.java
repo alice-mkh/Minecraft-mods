@@ -272,6 +272,11 @@ public class mod_noBiomesX extends BaseModMp{
                 BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 4;
                 BiomeGenBase.ocean.maxHeight = 0.4F;
             }
+            if (ReleaseLilypads){
+                BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 4;
+            }else{
+                BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;
+            }
             if (features>=2){
                 BiomeGenBase.taiga.temperature = 0.05F;
                 BiomeGenBase.extremeHills.maxHeight = 1.3F;
@@ -365,5 +370,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
 
     public static int ReleaseSwampColor = 1; //0 - green, 1 - harsh dark; 2 - smooth dark
+    public static boolean ReleaseLilypads = true;
     public static boolean ReleaseDesertWells = true;
 }
