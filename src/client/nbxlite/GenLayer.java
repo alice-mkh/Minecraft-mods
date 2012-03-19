@@ -95,9 +95,11 @@ public abstract class GenLayer
             obj = new GenLayerZoom(2001L, ((GenLayer) (obj)));
             if (mod_noBiomesX.MapFeatures!=0){
                 obj = new GenLayerAddIsland(2L, ((GenLayer) (obj)));
-                obj = new GenLayerAddSnow(2L, ((GenLayer) (obj)));
             }else{
                 obj = new GenLayerIsland18(2L, ((GenLayer) (obj)));
+            }
+            if (mod_noBiomesX.SnowPlains){
+                obj = new GenLayerAddSnow(2L, ((GenLayer) (obj)));
             }
             obj = new GenLayerZoom(2002L, ((GenLayer) (obj)));
             if (mod_noBiomesX.MapFeatures!=0){
