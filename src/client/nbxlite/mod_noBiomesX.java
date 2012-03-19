@@ -365,4 +365,5 @@ public class mod_noBiomesX extends BaseModMp{
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
 
     public static int ReleaseSwampColor = 1; //0 - green, 1 - harsh dark; 2 - smooth dark
+    public static boolean ReleaseDesertWells = true;
 }
