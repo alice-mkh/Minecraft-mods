@@ -219,6 +219,13 @@ public class GuiCreateWorld2 extends GuiScreen
                 mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
             }
             mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+                mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
+            }
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+                mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
+                mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
+            }
 //             MinecraftHook.startWorldHook(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, EnumWorldType.values()[field_46030_z]));
             mc.startWorld(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, WorldType.field_48637_a[field_46030_z]));
             mc.displayGuiScreen(null);
