@@ -379,4 +379,5 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean ReleaseFixedSkyColor = false;
     public static boolean ReleaseSnowPlains = true;
     public static boolean ReleaseMushroomBiomes = true;
+    public static boolean ReleaseHills = true;
 }

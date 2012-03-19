@@ -131,7 +131,7 @@ public abstract class GenLayer
                 obj2 = new GenLayerVillageLandscape18(200L, ((GenLayer) (obj2)));
             }
             obj2 = GenLayerZoom.func_35515_a(1000L, ((GenLayer) (obj2)), 2);
-            if (mod_noBiomesX.MapFeatures>=2){
+            if (mod_noBiomesX.ReleaseHills){
                 obj2 = new GenLayerHills(1000L, ((GenLayer) (obj2)));
             }
             GenLayer obj3 = new GenLayerTemperature11(((GenLayer) (obj2)));
