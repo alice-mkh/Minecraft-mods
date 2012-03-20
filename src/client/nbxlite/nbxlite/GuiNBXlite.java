@@ -45,15 +45,15 @@ public class GuiNBXlite extends GuiScreen{
         for (int i=0; i<4; i++){
             controlList.add(indevWidthButton[i]=new GuiButton(30+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 - 6, 40, 20, Integer.toString(GeneratorList.sizes[i])));
             controlList.add(indevLengthButton[i]=new GuiButton(34+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 + 24, 40, 20, Integer.toString(GeneratorList.sizes[i])));
-            indevWidthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
-            indevLengthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
+            indevWidthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+            indevLengthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
         }
         indevWidthButton[GeneratorList.xcurrent].enabled=false;
         indevLengthButton[GeneratorList.zcurrent].enabled=false;
         controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 54, mod_noBiomesX.lang.get("depth"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevHeight)));
-        indevHeightSlider.drawButton = (GeneratorList.gencurrent==1);
-        indevTypeButton.drawButton = (GeneratorList.gencurrent==1);
-        indevThemeButton.drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
+        indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+        indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+        indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
 //Beta
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         for (int i=0; i<=GeneratorList.feat1length; i++){
@@ -97,19 +97,18 @@ public class GuiNBXlite extends GuiScreen{
                 mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();
             }
-            System.out.println(mod_noBiomesX.Generator);
             mc.displayGuiScreen(parent);
         }else if (guibutton.id>=10 && guibutton.id<30){
             genButtons[GeneratorList.gencurrent].enabled = true;
             GeneratorList.gencurrent = guibutton.id-10;
             guibutton.enabled = false;
             for (int i=0; i<4; i++){
-                indevWidthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
-                indevLengthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
+                indevWidthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+                indevLengthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             }
-            indevHeightSlider.drawButton = (GeneratorList.gencurrent==1);
-            indevTypeButton.drawButton = (GeneratorList.gencurrent==1);
-            indevThemeButton.drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
+            indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+            indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+            indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             for (int i=0; i<=GeneratorList.feat1length; i++){
                 betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
             }
@@ -159,12 +158,12 @@ public class GuiNBXlite extends GuiScreen{
     {
         drawDefaultBackground();
         drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
-        if (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0){
+        if (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2){
             drawString(fontRenderer, mod_noBiomesX.lang.get("width"), width / 2 - 120 + leftmargin, height / 6, 0xa0a0a0);
             drawString(fontRenderer, mod_noBiomesX.lang.get("length"), width / 2 - 120 + leftmargin, height / 6 + 30, 0xa0a0a0);
             drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 148, 0xa0a0a0);
         }
-        if (GeneratorList.gencurrent==1){
+        if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
             if (GeneratorList.typecurrent==2){
                 int count = (indevHeightSlider.getSizeValue() - 64) / 48 + 1;
                 if (count==1){
