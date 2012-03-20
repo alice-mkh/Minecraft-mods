@@ -2,6 +2,7 @@
 convert=Select world settings
 continue=Continue
 plus=+
+settings=Settings: 
 
 #Indev settings
 1Layer=One layer

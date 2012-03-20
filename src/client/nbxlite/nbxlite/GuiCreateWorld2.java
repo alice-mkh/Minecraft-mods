@@ -120,7 +120,7 @@ public class GuiCreateWorld2 extends GuiScreen
 
     public static String genNBXliteButtonName(){
         StringBuilder str = new StringBuilder();
-        str.append("Settings: ");
+        str.append(mod_noBiomesX.lang.get("settings"));
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
             str.append(mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent]));
             if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
