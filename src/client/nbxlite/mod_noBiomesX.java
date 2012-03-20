@@ -334,7 +334,6 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public static int Generator = 2; //0 - alpha/infdev/indev; 1 - halloween/beta; 2 - 1.0
-    public static boolean GenerateLapis = true;
     public static boolean SunriseEffect = true;
     public static boolean SnowCovered = false;
     public static boolean LowHangingClouds = false;
@@ -347,6 +346,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean LeavesDecay=true;
     public static boolean OldSkyDimension=false;
     public static boolean FallbackColors=false;
+    public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha
     public static int MobSpawning=0; //0 - alpha; 1 - beta; 2 - 1.0
     public static int MapTheme = 0;  //0 - normal; 1 - hell; 2 - woods; 3 - paradise
     //Alpha: 0 - alpha; 1 - infdev; 2 - old infdev; 3 - indev;

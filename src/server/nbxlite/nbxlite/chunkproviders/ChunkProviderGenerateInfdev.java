@@ -345,7 +345,7 @@ public class ChunkProviderGenerateInfdev
             int j3 = i1 + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID,0)).generate_infdev(worldObj, rand, j1, j2, j3);
         }
-        if (mod_noBiomesX.GenerateLapis){
+        if(mod_noBiomesX.GenerateNewOres){
             for(int j3 = 0; j3 < 8; j3++)
             {
                 int l5 = ii1 + rand.nextInt(16);

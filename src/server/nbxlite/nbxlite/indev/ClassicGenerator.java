@@ -181,6 +181,11 @@ label0:
         a(Block.oreCoal.blockID, 90, 1, 4);
         a(Block.oreIron.blockID, 70, 2, 4);
         a(Block.oreGold.blockID, 50, 3, 4);
+        if (mod_noBiomesX.GenerateNewOres){
+            a(Block.oreLapis.blockID, 30, 4, 4);
+            a(Block.oreRedstone.blockID, 40, 5, 4);
+            a(Block.oreDiamond.blockID, 30, 6, 4);
+        }
         MinecraftServer.logger.info("Watering..");
         i2 = Block.waterStill.blockID;
         if(mod_noBiomesX.MapTheme == 1)

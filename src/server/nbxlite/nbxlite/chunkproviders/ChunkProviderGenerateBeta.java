@@ -1501,7 +1501,7 @@ public class ChunkProviderGenerateBeta
 
         }
 
-        if(mod_noBiomesX.GenerateLapis)
+        if(mod_noBiomesX.GenerateNewOres)
         {
             for(int l15 = 0; l15 < 1; l15++)
             {

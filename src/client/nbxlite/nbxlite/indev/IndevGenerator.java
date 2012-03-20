@@ -365,7 +365,13 @@ label0:
         int j3 = a(Block.oreIron.blockID, 800, 8, (k1 * 3) / 5);
         int l3 = a(Block.oreGold.blockID, 500, 6, (k1 << 1) / 5);
         l1 = a(Block.oreDiamond.blockID, 800, 2, k1 / 5);
-        System.out.println((new StringBuilder()).append("Coal: ").append(j2).append(", Iron: ").append(j3).append(", Gold: ").append(l3).append(", Diamond: ").append(l1).toString());
+        if (mod_noBiomesX.GenerateNewOres){
+            int redstone = a(Block.oreRedstone.blockID, 800, 4, (k1 << 1) / 5);
+            int lapis = a(Block.oreLapis.blockID, 600, 4, (k1 << 1) / 5);
+            System.out.println("Coal: "+j2+", Iron: "+j3+", Lapis: "+lapis+", Gold: "+l3+", Redstone: "+redstone+", Diamond: "+l1);
+        }else{
+            System.out.println("Coal: "+j2+", Iron: "+j3+", Gold: "+l3+", Diamond: "+l1);
+        }
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.melting"));
         nextPhase();
         c();
@@ -505,7 +511,7 @@ label0:
         world.name = "A Nice World";
         if(m != n)
         {
-            throw new IllegalStateException((new StringBuilder()).append("Wrong number of phases! Wanted ").append(n).append(", got ").append(m).toString());
+            throw new IllegalStateException((new StringBuilder()+"Wrong number of phases! Wanted "+n+", got "+m).toString());
         } else
         {
 //             return world;

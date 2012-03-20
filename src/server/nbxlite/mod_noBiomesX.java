@@ -67,7 +67,7 @@ public class mod_noBiomesX extends BaseModMp{
 
     public static int Generator = 1; //0 - alpha; 1 - halloween/beta; 2 - 1.0
     public static boolean OldSpawners = false;
-    public static boolean GenerateLapis = true;
+    public static boolean GenerateNewOres = true;
     public static boolean SnowCovered = false;
     public static boolean ClassicLight=true;
     public static boolean LeavesDecay=true;

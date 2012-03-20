@@ -521,7 +521,7 @@ public class ChunkProviderGenerateAlpha
             int l10 = l + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, i6, k8, l10);
         }
-        if(mod_noBiomesX.GenerateLapis)
+        if(mod_noBiomesX.GenerateNewOres)
         {
             for(int k13 = 0; k13 < 1; k13++)
             {
