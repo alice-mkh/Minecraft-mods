@@ -1,11 +1,20 @@
 package net.minecraft.src.nbxlite;
 
+import java.util.List;
+import java.util.Collections;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.ISaveFormat;
+import net.minecraft.src.PlayerControllerCreative;
+import net.minecraft.src.PlayerControllerSP;
+import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.mod_noBiomesX;
 
 public class GuiNBXlite extends GuiScreen{
+    private String selectedWorld;
+    private int number;
+    private boolean newworld;
     private int leftmargin = 90;
 //0-9 - generic; 10-29 - generators; 30-49 - indev; 50-59 - classic; 60-69 - alpha; 70-79 - beta; 80+ - release;
     private GuiScreen parent;
@@ -22,6 +31,15 @@ public class GuiNBXlite extends GuiScreen{
 
     public GuiNBXlite(GuiScreen guiscreen){
         parent = guiscreen;
+        newworld = true;
+    }
+
+    public GuiNBXlite(GuiScreen guiscreen, String world, int i)
+    {
+        selectedWorld = world;
+        parent = guiscreen;
+        number = i;
+        newworld = false;
     }
 
     public void updateScreen()
@@ -73,6 +91,53 @@ public class GuiNBXlite extends GuiScreen{
         releaseFeaturesButton[GeneratorList.feat2current].enabled=false;
     }
 
+    public void selectNBXliteSettings(){
+        mod_noBiomesX.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
+        if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
+            mod_noBiomesX.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
+        }
+        if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+            mod_noBiomesX.MapFeatures=GeneratorList.feat1current;
+        }
+        if(GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+            mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
+        }
+        mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
+        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+            mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
+        }
+        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+            mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
+            mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
+            mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();
+        }
+    }
+
+    public void selectWorld()
+    {
+        ISaveFormat isaveformat = mc.getSaveLoader();
+        List saveList = isaveformat.getSaveList();
+        Collections.sort(saveList);
+        mc.displayGuiScreen(null);
+        int j = ((SaveFormatComparator)saveList.get(number)).getGameType();
+        if (j == 0)
+        {
+            mc.playerController = new PlayerControllerSP(mc);
+        }
+        else
+        {
+            mc.playerController = new PlayerControllerCreative(mc);
+        }
+        selectNBXliteSettings();
+        String s = selectedWorld;
+        if (s == null)
+        {
+            s = (new StringBuilder()).append("World").append(selectedWorld).toString();
+        }
+        mc.startWorld(s, selectedWorld, null);
+        mc.displayGuiScreen(null);
+    }
+
     protected void actionPerformed(GuiButton guibutton)
     {
         if (!guibutton.enabled){
@@ -82,25 +147,11 @@ public class GuiNBXlite extends GuiScreen{
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(parent);
         }else if (guibutton.id == 0){
-            mod_noBiomesX.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
-            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-                mod_noBiomesX.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
+            if (!newworld){
+                selectWorld();
+                return;
             }
-            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-                mod_noBiomesX.MapFeatures=GeneratorList.feat1current;
-            }
-            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-                mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
-            }
-            mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
-                mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
-            }
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
-                mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
-                mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
-                mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();
-            }
+            selectNBXliteSettings();
             mc.displayGuiScreen(parent);
         }else if (guibutton.id>=10 && guibutton.id<30){
             genButtons[GeneratorList.gencurrent].enabled = true;

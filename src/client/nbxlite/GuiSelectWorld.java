@@ -176,8 +176,8 @@ public class GuiSelectWorld extends GuiScreen
      */
     public void selectWorld(int par1)
     {
-        if(true){
-            mc.displayGuiScreen(new GuiNBXliteSettings(this, getSaveFileName(par1), par1));
+        if (mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().getMapGen() == 0){
+            mc.displayGuiScreen(new GuiNBXlite(this, getSaveFileName(par1), par1));
             return;
         }
         mc.displayGuiScreen(null);
