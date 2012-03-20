@@ -7,7 +7,7 @@ import net.minecraft.src.mod_noBiomesX;
 
 public class GuiNBXlite extends GuiScreen{
     private int leftmargin = 90;
-//0-9 - generic; 10-29 - generators; 30-49 - indev; 50-59 - classic; 60-79 - beta;
+//0-9 - generic; 10-29 - generators; 30-49 - indev; 50-59 - classic; 60-79 - beta; 80+ - release;
     private GuiScreen parent;
     private GuiButton[] genButtons;
 
@@ -16,8 +16,8 @@ public class GuiNBXlite extends GuiScreen{
     private GuiButton[] indevWidthButton;
     private GuiButton[] indevLengthButton;
     private GuiSliderCustom indevHeightSlider;
-
     private GuiButton[] betaFeaturesButton;
+    private GuiButton[] releaseFeaturesButton;
 
     public GuiNBXlite(GuiScreen guiscreen){
         parent = guiscreen;
@@ -45,23 +45,29 @@ public class GuiNBXlite extends GuiScreen{
         for (int i=0; i<4; i++){
             controlList.add(indevWidthButton[i]=new GuiButton(30+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 - 6, 40, 20, Integer.toString(GeneratorList.sizes[i])));
             controlList.add(indevLengthButton[i]=new GuiButton(34+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 + 24, 40, 20, Integer.toString(GeneratorList.sizes[i])));
+            indevWidthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
+            indevLengthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
         }
         indevWidthButton[GeneratorList.xcurrent].enabled=false;
         indevLengthButton[GeneratorList.zcurrent].enabled=false;
         controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 54, mod_noBiomesX.lang.get("depth"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevHeight)));
-        for (int i=0; i<4; i++){
-            indevWidthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
-            indevLengthButton[i].drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
-        }
         indevHeightSlider.drawButton = (GeneratorList.gencurrent==1);
         indevTypeButton.drawButton = (GeneratorList.gencurrent==1);
         indevThemeButton.drawButton = (GeneratorList.gencurrent==1 || GeneratorList.gencurrent==0);
 //Beta
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         for (int i=0; i<=GeneratorList.feat1length; i++){
-            controlList.add(betaFeaturesButton[i]=new GuiButton(60+i, (width / 2 - 75) + leftmargin, height / 6 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat1name[i])));
+            controlList.add(betaFeaturesButton[i]=new GuiButton(60+i, (width / 2 - 75) + leftmargin, height / 6 + 20 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat1name[i])));
             betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
         }
+        betaFeaturesButton[GeneratorList.feat1current].enabled=false;
+//Release
+        releaseFeaturesButton = new GuiButton[GeneratorList.feat2length+1];
+        for (int i=0; i<=GeneratorList.feat2length; i++){
+            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 75) + leftmargin, height / 6 + 20 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat2name[i])));
+            releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
+        }
+        releaseFeaturesButton[GeneratorList.feat2current].enabled=false;
     }
 
     protected void actionPerformed(GuiButton guibutton)
@@ -107,6 +113,9 @@ public class GuiNBXlite extends GuiScreen{
             for (int i=0; i<=GeneratorList.feat1length; i++){
                 betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
             }
+            for (int i=0; i<=GeneratorList.feat2length; i++){
+                releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
+            }
         }else
 //Indev
         if (guibutton.id == 39){
@@ -133,9 +142,15 @@ public class GuiNBXlite extends GuiScreen{
             guibutton.enabled = false;
         }else
 //Beta
-        if (guibutton.id>=60 && guibutton.id<=70){
+        if (guibutton.id>=60 && guibutton.id<=79){
             betaFeaturesButton[GeneratorList.feat1current].enabled = true;
             GeneratorList.feat1current = guibutton.id-60;
+            guibutton.enabled = false;
+        }
+//Release
+        if (guibutton.id>=80){
+            releaseFeaturesButton[GeneratorList.feat2current].enabled = true;
+            GeneratorList.feat2current = guibutton.id-80;
             guibutton.enabled = false;
         }
     }
