@@ -112,6 +112,7 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.themecurrent = GeneratorList.themedefault;
         GeneratorList.feat1current = GeneratorList.feat1default;
         GeneratorList.feat2current = GeneratorList.feat2default;
+        GeneratorList.typecurrent = GeneratorList.typedefault;
         GeneratorList.xcurrent = GeneratorList.xdefault;
         GeneratorList.zcurrent = GeneratorList.zdefault;
         mod_noBiomesX.IndevHeight=96;
