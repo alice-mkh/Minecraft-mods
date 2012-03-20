@@ -7,7 +7,7 @@ import net.minecraft.src.mod_noBiomesX;
 
 public class GuiNBXlite extends GuiScreen{
     private int leftmargin = 90;
-//0-9 - generic; 10-29 - generators; 30-49 - indev; 50-59 - classic; 60-79 - beta; 80+ - release;
+//0-9 - generic; 10-29 - generators; 30-49 - indev; 50-59 - classic; 60-69 - alpha; 70-79 - beta; 80+ - release;
     private GuiScreen parent;
     private GuiButton[] genButtons;
 
@@ -16,6 +16,7 @@ public class GuiNBXlite extends GuiScreen{
     private GuiButton[] indevWidthButton;
     private GuiButton[] indevLengthButton;
     private GuiSliderCustom indevHeightSlider;
+    private GuiButton alphaThemeButton;
     private GuiButton[] betaFeaturesButton;
     private GuiButton[] releaseFeaturesButton;
 
@@ -54,10 +55,13 @@ public class GuiNBXlite extends GuiScreen{
         indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
         indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
         indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+//Alpha and Infdev
+        controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
+        alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
 //Beta
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         for (int i=0; i<=GeneratorList.feat1length; i++){
-            controlList.add(betaFeaturesButton[i]=new GuiButton(60+i, (width / 2 - 75) + leftmargin, height / 6 + 20 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat1name[i])));
+            controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 75) + leftmargin, height / 6 + 20 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat1name[i])));
             betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
         }
         betaFeaturesButton[GeneratorList.feat1current].enabled=false;
@@ -109,6 +113,7 @@ public class GuiNBXlite extends GuiScreen{
             indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+            alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
             for (int i=0; i<=GeneratorList.feat1length; i++){
                 betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
             }
@@ -124,13 +129,13 @@ public class GuiNBXlite extends GuiScreen{
                 GeneratorList.typecurrent=0;
             }
             indevTypeButton.displayString = mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
-        }else if (guibutton.id == 40){
+        }else if (guibutton.id == 40 || guibutton.id == 60){
             if (GeneratorList.themecurrent<GeneratorList.themelength){
                 GeneratorList.themecurrent++;
             }else{
                 GeneratorList.themecurrent=0;
             }
-            indevThemeButton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+            guibutton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
         }else if (guibutton.id>=30 && guibutton.id<=33){
             indevWidthButton[GeneratorList.xcurrent].enabled = true;
             GeneratorList.xcurrent = guibutton.id-30;
@@ -140,10 +145,11 @@ public class GuiNBXlite extends GuiScreen{
             GeneratorList.zcurrent = guibutton.id-34;
             guibutton.enabled = false;
         }else
+//Alpha and Infdev
 //Beta
-        if (guibutton.id>=60 && guibutton.id<=79){
+        if (guibutton.id>=70 && guibutton.id<=79){
             betaFeaturesButton[GeneratorList.feat1current].enabled = true;
-            GeneratorList.feat1current = guibutton.id-60;
+            GeneratorList.feat1current = guibutton.id-70;
             guibutton.enabled = false;
         }
 //Release
@@ -172,6 +178,9 @@ public class GuiNBXlite extends GuiScreen{
                     drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(count+"Layers"), width / 2 + leftmargin, height / 6 + 108, 0xa0a0a0);
                 }
             }
+        }
+        if (GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
+            drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 67, 0xa0a0a0);
         }
         super.drawScreen(i, j, f); 
     }
