@@ -68,6 +68,26 @@ public class GuiNBXlite extends GuiScreen{
         if (guibutton.id == 1){
             mc.displayGuiScreen(parent);
         }else if (guibutton.id == 0){
+            mod_noBiomesX.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
+                mod_noBiomesX.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
+            }
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+                mod_noBiomesX.MapFeatures=GeneratorList.feat1current;
+            }
+            if(GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
+            }
+            mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+                mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
+            }
+            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+                mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
+                mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
+                mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();
+            }
+            System.out.println(mod_noBiomesX.Generator);
             mc.displayGuiScreen(parent);
         }else if (guibutton.id>=10 && guibutton.id<30){
             genButtons[GeneratorList.gencurrent].enabled = true;
