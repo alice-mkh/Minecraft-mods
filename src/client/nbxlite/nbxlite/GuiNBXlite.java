@@ -36,8 +36,7 @@ public class GuiNBXlite extends GuiScreen{
         for (int i = 0; i<=GeneratorList.genlength; i++){
             controlList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 170, height / 6 + (i * 21), 100, 20, mod_noBiomesX.lang.get(GeneratorList.genname[i])));
         }
-        genButtons[GeneratorList.gendefault].enabled = false;
-        GeneratorList.gencurrent = GeneratorList.gendefault;
+        genButtons[GeneratorList.gencurrent].enabled = false;
 //Indev and classic
         controlList.add(indevTypeButton = new GuiButton(39, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent])));
         controlList.add(indevThemeButton = new GuiButton(40, width / 2 - 75 + leftmargin, height / 6 + 124, 150, 20, mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
@@ -80,6 +79,7 @@ public class GuiNBXlite extends GuiScreen{
             return;
         }
         if (guibutton.id == 1){
+            GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(parent);
         }else if (guibutton.id == 0){
             mod_noBiomesX.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
