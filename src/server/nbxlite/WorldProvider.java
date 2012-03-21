@@ -160,4 +160,18 @@ public abstract class WorldProvider
     {
         return terrainType != WorldType.field_48458_c ? 64 : 4;
     }
+
+//FORGE COMPATIBILITY
+    public String getSaveFolder(){
+        return "FIXME";
+    }
+    public String getWelcomeMessage(){
+        return "FIXME";
+    }
+    public String getDepartMessage(){
+        return "FIXME";
+    }
+    public double getMovementFactor(){
+        return 1.0D;
+    }
 }

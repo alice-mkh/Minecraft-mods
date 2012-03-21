@@ -67,4 +67,18 @@ public class WorldProviderHell extends WorldProvider
     {
         return false;
     }
+
+//FORGE COMPATIBILITY
+    public String getSaveFolder(){
+        return "FIXME";
+    }
+    public String getWelcomeMessage(){
+        return "FIXME";
+    }
+    public String getDepartMessage(){
+        return "FIXME";
+    }
+    public double getMovementFactor(){
+        return 1.0D;
+    }
 }
