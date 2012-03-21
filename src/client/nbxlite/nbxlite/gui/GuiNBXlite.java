@@ -1,4 +1,4 @@
-package net.minecraft.src.nbxlite;
+package net.minecraft.src.nbxlite.gui;
 
 import java.util.List;
 import java.util.Collections;

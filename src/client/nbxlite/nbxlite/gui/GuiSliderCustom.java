@@ -1,4 +1,4 @@
-package net.minecraft.src.nbxlite;
+package net.minecraft.src.nbxlite.gui;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;

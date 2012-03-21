@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.nbxlite.*;
+import net.minecraft.src.nbxlite.gui.*;
 
 public class GuiSelectWorld extends GuiScreen
 {

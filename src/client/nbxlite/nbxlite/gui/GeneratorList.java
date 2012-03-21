@@ -1,4 +1,4 @@
-package net.minecraft.src.nbxlite;
+package net.minecraft.src.nbxlite.gui;
 
 import net.minecraft.src.mod_noBiomesX;
 
