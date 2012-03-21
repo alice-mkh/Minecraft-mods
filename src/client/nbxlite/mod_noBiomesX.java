@@ -260,7 +260,7 @@ public class mod_noBiomesX extends BaseModMp{
         }
     }
 
-    public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow){
+    public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
         Generator=gen;
         MapFeatures=features;
         MobSpawning=gen;
@@ -331,6 +331,7 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             IndevMapType=0;
         }
+        GenerateNewOres=ores;
     }
 
     public static int Generator = 2; //0 - alpha/infdev/indev; 1 - halloween/beta; 2 - 1.0

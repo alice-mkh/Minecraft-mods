@@ -21,6 +21,7 @@ public class mod_noBiomesX extends BaseModMp{
             IndevWidthZ = pmanager.getIntProperty("indev-length", 256);
             IndevHeight = pmanager.getIntProperty("indev-height", 96);
         }
+        GenerateNewOres = pmanager.getBooleanProperty("generate-new-ores", false);
     }
 
     public void load(){}

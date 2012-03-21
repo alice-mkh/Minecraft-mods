@@ -256,7 +256,7 @@ public class World implements IBlockAccess
         mapGen = worldInfo.getMapGen();
         mapGenExtra = worldInfo.getMapGenExtra();
         snowCovered = worldInfo.getSnowCovered();
-        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, 0, snowCovered);
+        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, 0, snowCovered, worldInfo.getNewOres());
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -338,9 +338,10 @@ public class World implements IBlockAccess
             worldInfo.setMapGen(mod_noBiomesX.Generator+1);
             worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
             worldInfo.setMapTheme(mod_noBiomesX.MapTheme);
+            worldInfo.setNewOres(mod_noBiomesX.GenerateNewOres);
             mapGen=mod_noBiomesX.Generator+1;
             mapGenExtra=mod_noBiomesX.MapFeatures;
-            mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false);
+            mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false, mod_noBiomesX.GenerateNewOres);
             if(mod_noBiomesX.Generator==0 && !isHotWorld && mod_noBiomesX.MapFeatures==0)
             {
                 byte byte0 = 4;
@@ -421,7 +422,7 @@ public class World implements IBlockAccess
             mod_noBiomesX.IndevWidthX = worldInfo.getIndevX();
             mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
             mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
-            mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered);
+            mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
         }
         calculateInitialSkylight();
         calculateInitialWeather();

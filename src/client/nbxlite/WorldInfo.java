@@ -61,6 +61,7 @@ public class WorldInfo
     private int indevX;
     private int indevY;
     private int indevZ;
+    private boolean newOres;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
@@ -122,6 +123,7 @@ public class WorldInfo
         indevX = par1NBTTagCompound.getInteger("indevX");
         indevY = par1NBTTagCompound.getInteger("indevY");
         indevZ = par1NBTTagCompound.getInteger("indevZ");
+        newOres = par1NBTTagCompound.getBoolean("newOres");
 
         if (par1NBTTagCompound.hasKey("Player"))
         {
@@ -173,6 +175,7 @@ public class WorldInfo
         indevX = par1WorldInfo.indevX;
         indevY = par1WorldInfo.indevY;
         indevZ = par1WorldInfo.indevZ;
+        newOres = par1WorldInfo.newOres;
     }
 
     /**
@@ -237,6 +240,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("indevX", indevX);
         par1NBTTagCompound.setInteger("indevY", indevY);
         par1NBTTagCompound.setInteger("indevZ", indevZ);
+        par1NBTTagCompound.setBoolean("newOres", newOres);
 
         if (par2NBTTagCompound != null)
         {
@@ -562,6 +566,16 @@ public class WorldInfo
     public void setIndevZ(int i)
     {
         indevZ = i;
+    }
+
+    public boolean getNewOres()
+    {
+        return newOres;
+    }
+
+    public void setNewOres(boolean b)
+    {
+        newOres = b;
     }
 
     public void setSizeOnDisk(long l){
