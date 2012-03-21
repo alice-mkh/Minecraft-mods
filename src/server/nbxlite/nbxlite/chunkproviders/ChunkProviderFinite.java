@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.indev.*;
-import net.minecraft.src.nbxlite.indev.noise.IndevNoiseGeneratorOctaves;
 
 public class ChunkProviderFinite
     implements IChunkProvider

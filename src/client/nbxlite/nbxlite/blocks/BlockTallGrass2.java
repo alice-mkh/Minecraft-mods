@@ -1,6 +1,5 @@
 package net.minecraft.src.nbxlite.blocks;
 
-import java.util.Random;
 import net.minecraft.src.mod_noBiomesX;
 import net.minecraft.src.BlockTallGrass;
 import net.minecraft.src.IBlockAccess;
