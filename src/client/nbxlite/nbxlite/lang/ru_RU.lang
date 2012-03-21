@@ -3,6 +3,7 @@ convert=Укажите параметры мира
 continue=Продолжить
 plus=+
 settings=Параметры: 
+genNewOres=Генерировать новые руды: 
 
 #Indev settings
 1Layer=Один слой

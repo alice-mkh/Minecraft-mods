@@ -3,6 +3,7 @@ convert=Select world settings
 continue=Continue
 plus=+
 settings=Settings: 
+genNewOres=Generate new ores: 
 
 #Indev settings
 1Layer=One layer

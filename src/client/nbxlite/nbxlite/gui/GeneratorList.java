@@ -13,6 +13,7 @@ public class GeneratorList{
     public static int[] genfeatures = {0, 0, 0, 0, 0, 1, 2};
     public static int[] genfeats = {4, 3, 2, 1, 0, 0, 0};
     public static int[] genplus = {2, 1, 0, 0, 0, 0, 0};
+    public static boolean[] genores = {true, true, false, true, true, false, false};
 
     public static int feat1default = 4;
     public static int feat1current;
