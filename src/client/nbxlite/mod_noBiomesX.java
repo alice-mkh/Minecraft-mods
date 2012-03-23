@@ -18,6 +18,7 @@ public class mod_noBiomesX extends BaseModMp{
                 properties.setProperty("UseNewSpawning",Boolean.toString(false));
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
                 properties.setProperty("UseCustomTextures",Boolean.toString(true));
+                properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(false));
                 properties.store(fileoutputstream,"NBXlite properties");
                 fileoutputstream.close();
             }
@@ -25,6 +26,7 @@ public class mod_noBiomesX extends BaseModMp{
             UseNewSpawning = Boolean.parseBoolean(properties.getProperty("UseNewSpawning"));
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
             FallbackColors = !Boolean.parseBoolean(properties.getProperty("UseCustomTextures"));
+            UseOpaqueFlatClouds = !Boolean.parseBoolean(properties.getProperty("OpaqueFlatClouds"));
         }
         catch(IOException ioexception){
             ioexception.printStackTrace();
@@ -170,6 +172,11 @@ public class mod_noBiomesX extends BaseModMp{
             GreenGrassSides=true;
         }else{
             GreenGrassSides=false;
+        }
+        if (packet.dataInt[0]==0 &&  packet.dataInt[1]>0 && UseOpaqueFlatClouds){
+            OpaqueFlatClouds=true;
+        }else{
+            OpaqueFlatClouds=false;
         }
         if (packet.dataInt[0]==0 && packet.dataInt[1]==1){
             LeavesDecay=false;
@@ -321,6 +328,11 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             GreenGrassSides=false;
         }
+        if (gen==0 && features>0 && UseOpaqueFlatClouds){
+            OpaqueFlatClouds=true;
+        }else{
+            OpaqueFlatClouds=false;
+        }
         if (gen==0 && features==1){
             LeavesDecay=false;
         }else{
@@ -343,6 +355,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean GreenGrassSides=false;
     public static boolean NoGreenGrassSides=false;
     public static boolean OpaqueFlatClouds=false;
+    public static boolean UseOpaqueFlatClouds=false;
     public static boolean SunriseAtNorth=false;
     public static boolean LeavesDecay=true;
     public static boolean OldSkyDimension=false;
