@@ -26,7 +26,7 @@ public class mod_noBiomesX extends BaseModMp{
             UseNewSpawning = Boolean.parseBoolean(properties.getProperty("UseNewSpawning"));
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
             FallbackColors = !Boolean.parseBoolean(properties.getProperty("UseCustomTextures"));
-            UseOpaqueFlatClouds = !Boolean.parseBoolean(properties.getProperty("OpaqueFlatClouds"));
+            UseOpaqueFlatClouds = Boolean.parseBoolean(properties.getProperty("UseOpaqueFlatClouds"));
         }
         catch(IOException ioexception){
             ioexception.printStackTrace();
