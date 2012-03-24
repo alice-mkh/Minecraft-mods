@@ -378,7 +378,7 @@ public class ChunkProviderGenerateInfdev
         {
             int j4 = ii1 + rand.nextInt(16) + 8;
             int k4 = i1 + rand.nextInt(16) + 8;
-            treegen.func_517_a(1.0D, 1.0D, 1.0D);
+            treegen.setScale(1.0D, 1.0D, 1.0D);
             treegen.generate(worldObj, rand, j4, worldObj.getHeightValue(j4, k4), k4);
         }
         if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
