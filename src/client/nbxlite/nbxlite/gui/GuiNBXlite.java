@@ -79,16 +79,19 @@ public class GuiNBXlite extends GuiScreen{
         controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
         alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
 //Beta
+        String name;
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         for (int i=0; i<=GeneratorList.feat1length; i++){
-            controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 75) + leftmargin, height / 6 + 20 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat1name[i])));
+            name = mod_noBiomesX.lang.get(GeneratorList.feat1name[i])+" ("+mod_noBiomesX.lang.get(GeneratorList.feat1desc[i])+")";
+            controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + 20 + (i * 21), 210, 20, name));
             betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
         }
         betaFeaturesButton[GeneratorList.feat1current].enabled=false;
 //Release
         releaseFeaturesButton = new GuiButton[GeneratorList.feat2length+1];
         for (int i=0; i<=GeneratorList.feat2length; i++){
-            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 75) + leftmargin, height / 6 + 20 + (i * 21), 150, 20, mod_noBiomesX.lang.get(GeneratorList.feat2name[i])));
+            name = mod_noBiomesX.lang.get(GeneratorList.feat2name[i])+" ("+mod_noBiomesX.lang.get(GeneratorList.feat2desc[i])+")";
+            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + 20 + (i * 21), 210, 20, name));
             releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
         }
         releaseFeaturesButton[GeneratorList.feat2current].enabled=false;
