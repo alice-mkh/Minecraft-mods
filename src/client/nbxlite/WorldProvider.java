@@ -246,7 +246,7 @@ public abstract class WorldProvider
         if(mod_noBiomesX.LowHangingClouds)
         {
             if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
-                return mod_noBiomesX.IndevHeight+12;
+                return mod_noBiomesX.IndevHeight+2;
             }
             return 108F;
         } else
