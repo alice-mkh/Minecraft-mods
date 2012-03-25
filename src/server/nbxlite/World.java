@@ -315,6 +315,11 @@ public class World implements IBlockAccess
             }else{
                 mod_noBiomesX.LeavesDecay=true;
             }
+            if (mapGen==1 && mapGenExtra>=3){
+                mod_noBiomesX.RestrictSlimes=true;
+            }else{
+                mod_noBiomesX.RestrictSlimes=false;
+            }
             mapTypeIndev = worldInfo.getIndevMapType();
         }
         if(mod_noBiomesX.MobSpawning==0)

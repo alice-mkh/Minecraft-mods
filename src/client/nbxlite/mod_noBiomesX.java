@@ -333,6 +333,11 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             OpaqueFlatClouds=false;
         }
+        if (gen==0 && features>=3){
+            RestrictSlimes=true;
+        }else{
+            RestrictSlimes=false;
+        }
         if (gen==0 && features==1){
             LeavesDecay=false;
         }else{
@@ -360,6 +365,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean LeavesDecay=true;
     public static boolean OldSkyDimension=false;
     public static boolean FallbackColors=false;
+    public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha
     public static int MobSpawning=0; //0 - alpha; 1 - beta; 2 - 1.0
     public static int MapTheme = 0;  //0 - normal; 1 - hell; 2 - woods; 3 - paradise

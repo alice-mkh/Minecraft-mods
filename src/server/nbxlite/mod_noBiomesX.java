@@ -72,6 +72,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean SnowCovered = false;
     public static boolean ClassicLight=true;
     public static boolean LeavesDecay=true;
+    public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static int MobSpawning=0;
     public static int MapTheme = 0;
     public static int MapFeatures = 2;

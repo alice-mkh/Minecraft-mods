@@ -142,6 +142,10 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
+                        if(entityliving instanceof EntitySlime && entityliving.posY > 16D && mod_noBiomesX.RestrictSlimes)
+                        {
+                            continue;
+                        }
                         k++;
                         world.spawnEntityInWorld(entityliving);
                         if((entityliving instanceof EntitySpider) && world.rand.nextInt(100) == 0)
