@@ -57,7 +57,7 @@ public class EntityChicken extends EntityAnimal
         super.onLivingUpdate();
         field_756_e = field_752_b;
         field_757_d = destPos;
-        destPos += (double)(onGround ? -1 : 4) * 0.3D;
+        destPos += (double)(onGround ? -1 : 4) * 0.29999999999999999D;
 
         if (destPos < 0.0F)
         {
@@ -74,11 +74,11 @@ public class EntityChicken extends EntityAnimal
             field_755_h = 1.0F;
         }
 
-        field_755_h *= 0.9D;
+        field_755_h *= 0.90000000000000002D;
 
         if (!onGround && motionY < 0.0D)
         {
-            motionY *= 0.6D;
+            motionY *= 0.59999999999999998D;
         }
 
         field_752_b += field_755_h * 2.0F;
@@ -171,7 +171,7 @@ public class EntityChicken extends EntityAnimal
     }
 
     /**
-     * [This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.]
+     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
      */
     public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
     {

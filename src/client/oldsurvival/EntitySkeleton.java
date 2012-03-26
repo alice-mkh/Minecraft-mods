@@ -19,8 +19,8 @@ public class EntitySkeleton extends EntityMob
         tasks.addTask(5, new EntityAIWander(this, moveSpeed));
         tasks.addTask(6, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 8F));
         tasks.addTask(6, new EntityAILookIdle(this));
-        field_48105_bU.addTask(1, new EntityAIHurtByTarget(this, false));
-        field_48105_bU.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, false));
+        targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
     }
 
     /**
@@ -84,7 +84,7 @@ public class EntitySkeleton extends EntityMob
     {
         if (worldObj.isDaytime() && !worldObj.isRemote)
         {
-            float f = getEntityBrightness(1.0F);
+            float f = getBrightness(1.0F);
 
             if (f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
@@ -143,7 +143,7 @@ public class EntitySkeleton extends EntityMob
         }
     }
 
-    protected void func_48085_j_(int par1)
+    protected void dropRareDrop(int par1)
     {
         if (mod_OldSurvivalMode.DisableRareLoot){
             return;

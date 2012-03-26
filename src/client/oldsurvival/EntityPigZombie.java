@@ -168,9 +168,8 @@ public class EntityPigZombie extends EntityZombie
      */
     protected void dropFewItems(boolean par1, int par2)
     {
-        int i = rand.nextInt(2 + par2);
-
         if (!mod_OldSurvivalMode.OldDrops){
+            int i = rand.nextInt(2 + par2);
             for (int j = 0; j < i; j++)
             {
                 dropItem(Item.rottenFlesh.shiftedIndex, 1);
@@ -193,7 +192,7 @@ public class EntityPigZombie extends EntityZombie
         }
     }
 
-    protected void func_48085_j_(int par1)
+    protected void dropRareDrop(int par1)
     {
         if (mod_OldSurvivalMode.DisableRareLoot){
             return;
@@ -228,11 +227,10 @@ public class EntityPigZombie extends EntityZombie
      */
     protected int getDropItemId()
     {
-        if (!mod_OldSurvivalMode.OldDrops){
-            return Item.rottenFlesh.shiftedIndex;
-        }else{
+        if (mod_OldSurvivalMode.OldDrops){
             return Item.porkCooked.shiftedIndex;
         }
+        return Item.rottenFlesh.shiftedIndex;
     }
 
     /**

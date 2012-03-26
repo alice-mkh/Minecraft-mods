@@ -53,32 +53,24 @@ public class ItemFood extends Item
         }
         par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
 
-        if(!par2World.isRemote && mod_OldSurvivalMode.DisableHunger){
-            if (this.shiftedIndex==Item.appleGold.shiftedIndex){
-                par3EntityPlayer.heal(20);
-            }else if (this.shiftedIndex==Item.spiderEye.shiftedIndex || this.shiftedIndex==Item.rottenFlesh.shiftedIndex){
-                par3EntityPlayer.heal(-4);
+        if (!par2World.isRemote){
+            if(mod_OldSurvivalMode.DisableHunger){
+                if (this.shiftedIndex==Item.appleGold.shiftedIndex){
+                    par3EntityPlayer.heal(20);
+                }else if (this.shiftedIndex==Item.spiderEye.shiftedIndex || this.shiftedIndex==Item.rottenFlesh.shiftedIndex){
+                    par3EntityPlayer.heal(-4);
+                }else{
+                    par3EntityPlayer.heal(healAmount);
+                }
             }else{
-                par3EntityPlayer.heal(healAmount);
-            }
-        }else{
-            if (!par2World.isRemote && potionId > 0 && par2World.rand.nextFloat() < potionEffectProbability)
-            {
-                par3EntityPlayer.addPotionEffect(new PotionEffect(potionId, potionDuration * 20, potionAmplifier));
+                if (potionId > 0 && par2World.rand.nextFloat() < potionEffectProbability)
+                {
+                    par3EntityPlayer.addPotionEffect(new PotionEffect(potionId, potionDuration * 20, potionAmplifier));
+                }
             }
         }
 
         return par1ItemStack;
-    }
-
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 32;
-    }
-
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.eat;
     }
 
     public int getItemStackLimit(){
@@ -96,6 +88,22 @@ public class ItemFood extends Item
     public Item setMaxStackSize(int i){
         maxStackSize = i;
         return this;
+    }
+
+    /**
+     * How long it takes to use or consume an item
+     */
+    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    {
+        return 32;
+    }
+
+    /**
+     * returns the action that specifies what animation to play when the items is being used
+     */
+    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    {
+        return EnumAction.eat;
     }
 
     /**

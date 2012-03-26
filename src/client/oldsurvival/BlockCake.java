@@ -138,38 +138,45 @@ public class BlockCake extends Block
     }
 
     /**
-     * Heals the player and removes a slice from the cake. Args: world, x, y, z, entityPlayer
+     * Heals the player and removes a slice from the cake.
      */
     private void eatCakeSlice(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
-        if (!mod_OldSurvivalMode.DisableHunger){
-            if (par5EntityPlayer.canEat(false))
-            {
-                par5EntityPlayer.getFoodStats().addStats(2, 0.1F);
-                int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
-                if (i >= 6)
-                {
-                    par1World.setBlockWithNotify(par2, par3, par4, 0);
-                }
-                else
-                {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
-                    par1World.markBlockAsNeedsUpdate(par2, par3, par4);
-                }
-            }
+        if (mod_OldSurvivalMode.DisableHunger){
+            eatCakeSliceOld(par1World, par2, par3, par4, par5EntityPlayer);
         }else{
-            if(par5EntityPlayer.health < 20){
-                par5EntityPlayer.heal(3);
-                int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
-                if (i >= 6)
-                {
-                    par1World.setBlockWithNotify(par2, par3, par4, 0);
-                }
-                else
-                {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
-                    par1World.markBlockAsNeedsUpdate(par2, par3, par4);
-                }
+            eatCakeSliceNew(par1World, par2, par3, par4, par5EntityPlayer);
+        }
+    }
+
+    private void eatCakeSliceOld(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    {
+        if(par5EntityPlayer.health < 20){
+            par5EntityPlayer.heal(3);
+            int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
+
+            if (i >= 6){
+                par1World.setBlockWithNotify(par2, par3, par4, 0);
+            }
+            else{
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
+                par1World.markBlockAsNeedsUpdate(par2, par3, par4);
+            }
+        }
+    }
+
+    private void eatCakeSliceNew(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    {
+        if (par5EntityPlayer.canEat(false)){
+            par5EntityPlayer.getFoodStats().addStats(2, 0.1F);
+            int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
+
+            if (i >= 6){
+                par1World.setBlockWithNotify(par2, par3, par4, 0);
+            }
+            else{
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
+                par1World.markBlockAsNeedsUpdate(par2, par3, par4);
             }
         }
     }
