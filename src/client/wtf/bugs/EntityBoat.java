@@ -270,8 +270,25 @@ public class EntityBoat extends Entity
             return;
         }
 
-        double d6 = d * 2D - 1.0D;
-        motionY += 0.039999999105930328D * d6;
+        if (mod_WTFBugs.WaterLifts){
+            double d6 = d * 2D - 1.0D;
+            motionY += 0.039999999105930328D * d6;
+        }else{
+            if (d < 1.0D)
+            {
+                double d6 = d * 2D - 1.0D;
+                motionY += 0.039999999105930328D * d6;
+            }
+            else
+            {
+                if (motionY < 0.0D)
+                {
+                    motionY /= 2D;
+                }
+
+                motionY += 0.0070000002160668373D;
+            }
+        }
 
         if (riddenByEntity != null)
         {

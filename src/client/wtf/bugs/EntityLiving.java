@@ -1340,8 +1340,11 @@ public abstract class EntityLiving extends Entity
         int j = MathHelper.floor_double(boundingBox.minY);
         int k = MathHelper.floor_double(posZ);
         int l = worldObj.getBlockId(i, j, k);
-        int l1 = worldObj.getBlockId(i, j + 1, k);
-        return l == Block.ladder.blockID || l == Block.vine.blockID || l1 == Block.ladder.blockID || l1 == Block.vine.blockID;
+        if (mod_WTFBugs.LadderGaps){
+            int l1 = worldObj.getBlockId(i, j + 1, k);
+            return l == Block.ladder.blockID || l == Block.vine.blockID || l1 == Block.ladder.blockID || l1 == Block.vine.blockID;
+        }
+        return l == Block.ladder.blockID || l == Block.vine.blockID;
     }
 
     /**

@@ -99,7 +99,7 @@ public class ModelBiped extends ModelBase
 //         bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
 //         bipedRightArm.rotateAngleZ = 0.0F;
 //         bipedLeftArm.rotateAngleZ = 0.0F;
-        if(!isSneak && !isRiding){
+        if(!isSneak && !isRiding && mod_WTFEyecandy.OldWalking){
             bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2;
             bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2;
             bipedLeftArm.rotateAngleZ = (MathHelper.cos(par1 * 0.2812F) - 1.0F) * 1.0F * par2;
@@ -124,21 +124,21 @@ public class ModelBiped extends ModelBase
             bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
             bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
-/*
-        if (heldItemLeft != 0)
+
+        if (heldItemLeft != 0 && !mod_WTFEyecandy.OldWalking)
         {
             bipedLeftArm.rotateAngleX = bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)heldItemLeft;
         }
 
-        if (heldItemRight != 0)
+        if (heldItemRight != 0 && !mod_WTFEyecandy.OldWalking)
         {
             bipedRightArm.rotateAngleX = bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)heldItemRight;
         }
-*/
+
         bipedRightArm.rotateAngleY = 0.0F;
         bipedLeftArm.rotateAngleY = 0.0F;
-/*
-        if (onGround > -9990F)
+
+        if (onGround > -9990F && !mod_WTFEyecandy.OldWalking)
         {
             float f = onGround;
             bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(f) * (float)Math.PI * 2.0F) * 0.2F;
@@ -159,7 +159,7 @@ public class ModelBiped extends ModelBase
             bipedRightArm.rotateAngleY += bipedBody.rotateAngleY * 2.0F;
             bipedRightArm.rotateAngleZ = MathHelper.sin(onGround * (float)Math.PI) * -0.4F;
         }
-*/
+
         if (isSneak)
         {
             bipedBody.rotateAngleX = 0.5F;

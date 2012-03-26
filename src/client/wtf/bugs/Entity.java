@@ -972,7 +972,10 @@ public abstract class Entity
      */
     public boolean handleWaterMovement()
     {
-        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.water, this);
+        if (mod_WTFBugs.WaterLadders){
+            return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.water, this);
+        }
+        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
     }
 
     /**
@@ -1008,6 +1011,9 @@ public abstract class Entity
      */
     public boolean handleLavaMovement()
     {
+        if (mod_WTFBugs.LavaToasters){
+            return worldObj.isMaterialInBB(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.lava);
+        }
         return worldObj.isMaterialInBB(boundingBox.expand(-0.10000000149011612D, -0.40000000596046448D, -0.10000000149011612D), Material.lava);
     }
 

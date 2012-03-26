@@ -92,9 +92,16 @@ public class BlockTNT extends Block
             return;
         }
 
-        EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
-        par1World.spawnEntityInWorld(entitytntprimed);
-        par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
+        if ((par5 & 1) == 0 && !mod_WTFActions.PunchTNT)
+        {
+            dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Block.tnt.blockID, 1, 0));
+        }
+        else
+        {
+            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
+            par1World.spawnEntityInWorld(entitytntprimed);
+            par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
+        }
     }
 
     /**

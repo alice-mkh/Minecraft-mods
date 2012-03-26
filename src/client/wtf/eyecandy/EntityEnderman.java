@@ -180,7 +180,11 @@ public class EntityEnderman extends EntityMob
 
         for (int k = 0; k < 2; k++)
         {
-            worldObj.spawnParticle("largesmoke", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + rand.nextDouble() * (double)height, posZ + (rand.nextDouble() - 0.5D) * (double)width, 0.0D, 0.0D, 0.0D);
+            if (mod_WTFEyecandy.OldEndermen){
+                worldObj.spawnParticle("largesmoke", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + rand.nextDouble() * (double)height, posZ + (rand.nextDouble() - 0.5D) * (double)width, 0.0D, 0.0D, 0.0D);
+            }else{
+                worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, (posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)width, (rand.nextDouble() - 0.5D) * 2D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2D);
+            }
         }
 
         if (worldObj.isDaytime() && !worldObj.isRemote)
@@ -325,7 +329,11 @@ public class EntityEnderman extends EntityMob
             double d4 = d + (posX - d) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
             double d5 = d1 + (posY - d1) * d3 + rand.nextDouble() * (double)height;
             double d6 = d2 + (posZ - d2) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
-            worldObj.spawnParticle("largesmoke", d4, d5, d6, f, f1, f2);
+            if (mod_WTFEyecandy.OldEndermen){
+                worldObj.spawnParticle("largesmoke", d4, d5, d6, f, f1, f2);
+            }else{
+                worldObj.spawnParticle("portal", d4, d5, d6, f, f1, f2);
+            }
         }
 
         worldObj.playSoundEffect(d, d1, d2, "mob.endermen.portal", 1.0F, 1.0F);

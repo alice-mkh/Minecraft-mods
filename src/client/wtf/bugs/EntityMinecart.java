@@ -621,7 +621,12 @@ public class EntityMinecart extends Entity implements IInventory
 
                 if (d31 > 0.01D)
                 {
-                    double d32 = 0.04D;
+                    double d32;
+                    if (mod_WTFBugs.Boosters){
+                        d32 = 0.04D;
+                    }else{
+                        d32 = 0.059999999999999998D;
+                    }
                     motionX += (motionX / d31) * d32;
                     motionZ += (motionZ / d31) * d32;
                 }
@@ -1003,9 +1008,26 @@ public class EntityMinecart extends Entity implements IInventory
 
             if (par1Entity instanceof EntityMinecart)
             {
-                double d4 = par1Entity.motionX + motionX;
-                double d5 = par1Entity.motionZ + motionZ;
+                double d7;
+                double d8;
+                if (mod_WTFBugs.Boosters){
+                    d7 = par1Entity.motionX + motionX;
+                    d8 = par1Entity.motionZ + motionZ;
+                }else{
+                    double d4 = par1Entity.posX - posX;
+                    double d5 = par1Entity.posZ - posZ;
+                    Vec3D vec3d = Vec3D.createVector(d4, 0.0D, d5).normalize();
+                    Vec3D vec3d1 = Vec3D.createVector(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
+                    double d6 = Math.abs(vec3d.dotProduct(vec3d1));
 
+                    if (d6 < 0.80000001192092896D)
+                    {
+                        return;
+                    }
+
+                    d7 = par1Entity.motionX + motionX;
+                    d8 = par1Entity.motionZ + motionZ;
+                }
                 if (((EntityMinecart)par1Entity).minecartType == 2 && minecartType != 2)
                 {
                     motionX *= 0.20000000298023224D;
@@ -1024,14 +1046,14 @@ public class EntityMinecart extends Entity implements IInventory
                 }
                 else
                 {
-                    d4 /= 2D;
-                    d5 /= 2D;
+                    d7 /= 2D;
+                    d8 /= 2D;
                     motionX *= 0.20000000298023224D;
                     motionZ *= 0.20000000298023224D;
-                    addVelocity(d4 - d, 0.0D, d5 - d1);
+                    addVelocity(d7 - d, 0.0D, d8 - d1);
                     par1Entity.motionX *= 0.20000000298023224D;
                     par1Entity.motionZ *= 0.20000000298023224D;
-                    par1Entity.addVelocity(d4 + d, 0.0D, d5 + d1);
+                    par1Entity.addVelocity(d7 + d, 0.0D, d8 + d1);
                 }
             }
             else

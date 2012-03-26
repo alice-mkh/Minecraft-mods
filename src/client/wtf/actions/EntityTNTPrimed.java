@@ -116,6 +116,9 @@ public class EntityTNTPrimed extends Entity
     }
 
     public boolean attackEntityFrom(DamageSource damagesource, int i){
+        if (!mod_WTFActions.ExtinguishTNT){
+            return false;
+        }
         Entity entity = damagesource.getEntity();
         if(worldObj.isRemote || isDead || !(entity instanceof EntityPlayer)){
             return true;

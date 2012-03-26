@@ -265,7 +265,7 @@ public class BlockPistonBase extends Block
                     }
                 }
 
-                if (i1 > 0 && (flag || canPushBlock(i1, par1World, j, k, l, false)) && (Block.blocksList[i1].getMobilityFlag() == 0 || i1 == Block.pistonBase.blockID || i1 == Block.pistonStickyBase.blockID))
+                if (((i1 > 0 && (flag || canPushBlock(i1, par1World, j, k, l, false)) && mod_WTFBugs.PistonDupe) || (!flag && i1 > 0 && canPushBlock(i1, par1World, j, k, l, false) && !mod_WTFBugs.PistonDupe)) && (Block.blocksList[i1].getMobilityFlag() == 0 || i1 == Block.pistonBase.blockID || i1 == Block.pistonStickyBase.blockID))
                 {
                     par2 += Facing.offsetsXForSide[i];
                     par3 += Facing.offsetsYForSide[i];
