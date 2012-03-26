@@ -18,4 +18,5 @@ public class mod_WTFBugs extends BaseMod{
     public static boolean LavaToasters = false;
     public static boolean WaterLifts = false;
     public static boolean PistonDupe = false;
+//Sand generator
 }

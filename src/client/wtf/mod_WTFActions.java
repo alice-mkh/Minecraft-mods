@@ -15,7 +15,8 @@ public class mod_WTFActions extends BaseMod{
     public static boolean SmeltOnFire = false;
     public static boolean PunchTNT = false;
     public static boolean ExtinguishTNT = false;
-//Old fire
+    public static boolean FastFire = true;
+//Infinite log burning
 //Old tools
 //Old blocks
 }
