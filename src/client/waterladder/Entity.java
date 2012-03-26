@@ -71,8 +71,6 @@ public abstract class Entity
      * True if after a move this entity has collided with something either vertically or horizontally
      */
     public boolean isCollided;
-
-    /** Not used by client. Server sends Packet28EntityVelocity if set */
     public boolean velocityChanged;
     protected boolean isInWeb;
     public boolean field_9293_aM;
@@ -148,8 +146,6 @@ public abstract class Entity
      */
     protected boolean inWater;
     public int heartsLife;
-
-    /** Whether or not the entity is on its first update. */
     private boolean firstUpdate;
 
     /** downloadable location of player's skin */
@@ -173,9 +169,9 @@ public abstract class Entity
 
     /**
      * Render entity even if it is outside the camera frustum. Only true in EntityFish for now. Used in RenderGlobal:
-     * render if ignoreFrustumCheck or in frustum
+     * render if ignoreFrustumCheck or in frustum.
      */
-    public boolean ignoreFrustrumCheck;
+    public boolean ignoreFrustumCheck;
     public boolean isAirBorne;
 
     public Entity(World par1World)
@@ -274,9 +270,9 @@ public abstract class Entity
     }
 
     /**
-     * Will get destroyed next tick
+     * Will get destroyed next tick.
      */
-    public void setEntityDead()
+    public void setDead()
     {
         isDead = true;
     }
@@ -316,8 +312,8 @@ public abstract class Entity
     {
         float f = rotationPitch;
         float f1 = rotationYaw;
-        rotationYaw += (double)par1 * 0.15D;
-        rotationPitch -= (double)par2 * 0.15D;
+        rotationYaw += (double)par1 * 0.14999999999999999D;
+        rotationPitch -= (double)par2 * 0.14999999999999999D;
 
         if (rotationPitch < -90F)
         {
@@ -364,13 +360,13 @@ public abstract class Entity
         if (isSprinting() && !isInWater())
         {
             int i = MathHelper.floor_double(posX);
-            int j = MathHelper.floor_double(posY - 0.2D - (double)yOffset);
+            int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
             int k = MathHelper.floor_double(posZ);
             int j1 = worldObj.getBlockId(i, j, k);
 
             if (j1 > 0)
             {
-                worldObj.spawnParticle((new StringBuilder()).append("tilecrack_").append(j1).toString(), posX + ((double)rand.nextFloat() - 0.5D) * (double)width, boundingBox.minY + 0.1D, posZ + ((double)rand.nextFloat() - 0.5D) * (double)width, -motionX * 4D, 1.5D, -motionZ * 4D);
+                worldObj.spawnParticle((new StringBuilder()).append("tilecrack_").append(j1).toString(), posX + ((double)rand.nextFloat() - 0.5D) * (double)width, boundingBox.minY + 0.10000000000000001D, posZ + ((double)rand.nextFloat() - 0.5D) * (double)width, -motionX * 4D, 1.5D, -motionZ * 4D);
             }
         }
 
@@ -378,7 +374,7 @@ public abstract class Entity
         {
             if (!inWater && !firstUpdate)
             {
-                float f = MathHelper.sqrt_double(motionX * motionX * 0.2D + motionY * motionY + motionZ * motionZ * 0.2D) * 0.2F;
+                float f = MathHelper.sqrt_double(motionX * motionX * 0.20000000298023224D + motionY * motionY + motionZ * motionZ * 0.20000000298023224D) * 0.2F;
 
                 if (f > 1.0F)
                 {
@@ -497,7 +493,7 @@ public abstract class Entity
      */
     protected void kill()
     {
-        setEntityDead();
+        setDead();
     }
 
     /**
@@ -539,7 +535,7 @@ public abstract class Entity
         {
             isInWeb = false;
             par1 *= 0.25D;
-            par3 *= 0.05D;
+            par3 *= 0.05000000074505806D;
             par5 *= 0.25D;
             motionX = 0.0D;
             motionY = 0.0D;
@@ -554,7 +550,7 @@ public abstract class Entity
 
         if (flag)
         {
-            double d5 = 0.05D;
+            double d5 = 0.050000000000000003D;
 
             for (; par1 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, 0.0D)).size() == 0; d2 = par1)
             {
@@ -590,6 +586,38 @@ public abstract class Entity
                 {
                     par5 += d5;
                 }
+            }
+
+            while (par1 != 0.0D && par5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, par5)).size() == 0)
+            {
+                if (par1 < d5 && par1 >= -d5)
+                {
+                    par1 = 0.0D;
+                }
+                else if (par1 > 0.0D)
+                {
+                    par1 -= d5;
+                }
+                else
+                {
+                    par1 += d5;
+                }
+
+                if (par5 < d5 && par5 >= -d5)
+                {
+                    par5 = 0.0D;
+                }
+                else if (par5 > 0.0D)
+                {
+                    par5 -= d5;
+                }
+                else
+                {
+                    par5 += d5;
+                }
+
+                d2 = par1;
+                d4 = par5;
             }
         }
 
@@ -746,9 +774,9 @@ public abstract class Entity
 
         if (canTriggerWalking() && !flag && ridingEntity == null)
         {
-            distanceWalkedModified += (double)MathHelper.sqrt_double(d7 * d7 + d9 * d9) * 0.6D;
+            distanceWalkedModified += (double)MathHelper.sqrt_double(d7 * d7 + d9 * d9) * 0.59999999999999998D;
             int l = MathHelper.floor_double(posX);
-            int j1 = MathHelper.floor_double(posY - 0.2D - (double)yOffset);
+            int j1 = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
             int l1 = MathHelper.floor_double(posZ);
             int j3 = worldObj.getBlockId(l, j1, l1);
 
@@ -861,7 +889,7 @@ public abstract class Entity
                 if (this instanceof EntityLiving)
                 {
                     int i = MathHelper.floor_double(posX);
-                    int j = MathHelper.floor_double(posY - 0.2D - (double)yOffset);
+                    int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
                     int k = MathHelper.floor_double(posZ);
                     int l = worldObj.getBlockId(i, j, k);
 
@@ -944,7 +972,7 @@ public abstract class Entity
      */
     public boolean handleWaterMovement()
     {
-        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.4D, 0.0D), Material.water, this);
+        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.water, this);
     }
 
     /**
@@ -980,7 +1008,7 @@ public abstract class Entity
      */
     public boolean handleLavaMovement()
     {
-        return worldObj.isMaterialInBB(boundingBox.expand(-0.1D, -0.4D, -0.1D), Material.lava);
+        return worldObj.isMaterialInBB(boundingBox.expand(-0.10000000149011612D, -0.40000000596046448D, -0.10000000149011612D), Material.lava);
     }
 
     /**
@@ -1009,14 +1037,14 @@ public abstract class Entity
         motionZ += par2 * f2 + par1 * f1;
     }
 
-    public int getEntityBrightnessForRender(float par1)
+    public int getBrightnessForRender(float par1)
     {
         int i = MathHelper.floor_double(posX);
         int j = MathHelper.floor_double(posZ);
 
         if (worldObj.blockExists(i, 0, j))
         {
-            double d = (boundingBox.maxY - boundingBox.minY) * 0.66D;
+            double d = (boundingBox.maxY - boundingBox.minY) * 0.66000000000000003D;
             int k = MathHelper.floor_double((posY - (double)yOffset) + d);
             return worldObj.getLightBrightnessForSkyBlocks(i, k, j, 0);
         }
@@ -1029,14 +1057,14 @@ public abstract class Entity
     /**
      * Gets how bright this entity is.
      */
-    public float getEntityBrightness(float par1)
+    public float getBrightness(float par1)
     {
         int i = MathHelper.floor_double(posX);
         int j = MathHelper.floor_double(posZ);
 
         if (worldObj.blockExists(i, 0, j))
         {
-            double d = (boundingBox.maxY - boundingBox.minY) * 0.66D;
+            double d = (boundingBox.maxY - boundingBox.minY) * 0.66000000000000003D;
             int k = MathHelper.floor_double((posY - (double)yOffset) + d);
             return worldObj.getLightBrightness(i, k, j);
         }
@@ -1159,7 +1187,7 @@ public abstract class Entity
         double d1 = par1Entity.posZ - posZ;
         double d2 = MathHelper.abs_max(d, d1);
 
-        if (d2 >= 0.01D)
+        if (d2 >= 0.0099999997764825821D)
         {
             d2 = MathHelper.sqrt_double(d2);
             d /= d2;
@@ -1173,8 +1201,8 @@ public abstract class Entity
 
             d *= d3;
             d1 *= d3;
-            d *= 0.05D;
-            d1 *= 0.05D;
+            d *= 0.05000000074505806D;
+            d1 *= 0.05000000074505806D;
             d *= 1.0F - entityCollisionReduction;
             d1 *= 1.0F - entityCollisionReduction;
             addVelocity(-d, 0.0D, -d1);
@@ -1258,9 +1286,9 @@ public abstract class Entity
     }
 
     /**
-     * returns the directory and filename as a String
+     * Returns the texture's file path as a String.
      */
-    public String getEntityTexture()
+    public String getTexture()
     {
         return null;
     }
@@ -1386,7 +1414,7 @@ public abstract class Entity
     }
 
     /**
-     * creates a NBT list from the array of floats passed to this function
+     * Returns a new NBTTagList filled with the specified floats
      */
     protected NBTTagList newFloatNBTList(float par1ArrayOfFloat[])
     {
@@ -1684,8 +1712,8 @@ public abstract class Entity
     }
 
     /**
-     * args: if j >= 0 a new item will be generated with j as itemid and; k as damage - ignored if j < 0; i 0 for held
-     * item, 1-4 for armor slots 0-3, o;
+     * Parameters: item slot, item ID, item damage. If slot >= 0 a new item will be generated with the specified item ID
+     * damage.
      */
     public void outfitWithItem(int i, int j, int k)
     {
@@ -1716,18 +1744,24 @@ public abstract class Entity
         return getFlag(1);
     }
 
-    public void func_48078_c(boolean par1)
+    /**
+     * Sets the sneaking flag.
+     */
+    public void setSneaking(boolean par1)
     {
         setFlag(1, par1);
     }
 
+    /**
+     * Get if the Entity is sprinting.
+     */
     public boolean isSprinting()
     {
         return getFlag(3);
     }
 
     /**
-     * Sets the player's sprinting state.
+     * Set sprinting switch for Entity.
      */
     public void setSprinting(boolean par1)
     {
@@ -1745,8 +1779,8 @@ public abstract class Entity
     }
 
     /**
-     * Return true if the flag is active for the entity. Know flags: 0) is burning; 1) is sneaking; 2) is riding
-     * something
+     * Returns true if the flag is active for the entity. Known flags: 0) is burning; 1) is sneaking; 2) is riding
+     * something; 3) is sprinting; 4) is eating
      */
     protected boolean getFlag(int par1)
     {
@@ -1901,7 +1935,7 @@ public abstract class Entity
     }
 
     /**
-     * Sets isInWeb to true
+     * Sets the Entity inside a web block.
      */
     public void setInWeb()
     {
@@ -1929,7 +1963,10 @@ public abstract class Entity
     {
     }
 
-    public boolean func_48080_j()
+    /**
+     * If returns false, the item will not inflict any damage against entities.
+     */
+    public boolean canAttackWithItem()
     {
         return true;
     }
