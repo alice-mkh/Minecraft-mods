@@ -105,10 +105,10 @@ public class ModelBiped extends ModelBase
             bipedLeftArm.rotateAngleZ = (MathHelper.cos(par1 * 0.2812F) - 1.0F) * 1.0F * par2;
             bipedRightArm.rotateAngleZ = (MathHelper.cos(par1 * 0.2312F) + 1.0F) * 1.0F * par2;
         }else{
-            bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
-            bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-            bipedLeftArm.rotateAngleZ = 0F;
-            bipedRightArm.rotateAngleZ = 0F;
+            bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2 * 0.5F;
+            bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+            bipedLeftArm.rotateAngleZ = 0.0F;
+            bipedRightArm.rotateAngleZ = 0.0F;
         }
         bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
         bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
