@@ -20,7 +20,7 @@ public class EntityTNTPrimed extends Entity
         setPosition(par2, par4, par6);
         float f = (float)(Math.random() * Math.PI * 2D);
         motionX = -(float)Math.sin(f) * 0.02F;
-        motionY = 0.2D;
+        motionY = 0.20000000298023224D;
         motionZ = -(float)Math.cos(f) * 0.02F;
         fuse = 80;
         prevPosX = par2;
@@ -57,16 +57,16 @@ public class EntityTNTPrimed extends Entity
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
-        motionY -= 0.04D;
+        motionY -= 0.039999999105930328D;
         moveEntity(motionX, motionY, motionZ);
-        motionX *= 0.98D;
-        motionY *= 0.98D;
-        motionZ *= 0.98D;
+        motionX *= 0.98000001907348633D;
+        motionY *= 0.98000001907348633D;
+        motionZ *= 0.98000001907348633D;
 
         if (onGround)
         {
-            motionX *= 0.7D;
-            motionZ *= 0.7D;
+            motionX *= 0.69999998807907104D;
+            motionZ *= 0.69999998807907104D;
             motionY *= -0.5D;
         }
 
@@ -74,12 +74,12 @@ public class EntityTNTPrimed extends Entity
         {
             if (!worldObj.isRemote)
             {
-                setEntityDead();
+                setDead();
                 explode();
             }
             else
             {
-                setEntityDead();
+                setDead();
             }
         }
         else
@@ -121,7 +121,7 @@ public class EntityTNTPrimed extends Entity
             return true;
         }
         worldObj.playSoundAtEntity(this, "step.grass", 1.0F, 1.0F);
-        setEntityDead();
+        setDead();
         dropItem(Block.tnt.blockID, 1);
         return true;
     }

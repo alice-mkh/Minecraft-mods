@@ -69,9 +69,17 @@ public class BlockTNT extends Block
      */
     public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4)
     {
-        EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
-        entitytntprimed.fuse = par1World.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8;
-        par1World.spawnEntityInWorld(entitytntprimed);
+        if (par1World.isRemote)
+        {
+            return;
+        }
+        else
+        {
+            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
+            entitytntprimed.fuse = par1World.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8;
+            par1World.spawnEntityInWorld(entitytntprimed);
+            return;
+        }
     }
 
     /**
@@ -87,7 +95,6 @@ public class BlockTNT extends Block
         EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
         par1World.spawnEntityInWorld(entitytntprimed);
         par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
-
     }
 
     /**
