@@ -44,7 +44,7 @@ public class mod_SpawnHuman extends BaseMod{
         World theWorld = mc.theWorld;
         PlayerController playerController = mc.playerController;
         if(!theWorld.isRemote && (playerController.isInCreativeMode()||AllowInSurvival)){
-            EntityLiving entityliving = (EntityLiving)EntityList.createEntityInWorld("human", theWorld);
+            EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("human", theWorld);
             entityliving.setLocationAndAngles(entityplayer.posX, entityplayer.posY - 1.62D + entityplayer.getEyeHeight(), entityplayer.posZ, theWorld.rand.nextFloat() * 360F, 0.0F);
             theWorld.spawnEntityInWorld(entityliving);
             if (SpawnEffect){

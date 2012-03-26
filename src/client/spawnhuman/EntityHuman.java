@@ -16,11 +16,11 @@ public class EntityHuman extends EntityAnimal
     public EntityHuman(World world)
     {
         super(world);
-		if (mod_SpawnHuman.CustomTexture){
-			texture = "/char.png";
-		}else{
-			texture = "/mob/char.png";
-		}
+        if (mod_SpawnHuman.CustomTexture){
+            texture = "/char.png";
+        }else{
+            texture = "/mob/char.png";
+        }
         setSize(0.9F, 1.62F);
         moveSpeed = 1.2F;
     }
@@ -32,10 +32,10 @@ public class EntityHuman extends EntityAnimal
 
     public void onDeath(DamageSource damagesource)
     {
-		if(mod_SpawnHuman.DeathEffect){
-			this.spawnExplosionParticle();
-			setEntityDead();
-		}
+        if(mod_SpawnHuman.DeathEffect){
+            this.spawnExplosionParticle();
+            setDead();
+        }
     }
 
     protected void updateEntityActionState()
@@ -55,7 +55,7 @@ public class EntityHuman extends EntityAnimal
             return;
         }
         Profiler.startSection("followpath");
-        Vec3D vec3d = pathToEntity.func_48646_a(this, pathToEntity.func_48643_e());
+        Vec3D vec3d = pathToEntity.func_48646_a(this, pathToEntity.getCurrentPathIndex());
         for(double d = width * 2.0F; vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d;)
         {
             pathToEntity.incrementPathIndex();
@@ -65,7 +65,7 @@ public class EntityHuman extends EntityAnimal
                 pathToEntity = null;
             } else
             {
-                vec3d = pathToEntity.func_48646_a(this, pathToEntity.func_48643_e());
+                vec3d = pathToEntity.func_48646_a(this, pathToEntity.getCurrentPathIndex());
             }
         }
 
@@ -113,17 +113,17 @@ public class EntityHuman extends EntityAnimal
                 k = k1;
         }
 //         pathToEntity = worldObj.getEntityPathToXYZ(this, i, j, k, 10F);
-        setPathToEntity(worldObj.func_48460_a(this, i, j, k, 10F, true, false, false, true));
+        setPathToEntity(worldObj.getEntityPathToXYZ(this, i, j, k, 10F, true, false, false, true));
         Profiler.endSection();
     }
 
     public int getMaxHealth()
     {
-		if (mod_SpawnHuman.Health==0){
-			return 9999;
-		}else{
-			return mod_SpawnHuman.Health;
-		}
+        if (mod_SpawnHuman.Health==0){
+            return 9999;
+        }else{
+            return mod_SpawnHuman.Health;
+        }
     }
 
     protected void entityInit()
@@ -151,8 +151,8 @@ public class EntityHuman extends EntityAnimal
 
     protected int func_36001_a(EntityPlayer entityplayer)
     {
-		return 0;
-	}
+        return 0;
+    }
 
     private void func_40144_b(EntityAnimal entityanimal){}
     private PathEntity pathToEntity;
