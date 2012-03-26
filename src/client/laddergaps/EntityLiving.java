@@ -16,9 +16,15 @@ public abstract class EntityLiving extends Entity
     protected float field_9360_w;
     protected float field_9359_x;
     protected boolean field_9358_y;
+
+    /** the path for the texture of this entityLiving */
     protected String texture;
     protected boolean field_9355_A;
     protected float field_9353_B;
+
+    /**
+     * a string holding the type of entity it is currently only implemented in entityPlayer(as 'humanoid')
+     */
     protected String entityType;
     protected float field_9349_D;
 
@@ -73,6 +79,8 @@ public abstract class EntityLiving extends Entity
      * This gets set on entity death, but never used. Looks like a duplicate of isDead
      */
     protected boolean dead;
+
+    /** The experience points the Entity gives. */
     protected int experienceValue;
     public int field_9326_T;
     public float field_9325_U;
@@ -91,8 +99,13 @@ public abstract class EntityLiving extends Entity
 
     /** is only being set, has no uses as of MC 1.1 */
     private EntityLiving entityLivingToAttack;
-    private int field_48103_c;
-    private EntityLiving field_48102_d;
+    private int revengeTimer;
+    private EntityLiving lastAttackingEntity;
+
+    /**
+     * Set to 60 when hit by the player or the player's wolf, then decrements. Used to determine whether the entity
+     * should drop items on death.
+     */
     public int arrowHitTempCounter;
     public int arrowHitTimer;
     protected HashMap activePotionsMap;
@@ -103,15 +116,19 @@ public abstract class EntityLiving extends Entity
     private EntityLookHelper lookHelper;
     private EntityMoveHelper moveHelper;
     private EntityJumpHelper jumpHelper;
-    private EntityBodyHelper field_48108_aq;
-    private PathNavigate field_48107_ar;
+    private EntityBodyHelper bodyHelper;
+    private PathNavigate navigator;
     protected EntityAITasks tasks;
-    protected EntityAITasks field_48105_bU;
-    private EntityLiving field_48106_as;
+    protected EntityAITasks targetTasks;
+
+    /** The active target the Task system uses for tracking */
+    private EntityLiving attackTarget;
     private EntitySenses field_48104_at;
     private float field_48111_au;
-    private ChunkCoordinates field_48110_av;
-    private float field_48109_aw;
+    private ChunkCoordinates homePosition;
+
+    /** If -1 there is no maximum distance */
+    private float maximumHomeDistance;
 
     /**
      * The number of updates over which the new position and rotation are to be applied to the entity.
@@ -133,6 +150,8 @@ public abstract class EntityLiving extends Entity
     /** The new yaw rotation to be applied to the entity. */
     protected double newRotationPitch;
     float field_9348_ae;
+
+    /** intrinsic armor level for entity */
     protected int naturalArmorRating;
 
     /** Holds the living entity age, used to control the despawn. */
@@ -178,20 +197,20 @@ public abstract class EntityLiving extends Entity
         attackTime = 0;
         dead = false;
         field_9326_T = -1;
-        field_9325_U = (float)(Math.random() * 0.9D + 0.1D);
+        field_9325_U = (float)(Math.random() * 0.89999997615814209D + 0.10000000149011612D);
         attackingPlayer = null;
         recentlyHit = 0;
         entityLivingToAttack = null;
-        field_48103_c = 0;
-        field_48102_d = null;
+        revengeTimer = 0;
+        lastAttackingEntity = null;
         arrowHitTempCounter = 0;
         arrowHitTimer = 0;
         activePotionsMap = new HashMap();
         potionsNeedUpdate = true;
         tasks = new EntityAITasks();
-        field_48105_bU = new EntityAITasks();
-        field_48110_av = new ChunkCoordinates(0, 0, 0);
-        field_48109_aw = -1F;
+        targetTasks = new EntityAITasks();
+        homePosition = new ChunkCoordinates(0, 0, 0);
+        maximumHomeDistance = -1F;
         field_9348_ae = 0.0F;
         naturalArmorRating = 0;
         entityAge = 0;
@@ -205,8 +224,8 @@ public abstract class EntityLiving extends Entity
         lookHelper = new EntityLookHelper(this);
         moveHelper = new EntityMoveHelper(this);
         jumpHelper = new EntityJumpHelper(this);
-        field_48108_aq = new EntityBodyHelper(this);
-        field_48107_ar = new PathNavigate(this, par1World, 16F);
+        bodyHelper = new EntityBodyHelper(this);
+        navigator = new PathNavigate(this, par1World, 16F);
         field_48104_at = new EntitySenses(this);
         field_9363_r = (float)(Math.random() + 1.0D) * 0.01F;
         setPosition(posX, posY, posZ);
@@ -231,9 +250,9 @@ public abstract class EntityLiving extends Entity
         return jumpHelper;
     }
 
-    public PathNavigate func_48084_aL()
+    public PathNavigate getNavigator()
     {
-        return field_48107_ar;
+        return navigator;
     }
 
     public EntitySenses func_48090_aM()
@@ -251,16 +270,16 @@ public abstract class EntityLiving extends Entity
         return entityLivingToAttack;
     }
 
-    public EntityLiving func_48088_aP()
+    public EntityLiving getLastAttackingEntity()
     {
-        return field_48102_d;
+        return lastAttackingEntity;
     }
 
-    public void func_48089_l(Entity par1Entity)
+    public void setLastAttackingEntity(Entity par1Entity)
     {
         if (par1Entity instanceof EntityLiving)
         {
-            field_48102_d = (EntityLiving)par1Entity;
+            lastAttackingEntity = (EntityLiving)par1Entity;
         }
     }
 
@@ -287,18 +306,24 @@ public abstract class EntityLiving extends Entity
 
     public boolean attackEntityAsMob(Entity par1Entity)
     {
-        func_48089_l(par1Entity);
+        setLastAttackingEntity(par1Entity);
         return false;
     }
 
-    public EntityLiving func_48094_aS()
+    /**
+     * Gets the active target the Task system uses for tracking
+     */
+    public EntityLiving getAttackTarget()
     {
-        return field_48106_as;
+        return attackTarget;
     }
 
-    public void func_48092_c(EntityLiving par1EntityLiving)
+    /**
+     * Sets the active target the Task system uses for tracking
+     */
+    public void setAttackTarget(EntityLiving par1EntityLiving)
     {
-        field_48106_as = par1EntityLiving;
+        attackTarget = par1EntityLiving;
     }
 
     public boolean func_48100_a(Class par1Class)
@@ -306,57 +331,64 @@ public abstract class EntityLiving extends Entity
         return (net.minecraft.src.EntityCreeper.class) != par1Class && (net.minecraft.src.EntityGhast.class) != par1Class;
     }
 
-    public void func_48095_u()
+    /**
+     * This function applies the benefits of growing back wool and faster growing up to the acting entity. (This
+     * function is used in the AIEatGrass)
+     */
+    public void eatGrassBonus()
     {
     }
 
-    public boolean func_48093_aT()
+    /**
+     * Returns true if entity is within home distance from current position
+     */
+    public boolean isWithinHomeDistanceCurrentPosition()
     {
-        return func_48096_f(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
+        return isWithinHomeDistance(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
     }
 
-    public boolean func_48096_f(int par1, int par2, int par3)
+    public boolean isWithinHomeDistance(int par1, int par2, int par3)
     {
-        if (field_48109_aw == -1F)
+        if (maximumHomeDistance == -1F)
         {
             return true;
         }
         else
         {
-            return field_48110_av.func_48655_c(par1, par2, par3) < field_48109_aw * field_48109_aw;
+            return homePosition.getDistanceSquared(par1, par2, par3) < maximumHomeDistance * maximumHomeDistance;
         }
     }
 
-    public void func_48082_b(int par1, int par2, int par3, int par4)
+    public void setHomeArea(int par1, int par2, int par3, int par4)
     {
-        field_48110_av.func_48656_a(par1, par2, par3);
-        field_48109_aw = par4;
+        homePosition.set(par1, par2, par3);
+        maximumHomeDistance = par4;
     }
 
-    public ChunkCoordinates func_48091_aU()
+    public ChunkCoordinates getHomePosition()
     {
-        return field_48110_av;
+        return homePosition;
     }
 
-    public float func_48099_aV()
+    public float getMaximumHomeDistance()
     {
-        return field_48109_aw;
+        return maximumHomeDistance;
     }
 
-    public void func_48083_aW()
+    public void detachHome()
     {
-        field_48109_aw = -1F;
+        maximumHomeDistance = -1F;
     }
 
-    public boolean func_48087_aX()
+    public boolean hasHome()
     {
-        return field_48109_aw != -1F;
+        return maximumHomeDistance != -1F;
     }
 
-    public void func_48086_a(EntityLiving par1EntityLiving)
+    public void setRevengeTarget(EntityLiving par1EntityLiving)
     {
         entityLivingToAttack = par1EntityLiving;
-        field_48103_c = entityLivingToAttack == null ? 0 : 60;
+        revengeTimer = entityLivingToAttack == null ? 0 : 60;
     }
 
     protected void entityInit()
@@ -373,9 +405,9 @@ public abstract class EntityLiving extends Entity
     }
 
     /**
-     * returns the directory and filename as a String
+     * Returns the texture's file path as a String.
      */
-    public String getEntityTexture()
+    public String getTexture()
     {
         return texture;
     }
@@ -402,13 +434,16 @@ public abstract class EntityLiving extends Entity
     }
 
     /**
-     * Get number of ticks, at least during which the living entity will be silent
+     * Get number of ticks, at least during which the living entity will be silent.
      */
     public int getTalkInterval()
     {
         return 80;
     }
 
+    /**
+     * Plays living's sound at its position
+     */
     public void playLivingSound()
     {
         String s = getLivingSound();
@@ -428,7 +463,7 @@ public abstract class EntityLiving extends Entity
         super.onEntityUpdate();
         Profiler.startSection("mobBaseTick");
 
-        if (rand.nextInt(1000) < livingSoundTime++)
+        if (isEntityAlive() && rand.nextInt(1000) < livingSoundTime++)
         {
             livingSoundTime = -getTalkInterval();
             playLivingSound();
@@ -501,24 +536,24 @@ public abstract class EntityLiving extends Entity
             attackingPlayer = null;
         }
 
-        if (field_48102_d != null && !field_48102_d.isEntityAlive())
+        if (lastAttackingEntity != null && !lastAttackingEntity.isEntityAlive())
         {
-            field_48102_d = null;
+            lastAttackingEntity = null;
         }
 
         if (entityLivingToAttack != null)
         {
             if (!entityLivingToAttack.isEntityAlive())
             {
-                func_48086_a(null);
+                setRevengeTarget(null);
             }
-            else if (field_48103_c > 0)
+            else if (revengeTimer > 0)
             {
-                field_48103_c--;
+                revengeTimer--;
             }
             else
             {
-                func_48086_a(null);
+                setRevengeTarget(null);
             }
         }
 
@@ -551,7 +586,7 @@ public abstract class EntityLiving extends Entity
             }
 
             onEntityDeath();
-            setEntityDead();
+            setDead();
 
             for (int j = 0; j < 20; j++)
             {
@@ -571,6 +606,9 @@ public abstract class EntityLiving extends Entity
         return par1 - 1;
     }
 
+    /**
+     * Get the experience points the entity currently has.
+     */
     protected int getExperiencePoints(EntityPlayer par1EntityPlayer)
     {
         return experienceValue;
@@ -677,7 +715,7 @@ public abstract class EntityLiving extends Entity
 
         if (isAIEnabled())
         {
-            field_48108_aq.func_48650_a();
+            bodyHelper.func_48650_a();
         }
         else
         {
@@ -768,7 +806,7 @@ public abstract class EntityLiving extends Entity
 
     public abstract int getMaxHealth();
 
-    public int getEntityHealth()
+    public int getHealth()
     {
         return health;
     }
@@ -835,7 +873,7 @@ public abstract class EntityLiving extends Entity
         {
             if (entity instanceof EntityLiving)
             {
-                func_48086_a((EntityLiving)entity);
+                setRevengeTarget((EntityLiving)entity);
             }
 
             if (entity instanceof EntityPlayer)
@@ -847,7 +885,7 @@ public abstract class EntityLiving extends Entity
             {
                 EntityWolf entitywolf = (EntityWolf)entity;
 
-                if (entitywolf.func_48139_F_())
+                if (entitywolf.isTamed())
                 {
                     recentlyHit = 60;
                     attackingPlayer = null;
@@ -1024,9 +1062,9 @@ public abstract class EntityLiving extends Entity
         motionY += f1;
         motionZ -= (par5 / (double)f) * (double)f1;
 
-        if (motionY > 0.4D)
+        if (motionY > 0.40000000596046448D)
         {
-            motionY = 0.4D;
+            motionY = 0.40000000596046448D;
         }
     }
 
@@ -1068,7 +1106,7 @@ public abstract class EntityLiving extends Entity
 
                     if (j < 5)
                     {
-                        func_48085_j_(j > 0 ? 0 : 1);
+                        dropRareDrop(j > 0 ? 0 : 1);
                     }
                 }
             }
@@ -1077,7 +1115,7 @@ public abstract class EntityLiving extends Entity
         worldObj.setEntityState(this, (byte)3);
     }
 
-    protected void func_48085_j_(int i)
+    protected void dropRareDrop(int i)
     {
     }
 
@@ -1132,7 +1170,7 @@ public abstract class EntityLiving extends Entity
             }
 
             attackEntityFrom(DamageSource.fall, i);
-            int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.2D - (double)yOffset), MathHelper.floor_double(posZ));
+            int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset), MathHelper.floor_double(posZ));
 
             if (j > 0)
             {
@@ -1152,14 +1190,14 @@ public abstract class EntityLiving extends Entity
             double d = posY;
             moveFlying(par1, par2, isAIEnabled() ? 0.04F : 0.02F);
             moveEntity(motionX, motionY, motionZ);
-            motionX *= 0.8D;
-            motionY *= 0.8D;
-            motionZ *= 0.8D;
+            motionX *= 0.80000001192092896D;
+            motionY *= 0.80000001192092896D;
+            motionZ *= 0.80000001192092896D;
             motionY -= 0.02D;
 
-            if (isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.6D) - posY) + d, motionZ))
+            if (isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d, motionZ))
             {
-                motionY = 0.3D;
+                motionY = 0.30000001192092896D;
             }
         }
         else if (handleLavaMovement())
@@ -1172,9 +1210,9 @@ public abstract class EntityLiving extends Entity
             motionZ *= 0.5D;
             motionY -= 0.02D;
 
-            if (isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.6D) - posY) + d1, motionZ))
+            if (isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d1, motionZ))
             {
-                motionY = 0.3D;
+                motionY = 0.30000001192092896D;
             }
         }
         else
@@ -1253,9 +1291,9 @@ public abstract class EntityLiving extends Entity
 
                 fallDistance = 0.0F;
 
-                if (motionY < -0.15D)
+                if (motionY < -0.14999999999999999D)
                 {
-                    motionY = -0.15D;
+                    motionY = -0.14999999999999999D;
                 }
 
                 boolean flag = isSneaking() && (this instanceof EntityPlayer);
@@ -1270,11 +1308,11 @@ public abstract class EntityLiving extends Entity
 
             if (isCollidedHorizontally && isOnLadder())
             {
-                motionY = 0.2D;
+                motionY = 0.20000000000000001D;
             }
 
-            motionY -= 0.08D;
-            motionY *= 0.98D;
+            motionY -= 0.080000000000000002D;
+            motionY *= 0.98000001907348633D;
             motionX *= f;
             motionZ *= f;
         }
@@ -1339,6 +1377,11 @@ public abstract class EntityLiving extends Entity
      */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
+        if (health < -32768)
+        {
+            health = -32768;
+        }
+
         health = par1NBTTagCompound.getShort("Health");
 
         if (!par1NBTTagCompound.hasKey("Health"))
@@ -1470,11 +1513,11 @@ public abstract class EntityLiving extends Entity
         {
             if (flag)
             {
-                motionY += 0.04D;
+                motionY += 0.039999999105930328D;
             }
             else if (flag1)
             {
-                motionY += 0.04D;
+                motionY += 0.039999999105930328D;
             }
             else if (onGround && jumpTicks == 0)
             {
@@ -1495,7 +1538,7 @@ public abstract class EntityLiving extends Entity
         moveEntityWithHeading(moveStrafing, moveForward);
         landMovementFactor = f;
         Profiler.startSection("push");
-        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.2D, 0.0D, 0.2D));
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0)
         {
@@ -1547,7 +1590,7 @@ public abstract class EntityLiving extends Entity
      */
     protected void jump()
     {
-        motionY = 0.42D;
+        motionY = 0.41999998688697815D;
 
         if (isPotionActive(Potion.jump))
         {
@@ -1588,12 +1631,12 @@ public abstract class EntityLiving extends Entity
 
             if (canDespawn() && d3 > 16384D)
             {
-                setEntityDead();
+                setDead();
             }
 
             if (entityAge > 600 && rand.nextInt(800) == 0 && d3 > 1024D && canDespawn())
             {
-                setEntityDead();
+                setDead();
             }
             else if (d3 < 1024D)
             {
@@ -1609,19 +1652,19 @@ public abstract class EntityLiving extends Entity
         despawnEntity();
         Profiler.endSection();
         Profiler.startSection("sensing");
-        field_48104_at.func_48481_a();
+        field_48104_at.clearSensingCache();
         Profiler.endSection();
         Profiler.startSection("targetSelector");
-        field_48105_bU.onUpdateTasks();
+        targetTasks.onUpdateTasks();
         Profiler.endSection();
         Profiler.startSection("goalSelector");
         tasks.onUpdateTasks();
         Profiler.endSection();
         Profiler.startSection("navigation");
-        field_48107_ar.onUpdateNavigation();
+        navigator.onUpdateNavigation();
         Profiler.endSection();
         Profiler.startSection("mob tick");
-        func_48097_s_();
+        updateAITick();
         Profiler.endSection();
         Profiler.startSection("controls");
         moveHelper.onUpdateMoveHelper();
@@ -1630,14 +1673,16 @@ public abstract class EntityLiving extends Entity
         Profiler.endSection();
     }
 
-    protected void func_48097_s_()
+    /**
+     * main AI tick function, replaces updateEntityActionState
+     */
+    protected void updateAITick()
     {
     }
 
     protected void updateEntityActionState()
     {
         entityAge++;
-        EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, -1D);
         despawnEntity();
         moveStrafing = 0.0F;
         moveForward = 0.0F;
@@ -1645,11 +1690,11 @@ public abstract class EntityLiving extends Entity
 
         if (rand.nextFloat() < 0.02F)
         {
-            EntityPlayer entityplayer1 = worldObj.getClosestPlayerToEntity(this, f);
+            EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, f);
 
-            if (entityplayer1 != null)
+            if (entityplayer != null)
             {
-                currentTarget = entityplayer1;
+                currentTarget = entityplayer;
                 numTicksToChaseTarget = 10 + rand.nextInt(20);
             }
             else
@@ -2009,7 +2054,7 @@ public abstract class EntityLiving extends Entity
      */
     public void addPotionEffect(PotionEffect par1PotionEffect)
     {
-        if (!isPotionAplicable(par1PotionEffect))
+        if (!isPotionApplicable(par1PotionEffect))
         {
             return;
         }
@@ -2026,7 +2071,7 @@ public abstract class EntityLiving extends Entity
         }
     }
 
-    public boolean isPotionAplicable(PotionEffect par1PotionEffect)
+    public boolean isPotionApplicable(PotionEffect par1PotionEffect)
     {
         if (getCreatureAttribute() == EnumCreatureAttribute.UNDEAD)
         {
@@ -2126,14 +2171,14 @@ public abstract class EntityLiving extends Entity
 
         for (int i = 0; i < 5; i++)
         {
-            Vec3D vec3d = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+            Vec3D vec3d = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
             vec3d.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
             vec3d.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-            Vec3D vec3d1 = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.3D, (double)(-rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+            Vec3D vec3d1 = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
             vec3d1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
             vec3d1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
             vec3d1 = vec3d1.addVector(posX, posY + (double)getEyeHeight(), posZ);
-            worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3d1.xCoord, vec3d1.yCoord, vec3d1.zCoord, vec3d.xCoord, vec3d.yCoord + 0.05D, vec3d.zCoord);
+            worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3d1.xCoord, vec3d1.yCoord, vec3d1.zCoord, vec3d.xCoord, vec3d.yCoord + 0.050000000000000003D, vec3d.zCoord);
         }
     }
 }
