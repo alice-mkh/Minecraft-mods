@@ -909,7 +909,7 @@ public abstract class Entity
      */
     public boolean handleWaterMovement()
     {
-        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
+        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.water, this)
     }
 
     /**
