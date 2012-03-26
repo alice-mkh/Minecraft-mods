@@ -81,7 +81,7 @@ public class EntityBoat extends Entity
      */
     public double getMountedYOffset()
     {
-        return (double)height * 0.0D - 0.3D;
+        return (double)height * 0.0D - 0.30000001192092896D;
     }
 
     /**
@@ -116,7 +116,7 @@ public class EntityBoat extends Entity
                 dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
             }
 
-            setEntityDead();
+            setDead();
         }
 
         return true;
@@ -204,7 +204,7 @@ public class EntityBoat extends Entity
 
         double d1 = Math.sqrt(motionX * motionX + motionZ * motionZ);
 
-        if (d1 > 0.15D)
+        if (d1 > 0.14999999999999999D)
         {
             double d3 = Math.cos(((double)rotationYaw * Math.PI) / 180D);
             double d9 = Math.sin(((double)rotationYaw * Math.PI) / 180D);
@@ -212,18 +212,18 @@ public class EntityBoat extends Entity
             for (int i1 = 0; (double)i1 < 1.0D + d1 * 60D; i1++)
             {
                 double d16 = rand.nextFloat() * 2.0F - 1.0F;
-                double d19 = (double)(rand.nextInt(2) * 2 - 1) * 0.7D;
+                double d19 = (double)(rand.nextInt(2) * 2 - 1) * 0.69999999999999996D;
 
                 if (rand.nextBoolean())
                 {
-                    double d21 = (posX - d3 * d16 * 0.8D) + d9 * d19;
-                    double d23 = posZ - d9 * d16 * 0.8D - d3 * d19;
+                    double d21 = (posX - d3 * d16 * 0.80000000000000004D) + d9 * d19;
+                    double d23 = posZ - d9 * d16 * 0.80000000000000004D - d3 * d19;
                     worldObj.spawnParticle("splash", d21, posY - 0.125D, d23, motionX, motionY, motionZ);
                 }
                 else
                 {
-                    double d22 = posX + d3 + d9 * d16 * 0.7D;
-                    double d24 = (posZ + d9) - d3 * d16 * 0.7D;
+                    double d22 = posX + d3 + d9 * d16 * 0.69999999999999996D;
+                    double d24 = (posZ + d9) - d3 * d16 * 0.69999999999999996D;
                     worldObj.spawnParticle("splash", d22, posY - 0.125D, d24, motionX, motionY, motionZ);
                 }
             }
@@ -262,24 +262,24 @@ public class EntityBoat extends Entity
                     motionZ *= 0.5D;
                 }
 
-                motionX *= 0.99D;
-                motionY *= 0.95D;
-                motionZ *= 0.99D;
+                motionX *= 0.99000000953674316D;
+                motionY *= 0.94999998807907104D;
+                motionZ *= 0.99000000953674316D;
             }
 
             return;
         }
 
         double d6 = d * 2D - 1.0D;
-        motionY += 0.04D * d6;
+        motionY += 0.039999999105930328D * d6;
 
         if (riddenByEntity != null)
         {
-            motionX += riddenByEntity.motionX * 0.2D;
-            motionZ += riddenByEntity.motionZ * 0.2D;
+            motionX += riddenByEntity.motionX * 0.20000000000000001D;
+            motionZ += riddenByEntity.motionZ * 0.20000000000000001D;
         }
 
-        double d7 = 0.4D;
+        double d7 = 0.40000000000000002D;
 
         if (motionX < -d7)
         {
@@ -310,11 +310,11 @@ public class EntityBoat extends Entity
 
         moveEntity(motionX, motionY, motionZ);
 
-        if (isCollidedHorizontally && d1 > 0.2D)
+        if (isCollidedHorizontally && d1 > 0.20000000000000001D)
         {
             if (!worldObj.isRemote)
             {
-                setEntityDead();
+                setDead();
 
                 for (int k = 0; k < 3; k++)
                 {
@@ -329,9 +329,9 @@ public class EntityBoat extends Entity
         }
         else
         {
-            motionX *= 0.99D;
-            motionY *= 0.95D;
-            motionZ *= 0.99D;
+            motionX *= 0.99000000953674316D;
+            motionY *= 0.94999998807907104D;
+            motionZ *= 0.99000000953674316D;
         }
 
         rotationPitch = 0.0F;
@@ -362,7 +362,7 @@ public class EntityBoat extends Entity
 
         rotationYaw += d20;
         setRotation(rotationYaw, rotationPitch);
-        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.2D, 0.0D, 0.2D));
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0)
         {
@@ -379,9 +379,9 @@ public class EntityBoat extends Entity
 
         for (int k1 = 0; k1 < 4; k1++)
         {
-            int l1 = MathHelper.floor_double(posX + ((double)(k1 % 2) - 0.5D) * 0.8D);
+            int l1 = MathHelper.floor_double(posX + ((double)(k1 % 2) - 0.5D) * 0.80000000000000004D);
             int i2 = MathHelper.floor_double(posY);
-            int j2 = MathHelper.floor_double(posZ + ((double)(k1 / 2) - 0.5D) * 0.8D);
+            int j2 = MathHelper.floor_double(posZ + ((double)(k1 / 2) - 0.5D) * 0.80000000000000004D);
 
             if (worldObj.getBlockId(l1, i2, j2) == Block.snow.blockID)
             {
@@ -403,8 +403,8 @@ public class EntityBoat extends Entity
         }
         else
         {
-            double d = Math.cos(((double)rotationYaw * Math.PI) / 180D) * 0.4D;
-            double d1 = Math.sin(((double)rotationYaw * Math.PI) / 180D) * 0.4D;
+            double d = Math.cos(((double)rotationYaw * Math.PI) / 180D) * 0.40000000000000002D;
+            double d1 = Math.sin(((double)rotationYaw * Math.PI) / 180D) * 0.40000000000000002D;
             riddenByEntity.setPosition(posX + d, posY + getMountedYOffset() + riddenByEntity.getYOffset(), posZ + d1);
             return;
         }
