@@ -97,6 +97,10 @@ public class EntityMinecart extends Entity implements IInventory
         yOffset = height / 2.0F;
     }
 
+    /**
+     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * prevent them from trampling crops
+     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -110,6 +114,10 @@ public class EntityMinecart extends Entity implements IInventory
         dataWatcher.addObject(19, new Integer(0));
     }
 
+    /**
+     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
+     * pushable on contact, like boats or minecarts.
+     */
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return par1Entity.boundingBox;
@@ -123,6 +131,9 @@ public class EntityMinecart extends Entity implements IInventory
         return null;
     }
 
+    /**
+     * Returns true if this entity should push and be pushed by other entities when colliding.
+     */
     public boolean canBePushed()
     {
         return true;
@@ -146,7 +157,7 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public double getMountedYOffset()
     {
-        return (double)height * 0.0D - 0.3D;
+        return (double)height * 0.0D - 0.30000001192092896D;
     }
 
     /**
@@ -171,7 +182,7 @@ public class EntityMinecart extends Entity implements IInventory
                 riddenByEntity.mountEntity(this);
             }
 
-            setEntityDead();
+            setDead();
             dropItemWithOffset(Item.minecartEmpty.shiftedIndex, 1, 0.0F);
 
             if (minecartType == 1)
@@ -228,15 +239,18 @@ public class EntityMinecart extends Entity implements IInventory
         return true;
     }
 
+    /**
+     * Returns true if other Entities should be prevented from moving through this Entity.
+     */
     public boolean canBeCollidedWith()
     {
         return !isDead;
     }
 
     /**
-     * Will get destroyed next tick
+     * Will get destroyed next tick.
      */
-    public void setEntityDead()
+    public void setDead()
     {
         label0:
 
@@ -269,6 +283,12 @@ public class EntityMinecart extends Entity implements IInventory
 
                 itemstack.stackSize -= j;
                 EntityItem entityitem = new EntityItem(worldObj, posX + (double)f, posY + (double)f1, posZ + (double)f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
+
+                if (itemstack.hasTagCompound())
+                {
+                    entityitem.item.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                }
+
                 float f3 = 0.05F;
                 entityitem.motionX = (float)rand.nextGaussian() * f3;
                 entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
@@ -278,7 +298,7 @@ public class EntityMinecart extends Entity implements IInventory
             while (true);
         }
 
-        super.setEntityDead();
+        super.setDead();
     }
 
     /**
@@ -296,9 +316,14 @@ public class EntityMinecart extends Entity implements IInventory
             func_41018_e_(func_41020_o() - 1);
         }
 
+        if (posY < -64D)
+        {
+            kill();
+        }
+
         if (isMinecartPowered() && rand.nextInt(4) == 0)
         {
-            worldObj.spawnParticle("largesmoke", posX, posY + 0.8D, posZ, 0.0D, 0.0D, 0.0D);
+            worldObj.spawnParticle("largesmoke", posX, posY + 0.80000000000000004D, posZ, 0.0D, 0.0D, 0.0D);
         }
 
         if (worldObj.isRemote)
@@ -332,7 +357,7 @@ public class EntityMinecart extends Entity implements IInventory
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
-        motionY -= 0.04D;
+        motionY -= 0.039999999105930328D;
         int i = MathHelper.floor_double(posX);
         int j = MathHelper.floor_double(posY);
         int k = MathHelper.floor_double(posZ);
@@ -342,7 +367,7 @@ public class EntityMinecart extends Entity implements IInventory
             j--;
         }
 
-        double d2 = 0.4D;
+        double d2 = 0.40000000000000002D;
         double d4 = 0.0078125D;
         int l = worldObj.getBlockId(i, j, k);
 
@@ -410,7 +435,7 @@ public class EntityMinecart extends Entity implements IInventory
             {
                 double d16 = Math.sqrt(motionX * motionX + motionZ * motionZ);
 
-                if (d16 < 0.03D)
+                if (d16 < 0.029999999999999999D)
                 {
                     motionX *= 0.0D;
                     motionY *= 0.0D;
@@ -495,9 +520,9 @@ public class EntityMinecart extends Entity implements IInventory
 
             if (riddenByEntity != null)
             {
-                motionX *= 0.997D;
+                motionX *= 0.99699997901916504D;
                 motionY *= 0.0D;
-                motionZ *= 0.997D;
+                motionZ *= 0.99699997901916504D;
             }
             else
             {
@@ -509,31 +534,31 @@ public class EntityMinecart extends Entity implements IInventory
                     {
                         pushX /= d27;
                         pushZ /= d27;
-                        double d29 = 0.04D;
-                        motionX *= 0.8D;
+                        double d29 = 0.040000000000000001D;
+                        motionX *= 0.80000001192092896D;
                         motionY *= 0.0D;
-                        motionZ *= 0.8D;
+                        motionZ *= 0.80000001192092896D;
                         motionX += pushX * d29;
                         motionZ += pushZ * d29;
                     }
                     else
                     {
-                        motionX *= 0.9D;
+                        motionX *= 0.89999997615814209D;
                         motionY *= 0.0D;
-                        motionZ *= 0.9D;
+                        motionZ *= 0.89999997615814209D;
                     }
                 }
 
-                motionX *= 0.96D;
+                motionX *= 0.95999997854232788D;
                 motionY *= 0.0D;
-                motionZ *= 0.96D;
+                motionZ *= 0.95999997854232788D;
             }
 
             Vec3D vec3d1 = func_182_g(posX, posY, posZ);
 
             if (vec3d1 != null && vec3d != null)
             {
-                double d28 = (vec3d.yCoord - vec3d1.yCoord) * 0.05D;
+                double d28 = (vec3d.yCoord - vec3d1.yCoord) * 0.050000000000000003D;
                 double d14 = Math.sqrt(motionX * motionX + motionZ * motionZ);
 
                 if (d14 > 0.0D)
@@ -644,9 +669,9 @@ public class EntityMinecart extends Entity implements IInventory
 
             if (!onGround)
             {
-                motionX *= 0.95D;
-                motionY *= 0.95D;
-                motionZ *= 0.95D;
+                motionX *= 0.94999998807907104D;
+                motionY *= 0.94999998807907104D;
+                motionZ *= 0.94999998807907104D;
             }
         }
 
@@ -677,7 +702,7 @@ public class EntityMinecart extends Entity implements IInventory
         }
 
         setRotation(rotationYaw, rotationPitch);
-        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.2D, 0.0D, 0.2D));
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0)
         {
@@ -882,7 +907,7 @@ public class EntityMinecart extends Entity implements IInventory
         double d1 = par1Entity.posZ - posZ;
         double d2 = d * d + d1 * d1;
 
-        if (d2 >= 10.0E-005D)
+        if (d2 >= 9.9999997473787516E-005D)
         {
             d2 = MathHelper.sqrt_double(d2);
             d /= d2;
@@ -896,8 +921,8 @@ public class EntityMinecart extends Entity implements IInventory
 
             d *= d3;
             d1 *= d3;
-            d *= 0.1D;
-            d1 *= 0.1D;
+            d *= 0.10000000149011612D;
+            d1 *= 0.10000000149011612D;
             d *= 1.0F - entityCollisionReduction;
             d1 *= 1.0F - entityCollisionReduction;
             d *= 0.5D;
@@ -910,29 +935,29 @@ public class EntityMinecart extends Entity implements IInventory
 
                 if (((EntityMinecart)par1Entity).minecartType == 2 && minecartType != 2)
                 {
-                    motionX *= 0.2D;
-                    motionZ *= 0.2D;
+                    motionX *= 0.20000000298023224D;
+                    motionZ *= 0.20000000298023224D;
                     addVelocity(par1Entity.motionX - d, 0.0D, par1Entity.motionZ - d1);
-                    par1Entity.motionX *= 0.95D;
-                    par1Entity.motionZ *= 0.95D;
+                    par1Entity.motionX *= 0.94999998807907104D;
+                    par1Entity.motionZ *= 0.94999998807907104D;
                 }
                 else if (((EntityMinecart)par1Entity).minecartType != 2 && minecartType == 2)
                 {
-                    par1Entity.motionX *= 0.2D;
-                    par1Entity.motionZ *= 0.2D;
+                    par1Entity.motionX *= 0.20000000298023224D;
+                    par1Entity.motionZ *= 0.20000000298023224D;
                     par1Entity.addVelocity(motionX + d, 0.0D, motionZ + d1);
-                    motionX *= 0.95D;
-                    motionZ *= 0.95D;
+                    motionX *= 0.94999998807907104D;
+                    motionZ *= 0.94999998807907104D;
                 }
                 else
                 {
                     d4 /= 2D;
                     d5 /= 2D;
-                    motionX *= 0.2D;
-                    motionZ *= 0.2D;
+                    motionX *= 0.20000000298023224D;
+                    motionZ *= 0.20000000298023224D;
                     addVelocity(d4 - d, 0.0D, d5 - d1);
-                    par1Entity.motionX *= 0.2D;
-                    par1Entity.motionZ *= 0.2D;
+                    par1Entity.motionX *= 0.20000000298023224D;
+                    par1Entity.motionZ *= 0.20000000298023224D;
                     par1Entity.addVelocity(d4 + d, 0.0D, d5 + d1);
                 }
             }
@@ -944,6 +969,9 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSizeInventory()
     {
         return 27;
@@ -987,7 +1015,11 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    public ItemStack func_48315_b(int par1)
+    /**
+     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
+     * like when you close a workbench GUI.
+     */
+    public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (cargoItems[par1] != null)
         {
