@@ -14,8 +14,14 @@ public abstract class Entity
      * prevent spawning.
      */
     public boolean preventEntitySpawning;
+
+    /** The entity that is riding this entity */
     public Entity riddenByEntity;
+
+    /** The entity we are currently riding */
     public Entity ridingEntity;
+
+    /** Reference to the World object. */
     public World worldObj;
     public double prevPosX;
     public double prevPosY;
@@ -50,6 +56,10 @@ public abstract class Entity
     /** Axis aligned bounding box. */
     public final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     public boolean onGround;
+
+    /**
+     * True if after a move this entity has collided with something on X- or Z-axis
+     */
     public boolean isCollidedHorizontally;
 
     /**
@@ -61,11 +71,13 @@ public abstract class Entity
      * True if after a move this entity has collided with something either vertically or horizontally
      */
     public boolean isCollided;
-
-    /** EntityTrackerEntity sends Packet28EntityVelocity if set */
     public boolean velocityChanged;
     protected boolean isInWeb;
     public boolean field_9077_F;
+
+    /**
+     * gets set by setEntityDead, so this must be the flag whether an Entity is dead (inactive may be better term)
+     */
     public boolean isDead;
     public float yOffset;
 
@@ -86,8 +98,20 @@ public abstract class Entity
      * The distance that has to be exceeded in order to triger a new step sound and an onEntityWalking event on a block
      */
     private int nextStepDistance;
+
+    /**
+     * The entity's X coordinate at the previous tick, used to calculate position during rendering routines
+     */
     public double lastTickPosX;
+
+    /**
+     * The entity's Y coordinate at the previous tick, used to calculate position during rendering routines
+     */
     public double lastTickPosY;
+
+    /**
+     * The entity's Z coordinate at the previous tick, used to calculate position during rendering routines
+     */
     public double lastTickPosZ;
     public float ySize;
 
@@ -122,10 +146,6 @@ public abstract class Entity
      */
     protected boolean inWater;
     public int heartsLife;
-
-    /**
-     * this is true during the first update after this entity has spawned and false forever after that time
-     */
     private boolean firstUpdate;
     protected boolean isImmuneToFire;
     protected DataWatcher dataWatcher;
@@ -137,7 +157,12 @@ public abstract class Entity
     public int chunkCoordX;
     public int chunkCoordY;
     public int chunkCoordZ;
-    public boolean ignoreFrustrumCheck;
+
+    /**
+     * Render entity even if it is outside the camera frustum. Only true in EntityFish for now. Used in RenderGlobal:
+     * render if ignoreFrustumCheck or in frustum.
+     */
+    public boolean ignoreFrustumCheck;
     public boolean isAirBorne;
 
     public Entity(World par1World)
@@ -203,9 +228,9 @@ public abstract class Entity
     }
 
     /**
-     * Will get destroyed next tick
+     * Will get destroyed next tick.
      */
-    public void setEntityDead()
+    public void setDead()
     {
         isDead = true;
     }
@@ -272,13 +297,13 @@ public abstract class Entity
         if (isSprinting() && !isInWater())
         {
             int i = MathHelper.floor_double(posX);
-            int j = MathHelper.floor_double(posY - 0.2D - (double)yOffset);
+            int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
             int k = MathHelper.floor_double(posZ);
             int j1 = worldObj.getBlockId(i, j, k);
 
             if (j1 > 0)
             {
-                worldObj.spawnParticle((new StringBuilder()).append("tilecrack_").append(j1).toString(), posX + ((double)rand.nextFloat() - 0.5D) * (double)width, boundingBox.minY + 0.1D, posZ + ((double)rand.nextFloat() - 0.5D) * (double)width, -motionX * 4D, 1.5D, -motionZ * 4D);
+                worldObj.spawnParticle((new StringBuilder()).append("tilecrack_").append(j1).toString(), posX + ((double)rand.nextFloat() - 0.5D) * (double)width, boundingBox.minY + 0.10000000000000001D, posZ + ((double)rand.nextFloat() - 0.5D) * (double)width, -motionX * 4D, 1.5D, -motionZ * 4D);
             }
         }
 
@@ -286,7 +311,7 @@ public abstract class Entity
         {
             if (!inWater && !firstUpdate)
             {
-                float f = MathHelper.sqrt_double(motionX * motionX * 0.2D + motionY * motionY + motionZ * motionZ * 0.2D) * 0.2F;
+                float f = MathHelper.sqrt_double(motionX * motionX * 0.20000000298023224D + motionY * motionY + motionZ * motionZ * 0.20000000298023224D) * 0.2F;
 
                 if (f > 1.0F)
                 {
@@ -405,9 +430,12 @@ public abstract class Entity
      */
     protected void kill()
     {
-        setEntityDead();
+        setDead();
     }
 
+    /**
+     * Checks if the offset position from the entity's current position is inside of liquid. Args: x, y, z
+     */
     public boolean isOffsetPositionInLiquid(double par1, double par3, double par5)
     {
         AxisAlignedBB axisalignedbb = boundingBox.getOffsetBoundingBox(par1, par3, par5);
@@ -444,7 +472,7 @@ public abstract class Entity
         {
             isInWeb = false;
             par1 *= 0.25D;
-            par3 *= 0.05D;
+            par3 *= 0.05000000074505806D;
             par5 *= 0.25D;
             motionX = 0.0D;
             motionY = 0.0D;
@@ -459,7 +487,7 @@ public abstract class Entity
 
         if (flag)
         {
-            double d5 = 0.05D;
+            double d5 = 0.050000000000000003D;
 
             for (; par1 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, 0.0D)).size() == 0; d2 = par1)
             {
@@ -495,6 +523,38 @@ public abstract class Entity
                 {
                     par5 += d5;
                 }
+            }
+
+            while (par1 != 0.0D && par5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, par5)).size() == 0)
+            {
+                if (par1 < d5 && par1 >= -d5)
+                {
+                    par1 = 0.0D;
+                }
+                else if (par1 > 0.0D)
+                {
+                    par1 -= d5;
+                }
+                else
+                {
+                    par1 += d5;
+                }
+
+                if (par5 < d5 && par5 >= -d5)
+                {
+                    par5 = 0.0D;
+                }
+                else if (par5 > 0.0D)
+                {
+                    par5 -= d5;
+                }
+                else
+                {
+                    par5 += d5;
+                }
+
+                d2 = par1;
+                d4 = par5;
             }
         }
 
@@ -651,9 +711,9 @@ public abstract class Entity
 
         if (canTriggerWalking() && !flag && ridingEntity == null)
         {
-            distanceWalkedModified += (double)MathHelper.sqrt_double(d7 * d7 + d9 * d9) * 0.6D;
+            distanceWalkedModified += (double)MathHelper.sqrt_double(d7 * d7 + d9 * d9) * 0.59999999999999998D;
             int l = MathHelper.floor_double(posX);
-            int j1 = MathHelper.floor_double(posY - 0.2D - (double)yOffset);
+            int j1 = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
             int l1 = MathHelper.floor_double(posZ);
             int j3 = worldObj.getBlockId(l, j1, l1);
 
@@ -726,6 +786,9 @@ public abstract class Entity
         Profiler.endSection();
     }
 
+    /**
+     * Plays step sound at given x, y, z for the entity
+     */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         StepSound stepsound = Block.blocksList[par4].stepSound;
@@ -741,6 +804,10 @@ public abstract class Entity
         }
     }
 
+    /**
+     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * prevent them from trampling crops
+     */
     protected boolean canTriggerWalking()
     {
         return true;
@@ -759,7 +826,7 @@ public abstract class Entity
                 if (this instanceof EntityLiving)
                 {
                     int i = MathHelper.floor_double(posX);
-                    int j = MathHelper.floor_double(posY - 0.2D - (double)yOffset);
+                    int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
                     int k = MathHelper.floor_double(posZ);
                     int l = worldObj.getBlockId(i, j, k);
 
@@ -820,13 +887,17 @@ public abstract class Entity
         }
     }
 
+    /**
+     * Checks if this entity is either in water or on an open air block in rain (used in wolves).
+     */
     public boolean isWet()
     {
         return inWater || worldObj.canLightningStrikeAt(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
     }
 
     /**
-     * Returns whether the entity is in water.
+     * Checks if this entity is inside water (if inWater field is true as a result of handleWaterMovement() returning
+     * true)
      */
     public boolean isInWater()
     {
@@ -838,7 +909,7 @@ public abstract class Entity
      */
     public boolean handleWaterMovement()
     {
-        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.4D, 0.0D), Material.water, this);
+        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
     }
 
     /**
@@ -869,9 +940,12 @@ public abstract class Entity
         return 0.0F;
     }
 
+    /**
+     * Whether or not the current entity is in lava
+     */
     public boolean handleLavaMovement()
     {
-        return worldObj.isMaterialInBB(boundingBox.expand(-0.1D, -0.4D, -0.1D), Material.lava);
+        return worldObj.isMaterialInBB(boundingBox.expand(-0.10000000149011612D, -0.40000000596046448D, -0.10000000149011612D), Material.lava);
     }
 
     /**
@@ -903,14 +977,14 @@ public abstract class Entity
     /**
      * Gets how bright this entity is.
      */
-    public float getEntityBrightness(float par1)
+    public float getBrightness(float par1)
     {
         int i = MathHelper.floor_double(posX);
         int j = MathHelper.floor_double(posZ);
 
         if (worldObj.blockExists(i, 0, j))
         {
-            double d = (boundingBox.maxY - boundingBox.minY) * 0.66D;
+            double d = (boundingBox.maxY - boundingBox.minY) * 0.66000000000000003D;
             int k = MathHelper.floor_double((posY - (double)yOffset) + d);
             return worldObj.getLightBrightness(i, k, j);
         }
@@ -955,6 +1029,9 @@ public abstract class Entity
         setRotation(par7, par8);
     }
 
+    /**
+     * Sets the location and Yaw/Pitch of an entity in the world
+     */
     public void setLocationAndAngles(double par1, double par3, double par5, float par7, float par8)
     {
         lastTickPosX = prevPosX = posX = par1;
@@ -1030,7 +1107,7 @@ public abstract class Entity
         double d1 = par1Entity.posZ - posZ;
         double d2 = MathHelper.abs_max(d, d1);
 
-        if (d2 >= 0.01D)
+        if (d2 >= 0.0099999997764825821D)
         {
             d2 = MathHelper.sqrt_double(d2);
             d /= d2;
@@ -1044,8 +1121,8 @@ public abstract class Entity
 
             d *= d3;
             d1 *= d3;
-            d *= 0.05D;
-            d1 *= 0.05D;
+            d *= 0.05000000074505806D;
+            d1 *= 0.05000000074505806D;
             d *= 1.0F - entityCollisionReduction;
             d1 *= 1.0F - entityCollisionReduction;
             addVelocity(-d, 0.0D, -d1);
@@ -1081,16 +1158,26 @@ public abstract class Entity
         return false;
     }
 
+    /**
+     * Returns true if other Entities should be prevented from moving through this Entity.
+     */
     public boolean canBeCollidedWith()
     {
         return false;
     }
 
+    /**
+     * Returns true if this entity should push and be pushed by other entities when colliding.
+     */
     public boolean canBePushed()
     {
         return false;
     }
 
+    /**
+     * Adds a value to the player score. Currently not actually used and the entity passed in does nothing. Args:
+     * entity, scoreToAdd
+     */
     public void addToPlayerScore(Entity entity, int i)
     {
     }
@@ -1179,6 +1266,9 @@ public abstract class Entity
         readEntityFromNBT(par1NBTTagCompound);
     }
 
+    /**
+     * Returns the string that identifies this Entity's class
+     */
     protected final String getEntityString()
     {
         return EntityList.getEntityString(this);
@@ -1257,6 +1347,9 @@ public abstract class Entity
         return entityitem;
     }
 
+    /**
+     * Checks whether target entity is alive.
+     */
     public boolean isEntityAlive()
     {
         return !isDead;
@@ -1293,6 +1386,10 @@ public abstract class Entity
         return false;
     }
 
+    /**
+     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
+     * pushable on contact, like boats or minecarts.
+     */
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return null;
@@ -1383,7 +1480,7 @@ public abstract class Entity
     }
 
     /**
-     * set entity to null to unmount
+     * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
      */
     public void mountEntity(Entity par1Entity)
     {
@@ -1453,7 +1550,7 @@ public abstract class Entity
     }
 
     /**
-     * Returns true if the furnace is currently burning
+     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
      */
     public boolean isBurning()
     {
@@ -1498,7 +1595,8 @@ public abstract class Entity
     }
 
     /**
-     * Gets the specified flag from DataWatcher byte object 0
+     * Returns true if the flag is active for the entity. Known flags: 0) is burning; 1) is sneaking; 2) is riding
+     * something; 3) is sprinting; 4) is eating
      */
     protected boolean getFlag(int par1)
     {
@@ -1506,7 +1604,7 @@ public abstract class Entity
     }
 
     /**
-     * Sets the specified flag to the specified value in DataWatcher byte object 0
+     * Enable or disable a entity flag, see getEntityFlag to read the know flags.
      */
     protected void setFlag(int par1, boolean par2)
     {
@@ -1546,10 +1644,16 @@ public abstract class Entity
         }
     }
 
+    /**
+     * This method gets called when the entity kills another one.
+     */
     public void onKillEntity(EntityLiving entityliving)
     {
     }
 
+    /**
+     * Adds velocity to push the entity out of blocks at the specified x, y, z position Args: x, y, z
+     */
     protected boolean pushOutOfBlocks(double par1, double par3, double par5)
     {
         int i = MathHelper.floor_double(par1);
@@ -1675,6 +1779,9 @@ public abstract class Entity
         return null;
     }
 
+    /**
+     * Returns true if Entity argument is equal to this Entity
+     */
     public boolean isEntityEqual(Entity par1Entity)
     {
         return this == par1Entity;
@@ -1685,7 +1792,10 @@ public abstract class Entity
         return 0.0F;
     }
 
-    public boolean func_48313_k_()
+    /**
+     * If returns false, the item will not inflict any damage against entities.
+     */
+    public boolean canAttackWithItem()
     {
         return true;
     }
