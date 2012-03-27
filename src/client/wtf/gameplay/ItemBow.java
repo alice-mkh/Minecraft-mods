@@ -60,7 +60,7 @@ public class ItemBow extends Item
                 entityarrow.setFire(100);
             }
 
-            if (!mod_OldSurvivalMode.InfiniteBow){
+            if (!mod_WTFGameplay.InfiniteBow){
                 par1ItemStack.damageItem(1, par3EntityPlayer);
             }
             par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
@@ -107,7 +107,7 @@ public class ItemBow extends Item
      */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        if(!mod_OldSurvivalMode.InstantBow){
+        if(!mod_WTFGameplay.InstantBow){
             if(par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
@@ -123,7 +123,7 @@ public class ItemBow extends Item
                 {
                     par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
                 }
-                if (!mod_OldSurvivalMode.InfiniteBow){
+                if (!mod_WTFGameplay.InfiniteBow){
                     par1ItemStack.damageItem(1, par3EntityPlayer);
                 }
             }

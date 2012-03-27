@@ -6,7 +6,7 @@ public class EntitySheep extends EntityAnimal
 {
     public boolean attackEntityFrom(DamageSource damagesource, int i)
     {
-        if (!mod_OldSurvivalMode.PunchSheep){
+        if (!mod_WTFActions.PunchSheep){
             return super.attackEntityFrom(damagesource, i);
         }
         Entity entity = damagesource.getEntity();

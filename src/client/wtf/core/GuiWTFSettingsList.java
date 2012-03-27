@@ -28,7 +28,7 @@ public class GuiWTFSettingsList extends GuiScreen{
             if (i % 2 == 0){
                 x+=160;
             }
-            int y = height / 6 + (((i-1)/2) * 30);
+            int y = height / 6 - 10 + (((i-1)/2) * 30);
             controlList.add(propButtons[i] = new GuiButton(i+1, x, y, 150, 20, mod_WTF.propname[id][i]+": "+onOff(mod_WTF.propvalue[id][i])));
         }
     }
@@ -52,7 +52,6 @@ public class GuiWTFSettingsList extends GuiScreen{
         if (guibutton.id > 1){
             boolean b = !mod_WTF.propvalue[id][guibutton.id-1];
             mod_WTF.propvalue[id][guibutton.id-1]=b;
-//             mod_WTF.propfield[id][guibutton.id-1]=b;
             try{
                 mod_WTF.propfield[id][guibutton.id-1].setBoolean(mod_WTF.class, b);
             }catch(Exception ex){

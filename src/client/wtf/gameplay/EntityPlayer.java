@@ -1005,7 +1005,7 @@ public abstract class EntityPlayer extends EntityLiving
 
     protected void damageArmor(int par1)
     {
-        if (mod_OldSurvivalMode.OldArmor){
+        if (mod_WTFGameplay.OldArmor){
             for(int j = 0; j < inventory.armorInventory.length; j++)
             {
                 if(inventory.armorInventory[j] == null || !(inventory.armorInventory[j].getItem() instanceof ItemArmor))
@@ -1029,7 +1029,7 @@ public abstract class EntityPlayer extends EntityLiving
      */
     public int getTotalArmorValue()
     {
-        if (mod_OldSurvivalMode.OldArmor){
+        if (mod_WTFGameplay.OldArmor){
             int i = 0;
             int j = 0;
             int k = 0;
@@ -1079,7 +1079,7 @@ public abstract class EntityPlayer extends EntityLiving
             par2 = 1 + par2 >> 1;
         }
 
-        if (mod_OldSurvivalMode.OldArmor){
+        if (mod_WTFGameplay.OldArmor){
             par2 = applyArmorCalculations_old(par1DamageSource, par2);
         }else{
             par2 = applyArmorCalculations(par1DamageSource, par2);
@@ -1213,7 +1213,7 @@ public abstract class EntityPlayer extends EntityLiving
         {
             j++;
         }
-        if (mod_OldSurvivalMode.OldCombatSystem){
+        if (mod_WTFGameplay.OldCombatSystem){
             combatOld(par1Entity, i, j, k);
         }else{
             combatNew(par1Entity, i, j, k);

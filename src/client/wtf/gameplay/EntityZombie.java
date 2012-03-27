@@ -94,7 +94,7 @@ public class EntityZombie extends EntityMob
      */
     protected int getDropItemId()
     {
-        if (mod_OldSurvivalMode.OldDrops){
+        if (mod_WTFGameplay.OldDrops){
             return Item.feather.shiftedIndex;
         }
         return Item.rottenFlesh.shiftedIndex;
@@ -110,7 +110,7 @@ public class EntityZombie extends EntityMob
 
     protected void dropRareDrop(int par1)
     {
-        if (mod_OldSurvivalMode.DisableRareLoot){
+        if (mod_WTFGameplay.DisableRareLoot){
             return;
         }
         switch (rand.nextInt(4))

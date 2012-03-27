@@ -158,7 +158,7 @@ public class EntityChicken extends EntityAnimal
             dropItem(Item.feather.shiftedIndex, 1);
         }
 
-        if (!mod_OldSurvivalMode.OldDrops){
+        if (!mod_WTFGameplay.OldDrops){
             if (isBurning())
             {
                 dropItem(Item.chickenCooked.shiftedIndex, 1);

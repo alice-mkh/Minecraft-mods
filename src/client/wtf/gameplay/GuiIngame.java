@@ -97,7 +97,7 @@ public class GuiIngame extends Gui
             zLevel = -90F;
             drawTexturedModalRect(i / 2 - 91, j - 22, 0, 0, 182, 22);
             drawTexturedModalRect((i / 2 - 91 - 1) + inventoryplayer.currentItem * 20, j - 22 - 1, 0, 22, 24, 22);
-            if(mod_OldSurvivalMode.DisableHunger){
+            if(mod_WTFGameplay.DisableHunger){
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons2.png"));
             }else{
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
@@ -127,7 +127,7 @@ public class GuiIngame extends Gui
                 int k5 = i / 2 - 91;
                 int k6 = i / 2 + 91;
                 int i8 = j - 32;
-                if(!mod_OldSurvivalMode.DisableXP){
+                if(!mod_WTFGameplay.DisableXP){
                     if ( mc.thePlayer.xpBarCap() > 0)
                     {
                         char c = '\266';
@@ -156,7 +156,7 @@ public class GuiIngame extends Gui
                     {
                         int k10 = k6 - l9 * 8 - 9;
                         int intintintintint = i8;
-                        if(!mod_OldSurvivalMode.DisableHunger){
+                        if(!mod_WTFGameplay.DisableHunger){
                             k10 = k5 + l9 * 8;
                             intintintintint = i8 - 10;
                         }
@@ -237,7 +237,7 @@ public class GuiIngame extends Gui
                     }
                 }
 
-                if(!mod_OldSurvivalMode.DisableHunger){
+                if(!mod_WTFGameplay.DisableHunger){
                     for (int i10 = 0; i10 < 10; i10++)
                     {
                         int i11 = i8;
@@ -297,7 +297,7 @@ public class GuiIngame extends Gui
                     {
                         if (i12 < j10)
                         {
-                            if(mod_OldSurvivalMode.DisableHunger){
+                            if(mod_WTFGameplay.DisableHunger){
                                 drawTexturedModalRect(k5 + i12 * 8, k8, 16, 18, 9, 9);
                             }else{
                                 drawTexturedModalRect(k6 - i12 * 8 - 9, k8, 16, 18, 9, 9);
@@ -305,7 +305,7 @@ public class GuiIngame extends Gui
                         }
                         else
                         {
-                            if(mod_OldSurvivalMode.DisableHunger){
+                            if(mod_WTFGameplay.DisableHunger){
                                 drawTexturedModalRect(k5 + i12 * 8, k8, 25, 18, 9, 9);
                             }else{
                                 drawTexturedModalRect(k6 - i12 * 8 - 9, k8, 25, 18, 9, 9);
@@ -362,7 +362,7 @@ public class GuiIngame extends Gui
             fontrenderer.drawString(s, j3, l3, i1);
         }
 
-        if (mc.gameSettings.showDebugInfo && mod_OldSurvivalMode.AllowDebug)
+        if (mc.gameSettings.showDebugInfo && mod_WTFGameplay.AllowDebug)
         {
             GL11.glPushMatrix();
 

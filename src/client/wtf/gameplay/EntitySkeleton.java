@@ -145,7 +145,7 @@ public class EntitySkeleton extends EntityMob
 
     protected void dropRareDrop(int par1)
     {
-        if (mod_OldSurvivalMode.DisableRareLoot){
+        if (mod_WTFGameplay.DisableRareLoot){
             return;
         }
         if (par1 > 0)

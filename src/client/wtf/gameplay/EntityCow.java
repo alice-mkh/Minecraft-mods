@@ -101,7 +101,7 @@ public class EntityCow extends EntityAnimal
             dropItem(Item.leather.shiftedIndex, 1);
         }
 
-        if (!mod_OldSurvivalMode.OldDrops){
+        if (!mod_WTFGameplay.OldDrops){
             i = rand.nextInt(3) + 1 + rand.nextInt(1 + par2);
 
             for (int k = 0; k < i; k++)

@@ -1,61 +1,38 @@
 package net.minecraft.src;
-
+import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_OldSurvivalMode extends BaseMod{
-    public String getVersion(){
-        return "1.2.3";
-    }
-
-    public mod_OldSurvivalMode(){
-        OldSurvivalModeProperties oldsurvivalmodeproperties = new OldSurvivalModeProperties();
-        try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldSurvivalMode.properties").toString());
-            boolean flag = file.createNewFile();
-            if(flag){
-                FileOutputStream fileoutputstream = new FileOutputStream(file);
-                oldsurvivalmodeproperties.setProperty("AnimalsFleeWhenDamaged", Boolean.toString(false));
-                oldsurvivalmodeproperties.setProperty("DisableFoodStacking", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("InstantBow", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("InstantFood", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("DisableHunger", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("DisableXP", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("OldCombatSystem", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("OldArmor", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("InfiniteBow", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("OldDrops", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("AllowDebug", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("PunchSheep", Boolean.toString(true));
-                oldsurvivalmodeproperties.setProperty("DisableRareLoot", Boolean.toString(true));
-                oldsurvivalmodeproperties.store(fileoutputstream, "Survival mode config");
-
-                fileoutputstream.close();
-            }
-            oldsurvivalmodeproperties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldSurvivalMode.properties").toString()));
-            DisableXP = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("DisableXP"));
-            DisableHunger = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("DisableHunger"));
-            InstantFood = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("InstantFood"));
-            InstantBow = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("InstantBow"));
-            DisableFoodStacking = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("DisableFoodStacking"));
-            AnimalsFlee = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("AnimalsFleeWhenDamaged"));
-            OldCombatSystem = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("OldCombatSystem"));
-            OldArmor = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("OldArmor"));
-            InfiniteBow = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("InfiniteBow"));
-            OldDrops = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("OldDrops"));
-            AllowDebug = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("AllowDebug"));
-            PunchSheep = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("PunchSheep"));
-            DisableRareLoot = Boolean.parseBoolean(oldsurvivalmodeproperties.getProperty("DisableRareLoot"));
-        }
-        catch(IOException ioexception){
-            ioexception.printStackTrace();
-        }
-        ModLoader.setInGameHook(this, true, true);
+public class mod_WTFGameplay extends mod_WTF{
+    public void load(){
+        addProperty(this, 1, "Disable XP",            false, "DisableXP");
+        addProperty(this, 2, "Disable hunger",        false, "DisableHunger");
+        addProperty(this, 3, "Instant food",          false, "InstantFood");
+        addProperty(this, 4, "Disable food stacking", false, "DisableFoodStacking");
+        addProperty(this, 5, "Old loot",              false, "OldDrops");
+        addProperty(this, 6, "Disable rare loot",     false, "DisableRareLoot");
+        addProperty(this, 7, "Machine bow",           false, "InstantBow");
+        addProperty(this, 8, "No bow durability",     false, "InfiniteBow");
+        addProperty(this, 9, "Old combat system",     false, "OldCombatSystem");
+        addProperty(this, 10,"Old armor",             false, "OldArmor");
+        addProperty(this, 11,"Allow debug screen",    true,  "AllowDebug");
         setSwordDamage(OldCombatSystem);
         setArmorDamage(OldArmor);
-//         ReplaceMobs();
+        ModLoader.setInGameHook(this, true, true);
     }
-    
+
+    public static boolean DisableXP;
+    public static boolean DisableHunger;
+    public static boolean InstantFood;
+    public static boolean DisableFoodStacking;
+    public static boolean OldDrops;
+    public static boolean DisableRareLoot;
+    public static boolean InstantBow;
+    public static boolean InfiniteBow;
+    public static boolean OldCombatSystem;
+    public static boolean OldArmor;
+    public static boolean AllowDebug = true;
+
     private void setSwordDamage(boolean b){
         try{
             if (b){
@@ -73,7 +50,7 @@ public class mod_OldSurvivalMode extends BaseMod{
             System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
         }
     }
-    
+
     private void setArmorDamage(boolean b){
         try{
             if (b){
@@ -159,19 +136,7 @@ public class mod_OldSurvivalMode extends BaseMod{
             System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
         }
     }
-/*
-    private static void replaceMobs(){
-        try{
-            ModLoader.RegisterEntityID(EntityZombie2.class, "Zombie", 54);
-            ModLoader.RegisterEntityID(EntityPigZombie2.class, "PigZombie", 57);
-            ModLoader.RegisterEntityID(EntityCow2.class, "Cow", 92);
-            ModLoader.RegisterEntityID(EntityChicken2.class, "Chicken", 93);
-            ModLoader.RegisterEntityID(EntityMooshroom2.class, "MushroomCow", 96);
-        }catch (Exception exception){
-            System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
-        }
-    }
-*/
+
     public boolean onTickInGame(float f, Minecraft minecraft){
         tickDebug(minecraft);
         return true;
@@ -183,20 +148,4 @@ public class mod_OldSurvivalMode extends BaseMod{
         }
         minecraft.gameSettings.showDebugInfo = false;
     }
-
-    public void load(){};
-
-    public static boolean DisableXP;
-    public static boolean DisableHunger;
-    public static boolean InstantFood;
-    public static boolean InstantBow;
-    public static boolean DisableFoodStacking;
-    public static boolean AnimalsFlee;
-    public static boolean OldCombatSystem;
-    public static boolean OldArmor;
-    public static boolean InfiniteBow;
-    public static boolean OldDrops;
-    public static boolean AllowDebug;
-    public static boolean PunchSheep;
-    public static boolean DisableRareLoot;
 }

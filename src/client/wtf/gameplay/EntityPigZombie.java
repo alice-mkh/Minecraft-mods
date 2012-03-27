@@ -168,7 +168,7 @@ public class EntityPigZombie extends EntityZombie
      */
     protected void dropFewItems(boolean par1, int par2)
     {
-        if (!mod_OldSurvivalMode.OldDrops){
+        if (!mod_WTFGameplay.OldDrops){
             int i = rand.nextInt(2 + par2);
             for (int j = 0; j < i; j++)
             {
@@ -194,7 +194,7 @@ public class EntityPigZombie extends EntityZombie
 
     protected void dropRareDrop(int par1)
     {
-        if (mod_OldSurvivalMode.DisableRareLoot){
+        if (mod_WTFGameplay.DisableRareLoot){
             return;
         }
         if (par1 > 0)
@@ -227,7 +227,7 @@ public class EntityPigZombie extends EntityZombie
      */
     protected int getDropItemId()
     {
-        if (mod_OldSurvivalMode.OldDrops){
+        if (mod_WTFGameplay.OldDrops){
             return Item.porkCooked.shiftedIndex;
         }
         return Item.rottenFlesh.shiftedIndex;

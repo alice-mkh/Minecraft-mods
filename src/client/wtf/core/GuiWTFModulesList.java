@@ -20,9 +20,7 @@ public class GuiWTFModulesList extends GuiScreen{
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
-        addModule(0,"Actions");
-        addModule(1,"Bugs");
-        addModule(2,"Eyecandy");
+        mod_WTF.addModules(this);
     }
     
     public void addModule(int i, String name){

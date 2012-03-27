@@ -20,7 +20,7 @@ public class EntityAIPanic extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-        if (!mod_OldSurvivalMode.AnimalsFlee){
+        if (!mod_WTFActions.AnimalsFlee){
             return false;
         }
         if (field_48316_a.getAITarget() == null)

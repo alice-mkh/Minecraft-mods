@@ -298,7 +298,7 @@ public class EntityArrow extends Entity
                 {
                     j1 += rand.nextInt(j1 / 2 + 2);
                 }
-                if (mod_OldSurvivalMode.OldCombatSystem){
+                if (mod_WTFGameplay.OldCombatSystem){
                     j1 = 4;
                 }
 

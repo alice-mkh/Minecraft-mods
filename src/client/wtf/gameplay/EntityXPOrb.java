@@ -54,7 +54,7 @@ public class EntityXPOrb extends Entity
 
     protected void entityInit()
     {
-        if(mod_OldSurvivalMode.DisableXP){
+        if(mod_WTFGameplay.DisableXP){
             setDead();
         }
     }

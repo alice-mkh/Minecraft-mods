@@ -16,7 +16,14 @@ public class mod_WTF extends BaseMod{
         moduleGui = new GuiWTFModulesList(null);
         ModLoader.registerKey(this, this.keySettings, false);
         ModLoader.addLocalization("key_settings", "Open WTF Settings");
-    };
+    }
+    
+    public static void addModules(GuiWTFModulesList gui){
+        gui.addModule(0,"Actions");
+        gui.addModule(1,"Bugs");
+        gui.addModule(2,"Gameplay");
+        gui.addModule(3,"Eyecandy");
+    }
     
     public static void addProperty(Object module, int i2, String name, boolean val, String var){
         int i1 = 0;
@@ -60,5 +67,5 @@ public class mod_WTF extends BaseMod{
     public static boolean[][] propvalue;
     public static Field[][] propfield;
     public static int[] proplength;
-    public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFEyecandy.class};
+    public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class};
 }

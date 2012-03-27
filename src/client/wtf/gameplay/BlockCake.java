@@ -142,7 +142,7 @@ public class BlockCake extends Block
      */
     private void eatCakeSlice(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
-        if (mod_OldSurvivalMode.DisableHunger){
+        if (mod_WTFGameplay.DisableHunger){
             eatCakeSliceOld(par1World, par2, par3, par4, par5EntityPlayer);
         }else{
             eatCakeSliceNew(par1World, par2, par3, par4, par5EntityPlayer);

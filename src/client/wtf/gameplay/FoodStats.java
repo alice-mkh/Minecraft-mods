@@ -30,7 +30,7 @@ public class FoodStats
      */
     public void addStats(int par1, float par2)
     {
-        if(mod_OldSurvivalMode.DisableHunger){
+        if(mod_WTFGameplay.DisableHunger){
             foodLevel = disabledLevel;
             foodSaturationLevel = disabledLevel;
         }else{
@@ -73,7 +73,7 @@ public class FoodStats
         {
             foodTimer++;
 
-            if (foodTimer >= 80 && !mod_OldSurvivalMode.DisableHunger)
+            if (foodTimer >= 80 && !mod_WTFGameplay.DisableHunger)
             {
                 par1EntityPlayer.heal(1);
                 foodTimer = 0;
@@ -85,7 +85,7 @@ public class FoodStats
 
             if (foodTimer >= 80)
             {
-                if (par1EntityPlayer.getHealth() > 10 || i >= 3 || par1EntityPlayer.getHealth() > 1 && i >= 2 && !mod_OldSurvivalMode.DisableHunger)
+                if (par1EntityPlayer.getHealth() > 10 || i >= 3 || par1EntityPlayer.getHealth() > 1 && i >= 2 && !mod_WTFGameplay.DisableHunger)
                 {
                     par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1);
                 }
@@ -106,7 +106,7 @@ public class FoodStats
     {
         if (par1NBTTagCompound.hasKey("foodLevel"))
         {
-            if(mod_OldSurvivalMode.DisableHunger){
+            if(mod_WTFGameplay.DisableHunger){
                 foodLevel = disabledLevel;
                 foodTimer = disabledLevel;
                 foodSaturationLevel = disabledLevel;
@@ -125,7 +125,7 @@ public class FoodStats
      */
     public void writeNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if(mod_OldSurvivalMode.DisableHunger){
+        if(mod_WTFGameplay.DisableHunger){
             par1NBTTagCompound.setInteger("foodLevel", disabledLevel);
             par1NBTTagCompound.setInteger("foodTickTimer", disabledLevel);
             par1NBTTagCompound.setFloat("foodSaturationLevel", disabledLevel);
@@ -143,7 +143,7 @@ public class FoodStats
      */
     public int getFoodLevel()
     {
-        if(mod_OldSurvivalMode.DisableHunger){
+        if(mod_WTFGameplay.DisableHunger){
             return disabledLevel;
         }
         return foodLevel;
@@ -167,7 +167,7 @@ public class FoodStats
      */
     public void addExhaustion(float par1)
     {
-        if(!mod_OldSurvivalMode.DisableHunger){
+        if(!mod_WTFGameplay.DisableHunger){
             foodExhaustionLevel = Math.min(foodExhaustionLevel + par1, 40F);
         }
     }
@@ -177,7 +177,7 @@ public class FoodStats
      */
     public float getSaturationLevel()
     {
-        if(mod_OldSurvivalMode.DisableHunger){
+        if(mod_WTFGameplay.DisableHunger){
             return disabledLevel;
         }
         return foodSaturationLevel;

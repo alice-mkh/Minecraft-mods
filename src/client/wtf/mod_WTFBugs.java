@@ -13,12 +13,12 @@ public class mod_WTFBugs extends mod_WTF{
         addProperty(this, 6, "Piston dupe",   false, "PistonDupe");
     }
 
-    public static boolean Boosters = false;
-    public static boolean LadderGaps = false;
-    public static boolean WaterLadders = false;
-    public static boolean LavaToasters = false;
-    public static boolean WaterLifts = false;
-    public static boolean PistonDupe = false;
+    public static boolean Boosters;
+    public static boolean LadderGaps;
+    public static boolean WaterLadders;
+    public static boolean LavaToasters;
+    public static boolean WaterLifts;
+    public static boolean PistonDupe;
 //Sand generator
 //Data value change bug
 //Infinite log burning
