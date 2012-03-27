@@ -21,12 +21,30 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     }
 
     /**
+     * main AI tick function, replaces updateEntityActionState
+     */
+    protected void updateAITick()
+    {
+        if (getGrowingAge() != 0)
+        {
+            inLove = 0;
+        }
+
+        super.updateAITick();
+    }
+
+    /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+
+        if (getGrowingAge() != 0)
+        {
+            inLove = 0;
+        }
 
         if (inLove > 0)
         {
@@ -73,7 +91,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
         {
             EntityAnimal entityanimal = (EntityAnimal)par1Entity;
 
-            if (func_48351_J() > 0 && entityanimal.func_48351_J() < 0)
+            if (getGrowingAge() > 0 && entityanimal.getGrowingAge() < 0)
             {
                 if ((double)par2 < 2.5D)
                 {
@@ -126,18 +144,18 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
 
         if (entityanimal != null)
         {
-            func_48350_c(6000);
-            par1EntityAnimal.func_48350_c(6000);
+            setGrowingAge(6000);
+            par1EntityAnimal.setGrowingAge(6000);
             inLove = 0;
             breeding = 0;
             entityToAttack = null;
             par1EntityAnimal.entityToAttack = null;
             par1EntityAnimal.breeding = 0;
             par1EntityAnimal.inLove = 0;
-            breeded = true;
-            par1EntityAnimal.breeded = true;
-            entityanimal.breeded = true;
-            entityanimal.func_48350_c(-24000);
+            breeded = false;
+            par1EntityAnimal.breeded = false;
+            entityanimal.breeded = false;
+            entityanimal.setGrowingAge(-24000);
             entityanimal.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
 
             for (int i = 0; i < 7; i++)
@@ -157,6 +175,9 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     public abstract EntityAnimal spawnBabyAnimal(EntityAnimal entityanimal);
 
+    /**
+     * Used when an entity is close enough to attack but cannot be seen (Creeper de-fuse)
+     */
     protected void attackBlockedEntity(Entity entity, float f)
     {
     }
@@ -235,7 +256,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
                 }
             }
         }
-        else if (func_48351_J() == 0)
+        else if (getGrowingAge() == 0)
         {
             List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityPlayer.class, boundingBox.expand(f, f, f));
 
@@ -249,7 +270,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
                 }
             }
         }
-        else if (func_48351_J() > 0)
+        else if (getGrowingAge() > 0)
         {
             List list2 = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
 
@@ -257,7 +278,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
             {
                 EntityAnimal entityanimal1 = (EntityAnimal)list2.get(k);
 
-                if (entityanimal1 != this && entityanimal1.func_48351_J() < 0)
+                if (entityanimal1 != this && entityanimal1.getGrowingAge() < 0)
                 {
                     return entityanimal1;
                 }
@@ -320,7 +341,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (itemstack != null && isWheat(itemstack) && func_48351_J() == 0)
+        if (itemstack != null && isWheat(itemstack) && getGrowingAge() == 0)
         {
             if (worldObj.getWorldInfo().getGameType() != 1)
             {
@@ -351,12 +372,15 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
         }
     }
 
-    public boolean func_48363_r_()
+    /**
+     * Returns if the entity is currently in 'love mode'.
+     */
+    public boolean isInLove()
     {
         return inLove > 0;
     }
 
-    public void func_48364_s_()
+    public void resetInLove()
     {
         inLove = 0;
     }
@@ -374,7 +398,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
         }
         else
         {
-            return func_48363_r_() && par1EntityAnimal.func_48363_r_();
+            return isInLove() && par1EntityAnimal.isInLove();
         }
     }
 }

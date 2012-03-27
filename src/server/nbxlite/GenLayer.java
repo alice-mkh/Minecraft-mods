@@ -15,8 +15,17 @@ public abstract class GenLayer
 {
     /** seed from World#getWorldSeed that is used in the LCG prng */
     private long worldGenSeed;
+
+    /** parent GenLayer that was provided via the constructor */
     protected GenLayer parent;
+
+    /**
+     * final part of the LCG prng that uses the chunk X, Z coords along with the other two seeds to generate
+     * pseudorandom numbers
+     */
     private long chunkSeed;
+
+    /** base seed to the LCG prng provided via the constructor */
     private long baseSeed;
 
     public static GenLayer[] func_48391_a(long par0, WorldType par2WorldType)
@@ -232,6 +241,9 @@ public abstract class GenLayer
         chunkSeed += par3;
     }
 
+    /**
+     * returns a LCG pseudo random number from [0, x). Args: int x
+     */
     protected int nextInt(int par1)
     {
         int i = (int)((chunkSeed >> 24) % (long)par1);

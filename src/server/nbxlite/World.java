@@ -12,6 +12,8 @@ public class World implements IBlockAccess
      * boolean; if true updates scheduled by scheduleBlockUpdate happen immediately
      */
     public boolean scheduledUpdatesAreImmediate;
+
+    /** A list of all Entities in all currently-loaded chunks */
     public List loadedEntityList;
     private List unloadedEntityList;
 
@@ -22,6 +24,8 @@ public class World implements IBlockAccess
 
     /** Set of scheduled ticks (used for checking if a tick already exists) */
     private Set scheduledTickSet;
+
+    /** A list of all TileEntities in all currently-loaded chunks */
     public List loadedTileEntityList;
     private List addedTileEntityList;
 
@@ -53,7 +57,16 @@ public class World implements IBlockAccess
     protected float rainingStrength;
     protected float prevThunderingStrength;
     protected float thunderingStrength;
+
+    /**
+     * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
+     * unused.
+     */
     protected int lastLightningBolt;
+
+    /**
+     * If > 0, the sky and skylight colors are illuminated by a lightning flash
+     */
     public int lightningFlash;
 
     /** true while the server is editing blocks */
@@ -63,7 +76,7 @@ public class World implements IBlockAccess
      * Contains a timestamp from when the World object was created. Is used in the session.lock file
      */
     private long lockTimestamp;
-    //FOR FORGE COMPATIBILITY
+//FOR FORGE COMPATIBILITY
 //     protected int autosavePeriod;
     public int autosavePeriod;
 
@@ -95,15 +108,21 @@ public class World implements IBlockAccess
      * chunkprovider's dummy if possible
      */
     public boolean findingSpawnPoint;
+
+    /**
+     * A flag indicating whether or not all players in the world are sleeping.
+     */
     private boolean allPlayersSleeping;
     public MapStorage mapStorage;
-    public final VillageCollection field_48096_A = new VillageCollection(this);
-    private final VillageSiege field_48097_O = new VillageSiege(this);
+    public final VillageCollection villageCollectionObj = new VillageCollection(this);
+    private final VillageSiege villageSiegeObj = new VillageSiege(this);
     private ArrayList collidingBoundingBoxes;
     private boolean scanningTileEntities;
 
     /** indicates if enemies are spawned or not */
     protected boolean spawnHostileMobs;
+
+    /** A flag indicating whether we should spawn peaceful mobs. */
     protected boolean spawnPeacefulMobs;
 
     /** populated by chunks that are within 9 chunks of any player */
@@ -218,8 +237,8 @@ public class World implements IBlockAccess
         worldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
 
-        if (flag)
-        {
+         if (flag)
+         {
             if (mod_noBiomesX.Generator==2){
                 if (mod_noBiomesX.MapFeatures==0){
                     BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;
@@ -471,6 +490,9 @@ public class World implements IBlockAccess
         return getBlockId(par1, i, par2);
     }
 
+    /**
+     * Saves the data for this World. If passed true, then only save up to 2 chunks, otherwise, save all chunks.
+     */
     public void saveWorld(boolean par1, IProgressUpdate par2IProgressUpdate)
     {
         if (!chunkProvider.canSave())
@@ -493,6 +515,9 @@ public class World implements IBlockAccess
         chunkProvider.saveChunks(par1, par2IProgressUpdate);
     }
 
+    /**
+     * Saves the global data associated with this World
+     */
     private void saveLevel()
     {
         checkSessionLock();
@@ -505,12 +530,6 @@ public class World implements IBlockAccess
      */
     public int getBlockId(int par1, int par2, int par3)
     {
-        if (mod_noBiomesX.Generator == 0 && mod_noBiomesX.MapFeatures==4){
-            if (par2<0){
-                return (byte)Block.bedrock.blockID;
-            }
-        }
-
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return 0;
@@ -533,6 +552,11 @@ public class World implements IBlockAccess
 
     public int func_48092_f(int par1, int par2, int par3)
     {
+        if (mod_noBiomesX.Generator == 0 && mod_noBiomesX.MapFeatures==4){
+            if (par2<0){
+                return (byte)Block.bedrock.blockID;
+            }
+        }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return 0;
@@ -549,7 +573,7 @@ public class World implements IBlockAccess
         }
         else
         {
-            return getChunkFromChunkCoords(par1 >> 4, par3 >> 4).func_48555_b(par1 & 0xf, par2, par3 & 0xf);
+            return getChunkFromChunkCoords(par1 >> 4, par3 >> 4).getBlockLightOpacity(par1 & 0xf, par2, par3 & 0xf);
         }
     }
 
@@ -564,9 +588,12 @@ public class World implements IBlockAccess
     public boolean func_48084_h(int par1, int par2, int par3)
     {
         int i = getBlockId(par1, par2, par3);
-        return Block.blocksList[i] != null && Block.blocksList[i].func_48124_n();
+        return Block.blocksList[i] != null && Block.blocksList[i].hasTileEntity();
     }
 
+    /**
+     * Returns whether a block exists at world coordinates x, y, z
+     */
     public boolean blockExists(int par1, int par2, int par3)
     {
         if (par2 < 0 || par2 >= 256)
@@ -580,7 +607,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Checks if the chunks within (argument 4) chunks of the given block exist
+     * Checks if any of the chunks within distance (argument 4) blocks of the given block exist
      */
     public boolean doChunksNearChunkExist(int par1, int par2, int par3, int par4)
     {
@@ -640,6 +667,9 @@ public class World implements IBlockAccess
         return chunkProvider.provideChunk(par1, par2);
     }
 
+    /**
+     * Sets the block ID and metadata of a block in global coordinates
+     */
     public boolean setBlockAndMetadata(int par1, int par2, int par3, int par4, int par5)
     {
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
@@ -806,6 +836,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Sets the block ID and metadata, then notifies neighboring blocks of the change Params: x, y, z, BlockID, Metadata
+     */
     public boolean setBlockAndMetadataWithNotify(int par1, int par2, int par3, int par4, int par5)
     {
         if (setBlockAndMetadata(par1, par2, par3, par4, par5))
@@ -819,6 +852,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Marks the block as needing an update with the renderer. Args: x, y, z
+     */
     public void markBlockNeedsUpdate(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -1094,7 +1130,7 @@ public class World implements IBlockAccess
 
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).func_48414_b(par2, par3, par4);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par2, par3, par4);
         }
     }
 
@@ -1102,7 +1138,7 @@ public class World implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).func_48414_b(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par1, par2, par3);
         }
     }
 
@@ -1428,6 +1464,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Start the skin for this entity downloading, if necessary, and increment its reference counter
+     */
     protected void obtainEntitySkin(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -1436,6 +1475,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Decrement the reference counter for this entity's skin image data
+     */
     protected void releaseEntitySkin(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -1460,7 +1502,7 @@ public class World implements IBlockAccess
             par1Entity.mountEntity(null);
         }
 
-        par1Entity.setEntityDead();
+        par1Entity.setDead();
 
         if (par1Entity instanceof EntityPlayer)
         {
@@ -1474,7 +1516,7 @@ public class World implements IBlockAccess
      */
     public void removePlayer(Entity par1Entity)
     {
-        par1Entity.setEntityDead();
+        par1Entity.setDead();
 
         if (par1Entity instanceof EntityPlayer)
         {
@@ -1587,6 +1629,9 @@ public class World implements IBlockAccess
         return (int)(f3 * (f1 - 4F) + (15F - f1));
     }
 
+    /**
+     * calls calculateCelestialAngle
+     */
     public float getCelestialAngle(float par1)
     {
         return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
@@ -1606,7 +1651,7 @@ public class World implements IBlockAccess
     public int getTopSolidOrLiquidBlock(int par1, int par2)
     {
         Chunk chunk = getChunkFromBlockCoords(par1, par2);
-        int i = chunk.func_48561_g() + 16;
+        int i = chunk.getTopFilledSegment() + 16;
         par1 &= 0xf;
         par2 &= 0xf;
 
@@ -1864,11 +1909,18 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Will update the entity in the world if the chunk the entity is in is currently loaded. Args: entity
+     */
     public void updateEntity(Entity par1Entity)
     {
         updateEntityWithOptionalForce(par1Entity, true);
     }
 
+    /**
+     * Will update the entity in the world if the chunk the entity is in is currently loaded or its forced to update.
+     * Args: entity, forceUpdate
+     */
     public void updateEntityWithOptionalForce(Entity par1Entity, boolean par2)
     {
         int i = MathHelper.floor_double(par1Entity.posX);
@@ -1963,6 +2015,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Returns true if there are no solid, live entities in the specified AxisAlignedBB
+     */
     public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
     {
         List list = getEntitiesWithinAABBExcludingEntity(null, par1AxisAlignedBB);
@@ -2072,6 +2127,9 @@ public class World implements IBlockAccess
         return false;
     }
 
+    /**
+     * Returns whether or not the given bounding box is on fire or not
+     */
     public boolean isBoundingBoxBurning(AxisAlignedBB par1AxisAlignedBB)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2234,6 +2292,9 @@ public class World implements IBlockAccess
         return false;
     }
 
+    /**
+     * Creates an explosion. Args: entity, x, y, z, strength
+     */
     public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
         return newExplosion(par1Entity, par2, par4, par6, par8, false);
@@ -2443,6 +2504,9 @@ public class World implements IBlockAccess
         entityRemoval.add(par1TileEntity);
     }
 
+    /**
+     * Returns true if the block at the specified coordinates is an opaque cube. Args: x, y, z
+     */
     public boolean isBlockOpaqueCube(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[getBlockId(par1, par2, par3)];
@@ -2465,7 +2529,7 @@ public class World implements IBlockAccess
      */
     public boolean isBlockNormalCube(int par1, int par2, int par3)
     {
-        return Block.func_48126_g(getBlockId(par1, par2, par3));
+        return Block.isNormalCube(getBlockId(par1, par2, par3));
     }
 
     /**
@@ -2520,6 +2584,9 @@ public class World implements IBlockAccess
         spawnPeacefulMobs = par2;
     }
 
+    /**
+     * Runs a single tick for the world
+     */
     public void tick()
     {
         if (getWorldInfo().isHardcoreModeEnabled() && difficultySetting < 3)
@@ -2550,6 +2617,7 @@ public class World implements IBlockAccess
         }
 
         Profiler.startSection("mobSpawner");
+//         SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
         if (worldProvider.worldType!=1){
             if (mod_noBiomesX.MobSpawning==2 || mod_noBiomesX.UseNewSpawning){
                 SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
@@ -2586,8 +2654,8 @@ public class World implements IBlockAccess
         Profiler.endStartSection("tickTiles");
         tickBlocksAndAmbiance();
         Profiler.endStartSection("village");
-        field_48096_A.func_48633_a();
-        field_48097_O.func_48500_a();
+        villageCollectionObj.tick();
+        villageSiegeObj.tick();
         Profiler.endSection();
     }
 
@@ -2805,7 +2873,7 @@ public class World implements IBlockAccess
         }
 
         Profiler.endStartSection("checkLight");
-        par3Chunk.func_48557_n();
+        par3Chunk.enqueueRelightChecks();
     }
 
     /**
@@ -2904,14 +2972,14 @@ public class World implements IBlockAccess
             }
 
             Profiler.endStartSection("tickTiles");
-            ExtendedBlockStorage aextendedblockstorage[] = chunk.func_48553_h();
+            ExtendedBlockStorage aextendedblockstorage[] = chunk.getBlockStorageArray();
             int i2 = aextendedblockstorage.length;
 
             for (int l2 = 0; l2 < i2; l2++)
             {
                 ExtendedBlockStorage extendedblockstorage = aextendedblockstorage[l2];
 
-                if (extendedblockstorage == null || !extendedblockstorage.func_48607_b())
+                if (extendedblockstorage == null || !extendedblockstorage.getNeedsRandomTick())
                 {
                     continue;
                 }
@@ -2923,14 +2991,14 @@ public class World implements IBlockAccess
                     int i4 = l3 & 0xf;
                     int j4 = l3 >> 8 & 0xf;
                     int k4 = l3 >> 16 & 0xf;
-                    int l4 = extendedblockstorage.func_48591_a(i4, k4, j4);
+                    int l4 = extendedblockstorage.getExtBlockID(i4, k4, j4);
                     j++;
                     Block block = Block.blocksList[l4];
 
-                    if (block != null && block.func_48125_m())
+                    if (block != null && block.getTickRandomly())
                     {
                         i++;
-                        block.updateTick(this, i4 + k, k4 + extendedblockstorage.func_48597_c(), j4 + l, rand);
+                        block.updateTick(this, i4 + k, k4 + extendedblockstorage.getYLocation(), j4 + l, rand);
                     }
                 }
             }
@@ -2959,7 +3027,7 @@ public class World implements IBlockAccess
     public boolean isBlockHydrated(int par1, int par2, int par3, boolean par4)
     {
         BiomeGenBase biomegenbase = func_48091_a(par1, par3);
-        float f = biomegenbase.func_48442_h();
+        float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
         {
@@ -3015,7 +3083,7 @@ public class World implements IBlockAccess
     public boolean canSnowAt(int par1, int par2, int par3)
     {
         BiomeGenBase biomegenbase = func_48091_a(par1, par3);
-        float f = biomegenbase.func_48442_h();
+        float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
         {
@@ -3497,7 +3565,7 @@ public class World implements IBlockAccess
         return arraylist;
     }
 
-    public Entity func_48085_a(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity)
+    public Entity findNearestEntityWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity)
     {
         List list = getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
         Entity entity = null;
@@ -3607,6 +3675,10 @@ public class World implements IBlockAccess
         unloadedEntityList.addAll(par1List);
     }
 
+    /**
+     * Returns true if the specified block can be placed at the given coordinates, optionally making sure there are no
+     * entities in the way. Args: blockID, x, y, z, ignoreEntities
+     */
     public boolean canBlockBePlacedAt(int par1, int par2, int par3, int par4, boolean par5, int par6)
     {
         int i = getBlockId(par2, par3, par4);
@@ -3632,7 +3704,7 @@ public class World implements IBlockAccess
         return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
     }
 
-    public PathEntity func_48083_a(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7)
+    public PathEntity getPathEntityToEntity(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7)
     {
         Profiler.startSection("pathfind");
         int i = MathHelper.floor_double(par1Entity.posX);
@@ -3651,7 +3723,7 @@ public class World implements IBlockAccess
         return pathentity;
     }
 
-    public PathEntity func_48088_a(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9)
+    public PathEntity getEntityPathToXYZ(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9)
     {
         Profiler.startSection("pathfind");
         int i = MathHelper.floor_double(par1Entity.posX);
@@ -3891,6 +3963,9 @@ public class World implements IBlockAccess
         saveHandler.checkSessionLock();
     }
 
+    /**
+     * Sets the world time.
+     */
     public void setWorldTime(long par1)
     {
         worldInfo.setWorldTime(par1);
@@ -3985,6 +4060,9 @@ public class World implements IBlockAccess
         return worldInfo;
     }
 
+    /**
+     * Updates the flag that indicates whether or not all players in the world are sleeping.
+     */
     public void updateAllPlayersSleepingFlag()
     {
         allPlayersSleeping = !playerEntities.isEmpty();
@@ -4010,6 +4088,9 @@ public class World implements IBlockAccess
         while (true);
     }
 
+    /**
+     * Wakes up all players in the world.
+     */
     protected void wakeUpAllPlayers()
     {
         allPlayersSleeping = false;
@@ -4034,6 +4115,9 @@ public class World implements IBlockAccess
         clearWeather();
     }
 
+    /**
+     * Returns whether or not all players in the world are fully asleep.
+     */
     public boolean isAllPlayersFullyAsleep()
     {
         if (allPlayersSleeping && !isRemote)
@@ -4069,14 +4153,20 @@ public class World implements IBlockAccess
         return prevRainingStrength + (rainingStrength - prevRainingStrength) * par1;
     }
 
+    /**
+     * Returns true if the current thunder strength (weighted with the rain strength) is greater than 0.9
+     */
     public boolean isThundering()
     {
-        return (double)getWeightedThunderStrength(1.0F) > 0.9D;
+        return (double)getWeightedThunderStrength(1.0F) > 0.90000000000000002D;
     }
 
+    /**
+     * Returns true if the current rain strength is greater than 0.2
+     */
     public boolean isRaining()
     {
-        return (double)getRainStrength(1.0F) > 0.2D;
+        return (double)getRainStrength(1.0F) > 0.20000000000000001D;
     }
 
     public boolean canLightningStrikeAt(int par1, int par2, int par3)
@@ -4095,7 +4185,6 @@ public class World implements IBlockAccess
         {
             return false;
         }
-
         if (mod_noBiomesX.Generator==2){
             BiomeGenBase biomegenbase = func_48091_a(par1, par3);
             if (biomegenbase.getEnableSnow())
@@ -4122,26 +4211,44 @@ public class World implements IBlockAccess
         return biomegenbase.func_48441_d();
     }
 
+    /**
+     * Assigns the given String id to the given MapDataBase using the MapStorage, removing any existing ones of the same
+     * id.
+     */
     public void setItemData(String par1Str, WorldSavedData par2WorldSavedData)
     {
         mapStorage.setData(par1Str, par2WorldSavedData);
     }
 
+    /**
+     * Loads an existing MapDataBase corresponding to the given String id from disk using the MapStorage, instantiating
+     * the given Class, or returns null if none such file exists. args: Class to instantiate, String dataid
+     */
     public WorldSavedData loadItemData(Class par1Class, String par2Str)
     {
         return mapStorage.loadData(par1Class, par2Str);
     }
 
+    /**
+     * Returns an unique new data id from the MapStorage for the given prefix and saves the idCounts map to the
+     * 'idcounts' file.
+     */
     public int getUniqueDataId(String par1Str)
     {
         return mapStorage.getUniqueDataId(par1Str);
     }
 
+    /**
+     * See description for func_28136_a.
+     */
     public void playAuxSFX(int par1, int par2, int par3, int par4, int par5)
     {
         playAuxSFXAtEntity(null, par1, par2, par3, par4, par5);
     }
 
+    /**
+     * See description for playAuxSFX.
+     */
     public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -4150,7 +4257,10 @@ public class World implements IBlockAccess
         }
     }
 
-    public int func_48095_y()
+    /**
+     * Returns current world height.
+     */
+    public int getHeight()
     {
         return 256;
     }
@@ -4165,6 +4275,9 @@ public class World implements IBlockAccess
         return rand;
     }
 
+    /**
+     * Updates lighting. Returns true if there are more lighting updates to update
+     */
     public boolean updatingLighting()
     {
         return false;
@@ -4195,7 +4308,7 @@ public class World implements IBlockAccess
         return getChunkProvider().findClosestStructure(this, par1Str, par2, par3, par4);
     }
 
-    //FOR FORGE COMPATIBILITY
+//FOR FORGE COMPATIBILITY
     public void addTileEntity(TileEntity entity)
     {
         List dest = scanningTileEntities ? addedTileEntityList : loadedTileEntityList;
@@ -4205,7 +4318,7 @@ public class World implements IBlockAccess
         }
     }
 
-    //FOR FORGE COMPATIBILITY
+//FOR FORGE COMPATIBILITY
     public boolean isBlockSolidOnSide(int X, int Y, int Z, int side)
     {
         Block block = Block.blocksList[getBlockId(X, Y, Z)];

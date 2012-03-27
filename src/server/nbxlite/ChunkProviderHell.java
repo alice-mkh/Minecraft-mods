@@ -6,43 +6,53 @@ import java.util.Random;
 public class ChunkProviderHell implements IChunkProvider
 {
     private Random hellRNG;
-    private NoiseGeneratorOctaves field_4240_i;
-    private NoiseGeneratorOctaves field_4239_j;
-    private NoiseGeneratorOctaves field_4238_k;
-    private NoiseGeneratorOctaves field_4237_l;
-    private NoiseGeneratorOctaves field_4236_m;
-    public NoiseGeneratorOctaves field_4248_a;
-    public NoiseGeneratorOctaves field_4247_b;
+
+    /** A NoiseGeneratorOctaves used in generating nether terrain */
+    private NoiseGeneratorOctaves netherNoiseGen1;
+    private NoiseGeneratorOctaves netherNoiseGen2;
+    private NoiseGeneratorOctaves netherNoiseGen3;
+
+    /** Determines whether slowsand or gravel can be generated at a location */
+    private NoiseGeneratorOctaves slowsandGravelNoiseGen;
+
+    /**
+     * Determines whether something other than nettherack can be generated at a location
+     */
+    private NoiseGeneratorOctaves netherrackExculsivityNoiseGen;
+    public NoiseGeneratorOctaves netherNoiseGen6;
+    public NoiseGeneratorOctaves netherNoiseGen7;
+
+    /** Is the world that the nether is getting generated. */
     private World worldObj;
     private double field_4234_o[];
     public MapGenNetherBridge genNetherBridge;
-    private double field_4233_p[];
+    private double slowsandNoise[];
     private double gravelNoise[];
-    private double field_4231_r[];
+    private double netherrackExclusivityNoise[];
     private MapGenBase netherCaveGenerator;
-    double field_4246_c[];
-    double field_4245_d[];
-    double field_4244_e[];
-    double field_4243_f[];
-    double field_4242_g[];
+    double noiseData1[];
+    double noiseData2[];
+    double noiseData3[];
+    double noiseData4[];
+    double noiseData5[];
     private boolean generateStructures;
 
     public ChunkProviderHell(World par1World, long par2)
     {
         genNetherBridge = new MapGenNetherBridge();
-        field_4233_p = new double[256];
+        slowsandNoise = new double[256];
         gravelNoise = new double[256];
-        field_4231_r = new double[256];
+        netherrackExclusivityNoise = new double[256];
         netherCaveGenerator = new MapGenCavesHell();
         worldObj = par1World;
         hellRNG = new Random(par2);
-        field_4240_i = new NoiseGeneratorOctaves(hellRNG, 16);
-        field_4239_j = new NoiseGeneratorOctaves(hellRNG, 16);
-        field_4238_k = new NoiseGeneratorOctaves(hellRNG, 8);
-        field_4237_l = new NoiseGeneratorOctaves(hellRNG, 4);
-        field_4236_m = new NoiseGeneratorOctaves(hellRNG, 4);
-        field_4248_a = new NoiseGeneratorOctaves(hellRNG, 10);
-        field_4247_b = new NoiseGeneratorOctaves(hellRNG, 16);
+        netherNoiseGen1 = new NoiseGeneratorOctaves(hellRNG, 16);
+        netherNoiseGen2 = new NoiseGeneratorOctaves(hellRNG, 16);
+        netherNoiseGen3 = new NoiseGeneratorOctaves(hellRNG, 8);
+        slowsandGravelNoiseGen = new NoiseGeneratorOctaves(hellRNG, 4);
+        netherrackExculsivityNoiseGen = new NoiseGeneratorOctaves(hellRNG, 4);
+        netherNoiseGen6 = new NoiseGeneratorOctaves(hellRNG, 10);
+        netherNoiseGen7 = new NoiseGeneratorOctaves(hellRNG, 16);
         generateStructures = par1World.getWorldInfo().isMapFeaturesEnabled() || (mod_noBiomesX.Generator==2 && mod_noBiomesX.MapFeatures!=0);
     }
 
@@ -127,17 +137,17 @@ public class ChunkProviderHell implements IChunkProvider
     {
         byte byte0 = 64;
         double d = 0.03125D;
-        field_4233_p = field_4237_l.generateNoiseOctaves(field_4233_p, par1 * 16, par2 * 16, 0, 16, 16, 1, d, d, 1.0D);
-        gravelNoise = field_4237_l.generateNoiseOctaves(gravelNoise, par1 * 16, 109, par2 * 16, 16, 1, 16, d, 1.0D, d);
-        field_4231_r = field_4236_m.generateNoiseOctaves(field_4231_r, par1 * 16, par2 * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
+        slowsandNoise = slowsandGravelNoiseGen.generateNoiseOctaves(slowsandNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d, d, 1.0D);
+        gravelNoise = slowsandGravelNoiseGen.generateNoiseOctaves(gravelNoise, par1 * 16, 109, par2 * 16, 16, 1, 16, d, 1.0D, d);
+        netherrackExclusivityNoise = netherrackExculsivityNoiseGen.generateNoiseOctaves(netherrackExclusivityNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
 
         for (int i = 0; i < 16; i++)
         {
             for (int j = 0; j < 16; j++)
             {
-                boolean flag = field_4233_p[i + j * 16] + hellRNG.nextDouble() * 0.2D > 0.0D;
-                boolean flag1 = gravelNoise[i + j * 16] + hellRNG.nextDouble() * 0.2D > 0.0D;
-                int k = (int)(field_4231_r[i + j * 16] / 3D + 3D + hellRNG.nextDouble() * 0.25D);
+                boolean flag = slowsandNoise[i + j * 16] + hellRNG.nextDouble() * 0.20000000000000001D > 0.0D;
+                boolean flag1 = gravelNoise[i + j * 16] + hellRNG.nextDouble() * 0.20000000000000001D > 0.0D;
+                int k = (int)(netherrackExclusivityNoise[i + j * 16] / 3D + 3D + hellRNG.nextDouble() * 0.25D);
                 int l = -1;
                 byte byte1 = (byte)Block.netherrack.blockID;
                 byte byte2 = (byte)Block.netherrack.blockID;
@@ -241,6 +251,10 @@ public class ChunkProviderHell implements IChunkProvider
         return provideChunk(par1, par2);
     }
 
+    /**
+     * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
+     * specified chunk from the map seed and chunk seed
+     */
     public Chunk provideChunk(int par1, int par2)
     {
         hellRNG.setSeed((long)par1 * 0x4f9939f508L + (long)par2 * 0x1ef1565bd5L);
@@ -252,7 +266,15 @@ public class ChunkProviderHell implements IChunkProvider
             genNetherBridge.generate(this, worldObj, par1, par2, abyte0);
         }
         Chunk chunk = new Chunk(worldObj, abyte0, par1, par2);
-        chunk.func_48554_m();
+        BiomeGenBase abiomegenbase[] = worldObj.getWorldChunkManager().loadBlockGeneratorData(null, par1 * 16, par2 * 16, 16, 16);
+        byte abyte1[] = chunk.getBiomeArray();
+
+        for (int i = 0; i < abyte1.length; i++)
+        {
+            abyte1[i] = (byte)abiomegenbase[i].biomeID;
+        }
+
+        chunk.resetRelightChecks();
         return chunk;
     }
 
@@ -263,13 +285,13 @@ public class ChunkProviderHell implements IChunkProvider
             par1ArrayOfDouble = new double[par5 * par6 * par7];
         }
 
-        double d = 684.412D;
-        double d1 = 2053.236D;
-        field_4243_f = field_4248_a.generateNoiseOctaves(field_4243_f, par2, par3, par4, par5, 1, par7, 1.0D, 0.0D, 1.0D);
-        field_4242_g = field_4247_b.generateNoiseOctaves(field_4242_g, par2, par3, par4, par5, 1, par7, 100D, 0.0D, 100D);
-        field_4246_c = field_4238_k.generateNoiseOctaves(field_4246_c, par2, par3, par4, par5, par6, par7, d / 80D, d1 / 60D, d / 80D);
-        field_4245_d = field_4240_i.generateNoiseOctaves(field_4245_d, par2, par3, par4, par5, par6, par7, d, d1, d);
-        field_4244_e = field_4239_j.generateNoiseOctaves(field_4244_e, par2, par3, par4, par5, par6, par7, d, d1, d);
+        double d = 684.41200000000003D;
+        double d1 = 2053.2359999999999D;
+        noiseData4 = netherNoiseGen6.generateNoiseOctaves(noiseData4, par2, par3, par4, par5, 1, par7, 1.0D, 0.0D, 1.0D);
+        noiseData5 = netherNoiseGen7.generateNoiseOctaves(noiseData5, par2, par3, par4, par5, 1, par7, 100D, 0.0D, 100D);
+        noiseData1 = netherNoiseGen3.generateNoiseOctaves(noiseData1, par2, par3, par4, par5, par6, par7, d / 80D, d1 / 60D, d / 80D);
+        noiseData2 = netherNoiseGen1.generateNoiseOctaves(noiseData2, par2, par3, par4, par5, par6, par7, d, d1, d);
+        noiseData3 = netherNoiseGen2.generateNoiseOctaves(noiseData3, par2, par3, par4, par5, par6, par7, d, d1, d);
         int i = 0;
         int j = 0;
         double ad[] = new double[par6];
@@ -295,7 +317,7 @@ public class ChunkProviderHell implements IChunkProvider
         {
             for (int i1 = 0; i1 < par7; i1++)
             {
-                double d3 = (field_4243_f[j] + 256D) / 512D;
+                double d3 = (noiseData4[j] + 256D) / 512D;
 
                 if (d3 > 1.0D)
                 {
@@ -303,7 +325,7 @@ public class ChunkProviderHell implements IChunkProvider
                 }
 
                 double d4 = 0.0D;
-                double d5 = field_4242_g[j] / 8000D;
+                double d5 = noiseData5[j] / 8000D;
 
                 if (d5 < 0.0D)
                 {
@@ -321,7 +343,7 @@ public class ChunkProviderHell implements IChunkProvider
                         d5 = -1D;
                     }
 
-                    d5 /= 1.4D;
+                    d5 /= 1.3999999999999999D;
                     d5 /= 2D;
                     d3 = 0.0D;
                 }
@@ -343,9 +365,9 @@ public class ChunkProviderHell implements IChunkProvider
                 {
                     double d6 = 0.0D;
                     double d7 = ad[j1];
-                    double d8 = field_4245_d[i] / 512D;
-                    double d9 = field_4244_e[i] / 512D;
-                    double d10 = (field_4246_c[i] / 10D + 1.0D) / 2D;
+                    double d8 = noiseData2[i] / 512D;
+                    double d9 = noiseData3[i] / 512D;
+                    double d10 = (noiseData1[i] / 10D + 1.0D) / 2D;
 
                     if (d10 < 0.0D)
                     {
@@ -476,11 +498,18 @@ public class ChunkProviderHell implements IChunkProvider
         return true;
     }
 
+    /**
+     * Unloads the 100 oldest chunks from memory, due to a bug with chunkSet.add() never being called it thinks the list
+     * is always empty and will not remove any chunks.
+     */
     public boolean unload100OldestChunks()
     {
         return false;
     }
 
+    /**
+     * Returns if the IChunkProvider supports saving.
+     */
     public boolean canSave()
     {
         return true;

@@ -41,12 +41,12 @@ public class Converter{
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
                 for (int y=128; y<height; y++){
-                    ExtendedBlockStorage extendedblockstorage = chunk.func_48553_h()[y >> 4];
+                    ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
                     if (extendedblockstorage == null)
                     {
-                        extendedblockstorage = chunk.func_48553_h()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
+                        extendedblockstorage = chunk.getBlockStorageArray()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
                     }
-                    extendedblockstorage.func_48588_a(x, y & 0xf, z, finiteWorld[indexIndev(x+(x1*16), y, z+(z1*16))]);
+                    extendedblockstorage.setExtBlockID(x, y & 0xf, z, finiteWorld[indexIndev(x+(x1*16), y, z+(z1*16))]);
                 }
             }
         }

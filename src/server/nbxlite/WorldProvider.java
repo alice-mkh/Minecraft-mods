@@ -4,14 +4,21 @@ import net.minecraft.src.nbxlite.chunkproviders.*;
 
 public abstract class WorldProvider
 {
+    /** world object being used */
     public World worldObj;
     public WorldType terrainType;
+
+    /** World chunk manager being used to generate chunks */
     public WorldChunkManager worldChunkMgr;
 
     /**
      * States whether the Hell world provider is used(true) or if the normal world provider is used(false)
      */
     public boolean isHellWorld;
+
+    /**
+     * A boolean that tells if a world does not have a sky. Used in calculating weather and skylight
+     */
     public boolean hasNoSky;
     public float lightBrightnessTable[];
 
@@ -28,6 +35,9 @@ public abstract class WorldProvider
         colorsSunriseSunset = new float[4];
     }
 
+    /**
+     * associate an existing world with a World provider, and setup its lightbrightness table
+     */
     public final void registerWorld(World par1World)
     {
         worldObj = par1World;
@@ -53,9 +63,12 @@ public abstract class WorldProvider
         }
     }
 
+    /**
+     * creates a new world chunk manager for WorldProvider
+     */
     protected void registerWorldChunkManager()
     {
-        if (worldObj.getWorldInfo().getTerrainType() == WorldType.field_48458_c)
+        if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT)
         {
             worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F);
         }
@@ -70,7 +83,7 @@ public abstract class WorldProvider
      */
     public IChunkProvider getChunkProvider()
     {
-        if (terrainType == WorldType.field_48458_c)
+        if (terrainType == WorldType.FLAT)
         {
             return new ChunkProviderFlat(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
         }
@@ -95,6 +108,9 @@ public abstract class WorldProvider
         return i == Block.sand.blockID;
     }
 
+    /**
+     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
+     */
     public float calculateCelestialAngle(long par1, float par3)
     {
         int i = (int)(par1 % 24000L);
@@ -121,6 +137,9 @@ public abstract class WorldProvider
         return true;
     }
 
+    /**
+     * True if the player can respawn in this dimension (true = overworld, false = nether).
+     */
     public boolean canRespawnHere()
     {
         return true;
@@ -158,7 +177,7 @@ public abstract class WorldProvider
 
     public int getAverageGroundLevel()
     {
-        return terrainType != WorldType.field_48458_c ? 64 : 4;
+        return terrainType != WorldType.FLAT ? 64 : 4;
     }
 
 //FORGE COMPATIBILITY
