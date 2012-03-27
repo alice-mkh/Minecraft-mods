@@ -10,7 +10,7 @@ public class mod_WTFActions extends mod_WTF{
         addProperty(this, 3, "Smelt items on fire", false, "SmeltOnFire");
         addProperty(this, 4, "Unnerfed fire",       false, "FastFire");
         addProperty(this, 5, "Punch sheep",         false, "PunchSheep");
-        addProperty(this, 6, "Animal panic",        false, "AnimalsFlee");
+        addProperty(this, 6, "Animal panic",        true,  "AnimalsFlee");
         loadModuleProperties(0);
     }
 
