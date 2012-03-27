@@ -231,7 +231,7 @@ public abstract class WorldProvider
 
     public boolean isSkyColored()
     {
-        if ((mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3) || mod_noBiomesX.MapTheme!=0){
+        if (mod_noBiomesX.Generator==0 && (mod_noBiomesX.MapFeatures>=3 || mod_noBiomesX.MapTheme!=0)){
             return false;
         }
         return true;
