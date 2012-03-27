@@ -52,6 +52,7 @@ public class GuiWTFSettingsList extends GuiScreen{
         if (guibutton.id > 1){
             boolean b = !mod_WTF.propvalue[id][guibutton.id-1];
             mod_WTF.propvalue[id][guibutton.id-1]=b;
+            mod_WTF.saveModuleProperties(id);
             try{
                 mod_WTF.propfield[id][guibutton.id-1].setBoolean(mod_WTF.class, b);
             }catch(Exception ex){

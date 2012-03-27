@@ -11,6 +11,7 @@ public class mod_WTFBugs extends mod_WTF{
         addProperty(this, 4, "Water ladders", false, "WaterLadders");
         addProperty(this, 5, "Ladder gaps",   false, "LadderGaps");
         addProperty(this, 6, "Piston dupe",   false, "PistonDupe");
+        loadModuleProperties(1);
     }
 
     public static boolean Boosters;

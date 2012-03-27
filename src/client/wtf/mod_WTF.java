@@ -18,6 +18,51 @@ public class mod_WTF extends BaseMod{
         ModLoader.addLocalization("key_settings", "Open WTF Settings");
     }
     
+    public static void saveModuleProperties(int id){
+        Properties properties = new Properties();
+        try{
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/WTF"+id+".properties").toString());
+            FileOutputStream fileoutputstream = new FileOutputStream(file);
+            for (int i = 1; i <= proplength[id]; i++){
+                properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]));
+            }
+            properties.store(fileoutputstream, "WTF config");
+            fileoutputstream.close();
+        }
+        catch(IOException ioexception){
+            ioexception.printStackTrace();
+        }
+    }
+    
+    public static void loadModuleProperties(int id){
+        Properties properties = new Properties();
+        try{
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/WTF"+id+".properties").toString());
+            boolean flag = file.createNewFile();
+            if(flag){
+                FileOutputStream fileoutputstream = new FileOutputStream(file);
+                for (int i = 1; i <= proplength[id]; i++){
+                    properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]));
+                }
+                properties.store(fileoutputstream, "WTF config");
+                fileoutputstream.close();
+            }
+            try{
+                properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/WTF"+id+".properties").toString()));
+                for (int i = 1; i <= proplength[id]; i++){
+                    boolean val = Boolean.parseBoolean(properties.getProperty(propfield[id][i].getName()));;
+                    propvalue[id][i] = val;
+                    propfield[id][i].setBoolean(modules[id], val);
+                }
+            }catch(Exception ex){
+                System.out.println(ex);
+            }
+        }
+        catch(IOException ioexception){
+            ioexception.printStackTrace();
+        }
+    }
+
     public static void addModules(GuiWTFModulesList gui){
         gui.addModule(0,"Actions");
         gui.addModule(1,"Bugs");

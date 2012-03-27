@@ -11,6 +11,7 @@ public class mod_WTFEyecandy extends mod_WTF{
         addProperty(this, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
         addProperty(this, 5, "Item sway",           true,  "ItemSway");
         addProperty(this, 6, "2D items",            false, "Items2D");
+        loadModuleProperties(3);
     }
 
     public void addRenderer(Map map){

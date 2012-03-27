@@ -16,6 +16,7 @@ public class mod_WTFGameplay extends mod_WTF{
         addProperty(this, 9, "Old combat system",     false, "OldCombatSystem");
         addProperty(this, 10,"Old armor",             false, "OldArmor");
         addProperty(this, 11,"Allow debug screen",    true,  "AllowDebug");
+        loadModuleProperties(2);
         setSwordDamage(OldCombatSystem);
         setArmorDamage(OldArmor);
         ModLoader.setInGameHook(this, true, true);
