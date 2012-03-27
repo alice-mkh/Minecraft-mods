@@ -21,12 +21,30 @@ public abstract class EntityAnimal extends EntityAgeable
     }
 
     /**
+     * main AI tick function, replaces updateEntityActionState
+     */
+    protected void updateAITick()
+    {
+        if (getGrowingAge() != 0)
+        {
+            inLove = 0;
+        }
+
+        super.updateAITick();
+    }
+
+    /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+
+        if (getGrowingAge() != 0)
+        {
+            inLove = 0;
+        }
 
         if (inLove > 0)
         {
@@ -73,7 +91,7 @@ public abstract class EntityAnimal extends EntityAgeable
         {
             EntityAnimal entityanimal = (EntityAnimal)par1Entity;
 
-            if (func_48123_at() > 0 && entityanimal.func_48123_at() < 0)
+            if (getGrowingAge() > 0 && entityanimal.getGrowingAge() < 0)
             {
                 if ((double)par2 < 2.5D)
                 {
@@ -126,8 +144,8 @@ public abstract class EntityAnimal extends EntityAgeable
 
         if (entityanimal != null)
         {
-            func_48122_d(6000);
-            par1EntityAnimal.func_48122_d(6000);
+            setGrowingAge(6000);
+            par1EntityAnimal.setGrowingAge(6000);
             inLove = 0;
             breeding = 0;
             entityToAttack = null;
@@ -137,7 +155,7 @@ public abstract class EntityAnimal extends EntityAgeable
             breeded = true;
             entityanimal.breeded = true;
             par1EntityAnimal.breeded = true;
-            entityanimal.func_48122_d(-24000);
+            entityanimal.setGrowingAge(-24000);
             entityanimal.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
 
             for (int i = 0; i < 7; i++)
@@ -153,7 +171,7 @@ public abstract class EntityAnimal extends EntityAgeable
     }
 
     /**
-     * [This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.]
+     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
      */
     public abstract EntityAnimal spawnBabyAnimal(EntityAnimal entityanimal);
 
@@ -238,7 +256,7 @@ public abstract class EntityAnimal extends EntityAgeable
                 }
             }
         }
-        else if (func_48123_at() == 0)
+        else if (getGrowingAge() == 0)
         {
             List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityPlayer.class, boundingBox.expand(f, f, f));
 
@@ -252,7 +270,7 @@ public abstract class EntityAnimal extends EntityAgeable
                 }
             }
         }
-        else if (func_48123_at() > 0)
+        else if (getGrowingAge() > 0)
         {
             List list2 = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
 
@@ -260,7 +278,7 @@ public abstract class EntityAnimal extends EntityAgeable
             {
                 EntityAnimal entityanimal1 = (EntityAnimal)list2.get(k);
 
-                if (entityanimal1 != this && entityanimal1.func_48123_at() < 0)
+                if (entityanimal1 != this && entityanimal1.getGrowingAge() < 0)
                 {
                     return entityanimal1;
                 }
@@ -282,7 +300,7 @@ public abstract class EntityAnimal extends EntityAgeable
     }
 
     /**
-     * Get number of ticks, at least during which the living entity will be silent
+     * Get number of ticks, at least during which the living entity will be silent.
      */
     public int getTalkInterval()
     {
@@ -300,6 +318,9 @@ public abstract class EntityAnimal extends EntityAgeable
         return true;
     }
 
+    /**
+     * Get the experience points the entity currently has.
+     */
     protected int getExperiencePoints(EntityPlayer par1EntityPlayer)
     {
         return 1 + worldObj.rand.nextInt(3);
@@ -320,7 +341,7 @@ public abstract class EntityAnimal extends EntityAgeable
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (itemstack != null && isWheat(itemstack) && func_48123_at() == 0)
+        if (itemstack != null && isWheat(itemstack) && getGrowingAge() == 0)
         {
             if (worldObj.getWorldInfo().getGameType() != 1)
             {
@@ -351,12 +372,15 @@ public abstract class EntityAnimal extends EntityAgeable
         }
     }
 
-    public boolean func_48136_o_()
+    /**
+     * Returns if the entity is currently in 'love mode'.
+     */
+    public boolean isInLove()
     {
         return inLove > 0;
     }
 
-    public void func_48134_p_()
+    public void resetInLove()
     {
         inLove = 0;
     }
@@ -374,7 +398,7 @@ public abstract class EntityAnimal extends EntityAgeable
         }
         else
         {
-            return func_48136_o_() && par1EntityAnimal.func_48136_o_();
+            return isInLove() && par1EntityAnimal.isInLove();
         }
     }
 }

@@ -68,14 +68,7 @@ public abstract class WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        if (worldObj.getWorldInfo().getTerrainType() == WorldType.field_48636_c)
-        {
-            worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F);
-        }
-        else
-        {
-            worldChunkMgr = new WorldChunkManager(worldObj);
-        }
+        worldChunkMgr = terrainType.getChunkManager(worldObj);
     }
 
     /**
@@ -83,15 +76,15 @@ public abstract class WorldProvider
      */
     public IChunkProvider getChunkProvider()
     {
-        if (terrainType == WorldType.field_48636_c)
+        if (terrainType == WorldType.FLAT)
         {
             return new ChunkProviderFlat(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
         }
         else
         {
-//             return new ChunkProviderGenerate(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
             return new ChunkProviderGenerate2(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
         }
+//         return terrainType.getChunkGenerator(worldObj);
     }
 
     /**
@@ -208,24 +201,7 @@ public abstract class WorldProvider
 
     public static WorldProvider getProviderForDimension(int par0)
     {
-        if (par0 == -1)
-        {
-            return new WorldProviderHell();
-        }
-
-        if (par0 == 0)
-        {
-            return new WorldProviderSurface();
-        }
-
-        if (par0 == 1)
-        {
-            return new WorldProviderEnd();
-        }
-        else
-        {
-            return null;
-        }
+        return ((WorldProvider)(par0 != -1 ? par0 != 0 ? par0 != 1 ? null : new WorldProviderEnd() : new WorldProviderSurface() : new WorldProviderHell()));
     }
 
     /**
@@ -249,10 +225,8 @@ public abstract class WorldProvider
                 return mod_noBiomesX.IndevHeight+2;
             }
             return 108F;
-        } else
-        {
-            return 128F;
         }
+        return 128F;
     }
 
     public boolean isSkyColored()
@@ -273,7 +247,7 @@ public abstract class WorldProvider
 
     public int getAverageGroundLevel()
     {
-        return terrainType != WorldType.field_48636_c ? 64 : 4;
+        return terrainType.getSeaLevel(worldObj);
     }
 
     /**
@@ -281,12 +255,17 @@ public abstract class WorldProvider
      */
     public boolean getWorldHasNoSky()
     {
-        return terrainType != WorldType.field_48636_c && !hasNoSky;
+        return terrainType.hasVoidParticles(hasNoSky);
     }
 
-    public double func_46065_j()
+    /**
+     * Returns a double value representing the Y value relative to the top of the map at which void fog is at its
+     * maximum. The default factor of 0.03125 relative to 256, for example, means the void fog will be at its maximum at
+     * (256*0.03125), or 8.
+     */
+    public double getVoidFogYFactor()
     {
-        return terrainType != WorldType.field_48636_c ? 0.03125D : 1.0D;
+        return terrainType.voidFadeMagnitude();
     }
 
     public boolean func_48218_b(int par1, int par2)

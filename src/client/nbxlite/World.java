@@ -17,7 +17,13 @@ public class World implements IBlockAccess
     /** A list of all Entities in all currently-loaded chunks */
     public List loadedEntityList;
     private List unloadedEntityList;
+
+    /**
+     * TreeSet of scheduled ticks which is used as a priority queue for the ticks
+     */
     private TreeSet scheduledTickTreeSet;
+
+    /** Set of scheduled ticks (used for checking if a tick already exists) */
     private Set scheduledTickSet;
 
     /** A list of all TileEntities in all currently-loaded chunks */
@@ -29,6 +35,8 @@ public class World implements IBlockAccess
 
     /** Array list of players in the world. */
     public List playerEntities;
+
+    /** a list of all the lightning entities */
     public List weatherEffects;
     private long cloudColour;
 
@@ -41,6 +49,10 @@ public class World implements IBlockAccess
      * 16x128x16 field.
      */
     protected int updateLCG;
+
+    /**
+     * magic number used to generate fast random numbers for 3d distribution within a chunk
+     */
     protected final int DIST_HASH_MAGIC = 0x3c6ef35f;
     protected float prevRainingStrength;
     protected float rainingStrength;
@@ -101,8 +113,8 @@ public class World implements IBlockAccess
      */
     private boolean allPlayersSleeping;
     public MapStorage mapStorage;
-    public final VillageCollection field_48465_A;
-    private final VillageSiege field_48466_O;
+    public final VillageCollection villageCollectionObj;
+    private final VillageSiege villageSiegeObj;
     private ArrayList collidingBoundingBoxes;
     private boolean scanningTileEntities;
 
@@ -114,6 +126,8 @@ public class World implements IBlockAccess
 
     /** Positions to update */
     protected Set activeChunkSet;
+
+    /** number of ticks until the next random ambients play */
     private int ambientTickCountdown;
     int lightUpdateBlockList[];
 
@@ -183,8 +197,8 @@ public class World implements IBlockAccess
         rand = new Random();
         isNewWorld = false;
         worldAccesses = new ArrayList();
-        field_48465_A = new VillageCollection(this);
-        field_48466_O = new VillageSiege(this);
+        villageCollectionObj = new VillageCollection(this);
+        villageSiegeObj = new VillageSiege(this);
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -232,8 +246,8 @@ public class World implements IBlockAccess
         rand = new Random();
         isNewWorld = false;
         worldAccesses = new ArrayList();
-        field_48465_A = new VillageCollection(this);
-        field_48466_O = new VillageSiege(this);
+        villageCollectionObj = new VillageCollection(this);
+        villageSiegeObj = new VillageSiege(this);
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -289,8 +303,8 @@ public class World implements IBlockAccess
         rand = new Random();
         isNewWorld = false;
         worldAccesses = new ArrayList();
-        field_48465_A = new VillageCollection(this);
-        field_48466_O = new VillageSiege(this);
+        villageCollectionObj = new VillageCollection(this);
+        villageSiegeObj = new VillageSiege(this);
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -334,7 +348,7 @@ public class World implements IBlockAccess
 
         int gen = worldInfo.getMapGen();
         if(flag || gen == 0)
-        {
+         {
             worldInfo.setMapGen(mod_noBiomesX.Generator+1);
             worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
             worldInfo.setMapTheme(mod_noBiomesX.MapTheme);
@@ -379,7 +393,6 @@ public class World implements IBlockAccess
                         chunkProvider.provideChunk(x,z);
                     }
                 }
-                
                 mod_noBiomesX.IndevSpawnX = gen2.spawnX;
                 mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                 mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
@@ -412,7 +425,7 @@ public class World implements IBlockAccess
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);
             }
-            generateSpawnPoint();
+             generateSpawnPoint();
         } else
         {
             mapGen = worldInfo.getMapGen();
@@ -423,7 +436,8 @@ public class World implements IBlockAccess
             mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
             mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
             mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
-        }
+         }
+
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -498,6 +512,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Creates the chunk provider for this world. Called in the constructor. Retrieves provider from worldProvider?
+     */
     protected IChunkProvider createChunkProvider()
     {
         IChunkLoader ichunkloader = saveHandler.getChunkLoader(worldProvider);
@@ -771,7 +788,6 @@ public class World implements IBlockAccess
                 return (byte)Block.bedrock.blockID;
             }
         }
-
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return 0;
@@ -810,7 +826,7 @@ public class World implements IBlockAccess
         }
         else
         {
-            return getChunkFromChunkCoords(par1 >> 4, par3 >> 4).func_48499_b(par1 & 0xf, par2, par3 & 0xf);
+            return getChunkFromChunkCoords(par1 >> 4, par3 >> 4).getBlockLightOpacity(par1 & 0xf, par2, par3 & 0xf);
         }
     }
 
@@ -838,7 +854,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Checks if the chunks within (argument 4) chunks of the given block exist
+     * Checks if any of the chunks within distance (argument 4) blocks of the given block exist
      */
     public boolean doChunksNearChunkExist(int par1, int par2, int par3, int par4)
     {
@@ -1296,8 +1312,8 @@ public class World implements IBlockAccess
     }
 
     /**
-     * 'Brightness for SkyBlock.Sky is clear white and (through color computing i assume) DEPENDANT ON DAYTIME.
-     * Brightness for SkyBlock.Block is yellowish and independant'
+     * Brightness for SkyBlock.Sky is clear white and (through color computing it is assumed) DEPENDENT ON DAYTIME.
+     * Brightness for SkyBlock.Block is yellowish and independent.
      */
     public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
     {
@@ -1432,7 +1448,7 @@ public class World implements IBlockAccess
 
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).func_48180_b(par2, par3, par4);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par2, par3, par4);
         }
     }
 
@@ -1440,7 +1456,7 @@ public class World implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).func_48180_b(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par1, par2, par3);
         }
     }
 
@@ -1489,6 +1505,9 @@ public class World implements IBlockAccess
         return skylightSubtracted < 4;
     }
 
+    /**
+     * ray traces all blocks, including non-collideable ones
+     */
     public MovingObjectPosition rayTraceBlocks(Vec3D par1Vec3D, Vec3D par2Vec3D)
     {
         return rayTraceBlocks_do_do(par1Vec3D, par2Vec3D, false, false);
@@ -1748,6 +1767,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * adds a lightning bolt to the list of lightning bolts in this world.
+     */
     public boolean addWeatherEffect(Entity par1Entity)
     {
         weatherEffects.add(par1Entity);
@@ -1825,7 +1847,7 @@ public class World implements IBlockAccess
             par1Entity.mountEntity(null);
         }
 
-        par1Entity.setEntityDead();
+        par1Entity.setDead();
 
         if (par1Entity instanceof EntityPlayer)
         {
@@ -1935,27 +1957,6 @@ public class World implements IBlockAccess
         return (int)(f3 * (f1 - 4F) + (15F - f1));
     }
 
-    public float func_35464_b(float par1)
-    {
-        float f = getCelestialAngle(par1);
-        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
-
-        if (f1 < 0.0F)
-        {
-            f1 = 0.0F;
-        }
-
-        if (f1 > 1.0F)
-        {
-            f1 = 1.0F;
-        }
-
-        f1 = 1.0F - f1;
-        f1 = (float)((double)f1 * (1.0D - (double)(getRainStrength(par1) * 5F) / 16D));
-        f1 = (float)((double)f1 * (1.0D - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
-        return f1 * 0.8F + 0.2F;
-    }
-
    public Vec3D computeFogColor(float f)
     {
         float f1 = getCelestialAngle(f);
@@ -1975,6 +1976,27 @@ public class World implements IBlockAccess
         f4 *= f2 * 0.94F + 0.06F;
         f5 *= f2 * 0.91F + 0.09F;
         return Vec3D.createVector(f3, f4, f5);
+    }
+
+    public float func_35464_b(float par1)
+    {
+        float f = getCelestialAngle(par1);
+        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
+
+        if (f1 < 0.0F)
+        {
+            f1 = 0.0F;
+        }
+
+        if (f1 > 1.0F)
+        {
+            f1 = 1.0F;
+        }
+
+        f1 = 1.0F - f1;
+        f1 = (float)((double)f1 * (1.0D - (double)(getRainStrength(par1) * 5F) / 16D));
+        f1 = (float)((double)f1 * (1.0D - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
+        return f1 * 0.8F + 0.2F;
     }
 
     /**
@@ -2070,72 +2092,6 @@ public class World implements IBlockAccess
         f8 *= f4;
         return Vec3D.createVector(f5, f6, f8);
     }
-/*
-    public Vec3D getSkyColor(Entity par1Entity, float par2)
-    {
-        float f = getCelestialAngle(par2);
-        float f1 = MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
-
-        if (f1 < 0.0F)
-        {
-            f1 = 0.0F;
-        }
-
-        if (f1 > 1.0F)
-        {
-            f1 = 1.0F;
-        }
-
-        int i = MathHelper.floor_double(par1Entity.posX);
-        int j = MathHelper.floor_double(par1Entity.posZ);
-        BiomeGenBase biomegenbase = func_48454_a(i, j);
-        float f2 = biomegenbase.func_48411_i();
-        int k = biomegenbase.getSkyColorByTemp(f2);
-        float f3 = (float)(k >> 16 & 0xff) / 255F;
-        float f4 = (float)(k >> 8 & 0xff) / 255F;
-        float f5 = (float)(k & 0xff) / 255F;
-        f3 *= f1;
-        f4 *= f1;
-        f5 *= f1;
-        float f6 = getRainStrength(par2);
-
-        if (f6 > 0.0F)
-        {
-            float f7 = (f3 * 0.3F + f4 * 0.59F + f5 * 0.11F) * 0.6F;
-            float f9 = 1.0F - f6 * 0.75F;
-            f3 = f3 * f9 + f7 * (1.0F - f9);
-            f4 = f4 * f9 + f7 * (1.0F - f9);
-            f5 = f5 * f9 + f7 * (1.0F - f9);
-        }
-
-        float f8 = getWeightedThunderStrength(par2);
-
-        if (f8 > 0.0F)
-        {
-            float f10 = (f3 * 0.3F + f4 * 0.59F + f5 * 0.11F) * 0.2F;
-            float f12 = 1.0F - f8 * 0.75F;
-            f3 = f3 * f12 + f10 * (1.0F - f12);
-            f4 = f4 * f12 + f10 * (1.0F - f12);
-            f5 = f5 * f12 + f10 * (1.0F - f12);
-        }
-
-        if (lightningFlash > 0)
-        {
-            float f11 = (float)lightningFlash - par2;
-
-            if (f11 > 1.0F)
-            {
-                f11 = 1.0F;
-            }
-
-            f11 *= 0.45F;
-            f3 = f3 * (1.0F - f11) + 0.8F * f11;
-            f4 = f4 * (1.0F - f11) + 0.8F * f11;
-            f5 = f5 * (1.0F - f11) + 1.0F * f11;
-        }
-
-        return Vec3D.createVector(f3, f4, f5);
-    }*/
 
     /**
      * calls calculateCelestialAngle
@@ -2234,7 +2190,7 @@ public class World implements IBlockAccess
     public int getTopSolidOrLiquidBlock(int par1, int par2)
     {
         Chunk chunk = getChunkFromBlockCoords(par1, par2);
-        int i = chunk.func_48498_h() + 16;
+        int i = chunk.getTopFilledSegment() + 16;
         par1 &= 0xf;
         par2 &= 0xf;
 
@@ -2333,6 +2289,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Updates (and cleans up) entities and tile entities
+     */
     public void updateEntities()
     {
         Profiler.startSection("entities");
@@ -2772,6 +2731,9 @@ public class World implements IBlockAccess
         return flag;
     }
 
+    /**
+     * Returns true if the given bounding box contains the given material
+     */
     public boolean isMaterialInBB(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -3102,7 +3064,7 @@ public class World implements IBlockAccess
      */
     public boolean isBlockNormalCube(int par1, int par2, int par3)
     {
-        return Block.func_48206_g(getBlockId(par1, par2, par3));
+        return Block.isNormalCube(getBlockId(par1, par2, par3));
     }
 
     /**
@@ -3194,9 +3156,6 @@ public class World implements IBlockAccess
             {
                 if (difficultySetting < 1);
             }
-            /*if (spawnHostileMobs && difficultySetting >= 1 && mod_noBiomesX.MobSpawning!=2 && !mod_noBiomesX.UseNewSpawning){
-                flag = SpawnerAnimalsBeta.performSleepSpawning(this, playerEntities);
-            }*/
 
             if (!flag)
             {
@@ -3244,8 +3203,8 @@ public class World implements IBlockAccess
         Profiler.endStartSection("tickTiles");
         tickBlocksAndAmbiance();
         Profiler.endStartSection("village");
-        field_48465_A.func_48558_a();
-        field_48466_O.func_48573_a();
+        villageCollectionObj.tick();
+        villageSiegeObj.tick();
         Profiler.endSection();
     }
 
@@ -3265,6 +3224,9 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Updates all weather states.
+     */
     protected void updateWeather()
     {
         if (worldProvider.hasNoSky)
@@ -3452,9 +3414,13 @@ public class World implements IBlockAccess
         }
 
         Profiler.endStartSection("checkLight");
-        par3Chunk.func_48491_o();
+        par3Chunk.enqueueRelightChecks();
     }
 
+    /**
+     * plays random cave ambient sounds and runs updateTick on random blocks within each chunk in the vacinity of a
+     * player
+     */
     protected void tickBlocksAndAmbiance()
     {
         func_48461_r();
@@ -3546,14 +3512,14 @@ public class World implements IBlockAccess
             }
 
             Profiler.endStartSection("tickTiles");
-            ExtendedBlockStorage aextendedblockstorage[] = chunk.func_48495_i();
+            ExtendedBlockStorage aextendedblockstorage[] = chunk.getBlockStorageArray();
             int i2 = aextendedblockstorage.length;
 
             for (int l2 = 0; l2 < i2; l2++)
             {
                 ExtendedBlockStorage extendedblockstorage = aextendedblockstorage[l2];
 
-                if (extendedblockstorage == null || !extendedblockstorage.func_48698_b())
+                if (extendedblockstorage == null || !extendedblockstorage.getNeedsRandomTick())
                 {
                     continue;
                 }
@@ -3565,14 +3531,14 @@ public class World implements IBlockAccess
                     int i4 = l3 & 0xf;
                     int j4 = l3 >> 8 & 0xf;
                     int k4 = l3 >> 16 & 0xf;
-                    int l4 = extendedblockstorage.func_48703_a(i4, k4, j4);
+                    int l4 = extendedblockstorage.getExtBlockID(i4, k4, j4);
                     j++;
                     Block block = Block.blocksList[l4];
 
-                    if (block != null && block.func_48203_o())
+                    if (block != null && block.getTickRandomly())
                     {
                         i++;
-                        block.updateTick(this, i4 + j1, k4 + extendedblockstorage.func_48707_c(), j4 + l1, rand);
+                        block.updateTick(this, i4 + j1, k4 + extendedblockstorage.getYLocation(), j4 + l1, rand);
                     }
                 }
             }
@@ -3595,10 +3561,13 @@ public class World implements IBlockAccess
         return isBlockHydrated(par1, par2, par3, true);
     }
 
+    /**
+     * (I think)
+     */
     public boolean isBlockHydrated(int par1, int par2, int par3, boolean par4)
     {
         BiomeGenBase biomegenbase = func_48454_a(par1, par3);
-        float f = biomegenbase.func_48411_i();
+        float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
         {
@@ -3654,7 +3623,7 @@ public class World implements IBlockAccess
     public boolean canSnowAt(int par1, int par2, int par3)
     {
         BiomeGenBase biomegenbase = func_48454_a(par1, par3);
-        float f = biomegenbase.func_48411_i();
+        float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
         {
@@ -4102,7 +4071,7 @@ public class World implements IBlockAccess
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky() && mod_noBiomesX.VoidFog)
+            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky())
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
@@ -4165,7 +4134,7 @@ public class World implements IBlockAccess
         return arraylist;
     }
 
-    public Entity func_48459_a(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity)
+    public Entity findNearestEntityWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity)
     {
         List list = getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
         Entity entity = null;
@@ -4205,6 +4174,9 @@ public class World implements IBlockAccess
         return loadedEntityList;
     }
 
+    /**
+     * marks the chunk that contains this tilentity as modified and then calls worldAccesses.doNothingWithTileEntity
+     */
     public void updateTileEntityChunkAndDoNothing(int par1, int par2, int par3, TileEntity par4TileEntity)
     {
         if (blockExists(par1, par2, par3))
@@ -4259,6 +4231,9 @@ public class World implements IBlockAccess
         return i;
     }
 
+    /**
+     * adds entities to the loaded entities list, and loads thier skins.
+     */
     public void addLoadedEntities(List par1List)
     {
         loadedEntityList.addAll(par1List);
@@ -4314,7 +4289,7 @@ public class World implements IBlockAccess
         return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
     }
 
-    public PathEntity func_48463_a(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7)
+    public PathEntity getPathEntityToEntity(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7)
     {
         Profiler.startSection("pathfind");
         int i = MathHelper.floor_double(par1Entity.posX);
@@ -4333,7 +4308,7 @@ public class World implements IBlockAccess
         return pathentity;
     }
 
-    public PathEntity func_48460_a(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9)
+    public PathEntity getEntityPathToXYZ(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9)
     {
         Profiler.startSection("pathfind");
         int i = MathHelper.floor_double(par1Entity.posX);
@@ -4521,7 +4496,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Returns the closest vulnerable player within the given radius, or null if none is found
+     * Returns the closest vulnerable player within the given radius, or null if none is found.
      */
     public EntityPlayer getClosestVulnerablePlayer(double par1, double par3, double par5, double par7)
     {
@@ -4637,11 +4612,17 @@ public class World implements IBlockAccess
         }
     }
 
+    /**
+     * Called when checking if a certain block can be mined or not. The 'spawn safe zone' check is located here.
+     */
     public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int i)
     {
         return true;
     }
 
+    /**
+     * sends a Packet 38 (Entity Status) to all tracked players of that entity
+     */
     public void setEntityState(Entity entity, byte byte0)
     {
     }
@@ -4824,6 +4805,9 @@ public class World implements IBlockAccess
         return (prevThunderingStrength + (thunderingStrength - prevThunderingStrength) * par1) * getRainStrength(par1);
     }
 
+    /**
+     * Not sure about this actually. Reverting this one myself.
+     */
     public float getRainStrength(float par1)
     {
         return prevRainingStrength + (rainingStrength - prevRainingStrength) * par1;
@@ -4840,7 +4824,7 @@ public class World implements IBlockAccess
      */
     public boolean isThundering()
     {
-        return (double)getWeightedThunderStrength(1.0F) > 0.9D;
+        return (double)getWeightedThunderStrength(1.0F) > 0.90000000000000002D;
     }
 
     /**
@@ -4848,7 +4832,7 @@ public class World implements IBlockAccess
      */
     public boolean isRaining()
     {
-        return (double)getRainStrength(1.0F) > 0.2D;
+        return (double)getRainStrength(1.0F) > 0.20000000000000001D;
     }
 
     public boolean canLightningStrikeAt(int par1, int par2, int par3)
@@ -4888,7 +4872,7 @@ public class World implements IBlockAccess
             {
                 return oldbiomegenbase.canSpawnLightningBolt();
             }
-        }
+         }
     }
 
     public boolean func_48455_z(int par1, int par2, int par3)
@@ -4943,7 +4927,10 @@ public class World implements IBlockAccess
         }
     }
 
-    public int func_48453_b()
+    /**
+     * Returns current world height
+     */
+    public int getWorldHeight()
     {
         return 256;
     }
@@ -5004,7 +4991,7 @@ public class World implements IBlockAccess
         if (!mod_noBiomesX.VoidFog){
             return -9999D;
         }
-        return worldInfo.getTerrainType() != WorldType.field_48636_c ? 63D : 0.0D;
+        return worldInfo.getTerrainType() != WorldType.FLAT ? 63D : 0.0D;
     }
 
     //FOR FORGE COMPATIBILITY

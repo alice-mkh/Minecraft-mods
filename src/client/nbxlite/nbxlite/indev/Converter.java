@@ -49,12 +49,12 @@ public class Converter{
                     if (block==0){
                         continue;
                     }
-                    ExtendedBlockStorage extendedblockstorage = chunk.func_48495_i()[y >> 4];
+                    ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
                     if (extendedblockstorage == null)
                     {
-                        extendedblockstorage = chunk.func_48495_i()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
+                        extendedblockstorage = chunk.getBlockStorageArray()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
                     }
-                    extendedblockstorage.func_48691_a(x, y & 0xf, z, block);
+                    extendedblockstorage.setExtBlockID(x, y & 0xf, z, block);
                 }
             }
         }

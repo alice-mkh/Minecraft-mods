@@ -21,14 +21,6 @@ public class WorldChunkManagerHell extends WorldChunkManager
         oldField_4201_e = OldBiomeGenBase.hell;
     }
 
-    public WorldChunkManagerHell(BiomeGenBase biomegenbase, float f, float f1, OldBiomeGenBase oldbiomegenbase)
-    {
-        biomeGenerator = biomegenbase;
-        hellTemperature = f;
-        rainfall = f1;
-        oldField_4201_e = oldbiomegenbase;
-    }
-
     public OldBiomeGenBase oldGetBiomeGenAt(int i, int j){
         return oldField_4201_e;
     }
@@ -58,6 +50,14 @@ public class WorldChunkManagerHell extends WorldChunkManager
         Arrays.fill(humidity, 0, k * l, rainfall);
         Arrays.fill(temperature, 0, k * l, hellTemperature);
         return aoldbiomegenbase;
+    }
+
+    public WorldChunkManagerHell(BiomeGenBase biomegenbase, float f, float f1, OldBiomeGenBase oldbiomegenbase)
+    {
+        biomeGenerator = biomegenbase;
+        hellTemperature = f;
+        rainfall = f1;
+        oldField_4201_e = oldbiomegenbase;
     }
 
     /**

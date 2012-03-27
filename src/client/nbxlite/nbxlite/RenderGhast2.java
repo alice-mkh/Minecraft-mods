@@ -28,7 +28,7 @@ public class RenderGhast2 extends RenderLiving
         float f3 = (8F + 1.0F / f1) / 2.0F;
         GL11.glScalef(f3, f2, f3);
         if (mod_noBiomesX.ClassicLight){
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)(61680 % 0x10000) / 1.0F, (float)(61680 / 0x10000) / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(61680 % 0x10000) / 1.0F, (float)(61680 / 0x10000) / 1.0F);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }

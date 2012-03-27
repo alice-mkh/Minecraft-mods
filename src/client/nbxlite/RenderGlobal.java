@@ -30,12 +30,12 @@ public class RenderGlobal implements IWorldAccess
     private int glRenderListBase;
 
     /** A reference to the Minecraft object. */
-    //FOR FORGE COMPATIBILITY
+//FOR FORGE COMPATIBILITY
 //     private Minecraft mc;
     public Minecraft mc;
 
     /** Global render blocks */
-    //FOR FORGE COMPATIBILITY
+//FOR FORGE COMPATIBILITY
 //     private RenderBlocks globalRenderBlocks;
     public RenderBlocks globalRenderBlocks;
 
@@ -144,7 +144,7 @@ public class RenderGlobal implements IWorldAccess
     /**
      * The offset used to determine if a renderer is one of the sixteenth that are being updated this frame
      */
-    int frustrumCheckOffset;
+    int frustumCheckOffset;
 
     public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine)
     {
@@ -160,7 +160,7 @@ public class RenderGlobal implements IWorldAccess
         prevSortX = -9999D;
         prevSortY = -9999D;
         prevSortZ = -9999D;
-        frustrumCheckOffset = 0;
+        frustumCheckOffset = 0;
         mc = par1Minecraft;
         renderEngine = par2RenderEngine;
         byte byte0 = 34;
@@ -442,7 +442,7 @@ public class RenderGlobal implements IWorldAccess
         {
             Entity entity1 = (Entity)list.get(j);
 
-            if (entity1.isInRangeToRenderVec3D(par1Vec3D) && (entity1.ignoreFrustrumCheck || par2ICamera.isBoundingBoxInFrustum(entity1.boundingBox)) && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && worldObj.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
+            if (entity1.isInRangeToRenderVec3D(par1Vec3D) && (entity1.ignoreFrustumCheck || par2ICamera.isBoundingBoxInFrustum(entity1.boundingBox)) && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && worldObj.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
             {
                 countEntitiesRendered++;
                 RenderManager.instance.renderEntity(entity1, par3);
@@ -1013,11 +1013,11 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
-        float da = 1.0F - worldObj.getRainStrength(par1);
+        double d = 1.0F - worldObj.getRainStrength(par1);
         float f7 = 0.0F;
         float f9 = 0.0F;
         float f12 = 0.0F;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, da);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) d);
         GL11.glTranslatef(f7, f9, f12);
         if (!mod_noBiomesX.SunriseAtNorth){
             GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
@@ -1035,9 +1035,9 @@ public class RenderGlobal implements IWorldAccess
         tessellator1.draw();
         f15 = 20F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
-        int f18a = worldObj.getMoonPhase(par1);
-        int l = f18a % 4;
-        int i1 = (f18a / 4) % 2;
+        int i18 = worldObj.getMoonPhase(par1);
+        int l = i18 % 4;
+        int i1 = (i18 / 4) % 2;
         float f24 = (float)(l + 0) / 4F;
         float f25 = (float)(i1 + 0) / 2.0F;
         float f26 = (float)(l + 1) / 4F;
@@ -1049,7 +1049,7 @@ public class RenderGlobal implements IWorldAccess
         tessellator1.addVertexWithUV(-f15, -100D, -f15, f26, f25);
         tessellator1.draw();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float f18 = worldObj.getStarBrightness(par1) * da;
+        float f18 = (float)(worldObj.getStarBrightness(par1) * d);
 
         if (f18 > 0.0F)
         {
@@ -1062,8 +1062,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
-        double d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
-
+        d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
         if (mod_noBiomesX.VoidFog){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
@@ -1163,7 +1162,7 @@ public class RenderGlobal implements IWorldAccess
 
         float f5 = 0.0004882813F;
         double d = (float)cloudOffsetX + par1;
-        double d1 = mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.03D;
+        double d1 = mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.029999999329447746D;
         double d2 = mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * (double)par1;
         int j = MathHelper.floor_double(d1 / 2048D);
         int k = MathHelper.floor_double(d2 / 2048D);
@@ -1174,7 +1173,7 @@ public class RenderGlobal implements IWorldAccess
         float f10 = (float)(d2 * (double)f5);
         tessellator.startDrawingQuads();
         if (mod_noBiomesX.OpaqueFlatClouds){
-            tessellator.setColorRGBA_F(f1, f2, f3, 1F);
+            tessellator.setColorRGBA_F(f1, f2, f3, 1.0F);
         }else{
             tessellator.setColorRGBA_F(f1, f2, f3, 0.8F);
         }
@@ -1212,8 +1211,8 @@ public class RenderGlobal implements IWorldAccess
         float f1 = 12F;
         float f2 = 4F;
         double d = (float)cloudOffsetX + par1;
-        double d1 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.03D) / (double)f1;
-        double d2 = (mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * (double)par1) / (double)f1 + 0.33D;
+        double d1 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.029999999329447746D) / (double)f1;
+        double d2 = (mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * (double)par1) / (double)f1 + 0.33000001311302185D;
         float f3 = (worldObj.worldProvider.getCloudHeight() - f) + 0.33F;
         int i = MathHelper.floor_double(d1 / 2048D);
         int j = MathHelper.floor_double(d2 / 2048D);
@@ -1576,11 +1575,11 @@ public class RenderGlobal implements IWorldAccess
 
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 tessellator.startDrawingQuads();
-                tessellator.setTranslationD(-d, -d1, -d2);
+                tessellator.setTranslation(-d, -d1, -d2);
                 tessellator.disableColor();
                 globalRenderBlocks.renderBlockUsingTexture(block, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ, 240 + (int)(damagePartialTime * 10F));
                 tessellator.draw();
-                tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
+                tessellator.setTranslation(0.0D, 0.0D, 0.0D);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glPolygonOffset(0.0F, 0.0F);
                 GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -1759,13 +1758,17 @@ public class RenderGlobal implements IWorldAccess
         markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
     }
 
-    public void func_48180_b(int par1, int par2, int par3)
+    /**
+     * As of mc 1.2.3 this method has exactly the same signature and does exactly the same as markBlockNeedsUpdate
+     */
+    public void markBlockNeedsUpdate2(int par1, int par2, int par3)
     {
         markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
     }
 
     /**
-     * Marks the blocks as needing an update with the renderer. Args: minX, minY, minZ, maxX, maxY, maxZ
+     * Called across all registered IWorldAccess instances when a block range is invalidated. Args: minX, minY, minZ,
+     * maxX, maxY, maxZ
      */
     public void markBlockRangeNeedsUpdate(int par1, int par2, int par3, int par4, int par5, int par6)
     {
@@ -1773,20 +1776,20 @@ public class RenderGlobal implements IWorldAccess
     }
 
     /**
-     * Checks all renderers that previously weren't in the frustrum and 1/16th of those that previously were in the
-     * frustrum for frustrum clipping Args: frustrum, partialTickTime
+     * Checks all renderers that previously weren't in the frustum and 1/16th of those that previously were in the
+     * frustum for frustum clipping Args: frustum, partialTickTime
      */
-    public void clipRenderersByFrustrum(ICamera par1ICamera, float par2)
+    public void clipRenderersByFrustum(ICamera par1ICamera, float par2)
     {
         for (int i = 0; i < worldRenderers.length; i++)
         {
-            if (!worldRenderers[i].skipAllRenderPasses() && (!worldRenderers[i].isInFrustum || (i + frustrumCheckOffset & 0xf) == 0))
+            if (!worldRenderers[i].skipAllRenderPasses() && (!worldRenderers[i].isInFrustum || (i + frustumCheckOffset & 0xf) == 0))
             {
-                worldRenderers[i].updateInFrustrum(par1ICamera);
+                worldRenderers[i].updateInFrustum(par1ICamera);
             }
         }
 
-        frustrumCheckOffset++;
+        frustumCheckOffset++;
     }
 
     /**
@@ -2077,18 +2080,18 @@ public class RenderGlobal implements IWorldAccess
             case 2000:
                 int i = par6 % 3 - 1;
                 int l = (par6 / 3) % 3 - 1;
-                double d3 = (double)par3 + (double)i * 0.6D + 0.5D;
+                double d3 = (double)par3 + (double)i * 0.59999999999999998D + 0.5D;
                 double d7 = (double)par4 + 0.5D;
-                double d11 = (double)par5 + (double)l * 0.6D + 0.5D;
+                double d11 = (double)par5 + (double)l * 0.59999999999999998D + 0.5D;
 
                 for (int l1 = 0; l1 < 10; l1++)
                 {
-                    double d13 = random.nextDouble() * 0.2D + 0.01D;
+                    double d13 = random.nextDouble() * 0.20000000000000001D + 0.01D;
                     double d14 = d3 + (double)i * 0.01D + (random.nextDouble() - 0.5D) * (double)l * 0.5D;
                     double d15 = d7 + (random.nextDouble() - 0.5D) * 0.5D;
                     double d17 = d11 + (double)l * 0.01D + (random.nextDouble() - 0.5D) * (double)i * 0.5D;
                     double d19 = (double)i * d13 + random.nextGaussian() * 0.01D;
-                    double d21 = -0.03D + random.nextGaussian() * 0.01D;
+                    double d21 = -0.029999999999999999D + random.nextGaussian() * 0.01D;
                     double d23 = (double)l * d13 + random.nextGaussian() * 0.01D;
                     spawnParticle("smoke", d14, d15, d17, d19, d21, d23);
                 }
@@ -2103,13 +2106,13 @@ public class RenderGlobal implements IWorldAccess
 
                 for (int i1 = 0; i1 < 8; i1++)
                 {
-                    spawnParticle(s, d, d4, d8, random.nextGaussian() * 0.15D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.15D);
+                    spawnParticle(s, d, d4, d8, random.nextGaussian() * 0.14999999999999999D, random.nextDouble() * 0.20000000000000001D, random.nextGaussian() * 0.14999999999999999D);
                 }
 
                 for (double d12 = 0.0D; d12 < (Math.PI * 2D); d12 += 0.15707963267948966D)
                 {
-                    spawnParticle("portal", d + Math.cos(d12) * 5D, d4 - 0.4D, d8 + Math.sin(d12) * 5D, Math.cos(d12) * -5D, 0.0D, Math.sin(d12) * -5D);
-                    spawnParticle("portal", d + Math.cos(d12) * 5D, d4 - 0.4D, d8 + Math.sin(d12) * 5D, Math.cos(d12) * -7D, 0.0D, Math.sin(d12) * -7D);
+                    spawnParticle("portal", d + Math.cos(d12) * 5D, d4 - 0.40000000000000002D, d8 + Math.sin(d12) * 5D, Math.cos(d12) * -5D, 0.0D, Math.sin(d12) * -5D);
+                    spawnParticle("portal", d + Math.cos(d12) * 5D, d4 - 0.40000000000000002D, d8 + Math.sin(d12) * 5D, Math.cos(d12) * -7D, 0.0D, Math.sin(d12) * -7D);
                 }
 
                 break;
@@ -2122,7 +2125,7 @@ public class RenderGlobal implements IWorldAccess
 
                 for (int j1 = 0; j1 < 8; j1++)
                 {
-                    spawnParticle(s1, d1, d5, d9, random.nextGaussian() * 0.15D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.15D);
+                    spawnParticle(s1, d1, d5, d9, random.nextGaussian() * 0.14999999999999999D, random.nextDouble() * 0.20000000000000001D, random.nextGaussian() * 0.14999999999999999D);
                 }
 
                 int k1 = Item.potion.getColorFromDamage(par6, 0);
@@ -2143,7 +2146,7 @@ public class RenderGlobal implements IWorldAccess
                     double d20 = Math.cos(d18) * d16;
                     double d22 = 0.01D + random.nextDouble() * 0.5D;
                     double d24 = Math.sin(d18) * d16;
-                    EntityFX entityfx = func_40193_b(s2, d1 + d20 * 0.1D, d5 + 0.3D, d9 + d24 * 0.1D, d20, d22, d24);
+                    EntityFX entityfx = func_40193_b(s2, d1 + d20 * 0.10000000000000001D, d5 + 0.29999999999999999D, d9 + d24 * 0.10000000000000001D, d20, d22, d24);
 
                     if (entityfx != null)
                     {

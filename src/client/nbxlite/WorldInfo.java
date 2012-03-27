@@ -45,6 +45,8 @@ public class WorldInfo
 
     /** Number of ticks untils next thunderbolt. */
     private int thunderTime;
+
+    /** Indicates the type of the game. 0 for survival, 1 for creative. */
     private int gameType;
 
     /** are map structures going to be generated (e.g. strongholds) */
@@ -65,7 +67,7 @@ public class WorldInfo
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
-        terrainType = WorldType.field_48635_b;
+        terrainType = WorldType.DEFAULT;
         hardcore = false;
         randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 
@@ -76,7 +78,7 @@ public class WorldInfo
 
             if (terrainType == null)
             {
-                terrainType = WorldType.field_48635_b;
+                terrainType = WorldType.DEFAULT;
             }
             else if (terrainType.func_48626_e())
             {
@@ -134,7 +136,7 @@ public class WorldInfo
 
     public WorldInfo(WorldSettings par1WorldSettings, String par2Str)
     {
-        terrainType = WorldType.field_48635_b;
+        terrainType = WorldType.DEFAULT;
         hardcore = false;
         randomSeed = par1WorldSettings.getSeed();
         gameType = par1WorldSettings.getGameType();
@@ -146,7 +148,7 @@ public class WorldInfo
 
     public WorldInfo(WorldInfo par1WorldInfo)
     {
-        terrainType = WorldType.field_48635_b;
+        terrainType = WorldType.DEFAULT;
         hardcore = false;
         randomSeed = par1WorldInfo.randomSeed;
         terrainType = par1WorldInfo.terrainType;
@@ -216,7 +218,7 @@ public class WorldInfo
     {
         par1NBTTagCompound.setLong("RandomSeed", randomSeed);
         par1NBTTagCompound.setString("generatorName", terrainType.func_48628_a());
-        par1NBTTagCompound.setInteger("generatorVersion", terrainType.func_48630_c());
+        par1NBTTagCompound.setInteger("generatorVersion", terrainType.getGeneratorVersion());
         par1NBTTagCompound.setInteger("GameType", gameType);
         par1NBTTagCompound.setBoolean("MapFeatures", mapFeaturesEnabled);
         par1NBTTagCompound.setInteger("SpawnX", spawnX);
@@ -457,6 +459,9 @@ public class WorldInfo
         rainTime = par1;
     }
 
+    /**
+     * Get the game type, 0 for survival, 1 for creative.
+     */
     public int getGameType()
     {
         return gameType;
@@ -483,7 +488,7 @@ public class WorldInfo
         return terrainType;
     }
 
-    public void func_48619_a(WorldType par1WorldType)
+    public void setTerrainType(WorldType par1WorldType)
     {
         terrainType = par1WorldType;
     }

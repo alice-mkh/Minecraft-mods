@@ -28,7 +28,7 @@ public class WorldChunkManager
     private NoiseGeneratorOctaves2 field_4194_e;
     private NoiseGeneratorOctaves2 field_4193_f;
     private NoiseGeneratorOctaves2 field_4192_g;
-    
+
     protected WorldChunkManager()
     {
         biomeCache = new BiomeCache(this);
@@ -44,8 +44,8 @@ public class WorldChunkManager
             biomesToSpawnIn.add(BiomeGenBase.forestHills);
         }
         if (mod_noBiomesX.MapFeatures==3){
-            biomesToSpawnIn.add(BiomeGenBase.field_48416_w);
-            biomesToSpawnIn.add(BiomeGenBase.field_48417_x);
+            biomesToSpawnIn.add(BiomeGenBase.jungle);
+            biomesToSpawnIn.add(BiomeGenBase.jungleHills);
         }
     }
 

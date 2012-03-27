@@ -97,10 +97,11 @@ public class GuiCreateWorld2 extends GuiScreen
             field_46030_z = 0;
         }
         field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
-        textboxWorldName = new GuiTextField(this, fontRenderer, width / 2 - 100, 60, 200, 20, localizedNewWorldText);
-        textboxWorldName.isFocused = true;
-        textboxWorldName.setMaxStringLength(32);
-        textboxSeed = new GuiTextField(this, fontRenderer, width / 2 - 100, 60, 200, 20, seed);
+        textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
+        textboxWorldName.func_50033_b(true);
+        textboxWorldName.setText(localizedNewWorldText);
+        textboxSeed = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
+        textboxSeed.setText(seed);
         controlList.add(nbxliteButton = new GuiButton(6, width / 2 - 155, 135, 310, 20, genNBXliteButtonName()));
         nbxliteButton.drawButton = false;
         makeUseableName();
@@ -196,13 +197,13 @@ public class GuiCreateWorld2 extends GuiScreen
             generateStructuresButton.displayString += stringtranslate.translateKey("options.off");
         }
 
-        worldTypeButton.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.mapType")).append(" ").append(stringtranslate.translateKey(WorldType.field_48637_a[field_46030_z].func_46136_a())).toString();
+        worldTypeButton.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.mapType")).append(" ").append(stringtranslate.translateKey(WorldType.worldTypes[field_46030_z].getTranslateName())).toString();
         return;
     }
 
     public static String func_25097_a(ISaveFormat par0ISaveFormat, String par1Str)
     {
-        for (; par0ISaveFormat.getWorldInfo(par1Str) != null; par1Str = (new StringBuilder()).append(par1Str).append("-").toString()) { }
+        for (par1Str = par1Str.replaceAll("[\\./\"]|COM", "_"); par0ISaveFormat.getWorldInfo(par1Str) != null; par1Str = (new StringBuilder()).append(par1Str).append("-").toString()) { }
 
         return par1Str;
     }
@@ -271,7 +272,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 mc.playerController = new PlayerControllerSP(mc);
             }
 
-            mc.startWorld(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, WorldType.field_48637_a[field_46030_z]));
+            mc.startWorld(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, WorldType.worldTypes[field_46030_z]));
             mc.displayGuiScreen(null);
         }
         else if (par1GuiButton.id == 3)
@@ -332,21 +333,21 @@ public class GuiCreateWorld2 extends GuiScreen
         {
             field_46030_z++;
 
-            if (field_46030_z >= WorldType.field_48637_a.length)
+            if (field_46030_z >= WorldType.worldTypes.length)
             {
                 field_46030_z = 0;
             }
 
             do
             {
-                if (WorldType.field_48637_a[field_46030_z] != null && WorldType.field_48637_a[field_46030_z].func_48627_d())
+                if (WorldType.worldTypes[field_46030_z] != null && WorldType.worldTypes[field_46030_z].getCanBeCreated())
                 {
                     break;
                 }
 
                 field_46030_z++;
 
-                if (field_46030_z >= WorldType.field_48637_a.length)
+                if (field_46030_z >= WorldType.worldTypes.length)
                 {
                     field_46030_z = 0;
                 }
@@ -362,14 +363,14 @@ public class GuiCreateWorld2 extends GuiScreen
      */
     protected void keyTyped(char par1, int par2)
     {
-        if (textboxWorldName.isFocused && !moreOptions)
+        if (textboxWorldName.func_50025_j() && !moreOptions)
         {
-            textboxWorldName.textboxKeyTyped(par1, par2);
+            textboxWorldName.func_50037_a(par1, par2);
             localizedNewWorldText = textboxWorldName.getText();
         }
-        else if (textboxSeed.isFocused && moreOptions)
+        else if (textboxSeed.func_50025_j() && moreOptions)
         {
-            textboxSeed.textboxKeyTyped(par1, par2);
+            textboxSeed.func_50037_a(par1, par2);
             seed = textboxSeed.getText();
         }
 
@@ -425,19 +426,5 @@ public class GuiCreateWorld2 extends GuiScreen
         }
 
         super.drawScreen(par1, par2, par3);
-    }
-
-    public void selectNextField()
-    {
-        if (textboxWorldName.isFocused)
-        {
-            textboxWorldName.setFocused(false);
-            textboxSeed.setFocused(true);
-        }
-        else
-        {
-            textboxWorldName.setFocused(true);
-            textboxSeed.setFocused(false);
-        }
     }
 }
