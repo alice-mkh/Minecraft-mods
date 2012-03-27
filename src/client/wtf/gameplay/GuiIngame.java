@@ -348,7 +348,7 @@ public class GuiIngame extends Gui
             GL11.glEnable(GL11.GL_DEPTH_TEST);
         }
 
-        if (mc.playerController.func_35642_f() && mc.thePlayer.experienceLevel > 0)
+        if (mc.playerController.func_35642_f() && mc.thePlayer.experienceLevel > 0 && !mod_WTFGameplay.DisableXP)
         {
             boolean flag = false;
             int i1 = flag ? 0xffffff : 0x80ff20;
