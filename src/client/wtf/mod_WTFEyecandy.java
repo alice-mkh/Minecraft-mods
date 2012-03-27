@@ -21,4 +21,5 @@ public class mod_WTFEyecandy extends BaseMod{
     public static boolean Bobbing = false;
     public static boolean OldWalking = true;
     public static boolean OldEndermen = true;
+    public static boolean EndermenOpenMouth = true;
 }

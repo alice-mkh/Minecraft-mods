@@ -124,7 +124,7 @@ public class ModelEnderman extends ModelBiped
         bipedHeadwear.rotateAngleY = bipedHead.rotateAngleY;
         bipedHeadwear.rotateAngleZ = bipedHead.rotateAngleZ;
 
-        if (isAttacking)
+        if (isAttacking && mod_WTFEyecandy.EndermenOpenMouth)
         {
             float f2 = 1.0F;
             bipedHead.rotationPointY -= f2 * 5F;
