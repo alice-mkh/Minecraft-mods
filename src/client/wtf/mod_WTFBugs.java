@@ -3,14 +3,15 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_WTFBugs extends BaseMod{
-    public String getVersion(){
-        return "1.2.4";
+public class mod_WTFBugs extends mod_WTF{
+    public void load(){
+        addProperty(this, 1, "Boosters",      false, "Boosters");
+        addProperty(this, 2, "Water lifts",   false, "WaterLifts");
+        addProperty(this, 3, "Toasters",      false, "LavaToasters");
+        addProperty(this, 4, "Water ladders", false, "WaterLadders");
+        addProperty(this, 5, "Ladder gaps",   false, "LadderGaps");
+        addProperty(this, 6, "Piston dupe",   false, "PistonDupe");
     }
-
-    public mod_WTFBugs(){}
-
-    public void load(){};
 
     public static boolean Boosters = false;
     public static boolean LadderGaps = false;
@@ -19,4 +20,6 @@ public class mod_WTFBugs extends BaseMod{
     public static boolean WaterLifts = false;
     public static boolean PistonDupe = false;
 //Sand generator
+//Data value change bug
+//Infinite log burning
 }
