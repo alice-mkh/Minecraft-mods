@@ -68,22 +68,24 @@ public class EntitySheep extends EntityAnimal
      * tick.
      */
     private int sheepTimer;
-    private EntityAIEatGrass field_48365_c;
+
+    /** The eat grass AI task for this mob. */
+    private EntityAIEatGrass aiEatGrass;
 
     public EntitySheep(World par1World)
     {
         super(par1World);
-        field_48365_c = new EntityAIEatGrass(this);
+        aiEatGrass = new EntityAIEatGrass(this);
         texture = "/mob/sheep.png";
         setSize(0.9F, 1.3F);
         float f = 0.23F;
-        func_48333_ak().func_48656_a(true);
+        getNavigator().func_48656_a(true);
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIPanic(this, 0.38F));
         tasks.addTask(2, new EntityAIMate(this, f));
         tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
         tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
-        tasks.addTask(5, field_48365_c);
+        tasks.addTask(5, aiEatGrass);
         tasks.addTask(6, new EntityAIWander(this, f));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(8, new EntityAILookIdle(this));
@@ -99,7 +101,7 @@ public class EntitySheep extends EntityAnimal
 
     protected void updateAITasks()
     {
-        sheepTimer = field_48365_c.func_48227_f();
+        sheepTimer = aiEatGrass.func_48227_f();
         super.updateAITasks();
     }
 
@@ -231,6 +233,9 @@ public class EntitySheep extends EntityAnimal
         dataWatcher.updateObject(16, Byte.valueOf((byte)(byte0 & 0xf0 | par1 & 0xf)));
     }
 
+    /**
+     * returns true if a sheeps wool has been sheared
+     */
     public boolean getSheared()
     {
         return (dataWatcher.getWatchableObjectByte(16) & 0x10) != 0;
@@ -253,6 +258,9 @@ public class EntitySheep extends EntityAnimal
         }
     }
 
+    /**
+     * This method is called when a sheep spawns in the world to select the color of sheep fleece.
+     */
     public static int getRandomFleeceColor(Random par0Random)
     {
         int i = par0Random.nextInt(100);
@@ -300,20 +308,24 @@ public class EntitySheep extends EntityAnimal
         return entitysheep1;
     }
 
-    public void func_48319_z()
+    /**
+     * This function applies the benefits of growing back wool and faster growing up to the acting entity. (This
+     * function is used in the AIEatGrass)
+     */
+    public void eatGrassBonus()
     {
         setSheared(false);
 
         if (isChild())
         {
-            int i = func_48351_J() + 1200;
+            int i = getGrowingAge() + 1200;
 
             if (i > 0)
             {
                 i = 0;
             }
 
-            func_48350_c(i);
+            setGrowingAge(i);
         }
     }
 }

@@ -16,13 +16,9 @@ public class EntityArrow extends Entity
     /** Seems to be some sort of timer for animating an arrow. */
     public int arrowShake;
 
-    /** the entity that shot this arrow */
+    /** The owner of this arrow. */
     public Entity shootingEntity;
-
-    /** after so long in ground entity dies */
     private int ticksInGround;
-
-    /** cant hit stuff first 5 ticks after you shoot it */
     private int ticksInAir;
     private double damage;
     private int field_46010_n;
@@ -82,13 +78,13 @@ public class EntityArrow extends Entity
         arrowCritical = false;
         shootingEntity = par2EntityLiving;
         doesArrowBelongToPlayer = par2EntityLiving instanceof EntityPlayer;
-        posY = (par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight()) - 0.1D;
+        posY = (par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight()) - 0.10000000149011612D;
         double d = par3EntityLiving.posX - par2EntityLiving.posX;
-        double d1 = (par3EntityLiving.posY + (double)par3EntityLiving.getEyeHeight()) - 0.7D - posY;
+        double d1 = (par3EntityLiving.posY + (double)par3EntityLiving.getEyeHeight()) - 0.69999998807907104D - posY;
         double d2 = par3EntityLiving.posZ - par2EntityLiving.posZ;
         double d3 = MathHelper.sqrt_double(d * d + d2 * d2);
 
-        if (d3 < 10.0E-008D)
+        if (d3 < 9.9999999999999995E-008D)
         {
             return;
         }
@@ -125,7 +121,7 @@ public class EntityArrow extends Entity
         setSize(0.5F, 0.5F);
         setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
         posX -= MathHelper.cos((rotationYaw / 180F) * (float)Math.PI) * 0.16F;
-        posY -= 0.1D;
+        posY -= 0.10000000149011612D;
         posZ -= MathHelper.sin((rotationYaw / 180F) * (float)Math.PI) * 0.16F;
         setPosition(posX, posY, posZ);
         yOffset = 0.0F;
@@ -149,9 +145,9 @@ public class EntityArrow extends Entity
         par1 /= f;
         par3 /= f;
         par5 /= f;
-        par1 += rand.nextGaussian() * 0.0075D * (double)par8;
-        par3 += rand.nextGaussian() * 0.0075D * (double)par8;
-        par5 += rand.nextGaussian() * 0.0075D * (double)par8;
+        par1 += rand.nextGaussian() * 0.0074999998323619366D * (double)par8;
+        par3 += rand.nextGaussian() * 0.0074999998323619366D * (double)par8;
+        par5 += rand.nextGaussian() * 0.0074999998323619366D * (double)par8;
         par1 *= par7;
         par3 *= par7;
         par5 *= par7;
@@ -216,7 +212,7 @@ public class EntityArrow extends Entity
 
             if (ticksInGround == 1200)
             {
-                setEntityDead();
+                setDead();
             }
 
             return;
@@ -313,19 +309,19 @@ public class EntityArrow extends Entity
 
                             if (f7 > 0.0F)
                             {
-                                movingobjectposition.entityHit.addVelocity((motionX * (double)field_46010_n * 0.6D) / (double)f7, 0.1D, (motionZ * (double)field_46010_n * 0.6D) / (double)f7);
+                                movingobjectposition.entityHit.addVelocity((motionX * (double)field_46010_n * 0.60000002384185791D) / (double)f7, 0.10000000000000001D, (motionZ * (double)field_46010_n * 0.60000002384185791D) / (double)f7);
                             }
                         }
                     }
 
                     worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
-                    setEntityDead();
+                    setDead();
                 }
                 else
                 {
-                    motionX *= -0.1D;
-                    motionY *= -0.1D;
-                    motionZ *= -0.1D;
+                    motionX *= -0.10000000149011612D;
+                    motionY *= -0.10000000149011612D;
+                    motionZ *= -0.10000000149011612D;
                     rotationYaw += 180F;
                     prevRotationYaw += 180F;
                     ticksInAir = 0;
@@ -342,9 +338,9 @@ public class EntityArrow extends Entity
                 motionY = (float)(movingobjectposition.hitVec.yCoord - posY);
                 motionZ = (float)(movingobjectposition.hitVec.zCoord - posZ);
                 float f2 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-                posX -= (motionX / (double)f2) * 0.05D;
-                posY -= (motionY / (double)f2) * 0.05D;
-                posZ -= (motionZ / (double)f2) * 0.05D;
+                posX -= (motionX / (double)f2) * 0.05000000074505806D;
+                posY -= (motionY / (double)f2) * 0.05000000074505806D;
+                posZ -= (motionZ / (double)f2) * 0.05000000074505806D;
                 worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                 inGround = true;
                 arrowShake = 7;
@@ -356,7 +352,7 @@ public class EntityArrow extends Entity
         {
             for (int i1 = 0; i1 < 4; i1++)
             {
-                worldObj.spawnParticle("crit", posX + (motionX * (double)i1) / 4D, posY + (motionY * (double)i1) / 4D, posZ + (motionZ * (double)i1) / 4D, -motionX, -motionY + 0.2D, -motionZ);
+                worldObj.spawnParticle("crit", posX + (motionX * (double)i1) / 4D, posY + (motionY * (double)i1) / 4D, posZ + (motionZ * (double)i1) / 4D, -motionX, -motionY + 0.20000000000000001D, -motionZ);
             }
         }
 
@@ -447,7 +443,7 @@ public class EntityArrow extends Entity
         {
             worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, 1);
-            setEntityDead();
+            setDead();
         }
     }
 
@@ -466,7 +462,10 @@ public class EntityArrow extends Entity
         field_46010_n = par1;
     }
 
-    public boolean func_48313_k_()
+    /**
+     * If returns false, the item will not inflict any damage against entities.
+     */
+    public boolean canAttackWithItem()
     {
         return false;
     }

@@ -9,6 +9,8 @@ public class ItemFood extends Item
     /** The amount this food item heals the player. */
     private final int healAmount;
     private final float saturationModifier;
+
+    /** Whether wolves like this food (true for raw and cooked porkchop). */
     private final boolean isWolfsFavoriteMeat;
 
     /**
@@ -135,16 +137,26 @@ public class ItemFood extends Item
         return healAmount;
     }
 
+    /**
+     * gets the saturationModifier of the ItemFood
+     */
     public float getSaturationModifier()
     {
         return saturationModifier;
     }
 
+    /**
+     * Whether wolves like this food (true for raw and cooked porkchop).
+     */
     public boolean isWolfsFavoriteMeat()
     {
         return isWolfsFavoriteMeat;
     }
 
+    /**
+     * sets a potion effect on the item. Args: int potionId, int duration (will be multiplied by 20), int amplifier,
+     * float probability of effect happening
+     */
     public ItemFood setPotionEffect(int par1, int par2, int par3, float par4)
     {
         potionId = par1;

@@ -11,9 +11,12 @@ public class ItemBow extends Item
         setMaxDamage(384);
     }
 
+    /**
+     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
+     */
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-        boolean flag = par3EntityPlayer.capabilities.depleteBuckets || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
+        boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
         if (flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
         {
@@ -21,7 +24,7 @@ public class ItemBow extends Item
             float f = (float)i / 20F;
             f = (f * f + f * 2.0F) / 3F;
 
-            if ((double)f < 0.1D)
+            if ((double)f < 0.10000000000000001D)
             {
                 return;
             }
@@ -110,14 +113,14 @@ public class ItemBow extends Item
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
         }else{
-            if(par3EntityPlayer.capabilities.depleteBuckets || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
+            if(par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
             {
                 par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
                 if(!par2World.isRemote)
                 {
                     par2World.spawnEntityInWorld(new EntityArrow(par2World, par3EntityPlayer, 1.0F));
                 }
-                if (!par3EntityPlayer.capabilities.depleteBuckets)
+                if (!par3EntityPlayer.capabilities.isCreativeMode)
                 {
                     par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
                 }
@@ -130,6 +133,9 @@ public class ItemBow extends Item
         return par1ItemStack;
     }
 
+    /**
+     * Return the enchantability factor of the item, most of the time is based on material.
+     */
     public int getItemEnchantability()
     {
         return 1;

@@ -44,6 +44,8 @@ public abstract class EntityPlayer extends EntityLiving
     public double field_20050_aB;
     public double field_20049_aC;
     public double field_20048_aD;
+
+    /** Boolean value indicating weather a player is sleeping or not */
     protected boolean sleeping;
 
     /** the current location of the player */
@@ -54,10 +56,18 @@ public abstract class EntityPlayer extends EntityLiving
 
     /** holds the spawn chunk of the player */
     private ChunkCoordinates spawnChunk;
+
+    /** Holds the coordinate of the player when enter a minecraft to ride. */
     private ChunkCoordinates startMinecartRidingCoordinate;
     public int timeUntilPortal;
+
+    /** Whether the entity is inside a Portal */
     protected boolean inPortal;
+
+    /** The amount of time an entity has been in a Portal */
     public float timeInPortal;
+
+    /** The player's capabilities. (See class PlayerCapabilities) */
     public PlayerCapabilities capabilities;
 
     /** The player's experience level. */
@@ -80,6 +90,10 @@ public abstract class EntityPlayer extends EntityLiving
     private int itemInUseCount;
     protected float speedOnGround;
     protected float speedInAir;
+
+    /**
+     * An instance of a fishing rod's hook. If this isn't null, the icon image of the fishing rod is slightly different
+     */
     public EntityFishHook fishEntity;
 
     public EntityPlayer(World par1World)
@@ -173,12 +187,12 @@ public abstract class EntityPlayer extends EntityLiving
             {
                 if (itemInUseCount <= 25 && itemInUseCount % 4 == 0)
                 {
-                    func_35208_b(itemstack, 5);
+                    updateItemUse(itemstack, 5);
                 }
 
                 if (--itemInUseCount == 0 && !worldObj.isRemote)
                 {
-                    func_35199_C();
+                    onItemUseFinish();
                 }
             }
         }
@@ -291,7 +305,10 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
-    protected void func_35208_b(ItemStack par1ItemStack, int par2)
+    /**
+     * Plays sounds and makes particles for item in use state
+     */
+    protected void updateItemUse(ItemStack par1ItemStack, int par2)
     {
         if (par1ItemStack.getItemUseAction() == EnumAction.drink)
         {
@@ -302,25 +319,28 @@ public abstract class EntityPlayer extends EntityLiving
         {
             for (int i = 0; i < par2; i++)
             {
-                Vec3D vec3d = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+                Vec3D vec3d = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
                 vec3d.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3d.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-                Vec3D vec3d1 = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.3D, (double)(-rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+                Vec3D vec3d1 = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
                 vec3d1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3d1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
                 vec3d1 = vec3d1.addVector(posX, posY + (double)getEyeHeight(), posZ);
-                worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3d1.xCoord, vec3d1.yCoord, vec3d1.zCoord, vec3d.xCoord, vec3d.yCoord + 0.05D, vec3d.zCoord);
+                worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3d1.xCoord, vec3d1.yCoord, vec3d1.zCoord, vec3d.xCoord, vec3d.yCoord + 0.050000000000000003D, vec3d.zCoord);
             }
 
             worldObj.playSoundAtEntity(this, "random.eat", 0.5F + 0.5F * (float)rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
         }
     }
 
-    protected void func_35199_C()
+    /**
+     * Used for when item use count runs out, ie: eating completed
+     */
+    protected void onItemUseFinish()
     {
         if (itemInUse != null)
         {
-            func_35208_b(itemInUse, 16);
+            updateItemUse(itemInUse, 16);
             int i = itemInUse.stackSize;
             ItemStack itemstack = itemInUse.onFoodEaten(worldObj, this);
 
@@ -343,7 +363,7 @@ public abstract class EntityPlayer extends EntityLiving
      */
     protected boolean isMovementBlocked()
     {
-        return getEntityHealth() <= 0 || isPlayerSleeping();
+        return getHealth() <= 0 || isPlayerSleeping();
     }
 
     /**
@@ -368,6 +388,9 @@ public abstract class EntityPlayer extends EntityLiving
         addMountedMovementStat(posX - d, posY - d1, posZ - d2);
     }
 
+    /**
+     * Returns the swing speed modifier
+     */
     private int getSwingSpeedModifier()
     {
         if (isPotionActive(Potion.digSpeed))
@@ -418,7 +441,7 @@ public abstract class EntityPlayer extends EntityLiving
             flyToggleTimer--;
         }
 
-        if (worldObj.difficultySetting == 0 && getEntityHealth() < getMaxHealth() && (ticksExisted % 20) * 12 == 0)
+        if (worldObj.difficultySetting == 0 && getHealth() < getMaxHealth() && (ticksExisted % 20) * 12 == 0)
         {
             heal(1);
         }
@@ -431,24 +454,24 @@ public abstract class EntityPlayer extends EntityLiving
 
         if (isSprinting())
         {
-            landMovementFactor += (double)speedOnGround * 0.3D;
-            jumpMovementFactor += (double)speedInAir * 0.3D;
+            landMovementFactor += (double)speedOnGround * 0.29999999999999999D;
+            jumpMovementFactor += (double)speedInAir * 0.29999999999999999D;
         }
 
         float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-        float f1 = (float)Math.atan(-motionY * 0.2D) * 15F;
+        float f1 = (float)Math.atan(-motionY * 0.20000000298023224D) * 15F;
 
         if (f > 0.1F)
         {
             f = 0.1F;
         }
 
-        if (!onGround || getEntityHealth() <= 0)
+        if (!onGround || getHealth() <= 0)
         {
             f = 0.0F;
         }
 
-        if (onGround || getEntityHealth() <= 0)
+        if (onGround || getHealth() <= 0)
         {
             f1 = 0.0F;
         }
@@ -456,7 +479,7 @@ public abstract class EntityPlayer extends EntityLiving
         cameraYaw += (f - cameraYaw) * 0.4F;
         cameraPitch += (f1 - cameraPitch) * 0.8F;
 
-        if (getEntityHealth() > 0)
+        if (getHealth() > 0)
         {
             List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(1.0D, 0.0D, 1.0D));
 
@@ -488,11 +511,11 @@ public abstract class EntityPlayer extends EntityLiving
         super.onDeath(par1DamageSource);
         setSize(0.2F, 0.2F);
         setPosition(posX, posY, posZ);
-        motionY = 0.1D;
+        motionY = 0.10000000149011612D;
 
         if (username.equals("Notch"))
         {
-            func_48349_a(new ItemStack(Item.appleRed, 1), true);
+            dropPlayerItemWithRandomChoice(new ItemStack(Item.appleRed, 1), true);
         }
 
         inventory.dropAllItems();
@@ -511,6 +534,10 @@ public abstract class EntityPlayer extends EntityLiving
         addStat(StatList.deathsStat, 1);
     }
 
+    /**
+     * Adds a value to the player score. Currently not actually used and the entity passed in does nothing. Args:
+     * entity, scoreToAdd
+     */
     public void addToPlayerScore(Entity par1Entity, int par2)
     {
         score += par2;
@@ -542,24 +569,33 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
-    public EntityItem func_48347_R()
+    /**
+     * Called when player presses the drop item key
+     */
+    public EntityItem dropOneItem()
     {
-        return func_48349_a(inventory.decrStackSize(inventory.currentItem, 1), false);
+        return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, 1), false);
     }
 
-    public EntityItem func_48348_b(ItemStack par1ItemStack)
+    /**
+     * Args: itemstack
+     */
+    public EntityItem dropPlayerItem(ItemStack par1ItemStack)
     {
-        return func_48349_a(par1ItemStack, false);
+        return dropPlayerItemWithRandomChoice(par1ItemStack, false);
     }
 
-    public EntityItem func_48349_a(ItemStack par1ItemStack, boolean par2)
+    /**
+     * Args: itemstack, flag
+     */
+    public EntityItem dropPlayerItemWithRandomChoice(ItemStack par1ItemStack, boolean par2)
     {
         if (par1ItemStack == null)
         {
             return null;
         }
 
-        EntityItem entityitem = new EntityItem(worldObj, posX, (posY - 0.3D) + (double)getEyeHeight(), posZ, par1ItemStack);
+        EntityItem entityitem = new EntityItem(worldObj, posX, (posY - 0.30000001192092896D) + (double)getEyeHeight(), posZ, par1ItemStack);
         entityitem.delayBeforeCanPickup = 40;
         float f = 0.1F;
 
@@ -569,7 +605,7 @@ public abstract class EntityPlayer extends EntityLiving
             float f4 = rand.nextFloat() * (float)Math.PI * 2.0F;
             entityitem.motionX = -MathHelper.sin(f4) * f2;
             entityitem.motionZ = MathHelper.cos(f4) * f2;
-            entityitem.motionY = 0.2D;
+            entityitem.motionY = 0.20000000298023224D;
         }
         else
         {
@@ -748,7 +784,7 @@ public abstract class EntityPlayer extends EntityLiving
 
         entityAge = 0;
 
-        if (getEntityHealth() <= 0)
+        if (getHealth() <= 0)
         {
             return false;
         }
@@ -837,6 +873,10 @@ public abstract class EntityPlayer extends EntityLiving
         return false;
     }
 
+    /**
+     * Called when the player attack or gets attacked, it's alert all wolves in the area that are owned by the player to
+     * join the attack or defend the player.
+     */
     protected void alertWolves(EntityLiving par1EntityLiving, boolean par2)
     {
         if ((par1EntityLiving instanceof EntityCreeper) || (par1EntityLiving instanceof EntityGhast))
@@ -848,7 +888,7 @@ public abstract class EntityPlayer extends EntityLiving
         {
             EntityWolf entitywolf = (EntityWolf)par1EntityLiving;
 
-            if (entitywolf.func_48373_u_() && username.equals(entitywolf.func_48367_A()))
+            if (entitywolf.isTamed() && username.equals(entitywolf.getOwnerName()))
             {
                 return;
             }
@@ -872,7 +912,7 @@ public abstract class EntityPlayer extends EntityLiving
             Entity entity = (Entity)iterator.next();
             EntityWolf entitywolf1 = (EntityWolf)entity;
 
-            if (entitywolf1.func_48373_u_() && entitywolf1.getEntityToAttack() == null && username.equals(entitywolf1.func_48367_A()) && (!par2 || !entitywolf1.func_48371_v_()))
+            if (entitywolf1.isTamed() && entitywolf1.getEntityToAttack() == null && username.equals(entitywolf1.getOwnerName()) && (!par2 || !entitywolf1.isSitting()))
             {
                 entitywolf1.func_48369_c(false);
                 entitywolf1.setTarget(par1EntityLiving);
@@ -988,6 +1028,9 @@ public abstract class EntityPlayer extends EntityLiving
     {
     }
 
+    /**
+     * Displays the GUI for interacting with a brewing stand.
+     */
     public void displayGUIBrewingStand(TileEntityBrewingStand tileentitybrewingstand)
     {
     }
@@ -1058,7 +1101,7 @@ public abstract class EntityPlayer extends EntityLiving
      */
     public void attackTargetEntityWithCurrentItem(Entity par1Entity)
     {
-        if (!par1Entity.func_48313_k_())
+        if (!par1Entity.canAttackWithItem())
         {
             return;
         }
@@ -1088,120 +1131,127 @@ public abstract class EntityPlayer extends EntityLiving
         {
             j++;
         }
-
-        if (!mod_OldSurvivalMode.OldCombatSystem){
-            if (i > 0 || k > 0)
-            {
-                boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
-
-                if (flag)
-                {
-                    i += rand.nextInt(i / 2 + 2);
-                }
-
-                i += k;
-                boolean flag1 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
-
-                if (flag1)
-                {
-                    if (j > 0)
-                    {
-                        par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.1D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
-                        motionX *= 0.6D;
-                        motionZ *= 0.6D;
-                        setSprinting(false);
-                    }
-
-                    if (flag)
-                    {
-                        onCriticalHit(par1Entity);
-                    }
-
-                    if (k > 0)
-                    {
-                        onEnchantmentCritical(par1Entity);
-                    }
-
-                    if (i >= 18)
-                    {
-                        triggerAchievement(AchievementList.overkill);
-                    }
-
-                    func_48335_g(par1Entity);
-                }
-
-                ItemStack itemstack = getCurrentEquippedItem();
-
-                if (itemstack != null && (par1Entity instanceof EntityLiving))
-                {
-                    itemstack.hitEntity((EntityLiving)par1Entity, this);
-
-                    if (itemstack.stackSize <= 0)
-                    {
-                        itemstack.onItemDestroyedByUse(this);
-                        destroyCurrentEquippedItem();
-                    }
-                }
-
-                if (par1Entity instanceof EntityLiving)
-                {
-                    if (par1Entity.isEntityAlive())
-                    {
-                        alertWolves((EntityLiving)par1Entity, true);
-                    }
-
-                    addStat(StatList.damageDealtStat, i);
-                    int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
-
-                    if (l > 0)
-                    {
-                        par1Entity.setFire(l * 4);
-                    }
-                }
-
-                addExhaustion(0.3F);
-            }
+        if (mod_OldSurvivalMode.OldCombatSystem){
+            combatOld(par1Entity, i, j, k);
         }else{
-            if(i > 0)
+            combatNew(par1Entity, i, j, k);
+        }
+    }
+
+    private void combatOld(Entity par1Entity, int i, int j, int k){
+        if(i > 0)
+        {
+            i += k;
+            if (j > 0)
             {
-                i += k;
+                par1Entity.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F);
+                motionX *= 0.59999999999999998D;
+                motionZ *= 0.59999999999999998D;
+                setSprinting(false);
+            }
+            if(motionY < 0.0D)
+            {
+                i++;
+            }
+            par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
+            ItemStack itemstack = getCurrentEquippedItem();
+            if(itemstack != null && (par1Entity instanceof EntityLiving))
+            {
+                itemstack.hitEntity((EntityLiving)par1Entity, this);
+                if(itemstack.stackSize <= 0)
+                {
+                    itemstack.onItemDestroyedByUse(this);
+                    destroyCurrentEquippedItem();
+                }
+            }
+            if(par1Entity instanceof EntityLiving)
+            {
+                if(par1Entity.isEntityAlive())
+                {
+                    alertWolves((EntityLiving)par1Entity, true);
+                }
+                addStat(StatList.damageDealtStat, i);
+                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
+                if (l > 0)
+                {
+                    par1Entity.setFire(l * 4);
+                }
+            }
+            addExhaustion(0.3F);
+        }
+    }
+
+    private void combatNew(Entity par1Entity, int i, int j, int k){
+        if (i > 0 || k > 0)
+        {
+            boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
+
+            if (flag)
+            {
+                i += rand.nextInt(i / 2 + 2);
+            }
+
+            i += k;
+            boolean flag1 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
+
+            if (flag1)
+            {
                 if (j > 0)
                 {
-                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F);
+                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
                     motionX *= 0.59999999999999998D;
                     motionZ *= 0.59999999999999998D;
                     setSprinting(false);
                 }
-                if(motionY < 0.0D)
+
+                if (flag)
                 {
-                    i++;
+                    onCriticalHit(par1Entity);
                 }
-                par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
-                ItemStack itemstack = getCurrentEquippedItem();
-                if(itemstack != null && (par1Entity instanceof EntityLiving))
+
+                if (k > 0)
                 {
-                    itemstack.hitEntity((EntityLiving)par1Entity, this);
-                    if(itemstack.stackSize <= 0)
-                    {
-                        itemstack.onItemDestroyedByUse(this);
-                        destroyCurrentEquippedItem();
-                    }
+                    onEnchantmentCritical(par1Entity);
                 }
-                if(par1Entity instanceof EntityLiving)
+
+                if (i >= 18)
                 {
-                    if(par1Entity.isEntityAlive())
-                    {
-                        alertWolves((EntityLiving)par1Entity, true);
-                    }
-                    addStat(StatList.damageDealtStat, i);
-                    int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
-                    if (l > 0)
-                    {
-                        par1Entity.setFire(l * 4);
-                    }
+                    triggerAchievement(AchievementList.overkill);
                 }
-                addExhaustion(0.3F);
+
+                setLastAttackingEntity(par1Entity);
             }
+
+            ItemStack itemstack = getCurrentEquippedItem();
+
+            if (itemstack != null && (par1Entity instanceof EntityLiving))
+            {
+                itemstack.hitEntity((EntityLiving)par1Entity, this);
+
+                if (itemstack.stackSize <= 0)
+                {
+                    itemstack.onItemDestroyedByUse(this);
+                    destroyCurrentEquippedItem();
+                }
+            }
+
+            if (par1Entity instanceof EntityLiving)
+            {
+                if (par1Entity.isEntityAlive())
+                {
+                    alertWolves((EntityLiving)par1Entity, true);
+                }
+
+                addStat(StatList.damageDealtStat, i);
+                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
+
+                if (l > 0)
+                {
+                    par1Entity.setFire(l * 4);
+                }
+            }
+
+            addExhaustion(0.3F);
         }
     }
 
@@ -1221,11 +1271,11 @@ public abstract class EntityPlayer extends EntityLiving
     }
 
     /**
-     * Will get destroyed next tick
+     * Will get destroyed next tick.
      */
-    public void setEntityDead()
+    public void setDead()
     {
-        super.setEntityDead();
+        super.setDead();
         inventorySlots.onCraftGuiClosed(this);
 
         if (craftingInventory != null)
@@ -1285,7 +1335,7 @@ public abstract class EntityPlayer extends EntityLiving
         if (worldObj.blockExists(par1, par2, par3))
         {
             int i = worldObj.getBlockMetadata(par1, par2, par3);
-            int j = BlockBed.func_48132_b(i);
+            int j = BlockBed.getDirection(i);
             float f = 0.5F;
             float f1 = 0.5F;
 
@@ -1354,6 +1404,9 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
+    /**
+     * Wake up the player if they're sleeping.
+     */
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
     {
         setSize(0.6F, 1.8F);
@@ -1427,16 +1480,25 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
+    /**
+     * Returns whether player is sleeping or not
+     */
     public boolean isPlayerSleeping()
     {
         return sleeping;
     }
 
+    /**
+     * Returns whether or not the player is asleep and the screen has fully faded.
+     */
     public boolean isPlayerFullyAsleep()
     {
         return sleeping && sleepTimer >= 100;
     }
 
+    /**
+     * Add a chat message to the player
+     */
     public void addChatMessage(String s)
     {
     }
@@ -1464,6 +1526,9 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
+    /**
+     * Will trigger the specified trigger.
+     */
     public void triggerAchievement(StatBase par1StatBase)
     {
         addStat(par1StatBase, 1);
@@ -1509,7 +1574,7 @@ public abstract class EntityPlayer extends EntityLiving
             float f = jumpMovementFactor;
             jumpMovementFactor = 0.05F;
             super.moveEntityWithHeading(par1, par2);
-            motionY = d3 * 0.6D;
+            motionY = d3 * 0.59999999999999998D;
             jumpMovementFactor = f;
         }
         else
@@ -1520,6 +1585,9 @@ public abstract class EntityPlayer extends EntityLiving
         addMovementStat(posX - d, posY - d1, posZ - d2);
     }
 
+    /**
+     * Adds a value to a movement statistic field - like run, walk, swin or climb.
+     */
     public void addMovementStat(double par1, double par3, double par5)
     {
         if (ridingEntity != null)
@@ -1564,7 +1632,7 @@ public abstract class EntityPlayer extends EntityLiving
 
                 if (isSprinting())
                 {
-                    addExhaustion(0.1F * (float)k * 0.01F);
+                    addExhaustion(0.09999999F * (float)k * 0.01F);
                 }
                 else
                 {
@@ -1583,6 +1651,9 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
+    /**
+     * Adds a value to a mounted movement statistic field - by minecart, boat, or pig.
+     */
     private void addMountedMovementStat(double par1, double par3, double par5)
     {
         if (ridingEntity != null)
@@ -1599,7 +1670,7 @@ public abstract class EntityPlayer extends EntityLiving
                     {
                         startMinecartRidingCoordinate = new ChunkCoordinates(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
                     }
-                    else if (startMinecartRidingCoordinate.getSqDistanceTo(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) >= 1000D)
+                    else if (startMinecartRidingCoordinate.getEuclideanDistanceTo(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) >= 1000D)
                     {
                         addStat(AchievementList.onARail, 1);
                     }
@@ -1634,6 +1705,9 @@ public abstract class EntityPlayer extends EntityLiving
         super.fall(par1);
     }
 
+    /**
+     * This method gets called when the entity kills another one.
+     */
     public void onKillEntity(EntityLiving par1EntityLiving)
     {
         if (par1EntityLiving instanceof EntityMob)
@@ -1683,7 +1757,7 @@ public abstract class EntityPlayer extends EntityLiving
     }
 
     /**
-     * Removes i number of levels
+     * Removes the specified number of experience levels.
      */
     public void removeExperience(int par1)
     {
@@ -1712,6 +1786,9 @@ public abstract class EntityPlayer extends EntityLiving
         experienceLevel++;
     }
 
+    /**
+     * increases exhaustion level by supplied amount
+     */
     public void addExhaustion(float par1)
     {
         if (capabilities.disableDamage)
@@ -1743,7 +1820,7 @@ public abstract class EntityPlayer extends EntityLiving
      */
     public boolean shouldHeal()
     {
-        return getEntityHealth() > 0 && getEntityHealth() < getMaxHealth();
+        return getHealth() > 0 && getHealth() < getMaxHealth();
     }
 
     /**
@@ -1818,8 +1895,16 @@ public abstract class EntityPlayer extends EntityLiving
         score = par1EntityPlayer.score;
     }
 
+    /**
+     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * prevent them from trampling crops
+     */
     protected boolean canTriggerWalking()
     {
         return !capabilities.isFlying;
+    }
+
+    public void func_50022_L()
+    {
     }
 }

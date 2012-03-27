@@ -15,6 +15,8 @@ public class FoodStats
     private int foodTimer;
     private int prevFoodLevel;
 
+    private static int disabledLevel = 20;
+
     public FoodStats()
     {
         foodTimer = 0;
@@ -23,11 +25,14 @@ public class FoodStats
         foodSaturationLevel = 5F;
     }
 
+    /**
+     * Args: int foodLevel, float foodSaturationModifier
+     */
     public void addStats(int par1, float par2)
     {
         if(mod_OldSurvivalMode.DisableHunger){
-            foodLevel = 20;
-            foodSaturationLevel = 20;
+            foodLevel = disabledLevel;
+            foodSaturationLevel = disabledLevel;
         }else{
             foodLevel = Math.min(par1 + foodLevel, 20);
             foodSaturationLevel = Math.min(foodSaturationLevel + (float)par1 * par2 * 2.0F, foodLevel);
@@ -68,12 +73,10 @@ public class FoodStats
         {
             foodTimer++;
 
-            if(!mod_OldSurvivalMode.DisableHunger){
-                if (foodTimer >= 80)
-                {
-                    par1EntityPlayer.heal(1);
-                    foodTimer = 0;
-                }
+            if (foodTimer >= 80 && !mod_OldSurvivalMode.DisableHunger)
+            {
+                par1EntityPlayer.heal(1);
+                foodTimer = 0;
             }
         }
         else if (foodLevel <= 0)
@@ -82,11 +85,9 @@ public class FoodStats
 
             if (foodTimer >= 80)
             {
-                if(!mod_OldSurvivalMode.DisableHunger){
-                    if (par1EntityPlayer.getEntityHealth() > 10 || i >= 3 || par1EntityPlayer.getEntityHealth() > 1 && i >= 2)
-                    {
-                        par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1);
-                    }
+                if (par1EntityPlayer.getHealth() > 10 || i >= 3 || par1EntityPlayer.getHealth() > 1 && i >= 2 && !mod_OldSurvivalMode.DisableHunger)
+                {
+                    par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1);
                 }
 
                 foodTimer = 0;
@@ -106,10 +107,10 @@ public class FoodStats
         if (par1NBTTagCompound.hasKey("foodLevel"))
         {
             if(mod_OldSurvivalMode.DisableHunger){
-                foodLevel = 20;
-                foodTimer = 20;
-                foodSaturationLevel = 20;
-                foodExhaustionLevel = 20;
+                foodLevel = disabledLevel;
+                foodTimer = disabledLevel;
+                foodSaturationLevel = disabledLevel;
+                foodExhaustionLevel = disabledLevel;
             }else{
                 foodLevel = par1NBTTagCompound.getInteger("foodLevel");
                 foodTimer = par1NBTTagCompound.getInteger("foodTickTimer");
@@ -125,10 +126,10 @@ public class FoodStats
     public void writeNBT(NBTTagCompound par1NBTTagCompound)
     {
         if(mod_OldSurvivalMode.DisableHunger){
-            par1NBTTagCompound.setInteger("foodLevel", 20);
-            par1NBTTagCompound.setInteger("foodTickTimer", 20);
-            par1NBTTagCompound.setFloat("foodSaturationLevel", 20);
-            par1NBTTagCompound.setFloat("foodExhaustionLevel", 20);
+            par1NBTTagCompound.setInteger("foodLevel", disabledLevel);
+            par1NBTTagCompound.setInteger("foodTickTimer", disabledLevel);
+            par1NBTTagCompound.setFloat("foodSaturationLevel", disabledLevel);
+            par1NBTTagCompound.setFloat("foodExhaustionLevel", disabledLevel);
         }else{
             par1NBTTagCompound.setInteger("foodLevel", foodLevel);
             par1NBTTagCompound.setInteger("foodTickTimer", foodTimer);
@@ -143,7 +144,7 @@ public class FoodStats
     public int getFoodLevel()
     {
         if(mod_OldSurvivalMode.DisableHunger){
-            return 20;
+            return disabledLevel;
         }
         return foodLevel;
     }
@@ -172,7 +173,7 @@ public class FoodStats
     public float getSaturationLevel()
     {
         if(mod_OldSurvivalMode.DisableHunger){
-            return 20;
+            return disabledLevel;
         }
         return foodSaturationLevel;
     }

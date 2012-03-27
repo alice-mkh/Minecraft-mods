@@ -12,7 +12,7 @@ public class EntityAIPanic extends EntityAIBase
     {
         field_48208_a = par1EntityCreature;
         field_48206_b = par2;
-        func_46087_a(1);
+        setMutexBits(1);
     }
 
     /**
@@ -43,9 +43,12 @@ public class EntityAIPanic extends EntityAIBase
         }
     }
 
-    public void func_46088_e()
+    /**
+     * Execute a one shot task or start executing a continuous task
+     */
+    public void startExecuting()
     {
-        field_48208_a.func_48333_ak().func_48658_a(field_48207_c, field_48204_d, field_48205_e, field_48206_b);
+        field_48208_a.getNavigator().func_48658_a(field_48207_c, field_48204_d, field_48205_e, field_48206_b);
     }
 
     /**
@@ -53,6 +56,6 @@ public class EntityAIPanic extends EntityAIBase
      */
     public boolean continueExecuting()
     {
-        return !field_48208_a.func_48333_ak().func_46034_b();
+        return !field_48208_a.getNavigator().noPath();
     }
 }

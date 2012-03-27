@@ -26,7 +26,7 @@ public class mod_OldSurvivalMode extends BaseModMp{
     public void load(){}
 
     public String getVersion(){
-        return "1.1.0";
+        return "1.2.4";
     }
 
     private void SetSwordDamage(boolean b){

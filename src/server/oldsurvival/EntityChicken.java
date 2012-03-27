@@ -57,7 +57,7 @@ public class EntityChicken extends EntityAnimal
         super.onLivingUpdate();
         field_393_af = field_391_b;
         field_394_ae = destPos;
-        destPos += (double)(onGround ? -1 : 4) * 0.3D;
+        destPos += (double)(onGround ? -1 : 4) * 0.29999999999999999D;
 
         if (destPos < 0.0F)
         {
@@ -74,11 +74,11 @@ public class EntityChicken extends EntityAnimal
             field_390_ai = 1.0F;
         }
 
-        field_390_ai *= 0.9D;
+        field_390_ai *= 0.90000000000000002D;
 
         if (!onGround && motionY < 0.0D)
         {
-            motionY *= 0.6D;
+            motionY *= 0.59999999999999998D;
         }
 
         field_391_b += field_390_ai * 2.0F;
