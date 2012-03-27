@@ -4071,7 +4071,7 @@ public class World implements IBlockAccess
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky())
+            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky() && mod_noBiomesX.VoidFog)
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
