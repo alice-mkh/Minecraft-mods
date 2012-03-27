@@ -92,7 +92,7 @@ public class BlockFire extends Block
     public int tickRate()
     {
         if (mod_WTFActions.FastFire){
-            return 40;
+            return 10;
         }
         return 30;
     }
