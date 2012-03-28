@@ -11,7 +11,14 @@ public class mod_WTFEyecandy extends mod_WTF{
         addProperty(this, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
         addProperty(this, 5, "Item sway",           true,  "ItemSway");
         addProperty(this, 6, "2D items",            false, "Items2D");
+        addProperty(this, 7, "Old chests",            false, "OldChest");
         loadModuleProperties(3);
+    }
+
+    public void callback (int i){
+        if (i==7){
+            ModLoader.getMinecraftInstance().renderGlobal.loadRenderers();
+        }
     }
 
     public void addRenderer(Map map){
@@ -24,6 +31,7 @@ public class mod_WTFEyecandy extends mod_WTF{
     public static boolean OldWalking;
     public static boolean OldEndermen;
     public static boolean EndermenOpenMouth = true;
+    public static boolean OldChest;
 //Chest
 //Zombies with armor
 }
