@@ -91,10 +91,7 @@ public class BlockFire extends Block
      */
     public int tickRate()
     {
-        if (mod_WTFActions.FastFire){
-            return 10;
-        }
-        return 30;
+        return mod_WTFActions.OldFire? 10 : 30;
     }
 
     /**
@@ -210,8 +207,32 @@ public class BlockFire extends Block
         }
     }
 
+    private void tryToCatchBlockOnFire_old(World world, int i, int j, int k, int l, Random random)
+    {
+        int i1 = abilityToCatchFire[world.getBlockId(i, j, k)];
+        if(random.nextInt(l) < i1)
+        {
+            boolean flag = world.getBlockId(i, j, k) == Block.tnt.blockID;
+            if(random.nextInt(2) == 0 && !world.canLightningStrikeAt(i, j, k))
+            {
+                world.setBlockWithNotify(i, j, k, blockID);
+            } else
+            {
+                world.setBlockWithNotify(i, j, k, 0);
+            }
+            if(flag)
+            {
+                Block.tnt.onBlockDestroyedByPlayer(world, i, j, k, 0);
+            }
+        }
+    }
+
     private void tryToCatchBlockOnFire(World par1World, int par2, int par3, int par4, int par5, Random par6Random, int par7)
     {
+        if (mod_WTFActions.OldFire){
+            tryToCatchBlockOnFire_old(par1World, par2, par3, par4, par5, par6Random);
+            return;
+        }
         int i = abilityToCatchFire[par1World.getBlockId(par2, par3, par4)];
 
         if (par6Random.nextInt(par5) < i)
