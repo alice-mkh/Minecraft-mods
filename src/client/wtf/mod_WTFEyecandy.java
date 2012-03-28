@@ -23,6 +23,7 @@ public class mod_WTFEyecandy extends mod_WTF{
 
     public void addRenderer(Map map){
         map.put(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
+        map.put(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
     }
 
     public static boolean ItemSway = true;
@@ -32,6 +33,5 @@ public class mod_WTFEyecandy extends mod_WTF{
     public static boolean OldEndermen;
     public static boolean EndermenOpenMouth = true;
     public static boolean OldChest;
-//Chest
 //Zombies with armor
 }
