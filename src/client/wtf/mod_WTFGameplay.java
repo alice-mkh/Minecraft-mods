@@ -22,6 +22,15 @@ public class mod_WTFGameplay extends mod_WTF{
         ModLoader.setInGameHook(this, true, true);
     }
 
+    public void callback (int i){
+        if (i==9){
+            setSwordDamage(OldCombatSystem);
+        }
+        if (i==10){
+            setArmorDamage(OldArmor);
+        }
+    }
+
     public static boolean DisableXP;
     public static boolean DisableHunger;
     public static boolean InstantFood;
