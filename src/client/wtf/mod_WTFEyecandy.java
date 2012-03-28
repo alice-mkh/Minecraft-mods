@@ -5,13 +5,14 @@ import net.minecraft.client.Minecraft;
 
 public class mod_WTFEyecandy extends mod_WTF{
     public void load(){
-        addProperty(this, 1, "Old walking",         false, "OldWalking");
-        addProperty(this, 2, "Bobbing",             false, "Bobbing");
-        addProperty(this, 3, "Old endermen",        false, "OldEndermen");
-        addProperty(this, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
-        addProperty(this, 5, "Item sway",           true,  "ItemSway");
-        addProperty(this, 6, "2D items",            false, "Items2D");
+        addProperty(this, 1, "Old walking",           false, "OldWalking");
+        addProperty(this, 2, "Bobbing",               false, "Bobbing");
+        addProperty(this, 3, "Old endermen",          false, "OldEndermen");
+        addProperty(this, 4, "Endermen open mouth",   true,  "EndermenOpenMouth");
+        addProperty(this, 5, "Item sway",             true,  "ItemSway");
+        addProperty(this, 6, "2D items",              false, "Items2D");
         addProperty(this, 7, "Old chests",            false, "OldChest");
+        addProperty(this, 8, "Show mob IDs in F3",    false, "MobLabels");
         loadModuleProperties(3);
     }
 
@@ -33,5 +34,6 @@ public class mod_WTFEyecandy extends mod_WTF{
     public static boolean OldEndermen;
     public static boolean EndermenOpenMouth = true;
     public static boolean OldChest;
+    public static boolean MobLabels;
 //Zombies with armor
 }

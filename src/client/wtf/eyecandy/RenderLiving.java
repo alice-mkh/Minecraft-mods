@@ -324,7 +324,13 @@ public class RenderLiving extends Render
      */
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
-        if (!Minecraft.isDebugInfoEnabled());
+        if (Minecraft.isDebugInfoEnabled() && mod_WTFEyecandy.MobLabels){
+            if (par1EntityLiving instanceof EntityEnderman){
+                renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4 + 1D, par6, 64);
+            }else{
+                renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
+            }
+        }
     }
 
     /**
