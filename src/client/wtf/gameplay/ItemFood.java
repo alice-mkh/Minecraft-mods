@@ -4,6 +4,10 @@ import java.util.Random;
 
 public class ItemFood extends Item
 {
+    public static boolean heal = false;
+    public static boolean instant = false;
+    public static boolean stacks = true;
+
     public final int field_35430_a = 32;
 
     /** The amount this food item heals the player. */
@@ -48,13 +52,13 @@ public class ItemFood extends Item
     public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         par1ItemStack.stackSize--;
-        if(!mod_WTFGameplay.DisableHunger){
+        if(!heal){
             par3EntityPlayer.getFoodStats().addStats(this);
         }
         par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
 
         if (!par2World.isRemote){
-            if(mod_WTFGameplay.DisableHunger){
+            if(heal){
                 if (this.shiftedIndex==Item.appleGold.shiftedIndex){
                     par3EntityPlayer.heal(20);
                 }else if (this.shiftedIndex==Item.spiderEye.shiftedIndex || this.shiftedIndex==Item.rottenFlesh.shiftedIndex){
@@ -74,7 +78,7 @@ public class ItemFood extends Item
     }
 
     public int getItemStackLimit(){
-        if (mod_WTFGameplay.DisableFoodStacking){
+        if (!stacks){
             if (this.shiftedIndex==Item.cookie.shiftedIndex || this.shiftedIndex==Item.melon.shiftedIndex){
                 return 8;
             }else{
@@ -111,12 +115,12 @@ public class ItemFood extends Item
      */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        if(!mod_WTFGameplay.InstantFood){
-            if (par3EntityPlayer.canEat(alwaysEdible) || mod_WTFGameplay.DisableHunger){
+        if(!instant){
+            if (par3EntityPlayer.canEat(alwaysEdible) || heal){
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
         }else{
-            if(!mod_WTFGameplay.DisableHunger){
+            if(!heal){
                 if(par3EntityPlayer.canEat(alwaysEdible)){
                     if(!par2World.isRemote && potionId > 0 && par2World.rand.nextFloat() < potionEffectProbability)
                     {

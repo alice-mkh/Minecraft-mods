@@ -10,6 +10,10 @@ import org.lwjgl.opengl.GL12;
 
 public class GuiIngame extends Gui
 {
+    public static boolean hidexp = false;
+    public static boolean hidehunger = false;
+    public static boolean nodebug = false;
+
     private static RenderItem itemRenderer = new RenderItem();
 
     /** A list with all the chat messages in. */
@@ -97,7 +101,7 @@ public class GuiIngame extends Gui
             zLevel = -90F;
             drawTexturedModalRect(i / 2 - 91, j - 22, 0, 0, 182, 22);
             drawTexturedModalRect((i / 2 - 91 - 1) + inventoryplayer.currentItem * 20, j - 22 - 1, 0, 22, 24, 22);
-            if(mod_WTFGameplay.DisableHunger){
+            if(hidehunger){
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons2.png"));
             }else{
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
@@ -127,7 +131,7 @@ public class GuiIngame extends Gui
                 int k5 = i / 2 - 91;
                 int k6 = i / 2 + 91;
                 int i8 = j - 32;
-                if(!mod_WTFGameplay.DisableXP){
+                if(!hidexp){
                     if ( mc.thePlayer.xpBarCap() > 0)
                     {
                         char c = '\266';
@@ -156,7 +160,7 @@ public class GuiIngame extends Gui
                     {
                         int k10 = k6 - l9 * 8 - 9;
                         int intintintintint = i8;
-                        if(!mod_WTFGameplay.DisableHunger){
+                        if(!hidehunger){
                             k10 = k5 + l9 * 8;
                             intintintintint = i8 - 10;
                         }
@@ -237,7 +241,7 @@ public class GuiIngame extends Gui
                     }
                 }
 
-                if(!mod_WTFGameplay.DisableHunger){
+                if(!hidehunger){
                     for (int i10 = 0; i10 < 10; i10++)
                     {
                         int i11 = i8;
@@ -297,7 +301,7 @@ public class GuiIngame extends Gui
                     {
                         if (i12 < j10)
                         {
-                            if(mod_WTFGameplay.DisableHunger){
+                            if(hidehunger){
                                 drawTexturedModalRect(k5 + i12 * 8, k8, 16, 18, 9, 9);
                             }else{
                                 drawTexturedModalRect(k6 - i12 * 8 - 9, k8, 16, 18, 9, 9);
@@ -305,7 +309,7 @@ public class GuiIngame extends Gui
                         }
                         else
                         {
-                            if(mod_WTFGameplay.DisableHunger){
+                            if(hidehunger){
                                 drawTexturedModalRect(k5 + i12 * 8, k8, 25, 18, 9, 9);
                             }else{
                                 drawTexturedModalRect(k6 - i12 * 8 - 9, k8, 25, 18, 9, 9);
@@ -348,7 +352,7 @@ public class GuiIngame extends Gui
             GL11.glEnable(GL11.GL_DEPTH_TEST);
         }
 
-        if (mc.playerController.func_35642_f() && mc.thePlayer.experienceLevel > 0 && !mod_WTFGameplay.DisableXP)
+        if (mc.playerController.func_35642_f() && mc.thePlayer.experienceLevel > 0 && !hidexp)
         {
             boolean flag = false;
             int i1 = flag ? 0xffffff : 0x80ff20;
@@ -362,7 +366,7 @@ public class GuiIngame extends Gui
             fontrenderer.drawString(s, j3, l3, i1);
         }
 
-        if (mc.gameSettings.showDebugInfo && mod_WTFGameplay.AllowDebug)
+        if (mc.gameSettings.showDebugInfo && !nodebug)
         {
             GL11.glPushMatrix();
 

@@ -4,6 +4,8 @@ import java.util.*;
 
 public class BlockChest extends BlockContainer
 {
+    public static boolean normalblock = false;
+
     private Random random;
 
     protected BlockChest(int par1)
@@ -35,7 +37,7 @@ public class BlockChest extends BlockContainer
      */
     public int getRenderType()
     {
-        return mod_WTFEyecandy.OldChest ? 0 : 22;
+        return normalblock ? 0 : 22;
     }
 
     /**

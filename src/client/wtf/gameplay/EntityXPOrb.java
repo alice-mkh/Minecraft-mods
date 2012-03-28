@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class EntityXPOrb extends Entity
 {
+    public static boolean noxp = false;
+
     /**
      * A constantly increasing value that RenderXPOrb uses to control the colour shifting (Green / yellow)
      */
@@ -54,7 +56,7 @@ public class EntityXPOrb extends Entity
 
     protected void entityInit()
     {
-        if(mod_WTFGameplay.DisableXP){
+        if(noxp){
             setDead();
         }
     }

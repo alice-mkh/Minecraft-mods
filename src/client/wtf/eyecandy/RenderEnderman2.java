@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderEnderman2 extends RenderLiving
 {
+    public static boolean greeneyes = false;
+
     /** The model of the enderman */
     private ModelEnderman endermanModel;
     private Random rnd;
@@ -77,7 +79,7 @@ public class RenderEnderman2 extends RenderLiving
         }
         else
         {
-            if (mod_WTFEyecandy.OldEndermen){
+            if (greeneyes){
                 loadTexture("/mob/enderman_eyes_old.png");
             }else{
                 loadTexture("/mob/enderman_eyes.png");

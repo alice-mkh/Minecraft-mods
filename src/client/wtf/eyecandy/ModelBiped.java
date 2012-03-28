@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 public class ModelBiped extends ModelBase
 {
+    public static boolean oldwalking = false;
+
     public ModelRenderer bipedHead;
     public ModelRenderer bipedHeadwear;
     public ModelRenderer bipedBody;
@@ -99,7 +101,7 @@ public class ModelBiped extends ModelBase
 //         bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
 //         bipedRightArm.rotateAngleZ = 0.0F;
 //         bipedLeftArm.rotateAngleZ = 0.0F;
-        if(!isSneak && !isRiding && mod_WTFEyecandy.OldWalking){
+        if(!isSneak && !isRiding && oldwalking){
             bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2;
             bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2;
             bipedLeftArm.rotateAngleZ = (MathHelper.cos(par1 * 0.2812F) - 1.0F) * 1.0F * par2;
@@ -125,12 +127,12 @@ public class ModelBiped extends ModelBase
             bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
 
-        if (heldItemLeft != 0 && !mod_WTFEyecandy.OldWalking)
+        if (heldItemLeft != 0 && !oldwalking)
         {
             bipedLeftArm.rotateAngleX = bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)heldItemLeft;
         }
 
-        if (heldItemRight != 0 && !mod_WTFEyecandy.OldWalking)
+        if (heldItemRight != 0 && !oldwalking)
         {
             bipedRightArm.rotateAngleX = bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)heldItemRight;
         }
@@ -138,7 +140,7 @@ public class ModelBiped extends ModelBase
         bipedRightArm.rotateAngleY = 0.0F;
         bipedLeftArm.rotateAngleY = 0.0F;
 
-        if (onGround > -9990F && !mod_WTFEyecandy.OldWalking)
+        if (onGround > -9990F && !oldwalking)
         {
             float f = onGround;
             bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(f) * (float)Math.PI * 2.0F) * 0.2F;

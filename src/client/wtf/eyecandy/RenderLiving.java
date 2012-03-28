@@ -6,6 +6,9 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderLiving extends Render
 {
+    public static boolean bobbing = false;
+    public static boolean labels = false;
+
     protected ModelBase mainModel;
 
     /** The model to be used during the render passes. */
@@ -74,12 +77,12 @@ public class RenderLiving extends Render
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1F, -1F, 1.0F);
             preRenderCallback(par1EntityLiving, par9);
-            if (!mod_WTFEyecandy.Bobbing){
+            if (!bobbing){
                 GL11.glTranslatef(0.0F, -24F * f4 - 0.0078125F, 0.0F);
             }
             float f5 = par1EntityLiving.field_705_Q + (par1EntityLiving.field_704_R - par1EntityLiving.field_705_Q) * par9;
             float f6;
-            if (mod_WTFEyecandy.Bobbing){
+            if (bobbing){
                 f6 = par1EntityLiving.field_9359_x + (par1EntityLiving.field_9360_w - par1EntityLiving.field_9359_x) * par9;
                 float bobStrength = 0F;
                 if (par1EntityLiving instanceof EntityZombie || 
@@ -324,7 +327,7 @@ public class RenderLiving extends Render
      */
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
-        if (Minecraft.isDebugInfoEnabled() && mod_WTFEyecandy.MobLabels){
+        if (Minecraft.isDebugInfoEnabled() && labels){
             if (par1EntityLiving instanceof EntityEnderman){
                 renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4 + 1D, par6, 64);
             }else{

@@ -4,6 +4,9 @@ import java.util.Random;
 
 public class EntityZombie extends EntityMob
 {
+    public static boolean noflesh = false;
+    public static boolean rareloot = true;
+
     public EntityZombie(World par1World)
     {
         super(par1World);
@@ -94,7 +97,7 @@ public class EntityZombie extends EntityMob
      */
     protected int getDropItemId()
     {
-        if (mod_WTFGameplay.OldDrops){
+        if (noflesh){
             return Item.feather.shiftedIndex;
         }
         return Item.rottenFlesh.shiftedIndex;
@@ -110,7 +113,7 @@ public class EntityZombie extends EntityMob
 
     protected void dropRareDrop(int par1)
     {
-        if (mod_WTFGameplay.DisableRareLoot){
+        if (!rareloot){
             return;
         }
         switch (rand.nextInt(4))

@@ -5,6 +5,9 @@ import java.util.Random;
 
 public class EntityPigZombie extends EntityZombie
 {
+    public static boolean noflesh = false;
+    public static boolean rareloot = true;
+
     /** Above zero if this PigZombie is Angry. */
     private int angerLevel;
 
@@ -168,7 +171,7 @@ public class EntityPigZombie extends EntityZombie
      */
     protected void dropFewItems(boolean par1, int par2)
     {
-        if (!mod_WTFGameplay.OldDrops){
+        if (!noflesh){
             int i = rand.nextInt(2 + par2);
             for (int j = 0; j < i; j++)
             {
@@ -194,7 +197,7 @@ public class EntityPigZombie extends EntityZombie
 
     protected void dropRareDrop(int par1)
     {
-        if (mod_WTFGameplay.DisableRareLoot){
+        if (!rareloot){
             return;
         }
         if (par1 > 0)
@@ -227,7 +230,7 @@ public class EntityPigZombie extends EntityZombie
      */
     protected int getDropItemId()
     {
-        if (mod_WTFGameplay.OldDrops){
+        if (noflesh){
             return Item.porkCooked.shiftedIndex;
         }
         return Item.rottenFlesh.shiftedIndex;

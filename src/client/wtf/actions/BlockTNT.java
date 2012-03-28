@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class BlockTNT extends Block
 {
+    public static boolean punchToActivate = false;
+
     public BlockTNT(int par1, int par2)
     {
         super(par1, par2, Material.tnt);
@@ -92,7 +94,7 @@ public class BlockTNT extends Block
             return;
         }
 
-        if ((par5 & 1) == 0 && !mod_WTFActions.PunchTNT)
+        if ((par5 & 1) == 0 && !punchToActivate)
         {
             dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Block.tnt.blockID, 1, 0));
         }

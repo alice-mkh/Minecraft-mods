@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class BlockFire extends Block
 {
+    public static boolean oldFire = false;
+
     private int chanceToEncourageFire[];
     private int abilityToCatchFire[];
 
@@ -91,7 +93,7 @@ public class BlockFire extends Block
      */
     public int tickRate()
     {
-        return mod_WTFActions.OldFire? 10 : 30;
+        return oldFire? 10 : 30;
     }
 
     /**
@@ -229,7 +231,7 @@ public class BlockFire extends Block
 
     private void tryToCatchBlockOnFire(World par1World, int par2, int par3, int par4, int par5, Random par6Random, int par7)
     {
-        if (mod_WTFActions.OldFire){
+        if (oldFire){
             tryToCatchBlockOnFire_old(par1World, par2, par3, par4, par5, par6Random);
             return;
         }

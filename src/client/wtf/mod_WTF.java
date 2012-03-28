@@ -52,9 +52,12 @@ public class mod_WTF extends BaseMod{
                 for (int i = 1; i <= proplength[id]; i++){
                     boolean val = Boolean.parseBoolean(properties.getProperty(propfield[id][i].getName()));;
                     propvalue[id][i] = val;
-                    propfield[id][i].setBoolean(Class.forName(modules[id]), val);
+                    propfield[id][i].setBoolean(modules[id], val);
+                    sendCallback(id, i);
                 }
-            }catch(Exception ex){}
+            }catch(Exception ex){
+                System.out.println(ex);
+            }
         }
         catch(IOException ioexception){
             ioexception.printStackTrace();
@@ -71,12 +74,8 @@ public class mod_WTF extends BaseMod{
     public static void addProperty(Object module, int i2, String name, boolean val, String var){
         int i1 = 0;
         for (int i = 0; i<modules.length; i++){
-            try{
-                if (module.getClass() == Class.forName(modules[i])){
-                    i1 = i;
-                }
-            }catch (Exception ex){
-                continue;
+            if (module.getClass() == modules[i]){
+                i1 = i;
             }
         }
         if (propname==null){
@@ -95,8 +94,10 @@ public class mod_WTF extends BaseMod{
         propname[i1][i2]=name;
         propvalue[i1][i2]=val;
         try{
-            propfield[i1][i2]=Class.forName(modules[i1]).getDeclaredField(var);
-        }catch (Exception ex){}
+            propfield[i1][i2]=modules[i1].getDeclaredField(var);
+        }catch (Exception ex){
+            System.out.println(ex);
+        }
         proplength[i1]++;
     }
 
@@ -112,13 +113,9 @@ public class mod_WTF extends BaseMod{
         int id2 = 0;
         List list = ModLoader.getLoadedMods();
         for(int i = 0; i < list.size(); i++){
-            try{
-                if (list.get(i).getClass() == Class.forName(modules[i])){
-                    id2 = i;
-                    break;
-                }
-            }catch (Exception ex){
-                continue;
+            if (list.get(i).getClass() == modules[id]){
+                id2 = i;
+                break;
             }
         }
         try{
@@ -134,5 +131,5 @@ public class mod_WTF extends BaseMod{
     public static boolean[][] propvalue;
     public static Field[][] propfield;
     public static int[] proplength;
-    public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy"};
+    public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class};
 }

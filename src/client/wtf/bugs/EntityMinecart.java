@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class EntityMinecart extends Entity implements IInventory
 {
+    public static boolean boosters = false;
+
     private ItemStack cargoItems[];
     private int fuel;
     private boolean field_856_i;
@@ -622,7 +624,7 @@ public class EntityMinecart extends Entity implements IInventory
                 if (d31 > 0.01D)
                 {
                     double d32;
-                    if (mod_WTFBugs.Boosters){
+                    if (boosters){
                         d32 = 0.04D;
                     }else{
                         d32 = 0.059999999999999998D;
@@ -1010,7 +1012,7 @@ public class EntityMinecart extends Entity implements IInventory
             {
                 double d7;
                 double d8;
-                if (mod_WTFBugs.Boosters){
+                if (boosters){
                     d7 = par1Entity.motionX + motionX;
                     d8 = par1Entity.motionZ + motionZ;
                 }else{

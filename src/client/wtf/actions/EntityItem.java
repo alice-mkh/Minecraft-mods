@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class EntityItem extends Entity
 {
+    public static boolean smeltOnFire = false;
+
     /** The item stack of this EntityItem. */
     public ItemStack item;
 
@@ -136,7 +138,7 @@ public class EntityItem extends Entity
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         setBeenAttacked();
-        if ((par1DamageSource == DamageSource.inFire || par1DamageSource == DamageSource.onFire || par1DamageSource == DamageSource.lava) && mod_WTFActions.SmeltOnFire){
+        if ((par1DamageSource == DamageSource.inFire || par1DamageSource == DamageSource.onFire || par1DamageSource == DamageSource.lava) && smeltOnFire){
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
             if (item != itemstack && itemstack != null){
                 item.itemID = itemstack.itemID;

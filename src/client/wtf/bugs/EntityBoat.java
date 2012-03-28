@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class EntityBoat extends Entity
 {
+    public static boolean waterlift = false;
+
     private int boatPosRotationIncrements;
     private double boatX;
     private double boatY;
@@ -270,7 +272,7 @@ public class EntityBoat extends Entity
             return;
         }
 
-        if (mod_WTFBugs.WaterLifts){
+        if (waterlift){
             double d6 = d * 2D - 1.0D;
             motionY += 0.039999999105930328D * d6;
         }else{

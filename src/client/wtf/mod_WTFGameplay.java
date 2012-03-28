@@ -17,17 +17,34 @@ public class mod_WTFGameplay extends mod_WTF{
         addProperty(this, 10,"Old armor",             false, "OldArmor");
         addProperty(this, 11,"Allow debug screen",    true,  "AllowDebug");
         loadModuleProperties(2);
-        setSwordDamage(OldCombatSystem);
-        setArmorDamage(OldArmor);
         ModLoader.setInGameHook(this, true, true);
     }
 
     public void callback (int i){
-        if (i==9){
-            setSwordDamage(OldCombatSystem);
-        }
-        if (i==10){
-            setArmorDamage(OldArmor);
+        switch (i){
+            case 1: EntityXPOrb.noxp =          DisableXP;
+                    GuiIngame.hidexp =          DisableXP;           break;
+            case 2: FoodStats.disabled =        DisableHunger;
+                    ItemFood.heal =             DisableHunger;
+                    BlockCake.heal =            DisableHunger;
+                    GuiIngame.hidehunger =      DisableHunger;       break;
+            case 3: ItemFood.instant =          InstantFood;         break;
+            case 4: ItemFood.stacks =          !DisableFoodStacking; break;
+            case 5: EntityChicken.nochicken =   OldDrops;
+                    EntityCow.nobeef =          OldDrops;
+                    EntityZombie.noflesh =      OldDrops;
+                    EntityPigZombie.noflesh =   OldDrops;            break;
+            case 6: EntityZombie.rareloot =    !DisableRareLoot;
+                    EntitySkeleton.rareloot =  !DisableRareLoot;
+                    EntityPigZombie.rareloot = !DisableRareLoot;     break;
+            case 7: ItemBow.nocharging =        InstantBow;          break;
+            case 8: ItemBow.nodurability =      InfiniteBow;         break;
+            case 9: EntityArrow.olddamage =     OldCombatSystem;
+                    EntityPlayer.oldcombat =    OldCombatSystem;
+                    setSwordDamage(OldCombatSystem);                 break;
+            case 10:EntityPlayer.oldarmor =     OldArmor;
+                    setArmorDamage(OldArmor);                        break;
+            case 11:GuiIngame.nodebug =        !AllowDebug;          break;
         }
     }
 

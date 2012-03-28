@@ -14,12 +14,23 @@ public class mod_WTFActions extends mod_WTF{
         loadModuleProperties(0);
     }
 
+    public void callback (int i){
+        switch(i){
+            case 1: BlockTNT.punchToActivate =    PunchTNT;      break;
+            case 2: EntityTNTPrimed.extinguish =  ExtinguishTNT; break;
+            case 3: EntityItem.smeltOnFire =      SmeltOnFire;   break;
+            case 4: BlockFire.oldFire =           OldFire;       break;
+            case 5: EntitySheep.punchToShear =    PunchSheep;    break;
+            case 6: EntityAIPanic.disablePanic = !AnimalsFlee;   break;
+        }
+    }
+
     public static boolean SmeltOnFire;
     public static boolean PunchTNT;
     public static boolean ExtinguishTNT;
     public static boolean OldFire;
     public static boolean PunchSheep;
-    public static boolean AnimalsFlee;
+    public static boolean AnimalsFlee = true;
 //Old tools
 //Old blocks
 }

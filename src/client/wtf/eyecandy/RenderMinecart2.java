@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderMinecart2 extends RenderMinecart
 {
+    public static boolean shiftChest = false;
 
     public RenderMinecart2()
     {
@@ -78,7 +79,7 @@ public class RenderMinecart2 extends RenderMinecart
 
             if (par1EntityMinecart.minecartType == 1)
             {
-                if (mod_WTFEyecandy.OldChest){
+                if (shiftChest){
                     GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
                     GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
                     (new RenderBlocks()).renderBlockAsItem(Block.chest, 0, par1EntityMinecart.getBrightness(par9));

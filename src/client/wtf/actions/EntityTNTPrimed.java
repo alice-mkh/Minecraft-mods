@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 public class EntityTNTPrimed extends Entity
 {
+    public static boolean extinguish = false;
+
     /** How long the fuse is */
     public int fuse;
 
@@ -116,7 +118,7 @@ public class EntityTNTPrimed extends Entity
     }
 
     public boolean attackEntityFrom(DamageSource damagesource, int i){
-        if (!mod_WTFActions.ExtinguishTNT){
+        if (!extinguish){
             return false;
         }
         Entity entity = damagesource.getEntity();

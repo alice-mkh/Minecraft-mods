@@ -14,6 +14,17 @@ public class mod_WTFBugs extends mod_WTF{
         loadModuleProperties(1);
     }
 
+    public void callback (int i){
+        switch(i){
+            case 1: EntityMinecart.boosters = WaterLifts;   break;
+            case 2: EntityBoat.waterlift =    WaterLifts;   break;
+            case 3: Entity.toaster =          LavaToasters; break;
+            case 4: Entity.waterladder =      WaterLadders; break;
+            case 5: EntityLiving.laddergaps = LadderGaps;   break;
+            case 6: BlockPistonBase.dupe =    PistonDupe;   break;
+        }
+    }
+
     public static boolean Boosters;
     public static boolean LadderGaps;
     public static boolean WaterLadders;

@@ -4,9 +4,11 @@ import java.util.Random;
 
 public class EntitySheep extends EntityAnimal
 {
+    public static boolean punchToShear = false;
+
     public boolean attackEntityFrom(DamageSource damagesource, int i)
     {
-        if (!mod_WTFActions.PunchSheep){
+        if (!punchToShear){
             return super.attackEntityFrom(damagesource, i);
         }
         Entity entity = damagesource.getEntity();

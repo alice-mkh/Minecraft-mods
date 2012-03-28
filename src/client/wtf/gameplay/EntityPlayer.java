@@ -4,6 +4,9 @@ import java.util.*;
 
 public abstract class EntityPlayer extends EntityLiving
 {
+    public static boolean oldarmor = false;
+    public static boolean oldcombat = false;
+
     /** Inventory of the player */
     public InventoryPlayer inventory;
 
@@ -1005,7 +1008,7 @@ public abstract class EntityPlayer extends EntityLiving
 
     protected void damageArmor(int par1)
     {
-        if (mod_WTFGameplay.OldArmor){
+        if (oldarmor){
             for(int j = 0; j < inventory.armorInventory.length; j++)
             {
                 if(inventory.armorInventory[j] == null || !(inventory.armorInventory[j].getItem() instanceof ItemArmor))
@@ -1029,7 +1032,7 @@ public abstract class EntityPlayer extends EntityLiving
      */
     public int getTotalArmorValue()
     {
-        if (mod_WTFGameplay.OldArmor){
+        if (oldarmor){
             int i = 0;
             int j = 0;
             int k = 0;
@@ -1079,7 +1082,7 @@ public abstract class EntityPlayer extends EntityLiving
             par2 = 1 + par2 >> 1;
         }
 
-        if (mod_WTFGameplay.OldArmor){
+        if (oldarmor){
             par2 = applyArmorCalculations_old(par1DamageSource, par2);
         }else{
             par2 = applyArmorCalculations(par1DamageSource, par2);
@@ -1213,7 +1216,7 @@ public abstract class EntityPlayer extends EntityLiving
         {
             j++;
         }
-        if (mod_WTFGameplay.OldCombatSystem){
+        if (oldcombat){
             combatOld(par1Entity, i, j, k);
         }else{
             combatNew(par1Entity, i, j, k);

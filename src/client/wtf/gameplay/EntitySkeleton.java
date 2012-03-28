@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class EntitySkeleton extends EntityMob
 {
+    public static boolean rareloot = true;
+
     /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem;
 
@@ -145,7 +147,7 @@ public class EntitySkeleton extends EntityMob
 
     protected void dropRareDrop(int par1)
     {
-        if (mod_WTFGameplay.DisableRareLoot){
+        if (!rareloot){
             return;
         }
         if (par1 > 0)

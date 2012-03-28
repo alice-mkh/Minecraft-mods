@@ -6,6 +6,9 @@ import org.lwjgl.opengl.GL12;
 
 public class ItemRenderer
 {
+    public static boolean sway = true;
+    public static boolean items2d = false;
+
     /** A reference to the Minecraft object. */
     private Minecraft mc;
     private ItemStack itemToRender;
@@ -69,7 +72,7 @@ public class ItemRenderer
             GL11.glTranslatef(-f4, -f5, 0.0F);
             float f6 = 1.5F;
             GL11.glScalef(f6, f6, f6);
-            if (mod_WTFEyecandy.Items2D){
+            if (items2d){
                 GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(360F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-0.5F, -0.0625F, 0.0F);
@@ -134,7 +137,7 @@ public class ItemRenderer
      */
     private void renderItemIn2D(Tessellator par1Tessellator, float par2, float par3, float par4, float par5)
     {
-        if (mod_WTFEyecandy.Items2D){
+        if (items2d){
             renderItemIn2D_old(par1Tessellator, par2, par3, par4, par5);
             return;
         }
@@ -235,7 +238,7 @@ public class ItemRenderer
             EntityPlayerSP entityplayersp1 = (EntityPlayerSP)entityplayersp;
             float f2 = entityplayersp1.prevRenderArmPitch + (entityplayersp1.renderArmPitch - entityplayersp1.prevRenderArmPitch) * par1;
             float f4 = entityplayersp1.prevRenderArmYaw + (entityplayersp1.renderArmYaw - entityplayersp1.prevRenderArmYaw) * par1;
-            if (mod_WTFEyecandy.ItemSway){
+            if (sway){
                 GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationPitch - f2) * 0.1F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationYaw - f4) * 0.1F, 0.0F, 1.0F, 0.0F);
             }
@@ -354,7 +357,7 @@ public class ItemRenderer
                     f31 = f31 * f31 * f31;
                     float f35 = 1.0F - f31;
                     GL11.glTranslatef(0.0F, MathHelper.abs(MathHelper.cos((f15 / 4F) * (float)Math.PI) * 0.1F) * (float)((double)f28 <= 0.20000000000000001D ? 0 : 1), 0.0F);
-                    if (!mod_WTFEyecandy.Items2D || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                    if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glTranslatef(f35 * 0.6F, -f35 * 0.5F, 0.0F);
                         GL11.glRotatef(f35 * 90F, 0.0F, 1.0F, 0.0F);
                         GL11.glRotatef(f35 * 10F, 1.0F, 0.0F, 0.0F);
@@ -371,14 +374,14 @@ public class ItemRenderer
             }
 
             GL11.glTranslatef(0.7F * f6, -0.65F * f6 - (1.0F - f) * 0.6F, -0.9F * f6);
-            if (!mod_WTFEyecandy.Items2D || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+            if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
             }
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             float f11 = entityplayersp.getSwingProgress(par1);
             float f17 = MathHelper.sin(f11 * f11 * (float)Math.PI);
             float f23 = MathHelper.sin(MathHelper.sqrt_float(f11) * (float)Math.PI);
-            if (!mod_WTFEyecandy.Items2D || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+            if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                 GL11.glRotatef(-f17 * 20F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(-f23 * 20F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(-f23 * 80F, 1.0F, 0.0F, 0.0F);
@@ -393,7 +396,7 @@ public class ItemRenderer
                 if (enumaction1 == EnumAction.block)
                 {
                     GL11.glTranslatef(-0.5F, 0.2F, 0.0F);
-                    if (!mod_WTFEyecandy.Items2D || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                    if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(30F, 0.0F, 1.0F, 0.0F);
                         GL11.glRotatef(-80F, 1.0F, 0.0F, 0.0F);
                         GL11.glRotatef(60F, 0.0F, 1.0F, 0.0F);
@@ -401,7 +404,7 @@ public class ItemRenderer
                 }
                 else if (enumaction1 == EnumAction.bow)
                 {
-                    if (!mod_WTFEyecandy.Items2D || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                    if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(-18F, 0.0F, 0.0F, 1.0F);
                         GL11.glRotatef(-12F, 0.0F, 1.0F, 0.0F);
                         GL11.glRotatef(-8F, 1.0F, 0.0F, 0.0F);
@@ -422,7 +425,7 @@ public class ItemRenderer
                     }
 
                     GL11.glTranslatef(0.0F, 0.0F, f29 * 0.1F);
-                    if (!mod_WTFEyecandy.Items2D || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                    if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(-335F, 0.0F, 0.0F, 1.0F);
                         GL11.glRotatef(-50F, 0.0F, 1.0F, 0.0F);
                     }
@@ -430,7 +433,7 @@ public class ItemRenderer
                     float f32 = 1.0F + f29 * 0.2F;
                     GL11.glScalef(1.0F, 1.0F, f32);
                     GL11.glTranslatef(0.0F, -0.5F, 0.0F);
-                    if (!mod_WTFEyecandy.Items2D|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                    if (!items2d|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(50F, 0.0F, 1.0F, 0.0F);
                         GL11.glRotatef(335F, 0.0F, 0.0F, 1.0F);
                     }

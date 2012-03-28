@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class EntityCow extends EntityAnimal
 {
+    public static boolean nobeef = false;
+
     public EntityCow(World par1World)
     {
         super(par1World);
@@ -101,7 +103,7 @@ public class EntityCow extends EntityAnimal
             dropItem(Item.leather.shiftedIndex, 1);
         }
 
-        if (!mod_WTFGameplay.OldDrops){
+        if (!nobeef){
             i = rand.nextInt(3) + 1 + rand.nextInt(1 + par2);
 
             for (int k = 0; k < i; k++)

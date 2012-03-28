@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class EntityChicken extends EntityAnimal
 {
+    public static boolean nochicken = false;
+
     public boolean field_753_a;
     public float field_752_b;
     public float destPos;
@@ -158,7 +160,7 @@ public class EntityChicken extends EntityAnimal
             dropItem(Item.feather.shiftedIndex, 1);
         }
 
-        if (!mod_WTFGameplay.OldDrops){
+        if (!nochicken){
             if (isBurning())
             {
                 dropItem(Item.chickenCooked.shiftedIndex, 1);

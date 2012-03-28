@@ -4,6 +4,8 @@ import java.util.*;
 
 public abstract class EntityLiving extends Entity
 {
+    public static boolean laddergaps = false;
+
     public int heartsHalvesLife;
     public float field_9365_p;
     public float field_9363_r;
@@ -1340,7 +1342,7 @@ public abstract class EntityLiving extends Entity
         int j = MathHelper.floor_double(boundingBox.minY);
         int k = MathHelper.floor_double(posZ);
         int l = worldObj.getBlockId(i, j, k);
-        if (mod_WTFBugs.LadderGaps){
+        if (laddergaps){
             int l1 = worldObj.getBlockId(i, j + 1, k);
             return l == Block.ladder.blockID || l == Block.vine.blockID || l1 == Block.ladder.blockID || l1 == Block.vine.blockID;
         }

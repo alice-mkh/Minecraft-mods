@@ -17,8 +17,19 @@ public class mod_WTFEyecandy extends mod_WTF{
     }
 
     public void callback (int i){
-        if (i==7){
-            ModLoader.getMinecraftInstance().renderGlobal.loadRenderers();
+        switch (i){
+            case 1: ModelBiped.oldwalking =             OldWalking;        break;
+            case 2: RenderLiving.bobbing =              Bobbing;           break;
+            case 3: EntityEnderman.smoke =              OldEndermen;
+                    RenderEnderman2.greeneyes =         OldEndermen;       break;
+            case 4: ModelEnderman.openmouth =           EndermenOpenMouth; break;
+            case 5: ItemRenderer.sway =                 ItemSway;          break;
+            case 6: ItemRenderer.items2d =              Items2D;           break;
+            case 7: BlockChest.normalblock =            OldChest;
+                    TileEntityChestRenderer.hidemodel = OldChest;
+                    RenderMinecart2.shiftChest =        OldChest;
+                    ModLoader.getMinecraftInstance().renderGlobal.loadRenderers(); break;
+            case 8: RenderLiving.labels =               MobLabels;         break;
         }
     }
 

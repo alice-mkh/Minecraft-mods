@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 public class EntityAIPanic extends EntityAIBase
 {
+    public static boolean disablePanic = false;
+
     private EntityCreature field_48316_a;
     private float field_48314_b;
     private double field_48315_c;
@@ -20,7 +22,7 @@ public class EntityAIPanic extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-        if (!mod_WTFActions.AnimalsFlee){
+        if (disablePanic){
             return false;
         }
         if (field_48316_a.getAITarget() == null)

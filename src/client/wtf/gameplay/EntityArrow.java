@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class EntityArrow extends Entity
 {
+    public static boolean olddamage = false;
+
     private int xTile;
     private int yTile;
     private int zTile;
@@ -298,7 +300,7 @@ public class EntityArrow extends Entity
                 {
                     j1 += rand.nextInt(j1 / 2 + 2);
                 }
-                if (mod_WTFGameplay.OldCombatSystem){
+                if (olddamage){
                     j1 = 4;
                 }
 
