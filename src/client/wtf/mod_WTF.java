@@ -69,7 +69,6 @@ public class mod_WTF extends BaseMod{
         gui.addModule(1,"Bugs");
         gui.addModule(2,"Gameplay");
         gui.addModule(3,"Eyecandy");
-        gui.addModule(4,"Actions2");
     }
     
     public static void addProperty(Object module, int i2, String name, boolean val, String var){
@@ -146,5 +145,5 @@ public class mod_WTF extends BaseMod{
     public static Field[][] propfield;
     public static int[] proplength;
 //     public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class, mod_WTFActions2.class};
-    public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy", "net.minecraft.src.mod_WTFActions2"};
+    public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy"};
 }
