@@ -58,6 +58,7 @@ public class GuiWTFSettingsList extends GuiScreen{
             }catch(Exception ex){
                 System.out.println(ex);
             }
+            mod_WTF.sendCallback(id, guibutton.id-1);
             guibutton.displayString = mod_WTF.propname[id][guibutton.id-1]+": "+onOff(b);
         }
     }

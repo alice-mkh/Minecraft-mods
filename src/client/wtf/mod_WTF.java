@@ -105,6 +105,24 @@ public class mod_WTF extends BaseMod{
             ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, moduleGui);
         }
     }
+    
+    public void callback (int i){}
+
+    public static void sendCallback(int id, int i2){
+        int id2 = 0;
+        List list = ModLoader.getLoadedMods();
+        for(int i = 0; i < list.size(); i++){
+            if (list.get(i).getClass() == modules[id]){
+                id2 = i;
+                break;
+            }
+        }
+        try{
+            ((mod_WTF)list.get(id2)).callback(i2);
+        }catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
 
     private GuiWTFModulesList moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
