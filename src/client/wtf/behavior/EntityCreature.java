@@ -307,7 +307,7 @@ public abstract class EntityCreature extends EntityLiving
                 return 2.8F;
             }
         }
-        if (isAIEnabled() && newai)
+        if (isAIEnabled() && newai())
         {
             return 1.0F;
         }

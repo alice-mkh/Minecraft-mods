@@ -7,6 +7,19 @@ public abstract class EntityLiving extends Entity
     public static boolean laddergaps = false;
     public static boolean newai = true;
 
+    public boolean newai(){
+        if (this instanceof EntityOcelot){
+            return true;
+        }
+        if (this instanceof EntityIronGolem){
+            return true;
+        }
+        if (this instanceof EntityWolf){
+            return true;
+        }
+        return newai;
+    }
+
     public int heartsHalvesLife;
     public float field_9365_p;
     public float field_9363_r;
@@ -716,7 +729,7 @@ public abstract class EntityLiving extends Entity
 
         field_9361_v = field_9361_v + (f3 - field_9361_v) * 0.3F;
 
-        if (isAIEnabled() && newai)
+        if (isAIEnabled() && newai())
         {
             bodyHelper.func_48650_a();
         }
@@ -1191,7 +1204,7 @@ public abstract class EntityLiving extends Entity
         if (isInWater())
         {
             double d = posY;
-            moveFlying(par1, par2, (isAIEnabled() && newai) ? 0.04F : 0.02F);
+            moveFlying(par1, par2, (isAIEnabled() && newai()) ? 0.04F : 0.02F);
             moveEntity(motionX, motionY, motionZ);
             motionX *= 0.80000001192092896D;
             motionY *= 0.80000001192092896D;
@@ -1238,7 +1251,7 @@ public abstract class EntityLiving extends Entity
 
             if (onGround)
             {
-                if (isAIEnabled() && newai)
+                if (isAIEnabled() && newai())
                 {
                     f2 = func_48101_aR();
                 }
@@ -1496,7 +1509,7 @@ public abstract class EntityLiving extends Entity
         }
         else if (isClientWorld())
         {
-            if (isAIEnabled() && newai)
+            if (isAIEnabled() && newai())
             {
                 Profiler.startSection("newAi");
                 updateAITasks();
