@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class EntityCreeper extends EntityMob
 {
-    public static boolean fixcreeper = false;
+    public static boolean fixai = false;
 
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -76,7 +76,7 @@ public class EntityCreeper extends EntityMob
 
     protected void attackBlockedEntity(Entity entity, float f)
     {
-        if (!fixcreeper){
+        if (!fixai){
             super.attackBlockedEntity(entity,f);
             return;
         }
@@ -132,7 +132,7 @@ public class EntityCreeper extends EntityMob
      */
     public void onUpdate()
     {
-        if (fixcreeper){
+        if (fixai){
             onUpdate_old();
             return;
         }
@@ -178,7 +178,7 @@ public class EntityCreeper extends EntityMob
 
     protected void attackEntity(Entity entity, float f)
     {
-        if (!fixcreeper){
+        if (!fixai){
             return;
         }
         if (worldObj.isRemote)

@@ -298,9 +298,14 @@ public abstract class EntityCreature extends EntityLiving
      */
     protected float getSpeedModifier()
     {
-        if (isAIEnabled() && !newai && this instanceof EntityZombie)
+        if (isAIEnabled() && !newai)
         {
-            return 2.17391304348F;
+            if (this instanceof EntityZombie){
+                return 2.17391304348F;
+            }
+            if (this instanceof EntitySkeleton){
+                return 2.8F;
+            }
         }
         if (isAIEnabled() && newai)
         {

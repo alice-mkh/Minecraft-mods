@@ -9,9 +9,10 @@ public class RenderSkeleton extends RenderLiving
     private ModelMobArmor armor;
     private ModelSkeleton modelBipedMain;
 
-    public RenderSkeleton(ModelSkeleton modelBipedMain)
+    public RenderSkeleton(ModelSkeleton model)
     {
-        super(modelBipedMain, 0.5F);
+        super(model, 0.5F);
+        modelBipedMain = model;
         armor = new ModelMobArmor(1.2F);
     }
 
@@ -56,7 +57,7 @@ public class RenderSkeleton extends RenderLiving
         if (itemstack != null)
         {
             GL11.glPushMatrix();
-//             modelBipedMain.bipedRightArm.postRender(0.0625F);
+            ((ModelBiped)modelBipedMain).bipedRightArm.postRender(0.0625F);
             GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 
             if (itemstack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
