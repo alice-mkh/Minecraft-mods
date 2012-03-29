@@ -7,12 +7,17 @@ public class EntityZombie extends EntityMob
     public static boolean noflesh = false;
     public static boolean rareloot = true;
 
+    public boolean helmet;
+    public boolean armor;
+
     public EntityZombie(World par1World)
     {
         super(par1World);
         texture = "/mob/zombie.png";
         moveSpeed = 0.23F;
         attackStrength = 4;
+        helmet = Math.random() < 0.20000000298023224D;
+        armor = Math.random() < 0.20000000298023224D;
         getNavigator().setBreakDoors(true);
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIBreakDoor(this));
@@ -26,6 +31,26 @@ public class EntityZombie extends EntityMob
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityVillager.class, 16F, 0, false));
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("Helmet", helmet);
+        par1NBTTagCompound.setBoolean("Armor", armor);
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readEntityFromNBT(par1NBTTagCompound);
+        helmet = par1NBTTagCompound.getBoolean("Helmet");
+        armor = par1NBTTagCompound.getBoolean("Armor");
     }
 
     public int getMaxHealth()

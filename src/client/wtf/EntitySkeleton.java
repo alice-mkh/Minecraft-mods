@@ -9,11 +9,16 @@ public class EntitySkeleton extends EntityMob
     /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem;
 
+    public boolean helmet;
+    public boolean armor;
+
     public EntitySkeleton(World par1World)
     {
         super(par1World);
         texture = "/mob/skeleton.png";
         moveSpeed = 0.25F;
+        helmet = Math.random() < 0.20000000298023224D;
+        armor = Math.random() < 0.20000000298023224D;
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAIRestrictSun(this));
         tasks.addTask(3, new EntityAIFleeSun(this, moveSpeed));
@@ -23,6 +28,26 @@ public class EntitySkeleton extends EntityMob
         tasks.addTask(6, new EntityAILookIdle(this));
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("Helmet", helmet);
+        par1NBTTagCompound.setBoolean("Armor", armor);
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readEntityFromNBT(par1NBTTagCompound);
+        helmet = par1NBTTagCompound.getBoolean("Helmet");
+        armor = par1NBTTagCompound.getBoolean("Armor");
     }
 
     /**

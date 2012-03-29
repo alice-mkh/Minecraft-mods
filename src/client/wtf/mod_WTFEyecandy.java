@@ -13,6 +13,7 @@ public class mod_WTFEyecandy extends mod_WTF{
         addProperty(this, 6, "2D items",              false, "Items2D");
         addProperty(this, 7, "Old chests",            false, "OldChest");
         addProperty(this, 8, "Show mob IDs in F3",    false, "MobLabels");
+        addProperty(this, 9, "Mob armor",             false, "MobArmor");
         loadModuleProperties(3);
     }
 
@@ -30,12 +31,16 @@ public class mod_WTFEyecandy extends mod_WTF{
                     RenderMinecart2.shiftChest =        OldChest;
                     ModLoader.getMinecraftInstance().renderGlobal.loadRenderers(); break;
             case 8: RenderLiving.labels =               MobLabels;         break;
+            case 9: RenderZombie.mobArmor =             MobArmor;
+                    RenderSkeleton.mobArmor =           MobArmor;          break;
         }
     }
 
     public void addRenderer(Map map){
         map.put(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
         map.put(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
+        map.put(net.minecraft.src.EntityZombie.class, new RenderZombie());
+        map.put(net.minecraft.src.EntitySkeleton.class, new RenderSkeleton());
     }
 
     public static boolean ItemSway = true;
@@ -46,5 +51,6 @@ public class mod_WTFEyecandy extends mod_WTF{
     public static boolean EndermenOpenMouth = true;
     public static boolean OldChest;
     public static boolean MobLabels;
+    public static boolean MobArmor;
 //Zombies with armor
 }
