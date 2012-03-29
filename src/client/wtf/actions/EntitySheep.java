@@ -72,12 +72,12 @@ public class EntitySheep extends EntityAnimal
     private int sheepTimer;
 
     /** The eat grass AI task for this mob. */
-    private EntityAIEatGrass aiEatGrass;
+    private EntityAIEatGrass2 aiEatGrass;
 
     public EntitySheep(World par1World)
     {
         super(par1World);
-        aiEatGrass = new EntityAIEatGrass(this);
+        aiEatGrass = new EntityAIEatGrass2(this);
         texture = "/mob/sheep.png";
         setSize(0.9F, 1.3F);
         float f = 0.23F;
