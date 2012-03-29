@@ -10,9 +10,7 @@ public class mod_WTFActions extends mod_WTF{
         addProperty(this, 3, "Smelt items on fire", false, "SmeltOnFire");
         addProperty(this, 4, "Unnerfed fire",       false, "OldFire");
         addProperty(this, 5, "Punch sheep",         false, "PunchSheep");
-        addProperty(this, 6, "Animal panic",        true,  "AnimalsFlee");
-        addProperty(this, 7, "Old tool durability", false, "OldTools");
-        addProperty(this, 8, "Sheeps eat grass",    true,  "SheepsEatGrass");
+        addProperty(this, 6, "Old tool durability", false, "OldTools");
         loadModuleProperties(0);
     }
 
@@ -23,9 +21,7 @@ public class mod_WTFActions extends mod_WTF{
             case 3: EntityItem.smeltOnFire =        SmeltOnFire;    break;
             case 4: BlockFire.oldFire =             OldFire;        break;
             case 5: EntitySheep.punchToShear =      PunchSheep;     break;
-            case 6: EntityAIPanic.disablePanic =   !AnimalsFlee;    break;
-            case 7: setToolDurability(OldTools);                    break;
-            case 8: EntityAIEatGrass2.caneatgrass = SheepsEatGrass; break;
+            case 6: setToolDurability(OldTools);                    break;
         }
     }
 
@@ -34,9 +30,7 @@ public class mod_WTFActions extends mod_WTF{
     public static boolean ExtinguishTNT;
     public static boolean OldFire;
     public static boolean PunchSheep;
-    public static boolean AnimalsFlee = true;
     public static boolean OldTools;
-    public static boolean SheepsEatGrass = true;
 //Old blocks
 
     private void setToolDurability(boolean b){

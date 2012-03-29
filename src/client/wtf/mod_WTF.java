@@ -69,6 +69,7 @@ public class mod_WTF extends BaseMod{
         gui.addModule(1,"Bugs");
         gui.addModule(2,"Gameplay");
         gui.addModule(3,"Eyecandy");
+        gui.addModule(4,"Behavior");
     }
     
     public static void addProperty(Object module, int i2, String name, boolean val, String var){
@@ -88,8 +89,6 @@ public class mod_WTF extends BaseMod{
                     continue;
                 }
                 continue;
-//             if (module.getClass() == modules[i]){
-//                 i1 = i;
             }
         }
         if (propname==null){
@@ -110,10 +109,6 @@ public class mod_WTF extends BaseMod{
         try{
             propfield[i1][i2]=Class.forName(modules[i1]).getDeclaredField(var);
         }catch (Exception ex){}
-//             propfield[i1][i2]=modules[i1].getDeclaredField(var);
-//         }catch (Exception ex){
-//             System.out.println(ex);
-//         }
         proplength[i1]++;
     }
 
@@ -151,6 +146,6 @@ public class mod_WTF extends BaseMod{
     public static Field[][] propfield;
     public static int[] proplength;
 //     public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class, mod_WTFActions2.class};
-    public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy"};
-    public static String[] modules2 = {"mod_WTFActions", "mod_WTFBugs", "mod_WTFGameplay", "mod_WTFEyecandy"};
+    public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy", "net.minecraft.src.mod_WTFBehavior"};
+    public static String[] modules2 = {"mod_WTFActions", "mod_WTFBugs", "mod_WTFGameplay", "mod_WTFEyecandy", "mod_WTFBehavior"};
 }
