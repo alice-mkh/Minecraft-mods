@@ -15,7 +15,8 @@ public class mod_WTFBehavior extends mod_WTF{
         switch(i){
             case 1: EntityLiving.newai =           !OldAI;
                     EntityCreeper.fixai =           OldAI;
-                    EntitySkeleton.fixai =          OldAI;          break;
+                    EntitySkeleton.fixai =          OldAI;
+                    EntitySnowman.fixai =           OldAI;          break;
             case 2: EntityAIPanic.disablePanic =   !AnimalsFlee;
                     EntityCreature.nopanic =       !AnimalsFlee;    break;
             case 3: EntityAIEatGrass2.caneatgrass = SheepsEatGrass; break;
