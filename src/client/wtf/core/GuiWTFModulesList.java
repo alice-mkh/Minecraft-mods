@@ -27,7 +27,7 @@ public class GuiWTFModulesList extends GuiScreen{
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(moduleButtons[i]=new GuiButton(i+1, width / 2 - 75, height / 6 + 10 + (i*30), 150, 20, name));
         if (!ModLoader.isModLoaded("mod_WTF"+name)){
-            moduleButtons[i].drawButton = false;
+//             moduleButtons[i].drawButton = false;
             moduleButtons[i].enabled = false;
         }
     }

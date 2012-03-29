@@ -79,6 +79,16 @@ public class mod_WTF extends BaseMod{
                     i1 = i;
                 }
             }catch (Exception ex){
+                if (!alt){
+                    try{
+                        if (module.getClass() == Class.forName(modules2[i])){
+                            i1 = i;
+                            modules = modules2;
+                        }
+                    }catch (Exception ex2){
+                        continue;
+                    }
+                }
                 continue;
 //             if (module.getClass() == modules[i]){
 //                 i1 = i;
@@ -121,16 +131,14 @@ public class mod_WTF extends BaseMod{
         int id2 = 0;
         List list = ModLoader.getLoadedMods();
         Object obj = null;
-        findclass: for(int i = 0; i < list.size(); i++){
-            for (int ii = 0; ii < modules.length; ii++){
-                try{
-                    if (list.get(i).getClass() == Class.forName(modules[ii])){
-                        obj = list.get(i);
-                        break findclass;
-                    }
-                }catch (Exception ex){
-                    continue;
+        for(int i = 0; i < list.size(); i++){
+            try{
+                if (list.get(i).getClass() == Class.forName(modules[id])){
+                    obj = list.get(i);
+                    break;
                 }
+            }catch (Exception ex){
+                continue;
             }
         }
         try{
@@ -146,4 +154,6 @@ public class mod_WTF extends BaseMod{
     public static int[] proplength;
 //     public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class, mod_WTFActions2.class};
     public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy"};
+    public static String[] modules2 = {"mod_WTFActions", "mod_WTFBugs", "mod_WTFGameplay", "mod_WTFEyecandy"};
+    public static boolean alt = false;
 }
