@@ -39,8 +39,8 @@ public class mod_WTFEyecandy extends mod_WTF{
     public void addRenderer(Map map){
         map.put(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
         map.put(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
-        map.put(net.minecraft.src.EntityZombie.class, new RenderZombie());
-        map.put(net.minecraft.src.EntitySkeleton.class, new RenderSkeleton());
+        map.put(net.minecraft.src.EntityZombie.class, new RenderZombie(new ModelZombie()));
+        map.put(net.minecraft.src.EntitySkeleton.class, new RenderSkeleton(new ModelSkeleton()));
     }
 
     public static boolean ItemSway = true;
