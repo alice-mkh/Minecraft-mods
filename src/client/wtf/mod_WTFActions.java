@@ -11,6 +11,7 @@ public class mod_WTFActions extends mod_WTF{
         addProperty(this, 4, "Unnerfed fire",       false, "OldFire");
         addProperty(this, 5, "Punch sheep",         false, "PunchSheep");
         addProperty(this, 6, "Animal panic",        true,  "AnimalsFlee");
+        addProperty(this, 7, "Old tool durability", false, "OldTools");
         loadModuleProperties(0);
     }
 
@@ -22,6 +23,7 @@ public class mod_WTFActions extends mod_WTF{
             case 4: BlockFire.oldFire =           OldFire;       break;
             case 5: EntitySheep.punchToShear =    PunchSheep;    break;
             case 6: EntityAIPanic.disablePanic = !AnimalsFlee;   break;
+            case 7: setToolDurability(OldTools);                 break;
         }
     }
 
@@ -31,6 +33,50 @@ public class mod_WTFActions extends mod_WTF{
     public static boolean OldFire;
     public static boolean PunchSheep;
     public static boolean AnimalsFlee = true;
-//Old tools
+    public static boolean OldTools;
 //Old blocks
+
+    private void setToolDurability(boolean b){
+        try{
+            int wood = 59;
+            int stone = 131;
+            int iron = 250;
+            int gold = 32;
+            int diamond = 1561;
+            if (b){
+                wood = 31;
+                stone = 63;
+                iron = 127;
+                gold = 15;
+                diamond = 255;
+            }
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeWood, 145, wood);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeWood, 145, wood);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelWood, 145, wood);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordWood, 145, wood);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeWood, 145, wood);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeStone, 145, stone);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeStone, 145, stone);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelStone, 145, stone);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordStone, 145, stone);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeStone, 145, stone);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeSteel, 145, iron);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeSteel, 145, iron);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelSteel, 145, iron);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordSteel, 145, iron);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeSteel, 145, iron);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeGold, 145, gold);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeGold, 145, gold);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelGold, 145, gold);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordGold, 145, gold);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeGold, 145, gold);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeDiamond, 145, diamond);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeDiamond, 145, diamond);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelDiamond, 145, diamond);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordDiamond, 145, diamond);
+            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeDiamond, 145, diamond);
+        }catch(Exception exception){
+            System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
+        }
+    }
 }

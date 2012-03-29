@@ -79,15 +79,13 @@ public class mod_WTF extends BaseMod{
                     i1 = i;
                 }
             }catch (Exception ex){
-                if (!alt){
-                    try{
-                        if (module.getClass() == Class.forName(modules2[i])){
-                            i1 = i;
-                            modules = modules2;
-                        }
-                    }catch (Exception ex2){
-                        continue;
+                try{
+                    if (module.getClass() == Class.forName(modules2[i])){
+                        i1 = i;
+                        modules = modules2;
                     }
+                }catch (Exception ex2){
+                    continue;
                 }
                 continue;
 //             if (module.getClass() == modules[i]){
@@ -155,5 +153,4 @@ public class mod_WTF extends BaseMod{
 //     public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class, mod_WTFActions2.class};
     public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy"};
     public static String[] modules2 = {"mod_WTFActions", "mod_WTFBugs", "mod_WTFGameplay", "mod_WTFEyecandy"};
-    public static boolean alt = false;
 }

@@ -52,5 +52,4 @@ public class mod_WTFEyecandy extends mod_WTF{
     public static boolean OldChest;
     public static boolean MobLabels;
     public static boolean MobArmor;
-//Zombies with armor
 }
