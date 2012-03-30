@@ -32,6 +32,7 @@ public class mod_WTFActions extends mod_WTF{
     public static boolean PunchSheep;
     public static boolean OldTools;
 //Old blocks
+//Unflammable fences and stairs
 
     private void setToolDurability(boolean b){
         try{

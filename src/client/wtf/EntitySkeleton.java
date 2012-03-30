@@ -6,6 +6,7 @@ public class EntitySkeleton extends EntityMob
 {
     public static boolean rareloot = true;
     public static boolean fixai = false;
+    public static boolean survivaltest = false;
 
     /** The ItemStack that any Skeleton holds (a bow). */
     private static final ItemStack defaultHeldItem;
@@ -61,7 +62,7 @@ public class EntitySkeleton extends EntityMob
 
     public int getMaxHealth()
     {
-        return 20;
+        return survivaltest ? 10 : 20;
     }
 
     /**

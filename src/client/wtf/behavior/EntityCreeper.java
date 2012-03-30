@@ -5,6 +5,7 @@ import java.util.Random;
 public class EntityCreeper extends EntityMob
 {
     public static boolean fixai = false;
+    public static boolean survivaltest = false;
 
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -42,7 +43,13 @@ public class EntityCreeper extends EntityMob
 
     public int getMaxHealth()
     {
-        return 20;
+        return survivaltest ? 10 : 20;
+    }
+
+    public float getBrightness(float f)
+    {
+        float f1 = (float)(20 - health) / 20F;
+        return (f1 = (MathHelper.cos((float)0 + f) * 0.5F + 0.5F) * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f);
     }
 
     protected void entityInit()
@@ -181,6 +188,9 @@ public class EntityCreeper extends EntityMob
         if (!fixai){
             return;
         }
+        if (survivaltest){
+            return;
+        }
         if (worldObj.isRemote)
         {
             return;
@@ -241,16 +251,37 @@ public class EntityCreeper extends EntityMob
     public void onDeath(DamageSource par1DamageSource)
     {
         super.onDeath(par1DamageSource);
-
-        if (par1DamageSource.getEntity() instanceof EntitySkeleton)
-        {
-            dropItem(Item.record13.shiftedIndex + rand.nextInt(10), 1);
+        if (!survivaltest){
+            if (par1DamageSource.getEntity() instanceof EntitySkeleton)
+            {
+                dropItem(Item.record13.shiftedIndex + rand.nextInt(10), 1);
+            }
         }
     }
 
-    public boolean attackEntityAsMob(Entity par1Entity)
+    protected void onDeathUpdate(){
+        if (survivaltest && deathTime >= 19){
+            float f = 4F;
+            worldObj.createExplosion(this, posX, posY, posZ, f);
+            setDead();
+        }else{
+            super.onDeathUpdate();
+        }
+    }
+
+    public boolean attackEntityAsMob(Entity entity)
     {
-        return true;
+        if (!survivaltest){
+            return true;
+        }
+        if(!super.attackEntityAsMob(entity))
+        {
+            return false;
+        } else
+        {
+            entity.attackEntityFrom(DamageSource.causeMobDamage(this), 6);
+            return true;
+        }
     }
 
     /**

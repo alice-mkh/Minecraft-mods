@@ -5,6 +5,7 @@ import java.util.Random;
 public abstract class EntityCreature extends EntityLiving
 {
     public static boolean nopanic = false;
+    public static boolean fastzombies = false;
 
     private PathEntity pathToEntity;
 
@@ -301,6 +302,9 @@ public abstract class EntityCreature extends EntityLiving
         if (isAIEnabled() && !newai)
         {
             if (this instanceof EntityZombie){
+                if (fastzombies){
+                    return 4.34782608696F;
+                }
                 return 2.17391304348F;
             }
             if (this instanceof EntitySkeleton){
@@ -309,6 +313,9 @@ public abstract class EntityCreature extends EntityLiving
         }
         if (isAIEnabled() && newai())
         {
+            if (this instanceof EntityZombie && fastzombies){
+                return 2.0F;
+            }
             return 1.0F;
         }
         float f = super.getSpeedModifier();
