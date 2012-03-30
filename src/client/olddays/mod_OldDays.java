@@ -146,11 +146,11 @@ public class mod_OldDays extends BaseMod{
     public static String[] modules = {"net.minecraft.src.mod_OldDaysActions",
                                       "net.minecraft.src.mod_OldDaysBugs",
                                       "net.minecraft.src.mod_OldDaysGameplay",
-                                      "net.minecraft.src.mod_OldDaysEyecandy",
-                                      "net.minecraft.src.mod_OldDaysBehavior"};
+                                      "net.minecraft.src.mod_OldDaysMobs",
+                                      "net.minecraft.src.mod_OldDaysEyecandy"};
     public static String[] modules2 = {"mod_OldDaysActions",
                                        "mod_OldDaysBugs",
                                        "mod_OldDaysGameplay",
-                                       "mod_OldDaysEyecandy",
-                                       "mod_OldDaysBehavior"};
+                                       "mod_OldDaysMobs",
+                                       "mod_OldDaysEyecandy"};
 }

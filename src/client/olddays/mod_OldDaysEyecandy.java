@@ -14,7 +14,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 7, "Old chests",            false, "OldChest");
         addProperty(this, 8, "Show mob IDs in F3",    false, "MobLabels");
         addProperty(this, 9, "Mob armor",             false, "MobArmor");
-        loadModuleProperties(3);
+        loadModuleProperties(4);
     }
 
     public void callback (int i){

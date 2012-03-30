@@ -6,6 +6,7 @@ public class EntityCreeper extends EntityMob
 {
     public static boolean fixai = false;
     public static boolean survivaltest = false;
+    public static boolean dark = false;
 
     /**
      * The amount of time since the creeper was close enough to the player to ignite
@@ -49,7 +50,7 @@ public class EntityCreeper extends EntityMob
 
     public int getBrightnessForRender(float f)
     {
-        if (!survivaltest){
+        if (!dark){
             return super.getBrightnessForRender(f);
         }
         float f1 = (float)(getMaxHealth() - health) / (getMaxHealth() * 2F);
