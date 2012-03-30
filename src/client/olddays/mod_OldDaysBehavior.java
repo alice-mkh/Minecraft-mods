@@ -25,10 +25,6 @@ public class mod_OldDaysBehavior extends mod_OldDays{
         }
     }
 
-    public void addRenderer(Map map){
-        map.put(net.minecraft.src.EntityCreeper.class, new RenderDarkCreeper());
-    }
-
     public static boolean OldAI;
     public static boolean AnimalsFlee = true;
     public static boolean SheepsEatGrass = true;
