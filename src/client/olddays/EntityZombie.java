@@ -6,6 +6,7 @@ public class EntityZombie extends EntityMob
 {
     public static boolean noflesh = false;
     public static boolean rareloot = true;
+    public static boolean burns = true;
 
     public boolean helmet;
     public boolean armor;
@@ -80,7 +81,7 @@ public class EntityZombie extends EntityMob
      */
     public void onLivingUpdate()
     {
-        if (worldObj.isDaytime() && !worldObj.isRemote)
+        if (worldObj.isDaytime() && !worldObj.isRemote && burns)
         {
             float f = getBrightness(1.0F);
 

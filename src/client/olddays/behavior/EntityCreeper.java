@@ -39,7 +39,7 @@ public class EntityCreeper extends EntityMob
      */
     public boolean isAIEnabled()
     {
-        return true;
+        return !survivaltest;
     }
 
     public int getMaxHealth()
