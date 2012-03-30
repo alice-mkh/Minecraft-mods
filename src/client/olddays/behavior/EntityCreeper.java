@@ -55,7 +55,7 @@ public class EntityCreeper extends EntityMob
         }
         float f1 = (float)(getMaxHealth() - health) / (getMaxHealth() * 2F);
         float f2 = (MathHelper.cos((float)entityAge + f) * 0.5F + 0.5F);
-        return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 250F);
+        return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 350F);
     }
 
     protected void entityInit()
