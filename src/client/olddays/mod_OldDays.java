@@ -4,51 +4,51 @@ import java.io.*;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
 
-public class mod_WTF extends BaseMod{
+public class mod_OldDays extends BaseMod{
     public String getVersion(){
         return "1.2.4";
     }
 
-    public mod_WTF(){
+    public mod_OldDays(){
     }
 
     public void load(){
-        moduleGui = new GuiWTFModulesList(null);
+        moduleGui = new GuiOldDaysModules(null);
         ModLoader.registerKey(this, this.keySettings, false);
-        ModLoader.addLocalization("key_settings", "Open WTF Settings");
+        ModLoader.addLocalization("key_settings", "Old Days Settings");
     }
-    
+
     public static void saveModuleProperties(int id){
         Properties properties = new Properties();
         try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/WTF"+id+".properties").toString());
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+id+".properties").toString());
             FileOutputStream fileoutputstream = new FileOutputStream(file);
             for (int i = 1; i <= proplength[id]; i++){
                 properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]));
             }
-            properties.store(fileoutputstream, "WTF config");
+            properties.store(fileoutputstream, "Old Days config");
             fileoutputstream.close();
         }
         catch(IOException ioexception){
             ioexception.printStackTrace();
         }
     }
-    
+
     public static void loadModuleProperties(int id){
         Properties properties = new Properties();
         try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/WTF"+id+".properties").toString());
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+id+".properties").toString());
             boolean flag = file.createNewFile();
             if(flag){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 for (int i = 1; i <= proplength[id]; i++){
                     properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]));
                 }
-                properties.store(fileoutputstream, "WTF config");
+                properties.store(fileoutputstream, "Old Days config");
                 fileoutputstream.close();
             }
             try{
-                properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/WTF"+id+".properties").toString()));
+                properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+id+".properties").toString()));
                 for (int i = 1; i <= proplength[id]; i++){
                     boolean val = Boolean.parseBoolean(properties.getProperty(propfield[id][i].getName()));;
                     propvalue[id][i] = val;
@@ -64,14 +64,12 @@ public class mod_WTF extends BaseMod{
         }
     }
 
-    public static void addModules(GuiWTFModulesList gui){
-        gui.addModule(0,"Actions");
-        gui.addModule(1,"Bugs");
-        gui.addModule(2,"Gameplay");
-        gui.addModule(3,"Eyecandy");
-        gui.addModule(4,"Behavior");
+    public static void addModules(GuiOldDaysModules gui){
+        for (int i = 0; i < modules2.length; i++){
+            gui.addModule(i,modules2[i].replaceFirst("mod_OldDays", ""));
+        }
     }
-    
+
     public static void addProperty(Object module, int i2, String name, boolean val, String var){
         int i1 = 0;
         for (int i = 0; i<modules.length; i++){
@@ -117,7 +115,7 @@ public class mod_WTF extends BaseMod{
             ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, moduleGui);
         }
     }
-    
+
     public void callback (int i){}
 
     public static void sendCallback(int id, int i2){
@@ -135,17 +133,24 @@ public class mod_WTF extends BaseMod{
             }
         }
         try{
-            ((mod_WTF)obj).callback(i2);
+            ((mod_OldDays)obj).callback(i2);
         }catch (Exception ex){}
     }
 
-    private GuiWTFModulesList moduleGui;
+    private GuiOldDaysModules moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static String[][] propname;
     public static boolean[][] propvalue;
     public static Field[][] propfield;
     public static int[] proplength;
-//     public static Class[] modules = {mod_WTFActions.class, mod_WTFBugs.class, mod_WTFGameplay.class, mod_WTFEyecandy.class, mod_WTFActions2.class};
-    public static String[] modules = {"net.minecraft.src.mod_WTFActions", "net.minecraft.src.mod_WTFBugs", "net.minecraft.src.mod_WTFGameplay", "net.minecraft.src.mod_WTFEyecandy", "net.minecraft.src.mod_WTFBehavior"};
-    public static String[] modules2 = {"mod_WTFActions", "mod_WTFBugs", "mod_WTFGameplay", "mod_WTFEyecandy", "mod_WTFBehavior"};
+    public static String[] modules = {"net.minecraft.src.mod_OldDaysActions",
+                                      "net.minecraft.src.mod_OldDaysBugs",
+                                      "net.minecraft.src.mod_OldDaysGameplay",
+                                      "net.minecraft.src.mod_OldDaysEyecandy",
+                                      "net.minecraft.src.mod_OldDaysBehavior"};
+    public static String[] modules2 = {"mod_OldDaysActions",
+                                       "mod_OldDaysBugs",
+                                       "mod_OldDaysGameplay",
+                                       "mod_OldDaysEyecandy",
+                                       "mod_OldDaysBehavior"};
 }

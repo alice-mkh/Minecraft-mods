@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_WTFActions extends mod_WTF{
+public class mod_OldDaysActions extends mod_OldDays{
     public void load(){
         addProperty(this, 1, "Punch TNT",           false, "PunchTNT");
         addProperty(this, 2, "Extinguish TNT",      false, "ExtinguishTNT");
@@ -73,8 +73,8 @@ public class mod_WTFActions extends mod_WTF{
             ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelDiamond, 145, diamond);
             ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordDiamond, 145, diamond);
             ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeDiamond, 145, diamond);
-        }catch(Exception exception){
-            System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
+        }catch(Exception ex){
+            System.out.println(ex);
         }
     }
 }

@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_WTFGameplay extends mod_WTF{
+public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
         addProperty(this, 1, "Disable XP",            false, "DisableXP");
         addProperty(this, 2, "Disable hunger",        false, "DisableHunger");
@@ -73,8 +73,8 @@ public class mod_WTFGameplay extends mod_WTF{
             }
             ModLoader.setPrivateValue(net.minecraft.src.ItemSword.class, Item.swordWood, 0, 4);
             ModLoader.setPrivateValue(net.minecraft.src.ItemSword.class, Item.swordGold, 0, 4);
-        }catch(Exception exception){
-            System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
+        }catch(Exception ex){
+            System.out.println(ex);
         }
     }
 
@@ -159,8 +159,8 @@ public class mod_WTFGameplay extends mod_WTF{
             ModLoader.setPrivateValue(net.minecraft.src.ItemArmor.class, Item.plateDiamond, 2, 8);
             ModLoader.setPrivateValue(net.minecraft.src.ItemArmor.class, Item.legsDiamond, 2, 6);
             ModLoader.setPrivateValue(net.minecraft.src.ItemArmor.class, Item.bootsDiamond, 2, 3);
-        }catch(Exception exception){
-            System.out.println(new StringBuilder().append("WTF? '").append(exception).append("' OMG EXCEPTION LOL"));
+        }catch(Exception ex){
+            System.out.println(ex);
         }
     }
 

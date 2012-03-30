@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_WTFEyecandy extends mod_WTF{
+public class mod_OldDaysEyecandy extends mod_OldDays{
     public void load(){
         addProperty(this, 1, "Old walking",           false, "OldWalking");
         addProperty(this, 2, "Bobbing",               false, "Bobbing");

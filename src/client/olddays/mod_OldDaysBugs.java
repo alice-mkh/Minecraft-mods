@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_WTFBugs extends mod_WTF{
+public class mod_OldDaysBugs extends mod_OldDays{
     public void load(){
         addProperty(this, 1, "Boosters",      false, "Boosters");
         addProperty(this, 2, "Water lifts",   false, "WaterLifts");

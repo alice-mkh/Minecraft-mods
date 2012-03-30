@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 
-public class mod_WTFBehavior extends mod_WTF{
+public class mod_OldDaysBehavior extends mod_OldDays{
     public void load(){
         addProperty(this, 1, "Old mob AI",          false, "OldAI");
         addProperty(this, 2, "Animal panic",        true,  "AnimalsFlee");
