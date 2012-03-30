@@ -33,6 +33,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 5: EntityChicken.nochicken =   OldDrops;
                     EntityCow.nobeef =          OldDrops;
                     EntityZombie.noflesh =      OldDrops;
+                    EntitySpider.noeyes =       OldDrops;
                     EntityPigZombie.noflesh =   OldDrops;            break;
             case 6: EntityZombie.rareloot =    !DisableRareLoot;
                     EntitySkeleton.rareloot =  !DisableRareLoot;
