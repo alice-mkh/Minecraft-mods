@@ -22,6 +22,7 @@ public class EntityCreeper extends EntityMob
     {
         super(par1World);
         texture = "/mob/creeper.png";
+        attackStrength = 6;
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAICreeperSwell(this));
         tasks.addTask(3, new EntityAIAvoidEntity(this, net.minecraft.src.EntityOcelot.class, 6F, 0.25F, 0.3F));
@@ -83,12 +84,16 @@ public class EntityCreeper extends EntityMob
 
     protected void attackBlockedEntity(Entity entity, float f)
     {
+        if (worldObj.isRemote)
+        {
+            return;
+        }
         if (!fixai){
             super.attackBlockedEntity(entity,f);
             return;
         }
-        if (worldObj.isRemote)
-        {
+        if (survivaltest){
+            super.attackBlockedEntity(entity,f);
             return;
         }
         if (timeSinceIgnited > 0)
@@ -185,14 +190,15 @@ public class EntityCreeper extends EntityMob
 
     protected void attackEntity(Entity entity, float f)
     {
-        if (!fixai){
+        if (worldObj.isRemote)
+        {
             return;
         }
         if (survivaltest){
+            super.attackEntity(entity, f);
             return;
         }
-        if (worldObj.isRemote)
-        {
+        if (!fixai){
             return;
         }
         int i = getCreeperState();
@@ -260,28 +266,17 @@ public class EntityCreeper extends EntityMob
     }
 
     protected void onDeathUpdate(){
-        if (survivaltest && deathTime >= 19){
-            float f = 4F;
-            worldObj.createExplosion(this, posX, posY, posZ, f);
+        if (survivaltest && deathTime >= 15){
+            worldObj.createExplosion(this, posX, posY, posZ, 4F);
             setDead();
         }else{
             super.onDeathUpdate();
         }
     }
 
-    public boolean attackEntityAsMob(Entity entity)
+    public boolean attackEntityAsMob(Entity par1Entity)
     {
-        if (!survivaltest){
-            return true;
-        }
-        if(!super.attackEntityAsMob(entity))
-        {
-            return false;
-        } else
-        {
-            entity.attackEntityFrom(DamageSource.causeMobDamage(this), 6);
-            return true;
-        }
+        return survivaltest ? super.attackEntityAsMob(par1Entity) : true;
     }
 
     /**
@@ -305,7 +300,7 @@ public class EntityCreeper extends EntityMob
      */
     protected int getDropItemId()
     {
-        return Item.gunpowder.shiftedIndex;
+        return survivaltest ? 0 : Item.gunpowder.shiftedIndex;
     }
 
     /**
