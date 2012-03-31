@@ -14,6 +14,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 7, "Old chests",          false, "OldChest");
         addProperty(this, 8, "Show mob IDs in F3",  false, "MobLabels");
         addProperty(this, 9, "Mob armor",           false, "MobArmor");
+        addProperty(this, 10,"Old main menu",       false, "OldMainMenu");
         loadModuleProperties(4);
     }
 
@@ -33,6 +34,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 8: RenderLiving.labels =               MobLabels;         break;
             case 9: RenderZombie.mobArmor =             MobArmor;
                     RenderSkeleton.mobArmor =           MobArmor;          break;
+            case 10:GuiMainMenu.panorama =             !OldMainMenu;
+                    GuiMainMenu.oldlogo =               OldMainMenu;       break;
         }
     }
 
@@ -52,4 +55,5 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean OldChest;
     public static boolean MobLabels;
     public static boolean MobArmor;
+    public static boolean OldMainMenu;
 }
