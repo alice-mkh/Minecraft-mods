@@ -5,11 +5,11 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysBugs extends mod_OldDays{
     public void load(){
-        addProperty(this, 1, "Boosters",      false, "Boosters");
-        addProperty(this, 2, "Water lifts",   false, "WaterLifts");
-        addProperty(this, 3, "Toasters",      false, "LavaToasters");
-        addProperty(this, 4, "Water ladders", false, "WaterLadders");
-        addProperty(this, 5, "Ladder gaps",   false, "LadderGaps");
+        addProperty(this, 1, "Boosters",      true,  "Boosters");
+        addProperty(this, 2, "Water lifts",   true,  "WaterLifts");
+        addProperty(this, 3, "Toasters",      true,  "LavaToasters");
+        addProperty(this, 4, "Water ladders", true,  "WaterLadders");
+        addProperty(this, 5, "Ladder gaps",   true,  "LadderGaps");
         addProperty(this, 6, "Piston dupe",   false, "PistonDupe");
         loadModuleProperties(1);
     }
@@ -25,11 +25,11 @@ public class mod_OldDaysBugs extends mod_OldDays{
         }
     }
 
-    public static boolean Boosters;
-    public static boolean LadderGaps;
-    public static boolean WaterLadders;
-    public static boolean LavaToasters;
-    public static boolean WaterLifts;
+    public static boolean Boosters = true;
+    public static boolean LadderGaps = true;
+    public static boolean WaterLadders = true;
+    public static boolean LavaToasters = true;
+    public static boolean WaterLifts = true;
     public static boolean PistonDupe;
 //Sand generator
 //Data value change bug

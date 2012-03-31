@@ -5,8 +5,8 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysMobs extends mod_OldDays{
     public void load(){
-        addProperty(this, 1, "Old mob AI",          false, "OldAI");
-        addProperty(this, 2, "Animal panic",        true,  "AnimalsFlee");
+        addProperty(this, 1, "Old mob AI",          true,  "OldAI");
+        addProperty(this, 2, "Animal panic",        false, "AnimalsFlee");
         addProperty(this, 3, "Sheep eat grass",     true,  "SheepEatGrass");
         addProperty(this, 4, "Spiders climb walls", true,  "SpidersCanClimb");
         addProperty(this, 5, "Survival Test mobs",  false, "SurvivalTestMobs");
@@ -32,8 +32,8 @@ public class mod_OldDaysMobs extends mod_OldDays{
         }
     }
 
-    public static boolean OldAI;
-    public static boolean AnimalsFlee = true;
+    public static boolean OldAI = true;
+    public static boolean AnimalsFlee = false;
     public static boolean SheepEatGrass = true;
     public static boolean SpidersCanClimb = true;
     public static boolean SurvivalTestMobs;

@@ -5,16 +5,16 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysEyecandy extends mod_OldDays{
     public void load(){
-        addProperty(this, 1, "Old walking",         false, "OldWalking");
+        addProperty(this, 1, "Old walking",         true,  "OldWalking");
         addProperty(this, 2, "Bobbing",             false, "Bobbing");
-        addProperty(this, 3, "Old endermen",        false, "OldEndermen");
+        addProperty(this, 3, "Old endermen",        true,  "OldEndermen");
         addProperty(this, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
         addProperty(this, 5, "Item sway",           true,  "ItemSway");
         addProperty(this, 6, "2D items",            false, "Items2D");
-        addProperty(this, 7, "Old chests",          false, "OldChest");
-        addProperty(this, 8, "Show mob IDs in F3",  false, "MobLabels");
+        addProperty(this, 7, "Old chests",          true,  "OldChest");
+        addProperty(this, 8, "Show mob IDs in F3",  true,  "MobLabels");
         addProperty(this, 9, "Mob armor",           false, "MobArmor");
-        addProperty(this, 10,"Old main menu",       false, "OldMainMenu");
+        addProperty(this, 10,"Old main menu",       true,  "OldMainMenu");
         loadModuleProperties(4);
     }
 
@@ -49,11 +49,11 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean ItemSway = true;
     public static boolean Items2D;
     public static boolean Bobbing;
-    public static boolean OldWalking;
-    public static boolean OldEndermen;
+    public static boolean OldWalking = true;
+    public static boolean OldEndermen = true;
     public static boolean EndermenOpenMouth = true;
-    public static boolean OldChest;
-    public static boolean MobLabels;
+    public static boolean OldChest = true;
+    public static boolean MobLabels = true;
     public static boolean MobArmor;
-    public static boolean OldMainMenu;
+    public static boolean OldMainMenu = true;
 }

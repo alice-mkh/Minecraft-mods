@@ -5,16 +5,16 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
-        addProperty(this, 1, "Disable XP",            false, "DisableXP");
-        addProperty(this, 2, "Disable hunger",        false, "DisableHunger");
-        addProperty(this, 3, "Instant food",          false, "InstantFood");
-        addProperty(this, 4, "Disable food stacking", false, "DisableFoodStacking");
-        addProperty(this, 5, "Old loot",              false, "OldDrops");
-        addProperty(this, 6, "Disable rare loot",     false, "DisableRareLoot");
-        addProperty(this, 7, "Machine bow",           false, "InstantBow");
-        addProperty(this, 8, "No bow durability",     false, "InfiniteBow");
-        addProperty(this, 9, "Old combat system",     false, "OldCombatSystem");
-        addProperty(this, 10,"Old armor",             false, "OldArmor");
+        addProperty(this, 1, "Disable XP",            true,  "DisableXP");
+        addProperty(this, 2, "Disable hunger",        true,  "DisableHunger");
+        addProperty(this, 3, "Instant food",          true,  "InstantFood");
+        addProperty(this, 4, "Disable food stacking", true,  "DisableFoodStacking");
+        addProperty(this, 5, "Old loot",              true,  "OldDrops");
+        addProperty(this, 6, "Disable rare loot",     true,  "DisableRareLoot");
+        addProperty(this, 7, "Machine bow",           true,  "InstantBow");
+        addProperty(this, 8, "No bow durability",     true,  "InfiniteBow");
+        addProperty(this, 9, "Old combat system",     true,  "OldCombatSystem");
+        addProperty(this, 10,"Old armor",             true,  "OldArmor");
         addProperty(this, 11,"Allow debug screen",    true,  "AllowDebug");
         loadModuleProperties(2);
         ModLoader.setInGameHook(this, true, true);
@@ -49,16 +49,16 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         }
     }
 
-    public static boolean DisableXP;
-    public static boolean DisableHunger;
-    public static boolean InstantFood;
-    public static boolean DisableFoodStacking;
-    public static boolean OldDrops;
-    public static boolean DisableRareLoot;
-    public static boolean InstantBow;
-    public static boolean InfiniteBow;
-    public static boolean OldCombatSystem;
-    public static boolean OldArmor;
+    public static boolean DisableXP = true;
+    public static boolean DisableHunger = true;
+    public static boolean InstantFood = true;
+    public static boolean DisableFoodStacking = true;
+    public static boolean OldDrops = true;
+    public static boolean DisableRareLoot = true;
+    public static boolean InstantBow = true;
+    public static boolean InfiniteBow = true;
+    public static boolean OldCombatSystem = true;
+    public static boolean OldArmor = true;
     public static boolean AllowDebug = true;
 
     private void setSwordDamage(boolean b){
