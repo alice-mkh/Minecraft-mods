@@ -150,6 +150,7 @@ public class EntitySkeleton extends EntityMob
             worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
             for(int j = 0; j < i; j++){
                 EntityArrow arrow = new EntityArrow(worldObj, this, 0.4F);
+                arrow.doesArrowBelongToPlayer = true;
                 arrow.posY = posY + 0.2F;
                 arrow.rotationYaw = (float)Math.random() * 360F;
                 arrow.rotationPitch = -(float)Math.random() * 60F;
