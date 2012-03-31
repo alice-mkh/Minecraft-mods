@@ -18,15 +18,16 @@ public class mod_OldDaysMobs extends mod_OldDays{
             case 1: EntityLiving.newai =           !OldAI;
                     EntityCreeper.fixai =           OldAI;
                     EntitySkeleton.fixai =          OldAI;
-                    EntitySnowman.fixai =           OldAI;           break;
+                    EntitySnowman.fixai =           OldAI;            break;
             case 2: EntityAIPanic.disablePanic =   !AnimalsFlee;
-                    EntityCreature.nopanic =       !AnimalsFlee;     break;
-            case 3: EntityAIEatGrass2.caneatgrass = SheepEatGrass;   break;
-            case 4: EntitySpider.canclimb =         SpidersCanClimb; break;
+                    EntityCreature.nopanic =       !AnimalsFlee;      break;
+            case 3: EntityAIEatGrass2.caneatgrass = SheepEatGrass;    break;
+            case 4: EntitySpider.canclimb =         SpidersCanClimb;  break;
             case 5: EntityCreeper.survivaltest =    SurvivalTestMobs;
                     EntityCreeper.dark =            SurvivalTestMobs;
                     EntityCreature.fastzombies =    SurvivalTestMobs;
                     EntityZombie.burns =           !SurvivalTestMobs;
+                    EntitySkeleton.survivaltest =   SurvivalTestMobs;
                     EntitySpider.survivaltest =     SurvivalTestMobs; break;
         }
     }
