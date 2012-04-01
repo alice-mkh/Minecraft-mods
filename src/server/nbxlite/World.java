@@ -340,6 +340,7 @@ public class World implements IBlockAccess
                 mod_noBiomesX.RestrictSlimes=false;
             }
             mapTypeIndev = worldInfo.getIndevMapType();
+            worldProvider.registerWorld(this);
         }
         if(mod_noBiomesX.MobSpawning==0)
         {
@@ -379,7 +380,7 @@ public class World implements IBlockAccess
      */
     protected void generateSpawnPoint()
     {
-        if (mod_noBiomesX.Generator==2){
+        if (mod_noBiomesX.Generator==2 || worldProvider.worldType==1){
             if (mod_noBiomesX.MapFeatures<2){
                 findingSpawnPoint = true;
                 WorldChunkManager worldchunkmanager = worldProvider.worldChunkMgr;
@@ -530,6 +531,11 @@ public class World implements IBlockAccess
      */
     public int getBlockId(int par1, int par2, int par3)
     {
+        if (mod_noBiomesX.Generator == 0 && mod_noBiomesX.MapFeatures==4){
+            if (par2<0){
+                return (byte)Block.bedrock.blockID;
+            }
+        }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return 0;
@@ -552,11 +558,6 @@ public class World implements IBlockAccess
 
     public int func_48092_f(int par1, int par2, int par3)
     {
-        if (mod_noBiomesX.Generator == 0 && mod_noBiomesX.MapFeatures==4){
-            if (par2<0){
-                return (byte)Block.bedrock.blockID;
-            }
-        }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return 0;
@@ -1634,6 +1635,12 @@ public class World implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
+        if(mod_noBiomesX.Generator == 1 && mod_noBiomesX.MapFeatures>=5){
+            return 0.0F;
+        }
+        if(mod_noBiomesX.MapTheme==3){
+            return 1.0F;
+        }
         return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
     }
 
@@ -2595,7 +2602,7 @@ public class World implements IBlockAccess
         }
 
         worldProvider.worldChunkMgr.cleanupCache();
-        if (mod_noBiomesX.Generator==2 || (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=3)){
+        if (mod_noBiomesX.Generator==2 || (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=3 && mod_noBiomesX.MapFeatures<5)){
             updateWeather();
         }
 

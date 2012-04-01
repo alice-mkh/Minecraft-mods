@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraft.src.nbxlite.chunkproviders.*;
+import net.minecraft.src.nbxlite.oldbiomes.*;
 
 public abstract class WorldProvider
 {
@@ -68,7 +69,9 @@ public abstract class WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT)
+        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures==5){
+            worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.0F, OldBiomeGenBase.sky);
+        }else if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT)
         {
             worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F);
         }
@@ -102,6 +105,9 @@ public abstract class WorldProvider
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
+        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+            return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();
+        }
         if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
             return i == Block.grass.blockID;
         }
