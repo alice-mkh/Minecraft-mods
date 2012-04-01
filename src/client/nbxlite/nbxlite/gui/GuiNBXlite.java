@@ -82,7 +82,10 @@ public class GuiNBXlite extends GuiScreen{
         String name;
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         for (int i=0; i<=GeneratorList.feat1length; i++){
-            name = mod_noBiomesX.lang.get(GeneratorList.feat1name[i])+" ("+mod_noBiomesX.lang.get(GeneratorList.feat1desc[i])+")";
+            name = mod_noBiomesX.lang.get(GeneratorList.feat1name[i]);
+            if (GeneratorList.feat1desc[i]!=""){
+                name += " ("+mod_noBiomesX.lang.get(GeneratorList.feat1desc[i])+")";
+            }
             controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, name));
             betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
         }
@@ -90,7 +93,10 @@ public class GuiNBXlite extends GuiScreen{
 //Release
         releaseFeaturesButton = new GuiButton[GeneratorList.feat2length+1];
         for (int i=0; i<=GeneratorList.feat2length; i++){
-            name = mod_noBiomesX.lang.get(GeneratorList.feat2name[i])+" ("+mod_noBiomesX.lang.get(GeneratorList.feat2desc[i])+")";
+            name = mod_noBiomesX.lang.get(GeneratorList.feat2name[i]);
+            if (GeneratorList.feat2desc[i]!=""){
+                name += " ("+mod_noBiomesX.lang.get(GeneratorList.feat2desc[i])+")";
+            }
             controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + 20 + (i * 21), 210, 20, name));
             releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
         }
