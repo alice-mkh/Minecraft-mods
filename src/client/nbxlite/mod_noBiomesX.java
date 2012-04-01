@@ -363,14 +363,13 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean UseOpaqueFlatClouds=false;
     public static boolean SunriseAtNorth=false;
     public static boolean LeavesDecay=true;
-    public static boolean OldSkyDimension=false;
     public static boolean FallbackColors=false;
     public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha
     public static int MobSpawning=0; //0 - alpha; 1 - beta; 2 - 1.0
     public static int MapTheme = 0;  //0 - normal; 1 - hell; 2 - woods; 3 - paradise
     //Alpha: 0 - alpha; 1 - infdev; 2 - old infdev; 3 - indev;
-    //Beta: 0 - halloween; 1 - beta 1.2; 2 - beta 1.4; 3 - beta 1.5; 4 - beta 1.7.3;
+    //Beta: 0 - halloween; 1 - beta 1.2; 2 - beta 1.4; 3 - beta 1.5; 4 - beta 1.7.3; 5 - sky dimension;
     //Release: 0 - Beta 1.8; 1 - 1.0; 2 - 1.1;
     public static int MapFeatures = 3;
     public static boolean UseNewSpawning = false;

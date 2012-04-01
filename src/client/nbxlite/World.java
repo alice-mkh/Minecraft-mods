@@ -211,14 +211,14 @@ public class World implements IBlockAccess
         worldInfo = new WorldInfo(par4WorldSettings, par2Str);
         worldProvider = par3WorldProvider;
         mapStorage = new MapStorage(par1ISaveHandler);
+        mod_noBiomesX NBX = new mod_noBiomesX();
+        NBX.RequestGeneratorInfo();
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         skyColor = 0x88bbffL;
         fogColor = 0L;
         totalSkyLight = 15;
         isHotWorld = false;
-        mod_noBiomesX NBX = new mod_noBiomesX();
-        NBX.RequestGeneratorInfo();
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -261,16 +261,16 @@ public class World implements IBlockAccess
         worldInfo = new WorldInfo(par1World.worldInfo);
         mapStorage = new MapStorage(saveHandler);
         worldProvider = par2WorldProvider;
+        mapGen = worldInfo.getMapGen();
+        mapGenExtra = worldInfo.getMapGenExtra();
+        snowCovered = worldInfo.getSnowCovered();
+        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, 0, snowCovered, worldInfo.getNewOres());
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         skyColor = 0x88bbffL;
         fogColor = 0L;
         totalSkyLight = 15;
         isHotWorld = false;
-        mapGen = worldInfo.getMapGen();
-        mapGenExtra = worldInfo.getMapGenExtra();
-        snowCovered = worldInfo.getSnowCovered();
-        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, 0, snowCovered, worldInfo.getNewOres());
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -436,6 +436,7 @@ public class World implements IBlockAccess
             mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
             mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
             mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
+            worldProvider.registerWorld(this);
          }
 
         calculateInitialSkylight();
@@ -504,8 +505,13 @@ public class World implements IBlockAccess
                 isHotWorld = true;
             }
         }else{
-            skyColor = 0x88bbffL;
-            fogColor = 0L;
+            if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+                skyColor = 0xb9b8f4;
+                fogColor = 0x9493bb;
+            }else{
+                skyColor = 0x88bbffL;
+                fogColor = 0L;
+            }
             cloudColour = 0xffffffL;
             totalSkyLight = 15;
             isHotWorld = false;
@@ -2004,7 +2010,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getSkyColor(Entity entity, float f)
     {
-        if(mod_noBiomesX.Generator!=0 || ModLoader.getMinecraftInstance().thePlayer.dimension == 1)
+        if((mod_noBiomesX.Generator!=0 || ModLoader.getMinecraftInstance().thePlayer.dimension == 1) && !(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5))
         {
             float f1 = getCelestialAngle(f);
             float f3 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -2020,7 +2026,7 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1){
+            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1 && !(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5)){
                 if (mod_noBiomesX.Generator==2 || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
                     if (mod_noBiomesX.MapFeatures<3){
                         f7 = 0.2146759F;
@@ -2098,6 +2104,9 @@ public class World implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
+        if(mod_noBiomesX.Generator == 1 && mod_noBiomesX.MapFeatures>=5){
+            return 0.0F;
+        }
         if(totalSkyLight == 16){
             return 1.0F;
         }
@@ -3144,7 +3153,7 @@ public class World implements IBlockAccess
         }
 
         worldProvider.worldChunkMgr.cleanupCache();
-        if (mod_noBiomesX.Generator==2 ||(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=3)){
+        if (mod_noBiomesX.Generator==2 ||(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=3 && mod_noBiomesX.MapFeatures<5)){
             updateWeather();
         }
 

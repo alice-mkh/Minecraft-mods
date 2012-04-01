@@ -17,11 +17,11 @@ public class GeneratorList{
 
     public static int feat1default = 4;
     public static int feat1current;
-    public static int feat1length = 4;
-    public static String[] feat1id = {"120", "beta12", "14", "15", "173"};
-    public static String[] feat1name = {"featuresHalloween", "featuresBeta12", "featuresBeta14", "featuresBeta15", "featuresBeta173"};
-    public static String[] feat1desc = {"descriptionFeaturesHalloween", "descriptionFeaturesBeta12", "descriptionFeaturesBeta14", "descriptionFeaturesBeta15", "descriptionFeaturesBeta173"};
-    public static boolean[] feat1worldtype = {false, false, false, false, false};
+    public static int feat1length = 5;
+    public static String[] feat1id = {"120", "beta12", "14", "15", "173", "sky"};
+    public static String[] feat1name = {"featuresHalloween", "featuresBeta12", "featuresBeta14", "featuresBeta15", "featuresBeta173", "featuresBetaSky"};
+    public static String[] feat1desc = {"descriptionFeaturesHalloween", "descriptionFeaturesBeta12", "descriptionFeaturesBeta14", "descriptionFeaturesBeta15", "descriptionFeaturesBeta173", "descriptionFeaturesBetaSky"};
+    public static boolean[] feat1worldtype = {false, false, false, false, false, false};
 
     public static int feat2default = 3;
     public static int feat2current;

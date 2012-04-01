@@ -1,12 +1,25 @@
 package net.minecraft.src;
 
 import net.minecraft.src.nbxlite.chunkproviders.*;
+import net.minecraft.src.nbxlite.oldbiomes.*;
 
 public class WorldProviderSurface extends WorldProvider
 {
     public WorldProviderSurface()
     {
         super();
+    }
+
+    /**
+     * creates a new world chunk manager for WorldProvider
+     */
+    protected void registerWorldChunkManager()
+    {
+        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures==5){
+            worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.0F, OldBiomeGenBase.sky);
+        }else{
+            super.registerWorldChunkManager();
+        }
     }
 
     /**
@@ -34,6 +47,9 @@ public class WorldProviderSurface extends WorldProvider
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
+        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+            return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();
+        }
         if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
             return i == Block.grass.blockID;
         }
@@ -45,7 +61,7 @@ public class WorldProviderSurface extends WorldProvider
      */
     public float[] calcSunriseSunsetColors(float par1, float par2)
     {
-        if(!mod_noBiomesX.SunriseEffect){
+        if(!mod_noBiomesX.SunriseEffect || (mod_noBiomesX.Generator == 1 && mod_noBiomesX.MapFeatures>=5)){
             return null;
         }
         return super.calcSunriseSunsetColors(par1, par2);
@@ -58,6 +74,9 @@ public class WorldProviderSurface extends WorldProvider
     {
         if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3 && mod_noBiomesX.IndevMapType==2){
             return -16F;
+        }
+        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+            return 8F;
         }
         if(worldObj.totalSkyLight == 16)
         {
@@ -78,7 +97,7 @@ public class WorldProviderSurface extends WorldProvider
 
     public boolean isSkyColored()
     {
-        if (mod_noBiomesX.Generator==0 && (mod_noBiomesX.MapFeatures>=3 || mod_noBiomesX.MapTheme!=0)){
+        if ((mod_noBiomesX.Generator==0 && (mod_noBiomesX.MapFeatures>=3 || mod_noBiomesX.MapTheme!=0)) || (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5)){
             return false;
         }
         return true;
