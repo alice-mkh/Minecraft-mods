@@ -27,7 +27,7 @@ public class mod_noBiomesX extends BaseModMp{
     public void load(){}
 
     public String getVersion(){
-        return "1.2.3";
+        return "1.2.4";
     }
 
     public void SendGeneratorInfo(EntityPlayerMP entityplayermp)

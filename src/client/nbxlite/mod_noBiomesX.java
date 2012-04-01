@@ -133,7 +133,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 */
     public String getVersion(){
-        return "1.2.3";
+        return "1.2.4";
     }
 
     public void handlePacket(Packet230ModLoader packet)
