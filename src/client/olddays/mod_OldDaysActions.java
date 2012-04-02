@@ -12,16 +12,17 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 5, "Punch sheep",         true,  "PunchSheep");
         addProperty(this, 6, "Old tool durability", false, "OldTools");
         loadModuleProperties(0);
+        replaceBlocks();
     }
 
     public void callback (int i){
         switch(i){
-            case 1: BlockTNT.punchToActivate =      PunchTNT;       break;
-            case 2: EntityTNTPrimed.extinguish =    ExtinguishTNT;  break;
-            case 3: EntityItem.smeltOnFire =        SmeltOnFire;    break;
-            case 4: BlockFire.oldFire =             OldFire;        break;
-            case 5: EntitySheep.punchToShear =      PunchSheep;     break;
-            case 6: setToolDurability(OldTools);                    break;
+            case 1: BlockTNT2.punchToActivate =     PunchTNT;      break;
+            case 2: EntityTNTPrimed.extinguish =    ExtinguishTNT; break;
+            case 3: EntityItem.smeltOnFire =        SmeltOnFire;   break;
+            case 4: BlockFire.oldFire =             OldFire;       break;
+            case 5: EntitySheep.punchToShear =      PunchSheep;    break;
+            case 6: setToolDurability(OldTools);                   break;
         }
     }
 
@@ -33,6 +34,16 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean OldTools;
 //Old blocks
 //Unflammable fences and stairs
+
+    private void replaceBlocks(){
+        try{
+            Block.blocksList[Block.tnt.blockID] = null;
+            BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(46, 8)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("tnt");
+            Block.blocksList[Block.tnt.blockID] = customtnt;
+        }catch (Exception exception){
+            System.out.println(exception);
+        }
+    }
 
     private void setToolDurability(boolean b){
         try{
