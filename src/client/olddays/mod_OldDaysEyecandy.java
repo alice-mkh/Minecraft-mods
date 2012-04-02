@@ -16,6 +16,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 9, "Mob armor",           false, "MobArmor");
         addProperty(this, 10,"Old main menu",       true,  "OldMainMenu");
         loadModuleProperties(4);
+        replaceBlocks();
     }
 
     public void callback (int i){
@@ -27,7 +28,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 4: ModelEnderman.openmouth =           EndermenOpenMouth; break;
             case 5: ItemRenderer.sway =                 ItemSway;          break;
             case 6: ItemRenderer.items2d =              Items2D;           break;
-            case 7: BlockChest.normalblock =            OldChest;
+            case 7: BlockChestOld.normalblock =         OldChest;
                     TileEntityChestRenderer.hidemodel = OldChest;
                     RenderMinecart2.shiftChest =        OldChest;
                     ModLoader.getMinecraftInstance().renderGlobal.loadRenderers(); break;
@@ -56,4 +57,14 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean MobLabels = true;
     public static boolean MobArmor;
     public static boolean OldMainMenu = true;
+
+    private void replaceBlocks(){
+        try{
+            Block.blocksList[Block.chest.blockID] = null;
+            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54)).setHardness(2.5F).setStepSound(Block.soundWoodFootstep).setBlockName("chest").setRequiresSelfNotify();
+            Block.blocksList[Block.chest.blockID] = customchest;
+        }catch (Exception exception){
+            System.out.println(exception);
+        }
+    }
 }
