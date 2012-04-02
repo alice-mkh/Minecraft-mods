@@ -35,9 +35,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
                     EntityZombie.noflesh =      OldDrops;
                     EntitySpider.noeyes =       OldDrops;
                     EntityPigZombie.noflesh =   OldDrops;            break;
-            case 6: EntityZombie.rareloot =    !DisableRareLoot;
-                    EntitySkeleton.rareloot =  !DisableRareLoot;
-                    EntityPigZombie.rareloot = !DisableRareLoot;     break;
+            case 6: EntityLiving.rareloot =    !DisableRareLoot;     break;
             case 7: ItemBow.nocharging =        InstantBow;          break;
             case 8: ItemBow.nodurability =      InfiniteBow;         break;
             case 9: EntityArrow.olddamage =     OldCombatSystem;

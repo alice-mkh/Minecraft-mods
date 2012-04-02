@@ -5,7 +5,6 @@ import java.util.Random;
 public class EntityZombie extends EntityMob
 {
     public static boolean noflesh = false;
-    public static boolean rareloot = true;
     public static boolean burns = true;
 
     public boolean helmet;
@@ -139,9 +138,6 @@ public class EntityZombie extends EntityMob
 
     protected void dropRareDrop(int par1)
     {
-        if (!rareloot){
-            return;
-        }
         switch (rand.nextInt(4))
         {
             case 0:

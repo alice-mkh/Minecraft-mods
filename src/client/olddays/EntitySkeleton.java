@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class EntitySkeleton extends EntityMob
 {
-    public static boolean rareloot = true;
     public static boolean fixai = false;
     public static boolean survivaltest = false;
 
@@ -239,9 +238,6 @@ public class EntitySkeleton extends EntityMob
 
     protected void dropRareDrop(int par1)
     {
-        if (!rareloot){
-            return;
-        }
         if (par1 > 0)
         {
             ItemStack itemstack = new ItemStack(Item.bow);

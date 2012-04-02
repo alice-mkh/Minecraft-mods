@@ -6,7 +6,6 @@ import java.util.Random;
 public class EntityPigZombie extends EntityZombie
 {
     public static boolean noflesh = false;
-    public static boolean rareloot = true;
 
     /** Above zero if this PigZombie is Angry. */
     private int angerLevel;
@@ -197,9 +196,6 @@ public class EntityPigZombie extends EntityZombie
 
     protected void dropRareDrop(int par1)
     {
-        if (!rareloot){
-            return;
-        }
         if (par1 > 0)
         {
             ItemStack itemstack = new ItemStack(Item.swordGold);

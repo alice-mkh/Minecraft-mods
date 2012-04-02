@@ -6,6 +6,7 @@ public abstract class EntityLiving extends Entity
 {
     public static boolean laddergaps = false;
     public static boolean newai = true;
+    public static boolean rareloot = true;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -1116,7 +1117,7 @@ public abstract class EntityLiving extends Entity
             {
                 dropFewItems(recentlyHit > 0, i);
 
-                if (recentlyHit > 0)
+                if (recentlyHit > 0 && rareloot)
                 {
                     int j = rand.nextInt(200) - i;
 
