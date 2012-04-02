@@ -7,6 +7,7 @@ public abstract class EntityLiving extends Entity
     public static boolean laddergaps = false;
     public static boolean newai = true;
     public static boolean rareloot = true;
+    public static boolean oldloot = true;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -1115,7 +1116,21 @@ public abstract class EntityLiving extends Entity
 
             if (!isChild())
             {
-                dropFewItems(recentlyHit > 0, i);
+                if (oldloot){
+                    if (this instanceof EntityChicken || this instanceof EntityZombie){
+                        dropFewItemsOld(recentlyHit > 0, i, Item.feather.shiftedIndex);
+                    }else if (this instanceof EntityCow){
+                        dropFewItemsOld(recentlyHit > 0, i, Item.leather.shiftedIndex);
+                    }else if (this instanceof EntityPigZombie){
+                        dropFewItemsOld(recentlyHit > 0, i, Item.porkCooked.shiftedIndex);
+                    }else if (this instanceof EntitySpider){
+                        dropFewItemsOld(recentlyHit > 0, i, Item.silk.shiftedIndex);
+                    }else{
+                        dropFewItems(recentlyHit > 0, i);
+                    }
+                }else{
+                    dropFewItems(recentlyHit > 0, i);
+                }
 
                 if (recentlyHit > 0 && rareloot)
                 {
@@ -1130,6 +1145,17 @@ public abstract class EntityLiving extends Entity
         }
 
         worldObj.setEntityState(this, (byte)3);
+    }
+
+    protected void dropFewItemsOld(boolean par1, int par2, int item)
+    {
+        int k = rand.nextInt(3);
+        if (par2 > 0){
+            k += rand.nextInt(par2 + 1);
+        }
+        for (int l = 0; l < k; l++){
+            dropItem(item, 1);
+        }
     }
 
     protected void dropRareDrop(int i)

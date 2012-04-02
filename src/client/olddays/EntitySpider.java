@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class EntitySpider extends EntityMob
 {
-    public static boolean noeyes = false;
     public static boolean survivaltest = false;
     public static boolean canclimb = true;
 
@@ -178,7 +177,7 @@ public class EntitySpider extends EntityMob
     {
         super.dropFewItems(par1, par2);
 
-        if (par1 && (rand.nextInt(3) == 0 || rand.nextInt(1 + par2) > 0) && !noeyes)
+        if (par1 && (rand.nextInt(3) == 0 || rand.nextInt(1 + par2) > 0))
         {
             dropItem(Item.spiderEye.shiftedIndex, 1);
         }

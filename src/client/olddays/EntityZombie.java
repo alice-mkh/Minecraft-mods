@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class EntityZombie extends EntityMob
 {
-    public static boolean noflesh = false;
     public static boolean burns = true;
 
     public boolean helmet;
@@ -122,9 +121,6 @@ public class EntityZombie extends EntityMob
      */
     protected int getDropItemId()
     {
-        if (noflesh){
-            return Item.feather.shiftedIndex;
-        }
         return Item.rottenFlesh.shiftedIndex;
     }
 
