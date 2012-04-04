@@ -5,16 +5,16 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysEyecandy extends mod_OldDays{
     public void load(){
-        addProperty(this, 1, "Old walking",         true,  "OldWalking");
-        addProperty(this, 2, "Bobbing",             false, "Bobbing");
-        addProperty(this, 3, "Old endermen",        true,  "OldEndermen");
-        addProperty(this, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
-        addProperty(this, 5, "Item sway",           true,  "ItemSway");
-        addProperty(this, 6, "2D items",            false, "Items2D");
-        addProperty(this, 7, "Old chests",          true,  "OldChest");
-        addProperty(this, 8, "Show mob IDs in F3",  true,  "MobLabels");
-        addProperty(this, 9, "Mob armor",           false, "MobArmor");
-        addProperty(this, 10,"Old main menu",       true,  "OldMainMenu");
+        addProperty(this, 4, 1, "Old walking",         true,  "OldWalking");
+        addProperty(this, 4, 2, "Bobbing",             false, "Bobbing");
+        addProperty(this, 4, 3, "Old endermen",        true,  "OldEndermen");
+        addProperty(this, 4, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
+        addProperty(this, 4, 5, "Item sway",           true,  "ItemSway");
+        addProperty(this, 4, 6, "2D items",            false, "Items2D");
+        addProperty(this, 4, 7, "Old chests",          true,  "OldChest");
+        addProperty(this, 4, 8, "Show mob IDs in F3",  true,  "MobLabels");
+        addProperty(this, 4, 9, "Mob armor",           false, "MobArmor");
+        addProperty(this, 4, 10,"Old main menu",       true,  "OldMainMenu");
         loadModuleProperties(4);
         replaceBlocks();
     }

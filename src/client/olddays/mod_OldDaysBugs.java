@@ -5,12 +5,12 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysBugs extends mod_OldDays{
     public void load(){
-        addProperty(this, 1, "Boosters",      true,  "Boosters");
-        addProperty(this, 2, "Water lifts",   true,  "WaterLifts");
-        addProperty(this, 3, "Toasters",      true,  "LavaToasters");
-        addProperty(this, 4, "Water ladders", true,  "WaterLadders");
-        addProperty(this, 5, "Ladder gaps",   true,  "LadderGaps");
-        addProperty(this, 6, "Piston dupe",   false, "PistonDupe");
+        addProperty(this, 1, 1, "Boosters",      true,  "Boosters");
+        addProperty(this, 1, 2, "Water lifts",   true,  "WaterLifts");
+        addProperty(this, 1, 3, "Toasters",      true,  "LavaToasters");
+        addProperty(this, 1, 4, "Water ladders", true,  "WaterLadders");
+        addProperty(this, 1, 5, "Ladder gaps",   true,  "LadderGaps");
+        addProperty(this, 1, 6, "Piston dupe",   false, "PistonDupe");
         loadModuleProperties(1);
     }
 

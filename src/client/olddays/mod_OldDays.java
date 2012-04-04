@@ -66,27 +66,23 @@ public class mod_OldDays extends BaseMod{
 
     public static void addModules(GuiOldDaysModules gui){
         for (int i = 0; i < modules2.length; i++){
-            gui.addModule(i,modules2[i].replaceFirst("mod_OldDays", ""));
+            if (modules2[i]!=null){
+                gui.addModule(i, modules2[i].replaceFirst("mod_OldDays", ""));
+            }
         }
     }
 
-    public static void addProperty(Object module, int i2, String name, boolean val, String var){
-        int i1 = 0;
-        for (int i = 0; i<modules.length; i++){
-            try{
-                if (module.getClass() == Class.forName(modules[i])){
-                    i1 = i;
-                }
-            }catch (Exception ex){
-                try{
-                    if (module.getClass() == Class.forName(modules2[i])){
-                        i1 = i;
-                        modules = modules2;
-                    }
-                }catch (Exception ex2){
-                    continue;
-                }
-                continue;
+    public static void addProperty(Object module, int num, int i2, String name, boolean val, String var){
+        String modulename = module.getClass().getName();
+        if (modules[num]==null || modules2[num]==null){
+            if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
+                modules[num]=modulename;
+                modules2[num]=modulename.replaceFirst("net.minecraft.src.", "");
+                modulecount++;
+            }else if (modulename.startsWith("mod_OldDays") && modulename != "mod_OldDays"){
+                modules[num]=modulename;
+                modules2[num]=modulename;
+                modulecount++;
             }
         }
         if (propname==null){
@@ -100,14 +96,14 @@ public class mod_OldDays extends BaseMod{
         }
         if (proplength==null){
             proplength=new int[10];
-            proplength[i1]=0;
+            proplength[num]=0;
         }
-        propname[i1][i2]=name;
-        propvalue[i1][i2]=val;
+        propname[num][i2]=name;
+        propvalue[num][i2]=val;
         try{
-            propfield[i1][i2]=Class.forName(modules[i1]).getDeclaredField(var);
+            propfield[num][i2]=Class.forName(modules[num]).getDeclaredField(var);
         }catch (Exception ex){}
-        proplength[i1]++;
+        proplength[num]++;
     }
 
     public void keyboardEvent(KeyBinding keybinding){
@@ -143,14 +139,7 @@ public class mod_OldDays extends BaseMod{
     public static boolean[][] propvalue;
     public static Field[][] propfield;
     public static int[] proplength;
-    public static String[] modules = {"net.minecraft.src.mod_OldDaysActions",
-                                      "net.minecraft.src.mod_OldDaysBugs",
-                                      "net.minecraft.src.mod_OldDaysGameplay",
-                                      "net.minecraft.src.mod_OldDaysMobs",
-                                      "net.minecraft.src.mod_OldDaysEyecandy"};
-    public static String[] modules2 = {"mod_OldDaysActions",
-                                       "mod_OldDaysBugs",
-                                       "mod_OldDaysGameplay",
-                                       "mod_OldDaysMobs",
-                                       "mod_OldDaysEyecandy"};
+    public static String[] modules = new String[10];
+    public static String[] modules2 = new String[10];
+    public static int modulecount = 0;
 }
