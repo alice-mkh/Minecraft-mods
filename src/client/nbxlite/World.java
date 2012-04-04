@@ -1987,7 +1987,7 @@ public class World implements IBlockAccess
     public float func_35464_b(float par1)
     {
         float f = getCelestialAngle(par1);
-        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
+        float f1 = (Math.min(totalSkyLight+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
 
         if (f1 < 0.0F)
         {
@@ -1999,9 +1999,9 @@ public class World implements IBlockAccess
             f1 = 1.0F;
         }
 
-        f1 = 1.0F - f1;
-        f1 = (float)((double)f1 * (1.0D - (double)(getRainStrength(par1) * 5F) / 16D));
-        f1 = (float)((double)f1 * (1.0D - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
+        f1 = (Math.min(totalSkyLight+1, 16F) / 16F) - f1;
+        f1 = (float)((double)f1 * (((double)((Math.min(totalSkyLight+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
+        f1 = (float)((double)f1 * (((double)((Math.min(totalSkyLight+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
         return f1 * 0.8F + 0.2F;
     }
 
