@@ -16,6 +16,20 @@ public class EntityTNTPrimed extends Entity
         yOffset = height / 2.0F;
     }
 
+    public boolean attackEntityFrom(DamageSource damagesource, int i){
+        if (!extinguish){
+            return false;
+        }
+        Entity entity = damagesource.getEntity();
+        if(worldObj.isRemote || isDead || !(entity instanceof EntityPlayer)){
+            return true;
+        }
+        worldObj.playSoundAtEntity(this, "step.grass", 1.0F, 1.0F);
+        setDead();
+        dropItem(Block.tnt.blockID, 1);
+        return true;
+    }
+
     public EntityTNTPrimed(World par1World, double par2, double par4, double par6)
     {
         this(par1World);
@@ -115,19 +129,5 @@ public class EntityTNTPrimed extends Entity
     public float getShadowSize()
     {
         return 0.0F;
-    }
-
-    public boolean attackEntityFrom(DamageSource damagesource, int i){
-        if (!extinguish){
-            return false;
-        }
-        Entity entity = damagesource.getEntity();
-        if(worldObj.isRemote || isDead || !(entity instanceof EntityPlayer)){
-            return true;
-        }
-        worldObj.playSoundAtEntity(this, "step.grass", 1.0F, 1.0F);
-        setDead();
-        dropItem(Block.tnt.blockID, 1);
-        return true;
     }
 }

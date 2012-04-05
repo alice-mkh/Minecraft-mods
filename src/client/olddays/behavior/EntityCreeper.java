@@ -23,7 +23,6 @@ public class EntityCreeper extends EntityMob
     {
         super(par1World);
         texture = "/mob/creeper.png";
-        attackStrength = 6;
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAICreeperSwell(this));
         tasks.addTask(3, new EntityAIAvoidEntity(this, net.minecraft.src.EntityOcelot.class, 6F, 0.25F, 0.3F));
@@ -33,6 +32,88 @@ public class EntityCreeper extends EntityMob
         tasks.addTask(6, new EntityAILookIdle(this));
         targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
         targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+    }
+
+    public int getBrightnessForRender(float f)
+    {
+        if (!dark){
+            return super.getBrightnessForRender(f);
+        }
+        float f1 = (float)(getMaxHealth() - health) / (getMaxHealth() * 2F);
+        float f2 = (MathHelper.cos((float)entityAge + f) * 0.5F + 0.5F);
+        return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 350F);
+    }
+
+    protected void attackBlockedEntity(Entity entity, float f)
+    {
+        if (worldObj.isRemote)
+        {
+            return;
+        }
+        if (!fixai){
+            super.attackBlockedEntity(entity,f);
+            return;
+        }
+        if (survivaltest){
+            super.attackBlockedEntity(entity,f);
+            return;
+        }
+        if (timeSinceIgnited > 0)
+        {
+            setCreeperState(-1);
+            timeSinceIgnited--;
+            if (timeSinceIgnited < 0)
+            {
+                timeSinceIgnited = 0;
+            }
+        }
+    }
+
+    protected void attackEntity(Entity entity, float f)
+    {
+        if (worldObj.isRemote)
+        {
+            return;
+        }
+        if (survivaltest){
+            super.attackEntity(entity, f);
+            return;
+        }
+        if (!fixai){
+            return;
+        }
+        int i = getCreeperState();
+        if (i <= 0 && f < 3F || i > 0 && f < 7F)
+        {
+            if (timeSinceIgnited == 0)
+            {
+                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+            }
+            setCreeperState(1);
+            timeSinceIgnited++;
+            if (timeSinceIgnited >= 30)
+            {
+                if (getPowered())
+                {
+                    worldObj.createExplosion(this, posX, posY, posZ, 6F);
+                }
+                else
+                {
+                    worldObj.createExplosion(this, posX, posY, posZ, 3F);
+                }
+                setDead();
+            }
+            hasAttacked = true;
+        }
+        else
+        {
+            setCreeperState(-1);
+            timeSinceIgnited--;
+            if (timeSinceIgnited < 0)
+            {
+                timeSinceIgnited = 0;
+            }
+        }
     }
 
     /**
@@ -46,16 +127,6 @@ public class EntityCreeper extends EntityMob
     public int getMaxHealth()
     {
         return 20;
-    }
-
-    public int getBrightnessForRender(float f)
-    {
-        if (!dark){
-            return super.getBrightnessForRender(f);
-        }
-        float f1 = (float)(getMaxHealth() - health) / (getMaxHealth() * 2F);
-        float f2 = (MathHelper.cos((float)entityAge + f) * 0.5F + 0.5F);
-        return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 350F);
     }
 
     protected void entityInit()
@@ -85,31 +156,6 @@ public class EntityCreeper extends EntityMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
-    }
-
-    protected void attackBlockedEntity(Entity entity, float f)
-    {
-        if (worldObj.isRemote)
-        {
-            return;
-        }
-        if (!fixai){
-            super.attackBlockedEntity(entity,f);
-            return;
-        }
-        if (survivaltest){
-            super.attackBlockedEntity(entity,f);
-            return;
-        }
-        if (timeSinceIgnited > 0)
-        {
-            setCreeperState(-1);
-            timeSinceIgnited--;
-            if (timeSinceIgnited < 0)
-            {
-                timeSinceIgnited = 0;
-            }
-        }
     }
 
     public void onUpdate_old()
@@ -191,53 +237,6 @@ public class EntityCreeper extends EntityMob
         }
 
         super.onUpdate();
-    }
-
-    protected void attackEntity(Entity entity, float f)
-    {
-        if (worldObj.isRemote)
-        {
-            return;
-        }
-        if (survivaltest){
-            super.attackEntity(entity, f);
-            return;
-        }
-        if (!fixai){
-            return;
-        }
-        int i = getCreeperState();
-        if (i <= 0 && f < 3F || i > 0 && f < 7F)
-        {
-            if (timeSinceIgnited == 0)
-            {
-                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
-            }
-            setCreeperState(1);
-            timeSinceIgnited++;
-            if (timeSinceIgnited >= 30)
-            {
-                if (getPowered())
-                {
-                    worldObj.createExplosion(this, posX, posY, posZ, 6F);
-                }
-                else
-                {
-                    worldObj.createExplosion(this, posX, posY, posZ, 3F);
-                }
-                setDead();
-            }
-            hasAttacked = true;
-        }
-        else
-        {
-            setCreeperState(-1);
-            timeSinceIgnited--;
-            if (timeSinceIgnited < 0)
-            {
-                timeSinceIgnited = 0;
-            }
-        }
     }
 
     /**

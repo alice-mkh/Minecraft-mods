@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 
 public class mod_OldDays extends BaseMod{
     public String getVersion(){
-        return "1.2.4";
+        return "1.2.5";
     }
 
     public mod_OldDays(){

@@ -286,7 +286,7 @@ public abstract class EntityCreature extends EntityLiving
     }
 
     /**
-     * Sets entities target to attack
+     * Sets the entity which is to be attacked.
      */
     public void setTarget(Entity par1Entity)
     {

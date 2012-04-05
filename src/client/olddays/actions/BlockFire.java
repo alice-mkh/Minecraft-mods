@@ -144,7 +144,7 @@ public class BlockFire extends Block
             return;
         }
 
-        boolean flag1 = par1World.func_48455_z(par2, par3, par4);
+        boolean flag1 = par1World.isBlockHighHumidity(par2, par3, par4);
         byte byte0 = 0;
 
         if (flag1)

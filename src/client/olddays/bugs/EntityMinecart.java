@@ -1030,6 +1030,7 @@ public class EntityMinecart extends Entity implements IInventory
                     d7 = par1Entity.motionX + motionX;
                     d8 = par1Entity.motionZ + motionZ;
                 }
+
                 if (((EntityMinecart)par1Entity).minecartType == 2 && minecartType != 2)
                 {
                     motionX *= 0.20000000298023224D;

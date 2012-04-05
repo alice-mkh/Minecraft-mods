@@ -81,7 +81,7 @@ public class EntitySheep extends EntityAnimal
         texture = "/mob/sheep.png";
         setSize(0.9F, 1.3F);
         float f = 0.23F;
-        getNavigator().func_48664_a(true);
+        getNavigator().setAvoidsWater(true);
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIPanic(this, 0.38F));
         tasks.addTask(2, new EntityAIMate(this, f));

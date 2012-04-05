@@ -3,6 +3,7 @@ package net.minecraft.src;
 public class FoodStats
 {
     public static boolean disabled = false;
+    private static int disabledLevel = 20;
 
     /** The player's food level. */
     private int foodLevel;
@@ -16,8 +17,6 @@ public class FoodStats
     /** The player's food timer value. */
     private int foodTimer;
     private int prevFoodLevel;
-
-    private static int disabledLevel = 20;
 
     public FoodStats()
     {

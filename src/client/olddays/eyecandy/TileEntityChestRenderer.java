@@ -54,7 +54,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
         ModelChest modelchest;
 
-        if (par1TileEntityChest.adjacentChestXPos != null || par1TileEntityChest.adjacentChestZPos != null)
+        if (par1TileEntityChest.adjacentChestXPos != null || par1TileEntityChest.adjacentChestZPosition != null)
         {
             modelchest = largeChestModel;
             bindTextureByName("/item/largechest.png");
@@ -98,7 +98,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
             GL11.glTranslatef(1.0F, 0.0F, 0.0F);
         }
 
-        if (i == 5 && par1TileEntityChest.adjacentChestZPos != null)
+        if (i == 5 && par1TileEntityChest.adjacentChestZPosition != null)
         {
             GL11.glTranslatef(0.0F, 0.0F, -1F);
         }

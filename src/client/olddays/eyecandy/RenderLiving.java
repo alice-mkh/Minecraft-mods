@@ -68,7 +68,7 @@ public class RenderLiving extends Render
         try
         {
             float f = func_48418_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-            float f1 = func_48418_a(par1EntityLiving.prevRotationYaw3, par1EntityLiving.prevRotationYaw2, par9);
+            float f1 = func_48418_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
             float f2 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
             renderLivingAt(par1EntityLiving, par2, par4, par6);
             float f3 = handleRotationFloat(par1EntityLiving, par9);
@@ -99,6 +99,7 @@ public class RenderLiving extends Render
             }else{
                 f6 = par1EntityLiving.field_703_S - par1EntityLiving.field_704_R * (1.0F - par9);
             }
+
             if (par1EntityLiving.isChild())
             {
                 f6 *= 3F;

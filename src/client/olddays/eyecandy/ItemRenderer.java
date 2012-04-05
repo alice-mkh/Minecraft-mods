@@ -72,7 +72,7 @@ public class ItemRenderer
             GL11.glTranslatef(-f4, -f5, 0.0F);
             float f6 = 1.5F;
             GL11.glScalef(f6, f6, f6);
-            if (items2d){
+           if (items2d){
                 GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(360F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-0.5F, -0.0625F, 0.0F);
@@ -237,8 +237,7 @@ public class ItemRenderer
         {
             EntityPlayerSP entityplayersp1 = (EntityPlayerSP)entityplayersp;
             float f2 = entityplayersp1.prevRenderArmPitch + (entityplayersp1.renderArmPitch - entityplayersp1.prevRenderArmPitch) * par1;
-            float f4 = entityplayersp1.prevRenderArmYaw + (entityplayersp1.renderArmYaw - entityplayersp1.prevRenderArmYaw) * par1;
-            if (sway){
+            float f4 = entityplayersp1.prevRenderArmYaw + (entityplayersp1.renderArmYaw - entityplayersp1.prevRenderArmYaw) * par1;            if (sway){
                 GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationPitch - f2) * 0.1F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationYaw - f4) * 0.1F, 0.0F, 1.0F, 0.0F);
             }
@@ -433,7 +432,7 @@ public class ItemRenderer
                     float f32 = 1.0F + f29 * 0.2F;
                     GL11.glScalef(1.0F, 1.0F, f32);
                     GL11.glTranslatef(0.0F, -0.5F, 0.0F);
-                    if (!items2d|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                  if (!items2d|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(50F, 0.0F, 1.0F, 0.0F);
                         GL11.glRotatef(335F, 0.0F, 0.0F, 1.0F);
                     }

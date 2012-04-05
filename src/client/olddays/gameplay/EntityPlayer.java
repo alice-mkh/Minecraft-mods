@@ -39,7 +39,7 @@ public abstract class EntityPlayer extends EntityLiving
     public String playerCloakUrl;
 
     /**
-     * used by EntityPlayer to prevent too many xp orbs from getting absorbed at once.
+     * Used by EntityPlayer to prevent too many xp orbs from getting absorbed at once.
      */
     public int xpCooldown;
     public double field_20066_r;
@@ -97,7 +97,7 @@ public abstract class EntityPlayer extends EntityLiving
     public float experience;
 
     /**
-     * this is the item that is in use when the player is holding down the useItemButton (e.g., bow, food, sword)
+     * This is the item that is in use when the player is holding down the useItemButton (e.g., bow, food, sword)
      */
     private ItemStack itemInUse;
 
@@ -139,6 +139,153 @@ public abstract class EntityPlayer extends EntityLiving
         field_9353_B = 180F;
         fireResistance = 20;
         texture = "/mob/char.png";
+    }
+
+    protected int applyArmorCalculations_old(DamageSource damagesource, int i)
+    {
+        int j = 25 - getTotalArmorValue();
+        int k = i * j + carryoverDamage;
+        damageArmor(i);
+        i = k / 25;
+        carryoverDamage = k % 25;
+        return i;
+    }
+
+    private void combatOld(Entity par1Entity, int i, int j, int k){
+        if(i > 0)
+        {
+            i += k;
+            if (j > 0)
+            {
+                par1Entity.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F);
+                motionX *= 0.59999999999999998D;
+                motionZ *= 0.59999999999999998D;
+                setSprinting(false);
+            }
+            if(motionY < 0.0D)
+            {
+                i++;
+            }
+            par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
+            ItemStack itemstack = getCurrentEquippedItem();
+            if(itemstack != null && (par1Entity instanceof EntityLiving))
+            {
+                itemstack.hitEntity((EntityLiving)par1Entity, this);
+                if(itemstack.stackSize <= 0)
+                {
+                    itemstack.onItemDestroyedByUse(this);
+                    destroyCurrentEquippedItem();
+                }
+            }
+            if(par1Entity instanceof EntityLiving)
+            {
+                if(par1Entity.isEntityAlive())
+                {
+                    alertWolves((EntityLiving)par1Entity, true);
+                }
+                addStat(StatList.damageDealtStat, i);
+                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
+                if (l > 0)
+                {
+                    par1Entity.setFire(l * 4);
+                }
+            }
+            addExhaustion(0.3F);
+        }
+    }
+
+    private void combatNew(Entity par1Entity, int i, int j, int k){
+        if (i > 0 || k > 0)
+        {
+            boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
+            if (flag)
+            {
+                i += rand.nextInt(i / 2 + 2);
+            }
+            i += k;
+            boolean flag1 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
+            if (flag1)
+            {
+                if (j > 0)
+                {
+                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
+                    motionX *= 0.59999999999999998D;
+                    motionZ *= 0.59999999999999998D;
+                    setSprinting(false);
+                }
+                if (flag)
+                {
+                    onCriticalHit(par1Entity);
+                }
+                if (k > 0)
+                {
+                    onEnchantmentCritical(par1Entity);
+                }
+                if (i >= 18)
+                {
+                    triggerAchievement(AchievementList.overkill);
+                }
+                setLastAttackingEntity(par1Entity);
+            }
+            ItemStack itemstack = getCurrentEquippedItem();
+            if (itemstack != null && (par1Entity instanceof EntityLiving))
+            {
+                itemstack.hitEntity((EntityLiving)par1Entity, this);
+                if (itemstack.stackSize <= 0)
+                {
+                    itemstack.onItemDestroyedByUse(this);
+                    destroyCurrentEquippedItem();
+                }
+            }
+            if (par1Entity instanceof EntityLiving)
+            {
+                if (par1Entity.isEntityAlive())
+                {
+                    alertWolves((EntityLiving)par1Entity, true);
+                }
+                addStat(StatList.damageDealtStat, i);
+                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
+                if (l > 0)
+                {
+                    par1Entity.setFire(l * 4);
+                }
+            }
+            addExhaustion(0.3F);
+        }
+    }
+
+    //FOR FORGE COMPATIBILITY
+    public float getCurrentPlayerStrVsBlock(Block block, int md)
+    {
+        float f = 1.0F;
+        ItemStack ist = inventory.getCurrentItem();
+        if(ist != null)
+        {
+//             f = ist.getItem().getStrVsBlock(ist, block, md);
+            f = ist.getItem().getStrVsBlock(ist, block);
+        }
+        int i = EnchantmentHelper.getEfficiencyModifier(inventory);
+        if (i > 0 /*&& ForgeHooks.canHarvestBlock(block, this, md)*/)
+        {
+            f += i * i + 1;
+        }
+        if(isPotionActive(Potion.digSpeed))
+        {
+            f *= 1.0F + (float)(getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
+        }
+        if(isPotionActive(Potion.digSlowdown))
+        {
+            f *= 1.0F - (float)(getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
+        }
+        if(isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(inventory))
+        {
+            f /= 5F;
+        }
+        if(!onGround)
+        {
+            f /= 5F;
+        }
+        return f;
     }
 
     public int getMaxHealth()
@@ -999,7 +1146,7 @@ public abstract class EntityPlayer extends EntityLiving
 
             if (entitywolf1.isTamed() && entitywolf1.getEntityToAttack() == null && username.equals(entitywolf1.getOwnerName()) && (!par2 || !entitywolf1.isSitting()))
             {
-                entitywolf1.func_48140_f(false);
+                entitywolf1.setSitting(false);
                 entitywolf1.setTarget(par1EntityLiving);
             }
         }
@@ -1059,16 +1206,6 @@ public abstract class EntityPlayer extends EntityLiving
         }else{
             return inventory.getTotalArmorValue();
         }
-    }
-
-    protected int applyArmorCalculations_old(DamageSource damagesource, int i)
-    {
-        int j = 25 - getTotalArmorValue();
-        int k = i * j + carryoverDamage;
-        damageArmor(i);
-        i = k / 25;
-        carryoverDamage = k % 25;
-        return i;
     }
 
     /**
@@ -1223,125 +1360,8 @@ public abstract class EntityPlayer extends EntityLiving
         }
     }
 
-    private void combatOld(Entity par1Entity, int i, int j, int k){
-        if(i > 0)
-        {
-            i += k;
-            if (j > 0)
-            {
-                par1Entity.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F);
-                motionX *= 0.59999999999999998D;
-                motionZ *= 0.59999999999999998D;
-                setSprinting(false);
-            }
-            if(motionY < 0.0D)
-            {
-                i++;
-            }
-            par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
-            ItemStack itemstack = getCurrentEquippedItem();
-            if(itemstack != null && (par1Entity instanceof EntityLiving))
-            {
-                itemstack.hitEntity((EntityLiving)par1Entity, this);
-                if(itemstack.stackSize <= 0)
-                {
-                    itemstack.onItemDestroyedByUse(this);
-                    destroyCurrentEquippedItem();
-                }
-            }
-            if(par1Entity instanceof EntityLiving)
-            {
-                if(par1Entity.isEntityAlive())
-                {
-                    alertWolves((EntityLiving)par1Entity, true);
-                }
-                addStat(StatList.damageDealtStat, i);
-                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
-                if (l > 0)
-                {
-                    par1Entity.setFire(l * 4);
-                }
-            }
-            addExhaustion(0.3F);
-        }
-    }
-
-    private void combatNew(Entity par1Entity, int i, int j, int k){
-        if (i > 0 || k > 0)
-        {
-            boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
-
-            if (flag)
-            {
-                i += rand.nextInt(i / 2 + 2);
-            }
-
-            i += k;
-            boolean flag1 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
-
-            if (flag1)
-            {
-                if (j > 0)
-                {
-                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
-                    motionX *= 0.59999999999999998D;
-                    motionZ *= 0.59999999999999998D;
-                    setSprinting(false);
-                }
-
-                if (flag)
-                {
-                    onCriticalHit(par1Entity);
-                }
-
-                if (k > 0)
-                {
-                    onEnchantmentCritical(par1Entity);
-                }
-
-                if (i >= 18)
-                {
-                    triggerAchievement(AchievementList.overkill);
-                }
-
-                setLastAttackingEntity(par1Entity);
-            }
-
-            ItemStack itemstack = getCurrentEquippedItem();
-
-            if (itemstack != null && (par1Entity instanceof EntityLiving))
-            {
-                itemstack.hitEntity((EntityLiving)par1Entity, this);
-
-                if (itemstack.stackSize <= 0)
-                {
-                    itemstack.onItemDestroyedByUse(this);
-                    destroyCurrentEquippedItem();
-                }
-            }
-
-            if (par1Entity instanceof EntityLiving)
-            {
-                if (par1Entity.isEntityAlive())
-                {
-                    alertWolves((EntityLiving)par1Entity, true);
-                }
-
-                addStat(StatList.damageDealtStat, i);
-                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
-
-                if (l > 0)
-                {
-                    par1Entity.setFire(l * 4);
-                }
-            }
-
-            addExhaustion(0.3F);
-        }
-    }
-
     /**
-     * is called when the player performs a critical hit on the Entity. Args: entity that was hit critically
+     * Called when the player performs a critical hit on the Entity. Args: entity that was hit critically
      */
     public void onCriticalHit(Entity entity)
     {
@@ -1667,7 +1687,7 @@ public abstract class EntityPlayer extends EntityLiving
     }
 
     /**
-     * jump, Causes this entity to do an upwards motion (jumping)
+     * Causes this entity to do an upwards motion (jumping).
      */
     protected void jump()
     {
@@ -2068,39 +2088,5 @@ public abstract class EntityPlayer extends EntityLiving
 
     public void func_50009_aI()
     {
-    }
-
-    //FOR FORGE COMPATIBILITY
-    public float getCurrentPlayerStrVsBlock(Block block, int md)
-    {
-        float f = 1.0F;
-        ItemStack ist = inventory.getCurrentItem();
-        if(ist != null)
-        {
-//             f = ist.getItem().getStrVsBlock(ist, block, md);
-            f = ist.getItem().getStrVsBlock(ist, block);
-        }
-        int i = EnchantmentHelper.getEfficiencyModifier(inventory);
-        if (i > 0 /*&& ForgeHooks.canHarvestBlock(block, this, md)*/)
-        {
-            f += i * i + 1;
-        }
-        if(isPotionActive(Potion.digSpeed))
-        {
-            f *= 1.0F + (float)(getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
-        }
-        if(isPotionActive(Potion.digSlowdown))
-        {
-            f *= 1.0F - (float)(getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
-        }
-        if(isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(inventory))
-        {
-            f /= 5F;
-        }
-        if(!onGround)
-        {
-            f /= 5F;
-        }
-        return f;
     }
 }

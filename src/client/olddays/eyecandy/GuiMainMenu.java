@@ -102,9 +102,7 @@ public class GuiMainMenu extends GuiScreen
                     {
                         logoEffects[i][j].func_875_a();
                     }
-
                 }
-
             }
         }
     }
@@ -364,6 +362,61 @@ public class GuiMainMenu extends GuiScreen
         tessellator.draw();
     }
 
+    /**
+     * Draws the screen and all the components in it.
+     */
+    public void drawScreen(int par1, int par2, float par3)
+    {
+        if (panorama){
+            renderSkybox(par1, par2, par3);
+        }else{
+            drawDefaultBackground();
+        }
+        Tessellator tessellator = Tessellator.instance;
+        if (oldlogo){
+            drawLogo(par3);
+        }
+        char c = 274;
+        int i = width / 2 - c / 2;
+        byte byte0 = 30;
+        if (panorama){
+            drawGradientRect(0, 0, width, height, 0x80ffffff, 0xffffff);
+            drawGradientRect(0, 0, width, height, 0, 0x80000000);
+        }
+        if (!oldlogo){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/mclogo.png"));
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+            if ((double)updateCounter < 0.0001D)
+            {
+                drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
+                drawTexturedModalRect(i + 99, byte0 + 0, 129, 0, 27, 44);
+                drawTexturedModalRect(i + 99 + 26, byte0 + 0, 126, 0, 3, 44);
+                drawTexturedModalRect(i + 99 + 26 + 3, byte0 + 0, 99, 0, 26, 44);
+                drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
+            }
+            else
+            {
+                drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 155, 44);
+                drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
+            }
+        }
+
+        tessellator.setColorOpaque_I(0xffffff);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(width / 2 + 90, 70F, 0.0F);
+        GL11.glRotatef(-20F, 0.0F, 0.0F, 1.0F);
+        float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(System.currentTimeMillis() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
+        f = (f * 100F) / (float)(fontRenderer.getStringWidth(splashText) + 32);
+        GL11.glScalef(f, f, f);
+        drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
+        GL11.glPopMatrix();
+        drawString(fontRenderer, "Minecraft 1.2.5", 2, height - 10, 0xffffff);
+        String s = "Copyright Mojang AB. Do not distribute!";
+        drawString(fontRenderer, s, width - fontRenderer.getStringWidth(s) - 2, height - 10, 0xffffff);
+        super.drawScreen(par1, par2, par3);
+    }
+
     private void drawLogo(float f)
     {
         if(logoEffects == null)
@@ -500,62 +553,5 @@ public class GuiMainMenu extends GuiScreen
             tessellator.draw();
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         }
-    }
-
-    /**
-     * Draws the screen and all the components in it.
-     */
-    public void drawScreen(int par1, int par2, float par3)
-    {
-        if (panorama){
-            renderSkybox(par1, par2, par3);
-        }else{
-            drawDefaultBackground();
-        }
-        Tessellator tessellator = Tessellator.instance;
-        if (oldlogo){
-            drawLogo(par3);
-//             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/logo.png"));
-//             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        }
-        char c = 274;
-        int i = width / 2 - c / 2;
-        byte byte0 = 30;
-        if (panorama){
-            drawGradientRect(0, 0, width, height, 0x80ffffff, 0xffffff);
-            drawGradientRect(0, 0, width, height, 0, 0x80000000);
-        }
-        if (!oldlogo){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/mclogo.png"));
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-            if ((double)updateCounter < 0.0001D)
-            {
-                drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
-                drawTexturedModalRect(i + 99, byte0 + 0, 129, 0, 27, 44);
-                drawTexturedModalRect(i + 99 + 26, byte0 + 0, 126, 0, 3, 44);
-                drawTexturedModalRect(i + 99 + 26 + 3, byte0 + 0, 99, 0, 26, 44);
-                drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
-            }
-            else
-            {
-                drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 155, 44);
-                drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
-            }
-        }
-
-        tessellator.setColorOpaque_I(0xffffff);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(width / 2 + 90, 70F, 0.0F);
-        GL11.glRotatef(-20F, 0.0F, 0.0F, 1.0F);
-        float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(System.currentTimeMillis() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
-        f = (f * 100F) / (float)(fontRenderer.getStringWidth(splashText) + 32);
-        GL11.glScalef(f, f, f);
-        drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
-        GL11.glPopMatrix();
-        drawString(fontRenderer, "Minecraft 1.2.4", 2, height - 10, 0xffffff);
-        String s = "Copyright Mojang AB. Do not distribute!";
-        drawString(fontRenderer, s, width - fontRenderer.getStringWidth(s) - 2, height - 10, 0xffffff);
-        super.drawScreen(par1, par2, par3);
     }
 }
