@@ -71,7 +71,7 @@ public class WorldChunkManager
 
     public OldBiomeGenBase oldGetBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
     {
-        return oldGetBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
+        return oldGetBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPosition << 4);
     }
 
     public OldBiomeGenBase oldGetBiomeGenAt(int i, int j)
@@ -174,59 +174,6 @@ public class WorldChunkManager
         return ad;
     }
 
-    public BiomeGenBase getBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
-    {
-        return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
-    }
-
-    public float getRainfall(int i, int j)
-    {
-        return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
-    }
-
-    public float getTemperature(int i, int j, int k)
-    {
-        return getTemperatureAtHeight(biomeCache.getBiomeCacheBlock(i, k).temperatureValues[i & 0xf | (k & 0xf) << 4], j);
-    }
-
-    public double getTemperature_old(int i, int j)
-    {
-        temperature = field_4194_e.func_4112_a(temperature, i, j, 1, 1, 0.02500000037252903D, 0.02500000037252903D, 0.5D);
-        return temperature[0];
-    }
-
-    public float[] initTemperatureCache(int i, int j, int k, int l)
-    {
-        temperatureCache = getTemperatures(temperatureCache, i, j, k, l);
-        return temperatureCache;
-    }
-
-    public BiomeGenBase[] func_35557_b(BiomeGenBase abiomegenbase[], int i, int j, int k, int l)
-    {
-        return getBiomesForGeneration(abiomegenbase, i, j, k, l);
-    }
-
-    /**
-     * Return an adjusted version of a given temperature based on the y height
-     */
-    public float getTemperatureAtHeight(float par1, int par2)
-    {
-        return par1;
-    }
-
-    public BiomeGenBase[] loadRendererData(int i, int j, int k, int l)
-    {
-        if (k == 16 && l == 16 && (i & 0xf) == 0 && (j & 0xf) == 0)
-        {
-            return biomeCache.getCachedBiomes(i, j);
-        }
-        else
-        {
-            rendererBiomeGenCache = loadBlockGeneratorData(rendererBiomeGenCache, i, j, k, l);
-            return rendererBiomeGenCache;
-        }
-    }
-
     public ChunkPosition func_35556_a(int i, int j, int k, List list, Random random)
     {
         int l = i - k >> 2;
@@ -277,6 +224,43 @@ public class WorldChunkManager
         }
 
         return chunkposition;
+    }
+
+    public BiomeGenBase getBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
+    {
+        return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPosition << 4);
+    }
+
+    public float getRainfall(int i, int j)
+    {
+        return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
+    }
+
+    public float getTemperature(int i, int j, int k)
+    {
+        return getTemperatureAtHeight(biomeCache.getBiomeCacheBlock(i, k).temperatureValues[i & 0xf | (k & 0xf) << 4], j);
+    }
+
+    public float getTemperatureAtHeight(float par1, int par2)
+    {
+        return par1;
+    }
+
+    public double getTemperature_old(int i, int j)
+    {
+        temperature = field_4194_e.func_4112_a(temperature, i, j, 1, 1, 0.02500000037252903D, 0.02500000037252903D, 0.5D);
+        return temperature[0];
+    }
+
+    public float[] initTemperatureCache(int i, int j, int k, int l)
+    {
+        temperatureCache = getTemperatures(temperatureCache, i, j, k, l);
+        return temperatureCache;
+    }
+
+    public BiomeGenBase[] func_35557_b(BiomeGenBase abiomegenbase[], int i, int j, int k, int l)
+    {
+        return getBiomesForGeneration(abiomegenbase, i, j, k, l);
     }
 
     /**

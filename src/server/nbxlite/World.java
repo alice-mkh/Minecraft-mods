@@ -138,7 +138,9 @@ public class World implements IBlockAccess
      */
     private List entitiesWithinAABBExcludingEntity;
 
-    /** This is always false on a server */
+    /**
+     * This is set to true when you are a client connected to a multiplayer world, false otherwise.
+     */
     public boolean isRemote;
 
     public int totalSkyLight;
@@ -151,7 +153,10 @@ public class World implements IBlockAccess
     private OldSpawnerMonsters monsterSpawner;
     private OldSpawnerAnimals waterMobSpawner;
 
-    public BiomeGenBase func_48091_a(int par1, int par2)
+    /**
+     * Gets the biome for a given set of x/z coordinates
+     */
+    public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
         if (blockExists(par1, 0, par2))
         {
@@ -376,7 +381,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * generates a spawn point for this world
+     * Finds an initial spawn location upon creating a new world
      */
     protected void generateSpawnPoint()
     {
@@ -653,7 +658,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Returns a chunk looked up by block coordinates. Args: x, y
+     * Returns a chunk looked up by block coordinates. Args: x, z
      */
     public Chunk getChunkFromBlockCoords(int par1, int par2)
     {
@@ -1145,7 +1150,7 @@ public class World implements IBlockAccess
 
     /**
      * Returns how bright the block is shown as which is the block's light value looked up in a lookup table (light
-     * values aren't linear for brihgtness). Args: x, y, z
+     * values aren't linear for brightness). Args: x, y, z
      */
     public float getLightBrightness(int par1, int par2, int par3)
     {
@@ -1377,7 +1382,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Plays a sound at the entity's position. Args: entity, sound, unknown1, unknown2
+     * Plays a sound at the entity's position. Args: entity, sound, unknown1, volume (relative to 1.0)
      */
     public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
     {
@@ -1606,28 +1611,26 @@ public class World implements IBlockAccess
     /**
      * Returns the amount of skylight subtracted for the current time
      */
-    public int calculateSkylightSubtracted(float f)
+    public int calculateSkylightSubtracted(float par1)
     {
-        float f1 = totalSkyLight;
-        if(totalSkyLight == 16 || (worldProvider instanceof WorldProviderEnd))
+        float f = getCelestialAngle(par1);
+        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.5F);
+
+        if (f1 < 0.0F)
         {
-            f1 = 15F;
+            f1 = 0.0F;
         }
-        float f2 = getCelestialAngle(f);
-        float f3 = 1.0F - (MathHelper.cos(f2 * 3.141593F * 2.0F) * 2.0F + 0.5F);
-        if(f3 < 0.0F)
+
+        if (f1 > 1.0F)
         {
-            f3 = 0.0F;
+            f1 = 1.0F;
         }
-        if(f3 > 1.0F)
-        {
-            f3 = 1.0F;
-        }
-        f3 = 1.0F - f3;
-        f3 = (float)((double)f3 * (1.0D - (double)(getRainStrength(f) * 5F) / 16D));
-        f3 = (float)((double)f3 * (1.0D - (double)(getWeightedThunderStrength(f) * 5F) / 16D));
-        f3 = 1.0F - f3;
-        return (int)(f3 * (f1 - 4F) + (15F - f1));
+
+        f1 = 1.0F - f1;
+        f1 = (float)((double)f1 * (1.0D - (double)(getRainStrength(par1) * 5F) / 16D));
+        f1 = (float)((double)f1 * (1.0D - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
+        f1 = 1.0F - f1;
+        return (int)(f1 * 11F);
     }
 
     /**
@@ -2667,7 +2670,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * updates rainingStrength and thunderingStrength
+     * Called from World constructor to set rainingStrength and thunderingStrength
      */
     private void calculateInitialWeather()
     {
@@ -2683,7 +2686,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * update's all weather states.
+     * Updates all weather states.
      */
     protected void updateWeather()
     {
@@ -2789,7 +2792,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * stops all weather effects
+     * Stops all weather effects.
      */
     private void clearWeather()
     {
@@ -2897,9 +2900,9 @@ public class World implements IBlockAccess
         {
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             int k = chunkcoordintpair.chunkXPos * 16;
-            int l = chunkcoordintpair.chunkZPos * 16;
+            int l = chunkcoordintpair.chunkZPosition * 16;
             Profiler.startSection("getChunk");
-            Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
+            Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPosition);
             func_48094_a(k, l, chunk);
             Profiler.endStartSection("thunder");
 
@@ -2946,7 +2949,7 @@ public class World implements IBlockAccess
                 int l8 = l7 & 0xf;
                 int l9 = l7 >> 8 & 0xf;
                 int l10 = getPrecipitationHeight(l8 + k, l9 + l);
-                if(isRaining() && isBlockHydratedDirectly(l8 + k, l10 - 1, l9 + l))
+                if(isRaining() && isBlockFreezable(l8 + k, l10 - 1, l9 + l))
                 {
                     setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                 }
@@ -3013,27 +3016,28 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Checks if the block is hydrating itself.
+     * checks to see if a given block is both water and is cold enough to freeze
      */
-    public boolean isBlockHydratedDirectly(int par1, int par2, int par3)
+    public boolean isBlockFreezable(int par1, int par2, int par3)
     {
-        return isBlockHydrated(par1, par2, par3, false);
+        return canBlockFreeze(par1, par2, par3, false);
     }
 
     /**
-     * Check if the block is being hydrated by an adjacent block.
+     * checks to see if a given block is both water and has at least one immediately adjacent non-water block
      */
-    public boolean isBlockHydratedIndirectly(int par1, int par2, int par3)
+    public boolean isBlockFreezableNaturally(int par1, int par2, int par3)
     {
-        return isBlockHydrated(par1, par2, par3, true);
+        return canBlockFreeze(par1, par2, par3, true);
     }
 
     /**
-     * (I think)
+     * checks to see if a given block is both water, and cold enough to freeze - if the par4 boolean is set, this will
+     * only return true if there is a non-water block immediately adjacent to the specified block
      */
-    public boolean isBlockHydrated(int par1, int par2, int par3, boolean par4)
+    public boolean canBlockFreeze(int par1, int par2, int par3, boolean par4)
     {
-        BiomeGenBase biomegenbase = func_48091_a(par1, par3);
+        BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
         float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
@@ -3089,7 +3093,7 @@ public class World implements IBlockAccess
      */
     public boolean canSnowAt(int par1, int par2, int par3)
     {
-        BiomeGenBase biomegenbase = func_48091_a(par1, par3);
+        BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
         float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
@@ -3488,7 +3492,7 @@ public class World implements IBlockAccess
         ChunkCoordIntPair chunkcoordintpair = par1Chunk.getChunkCoordIntPair();
         int i = chunkcoordintpair.chunkXPos << 4;
         int j = i + 16;
-        int k = chunkcoordintpair.chunkZPos << 4;
+        int k = chunkcoordintpair.chunkZPosition << 4;
         int l = k + 16;
         Iterator iterator = scheduledTickSet.iterator();
 
@@ -4192,8 +4196,9 @@ public class World implements IBlockAccess
         {
             return false;
         }
+
         if (mod_noBiomesX.Generator==2){
-            BiomeGenBase biomegenbase = func_48091_a(par1, par3);
+            BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
             if (biomegenbase.getEnableSnow())
             {
                 return false;
@@ -4212,10 +4217,13 @@ public class World implements IBlockAccess
         }
     }
 
-    public boolean func_48089_z(int par1, int par2, int par3)
+    /**
+     * Checks to see if the biome rainfall values for a given x,y,z coordinate set are extremely high
+     */
+    public boolean isBlockHighHumidity(int par1, int par2, int par3)
     {
-        BiomeGenBase biomegenbase = func_48091_a(par1, par3);
-        return biomegenbase.func_48441_d();
+        BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
+        return biomegenbase.isHighHumidity();
     }
 
     /**

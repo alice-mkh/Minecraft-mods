@@ -8,16 +8,16 @@ public class WorldInfo
     private long randomSeed;
     private WorldType terrainType;
 
-    /** The spawn zone position (X) */
+    /** The spawn zone position X coordinate. */
     private int spawnX;
 
-    /** The spawn zone position (Y) */
+    /** The spawn zone position Y coordinate. */
     private int spawnY;
 
-    /** The spawn zone position (Z) */
+    /** The spawn zone position Z coordinate. */
     private int spawnZ;
 
-    /** The world time (in ticks) */
+    /** The current world time in ticks, ranging from 0 to 23999. */
     private long worldTime;
 
     /** The last time the player was in this world. */
@@ -34,22 +34,24 @@ public class WorldInfo
     /** Introduced in beta 1.3, is the save version for future control. */
     private int saveVersion;
 
-    /** hold the boolean if its raining or not */
+    /** True if it's raining, false otherwise. */
     private boolean raining;
 
-    /** holds the time of the rain */
+    /** Number of ticks until next rain. */
     private int rainTime;
 
     /** Is thunderbolts failing now? */
     private boolean thundering;
 
-    /** hold the during of the thunder */
+    /** Number of ticks untils next thunderbolt. */
     private int thunderTime;
 
     /** Indicates the type of the game. 0 for survival, 1 for creative. */
     private int gameType;
 
-    /** Are map structures going to be generated? (e.g. strongholds) */
+    /**
+     * Whether the map features (e.g. strongholds) generation is enabled or disabled.
+     */
     private boolean mapFeaturesEnabled;
 
     /** Hardcore mode flag */
@@ -244,6 +246,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("indevZ", indevZ);
         par1NBTTagCompound.setBoolean("newOres", newOres);
 
+
         if (par2NBTTagCompound != null)
         {
             par1NBTTagCompound.setCompoundTag("Player", par2NBTTagCompound);
@@ -304,7 +307,7 @@ public class WorldInfo
     }
 
     /**
-     * Sets the spawn (zone) position
+     * Sets the spawn zone position. Args: x, y, z
      */
     public void setSpawnPosition(int par1, int par2, int par3)
     {
@@ -335,7 +338,7 @@ public class WorldInfo
     }
 
     /**
-     * gets if it's thundering or not
+     * Returns true if it is thundering, false otherwise.
      */
     public boolean isThundering()
     {
@@ -343,7 +346,7 @@ public class WorldInfo
     }
 
     /**
-     * sets if it's thundering or not
+     * Sets whether it is thundering or not.
      */
     public void setThundering(boolean par1)
     {
@@ -351,7 +354,7 @@ public class WorldInfo
     }
 
     /**
-     * gets the during of the thunder
+     * Returns the number of ticks until next thunderbolt.
      */
     public int getThunderTime()
     {
@@ -359,7 +362,7 @@ public class WorldInfo
     }
 
     /**
-     * sets the during of the Thunder
+     * Defines the number of ticks until next thunderbolt.
      */
     public void setThunderTime(int par1)
     {
@@ -367,7 +370,7 @@ public class WorldInfo
     }
 
     /**
-     * returns whether it's raining
+     * Returns true if it is raining, false otherwise.
      */
     public boolean isRaining()
     {
@@ -375,7 +378,7 @@ public class WorldInfo
     }
 
     /**
-     * sets whether it's raining
+     * Sets whether it is raining or not.
      */
     public void setRaining(boolean par1)
     {
@@ -383,7 +386,7 @@ public class WorldInfo
     }
 
     /**
-     * gets the rainTime
+     * Return the number of ticks until rain.
      */
     public int getRainTime()
     {
@@ -391,7 +394,7 @@ public class WorldInfo
     }
 
     /**
-     * sets the rainTime
+     * Sets the number of ticks until rain.
      */
     public void setRainTime(int par1)
     {
@@ -407,7 +410,7 @@ public class WorldInfo
     }
 
     /**
-     * Get whether the map features generation is enabled or disabled.
+     * Get whether the map features (e.g. strongholds) generation is enabled or disabled.
      */
     public boolean isMapFeaturesEnabled()
     {

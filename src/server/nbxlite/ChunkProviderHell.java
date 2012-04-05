@@ -525,7 +525,7 @@ public class ChunkProviderHell implements IChunkProvider
             return genNetherBridge.getSpawnList();
         }
 
-        BiomeGenBase biomegenbase = worldObj.func_48091_a(par2, par4);
+        BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(par2, par4);
 
         if (biomegenbase == null)
         {

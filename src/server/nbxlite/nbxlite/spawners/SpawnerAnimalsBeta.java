@@ -93,7 +93,7 @@ public final class SpawnerAnimalsBeta
                                 }
                             }
 
-                            ChunkPosition var41 = getRandomSpawningPointInChunk(var0, var10.chunkXPos * 16, var10.chunkZPos * 16);
+                            ChunkPosition var41 = getRandomSpawningPointInChunk(var0, var10.chunkXPos * 16, var10.chunkZPosition * 16);
                             int var42 = var41.x;
                             int var18 = var41.y;
                             int var19 = var41.z;

@@ -76,7 +76,7 @@ public class OldSpawnerAnimals
             if(world.rand.nextInt(10) == 0)
             {
                 int j1 = world.rand.nextInt(spawnSubclasses.length);
-                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
+                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPosition * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
                 int k2 = chunkposition.z;
@@ -195,7 +195,7 @@ public class OldSpawnerAnimals
             if(world.rand.nextInt(10) == 0)
             {
                 int j1 = world.rand.nextInt(spawnSubclasses.length);
-                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
+                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPosition * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
                 int k2 = chunkposition.z;

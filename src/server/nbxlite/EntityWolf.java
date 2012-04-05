@@ -29,7 +29,7 @@ public class EntityWolf extends EntityTameable
         texture = "/mob/wolf.png";
         setSize(0.6F, 0.8F);
         moveSpeed = 0.3F;
-        getNavigator().func_48656_a(true);
+        getNavigator().setAvoidsWater(true);
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, aiSit);
         tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
@@ -118,10 +118,7 @@ public class EntityWolf extends EntityTameable
      */
     protected boolean canDespawn()
     {
-        if (mod_noBiomesX.Generator==2 || mod_noBiomesX.UseNewSpawning){
-            return isAngry();
-        }
-        return !isTamed();
+        return (mod_noBiomesX.Generator==2 || mod_noBiomesX.UseNewSpawning) ? isAngry() : !isTamed();
     }
 
     /**
@@ -316,7 +313,10 @@ public class EntityWolf extends EntityTameable
         {
             if (itemstack != null && itemstack.itemID == Item.bone.shiftedIndex && !isAngry())
             {
-                itemstack.stackSize--;
+                if (!par1EntityPlayer.capabilities.isCreativeMode)
+                {
+                    itemstack.stackSize--;
+                }
 
                 if (itemstack.stackSize <= 0)
                 {
@@ -354,7 +354,11 @@ public class EntityWolf extends EntityTameable
 
                 if (itemfood.isWolfsFavoriteMeat() && dataWatcher.getWatchableObjectInt(18) < 20)
                 {
-                    itemstack.stackSize--;
+                    if (!par1EntityPlayer.capabilities.isCreativeMode)
+                    {
+                        itemstack.stackSize--;
+                    }
+
                     heal(itemfood.getHealAmount());
 
                     if (itemstack.stackSize <= 0)
@@ -406,7 +410,7 @@ public class EntityWolf extends EntityTameable
     }
 
     /**
-     * gets if the wolf is angry
+     * Determines whether this wolf is angry or not.
      */
     public boolean isAngry()
     {
@@ -414,7 +418,7 @@ public class EntityWolf extends EntityTameable
     }
 
     /**
-     * sets if the wolf is angry or not
+     * Sets whether this wolf is angry or not.
      */
     public void setAngry(boolean par1)
     {
