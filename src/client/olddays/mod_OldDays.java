@@ -21,7 +21,7 @@ public class mod_OldDays extends BaseMod{
     public static void saveModuleProperties(int id){
         Properties properties = new Properties();
         try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+id+".properties").toString());
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString());
             FileOutputStream fileoutputstream = new FileOutputStream(file);
             for (int i = 1; i <= proplength[id]; i++){
                 properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]));
@@ -37,7 +37,7 @@ public class mod_OldDays extends BaseMod{
     public static void loadModuleProperties(int id){
         Properties properties = new Properties();
         try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+id+".properties").toString());
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString());
             boolean flag = file.createNewFile();
             if(flag){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
@@ -48,7 +48,7 @@ public class mod_OldDays extends BaseMod{
                 fileoutputstream.close();
             }
             try{
-                properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+id+".properties").toString()));
+                properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString()));
                 for (int i = 1; i <= proplength[id]; i++){
                     boolean val = Boolean.parseBoolean(properties.getProperty(propfield[id][i].getName()));;
                     propvalue[id][i] = val;
