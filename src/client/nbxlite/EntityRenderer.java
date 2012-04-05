@@ -1953,6 +1953,9 @@ public class EntityRenderer
         if (mc.gameSettings.renderDistance < 2)
         {
             Vec3D vec3d2 = MathHelper.sin(world.getCelestialAngleRadians(par1)) <= 0.0F ? Vec3D.createVector(1.0D, 0.0D, 0.0D) : Vec3D.createVector(-1D, 0.0D, 0.0D);
+            if (mod_noBiomesX.SunriseAtNorth){
+                vec3d2 = MathHelper.sin(world.getCelestialAngleRadians(f)) <= 0.0F ? Vec3D.createVector(0.0D, 0.0D, -1D) : Vec3D.createVector(0.0D, 0.0D, 1.0D);
+            }
             float f5 = (float)entityliving.getLook(par1).dotProduct(vec3d2);
 
             if (f5 < 0.0F)
@@ -2040,7 +2043,7 @@ public class EntityRenderer
             }
         }
 
-        if (d < 1.0D)
+        if (d < 1.0D && mod_noBiomesX.VoidFog)
         {
             if (d < 0.0D)
             {
@@ -2200,7 +2203,7 @@ public class EntityRenderer
             {
                 double d = (double)((entityliving.getBrightnessForRender(par2) & 0xf00000) >> 20) / 16D + (entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par2 + 4D) / 32D;
 
-                if (d < 1.0D)
+                if (d < 1.0D && mod_noBiomesX.VoidFog)
                 {
                     if (d < 0.0D)
                     {

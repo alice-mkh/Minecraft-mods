@@ -29,6 +29,7 @@ public class RenderGlobal implements IWorldAccess
     /** OpenGL render lists base */
     private int glRenderListBase;
 
+    /** A reference to the Minecraft object. */
 //FOR FORGE COMPATIBILITY
 //     private Minecraft mc;
     public Minecraft mc;
@@ -1061,10 +1062,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor3f(0.0F, 0.0F, 0.0F);
         d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
-
         if (mod_noBiomesX.VoidFog){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
