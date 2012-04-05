@@ -8,16 +8,16 @@ public class WorldInfo
     private long randomSeed;
     private WorldType terrainType;
 
-    /** The player spawn X coordinate. */
+    /** The spawn zone position X coordinate. */
     private int spawnX;
 
-    /** The player spawn Y coordinate. */
+    /** The spawn zone position Y coordinate. */
     private int spawnY;
 
-    /** The player spawn Z coordinate. */
+    /** The spawn zone position Z coordinate. */
     private int spawnZ;
 
-    /** The current world time in range from 0 to 23999. */
+    /** The current world time in ticks, ranging from 0 to 23999. */
     private long worldTime;
 
     /** The last time the player was in this world. */
@@ -34,7 +34,7 @@ public class WorldInfo
     /** Introduced in beta 1.3, is the save version for future control. */
     private int saveVersion;
 
-    /** Is current raining? */
+    /** True if it's raining, false otherwise. */
     private boolean raining;
 
     /** Number of ticks until next rain. */
@@ -49,7 +49,9 @@ public class WorldInfo
     /** Indicates the type of the game. 0 for survival, 1 for creative. */
     private int gameType;
 
-    /** are map structures going to be generated (e.g. strongholds) */
+    /**
+     * Whether the map features (e.g. strongholds) generation is enabled or disabled.
+     */
     private boolean mapFeaturesEnabled;
 
     /** Hardcore mode flag */
@@ -244,6 +246,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("indevZ", indevZ);
         par1NBTTagCompound.setBoolean("newOres", newOres);
 
+
         if (par2NBTTagCompound != null)
         {
             par1NBTTagCompound.setCompoundTag("Player", par2NBTTagCompound);
@@ -349,7 +352,7 @@ public class WorldInfo
     }
 
     /**
-     * Sets the spawn position Args: x, y, z
+     * Sets the spawn zone position. Args: x, y, z
      */
     public void setSpawnPosition(int par1, int par2, int par3)
     {
@@ -396,7 +399,7 @@ public class WorldInfo
     }
 
     /**
-     * Returns the current state of thunderbolts.
+     * Returns true if it is thundering, false otherwise.
      */
     public boolean isThundering()
     {
@@ -404,7 +407,7 @@ public class WorldInfo
     }
 
     /**
-     * Defines if is thundering now.
+     * Sets whether it is thundering or not.
      */
     public void setThundering(boolean par1)
     {
@@ -428,7 +431,7 @@ public class WorldInfo
     }
 
     /**
-     * Gets the current state of raining.
+     * Returns true if it is raining, false otherwise.
      */
     public boolean isRaining()
     {
@@ -436,7 +439,7 @@ public class WorldInfo
     }
 
     /**
-     * Sets the current state of raining.
+     * Sets whether it is raining or not.
      */
     public void setRaining(boolean par1)
     {
@@ -468,7 +471,7 @@ public class WorldInfo
     }
 
     /**
-     * are map structures going to be generated (e.g. strongholds)
+     * Get whether the map features (e.g. strongholds) generation is enabled or disabled.
      */
     public boolean isMapFeaturesEnabled()
     {
@@ -581,9 +584,5 @@ public class WorldInfo
     public void setNewOres(boolean b)
     {
         newOres = b;
-    }
-
-    public void setSizeOnDisk(long l){
-        sizeOnDisk = l;
     }
 }

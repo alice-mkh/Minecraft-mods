@@ -29,7 +29,6 @@ public class RenderGlobal implements IWorldAccess
     /** OpenGL render lists base */
     private int glRenderListBase;
 
-    /** A reference to the Minecraft object. */
 //FOR FORGE COMPATIBILITY
 //     private Minecraft mc;
     public Minecraft mc;
@@ -1062,7 +1061,10 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor3f(0.0F, 0.0F, 0.0F);
         d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
+
         if (mod_noBiomesX.VoidFog){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
@@ -1172,11 +1174,7 @@ public class RenderGlobal implements IWorldAccess
         float f9 = (float)(d1 * (double)f5);
         float f10 = (float)(d2 * (double)f5);
         tessellator.startDrawingQuads();
-        if (mod_noBiomesX.OpaqueFlatClouds){
-            tessellator.setColorRGBA_F(f1, f2, f3, 1.0F);
-        }else{
-            tessellator.setColorRGBA_F(f1, f2, f3, 0.8F);
-        }
+        tessellator.setColorRGBA_F(f1, f2, f3, mod_noBiomesX.OpaqueFlatClouds ? 1.0F : 0.8F);
 
         for (int l = -byte0 * i; l < byte0 * i; l += byte0)
         {

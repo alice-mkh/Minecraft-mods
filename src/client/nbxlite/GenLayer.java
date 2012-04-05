@@ -1,4 +1,5 @@
 package net.minecraft.src;
+
 import net.minecraft.src.nbxlite.mapgens.GenLayerDownfall11;
 import net.minecraft.src.nbxlite.mapgens.GenLayerDownfallMix11;
 import net.minecraft.src.nbxlite.mapgens.GenLayerIsland18;

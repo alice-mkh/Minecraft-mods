@@ -79,7 +79,7 @@ public class WorldChunkManager
 
     public OldBiomeGenBase oldGetBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
     {
-        return oldGetBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
+        return oldGetBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPosition << 4);
     }
 
     public OldBiomeGenBase oldGetBiomeGenAt(int i, int j)
@@ -184,7 +184,86 @@ public class WorldChunkManager
 
     public BiomeGenBase getBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
     {
-        return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
+        return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPosition << 4);
+    }
+
+    public float getRainfall(int i, int j)
+    {
+        return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
+    }
+
+    public BiomeGenBase[] func_35557_b(BiomeGenBase abiomegenbase[], int i, int j, int k, int l)
+    {
+        return getBiomesForGeneration(abiomegenbase, i, j, k, l);
+    }
+
+    public ChunkPosition func_35556_a(int i, int j, int k, List list, Random random)
+    {
+        int l = i - k >> 2;
+        int i1 = j - k >> 2;
+        int j1 = i + k >> 2;
+        int k1 = j + k >> 2;
+        int l1 = (j1 - l) + 1;
+        int i2 = (k1 - i1) + 1;
+        int ai[] = genBiomes.getInts(l, i1, l1, i2);
+        ChunkPosition chunkposition = null;
+        int j2 = 0;
+        for (int k2 = 0; k2 < ai.length; k2++)
+        {
+            int l2 = l + k2 % l1 << 2;
+            int i3 = i1 + k2 / l1 << 2;
+            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[ai[k2]];
+            if (list.contains(biomegenbase) && (chunkposition == null || random.nextInt(j2 + 1) == 0))
+            {
+                chunkposition = new ChunkPosition(l2, 0, i3);
+                j2++;
+            }
+        }
+
+        return chunkposition;
+    }
+
+    public ChunkPosition func_35556_a_ignoreBiome(int i, int j, int k, List list, Random random)
+    {
+        int l = i - k >> 2;
+        int i1 = j - k >> 2;
+        int j1 = i + k >> 2;
+        int k1 = j + k >> 2;
+        int l1 = (j1 - l) + 1;
+        int i2 = (k1 - i1) + 1;
+        int ai[] = genBiomes.getInts(l, i1, l1, i2);
+        ChunkPosition chunkposition = null;
+        int j2 = 0;
+        for(int k2 = 0; k2 < ai.length; k2++)
+        {
+            int l2 = l + k2 % l1 << 2;
+            int i3 = i1 + k2 / l1 << 2;
+            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[ai[k2]];
+            if(chunkposition == null || random.nextInt(j2 + 1) == 0)
+            {
+                chunkposition = new ChunkPosition(l2, 0, i3);
+                j2++;
+            }
+        }
+
+        return chunkposition;
+    }
+
+    public float getTemperature(int i, int j, int k)
+    {
+        return getTemperatureAtHeight(biomeCache.getBiomeCacheBlock(i, k).temperatureValues[i & 0xf | (k & 0xf) << 4], j);
+    }
+
+    public double getTemperature_old(int i, int j)
+    {
+        temperature = field_4194_e.func_4112_a(temperature, i, j, 1, 1, 0.02500000037252903D, 0.02500000037252903D, 0.5D);
+        return temperature[0];
+    }
+
+    public float[] initTemperatureCache(int i, int j, int k, int l)
+    {
+        temperatureCache = getTemperatures(temperatureCache, i, j, k, l);
+        return temperatureCache;
     }
 
     /**
@@ -193,11 +272,6 @@ public class WorldChunkManager
     public BiomeGenBase getBiomeGenAt(int par1, int par2)
     {
         return biomeCache.getBiomeGenAt(par1, par2);
-    }
-
-    public float getRainfall(int i, int j)
-    {
-        return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
     }
 
     /**
@@ -227,23 +301,6 @@ public class WorldChunkManager
         }
 
         return par1ArrayOfFloat;
-    }
-
-    public float getTemperature(int i, int j, int k)
-    {
-        return getTemperatureAtHeight(biomeCache.getBiomeCacheBlock(i, k).temperatureValues[i & 0xf | (k & 0xf) << 4], j);
-    }
-
-    public double getTemperature_old(int i, int j)
-    {
-        temperature = field_4194_e.func_4112_a(temperature, i, j, 1, 1, 0.02500000037252903D, 0.02500000037252903D, 0.5D);
-        return temperature[0];
-    }
-
-    public float[] initTemperatureCache(int i, int j, int k, int l)
-    {
-        temperatureCache = getTemperatures(temperatureCache, i, j, k, l);
-        return temperatureCache;
     }
 
     /**
@@ -283,11 +340,6 @@ public class WorldChunkManager
         return par1ArrayOfFloat;
     }
 
-    public BiomeGenBase[] func_35557_b(BiomeGenBase abiomegenbase[], int i, int j, int k, int l)
-    {
-        return getBiomesForGeneration(abiomegenbase, i, j, k, l);
-    }
-
     /**
      * Returns an array of biomes for the location input.
      */
@@ -317,19 +369,6 @@ public class WorldChunkManager
     public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5)
     {
         return getBiomeGenAt(par1ArrayOfBiomeGenBase, par2, par3, par4, par5, true);
-    }
-
-    public BiomeGenBase[] loadRendererData(int i, int j, int k, int l)
-    {
-        if (k == 16 && l == 16 && (i & 0xf) == 0 && (j & 0xf) == 0)
-        {
-            return biomeCache.getCachedBiomes(i, j);
-        }
-        else
-        {
-            rendererBiomeGenCache = loadBlockGeneratorData(rendererBiomeGenCache, i, j, k, l);
-            return rendererBiomeGenCache;
-        }
     }
 
     /**
@@ -388,32 +427,6 @@ public class WorldChunkManager
         return true;
     }
 
-    public ChunkPosition func_35556_a(int i, int j, int k, List list, Random random)
-    {
-        int l = i - k >> 2;
-        int i1 = j - k >> 2;
-        int j1 = i + k >> 2;
-        int k1 = j + k >> 2;
-        int l1 = (j1 - l) + 1;
-        int i2 = (k1 - i1) + 1;
-        int ai[] = genBiomes.getInts(l, i1, l1, i2);
-        ChunkPosition chunkposition = null;
-        int j2 = 0;
-        for (int k2 = 0; k2 < ai.length; k2++)
-        {
-            int l2 = l + k2 % l1 << 2;
-            int i3 = i1 + k2 / l1 << 2;
-            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[ai[k2]];
-            if (list.contains(biomegenbase) && (chunkposition == null || random.nextInt(j2 + 1) == 0))
-            {
-                chunkposition = new ChunkPosition(l2, 0, i3);
-                j2++;
-            }
-        }
-
-        return chunkposition;
-    }
-
     /**
      * Finds a valid position within a range, that is once of the listed biomes.
      */
@@ -451,31 +464,5 @@ public class WorldChunkManager
     public void cleanupCache()
     {
         biomeCache.cleanupCache();
-    }
-
-    public ChunkPosition func_35556_a_ignoreBiome(int i, int j, int k, List list, Random random)
-    {
-        int l = i - k >> 2;
-        int i1 = j - k >> 2;
-        int j1 = i + k >> 2;
-        int k1 = j + k >> 2;
-        int l1 = (j1 - l) + 1;
-        int i2 = (k1 - i1) + 1;
-        int ai[] = genBiomes.getInts(l, i1, l1, i2);
-        ChunkPosition chunkposition = null;
-        int j2 = 0;
-        for(int k2 = 0; k2 < ai.length; k2++)
-        {
-            int l2 = l + k2 % l1 << 2;
-            int i3 = i1 + k2 / l1 << 2;
-            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[ai[k2]];
-            if(chunkposition == null || random.nextInt(j2 + 1) == 0)
-            {
-                chunkposition = new ChunkPosition(l2, 0, i3);
-                j2++;
-            }
-        }
-
-        return chunkposition;
     }
 }

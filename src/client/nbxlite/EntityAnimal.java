@@ -312,10 +312,7 @@ public abstract class EntityAnimal extends EntityAgeable
      */
     protected boolean canDespawn()
     {
-        if (mod_noBiomesX.Generator==2 || mod_noBiomesX.UseNewSpawning || breeded){
-            return false;
-        }
-        return true;
+        return mod_noBiomesX.Generator!=2 && !mod_noBiomesX.UseNewSpawning && !breeded;
     }
 
     /**
@@ -343,7 +340,7 @@ public abstract class EntityAnimal extends EntityAgeable
 
         if (itemstack != null && isWheat(itemstack) && getGrowingAge() == 0)
         {
-            if (worldObj.getWorldInfo().getGameType() != 1)
+            if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
                 itemstack.stackSize--;
 

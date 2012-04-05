@@ -55,7 +55,7 @@ public class mod_noBiomesX extends BaseModMp{
         }
         return true;
     }
-    
+
     private void pushBack(Entity entity){
         if (Generator==0 && MapFeatures==3){
             if (entity.posX>IndevWidthX+8){
@@ -84,7 +84,7 @@ public class mod_noBiomesX extends BaseModMp{
             if (entity.posZ<0){
                 entity.motionZ+=0.5;
             }
-        }    
+        }
     }
 
     private static void replaceBlocks(){
@@ -133,7 +133,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 */
     public String getVersion(){
-        return "1.2.4";
+        return "1.2.5";
     }
 
     public void handlePacket(Packet230ModLoader packet)
@@ -219,7 +219,7 @@ public class mod_noBiomesX extends BaseModMp{
                 {
                     for (int i2 = -1; i2 <= 1; i2++)
                     {
-                        int j2 = iblockaccess.func_48454_a(x + i2, z + l1).func_48412_k();
+                        int j2 = iblockaccess.getBiomeGenForCoords(x + i2, z + l1).getBiomeFoliageColor();
                         i1 += (j2 & 0xff0000) >> 16;
                         j1 += (j2 & 0xff00) >> 8;
                         k1 += j2 & 0xff;
@@ -227,7 +227,7 @@ public class mod_noBiomesX extends BaseModMp{
                 }
                 return (i1 / 9 & 0xff) << 16 | (j1 / 9 & 0xff) << 8 | k1 / 9 & 0xff;
             }else{
-                return iblockaccess.func_48454_a(x, z).func_48412_k();
+                return iblockaccess.getBiomeGenForCoords(x, z).getBiomeFoliageColor();
             }
         }
     }
@@ -254,7 +254,7 @@ public class mod_noBiomesX extends BaseModMp{
                 {
                     for (int l1 = -1; l1 <= 1; l1++)
                     {
-                        int i2 = iblockaccess.func_48454_a(x + l1, z + k1).func_48415_j();
+                        int i2 = iblockaccess.getBiomeGenForCoords(x + l1, z + k1).getBiomeGrassColor();
                         l += (i2 & 0xff0000) >> 16;
                         i1 += (i2 & 0xff00) >> 8;
                         j1 += i2 & 0xff;
@@ -262,7 +262,7 @@ public class mod_noBiomesX extends BaseModMp{
                 }
                 return (l / 9 & 0xff) << 16 | (i1 / 9 & 0xff) << 8 | j1 / 9 & 0xff;
             }else{
-                return iblockaccess.func_48454_a(x, z).func_48415_j();
+                return iblockaccess.getBiomeGenForCoords(x, z).getBiomeGrassColor();
             }
         }
     }

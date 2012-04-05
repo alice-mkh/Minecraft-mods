@@ -614,7 +614,7 @@ public class ChunkProviderGenerateRelease
                 for (int j3 = 0; j3 < 16; j3++)
                 {
                     int j4 = worldObj.getPrecipitationHeight(k + i2, l + j3);
-                    if (worldObj.isBlockHydratedDirectly(i2 + k, j4 - 1, j3 + l))
+                    if (worldObj.isBlockFreezable(i2 + k, j4 - 1, j3 + l))
                     {
                         worldObj.setBlockWithNotify(i2 + k, j4 - 1, j3 + l, Block.ice.blockID);
                     }

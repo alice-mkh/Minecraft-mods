@@ -548,12 +548,9 @@ public class EntityRenderer
         {
             GL11.glTranslatef((float)cameraYaw, (float)(-cameraPitch), 0.0F);
             GL11.glScaled(cameraZoom, cameraZoom, 1.0D);
-            GLU.gluPerspective(getFOVModifier(par1, true), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
         }
-        else
-        {
-            GLU.gluPerspective(getFOVModifier(par1, true), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
-        }
+
+        GLU.gluPerspective(getFOVModifier(par1, true), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
 
         if (mc.playerController.func_35643_e())
         {
@@ -650,12 +647,9 @@ public class EntityRenderer
         {
             GL11.glTranslatef((float)cameraYaw, (float)(-cameraPitch), 0.0F);
             GL11.glScaled(cameraZoom, cameraZoom, 1.0D);
-            GLU.gluPerspective(getFOVModifier(par1, false), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
         }
-        else
-        {
-            GLU.gluPerspective(getFOVModifier(par1, false), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
-        }
+
+        GLU.gluPerspective(getFOVModifier(par1, false), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
 
         if (mc.playerController.func_35643_e())
         {
@@ -1360,7 +1354,7 @@ public class EntityRenderer
             int l1 = (k + random.nextInt(byte0)) - random.nextInt(byte0);
             int i2 = world.getPrecipitationHeight(k1, l1);
             int j2 = world.getBlockId(k1, i2 - 1, l1);
-            BiomeGenBase biomegenbase = world.func_48454_a(k1, l1);
+            BiomeGenBase biomegenbase = world.getBiomeGenForCoords(k1, l1);
 
             if (i2 > j + byte0 || i2 < j - byte0 || !biomegenbase.canSpawnLightningBolt() || biomegenbase.getFloatTemperature() <= 0.2F)
             {
@@ -1815,7 +1809,7 @@ public class EntityRenderer
                 int j2 = ((l1 - i1) + 16) * 32 + ((i2 - k) + 16);
                 float f5 = rainXCoords[j2] * 0.5F;
                 float f6 = rainYCoords[j2] * 0.5F;
-                BiomeGenBase biomegenbase = world.func_48454_a(i2, l1);
+                BiomeGenBase biomegenbase = world.getBiomeGenForCoords(i2, l1);
 
                 if (!biomegenbase.canSpawnLightningBolt() && !biomegenbase.getEnableSnow())
                 {
@@ -1959,9 +1953,6 @@ public class EntityRenderer
         if (mc.gameSettings.renderDistance < 2)
         {
             Vec3D vec3d2 = MathHelper.sin(world.getCelestialAngleRadians(par1)) <= 0.0F ? Vec3D.createVector(1.0D, 0.0D, 0.0D) : Vec3D.createVector(-1D, 0.0D, 0.0D);
-            if (mod_noBiomesX.SunriseAtNorth){
-                vec3d2 = MathHelper.sin(world.getCelestialAngleRadians(f)) <= 0.0F ? Vec3D.createVector(0.0D, 0.0D, -1D) : Vec3D.createVector(0.0D, 0.0D, 1.0D);
-            }
             float f5 = (float)entityliving.getLook(par1).dotProduct(vec3d2);
 
             if (f5 < 0.0F)
@@ -2049,7 +2040,7 @@ public class EntityRenderer
             }
         }
 
-        if (d < 1.0D && mod_noBiomesX.VoidFog)
+        if (d < 1.0D)
         {
             if (d < 0.0D)
             {
@@ -2209,7 +2200,7 @@ public class EntityRenderer
             {
                 double d = (double)((entityliving.getBrightnessForRender(par2) & 0xf00000) >> 20) / 16D + (entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par2 + 4D) / 32D;
 
-                if (d < 1.0D && mod_noBiomesX.VoidFog)
+                if (d < 1.0D)
                 {
                     if (d < 0.0D)
                     {

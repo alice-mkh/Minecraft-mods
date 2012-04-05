@@ -84,7 +84,7 @@ public class World implements IBlockAccess
     /** Option > Difficulty setting (0 - 3) */
     public int difficultySetting;
 
-    /** RNG for world. */
+    /** RNG for World. */
     public Random rand;
 
     /**
@@ -154,7 +154,10 @@ public class World implements IBlockAccess
     private OldSpawnerMonsters monsterSpawner;
     private OldSpawnerAnimals waterMobSpawner;
 
-    public BiomeGenBase func_48454_a(int par1, int par2)
+    /**
+     * Gets the biome for a given set of x/z coordinates
+     */
+    public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
         if (blockExists(par1, 0, par2))
         {
@@ -731,7 +734,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Saves the data for this World.  If passed true, then only save up to 2 chunks, otherwise, save all chunks.
+     * Saves the data for this World. If passed true, then only save up to 2 chunks, otherwise, save all chunks.
      */
     public void saveWorld(boolean par1, IProgressUpdate par2IProgressUpdate)
     {
@@ -1467,7 +1470,7 @@ public class World implements IBlockAccess
     }
 
     /**
-     * 'Any Light rendered on a 1.8 Block goes through here'
+     * Any Light rendered on a 1.8 Block goes through here
      */
     public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
     {
@@ -1839,7 +1842,8 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Not sure what this does 100%, but from the calling methods this method should be called like this.
+     * Dismounts the entity (and anything riding the entity), sets the dead flag, and removes the player entity from the
+     * player entity list. Called by the playerLoggedOut function.
      */
     public void setEntityDead(Entity par1Entity)
     {
@@ -1961,27 +1965,6 @@ public class World implements IBlockAccess
         f3 = (float)((double)f3 * (1.0D - (double)(getWeightedThunderStrength(f) * 5F) / 16D));
         f3 = 1.0F - f3;
         return (int)(f3 * (f1 - 4F) + (15F - f1));
-    }
-
-   public Vec3D computeFogColor(float f)
-    {
-        float f1 = getCelestialAngle(f);
-        float f2 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
-        if(f2 < 0.0F)
-        {
-            f2 = 0.0F;
-        }
-        if(f2 > 1.0F)
-        {
-            f2 = 1.0F;
-        }
-        float f3 = (float)(fogColor >> 16 & 255L) / 255F;
-        float f4 = (float)(fogColor >> 8 & 255L) / 255F;
-        float f5 = (float)(fogColor & 255L) / 255F;
-        f3 *= f2 * 0.94F + 0.06F;
-        f4 *= f2 * 0.94F + 0.06F;
-        f5 *= f2 * 0.91F + 0.09F;
-        return Vec3D.createVector(f3, f4, f5);
     }
 
     public float func_35464_b(float par1)
@@ -2171,6 +2154,27 @@ public class World implements IBlockAccess
         }
 
         return Vec3D.createVector(f2, f3, f4);
+    }
+
+    public Vec3D computeFogColor(float f)
+    {
+        float f1 = getCelestialAngle(f);
+        float f2 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
+        if(f2 < 0.0F)
+        {
+            f2 = 0.0F;
+        }
+        if(f2 > 1.0F)
+        {
+            f2 = 1.0F;
+        }
+        float f3 = (float)(fogColor >> 16 & 255L) / 255F;
+        float f4 = (float)(fogColor >> 8 & 255L) / 255F;
+        float f5 = (float)(fogColor & 255L) / 255F;
+        f3 *= f2 * 0.94F + 0.06F;
+        f4 *= f2 * 0.94F + 0.06F;
+        f5 *= f2 * 0.91F + 0.09F;
+        return Vec3D.createVector(f3, f4, f5);
     }
 
     /**
@@ -3439,19 +3443,19 @@ public class World implements IBlockAccess
         for (Iterator iterator = activeChunkSet.iterator(); iterator.hasNext(); Profiler.endSection())
         {
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
-            int j1 = chunkcoordintpair.chunkXPos * 16;
-            int l1 = chunkcoordintpair.chunkZPos * 16;
+            int k = chunkcoordintpair.chunkXPos * 16;
+            int l = chunkcoordintpair.chunkZPosition * 16;
             Profiler.startSection("getChunk");
-            Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
-            func_48458_a(j1, l1, chunk);
+            Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPosition);
+            func_48458_a(k, l, chunk);
             Profiler.endStartSection("thunder");
 
             if (rand.nextInt(0x186a0) == 0 && isRaining() && isThundering())
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int i1 = updateLCG >> 2;
-                int k1 = j1 + (i1 & 0xf);
-                int j2 = l1 + (i1 >> 8 & 0xf);
+                int k1 = k + (i1 & 0xf);
+                int j2 = l + (i1 >> 8 & 0xf);
                 int i3 = getPrecipitationHeight(k1, j2);
 
                 if (canLightningStrikeAt(k1, i3, j2))
@@ -3468,18 +3472,18 @@ public class World implements IBlockAccess
                 int l2 = updateLCG >> 2;
                 int l3 = l2 & 0xf;
                 int l4 = l2 >> 8 & 0xf;
-                int l5 = getPrecipitationHeight(l3 + j1, l4 + l1);
+                int l5 = getPrecipitationHeight(l3 + k, l4 + l);
                 if(l5 >= 0 && l5 < 128 && chunk.getSavedLightValue(EnumSkyBlock.Block, l3, l5, l4) < 10)
                 {
                     int k6 = chunk.getBlockID(l3, l5 - 1, l4);
                     int i7 = chunk.getBlockID(l3, l5, l4);
-                    if(i7 == 0 && Block.snow.canPlaceBlockAt(this, l3 + j1, l5, l4 + l1) && k6 != 0 && k6 != Block.ice.blockID && Block.blocksList[k6].blockMaterial.isSolid())
+                    if(i7 == 0 && Block.snow.canPlaceBlockAt(this, l3 + k, l5, l4 + l) && k6 != 0 && k6 != Block.ice.blockID && Block.blocksList[k6].blockMaterial.isSolid())
                     {
-                        setBlockWithNotify(l3 + j1, l5, l4 + l1, Block.snow.blockID);
+                        setBlockWithNotify(l3 + k, l5, l4 + l, Block.snow.blockID);
                     }
                     if((k6 == Block.waterMoving.blockID || k6 == Block.waterStill.blockID) && chunk.getBlockMetadata(l3, l5 - 1, l4) == 0)
                     {
-                        setBlockWithNotify(l3 + j1, l5 - 1, l4 + l1, Block.ice.blockID);
+                        setBlockWithNotify(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
                     }
                 }
             }else if (mod_noBiomesX.Generator==2){
@@ -3487,14 +3491,14 @@ public class World implements IBlockAccess
                 int l7 = updateLCG >> 2;
                 int l8 = l7 & 0xf;
                 int l9 = l7 >> 8 & 0xf;
-                int l10 = getPrecipitationHeight(l8 + j1, l9 + l1);
-                if(isRaining() && isBlockHydratedDirectly(l8 + j1, l10 - 1, l9 + l1))
+                int l10 = getPrecipitationHeight(l8 + k, l9 + l);
+                if(isRaining() && isBlockFreezable(l8 + k, l10 - 1, l9 + l))
                 {
-                    setBlockWithNotify(l8 + j1, l10 - 1, l9 + l1, Block.ice.blockID);
+                    setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                 }
-                if(isRaining() && canSnowAt(l8 + j1, l10, l9 + l1))
+                if(isRaining() && canSnowAt(l8 + k, l10, l9 + l))
                 {
-                    setBlockWithNotify(l8 + j1, l10, l9 + l1, Block.snow.blockID);
+                    setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
                 }
             }else{
                 if(rand.nextInt(16) == 0 && mod_noBiomesX.MapFeatures==4)
@@ -3503,18 +3507,18 @@ public class World implements IBlockAccess
                     int l7 = updateLCG >> 2;
                     int l8 = l7 & 0xf;
                     int l9 = l7 >> 8 & 0xf;
-                    int l10 = getPrecipitationHeight(l8 + j1, l9 + l1);
-                    if(getWorldChunkManager().oldGetBiomeGenAt(l8 + j1, l9 + l1).getEnableSnow() && l10 >= 0 && l10 < 128 && chunk.getSavedLightValue(EnumSkyBlock.Block, l8, l10, l9) < 10)
+                    int l10 = getPrecipitationHeight(l8 + k, l9 + l);
+                    if(getWorldChunkManager().oldGetBiomeGenAt(l8 + k, l9 + l).getEnableSnow() && l10 >= 0 && l10 < 128 && chunk.getSavedLightValue(EnumSkyBlock.Block, l8, l10, l9) < 10)
                     {
                         int i66 = chunk.getBlockID(l8, l10 - 1, l9);
                         int k66 = chunk.getBlockID(l8, l10, l9);
-                        if(isRaining() && k66 == 0 && Block.snow.canPlaceBlockAt(this, l8 + j1, l10, l9 + l1) && i66 != 0 && i66 != Block.ice.blockID && Block.blocksList[i66].blockMaterial.isSolid())
+                        if(isRaining() && k66 == 0 && Block.snow.canPlaceBlockAt(this, l8 + k, l10, l9 + l) && i66 != 0 && i66 != Block.ice.blockID && Block.blocksList[i66].blockMaterial.isSolid())
                         {
-                            setBlockWithNotify(l8 + j1, l10, l9 + l1, Block.snow.blockID);
+                            setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
                         }
                         if(i66 == Block.waterStill.blockID && chunk.getBlockMetadata(l8, l10 - 1, l9) == 0)
                         {
-                            setBlockWithNotify(l8 + j1, l10 - 1, l9 + l1, Block.ice.blockID);
+                            setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                         }
                     }
                 }
@@ -3547,7 +3551,7 @@ public class World implements IBlockAccess
                     if (block != null && block.getTickRandomly())
                     {
                         i++;
-                        block.updateTick(this, i4 + j1, k4 + extendedblockstorage.getYLocation(), j4 + l1, rand);
+                        block.updateTick(this, i4 + k, k4 + extendedblockstorage.getYLocation(), j4 + l, rand);
                     }
                 }
             }
@@ -3555,27 +3559,28 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Checks if the block is hydrating itself.
+     * checks to see if a given block is both water and is cold enough to freeze
      */
-    public boolean isBlockHydratedDirectly(int par1, int par2, int par3)
+    public boolean isBlockFreezable(int par1, int par2, int par3)
     {
-        return isBlockHydrated(par1, par2, par3, false);
+        return canBlockFreeze(par1, par2, par3, false);
     }
 
     /**
-     * Check if the block is being hydrated by an adjacent block.
+     * checks to see if a given block is both water and has at least one immediately adjacent non-water block
      */
-    public boolean isBlockHydratedIndirectly(int par1, int par2, int par3)
+    public boolean isBlockFreezableNaturally(int par1, int par2, int par3)
     {
-        return isBlockHydrated(par1, par2, par3, true);
+        return canBlockFreeze(par1, par2, par3, true);
     }
 
     /**
-     * (I think)
+     * checks to see if a given block is both water, and cold enough to freeze - if the par4 boolean is set, this will
+     * only return true if there is a non-water block immediately adjacent to the specified block
      */
-    public boolean isBlockHydrated(int par1, int par2, int par3, boolean par4)
+    public boolean canBlockFreeze(int par1, int par2, int par3, boolean par4)
     {
-        BiomeGenBase biomegenbase = func_48454_a(par1, par3);
+        BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
         float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
@@ -3631,7 +3636,7 @@ public class World implements IBlockAccess
      */
     public boolean canSnowAt(int par1, int par2, int par3)
     {
-        BiomeGenBase biomegenbase = func_48454_a(par1, par3);
+        BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
         float f = biomegenbase.getFloatTemperature();
 
         if (f > 0.15F)
@@ -4030,7 +4035,7 @@ public class World implements IBlockAccess
         ChunkCoordIntPair chunkcoordintpair = par1Chunk.getChunkCoordIntPair();
         int i = chunkcoordintpair.chunkXPos << 4;
         int j = i + 16;
-        int k = chunkcoordintpair.chunkZPos << 4;
+        int k = chunkcoordintpair.chunkZPosition << 4;
         int l = k + 16;
         Iterator iterator = scheduledTickSet.iterator();
 
@@ -4271,7 +4276,7 @@ public class World implements IBlockAccess
 
     /**
      * Returns true if the specified block can be placed at the given coordinates, optionally making sure there are no
-     * entities in the way.  Args: blockID, x, y, z, ignoreEntities
+     * entities in the way. Args: blockID, x, y, z, ignoreEntities
      */
     public boolean canBlockBePlacedAt(int par1, int par2, int par3, int par4, boolean par5, int par6)
     {
@@ -4862,7 +4867,7 @@ public class World implements IBlockAccess
         }
 
         if (mod_noBiomesX.Generator==2){
-            BiomeGenBase biomegenbase = func_48454_a(par1, par3);
+            BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
             if (biomegenbase.getEnableSnow())
             {
                 return false;
@@ -4881,13 +4886,16 @@ public class World implements IBlockAccess
             {
                 return oldbiomegenbase.canSpawnLightningBolt();
             }
-         }
+        }
     }
 
-    public boolean func_48455_z(int par1, int par2, int par3)
+    /**
+     * Checks to see if the biome rainfall values for a given x,y,z coordinate set are extremely high
+     */
+    public boolean isBlockHighHumidity(int par1, int par2, int par3)
     {
-        BiomeGenBase biomegenbase = func_48454_a(par1, par3);
-        return biomegenbase.func_48413_d();
+        BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
+        return biomegenbase.isHighHumidity();
     }
 
     /**
@@ -4937,9 +4945,9 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Returns current world height
+     * Returns current world height.
      */
-    public int getWorldHeight()
+    public int getHeight()
     {
         return 256;
     }
