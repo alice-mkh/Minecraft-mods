@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 
 public class mod_SpawnHuman extends BaseMod{
     public String getVersion(){
-        return "1.1";
+        return "1.2.5";
     }
 
     public mod_SpawnHuman(){

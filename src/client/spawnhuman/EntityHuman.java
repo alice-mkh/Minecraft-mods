@@ -55,7 +55,7 @@ public class EntityHuman extends EntityAnimal
             return;
         }
         Profiler.startSection("followpath");
-        Vec3D vec3d = pathToEntity.func_48646_a(this, pathToEntity.getCurrentPathIndex());
+        Vec3D vec3d = pathToEntity.getVectorFromIndex(this, pathToEntity.getCurrentPathIndex());
         for(double d = width * 2.0F; vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d;)
         {
             pathToEntity.incrementPathIndex();
@@ -65,7 +65,7 @@ public class EntityHuman extends EntityAnimal
                 pathToEntity = null;
             } else
             {
-                vec3d = pathToEntity.func_48646_a(this, pathToEntity.getCurrentPathIndex());
+                vec3d = pathToEntity.getVectorFromIndex(this, pathToEntity.getCurrentPathIndex());
             }
         }
 
