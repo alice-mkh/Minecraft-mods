@@ -1611,26 +1611,28 @@ public class World implements IBlockAccess
     /**
      * Returns the amount of skylight subtracted for the current time
      */
-    public int calculateSkylightSubtracted(float par1)
+    public int calculateSkylightSubtracted(float f)
     {
-        float f = getCelestialAngle(par1);
-        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.5F);
-
-        if (f1 < 0.0F)
+        float f1 = totalSkyLight;
+        if(totalSkyLight == 16 || (worldProvider instanceof WorldProviderEnd))
         {
-            f1 = 0.0F;
+            f1 = 15F;
         }
-
-        if (f1 > 1.0F)
+        float f2 = getCelestialAngle(f);
+        float f3 = 1.0F - (MathHelper.cos(f2 * 3.141593F * 2.0F) * 2.0F + 0.5F);
+        if(f3 < 0.0F)
         {
-            f1 = 1.0F;
+            f3 = 0.0F;
         }
-
-        f1 = 1.0F - f1;
-        f1 = (float)((double)f1 * (1.0D - (double)(getRainStrength(par1) * 5F) / 16D));
-        f1 = (float)((double)f1 * (1.0D - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
-        f1 = 1.0F - f1;
-        return (int)(f1 * 11F);
+        if(f3 > 1.0F)
+        {
+            f3 = 1.0F;
+        }
+        f3 = 1.0F - f3;
+        f3 = (float)((double)f3 * (1.0D - (double)(getRainStrength(f) * 5F) / 16D));
+        f3 = (float)((double)f3 * (1.0D - (double)(getWeightedThunderStrength(f) * 5F) / 16D));
+        f3 = 1.0F - f3;
+        return (int)(f3 * (f1 - 4F) + (15F - f1));
     }
 
     /**
