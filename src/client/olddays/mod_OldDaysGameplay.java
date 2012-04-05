@@ -1,6 +1,4 @@
 package net.minecraft.src;
-import java.util.*;
-import java.io.*;
 import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysGameplay extends mod_OldDays{

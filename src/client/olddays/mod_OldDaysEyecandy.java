@@ -1,7 +1,5 @@
 package net.minecraft.src;
 import java.util.*;
-import java.io.*;
-import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysEyecandy extends mod_OldDays{
     public void load(){
