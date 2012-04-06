@@ -97,9 +97,9 @@ public class EntityAIMate extends EntityAIBase
 
         theAnimal.setGrowingAge(6000);
         targetMate.setGrowingAge(6000);
-        theAnimal.breeded = false;
-        targetMate.breeded = false;
-        entityanimal.breeded = false;
+        theAnimal.breeded = true;
+        targetMate.breeded = true;
+        entityanimal.breeded = true;
         theAnimal.resetInLove();
         targetMate.resetInLove();
         entityanimal.setGrowingAge(-24000);

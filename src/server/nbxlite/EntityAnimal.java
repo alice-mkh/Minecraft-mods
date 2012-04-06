@@ -152,9 +152,9 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
             par1EntityAnimal.entityToAttack = null;
             par1EntityAnimal.breeding = 0;
             par1EntityAnimal.inLove = 0;
-            breeded = false;
-            par1EntityAnimal.breeded = false;
-            entityanimal.breeded = false;
+            breeded = true;
+            par1EntityAnimal.breeded = true;
+            entityanimal.breeded = true;
             entityanimal.setGrowingAge(-24000);
             entityanimal.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
 
