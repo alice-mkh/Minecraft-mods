@@ -6,7 +6,7 @@ import java.util.Random;
 public abstract class Entity
 {
     public static boolean waterladder = false;
-    public static boolean toaster = true;
+    public static boolean toaster = false;
 
     private static int nextEntityID = 0;
     public int entityId;
