@@ -3,6 +3,7 @@ package net.minecraft.src.nbxlite.chunkproviders;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.noise.InfdevOldNoiseGeneratorOctaves;
 
 public class ChunkProviderGenerateOldInfdev
@@ -179,7 +180,7 @@ public class ChunkProviderGenerateOldInfdev
                 l3++;
             }
             l3 += 20;
-            Object obj = new WorldGenTrees(false);
+            Object obj = new OldWorldGenTrees(false);
             for(int i11 = 0; i11 < l3; i11++)
             {
                 int l13 = i1 * 16 + a.nextInt(16) + 8;

@@ -11,6 +11,7 @@ import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenClay;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
 public class ChunkProviderGenerateAlpha
@@ -546,7 +547,7 @@ public class ChunkProviderGenerateAlpha
         {
             l3 += 20;
         }
-        Object obj = new WorldGenTrees(false);
+        Object obj = new OldWorldGenTrees(false);
         if(rand.nextInt(10) == 0)
         {
             obj = new WorldGenBigTree(false);

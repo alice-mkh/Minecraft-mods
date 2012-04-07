@@ -3,9 +3,9 @@ package net.minecraft.src.nbxlite.oldbiomes;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.nbxlite.spawners.SpawnListEntryBeta;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.WorldGenerator;
 import net.minecraft.src.WorldGenBigTree;
-import net.minecraft.src.WorldGenTrees;
 
 public class OldBiomeGenRainforest extends OldBiomeGenBase
 {
@@ -22,7 +22,7 @@ public class OldBiomeGenRainforest extends OldBiomeGenBase
             return new WorldGenBigTree(false);
         } else
         {
-            return new WorldGenTrees(false);
+            return new OldWorldGenTrees(false);
         }
     }
 }

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.nbxlite.spawners.SpawnListEntryBeta;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.WorldGenerator;
-import net.minecraft.src.WorldGenTrees;
 import net.minecraft.src.WorldGenBigTree;
 
 public class OldBiomeGenBase
@@ -88,7 +88,7 @@ public class OldBiomeGenBase
             return new WorldGenBigTree(false);
         } else
         {
-            return new WorldGenTrees(false);
+            return new OldWorldGenTrees(false);
         }
     }
 
