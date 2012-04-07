@@ -19,7 +19,7 @@ public class mod_noBiomesX extends BaseModMp{
             IndevMapType = pmanager.getIntProperty("indev-map-type", 1);
             IndevWidthX = pmanager.getIntProperty("indev-width", 256);
             IndevWidthZ = pmanager.getIntProperty("indev-length", 256);
-            IndevHeight = pmanager.getIntProperty("indev-height", 96);
+            IndevHeight = pmanager.getIntProperty("indev-height", 64);
         }
         GenerateNewOres = pmanager.getBooleanProperty("generate-new-ores", false);
     }
@@ -77,7 +77,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int MapTheme = 0;
     public static int MapFeatures = 2;
     public static int IndevMapType=0;//0 - inland; 1 - island; 2 - floating; 3 - flat
-    public static int IndevHeight = 96;
+    public static int IndevHeight = 64;
     public static int IndevWidthX = 256;
     public static int IndevWidthZ = 256;
     public static int IndevSpawnX;

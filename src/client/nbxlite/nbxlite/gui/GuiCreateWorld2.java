@@ -116,7 +116,7 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.typecurrent = GeneratorList.typedefault;
         GeneratorList.xcurrent = GeneratorList.xdefault;
         GeneratorList.zcurrent = GeneratorList.zdefault;
-        mod_noBiomesX.IndevHeight=96;
+        mod_noBiomesX.IndevHeight=64;
     }
 
     public static String genNBXliteButtonName(){

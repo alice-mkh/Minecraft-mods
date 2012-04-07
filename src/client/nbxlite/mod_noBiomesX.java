@@ -374,7 +374,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int MapFeatures = 3;
     public static boolean UseNewSpawning = false;
     public static int IndevMapType=0;//0 - inland; 1 - island; 2 - floating; 3 - flat
-    public static int IndevHeight = 96;
+    public static int IndevHeight = 64;
     public static int IndevWidthX = 256;
     public static int IndevWidthZ = 256;
     public static int IndevSpawnX;
