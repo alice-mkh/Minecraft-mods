@@ -15,7 +15,7 @@ import org.lwjgl.util.glu.GLU;
 public class GuiMainMenu extends GuiScreen
 {
     public static boolean panorama = false;
-    public static boolean oldlogo = true;
+    public static boolean oldlogo = false;
     String minecraftLogo[] = {
         " *   * * *   * *** *** *** *** *** ***",
         " ** ** * **  * *   *   * * * * *    * ",
