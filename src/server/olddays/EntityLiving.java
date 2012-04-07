@@ -7,7 +7,7 @@ public abstract class EntityLiving extends Entity
     public static boolean laddergaps = false;
     public static boolean newai = true;
     public static boolean rareloot = true;
-    public static boolean oldloot = true;
+    public static boolean oldloot = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
