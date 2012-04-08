@@ -10,6 +10,7 @@ import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.nbxlite.MinecraftHook;
 
 public class GuiNBXlite extends GuiScreen{
     private String selectedWorld;
@@ -139,7 +140,7 @@ public class GuiNBXlite extends GuiScreen{
 
     public void selectWorld()
     {
-        ISaveFormat isaveformat = mc.getSaveLoader();
+        ISaveFormat isaveformat = MinecraftHook.getSaveLoader2();
         List saveList = isaveformat.getSaveList();
         Collections.sort(saveList);
         mc.displayGuiScreen(null);
@@ -158,7 +159,7 @@ public class GuiNBXlite extends GuiScreen{
         {
             s = (new StringBuilder()).append("World").append(selectedWorld).toString();
         }
-        mc.startWorld(s, selectedWorld, null);
+        MinecraftHook.startWorldHook(s, selectedWorld, null);
         mc.displayGuiScreen(null);
     }
 

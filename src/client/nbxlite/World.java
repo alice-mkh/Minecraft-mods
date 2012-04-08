@@ -4970,6 +4970,10 @@ public class World implements IBlockAccess
         return false;
     }
 
+    public void scheduleLightingUpdate(EnumSkyBlock enumskyblock, int i, int j, int k, int l, int i1, int j1)
+    {
+    }
+
     /**
      * Gets a random mob for spawning in this world.
      */

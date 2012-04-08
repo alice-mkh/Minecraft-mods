@@ -585,4 +585,9 @@ public class WorldInfo
     {
         newOres = b;
     }
+
+    public void setSizeOnDisk(long l)
+    {
+        sizeOnDisk = l;
+    }
 }

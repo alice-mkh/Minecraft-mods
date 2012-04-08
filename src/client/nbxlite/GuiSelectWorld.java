@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.gui.*;
+import net.minecraft.src.nbxlite.MinecraftHook;
 
 public class GuiSelectWorld extends GuiScreen
 {
@@ -77,8 +78,7 @@ public class GuiSelectWorld extends GuiScreen
      */
     private void loadSaves()
     {
-        ISaveFormat isaveformat = mc.getSaveLoader();
-        saveList = isaveformat.getSaveList();
+        saveList = MinecraftHook.getSaveLoader2().getSaveList();
         Collections.sort(saveList);
         selectedWorld = -1;
     }
@@ -206,7 +206,7 @@ public class GuiSelectWorld extends GuiScreen
             s = (new StringBuilder()).append("World").append(par1).toString();
         }
 
-        mc.startWorld(s, getSaveName(par1), null);
+        MinecraftHook.startWorldHook(s, getSaveName(par1), null);
         mc.displayGuiScreen(null);
     }
 
