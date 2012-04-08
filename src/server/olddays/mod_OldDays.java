@@ -18,29 +18,29 @@ public class mod_OldDays extends BaseModMp{
 
     public void load(){}
 
-    public static void loadModuleProperties(int id){
-        PropertyManager pmanager = new PropertyManager(new File("oldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties"));
-        for (int i = 1; i <= proplength[id]; i++){
+    public static void loadModuleProperties(){
+        PropertyManager pmanager = new PropertyManager(new File("oldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties"));
+        for (int i = 1; i <= proplength[modulenum]; i++){
             try{
-                propvalue[id][i] = pmanager.getBooleanProperty(propfield[id][i].getName(), propvalue[id][i]);
-                propfield[id][i].setBoolean(Class.forName(modules[id]), propvalue[id][i]);
-                sendCallback(id, i);
+                propvalue[modulenum][i] = pmanager.getBooleanProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]);
+                propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), propvalue[modulenum][i]);
+                sendCallback(modulenum, i);
             }catch(Exception ex){
-                System.out.println(id+" "+i+" "+ex);
+                System.out.println(modulenum+" "+i+" "+ex);
             }
         }
     }
 
-    public static void addProperty(Object module, int num, int i2, String name, boolean val, String var){
+    public static void addProperty(Object module, int i2, String name, boolean val, String var){
         String modulename = module.getClass().getName();
-        if (modules[num]==null || modules2[num]==null){
+        if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
-                modules[num]=modulename;
-                modules2[num]=modulename.replaceFirst("net.minecraft.src.", "");
+                modules[modulenum]=modulename;
+                modules2[modulenum]=modulename.replaceFirst("net.minecraft.src.", "");
                 modulecount++;
             }else if (modulename.startsWith("mod_OldDays") && modulename != "mod_OldDays"){
-                modules[num]=modulename;
-                modules2[num]=modulename;
+                modules[modulenum]=modulename;
+                modules2[modulenum]=modulename;
                 modulecount++;
             }
         }
@@ -55,14 +55,18 @@ public class mod_OldDays extends BaseModMp{
         }
         if (proplength==null){
             proplength=new int[10];
-            proplength[num]=0;
+            proplength[modulenum]=0;
         }
-        propname[num][i2]=name;
-        propvalue[num][i2]=val;
+        propname[modulenum][i2]=name;
+        propvalue[modulenum][i2]=val;
         try{
-            propfield[num][i2]=Class.forName(modules[num]).getDeclaredField(var);
+            propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){}
-        proplength[num]++;
+        proplength[modulenum]++;
+    }
+
+    public static void registerModule(int num){
+        modulenum = num;
     }
 
     public void callback (int i){}
@@ -93,4 +97,5 @@ public class mod_OldDays extends BaseModMp{
     public static String[] modules = new String[10];
     public static String[] modules2 = new String[10];
     public static int modulecount = 0;
+    private static int modulenum;
 }

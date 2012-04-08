@@ -2,17 +2,17 @@ package net.minecraft.src;
 
 public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
-        addProperty(this, 2, 1, "Disable XP",            true,  "DisableXP");
-        addProperty(this, 2, 2, "Disable hunger",        true,  "DisableHunger");
-        addProperty(this, 2, 3, "Instant food",          true,  "InstantFood");
-        addProperty(this, 2, 4, "Disable food stacking", true,  "DisableFoodStacking");
-        addProperty(this, 2, 5, "Old loot",              true,  "OldDrops");
-        addProperty(this, 2, 6, "Disable rare loot",     true,  "DisableRareLoot");
-        addProperty(this, 2, 7, "Machine bow",           true,  "InstantBow");
-        addProperty(this, 2, 8, "No bow durability",     true,  "InfiniteBow");
-        addProperty(this, 2, 9, "Old combat system",     true,  "OldCombatSystem");
-        addProperty(this, 2, 10,"Old armor",             true,  "OldArmor");
-        loadModuleProperties(2);
+        registerModule(2);
+        addProperty(this, 1, "Disable XP",            true,  "DisableXP");
+        addProperty(this, 2, "Disable hunger",        true,  "DisableHunger");
+        addProperty(this, 3, "Instant food",          true,  "InstantFood");
+        addProperty(this, 4, "Disable food stacking", true,  "DisableFoodStacking");
+        addProperty(this, 5, "Old loot",              true,  "OldDrops");
+        addProperty(this, 6, "Disable rare loot",     true,  "DisableRareLoot");
+        addProperty(this, 7, "Machine bow",           true,  "InstantBow");
+        addProperty(this, 8, "No bow durability",     true,  "InfiniteBow");
+        addProperty(this, 9, "Old combat system",     true,  "OldCombatSystem");
+        addProperty(this, 10,"Old armor",             true,  "OldArmor");
     }
 
     public void callback (int i){
