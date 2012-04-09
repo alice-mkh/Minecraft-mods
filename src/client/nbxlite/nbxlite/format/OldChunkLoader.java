@@ -232,7 +232,6 @@ public class OldChunkLoader
         if (chunk.blocklightMap.data == null)
         {
             chunk.blocklightMap = new NibbleArray(chunk.blocks.length, 7);
-//             chunk.func_1014_a();
         }
         NBTTagList nbttaglist = nbttagcompound.getTagList("Entities");
         if (nbttaglist != null)
