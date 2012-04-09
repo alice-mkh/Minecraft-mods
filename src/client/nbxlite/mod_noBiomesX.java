@@ -381,5 +381,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnY;
     public static int IndevSpawnZ;
     public static byte[] IndevWorld;
+    public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
 }
