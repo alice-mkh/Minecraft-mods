@@ -24,15 +24,65 @@ public class mod_noBiomesX extends BaseModMp{
         GenerateNewOres = pmanager.getBooleanProperty("generate-new-ores", false);
     }
 
-    public void load(){}
+    public void load(){
+        ModLoader.setInGameHook(this, true, true);
+    }
 
     public String getVersion(){
         return "1.2.5";
     }
 
+    public void onTickInGame(MinecraftServer minecraft){
+        if (Generator==0 && MapFeatures>=3){
+            tickPushing(minecraft);
+        }
+        return;
+    }
+
+    public boolean tickPushing(MinecraftServer minecraft){
+        Entity entity;
+        for (int k = 0; k < minecraft.getWorldManager(0).loadedEntityList.size(); k++)
+        {
+            entity = (Entity)minecraft.getWorldManager(0).loadedEntityList.get(k);
+            pushBack(entity);
+        }
+        return true;
+    }
+
+    private void pushBack(Entity entity){
+        if (MapFeatures==3){
+            if (entity.posX>IndevWidthX+8){
+                entity.motionX-=(entity.posX-IndevWidthX)/950;
+            }
+            if (entity.posX<-8){
+                entity.motionX-=(entity.posX)/950;
+            }
+            if (entity.posZ>IndevWidthZ+8){
+                entity.motionZ-=(entity.posZ-IndevWidthZ)/950;
+            }
+            if (entity.posZ<-8){
+                entity.motionZ-=(entity.posZ)/950;
+            }
+        }
+        if (MapFeatures==4){
+            if (entity.posX>IndevWidthX){
+                entity.motionX-=0.5;
+            }
+            if (entity.posX<0){
+                entity.motionX+=0.5;
+            }
+            if (entity.posZ>IndevWidthZ){
+                entity.motionZ-=0.5;
+            }
+            if (entity.posZ<0){
+                entity.motionZ+=0.5;
+            }
+        }
+    }
+
     public void SendGeneratorInfo(EntityPlayerMP entityplayermp)
     {
-        int[] dataInt = new int[4];
+        int[] dataInt = new int[7];
         dataInt[0] = Generator;
         dataInt[1] = MapFeatures;
         dataInt[2] = MapTheme;
@@ -43,7 +93,13 @@ public class mod_noBiomesX extends BaseModMp{
         }
         Packet230ModLoader packet = new Packet230ModLoader();
         packet.packetType = 0;
+        dataInt[4] = IndevHeight;
+        dataInt[5] = IndevWidthX;
+        dataInt[6] = IndevWidthZ;
         packet.dataInt = dataInt;
+        String[] dataString = new String[1];
+        dataString[0] = String.valueOf(ModLoader.getMinecraftServerInstance().getWorldManager(0).getSeed());
+        packet.dataString = dataString;
         ModLoaderMp.sendPacketTo(this, entityplayermp, packet);
     }
 

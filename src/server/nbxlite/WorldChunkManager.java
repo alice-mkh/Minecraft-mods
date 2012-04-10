@@ -64,9 +64,13 @@ public class WorldChunkManager
     public WorldChunkManager(World par1World)
     {
         this(par1World.getSeed(), par1World.getWorldInfo().getTerrainType());
-        field_4194_e = new NoiseGeneratorOctaves2(new Random(par1World.getSeed() * 9871L), 4);
-        field_4193_f = new NoiseGeneratorOctaves2(new Random(par1World.getSeed() * 39811L), 4);
-        field_4192_g = new NoiseGeneratorOctaves2(new Random(par1World.getSeed() * 0x84a59L), 2);
+        initNoise(par1World.getSeed());
+    }
+
+    public void initNoise(long seed){
+        field_4194_e = new NoiseGeneratorOctaves2(new Random(seed * 9871L), 4);
+        field_4193_f = new NoiseGeneratorOctaves2(new Random(seed * 39811L), 4);
+        field_4192_g = new NoiseGeneratorOctaves2(new Random(seed * 0x84a59L), 2);
     }
 
     public OldBiomeGenBase oldGetBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)

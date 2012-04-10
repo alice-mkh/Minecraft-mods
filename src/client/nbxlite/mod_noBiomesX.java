@@ -140,6 +140,11 @@ public class mod_noBiomesX extends BaseModMp{
     {
         Generator=packet.dataInt[0];
         MapFeatures=packet.dataInt[1];
+        IndevHeight=packet.dataInt[4];
+        IndevWidthX=packet.dataInt[5];
+        IndevWidthZ=packet.dataInt[6];
+        long seed=Long.parseLong(packet.dataString[0]);
+        ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager().initNoise(seed);
         if (packet.dataInt[0]==0){
             MapTheme=packet.dataInt[2];
             ModLoader.getMinecraftInstance().theWorld.setWorldTheme();
