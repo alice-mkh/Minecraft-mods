@@ -5,6 +5,7 @@ import java.util.Random;
 public class BlockFire extends Block
 {
     public static boolean oldFire = false;
+    public static boolean infiniteBurn = false;
 
     private int chanceToEncourageFire[];
     private int abilityToCatchFire[];
@@ -96,11 +97,88 @@ public class BlockFire extends Block
         return oldFire? 10 : 30;
     }
 
+    public void updateTickOld(World world, int i, int j, int k, Random random)
+    {
+        boolean flag = world.getBlockId(i, j - 1, k) == Block.netherrack.blockID;
+        if(!flag && world.isRaining() && (world.canLightningStrikeAt(i, j, k) || world.canLightningStrikeAt(i - 1, j, k) || world.canLightningStrikeAt(i + 1, j, k) || world.canLightningStrikeAt(i, j, k - 1) || world.canLightningStrikeAt(i, j, k + 1)))
+        {
+            world.setBlockWithNotify(i, j, k, 0);
+            return;
+        }
+        int l = world.getBlockMetadata(i, j, k);
+        if(l < 15)
+        {
+            world.setBlockMetadataWithNotify(i, j, k, l + 1);
+            world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+        }
+        if(!flag && !canNeighborBurn(world, i, j, k))
+        {
+            if(!world.isBlockOpaqueCube(i, j - 1, k) || l > 3)
+            {
+                world.setBlockWithNotify(i, j, k, 0);
+            }
+            return;
+        }
+        if(!flag && !canBlockCatchFire(world, i, j - 1, k) && l == 15 && random.nextInt(4) == 0)
+        {
+            world.setBlockWithNotify(i, j, k, 0);
+            return;
+        }
+        if(l % 2 == 0 && l > 2)
+        {
+            tryToCatchBlockOnFire_old(world, i + 1, j, k, 300, random);
+            tryToCatchBlockOnFire_old(world, i - 1, j, k, 300, random);
+            tryToCatchBlockOnFire_old(world, i, j - 1, k, 250, random);
+            tryToCatchBlockOnFire_old(world, i, j + 1, k, 250, random);
+            tryToCatchBlockOnFire_old(world, i, j, k - 1, 300, random);
+            tryToCatchBlockOnFire_old(world, i, j, k + 1, 300, random);
+            for(int i1 = i - 1; i1 <= i + 1; i1++)
+            {
+                for(int j1 = k - 1; j1 <= k + 1; j1++)
+                {
+                    for(int k1 = j - 1; k1 <= j + 4; k1++)
+                    {
+                        if(i1 == i && k1 == j && j1 == k)
+                        {
+                            continue;
+                        }
+                        int l1 = 100;
+                        if(k1 > j + 1)
+                        {
+                            l1 += (k1 - (j + 1)) * 100;
+                        }
+                        int i2 = getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+                        if(i2 > 0 && random.nextInt(l1) <= i2 && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1)) && !world.canLightningStrikeAt(i1 - 1, k1, k) && !world.canLightningStrikeAt(i1 + 1, k1, j1) && !world.canLightningStrikeAt(i1, k1, j1 - 1) && !world.canLightningStrikeAt(i1, k1, j1 + 1))
+                        {
+                            world.setBlockWithNotify(i1, k1, j1, blockID);
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        if(l == 15 && !infiniteBurn)
+        {
+            tryToCatchBlockOnFire_old(world, i + 1, j, k, 1, random);
+            tryToCatchBlockOnFire_old(world, i - 1, j, k, 1, random);
+            tryToCatchBlockOnFire_old(world, i, j - 1, k, 1, random);
+            tryToCatchBlockOnFire_old(world, i, j + 1, k, 1, random);
+            tryToCatchBlockOnFire_old(world, i, j, k - 1, 1, random);
+            tryToCatchBlockOnFire_old(world, i, j, k + 1, 1, random);
+        }
+    }
+
     /**
      * Ticks the block if it's been scheduled
      */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
+        if (oldFire){
+            updateTickOld(par1World, par2, par3, par4, par5Random);
+            return;
+        }
         boolean flag = par1World.getBlockId(par2, par3 - 1, par4) == Block.netherrack.blockID;
 
         if ((par1World.worldProvider instanceof WorldProviderEnd) && par1World.getBlockId(par2, par3 - 1, par4) == Block.bedrock.blockID)

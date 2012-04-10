@@ -31,5 +31,4 @@ public class mod_OldDaysBugs extends mod_OldDays{
     public static boolean PistonDupe;
 //Sand generator
 //Data value change bug
-//Infinite log burning
 }

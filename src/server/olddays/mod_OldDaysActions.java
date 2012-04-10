@@ -19,7 +19,8 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 1: BlockTNT2.punchToActivate =     PunchTNT;        break;
             case 2: EntityTNTPrimed.extinguish =    ExtinguishTNT;   break;
             case 3: EntityItem.smeltOnFire =        SmeltOnFire;     break;
-            case 4: BlockFire.oldFire =             OldFire;         break;
+            case 4: BlockFire.oldFire =             OldFire;
+                    BlockFire.infiniteBurn =        OldFire;         break;
             case 5: EntitySheep.punchToShear =      PunchSheep;      break;
             case 6: setToolDurability(OldTools);                     break;
             case 7: BlockMushroom.spreading =       ShroomSpreading; break;

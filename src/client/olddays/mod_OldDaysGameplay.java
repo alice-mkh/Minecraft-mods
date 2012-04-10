@@ -35,9 +35,9 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 8: ItemBow.nodurability =   InfiniteBow;         break;
             case 9: EntityArrow.olddamage =  OldCombatSystem;
                     EntityPlayer.oldcombat = OldCombatSystem;
-                    setSwordDamage(OldCombatSystem);                  break;
+                    setSwordDamage(OldCombatSystem);              break;
             case 10:EntityPlayer.oldarmor =  OldArmor;
-                    setArmorDamage(OldArmor);                         break;
+                    setArmorDamage(OldArmor);                     break;
             case 11:GuiIngame.nodebug =     !AllowDebug;          break;
         }
     }
