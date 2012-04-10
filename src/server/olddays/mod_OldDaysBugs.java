@@ -9,6 +9,7 @@ public class mod_OldDaysBugs extends mod_OldDays{
         addProperty(this, 4, "Water ladders", true,  "WaterLadders");
         addProperty(this, 5, "Ladder gaps",   true,  "LadderGaps");
         addProperty(this, 6, "Piston dupe",   false, "PistonDupe");
+        loadModuleProperties();
     }
 
     public void callback (int i){

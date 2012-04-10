@@ -7,7 +7,8 @@ public class mod_OldDaysMobs extends mod_OldDays{
         addProperty(this, 2, "Animal panic",        false, "AnimalsFlee");
         addProperty(this, 3, "Sheep eat grass",     true,  "SheepEatGrass");
         addProperty(this, 4, "Spiders climb walls", true,  "SpidersCanClimb");
-        addProperty(this, 5, "Surviva Test mobs",  false, "SurvivalTestMobs");
+        addProperty(this, 5, "Surviva Test mobs",   false, "SurvivalTestMobs");
+        loadModuleProperties();
     }
 
     public void callback (int i){

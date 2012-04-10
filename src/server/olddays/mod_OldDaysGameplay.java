@@ -13,6 +13,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         addProperty(this, 8, "No bow durability",     true,  "InfiniteBow");
         addProperty(this, 9, "Old combat system",     true,  "OldCombatSystem");
         addProperty(this, 10,"Old armor",             true,  "OldArmor");
+        loadModuleProperties();
     }
 
     public void callback (int i){

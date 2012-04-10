@@ -9,18 +9,20 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 4, "Unnerfed fire",       true,  "OldFire");
         addProperty(this, 5, "Punch sheep",         true,  "PunchSheep");
         addProperty(this, 6, "Old tool durability", false, "OldTools");
+        addProperty(this, 7, "Mushroom spreading",  true,  "ShroomSpreading");
         loadModuleProperties();
         replaceBlocks();
     }
 
     public void callback (int i){
         switch(i){
-            case 1: BlockTNT2.punchToActivate =     PunchTNT;      break;
-            case 2: EntityTNTPrimed.extinguish =    ExtinguishTNT; break;
-            case 3: EntityItem.smeltOnFire =        SmeltOnFire;   break;
-            case 4: BlockFire.oldFire =             OldFire;       break;
-            case 5: EntitySheep.punchToShear =      PunchSheep;    break;
-            case 6: setToolDurability(OldTools);                   break;
+            case 1: BlockTNT2.punchToActivate =     PunchTNT;        break;
+            case 2: EntityTNTPrimed.extinguish =    ExtinguishTNT;   break;
+            case 3: EntityItem.smeltOnFire =        SmeltOnFire;     break;
+            case 4: BlockFire.oldFire =             OldFire;         break;
+            case 5: EntitySheep.punchToShear =      PunchSheep;      break;
+            case 6: setToolDurability(OldTools);                     break;
+            case 7: BlockMushroom.spreading =       ShroomSpreading; break;
         }
     }
 
@@ -30,6 +32,7 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean OldFire= true;
     public static boolean PunchSheep = true;
     public static boolean OldTools;
+    public static boolean ShroomSpreading = true;
 //Old blocks
 //Unflammable fences and stairs
 
