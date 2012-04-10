@@ -4,16 +4,17 @@ import java.util.*;
 public class mod_OldDaysEyecandy extends mod_OldDays{
     public void load(){
         registerModule(4);
-        addProperty(this, 1, "Old walking",         true,  "OldWalking");
-        addProperty(this, 2, "Bobbing",             false, "Bobbing");
-        addProperty(this, 3, "Old endermen",        true,  "OldEndermen");
-        addProperty(this, 4, "Endermen open mouth", true,  "EndermenOpenMouth");
-        addProperty(this, 5, "Item sway",           true,  "ItemSway");
-        addProperty(this, 6, "2D items",            false, "Items2D");
-        addProperty(this, 7, "Old chests",          true,  "OldChest");
-        addProperty(this, 8, "Show mob IDs in F3",  true,  "MobLabels");
-        addProperty(this, 9, "Mob armor",           false, "MobArmor");
-        addProperty(this, 10,"Old main menu",       true,  "OldMainMenu");
+        addProperty(this, 1, "Old walking",           true,  "OldWalking");
+        addProperty(this, 2, "Bobbing",               false, "Bobbing");
+        addProperty(this, 3, "Old endermen",          true,  "OldEndermen");
+        addProperty(this, 4, "Endermen open mouth",   true,  "EndermenOpenMouth");
+        addProperty(this, 5, "Item sway",             true,  "ItemSway");
+        addProperty(this, 6, "2D items",              false, "Items2D");
+        addProperty(this, 7, "Old chests",            true,  "OldChest");
+        addProperty(this, 8, "Show mob IDs in F3",    true,  "MobLabels");
+        addProperty(this, 9, "Mob armor",             false, "MobArmor");
+        addProperty(this, 10,"Old main menu",         true,  "OldMainMenu");
+        addProperty(this, 11,"Old digging particles", true,  "OldDigging");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -36,6 +37,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
                     RenderSkeleton.mobArmor =           MobArmor;          break;
             case 10:GuiMainMenu.panorama =             !OldMainMenu;
                     GuiMainMenu.oldlogo =               OldMainMenu;       break;
+            case 11:EntityDiggingFX.oldparticles =      OldDigging;        break;
         }
     }
 
@@ -56,6 +58,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean MobLabels = true;
     public static boolean MobArmor;
     public static boolean OldMainMenu = true;
+    public static boolean OldDigging = true;
 
     private void replaceBlocks(){
         try{
