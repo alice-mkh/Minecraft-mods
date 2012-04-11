@@ -6,6 +6,7 @@ public abstract class EntityCreature extends EntityLiving
 {
     public static boolean nopanic = false;
     public static boolean fastzombies = false;
+    public static boolean jump = false;
 
     private PathEntity pathToEntity;
 
@@ -168,7 +169,7 @@ public abstract class EntityCreature extends EntityLiving
             faceEntity(entityToAttack, 30F, 30F);
         }
 
-        if (isCollidedHorizontally && !hasPath())
+        if (isCollidedHorizontally && (!hasPath() || jump))
         {
             isJumping = true;
         }
