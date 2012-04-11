@@ -6,6 +6,7 @@ public abstract class EntityPlayer extends EntityLiving
 {
     public static boolean oldarmor = false;
     public static boolean oldcombat = false;
+    public static boolean sprint = true;
 
     /** Inventory of the player */
     public InventoryPlayer inventory;
@@ -609,6 +610,9 @@ public abstract class EntityPlayer extends EntityLiving
 
         if (isSprinting())
         {
+            if (!sprint){
+                setSprinting(false);
+            }
             landMovementFactor += (double)speedOnGround * 0.29999999999999999D;
             jumpMovementFactor += (double)speedInAir * 0.29999999999999999D;
         }

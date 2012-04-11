@@ -13,6 +13,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         addProperty(this, 8, "No bow durability",     true,  "InfiniteBow");
         addProperty(this, 9, "Old combat system",     true,  "OldCombatSystem");
         addProperty(this, 10,"Old armor",             true,  "OldArmor");
+        addProperty(this, 12,"Allow sprint",          true,  "AllowSprint");
         loadModuleProperties();
     }
 
@@ -21,18 +22,20 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 1: EntityXPOrb.noxp =       DisableXP;
             case 2: FoodStats.disabled =     DisableHunger;
                     ItemFood.heal =          DisableHunger;
-                    BlockCake.heal =         DisableHunger;       break;
-            case 3: ItemFood.instant =       InstantFood;         break;
-            case 4: ItemFood.stacks =       !DisableFoodStacking; break;
-            case 5: EntityLiving.oldloot =   OldDrops;            break;
-            case 6: EntityLiving.rareloot = !DisableRareLoot;     break;
-            case 7: ItemBow.nocharging =     InstantBow;          break;
-            case 8: ItemBow.nodurability =   InfiniteBow;         break;
+                    BlockCake.heal =         DisableHunger;         break;
+            case 3: ItemFood.instant =       InstantFood;           break;
+            case 4: ItemFood.stacks =       !DisableFoodStacking;   break;
+            case 5: EntityLiving.oldloot =   OldDrops;              break;
+            case 6: EntityLiving.rareloot = !DisableRareLoot;       break;
+            case 7: ItemBow.nocharging =     InstantBow;            break;
+            case 8: ItemBow.nodurability =   InfiniteBow;           break;
             case 9: EntityArrow.olddamage =  OldCombatSystem;
                     EntityPlayer.oldcombat = OldCombatSystem;
-                    setSwordDamage(OldCombatSystem);              break;
+                    setSwordDamage(OldCombatSystem);                break;
             case 10:EntityPlayer.oldarmor =  OldArmor;
-                    setArmorDamage(OldArmor);                     break;
+                    setArmorDamage(OldArmor);                       break;
+            case 12:EntityPlayer.sprint =    AllowSprint;
+                    FoodStats.disabledLevel = AllowSprint ? 20 : 5; break;
         }
     }
 
@@ -47,6 +50,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
     public static boolean OldCombatSystem = true;
     public static boolean OldArmor = true;
     public static boolean AllowDebug = true;
+    public static boolean AllowSprint = true;
 
     private void setSwordDamage(boolean b){
         try{
