@@ -120,16 +120,7 @@ public class ItemFood extends Item
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
         }else{
-            if(!heal){
-                if(par3EntityPlayer.canEat(alwaysEdible)){
-                    if(!par2World.isRemote && potionId > 0 && par2World.rand.nextFloat() < potionEffectProbability)
-                    {
-                        par3EntityPlayer.addPotionEffect(new PotionEffect(potionId, potionDuration * 20, potionAmplifier));
-                    }
-                }
-            }else{
-                onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
-            }
+            onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
             if (this.shiftedIndex==Item.bowlSoup.shiftedIndex){
                 return new ItemStack(Item.bowlEmpty);
             }
