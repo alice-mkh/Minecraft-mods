@@ -10,6 +10,7 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 5, "Punch sheep",         true,  "PunchSheep");
         addProperty(this, 6, "Old tool durability", false, "OldTools");
         addProperty(this, 7, "Mushroom spreading",  true,  "ShroomSpreading");
+        addProperty(this, 8, "TNT is solid",        true,  "SolidTNT");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -24,6 +25,7 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 5: EntitySheep.punchToShear =      PunchSheep;      break;
             case 6: setToolDurability(OldTools);                     break;
             case 7: BlockMushroom.spreading =       ShroomSpreading; break;
+            case 8: setSolidTNT(SolidTNT);                           break;
         }
     }
 
@@ -34,8 +36,17 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean PunchSheep = true;
     public static boolean OldTools;
     public static boolean ShroomSpreading = true;
+    public static boolean SolidTNT = true;
 //Old blocks
 //Unflammable fences and stairs
+
+    private void setSolidTNT(boolean b){
+        try{
+            ModLoader.setPrivateValue(net.minecraft.src.Material.class, Material.tnt, 33, !b);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
 
     private void replaceBlocks(){
         try{

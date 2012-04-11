@@ -9,7 +9,7 @@ public class mod_OldDaysMobs extends mod_OldDays{
         addProperty(this, 4, "Spiders climb walls", true,  "SpidersCanClimb");
         addProperty(this, 5, "Survival Test mobs",  false, "SurvivalTestMobs");
         addProperty(this, 6, "Jumping mobs",        true,  "JumpingMobs");
-        addProperty(this, 7, "Old skeleton fire",   true,  "FastSkeletons");
+        addProperty(this, 7, "Old skeleton fire",   false, "FastSkeletons");
         loadModuleProperties();
     }
 
@@ -39,5 +39,5 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static boolean SpidersCanClimb = true;
     public static boolean SurvivalTestMobs;
     public static boolean JumpingMobs = true;
-    public static boolean FastSkeletons = true;
+    public static boolean FastSkeletons;
 }

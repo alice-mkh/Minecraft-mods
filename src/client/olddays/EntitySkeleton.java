@@ -72,7 +72,7 @@ public class EntitySkeleton extends EntityMob
             double d1 = entity.posZ - posZ;
             if (attackTime == 0)
             {
-                EntityArrow2 entityarrow = new EntityArrow2(worldObj, this, 1.0F);
+                EntityArrow entityarrow = new EntityArrow(worldObj, this, 1.0F);
                 if (fast){
                     entityarrow.posY += 1.3999999761581421D;
                     double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityarrow.posY;
