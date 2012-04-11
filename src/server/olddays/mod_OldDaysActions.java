@@ -10,7 +10,7 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 5, "Punch sheep",         true,  "PunchSheep");
         addProperty(this, 6, "Old tool durability", false, "OldTools");
         addProperty(this, 7, "Mushroom spreading",  true,  "ShroomSpreading");
-        addProperty(this, 8, "TNT is solid",        true,  "SolidTNT");
+        addProperty(this, 8, "Solid TNT",           true,  "SolidTNT");
         loadModuleProperties();
         replaceBlocks();
     }

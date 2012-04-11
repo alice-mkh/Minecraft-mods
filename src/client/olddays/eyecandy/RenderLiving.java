@@ -90,7 +90,8 @@ public class RenderLiving extends Render
                     par1EntityLiving instanceof EntityCreeper || 
                     par1EntityLiving instanceof EntityPig || 
                     par1EntityLiving instanceof EntitySheep || 
-                    par1EntityLiving instanceof EntityPlayer){
+                    par1EntityLiving instanceof EntityPlayer ||
+                    par1EntityLiving instanceof EntityOtherPlayerMP){
                     bobStrength = 1.0F;
                 }
                 float f32 = par1EntityLiving.field_9362_u + (par1EntityLiving.field_9361_v - par1EntityLiving.field_9362_u) * par9;
