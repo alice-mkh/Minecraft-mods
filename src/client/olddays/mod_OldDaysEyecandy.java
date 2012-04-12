@@ -16,6 +16,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 10,"Old main menu",         true,  "OldMainMenu");
         addProperty(this, 11,"Old digging particles", true,  "OldDigging");
         addProperty(this, 12,"Old item tooltips",     true,  "OldTooltips");
+        addProperty(this, 13,"Old ore blocks",        true,  "OldOreBlocks");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -40,6 +41,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
                     GuiMainMenu.oldlogo =               OldMainMenu;       break;
             case 11:EntityDiggingFX.oldparticles =      OldDigging;        break;
             case 12:GuiContainer.oldtooltips =          OldTooltips;       break;
+            case 13:BlockOreStorageOld.oldtextures =    OldOreBlocks;
+                    ModLoader.getMinecraftInstance().renderGlobal.loadRenderers(); break;
         }
     }
 
@@ -62,12 +65,44 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean OldMainMenu = true;
     public static boolean OldDigging = true;
     public static boolean OldTooltips = true;
+    public static boolean OldOreBlocks = true;
 
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.chest.blockID] = null;
-            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54)).setHardness(2.5F).setStepSound(Block.soundWoodFootstep).setBlockName("chest").setRequiresSelfNotify();
+            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54));
+            customchest.setHardness(2.5F);
+            customchest.setStepSound(Block.soundWoodFootstep);
+            customchest.setBlockName("chest");
+            customchest.setRequiresSelfNotify();
             Block.blocksList[Block.chest.blockID] = customchest;
+            Block.blocksList[Block.blockSteel.blockID] = null;
+            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID, 22));
+            customsteel.setHardness(5F);
+            customsteel.setResistance(10F);
+            customsteel.setStepSound(Block.soundMetalFootstep);
+            customsteel.setBlockName("blockIron");
+            customsteel.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/ironside.png");
+            customsteel.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/ironbottom.png");
+            Block.blocksList[Block.blockSteel.blockID] = customsteel;
+            Block.blocksList[Block.blockGold.blockID] = null;
+            BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, 23));
+            customgold.setHardness(3F);
+            customgold.setResistance(10F);
+            customgold.setStepSound(Block.soundMetalFootstep);
+            customgold.setBlockName("blockGold");
+            customgold.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/goldside.png");
+            customgold.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/goldbottom.png");
+            Block.blocksList[Block.blockGold.blockID] = customgold;
+            Block.blocksList[Block.blockDiamond .blockID] = null;
+            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond .blockID, 24));
+            customdiamond.setHardness(5F);
+            customdiamond.setResistance(10F);
+            customdiamond.setStepSound(Block.soundMetalFootstep);
+            customdiamond.setBlockName("blockDiamond");
+            customdiamond.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/diamondside.png");
+            customdiamond.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/diamondbottom.png");
+            Block.blocksList[Block.blockDiamond .blockID] = customdiamond;
         }catch (Exception exception){
             System.out.println(exception);
         }

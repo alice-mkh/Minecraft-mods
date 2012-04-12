@@ -51,7 +51,10 @@ public class mod_OldDaysActions extends mod_OldDays{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.tnt.blockID] = null;
-            BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(46, 8)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("tnt");
+            BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(46, 8));
+            customtnt.setHardness(0.0F);
+            customtnt.setStepSound(Block.soundGrassFootstep);
+            customtnt.setBlockName("tnt");
             Block.blocksList[Block.tnt.blockID] = customtnt;
         }catch (Exception exception){
             System.out.println(exception);
