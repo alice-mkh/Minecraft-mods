@@ -82,8 +82,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             customsteel.setResistance(10F);
             customsteel.setStepSound(Block.soundMetalFootstep);
             customsteel.setBlockName("blockIron");
-            customsteel.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/ironside.png");
-            customsteel.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/ironbottom.png");
+            customsteel.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/ironside.png");
+            customsteel.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/ironbottom.png");
             Block.blocksList[Block.blockSteel.blockID] = customsteel;
             Block.blocksList[Block.blockGold.blockID] = null;
             BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, 23));
@@ -91,8 +91,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
             customgold.setBlockName("blockGold");
-            customgold.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/goldside.png");
-            customgold.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/goldbottom.png");
+            customgold.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/goldside.png");
+            customgold.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/goldbottom.png");
             Block.blocksList[Block.blockGold.blockID] = customgold;
             Block.blocksList[Block.blockDiamond .blockID] = null;
             BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond .blockID, 24));
@@ -100,8 +100,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
             customdiamond.setBlockName("blockDiamond");
-            customdiamond.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/diamondside.png");
-            customdiamond.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/diamondbottom.png");
+            customdiamond.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/diamondside.png");
+            customdiamond.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/diamondbottom.png");
             Block.blocksList[Block.blockDiamond .blockID] = customdiamond;
         }catch (Exception exception){
             System.out.println(exception);

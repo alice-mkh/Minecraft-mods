@@ -22,7 +22,7 @@ public class RenderZombie extends RenderLiving
         {
             if (par2 == 1)
             {
-                loadTexture("/armor/plate.png");
+                loadTexture("/olddays/plate.png");
                 GL11.glDisable(2884);
                 setRenderPassModel(armor);
                 armor.bipedHead.showModel = par1EntityZombie.helmet;

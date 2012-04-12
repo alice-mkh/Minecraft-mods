@@ -80,7 +80,7 @@ public class RenderEnderman2 extends RenderLiving
         else
         {
             if (greeneyes){
-                loadTexture("/mob/enderman_eyes_old.png");
+                loadTexture("/olddays/enderman_eyes.png");
             }else{
                 loadTexture("/mob/enderman_eyes.png");
             }
