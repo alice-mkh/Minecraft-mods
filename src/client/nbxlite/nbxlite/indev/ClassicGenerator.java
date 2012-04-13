@@ -199,7 +199,7 @@ label0:
         }
         progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.watering"));
         i2 = Block.waterStill.blockID;
-        if(mod_noBiomesX.MapTheme == 1)
+        if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
             {
             i2 = Block.lavaStill.blockID;
         }
@@ -265,13 +265,13 @@ label0:
                     continue;
                 }
                 int i15 = Block.grass.blockID;
-                if(mod_noBiomesX.MapTheme == 1)
+                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
                 {
                     i15 = Block.dirt.blockID;
                 }
                 if(i12 <= this.d / 2 - 1 && flag){
                     i15 = Block.sand.blockID;
-                    if(mod_noBiomesX.MapTheme == 1)
+                    if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
                     {
                         i15 = Block.grass.blockID;
                     }
@@ -378,7 +378,7 @@ label0:
             i2 = (this.b * this.c) / 4000;
         }
         int iii = 1;
-        if (mod_noBiomesX.MapTheme==2){
+        if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS){
             iii = 51;
         }
         for (int ii = 0; ii<iii; ii++){

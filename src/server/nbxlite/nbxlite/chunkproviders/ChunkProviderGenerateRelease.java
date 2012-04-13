@@ -388,19 +388,19 @@ public class ChunkProviderGenerateRelease
     {
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
-        if (mod_noBiomesX.MapFeatures==0){
+        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             generateTerrain_18(i, j, abyte0);
         }else{
             generateTerrain(i, j, abyte0);
         }
         biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
-        if (mod_noBiomesX.MapFeatures==0){
+        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             replaceBlocksForBiome_18(i, j, abyte0, biomesForGeneration);
         }else{
             replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
         }
         caveGenerator.generate(this, worldObj, i, j, abyte0);
-        if (mod_noBiomesX.MapFeatures!=0){
+        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
         }
         if (mapFeaturesEnabled)
@@ -409,7 +409,7 @@ public class ChunkProviderGenerateRelease
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
         }
-        if (mod_noBiomesX.MapFeatures==0){
+        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
         }
         Chunk chunk = new Chunk(worldObj, abyte0, i, j);
@@ -508,7 +508,7 @@ public class ChunkProviderGenerateRelease
                     d3 = (d3 * (double)i1) / 16D;
                     double d5 = (double)i1 / 2D + d3 * 4D;
                     double d6 = 0.0D;
-                    if (mod_noBiomesX.MapFeatures==0){
+                    if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                         worldObj.getClass();
                     }
                     double d7 = (((double)k3 - d5) * 12D * 128D) / (double)128 / d4;
@@ -563,19 +563,19 @@ public class ChunkProviderGenerateRelease
         boolean flag = false;
         if (mapFeaturesEnabled)
         {
-            if(mod_noBiomesX.MapFeatures==0){
+            if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
             mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             flag = villageGenerator.generateStructuresInChunk(worldObj, rand, i, j);
-            if(mod_noBiomesX.MapFeatures!=0){
+            if(mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
         }
         if(!flag && rand.nextInt(4) == 0)
         {
             int i1 = k + rand.nextInt(16) + 8;
-            if(mod_noBiomesX.MapFeatures==0){
+            if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                 worldObj.getClass();
             }
             int j2 = rand.nextInt(128);
@@ -585,12 +585,12 @@ public class ChunkProviderGenerateRelease
         if(!flag && rand.nextInt(8) == 0)
         {
             int j1 = k + rand.nextInt(16) + 8;
-            if(mod_noBiomesX.MapFeatures==0){
+            if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                 worldObj.getClass();
             }
             int k2 = rand.nextInt(rand.nextInt(128 - 8) + 8);
             int l3 = l + rand.nextInt(16) + 8;
-            if(mod_noBiomesX.MapFeatures==0){
+            if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                 worldObj.getClass();
             }
             if(k2 < 63 || rand.nextInt(10) == 0)
@@ -601,7 +601,7 @@ public class ChunkProviderGenerateRelease
         for(int k1 = 0; k1 < 8; k1++)
         {
             int i3 = k + rand.nextInt(16) + 8;
-            if(mod_noBiomesX.MapFeatures==0){
+            if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                 worldObj.getClass();
             }
             int i4 = rand.nextInt(128);
@@ -613,7 +613,7 @@ public class ChunkProviderGenerateRelease
         if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
         }
-        if (mod_noBiomesX.MapFeatures!=0){
+        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
             k += 8;
             l += 8;
             for (int i2 = 0; i2 < 16; i2++)

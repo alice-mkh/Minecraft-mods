@@ -224,9 +224,9 @@ public class EntityRenderer
         fogColor1 += (f4 - fogColor1) * 0.1F;
         rendererUpdateCount++;
         itemRenderer.updateEquippedItem();
-        if (mod_noBiomesX.Generator==2){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
             addRainParticles();
-        }else if (mod_noBiomesX.Generator==1){
+        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
             addRainParticlesOld();
         }
     }
@@ -1268,13 +1268,13 @@ public class EntityRenderer
             }
 
             Profiler.endStartSection("weather");
-            if (mod_noBiomesX.Generator==0){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 renderSnow(par1);
             }
-            if (mod_noBiomesX.Generator==1){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
                 renderOldRainSnow(par1);
             }
-            if (mod_noBiomesX.Generator==2){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
                 renderRainSnow(par1);
             }
             GL11.glDisable(GL11.GL_FOG);

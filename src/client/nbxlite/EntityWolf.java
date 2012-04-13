@@ -138,7 +138,7 @@ public class EntityWolf extends EntityTameable
      */
     protected boolean canDespawn()
     {
-        return (mod_noBiomesX.Generator==2 || mod_noBiomesX.UseNewSpawning) ? isAngry() : !isTamed();
+        return (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.UseNewSpawning) ? isAngry() : !isTamed();
     }
 
     /**

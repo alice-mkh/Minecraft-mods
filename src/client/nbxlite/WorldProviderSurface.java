@@ -15,7 +15,7 @@ public class WorldProviderSurface extends WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures==5){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.0F, OldBiomeGenBase.sky);
         }else{
             super.registerWorldChunkManager();
@@ -43,14 +43,14 @@ public class WorldProviderSurface extends WorldProvider
      */
     public boolean canCoordinateBeSpawn(int par1, int par2)
     {
-        if (mod_noBiomesX.Generator==0 && (mod_noBiomesX.MapFeatures>=2)){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_INFDEV0227){
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
-        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();
         }
-        if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
             return i == Block.grass.blockID;
         }
         return i == Block.sand.blockID;
@@ -61,7 +61,7 @@ public class WorldProviderSurface extends WorldProvider
      */
     public float[] calcSunriseSunsetColors(float par1, float par2)
     {
-        if(!mod_noBiomesX.SunriseEffect || (mod_noBiomesX.Generator == 1 && mod_noBiomesX.MapFeatures>=5)){
+        if(!mod_noBiomesX.SunriseEffect || (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY)){
             return null;
         }
         return super.calcSunriseSunsetColors(par1, par2);
@@ -72,22 +72,22 @@ public class WorldProviderSurface extends WorldProvider
      */
     public float getCloudHeight()
     {
-        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3 && mod_noBiomesX.IndevMapType==2){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
             return -16F;
         }
-        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return 8F;
         }
         if(worldObj.totalSkyLight == 16)
         {
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
                 return mod_noBiomesX.IndevHeight+64;
             }
             return 160F;
         }
         if(mod_noBiomesX.LowHangingClouds)
         {
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
                 return mod_noBiomesX.IndevHeight+2;
             }
             return 108F;
@@ -97,7 +97,7 @@ public class WorldProviderSurface extends WorldProvider
 
     public boolean isSkyColored()
     {
-        if ((mod_noBiomesX.Generator==0 && (mod_noBiomesX.MapFeatures>=3 || mod_noBiomesX.MapTheme!=0)) || (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5)){
+        if ((mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC || mod_noBiomesX.MapTheme!=mod_noBiomesX.THEME_HELL)) || (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY)){
             return false;
         }
         return true;
@@ -105,7 +105,7 @@ public class WorldProviderSurface extends WorldProvider
 
     public int getAverageGroundLevel()
     {
-        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
             return mod_noBiomesX.IndevHeight - 32;
         }
         return terrainType.getSeaLevel(worldObj);

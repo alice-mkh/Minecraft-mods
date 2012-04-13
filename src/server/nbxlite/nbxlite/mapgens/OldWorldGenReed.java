@@ -29,7 +29,7 @@ public class OldWorldGenReed extends WorldGenerator
             {
                 if (Block.reed.canBlockStay(world, i1, j1 + i2, k1))
                 {
-                    if(mod_noBiomesX.Generator==2 || (world.getBlockId(i1, j1 + i2 - 1, k1) != Block.sand.blockID)){
+                    if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || (world.getBlockId(i1, j1 + i2 - 1, k1) != Block.sand.blockID)){
                         world.setBlock(i1, j1 + i2, k1, Block.reed.blockID);
                     }
                 }

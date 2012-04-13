@@ -21,7 +21,7 @@ public class BlockGrass extends Block
     {
         if (par1 == 1)
         {
-            if (mod_noBiomesX.Generator==0 && !mod_noBiomesX.FallbackColors){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !mod_noBiomesX.FallbackColors){
                 return toptex;
             }
             return 0;
@@ -37,7 +37,7 @@ public class BlockGrass extends Block
     {
         if (par5 == 1)
         {
-            if (mod_noBiomesX.Generator==0 && !mod_noBiomesX.FallbackColors){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !mod_noBiomesX.FallbackColors){
                 return toptex;
             }
             return 0;
@@ -49,7 +49,7 @@ public class BlockGrass extends Block
         }
 
         Material material = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-        if ((mod_noBiomesX.Generator==0 || (mod_noBiomesX.GreenGrassSides && !mod_noBiomesX.NoGreenGrassSides)) && !mod_noBiomesX.FallbackColors){
+        if ((mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS || (mod_noBiomesX.GreenGrassSides && !mod_noBiomesX.NoGreenGrassSides)) && !mod_noBiomesX.FallbackColors){
             return material != Material.snow && material != Material.craftedSnow ? sidetex : 68;
         }
         return material != Material.snow && material != Material.craftedSnow ? 3 : 68;
@@ -57,7 +57,7 @@ public class BlockGrass extends Block
 
     public int getBlockColor()
     {
-        if (mod_noBiomesX.Generator==0){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
             if (mod_noBiomesX.FallbackColors){
                 return 0x5fff3f;
             }

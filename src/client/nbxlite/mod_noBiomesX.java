@@ -40,7 +40,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public boolean onTickInGame(float f, Minecraft minecraft){
-        if (Generator==0 && MapFeatures>=3 && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
+        if (Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
             tickPushing(minecraft);
         }
         return true;
@@ -57,7 +57,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     private void pushBack(Entity entity){
-        if (Generator==0 && MapFeatures==3){
+        if (MapFeatures==FEATURES_INDEV){
             if (entity.posX>IndevWidthX+8){
                 entity.motionX-=(entity.posX-IndevWidthX)/950;
             }
@@ -71,7 +71,7 @@ public class mod_noBiomesX extends BaseModMp{
                 entity.motionZ-=(entity.posZ)/950;
             }
         }
-        if (Generator==0 && MapFeatures==4){
+        if (MapFeatures==FEATURES_CLASSIC){
             if (entity.posX>IndevWidthX){
                 entity.motionX-=0.5;
             }
@@ -202,13 +202,13 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
-        if (Generator==0){
+        if (Generator==GEN_BIOMELESS){
             if (tex && !FallbackColors){
                 return 0xffffff;
             }else{
                 return 0x5fff3f;
             }
-        }else if (Generator==1){
+        }else if (Generator==GEN_OLDBIOMES){
             WorldChunkManager man = ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager();
             man.oldFunc_4069_a(x, z, 1, 1);
             double d = man.temperature[0];
@@ -216,7 +216,7 @@ public class mod_noBiomesX extends BaseModMp{
             return ColorizerFoliage.getFoliageColor(d, d1);
 //             return 0xffffff;
         }else{
-            if (mod_noBiomesX.MapFeatures>=2 && smooth){
+            if (mod_noBiomesX.MapFeatures>=FEATURES_11 && smooth){
                 int i1 = 0;
                 int j1 = 0;
                 int k1 = 0;
@@ -238,20 +238,20 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public static int GetGrassColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
-        if(Generator==0){
+        if(Generator==GEN_BIOMELESS){
             if (tex && !FallbackColors){
                 return 0xffffff;
             }else{
                 return 0x5fff3f;
             }
-        } else if(Generator==1){
+        } else if(Generator==GEN_OLDBIOMES){
             WorldChunkManager man = ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager();
             man.oldFunc_4069_a(x, z, 1, 1);
             double d = man.temperature[0];
             double d1 = man.humidity[0];
             return ColorizerGrass.getGrassColor(d, d1);
         }else{
-            if (mod_noBiomesX.MapFeatures>=2 && smooth){
+            if (mod_noBiomesX.MapFeatures>=FEATURES_11 && smooth){
                 int l = 0;
                 int i1 = 0;
                 int j1 = 0;
@@ -388,4 +388,37 @@ public class mod_noBiomesX extends BaseModMp{
     public static byte[] IndevWorld;
     public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
+
+    public static int GEN_BIOMELESS = 0;
+    public static int GEN_OLDBIOMES = 1;
+    public static int GEN_NEWBIOMES = 2;
+
+    public static int FEATURES_ALPHA11201 = 0;
+    public static int FEATURES_INFDEV0420 = 1;
+    public static int FEATURES_INFDEV0227 = 2;
+    public static int FEATURES_INDEV = 3;
+    public static int FEATURES_CLASSIC = 4;
+
+    public static int FEATURES_ALPHA120 = 0;
+    public static int FEATURES_BETA12 = 1;
+    public static int FEATURES_BETA14 = 2;
+    public static int FEATURES_BETA15 = 3;
+    public static int FEATURES_BETA173 = 4;
+    public static int FEATURES_SKY = 5;
+
+    public static int FEATURES_BETA181 = 0;
+    public static int FEATURES_10 = 1;
+    public static int FEATURES_11 = 2;
+    public static int FEATURES_12 = 3;
+
+    public static int THEME_NORMAL = 0;
+    public static int THEME_HELL = 1;
+    public static int THEME_WOODS = 2;
+    public static int THEME_PARADISE = 3;
+
+    public static int TYPE_INLAND = 0;
+    public static int TYPE_ISLAND = 1;
+    public static int TYPE_FLOATING = 2;
+    public static int TYPE_FLAT = 3;
+    
 }

@@ -32,7 +32,7 @@ public class BiomeGenSwamp extends BiomeGenBase
     {
         double d = getFloatTemperature();
         double d1 = getFloatRainfall();
-        if (mod_noBiomesX.MapFeatures==0){
+        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             return ColorizerGrass.getGrassColor(d, d1);
         }
         return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
@@ -45,7 +45,7 @@ public class BiomeGenSwamp extends BiomeGenBase
     {
         double d = getFloatTemperature();
         double d1 = getFloatRainfall();
-        if (mod_noBiomesX.MapFeatures==0){
+        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             return ColorizerFoliage.getFoliageColor(d, d1);
         }
         return ((ColorizerFoliage.getFoliageColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;

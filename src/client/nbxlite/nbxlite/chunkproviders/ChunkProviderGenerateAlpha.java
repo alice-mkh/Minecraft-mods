@@ -135,7 +135,7 @@ public class ChunkProviderGenerateAlpha
                                     {
                                         i3 = Block.ice.blockID;
                                     } else
-                                    if(mod_noBiomesX.MapTheme == 1)
+                                    if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
                                     {
                                         i3 = Block.lavaStill.blockID;
                                     } else
@@ -182,7 +182,7 @@ public class ChunkProviderGenerateAlpha
             for(int i1 = 0; i1 < 16; i1++)
             {
                 double d1 = 0.0D;
-                if(mod_noBiomesX.MapTheme == 3)
+                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_PARADISE)
                 {
                     d1 = -0.29999999999999999D;
                 }
@@ -191,7 +191,7 @@ public class ChunkProviderGenerateAlpha
                 int j1 = (int)(stoneNoise[l + i1 * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
                 int k1 = -1;
                 byte byte1;
-                if(mod_noBiomesX.MapTheme==1){
+                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                     byte1 = (byte)Block.dirt.blockID;
 				}else{
                     byte1 = (byte)Block.grass.blockID;
@@ -269,7 +269,7 @@ public class ChunkProviderGenerateAlpha
                             if(mod_noBiomesX.SnowCovered && l1 >= byte0 - 1 && mod_noBiomesX.MapTheme != 1)
                             {
                                 byte1 = (byte)Block.ice.blockID;
-                            } else if(mod_noBiomesX.MapTheme == 1)
+                            } else if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
                             {
                                 byte1 = (byte)Block.lavaStill.blockID;
                             } else
@@ -543,7 +543,7 @@ public class ChunkProviderGenerateAlpha
         {
             l3++;
         }
-        if(mod_noBiomesX.MapTheme == 2)
+        if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS)
         {
             l3 += 20;
         }
@@ -611,7 +611,7 @@ public class ChunkProviderGenerateAlpha
             int k15 = k + rand.nextInt(16) + 8;
             int j18 = rand.nextInt(rand.nextInt(120) + 8);
             int i20 = l + rand.nextInt(16) + 8;
-            if (mod_noBiomesX.MapTheme==1){
+            if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                 (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, k15, j18, i20);
             }else{
                 (new WorldGenLiquids(Block.waterMoving.blockID)).generate(worldObj, rand, k15, j18, i20);

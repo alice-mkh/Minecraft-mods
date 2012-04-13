@@ -312,7 +312,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     protected boolean canDespawn()
     {
-        return mod_noBiomesX.Generator!=2 && !mod_noBiomesX.UseNewSpawning && !breeded;
+        return mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES && !mod_noBiomesX.UseNewSpawning && !breeded;
     }
 
     /**

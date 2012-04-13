@@ -53,7 +53,7 @@ public class ChunkProviderHell implements IChunkProvider
         netherrackExculsivityNoiseGen = new NoiseGeneratorOctaves(hellRNG, 4);
         netherNoiseGen6 = new NoiseGeneratorOctaves(hellRNG, 10);
         netherNoiseGen7 = new NoiseGeneratorOctaves(hellRNG, 16);
-        generateStructures = par1World.getWorldInfo().isMapFeaturesEnabled() || (mod_noBiomesX.Generator==2 && mod_noBiomesX.MapFeatures!=0);
+        generateStructures = par1World.getWorldInfo().isMapFeaturesEnabled() || (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES && mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181);
     }
 
     /**

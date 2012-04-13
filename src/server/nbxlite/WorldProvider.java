@@ -69,7 +69,7 @@ public abstract class WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures==5){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.0F, OldBiomeGenBase.sky);
         }else if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT)
         {
@@ -101,14 +101,14 @@ public abstract class WorldProvider
      */
     public boolean canCoordinateBeSpawn(int par1, int par2)
     {
-        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=2){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_INFDEV0227){
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
-        if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();
         }
-        if (mod_noBiomesX.Generator==2 || mod_noBiomesX.MapTheme==1){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
             return i == Block.grass.blockID;
         }
         return i == Block.sand.blockID;

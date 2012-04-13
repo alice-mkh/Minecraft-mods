@@ -29,10 +29,10 @@ public abstract class BlockFluid extends Block
      */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        if (blockMaterial == Material.water && mod_noBiomesX.Generator==2 && mod_noBiomesX.MapFeatures==1){
+        if (blockMaterial == Material.water && mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_10){
             BiomeGenBase biomegenbase = par1IBlockAccess.getBiomeGenForCoords(par2, par4);
             return biomegenbase.waterColorMultiplier;
-        } else if (blockMaterial == Material.water && mod_noBiomesX.Generator==2 && mod_noBiomesX.MapFeatures>=2)
+        } else if (blockMaterial == Material.water && mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES && mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_10)
         {
             int i = 0;
             int j = 0;

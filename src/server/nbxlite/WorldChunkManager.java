@@ -35,15 +35,15 @@ public class WorldChunkManager
         biomesToSpawnIn = new ArrayList();
         biomesToSpawnIn.add(BiomeGenBase.forest);
         biomesToSpawnIn.add(BiomeGenBase.taiga);
-        if (mod_noBiomesX.MapFeatures<2){
+        if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11){
             biomesToSpawnIn.add(BiomeGenBase.swampland);
         }
-        if (mod_noBiomesX.MapFeatures>=2){
+        if (mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_11){
             biomesToSpawnIn.add(BiomeGenBase.plains);
             biomesToSpawnIn.add(BiomeGenBase.taigaHills);
             biomesToSpawnIn.add(BiomeGenBase.forestHills);
         }
-        if (mod_noBiomesX.MapFeatures==3){
+        if (mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_12){
             biomesToSpawnIn.add(BiomeGenBase.jungle);
             biomesToSpawnIn.add(BiomeGenBase.jungleHills);
         }
@@ -55,7 +55,7 @@ public class WorldChunkManager
         GenLayer agenlayer[] = GenLayer.func_48391_a(par1, par3WorldType);
         genBiomes = agenlayer[0];
         biomeIndexLayer = agenlayer[1];
-        if (mod_noBiomesX.MapFeatures!=3){
+        if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
             temperatureLayer = agenlayer[2];
             rainfallLayer = agenlayer[3];
         }
@@ -80,7 +80,7 @@ public class WorldChunkManager
 
     public OldBiomeGenBase oldGetBiomeGenAt(int i, int j)
     {
-        if(mod_noBiomesX.Generator==0)
+        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS)
         {
             return OldBiomeGenBase.notABiome;
         } else

@@ -251,7 +251,7 @@ public class ChunkProviderGenerateBeta
                         continue;
                     }
                     j1 = rand.nextInt(4);
-                    if(mod_noBiomesX.MapFeatures>=2)
+                    if(mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_BETA14)
                     {
                         byte2 = (byte)Block.sandStone.blockID;
                     }

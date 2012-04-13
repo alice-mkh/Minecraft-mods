@@ -163,10 +163,10 @@ public class GuiNBXlite extends GuiScreen{
                 mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
             }
             mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
             }
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
                 mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
                 mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();

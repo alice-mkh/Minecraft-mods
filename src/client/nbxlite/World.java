@@ -359,7 +359,7 @@ public class World implements IBlockAccess
             mapGen=mod_noBiomesX.Generator+1;
             mapGenExtra=mod_noBiomesX.MapFeatures;
             mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false, mod_noBiomesX.GenerateNewOres);
-            if(mod_noBiomesX.Generator==0 && !isHotWorld && mod_noBiomesX.MapFeatures==0)
+            if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !isHotWorld && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201)
             {
                 byte byte0 = 4;
                 if(worldInfo.getMapTheme() == 2)
@@ -377,15 +377,15 @@ public class World implements IBlockAccess
             }else{
                 mod_noBiomesX.SnowCovered=false;
             }
-            if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
-                if (mod_noBiomesX.IndevMapType==1){
+                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
                     gen2.island=true;
                 }
-                if (mod_noBiomesX.IndevMapType==2){
+                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
                     gen2.floating=true;
                 }
-                if (mod_noBiomesX.IndevMapType==3){
+                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
                     gen2.flat=true;
                 }
                 gen2.theme=mod_noBiomesX.MapTheme;
@@ -405,7 +405,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
-            }else if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
+            }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                 mod_noBiomesX.IndevHeight = 64;
                 ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
                 ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
@@ -463,17 +463,17 @@ public class World implements IBlockAccess
 
     public void setWorldTheme()
     {
-        if(mod_noBiomesX.Generator==0){
+        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
             int i = mod_noBiomesX.MapTheme;
             if(i == 0)
             {
-                if (mod_noBiomesX.MapFeatures==1){
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420){
                     skyColor = 0x99ccff;
                     fogColor = 0xb0d0ff;
-                }else if (mod_noBiomesX.MapFeatures==2){
+                }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                     skyColor = 0x0000ffL;
                     fogColor = 0xffffffL;
-                }else if (mod_noBiomesX.MapFeatures>=3){
+                }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                     skyColor = 0x99ccffL;
                     fogColor = 0xffffffL;
                 }else{
@@ -508,7 +508,7 @@ public class World implements IBlockAccess
                 isHotWorld = true;
             }
         }else{
-            if (mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
                 skyColor = 0xb9b8f4;
                 fogColor = 0x9493bb;
             }else{
@@ -535,8 +535,8 @@ public class World implements IBlockAccess
      */
     protected void generateSpawnPoint()
     {
-        if (mod_noBiomesX.Generator==2){
-            if (mod_noBiomesX.MapFeatures!=2){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11){
                 findingSpawnPoint = true;
                 WorldChunkManager worldchunkmanager = getWorldChunkManager();
                 List list = worldchunkmanager.getBiomesToSpawnIn();
@@ -602,13 +602,13 @@ public class World implements IBlockAccess
                 worldInfo.setSpawnPosition(i, j, k);
                 findingSpawnPoint = false;
             }
-        }else if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==3){
+        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
             setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
             setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
             findingSpawnPoint = false;
-        }else if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures==4){
+        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
             findingSpawnPoint = false;
@@ -638,13 +638,13 @@ public class World implements IBlockAccess
      */
     public void setSpawnLocation()
     {
-        if (mod_noBiomesX.Generator==0 && mod_noBiomesX.MapFeatures>=3){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
             findingSpawnPoint = true;
             worldInfo.setSpawnX(worldInfo.getSpawnX());
             worldInfo.setSpawnY(worldInfo.getSpawnY());
             worldInfo.setSpawnZ(worldInfo.getSpawnZ());
             findingSpawnPoint = false;
-        }else if (mod_noBiomesX.Generator!=2){
+        }else if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES){
             if(worldInfo.getSpawnY() <= 0)
             {
                 worldInfo.setSpawnY(64);
@@ -674,7 +674,7 @@ public class World implements IBlockAccess
                 i += rand.nextInt(8) - rand.nextInt(8);
                 j += rand.nextInt(8) - rand.nextInt(8);
             } while(++k != 10000);
-            if (mod_noBiomesX.MapFeatures!=2){
+            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11){
                 for(j = worldInfo.getSpawnZ(); getFirstUncoveredBlock(i, j) == 0; j += rand.nextInt(8) - rand.nextInt(8))
                 {
                     i += rand.nextInt(8) - rand.nextInt(8);
@@ -792,7 +792,7 @@ public class World implements IBlockAccess
      */
     public int getBlockId(int par1, int par2, int par3)
     {
-        if (mod_noBiomesX.Generator == 0 && mod_noBiomesX.MapFeatures==4){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
             if (par2<0){
                 return (byte)Block.bedrock.blockID;
             }
@@ -1993,7 +1993,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getSkyColor(Entity entity, float f)
     {
-        if((mod_noBiomesX.Generator!=0 || ModLoader.getMinecraftInstance().thePlayer.dimension == 1) && !(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5))
+        if((mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || ModLoader.getMinecraftInstance().thePlayer.dimension == 1) && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY))
         {
             float f1 = getCelestialAngle(f);
             float f3 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -2009,9 +2009,9 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1 && !(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=5)){
-                if (mod_noBiomesX.Generator==2 || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
-                    if (mod_noBiomesX.MapFeatures<3){
+            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY)){
+                if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
+                    if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
                         f7 = 0.2146759F;
                         k = -8477697;
                     }else{
@@ -2087,7 +2087,7 @@ public class World implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
-        if(mod_noBiomesX.Generator == 1 && mod_noBiomesX.MapFeatures>=5){
+        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return 0.0F;
         }
         if(totalSkyLight == 16){
@@ -3157,7 +3157,7 @@ public class World implements IBlockAccess
         }
 
         worldProvider.worldChunkMgr.cleanupCache();
-        if (mod_noBiomesX.Generator==2 ||(mod_noBiomesX.Generator==1 && mod_noBiomesX.MapFeatures>=3 && mod_noBiomesX.MapFeatures<5)){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES ||(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA15 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA173))){
             updateWeather();
         }
 
@@ -3466,7 +3466,7 @@ public class World implements IBlockAccess
             }
 
             Profiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && mod_noBiomesX.Generator==0 && snowCovered && mod_noBiomesX.SnowCovered && ModLoader.getMinecraftInstance().thePlayer.dimension==0)
+            if(rand.nextInt(4) == 0 && mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && snowCovered && mod_noBiomesX.SnowCovered && ModLoader.getMinecraftInstance().thePlayer.dimension==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
@@ -3486,7 +3486,7 @@ public class World implements IBlockAccess
                         setBlockWithNotify(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
                     }
                 }
-            }else if (mod_noBiomesX.Generator==2){
+            }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l7 = updateLCG >> 2;
                 int l8 = l7 & 0xf;
@@ -3501,7 +3501,7 @@ public class World implements IBlockAccess
                     setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
                 }
             }else{
-                if(rand.nextInt(16) == 0 && mod_noBiomesX.MapFeatures==4)
+                if(rand.nextInt(16) == 0 && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA15 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA173))
                 {
                     updateLCG = updateLCG * 3 + 0x3c6ef35f;
                     int l7 = updateLCG >> 2;
@@ -4866,7 +4866,7 @@ public class World implements IBlockAccess
             return false;
         }
 
-        if (mod_noBiomesX.Generator==2){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
             BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
             if (biomegenbase.getEnableSnow())
             {

@@ -98,7 +98,7 @@ public class ChunkProviderGenerateOldInfdev
                     } else
                     if(k1 == f1 && f1 >= 64)
                     {
-                        if (mod_noBiomesX.MapTheme == 1){
+                        if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                             l1 = Block.dirt.blockID;
                         }else{
                             l1 = Block.grass.blockID;
@@ -114,7 +114,7 @@ public class ChunkProviderGenerateOldInfdev
                     } else
                     if(k1 <= 64)
                     {
-                        if (mod_noBiomesX.MapTheme == 1){
+                        if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                             l1 = Block.lavaStill.blockID;
                         }else{
                             l1 = Block.waterStill.blockID;
@@ -173,7 +173,7 @@ public class ChunkProviderGenerateOldInfdev
 
     public void populate(IChunkProvider ichunkprovider2, int i1, int j1)
     {
-        if (mod_noBiomesX.MapTheme == 2){
+        if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS){
             int l3 = (int)((d.func_806_a((double)i1 * 8D, (double)j1 * 8D) / 8D + a.nextDouble() * 4D + 4D) / 3D);
             if(l3 < 0)
             {

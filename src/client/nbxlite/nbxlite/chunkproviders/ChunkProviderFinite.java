@@ -28,35 +28,35 @@ public class ChunkProviderFinite
                 for (int l = 0; l < i; l++)
                 {
                     int i1 = 0;
-                    if (mod_noBiomesX.MapFeatures==4){
+                    if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                         if (l <= altitude-3){
                             i1 = Block.bedrock.blockID;
                         }else if (l < altitude && l > altitude-3){
-                            if (mod_noBiomesX.MapTheme==1){
+                            if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                                 i1 = Block.lavaStill.blockID;
                             }else{
                                 i1 = Block.waterStill.blockID;
                             }
                         }
                     }else{
-                        if (mod_noBiomesX.IndevMapType==1){
+                        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
                             if (l <= altitude-11){
                                 i1 = Block.bedrock.blockID;
                             }else  if (l == altitude-10){
                                 i1 = Block.dirt.blockID;
                             }else if (l < altitude && l > altitude-11){
-                                if (mod_noBiomesX.MapTheme==1){
+                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                                     i1 = Block.lavaStill.blockID;
                                 }else{
                                     i1 = Block.waterStill.blockID;
                                 }
                             }
                         }
-                        if (mod_noBiomesX.IndevMapType==0 || mod_noBiomesX.IndevMapType==3){
+                        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_INLAND || mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
                             if (l <= altitude-1){
                                 i1 = Block.bedrock.blockID;
                             }else if (l == altitude){
-                                if (mod_noBiomesX.MapTheme==1){
+                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                                     i1 = Block.dirt.blockID;
                                 }else{
                                     i1 = Block.grass.blockID;
@@ -80,15 +80,15 @@ public class ChunkProviderFinite
         Chunk chunk;
         if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
             if (mod_noBiomesX.IndevWorld==null){
-                if (mod_noBiomesX.MapFeatures==3){
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                     IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
-                    if (mod_noBiomesX.IndevMapType==1){
+                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
                         gen2.island=true;
                     }
-                    if (mod_noBiomesX.IndevMapType==2){
+                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
                         gen2.floating=true;
                     }
-                    if (mod_noBiomesX.IndevMapType==3){
+                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
                         gen2.flat=true;
                     }
                     gen2.theme=mod_noBiomesX.MapTheme;

@@ -161,7 +161,7 @@ public class ChunkProviderGenerateInfdev
                                 int k6 = 0;
                                 if((l2 << 3) + k5 < 64)
                                 {
-                                    if (mod_noBiomesX.MapTheme==1){
+                                    if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                                         k6 = Block.lavaStill.blockID;
                                     }else{
                                         k6 = Block.waterStill.blockID;
@@ -192,7 +192,7 @@ public class ChunkProviderGenerateInfdev
                 double d2 = (i1 << 4) + l1;
                 double d4 = (j1 << 4) + j2;
                 double asd = 0.0D;
-                if(mod_noBiomesX.MapTheme == 3)
+                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_PARADISE)
                 {
                     asd = -0.29999999999999999D;
                 }
@@ -202,7 +202,7 @@ public class ChunkProviderGenerateInfdev
                 int j4 = l1 << 11 | j2 << 7 | 0x7f;
                 int k4 = -1;
                 int l4;
-                if (mod_noBiomesX.MapTheme==1){
+                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                     l4 = Block.dirt.blockID;
                 }else{
                     l4 = Block.grass.blockID;
@@ -225,7 +225,7 @@ public class ChunkProviderGenerateInfdev
                             } else
                             if(j5 >= 60 && j5 <= 65)
                             {
-                                if (mod_noBiomesX.MapTheme==1){
+                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                                     l4 = Block.dirt.blockID;
                                     i5 = Block.dirt.blockID;
                                     if(flag1)
@@ -267,7 +267,7 @@ public class ChunkProviderGenerateInfdev
                             }
                             if(j5 < 64 && l4 == 0)
                             {
-                                if (mod_noBiomesX.MapTheme==1){
+                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                                     l4 = Block.lavaStill.blockID;
                                 }else{
                                     l4 = Block.waterStill.blockID;
@@ -370,7 +370,7 @@ public class ChunkProviderGenerateInfdev
         {
             j1++;
         }
-        if(mod_noBiomesX.MapTheme == 2)
+        if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS)
         {
             j1 += 20;
         }

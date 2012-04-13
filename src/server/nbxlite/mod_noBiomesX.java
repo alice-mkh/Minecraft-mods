@@ -10,12 +10,12 @@ public class mod_noBiomesX extends BaseModMp{
         MapFeatures = pmanager.getIntProperty("features", 2);
         MapTheme = pmanager.getIntProperty("theme", 0);
         UseNewSpawning = pmanager.getBooleanProperty("new-spawning", false);
-        if (Generator==0 && MapFeatures==0 && MapTheme!=1 && MapTheme!=3){
+        if (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201 && MapTheme!=THEME_HELL && MapTheme!=THEME_PARADISE){
             SnowCovered = pmanager.getBooleanProperty("snow-covered", false);
         }else{
             SnowCovered = false;
         }
-        if (Generator==0 && MapFeatures==3){
+        if (Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC)){
             IndevMapType = pmanager.getIntProperty("indev-map-type", 1);
             IndevWidthX = pmanager.getIntProperty("indev-width", 256);
             IndevWidthZ = pmanager.getIntProperty("indev-length", 256);
@@ -33,7 +33,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public void onTickInGame(MinecraftServer minecraft){
-        if (Generator==0 && MapFeatures>=3){
+        if (Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC)){
             tickPushing(minecraft);
         }
         return;
@@ -50,7 +50,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     private void pushBack(Entity entity){
-        if (MapFeatures==3){
+        if (MapFeatures==FEATURES_INDEV){
             if (entity.posX>IndevWidthX+8){
                 entity.motionX-=(entity.posX-IndevWidthX)/950;
             }
@@ -64,7 +64,7 @@ public class mod_noBiomesX extends BaseModMp{
                 entity.motionZ-=(entity.posZ)/950;
             }
         }
-        if (MapFeatures==4){
+        if (MapFeatures==FEATURES_CLASSIC){
             if (entity.posX>IndevWidthX){
                 entity.motionX-=0.5;
             }
@@ -141,4 +141,36 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnZ;
     public static byte[] IndevWorld;
     public static boolean UseNewSpawning;
+
+    public static int GEN_BIOMELESS = 0;
+    public static int GEN_OLDBIOMES = 1;
+    public static int GEN_NEWBIOMES = 2;
+
+    public static int FEATURES_ALPHA11201 = 0;
+    public static int FEATURES_INFDEV0420 = 1;
+    public static int FEATURES_INFDEV0227 = 2;
+    public static int FEATURES_INDEV = 3;
+    public static int FEATURES_CLASSIC = 4;
+
+    public static int FEATURES_ALPHA120 = 0;
+    public static int FEATURES_BETA12 = 1;
+    public static int FEATURES_BETA14 = 2;
+    public static int FEATURES_BETA15 = 3;
+    public static int FEATURES_BETA173 = 4;
+    public static int FEATURES_SKY = 5;
+
+    public static int FEATURES_BETA181 = 0;
+    public static int FEATURES_10 = 1;
+    public static int FEATURES_11 = 2;
+    public static int FEATURES_12 = 3;
+
+    public static int THEME_NORMAL = 0;
+    public static int THEME_HELL = 1;
+    public static int THEME_WOODS = 2;
+    public static int THEME_PARADISE = 3;
+
+    public static int TYPE_INLAND = 0;
+    public static int TYPE_ISLAND = 1;
+    public static int TYPE_FLOATING = 2;
+    public static int TYPE_FLAT = 3;
 }

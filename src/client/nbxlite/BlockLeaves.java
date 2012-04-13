@@ -46,14 +46,14 @@ public class BlockLeaves extends BlockLeavesBase
         }
         if ((par1 & 3) == 3)
         {
-            if (mod_noBiomesX.Generator==0){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 return 0x5fff3f;
             }
             return ColorizerFoliage.getFoliageColorBasic();
         }
         else
         {
-            if (mod_noBiomesX.Generator==0){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 if (mod_noBiomesX.FallbackColors){
                     return 0x5fff3f;
                 }
@@ -332,7 +332,7 @@ public class BlockLeaves extends BlockLeavesBase
         }
         else
         {
-            if (mod_noBiomesX.Generator!=0 || (par2 & 3) == 2 || mod_noBiomesX.FallbackColors){
+            if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || (par2 & 3) == 2 || mod_noBiomesX.FallbackColors){
                 return blockIndexInTexture;
             }
             if (graphicsLevel){
