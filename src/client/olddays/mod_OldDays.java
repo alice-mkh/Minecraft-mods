@@ -142,7 +142,7 @@ public class mod_OldDays extends BaseMod{
         }catch (Exception ex){}
     }
 
-    private GuiOldDaysModules moduleGui;
+    protected GuiOldDaysModules moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static String[][] propname;
     public static boolean[][] propvalue;
