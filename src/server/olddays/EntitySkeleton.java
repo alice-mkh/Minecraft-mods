@@ -54,7 +54,7 @@ public class EntitySkeleton extends EntityMob
                     float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
                     worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
                     worldObj.spawnEntityInWorld(entityarrow);
-                    entityarrow.setArrowHeading(d, d2 + (double)f1, d1, 0.6F, 12F);
+                    entityarrow.setArrowHeading(d, d2 + (double)f1, d1, /*0.6*/1.1F, 12F);
                     attackTime = 30;
                 }else{
                     double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.69999998807907104D - entityarrow.posY;
