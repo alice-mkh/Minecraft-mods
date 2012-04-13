@@ -36,6 +36,11 @@ public class mod_OldDays extends BaseMod{
 
     public static void registerModule(int num){
         modulenum = num;
+        modulegui[modulenum] = null;
+    }
+
+    public static void registerGui(GuiScreen gui){
+        modulegui[modulenum] = gui;
     }
 
     public static void loadModuleProperties(){
@@ -147,4 +152,5 @@ public class mod_OldDays extends BaseMod{
     public static String[] modules2 = new String[10];
     public static int modulecount = 0;
     private static int modulenum;
+    public static GuiScreen[] modulegui = new GuiScreen[10];
 }

@@ -42,7 +42,11 @@ public class GuiOldDaysModules extends GuiScreen{
         {
             mc.displayGuiScreen(parent);
         }else{
-            mc.displayGuiScreen(new GuiOldDaysSettings(this,guibutton.id-1));
+            if (mod_OldDays.modulegui[guibutton.id-1] == null){
+                mc.displayGuiScreen(new GuiOldDaysSettings(this,guibutton.id-1));
+            }else{
+                mc.displayGuiScreen(mod_OldDays.modulegui[guibutton.id-1]);
+            }
         }
     }
 
