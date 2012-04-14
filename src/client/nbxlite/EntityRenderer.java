@@ -874,15 +874,22 @@ public class EntityRenderer
                 float f1 = world.worldProvider.lightBrightnessTable[i1];
                 int j1 = (int)(f * 255F);
                 int k1 = (int)(f1 * 255F);
-//                 float f5 = (float)(15 - k) / 15F;
+                float f2 = 1.0F - (float)mod_noBiomesX.LightTintRed / 255F;
+                float f3 = 1.0F - (float)mod_noBiomesX.LightTintGreen / 255F;
+                float f4 = 1.0F - (float)mod_noBiomesX.LightTintBlue / 255F;
+                float f5 = (float)(15 - k) / 15F;
+                f2 *= f5;
+                f3 *= f5;
+                f4 *= f5;
+                f2 = 1.0F - f2;
+                f3 = 1.0F - f3;
+                f4 = 1.0F - f4;
                 j1 = (int)((float)j1 * (mc.gameSettings.gammaSetting + 1.0F));
-//                 j1 = (int)((float)j1 * ((mc.gameSettings.gammaSetting * 3.0F) + 1.0F) + ((16 - f)/2.0F));
                 if(j1 > 255)
                 {
                     j1 = 255;
                 }
                 k1 = (int)((float)k1 * (mc.gameSettings.gammaSetting + 1.0F));
-//                 k1 = (int)((float)k1 * ((mc.gameSettings.gammaSetting * 3.0F) + 1.0F) + ((16 - f)/2.0F));
                 if(k1 > 255)
                 {
                     k1 = 255;
@@ -890,10 +897,10 @@ public class EntityRenderer
                 char c = '\377';
                 if(f > f1)
                 {
-                    lightmapColors[j] = c << 24 | j1 << 16 | j1 << 8 | j1;
+                    lightmapColors[j] = c << 24 | (int)((float)j1 * f2) << 16 | (int)((float)j1 * f3) << 8 | (int)((float)j1 * f4);
                 } else
                 {
-                    lightmapColors[j] = c << 24 | k1 << 16 | k1 << 8 | k1;
+                    lightmapColors[j] = c << 24 | (int)((float)k1 * f2) << 16 | (int)((float)k1 * f3) << 8 | (int)((float)k1 * f4);
                 }
                 j++;
             }

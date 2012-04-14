@@ -413,6 +413,10 @@ public class mod_noBiomesX extends BaseModMp{
     public static int DefaultFiniteLength = 2;
     public static int DefaultFiniteDepth = 32;
     public static boolean DefaultNewOres = false;
+   
+    public static int LightTintRed = 255;
+    public static int LightTintGreen = 255;
+    public static int LightTintBlue = 255;
 
     public static int GEN_BIOMELESS = 0;
     public static int GEN_OLDBIOMES = 1;
@@ -444,5 +448,5 @@ public class mod_noBiomesX extends BaseModMp{
     public static int TYPE_INLAND = 0;
     public static int TYPE_ISLAND = 1;
     public static int TYPE_FLOATING = 2;
-    public static int TYPE_FLAT = 3; 
+    public static int TYPE_FLAT = 3;
 }
