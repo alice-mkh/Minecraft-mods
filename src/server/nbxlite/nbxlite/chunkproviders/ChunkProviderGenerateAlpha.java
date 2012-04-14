@@ -635,7 +635,7 @@ public class ChunkProviderGenerateAlpha
                 }
             }
         }
-        if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+        if (mod_noBiomesX.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(k + 16, l + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
         }

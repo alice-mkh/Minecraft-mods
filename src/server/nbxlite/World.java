@@ -333,7 +333,6 @@ public class World implements IBlockAccess
             }
             mapGen = worldInfo.getMapGen();
             mapGenExtra = worldInfo.getMapGenExtra();
-            mod_noBiomesX.MobSpawning=mapGen-1;
             if (mapGen==1 && mapGenExtra==1){
                 mod_noBiomesX.LeavesDecay=false;
             }else{
@@ -347,7 +346,7 @@ public class World implements IBlockAccess
             mapTypeIndev = worldInfo.getIndevMapType();
             worldProvider.registerWorld(this);
         }
-        if(mod_noBiomesX.MobSpawning==0)
+        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS)
         {
             turnOnOldSpawners();
         }
@@ -2631,11 +2630,11 @@ public class World implements IBlockAccess
         Profiler.startSection("mobSpawner");
 //         SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
         if (worldProvider.worldType!=1){
-            if (mod_noBiomesX.MobSpawning==2 || mod_noBiomesX.UseNewSpawning){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.UseNewSpawning){
                 SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (mod_noBiomesX.MobSpawning==1 || worldProvider.worldType!=0){
+            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES || worldProvider.worldType!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
-            } else if (mod_noBiomesX.MobSpawning==0){
+            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 animalSpawner.func_1150_a(this);
                 monsterSpawner.func_1150_a(this);
                 waterMobSpawner.func_1150_a(this);

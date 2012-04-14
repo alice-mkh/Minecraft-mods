@@ -3181,11 +3181,11 @@ public class World implements IBlockAccess
         Profiler.startSection("mobSpawner");
 //         SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
         if (ModLoader.getMinecraftInstance().thePlayer.dimension!=1){
-            if (mod_noBiomesX.MobSpawning==2 || mod_noBiomesX.UseNewSpawning){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.UseNewSpawning){
                 SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (mod_noBiomesX.MobSpawning==1 || ModLoader.getMinecraftInstance().thePlayer.dimension!=0){
+            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
-            } else if (mod_noBiomesX.MobSpawning==0){
+            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 animalSpawner.func_1150_a(this);
                 monsterSpawner.func_1150_a(this);
                 waterMobSpawner.func_1150_a(this);

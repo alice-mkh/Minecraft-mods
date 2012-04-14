@@ -610,7 +610,7 @@ public class ChunkProviderGenerateRelease
         }
 
         biomegenbase.decorate(worldObj, rand, k, l);
-        if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+        if (mod_noBiomesX.UseNewSpawning){
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
         }
         if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){

@@ -122,17 +122,16 @@ public class mod_noBiomesX extends BaseModMp{
         return false;
     }
 
-    public static int Generator = 1; //0 - alpha; 1 - halloween/beta; 2 - 1.0
+    public static int Generator = 1;
     public static boolean OldSpawners = false;
     public static boolean GenerateNewOres = true;
     public static boolean SnowCovered = false;
     public static boolean ClassicLight=true;
     public static boolean LeavesDecay=true;
     public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
-    public static int MobSpawning=0;
     public static int MapTheme = 0;
     public static int MapFeatures = 2;
-    public static int IndevMapType=0;//0 - inland; 1 - island; 2 - floating; 3 - flat
+    public static int IndevMapType=0;
     public static int IndevHeight = 64;
     public static int IndevWidthX = 256;
     public static int IndevWidthZ = 256;

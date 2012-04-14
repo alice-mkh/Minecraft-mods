@@ -381,7 +381,7 @@ public class ChunkProviderGenerateInfdev
             treegen.setScale(1.0D, 1.0D, 1.0D);
             treegen.generate(worldObj, rand, j4, worldObj.getHeightValue(j4, k4), k4);
         }
-        if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+        if (mod_noBiomesX.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i1 * 16) + 16, (j1 * 16) + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i1 * 16) + 8, (j1 * 16) + 8, 16, 16, rand);
         }

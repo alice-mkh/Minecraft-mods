@@ -407,7 +407,7 @@ public class ChunkProviderGenerateBeta
         if(k == 0)
         {
             populate_halloween(ichunkprovider, i, j);
-            if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+            if (mod_noBiomesX.UseNewSpawning){
                 BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i * 16) + 16, (j * 16) + 16);
                 SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i * 16) + 8, (j * 16) + 8, 16, 16, rand);
             }
@@ -416,7 +416,7 @@ public class ChunkProviderGenerateBeta
         if(k == 1)
         {
             populate_12(ichunkprovider, i, j);
-            if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+            if (mod_noBiomesX.UseNewSpawning){
                 BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i * 16) + 16, (j * 16) + 16);
                 SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i * 16) + 8, (j * 16) + 8, 16, 16, rand);
             }
@@ -425,7 +425,7 @@ public class ChunkProviderGenerateBeta
         if(k == 2|| k == 3)
         {
             populate_14(ichunkprovider, i, j);
-            if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+            if (mod_noBiomesX.UseNewSpawning){
                 BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i * 16) + 16, (j * 16) + 16);
                 SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i * 16) + 8, (j * 16) + 8, 16, 16, rand);
             }
@@ -741,7 +741,7 @@ public class ChunkProviderGenerateBeta
             }
         }
         BlockSand.fallInstantly = false;
-        if (mod_noBiomesX.UseNewSpawning || mod_noBiomesX.MobSpawning==2){
+        if (mod_noBiomesX.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(l + 16, i1 + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, l + 8, i1 + 8, 16, 16, rand);
         }
