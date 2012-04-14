@@ -2090,6 +2090,9 @@ public class World implements IBlockAccess
         if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return 0.0F;
         }
+        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
+            return 1.0F;
+        }
         if(totalSkyLight == 16){
             return 1.0F;
         }
