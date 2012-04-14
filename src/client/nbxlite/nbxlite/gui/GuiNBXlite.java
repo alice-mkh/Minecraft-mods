@@ -37,12 +37,14 @@ public class GuiNBXlite extends GuiScreen{
     public GuiNBXlite(GuiScreen guiscreen){
         parent = guiscreen;
         newworld = true;
+        newores = mod_noBiomesX.DefaultNewOres;
     }
 
     public GuiNBXlite(GuiScreen guiscreen, boolean ingame){
         parent = guiscreen;
         newworld = true;
         olddays = true;
+        newores = mod_noBiomesX.DefaultNewOres;
     }
 
     public GuiNBXlite(GuiScreen guiscreen, String world, int i)
@@ -51,6 +53,7 @@ public class GuiNBXlite extends GuiScreen{
         parent = guiscreen;
         number = i;
         newworld = false;
+        newores = mod_noBiomesX.DefaultNewOres;
     }
 
     public void updateScreen()

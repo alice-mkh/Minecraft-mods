@@ -116,7 +116,20 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.typecurrent = GeneratorList.typedefault;
         GeneratorList.xcurrent = GeneratorList.xdefault;
         GeneratorList.zcurrent = GeneratorList.zdefault;
-        mod_noBiomesX.IndevHeight=64;
+        mod_noBiomesX.Generator = GeneratorList.genfeatures[GeneratorList.gendefault];
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+            mod_noBiomesX.MapFeatures = GeneratorList.genfeats[GeneratorList.gendefault];
+        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
+            mod_noBiomesX.MapFeatures = GeneratorList.feat1default;
+        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+            mod_noBiomesX.MapFeatures = GeneratorList.feat2default;
+        }
+        mod_noBiomesX.MapTheme = GeneratorList.themedefault;
+        mod_noBiomesX.IndevMapType = GeneratorList.typedefault;
+        mod_noBiomesX.IndevWidthX = GeneratorList.sizes[GeneratorList.xdefault];
+        mod_noBiomesX.IndevWidthZ = GeneratorList.sizes[GeneratorList.zdefault];
+        mod_noBiomesX.IndevHeight = mod_noBiomesX.DefaultFiniteDepth+32;
+        mod_noBiomesX.GenerateNewOres = mod_noBiomesX.DefaultNewOres;
     }
 
     public static String genNBXliteButtonName(){
@@ -281,7 +294,7 @@ public class GuiCreateWorld2 extends GuiScreen
             gameModeButton.drawButton = !moreOptions;
             generateStructuresButton.drawButton = moreOptions;
             worldTypeButton.drawButton = moreOptions;
-            nbxliteButton.drawButton = moreOptions;
+            nbxliteButton.drawButton = moreOptions && !mod_noBiomesX.HideGUI;
 
             if (moreOptions)
             {

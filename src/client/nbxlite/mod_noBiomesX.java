@@ -9,7 +9,7 @@ import net.minecraft.src.nbxlite.lib.EasyLocalization;
 
 public class mod_noBiomesX extends BaseModMp{
     public mod_noBiomesX(){
-        NBXliteProperties properties = new NBXliteProperties();
+        Properties properties = new Properties();
         try{
             File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/NBXlite.properties").toString());
             boolean flag = file.createNewFile();
@@ -19,6 +19,16 @@ public class mod_noBiomesX extends BaseModMp{
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
                 properties.setProperty("UseCustomTextures",Boolean.toString(true));
                 properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(false));
+                properties.setProperty("HideGUI",Boolean.toString(false));
+                properties.setProperty("DefaultGenerator",Integer.toString(6));
+                properties.setProperty("DefaultFeaturesBeta",Integer.toString(4));
+                properties.setProperty("DefaultFeaturesRelease",Integer.toString(3));
+                properties.setProperty("DefaultTheme",Integer.toString(0));
+                properties.setProperty("DefaultIndevType",Integer.toString(1));
+                properties.setProperty("DefaultFiniteWidth",Integer.toString(2));
+                properties.setProperty("DefaultFiniteLength",Integer.toString(2));
+                properties.setProperty("DefaultFiniteDepth",Integer.toString(32));
+                properties.setProperty("DefaultNewOres",Boolean.toString(false));
                 properties.store(fileoutputstream,"NBXlite properties");
                 fileoutputstream.close();
             }
@@ -27,9 +37,19 @@ public class mod_noBiomesX extends BaseModMp{
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
             FallbackColors = !Boolean.parseBoolean(properties.getProperty("UseCustomTextures"));
             UseOpaqueFlatClouds = Boolean.parseBoolean(properties.getProperty("UseOpaqueFlatClouds"));
+            HideGUI = Boolean.parseBoolean(properties.getProperty("HideGUI"));
+            DefaultGenerator = Integer.parseInt(properties.getProperty("DefaultGenerator"));
+            DefaultFeaturesBeta = Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
+            DefaultFeaturesRelease = Integer.parseInt(properties.getProperty("DefaultFeaturesRelease"));
+            DefaultTheme = Integer.parseInt(properties.getProperty("DefaultTheme"));
+            DefaultIndevType = Integer.parseInt(properties.getProperty("DefaultIndevType"));
+            DefaultFiniteWidth = Integer.parseInt(properties.getProperty("DefaultFiniteWidth"));
+            DefaultFiniteLength = Integer.parseInt(properties.getProperty("DefaultFiniteLength"));
+            DefaultFiniteDepth = Integer.parseInt(properties.getProperty("DefaultFiniteDepth"));
+            DefaultNewOres = Boolean.parseBoolean(properties.getProperty("DefaultNewOres"));
         }
         catch(IOException ioexception){
-            ioexception.printStackTrace();
+            System.out.println(ioexception);
         }
     }
 
@@ -383,6 +403,16 @@ public class mod_noBiomesX extends BaseModMp{
     public static byte[] IndevWorld;
     public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
+    public static boolean HideGUI = true;
+    public static int DefaultGenerator = 6;
+    public static int DefaultFeaturesBeta = 4;
+    public static int DefaultFeaturesRelease = 3;
+    public static int DefaultTheme = 0;
+    public static int DefaultIndevType = 1;
+    public static int DefaultFiniteWidth = 2;
+    public static int DefaultFiniteLength = 2;
+    public static int DefaultFiniteDepth = 32;
+    public static boolean DefaultNewOres = false;
 
     public static int GEN_BIOMELESS = 0;
     public static int GEN_OLDBIOMES = 1;
