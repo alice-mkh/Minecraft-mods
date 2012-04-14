@@ -103,7 +103,7 @@ public class WorldInfo
         }
         else
         {
-            mapFeaturesEnabled = true;
+            mapFeaturesEnabled = mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES;
         }
 
         spawnX = par1NBTTagCompound.getInteger("SpawnX");
