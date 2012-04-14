@@ -15,8 +15,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 9, "Mob armor",             false, "MobArmor");
         addProperty(this, 10,"Old main menu",         true,  "OldMainMenu");
         addProperty(this, 11,"Old digging particles", true,  "OldDigging");
-        addProperty(this, 12,"Old item tooltips",     true,  "OldTooltips");
-        addProperty(this, 13,"Old ore blocks",        true,  "OldOreBlocks");
+        addProperty(this, 12,"Old ore blocks",        true,  "OldOreBlocks");
+//         addProperty(this, 13,"Old item tooltips",     true,  "OldTooltips");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -40,9 +40,9 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 10:GuiMainMenu.panorama =             !OldMainMenu;
                     GuiMainMenu.oldlogo =               OldMainMenu;       break;
             case 11:EntityDiggingFX.oldparticles =      OldDigging;        break;
-            case 12:GuiContainer.oldtooltips =          OldTooltips;       break;
-            case 13:BlockOreStorageOld.oldtextures =    OldOreBlocks;
+            case 12:BlockOreStorageOld.oldtextures =    OldOreBlocks;
                     ModLoader.getMinecraftInstance().renderGlobal.loadRenderers(); break;
+//             case 13:GuiContainer.oldtooltips =          OldTooltips;       break;
         }
     }
 
@@ -64,7 +64,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean MobArmor;
     public static boolean OldMainMenu = true;
     public static boolean OldDigging = true;
-    public static boolean OldTooltips = true;
+//     public static boolean OldTooltips = true;
     public static boolean OldOreBlocks = true;
 
     private void replaceBlocks(){
