@@ -38,18 +38,18 @@ public class mod_noBiomesX extends BaseModMp{
             FallbackColors = !Boolean.parseBoolean(properties.getProperty("UseCustomTextures"));
             UseOpaqueFlatClouds = Boolean.parseBoolean(properties.getProperty("UseOpaqueFlatClouds"));
             HideGUI = Boolean.parseBoolean(properties.getProperty("HideGUI"));
-            DefaultGenerator = Integer.parseInt(properties.getProperty("DefaultGenerator"));
-            DefaultFeaturesBeta = Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
-            DefaultFeaturesRelease = Integer.parseInt(properties.getProperty("DefaultFeaturesRelease"));
-            DefaultTheme = Integer.parseInt(properties.getProperty("DefaultTheme"));
-            DefaultIndevType = Integer.parseInt(properties.getProperty("DefaultIndevType"));
-            DefaultFiniteWidth = Integer.parseInt(properties.getProperty("DefaultFiniteWidth"));
-            DefaultFiniteLength = Integer.parseInt(properties.getProperty("DefaultFiniteLength"));
-            DefaultFiniteDepth = Integer.parseInt(properties.getProperty("DefaultFiniteDepth"));
+            DefaultGenerator = properties.getProperty("DefaultGenerator") == null ? 6 : Integer.parseInt(properties.getProperty("DefaultGenerator"));
+            DefaultFeaturesBeta = properties.getProperty("DefaultFeaturesBeta") == null ? 4 : Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
+            DefaultFeaturesRelease =properties.getProperty("DefaultFeaturesRelease") == null ? 3 : Integer.parseInt(properties.getProperty("DefaultFeaturesRelease"));
+            DefaultTheme = properties.getProperty("DefaultTheme") == null ? 0 : Integer.parseInt(properties.getProperty("DefaultTheme"));
+            DefaultIndevType = properties.getProperty("DefaultIndevType") == null ? 1 : Integer.parseInt(properties.getProperty("DefaultIndevType"));
+            DefaultFiniteWidth = properties.getProperty("DefaultFiniteWidth") == null ? 2 : Integer.parseInt(properties.getProperty("DefaultFiniteWidth"));
+            DefaultFiniteLength = properties.getProperty("DefaultFiniteLength") == null ? 2 : Integer.parseInt(properties.getProperty("DefaultFiniteLength"));
+            DefaultFiniteDepth = properties.getProperty("DefaultFiniteDepth") == null ? 32 : Integer.parseInt(properties.getProperty("DefaultFiniteDepth"));
             DefaultNewOres = Boolean.parseBoolean(properties.getProperty("DefaultNewOres"));
         }
-        catch(IOException ioexception){
-            System.out.println(ioexception);
+        catch(IOException exception){
+            System.out.println(exception);
         }
     }
 
