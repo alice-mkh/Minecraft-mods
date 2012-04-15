@@ -154,9 +154,6 @@ public class GuiIngame extends Gui
                 {
                     if (j9 > 0)
                     {
-                        if (hidehunger){
-                            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/olddays/icons.png"));
-                        }
                         int i11 = i6 - j10 * 8 - 9;
                         int intintintintint = k7;
                         if(!hidehunger){
@@ -169,17 +166,19 @@ public class GuiIngame extends Gui
                             drawTexturedModalRect(i11, intintintintint, 34, 9, 9, 9);
                         }
 
-                        if (j10 * 2 + 1 == j9)
-                        {
-                            drawTexturedModalRect(i11, intintintintint, 25, 9, 9, 9);
+                        if (j10 * 2 + 1 == j9){
+                            if (hidehunger){
+                                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/olddays/icons.png"));
+                                drawTexturedModalRect(i11, intintintintint, 0, 0, 9, 9);
+                                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
+                            }else{
+                                drawTexturedModalRect(i11, intintintintint, 25, 9, 9, 9);
+                            }
                         }
 
                         if (j10 * 2 + 1 > j9)
                         {
                             drawTexturedModalRect(i11, intintintintint, 16, 9, 9, 9);
-                        }
-                        if (hidehunger){
-                            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
                         }
                     }
 
