@@ -427,6 +427,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int FEATURES_INFDEV0227 = 2;
     public static int FEATURES_INDEV = 3;
     public static int FEATURES_CLASSIC = 4;
+    public static int FEATURES_INFDEV0608 = 5;
 
     public static int FEATURES_ALPHA120 = 0;
     public static int FEATURES_BETA12 = 1;

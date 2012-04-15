@@ -7,6 +7,7 @@ import net.minecraft.src.nbxlite.noise.InfdevNoiseGeneratorOctaves;
 import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenBigTree;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
 public class ChunkProviderGenerateInfdev
@@ -365,7 +366,11 @@ public class ChunkProviderGenerateInfdev
         {
             j1 = 0;
         }
-        OldWorldGenBigTree treegen = new OldWorldGenBigTree();
+        Object treegen = new OldWorldGenBigTree();
+        if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608)
+        {
+            treegen = new OldWorldGenTrees(false);
+        }
         if(rand.nextInt(100) == 0)
         {
             j1++;
@@ -378,8 +383,8 @@ public class ChunkProviderGenerateInfdev
         {
             int j4 = ii1 + rand.nextInt(16) + 8;
             int k4 = i1 + rand.nextInt(16) + 8;
-            treegen.setScale(1.0D, 1.0D, 1.0D);
-            treegen.generate(worldObj, rand, j4, worldObj.getHeightValue(j4, k4), k4);
+            ((WorldGenerator)treegen).setScale(1.0D, 1.0D, 1.0D);
+            ((WorldGenerator)treegen).generate(worldObj, rand, j4, worldObj.getHeightValue(j4, k4), k4);
         }
         if (mod_noBiomesX.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i1 * 16) + 16, (j1 * 16) + 16);

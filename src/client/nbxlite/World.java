@@ -467,7 +467,7 @@ public class World implements IBlockAccess
             int i = mod_noBiomesX.MapTheme;
             if(i == 0)
             {
-                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420){
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608){
                     skyColor = 0x99ccff;
                     fogColor = 0xb0d0ff;
                 }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){

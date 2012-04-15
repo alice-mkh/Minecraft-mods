@@ -36,7 +36,7 @@ public class ChunkProviderGenerate2
         {
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201){
                 return alphaGen.provideChunk(i, j);
-            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420){
+            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608){
                 return infdevGen.provideChunk(i, j);
             }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                 return oldInfdevGen.provideChunk(i, j);
@@ -63,7 +63,7 @@ public class ChunkProviderGenerate2
         {
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201){
                 alphaGen.populate(ichunkprovider, i, j);
-            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420){
+            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608){
                 infdevGen.populate(ichunkprovider, i, j);
             }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                 oldInfdevGen.populate(ichunkprovider, i, j);
@@ -109,7 +109,7 @@ public class ChunkProviderGenerate2
         {
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201){
                 return alphaGen.findClosestStructure(world, s, i, j, k);
-            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420){
+            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608){
                 return infdevGen.findClosestStructure(world, s, i, j, k);
             }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                 return oldInfdevGen.findClosestStructure(world, s, i, j, k);
