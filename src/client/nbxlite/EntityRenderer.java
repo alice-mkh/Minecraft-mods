@@ -872,6 +872,10 @@ public class EntityRenderer
                     i1 = 0;
                 }
                 float f1 = world.worldProvider.lightBrightnessTable[i1];
+                if (world.worldProvider.worldType == 1)
+                {
+                    f1 = 0.22F + f1 * 0.75F;
+                }
                 int j1 = (int)(f * 255F);
                 int k1 = (int)(f1 * 255F);
                 float f2 = 1.0F - (float)mod_noBiomesX.LightTintRed / 255F;
