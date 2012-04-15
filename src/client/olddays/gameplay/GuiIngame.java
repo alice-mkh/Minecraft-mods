@@ -101,11 +101,7 @@ public class GuiIngame extends Gui
             zLevel = -90F;
             drawTexturedModalRect(i / 2 - 91, j - 22, 0, 0, 182, 22);
             drawTexturedModalRect((i / 2 - 91 - 1) + inventoryplayer.currentItem * 20, j - 22 - 1, 0, 22, 24, 22);
-            if(hidehunger){
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/olddays/icons.png"));
-            }else{
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
-            }
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
             drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
@@ -158,6 +154,9 @@ public class GuiIngame extends Gui
                 {
                     if (j9 > 0)
                     {
+                        if (hidehunger){
+                            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/olddays/icons.png"));
+                        }
                         int i11 = i6 - j10 * 8 - 9;
                         int intintintintint = k7;
                         if(!hidehunger){
@@ -178,6 +177,9 @@ public class GuiIngame extends Gui
                         if (j10 * 2 + 1 > j9)
                         {
                             drawTexturedModalRect(i11, intintintintint, 16, 9, 9, 9);
+                        }
+                        if (hidehunger){
+                            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
                         }
                     }
 
