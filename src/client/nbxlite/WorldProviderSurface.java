@@ -85,14 +85,16 @@ public class WorldProviderSurface extends WorldProvider
             }
             return 160F;
         }
-        if(mod_noBiomesX.LowHangingClouds)
-        {
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
-                return mod_noBiomesX.IndevHeight+2;
-            }
-            return 108F;
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608)){
+            return 120F;
         }
-        return 128F;
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
+            return mod_noBiomesX.IndevHeight+2;
+        }
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+            return 128F;
+        }
+        return 108F;
     }
 
     public boolean isSkyColored()

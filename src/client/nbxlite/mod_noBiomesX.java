@@ -185,11 +185,9 @@ public class mod_noBiomesX extends BaseModMp{
             SunriseAtNorth=true;
         }
         if (packet.dataInt[0]==2){
-            LowHangingClouds=false;
             ClassicLight=false;
             VoidFog=true;
         }else{
-            LowHangingClouds=true;
             ClassicLight=true;
             VoidFog=false;
         }
@@ -339,11 +337,9 @@ public class mod_noBiomesX extends BaseModMp{
             SunriseAtNorth=true;
         }
         if (gen==2){
-            LowHangingClouds=false;
             ClassicLight=false;
             VoidFog=true;
         }else{
-            LowHangingClouds=true;
             ClassicLight=true;
             VoidFog=false;
         }
@@ -378,7 +374,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int Generator = 2;
     public static boolean SunriseEffect = true;
     public static boolean SnowCovered = false;
-    public static boolean LowHangingClouds = false;
     public static boolean ClassicLight=true;
     public static boolean VoidFog=false;
     public static boolean GreenGrassSides=false;
