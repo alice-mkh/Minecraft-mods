@@ -275,6 +275,53 @@ public class WorldChunkManager
      */
     public BiomeGenBase getBiomeGenAt(int par1, int par2)
     {
+        if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES){
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
+                return BiomeGenBase.sky;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.rainforest){
+                return BiomeGenBase.jungle;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.swampland){
+                return BiomeGenBase.swampland;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.seasonalForest){
+                return BiomeGenBase.forest;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.forest){
+                return BiomeGenBase.forest;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.savanna){
+                return BiomeGenBase.plains;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.shrubland){
+                return BiomeGenBase.plains;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.taiga){
+                return BiomeGenBase.taiga;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.desert){
+                return BiomeGenBase.desert;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.plains){
+                return BiomeGenBase.plains;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.iceDesert){
+                return BiomeGenBase.icePlains;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.tundra){
+                return BiomeGenBase.icePlains;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.hell){
+                return BiomeGenBase.hell;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.sky){
+                return BiomeGenBase.sky;
+            }
+            if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.notABiome){
+                return BiomeGenBase.plains;
+            }
+        }
         return biomeCache.getBiomeGenAt(par1, par2);
     }
 
