@@ -17,15 +17,53 @@ public class ChunkProviderFinite
         rand = new Random(l);
     }
 
-    private void generateBoundaries(byte abyte0[])
+    private int indexIndev(int x, int y, int z){
+        return x+(y*mod_noBiomesX.IndevWidthZ+z)*mod_noBiomesX.IndevWidthX;
+    }
+
+    private byte[] getChunkArray(int x1, int z1){
+        byte[] result = new byte[32768];
+        for (int x=0; x<16; x++){
+            for (int z=0; z<16; z++){
+                for (int y=0; y<Math.min(mod_noBiomesX.IndevHeight, 128); y++){
+                    byte block = mod_noBiomesX.IndevWorld[indexIndev(x+(x1*16), y, z+(z1*16))];
+                    if (block==0){
+                        continue;
+                    }
+                    result[x << 11 | z << 7 | y]=block;
+                }
+            }
+        }
+        return result;
+    }
+
+    private void fixDeepMaps(Chunk chunk, int x1, int z1){
+        for (int x=0; x<16; x++){
+            for (int z=0; z<16; z++){
+                for (int y=128; y<mod_noBiomesX.IndevHeight; y++){
+                    byte block = mod_noBiomesX.IndevWorld[indexIndev(x+(x1*16), y, z+(z1*16))];
+                    if (block==0){
+                        continue;
+                    }
+                    ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
+                    if (extendedblockstorage == null)
+                    {
+                        extendedblockstorage = chunk.getBlockStorageArray()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
+                    }
+                    extendedblockstorage.setExtBlockID(x, y & 0xf, z, block);
+                }
+            }
+        }
+    }
+
+    private void generateBoundaries(byte abyte0[], boolean tall)
     {
         int altitude = mod_noBiomesX.IndevHeight-32;
-        int i = abyte0.length / 256;
         for (int j = 0; j < 16; j++)
         {
             for (int k = 0; k < 16; k++)
             {
-                for (int l = 0; l < i; l++)
+                for (int l = 0; l <= altitude; l++)
                 {
                     int i1 = 0;
                     if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
@@ -64,7 +102,11 @@ public class ChunkProviderFinite
                             }
                         }
                     }
-                    abyte0[j << 11 | k << 7 | l] = (byte)i1;
+                    if (tall){
+                        abyte0[j << 11 | k << 8 | l] = (byte)i1;
+                    }else{
+                        abyte0[j << 11 | k << 7 | l] = (byte)i1;
+                    }
                 }
             }
         }
@@ -77,6 +119,8 @@ public class ChunkProviderFinite
 
     public Chunk provideChunk(int i, int j)
     {
+        boolean tall = mod_noBiomesX.IndevHeight>128;
+        boolean tall2 = mod_noBiomesX.IndevHeight>160;
         Chunk chunk;
         if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
             if (mod_noBiomesX.IndevWorld==null){
@@ -101,19 +145,20 @@ public class ChunkProviderFinite
                     mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 }
             }
-            Converter c = new Converter(mod_noBiomesX.IndevWorld, mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-            chunk = new Chunk(worldObj, c.getChunkArray(i, j), i, j);
-            if (mod_noBiomesX.IndevHeight>128){
-                c.fixDeepMaps(chunk, i, j);
+            chunk = new Chunk(worldObj, getChunkArray(i, j), i, j);
+            if (tall){
+                fixDeepMaps(chunk, i, j);
             }
         }else{
             byte abyte0[];
-            if (mod_noBiomesX.IndevHeight>128){
+            if (tall2){
                 abyte0= new byte[32768*2];
             }else{
                 abyte0= new byte[32768];
             }
-            generateBoundaries(abyte0);
+            if (mod_noBiomesX.IndevMapType!=mod_noBiomesX.TYPE_FLOATING){
+                generateBoundaries(abyte0, tall2);
+            }
             chunk = new Chunk(worldObj, abyte0, i, j);
         }
         chunk.generateSkylightMap();
