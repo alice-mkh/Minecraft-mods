@@ -76,7 +76,7 @@ public class ChunkProviderGenerateRelease
         worldObj.getClass();
         int j1 = 128 / 8 + 1;
         int k1 = byte0 + 1;
-        biomesForGeneration = worldObj.getWorldChunkManager().func_35557_b(biomesForGeneration, i * 4 - 2, j * 4 - 2, i1 + 5, k1 + 5);
+        biomesForGeneration = worldObj.getWorldChunkManager().getBiomesForGeneration(biomesForGeneration, i * 4 - 2, j * 4 - 2, i1 + 5, k1 + 5);
         field_4180_q = initializeNoiseField(field_4180_q, i * byte0, 0, j * byte0, i1, j1, k1);
         for(int l1 = 0; l1 < byte0; l1++)
         {
@@ -152,7 +152,7 @@ public class ChunkProviderGenerateRelease
         int i1 = byte0 + 1;
         int j1 = 17;
         int k1 = byte0 + 1;
-        biomesForGeneration = worldObj.getWorldChunkManager().func_35557_b(biomesForGeneration, i * 4 - 2, j * 4 - 2, i1 + 5, k1 + 5);
+        biomesForGeneration = worldObj.getWorldChunkManager().getBiomesForGeneration(biomesForGeneration, i * 4 - 2, j * 4 - 2, i1 + 5, k1 + 5);
         field_4180_q = initializeNoiseField(field_4180_q, i * byte0, 0, j * byte0, i1, j1, k1);
         for(int l1 = 0; l1 < byte0; l1++)
         {

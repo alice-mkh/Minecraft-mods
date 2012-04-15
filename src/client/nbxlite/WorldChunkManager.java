@@ -196,11 +196,6 @@ public class WorldChunkManager
         return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
     }
 
-    public BiomeGenBase[] func_35557_b(BiomeGenBase abiomegenbase[], int i, int j, int k, int l)
-    {
-        return getBiomesForGeneration(abiomegenbase, i, j, k, l);
-    }
-
     public ChunkPosition func_35556_a(int i, int j, int k, List list, Random random)
     {
         int l = i - k >> 2;

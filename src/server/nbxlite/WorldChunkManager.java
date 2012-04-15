@@ -262,11 +262,6 @@ public class WorldChunkManager
         return temperatureCache;
     }
 
-    public BiomeGenBase[] func_35557_b(BiomeGenBase abiomegenbase[], int i, int j, int k, int l)
-    {
-        return getBiomesForGeneration(abiomegenbase, i, j, k, l);
-    }
-
     /**
      * Gets the list of valid biomes for the player to spawn in.
      */
