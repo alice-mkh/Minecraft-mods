@@ -378,28 +378,30 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SnowCovered=false;
             }
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
-                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
-                    gen2.island=true;
-                }
-                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
-                    gen2.floating=true;
-                }
-                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
-                    gen2.flat=true;
-                }
-                gen2.theme=mod_noBiomesX.MapTheme;
-                ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
-                mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
-                    for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
-                        chunkProvider.provideChunk(x,z);
+                if (!mod_noBiomesX.FiniteImport){
+                    IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
+                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
+                        gen2.island=true;
                     }
+                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
+                        gen2.floating=true;
+                    }
+                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
+                        gen2.flat=true;
+                    }
+                    gen2.theme=mod_noBiomesX.MapTheme;
+                    ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                    for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
+                        for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                            chunkProvider.provideChunk(x,z);
+                        }
+                    }
+                    mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+                    mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+                    mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
+                    mod_noBiomesX.IndevWorld = null;
                 }
-                mod_noBiomesX.IndevSpawnX = gen2.spawnX;
-                mod_noBiomesX.IndevSpawnY = gen2.spawnY;
-                mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
-                mod_noBiomesX.IndevWorld = null;
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
@@ -440,8 +442,7 @@ public class World implements IBlockAccess
             mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
             mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
             worldProvider.registerWorld(this);
-         }
-
+        }
         calculateInitialSkylight();
         calculateInitialWeather();
     }

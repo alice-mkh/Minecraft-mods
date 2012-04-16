@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.src.*;
+import net.minecraft.src.mod_noBiomesX;
 
 public class GuiCreateWorld2 extends GuiScreen
 {
@@ -285,6 +286,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 mc.playerController = new PlayerControllerSP(mc);
             }
 
+            mod_noBiomesX.FiniteImport = false;
             mc.startWorld(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, WorldType.worldTypes[field_46030_z]));
             mc.displayGuiScreen(null);
         }

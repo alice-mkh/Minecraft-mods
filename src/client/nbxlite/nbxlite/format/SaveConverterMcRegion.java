@@ -23,6 +23,10 @@ public class SaveConverterMcRegion extends SaveFormatOld
         return "Scaevolus' McRegion";
     }
 
+    public File getSaveDirectory(){
+        return savesDirectory;
+    }
+
     public List getSaveList()
     {
         ArrayList arraylist = new ArrayList();
@@ -32,26 +36,40 @@ public class SaveConverterMcRegion extends SaveFormatOld
         for (int j = 0; j < i; j++)
         {
             File file = afile1[j];
-            if (!file.isDirectory())
+            if (!file.isDirectory() && !file.getName().endsWith(".mclevel"))
             {
                 continue;
             }
             String s = file.getName();
             WorldInfo worldinfo = getWorldInfo(s);
+            int format = 0; //0 is level.dat, 1 is mclevel
             if (worldinfo == null)
             {
-                continue;
+                if (file.isDirectory()){
+                    continue;
+                }
+                format = 1;
             }
-            boolean flag = worldinfo.getSaveVersion() != 19133;
-            String s1 = worldinfo.getWorldName();
+            boolean flag = true;
+            String s1 = null;
+            if (format==0){
+                flag = worldinfo.getSaveVersion() != 19133;
+                s1 = worldinfo.getWorldName();
+            }
             if (s1 == null || MathHelper.stringNullOrLengthZero(s1))
             {
                 s1 = s;
+                if (format==1){
+                    s1 = s.replace(".mclevel","");
+                }
             }
             long l = 0L;
-            arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.getGameType(), flag, worldinfo.isHardcoreModeEnabled()));
+            if (format==0){
+                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.getGameType(), flag, worldinfo.isHardcoreModeEnabled()));
+            }else{
+                arraylist.add(new SaveFormatComparator(s, s1, 0L, l, 0, true, true));
+            }
         }
-
         return arraylist;
     }
 
