@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import java.io.File;
-import java.io.FileInputStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.gui.*;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
@@ -182,11 +181,7 @@ public class GuiSelectWorld extends GuiScreen
     {
         if (getSaveFileName(par1).endsWith(".mclevel")){
             try{
-                File mclevel = new File(((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory(), getSaveFileName(par1));
-                NBTTagCompound about = CompressedStreamTools.readCompressed(new FileInputStream(mclevel)).getCompoundTag("About");
-                NBTTagCompound env = CompressedStreamTools.readCompressed(new FileInputStream(mclevel)).getCompoundTag("Environment");
-                NBTTagCompound map = CompressedStreamTools.readCompressed(new FileInputStream(mclevel)).getCompoundTag("Map");
-                McLevelImporter importer = new McLevelImporter(about, env, map);
+                McLevelImporter importer = new McLevelImporter(new File(((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory(), getSaveFileName(par1)));
                 mc.playerController = new PlayerControllerSP(mc);
                 mc.startWorld(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, 0, false, false, WorldType.DEFAULT));
                 mc.displayGuiScreen(null);
