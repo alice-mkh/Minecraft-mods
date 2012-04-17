@@ -403,6 +403,13 @@ public class World implements IBlockAccess
                     mod_noBiomesX.IndevWorld = null;
                 }else{
                     worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.getTime());
+                    for (int x = 0; x < mod_noBiomesX.IndevWidthX; x++){
+                        for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
+                            for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
+                                setBlockMetadata(x, y, z, mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)]);
+                            }
+                        }
+                    }
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
@@ -447,6 +454,10 @@ public class World implements IBlockAccess
         }
         calculateInitialSkylight();
         calculateInitialWeather();
+    }
+
+    private int indexIndev(int x, int y, int z){
+        return x+(y*mod_noBiomesX.IndevWidthZ+z)*mod_noBiomesX.IndevWidthX;
     }
 
     public void turnOnOldSpawners()
@@ -608,8 +619,10 @@ public class World implements IBlockAccess
         }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
-            setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
-            setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
+            if (!mod_noBiomesX.FiniteImport){
+                setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
+                setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
+            }
             findingSpawnPoint = false;
         }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
             findingSpawnPoint = true;

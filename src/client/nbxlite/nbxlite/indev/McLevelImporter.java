@@ -111,6 +111,10 @@ public class McLevelImporter{
         return timeofday;
     }
 
+    public byte[] getData(){
+        return data;
+    }
+
     public void importLevel(World world){
         for (int i = 0; i < tileentities.size(); i++){
             world.addTileEntity((TileEntity)tileentities.get(i));
