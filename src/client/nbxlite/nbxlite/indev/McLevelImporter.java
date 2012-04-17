@@ -95,6 +95,10 @@ public class McLevelImporter{
         return mod_noBiomesX.TYPE_INLAND;
     }
 
+    public List getEntities(){
+        return entities;
+    }
+
     public List getTileEntities(){
         return tileentities;
     }
@@ -124,17 +128,18 @@ public class McLevelImporter{
         entities = new ArrayList();
         for (int i = 0; i < list.tagCount(); i++){
             NBTTagCompound ent = ((NBTTagCompound)list.tagAt(i));
+            double motionX = ((double)((NBTTagFloat)ent.getTagList("Motion").tagAt(0)).data);
+            double motionY = ((double)((NBTTagFloat)ent.getTagList("Motion").tagAt(1)).data);
+            double motionZ = ((double)((NBTTagFloat)ent.getTagList("Motion").tagAt(2)).data);
+            ent.setTag("Motion", newDoubleNBTList(new double[]{motionX, motionY, motionZ}));
+            double posX = ((double)((NBTTagFloat)ent.getTagList("Pos").tagAt(0)).data);
+            double posY = ((double)((NBTTagFloat)ent.getTagList("Pos").tagAt(1)).data) + 1D;
+            double posZ = ((double)((NBTTagFloat)ent.getTagList("Pos").tagAt(2)).data);
+            ent.setTag("Pos", newDoubleNBTList(new double[]{posX, posY, posZ}));
             if (ent.getString("id").startsWith("LocalPlayer")){
                 localplayer = ent;
-                ent.getTagList("Motion");
-                double motionX = ((double)((NBTTagFloat)ent.getTagList("Motion").tagAt(0)).data);
-                double motionY = ((double)((NBTTagFloat)ent.getTagList("Motion").tagAt(1)).data);
-                double motionZ = ((double)((NBTTagFloat)ent.getTagList("Motion").tagAt(2)).data);
-                localplayer.setTag("Motion", newDoubleNBTList(new double[]{motionX, motionY, motionZ}));
-                double posX = ((double)((NBTTagFloat)ent.getTagList("Pos").tagAt(0)).data);
-                double posY = ((double)((NBTTagFloat)ent.getTagList("Pos").tagAt(1)).data) + 1D;
-                double posZ = ((double)((NBTTagFloat)ent.getTagList("Pos").tagAt(2)).data);
-                localplayer.setTag("Pos", newDoubleNBTList(new double[]{posX, posY, posZ}));
+            }else{
+                entities.add(ent);
             }
 //             System.out.println(i+": creating entity at "+ent.posX+", "+ent.posY+", "+ent.posZ);
         }
