@@ -241,7 +241,9 @@ public class GuiSelectWorld extends GuiScreen
             {
                 ISaveFormat isaveformat = mc.getSaveLoader();
                 isaveformat.flushCache();
-                isaveformat.deleteWorldDirectory(getSaveFileName(par2));
+                if (!getSaveFileName(par2).endsWith(".mclevel")){
+                    isaveformat.deleteWorldDirectory(getSaveFileName(par2));
+                }
                 loadSaves();
             }
 

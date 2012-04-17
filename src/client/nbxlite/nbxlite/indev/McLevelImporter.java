@@ -64,7 +64,7 @@ public class McLevelImporter{
         mod_noBiomesX.IndevWorld = blocks;
         mod_noBiomesX.IndevWidthX = width;
         mod_noBiomesX.IndevWidthZ = length;
-        mod_noBiomesX.IndevHeight = height;
+        mod_noBiomesX.IndevHeight = Math.min(height, 256);
         mod_noBiomesX.IndevSpawnX = spawnx;
         mod_noBiomesX.IndevSpawnY = spawny-3;
         mod_noBiomesX.IndevSpawnZ = spawnz;
