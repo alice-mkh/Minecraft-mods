@@ -107,6 +107,10 @@ public class McLevelImporter{
         return localplayer;
     }
 
+    public int getTime(){
+        return timeofday;
+    }
+
     public void importLevel(World world){
         for (int i = 0; i < tileentities.size(); i++){
             world.addTileEntity((TileEntity)tileentities.get(i));
@@ -141,7 +145,6 @@ public class McLevelImporter{
             }else{
                 entities.add(ent);
             }
-//             System.out.println(i+": creating entity at "+ent.posX+", "+ent.posY+", "+ent.posZ);
         }
     }
     private void loadTileEntities(NBTTagList list){

@@ -401,6 +401,8 @@ public class World implements IBlockAccess
                     mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                     mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                     mod_noBiomesX.IndevWorld = null;
+                }else{
+                    worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.getTime());
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
