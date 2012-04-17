@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
+import net.minecraft.src.nbxlite.indev.McLevelImporter;
 import net.minecraft.src.nbxlite.lib.EasyLocalization;
 
 public class mod_noBiomesX extends BaseModMp{
@@ -409,6 +410,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int DefaultFiniteLength = 2;
     public static int DefaultFiniteDepth = 32;
     public static boolean DefaultNewOres = false;
+    public static McLevelImporter mclevelimporter = null;
    
     public static int LightTintRed = 255;
     public static int LightTintGreen = 255;

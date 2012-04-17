@@ -181,11 +181,15 @@ public class GuiSelectWorld extends GuiScreen
     {
         if (getSaveFileName(par1).endsWith(".mclevel")){
             try{
-                McLevelImporter importer = new McLevelImporter(new File(((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory(), getSaveFileName(par1)));
+                mod_noBiomesX.mclevelimporter = new McLevelImporter(new File(((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory(), getSaveFileName(par1)));
                 mc.playerController = new PlayerControllerSP(mc);
                 mc.startWorld(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, 0, false, false, WorldType.DEFAULT));
                 mc.displayGuiScreen(null);
             }catch(Exception ex){
+                ISaveFormat isaveformat = mc.getSaveLoader();
+                isaveformat.flushCache();
+                isaveformat.deleteWorldDirectory(getSaveFileName(par1).replace(".mclevel",""));
+                loadSaves();
                 System.out.println(ex);
                 return;
             }

@@ -123,7 +123,7 @@ public class ChunkProviderFinite
         boolean tall2 = mod_noBiomesX.IndevHeight>160;
         Chunk chunk;
         if (i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16){
-            if (mod_noBiomesX.IndevWorld==null && !mod_noBiomesX.FiniteImport){
+            if (mod_noBiomesX.IndevWorld==null && mod_noBiomesX.FiniteImport){
                 if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                     IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
                     if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
@@ -144,8 +144,6 @@ public class ChunkProviderFinite
                     ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
                     mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
                 }
-                System.out.println(mod_noBiomesX.FiniteImport);
-                System.out.println("lolwut");
             }
             chunk = new Chunk(worldObj, getChunkArray(i, j), i, j);
             if (tall){

@@ -711,6 +711,10 @@ public class World implements IBlockAccess
         try
         {
             NBTTagCompound nbttagcompound = worldInfo.getPlayerNBTTagCompound();
+            if (mod_noBiomesX.FiniteImport){
+                par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.getLocalPlayer());
+                mod_noBiomesX.FiniteImport = false;
+            }
 
             if (nbttagcompound != null)
             {
