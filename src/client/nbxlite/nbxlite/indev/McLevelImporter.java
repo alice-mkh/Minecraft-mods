@@ -46,6 +46,7 @@ public class McLevelImporter{
     public McLevelImporter(File f){
         try{
             NBTTagList ent = CompressedStreamTools.readCompressed(new FileInputStream(f)).getTagList("Entities");
+            NBTTagList en2t = CompressedStreamTools.readCompressed(new FileInputStream(f)).getTagList("Entisties");
             NBTTagList tent = CompressedStreamTools.readCompressed(new FileInputStream(f)).getTagList("TileEntities");
             NBTTagCompound a = CompressedStreamTools.readCompressed(new FileInputStream(f)).getCompoundTag("About");
             NBTTagCompound env = CompressedStreamTools.readCompressed(new FileInputStream(f)).getCompoundTag("Environment");

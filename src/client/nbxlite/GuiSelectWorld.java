@@ -180,14 +180,19 @@ public class GuiSelectWorld extends GuiScreen
     public void selectWorld(int par1)
     {
         if (getSaveFileName(par1).endsWith(".mclevel")){
+            File dir = ((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory();
             try{
-                mod_noBiomesX.mclevelimporter = new McLevelImporter(new File(((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory(), getSaveFileName(par1)));
+                File mclevel = new File(dir, getSaveFileName(par1));
+                mod_noBiomesX.mclevelimporter = new McLevelImporter(mclevel);
                 mc.playerController = new PlayerControllerSP(mc);
                 mc.startWorld(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, 0, false, false, WorldType.DEFAULT));
+                mclevel.renameTo(new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+mclevel.getName()));
                 mc.displayGuiScreen(null);
             }catch(Exception ex){
-                ISaveFormat isaveformat = mc.getSaveLoader();
+                ISaveFormat isaveformat = MinecraftHook.getSaveLoader2();
                 isaveformat.flushCache();
+                File mclevel = new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+getSaveFileName(par1));
+                mclevel.renameTo(new File(dir, mclevel.getName()));
                 isaveformat.deleteWorldDirectory(getSaveFileName(par1).replace(".mclevel",""));
                 loadSaves();
                 System.out.println(ex);
@@ -239,11 +244,12 @@ public class GuiSelectWorld extends GuiScreen
 
             if (par1)
             {
-                ISaveFormat isaveformat = mc.getSaveLoader();
+                ISaveFormat isaveformat = MinecraftHook.getSaveLoader2();
+                File dir = ((SaveConverterMcRegion)isaveformat).getSaveDirectory();
+                File mclevel = new File(dir, getSaveFileName(par2)+"/"+getSaveFileName(par2)+".mclevel");
+                mclevel.renameTo(new File(dir, getSaveFileName(par2)+".mclevel"));
                 isaveformat.flushCache();
-                if (!getSaveFileName(par2).endsWith(".mclevel")){
-                    isaveformat.deleteWorldDirectory(getSaveFileName(par2));
-                }
+                isaveformat.deleteWorldDirectory(getSaveFileName(par2));
                 loadSaves();
             }
 

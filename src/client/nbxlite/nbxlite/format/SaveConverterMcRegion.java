@@ -27,6 +27,21 @@ public class SaveConverterMcRegion extends SaveFormatOld
         return savesDirectory;
     }
 
+    public void deleteWorldDirectory(String par1Str)
+    {
+        File file = new File(savesDirectory, par1Str);
+
+        if (file.getName().endsWith(".mclevel"))
+        {
+            System.out.println((new StringBuilder()).append("Deleting ").append(file).toString());
+            file.delete();
+        }
+        else
+        {
+            super.deleteWorldDirectory(par1Str);
+        }
+    }
+
     public List getSaveList()
     {
         ArrayList arraylist = new ArrayList();
