@@ -414,7 +414,7 @@ public class World implements IBlockAccess
                     List tentlist = mod_noBiomesX.mclevelimporter.getTileEntities();
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks and light..");
                     for (int x = 0; x < mod_noBiomesX.IndevWidthX; x++){
-                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((x / mod_noBiomesX.IndevWidthX) * 100);
+                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((int)(((float)x / (float)mod_noBiomesX.IndevWidthX) * 100F));
                         for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
                             for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);

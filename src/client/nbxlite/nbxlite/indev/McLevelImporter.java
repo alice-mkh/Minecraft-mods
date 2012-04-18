@@ -154,7 +154,12 @@ public class McLevelImporter{
     private void loadTileEntities(NBTTagList list){
         tileentities = new ArrayList();
         for (int i = 0; i < list.tagCount(); i++){
-            TileEntity tent = TileEntity.createAndLoadEntity((NBTTagCompound)list.tagAt(i));
+            NBTTagCompound tag = (NBTTagCompound)list.tagAt(i);
+            TileEntity tent = TileEntity.createAndLoadEntity(tag);
+            int pos = tag.getInteger("Pos");
+            tent.xCoord = pos % 1024;
+            tent.yCoord = (pos >> 10) % 1024;
+            tent.zCoord = (pos >> 20) % 1024;
             tileentities.add(tent);
 //             System.out.println(i+": creating tile entity at "+tent.xCoord+", "+tent.yCoord+", "+tent.zCoord);
         }
