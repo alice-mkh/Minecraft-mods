@@ -422,7 +422,9 @@ public class World implements IBlockAccess
                                 if (id != Block.leaves.blockID && id != Block.sapling.blockID && id != 0 && meta != 0){
                                     setBlockMetadata(x, y, z, meta);
                                 }
-//                                 updateAllLightTypes(x, y, z);
+                                if (Block.lightValue[id]>0){
+                                    updateAllLightTypes(x, y, z);
+                                }
                                 if (id > 0 && Block.blocksList[id].hasTileEntity()){
                                     for (int i=0; i < tentlist.size(); i++){
                                         TileEntity tent = ((TileEntity)tentlist.get(i));
