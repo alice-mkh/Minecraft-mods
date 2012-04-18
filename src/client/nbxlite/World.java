@@ -402,27 +402,48 @@ public class World implements IBlockAccess
                     mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                     mod_noBiomesX.IndevWorld = null;
                 }else{
+                    ModLoader.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
+                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Importing blocks..");
                     for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
+                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((x / ((mod_noBiomesX.IndevWidthX/16)+2)) * 100);
                         for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                             chunkProvider.provideChunk(x,z);
                         }
                     }
                     worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.getTime());
+                    List tentlist = mod_noBiomesX.mclevelimporter.getTileEntities();
+                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks and light..");
                     for (int x = 0; x < mod_noBiomesX.IndevWidthX; x++){
+                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((x / mod_noBiomesX.IndevWidthX) * 100);
                         for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
                             for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);
-//                                 if ((id>=21 && id<=33) || id==36){//21-35
-//                                     setBlock(x, y, z, Block.cloth.blockID);
+                                int meta = mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)] >> 4;
+//                                 if (id == Block.torchWood.blockID){
+//                                     meta--;
+//                                     System.out.println(meta);
 //                                 }
-                                if (id == Block.torchWood.blockID){
-                                    setBlock(x, y, z, 0);
-                                    setBlock(x, y, z, Block.torchWood.blockID);
+                                if (id != Block.leaves.blockID && id != 0 && meta != 0){
+                                    setBlockMetadata(x, y, z, meta);
                                 }
-                                if (id != Block.leaves.blockID && id != Block.torchWood.blockID){
-                                    setBlockMetadata(x, y, z, mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)]);
+//                                 if (id == Block.crops.blockID){
+//                                 if (mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)]>0 && (id < 8 || id > 11) && id > 0){
+//                                     System.out.println(mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)]+" "+Block.blocksList[id].getBlockName());
+//                                 }
+//                                 updateAllLightTypes(x, y, z);
+                                if (id > 0 && Block.blocksList[id].hasTileEntity()){
+                                    for (int i=0; i < tentlist.size(); i++){
+                                        TileEntity tent = ((TileEntity)tentlist.get(i));
+                                        if (tent.xCoord == x && tent.yCoord == y && tent.zCoord == z){
+                                            setBlockTileEntity(x, y, z, tent);
+                                            tentlist.remove(i);
+                                            System.out.println("LOL "+tentlist.size()+" left!");
+                                        }
+                                    }
+                                    if (tentlist.size()<=0){
+                                        System.out.println("LOL!");
+                                    }
                                 }
-                                updateAllLightTypes(x, y, z);
                             }
                         }
                     }
