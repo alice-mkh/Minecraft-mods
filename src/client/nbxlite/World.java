@@ -440,18 +440,18 @@ public class World implements IBlockAccess
                             }
                         }
                     }
+                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading entities..");
+                    List entlist = mod_noBiomesX.mclevelimporter.getEntities();
+                    for (int i = 0; i < entlist.size(); i++){
+                        Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
+                        spawnEntityInWorld(entity);
+                    }
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
-                ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading entities..");
-                List entlist = mod_noBiomesX.mclevelimporter.getEntities();
-                for (int i = 0; i < entlist.size(); i++){
-                    Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
-                    spawnEntityInWorld(entity);
-                }
             }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                 mod_noBiomesX.IndevHeight = 64;
                 ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
