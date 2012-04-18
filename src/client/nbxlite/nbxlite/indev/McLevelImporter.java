@@ -97,7 +97,7 @@ public class McLevelImporter{
         return mod_noBiomesX.TYPE_INLAND;
     }
 
-    public int fixCloth(int id){
+    public int getRightMetadata(int id){
         if (id == 21){
             return 14;
         }
@@ -146,8 +146,21 @@ public class McLevelImporter{
         return 0;
     }
 
-    public boolean isCloth(int id){
-        return id >= 21 && id <= 36;
+    public int getRightId(int id){
+        if (id >= 21 && id <= 36){
+            return Block.cloth.blockID;
+        }
+        if (id == 52){
+            return Block.waterStill.blockID;
+        }
+        if (id == 55){
+            return 0;
+        }
+        return id;
+    }
+
+    public boolean needsFixing(int id){
+        return (id >= 21 && id <= 36) || id == 52 || id == 55 || id==Block.leaves.blockID || id==Block.sapling.blockID || id==Block.wood.blockID || id==Block.planks.blockID;
     }
 
     public List getEntities(){
@@ -205,21 +218,25 @@ public class McLevelImporter{
                 for (int j = 0; j < inv.tagCount(); j++){
                     NBTTagCompound tag = ((NBTTagCompound)inv.tagAt(j));
                     int id = tag.getShort("id");
-                    if (isCloth(id)){
-                        tag.setShort("id", ((short)Block.cloth.blockID));
-                        tag.setShort("Damage", (short)fixCloth(id));
+                    if (needsFixing(id)){
+                        tag.setShort("id", (short)getRightId(id));
+                        tag.setShort("Damage", (short)getRightMetadata(id));
                     }
                 }
             }else{
                 if (ent.getString("id").startsWith("Item")){
                     NBTTagCompound tag = (ent.getCompoundTag("Item"));
                     int id = tag.getShort("id");
-                    if (isCloth(id)){
-                        tag.setShort("id", ((short)Block.cloth.blockID));
-                        tag.setShort("Damage", (short)fixCloth(id));
+                    if (needsFixing(id)){
+                        tag.setShort("id", (short)getRightId(id));
+                        tag.setShort("Damage", (short)getRightMetadata(id));
                     }
                 }
+                if (ent.getString("id").startsWith("Mob")){
+                    continue;
+                }
                 entities.add(ent);
+                
             }
         }
     }
@@ -232,9 +249,9 @@ public class McLevelImporter{
                 for (int j = 0; j < inv.tagCount(); j++){
                     NBTTagCompound tag = ((NBTTagCompound)inv.tagAt(j));
                     int id = tag.getShort("id");
-                    if (isCloth(id)){
-                        tag.setShort("id", ((short)Block.cloth.blockID));
-                        tag.setShort("Damage", (short)fixCloth(id));
+                    if (needsFixing(id)){
+                        tag.setShort("id", (short)getRightId(id));
+                        tag.setShort("Damage", (short)getRightMetadata(id));
                     }
                 }
             }

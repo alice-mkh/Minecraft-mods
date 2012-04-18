@@ -419,11 +419,10 @@ public class World implements IBlockAccess
                             for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);
                                 int meta = mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)] >> 4;
-                                if (id != Block.leaves.blockID && id != Block.sapling.blockID && id != 0 && meta != 0){
+                                if (mod_noBiomesX.mclevelimporter.needsFixing(id)){
+                                    setBlockAndMetadata(x, y, z, mod_noBiomesX.mclevelimporter.getRightId(id), mod_noBiomesX.mclevelimporter.getRightMetadata(id));
+                                }else if (id != 0 && meta != 0){
                                     setBlockMetadata(x, y, z, meta);
-                                }
-                                if (mod_noBiomesX.mclevelimporter.isCloth(id)){
-                                    setBlockAndMetadata(x, y, z, Block.cloth.blockID, mod_noBiomesX.mclevelimporter.fixCloth(id));
                                 }
                                 if (Block.lightValue[id]>0){
                                     updateAllLightTypes(x, y, z);
