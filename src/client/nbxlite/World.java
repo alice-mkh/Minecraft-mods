@@ -419,17 +419,9 @@ public class World implements IBlockAccess
                             for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);
                                 int meta = mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)] >> 4;
-//                                 if (id == Block.torchWood.blockID){
-//                                     meta--;
-//                                     System.out.println(meta);
-//                                 }
-                                if (id != Block.leaves.blockID && id != 0 && meta != 0){
+                                if (id != Block.leaves.blockID && id != Block.sapling.blockID && id != 0 && meta != 0){
                                     setBlockMetadata(x, y, z, meta);
                                 }
-//                                 if (id == Block.crops.blockID){
-//                                 if (mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)]>0 && (id < 8 || id > 11) && id > 0){
-//                                     System.out.println(mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)]+" "+Block.blocksList[id].getBlockName());
-//                                 }
 //                                 updateAllLightTypes(x, y, z);
                                 if (id > 0 && Block.blocksList[id].hasTileEntity()){
                                     for (int i=0; i < tentlist.size(); i++){
