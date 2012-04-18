@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
+import net.minecraft.src.Block;
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.Entity;
 import net.minecraft.src.ModLoader;
@@ -95,6 +96,59 @@ public class McLevelImporter{
         return mod_noBiomesX.TYPE_INLAND;
     }
 
+    public int fixCloth(int id){
+        if (id == 21){
+            return 14;
+        }
+        if (id == 22){
+            return 1;
+        }
+        if (id == 23){
+            return 4;
+        }
+        if (id == 24){
+            return 5;
+        }
+        if (id == 25){
+            return 13;
+        }
+        if (id == 26){
+            return 9;
+        }
+        if (id == 27){
+            return 9;
+        }
+        if (id == 28){
+            return 3;
+        }
+        if (id == 29){
+            return 11;
+        }
+        if (id == 30){
+            return 10;
+        }
+        if (id == 31){
+            return 10;
+        }
+        if (id == 32){
+            return 2;
+        }
+        if (id == 33){
+            return 6;
+        }
+        if (id == 34){
+            return 15;
+        }
+        if (id == 35){
+            return 8;
+        }
+        return 0;
+    }
+
+    public boolean isCloth(int id){
+        return id >= 21 && id <= 36;
+    }
+
     public List getEntities(){
         return entities;
     }
@@ -146,7 +200,24 @@ public class McLevelImporter{
             ent.setTag("Pos", newDoubleNBTList(new double[]{posX, posY, posZ}));
             if (ent.getString("id").startsWith("LocalPlayer")){
                 localplayer = ent;
+                NBTTagList inv = localplayer.getTagList("Inventory");
+                for (int j = 0; j < inv.tagCount(); j++){
+                    NBTTagCompound tag = ((NBTTagCompound)inv.tagAt(j));
+                    int id = tag.getShort("id");
+                    if (isCloth(id)){
+                        tag.setShort("id", ((short)Block.cloth.blockID));
+                        tag.setShort("Damage", (short)fixCloth(id));
+                    }
+                }
             }else{
+                if (ent.getString("id").startsWith("Item")){
+                    NBTTagCompound tag = (ent.getCompoundTag("Item"));
+                    int id = tag.getShort("id");
+                    if (isCloth(id)){
+                        tag.setShort("id", ((short)Block.cloth.blockID));
+                        tag.setShort("Damage", (short)fixCloth(id));
+                    }
+                }
                 entities.add(ent);
             }
         }
@@ -154,14 +225,24 @@ public class McLevelImporter{
     private void loadTileEntities(NBTTagList list){
         tileentities = new ArrayList();
         for (int i = 0; i < list.tagCount(); i++){
-            NBTTagCompound tag = (NBTTagCompound)list.tagAt(i);
-            TileEntity tent = TileEntity.createAndLoadEntity(tag);
-            int pos = tag.getInteger("Pos");
+            NBTTagCompound tenttag = (NBTTagCompound)list.tagAt(i);
+            if (tenttag.getString("id").startsWith("Chest")){
+                NBTTagList inv = tenttag.getTagList("Items");
+                for (int j = 0; j < inv.tagCount(); j++){
+                    NBTTagCompound tag = ((NBTTagCompound)inv.tagAt(j));
+                    int id = tag.getShort("id");
+                    if (isCloth(id)){
+                        tag.setShort("id", ((short)Block.cloth.blockID));
+                        tag.setShort("Damage", (short)fixCloth(id));
+                    }
+                }
+            }
+            TileEntity tent = TileEntity.createAndLoadEntity(tenttag);
+            int pos = tenttag.getInteger("Pos");
             tent.xCoord = pos % 1024;
             tent.yCoord = (pos >> 10) % 1024;
             tent.zCoord = (pos >> 20) % 1024;
             tileentities.add(tent);
-//             System.out.println(i+": creating tile entity at "+tent.xCoord+", "+tent.yCoord+", "+tent.zCoord);
         }
     }
 

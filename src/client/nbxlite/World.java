@@ -403,7 +403,7 @@ public class World implements IBlockAccess
                     mod_noBiomesX.IndevWorld = null;
                 }else{
                     ModLoader.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
-                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Importing blocks..");
+                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading blocks..");
                     for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
                         ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((x / ((mod_noBiomesX.IndevWidthX/16)+2)) * 100);
                         for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
@@ -412,7 +412,7 @@ public class World implements IBlockAccess
                     }
                     worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.getTime());
                     List tentlist = mod_noBiomesX.mclevelimporter.getTileEntities();
-                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks and light..");
+                    ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks..");
                     for (int x = 0; x < mod_noBiomesX.IndevWidthX; x++){
                         ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((int)(((float)x / (float)mod_noBiomesX.IndevWidthX) * 100F));
                         for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
@@ -421,6 +421,9 @@ public class World implements IBlockAccess
                                 int meta = mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)] >> 4;
                                 if (id != Block.leaves.blockID && id != Block.sapling.blockID && id != 0 && meta != 0){
                                     setBlockMetadata(x, y, z, meta);
+                                }
+                                if (mod_noBiomesX.mclevelimporter.isCloth(id)){
+                                    setBlockAndMetadata(x, y, z, Block.cloth.blockID, mod_noBiomesX.mclevelimporter.fixCloth(id));
                                 }
                                 if (Block.lightValue[id]>0){
                                     updateAllLightTypes(x, y, z);
@@ -431,11 +434,7 @@ public class World implements IBlockAccess
                                         if (tent.xCoord == x && tent.yCoord == y && tent.zCoord == z){
                                             setBlockTileEntity(x, y, z, tent);
                                             tentlist.remove(i);
-                                            System.out.println("LOL "+tentlist.size()+" left!");
                                         }
-                                    }
-                                    if (tentlist.size()<=0){
-                                        System.out.println("LOL!");
                                     }
                                 }
                             }
@@ -447,6 +446,12 @@ public class World implements IBlockAccess
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading entities..");
+                List entlist = mod_noBiomesX.mclevelimporter.getEntities();
+                for (int i = 0; i < entlist.size(); i++){
+                    Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
+                    spawnEntityInWorld(entity);
+                }
             }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                 mod_noBiomesX.IndevHeight = 64;
                 ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
@@ -759,12 +764,8 @@ public class World implements IBlockAccess
             NBTTagCompound nbttagcompound = worldInfo.getPlayerNBTTagCompound();
             if (mod_noBiomesX.FiniteImport){
                 par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.getLocalPlayer());
-                List entlist = mod_noBiomesX.mclevelimporter.getEntities();
-                for (int i = 0; i < entlist.size(); i++){
-                    Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
-                    spawnEntityInWorld(entity);
-                }
                 mod_noBiomesX.FiniteImport = false;
+                mod_noBiomesX.mclevelimporter = null;
             }
 
             if (nbttagcompound != null)
