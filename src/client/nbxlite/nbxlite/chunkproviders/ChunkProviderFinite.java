@@ -173,6 +173,15 @@ public class ChunkProviderFinite
 
     public void populate(IChunkProvider ichunkprovider, int i, int j)
     {
+        for (int x = i * 16; x < (i + 1) * 16; x++){
+            for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
+                for (int z = j * 16; z < (j + 1) * 16; z++){
+                    if (Block.lightValue[worldObj.getBlockId(x, y, z)]>0){
+                        worldObj.updateAllLightTypes(x, y, z);
+                    }
+                }
+            }
+        }
     }
 
     public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
