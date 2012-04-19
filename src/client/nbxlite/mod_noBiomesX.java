@@ -30,6 +30,7 @@ public class mod_noBiomesX extends BaseModMp{
                 properties.setProperty("DefaultFiniteLength",Integer.toString(2));
                 properties.setProperty("DefaultFiniteDepth",Integer.toString(32));
                 properties.setProperty("DefaultNewOres",Boolean.toString(false));
+                properties.setProperty("GearsId",Integer.toString(200));
                 properties.store(fileoutputstream,"NBXlite properties");
                 fileoutputstream.close();
             }
@@ -48,16 +49,39 @@ public class mod_noBiomesX extends BaseModMp{
             DefaultFiniteLength = properties.getProperty("DefaultFiniteLength") == null ? 2 : Integer.parseInt(properties.getProperty("DefaultFiniteLength"));
             DefaultFiniteDepth = properties.getProperty("DefaultFiniteDepth") == null ? 32 : Integer.parseInt(properties.getProperty("DefaultFiniteDepth"));
             DefaultNewOres = Boolean.parseBoolean(properties.getProperty("DefaultNewOres"));
+            gearId = properties.getProperty("GearsId") == null ? 200 : Integer.parseInt(properties.getProperty("GearsId"));
         }
         catch(IOException exception){
             System.out.println(exception);
         }
     }
 
+    private void registerGears(){
+        Block gear = new BlockGear(gearId, ModLoader.getUniqueSpriteIndex("/terrain.png"));
+        ModLoader.getUniqueSpriteIndex("/terrain.png");
+        gear.setHardness(0.5F);
+        gear.setBlockName("gear");
+        gear.disableStats();
+        ModLoader.addName(gear, "Gear");
+        ModLoader.registerBlock(gear);
+        ModLoader.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(0));
+        ModLoader.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(1));
+        gearRenderID = ModLoader.getUniqueBlockModelID(this, false);
+//         ModLoader.addRecipe(new ItemStack(gear, 1), new Object[]{" # ","###"," # ",Character.valueOf('#'), Item.ingotIron});
+    }
+
+    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+        if (id == gearRenderID){
+            return BlockGear.renderBlockGear(r, i, b, x, y, z);
+        }
+        return false;
+    }
+
     public void load(){
         ModLoader.setInGameHook(this, true, true);
         replaceBlocks();
 //         replaceHoes();
+        registerGears();
     }
 
     public boolean onTickInGame(float f, Minecraft minecraft){
@@ -411,6 +435,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int DefaultFiniteDepth = 32;
     public static boolean DefaultNewOres = false;
     public static McLevelImporter mclevelimporter = null;
+    public static int gearId = 200;
    
     public static int LightTintRed = 255;
     public static int LightTintGreen = 255;
@@ -448,4 +473,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int TYPE_ISLAND = 1;
     public static int TYPE_FLOATING = 2;
     public static int TYPE_FLAT = 3;
+
+    public static int gearRenderID;
 }

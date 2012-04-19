@@ -154,7 +154,7 @@ public class McLevelImporter{
             return Block.waterStill.blockID;
         }
         if (id == 55){
-            return 0;
+            return mod_noBiomesX.gearId;
         }
         return id;
     }
