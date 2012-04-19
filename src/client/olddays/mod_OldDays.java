@@ -94,12 +94,12 @@ public class mod_OldDays extends BaseMod{
         }
     }
 
-    protected void setInt(String where, String what,integer value){
+    protected void setInt(String where, String what, int value){
         try{
-            Class.forName(where).getDeclaredField(what).setInteger(null, value);
+            Class.forName(where).getDeclaredField(what).setInt(null, value);
         }catch(Exception ex){
             try{
-                Class.forName("net.minecraft.src."+where).getDeclaredField(what).setInteger(null, value);
+                Class.forName("net.minecraft.src."+where).getDeclaredField(what).setInt(null, value);
             }catch(Exception ex2){
                 System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
                 disabled[lastmodule][lastoption]=true;

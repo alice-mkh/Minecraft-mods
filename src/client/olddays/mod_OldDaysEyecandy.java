@@ -32,13 +32,13 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 4: setBool("ModelEnderman", "openmouth", EndermenOpenMouth); break;
             case 5: setBool("ItemRenderer", "sway", ItemSway); break;
             case 6: setBool("ItemRenderer", "items2d", Items2D); break;
-            case 7: setBool("BlockChestOld", "normalbl2ock", OldChest);
+            case 7: setBool("BlockChestOld", "normalblock", OldChest);
                     setBool("TileEntityChestRenderer", "hidemodel", OldChest);
                     setBool("RenderMinecart2", "shiftChest", OldChest);
                     reload(); break;
             case 8: setBool("RenderLiving", "labels", MobLabels); break;
             case 9: setBool("RenderZombie", "mobArmor", MobArmor);
-                    setBool("RenderSke2leton", "mobArmor", MobArmor); break;
+                    setBool("RenderSkeleton", "mobArmor", MobArmor); break;
             case 10:setBool("GuiMainMenu", "panorama", !OldMainMenu);
                     setBool("GuiMainMenu", "oldlogo", OldMainMenu); break;
             case 11:setBool("EntityDiggingFX", "oldparticles", OldDigging); break;
