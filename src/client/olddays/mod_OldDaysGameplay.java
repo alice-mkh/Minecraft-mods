@@ -22,26 +22,26 @@ public class mod_OldDaysGameplay extends mod_OldDays{
 
     public void callback (int i){
         switch (i){
-            case 1: setBool("EntityXPOrb", "noxp", DisableXP);
-                    setBool("GuiIngame", "hidexp", DisableXP); break;
-            case 2: setBool("FoodStats", "disabled", DisableHunger);
-                    setBool("ItemFood", "heal", DisableHunger);
-                    setBool("BlockCake", "heal", DisableHunger);
-                    setBool("GuiIngame", "hidehunger", DisableHunger); break;
-            case 3: setBool("ItemFood", "instant", InstantFood); break;
-            case 4: setBool("ItemFood", "stacks", !DisableFoodStacking); break;
-            case 5: setBool("EntityLiving", "oldloot", OldDrops); break;
-            case 6: setBool("EntityLiving", "rareloot", !DisableRareLoot); break;
-            case 7: setBool("ItemBow", "nocharging", InstantBow); break;
-            case 8: setBool("ItemBow", "nodurability", InfiniteBow); break;
-            case 9: setBool("EntityArrow", "olddamage", OldCombatSystem);
-                    setBool("EntityPlayer", "oldcombat", OldCombatSystem);
+            case 1: setBool(net.minecraft.src.EntityXPOrb.class, "noxp", DisableXP);
+                    setBool(net.minecraft.src.GuiIngame.class, "hidexp", DisableXP); break;
+            case 2: setBool(net.minecraft.src.FoodStats.class, "disabled", DisableHunger);
+                    setBool(net.minecraft.src.ItemFood.class, "heal", DisableHunger);
+                    setBool(net.minecraft.src.BlockCake.class, "heal", DisableHunger);
+                    setBool(net.minecraft.src.GuiIngame.class, "hidehunger", DisableHunger); break;
+            case 3: setBool(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
+            case 4: setBool(net.minecraft.src.ItemFood.class, "stacks", !DisableFoodStacking); break;
+            case 5: setBool(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
+            case 6: setBool(net.minecraft.src.EntityLiving.class, "rareloot", !DisableRareLoot); break;
+            case 7: setBool(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
+            case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", InfiniteBow); break;
+            case 9: setBool(net.minecraft.src.EntityArrow.class, "olddamage", OldCombatSystem);
+                    setBool(net.minecraft.src.EntityPlayer.class, "oldcombat", OldCombatSystem);
                     setSwordDamage(OldCombatSystem); break;
-            case 10:setBool("EntityPlayer", "oldarmor", OldArmor);
+            case 10:setBool(net.minecraft.src.EntityPlayer.class, "oldarmor", OldArmor);
                     setArmorDamage(OldArmor); break;
-            case 11:setBool("GuiIngame", "nodebug", !AllowDebug); break;
-            case 12:setBool("EntityPlayer", "sprint", AllowSprint);
-                    setInt("FoodStats", "disabledLevel", AllowSprint ? 20 : 5); break;
+            case 11:setBool(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
+            case 12:setBool(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
+                    setInt(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
         }
     }
 

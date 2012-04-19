@@ -81,29 +81,21 @@ public class mod_OldDays extends BaseMod{
         }
     }
 
-    protected void setBool(String where, String what, boolean value){
+    protected void setBool(Class where, String what, boolean value){
         try{
-            Class.forName(where).getDeclaredField(what).setBoolean(null, value);
+            where.getDeclaredField(what).setBoolean(null, value);
         }catch(Exception ex){
-            try{
-                Class.forName("net.minecraft.src."+where).getDeclaredField(what).setBoolean(null, value);
-            }catch(Exception ex2){
-                System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
-                disabled[lastmodule][lastoption]=true;
-            }
+            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+            disabled[lastmodule][lastoption]=true;
         }
     }
 
-    protected void setInt(String where, String what, int value){
+    protected void setInt(Class where, String what, int value){
         try{
-            Class.forName(where).getDeclaredField(what).setInt(null, value);
+            where.getDeclaredField(what).setInt(null, value);
         }catch(Exception ex){
-            try{
-                Class.forName("net.minecraft.src."+where).getDeclaredField(what).setInt(null, value);
-            }catch(Exception ex2){
-                System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
-                disabled[lastmodule][lastoption]=true;
-            }
+            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+            disabled[lastmodule][lastoption]=true;
         }
     }
 

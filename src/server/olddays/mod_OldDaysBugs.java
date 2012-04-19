@@ -14,12 +14,12 @@ public class mod_OldDaysBugs extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: EntityMinecart.boosters = WaterLifts;   break;
-            case 2: EntityBoat.waterlift =    WaterLifts;   break;
-            case 3: Entity.toaster =          LavaToasters; break;
-            case 4: Entity.waterladder =      WaterLadders; break;
-            case 5: EntityLiving.laddergaps = LadderGaps;   break;
-            case 6: BlockPistonBase.dupe =    PistonDupe;   break;
+            case 1: setBool(net.minecraft.src.EntityMinecart.class, "boosters", WaterLifts); break;
+            case 2: setBool(net.minecraft.src.EntityBoat.class, "waterlift", WaterLifts); break;
+            case 3: setBool(net.minecraft.src.Entity.class, "toaster", LavaToasters); break;
+            case 4: setBool(net.minecraft.src.Entity.class, "waterladder", WaterLadders); break;
+            case 5: setBool(net.minecraft.src.EntityLiving.class, "laddergaps", LadderGaps); break;
+            case 6: setBool(net.minecraft.src.BlockPistonBase.class, "dupe", PistonDupe); break;
         }
     }
 

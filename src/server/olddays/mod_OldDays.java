@@ -18,7 +18,7 @@ public class mod_OldDays extends BaseModMp{
 
     public void load(){}
 
-    public static void loadModuleProperties(){
+    protected static void loadModuleProperties(){
         PropertyManager pmanager = new PropertyManager(new File("oldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties"));
         for (int i = 1; i <= proplength[modulenum]; i++){
             try{
@@ -31,7 +31,7 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    public static void addProperty(Object module, int i2, String name, boolean val, String var){
+    protected static void addProperty(Object module, int i2, String name, boolean val, String var){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
@@ -65,13 +65,29 @@ public class mod_OldDays extends BaseModMp{
         proplength[modulenum]++;
     }
 
-    public static void registerModule(int num){
+    protected static void registerModule(int num){
         modulenum = num;
+    }
+
+    protected void setBool(Class where, String what, boolean value){
+        try{
+            where.getDeclaredField(what).setBoolean(null, value);
+        }catch(Exception ex){
+            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+        }
+    }
+
+    protected void setInt(Class where, String what, int value){
+        try{
+            where.getDeclaredField(what).setInt(null, value);
+        }catch(Exception ex){
+            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+        }
     }
 
     public void callback (int i){}
 
-    public static void sendCallback(int id, int i2){
+    protected static void sendCallback(int id, int i2){
         int id2 = 0;
         List list = ModLoader.getLoadedMods();
         Object obj = null;
@@ -98,4 +114,6 @@ public class mod_OldDays extends BaseModMp{
     public static String[] modules2 = new String[10];
     public static int modulecount = 0;
     private static int modulenum;
+    public static int lastmodule = 0;
+    public static int lastoption = 0;
 }

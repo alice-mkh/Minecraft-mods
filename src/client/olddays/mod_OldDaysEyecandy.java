@@ -25,28 +25,28 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
 
     public void callback (int i){
         switch (i){
-            case 1: setBool("ModelBiped", "oldwalking", OldWalking); break;
-            case 2: setBool("RenderLiving", "bobbing", Bobbing); break;
-            case 3: setBool("EntityEnderman", "smoke", OldEndermen);
-                    setBool("RenderEnderman2", "greeneyes", OldEndermen); break;
-            case 4: setBool("ModelEnderman", "openmouth", EndermenOpenMouth); break;
-            case 5: setBool("ItemRenderer", "sway", ItemSway); break;
-            case 6: setBool("ItemRenderer", "items2d", Items2D); break;
-            case 7: setBool("BlockChestOld", "normalblock", OldChest);
-                    setBool("TileEntityChestRenderer", "hidemodel", OldChest);
-                    setBool("RenderMinecart2", "shiftChest", OldChest);
+            case 1: setBool(net.minecraft.src.ModelBiped.class, "oldwalking", OldWalking); break;
+            case 2: setBool(net.minecraft.src.RenderLiving.class, "bobbing", Bobbing); break;
+            case 3: setBool(net.minecraft.src.EntityEnderman.class, "smoke", OldEndermen);
+                    setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen); break;
+            case 4: setBool(net.minecraft.src.ModelEnderman.class, "openmouth", EndermenOpenMouth); break;
+            case 5: setBool(net.minecraft.src.ItemRenderer.class, "sway", ItemSway); break;
+            case 6: setBool(net.minecraft.src.ItemRenderer.class, "items2d", Items2D); break;
+            case 7: setBool(net.minecraft.src.BlockChestOld.class, "normalblock", OldChest);
+                    setBool(net.minecraft.src.TileEntityChestRenderer.class, "hidemodel", OldChest);
+                    setBool(net.minecraft.src.RenderMinecart2.class, "shiftChest", OldChest);
                     reload(); break;
-            case 8: setBool("RenderLiving", "labels", MobLabels); break;
-            case 9: setBool("RenderZombie", "mobArmor", MobArmor);
-                    setBool("RenderSkeleton", "mobArmor", MobArmor); break;
-            case 10:setBool("GuiMainMenu", "panorama", !OldMainMenu);
-                    setBool("GuiMainMenu", "oldlogo", OldMainMenu); break;
-            case 11:setBool("EntityDiggingFX", "oldparticles", OldDigging); break;
-            case 12:setBool("BlockOreStorageOld", "oldtextures", OldOreBlocks);
+            case 8: setBool(net.minecraft.src.RenderLiving.class, "labels", MobLabels); break;
+            case 9: setBool(net.minecraft.src.RenderZombie.class, "mobArmor", MobArmor);
+                    setBool(net.minecraft.src.RenderSkeleton.class, "mobArmor", MobArmor); break;
+            case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", !OldMainMenu);
+                    setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", OldMainMenu); break;
+            case 11:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
+            case 12:setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks);
                     reload(); break;
-            case 13:setBool("BlockRedstoneWireOld", "cross", OldWires);
+            case 13:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
-            case 14:setBool("GuiContainer", "oldtooltips", OldTooltips); break;
+            case 14:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", OldTooltips); break;
         }
     }
 

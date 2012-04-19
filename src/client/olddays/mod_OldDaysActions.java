@@ -17,14 +17,14 @@ public class mod_OldDaysActions extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: setBool("BlockTNT2", "punchToActivate", PunchTNT); break;
-            case 2: setBool("EntityTNTPrimed", "extinguish", ExtinguishTNT); break;
-            case 3: setBool("EntityItem", "smeltOnFire", SmeltOnFire); break;
-            case 4: setBool("BlockFire", "oldFire", OldFire);
-                    setBool("BlockFire", "infiniteBurn", OldFire); break;
-            case 5: setBool("EntitySheep", "punchToShear", PunchSheep); break;
+            case 1: setBool(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
+            case 2: setBool(net.minecraft.src.EntityTNTPrimed.class, "extinguish", ExtinguishTNT); break;
+            case 3: setBool(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
+            case 4: setBool(net.minecraft.src.BlockFire.class, "oldFire", OldFire);
+                    setBool(net.minecraft.src.BlockFire.class, "infiniteBurn", OldFire); break;
+            case 5: setBool(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
             case 6: setToolDurability(OldTools); break;
-            case 7: setBool("BlockMushroom", "spreading", ShroomSpreading); break;
+            case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
         }
     }

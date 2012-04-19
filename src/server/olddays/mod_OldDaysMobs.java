@@ -15,21 +15,21 @@ public class mod_OldDaysMobs extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: EntityLiving.newai =           !OldAI;
-                    EntityCreeper.fixai =           OldAI;
-                    EntitySkeleton.fixai =          OldAI;
-                    EntitySnowman.fixai =           OldAI;            break;
-            case 2: EntityAIPanic.disablePanic =   !AnimalsFlee;
-                    EntityCreature.nopanic =       !AnimalsFlee;      break;
-            case 3: EntityAIEatGrass2.caneatgrass = SheepEatGrass;    break;
-            case 4: EntitySpider.canclimb =         SpidersCanClimb;  break;
-            case 5: EntityCreeper.survivaltest =    SurvivalTestMobs;
-                    EntityCreature.fastzombies =    SurvivalTestMobs;
-                    EntityZombie.burns =           !SurvivalTestMobs;
-                    EntitySkeleton.survivaltest =   SurvivalTestMobs;
-                    EntitySpider.survivaltest =     SurvivalTestMobs; break;
-            case 6: EntityCreature.jump =           JumpingMobs;      break;
-            case 7: EntitySkeleton.fast =           FastSkeletons;    break;
+            case 1: setBool(net.minecraft.src.EntityLiving.class, "newai", !OldAI);
+                    setBool(net.minecraft.src.EntityCreeper.class, "fixai", OldAI);
+                    setBool(net.minecraft.src.EntitySkeleton.class, "fixai", OldAI);
+                    setBool(net.minecraft.src.EntitySnowman.class, "fixai", OldAI); break;
+            case 2: setBool(net.minecraft.src.EntityAIPanic.class, "disablePanic", !AnimalsFlee);
+                    setBool(net.minecraft.src.EntityCreature.class, "nopanic", !AnimalsFlee); break;
+            case 3: setBool(net.minecraft.src.EntityAIEatGrass2.class, "caneatgrass", SheepEatGrass); break;
+            case 4: setBool(net.minecraft.src.EntitySpider.class, "canclimb", SpidersCanClimb); break;
+            case 5: setBool(net.minecraft.src.EntityCreeper.class, "survivaltest", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntityCreature.class, "fastzombies", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntityZombie.class, "burns", !SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntitySkeleton.class, "survivaltest", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntitySpider.class, "survivaltest", SurvivalTestMobs); break;
+            case 6: setBool(net.minecraft.src.EntityCreature.class, "jump", JumpingMobs); break;
+            case 7: setBool(net.minecraft.src.EntitySkeleton.class, "fast", FastSkeletons); break;
         }
     }
 
