@@ -41,6 +41,7 @@ public class GuiOldDaysSettings extends GuiScreen{
             }
             int y = height / 6 - top + (((i-1)/2) * margin);
             controlList.add(propButtons[i] = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.propname[id][i]+": "+onOff(mod_OldDays.propvalue[id][i])));
+            propButtons[i].enabled = !mod_OldDays.disabled[id][i];
         }
     }
     
