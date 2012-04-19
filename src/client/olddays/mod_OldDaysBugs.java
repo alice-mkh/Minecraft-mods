@@ -14,12 +14,12 @@ public class mod_OldDaysBugs extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: EntityMinecart.boosters = WaterLifts;   break;
-            case 2: EntityBoat.waterlift =    WaterLifts;   break;
-            case 3: Entity.toaster =          LavaToasters; break;
-            case 4: Entity.waterladder =      WaterLadders; break;
-            case 5: EntityLiving.laddergaps = LadderGaps;   break;
-            case 6: BlockPistonBase.dupe =    PistonDupe;   break;
+            case 1: setBool("EntityMinecart", "boosters", WaterLifts); break;
+            case 2: setBool("EntityBoat", "waterlift", WaterLifts); break;
+            case 3: setBool("Entity", "toaster", LavaToasters); break;
+            case 4: setBool("Entity", "waterladder", WaterLadders); break;
+            case 5: setBool("EntityLiving", "laddergaps", LadderGaps); break;
+            case 6: setBool("BlockPistonBase", "dupe", PistonDupe); break;
         }
     }
 

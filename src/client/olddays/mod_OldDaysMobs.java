@@ -15,22 +15,22 @@ public class mod_OldDaysMobs extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: EntityLiving.newai =           !OldAI;
-                    EntityCreeper.fixai =           OldAI;
-                    EntitySkeleton.fixai =          OldAI;
-                    EntitySnowman.fixai =           OldAI;            break;
-            case 2: EntityAIPanic.disablePanic =   !AnimalsFlee;
-                    EntityCreature.nopanic =       !AnimalsFlee;      break;
-            case 3: EntityAIEatGrass2.caneatgrass = SheepEatGrass;    break;
-            case 4: EntitySpider.canclimb =         SpidersCanClimb;  break;
-            case 5: EntityCreeper.survivaltest =    SurvivalTestMobs;
-                    EntityCreeper.dark =            SurvivalTestMobs;
-                    EntityCreature.fastzombies =    SurvivalTestMobs;
-                    EntityZombie.burns =           !SurvivalTestMobs;
-                    EntitySkeleton.survivaltest =   SurvivalTestMobs;
-                    EntitySpider.survivaltest =     SurvivalTestMobs; break;
-            case 6: EntityCreature.jump =           JumpingMobs;      break;
-            case 7: EntitySkeleton.fast =           FastSkeletons;    break;
+            case 1: setBool("EntityLiving", "newai", !OldAI);
+                    setBool("EntityCreeper", "fixai", OldAI);
+                    setBool("EntitySkeleton", "fixai", OldAI);
+                    setBool("EntitySnowman", "fixai", OldAI); break;
+            case 2: setBool("EntityAIPanic", "disablePanic", !AnimalsFlee);
+                    setBool("EntityCreature", "nopanic", !AnimalsFlee); break;
+            case 3: setBool("EntityAIEatGrass2", "caneatgrass", SheepEatGrass); break;
+            case 4: setBool("EntitySpider", "canclimb", SpidersCanClimb); break;
+            case 5: setBool("EntityCreeper", "survivaltest", SurvivalTestMobs);
+                    setBool("EntityCreeper", "dark", SurvivalTestMobs);
+                    setBool("EntityCreature", "fastzombies", SurvivalTestMobs);
+                    setBool("EntityZombie", "burns", !SurvivalTestMobs);
+                    setBool("EntitySkeleton", "survivaltest", SurvivalTestMobs);
+                    setBool("EntitySpider", "survivaltest", SurvivalTestMobs); break;
+            case 6: setBool("EntityCreature", "jump", JumpingMobs); break;
+            case 7: setBool("EntitySkeleton", "fast", FastSkeletons); break;
         }
     }
 
