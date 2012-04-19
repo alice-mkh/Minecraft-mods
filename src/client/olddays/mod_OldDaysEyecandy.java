@@ -17,7 +17,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 11,"Old digging particles", true,  "OldDigging");
         addProperty(this, 12,"Old ore blocks",        true,  "OldOreBlocks");
         addProperty(this, 13,"Old redstone wire",     true,  "OldWires");
-//      addProperty(this, 14,"Old item tooltips",     true,  "OldTooltips");
+        addProperty(this, 14,"Old item tooltips",     true,  "OldTooltips");
         loadModuleProperties();
         replaceBlocks();
         setWireRendering();
@@ -25,28 +25,28 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
 
     public void callback (int i){
         switch (i){
-            case 1: ModelBiped.oldwalking =             OldWalking;        break;
-            case 2: RenderLiving.bobbing =              Bobbing;           break;
-            case 3: EntityEnderman.smoke =              OldEndermen;
-                    RenderEnderman2.greeneyes =         OldEndermen;       break;
-            case 4: ModelEnderman.openmouth =           EndermenOpenMouth; break;
-            case 5: ItemRenderer.sway =                 ItemSway;          break;
-            case 6: ItemRenderer.items2d =              Items2D;           break;
-            case 7: BlockChestOld.normalblock =         OldChest;
-                    TileEntityChestRenderer.hidemodel = OldChest;
-                    RenderMinecart2.shiftChest =        OldChest;
-                    reload();                                              break;
-            case 8: RenderLiving.labels =               MobLabels;         break;
-            case 9: RenderZombie.mobArmor =             MobArmor;
-                    RenderSkeleton.mobArmor =           MobArmor;          break;
-            case 10:GuiMainMenu.panorama =             !OldMainMenu;
-                    GuiMainMenu.oldlogo =               OldMainMenu;       break;
-            case 11:EntityDiggingFX.oldparticles =      OldDigging;        break;
-            case 12:BlockOreStorageOld.oldtextures =    OldOreBlocks;
-                    reload();                                              break;
-            case 13:BlockRedstoneWireOld.cross =        OldWires;
-                    reload();                                              break;
-//          case 14:GuiContainer.oldtooltips =          OldTooltips;       break;
+            case 1: setBool("ModelBiped", "oldwalking", OldWalking); break;
+            case 2: setBool("RenderLiving", "bobbing", Bobbing); break;
+            case 3: setBool("EntityEnderman", "smoke", OldEndermen);
+                    setBool("RenderEnderman2", "greeneyes", OldEndermen); break;
+            case 4: setBool("ModelEnderman", "openmouth", EndermenOpenMouth); break;
+            case 5: setBool("ItemRenderer", "sway", ItemSway); break;
+            case 6: setBool("ItemRenderer", "items2d", Items2D); break;
+            case 7: setBool("BlockChestOld", "normalbl2ock", OldChest);
+                    setBool("TileEntityChestRenderer", "hidemodel", OldChest);
+                    setBool("RenderMinecart2", "shiftChest", OldChest);
+                    reload(); break;
+            case 8: setBool("RenderLiving", "labels", MobLabels); break;
+            case 9: setBool("RenderZombie", "mobArmor", MobArmor);
+                    setBool("RenderSke2leton", "mobArmor", MobArmor); break;
+            case 10:setBool("GuiMainMenu", "panorama", !OldMainMenu);
+                    setBool("GuiMainMenu", "oldlogo", OldMainMenu); break;
+            case 11:setBool("EntityDiggingFX", "oldparticles", OldDigging); break;
+            case 12:setBool("BlockOreStorageOld", "oldtextures", OldOreBlocks);
+                    reload(); break;
+            case 13:setBool("BlockRedstoneWireOld", "cross", OldWires);
+                    reload(); break;
+            case 14:setBool("GuiContainer", "oldtooltips", OldTooltips); break;
         }
     }
 
@@ -70,7 +70,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean OldDigging = true;
     public static boolean OldOreBlocks = true;
     public static boolean OldWires = true;
-//  public static boolean OldTooltips = true;
+    public static boolean OldTooltips = true;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){
