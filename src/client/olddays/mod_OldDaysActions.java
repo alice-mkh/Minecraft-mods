@@ -17,15 +17,15 @@ public class mod_OldDaysActions extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: BlockTNT2.punchToActivate =     PunchTNT;        break;
-            case 2: EntityTNTPrimed.extinguish =    ExtinguishTNT;   break;
-            case 3: EntityItem.smeltOnFire =        SmeltOnFire;     break;
-            case 4: BlockFire.oldFire =             OldFire;
-                    BlockFire.infiniteBurn =        OldFire;         break;
-            case 5: EntitySheep.punchToShear =      PunchSheep;      break;
-            case 6: setToolDurability(OldTools);                     break;
-            case 7: BlockMushroom.spreading =       ShroomSpreading; break;
-            case 8: setSolidTNT(SolidTNT);                           break;
+            case 1: setBool("BlockTNT2", "punchToActivate", PunchTNT); break;
+            case 2: setBool("EntityTNTPrimed", "extinguish", ExtinguishTNT); break;
+            case 3: setBool("EntityItem", "smeltOnFire", SmeltOnFire); break;
+            case 4: setBool("BlockFire", "oldFire", OldFire);
+                    setBool("BlockFire", "infiniteBurn", OldFire); break;
+            case 5: setBool("EntitySheep", "punchToShear", PunchSheep); break;
+            case 6: setToolDurability(OldTools); break;
+            case 7: setBool("BlockMushroom", "spreading", ShroomSpreading); break;
+            case 8: setSolidTNT(SolidTNT); break;
         }
     }
 
