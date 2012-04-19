@@ -79,6 +79,7 @@ public class mod_noBiomesX extends BaseModMp{
 
     public void load(){
         ModLoader.setInGameHook(this, true, true);
+        ModLoader.setInGUIHook(this, true, true);
         replaceBlocks();
 //         replaceHoes();
         registerGears();
@@ -88,10 +89,22 @@ public class mod_noBiomesX extends BaseModMp{
         if (Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
             tickPushing(minecraft);
         }
+        if (minecraft.currentScreen==null){
+            lastGui = null;
+        }
         return true;
     }
 
-    public boolean tickPushing(Minecraft minecraft){
+    public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui){
+        if (gearsCreative && gui instanceof GuiContainerCreative && !(lastGui instanceof GuiContainerCreative) && !minecraft.theWorld.isRemote){
+            ContainerCreative creative = ((ContainerCreative)((GuiContainerCreative)gui).inventorySlots);
+            creative.itemList.add(new ItemStack(gearId, 1, 0));
+        }
+        lastGui = gui;
+        return true;
+    }
+
+    private boolean tickPushing(Minecraft minecraft){
         Entity entity;
         for (int k = 0; k < minecraft.theWorld.loadedEntityList.size(); k++)
         {
@@ -475,4 +488,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int TYPE_FLAT = 3;
 
     public static int gearRenderID;
+    public static boolean gearsCreative = true;
+    private static GuiScreen lastGui;
 }
