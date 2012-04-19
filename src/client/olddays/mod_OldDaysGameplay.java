@@ -22,26 +22,26 @@ public class mod_OldDaysGameplay extends mod_OldDays{
 
     public void callback (int i){
         switch (i){
-            case 1: EntityXPOrb.noxp =       DisableXP;
-                    GuiIngame.hidexp =       DisableXP;             break;
-            case 2: FoodStats.disabled =     DisableHunger;
-                    ItemFood.heal =          DisableHunger;
-                    BlockCake.heal =         DisableHunger;
-                    GuiIngame.hidehunger =   DisableHunger;         break;
-            case 3: ItemFood.instant =       InstantFood;           break;
-            case 4: ItemFood.stacks =       !DisableFoodStacking;   break;
-            case 5: EntityLiving.oldloot =   OldDrops;              break;
-            case 6: EntityLiving.rareloot = !DisableRareLoot;       break;
-            case 7: ItemBow.nocharging =     InstantBow;            break;
-            case 8: ItemBow.nodurability =   InfiniteBow;           break;
-            case 9: EntityArrow.olddamage =  OldCombatSystem;
-                    EntityPlayer.oldcombat = OldCombatSystem;
-                    setSwordDamage(OldCombatSystem);                break;
-            case 10:EntityPlayer.oldarmor =  OldArmor;
-                    setArmorDamage(OldArmor);                       break;
-            case 11:GuiIngame.nodebug =     !AllowDebug;            break;
-            case 12:EntityPlayer.sprint =    AllowSprint;
-                    FoodStats.disabledLevel = AllowSprint ? 20 : 5; break;
+            case 1: setBool("EntityXPOrb", "noxp", DisableXP;
+                    setBool("GuiIngame", "hidexp", DisableXP; break;
+            case 2: setBool("FoodStats", "disabled", DisableHunger;
+                    setBool("ItemFood", "heal", DisableHunger;
+                    setBool("BlockCake", "heal", DisableHunger;
+                    setBool("GuiIngame", "hidehunger", DisableHunger; break;
+            case 3: setBool("ItemFood", "instant", InstantFood; break;
+            case 4: setBool("ItemFood", "stacks", !DisableFoodStacking; break;
+            case 5: setBool("EntityLiving", "oldloot", OldDrops; break;
+            case 6: setBool("EntityLiving", "rareloot", !DisableRareLoot; break;
+            case 7: setBool("ItemBow", "nocharging", InstantBow; break;
+            case 8: setBool("ItemBow", "nodurability", InfiniteBow; break;
+            case 9: setBool("EntityArrow", "olddamage", OldCombatSystem;
+                    setBool("EntityPlayer", "oldcombat", OldCombatSystem;
+                    setSwordDamage(OldCombatSystem); break;
+            case 10:setBool("EntityPlayer", "oldarmor", OldArmor;
+                    setArmorDamage(OldArmor); break;
+            case 11:setBool("GuiIngame", "nodebug", !AllowDebug; break;
+            case 12:setBool("EntityPlayer", "sprint", AllowSprint;
+                    setInt("FoodStats", "disabledLevel", AllowSprint ? 20 : 5); break;
         }
     }
 

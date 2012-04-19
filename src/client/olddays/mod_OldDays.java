@@ -94,6 +94,19 @@ public class mod_OldDays extends BaseMod{
         }
     }
 
+    protected void setInt(String where, String what,integer value){
+        try{
+            Class.forName(where).getDeclaredField(what).setInteger(null, value);
+        }catch(Exception ex){
+            try{
+                Class.forName("net.minecraft.src."+where).getDeclaredField(what).setInteger(null, value);
+            }catch(Exception ex2){
+                System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+                disabled[lastmodule][lastoption]=true;
+            }
+        }
+    }
+
     protected static void addProperty(Object module, int i2, String name, boolean val, String var){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
