@@ -31,7 +31,6 @@ public class mod_OldDays extends BaseModMp{
         }
         for (int i = 1; i < proplength[module]; i++){
             settings[i+1] = propvalue[module][i] ? 1 : 0;
-            System.out.println("Sending "+propname[module][i]);
         }
         Packet230ModLoader packet = new Packet230ModLoader();
         packet.packetType = 0;

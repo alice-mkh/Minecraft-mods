@@ -4,7 +4,7 @@ import java.io.*;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
 
-public class mod_OldDays extends BaseMod{
+public class mod_OldDays extends BaseModMp{
     public String getVersion(){
         return "1.2.5";
     }
@@ -16,6 +16,46 @@ public class mod_OldDays extends BaseMod{
         moduleGui = new GuiOldDaysModules(null);
         ModLoader.registerKey(this, this.keySettings, false);
         ModLoader.addLocalization("key_settings", "Old Days Settings");
+        ModLoader.setInGameHook(this, true, true);
+    }
+
+    public boolean onTickInGame(float f, Minecraft minecraft){
+        if (minecraft.theWorld.isRemote == needSettings){
+            if (minecraft.theWorld.isRemote){
+                for (int i = 0; i < modules.length; i++){
+                    if (modules[i]!=null){
+                        requestSettings(i);
+                    }
+                }
+            }else{
+                loadModuleProperties();
+            }
+            needSettings = !needSettings;
+        }
+        return true;
+    }
+
+    public void requestSettings(int module){
+        Packet230ModLoader packet = new Packet230ModLoader();
+        packet.packetType = 1;
+        packet.dataInt = new int[]{module};
+        ModLoaderMp.sendPacket(this, packet);
+    }
+
+    public void handlePacket(Packet230ModLoader packet){
+        int[] settings = packet.dataInt;
+        int module = settings[1];
+        try{
+            for (int i = 1; i < settings.length-1; i++){
+                boolean val = settings[i+1]==1;
+                propvalue[module][i] = val;
+                propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
+                sendCallback(module, i);
+                System.out.println("Receiving "+propname[module][i]);
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 
     public static void saveModuleProperties(int id){
@@ -184,4 +224,5 @@ public class mod_OldDays extends BaseMod{
     public static GuiScreen[] modulegui = new GuiScreen[10];
     public static int lastmodule = 0;
     public static int lastoption = 0;
+    public static boolean needSettings = true;
 }
