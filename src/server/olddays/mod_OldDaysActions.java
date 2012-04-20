@@ -11,6 +11,7 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 6, "Old tool durability", 0, false, "OldTools");
         addProperty(this, 7, "Mushroom spreading",  1, true,  "ShroomSpreading");
         addProperty(this, 8, "Solid TNT",           0, true,  "SolidTNT");
+        addProperty(this, 9, "Big fences",          0, true,  "BigFences");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -26,6 +27,7 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 6: setToolDurability(OldTools); break;
             case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
+            case 9: setBool(net.minecraft.src.BlockFence.class, "bigfences", BigFences); break;
         }
     }
 
@@ -37,6 +39,7 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean OldTools;
     public static boolean ShroomSpreading = true;
     public static boolean SolidTNT = true;
+    public static boolean BigFences = true;
 //Old blocks
 //Unflammable fences and stairs
 
@@ -56,6 +59,13 @@ public class mod_OldDaysActions extends mod_OldDays{
             customtnt.setStepSound(Block.soundGrassFootstep);
             customtnt.setBlockName("tnt");
             Block.blocksList[Block.tnt.blockID] = customtnt;
+            Block.blocksList[Block.fence.blockID] = null;
+            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, 4));
+            customfence.setHardness(2.0F);
+            customfence.setResistance(5F);
+            customfence.setStepSound(Block.soundWoodFootstep);
+            customfence.setBlockName("fence");
+            Block.blocksList[Block.fence.blockID] = customfence;
         }catch (Exception exception){
             System.out.println(exception);
         }
