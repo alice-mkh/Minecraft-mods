@@ -75,14 +75,14 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
     }
 
-    private void drawTooltip(int i, int x, int y){
-        String str = mod_OldDays.propdesc[id][i];
-        if (str==null){
-            return;
+    private void drawTooltip(String str, int x, int y, boolean smp){
+        String str2 = str;
+        if (smp){
+            str2 = "Use server settings";
         }
-        fontRenderer.getStringWidth(str);
-        drawRect(x, y, x + 5 + fontRenderer.getStringWidth(str), y + 13, 0x80000000);
-        drawString(fontRenderer, str, x + 3, y + 3, 0xffffff);
+        fontRenderer.getStringWidth(str2);
+        drawRect(x, y, x + 5 + fontRenderer.getStringWidth(str2), y + 13, 0x80000000);
+        drawString(fontRenderer, str2, x + 3, y + 3, smp ? 0xff0000 : 0xffffff);
     }
 
     public void drawScreen(int i, int j, float f)
@@ -91,8 +91,13 @@ public class GuiOldDaysSettings extends GuiScreen{
         super.drawScreen(i,j,f);
         for (int k = 1; k < controlList.size(); k++){
             GuiButton button = ((GuiButton)controlList.get(k));
-            if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.enabled){
-                drawTooltip(k, i + 4, j - 13);
+            if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20){
+                String str = mod_OldDays.propdesc[id][k];
+                boolean smp = /*mod_OldDays.propsmp[id][k]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote*/false;
+                if (str == null && !smp){
+                    return;
+                }
+                drawTooltip(str, i + 4, j - 13, smp);
             }
         }
     }

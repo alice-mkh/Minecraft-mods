@@ -200,7 +200,7 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public void keyboardEvent(KeyBinding keybinding){
-        if (keybinding==keySettings){
+        if (keybinding==keySettings && ModLoader.getMinecraftInstance().currentScreen==null){
             ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, moduleGui);
         }
     }
