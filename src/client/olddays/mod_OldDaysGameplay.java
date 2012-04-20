@@ -4,36 +4,36 @@ import net.minecraft.client.Minecraft;
 public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
         registerModule(2);
-        addProperty(this, 1, "Disable XP",            true,  "DisableXP");
-        addProperty(this, 2, "Disable hunger",        true,  "DisableHunger");
-        addProperty(this, 3, "Instant food",          true,  "InstantFood");
-        addProperty(this, 4, "Disable food stacking", true,  "DisableFoodStacking");
-        addProperty(this, 5, "Old loot",              true,  "OldDrops");
-        addProperty(this, 6, "Disable rare loot",     true,  "DisableRareLoot");
-        addProperty(this, 7, "Machine bow",           true,  "InstantBow");
-        addProperty(this, 8, "No bow durability",     true,  "InfiniteBow");
-        addProperty(this, 9, "Old combat system",     true,  "OldCombatSystem");
-        addProperty(this, 10,"Old armor",             true,  "OldArmor");
-        addProperty(this, 11,"Allow debug screen",    true,  "AllowDebug");
-        addProperty(this, 12,"Allow sprint",          true,  "AllowSprint");
+        addProperty(this, 1, "Experience",         false, "EnableXP");
+        addProperty(this, 2, "Hunger",             false, "EnableHunger");
+        addProperty(this, 3, "Instant food",       true,  "InstantFood");
+        addProperty(this, 4, "Food stacking",      false, "FoodStacking");
+        addProperty(this, 5, "Old loot",           true,  "OldDrops");
+        addProperty(this, 6, "Rare loot",          false, "RareLoot");
+        addProperty(this, 7, "Machine bow",        true,  "InstantBow");
+        addProperty(this, 8, "Bow durability",     false, "FiniteBow");
+        addProperty(this, 9, "Old combat system",  true,  "OldCombatSystem");
+        addProperty(this, 10,"Old armor",          true,  "OldArmor");
+        addProperty(this, 11,"Allow debug screen", true,  "AllowDebug");
+        addProperty(this, 12,"Allow sprint",       true,  "AllowSprint");
         loadModuleProperties();
         ModLoader.setInGameHook(this, true, true);
     }
 
     public void callback (int i){
         switch (i){
-            case 1: setBool(net.minecraft.src.EntityXPOrb.class, "noxp", DisableXP);
-                    setBool(net.minecraft.src.GuiIngame.class, "hidexp", DisableXP); break;
-            case 2: setBool(net.minecraft.src.FoodStats.class, "disabled", DisableHunger);
-                    setBool(net.minecraft.src.ItemFood.class, "heal", DisableHunger);
-                    setBool(net.minecraft.src.BlockCake.class, "heal", DisableHunger);
-                    setBool(net.minecraft.src.GuiIngame.class, "hidehunger", DisableHunger); break;
+            case 1: setBool(net.minecraft.src.EntityXPOrb.class, "noxp", !EnableXP);
+                    setBool(net.minecraft.src.GuiIngame.class, "hidexp", !EnableXP); break;
+            case 2: setBool(net.minecraft.src.FoodStats.class, "disabled", !EnableHunger);
+                    setBool(net.minecraft.src.ItemFood.class, "heal", !EnableHunger);
+                    setBool(net.minecraft.src.BlockCake.class, "heal", !EnableHunger);
+                    setBool(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger); break;
             case 3: setBool(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
-            case 4: setBool(net.minecraft.src.ItemFood.class, "stacks", !DisableFoodStacking); break;
+            case 4: setBool(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
             case 5: setBool(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
-            case 6: setBool(net.minecraft.src.EntityLiving.class, "rareloot", !DisableRareLoot); break;
+            case 6: setBool(net.minecraft.src.EntityLiving.class, "rareloot", RareLoot); break;
             case 7: setBool(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
-            case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", InfiniteBow); break;
+            case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
             case 9: setBool(net.minecraft.src.EntityArrow.class, "olddamage", OldCombatSystem);
                     setBool(net.minecraft.src.EntityPlayer.class, "oldcombat", OldCombatSystem);
                     setSwordDamage(OldCombatSystem); break;
@@ -45,14 +45,14 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         }
     }
 
-    public static boolean DisableXP = true;
-    public static boolean DisableHunger = true;
+    public static boolean EnableXP;
+    public static boolean EnableHunger;
     public static boolean InstantFood = true;
-    public static boolean DisableFoodStacking = true;
+    public static boolean FoodStacking;
     public static boolean OldDrops = true;
-    public static boolean DisableRareLoot = true;
+    public static boolean RareLoot;
     public static boolean InstantBow = true;
-    public static boolean InfiniteBow = true;
+    public static boolean FiniteBow;
     public static boolean OldCombatSystem = true;
     public static boolean OldArmor = true;
     public static boolean AllowDebug = true;

@@ -8,15 +8,36 @@ public class mod_OldDays extends BaseModMp{
         return "1.2.5";
     }
 
-    public boolean hasClientSide()
-    {
-        return false;
-    }
-
     public mod_OldDays(){
     }
 
     public void load(){}
+
+    public void handlePacket(Packet230ModLoader packet, EntityPlayerMP player){
+        switch(packet.packetType){
+            case 1:{
+                int module = packet.dataInt[0];
+                sendSettings(module, player);
+            }
+        }
+    }
+
+    public void sendSettings(int module, EntityPlayerMP entityplayermp){
+        int[] settings = new int[proplength[module]+1];
+        try{
+            settings[1] = module;
+        }catch(Exception ex){
+            return;
+        }
+        for (int i = 1; i < proplength[module]; i++){
+            settings[i+1] = propvalue[module][i] ? 1 : 0;
+            System.out.println("Sending "+propname[module][i]);
+        }
+        Packet230ModLoader packet = new Packet230ModLoader();
+        packet.packetType = 0;
+        packet.dataInt = settings;
+        ModLoaderMp.sendPacketTo(this, entityplayermp, packet);
+    }
 
     protected static void loadModuleProperties(){
         PropertyManager pmanager = new PropertyManager(new File("oldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties"));
