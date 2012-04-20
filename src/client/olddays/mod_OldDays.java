@@ -115,6 +115,9 @@ public class mod_OldDays extends BaseMod{
         if (propname==null){
             propname=new String[10][30];
         }
+        if (propdesc==null){
+            propdesc=new String[10][30];
+        }
         if (propvalue==null){
             propvalue=new boolean[10][30];
         }
@@ -171,6 +174,7 @@ public class mod_OldDays extends BaseMod{
     public static String[][] propname;
     public static boolean[][] propvalue;
     public static Field[][] propfield;
+    public static String[][] propdesc;
     public static boolean[][] disabled;
     public static int[] proplength;
     public static String[] modules = new String[10];

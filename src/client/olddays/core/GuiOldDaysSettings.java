@@ -75,9 +75,25 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
     }
 
+    private void drawTooltip(int i, int x, int y){
+        String str = mod_OldDays.propdesc[id][i];
+        if (str==null){
+            return;
+        }
+        fontRenderer.getStringWidth(str);
+        drawRect(x, y, x + 5 + fontRenderer.getStringWidth(str), y + 13, 0x80000000);
+        drawString(fontRenderer, str, x + 3, y + 3, 0xffffff);
+    }
+
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
         super.drawScreen(i,j,f);
+        for (int k = 1; k < controlList.size(); k++){
+            GuiButton button = ((GuiButton)controlList.get(k));
+            if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.enabled){
+                drawTooltip(k, i + 4, j - 13);
+            }
+        }
     }
 }
