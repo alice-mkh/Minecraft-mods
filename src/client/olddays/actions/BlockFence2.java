@@ -43,12 +43,16 @@ public class BlockFence2 extends BlockFence
      */
     public boolean canConnectFenceTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        int i = par1IBlockAccess.getBlockId(par2, par3, par4);
+        if (!connect){
+            int i = par1IBlockAccess.getBlockId(par2, par3, par4);
 
-        if (i == blockID || i == Block.fenceGate.blockID || i == Block.netherFence.blockID)
-        {
-            return true;
+            if (i == blockID || i == Block.fenceGate.blockID || i == Block.netherFence.blockID)
+            {
+                return true;
+            }
+            return false;
+        }else{
+            return super.canConnectFenceTo(par1IBlockAccess, par2, par3, par4);
         }
-        return false;
     }
 }
