@@ -21,15 +21,15 @@ public class mod_OldDays extends BaseModMp{
 
     public boolean onTickInGame(float f, Minecraft minecraft){
         if (minecraft.theWorld.isRemote == needSettings){
-            if (minecraft.theWorld.isRemote){
-                for (int i = 0; i < modules.length; i++){
-                    if (modules[i]!=null){
+            for (int i = 0; i < modules.length; i++){
+                if (modules[i]!=null){
+                    modulenum = i;
+                    loadModuleProperties();
+                    if (minecraft.theWorld.isRemote){
                         setDefaultSMPSettings(i);
                         requestSettings(i);
                     }
                 }
-            }else{
-                loadModuleProperties();
             }
             needSettings = !needSettings;
         }
