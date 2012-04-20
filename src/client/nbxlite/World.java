@@ -159,7 +159,7 @@ public class World implements IBlockAccess
      */
     public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
-        if (blockExists(par1, 0, par2))
+        if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES && blockExists(par1, 0, par2))
         {
             Chunk chunk = getChunkFromBlockCoords(par1, par2);
 

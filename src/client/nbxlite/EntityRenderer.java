@@ -224,11 +224,7 @@ public class EntityRenderer
         fogColor1 += (f4 - fogColor1) * 0.1F;
         rendererUpdateCount++;
         itemRenderer.updateEquippedItem();
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
-            addRainParticles();
-        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
-            addRainParticlesOld();
-        }
+        addRainParticles();
     }
 
     /**
@@ -1281,11 +1277,7 @@ public class EntityRenderer
             Profiler.endStartSection("weather");
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 renderSnow(par1);
-            }
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
-                renderOldRainSnow(par1);
-            }
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+            }else{
                 renderRainSnow(par1);
             }
             GL11.glDisable(GL11.GL_FOG);
@@ -1405,71 +1397,6 @@ public class EntityRenderer
                 mc.theWorld.playSoundEffect(d, d1, d2, "ambient.weather.rain", 0.1F, 0.5F);
             }
             else
-            {
-                mc.theWorld.playSoundEffect(d, d1, d2, "ambient.weather.rain", 0.2F, 1.0F);
-            }
-        }
-    }
-
-    private void addRainParticlesOld()
-    {
-        float f = mc.theWorld.getRainStrength(1.0F);
-        if(!mc.gameSettings.fancyGraphics)
-        {
-            f /= 2.0F;
-        }
-        if(f == 0.0F)
-        {
-            return;
-        }
-        random.setSeed((long)rendererUpdateCount * 0x12a7ce5fL);
-        EntityLiving entityliving = mc.renderViewEntity;
-        World world = mc.theWorld;
-        int i = MathHelper.floor_double(entityliving.posX);
-        int j = MathHelper.floor_double(entityliving.posY);
-        int k = MathHelper.floor_double(entityliving.posZ);
-        byte byte0 = 10;
-        double d = 0.0D;
-        double d1 = 0.0D;
-        double d2 = 0.0D;
-        int l = 0;
-        for(int i1 = 0; i1 < (int)(100F * f * f); i1++)
-        {
-            int j1 = (i + random.nextInt(byte0)) - random.nextInt(byte0);
-            int k1 = (k + random.nextInt(byte0)) - random.nextInt(byte0);
-            int l1 = world.getPrecipitationHeight(j1, k1);
-            int i2 = world.getBlockId(j1, l1 - 1, k1);
-            if(l1 > j + byte0 || l1 < j - byte0 || !world.getWorldChunkManager().oldGetBiomeGenAt(j1, k1).canSpawnLightningBolt())
-            {
-                continue;
-            }
-            float f1 = random.nextFloat();
-            float f2 = random.nextFloat();
-            if(i2 <= 0)
-            {
-                continue;
-            }
-            if(Block.blocksList[i2].blockMaterial == Material.lava)
-            {
-                mc.effectRenderer.addEffect(new EntitySmokeFX(world, (float)j1 + f1, (double)((float)l1 + 0.1F) - Block.blocksList[i2].minY, (float)k1 + f2, 0.0D, 0.0D, 0.0D));
-                continue;
-            }
-            if(random.nextInt(++l) == 0)
-            {
-                d = (float)j1 + f1;
-                d1 = (double)((float)l1 + 0.1F) - Block.blocksList[i2].minY;
-                d2 = (float)k1 + f2;
-            }
-            mc.effectRenderer.addEffect(new EntityRainFX(world, (float)j1 + f1, (double)((float)l1 + 0.1F) - Block.blocksList[i2].minY, (float)k1 + f2));
-        }
-
-        if(l > 0 && random.nextInt(3) < rainSoundCounter++)
-        {
-            rainSoundCounter = 0;
-            if(d1 > entityliving.posY + 1.0D && world.getPrecipitationHeight(MathHelper.floor_double(entityliving.posX), MathHelper.floor_double(entityliving.posZ)) > MathHelper.floor_double(entityliving.posY))
-            {
-                mc.theWorld.playSoundEffect(d, d1, d2, "ambient.weather.rain", 0.1F, 0.5F);
-            } else
             {
                 mc.theWorld.playSoundEffect(d, d1, d2, "ambient.weather.rain", 0.2F, 1.0F);
             }
@@ -1597,153 +1524,6 @@ public class EntityRenderer
         GL11.glDisable(3042 /*GL_BLEND*/);
         GL11.glAlphaFunc(516, 0.1F);
         disableLightmap(f);
-    }
-
-    protected void renderOldRainSnow(float f)
-    {
-        float f1 = mc.theWorld.getRainStrength(f);
-        if(f1 <= 0.0F)
-        {
-            return;
-        }
-        EntityLiving entityliving = mc.renderViewEntity;
-        World world = mc.theWorld;
-        int i = MathHelper.floor_double(entityliving.posX);
-        int j = MathHelper.floor_double(entityliving.posY);
-        int k = MathHelper.floor_double(entityliving.posZ);
-        Tessellator tessellator = Tessellator.instance;
-        GL11.glDisable(2884 /*GL_CULL_FACE*/);
-        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-        GL11.glEnable(3042 /*GL_BLEND*/);
-        GL11.glBlendFunc(770, 771);
-        GL11.glAlphaFunc(516, 0.01F);
-        GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/environment/snow.png"));
-        double d = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)f;
-        double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)f;
-        double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)f;
-        int l = MathHelper.floor_double(d1);
-        int i1 = 5;
-        if(mc.gameSettings.fancyGraphics)
-        {
-            i1 = 10;
-        }
-        OldBiomeGenBase abiomegenbase[] = world.getWorldChunkManager().oldFunc_4069_a(i - i1, k - i1, i1 * 2 + 1, i1 * 2 + 1);
-        int j1 = 0;
-        for(int k1 = i - i1; k1 <= i + i1; k1++)
-        {
-            for(int i2 = k - i1; i2 <= k + i1; i2++)
-            {
-                OldBiomeGenBase biomegenbase = abiomegenbase[j1++];
-                if(!biomegenbase.getEnableSnow())
-                {
-                    continue;
-                }
-                int k2 = world.getPrecipitationHeight(k1, i2);
-                if(k2 < 0)
-                {
-                    k2 = 0;
-                }
-                int i3 = k2;
-                if(i3 < l)
-                {
-                    i3 = l;
-                }
-                int k3 = j - i1;
-                int i4 = j + i1;
-                if(k3 < k2)
-                {
-                    k3 = k2;
-                }
-                if(i4 < k2)
-                {
-                    i4 = k2;
-                }
-                float f3 = 1.0F;
-                if(k3 != i4)
-                {
-                    random.setSeed(k1 * k1 * 3121 /*GL_RGBA_MODE*/ + k1 * 0x2b24abb + i2 * i2 * 0x66397 + i2 * 13761);
-                    float f5 = (float)rendererUpdateCount + f;
-                    float f6 = ((float)(rendererUpdateCount & 0x1ff) + f) / 512F;
-                    float f7 = random.nextFloat() + f5 * 0.01F * (float)random.nextGaussian();
-                    float f8 = random.nextFloat() + f5 * (float)random.nextGaussian() * 0.001F;
-                    double d5 = (double)((float)k1 + 0.5F) - entityliving.posX;
-                    double d6 = (double)((float)i2 + 0.5F) - entityliving.posZ;
-                    float f11 = MathHelper.sqrt_double(d5 * d5 + d6 * d6) / (float)i1;
-                    tessellator.startDrawingQuads();
-                    float f12 = world.getLightBrightness(k1, i3, i2);
-                    GL11.glColor4f(f12, f12, f12, ((1.0F - f11 * f11) * 0.3F + 0.5F) * f1);
-                    tessellator.setTranslation(-d * 1.0D, -d1 * 1.0D, -d2 * 1.0D);
-                    tessellator.addVertexWithUV(k1 + 0, k3, (double)i2 + 0.5D, 0.0F * f3 + f7, ((float)k3 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV(k1 + 1, k3, (double)i2 + 0.5D, 1.0F * f3 + f7, ((float)k3 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV(k1 + 1, i4, (double)i2 + 0.5D, 1.0F * f3 + f7, ((float)i4 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV(k1 + 0, i4, (double)i2 + 0.5D, 0.0F * f3 + f7, ((float)i4 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV((double)k1 + 0.5D, k3, i2 + 0, 0.0F * f3 + f7, ((float)k3 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV((double)k1 + 0.5D, k3, i2 + 1, 1.0F * f3 + f7, ((float)k3 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV((double)k1 + 0.5D, i4, i2 + 1, 1.0F * f3 + f7, ((float)i4 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.addVertexWithUV((double)k1 + 0.5D, i4, i2 + 0, 0.0F * f3 + f7, ((float)i4 * f3) / 4F + f6 * f3 + f8);
-                    tessellator.setTranslation(0.0D, 0.0D, 0.0D);
-                    tessellator.draw();
-                }
-            }
-
-        }
-
-        GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/environment/rain.png"));
-        if(mc.gameSettings.fancyGraphics)
-        {
-            i1 = 10;
-        }
-        j1 = 0;
-        for(int l1 = i - i1; l1 <= i + i1; l1++)
-        {
-            for(int j2 = k - i1; j2 <= k + i1; j2++)
-            {
-                OldBiomeGenBase biomegenbase1 = abiomegenbase[j1++];
-                if(!biomegenbase1.canSpawnLightningBolt())
-                {
-                    continue;
-                }
-                int l2 = world.getPrecipitationHeight(l1, j2);
-                int j3 = j - i1;
-                int l3 = j + i1;
-                if(j3 < l2)
-                {
-                    j3 = l2;
-                }
-                if(l3 < l2)
-                {
-                    l3 = l2;
-                }
-                float f2 = 1.0F;
-                if(j3 != l3)
-                {
-                    random.setSeed(l1 * l1 * 3121 /*GL_RGBA_MODE*/ + l1 * 0x2b24abb + j2 * j2 * 0x66397 + j2 * 13761);
-                    float f4 = (((float)(rendererUpdateCount + l1 * l1 * 3121 /*GL_RGBA_MODE*/ + l1 * 0x2b24abb + j2 * j2 * 0x66397 + j2 * 13761 & 0x1f) + f) / 32F) * (3F + random.nextFloat());
-                    double d3 = (double)((float)l1 + 0.5F) - entityliving.posX;
-                    double d4 = (double)((float)j2 + 0.5F) - entityliving.posZ;
-                    float f9 = MathHelper.sqrt_double(d3 * d3 + d4 * d4) / (float)i1;
-                    tessellator.startDrawingQuads();
-                    float f10 = world.getLightBrightness(l1, 128, j2) * 0.85F + 0.15F;
-                    GL11.glColor4f(f10, f10, f10, ((1.0F - f9 * f9) * 0.5F + 0.5F) * f1);
-                    tessellator.setTranslation(-d * 1.0D, -d1 * 1.0D, -d2 * 1.0D);
-                    tessellator.addVertexWithUV(l1 + 0, j3, (double)j2 + 0.5D, 0.0F * f2, ((float)j3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV(l1 + 1, j3, (double)j2 + 0.5D, 1.0F * f2, ((float)j3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV(l1 + 1, l3, (double)j2 + 0.5D, 1.0F * f2, ((float)l3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV(l1 + 0, l3, (double)j2 + 0.5D, 0.0F * f2, ((float)l3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV((double)l1 + 0.5D, j3, j2 + 0, 0.0F * f2, ((float)j3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV((double)l1 + 0.5D, j3, j2 + 1, 1.0F * f2, ((float)j3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV((double)l1 + 0.5D, l3, j2 + 1, 1.0F * f2, ((float)l3 * f2) / 4F + f4 * f2);
-                    tessellator.addVertexWithUV((double)l1 + 0.5D, l3, j2 + 0, 0.0F * f2, ((float)l3 * f2) / 4F + f4 * f2);
-                    tessellator.setTranslation(0.0D, 0.0D, 0.0D);
-                    tessellator.draw();
-                }
-            }
-
-        }
-
-        GL11.glEnable(2884 /*GL_CULL_FACE*/);
-        GL11.glDisable(3042 /*GL_BLEND*/);
-        GL11.glAlphaFunc(516, 0.1F);
     }
 
     /**
