@@ -3,14 +3,14 @@ package net.minecraft.src;
 public class mod_OldDaysActions extends mod_OldDays{
     public void load(){
         registerModule(0);
-        addProperty(this, 1, "Punch TNT",           true,  "PunchTNT");
-        addProperty(this, 2, "Extinguish TNT",      false, "ExtinguishTNT");
-        addProperty(this, 3, "Smelt items on fire", false, "SmeltOnFire");
-        addProperty(this, 4, "Unnerfed fire",       true,  "OldFire");
-        addProperty(this, 5, "Punch sheep",         true,  "PunchSheep");
-        addProperty(this, 6, "Old tool durability", false, "OldTools");
-        addProperty(this, 7, "Mushroom spreading",  true,  "ShroomSpreading");
-        addProperty(this, 8, "Solid TNT",           true,  "SolidTNT");
+        addProperty(this, 1, "Punch TNT",           0, true,  "PunchTNT");
+        addProperty(this, 2, "Extinguish TNT",      0, false, "ExtinguishTNT");
+        addProperty(this, 3, "Smelt items on fire", 0, false, "SmeltOnFire");
+        addProperty(this, 4, "Unnerfed fire",       0, true,  "OldFire");
+        addProperty(this, 5, "Punch sheep",         0, true,  "PunchSheep");
+        addProperty(this, 6, "Old tool durability", 0, false, "OldTools");
+        addProperty(this, 7, "Mushroom spreading",  1, true,  "ShroomSpreading");
+        addProperty(this, 8, "Solid TNT",           0, true,  "SolidTNT");
         loadModuleProperties();
         replaceBlocks();
     }

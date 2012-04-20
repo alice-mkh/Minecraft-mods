@@ -24,6 +24,7 @@ public class mod_OldDays extends BaseModMp{
             if (minecraft.theWorld.isRemote){
                 for (int i = 0; i < modules.length; i++){
                     if (modules[i]!=null){
+                        setDefaultSMPSettings(i);
                         requestSettings(i);
                     }
                 }
@@ -33,6 +34,21 @@ public class mod_OldDays extends BaseModMp{
             needSettings = !needSettings;
         }
         return true;
+    }
+
+    private void setDefaultSMPSettings(int module){
+        for (int i = 1; i < proplength[module]; i++){
+            try{
+                if (propsmp[module][i]>=0){
+                    boolean val = propsmp[module][i]==1;
+                    propvalue[module][i] = val;
+                    propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
+                    sendCallback(module, i);
+                }
+            }catch(Exception ex){
+                System.out.println(ex);
+            }
+        }
     }
 
     public void requestSettings(int module){
@@ -51,7 +67,6 @@ public class mod_OldDays extends BaseModMp{
                 propvalue[module][i] = val;
                 propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
                 sendCallback(module, i);
-                System.out.println("Receiving "+propname[module][i]);
             }
         }catch(Exception ex){
             System.out.println(ex);
@@ -139,7 +154,7 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected static void addProperty(Object module, int i2, String name, boolean val, String var){
+    protected static void addProperty(Object module, int i2, String name, int mp, boolean val, String var){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
@@ -167,6 +182,9 @@ public class mod_OldDays extends BaseModMp{
         if (disabled==null){
             disabled=new boolean[10][30];
         }
+        if (propsmp==null){
+            propsmp=new int[10][30];
+        }
         if (proplength==null){
             proplength=new int[10];
             proplength[modulenum]=0;
@@ -174,6 +192,7 @@ public class mod_OldDays extends BaseModMp{
         propname[modulenum][i2]=name;
         propvalue[modulenum][i2]=val;
         disabled[modulenum][i2]=false;
+        propsmp[modulenum][i2]=mp;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){}
@@ -216,6 +235,7 @@ public class mod_OldDays extends BaseModMp{
     public static Field[][] propfield;
     public static String[][] propdesc;
     public static boolean[][] disabled;
+    public static int[][] propsmp;
     public static int[] proplength;
     public static String[] modules = new String[10];
     public static String[] modules2 = new String[10];

@@ -51,7 +51,7 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected static void addProperty(Object module, int i2, String name, boolean val, String var){
+    protected static void addProperty(Object module, int i2, String name, int mp, boolean val, String var){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
