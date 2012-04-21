@@ -3,15 +3,15 @@ package net.minecraft.src;
 public class mod_OldDaysActions extends mod_OldDays{
     public void load(){
         registerModule(0);
-        addProperty(this, 1, "Punch TNT",           0, true,  "PunchTNT");
-        addProperty(this, 2, "Extinguish TNT",      0, false, "ExtinguishTNT");
-        addProperty(this, 3, "Smelt items on fire", 0, false, "SmeltOnFire");
-        addProperty(this, 4, "Unnerfed fire",       0, true,  "OldFire");
-        addProperty(this, 5, "Punch sheep",         0, true,  "PunchSheep");
-        addProperty(this, 6, "Old tool durability", 0, false, "OldTools");
-        addProperty(this, 7, "Mushroom spreading",  1, true,  "ShroomSpreading");
-        addProperty(this, 8, "Solid TNT",           0, true,  "SolidTNT");
-        addProperty(this, 9, "Big fences",          0, true,  "BigFences");
+        addProperty(this, 1, "Punch TNT",           0, true,  "PunchTNT",        "");
+        addProperty(this, 2, "Extinguish TNT",      0, false, "ExtinguishTNT",   "");
+        addProperty(this, 3, "Smelt items on fire", 0, false, "SmeltOnFire",     "");
+        addProperty(this, 4, "Unnerfed fire",       0, true,  "OldFire",         "");
+        addProperty(this, 5, "Punch sheep",         0, true,  "PunchSheep",      "");
+        addProperty(this, 6, "Old tool durability", 0, false, "OldTools",        "");
+        addProperty(this, 7, "Mushroom spreading",  1, true,  "ShroomSpreading", "");
+        addProperty(this, 8, "Solid TNT",           0, true,  "SolidTNT",        "");
+        addProperty(this, 9, "Big fences",          0, true,  "BigFences",       "");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -27,7 +27,7 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 6: setToolDurability(OldTools); break;
             case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
-            case 9: setBool(net.minecraft.src.BlockFence.class, "bigfences", BigFences); break;
+            case 9: setBool(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
         }
     }
 
