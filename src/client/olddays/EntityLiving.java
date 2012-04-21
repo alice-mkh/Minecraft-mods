@@ -208,10 +208,12 @@ public abstract class EntityLiving extends Entity
 
     /** How long to keep a specific target entity */
     protected int numTicksToChaseTarget;
+    public int persistentId;
 
     public EntityLiving(World par1World)
     {
         super(par1World);
+        persistentId = rand.nextInt(0x7fffffff);
         heartsHalvesLife = 20;
         renderYawOffset = 0.0F;
         prevRenderYawOffset = 0.0F;
@@ -1424,6 +1426,7 @@ public abstract class EntityLiving extends Entity
             }
 
             par1NBTTagCompound.setTag("ActiveEffects", nbttaglist);
+            par1NBTTagCompound.setInteger("PersistentId", persistentId);
         }
     }
 
@@ -1460,6 +1463,10 @@ public abstract class EntityLiving extends Entity
                 int j = nbttagcompound.getInteger("Duration");
                 activePotionsMap.put(Integer.valueOf(byte0), new PotionEffect(byte0, j, byte1));
             }
+        }
+        persistentId = par1NBTTagCompound.getInteger("PersistentId");
+        if(persistentId == 0){
+            persistentId = rand.nextInt(0x7fffffff);
         }
     }
 
