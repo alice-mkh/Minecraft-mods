@@ -8,7 +8,7 @@ public abstract class EntityLiving extends Entity
     public static boolean newai = true;
     public static boolean rareloot = true;
     public static boolean oldloot = false;
-    public static boolean jumpdelay = false;
+    public static boolean jumpdelay = true;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
