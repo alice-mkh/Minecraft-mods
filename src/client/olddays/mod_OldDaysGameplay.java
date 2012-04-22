@@ -16,6 +16,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         addProperty(this, 10,"Old armor",          0, true,  "OldArmor",        "");
         addProperty(this, 11,"Allow debug screen", 1, true,  "AllowDebug",      "");
         addProperty(this, 12,"Allow sprint",       1, true,  "AllowSprint",     "");
+        addProperty(this, 13,"Jump delay",         1, false, "JumpDelay",       "");
         loadModuleProperties();
         ModLoader.setInGameHook(this, true, true);
     }
@@ -42,6 +43,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 11:setBool(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
             case 12:setBool(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
                     setInt(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
+            case 13:setBool(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
         }
     }
 
@@ -57,6 +59,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
     public static boolean OldArmor = true;
     public static boolean AllowDebug = true;
     public static boolean AllowSprint = true;
+    public static boolean JumpDelay;
 
     private void setSwordDamage(boolean b){
         try{

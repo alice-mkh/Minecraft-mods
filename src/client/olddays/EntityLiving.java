@@ -8,6 +8,7 @@ public abstract class EntityLiving extends Entity
     public static boolean newai = true;
     public static boolean rareloot = true;
     public static boolean oldloot = false;
+    public static boolean jumpdelay = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -1581,7 +1582,7 @@ public abstract class EntityLiving extends Entity
             {
                 motionY += 0.039999999105930328D;
             }
-            else if (onGround && jumpTicks == 0)
+            else if (onGround && (jumpTicks == 0 || !jumpdelay))
             {
                 jump();
                 jumpTicks = 10;
