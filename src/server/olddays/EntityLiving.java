@@ -1543,7 +1543,7 @@ public abstract class EntityLiving extends Entity
             {
                 motionY += 0.039999999105930328D;
             }
-            else if (onGround && jumpTicks == 0)
+            else if (onGround && (jumpTicks == 0 || !jumpdelay))
             {
                 jump();
                 jumpTicks = 10;
