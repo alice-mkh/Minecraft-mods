@@ -99,7 +99,13 @@ public class WorldProviderSurface extends WorldProvider
 
     public boolean isSkyColored()
     {
-        if ((mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC || mod_noBiomesX.MapTheme!=mod_noBiomesX.THEME_HELL)) || (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY)){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapTheme!=mod_noBiomesX.THEME_NORMAL){
+            return false;
+        }
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA11201){
+            return false;
+        }
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return false;
         }
         return true;
