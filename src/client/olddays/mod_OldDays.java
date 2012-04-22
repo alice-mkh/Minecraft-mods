@@ -41,8 +41,6 @@ public class mod_OldDays extends BaseModMp{
             try{
                 if (propsmp[module][i]>=0){
                     boolean val = propsmp[module][i]==1;
-                    propvalue[module][i] = val;
-                    propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
                     sendCallback(module, i);
                 }
             }catch(Exception ex){
@@ -64,7 +62,7 @@ public class mod_OldDays extends BaseModMp{
         try{
             for (int i = 1; i < settings.length-1; i++){
                 boolean val = settings[i+1]==1;
-                propvalue[module][i] = val;
+                propvalue[module][i] = settings[i+1];
                 propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
                 sendCallback(module, i);
             }
@@ -79,7 +77,7 @@ public class mod_OldDays extends BaseModMp{
             File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString());
             FileOutputStream fileoutputstream = new FileOutputStream(file);
             for (int i = 1; i <= proplength[id]; i++){
-                properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]));
+                properties.setProperty(propfield[id][i].getName(), Integer.toString(propvalue[id][i]));
             }
             properties.store(fileoutputstream, "Old Days config");
             fileoutputstream.close();
@@ -106,7 +104,7 @@ public class mod_OldDays extends BaseModMp{
             if(flag){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 for (int i = 1; i <= proplength[modulenum]; i++){
-                    properties.setProperty(propfield[modulenum][i].getName(), Boolean.toString(propvalue[modulenum][i]));
+                    properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
                 }
                 properties.store(fileoutputstream, "Old Days config");
                 fileoutputstream.close();
@@ -114,9 +112,9 @@ public class mod_OldDays extends BaseModMp{
             try{
                 properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString()));
                 for (int i = 1; i <= proplength[modulenum]; i++){
-                    boolean val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName()));;
+                    int val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));;
                     propvalue[modulenum][i] = val;
-                    propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), val);
+                    propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), val>0);
                     sendCallback(modulenum, i);
                 }
             }catch(Exception ex){
@@ -174,7 +172,7 @@ public class mod_OldDays extends BaseModMp{
             propdesc=new String[10][30];
         }
         if (propvalue==null){
-            propvalue=new boolean[10][30];
+            propvalue=new int[10][30];
         }
         if (propfield==null){
             propfield=new Field[10][30];
@@ -190,7 +188,7 @@ public class mod_OldDays extends BaseModMp{
             proplength[modulenum]=0;
         }
         propname[modulenum][i2]=name;
-        propvalue[modulenum][i2]=val;
+        propvalue[modulenum][i2]=val ? 1 : 0;
         disabled[modulenum][i2]=false;
         propsmp[modulenum][i2]=mp;
         propdesc[modulenum][i2]=desc;
@@ -208,7 +206,7 @@ public class mod_OldDays extends BaseModMp{
 
     public void callback (int i){}
 
-    protected static void sendCallback(int id, int i2){
+    protected static void sendCallback(int id, int i2, boolean val){
         lastmodule = id;
         lastoption = i2;
         int id2 = 0;
@@ -232,7 +230,7 @@ public class mod_OldDays extends BaseModMp{
     protected GuiOldDaysModules moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static String[][] propname;
-    public static boolean[][] propvalue;
+    public static int[][] propvalue;
     public static Field[][] propfield;
     public static String[][] propdesc;
     public static boolean[][] disabled;

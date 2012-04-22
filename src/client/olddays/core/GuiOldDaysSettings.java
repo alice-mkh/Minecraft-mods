@@ -40,7 +40,7 @@ public class GuiOldDaysSettings extends GuiScreen{
                 top += (margin / 3);
             }
             int y = height / 6 - top + (((i-1)/2) * margin);
-            controlList.add(propButtons[i] = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.propname[id][i]+": "+onOff(mod_OldDays.propvalue[id][i])));
+            controlList.add(propButtons[i] = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.propname[id][i]+": "+onOff(mod_OldDays.propvalue[id][i]>0)));
             propButtons[i].enabled = !mod_OldDays.disabled[id][i] && !(mod_OldDays.propsmp[id][i]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote);
         }
     }
@@ -62,8 +62,8 @@ public class GuiOldDaysSettings extends GuiScreen{
             mc.displayGuiScreen(parent);
         }
         if (guibutton.id > 1){
-            boolean b = !mod_OldDays.propvalue[id][guibutton.id-1];
-            mod_OldDays.propvalue[id][guibutton.id-1]=b;
+            boolean b = mod_OldDays.propvalue[id][guibutton.id-1]==0;
+            mod_OldDays.propvalue[id][guibutton.id-1]=b ? 1 : 0;
             try{
                 mod_OldDays.propfield[id][guibutton.id-1].setBoolean(mod_OldDays.class, b);
             }catch(Exception ex){

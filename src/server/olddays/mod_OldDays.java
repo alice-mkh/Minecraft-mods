@@ -30,7 +30,7 @@ public class mod_OldDays extends BaseModMp{
             return;
         }
         for (int i = 1; i < proplength[module]; i++){
-            settings[i+1] = propvalue[module][i] ? 1 : 0;
+            settings[i+1] = propvalue[module][i];
         }
         Packet230ModLoader packet = new Packet230ModLoader();
         packet.packetType = 0;
@@ -42,8 +42,8 @@ public class mod_OldDays extends BaseModMp{
         PropertyManager pmanager = new PropertyManager(new File("oldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties"));
         for (int i = 1; i <= proplength[modulenum]; i++){
             try{
-                propvalue[modulenum][i] = pmanager.getBooleanProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]);
-                propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), propvalue[modulenum][i]);
+                propvalue[modulenum][i] = pmanager.getIntProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]);
+                propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), propvalue[modulenum][i]>=1);
                 sendCallback(modulenum, i);
             }catch(Exception ex){
                 System.out.println(modulenum+" "+i+" "+ex);
@@ -68,7 +68,7 @@ public class mod_OldDays extends BaseModMp{
             propname=new String[10][30];
         }
         if (propvalue==null){
-            propvalue=new boolean[10][30];
+            propvalue=new int[10][30];
         }
         if (propfield==null){
             propfield=new Field[10][30];
@@ -78,7 +78,7 @@ public class mod_OldDays extends BaseModMp{
             proplength[modulenum]=0;
         }
         propname[modulenum][i2]=name;
-        propvalue[modulenum][i2]=val;
+        propvalue[modulenum][i2]=val ? 1 : 0;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){}
@@ -127,7 +127,7 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public static String[][] propname;
-    public static boolean[][] propvalue;
+    public static int[][] propvalue;
     public static Field[][] propfield;
     public static int[] proplength;
     public static String[] modules = new String[10];
