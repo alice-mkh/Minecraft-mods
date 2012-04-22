@@ -41,6 +41,8 @@ public class mod_OldDays extends BaseModMp{
             try{
                 if (propsmp[module][i]>=0){
                     boolean val = propsmp[module][i]==1;
+                    propvalue[module][i] = propsmp[module][i];
+                    propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
                     sendCallback(module, i);
                 }
             }catch(Exception ex){
@@ -206,7 +208,7 @@ public class mod_OldDays extends BaseModMp{
 
     public void callback (int i){}
 
-    protected static void sendCallback(int id, int i2, boolean val){
+    protected static void sendCallback(int id, int i2){
         lastmodule = id;
         lastoption = i2;
         int id2 = 0;
