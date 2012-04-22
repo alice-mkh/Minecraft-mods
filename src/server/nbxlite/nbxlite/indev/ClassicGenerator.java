@@ -109,7 +109,7 @@ public final class ClassicGenerator
                     if(k11 <= k10)
                         j14 = Block.stone.blockID;
                     if(k11 == 0)
-                        j14 = Block.lavaMoving.blockID;
+                        j14 = Block.lavaStill.blockID;
                     this.f[i13] = (byte)j14;
                 }
 

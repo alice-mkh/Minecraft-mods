@@ -17,7 +17,7 @@ public class IndevLevel{
     public int j;
     public int k;
     public float l;
-    public int m = Block.waterMoving.blockID;
+    public int m = Block.waterStill.blockID;
     List n = new ArrayList();
     public int waterLevel;
     public int t;

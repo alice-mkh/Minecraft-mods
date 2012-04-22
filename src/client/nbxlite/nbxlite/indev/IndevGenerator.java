@@ -425,7 +425,7 @@ label0:
             world.w = 0x100400;
             world.v = 0x100400;
             world.B = world.A = 7;
-            world.m = Block.lavaMoving.blockID;
+            world.m = Block.lavaStill.blockID;
             if(floating)
             {
                 world.u = k1 + 2;
@@ -1099,7 +1099,7 @@ label0:
                 else
                 {
                     if (j3 < world.t){
-                        if ((world.t > world.waterLevel) && (world.m == Block.waterMoving.blockID)){
+                        if ((world.t > world.waterLevel) && (world.m == Block.waterStill.blockID)){
                             i3 = Block.grass.blockID;
                         }else{
                             i3 = Block.dirt.blockID;
