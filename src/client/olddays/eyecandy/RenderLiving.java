@@ -88,13 +88,13 @@ public class RenderLiving extends Render
                     f6 *= 3F;
                 }
                 float bobStrength = 0F;
-                if (par1EntityLiving instanceof EntityZombie || 
+                if ((par1EntityLiving instanceof EntityZombie || 
                     par1EntityLiving instanceof EntitySkeleton || 
                     par1EntityLiving instanceof EntityCreeper || 
                     par1EntityLiving instanceof EntityPig || 
                     par1EntityLiving instanceof EntitySheep || 
                     par1EntityLiving instanceof EntityPlayer ||
-                    par1EntityLiving instanceof EntityOtherPlayerMP){
+                    par1EntityLiving instanceof EntityOtherPlayerMP) && !par1EntityLiving.isChild()){
                     bobStrength = 1.0F;
                 }
                 float f32 = par1EntityLiving.field_9362_u + (par1EntityLiving.field_9361_v - par1EntityLiving.field_9362_u) * par9;
