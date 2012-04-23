@@ -33,9 +33,10 @@ public class BlockFence2 extends BlockFence
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (bigfences){
-            return;
+            setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
+        }else{
+            super.setBlockBoundsBasedOnState(par1IBlockAccess, par2, par3, par4);
         }
-        super.setBlockBoundsBasedOnState(par1IBlockAccess, par2, par3, par4);
     }
 
     /**
@@ -46,7 +47,7 @@ public class BlockFence2 extends BlockFence
         if (!connect){
             int i = par1IBlockAccess.getBlockId(par2, par3, par4);
 
-            if (i == blockID || i == Block.fenceGate.blockID || i == Block.netherFence.blockID)
+            if (i == blockID || i == Block.fenceGate.blockID)
             {
                 return true;
             }
