@@ -42,8 +42,14 @@ public class mod_OldDays extends BaseModMp{
         PropertyManager pmanager = new PropertyManager(new File("oldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties"));
         for (int i = 1; i <= proplength[modulenum]; i++){
             try{
-                propvalue[modulenum][i] = pmanager.getIntProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]);
-                sendCallback(modulenum, i, pmanager.getIntProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]));
+                int val = 0;
+                if (propmax[modulenum][i]<=2){
+                    val = pmanager.getBooleanProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]>0) ? 1 : 0;
+                }else{
+                    val = pmanager.getIntProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]);
+                }
+                propvalue[modulenum][i] = val;
+                sendCallback(modulenum, i, val);
             }catch(Exception ex){
                 System.out.println(modulenum+" "+i+" "+ex);
             }

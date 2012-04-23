@@ -75,7 +75,11 @@ public class mod_OldDays extends BaseModMp{
             File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString());
             FileOutputStream fileoutputstream = new FileOutputStream(file);
             for (int i = 1; i <= proplength[id]; i++){
-                properties.setProperty(propfield[id][i].getName(), Integer.toString(propvalue[id][i]));
+                if (propmax[id][i]<=2){
+                    properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]>0));
+                }else{
+                    properties.setProperty(propfield[id][i].getName(), Integer.toString(propvalue[id][i]));
+                }
             }
             properties.store(fileoutputstream, "Old Days config");
             fileoutputstream.close();
@@ -102,7 +106,11 @@ public class mod_OldDays extends BaseModMp{
             if(flag){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 for (int i = 1; i <= proplength[modulenum]; i++){
-                    properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
+                    if (propmax[modulenum][i]<=2){
+                        properties.setProperty(propfield[modulenum][i].getName(), Boolean.toString(propvalue[modulenum][i]>0));
+                    }else{
+                        properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
+                    }
                 }
                 properties.store(fileoutputstream, "Old Days config");
                 fileoutputstream.close();
@@ -110,7 +118,12 @@ public class mod_OldDays extends BaseModMp{
             try{
                 properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString()));
                 for (int i = 1; i <= proplength[modulenum]; i++){
-                    int val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));;
+                    int val = 0;
+                    if (propmax[modulenum][i]<=2){
+                        val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName())) ? 1 : 0;
+                    }else{
+                        val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));
+                    }
                     propvalue[modulenum][i] = val;
                     sendCallback(modulenum, i, val);
                 }
