@@ -5,7 +5,7 @@ import java.util.*;
 public abstract class EntityPlayer extends EntityLiving
 {
     public static boolean oldarmor = false;
-    public static boolean oldcombat = false;
+    public static int combat = 3;
     public static boolean sprint = true;
 
     /** Inventory of the player */
@@ -156,18 +156,28 @@ public abstract class EntityPlayer extends EntityLiving
         if(i > 0)
         {
             i += k;
-            if (j > 0)
-            {
-                par1Entity.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * (float)j * 0.5F);
-                motionX *= 0.59999999999999998D;
-                motionZ *= 0.59999999999999998D;
-                setSprinting(false);
-            }
-            if(motionY < 0.0D)
+            if(motionY < 0.0D && combat>0)
             {
                 i++;
             }
-            par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
+            if (par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i)){
+                if (j > 0)
+                {
+                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
+                    motionX *= 0.59999999999999998D;
+                    motionZ *= 0.59999999999999998D;
+                    setSprinting(false);
+                }
+                if (k > 0)
+                {
+                    onEnchantmentCritical(par1Entity);
+                }
+                if (i >= 18)
+                {
+                    triggerAchievement(AchievementList.overkill);
+                }
+                setLastAttackingEntity(par1Entity);
+            }
             ItemStack itemstack = getCurrentEquippedItem();
             if(itemstack != null && (par1Entity instanceof EntityLiving))
             {
@@ -198,10 +208,15 @@ public abstract class EntityPlayer extends EntityLiving
     private void combatNew(Entity par1Entity, int i, int j, int k){
         if (i > 0 || k > 0)
         {
-            boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
+            boolean flag = combat >= 3 && fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
             if (flag)
             {
                 i += rand.nextInt(i / 2 + 2);
+            }
+            boolean flag2 = combat < 3 && motionY < 0.0D && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness);
+            if(flag2)
+            {
+                i = (i * 3) / 2 + 1;
             }
             i += k;
             boolean flag1 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
@@ -214,7 +229,7 @@ public abstract class EntityPlayer extends EntityLiving
                     motionZ *= 0.59999999999999998D;
                     setSprinting(false);
                 }
-                if (flag)
+                if (flag || flag2)
                 {
                     onCriticalHit(par1Entity);
                 }
@@ -1357,7 +1372,7 @@ public abstract class EntityPlayer extends EntityLiving
         {
             j++;
         }
-        if (oldcombat){
+        if (combat<2){
             combatOld(par1Entity, i, j, k);
         }else{
             combatNew(par1Entity, i, j, k);

@@ -5,6 +5,7 @@ import java.util.Random;
 public class EntityZombie extends EntityMob
 {
     public static boolean burns = true;
+    public static boolean defense = true;
 
     public boolean helmet;
     public boolean armor;
@@ -62,7 +63,7 @@ public class EntityZombie extends EntityMob
      */
     public int getTotalArmorValue()
     {
-        return 2;
+        return defense ? 2 : 0;
     }
 
     /**

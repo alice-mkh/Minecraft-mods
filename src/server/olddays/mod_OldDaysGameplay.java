@@ -11,7 +11,8 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         addProperty(this, 6, "Rare loot",          1, 0, "RareLoot",        "");
         addProperty(this, 7, "Machine bow",        0, 1, "InstantBow",      "");
         addProperty(this, 8, "Bow durability",     1, 0, "FiniteBow",       "");
-        addProperty(this, 9, "Old combat system",  0, 1, "OldCombatSystem", "");
+        addProperty(this, 9, "Combat system",      3, 2, "CombatSystem",    "");
+        setIntProperty(9, 4, new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
         addProperty(this, 10,"Old armor",          0, 1, "OldArmor",        "");
         addProperty(this, 11,"Allow debug screen", 1, 1, "AllowDebug",      "");
         addProperty(this, 13,"Jump delay",         1, 0, "JumpDelay",       "");
@@ -28,11 +29,12 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 4: setBool(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
             case 5: setBool(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
             case 6: setBool(net.minecraft.src.EntityLiving.class, "rareloot", RareLoot); break;
-            case 7: setBool(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
+            case 7: setBool(net.minecraft.src.EntityArrow.class, "olddamage", InstantBow);
+                    setBool(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
             case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
-            case 9: setBool(net.minecraft.src.EntityArrow.class, "olddamage", OldCombatSystem);
-                    setBool(net.minecraft.src.EntityPlayer.class, "oldcombat", OldCombatSystem);
-                    setSwordDamage(OldCombatSystem); break;
+            case 9: setInt(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem-1);
+                    setBool(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=4);
+                    setSwordDamage(CombatSystem<2); break;
             case 10:setBool(net.minecraft.src.EntityPlayer.class, "oldarmor", OldArmor);
                     setArmorDamage(OldArmor); break;
             case 12:setBool(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
@@ -49,7 +51,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
     public static boolean RareLoot;
     public static boolean InstantBow = true;
     public static boolean FiniteBow;
-    public static boolean OldCombatSystem = true;
+    public static int CombatSystem = 1;
     public static boolean OldArmor = true;
     public static boolean AllowDebug = true;
     public static boolean AllowSprint = true;

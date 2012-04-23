@@ -56,6 +56,10 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
+    protected void setIntProperty(int i2, int max, String[] names){
+        propmax[modulenum][i2]=max;
+    }
+
     protected static void addProperty(Object module, int i2, String name, int mp, int val, String var, String desc){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
