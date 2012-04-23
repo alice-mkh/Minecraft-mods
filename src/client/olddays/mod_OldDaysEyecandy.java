@@ -13,7 +13,11 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 7, "Old chests",            -1, 1, "OldChest",          "");
         addProperty(this, 8, "Show mob IDs in F3",    -1, 1, "MobLabels",         "");
         addProperty(this, 9, "Mob armor",             -1, 0, "MobArmor",          "");
-        addProperty(this, 10,"Old main menu",         -1, 1, "OldMainMenu",       "");
+        addProperty(this, 10,"Main menu",             -1, 1, "MainMenu",          "");
+        propmax[4][10]=3;
+        propnames[4][10][1]="Alpha";
+        propnames[4][10][2]="1.7.3";
+        propnames[4][10][3]="1.8.1";
         addProperty(this, 11,"Old digging particles", -1, 1, "OldDigging",        "");
         addProperty(this, 12,"Old ore blocks",        -1, 1, "OldOreBlocks",      "");
         addProperty(this, 13,"Old redstone wire",     -1, 1, "OldWires",          "");
@@ -40,8 +44,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 8: setBool(net.minecraft.src.RenderLiving.class, "labels", MobLabels); break;
             case 9: setBool(net.minecraft.src.RenderZombie.class, "mobArmor", MobArmor);
                     setBool(net.minecraft.src.RenderSkeleton.class, "mobArmor", MobArmor); break;
-            case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", !OldMainMenu);
-                    setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", OldMainMenu); break;
+            case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>2);
+                    setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", MainMenu<2); break;
             case 11:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
             case 12:setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks);
                     reload(); break;
@@ -69,7 +73,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean OldChest = true;
     public static boolean MobLabels = true;
     public static boolean MobArmor;
-    public static boolean OldMainMenu = true;
+    public static int MainMenu = 0;
     public static boolean OldDigging = true;
     public static boolean OldOreBlocks = true;
     public static boolean OldWires = true;
