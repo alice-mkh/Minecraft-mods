@@ -84,6 +84,9 @@ public class RenderLiving extends Render
             float f6;
             if (bobbing){
                 f6 = par1EntityLiving.field_9359_x + (par1EntityLiving.field_9360_w - par1EntityLiving.field_9359_x) * par9;
+                if (par1EntityLiving.isChild()){
+                    f6 *= 3F;
+                }
                 float bobStrength = 0F;
                 if (par1EntityLiving instanceof EntityZombie || 
                     par1EntityLiving instanceof EntitySkeleton || 
@@ -99,12 +102,11 @@ public class RenderLiving extends Render
                 GL11.glTranslatef(0.0F, bob * f4 - 0.0078125F, 0.0F);
             }else{
                 f6 = par1EntityLiving.field_703_S - par1EntityLiving.field_704_R * (1.0F - par9);
+                if (par1EntityLiving.isChild()){
+                    f6 *= 3F;
+                }
             }
 
-            if (par1EntityLiving.isChild())
-            {
-                f6 *= 3F;
-            }
 
             if (f5 > 1.0F)
             {
