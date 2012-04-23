@@ -43,15 +43,14 @@ public class mod_OldDays extends BaseModMp{
         for (int i = 1; i <= proplength[modulenum]; i++){
             try{
                 propvalue[modulenum][i] = pmanager.getIntProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]);
-                propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), propvalue[modulenum][i]>=1);
-                sendCallback(modulenum, i);
+                sendCallback(modulenum, i, pmanager.getIntProperty(propfield[modulenum][i].getName(), propvalue[modulenum][i]));
             }catch(Exception ex){
                 System.out.println(modulenum+" "+i+" "+ex);
             }
         }
     }
 
-    protected static void addProperty(Object module, int i2, String name, int mp, boolean val, String var, String desc){
+    protected static void addProperty(Object module, int i2, String name, int mp, int val, String var, String desc){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
@@ -73,12 +72,16 @@ public class mod_OldDays extends BaseModMp{
         if (propfield==null){
             propfield=new Field[10][30];
         }
+        if (propmax==null){
+            propmax=new int[10][30];
+        }
         if (proplength==null){
             proplength=new int[10];
             proplength[modulenum]=0;
         }
         propname[modulenum][i2]=name;
-        propvalue[modulenum][i2]=val ? 1 : 0;
+        propvalue[modulenum][i2]=val;
+        propmax[modulenum][i2]=2;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){}
@@ -107,7 +110,16 @@ public class mod_OldDays extends BaseModMp{
 
     public void callback (int i){}
 
-    protected static void sendCallback(int id, int i2){
+    protected static void sendCallback(int id, int i2, int b){
+        try{
+            if (propmax[id][i2]<=2){
+                mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b>0);
+            }else{
+                mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b);
+            }
+        }catch(Exception ex){}
+        lastmodule = id;
+        lastoption = i2;
         int id2 = 0;
         List list = ModLoader.getLoadedMods();
         Object obj = null;
@@ -127,6 +139,7 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public static String[][] propname;
+    public static int[][] propmax;
     public static int[][] propvalue;
     public static Field[][] propfield;
     public static int[] proplength;

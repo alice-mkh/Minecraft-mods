@@ -12,6 +12,8 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 7, "Mushroom spreading",  1, 1, "ShroomSpreading", "");
         addProperty(this, 8, "Solid TNT",           0, 1, "SolidTNT",        "");
         addProperty(this, 9, "Big fences",          0, 1, "BigFences",       "");
+        addProperty(this, 10, "Integer test 1",     0, 2, "BigFences2",      "This is just int option test");
+        addProperty(this, 11, "Integer test 2",     0, 3, "BigFences3",      "");
         propmax[0][10]=3;
         propmax[0][11]=4;
         loadModuleProperties();
@@ -30,6 +32,8 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
             case 9: setBool(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
+            case 10: System.out.println("test1 "+BigFences2); break;
+            case 11: System.out.println("test2 "+BigFences3); break;
         }
     }
 
@@ -42,6 +46,8 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean ShroomSpreading = true;
     public static boolean SolidTNT = true;
     public static boolean BigFences = true;
+    public static int BigFences2 = 2;
+    public static int BigFences3 = 3;
 //Old blocks
 //Unflammable fences and stairs
 

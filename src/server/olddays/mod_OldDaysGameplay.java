@@ -3,18 +3,18 @@ package net.minecraft.src;
 public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
         registerModule(2);
-        addProperty(this, 1, "Experience",         1, false, "EnableXP",        "");
-        addProperty(this, 2, "Hunger",             1, false, "EnableHunger",    "");
-        addProperty(this, 3, "Instant food",       0, true,  "InstantFood",     "");
-        addProperty(this, 4, "Food stacking",      1, false, "FoodStacking",    "");
-        addProperty(this, 5, "Old loot",           0, true,  "OldDrops",        "");
-        addProperty(this, 6, "Rare loot",          1, false, "RareLoot",        "");
-        addProperty(this, 7, "Machine bow",        0, true,  "InstantBow",      "");
-        addProperty(this, 8, "Bow durability",     1, false, "FiniteBow",       "");
-        addProperty(this, 9, "Old combat system",  0, true,  "OldCombatSystem", "");
-        addProperty(this, 10,"Old armor",          0, true,  "OldArmor",        "");
-        addProperty(this, 12,"Allow sprint",       1, true,  "AllowSprint",     "");
-        addProperty(this, 13,"Jump delay",         1, false, "JumpDelay",       "");
+        addProperty(this, 1, "Experience",         1, 0, "EnableXP",        "");
+        addProperty(this, 2, "Hunger",             1, 0, "EnableHunger",    "");
+        addProperty(this, 3, "Instant food",       0, 1, "InstantFood",     "");
+        addProperty(this, 4, "Food stacking",      1, 0, "FoodStacking",    "");
+        addProperty(this, 5, "Old loot",           0, 1, "OldDrops",        "");
+        addProperty(this, 6, "Rare loot",          1, 0, "RareLoot",        "");
+        addProperty(this, 7, "Machine bow",        0, 1, "InstantBow",      "");
+        addProperty(this, 8, "Bow durability",     1, 0, "FiniteBow",       "");
+        addProperty(this, 9, "Old combat system",  0, 1, "OldCombatSystem", "");
+        addProperty(this, 10,"Old armor",          0, 1, "OldArmor",        "");
+        addProperty(this, 11,"Allow debug screen", 1, 1, "AllowDebug",      "");
+        addProperty(this, 13,"Jump delay",         1, 0, "JumpDelay",       "");
         loadModuleProperties();
     }
 
