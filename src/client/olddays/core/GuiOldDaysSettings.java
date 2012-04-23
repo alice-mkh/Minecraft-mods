@@ -40,7 +40,7 @@ public class GuiOldDaysSettings extends GuiScreen{
                 top += (margin / 3);
             }
             int y = height / 6 - top + (((i-1)/2) * margin);
-            controlList.add(propButtons[i] = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.propname[id][i]+": "+onOff(mod_OldDays.propvalue[id][i]>0)));
+            controlList.add(propButtons[i] = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.propname[id][i]+": "+getState(i, mod_OldDays.propvalue[id][i])));
             propButtons[i].enabled = !mod_OldDays.disabled[id][i] && !(mod_OldDays.propsmp[id][i]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote);
         }
     }
@@ -48,6 +48,13 @@ public class GuiOldDaysSettings extends GuiScreen{
     private String onOff(boolean b){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         return b ? stringtranslate.translateKey("options.on") : stringtranslate.translateKey("options.off");
+    }
+    
+    private String getState(int i2, int state){
+        if (mod_OldDays.propmax[id][i2]<=2){
+            return onOff(state>0);
+        }
+        return ""+state;
     }
 
     protected void actionPerformed(GuiButton guibutton)
@@ -62,16 +69,16 @@ public class GuiOldDaysSettings extends GuiScreen{
             mc.displayGuiScreen(parent);
         }
         if (guibutton.id > 1){
-            boolean b = mod_OldDays.propvalue[id][guibutton.id-1]==0;
-            mod_OldDays.propvalue[id][guibutton.id-1]=b ? 1 : 0;
-            try{
-                mod_OldDays.propfield[id][guibutton.id-1].setBoolean(mod_OldDays.class, b);
-            }catch(Exception ex){
-                System.out.println(ex);
+            if (mod_OldDays.propmax[id][guibutton.id-1]<=2){
+                boolean b = mod_OldDays.propvalue[id][guibutton.id-1]==0;
+                mod_OldDays.propvalue[id][guibutton.id-1]=b ? 1 : 0;
+            }else{
+                boolean b = mod_OldDays.propvalue[id][guibutton.id-1]<mod_OldDays.propmax[id][guibutton.id-1];
+                mod_OldDays.propvalue[id][guibutton.id-1]=b ? mod_OldDays.propvalue[id][guibutton.id-1]+1 : 0;
             }
             mod_OldDays.saveModuleProperties(id);
-            mod_OldDays.sendCallback(id, guibutton.id-1);
-            guibutton.displayString = mod_OldDays.propname[id][guibutton.id-1]+": "+onOff(b);
+            mod_OldDays.sendCallback(id, guibutton.id-1, mod_OldDays.propvalue[id][guibutton.id-1]);
+            guibutton.displayString = mod_OldDays.propname[id][guibutton.id-1]+": "+getState(guibutton.id-1, mod_OldDays.propvalue[id][guibutton.id-1]);
         }
     }
 

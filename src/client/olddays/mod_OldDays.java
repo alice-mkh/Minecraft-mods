@@ -40,10 +40,8 @@ public class mod_OldDays extends BaseModMp{
         for (int i = 1; i < proplength[module]; i++){
             try{
                 if (propsmp[module][i]>=0){
-                    boolean val = propsmp[module][i]==1;
                     propvalue[module][i] = propsmp[module][i];
-                    propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
-                    sendCallback(module, i);
+                    sendCallback(module, i, propsmp[module][i]);
                 }
             }catch(Exception ex){
                 System.out.println(ex);
@@ -63,10 +61,8 @@ public class mod_OldDays extends BaseModMp{
         int module = settings[1];
         try{
             for (int i = 1; i < settings.length-1; i++){
-                boolean val = settings[i+1]==1;
                 propvalue[module][i] = settings[i+1];
-                propfield[module][i].setBoolean(Class.forName(modules[modulenum]), val);
-                sendCallback(module, i);
+                sendCallback(module, i, settings[i+1]);
             }
         }catch(Exception ex){
             System.out.println(ex);
@@ -116,8 +112,7 @@ public class mod_OldDays extends BaseModMp{
                 for (int i = 1; i <= proplength[modulenum]; i++){
                     int val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));;
                     propvalue[modulenum][i] = val;
-                    propfield[modulenum][i].setBoolean(Class.forName(modules[modulenum]), val>0);
-                    sendCallback(modulenum, i);
+                    sendCallback(modulenum, i, val);
                 }
             }catch(Exception ex){
                 System.out.println(ex);
@@ -154,7 +149,7 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected static void addProperty(Object module, int i2, String name, int mp, boolean val, String var, String desc){
+    protected static void addProperty(Object module, int i2, String name, int mp, int val, String var, String desc){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
@@ -185,15 +180,19 @@ public class mod_OldDays extends BaseModMp{
         if (propsmp==null){
             propsmp=new int[10][30];
         }
+        if (propmax==null){
+            propmax=new int[10][30];
+        }
         if (proplength==null){
             proplength=new int[10];
             proplength[modulenum]=0;
         }
         propname[modulenum][i2]=name;
-        propvalue[modulenum][i2]=val ? 1 : 0;
+        propvalue[modulenum][i2]=val;
         disabled[modulenum][i2]=false;
         propsmp[modulenum][i2]=mp;
         propdesc[modulenum][i2]=desc;
+        propmax[modulenum][i2]=2;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){}
@@ -208,7 +207,14 @@ public class mod_OldDays extends BaseModMp{
 
     public void callback (int i){}
 
-    protected static void sendCallback(int id, int i2){
+    protected static void sendCallback(int id, int i2, int b){
+        try{
+            if (propmax[id][i2]<=2){
+                mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b>0);
+            }else{
+                mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b);
+            }
+        }catch(Exception ex){}
         lastmodule = id;
         lastoption = i2;
         int id2 = 0;
@@ -235,6 +241,7 @@ public class mod_OldDays extends BaseModMp{
     public static int[][] propvalue;
     public static Field[][] propfield;
     public static String[][] propdesc;
+    public static int[][] propmax;
     public static boolean[][] disabled;
     public static int[][] propsmp;
     public static int[] proplength;
