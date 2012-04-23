@@ -45,14 +45,13 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
     }
     
-    private String onOff(boolean b){
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        return b ? stringtranslate.translateKey("options.on") : stringtranslate.translateKey("options.off");
-    }
-    
     private String getState(int i2, int state){
         if (mod_OldDays.propmax[id][i2]<=2){
-            return onOff(state>0);
+            StringTranslate stringtranslate = StringTranslate.getInstance();
+            return state>0 ? stringtranslate.translateKey("options.on") : stringtranslate.translateKey("options.off");
+        }
+        if (mod_OldDays.propnames[id][i2][state]!=null){
+            return mod_OldDays.propnames[id][i2][state];
         }
         return ""+state;
     }
@@ -74,7 +73,7 @@ public class GuiOldDaysSettings extends GuiScreen{
                 mod_OldDays.propvalue[id][guibutton.id-1]=b ? 1 : 0;
             }else{
                 boolean b = mod_OldDays.propvalue[id][guibutton.id-1]<mod_OldDays.propmax[id][guibutton.id-1];
-                mod_OldDays.propvalue[id][guibutton.id-1]=b ? mod_OldDays.propvalue[id][guibutton.id-1]+1 : 0;
+                mod_OldDays.propvalue[id][guibutton.id-1]=b ? mod_OldDays.propvalue[id][guibutton.id-1]+1 : 1;
             }
             mod_OldDays.saveModuleProperties(id);
             mod_OldDays.sendCallback(id, guibutton.id-1, mod_OldDays.propvalue[id][guibutton.id-1]);

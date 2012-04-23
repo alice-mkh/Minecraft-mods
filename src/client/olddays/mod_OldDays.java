@@ -196,6 +196,9 @@ public class mod_OldDays extends BaseModMp{
         if (propmax==null){
             propmax=new int[10][30];
         }
+        if (propnames==null){
+            propnames=new String[10][30][10];
+        }
         if (proplength==null){
             proplength=new int[10];
             proplength[modulenum]=0;
@@ -255,6 +258,7 @@ public class mod_OldDays extends BaseModMp{
     public static Field[][] propfield;
     public static String[][] propdesc;
     public static int[][] propmax;
+    public static String[][][] propnames;
     public static boolean[][] disabled;
     public static int[][] propsmp;
     public static int[] proplength;
