@@ -45,6 +45,17 @@ public class ModelEnderman extends ModelBiped
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
     {
         super.setRotationAngles(par1, par2, par3, par4, par5, par6);
+        if (!isCarrying)
+        {
+            bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2 * 0.5F;
+            bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+            bipedRightArm.rotateAngleZ = 0.0F;
+            bipedLeftArm.rotateAngleZ = 0.0F;
+            bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+            bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+            bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+            bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        }
         bipedHead.showModel = true;
         float f = -14F;
         bipedBody.rotateAngleX = 0.0F;
@@ -104,11 +115,6 @@ public class ModelEnderman extends ModelBiped
             bipedLeftArm.rotateAngleX = -0.5F;
             bipedRightArm.rotateAngleZ = 0.05F;
             bipedLeftArm.rotateAngleZ = -0.05F;
-        }else{
-            bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2 * 0.5F;
-            bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
-            bipedRightArm.rotateAngleZ = 0.0F;
-            bipedLeftArm.rotateAngleZ = 0.0F;
         }
 
         bipedRightArm.rotationPointZ = 0.0F;
