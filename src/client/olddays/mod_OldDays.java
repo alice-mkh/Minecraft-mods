@@ -215,6 +215,16 @@ public class mod_OldDays extends BaseModMp{
         proplength[modulenum]++;
     }
 
+    protected void setIntProperty(int i2, int max, String[] names){
+        propmax[modulenum][i2]=max;
+        if (names==null){
+            return;
+        }
+        for (int i = 0; i < names.length; i++){
+            propnames[modulenum][i2][i+1]=names[i];
+        }
+    }
+
     public void keyboardEvent(KeyBinding keybinding){
         if (keybinding==keySettings && ModLoader.getMinecraftInstance().currentScreen==null){
             ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, moduleGui);

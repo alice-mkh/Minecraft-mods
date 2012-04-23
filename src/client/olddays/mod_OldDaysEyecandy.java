@@ -14,10 +14,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(this, 8, "Show mob IDs in F3",    -1, 1, "MobLabels",         "");
         addProperty(this, 9, "Mob armor",             -1, 0, "MobArmor",          "");
         addProperty(this, 10,"Main menu",             -1, 1, "MainMenu",          "");
-        propmax[4][10]=3;
-        propnames[4][10][1]="Alpha";
-        propnames[4][10][2]="1.7.3";
-        propnames[4][10][3]="1.8.1";
+        setIntProperty(10, 3, new String[]{"Alpha", "1.7.3", "1.8.1"});
         addProperty(this, 11,"Old digging particles", -1, 1, "OldDigging",        "");
         addProperty(this, 12,"Old ore blocks",        -1, 1, "OldOreBlocks",      "");
         addProperty(this, 13,"Old redstone wire",     -1, 1, "OldWires",          "");

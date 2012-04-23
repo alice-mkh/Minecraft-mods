@@ -13,9 +13,9 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(this, 8, "Solid TNT",           0, 1, "SolidTNT",        "");
         addProperty(this, 9, "Big fences",          0, 1, "BigFences",       "");
         addProperty(this, 10, "Integer test 1",     0, 2, "BigFences2",      "This is just int option test");
+        setIntProperty(10, 3, null);
         addProperty(this, 11, "Integer test 2",     0, 3, "BigFences3",      "");
-        propmax[0][10]=3;
-        propmax[0][11]=4;
+        setIntProperty(11, 4, null);
         loadModuleProperties();
         replaceBlocks();
     }
