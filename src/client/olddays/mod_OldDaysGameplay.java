@@ -3,21 +3,20 @@ import net.minecraft.client.Minecraft;
 
 public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
-        registerModule(2);
-        addProperty(this, 1, "Experience",         1, 0, "EnableXP",        "");
-        addProperty(this, 2, "Hunger",             1, 0, "EnableHunger",    "");
-        addProperty(this, 3, "Instant food",       0, 1, "InstantFood",     "");
-        addProperty(this, 4, "Food stacking",      1, 0, "FoodStacking",    "");
-        addProperty(this, 5, "Old loot",           0, 1, "OldDrops",        "");
-        addProperty(this, 6, "Rare loot",          1, 0, "RareLoot",        "");
-        addProperty(this, 7, "Machine bow",        0, 1, "InstantBow",      "");
-        addProperty(this, 8, "Bow durability",     1, 0, "FiniteBow",       "");
-        addProperty(this, 9, "Combat system",      3, 2, "CombatSystem",    "");
-        setIntProperty(9, 4, new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
-        addProperty(this, 10,"Old armor",          0, 1, "OldArmor",        "");
-        addProperty(this, 11,"Allow debug screen", 1, 1, "AllowDebug",      "");
-        addProperty(this, 12,"Allow sprint",       1, 1, "AllowSprint",     "");
-        addProperty(this, 13,"Jump delay",         1, 0, "JumpDelay",       "");
+        registerModule(this, 2);
+        addProperty(1, "Experience",         1, 0, "EnableXP",        "");
+        addProperty(2, "Hunger",             1, 0, "EnableHunger",    "");
+        addProperty(3, "Instant food",       0, 1, "InstantFood",     "");
+        addProperty(4, "Food stacking",      1, 0, "FoodStacking",    "");
+        addProperty(5, "Old loot",           0, 1, "OldDrops",        "");
+        addProperty(6, "Rare loot",          1, 0, "RareLoot",        "");
+        addProperty(7, "Machine bow",        0, 1, "InstantBow",      "");
+        addProperty(8, "Bow durability",     1, 0, "FiniteBow",       "");
+        addProperty(9, "Combat system",      3, 2, "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
+        addProperty(10,"Old armor",          0, 1, "OldArmor",        "");
+        addProperty(11,"Allow debug screen", 1, 1, "AllowDebug",      "");
+        addProperty(12,"Allow sprint",       1, 1, "AllowSprint",     "");
+        addProperty(13,"Jump delay",         1, 0, "JumpDelay",       "");
         loadModuleProperties();
         ModLoader.setInGameHook(this, true, true);
     }
@@ -39,7 +38,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
             case 9: setInt(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem-1);
                     setBool(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=4);
-                    setSwordDamage(CombatSystem<2); break;
+                    setSwordDamage(CombatSystem<3); break;
             case 10:setBool(net.minecraft.src.EntityPlayer.class, "oldarmor", OldArmor);
                     setArmorDamage(OldArmor); break;
             case 11:setBool(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;

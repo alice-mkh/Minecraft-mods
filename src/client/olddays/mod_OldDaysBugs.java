@@ -2,13 +2,13 @@ package net.minecraft.src;
 
 public class mod_OldDaysBugs extends mod_OldDays{
     public void load(){
-        registerModule(1);
-        addProperty(this, 1, "Boosters",      0, 1, "Boosters",     "");
-        addProperty(this, 2, "Water lifts",   0, 1, "WaterLifts",   "");
-        addProperty(this, 3, "Toasters",      0, 1, "LavaToasters", "");
-        addProperty(this, 4, "Water ladders", 0, 1, "WaterLadders", "");
-        addProperty(this, 5, "Ladder gaps",   0, 1, "LadderGaps",   "");
-        addProperty(this, 6, "Piston dupe",   0, 0, "PistonDupe",   "");
+        registerModule(this, 1);
+        addProperty(1, "Boosters",      0, 1, "Boosters",     "");
+        addProperty(2, "Water lifts",   0, 1, "WaterLifts",   "");
+        addProperty(3, "Toasters",      0, 1, "LavaToasters", "");
+        addProperty(4, "Water ladders", 0, 1, "WaterLadders", "");
+        addProperty(5, "Ladder gaps",   0, 1, "LadderGaps",   "");
+        addProperty(6, "Piston dupe",   0, 0, "PistonDupe",   "");
         loadModuleProperties();
     }
 

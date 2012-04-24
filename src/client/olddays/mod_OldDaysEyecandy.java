@@ -3,22 +3,21 @@ import java.util.*;
 
 public class mod_OldDaysEyecandy extends mod_OldDays{
     public void load(){
-        registerModule(4);
-        addProperty(this, 1, "Old walking",           -1, 1, "OldWalking",        "");
-        addProperty(this, 2, "Bobbing",               -1, 0, "Bobbing",           "");
-        addProperty(this, 3, "Old endermen",          -1, 1, "OldEndermen",       "");
-        addProperty(this, 4, "Endermen open mouth",   -1, 1, "EndermenOpenMouth", "");
-        addProperty(this, 5, "Item sway",             -1, 1, "ItemSway",          "");
-        addProperty(this, 6, "2D items",              -1, 0, "Items2D",           "");
-        addProperty(this, 7, "Old chests",            -1, 1, "OldChest",          "");
-        addProperty(this, 8, "Show mob IDs in F3",    -1, 1, "MobLabels",         "");
-        addProperty(this, 9, "Mob armor",             -1, 0, "MobArmor",          "");
-        addProperty(this, 10,"Main menu",             -1, 1, "MainMenu",          "");
-        setIntProperty(10, 3, new String[]{"Alpha", "1.7.3", "1.8.1"});
-        addProperty(this, 11,"Old digging particles", -1, 1, "OldDigging",        "");
-        addProperty(this, 12,"Old ore blocks",        -1, 1, "OldOreBlocks",      "");
-        addProperty(this, 13,"Old redstone wire",     -1, 1, "OldWires",          "");
-        addProperty(this, 14,"Old item tooltips",     -1, 1, "OldTooltips",       "");
+        registerModule(this, 4);
+        addProperty(1, "Old walking",           -1, 1, "OldWalking",        "");
+        addProperty(2, "Bobbing",               -1, 0, "Bobbing",           "");
+        addProperty(3, "Old endermen",          -1, 1, "OldEndermen",       "");
+        addProperty(4, "Endermen open mouth",   -1, 1, "EndermenOpenMouth", "");
+        addProperty(5, "Item sway",             -1, 1, "ItemSway",          "");
+        addProperty(6, "2D items",              -1, 0, "Items2D",           "");
+        addProperty(7, "Old chests",            -1, 1, "OldChest",          "");
+        addProperty(8, "Show mob IDs in F3",    -1, 1, "MobLabels",         "");
+        addProperty(9, "Mob armor",             -1, 0, "MobArmor",          "");
+        addProperty(10,"Main menu",             -1, 1, "MainMenu",          "", new String[]{"Alpha", "1.7.3", "1.8.1"});
+        addProperty(11,"Old digging particles", -1, 1, "OldDigging",        "");
+        addProperty(12,"Old ore blocks",        -1, 1, "OldOreBlocks",      "");
+        addProperty(13,"Old redstone wire",     -1, 1, "OldWires",          "");
+        addProperty(14,"Old item tooltips",     -1, 1, "OldTooltips",       "");
 //         addProperty(this, 15,"Old fences",            -1, 1, "OldFences",         "");
         loadModuleProperties();
         replaceBlocks();

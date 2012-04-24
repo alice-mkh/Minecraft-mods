@@ -89,80 +89,9 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected static void registerModule(int num){
+    protected static void registerModule(Object module, int num){
         modulenum = num;
         modulegui[modulenum] = null;
-    }
-
-    protected static void registerGui(GuiScreen gui){
-        modulegui[modulenum] = gui;
-    }
-
-    protected static void loadModuleProperties(){
-        Properties properties = new Properties();
-        try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString());
-            boolean flag = file.createNewFile();
-            if(flag){
-                FileOutputStream fileoutputstream = new FileOutputStream(file);
-                for (int i = 1; i <= proplength[modulenum]; i++){
-                    if (propmax[modulenum][i]<=2){
-                        properties.setProperty(propfield[modulenum][i].getName(), Boolean.toString(propvalue[modulenum][i]>0));
-                    }else{
-                        properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
-                    }
-                }
-                properties.store(fileoutputstream, "Old Days config");
-                fileoutputstream.close();
-            }
-            try{
-                properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString()));
-                for (int i = 1; i <= proplength[modulenum]; i++){
-                    int val = 0;
-                    if (propmax[modulenum][i]<=2){
-                        val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName())) ? 1 : 0;
-                    }else{
-                        val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));
-                    }
-                    propvalue[modulenum][i] = val;
-                    sendCallback(modulenum, i, val);
-                }
-            }catch(Exception ex){
-                System.out.println(ex);
-            }
-        }
-        catch(IOException ioexception){
-            ioexception.printStackTrace();
-        }
-    }
-
-    public static void addModules(GuiOldDaysModules gui){
-        for (int i = 0; i < modules2.length; i++){
-            if (modules2[i]!=null){
-                gui.addModule(i, modules2[i].replaceFirst("mod_OldDays", ""));
-            }
-        }
-    }
-
-    protected void setBool(Class where, String what, boolean value){
-        try{
-            where.getDeclaredField(what).setBoolean(null, value);
-        }catch(Exception ex){
-            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
-            disabled[lastmodule][lastoption]=true;
-        }
-    }
-
-    protected void setInt(Class where, String what, int value){
-        try{
-            where.getDeclaredField(what).setInt(null, value);
-        }catch(Exception ex){
-            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
-            disabled[lastmodule][lastoption]=true;
-        }
-    }
-
-    protected static void addProperty(Object module, int i2, String name, int mp, int val, String var, String desc){
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
@@ -203,6 +132,77 @@ public class mod_OldDays extends BaseModMp{
             proplength=new int[10];
             proplength[modulenum]=0;
         }
+    }
+
+    protected static void registerGui(GuiScreen gui){
+        modulegui[modulenum] = gui;
+    }
+
+    protected static void loadModuleProperties(){
+        Properties properties = new Properties();
+        try{
+            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString());
+            boolean flag = file.createNewFile();
+            if(flag){
+                FileOutputStream fileoutputstream = new FileOutputStream(file);
+                for (int i = 1; i <= proplength[modulenum]; i++){
+                    if (propmax[modulenum][i]<=2){
+                        properties.setProperty(propfield[modulenum][i].getName(), Boolean.toString(propvalue[modulenum][i]>0));
+                    }else{
+                        properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
+                    }
+                }
+                properties.store(fileoutputstream, "Old Days config");
+                fileoutputstream.close();
+            }
+            properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString()));
+            for (int i = 1; i <= proplength[modulenum]; i++){
+                int val = 0;
+                try{
+                    if (propmax[modulenum][i]<=2){
+                        val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName())) ? 1 : 0;
+                    }else{
+                        val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));
+                    }
+                }catch(Exception ex){
+                    System.out.println(ex);
+                }
+                propvalue[modulenum][i] = val;
+                sendCallback(modulenum, i, val);
+            }
+        }
+        catch(IOException ioexception){
+            ioexception.printStackTrace();
+        }
+    }
+
+    public static void addModules(GuiOldDaysModules gui){
+        for (int i = 0; i < modules2.length; i++){
+            if (modules2[i]!=null){
+                gui.addModule(i, modules2[i].replaceFirst("mod_OldDays", ""));
+            }
+        }
+    }
+
+    protected void setBool(Class where, String what, boolean value){
+        try{
+            where.getDeclaredField(what).setBoolean(null, value);
+        }catch(Exception ex){
+            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+            disabled[lastmodule][lastoption]=true;
+        }
+    }
+
+    protected void setInt(Class where, String what, int value){
+        try{
+            where.getDeclaredField(what).setInt(null, value);
+        }catch(Exception ex){
+            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+            disabled[lastmodule][lastoption]=true;
+        }
+    }
+
+    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc){
         propname[modulenum][i2]=name;
         propvalue[modulenum][i2]=val;
         disabled[modulenum][i2]=false;
@@ -211,18 +211,27 @@ public class mod_OldDays extends BaseModMp{
         propmax[modulenum][i2]=2;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
-        }catch (Exception ex){}
+        }catch (Exception ex){
+            System.out.println("Error, disabling option "+modulenum+" "+i2);
+            disabled[modulenum][i2]=true;
+        }
         proplength[modulenum]++;
     }
 
-    protected void setIntProperty(int i2, int max, String[] names){
-        propmax[modulenum][i2]=max;
+    protected void addProperty(int i2, String name, int mp, int val, String var, String desc, String[] names){
+        addProperty(i2, name, mp, val, var, desc);
         if (names==null){
             return;
         }
+        propmax[modulenum][i2]=names.length;
         for (int i = 0; i < names.length; i++){
             propnames[modulenum][i2][i+1]=names[i];
         }
+    }
+
+    protected void addProperty(int i2, String name, int mp, int val, String var, String desc, int max){
+        addProperty(i2, name, mp, val, var, desc);
+        propmax[modulenum][i2]=max;
     }
 
     public void keyboardEvent(KeyBinding keybinding){

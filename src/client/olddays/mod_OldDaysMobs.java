@@ -2,14 +2,14 @@ package net.minecraft.src;
 
 public class mod_OldDaysMobs extends mod_OldDays{
     public void load(){
-        registerModule(3);
-        addProperty(this, 1, "Old mob AI",          0, 1, "OldAI",            "");
-        addProperty(this, 2, "Animal panic",        1, 0, "AnimalsFlee",      "");
-        addProperty(this, 3, "Sheep eat grass",     1, 1, "SheepEatGrass",    "");
-        addProperty(this, 4, "Spiders climb walls", 1, 1, "SpidersCanClimb",  "");
-        addProperty(this, 5, "Survival Test mobs",  0, 0, "SurvivalTestMobs", "");
-        addProperty(this, 6, "Jumping mobs",        0, 1, "JumpingMobs",      "");
-        addProperty(this, 7, "Old skeleton fire",   0, 0, "FastSkeletons",    "");
+        registerModule(this, 3);
+        addProperty(1, "Old mob AI",          0, 1, "OldAI",            "");
+        addProperty(2, "Animal panic",        1, 0, "AnimalsFlee",      "");
+        addProperty(3, "Sheep eat grass",     1, 1, "SheepEatGrass",    "");
+        addProperty(4, "Spiders climb walls", 1, 1, "SpidersCanClimb",  "");
+        addProperty(5, "Survival Test mobs",  0, 0, "SurvivalTestMobs", "");
+        addProperty(6, "Jumping mobs",        0, 1, "JumpingMobs",      "");
+        addProperty(7, "Old skeleton fire",   0, 0, "FastSkeletons",    "");
         loadModuleProperties();
     }
 

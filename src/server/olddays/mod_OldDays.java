@@ -56,11 +56,28 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected void setIntProperty(int i2, int max, String[] names){
+    protected void addProperty(int i2, String name, int mp, int val, String var, String desc, String[] names){
+        addProperty(i2, name, mp, val, var, desc);
+        propmax[modulenum][i2]=names.length;
+    }
+
+    protected void addProperty(int i2, String name, int mp, int val, String var, String desc, int max){
+        addProperty(i2, name, mp, val, var, desc);
         propmax[modulenum][i2]=max;
     }
 
-    protected static void addProperty(Object module, int i2, String name, int mp, int val, String var, String desc){
+    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc){
+        propname[modulenum][i2]=name;
+        propvalue[modulenum][i2]=val;
+        propmax[modulenum][i2]=2;
+        try{
+            propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
+        }catch (Exception ex){}
+        proplength[modulenum]++;
+    }
+
+    protected static void registerModule(Object module, int num){
+        modulenum = num;
         String modulename = module.getClass().getName();
         if (modules[modulenum]==null || modules2[modulenum]==null){
             if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
@@ -89,17 +106,6 @@ public class mod_OldDays extends BaseModMp{
             proplength=new int[10];
             proplength[modulenum]=0;
         }
-        propname[modulenum][i2]=name;
-        propvalue[modulenum][i2]=val;
-        propmax[modulenum][i2]=2;
-        try{
-            propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
-        }catch (Exception ex){}
-        proplength[modulenum]++;
-    }
-
-    protected static void registerModule(int num){
-        modulenum = num;
     }
 
     protected void setBool(Class where, String what, boolean value){
