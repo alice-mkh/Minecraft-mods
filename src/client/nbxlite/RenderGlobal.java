@@ -145,6 +145,7 @@ public class RenderGlobal implements IWorldAccess
      * The offset used to determine if a renderer is one of the sixteenth that are being updated this frame
      */
     int frustumCheckOffset;
+    private java.nio.FloatBuffer J;
 
     public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine)
     {
@@ -157,6 +158,7 @@ public class RenderGlobal implements IWorldAccess
         dummyBuf50k = new int[50000];
         occlusionResult = GLAllocation.createDirectIntBuffer(64);
         glRenderLists = new ArrayList();
+        J = org.lwjgl.BufferUtils.createFloatBuffer(16);
         prevSortX = -9999D;
         prevSortY = -9999D;
         prevSortZ = -9999D;
@@ -1196,6 +1198,14 @@ public class RenderGlobal implements IWorldAccess
         return false;
     }
 
+    private java.nio.FloatBuffer a(float f1, float f2, float f3, float f4)
+    {
+        J.clear();
+        J.put(f1).put(0.0F).put(f3).put(0.0F);
+        J.flip();
+        return J;
+    }
+
     /**
      * Renders the 3d fancy clouds
      */
@@ -1214,6 +1224,24 @@ public class RenderGlobal implements IWorldAccess
         int j = MathHelper.floor_double(d2 / 2048D);
         d1 -= i * 2048;
         d2 -= j * 2048;
+        if (mod_noBiomesX.TexturedClouds){
+            OpenGlHelper.setActiveTexture(33985);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/fluff.png"));
+            GL11.glTexGeni(8192, 9472, 9217);
+            GL11.glTexGen(8192, 9473, a(1.0F, 0.0F, 0.0F, 0.0F));
+            GL11.glTexGeni(8193, 9472, 9217);
+            GL11.glTexGen(8193, 9473, a(0.0F, 0.0F, 1.0F, 0.0F));
+            GL11.glEnable(3168);
+            GL11.glEnable(3169);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glMatrixMode(5890);
+            GL11.glLoadIdentity();
+            GL11.glScalef(0.25F, 0.25F, 0.25F);
+            GL11.glTranslatef((float)d1, (float)d2, 0.0F);
+            GL11.glMatrixMode(5888);
+            OpenGlHelper.setActiveTexture(33984);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+        }
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -1360,6 +1388,12 @@ public class RenderGlobal implements IWorldAccess
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
+        if (mod_noBiomesX.TexturedClouds){
+            OpenGlHelper.setActiveTexture(33985);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glDisable(3169);
+            OpenGlHelper.setActiveTexture(33984);
+        }
     }
 
     /**

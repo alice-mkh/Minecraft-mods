@@ -20,6 +20,7 @@ public class mod_noBiomesX extends BaseModMp{
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
                 properties.setProperty("UseCustomTextures",Boolean.toString(true));
                 properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(false));
+                properties.setProperty("TexturedClouds",Boolean.toString(false));
                 properties.setProperty("HideGUI",Boolean.toString(false));
                 properties.setProperty("DefaultGenerator",Integer.toString(6));
                 properties.setProperty("DefaultFeaturesBeta",Integer.toString(4));
@@ -39,6 +40,7 @@ public class mod_noBiomesX extends BaseModMp{
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
             FallbackColors = !Boolean.parseBoolean(properties.getProperty("UseCustomTextures"));
             UseOpaqueFlatClouds = Boolean.parseBoolean(properties.getProperty("UseOpaqueFlatClouds"));
+            TexturedClouds = Boolean.parseBoolean(properties.getProperty("TexturedClouds"));
             HideGUI = Boolean.parseBoolean(properties.getProperty("HideGUI"));
             DefaultGenerator = properties.getProperty("DefaultGenerator") == null ? 6 : Integer.parseInt(properties.getProperty("DefaultGenerator"));
             DefaultFeaturesBeta = properties.getProperty("DefaultFeaturesBeta") == null ? 4 : Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
@@ -418,6 +420,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean NoGreenGrassSides=false;
     public static boolean OpaqueFlatClouds=false;
     public static boolean UseOpaqueFlatClouds=false;
+    public static boolean TexturedClouds=false;
     public static boolean SunriseAtNorth=false;
     public static boolean LeavesDecay=true;
     public static boolean FallbackColors=false;
