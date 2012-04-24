@@ -202,13 +202,13 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc){
+    private static void addProp(int i2, String name, int mp, int val, String var, String desc, int max){
         propname[modulenum][i2]=name;
         propvalue[modulenum][i2]=val;
         disabled[modulenum][i2]=false;
         propsmp[modulenum][i2]=mp;
         propdesc[modulenum][i2]=desc;
-        propmax[modulenum][i2]=2;
+        propmax[modulenum][i2]=max;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){
@@ -218,20 +218,42 @@ public class mod_OldDays extends BaseModMp{
         proplength[modulenum]++;
     }
 
-    protected void addProperty(int i2, String name, int mp, int val, String var, String desc, String[] names){
-        addProperty(i2, name, mp, val, var, desc);
+    protected static void addProperty(int i2, String name, boolean mp, boolean val, String var, String desc){
+        addProp(i2, name, mp ? 1 : 0, val ? 1 : 0, var, desc, 2);
+    }
+
+    protected static void addProperty(int i2, String name, boolean val, String var, String desc){
+        addProp(i2, name, -1, val ? 1 : 0, var, desc, 2);
+    }
+
+    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc, int max){
+        addProp(i2, name, mp, val, var, desc, max);
+    }
+
+    protected static void addProperty(int i2, String name, int val, String var, String desc, int max){
+        addProp(i2, name, -1, val, var, desc, max);
+    }
+
+    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc, String[] names){
         if (names==null){
+            System.out.println("Failed to add option "+modulenum+" "+i2);
             return;
         }
-        propmax[modulenum][i2]=names.length;
+        addProp(i2, name, mp, val, var, desc, names.length);
         for (int i = 0; i < names.length; i++){
             propnames[modulenum][i2][i+1]=names[i];
         }
     }
 
-    protected void addProperty(int i2, String name, int mp, int val, String var, String desc, int max){
-        addProperty(i2, name, mp, val, var, desc);
-        propmax[modulenum][i2]=max;
+    protected static void addProperty(int i2, String name, int val, String var, String desc, String[] names){
+        if (names==null){
+            System.out.println("Failed to add option "+modulenum+" "+i2);
+            return;
+        }
+        addProp(i2, name, -1, val, var, desc, names.length);
+        for (int i = 0; i < names.length; i++){
+            propnames[modulenum][i2][i+1]=names[i];
+        }
     }
 
     public void keyboardEvent(KeyBinding keybinding){

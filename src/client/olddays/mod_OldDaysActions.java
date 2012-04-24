@@ -3,15 +3,15 @@ package net.minecraft.src;
 public class mod_OldDaysActions extends mod_OldDays{
     public void load(){
         registerModule(this, 0);
-        addProperty(1, "Punch TNT",           0, 1, "PunchTNT",        "");
-        addProperty(2, "Extinguish TNT",      0, 0, "ExtinguishTNT",   "");
-        addProperty(3, "Smelt items on fire", 0, 0, "SmeltOnFire",     "");
-        addProperty(4, "Unnerfed fire",       0, 1, "OldFire",         "");
-        addProperty(5, "Punch sheep",         0, 1, "PunchSheep",      "");
-        addProperty(6, "Old tool durability", 0, 0, "OldTools",        "");
-        addProperty(7, "Mushroom spreading",  1, 1, "ShroomSpreading", "");
-        addProperty(8, "Solid TNT",           0, 1, "SolidTNT",        "");
-        addProperty(9, "Big fences",          0, 1, "BigFences",       "");
+        addProperty(1, "Punch TNT",           false, true,  "PunchTNT",        "");
+        addProperty(2, "Extinguish TNT",      false, false, "ExtinguishTNT",   "");
+        addProperty(3, "Smelt items on fire", false, false, "SmeltOnFire",     "");
+        addProperty(4, "Unnerfed fire",       false, true,  "OldFire",         "");
+        addProperty(5, "Punch sheep",         false, true,  "PunchSheep",      "");
+        addProperty(6, "Old tool durability", false, false, "OldTools",        "");
+        addProperty(7, "Mushroom spreading",  true,  true,  "ShroomSpreading", "");
+        addProperty(8, "Solid TNT",           false, true,  "SolidTNT",        "");
+        addProperty(9, "Big fences",          false, true,  "BigFences",       "");
         loadModuleProperties();
         replaceBlocks();
     }

@@ -3,19 +3,19 @@ package net.minecraft.src;
 public class mod_OldDaysGameplay extends mod_OldDays{
     public void load(){
         registerModule(this, 2);
-        addProperty(1, "Experience",         1, 0, "EnableXP",        "");
-        addProperty(2, "Hunger",             1, 0, "EnableHunger",    "");
-        addProperty(3, "Instant food",       0, 1, "InstantFood",     "");
-        addProperty(4, "Food stacking",      1, 0, "FoodStacking",    "");
-        addProperty(5, "Old loot",           0, 1, "OldDrops",        "");
-        addProperty(6, "Rare loot",          1, 0, "RareLoot",        "");
-        addProperty(7, "Machine bow",        0, 1, "InstantBow",      "");
-        addProperty(8, "Bow durability",     1, 0, "FiniteBow",       "");
-        addProperty(9, "Combat system",      3, 2, "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
-        addProperty(10,"Old armor",          0, 1, "OldArmor",        "");
-        addProperty(11,"Allow debug screen", 1, 1, "AllowDebug",      "");
-        addProperty(12,"Allow sprint",       1, 1, "AllowSprint",     "");
-        addProperty(13,"Jump delay",         1, 0, "JumpDelay",       "");
+        addProperty(1, "Experience",         true,  false, "EnableXP",        "");
+        addProperty(2, "Hunger",             true,  false, "EnableHunger",    "");
+        addProperty(3, "Instant food",       false, true,  "InstantFood",     "");
+        addProperty(4, "Food stacking",      true,  false, "FoodStacking",    "");
+        addProperty(5, "Old loot",           false, true,  "OldDrops",        "");
+        addProperty(6, "Rare loot",          true,  false, "RareLoot",        "");
+        addProperty(7, "Machine bow",        false, true,  "InstantBow",      "");
+        addProperty(8, "Bow durability",     true,  false, "FiniteBow",       "");
+        addProperty(9, "Combat system",      3,     2,     "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
+        addProperty(10,"Old armor",          false, true,  "OldArmor",        "");
+        addProperty(11,"Allow debug screen", true,  true,  "AllowDebug",      "");
+        addProperty(12,"Allow sprint",       true,  true,  "AllowSprint",     "");
+        addProperty(13,"Jump delay",         true,  false, "JumpDelay",       "");
         loadModuleProperties();
     }
 
