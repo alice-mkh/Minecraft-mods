@@ -1391,6 +1391,7 @@ public class RenderGlobal implements IWorldAccess
         if (mod_noBiomesX.TexturedClouds){
             OpenGlHelper.setActiveTexture(33985);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glDisable(3168);
             GL11.glDisable(3169);
             OpenGlHelper.setActiveTexture(33984);
         }
