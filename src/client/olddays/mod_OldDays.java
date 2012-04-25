@@ -126,7 +126,7 @@ public class mod_OldDays extends BaseModMp{
             propmax=new int[10][30];
         }
         if (propnames==null){
-            propnames=new String[10][30][10];
+            propnames=new String[10][30][15];
         }
         if (proplength==null){
             proplength=new int[10];
