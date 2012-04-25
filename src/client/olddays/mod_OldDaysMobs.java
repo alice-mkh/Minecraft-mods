@@ -10,6 +10,8 @@ public class mod_OldDaysMobs extends mod_OldDays{
         addProperty(5, "Survival Test mobs",  false, false, "SurvivalTestMobs", "");
         addProperty(6, "Jumping mobs",        false, true,  "JumpingMobs",      "");
         addProperty(7, "Old skeleton fire",   false, false, "FastSkeletons",    "");
+//         addProperty(8, "Mobs",                11,    11,    "Mobs",             "", new String[]{"Classic", "Indev", "Alpha 1.0.8", "Alpha 1.0.11", "Alpha 1.0.14", "Alpha 1.2.0",
+//                                                                                                  "Beta 1.2", "Beta 1.7.3", "Beta 1.8.1", "1.1", "1.2"});
         loadModuleProperties();
     }
 
@@ -31,6 +33,15 @@ public class mod_OldDaysMobs extends mod_OldDays{
                     setBool(net.minecraft.src.EntitySpider.class, "survivaltest", SurvivalTestMobs); break;
             case 6: setBool(net.minecraft.src.EntityCreature.class, "jump", JumpingMobs); break;
             case 7: setBool(net.minecraft.src.EntitySkeleton.class, "fast", FastSkeletons); break;
+/*            case 8: setInt(net.minecraft.src.EntityLiving.class, "nonewmobs", Mobs-1);
+                    int color = 0;
+                    if (Mobs>6){
+                        color = 1;
+                    }
+                    if (Mobs>7){
+                        color = 2;
+                    }
+                    setInt(net.minecraft.src.EntitySheep.class, "color", color); break; */
         }
     }
 
@@ -41,5 +52,6 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static boolean SurvivalTestMobs;
     public static boolean JumpingMobs = true;
     public static boolean FastSkeletons;
+//     public static int Mobs = 1s1;
 //Creepers see through blocks;
 }

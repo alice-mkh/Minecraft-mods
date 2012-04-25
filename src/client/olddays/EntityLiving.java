@@ -9,6 +9,7 @@ public abstract class EntityLiving extends Entity
     public static boolean rareloot = true;
     public static boolean oldloot = false;
     public static boolean jumpdelay = true;
+    public static int nonewmobs = 10;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -21,6 +22,42 @@ public abstract class EntityLiving extends Entity
             return true;
         }
         return newai;
+    }
+
+    private void removeNewMobs(String id, int dim){
+        if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
+            setDead(); return;
+        }
+        if (dim!=0){
+            return;
+        }
+        if (nonewmobs<10 && id=="Ozelot"){
+            setDead(); return;
+        }
+        if (nonewmobs<9 && (id=="MushroomCow" || id=="Villager")){
+            setDead(); return;
+        }
+        if (nonewmobs<8 && id=="Enderman"){
+            setDead(); return;
+        }
+        if (nonewmobs<7 && id=="Wolf"){
+            setDead(); return;
+        }
+        if (nonewmobs<5 && id=="Squid"){
+            setDead(); return;
+        }
+        if (nonewmobs<4 && id=="Chicken"){
+            setDead(); return;
+        }
+        if (nonewmobs<3 && id=="Slime"){
+            setDead(); return;
+        }
+        if (nonewmobs<2 && id=="Cow"){
+            setDead(); return;
+        }
+        if (nonewmobs<1 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider")){
+            setDead(); return;
+        }
     }
 
     protected void dropFewItemsOld(boolean par1, int par2, int item)
@@ -234,6 +271,7 @@ public abstract class EntityLiving extends Entity
         deathTime = 0;
         attackTime = 0;
         dead = false;
+//         removeNewMobs(EntityList.getEntityString(this), par1World.worldProvider.worldType);
         field_9326_T = -1;
         field_9325_U = (float)(Math.random() * 0.89999997615814209D + 0.10000000149011612D);
         attackingPlayer = null;

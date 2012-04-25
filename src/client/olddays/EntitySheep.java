@@ -5,6 +5,7 @@ import java.util.Random;
 public class EntitySheep extends EntityAnimal
 {
     public static boolean punchToShear = false;
+    public static int color = 2;
 
     public boolean attackEntityFrom(DamageSource damagesource, int i)
     {
@@ -317,7 +318,21 @@ public class EntitySheep extends EntityAnimal
      */
     public static int getRandomFleeceColor(Random par0Random)
     {
+        if (color==0){
+            return 0;
+        }
         int i = par0Random.nextInt(100);
+        if (color==1){
+            if(i < 5)
+            {
+                return 15;
+            }
+            if(i < 10)
+            {
+                return 7;
+            }
+            return i >= 15 ? 0 : 8;   
+        }
 
         if (i < 5)
         {
