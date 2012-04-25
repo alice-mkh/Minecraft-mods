@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL12;
 
 public abstract class GuiContainer extends GuiScreen
 {
+    public static boolean tooltips = true;
     public static boolean oldtooltips = false;
 
     /** Stacks renderer. Icons, stack size, health, etc... */
@@ -107,7 +108,7 @@ public abstract class GuiContainer extends GuiScreen
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack())
+        if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack() && tooltips)
         {
             ItemStack itemstack = slot.getStack();
             List list = itemstack.getItemNameandInformation();

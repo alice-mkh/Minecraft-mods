@@ -17,7 +17,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(11,"Old digging particles", true,  "OldDigging",        "");
         addProperty(12,"Old ore blocks",        true,  "OldOreBlocks",      "");
         addProperty(13,"Old redstone wire",     true,  "OldWires",          "");
-        addProperty(14,"Old item tooltips",     true,  "OldTooltips",       "");
+        addProperty(14,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
 //         addProperty(this, 15,"Old fences",      true,  "OldFences",         "");
         loadModuleProperties();
         replaceBlocks();
@@ -47,7 +47,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
                     reload(); break;
             case 13:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
-            case 14:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", OldTooltips); break;
+            case 14:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<3);
+                    setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>1); break;
 //             case 15:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
 //                     reload(); break;
         }
@@ -73,7 +74,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean OldDigging = true;
     public static boolean OldOreBlocks = true;
     public static boolean OldWires = true;
-    public static boolean OldTooltips = true;
+    public static int Tooltips = 2;
     public static boolean OldFences = true;
     public static int redstoneRenderID;
 
