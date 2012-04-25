@@ -215,7 +215,7 @@ public class OldSpawnerAnimals
                         i3 += world.rand.nextInt(byte1) - world.rand.nextInt(byte1);
                         j3 += world.rand.nextInt(1) - world.rand.nextInt(1);
                         k3 += world.rand.nextInt(byte1) - world.rand.nextInt(byte1);
-                        if(!world.getBlockMaterial(i3, j3, k3).isLiquid())
+                        if(world.getBlockMaterial(i3, j3, k3)!=Material.water)
                         {
                             continue;
                         }
