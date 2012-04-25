@@ -1178,12 +1178,12 @@ public abstract class EntityLiving extends Entity
             if (!isChild())
             {
                 if (oldloot){
-                    if (this instanceof EntityChicken || this instanceof EntityZombie){
+                    if (this instanceof EntityPigZombie){
+                        dropFewItemsOld(recentlyHit > 0, i, Item.porkCooked.shiftedIndex);
+                    }else if (this instanceof EntityChicken || this instanceof EntityZombie){
                         dropFewItemsOld(recentlyHit > 0, i, Item.feather.shiftedIndex);
                     }else if (this instanceof EntityCow){
                         dropFewItemsOld(recentlyHit > 0, i, Item.leather.shiftedIndex);
-                    }else if (this instanceof EntityPigZombie){
-                        dropFewItemsOld(recentlyHit > 0, i, Item.porkCooked.shiftedIndex);
                     }else if (this instanceof EntitySpider){
                         dropFewItemsOld(recentlyHit > 0, i, Item.silk.shiftedIndex);
                     }else{
