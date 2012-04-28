@@ -52,6 +52,6 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static boolean SurvivalTestMobs;
     public static boolean JumpingMobs = true;
     public static boolean FastSkeletons;
-//     public static int Mobs = 1s1;
+//     public static int Mobs = 11;
 //Creepers see through blocks;
 }
