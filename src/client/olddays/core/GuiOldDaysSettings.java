@@ -11,6 +11,7 @@ public class GuiOldDaysSettings extends GuiScreen{
     private boolean dragging = false;
     private int currenty = 0;
     private int scrolled = 0;
+    private static boolean scrolling = false;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, int i){
         parent = guiscreen;
@@ -31,12 +32,26 @@ public class GuiOldDaysSettings extends GuiScreen{
                 x+=160;
             }
             int margin = 30;
-            int y = height / 6 - 10 + (((i-1)/2) * margin);
+            int top = 10;
+            if (!scrolling){
+                if (mod_OldDays.proplength[id] > 14){
+                    top += (margin / 1.8);
+                    margin -= 6;
+                }else if (mod_OldDays.proplength[id] > 12){
+                    margin -= 3;
+                    top += (margin / 2);
+                }else if (mod_OldDays.proplength[id] > 10){
+                    top += (margin / 3);
+                }
+            }
+            int y = height / 6 - top + (((i-1)/2) * margin);
             GuiButton button = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.propname[id][i]+": "+getState(i, mod_OldDays.propvalue[id][i]));
             button.enabled = !mod_OldDays.disabled[id][i] && !(mod_OldDays.propsmp[id][i]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote);
             controlList.add(button);
         }
-        updatePos(height/6-10);
+        if (scrolling){
+            updatePos(height/6-10);
+        }
     }
     
     private String getState(int i2, int state){
@@ -98,7 +113,7 @@ public class GuiOldDaysSettings extends GuiScreen{
     }
 
     protected void mouseClicked(int par1, int par2, int par3){
-        if (par2 < height - 55 && par2 > height / 6 - 10 && needScrolling()){
+        if (par2 < height - 55 && par2 > height / 6 - 10 && needScrolling() && scrolling){
             dragging = true;
             currenty = par2 - scrolled;
         }
@@ -107,11 +122,13 @@ public class GuiOldDaysSettings extends GuiScreen{
 
     protected void mouseMovedOrUp(int par1, int par2, int par3)
     {
-        if (par3==0){
-            dragging = false;
-        }
-        if (dragging && par3==-1){
-            updatePos(Math.max(Math.min(height/6-10, par2 - currenty), ((14-((mod_OldDays.proplength[id]-1)/2))*30)-235));
+        if (!scrolling){
+            if (par3==0){
+                dragging = false;
+            }
+            if (dragging && par3==-1){
+                updatePos(Math.max(Math.min(height/6-10, par2 - currenty), ((14-((mod_OldDays.proplength[id]-1)/2))*30)-235));
+            }
         }
         super.mouseMovedOrUp(par1, par2, par3);
     }
@@ -123,7 +140,19 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
 //         drawRect(x, y, x + 5 + fontRenderer.getStringWidth(str2), y + 13, 0x80000000);
 //         drawString(fontRenderer, str2, x + 3, y + 3, smp ? 0xff0000 : 0xffffff);
-       drawCenteredString(fontRenderer, str2, width / 2, height / 6 - 20, smp ? 0xff0000 : 0xffffff);
+        int top = 23;
+        if (scrolling){
+            top = 20;
+        }else{
+            if (mod_OldDays.proplength[id] > 14){
+                top += 16;
+            }else if (mod_OldDays.proplength[id] > 12){
+                top += 13;
+            }else if (mod_OldDays.proplength[id] > 10){
+                top += 10;
+            }
+        }
+       drawCenteredString(fontRenderer, str2, width / 2, height / 6 - top, smp ? 0xff0000 : 0xffffff);
     }
 
     public void drawScreen(int i, int j, float f)
