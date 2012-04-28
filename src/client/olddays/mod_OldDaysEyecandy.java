@@ -18,7 +18,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(12,"Old ore blocks",        true,  "OldOreBlocks",      "");
         addProperty(13,"Old redstone wire",     true,  "OldWires",          "");
         addProperty(14,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
-//         addProperty(this, 15,"Old fences",      true,  "OldFences",         "");
+        addProperty(15,"Old fences",            true,  "OldFences",         "");
         loadModuleProperties();
         replaceBlocks();
         setWireRendering();
@@ -49,8 +49,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
                     reload(); break;
             case 14:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<3);
                     setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>1); break;
-//             case 15:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
-//                     reload(); break;
+            case 15:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
+                    reload(); break;
         }
     }
 
