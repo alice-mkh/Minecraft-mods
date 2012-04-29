@@ -19,6 +19,8 @@ public class mod_OldDaysSounds extends mod_OldDays{
         addProperty(12,"Lava sound",          false, "Lava",       "");
         addProperty(13,"Enderman sounds",     2,     "Enderman",   "", new String[]{"1.0", "1.8.1", "OFF"});
         addSound(5, "door_open");
+        addSound(5, "door_close");
+        addSound(6, "door_open");
         addSound(6, "door_close");
         addSound(7, "bow");
         loadModuleProperties();

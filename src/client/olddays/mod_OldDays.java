@@ -148,6 +148,9 @@ public class mod_OldDays extends BaseModMp{
     }
 
     private static void disableProperty(int id, int i2){
+        if (disabled[id][i2]){
+            return;
+        }
         System.out.println("Error, disabling option "+id+" "+i2);
         disabled[id][i2]=true;
     }
