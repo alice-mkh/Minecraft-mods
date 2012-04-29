@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.io.File;
 
-public class mod_OldDaysSound extends mod_OldDays{
+public class mod_OldDaysSounds extends mod_OldDays{
     public void load(){
         registerModule(this, 5);
         addProperty(1, "Old explosion sound", true,  "Explode",    "");
