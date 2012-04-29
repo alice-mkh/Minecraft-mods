@@ -2071,8 +2071,9 @@ public class World implements IBlockAccess
                         f7 = 0.2146759F;
                         k = -8477697;
                     }else{
-                        f7 = getWorldChunkManager().getTemperature(i, 64, j);
-                        k = getWorldChunkManager().getBiomeGenAt(i, j).getSkyColorByTemp(f7);
+                        BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
+                        f7 = biomegenbase.getFloatTemperature();
+                        k = biomegenbase.getSkyColorByTemp(f7);
                     }
                 }else{
                     f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
