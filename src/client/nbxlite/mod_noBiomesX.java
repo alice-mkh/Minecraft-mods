@@ -282,7 +282,7 @@ public class mod_noBiomesX extends BaseModMp{
                 {
                     for (int i2 = -1; i2 <= 1; i2++)
                     {
-                        int j2 = iblockaccess.getBiomeGenForCoords(x + i2, z + l1).getBiomeFoliageColor();
+                        int j2 = iblockaccess.getBiomeGenForCoords(x + i2, z + l1).getBiomeFoliageColor2();
                         i1 += (j2 & 0xff0000) >> 16;
                         j1 += (j2 & 0xff00) >> 8;
                         k1 += j2 & 0xff;
@@ -290,7 +290,7 @@ public class mod_noBiomesX extends BaseModMp{
                 }
                 return (i1 / 9 & 0xff) << 16 | (j1 / 9 & 0xff) << 8 | k1 / 9 & 0xff;
             }else{
-                return iblockaccess.getBiomeGenForCoords(x, z).getBiomeFoliageColor();
+                return iblockaccess.getBiomeGenForCoords(x, z).getBiomeFoliageColor2();
             }
         }
     }
@@ -317,7 +317,7 @@ public class mod_noBiomesX extends BaseModMp{
                 {
                     for (int l1 = -1; l1 <= 1; l1++)
                     {
-                        int i2 = iblockaccess.getBiomeGenForCoords(x + l1, z + k1).getBiomeGrassColor();
+                        int i2 = iblockaccess.getBiomeGenForCoords(x + l1, z + k1).getBiomeGrassColor2();
                         l += (i2 & 0xff0000) >> 16;
                         i1 += (i2 & 0xff00) >> 8;
                         j1 += i2 & 0xff;
@@ -325,7 +325,7 @@ public class mod_noBiomesX extends BaseModMp{
                 }
                 return (l / 9 & 0xff) << 16 | (i1 / 9 & 0xff) << 8 | j1 / 9 & 0xff;
             }else{
-                return iblockaccess.getBiomeGenForCoords(x, z).getBiomeGrassColor();
+                return iblockaccess.getBiomeGenForCoords(x, z).getBiomeGrassColor2();
             }
         }
     }
@@ -335,10 +335,8 @@ public class mod_noBiomesX extends BaseModMp{
         MapFeatures=features;
         if (gen==2){
             if (features==0){
-                BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;
                 BiomeGenBase.ocean.maxHeight = 0.5F;
             }else{
-                BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 4;
                 BiomeGenBase.ocean.maxHeight = 0.4F;
             }
             if (features>=2){

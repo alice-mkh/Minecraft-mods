@@ -602,7 +602,7 @@ public class ChunkProviderGenerateRelease
             int k4 = l + rand.nextInt(16) + 8;
             if (!(new WorldGenDungeons()).generate(worldObj, rand, i3, i4, k4));
         }
-        biomegenbase.decorate(worldObj, rand, k, l);
+        biomegenbase.biomeDecorator.decorate(worldObj, rand, k, l);
         if (mod_noBiomesX.UseNewSpawning){
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
         }
