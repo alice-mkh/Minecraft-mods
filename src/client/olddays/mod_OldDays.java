@@ -138,11 +138,18 @@ public class mod_OldDays extends BaseModMp{
         modulegui[modulenum] = gui;
     }
 
-    private void addSound(String name){
+    protected void addSound(int id, String name){
         File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
-        if (sound != null){
+        if (sound.exists()){
             ModLoader.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
+        }else{
+            disableProperty(modulenum, id);
         }
+    }
+
+    private static void disableProperty(int id, int i2){
+        System.out.println("Error, disabling option "+id+" "+i2);
+        disabled[id][i2]=true;
     }
 
     protected static void loadModuleProperties(){
@@ -195,8 +202,7 @@ public class mod_OldDays extends BaseModMp{
         try{
             where.getDeclaredField(what).setBoolean(null, value);
         }catch(Exception ex){
-            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
-            disabled[lastmodule][lastoption]=true;
+            disableProperty(lastmodule, lastoption);
         }
     }
 
@@ -204,8 +210,7 @@ public class mod_OldDays extends BaseModMp{
         try{
             where.getDeclaredField(what).setInt(null, value);
         }catch(Exception ex){
-            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
-            disabled[lastmodule][lastoption]=true;
+            disableProperty(lastmodule, lastoption);
         }
     }
 
@@ -219,8 +224,7 @@ public class mod_OldDays extends BaseModMp{
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){
-            System.out.println("Error, disabling option "+modulenum+" "+i2);
-            disabled[modulenum][i2]=true;
+            disableProperty(modulenum, i2);
         }
         proplength[modulenum]++;
     }
