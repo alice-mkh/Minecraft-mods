@@ -24,13 +24,6 @@ public class mod_OldDaysSounds extends mod_OldDays{
         addSound("door_close");
     }
 
-    private void addSound(String name){
-        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
-        if (sound != null){
-            ModLoader.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
-        }
-    }
-
     public void callback (int i){
         switch(i){
             case 1: setBool(net.minecraft.src.SoundManager.class, "explode", Explode); break;

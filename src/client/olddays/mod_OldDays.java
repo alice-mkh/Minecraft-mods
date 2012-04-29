@@ -138,6 +138,13 @@ public class mod_OldDays extends BaseModMp{
         modulegui[modulenum] = gui;
     }
 
+    private void addSound(String name){
+        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
+        if (sound != null){
+            ModLoader.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
+        }
+    }
+
     protected static void loadModuleProperties(){
         Properties properties = new Properties();
         try{
@@ -265,6 +272,9 @@ public class mod_OldDays extends BaseModMp{
     public void callback (int i){}
 
     protected static void sendCallback(int id, int i2, int b){
+        if (disabled[id][i2]){
+            return;
+        }
         try{
             if (propmax[id][i2]<=2){
                 mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b>0);
