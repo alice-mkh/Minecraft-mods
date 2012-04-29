@@ -170,6 +170,9 @@ public class SoundManager
             }
 
             SoundPoolEntry soundpoolentry = soundPoolMusic.getRandomSound();
+            if (soundpoolentry.soundName.startsWith("calm4") && !calm4){
+                return;
+            }
 
             if (soundpoolentry != null)
             {
@@ -263,6 +266,7 @@ public class SoundManager
     public static boolean breaking = false;
     public static boolean lava = false;
     public static int enderman = 0;
+    public static boolean calm4 = false;
 
     private String oldSounds(String par1Str){
         String str = par1Str;

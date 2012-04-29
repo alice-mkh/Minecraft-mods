@@ -147,6 +147,15 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
+    protected void addMusic(int id, String name){
+        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/music/"+name+".ogg");
+        if (sound.exists()){
+            ModLoader.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
+        }else{
+            disableProperty(modulenum, id);
+        }
+    }
+
     private static void disableProperty(int id, int i2){
         if (disabled[id][i2]){
             return;
