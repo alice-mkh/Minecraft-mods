@@ -98,6 +98,10 @@ public class mod_OldDays extends BaseModMp{
         addProp(i2, name, -1, val, var, desc, names.length);
     }
 
+    private static void disableProperty(int id, int i2){
+        System.out.println("Error, disabling option "+id+" "+i2);
+    }
+
     protected static void registerModule(Object module, int num){
         modulenum = num;
         String modulename = module.getClass().getName();
@@ -134,7 +138,7 @@ public class mod_OldDays extends BaseModMp{
         try{
             where.getDeclaredField(what).setBoolean(null, value);
         }catch(Exception ex){
-            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+            disableProperty(lastmodule, lastoption);
         }
     }
 
@@ -142,7 +146,7 @@ public class mod_OldDays extends BaseModMp{
         try{
             where.getDeclaredField(what).setInt(null, value);
         }catch(Exception ex){
-            System.out.println("Error, disabling option "+lastmodule+" "+lastoption);
+            disableProperty(lastmodule, lastoption);
         }
     }
 
