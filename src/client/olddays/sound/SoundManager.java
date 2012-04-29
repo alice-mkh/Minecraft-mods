@@ -273,7 +273,7 @@ public class SoundManager
             str = "random.hurt";
         }
         if (par1Str.startsWith("damage.fall") && nofall){
-            return par1Str;
+            return "nothing";
         }
         if (par1Str.startsWith("random.bowhit") && drr){
             str = "random.drr";
@@ -285,20 +285,20 @@ public class SoundManager
             str = "random.pop";
         }
         if ((par1Str.startsWith("random.burp") || par1Str.startsWith("random.eat")) && eat){
-            return par1Str;
+            return "nothing";
         }
         if (par1Str.startsWith("random.drink") && drink){
-            return par1Str;
+            return "nothing";
         }
         if (par1Str.startsWith("random.break") && breaking){
-            return par1Str;
+            return "nothing";
         }
         if (par1Str.startsWith("liquid.lava") && lava){
-            return par1Str;
+            return "nothing";
         }
         if (par1Str.startsWith("mob.endermen.") && enderman>0){
             if (enderman>1){
-                return par1Str;
+                return "nothing";
             }
             if (par1Str.endsWith("death")){
                 str = "mob.zombiedeath";
@@ -310,7 +310,7 @@ public class SoundManager
                 str = "mob.zombie";
             }
             if (par1Str.endsWith("portal")){
-                return par1Str;
+                return "nothing";
             }
         }
         if (par1Str.startsWith("random.door_open") && door){
@@ -321,13 +321,13 @@ public class SoundManager
         }
         if (par1Str.startsWith("random.chestopen") && chest>0){
             if (chest>1){
-                return par1Str;
+                return "nothing";
             }
             str = "olddays.door_open";
         }
         if (par1Str.startsWith("random.chestclosed") && chest>0){
             if (chest>1){
-                return par1Str;
+                return "nothing";
             }
             str = "olddays.door_close";
         }
@@ -340,7 +340,7 @@ public class SoundManager
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6)
     {
         par1Str = oldSounds(par1Str);
-        if (!loaded || options.soundVolume == 0.0F)
+        if (!loaded || options.soundVolume == 0.0F || par1Str=="nothing")
         {
             return;
         }
