@@ -277,49 +277,52 @@ public class WorldChunkManager
     {
         if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES){
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
-                return BiomeGenBase.sky;
+                return BiomeGenBase.betaSky;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.rainforest){
-                return BiomeGenBase.jungle;
+                return BiomeGenBase.betaRainforest;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.swampland){
-                return BiomeGenBase.swampland;
+                return BiomeGenBase.betaSwampland;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.seasonalForest){
-                return BiomeGenBase.forest;
+                return BiomeGenBase.betaSeasonalForest;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.forest){
-                return BiomeGenBase.forest;
+                return BiomeGenBase.betaForest;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.savanna){
-                return BiomeGenBase.plains;
+                return BiomeGenBase.betaSavanna;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.shrubland){
-                return BiomeGenBase.plains;
+                return BiomeGenBase.betaShrubland;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.taiga){
-                return BiomeGenBase.taiga;
+                return BiomeGenBase.betaTaiga;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.desert){
-                return BiomeGenBase.desert;
+                return BiomeGenBase.betaDesert;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.plains){
-                return BiomeGenBase.plains;
+                return BiomeGenBase.betaPlains;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.iceDesert){
-                return BiomeGenBase.icePlains;
+                return BiomeGenBase.betaIceDesert;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.tundra){
-                return BiomeGenBase.icePlains;
+                return BiomeGenBase.betaTundra;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.hell){
-                return BiomeGenBase.hell;
+                return BiomeGenBase.betaHell;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.sky){
-                return BiomeGenBase.sky;
+                return BiomeGenBase.betaSky;
             }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.notABiome){
-                return BiomeGenBase.plains;
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201 && mod_noBiomesX.SnowCovered){
+                    return BiomeGenBase.notABiomeSnow;
+                }
+                return BiomeGenBase.notABiome;
             }
         }
         return biomeCache.getBiomeGenAt(par1, par2);

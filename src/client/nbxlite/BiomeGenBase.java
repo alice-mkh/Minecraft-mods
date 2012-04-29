@@ -104,6 +104,35 @@ public abstract class BiomeGenBase
     protected WorldGenForest worldGenForest;
     protected WorldGenSwamp worldGenSwamp;
 
+    public static final BiomeGenBase betaRainforest = (new BiomeGenJungle(30)).setColor(0x8fa36).setBiomeName("Beta Rainforest").setTemperatureRainfall(1F, 1F).func_4124_a(0x1ff458);
+    public static final BiomeGenBase betaSwampland = (new BiomeGenPlains(31)).setColor(0x9be023).setBiomeName("Beta Swampland").setTemperatureRainfall(0.75F, 0.5F).func_4124_a(0x8baf48);
+    public static final BiomeGenBase betaSeasonalForest = (new BiomeGenForest(32)).setColor(0x8fa36).setBiomeName("Beta Seasonal Forest").setTemperatureRainfall(1F, 0.8F);
+    public static final BiomeGenBase betaForest = (new BiomeGenForest(33)).setColor(0x56621).setBiomeName("Beta Forest").setTemperatureRainfall(0.7F, 0.75F).func_4124_a(0x4eba31);
+    public static final BiomeGenBase betaSavanna = (new BiomeGenPlains(34)).setColor(0xd9e023).setBiomeName("Beta Savanna").setTemperatureRainfall(0.8F, 0.1F);
+    public static final BiomeGenBase betaShrubland = (new BiomeGenPlains(35)).setColor(0xa1ad20).setBiomeName("Beta Shrubland").setTemperatureRainfall(0.7F, 0.1F);
+    public static final BiomeGenBase betaTaiga = (new BiomeGenDesert(36)).setColor(0x2eb153).setBiomeName("Beta Taiga").setTemperatureRainfall(0.2F, 0.5F).func_4124_a(0x7bb731);
+    public static final BiomeGenBase betaDesert = (new BiomeGenDesert(37)).setColor(0xfa9418).setBiomeName("Beta Desert").setTemperatureRainfall(1F, 0.1F).setDisableRain();
+    public static final BiomeGenBase betaPlains = (new BiomeGenPlains(38)).setColor(0xffd910).setBiomeName("Beta Plains").setTemperatureRainfall(0.5F, 0.25F);
+    public static final BiomeGenBase betaIceDesert = (new BiomeGenDesert(39)).setColor(0xffed93).setBiomeName("Beta Ice Desert").setTemperatureRainfall(0.2F, 0.1F).func_4124_a(0xc4d339).setEnableSnow().setDisableRain();
+    public static final BiomeGenBase betaTundra = (new BiomeGenSnow(40)).setColor(0x57ebf9).setBiomeName("Beta Tundra").setTemperatureRainfall(0.1F, 0.1F).func_4124_a(0xc4d339).setEnableSnow();
+    public static final BiomeGenBase betaHell = (new BiomeGenHell(41)).setColor(0xff0000).setBiomeName("Beta Hell").setTemperatureRainfall(1F, 1F).setDisableRain();
+    public static final BiomeGenBase betaSky = (new BiomeGenEnd(42)).setColor(0x8080ff).setBiomeName("Beta Sky").setTemperatureRainfall(1F, 1F).setDisableRain();
+    public static final BiomeGenBase notABiome = (new BiomeGenPlains(43)).setColor(0xffffff).setBiomeName("No biomes").setTemperatureRainfall(1F, 1F).setDisableRain();
+    public static final BiomeGenBase notABiomeSnow = (new BiomeGenSnow(44)).setColor(0xffffff).setBiomeName("No biomes (winter)").setTemperatureRainfall(0.1F, 1F).setEnableSnow().setDisableRain();
+
+    private BiomeGenBase registerOldBiome(int id, float temp, float humid, boolean rain, BiomeGenBase biome){
+        biome.temperature = temp;
+        biome.rainfall = humid;
+        biome.enableRain = rain;
+//         try{
+//             ModLoader.setPrivateValue(net.minecraft.src.BiomeGenBase.class, biome, 38, rain);
+//         }catch(Exception ex){
+//             System.out.println(ex);
+//         }
+        BiomeGenBase.biomeList[id] = biome;
+        return biome;
+    }
+
     protected BiomeGenBase(int par1)
     {
         topBlock = (byte)Block.grass.blockID;
