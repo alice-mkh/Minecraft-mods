@@ -127,7 +127,7 @@ public class ItemBow extends Item
                 entityarrow.doesArrowBelongToPlayer = false;
             }
             if(!par2World.isRemote){
-                par2World.spawnEntityInWorldentityarrow);
+                par2World.spawnEntityInWorld(entityarrow);
             }
         }
         return par1ItemStack;
