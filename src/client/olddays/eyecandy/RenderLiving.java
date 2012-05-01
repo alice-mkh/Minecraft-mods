@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -8,6 +9,7 @@ public class RenderLiving extends Render
 {
     public static boolean bobbing = false;
     public static boolean labels = false;
+    public static boolean stick = false;
 
     protected ModelBase mainModel;
 
@@ -290,6 +292,41 @@ public class RenderLiving extends Render
 
     protected void renderEquippedItems(EntityLiving entityliving, float f)
     {
+        if(entityliving.arrowHitTempCounter > 0 && stick)
+        {
+            EntityArrow entityarrow = new EntityArrow(entityliving.worldObj, entityliving.posX, entityliving.posY, entityliving.posZ);
+            Random random = new Random(entityliving.entityId);
+            for(int i = 0; i < entityliving.arrowHitTempCounter; i++)
+            {
+                GL11.glPushMatrix();
+                ModelRenderer modelrenderer = (ModelRenderer)mainModel.boxList.get(random.nextInt(mainModel.boxList.size()));
+                modelrenderer.postRender(0.0625F);
+                float f1 = random.nextFloat();
+                float f2 = random.nextFloat();
+                float f3 = random.nextFloat();
+                ModelBox box = ((ModelBox)modelrenderer.cubeList.get(random.nextInt(modelrenderer.cubeList.size())));
+                float f4 = (box.posX1 + (box.posX2 - box.posX1) * f1) / 16F;
+                float f5 = (box.posY1 + (box.posY2 - box.posY1) * f2) / 16F;
+                float f6 = (box.posZ1 + (box.posZ2 - box.posZ1) * f3) / 16F;
+                GL11.glTranslatef(f4, f5, f6);
+                f1 = f1 * 2.0F - 1.0F;
+                f2 = f2 * 2.0F - 1.0F;
+                f3 = f3 * 2.0F - 1.0F;
+                f1 *= -1F;
+                f2 *= -1F;
+                f3 *= -1F;
+                float f7 = MathHelper.sqrt_float(f1 * f1 + f3 * f3);
+                entityarrow.prevRotationYaw = entityarrow.rotationYaw = (float)((Math.atan2(f1, f3) * 180D) / 3.1415927410125732D);
+                entityarrow.prevRotationPitch = entityarrow.rotationPitch = (float)((Math.atan2(f2, f7) * 180D) / 3.1415927410125732D);
+                double d = 0.0D;
+                double d1 = 0.0D;
+                double d2 = 0.0D;
+                float f8 = 0.0F;
+                renderManager.renderEntityWithPosYaw(entityarrow, d, d1, d2, f8, f);
+                GL11.glPopMatrix();
+            }
+
+        }
     }
 
     protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
