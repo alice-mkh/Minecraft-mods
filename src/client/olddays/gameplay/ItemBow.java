@@ -110,28 +110,26 @@ public class ItemBow extends Item
      */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
+        boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
         if(!nocharging){
             if(par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
-        }else{
-            if(par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
-            {
-                par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
-                if(!par2World.isRemote)
-                {
-                    par2World.spawnEntityInWorld(new EntityArrow(par2World, par3EntityPlayer, 1.0F));
-                }
-                if (!par3EntityPlayer.capabilities.isCreativeMode)
-                {
-                    par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
-                }
-                if (!nodurability){
-                    par1ItemStack.damageItem(1, par3EntityPlayer);
-                }
+        }else if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
+            if (!nodurability){
+                par1ItemStack.damageItem(1, par3EntityPlayer);
+            }
+            EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, 1.0F);
+            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            if (!flag){
+                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
+            }else{
+                entityarrow.doesArrowBelongToPlayer = false;
+            }
+            if(!par2World.isRemote){
+                par2World.spawnEntityInWorldentityarrow);
             }
         }
-
         return par1ItemStack;
     }
 
