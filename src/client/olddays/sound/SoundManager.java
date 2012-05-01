@@ -269,6 +269,9 @@ public class SoundManager
     public static boolean calm4 = false;
 
     private String oldSounds(String par1Str){
+        if (par1Str==null){
+            return "nothing";
+        }
         String str = par1Str;
         if (par1Str.startsWith("random.explode") && explode){
             str = "random.old_explode";
