@@ -149,6 +149,7 @@ public class mod_noBiomesX extends BaseModMp{
 
     private static void replaceBlocks(){
         try{
+//             ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png", 0);
             Block.grass.toptex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png");
             Block.grass.sidetex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grassside.png");
 /*
@@ -204,16 +205,18 @@ public class mod_noBiomesX extends BaseModMp{
         IndevWidthX=packet.dataInt[5];
         IndevWidthZ=packet.dataInt[6];
         long seed=Long.parseLong(packet.dataString[0]);
-        ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager().initNoise(seed);
+        World world = ModLoader.getMinecraftInstance().theWorld;
+        world.getWorldChunkManager().initNoise(seed);
         if (packet.dataInt[0]==0){
             MapTheme=packet.dataInt[2];
-            ModLoader.getMinecraftInstance().theWorld.setWorldTheme();
             if (packet.dataInt[3]==1){
                 SnowCovered=true;
             }else{
                 SnowCovered=false;
             }
         }
+        world.setWorldTheme();
+        world.worldProvider.registerWorld(world);
         if (packet.dataInt[0]==0){
             SunriseEffect=false;
         }else{
@@ -363,6 +366,7 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             SunriseEffect=true;
         }
+        world.worldProvider.registerWorld(world);
         world.setWorldTheme();
         if (gen==0 && (theme==0||theme==2)){
             SnowCovered=snow;
