@@ -214,14 +214,9 @@ public class World implements IBlockAccess
         worldInfo = new WorldInfo(par4WorldSettings, par2Str);
         worldProvider = par3WorldProvider;
         mapStorage = new MapStorage(par1ISaveHandler);
-        mod_noBiomesX NBX = new mod_noBiomesX();
-        NBX.RequestGeneratorInfo();
+        setWorldTheme();
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
-        skyColor = 0x88bbffL;
-        fogColor = 0L;
-        totalSkyLight = 15;
-        isHotWorld = false;
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -267,13 +262,9 @@ public class World implements IBlockAccess
         mapGen = worldInfo.getMapGen();
         mapGenExtra = worldInfo.getMapGenExtra();
         snowCovered = worldInfo.getSnowCovered();
-        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, 0, 0, snowCovered, worldInfo.getNewOres());
+        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), worldInfo.getIndevMapType(), snowCovered, worldInfo.getNewOres());
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
-        skyColor = 0x88bbffL;
-        fogColor = 0L;
-        totalSkyLight = 15;
-        isHotWorld = false;
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -557,7 +548,7 @@ public class World implements IBlockAccess
                 isHotWorld = true;
             }
         }else{
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0){
                 skyColor = 0xb9b8f4;
                 fogColor = 0x9493bb;
             }else{
@@ -2049,7 +2040,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getSkyColor(Entity entity, float f)
     {
-        if((mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || ModLoader.getMinecraftInstance().thePlayer.dimension == 1) && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY))
+        if((mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || ModLoader.getMinecraftInstance().thePlayer.dimension == 1) && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0))
         {
             float f1 = getCelestialAngle(f);
             float f3 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -2065,7 +2056,7 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY)){
+            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
                 if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
                     if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
                         f7 = 0.2146759F;
@@ -2144,7 +2135,7 @@ public class World implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
-        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
+        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0){
             return 0.0F;
         }
         if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){

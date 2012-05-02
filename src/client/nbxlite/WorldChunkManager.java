@@ -271,9 +271,6 @@ public class WorldChunkManager
     public BiomeGenBase getBiomeGenAt(int par1, int par2)
     {
         if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
-                return BiomeGenBase.betaSky;
-            }
             if (oldGetBiomeGenAt(par1, par2)==OldBiomeGenBase.rainforest){
                 return BiomeGenBase.betaRainforest;
             }
