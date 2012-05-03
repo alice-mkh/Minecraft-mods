@@ -1,0 +1,99 @@
+#Various UI elements
+convert=Opciones del mundo
+continue=Continuar
+plus=+
+settings=Opciones: 
+genNewOres=Generara nuevos minerales: 
+
+#Indev settings
+1Layer=Una capa
+2Layers=Dos capas
+3Layers=Tres capas
+4Layers=Cuatro capas
+5Layers=Cinco Capas
+width=Ancho: 
+length=Largo: 
+height=Altura: 
+depth=Profundidad: 
+
+#Indev loading screen
+indev.raising=Aumentando..
+indev.eroding=Erocionando..
+indev.soiling=Ensuciando..
+indev.growing=Creciendo..
+indev.carving=Cavando..
+indev.melting=Fundiendo..
+indev.watering=Regando..
+indev.assembling=Ensamblando..
+indev.building=Construllendo..
+indev.planting=Plantando..
+indev.lighting=Iluminando..
+indev.spawning=Aparenciendo..
+
+gen=Generador: 
+features=Características: 
+theme=Tema: 
+indevType=Tipo: 
+
+#Generators
+genClassic=Classic
+genIndev=Indev
+genInfdev0227=Infdev (02.27)
+genInfdev0420=Infdev (04.20)
+genAlpha=Alpha
+genBeta=Beta
+genRelease=Lanzamiento
+
+#Beta features
+featuresHalloween=Alpha 1.2.0
+featuresBeta12=Beta 1.2
+featuresBeta14=Beta 1.4
+featuresBeta15=Beta 1.5
+featuresBeta173=Beta 1.7.3
+featuresBetaSky=Dimención Cielo
+
+#Release features
+featuresBeta181=Beta 1.8.1
+features10=1.0
+features11=1.1
+features12=1.2
+
+#Themes
+themeNormal=Normal
+themeHell=Infierno
+themeWoods=Bosques
+themeParadise=Paraiso
+
+#Indev types
+typeInland=Interior
+typeIsland=Isla
+typeFloating=Floatando
+typeFlat=Llano
+
+#Generator descriptions
+descriptionGenClassic=Mapa finito
+descriptionGenIndev=Mapa finito, más opciones
+descriptionGenInfdev0227=No árboles, lineas de obcidiana
+descriptionGenInfdev0420=No biomas, árboles grandes
+descriptionGenAlpha=No biomas, nubes bajas
+descriptionGenBeta=Pequeños biomas, nubes bajas
+descriptionGenRelease=Grandes biomas, villas
+
+#Beta features descriptions
+descriptionFeaturesHalloween=Nada especial
+descriptionFeaturesBeta12=Lagos, árboles especiales
+descriptionFeaturesBeta14=Arenisca
+descriptionFeaturesBeta15=Clima
+descriptionFeaturesBeta173=Hierba alta
+
+#Release feature descriptions
+descriptionFeaturesBeta181=Nada especial
+descriptionFeatures10=Nieve, hongos, pantanos oscuros
+descriptionFeatures11=Nieve en Taigas, playas, colinas
+descriptionFeatures12=Junglas, pozos de desierto
+
+#Theme descriprions
+descriptionThemeNormal=Cielo azul, hierba verde
+descriptionThemeHell=Mundo oscuro con lagos de lava
+descriptionThemeWoods=Cielo nuboso, muchos árboles
+descriptionThemeParadise=Día eterno, largas playas
