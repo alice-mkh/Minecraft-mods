@@ -3,15 +3,16 @@ package net.minecraft.src;
 public class mod_OldDaysActions extends mod_OldDays{
     public void load(){
         registerModule(this, 0);
-        addProperty(1, "Punch TNT",           false, true,  "PunchTNT",        "");
-        addProperty(2, "Extinguish TNT",      false, false, "ExtinguishTNT",   "");
-        addProperty(3, "Smelt items on fire", false, false, "SmeltOnFire",     "");
-        addProperty(4, "Unnerfed fire",       false, true,  "OldFire",         "");
-        addProperty(5, "Punch sheep",         false, true,  "PunchSheep",      "");
-        addProperty(6, "Old tool durability", false, false, "OldTools",        "");
-        addProperty(7, "Mushroom spreading",  true,  true,  "ShroomSpreading", "");
-        addProperty(8, "Solid TNT",           false, true,  "SolidTNT",        "");
-        addProperty(9, "Big fences",          false, true,  "BigFences",       "");
+        addProperty(1, "Punch TNT",             false, true,  "PunchTNT",        "");
+        addProperty(2, "Extinguish TNT",        false, false, "ExtinguishTNT",   "");
+        addProperty(3, "Smelt items on fire",   false, false, "SmeltOnFire",     "");
+        addProperty(4, "Unnerfed fire",         false, true,  "OldFire",         "");
+        addProperty(5, "Punch sheep",           false, true,  "PunchSheep",      "");
+        addProperty(6, "Old tool durability",   false, false, "OldTools",        "");
+        addProperty(7, "Mushroom spreading",    true,  true,  "ShroomSpreading", "");
+        addProperty(8, "Solid TNT",             false, true,  "SolidTNT",        "");
+        addProperty(9, "Big fences",            false, true,  "BigFences",       "");
+        addProperty(10,"Less Nether lava flow", false, false, "LessLavaFlow",    "");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -28,6 +29,7 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
             case 9: setBool(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
+            case 10:setBool(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
         }
     }
 
@@ -40,6 +42,7 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean ShroomSpreading = true;
     public static boolean SolidTNT = true;
     public static boolean BigFences = true;
+    public static boolean LessLavaFlow;
 //Old blocks
 //Unflammable fences and stairs
 
