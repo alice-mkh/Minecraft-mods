@@ -171,7 +171,7 @@ public abstract class BiomeGenBase
     /**
      * Allocate a new BiomeDecorator for this BiomeGenBase
      */
-    protected BiomeDecorator2 createBiomeDecorator()
+    protected BiomeDecorator createBiomeDecorator()
     {
         return new BiomeDecorator2(this);
     }
@@ -377,7 +377,7 @@ public abstract class BiomeGenBase
 
     public void decorate(World par1World, Random par2Random, int par3, int par4)
     {
-        ((BiomeDecorator2)biomeDecorator).decorate(par1World, par2Random, par3, par4);
+        biomeDecorator.decorate(par1World, par2Random, par3, par4);
     }
 
     /**
