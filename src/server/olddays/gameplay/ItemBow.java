@@ -120,6 +120,15 @@ public class ItemBow extends Item
                 par1ItemStack.damageItem(1, par3EntityPlayer);
             }
             EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, 1.0F);
+            int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
+            if (k > 0)
+            {
+                entityarrow.func_46007_b(k);
+            }
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
+            {
+                entityarrow.setFire(100);
+            }
             par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
             if (!flag){
                 par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
