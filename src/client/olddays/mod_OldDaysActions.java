@@ -6,7 +6,7 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(1, "Punch TNT",             false, true,  "PunchTNT",        "");
         addProperty(2, "Extinguish TNT",        false, false, "ExtinguishTNT",   "");
         addProperty(3, "Smelt items on fire",   false, false, "SmeltOnFire",     "");
-        addProperty(4, "Unnerfed fire",         false, true,  "OldFire",         "");
+        addProperty(4, "Fire",                  3,     2,     "Fire",            "", new String[]{"Alpha", "Beta 1.5", "Beta 1.6"});
         addProperty(5, "Punch sheep",           false, true,  "PunchSheep",      "");
         addProperty(6, "Old tool durability",   false, false, "OldTools",        "");
         addProperty(7, "Mushroom spreading",    true,  true,  "ShroomSpreading", "");
@@ -22,8 +22,8 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 1: setBool(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
             case 2: setBool(net.minecraft.src.EntityTNTPrimed.class, "extinguish", ExtinguishTNT); break;
             case 3: setBool(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
-            case 4: setBool(net.minecraft.src.BlockFire.class, "oldFire", OldFire);
-                    setBool(net.minecraft.src.BlockFire.class, "infiniteBurn", OldFire); break;
+            case 4: setBool(net.minecraft.src.BlockFire.class, "oldFire", Fire<3);
+                    setBool(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<2); break;
             case 5: setBool(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
             case 6: setToolDurability(OldTools); break;
             case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
@@ -36,7 +36,7 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean SmeltOnFire;
     public static boolean PunchTNT = true;
     public static boolean ExtinguishTNT;
-    public static boolean OldFire= true;
+    public static int Fire = 2;
     public static boolean PunchSheep = true;
     public static boolean OldTools;
     public static boolean ShroomSpreading = true;
