@@ -32,6 +32,11 @@ public class EntitySkeleton extends EntityMob
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
     }
 
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || survivaltest;
+    }
+
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */

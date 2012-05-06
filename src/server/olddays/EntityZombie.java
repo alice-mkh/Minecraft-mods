@@ -28,6 +28,11 @@ public class EntityZombie extends EntityMob
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityVillager.class, 16F, 0, false));
     }
 
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || !burns;
+    }
+
     public int getMaxHealth()
     {
         return 20;

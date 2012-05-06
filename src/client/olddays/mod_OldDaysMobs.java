@@ -30,7 +30,10 @@ public class mod_OldDaysMobs extends mod_OldDays{
                     setBool(net.minecraft.src.EntityCreature.class, "fastzombies", SurvivalTestMobs);
                     setBool(net.minecraft.src.EntityZombie.class, "burns", !SurvivalTestMobs);
                     setBool(net.minecraft.src.EntitySkeleton.class, "survivaltest", SurvivalTestMobs);
-                    setBool(net.minecraft.src.EntitySpider.class, "survivaltest", SurvivalTestMobs); break;
+                    setBool(net.minecraft.src.EntitySpider.class, "survivaltest", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntitySheep.class, "survivaltest", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntitySheep.class, "hungry", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntityLiving.class, "survivaltest", SurvivalTestMobs); break;
             case 6: setBool(net.minecraft.src.EntityCreature.class, "jump", JumpingMobs); break;
             case 7: setBool(net.minecraft.src.EntitySkeleton.class, "fast", FastSkeletons); break;
 /*            case 8: setInt(net.minecraft.src.EntityLiving.class, "nonewmobs", Mobs-1);
@@ -54,4 +57,5 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static boolean FastSkeletons;
 //     public static int Mobs = 11;
 //Creepers see through blocks;
+//Fix creeper behavior with SurvTest;
 }

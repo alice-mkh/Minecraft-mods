@@ -27,6 +27,11 @@ public class EntitySkeleton extends EntityMob
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
     }
 
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || survivaltest;
+    }
+
     protected void attackEntity(Entity entity, float f)
     {
         if (!fixai && !survivaltest){

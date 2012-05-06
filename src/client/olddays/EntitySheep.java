@@ -5,6 +5,8 @@ import java.util.Random;
 public class EntitySheep extends EntityAnimal
 {
     public static boolean punchToShear = false;
+    public static boolean survivaltest = false;
+    public static boolean hungry = true;
     public static int color = 2;
 
     public boolean attackEntityFrom(DamageSource damagesource, int i)
@@ -27,6 +29,11 @@ public class EntitySheep extends EntityAnimal
 
         }
         return super.attackEntityFrom(damagesource, i);
+    }
+
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || survivaltest;
     }
 
     public static final float fleeceColorTable[][] =

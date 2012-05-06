@@ -9,6 +9,7 @@ public abstract class EntityLiving extends Entity
     public static boolean rareloot = true;
     public static boolean oldloot = false;
     public static boolean jumpdelay = true;
+    public static boolean survivaltest = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -1105,7 +1106,11 @@ public abstract class EntityLiving extends Entity
 
             if (!isChild())
             {
-                if (oldloot){
+                if (survivaltest){
+                    if (this instanceof EntitySheep || this instanceof EntityPig){
+                        dropFewItemsOld(recentlyHit > 0, i, Block.mushroomBrown.blockID);
+                    }
+                }else if (oldloot){
                     if (this instanceof EntityPigZombie){
                         dropFewItemsOld(recentlyHit > 0, i, Item.porkCooked.shiftedIndex);
                     }else if (this instanceof EntityChicken || this instanceof EntityZombie){

@@ -15,6 +15,11 @@ public class EntitySpider extends EntityMob
         moveSpeed = 0.8F;
     }
 
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || survivaltest;
+    }
+
     protected void entityInit()
     {
         super.entityInit();

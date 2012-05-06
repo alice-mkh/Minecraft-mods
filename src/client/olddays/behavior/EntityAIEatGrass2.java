@@ -28,7 +28,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
         if (!caneatgrass){
             return false;
         }
-        if (theEntity.getRNG().nextInt(theEntity.isChild() ? 50 : 1000) != 0)
+        if (theEntity.getRNG().nextInt(EntitySheep.hungry ? theEntity.isChild() ? 50 : 10 : 1000) != 0)
         {
             return false;
         }
