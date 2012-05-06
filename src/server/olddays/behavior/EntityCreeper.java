@@ -34,6 +34,11 @@ public class EntityCreeper extends EntityMob
         targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || survivaltest;
+    }
+
     protected void attackBlockedEntity(Entity entity, float f)
     {
         if (worldObj.isRemote)

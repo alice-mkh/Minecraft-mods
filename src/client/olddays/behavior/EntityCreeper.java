@@ -35,6 +35,11 @@ public class EntityCreeper extends EntityMob
         targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() || survivaltest;
+    }
+
     public int getBrightnessForRender(float f)
     {
         if (!dark){
