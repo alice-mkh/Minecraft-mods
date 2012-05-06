@@ -7,6 +7,7 @@ public abstract class EntityPlayer extends EntityLiving
     public static boolean oldarmor = false;
     public static int combat = 3;
     public static boolean sprint = true;
+    public static int startitems = 0;
 
     /** Inventory of the player */
     public InventoryPlayer inventory;
@@ -140,6 +141,26 @@ public abstract class EntityPlayer extends EntityLiving
         field_9353_B = 180F;
         fireResistance = 20;
         texture = "/mob/char.png";
+        giveStartItems(startitems);
+    }
+
+    private void giveStartItems(int i){
+        if (i==0 || capabilities.isCreativeMode){
+            return;
+        }
+        if (i==1){
+            inventory.mainInventory[8] = new ItemStack(Block.tnt, 10);
+            return;
+        }
+        if (i==2){
+            inventory.mainInventory[8] = new ItemStack(Item.flintAndSteel, 1);
+            return;
+        }
+        if (i==3){
+            inventory.mainInventory[0] = new ItemStack(Block.glass, 999);
+            inventory.mainInventory[1] = new ItemStack(Block.planks, 999);
+            return;
+        }
     }
 
     protected int applyArmorCalculations_old(DamageSource damagesource, int i)
