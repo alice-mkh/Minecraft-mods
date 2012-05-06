@@ -4,9 +4,11 @@ import java.util.Random;
 
 public class EntitySheep extends EntityAnimal
 {
+    public static boolean caneatgrass = true;
+    public static boolean fixai = false;
     public static boolean punchToShear = false;
     public static boolean survivaltest = false;
-    public static boolean hungry = true;
+    public static boolean hungry = false;
 
     public boolean attackEntityFrom(DamageSource damagesource, int i)
     {
@@ -30,9 +32,64 @@ public class EntitySheep extends EntityAnimal
         return super.attackEntityFrom(damagesource, i);
     }
 
+    protected boolean isMovementCeased(){
+        return fixai ? super.isMovementCeased() : sheepTimer > 0;
+    }
+
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || survivaltest;
+    }
+
+    protected void updateEntityActionState()
+    {
+        super.updateEntityActionState();
+        if (!fixai){
+            return;
+        }
+        if (!hasPath() && sheepTimer <= 0 && (isChild() && rand.nextInt(50) == 0 || hungry && rand.nextInt(10) == 0 || rand.nextInt(1000) == 0))
+        {
+            int i = MathHelper.floor_double(posX);
+            int k = MathHelper.floor_double(posY);
+            int i1 = MathHelper.floor_double(posZ);
+            if (worldObj.getBlockId(i, k, i1) == Block.tallGrass.blockID && worldObj.getBlockMetadata(i, k, i1) == 1 || worldObj.getBlockId(i, k - 1, i1) == Block.grass.blockID)
+            {
+                sheepTimer = 40;
+                worldObj.setEntityState(this, (byte)10);
+            }
+        }
+        else if (sheepTimer == 4)
+        {
+            int j = MathHelper.floor_double(posX);
+            int l = MathHelper.floor_double(posY);
+            int j1 = MathHelper.floor_double(posZ);
+            boolean flag = false;
+            if (worldObj.getBlockId(j, l, j1) == Block.tallGrass.blockID)
+            {
+                worldObj.playAuxSFX(2001, j, l, j1, Block.tallGrass.blockID + 256);
+                worldObj.setBlockWithNotify(j, l, j1, 0);
+                flag = true;
+            }
+            else if (worldObj.getBlockId(j, l - 1, j1) == Block.grass.blockID)
+            {
+                worldObj.playAuxSFX(2001, j, l - 1, j1, Block.grass.blockID);
+                worldObj.setBlockWithNotify(j, l - 1, j1, Block.dirt.blockID);
+                flag = true;
+            }
+            if (flag)
+            {
+                setSheared(false);
+                if (isChild())
+                {
+                    int k1 = getGrowingAge() + 1200;
+                    if (k1 > 0)
+                    {
+                        k1 = 0;
+                    }
+                    setGrowingAge(k1);
+                }
+            }
+        }
     }
 
     public static final float fleeceColorTable[][] =
@@ -120,6 +177,14 @@ public class EntitySheep extends EntityAnimal
      */
     public void onLivingUpdate()
     {
+        if (fixai){
+            super.onLivingUpdate();
+            if (sheepTimer > 0)
+            {
+                sheepTimer--;
+            }
+            return;
+        }
         if (worldObj.isRemote)
         {
             sheepTimer = Math.max(0, sheepTimer - 1);

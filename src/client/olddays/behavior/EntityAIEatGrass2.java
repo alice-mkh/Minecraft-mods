@@ -4,8 +4,6 @@ import java.util.Random;
 
 public class EntityAIEatGrass2 extends EntityAIBase
 {
-    public static boolean caneatgrass = true;
-
     private EntityLiving theEntity;
     private World theWorld;
 
@@ -25,7 +23,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-        if (!caneatgrass){
+        if (!EntitySheep.caneatgrass){
             return false;
         }
         if (theEntity.getRNG().nextInt(EntitySheep.hungry ? theEntity.isChild() ? 50 : 10 : 1000) != 0)
