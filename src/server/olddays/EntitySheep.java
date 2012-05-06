@@ -9,6 +9,7 @@ public class EntitySheep extends EntityAnimal
     public static boolean punchToShear = false;
     public static boolean survivaltest = false;
     public static boolean hungry = false;
+    public static boolean oldhealth = false;
 
     public boolean attackEntityFrom(DamageSource damagesource, int i)
     {
@@ -195,7 +196,10 @@ public class EntitySheep extends EntityAnimal
 
     public int getMaxHealth()
     {
-        return 8;
+        if (survivaltest){
+            return 6;
+        }
+        return oldhealth ? 10 : 8;
     }
 
     protected void entityInit()

@@ -115,7 +115,7 @@ public class EntitySkeleton extends EntityMob
 
     public int getMaxHealth()
     {
-        return 20;
+        return survivaltest ? 10 : 20;
     }
 
     /**

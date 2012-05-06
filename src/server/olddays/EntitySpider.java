@@ -6,6 +6,7 @@ public class EntitySpider extends EntityMob
 {
     public static boolean survivaltest = false;
     public static boolean canclimb = true;
+    public static boolean oldhealth = false;
 
     public EntitySpider(World par1World)
     {
@@ -50,7 +51,10 @@ public class EntitySpider extends EntityMob
 
     public int getMaxHealth()
     {
-        return 16;
+        if (survivaltest){
+            return 10;
+        }
+        return oldhealth ? 20 : 16;
     }
 
     /**
