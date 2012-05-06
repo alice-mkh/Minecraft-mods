@@ -34,7 +34,7 @@ public class EntitySheep extends EntityAnimal
     }
 
     protected boolean isMovementCeased(){
-        return fixai ? super.isMovementCeased() : sheepTimer > 0;
+        return fixai ? sheepTimer > 0 :super.isMovementCeased();
     }
 
     public boolean getCanSpawnHere()
