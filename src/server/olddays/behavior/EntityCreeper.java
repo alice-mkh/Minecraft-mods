@@ -22,6 +22,7 @@ public class EntityCreeper extends EntityMob
     {
         super(par1World);
         texture = "/mob/creeper.png";
+        attackStrength = 2;
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAICreeperSwell(this));
         tasks.addTask(3, new EntityAIAvoidEntity(this, net.minecraft.src.EntityOcelot.class, 6F, 0.25F, 0.3F));
@@ -65,7 +66,12 @@ public class EntityCreeper extends EntityMob
             return;
         }
         if (survivaltest){
-            super.attackEntity(entity, f);
+            if (attackTime <= 0 && f < 2.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
+            {
+                attackTime = 20;
+                attackEntityAsMob(entity);
+                this.attackEntityFrom(DamageSource.causeMobDamage(this), 2);
+            }
             return;
         }
         if (!fixai){
