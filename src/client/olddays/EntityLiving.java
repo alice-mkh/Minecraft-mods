@@ -25,40 +25,41 @@ public abstract class EntityLiving extends Entity
         return newai;
     }
 
-    private void removeNewMobs(String id, int dim){
-        if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
-            setDead(); return;
-        }
+    private boolean allow(String id, int dim){
+        /*if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
+            return false;
+        }*/
         if (dim!=0){
-            return;
+            return true;
         }
         if (nonewmobs<10 && id=="Ozelot"){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<9 && (id=="MushroomCow" || id=="Villager")){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<8 && id=="Enderman"){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<7 && id=="Wolf"){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<5 && id=="Squid"){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<4 && id=="Chicken"){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<3 && id=="Slime"){
-            setDead(); return;
+            return false;
         }
         if (nonewmobs<2 && id=="Cow"){
-            setDead(); return;
+            return false;
         }
-        if (nonewmobs<1 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider")){
-            setDead(); return;
+        if (nonewmobs<1 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider" || id=="Creeper")){
+            return false;
         }
+        return true;
     }
 
     protected void dropFewItemsOld(boolean par1, int par2, int item)
@@ -272,7 +273,6 @@ public abstract class EntityLiving extends Entity
         deathTime = 0;
         attackTime = 0;
         dead = false;
-//         removeNewMobs(EntityList.getEntityString(this), par1World.worldProvider.worldType);
         field_9326_T = -1;
         field_9325_U = (float)(Math.random() * 0.89999997615814209D + 0.10000000149011612D);
         attackingPlayer = null;
@@ -1909,6 +1909,9 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
+        if (!allow(EntityList.getEntityString(this), worldObj.worldProvider.worldType)){
+            return false;
+        }
         return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
     }
 

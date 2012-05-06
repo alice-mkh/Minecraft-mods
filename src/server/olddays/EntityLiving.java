@@ -10,6 +10,7 @@ public abstract class EntityLiving extends Entity
     public static boolean oldloot = false;
     public static boolean jumpdelay = true;
     public static boolean survivaltest = false;
+    public static int nonewmobs = 10;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -22,6 +23,43 @@ public abstract class EntityLiving extends Entity
             return true;
         }
         return newai;
+    }
+
+    private boolean allow(String id, int dim){
+        /*if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
+            return false;
+        }*/
+        if (dim!=0){
+            return true;
+        }
+        if (nonewmobs<10 && id=="Ozelot"){
+            return false;
+        }
+        if (nonewmobs<9 && (id=="MushroomCow" || id=="Villager")){
+            return false;
+        }
+        if (nonewmobs<8 && id=="Enderman"){
+            return false;
+        }
+        if (nonewmobs<7 && id=="Wolf"){
+            return false;
+        }
+        if (nonewmobs<5 && id=="Squid"){
+            return false;
+        }
+        if (nonewmobs<4 && id=="Chicken"){
+            return false;
+        }
+        if (nonewmobs<3 && id=="Slime"){
+            return false;
+        }
+        if (nonewmobs<2 && id=="Cow"){
+            return false;
+        }
+        if (nonewmobs<1 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider" || id=="Creeper")){
+            return false;
+        }
+        return true;
     }
 
     protected void dropFewItemsOld(boolean par1, int par2, int item)
@@ -1832,6 +1870,9 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
+        if (!allow(EntityList.getEntityString(this), worldObj.worldProvider.worldType)){
+            return false;
+        }
         return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
     }
 
