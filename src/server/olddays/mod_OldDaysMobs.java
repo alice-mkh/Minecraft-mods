@@ -31,6 +31,7 @@ public class mod_OldDaysMobs extends mod_OldDays{
                     setBool(net.minecraft.src.EntitySpider.class, "survivaltest", SurvivalTestMobs);
                     setBool(net.minecraft.src.EntitySheep.class, "survivaltest", SurvivalTestMobs);
                     setBool(net.minecraft.src.EntitySheep.class, "hungry", SurvivalTestMobs);
+                    setBool(net.minecraft.src.EntityPig.class, "survivaltest", SurvivalTestMobs);
                     setBool(net.minecraft.src.EntityLiving.class, "survivaltest", SurvivalTestMobs); break;
             case 6: setBool(net.minecraft.src.EntityCreature.class, "jump", JumpingMobs); break;
             case 7: setBool(net.minecraft.src.EntitySkeleton.class, "fast", FastSkeletons); break;
