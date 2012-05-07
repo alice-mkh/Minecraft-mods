@@ -46,7 +46,7 @@ public class EntitySheep extends EntityAnimal
     protected void updateEntityActionState()
     {
         super.updateEntityActionState();
-        if (!fixai){
+        if (!fixai || !caneatgrass){
             return;
         }
         if (!hasPath() && sheepTimer <= 0 && (isChild() && rand.nextInt(50) == 0 || hungry && rand.nextInt(10) == 0 || rand.nextInt(1000) == 0))
