@@ -50,9 +50,6 @@ public abstract class EntityLiving extends Entity
         if (nonewmobs<4 && id=="Chicken"){
             return false;
         }
-        if (nonewmobs<3 && id=="Slime"){
-            return false;
-        }
         if (nonewmobs<2 && id=="Cow"){
             return false;
         }

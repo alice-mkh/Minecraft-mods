@@ -69,5 +69,4 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static int Mobs = 11;
     public static int Slimes = 4;
 //Creepers see through blocks;
-//Fix creeper behavior with SurvTest;
 }

@@ -13,6 +13,7 @@ public class mod_OldDaysMobs extends mod_OldDays{
         addProperty(8, "Old mob health",      false, false, "OldHealth",        "");
         addProperty(9, "Allowed mobs",        11,    11,    "Mobs",             "", new String[]{"Classic", "Indev", "Alpha 1.0.8", "Alpha 1.0.11", "Alpha 1.0.14", "Alpha 1.2.0",
                                                                                                  "Beta 1.2", "Beta 1.7.3", "Beta 1.8.1", "1.1", "1.2"});
+        addProperty(10,"Slime spawning",      4,     4,     "Slimes",           "", new String[]{"OFF", "Alpha 1.0.11", "Beta", "1.0"});
         loadModuleProperties();
     }
 
@@ -50,7 +51,9 @@ public class mod_OldDaysMobs extends mod_OldDays{
                     }
                     setInt(net.minecraft.src.EntitySheep.class, "color", color);
                     setBool(net.minecraft.src.EntityOcelot.class, "allow", Mobs>=11);
-                    setBool(net.minecraft.src.EntitySquid.class, "allow", Mobs>=7); break;
+                    setBool(net.minecraft.src.EntitySquid.class, "allow", Mobs>=7);
+                    setBool(net.minecraft.src.EntitySlime.class, "allow", Mobs>=4); break;
+            case 10:setInt(net.minecraft.src.EntitySlime.class, "slimeSpawn", Slimes-1); break;
         }
     }
 
@@ -63,5 +66,6 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static boolean FastSkeletons;
     public static boolean OldHealth = true;
     public static int Mobs = 11;
+    public static int Slimes = 4;
 //Creepers see through blocks
 }
