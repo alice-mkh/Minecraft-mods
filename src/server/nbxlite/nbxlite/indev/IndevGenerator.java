@@ -22,7 +22,7 @@ public final class IndevGenerator
     private Random rand;
     public byte blocks[];
     private byte[] e;
-    private int k;
+    private int sealevel;
     private int l;
     public boolean island;
     public boolean floating;
@@ -55,19 +55,19 @@ public final class IndevGenerator
         }
         n = 13 + l1 * 4;
         IndevLevel world = new IndevLevel();
-        world.waterLevel = k;
+        world.waterLevel = sealevel;
         world.t = l;
         world.a = i1;
         world.b = j1;
         world.c = k1;
-        this.width = i1;
-        this.length = j1;
-        this.height = k1;
+        width = i1;
+        length = j1;
+        height = k1;
         blocks = new byte[(i1 * j1 * k1)];
         for(int i2 = 0; i2 < l1; i2++)
         {
-            k = k1 - 32 - i2 * 48;
-            l = k - 2;
+            sealevel = k1 - 32 - i2 * 48;
+            l = sealevel - 2;
             int ai[];
             if(flat)
             {
@@ -83,19 +83,18 @@ public final class IndevGenerator
             {
                 MinecraftServer.logger.info("Raising..");
                 nextPhase();
-                IndevGenerator a1 = this;
-                IndevNoiseGenerator2 d1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
-                IndevNoiseGenerator2 d2 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
-                Object obj = new IndevNoiseGeneratorOctaves(a1.rand, 6);
-                IndevNoiseGeneratorOctaves c1 = new IndevNoiseGeneratorOctaves(a1.rand, 2);
-                int ai3[] = new int[a1.width * a1.length];
-                for(int j7 = 0; j7 < a1.width; j7++)
+                IndevNoiseGenerator2 d1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
+                IndevNoiseGenerator2 d2 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
+                Object obj = new IndevNoiseGeneratorOctaves(rand, 6);
+                IndevNoiseGeneratorOctaves c1 = new IndevNoiseGeneratorOctaves(rand, 2);
+                ai = new int[width * length];
+                for(int j7 = 0; j7 < width; j7++)
                 {
-                    double d5 = Math.abs(((double)j7 / ((double)a1.width - 1.0D) - 0.5D) * 2D);
-                    a1.a(((float)j7 * 100F) / (float)(a1.width - 1));
-                    for(int k8 = 0; k8 < a1.length; k8++)
+                    double d5 = Math.abs(((double)j7 / ((double)width - 1.0D) - 0.5D) * 2D);
+                    a(((float)j7 * 100F) / (float)(width - 1));
+                    for(int k8 = 0; k8 < length; k8++)
                     {
-                        double d7 = Math.abs(((double)k8 / ((double)a1.length - 1.0D) - 0.5D) * 2D);
+                        double d7 = Math.abs(((double)k8 / ((double)length - 1.0D) - 0.5D) * 2D);
                         double d9 = d1.a((float)j7 * 1.3F, (float)k8 * 1.3F) / 6D + -4D;
                         double d10 = d2.a((float)j7 * 1.3F, (float)k8 * 1.3F) / 5D + 10D + -4D;
                         double d11;
@@ -104,7 +103,7 @@ public final class IndevGenerator
                             d10 = d9;
                         }
                         double d13 = Math.max(d9, d10) / 2D;
-                        if(a1.island)
+                        if(island)
                         {
                             double d14 = Math.sqrt(d5 * d5 + d7 * d7) * 1.2000000476837158D;
                             double d15 = c1.a((float)j7 * 0.05F, (float)k8 * 0.05F) / 4D + 1.0D;
@@ -126,30 +125,27 @@ public final class IndevGenerator
                         {
                             d13 *= 0.80000000000000004D;
                         }
-                        ai3[j7 + k8 * a1.width] = (int)d13;
+                        ai[j7 + k8 * width] = (int)d13;
                     }
 
                 }
 
-                ai = ai3;
                 MinecraftServer.logger.info("Eroding..");
                 nextPhase();
-                int ai1[] = ai;
-                a1 = this;
-                d2 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
-                obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
-                for(int l4 = 0; l4 < a1.width; l4++)
+                d2 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
+                obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
+                for(int l4 = 0; l4 < width; l4++)
                 {
-                    a1.a(((float)l4 * 100F) / (float)(a1.width - 1));
-                    for(int k5 = 0; k5 < a1.length; k5++)
+                    a(((float)l4 * 100F) / (float)(width - 1));
+                    for(int k5 = 0; k5 < length; k5++)
                     {
                         double d3 = d2.a(l4 << 1, k5 << 1) / 8D;
                         int k7 = ((IndevNoiseGenerator) (obj)).a(l4 << 1, k5 << 1) <= 0.0D ? 0 : 1;
                         if(d3 > 2D)
                         {
                             int i8;
-                            i8 = (((i8 = ai1[l4 + k5 * a1.width]) - k7) / 2 << 1) + k7;
-                            ai1[l4 + k5 * a1.width] = i8;
+                            i8 = (((i8 = ai[l4 + k5 * width]) - k7) / 2 << 1) + k7;
+                            ai[l4 + k5 * width] = i8;
                         }
                     }
 
@@ -158,43 +154,38 @@ public final class IndevGenerator
             }
             MinecraftServer.logger.info("Soiling..");
             nextPhase();
-            int ai2[] = ai;
-            IndevGenerator a2 = this;
-            int i4 = a2.width;
-            int j4 = a2.length;
-            int i5 = a2.height;
-            IndevNoiseGeneratorOctaves c3 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
-            IndevNoiseGeneratorOctaves c4 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
-            for(int k6 = 0; k6 < i4; k6++)
+            IndevNoiseGeneratorOctaves c3 = new IndevNoiseGeneratorOctaves(rand, 8);
+            IndevNoiseGeneratorOctaves c4 = new IndevNoiseGeneratorOctaves(rand, 8);
+            for(int k6 = 0; k6 < width; k6++)
             {
-                double d4 = Math.abs(((double)k6 / ((double)i4 - 1.0D) - 0.5D) * 2D);
-                a2.a(((float)k6 * 100F) / (float)(i4 - 1));
-                for(int j8 = 0; j8 < j4; j8++)
+                double d4 = Math.abs(((double)k6 / ((double)width - 1.0D) - 0.5D) * 2D);
+                a(((float)k6 * 100F) / (float)(width - 1));
+                for(int j8 = 0; j8 < length; j8++)
                 {
-                    double d6 = Math.abs(((double)j8 / ((double)j4 - 1.0D) - 0.5D) * 2D);
+                    double d6 = Math.abs(((double)j8 / ((double)length - 1.0D) - 0.5D) * 2D);
                     double d8;
                     d8 = (d8 = Math.max(d4, d6)) * d8 * d8;
                     int i10 = (int)(c3.a(k6, j8) / 24D) - 4;
                     int j10;
-                    int k10 = (j10 = ai2[k6 + j8 * i4] + a2.k) + i10;
-                    ai2[k6 + j8 * i4] = Math.max(j10, k10);
-                    if(ai2[k6 + j8 * i4] > i5 - 2)
+                    int k10 = (j10 = ai[k6 + j8 * width] + sealevel) + i10;
+                    ai[k6 + j8 * width] = Math.max(j10, k10);
+                    if(ai[k6 + j8 * width] > height - 2)
                     {
-                        ai2[k6 + j8 * i4] = i5 - 2;
+                        ai[k6 + j8 * width] = height - 2;
                     }
-                    if(ai2[k6 + j8 * i4] <= 0)
+                    if(ai[k6 + j8 * width] <= 0)
                     {
-                        ai2[k6 + j8 * i4] = 1;
+                        ai[k6 + j8 * width] = 1;
                     }
                     double d12;
                     int i11;
-                    if((i11 = (int)((double)(i11 = (int)(Math.sqrt(Math.abs(d12 = c4.a((double)k6 * 2.2999999999999998D, (double)j8 * 2.2999999999999998D) / 24D)) * Math.signum(d12) * 20D) + a2.k) * (1.0D - d8) + d8 * (double)a2.height)) > a2.k)
+                    if((i11 = (int)((double)(i11 = (int)(Math.sqrt(Math.abs(d12 = c4.a((double)k6 * 2.2999999999999998D, (double)j8 * 2.2999999999999998D) / 24D)) * Math.signum(d12) * 20D) + sealevel) * (1.0D - d8) + d8 * (double)height)) > sealevel)
                     {
-                        i11 = a2.height;
+                        i11 = height;
                     }
-                    for(int j11 = 0; j11 < i5; j11++)
+                    for(int j11 = 0; j11 < height; j11++)
                     {
-                        int k11 = (j11 * a2.length + j8) * a2.width + k6;
+                        int k11 = (j11 * length + j8) * width + k6;
                         int l11 = 0;
                         if(j11 <= j10)
                         {
@@ -204,13 +195,13 @@ public final class IndevGenerator
                         {
                             l11 = Block.stone.blockID;
                         }
-                        if(a2.floating && j11 < i11)
+                        if(floating && j11 < i11)
                         {
                             l11 = 0;
                         }
-                        if(a2.blocks[k11] == 0)
+                        if(blocks[k11] == 0)
                         {
-                            a2.blocks[k11] = (byte)l11;
+                            blocks[k11] = (byte)l11;
                         }
                     }
 
@@ -220,42 +211,38 @@ public final class IndevGenerator
 
             MinecraftServer.logger.info("Growing..");
             nextPhase();
-            ai2 = ai;
-            a2 = this;
-            i4 = a2.width;
-            j4 = a2.length;
-            IndevNoiseGeneratorOctaves c2 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
-            c3 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
-            int i6 = a2.k - 1;
-            if(a2.theme == 3)
+            IndevNoiseGeneratorOctaves c2 = new IndevNoiseGeneratorOctaves(rand, 8);
+            c3 = new IndevNoiseGeneratorOctaves(rand, 8);
+            int i6 = sealevel - 1;
+            if(theme == 3)
             {
                 i6 += 2;
             }
-            for(int l6 = 0; l6 < i4; l6++)
+            for(int l6 = 0; l6 < width; l6++)
             {
-                a2.a(((float)l6 * 100F) / (float)(i4 - 1));
-                for(int l7 = 0; l7 < j4; l7++)
+                a(((float)l6 * 100F) / (float)(width - 1));
+                for(int l7 = 0; l7 < length; l7++)
                 {
                     boolean flag = c2.a(l6, l7) > 8D;
-                    if(a2.island)
+                    if(island)
                     {
                         flag = c2.a(l6, l7) > -8D;
                     }
-                    if(a2.theme == 3)
+                    if(theme == 3)
                     {
                         flag = c2.a(l6, l7) > -32D;
                     }
                     boolean flag1 = c3.a(l6, l7) > 12D;
-                    if(a2.theme == 1 || a2.theme == 2)
+                    if(theme == 1 || theme == 2)
                     {
                         flag = c2.a(l6, l7) > -8D;
                     }
                     int l8;
-                    int j9 = ((l8 = ai2[l6 + l7 * i4]) * a2.length + l7) * a2.width + l6;
+                    int j9 = ((l8 = ai[l6 + l7 * width]) * length + l7) * width + l6;
                     int k9;
-                    if(((k9 = a2.blocks[((l8 + 1) * a2.length + l7) * a2.width + l6] & 0xff) == Block.waterMoving.blockID || k9 == Block.waterStill.blockID || k9 == 0) && l8 <= a2.k - 1 && flag1)
+                    if(((k9 = blocks[((l8 + 1) * length + l7) * width + l6] & 0xff) == Block.waterMoving.blockID || k9 == Block.waterStill.blockID || k9 == 0) && l8 <= sealevel - 1 && flag1)
                     {
-                        a2.blocks[j9] = (byte)Block.gravel.blockID;
+                        blocks[j9] = (byte)Block.gravel.blockID;
                     }
                     if(k9 != 0)
                     {
@@ -265,14 +252,14 @@ public final class IndevGenerator
                     if(l8 <= i6 && flag)
                     {
                         l9 = Block.sand.blockID;
-                        if(a2.theme == 1)
+                        if(theme == 1)
                         {
                             l9 = Block.grass.blockID;
                         }
                     }
-                    if(a2.blocks[j9] != 0 && l9 > 0)
+                    if(blocks[j9] != 0 && l9 > 0)
                     {
-                        a2.blocks[j9] = (byte)l9;
+                        blocks[j9] = (byte)l9;
                     }
                 }
 
@@ -282,23 +269,19 @@ public final class IndevGenerator
 
         MinecraftServer.logger.info("Carving..");
         nextPhase();
-        IndevGenerator a3 = this;
-        int k4 = a3.width;
-        int j5 = a3.length;
-        int l5 = a3.height;
-        int j6 = (k4 * j5 * l5) / 256 / 64 << 1;
+        int j6 = (width * length * height) / 256 / 64 << 1;
         for(int i7 = 0; i7 < j6; i7++)
         {
-            a3.a(((float)i7 * 100F) / (float)(j6 - 1));
-            float f4 = a3.rand.nextFloat() * (float)k4;
-            float f5 = a3.rand.nextFloat() * (float)l5;
-            float f6 = a3.rand.nextFloat() * (float)j5;
-            int i9 = (int)((a3.rand.nextFloat() + a3.rand.nextFloat()) * 200F);
-            float f7 = a3.rand.nextFloat() * 3.141593F * 2.0F;
+            a(((float)i7 * 100F) / (float)(j6 - 1));
+            float f4 = rand.nextFloat() * (float)width;
+            float f5 = rand.nextFloat() * (float)height;
+            float f6 = rand.nextFloat() * (float)length;
+            int i9 = (int)((rand.nextFloat() + rand.nextFloat()) * 200F);
+            float f7 = rand.nextFloat() * 3.141593F * 2.0F;
             float f8 = 0.0F;
-            float f9 = a3.rand.nextFloat() * 3.141593F * 2.0F;
+            float f9 = rand.nextFloat() * 3.141593F * 2.0F;
             float f10 = 0.0F;
-            float f11 = a3.rand.nextFloat() * a3.rand.nextFloat();
+            float f11 = rand.nextFloat() * rand.nextFloat();
 label0:
             for(int l10 = 0; l10 < i9; l10++)
             {
@@ -306,17 +289,17 @@ label0:
                 f6 += MathHelper.cos(f7) * MathHelper.cos(f9);
                 f5 += MathHelper.sin(f9);
                 f7 += f8 * 0.2F;
-                f8 = (f8 *= 0.9F) + (a3.rand.nextFloat() - a3.rand.nextFloat());
+                f8 = (f8 *= 0.9F) + (rand.nextFloat() - rand.nextFloat());
                 f9 = (f9 += f10 * 0.5F) * 0.5F;
-                f10 = (f10 *= 0.75F) + (a3.rand.nextFloat() - a3.rand.nextFloat());
-                if(a3.rand.nextFloat() < 0.25F)
+                f10 = (f10 *= 0.75F) + (rand.nextFloat() - rand.nextFloat());
+                if(rand.nextFloat() < 0.25F)
                 {
                     continue;
                 }
-                float f12 = f4 + (a3.rand.nextFloat() * 4F - 2.0F) * 0.2F;
-                float f13 = f5 + (a3.rand.nextFloat() * 4F - 2.0F) * 0.2F;
-                float f14 = f6 + (a3.rand.nextFloat() * 4F - 2.0F) * 0.2F;
-                float f15 = ((float)a3.height - f13) / (float)a3.height;
+                float f12 = f4 + (rand.nextFloat() * 4F - 2.0F) * 0.2F;
+                float f13 = f5 + (rand.nextFloat() * 4F - 2.0F) * 0.2F;
+                float f14 = f6 + (rand.nextFloat() * 4F - 2.0F) * 0.2F;
+                float f15 = ((float)height - f13) / (float)height;
                 float f16 = 1.2F + (f15 * 3.5F + 1.0F) * f11;
                 float f17 = MathHelper.sin(((float)l10 * 3.141593F) / (float)i9) * f16;
                 l1 = (int)(f12 - f17);
@@ -333,14 +316,14 @@ label0:
                             float f1 = (float)l1 - f12;
                             float f2 = (float)i12 - f13;
                             float f3 = (float)j12 - f14;
-                            if((f1 = f1 * f1 + f2 * f2 * 2.0F + f3 * f3) >= f17 * f17 || l1 <= 0 || i12 <= 0 || j12 <= 0 || l1 >= a3.width - 1 || i12 >= a3.height - 1 || j12 >= a3.length - 1)
+                            if((f1 = f1 * f1 + f2 * f2 * 2.0F + f3 * f3) >= f17 * f17 || l1 <= 0 || i12 <= 0 || j12 <= 0 || l1 >= width - 1 || i12 >= height - 1 || j12 >= length - 1)
                             {
                                 continue;
                             }
-                            f1 = (i12 * a3.length + j12) * a3.width + l1;
-                            if(a3.blocks[(int)f1] == Block.stone.blockID)
+                            f1 = (i12 * length + j12) * width + l1;
+                            if(blocks[(int)f1] == Block.stone.blockID)
                             {
-                                a3.blocks[(int)f1] = 0;
+                                blocks[(int)f1] = 0;
                             }
                         }
 
@@ -352,16 +335,16 @@ label0:
 
         }
 
-        int j2 = a(Block.oreCoal.blockID, 1000, 10, (k1 << 2) / 5);
-        int j3 = a(Block.oreIron.blockID, 800, 8, (k1 * 3) / 5);
-        int l3 = a(Block.oreGold.blockID, 500, 6, (k1 << 1) / 5);
-        l1 = a(Block.oreDiamond.blockID, 800, 2, k1 / 5);
+        int coal = generateOre(Block.oreCoal.blockID, 1000, 10, (k1 << 2) / 5);
+        int iron = generateOre(Block.oreIron.blockID, 800, 8, (k1 * 3) / 5);
+        int gold = generateOre(Block.oreGold.blockID, 500, 6, (k1 << 1) / 5);
+        l1 = generateOre(Block.oreDiamond.blockID, 800, 2, k1 / 5);
         if (mod_noBiomesX.GenerateNewOres){
-            int redstone = a(Block.oreRedstone.blockID, 800, 4, (k1 << 1) / 5);
-            int lapis = a(Block.oreLapis.blockID, 600, 4, (k1 << 1) / 5);
-            MinecraftServer.logger.info("Coal: "+j2+", Iron: "+j3+", Lapis: "+lapis+", Gold: "+l3+", Redstone: "+redstone+", Diamond: "+l1);
+            int redstone = generateOre(Block.oreRedstone.blockID, 800, 4, (k1 << 1) / 5);
+            int lapis = generateOre(Block.oreLapis.blockID, 600, 4, (k1 << 1) / 5);
+            MinecraftServer.logger.info("Coal: "+coal+", Iron: "+iron+", Lapis: "+lapis+", Gold: "+gold+", Redstone: "+redstone+", Diamond: "+diamond);
         }else{
-            MinecraftServer.logger.info("Coal: "+j2+", Iron: "+j3+", Gold: "+l3+", Diamond: "+l1);
+            MinecraftServer.logger.info("Coal: "+coal+", Iron: "+iron+", Gold: "+gold+", Diamond: "+diamond);
         }
         MinecraftServer.logger.info("Melting..");
         nextPhase();
@@ -370,16 +353,16 @@ label0:
         if(floating)
         {
             l = -128;
-            k = l + 1;
+            sealevel = l + 1;
             world.u = -16;
         } else
         if(!island)
         {
-            l = k + 1;
-            k = l - 16;
+            l = sealevel + 1;
+            sealevel = l - 16;
         } else
         {
-            l = k - 9;
+            l = sealevel - 9;
         }
         MinecraftServer.logger.info("Watering..");
         nextPhase();
@@ -393,14 +376,14 @@ label0:
             }
             for(int k2 = 0; k2 < i1; k2++)
             {
-                fillWithLiquid(k2, k - 1, 0, 0, l1);
-                fillWithLiquid(k2, k - 1, j1 - 1, 0, l1);
+                fillWithLiquid(k2, sealevel - 1, 0, 0, l1);
+                fillWithLiquid(k2, sealevel - 1, j1 - 1, 0, l1);
             }
 
             for(int l2 = 0; l2 < j1; l2++)
             {
-                fillWithLiquid(i1 - 1, k - 1, l2, 0, l1);
-                fillWithLiquid(0, k - 1, l2, 0, l1);
+                fillWithLiquid(i1 - 1, sealevel - 1, l2, 0, l1);
+                fillWithLiquid(0, sealevel - 1, l2, 0, l1);
             }
 
         }
@@ -420,7 +403,7 @@ label0:
             if(floating)
             {
                 world.u = k1 + 2;
-                k = -16;
+                sealevel = -16;
             }
         }
         if(theme == 3)
@@ -439,7 +422,7 @@ label0:
             world.x = 0x4d5a5b;
             world.B = world.A = 12;
         }
-        world.waterLevel = k;
+        world.waterLevel = sealevel;
         world.t = l;
         MinecraftServer.logger.info("Assembling..");
         nextPhase();
@@ -506,7 +489,7 @@ label0:
         } else
         {
 //             return world;
-            return this.blocks;
+            return blocks;
         }
     }
     
@@ -644,7 +627,7 @@ label0:
 
     }
 
-    private int a(int i1, int j1, int k1, int l1)
+    private int generateOre(int i1, int j1, int k1, int l1)
     {
         int i2 = 0;
         i1 = (byte)i1;
@@ -934,7 +917,7 @@ label0:
                     int k4;
                     if(k3 >= 0 && j2 >= 0 && i4 >= 0 && k3 < world.a && j2 < world.c && i4 < world.b)
                     {
-                        if((k4 = this.blocks[(j2 * world.b + i4) * world.a + k3] & 0xff) != 0)
+                        if((k4 = blocks[(j2 * world.b + i4) * world.a + k3] & 0xff) != 0)
                         {
                             flag = false;
                         }
@@ -953,7 +936,7 @@ label0:
             return false;
         }
         int k2;
-        if((k2 = this.blocks[((j1 - 1) * world.b + k1) * world.a + i1] & 0xff) != Block.grass.blockID && k2 != Block.dirt.blockID || j1 >= world.c - l1 - 1)
+        if((k2 = blocks[((j1 - 1) * world.b + k1) * world.a + i1] & 0xff) != Block.grass.blockID && k2 != Block.dirt.blockID || j1 >= world.c - l1 - 1)
         {
             return false;
         }
@@ -994,7 +977,7 @@ label0:
         int y = j;
         int z = k;
         int index = x+(y*length+z)*width;
-        this.blocks[index]=(byte)id;
+        blocks[index]=(byte)id;
     }
 
     private boolean canFlowerStay(BlockFlower flower, IndevLevel world, int i, int j, int k){
@@ -1209,7 +1192,7 @@ label0:
         int y = j;
         int z = k;
         int index = x+(y*length+z)*width;
-        return this.blocks[index];
+        return blocks[index];
     }
     
     private Material getBlockMaterial(int i, int j, int k){
