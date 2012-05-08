@@ -28,8 +28,8 @@ public final class IndevGenerator
     public boolean floating;
     public boolean flat;
     public int theme;
-    private int m;
-    private int n;
+    private int phases2;
+    private int phases;
     private float o;
     private int p[];
     public int spawnX;
@@ -53,7 +53,7 @@ public final class IndevGenerator
         {
             l1 = (k1 - 64) / 48 + 1;
         }
-        n = 13 + l1 * 4;
+        phases = 13 + l1 * 4;
         IndevLevel world = new IndevLevel();
         world.waterLevel = sealevel;
         world.t = l;
@@ -338,7 +338,7 @@ label0:
         int coal = generateOre(Block.oreCoal.blockID, 1000, 10, (k1 << 2) / 5);
         int iron = generateOre(Block.oreIron.blockID, 800, 8, (k1 * 3) / 5);
         int gold = generateOre(Block.oreGold.blockID, 500, 6, (k1 << 1) / 5);
-        l1 = generateOre(Block.oreDiamond.blockID, 800, 2, k1 / 5);
+        int diamond = generateOre(Block.oreDiamond.blockID, 800, 2, k1 / 5);
         if (mod_noBiomesX.GenerateNewOres){
             int redstone = generateOre(Block.oreRedstone.blockID, 800, 4, (k1 << 1) / 5);
             int lapis = generateOre(Block.oreLapis.blockID, 600, 4, (k1 << 1) / 5);
@@ -483,9 +483,9 @@ label0:
         world.createTime = System.currentTimeMillis();
         world.creator = s;
         world.name = "A Nice World";
-        if(m != n)
+        if(phases2 != phases)
         {
-            throw new IllegalStateException((new StringBuilder()).append("Wrong number of phases! Wanted ").append(n).append(", got ").append(m).toString());
+            throw new IllegalStateException((new StringBuilder()).append("Wrong number of phases! Wanted ").append(phases).append(", got ").append(phases2).toString());
         } else
         {
 //             return world;
@@ -734,7 +734,7 @@ label0:
 
     private void nextPhase()
     {
-        m++;
+        phases2++;
         o = 0.0F;
         a(0.0F);
     }
@@ -746,7 +746,7 @@ label0:
             throw new IllegalStateException("Failed to set next phase!");
         } else
         {
-            f1 = (int)((((float)(m - 1) + f1 / 100F) * 100F) / (float)n);
+            f1 = (int)((((float)(phases2 - 1) + f1 / 100F) * 100F) / (float)phases);
             return;
         }
     }

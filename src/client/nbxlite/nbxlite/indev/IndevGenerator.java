@@ -30,8 +30,8 @@ public final class IndevGenerator
     public boolean floating;
     public boolean flat;
     public int theme;
-    private int m;
-    private int n;
+    private int phases2;
+    private int phases;
     private float o;
     private int p[];
     public int spawnX;
@@ -61,7 +61,7 @@ public final class IndevGenerator
         {
             l1 = (k1 - 64) / 48 + 1;
         }
-        n = 13 + l1 * 4;
+        phases = 13 + l1 * 4;
         progressupdate.displaySavingString(StatCollector.translateToLocal("menu.generatingLevel"));
         IndevLevel world = new IndevLevel();
         world.waterLevel = sealevel;
@@ -492,9 +492,9 @@ label0:
         world.createTime = System.currentTimeMillis();
         world.creator = s;
         world.name = "A Nice World";
-        if(m != n)
+        if(phases2 != phases)
         {
-            throw new IllegalStateException((new StringBuilder()+"Wrong number of phases! Wanted "+n+", got "+m).toString());
+            throw new IllegalStateException((new StringBuilder()+"Wrong number of phases! Wanted "+phases+", got "+phases2).toString());
         } else
         {
 //             return world;
@@ -743,7 +743,7 @@ label0:
 
     private void nextPhase()
     {
-        m++;
+        phases2++;
         o = 0.0F;
         a(0.0F);
     }
@@ -755,7 +755,7 @@ label0:
             throw new IllegalStateException("Failed to set next phase!");
         } else
         {
-            f1 = (int)((((float)(m - 1) + f1 / 100F) * 100F) / (float)n);
+            f1 = (int)((((float)(phases2 - 1) + f1 / 100F) * 100F) / (float)phases);
             progressupdate.setLoadingProgress((int)f1);
             return;
         }
