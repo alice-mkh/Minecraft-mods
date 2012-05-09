@@ -62,7 +62,7 @@ public class McLevelImporter{
         mod_noBiomesX.Generator = mod_noBiomesX.GEN_BIOMELESS;
         mod_noBiomesX.MapFeatures = mod_noBiomesX.FEATURES_INDEV;
         mod_noBiomesX.GenerateNewOres = false;
-        mod_noBiomesX.FiniteImport = true;
+        mod_noBiomesX.Import = true;
         mod_noBiomesX.IndevWorld = blocks;
         mod_noBiomesX.IndevWidthX = width;
         mod_noBiomesX.IndevWidthZ = length;

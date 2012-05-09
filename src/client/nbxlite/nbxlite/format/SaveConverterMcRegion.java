@@ -10,6 +10,7 @@ import net.minecraft.src.RegionFile;
 import net.minecraft.src.SaveFormatOld;
 import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.WorldInfo;
+import net.minecraft.src.mod_noBiomesX;
 
 public class SaveConverterMcRegion extends SaveFormatOld
 {
@@ -139,6 +140,10 @@ public class SaveConverterMcRegion extends SaveFormatOld
         if (file1.exists())
         {
             func_22182_a(arraylist3, arraylist.size() + arraylist2.size() + arraylist1.size(), i, iprogressupdate);
+        }
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201){
+            System.out.println("HALP");
+            System.out.println(worldinfo.getSnowCovered());
         }
         return true;
     }

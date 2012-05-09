@@ -124,7 +124,7 @@ public class ChunkProviderFinite
         boolean bounds = i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16;
         Chunk chunk;
         if (bounds){
-            if (mod_noBiomesX.IndevWorld==null && mod_noBiomesX.FiniteImport){
+            if (mod_noBiomesX.IndevWorld==null && mod_noBiomesX.Import){
                 if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                     IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
                     if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){

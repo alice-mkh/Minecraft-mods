@@ -119,7 +119,10 @@ public class WorldInfo
         thunderTime = par1NBTTagCompound.getInteger("thunderTime");
         thundering = par1NBTTagCompound.getBoolean("thundering");
         hardcore = par1NBTTagCompound.getBoolean("hardcore");
-        snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+        snowCovered = par1NBTTagCompound.getBoolean("SnowCovered");
+        if (par1NBTTagCompound.hasKey("snowCovered")){
+            snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+        }
         mapTheme = par1NBTTagCompound.getInteger("mapTheme");
         mapGen = par1NBTTagCompound.getInteger("mapGen");
         mapGenExtra = par1NBTTagCompound.getInteger("mapGenExtra");
@@ -236,7 +239,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("thunderTime", thunderTime);
         par1NBTTagCompound.setBoolean("thundering", thundering);
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
-        par1NBTTagCompound.setBoolean("snowCovered", snowCovered);
+        par1NBTTagCompound.setBoolean("SnowCovered", snowCovered);
         par1NBTTagCompound.setInteger("mapTheme", mapTheme);
         par1NBTTagCompound.setInteger("mapGen", mapGen);
         par1NBTTagCompound.setInteger("mapGenExtra", mapGenExtra);

@@ -352,24 +352,29 @@ public class World implements IBlockAccess
             mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false, mod_noBiomesX.GenerateNewOres);
             if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !isHotWorld && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201)
             {
-                byte byte0 = 4;
-                if(worldInfo.getMapTheme() == 2)
-                {
-                    byte0 = 2;
-                }
-                if(rand.nextInt(byte0) == 0)
-                {
-                    worldInfo.setSnowCovered(true);
-                    snowCovered = true;
-                    mod_noBiomesX.SnowCovered=true;
+                if (!mod_noBiomesX.Import){
+                    byte byte0 = 4;
+                    if(worldInfo.getMapTheme() == 2)
+                    {
+                        byte0 = 2;
+                    }
+                    if(rand.nextInt(byte0) == 0)
+                    {
+                        worldInfo.setSnowCovered(true);
+                        snowCovered = true;
+                        mod_noBiomesX.SnowCovered=true;
+                    }else{
+                        mod_noBiomesX.SnowCovered=false;
+                    }
                 }else{
-                    mod_noBiomesX.SnowCovered=false;
+                    snowCovered = worldInfo.getSnowCovered();
+                    mod_noBiomesX.SnowCovered=worldInfo.getSnowCovered();
                 }
             }else{
                 mod_noBiomesX.SnowCovered=false;
             }
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if (!mod_noBiomesX.FiniteImport){
+                if (!mod_noBiomesX.Import){
                     IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
                     if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
                         gen2.island=true;
@@ -645,7 +650,7 @@ public class World implements IBlockAccess
         }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
-            if (!mod_noBiomesX.FiniteImport){
+            if (!mod_noBiomesX.Import){
                 setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
                 setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
             }
@@ -752,11 +757,11 @@ public class World implements IBlockAccess
         try
         {
             NBTTagCompound nbttagcompound = worldInfo.getPlayerNBTTagCompound();
-            if (mod_noBiomesX.FiniteImport){
+            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV) && mod_noBiomesX.Import){
                 par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.getLocalPlayer());
-                mod_noBiomesX.FiniteImport = false;
                 mod_noBiomesX.mclevelimporter = null;
             }
+            mod_noBiomesX.Import = false;
 
             if (nbttagcompound != null)
             {

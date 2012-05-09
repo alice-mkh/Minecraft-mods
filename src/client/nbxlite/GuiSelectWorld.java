@@ -201,7 +201,7 @@ public class GuiSelectWorld extends GuiScreen
             return;
         }
         if (mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().getMapGen() == 0){
-            mod_noBiomesX.FiniteImport = false;
+            mod_noBiomesX.Import = true;
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(new GuiNBXlite(this, getSaveFileName(par1), par1));
             return;
@@ -232,7 +232,7 @@ public class GuiSelectWorld extends GuiScreen
             s = (new StringBuilder()).append("World").append(par1).toString();
         }
 
-        mod_noBiomesX.FiniteImport = false;
+        mod_noBiomesX.Import = false;
         MinecraftHook.startWorldHook(s, getSaveName(par1), null);
         mc.displayGuiScreen(null);
     }
