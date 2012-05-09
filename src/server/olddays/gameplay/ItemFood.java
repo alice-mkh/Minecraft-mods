@@ -62,7 +62,11 @@ public class ItemFood extends Item
                 if (this.shiftedIndex==Item.appleGold.shiftedIndex){
                     par3EntityPlayer.heal(20);
                 }else if (this.shiftedIndex==Item.spiderEye.shiftedIndex || this.shiftedIndex==Item.rottenFlesh.shiftedIndex){
-                    par3EntityPlayer.heal(-4);
+                    if (par3EntityPlayer.health>4){
+                        par3EntityPlayer.heal(-4);
+                    }else{
+                        par3EntityPlayer.health=1;
+                    }
                 }else{
                     par3EntityPlayer.heal(healAmount);
                 }
