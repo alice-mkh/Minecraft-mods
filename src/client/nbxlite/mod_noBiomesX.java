@@ -7,6 +7,7 @@ import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
 import net.minecraft.src.nbxlite.lib.EasyLocalization;
+import java.util.zip.*;
 
 public class mod_noBiomesX extends BaseModMp{
     public mod_noBiomesX(){
@@ -18,7 +19,6 @@ public class mod_noBiomesX extends BaseModMp{
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 properties.setProperty("UseNewSpawning",Boolean.toString(false));
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
-                properties.setProperty("UseCustomTextures",Boolean.toString(true));
                 properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(false));
                 properties.setProperty("TexturedClouds",Boolean.toString(false));
                 properties.setProperty("HideGUI",Boolean.toString(false));
@@ -38,7 +38,6 @@ public class mod_noBiomesX extends BaseModMp{
             properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/NBXlite.properties").toString()));
             UseNewSpawning = Boolean.parseBoolean(properties.getProperty("UseNewSpawning"));
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
-            FallbackColors = !Boolean.parseBoolean(properties.getProperty("UseCustomTextures"));
             UseOpaqueFlatClouds = Boolean.parseBoolean(properties.getProperty("UseOpaqueFlatClouds"));
             TexturedClouds = Boolean.parseBoolean(properties.getProperty("TexturedClouds"));
             HideGUI = Boolean.parseBoolean(properties.getProperty("HideGUI"));
@@ -266,9 +265,8 @@ public class mod_noBiomesX extends BaseModMp{
         if (Generator==GEN_BIOMELESS){
             if (tex && !FallbackColors){
                 return 0xffffff;
-            }else{
-                return 0x5fff3f;
             }
+            return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
         }else if (Generator==GEN_OLDBIOMES){
             WorldChunkManager man = ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager();
             man.oldFunc_4069_a(x, z, 1, 1);
@@ -302,9 +300,8 @@ public class mod_noBiomesX extends BaseModMp{
         if(Generator==GEN_BIOMELESS){
             if (tex && !FallbackColors){
                 return 0xffffff;
-            }else{
-                return 0x5fff3f;
             }
+            return ColorizerGrass.getGrassColor(1.0F, 1.0F);
         } else if(Generator==GEN_OLDBIOMES){
             WorldChunkManager man = ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager();
             man.oldFunc_4069_a(x, z, 1, 1);
@@ -411,6 +408,23 @@ public class mod_noBiomesX extends BaseModMp{
             IndevMapType=0;
         }
         GenerateNewOres=ores;
+        FallbackColors=!hasEntry("nbxlite/textures");
+    }
+
+    private static boolean hasEntry(String str){
+        try{
+            TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
+            if (texpack instanceof TexturePackFolder){
+                File orig = ((File)ModLoader.getPrivateValue(net.minecraft.src.TexturePackFolder.class, texpack, 2));
+                File file = new File(orig, str);
+                return file.exists();
+            }else{
+                ZipFile file = ((ZipFile)ModLoader.getPrivateValue(net.minecraft.src.TexturePackCustom.class, texpack, 0));
+                return file.getEntry(str)!=null;
+            }
+        }catch(Exception ex){
+            return true;
+        }
     }
 
     public static int Generator = 2;

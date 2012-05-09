@@ -58,10 +58,10 @@ public class BlockGrass extends Block
     public int getBlockColor()
     {
         if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-            if (mod_noBiomesX.FallbackColors){
-                return 0x5fff3f;
+            if (!mod_noBiomesX.FallbackColors){
+                return 0xffffff;
             }
-            return 0xffffff;
+            ColorizerGrass.getGrassColor(1.0F, 1.0F);
         }
         double d = 0.5D;
         double d1 = 1.0D;
