@@ -1142,7 +1142,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glDisable(GL11.GL_CULL_FACE);
         float f = (float)(mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)par1);
         byte byte0 = 32;
-        int i = 256 / byte0;
+        int i = (mod_noBiomesX.OpaqueFlatClouds ? 1024 : 256) / byte0;
         Tessellator tessellator = Tessellator.instance;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
