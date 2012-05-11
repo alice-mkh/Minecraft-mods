@@ -30,7 +30,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 1: setBool(net.minecraft.src.ModelBiped.class, "oldwalking", OldWalking); break;
             case 2: setBool(net.minecraft.src.RenderLiving.class, "bobbing", Bobbing); break;
             case 3: setBool(net.minecraft.src.EntityEnderman.class, "smoke", OldEndermen);
-                    setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen); break;
+                    setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallbacktex); break;
             case 4: setBool(net.minecraft.src.ModelEnderman.class, "openmouth", EndermenOpenMouth); break;
             case 5: setBool(net.minecraft.src.ItemRenderer.class, "sway", ItemSway); break;
             case 6: setBool(net.minecraft.src.ItemRenderer.class, "items2d", Items2D); break;
@@ -54,6 +54,10 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
                     reload(); break;
             case 16:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
         }
+    }
+
+    protected void onFallbackChange(boolean fallback){
+        setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallback);
     }
 
     public void addRenderer(Map map){
