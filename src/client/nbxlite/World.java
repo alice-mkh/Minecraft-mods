@@ -4141,7 +4141,7 @@ public class World implements IBlockAccess
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky() && mod_noBiomesX.VoidFog)
+            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky() && mod_noBiomesX.VoidFog==0)
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
@@ -5065,7 +5065,13 @@ public class World implements IBlockAccess
      */
     public double getSeaLevel()
     {
-        if (!mod_noBiomesX.VoidFog){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+            if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
+                return -16;
+            }
+            return mod_noBiomesX.IndevHeight-32;
+        }
+        if (mod_noBiomesX.VoidFog>1){
             return -9999D;
         }
         return worldInfo.getTerrainType() != WorldType.FLAT ? 63D : 0.0D;

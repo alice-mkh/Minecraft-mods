@@ -228,10 +228,8 @@ public class mod_noBiomesX extends BaseModMp{
         }
         if (packet.dataInt[0]==2){
             ClassicLight=false;
-            VoidFog=true;
         }else{
             ClassicLight=true;
-            VoidFog=false;
         }
         if (packet.dataInt[0]==1 && packet.dataInt[1]<=2 && !NoGreenGrassSides){
             GreenGrassSides=true;
@@ -247,6 +245,19 @@ public class mod_noBiomesX extends BaseModMp{
             LeavesDecay=false;
         }else{
             LeavesDecay=true;
+        }
+        if (Generator==2){
+            VoidFog = 0;
+        }else if (Generator==1 && MapFeatures==5){
+            VoidFog = 3;
+        }else if (Generator==0 && MapFeatures==3 && IndevMapType==2){
+            VoidFog = 1;
+        }else if (Generator==0 & MapTheme>0){
+            VoidFog = 3;
+        }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
+            VoidFog = 2;
+        }else if (Generator==0 && MapFeatures>0){
+            VoidFog = 4;
         }
     }
 
@@ -377,10 +388,8 @@ public class mod_noBiomesX extends BaseModMp{
         }
         if (gen==2){
             ClassicLight=false;
-            VoidFog=true;
         }else{
             ClassicLight=true;
-            VoidFog=false;
         }
         if (gen==1 && features<=2 && !NoGreenGrassSides){
             GreenGrassSides=true;
@@ -407,6 +416,19 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             IndevMapType=0;
         }
+        if (Generator==2){
+            VoidFog = 0;
+        }else if (Generator==1 && MapFeatures==5){
+            VoidFog = 3;
+        }else if (Generator==0 && MapFeatures==3 && IndevMapType==2){
+            VoidFog = 1;
+        }else if (Generator==0 & MapTheme>0){
+            VoidFog = 3;
+        }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
+            VoidFog = 2;
+        }else if (Generator==0 && MapFeatures>0){
+            VoidFog = 4;
+        }
         GenerateNewOres=ores;
         FallbackColors=!hasEntry("nbxlite/textures");
     }
@@ -431,7 +453,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean SunriseEffect = true;
     public static boolean SnowCovered = false;
     public static boolean ClassicLight=true;
-    public static boolean VoidFog=false;
+    public static int VoidFog=0;//0 - default; 1 - no void fog, horizon moves; 2 - no void fog, horizon doesn't move; 3 - no void fog, no bottom color; 4 - no void fog, no horizon
     public static boolean GreenGrassSides=false;
     public static boolean NoGreenGrassSides=false;
     public static boolean OpaqueFlatClouds=false;

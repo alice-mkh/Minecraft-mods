@@ -1065,10 +1065,10 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
         d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
-        if (mod_noBiomesX.VoidFog){
+        if (mod_noBiomesX.VoidFog<2){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
-            if (d < 0.0D)
+            if (d < 0.0D && mod_noBiomesX.VoidFog==0)
             {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 12F, 0.0F);
@@ -1106,19 +1106,28 @@ public class RenderGlobal implements IWorldAccess
 
         if (worldObj.worldProvider.isSkyColored())
         {
-            GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
+            if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+                GL11.glColor3f(f * 3F, f1 * 2F + 0.08F, f2 * 0.1F);
+            }else{
+                GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
+            }
         }
-        else
+        else if (mod_noBiomesX.VoidFog<4)
         {
             GL11.glColor3f(f, f1, f2);
         }
 
-        if (mod_noBiomesX.VoidFog){
+        if (mod_noBiomesX.VoidFog==0){
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, -(float)(d - 16D), 0.0F);
             GL11.glCallList(glSkyList2);
             GL11.glPopMatrix();
-        }else{
+        }else if (mod_noBiomesX.VoidFog==1){
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, -(float)(Math.max(d, 1.0D) - 16D), 0.0F);
+            GL11.glCallList(glSkyList2);
+            GL11.glPopMatrix();
+        }else if (mod_noBiomesX.VoidFog<4){
             GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
             GL11.glCallList(glSkyList2);
         }

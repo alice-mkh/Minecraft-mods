@@ -1834,7 +1834,7 @@ public class EntityRenderer
             }
         }
 
-        if (d < 1.0D && mod_noBiomesX.VoidFog)
+        if (d < 1.0D && mod_noBiomesX.VoidFog==0)
         {
             if (d < 0.0D)
             {
@@ -1994,7 +1994,7 @@ public class EntityRenderer
             {
                 double d = (double)((entityliving.getBrightnessForRender(par2) & 0xf00000) >> 20) / 16D + (entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par2 + 4D) / 32D;
 
-                if (d < 1.0D && mod_noBiomesX.VoidFog)
+                if (d < 1.0D && mod_noBiomesX.VoidFog==0)
                 {
                     if (d < 0.0D)
                     {
