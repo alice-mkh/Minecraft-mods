@@ -13,6 +13,7 @@ public class GuiIngame extends Gui
     public static boolean hidexp = false;
     public static boolean hidehunger = false;
     public static boolean nodebug = false;
+    public static boolean fallbacktex = false;
 
     private static RenderItem itemRenderer = new RenderItem();
 
@@ -167,7 +168,7 @@ public class GuiIngame extends Gui
                         }
 
                         if (j10 * 2 + 1 == j9){
-                            if (hidehunger){
+                            if (hidehunger && !fallbacktex){
                                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/olddays/icons.png"));
                                 drawTexturedModalRect(i11, intintintintint, 0, 0, 9, 9);
                                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));

@@ -50,6 +50,10 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         }
     }
 
+    protected void onFallbackChange(boolean fallback){
+        setBool(net.minecraft.src.GuiIngame.class, "fallbacktex", fallback);
+    }
+
     public static boolean EnableXP;
     public static boolean EnableHunger;
     public static boolean InstantFood = true;
