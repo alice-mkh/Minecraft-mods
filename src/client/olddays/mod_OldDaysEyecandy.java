@@ -44,7 +44,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>2);
                     setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", MainMenu<2); break;
             case 11:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
-            case 12:setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks);
+            case 12:setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks && !fallbacktex);
                     reload(); break;
             case 13:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
@@ -58,6 +58,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
 
     protected void onFallbackChange(boolean fallback){
         setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallback);
+        setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks && !fallback);
     }
 
     public void addRenderer(Map map){
