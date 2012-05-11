@@ -3,6 +3,7 @@ import java.util.*;
 import java.io.*;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
+import java.util.zip.*;
 
 public class mod_OldDays extends BaseModMp{
     public String getVersion(){
@@ -33,8 +34,18 @@ public class mod_OldDays extends BaseModMp{
             }
             needSettings = !needSettings;
         }
+        if (currentpack==null || currentpack!=ModLoader.getMinecraftInstance().gameSettings.skin){
+            currentpack=ModLoader.getMinecraftInstance().gameSettings.skin;
+            fallbacktex = !hasEntry("olddays");
+            List list = getModuleList();
+            for (int i = 0; i < list.size(); i++){
+                ((mod_OldDays)list.get(i)).onFallbackChange(fallbacktex);
+            }
+        }
         return true;
     }
+
+    protected void onFallbackChange(boolean fallback){}
 
     private void setDefaultSMPSettings(int module){
         for (int i = 1; i < proplength[module]; i++){
@@ -318,6 +329,40 @@ public class mod_OldDays extends BaseModMp{
         }catch (Exception ex){}
     }
 
+    private static List getModuleList(){
+        List list = ModLoader.getLoadedMods();
+        List list2 =new ArrayList();
+        for(int i = 0; i < list.size(); i++){
+            for (int i2 = 0; i2 < modules.length; i2++){
+                try{
+                    if (list.get(i).getClass().getName()==modules[i2]){
+                        list2.add(list.get(i));
+                        list.remove(list.get(i));
+                    }
+                }catch (Exception ex){
+                    continue;
+                }
+            }
+        }
+        return list2;
+    }
+
+    public static boolean hasEntry(String str){
+        try{
+            TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
+            if (texpack instanceof TexturePackFolder){
+                File orig = ((File)ModLoader.getPrivateValue(net.minecraft.src.TexturePackFolder.class, texpack, 2));
+                File file = new File(orig, str);
+                return file.exists();
+            }else{
+                ZipFile file = ((ZipFile)ModLoader.getPrivateValue(net.minecraft.src.TexturePackCustom.class, texpack, 0));
+                return file.getEntry(str)!=null;
+            }
+        }catch(Exception ex){
+            return true;
+        }
+    }
+
     protected GuiOldDaysModules moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static String[][] propname;
@@ -337,4 +382,6 @@ public class mod_OldDays extends BaseModMp{
     public static int lastmodule = 0;
     public static int lastoption = 0;
     public static boolean needSettings = true;
+    public static boolean fallbacktex = true;
+    private static String currentpack;
 }
