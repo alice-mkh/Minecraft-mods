@@ -45,7 +45,6 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean LessLavaFlow;
 //Old blocks
 //Unflammable fences and stairs
-//Start items
 
     private void setSolidTNT(boolean b){
         try{
