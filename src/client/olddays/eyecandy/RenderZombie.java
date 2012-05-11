@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderZombie extends RenderLiving
 {
     public static boolean mobArmor = false;
+    public static boolean fallback = false;
 
     private ModelMobArmor armor;
     private ModelZombie modelBipedMain;
@@ -22,7 +23,7 @@ public class RenderZombie extends RenderLiving
         {
             if (par2 == 1)
             {
-                loadTexture("/olddays/plate.png");
+                loadTexture(fallback ? "/armor/iron_1.png" : "/olddays/plate.png");
                 GL11.glDisable(2884);
                 setRenderPassModel(armor);
                 armor.bipedHead.showModel = par1EntityZombie.helmet;

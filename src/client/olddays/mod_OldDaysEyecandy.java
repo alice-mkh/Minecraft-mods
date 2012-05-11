@@ -58,6 +58,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
 
     protected void onFallbackChange(boolean fallback){
         setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallback);
+        setBool(net.minecraft.src.RenderZombie.class, "fallback", fallback);
+        setBool(net.minecraft.src.RenderSkeleton.class, "fallback", fallback);
         setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks && !fallback);
     }
 
