@@ -1107,7 +1107,7 @@ public class RenderGlobal implements IWorldAccess
         if (worldObj.worldProvider.isSkyColored())
         {
             if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
-                GL11.glColor3f(f * 3F, f1 * 2F + 0.08F, f2 * 0.1F);
+                GL11.glColor3f(0.2F, 0.1F, 0F);
             }else{
                 GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
             }
