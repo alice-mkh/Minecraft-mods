@@ -993,6 +993,9 @@ label0:
         int x = i;
         int y = j;
         int z = k;
+        if ((x == 0) || (z == 0) || (x == width - 1) || (z == length - 1)){
+            return;
+        }
         int index = x+(y*length+z)*width;
         this.blocks[index]=(byte)id;
     }
