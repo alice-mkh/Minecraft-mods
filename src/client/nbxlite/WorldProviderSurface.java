@@ -90,27 +90,28 @@ public class WorldProviderSurface extends WorldProvider
      */
     public float getCloudHeight()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
-            return -16F;
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+            return 128F;
         }
         if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
             return 8F;
         }
-        if(worldObj.totalSkyLight == 16)
-        {
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
-                return mod_noBiomesX.IndevHeight+64;
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608){
+                return worldObj.totalSkyLight == 16 ? 182F : 120F;
             }
-            return 160F;
-        }
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608)){
-            return 120F;
-        }
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
-            return mod_noBiomesX.IndevHeight+2;
-        }
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
-            return 128F;
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                if (worldObj.totalSkyLight==16){
+                    return mod_noBiomesX.IndevHeight+64;
+                }
+                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING && mod_noBiomesX.MapTheme!=mod_noBiomesX.THEME_HELL){
+                    return -16F;
+                }
+                return mod_noBiomesX.IndevHeight+2;
+            }
+            if(worldObj.totalSkyLight == 16){
+                return 170F;
+            }
         }
         return 108F;
     }

@@ -250,8 +250,6 @@ public class mod_noBiomesX extends BaseModMp{
             VoidFog = 0;
         }else if (Generator==1 && MapFeatures==5){
             VoidFog = 3;
-        }else if (Generator==0 && MapFeatures==3 && IndevMapType==2){
-            VoidFog = 1;
         }else if (Generator==0 & MapTheme>0){
             VoidFog = 3;
         }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
@@ -416,12 +414,30 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             IndevMapType=0;
         }
+        if (features==FEATURES_INDEV){
+            if (type==TYPE_ISLAND){
+                SurrWaterHeight = IndevHeight-32;
+                SurrGroundHeight = SurrWaterHeight - 9;
+            }else if (type==TYPE_FLOATING){
+                SurrGroundHeight = -64;
+                SurrWaterHeight = SurrGroundHeight + 1;
+            }else{
+                SurrGroundHeight = IndevHeight-31;
+                SurrWaterHeight = SurrGroundHeight - 16;
+            }
+            SurrGroundType = Block.grass.blockID;
+        }else if (features==FEATURES_CLASSIC){
+            SurrWaterHeight = IndevHeight-32;
+            SurrGroundHeight = SurrWaterHeight - 2;
+            SurrGroundType = Block.bedrock.blockID;
+        }
+        SurrWaterType = theme==THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
         if (Generator==2){
             VoidFog = 0;
         }else if (Generator==1 && MapFeatures==5){
             VoidFog = 3;
-        }else if (Generator==0 && MapFeatures==3 && IndevMapType==2){
-            VoidFog = 1;
+        }else if (Generator==0 & MapFeatures==3 && IndevMapType==2){
+            VoidFog = 4;
         }else if (Generator==0 & MapTheme>0){
             VoidFog = 3;
         }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
@@ -475,6 +491,10 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnY;
     public static int IndevSpawnZ;
     public static byte[] IndevWorld;
+    public static int SurrGroundHeight;
+    public static int SurrWaterHeight;
+    public static int SurrWaterType;
+    public static int SurrGroundType;
     public static boolean Import = false;
     public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");

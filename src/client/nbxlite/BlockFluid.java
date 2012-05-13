@@ -189,6 +189,21 @@ public abstract class BlockFluid extends Block
             return false;
         }
 
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
+            if (par5==4 && par2==-1){
+                return false;
+            }
+            if (par5==2 && par4==-1){
+                return false;
+            }
+            if (par5==5 && par2==mod_noBiomesX.IndevWidthX){
+                return false;
+            }
+            if (par5==3 && par4==mod_noBiomesX.IndevWidthZ){
+                return false;
+            }
+        }
+
         if (par5 == 1)
         {
             return true;
