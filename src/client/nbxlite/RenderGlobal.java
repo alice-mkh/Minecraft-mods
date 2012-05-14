@@ -1201,12 +1201,6 @@ public class RenderGlobal implements IWorldAccess
 
     public final void renderBounds(float f)
     {
-        GL11.glPushMatrix();
-        boolean anim = false;
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glRotatef(90F, 0F, 0F, 1F);
-//         float scale = 1F;
-//         GL11.glScalef(scale, scale, scale);
         int id = mod_noBiomesX.SurrGroundType;
         if (mod_noBiomesX.SurrGroundHeight<=mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID){
             id = Block.dirt.blockID;
@@ -1214,6 +1208,17 @@ public class RenderGlobal implements IWorldAccess
         if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
             id = Block.bedrock.blockID;
         }
+        GL11.glPushMatrix();
+        mc.entityRenderer.enableLightmap(f);
+        int l = 15 << 20 | Block.lightValue[id] << 4;
+        int i1 = l % 0x10000;
+        int j1 = l / 0x10000;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
+        boolean anim = false;
+        GL11.glMatrixMode(GL11.GL_TEXTURE);
+        GL11.glRotatef(90F, 0F, 0F, 1F);
+//         float scale = 1F;
+//         GL11.glScalef(scale, scale, scale);
         String name = Block.blocksList[id].getBlockName().replace("tile.", "");
         String texname = name.startsWith("grass") ? "/nbxlite/textures/grasstop.png" : "/nbxlite/textures/bounds/"+name+".png";
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(texname));
@@ -1223,6 +1228,10 @@ public class RenderGlobal implements IWorldAccess
 //         GL11.glScalef(1F/scale, 1F/scale, 1F/scale);
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        l = 15 << 20 | Block.lightValue[mod_noBiomesX.SurrWaterType] << 4;
+        i1 = l % 0x10000;
+        j1 = l / 0x10000;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         name = Block.blocksList[mod_noBiomesX.SurrWaterType].getBlockName().replace("tile.", "").replace("Still", "").replace("Moving", "");
         texname = anim ? "/nbxlite/textures/bounds/"+name+"anim.png" : "/nbxlite/textures/bounds/"+name+".png";
         GL11.glEnable(GL11.GL_BLEND);
@@ -1230,9 +1239,10 @@ public class RenderGlobal implements IWorldAccess
         renderBoundsLiquid_do(f);
         GL11.glRotatef(-90F, 0F, 0F, 1F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.entityRenderer.disableLightmap(f);
         GL11.glPopMatrix();
     }
 
