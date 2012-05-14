@@ -419,7 +419,7 @@ public class mod_noBiomesX extends BaseModMp{
                 SurrWaterHeight = IndevHeight-32;
                 SurrGroundHeight = SurrWaterHeight - 9;
             }else if (type==TYPE_FLOATING){
-                SurrGroundHeight = -64;
+                SurrGroundHeight = -128;
                 SurrWaterHeight = SurrGroundHeight + 1;
             }else{
                 SurrGroundHeight = IndevHeight-31;
@@ -436,9 +436,7 @@ public class mod_noBiomesX extends BaseModMp{
             VoidFog = 0;
         }else if (Generator==1 && MapFeatures==5){
             VoidFog = 3;
-        }else if (Generator==0 & MapFeatures==3 && IndevMapType==2){
-            VoidFog = 4;
-        }else if (Generator==0 & MapTheme>0){
+        }else if (Generator==0 && MapFeatures==0 && MapTheme>0){
             VoidFog = 3;
         }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
             VoidFog = 2;
