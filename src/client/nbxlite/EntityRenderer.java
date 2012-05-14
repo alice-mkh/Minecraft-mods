@@ -1183,6 +1183,9 @@ public class EntityRenderer
             RenderHelper.disableStandardItemLighting();
             Profiler.endStartSection("terrain");
             renderglobal.sortAndRender(entityliving, 0, par1);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+//             GL11.glShadeModel(GL11.GL_SMOOTH);
+//             GL11.glShadeModel(GL11.GL_FLAT);
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
                 renderglobal.renderBounds(par1);
             }
