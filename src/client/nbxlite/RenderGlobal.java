@@ -830,6 +830,7 @@ public class RenderGlobal implements IWorldAccess
         for (int j1 = 0; j1 < glRenderLists.size(); j1++)
         {
             WorldRenderer worldrenderer = (WorldRenderer)glRenderLists.get(j1);
+            
             int k1 = -1;
 
             for (int l1 = 0; l1 < l; l1++)
@@ -1226,8 +1227,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderBoundsGround_do(f);
 //         GL11.glScalef(1F/scale, 1F/scale, 1F/scale);
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//         GL11.glEnable(GL11.GL_TEXTURE_2D);
         l = 15 << 20 | Block.lightValue[mod_noBiomesX.SurrWaterType] << 4;
         i1 = l % 0x10000;
         j1 = l / 0x10000;
@@ -1240,8 +1240,8 @@ public class RenderGlobal implements IWorldAccess
         GL11.glRotatef(-90F, 0F, 0F, 1F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//         GL11.glEnable(GL11.GL_TEXTURE_2D);
+//         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.entityRenderer.disableLightmap(f);
         GL11.glPopMatrix();
     }
@@ -1298,7 +1298,7 @@ public class RenderGlobal implements IWorldAccess
         while (i3 < mod_noBiomesX.IndevWidthX + i1 * i2){
             int i5 = -i1 * i2;
             while (i5 < mod_noBiomesX.IndevWidthZ + i1 * i2){
-                float f4 = f1 + (float)Block.waterStill.maxY - 1.1F;
+                float f4 = f1 + (float)Block.waterStill.maxY - 1.1121F;
                 if ((f1 < 0.0F) || (i3 < 0) || (i5 < 0) || (i3 >= mod_noBiomesX.IndevWidthX) || (i5 >= mod_noBiomesX.IndevWidthZ)){
                     tessellator.addVertexWithUV(i3 + f2, f4, i5 + i1 + f3, dd1, dd3);
                     tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + i1 + f3, dd1, dd2);
