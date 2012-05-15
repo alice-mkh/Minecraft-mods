@@ -121,23 +121,25 @@ public class WorldInfo
         thundering = par1NBTTagCompound.getBoolean("thundering");
         hardcore = par1NBTTagCompound.getBoolean("hardcore");
         nbxlite = par1NBTTagCompound.hasKey("NBXlite");
-        NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
-        mapGen = getGen(nbxliteTag.getString("Generator"), 0);
-        mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
-        snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
-        newOres = nbxliteTag.getBoolean("NewOres");
-        if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
-            mapTheme = nbxliteTag.getInteger("Theme");
-            if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
-                NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
-                indevX = finiteTag.getInteger("X");
-                indevY = finiteTag.getInteger("Y");
-                indevZ = finiteTag.getInteger("Z");
-                mapType = finiteTag.getInteger("Type");
+        if (nbxlite){
+            NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
+            mapGen = getGen(nbxliteTag.getString("Generator"), 0);
+            mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
+            snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
+            newOres = nbxliteTag.getBoolean("NewOres");
+            if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
+                mapTheme = nbxliteTag.getInteger("Theme");
+                if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
+                    NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
+                    indevX = finiteTag.getInteger("X");
+                    indevY = finiteTag.getInteger("Y");
+                    indevZ = finiteTag.getInteger("Z");
+                    mapType = finiteTag.getInteger("Type");
+                }
             }
-        }
-        if (par1NBTTagCompound.hasKey("SnowCovered")){
-            snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+            if (par1NBTTagCompound.hasKey("SnowCovered")){
+                snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+            }
         }
 
         if (par1NBTTagCompound.hasKey("Player"))
