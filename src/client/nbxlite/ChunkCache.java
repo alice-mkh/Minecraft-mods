@@ -46,42 +46,11 @@ public class ChunkCache implements IBlockAccess
         return field_48467_d;
     }
 
-    private boolean isBounds(int x, int y, int z){
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || (y<0 && (mod_noBiomesX.SurrGroundHeight<0 || mod_noBiomesX.SurrWaterHeight<0))){
-                    return true;
-                }
-            }
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ || (y<0 && (mod_noBiomesX.SurrGroundHeight<0 || mod_noBiomesX.SurrWaterHeight<0))){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     /**
      * Returns the block ID at coords x,y,z
      */
     public int getBlockId(int par1, int par2, int par3)
     {
-        if (isBounds(par1, par2, par3)){
-            if (par2<mod_noBiomesX.SurrGroundHeight-1){
-                return Block.bedrock.blockID;
-            }
-            if (par2<mod_noBiomesX.SurrGroundHeight){
-                if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
-                    return Block.dirt.blockID;
-                }
-                return mod_noBiomesX.SurrGroundType;
-            }
-            if (par2<mod_noBiomesX.SurrWaterHeight){
-                return mod_noBiomesX.SurrWaterType;
-            }
-            return 0;
-        }
         if (par2 < 0)
         {
             return 0;
