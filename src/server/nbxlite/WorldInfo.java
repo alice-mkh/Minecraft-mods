@@ -122,11 +122,11 @@ public class WorldInfo
         hardcore = par1NBTTagCompound.getBoolean("hardcore");
         nbxlite = par1NBTTagCompound.hasKey("NBXlite");
         NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
-        mapGen = getGen(nbxliteTag.getString("Generator"), 0)+1;
+        mapGen = getGen(nbxliteTag.getString("Generator"), 0);
         mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
         snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
         newOres = nbxliteTag.getBoolean("NewOres");
-        if (mapGen-1==mod_noBiomesX.GEN_BIOMELESS){
+        if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
             mapTheme = nbxliteTag.getInteger("Theme");
             if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
                 NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
@@ -248,9 +248,9 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("thundering", thundering);
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
         NBTTagCompound nbxliteTag = new NBTTagCompound();
-        nbxliteTag.setString("Generator", getGenName(mapGen-1, mapGenExtra, snowCovered));
+        nbxliteTag.setString("Generator", getGenName(mapGen, mapGenExtra, snowCovered));
         nbxliteTag.setBoolean("NewOres", newOres);
-        if (mapGen-1==mod_noBiomesX.GEN_BIOMELESS){
+        if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
 //             NBTTagCompound themeTag = new NBTTagCompound();
 //             themeTag.setInteger("SkyColor", mapTheme);
 //             themeTag.setInteger("FogColor", mapTheme);

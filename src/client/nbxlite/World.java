@@ -262,7 +262,7 @@ public class World implements IBlockAccess
         mapGen = worldInfo.getMapGen();
         mapGenExtra = worldInfo.getMapGenExtra();
         snowCovered = worldInfo.getSnowCovered();
-        mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), worldInfo.getIndevMapType(), snowCovered, worldInfo.getNewOres());
+        mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), worldInfo.getIndevMapType(), snowCovered, worldInfo.getNewOres());
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         calculateInitialSkylight();
@@ -343,11 +343,11 @@ public class World implements IBlockAccess
         int gen = worldInfo.getMapGen();
         if(flag || gen == 0)
          {
-            worldInfo.setMapGen(mod_noBiomesX.Generator+1);
+            worldInfo.setMapGen(mod_noBiomesX.Generator);
             worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
             worldInfo.setMapTheme(mod_noBiomesX.MapTheme);
             worldInfo.setNewOres(mod_noBiomesX.GenerateNewOres);
-            mapGen=mod_noBiomesX.Generator+1;
+            mapGen=mod_noBiomesX.Generator;
             mapGenExtra=mod_noBiomesX.MapFeatures;
             mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false, mod_noBiomesX.GenerateNewOres);
             if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !isHotWorld && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201)
@@ -480,7 +480,7 @@ public class World implements IBlockAccess
             mod_noBiomesX.IndevWidthX = worldInfo.getIndevX();
             mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
             mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
-            mod_noBiomesX.SetGenerator(this, mapGen-1, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
+            mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
             worldProvider.registerWorld(this);
         }
         calculateInitialSkylight();

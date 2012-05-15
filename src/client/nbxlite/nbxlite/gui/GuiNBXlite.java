@@ -149,7 +149,7 @@ public class GuiNBXlite extends GuiScreen{
                 feats=GeneratorList.genfeats[GeneratorList.gencurrent];
             }
             if(gen==1){
-                feats=GeneratorList.feat1current;
+                feats=jungle ? 6 : GeneratorList.feat1current;
             }
             if(gen==2){
                 feats=GeneratorList.feat2current;
@@ -170,11 +170,7 @@ public class GuiNBXlite extends GuiScreen{
                 mod_noBiomesX.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
             }
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-                if (jungle){
-                    mod_noBiomesX.MapFeatures=6;
-                }else{
-                    mod_noBiomesX.MapFeatures=GeneratorList.feat1current;
-                }
+                mod_noBiomesX.MapFeatures=jungle ? 6 : GeneratorList.feat1current;
             }
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
                 mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
