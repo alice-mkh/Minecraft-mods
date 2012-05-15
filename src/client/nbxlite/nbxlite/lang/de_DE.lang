@@ -3,6 +3,8 @@ convert=Wähle deine Welteinstellungen
 continue=Fortsetzen
 plus=+
 settings=Einstellungen: 
+genNewOres=Erze generieren: 
+betaJungle=Dschungel: 
 
 #Indev settings
 1Layer=Eine Schicht
@@ -14,7 +16,6 @@ width=Breite:
 length=Länge: 
 height=Höhe: 
 depth=Tiefe: 
-genNewOres=Erze generieren: 
 
 #Indev loading screen
 indev.raising=Erheben..

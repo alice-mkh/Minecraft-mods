@@ -318,6 +318,8 @@ public class WorldInfo
                     result.append("5");
                 }else if (feats==mod_noBiomesX.FEATURES_BETA173){
                     result.append("73");
+                }else if (feats==mod_noBiomesX.FEATURES_JUNGLE){
+                    result.append("73/jungle");
                 }
             }
         }else if (gen==mod_noBiomesX.GEN_NEWBIOMES){
@@ -388,7 +390,11 @@ public class WorldInfo
                     return mod_noBiomesX.FEATURES_BETA15;
                 }
                 if (gen.contains("beta173")){
-                    return mod_noBiomesX.FEATURES_BETA173;
+                    if (gen.endsWith("/jungle")){
+                        return mod_noBiomesX.FEATURES_JUNGLE;
+                    }else{
+                        return mod_noBiomesX.FEATURES_BETA173;
+                    }
                 }
                 return 0;
             }
