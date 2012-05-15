@@ -557,7 +557,12 @@ public class ChunkProviderGenerateBeta
         }
         if(oldbiomegenbase == OldBiomeGenBase.rainforest)
         {
-            i8 += l4 + 5;
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_JUNGLE){
+                i8 += l4 + 50;
+                i8 *= 2;
+            }else{
+                i8 += l4 + 5;
+            }
         }
         if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
         {
