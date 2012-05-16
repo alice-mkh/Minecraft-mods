@@ -140,6 +140,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnZ;
     public static byte[] IndevWorld;
     public static boolean UseNewSpawning;
+    public static int DayNight = 2;//0 - none, 1 - old, 2 - new
 
     public static int GEN_BIOMELESS = 0;
     public static int GEN_OLDBIOMES = 1;

@@ -119,6 +119,12 @@ public abstract class WorldProvider
      */
     public float calculateCelestialAngle(long par1, float par3)
     {
+        if (mod_noBiomesX.DayNight==0){
+            return 0F;
+        }
+        if (mod_noBiomesX.DayNight==1){
+            return (par1 + par3) / 24000F - 0.15F;
+        }
         int i = (int)(par1 % 24000L);
         float f = ((float)i + par3) / 24000F - 0.25F;
 

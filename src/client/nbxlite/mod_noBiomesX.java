@@ -481,6 +481,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int MapTheme = 0;
     public static int MapFeatures = 3;
     public static boolean UseNewSpawning = false;
+    public static int DayNight = 2;//0 - none, 1 - old, 2 - new
     public static int IndevMapType=0;
     public static int IndevHeight = 64;
     public static int IndevWidthX = 256;

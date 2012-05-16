@@ -1032,36 +1032,38 @@ public class RenderGlobal implements IWorldAccess
             GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
         }
         GL11.glRotatef(worldObj.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
-        float f15 = 30F;
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
-        tessellator1.startDrawingQuads();
-        tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
-        tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
-        tessellator1.addVertexWithUV(f15, 100D, f15, 1.0D, 1.0D);
-        tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
-        tessellator1.draw();
-        f15 = 20F;
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
-        int i18 = worldObj.getMoonPhase(par1);
-        int l = i18 % 4;
-        int i1 = (i18 / 4) % 2;
-        float f24 = (float)(l + 0) / 4F;
-        float f25 = (float)(i1 + 0) / 2.0F;
-        float f26 = (float)(l + 1) / 4F;
-        float f27 = (float)(i1 + 1) / 2.0F;
-        tessellator1.startDrawingQuads();
-        tessellator1.addVertexWithUV(-f15, -100D, f15, f26, f27);
-        tessellator1.addVertexWithUV(f15, -100D, f15, f24, f27);
-        tessellator1.addVertexWithUV(f15, -100D, -f15, f24, f25);
-        tessellator1.addVertexWithUV(-f15, -100D, -f15, f26, f25);
-        tessellator1.draw();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float f18 = (float)(worldObj.getStarBrightness(par1) * d);
+        if (mod_noBiomesX.DayNight>0){
+            float f15 = 30F;
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
+            tessellator1.startDrawingQuads();
+            tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
+            tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
+            tessellator1.addVertexWithUV(f15, 100D, f15, 1.0D, 1.0D);
+            tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
+            tessellator1.draw();
+            f15 = 20F;
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
+            int i18 = worldObj.getMoonPhase(par1);
+            int l = i18 % 4;
+            int i1 = (i18 / 4) % 2;
+            float f24 = (float)(l + 0) / 4F;
+            float f25 = (float)(i1 + 0) / 2.0F;
+            float f26 = (float)(l + 1) / 4F;
+            float f27 = (float)(i1 + 1) / 2.0F;
+            tessellator1.startDrawingQuads();
+            tessellator1.addVertexWithUV(-f15, -100D, f15, f26, f27);
+            tessellator1.addVertexWithUV(f15, -100D, f15, f24, f27);
+            tessellator1.addVertexWithUV(f15, -100D, -f15, f24, f25);
+            tessellator1.addVertexWithUV(-f15, -100D, -f15, f26, f25);
+            tessellator1.draw();
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            float f18 = (float)(worldObj.getStarBrightness(par1) * d);
 
-        if (f18 > 0.0F)
-        {
-            GL11.glColor4f(f18, f18, f18, f18);
-            GL11.glCallList(starGLCallList);
+            if (f18 > 0.0F)
+            {
+                GL11.glColor4f(f18, f18, f18, f18);
+                GL11.glCallList(starGLCallList);
+            }
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

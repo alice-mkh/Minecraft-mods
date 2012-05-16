@@ -116,6 +116,20 @@ public class WorldProviderSurface extends WorldProvider
         return 108F;
     }
 
+    /**
+     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
+     */
+    public float calculateCelestialAngle(long par1, float par3)
+    {
+        if (mod_noBiomesX.DayNight==0){
+            return 0F;
+        }
+        if (mod_noBiomesX.DayNight==1){
+            return (par1 + par3) / 24000F - 0.15F;
+        }
+        return super.calculateCelestialAngle(par1, par3);
+    }
+
     public boolean isSkyColored()
     {
         if (mod_noBiomesX.VoidFog>2){
