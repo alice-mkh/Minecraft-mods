@@ -399,7 +399,7 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             OpaqueFlatClouds=false;
         }
-        if (gen==0 && features>=3){
+        if (gen==0 && (features==3 || features==4)){
             RestrictSlimes=true;
         }else{
             RestrictSlimes=false;
@@ -530,6 +530,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int FEATURES_BETA15 = 3;
     public static int FEATURES_BETA173 = 4;
     public static int FEATURES_SKY = 5;
+    public static int FEATURES_JUNGLE = 6;
 
     public static int FEATURES_BETA181 = 0;
     public static int FEATURES_10 = 1;
