@@ -338,7 +338,7 @@ public class World implements IBlockAccess
             }else{
                 mod_noBiomesX.LeavesDecay=true;
             }
-            if (mapGen==0 && mapGenExtra>=3){
+            if (mapGen==0 && (mapGenExtra==3 || mapGenExtra==4)){
                 mod_noBiomesX.RestrictSlimes=true;
             }else{
                 mod_noBiomesX.RestrictSlimes=false;
