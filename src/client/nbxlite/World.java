@@ -339,8 +339,6 @@ public class World implements IBlockAccess
 
         worldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
-
-        int gen = worldInfo.getMapGen();
         if(flag)
          {
             worldInfo.setMapGen(mod_noBiomesX.Generator);
@@ -484,6 +482,7 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
             }else{
                 mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, mod_noBiomesX.SnowCovered, mod_noBiomesX.GenerateNewOres);
+                worldInfo.setNBXlite(true);
             }
             worldProvider.registerWorld(this);
         }

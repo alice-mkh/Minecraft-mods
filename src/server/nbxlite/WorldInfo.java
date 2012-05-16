@@ -249,31 +249,33 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("thunderTime", thunderTime);
         par1NBTTagCompound.setBoolean("thundering", thundering);
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
-        NBTTagCompound nbxliteTag = new NBTTagCompound();
-        nbxliteTag.setString("Generator", getGenName(mapGen, mapGenExtra, snowCovered));
-        nbxliteTag.setBoolean("NewOres", newOres);
-        if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
-//             NBTTagCompound themeTag = new NBTTagCompound();
-//             themeTag.setInteger("SkyColor", mapTheme);
-//             themeTag.setInteger("FogColor", mapTheme);
-//             themeTag.setInteger("CloudColor", mapTheme);
-//             themeTag.setInteger("SkyBrightness", mapTheme);
-//             nbxliteTag.setCompoundTag("Theme", themeTag);
-            nbxliteTag.setInteger("Theme", mapTheme);
-            if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
-                NBTTagCompound finiteTag = new NBTTagCompound();
-                finiteTag.setInteger("X", indevX);
-                finiteTag.setInteger("Y", indevY);
-                finiteTag.setInteger("Z", indevZ);
-                finiteTag.setInteger("Type", mapType);
-//                 finiteTag.setInteger("SurroundingGroundType", Block.grass.blockID);
-//                 finiteTag.setInteger("SurroundingWaterType", Block.waterStill.blockID);
-//                 finiteTag.setInteger("SurroundingGroundHeight", mod_noBiomesX.IndevHeight-32);
-//                 finiteTag.setInteger("SurroundingWaterHeight", mod_noBiomesX.IndevHeight-32);
-                nbxliteTag.setCompoundTag("Indev", finiteTag);
+        if (nbxlite){
+            NBTTagCompound nbxliteTag = new NBTTagCompound();
+            nbxliteTag.setString("Generator", getGenName(mapGen, mapGenExtra, snowCovered));
+            nbxliteTag.setBoolean("NewOres", newOres);
+            if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
+//                 NBTTagCompound themeTag = new NBTTagCompound();
+//                 themeTag.setInteger("SkyColor", mapTheme);
+//                 themeTag.setInteger("FogColor", mapTheme);
+//                 themeTag.setInteger("CloudColor", mapTheme);
+//                 themeTag.setInteger("SkyBrightness", mapTheme);
+//                 nbxliteTag.setCompoundTag("Theme", themeTag);
+                nbxliteTag.setInteger("Theme", mapTheme);
+                if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
+                    NBTTagCompound finiteTag = new NBTTagCompound();
+                    finiteTag.setInteger("X", indevX);
+                    finiteTag.setInteger("Y", indevY);
+                    finiteTag.setInteger("Z", indevZ);
+                    finiteTag.setInteger("Type", mapType);
+//                     finiteTag.setInteger("SurroundingGroundType", Block.grass.blockID);
+//                     finiteTag.setInteger("SurroundingWaterType", Block.waterStill.blockID);
+//                     finiteTag.setInteger("SurroundingGroundHeight", mod_noBiomesX.IndevHeight-32);
+//                     finiteTag.setInteger("SurroundingWaterHeight", mod_noBiomesX.IndevHeight-32);
+                    nbxliteTag.setCompoundTag("Indev", finiteTag);
+                }
             }
+            par1NBTTagCompound.setCompoundTag("NBXlite", nbxliteTag);
         }
-        par1NBTTagCompound.setCompoundTag("NBXlite", nbxliteTag);
 
 
         if (par2NBTTagCompound != null)
@@ -702,6 +704,11 @@ public class WorldInfo
     public boolean getNBXlite()
     {
         return nbxlite;
+    }
+
+    public void setNBXlite(boolean b)
+    {
+        nbxlite = b;
     }
 
     public void setNewOres(boolean b)

@@ -314,6 +314,7 @@ public class World implements IBlockAccess
             }
             generateSpawnPoint();
         }else{
+            worldInfo.setNBXlite(true);
             snowCovered = worldInfo.getSnowCovered();
             if (mapGen==2){
                 if (worldInfo.getMapGenExtra()==0){
