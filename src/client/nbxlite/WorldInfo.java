@@ -267,10 +267,10 @@ public class WorldInfo
                     finiteTag.setInteger("Y", indevY);
                     finiteTag.setInteger("Z", indevZ);
                     finiteTag.setInteger("Type", mapType);
-//                     finiteTag.setInteger("SurroundingGroundType", Block.grass.blockID);
-//                     finiteTag.setInteger("SurroundingWaterType", Block.waterStill.blockID);
-//                     finiteTag.setInteger("SurroundingGroundHeight", mod_noBiomesX.IndevHeight-32);
-//                     finiteTag.setInteger("SurroundingWaterHeight", mod_noBiomesX.IndevHeight-32);
+                    finiteTag.setInteger("SurroundingGroundType", mod_noBiomesX.SurrGroundType);
+                    finiteTag.setInteger("SurroundingWaterType", mod_noBiomesX.SurrWaterType);
+                    finiteTag.setInteger("SurroundingGroundHeight", mod_noBiomesX.SurrGroundHeight);
+                    finiteTag.setInteger("SurroundingWaterHeight", mod_noBiomesX.SurrWaterHeight);
                     nbxliteTag.setCompoundTag("Indev", finiteTag);
                 }
             }
