@@ -401,7 +401,7 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             OpaqueFlatClouds=false;
         }
-        if (gen==0 && (features==3 || features==4){
+        if (gen==0 && (features==3 || features==4)){
             RestrictSlimes=true;
         }else{
             RestrictSlimes=false;
