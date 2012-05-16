@@ -244,6 +244,7 @@ public class World implements IBlockAccess
 
          if (flag)
          {
+            worldInfo.setNBXlite(true);
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
                 if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                     BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;

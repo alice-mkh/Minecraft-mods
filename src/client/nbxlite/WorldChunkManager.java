@@ -59,6 +59,7 @@ public class WorldChunkManager
             temperatureLayer = agenlayer[2];
             rainfallLayer = agenlayer[3];
         }
+        initNoise(par1);
     }
 
     public WorldChunkManager(World par1World)
