@@ -1575,6 +1575,9 @@ public class World implements IBlockAccess
      */
     public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
     {
+        if (isBounds(par1, par2, par3)){
+            return mod_noBiomesX.getLightInBounds(par1, par2, par3);
+        }
         int i = getSkyBlockTypeBrightness(EnumSkyBlock.Sky, par1, par2, par3);
         int j = getSkyBlockTypeBrightness(EnumSkyBlock.Block, par1, par2, par3);
 

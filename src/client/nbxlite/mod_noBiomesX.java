@@ -71,6 +71,28 @@ public class mod_noBiomesX extends BaseModMp{
 //         ModLoader.addRecipe(new ItemStack(gear, 1), new Object[]{" # ","###"," # ",Character.valueOf('#'), Item.ingotIron});
     }
 
+    public static int getLightInBounds(int par1, int par2, int par3){
+        int sky = 15;
+        if (par2<mod_noBiomesX.SurrWaterHeight){
+            sky-=3*(mod_noBiomesX.SurrWaterHeight-par2);
+        }
+        if (sky<0){
+            sky = 0;
+        }
+        int block = 0;
+        if (par2>=mod_noBiomesX.SurrGroundHeight){
+            if (par2<=mod_noBiomesX.SurrWaterHeight){
+                block = Block.lightValue[mod_noBiomesX.SurrWaterType];
+            }else{
+                block = Block.lightValue[mod_noBiomesX.SurrWaterType]-(par2-mod_noBiomesX.SurrWaterHeight)-1;
+            }
+        }
+        if (block<0){
+            block = 0;
+        }
+        return sky << 20 | block << 4;
+    }
+
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
         if (id == gearRenderID){
             return BlockGear.renderBlockGear(r, i, b, x, y, z);
