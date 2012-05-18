@@ -68,7 +68,7 @@ public class EntitySheep extends EntityAnimal
             boolean flag = false;
             if (worldObj.getBlockId(j, l, j1) == Block.tallGrass.blockID)
             {
-                worldObj.playAuxSFX(2001, j, l, j1, Block.tallGrass.blockID + 256);
+                worldObj.playAuxSFX(2001, j, l, j1, Block.tallGrass.blockID + 4096);
                 worldObj.setBlockWithNotify(j, l, j1, 0);
                 flag = true;
             }
