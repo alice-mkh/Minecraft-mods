@@ -1186,23 +1186,19 @@ public class RenderGlobal implements IWorldAccess
         tessellator.setColorOpaque_F(ff1, ff2, ff3);
         int i2 = 2048 / i1;
         tessellator.startDrawingQuads();
-        int i3 = -i1 * i2;
         double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
         tessellator.setTranslation(-d, -d1, -d2);
-        while (i3 < mod_noBiomesX.IndevWidthX + i1 * i2){
-            int i5 = -i1 * i2;
-            while (i5 < mod_noBiomesX.IndevWidthZ + i1 * i2){
+        for (int i3 = -i1 * i2; i3 < mod_noBiomesX.IndevWidthX + i1 * i2; i3 += i1){
+            for (int i5 = -i1 * i2; i5 < mod_noBiomesX.IndevWidthZ + i1 * i2; i5 += i1){
                 if ((f1 < 0.0F) || (i3 < 0) || (i5 < 0) || (i3 >= mod_noBiomesX.IndevWidthX) || (i5 >= mod_noBiomesX.IndevWidthZ)){
                     tessellator.addVertexWithUV(i3, f1, i5 + i1, dd1, dd3);
                     tessellator.addVertexWithUV(i3 + i1, f1, i5 + i1, dd1, dd2);
                     tessellator.addVertexWithUV(i3 + i1, f1, i5, dd, dd2);
                     tessellator.addVertexWithUV(i3, f1, i5, dd, dd3);
                 }
-                i5 += i1;
             }
-            i3 += i1;
         }
         tessellator.draw();
     }
@@ -1297,14 +1293,12 @@ public class RenderGlobal implements IWorldAccess
         tessellator.startDrawingQuads();
         float f2 = (float)Block.waterStill.minX;
         float f3 = (float)Block.waterStill.minZ;
-        int i3 = -i1 * i2;
         double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
         tessellator.setTranslation(-d, -d1, -d2);
-        while (i3 < mod_noBiomesX.IndevWidthX + i1 * i2){
-            int i5 = -i1 * i2;
-            while (i5 < mod_noBiomesX.IndevWidthZ + i1 * i2){
+        for (int i3 = -i1 * i2; i3 < mod_noBiomesX.IndevWidthX + i1 * i2; i3 += i1){
+            for (int i5 = -i1 * i2; i5 < mod_noBiomesX.IndevWidthZ + i1 * i2; i5 += i1){
                 float f4 = f1 + (float)Block.waterStill.maxY - 1.1121F;
                 if ((f1 < 0.0F) || (i3 < 0) || (i5 < 0) || (i3 >= mod_noBiomesX.IndevWidthX) || (i5 >= mod_noBiomesX.IndevWidthZ)){
                     tessellator.addVertexWithUV(i3 + f2, f4, i5 + i1 + f3, dd1, dd3);
@@ -1316,9 +1310,7 @@ public class RenderGlobal implements IWorldAccess
                     tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + i1 + f3, dd1, dd2);
                     tessellator.addVertexWithUV(i3 + f2, f4, i5 + i1 + f3, dd1, dd3);
                 }
-                i5 += i1;
             }
-            i3 += i1;
         }
         tessellator.draw();
         tessellator.setTranslation(0, 0, 0);
