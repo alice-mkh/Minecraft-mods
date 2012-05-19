@@ -1077,31 +1077,22 @@ label0:
         for (int j2 = 0; j2 < world.b; j2++){
             for (int j3 = 0; j3 < world.c; j3++){
                 i3 = 0;
-                if (j3 <= 1)
+                if (j3 <= 1 && j1 != 0 && j2 != 0 && j1 != world.a - 1 && j2 != world.b - 1)
                 {
-                    if ((j3 < world.t - 1) && (paramArrayOfByte1[(((j3 + 1) * world.b + j2) * world.a + j1)] == 0))
+                    if (j3 < world.t - 1)
                     {
-                        i3 = Block.lavaStill.blockID;
-                        break/* label235*/;
+                        if (paramArrayOfByte1[(((j3 + 1) * world.b + j2) * world.a + j1)] == 0){
+                            i3 = Block.lavaStill.blockID;
+                        }else{
+                            i3 = Block.bedrock.blockID;
+                        }
                     }
-                }
-                if (j3 < world.t - 1)
-                {
-                    i3 = Block.bedrock.blockID;
                 }
                 else
                 {
-                    if (j3 < world.t){
-                        if ((world.t > world.waterLevel) && (world.m == Block.waterStill.blockID)){
-                            i3 = Block.grass.blockID;
-                        }else{
-                            i3 = Block.dirt.blockID;
-                        }
-                    }else if (j3 < world.waterLevel){
-                        i3 = world.m;
-                    }
+                    i3 = 0;
                 }
-                label235: paramArrayOfByte1[((j3 * world.b + j2) * world.a + j1)] = (byte)i3;
+                paramArrayOfByte1[((j3 * world.b + j2) * world.a + j1)] = (byte)i3;
                 if ((j3 != 1) || (j1 == 0) || (j2 == 0) || (j1 == world.a - 1) || (j2 == world.b - 1)){
                     continue;
                 }

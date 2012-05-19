@@ -1080,10 +1080,27 @@ label0:
     world.a = paramInt1;
     world.b = paramInt3;
     world.c = paramInt2;
+    int i3;
     for (int j1 = 0; j1 < world.a; j1++){
         for (int j2 = 0; j2 < world.b; j2++){
             for (int j3 = 0; j3 < world.c; j3++){
-                label235: paramArrayOfByte1[((j3 * world.b + j2) * world.a + j1)] = 0;
+                i3 = 0;
+                if (j3 <= 1 && j1 != 0 && j2 != 0 && j1 != world.a - 1 && j2 != world.b - 1)
+                {
+                    if (j3 < world.t - 1)
+                    {
+                        if (paramArrayOfByte1[(((j3 + 1) * world.b + j2) * world.a + j1)] == 0){
+                            i3 = Block.lavaStill.blockID;
+                        }else{
+                            i3 = Block.bedrock.blockID;
+                        }
+                    }
+                }
+                else
+                {
+                    i3 = 0;
+                }
+                paramArrayOfByte1[((j3 * world.b + j2) * world.a + j1)] = (byte)i3;
                 if ((j3 != 1) || (j1 == 0) || (j2 == 0) || (j1 == world.a - 1) || (j2 == world.b - 1)){
                     continue;
                 }

@@ -854,12 +854,12 @@ public class World implements IBlockAccess
     private boolean isBounds(int x, int y, int z){
         if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || (y<0 && (mod_noBiomesX.SurrGroundHeight<0 || mod_noBiomesX.SurrWaterHeight<0))){
+                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || y<0){
                     return true;
                 }
             }
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ || (y<0 && (mod_noBiomesX.SurrGroundHeight<0 || mod_noBiomesX.SurrWaterHeight<0))){
+                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ || y<0){
                     return true;
                 }
             }
@@ -886,11 +886,6 @@ public class World implements IBlockAccess
                 return mod_noBiomesX.SurrWaterType;
             }
             return 0;
-        }
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-            if (par2<0){
-                return (byte)Block.bedrock.blockID;
-            }
         }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
