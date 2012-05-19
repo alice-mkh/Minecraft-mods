@@ -267,6 +267,7 @@ public class SoundManager
     public static boolean lava = false;
     public static int enderman = 0;
     public static boolean calm4 = false;
+    public static boolean creeper = false;
 
     private String oldSounds(String par1Str){
         if (par1Str==null){
@@ -319,6 +320,9 @@ public class SoundManager
             if (par1Str.endsWith("portal")){
                 return "nothing";
             }
+        }
+        if (par1Str.equals("mob.creeper") && creeper){
+            str = "olddays.creeper";
         }
         if (par1Str.startsWith("random.door_open") && door){
             str = "olddays.door_open";
