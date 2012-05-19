@@ -1080,6 +1080,17 @@ label0:
     world.a = paramInt1;
     world.b = paramInt3;
     world.c = paramInt2;
+    for (int j1 = 0; j1 < world.a; j1++){
+        for (int j2 = 0; j2 < world.b; j2++){
+            for (int j3 = 0; j3 < world.c; j3++){
+                label235: paramArrayOfByte1[((j3 * world.b + j2) * world.a + j1)] = 0;
+                if ((j3 != 1) || (j1 == 0) || (j2 == 0) || (j1 == world.a - 1) || (j2 == world.b - 1)){
+                    continue;
+                }
+                j3 = world.c - 2;
+            }
+        }
+    }
 /*//     world.d = paramArrayOfByte1;
 //     world.p = new int[paramInt1 * paramInt3];
 //     Arrays.fill(world.p, world.c);
