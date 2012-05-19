@@ -1142,7 +1142,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glDepthMask(true);
     }
 
-    private void renderBoundsGround_do(float f){
+    private void renderGroundBounds(float f){
         Tessellator tessellator = Tessellator.instance;
         float f1 = mod_noBiomesX.SurrGroundHeight;
         int i1 = 128;
@@ -1203,6 +1203,99 @@ public class RenderGlobal implements IWorldAccess
         tessellator.draw();
     }
 
+    private void renderSideBounds(float f){
+        Tessellator tessellator = Tessellator.instance;
+        float f1 = mod_noBiomesX.SurrGroundHeight;
+        int i1 = 128;
+        if (i1 > mod_noBiomesX.IndevWidthX){
+            i1 = mod_noBiomesX.IndevWidthX;
+        }
+        if (i1 > mod_noBiomesX.IndevWidthZ){
+            i1 = mod_noBiomesX.IndevWidthZ;
+        }
+        Block block = Block.bedrock;
+        int j = block.getBlockTextureFromSideAndMetadata(1, 0);
+        if (globalRenderBlocks.overrideBlockTexture >= 0){
+            j = globalRenderBlocks.overrideBlockTexture;
+        }
+        int k = (j & 0xf) << 4;
+        int l = j & 0xf0;
+        double dd = (double)i1;
+        double dd1 = 0D;
+        double dd2 = 0D;
+        double dd3 = (double)i1;
+//         double dd = (float)k / 256F;
+//         double dd1 = ((float)k + 15.999F) / 256F;
+//         double dd2 = (float)l / 256F;
+//         double dd3 = ((float)l + 15.999F) / 256F;
+        tessellator.startDrawingQuads();
+        double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
+        double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
+        double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
+        int i = mod_noBiomesX.SurrGroundHeight-i1;
+        tessellator.setTranslation(-d, -d1, -d2);
+        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
+        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
+        tessellator.addVertexWithUV(0, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
+        tessellator.addVertexWithUV(0, i, 0, dd, dd2);
+        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd2);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
+        tessellator.addVertexWithUV(0, i, mod_noBiomesX.IndevWidthZ, dd, dd2);
+        dd2 = (double)i1;
+        dd3 = 0D;
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, 0, dd, dd2);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
+        tessellator.addVertexWithUV(0, i, 0, dd, dd2);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, 0, dd, dd3);
+        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd3);
+        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
+        tessellator.draw();
+    }
+
+    private void renderBottomBounds(float f){
+        Tessellator tessellator = Tessellator.instance;
+        float f1 = 0;
+        int i1 = 128;
+        if (i1 > mod_noBiomesX.IndevWidthX){
+            i1 = mod_noBiomesX.IndevWidthX;
+        }
+        if (i1 > mod_noBiomesX.IndevWidthZ){
+            i1 = mod_noBiomesX.IndevWidthZ;
+        }
+        Block block = Block.bedrock;
+        int j = block.getBlockTextureFromSideAndMetadata(1, 0);
+        if (globalRenderBlocks.overrideBlockTexture >= 0){
+            j = globalRenderBlocks.overrideBlockTexture;
+        }
+        int k = (j & 0xf) << 4;
+        int l = j & 0xf0;
+//         double dd = (float)k / 256F;
+//         double dd1 = ((float)k + 15.999F) / 256F;
+//         double dd2 = (float)l / 256F;
+//         double dd3 = ((float)l + 15.999F) / 256F;
+        double dd = 0D;
+        double dd1 = (double)i1;
+        double dd2 = 0D;
+        double dd3 = (double)i1;
+        tessellator.startDrawingQuads();
+        double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
+        double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
+        double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
+        tessellator.setTranslation(-d, -d1, -d2);
+        for (int i3 = 0; i3 < mod_noBiomesX.IndevWidthX; i3 += i1){
+            for (int i5 = 0; i5 < mod_noBiomesX.IndevWidthZ; i5 += i1){
+                tessellator.addVertexWithUV(i3, f1, i5 + i1, dd1, dd3);
+                tessellator.addVertexWithUV(i3 + i1, f1, i5 + i1, dd1, dd2);
+                tessellator.addVertexWithUV(i3 + i1, f1, i5, dd, dd2);
+                tessellator.addVertexWithUV(i3, f1, i5, dd, dd3);
+            }
+        }
+        tessellator.draw();
+    }
+
     public final void renderBounds(float f)
     {
         int id = mod_noBiomesX.SurrGroundType;
@@ -1228,7 +1321,12 @@ public class RenderGlobal implements IWorldAccess
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(texname));
 //         System.out.println(texname);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        renderBoundsGround_do(f);
+        renderGroundBounds(f);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/bounds/bedrock.png"));
+        if (mod_noBiomesX.SurrGroundHeight>=0){
+            renderSideBounds(f);
+            renderBottomBounds(f);
+        }
 //         GL11.glScalef(1F/scale, 1F/scale, 1F/scale);
 //         GL11.glEnable(GL11.GL_TEXTURE_2D);
         l = mod_noBiomesX.getLightInBounds(0, mod_noBiomesX.SurrWaterHeight, 0);
@@ -1239,7 +1337,7 @@ public class RenderGlobal implements IWorldAccess
         texname = anim ? "/nbxlite/textures/bounds/"+name+"anim.png" : "/nbxlite/textures/bounds/"+name+".png";
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(texname));
-        renderBoundsLiquid_do(f);
+        renderLiquidBounds(f);
         GL11.glRotatef(-90F, 0F, 0F, 1F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glDisable(GL11.GL_BLEND);
@@ -1249,7 +1347,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glPopMatrix();
     }
 
-    private void renderBoundsLiquid_do(float f)
+    private void renderLiquidBounds(float f)
     {
         float f1 = (float)mod_noBiomesX.SurrWaterHeight;
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
