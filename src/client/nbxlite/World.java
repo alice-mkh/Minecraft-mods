@@ -387,8 +387,8 @@ public class World implements IBlockAccess
                     gen2.theme=mod_noBiomesX.MapTheme;
                     ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
                     mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                    for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
-                        for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                    for (int x=0; x<mod_noBiomesX.IndevWidthX/16; x++){
+                        for (int z=0; z<mod_noBiomesX.IndevWidthZ/16; z++){
                             chunkProvider.provideChunk(x,z);
                         }
                     }
@@ -451,8 +451,8 @@ public class World implements IBlockAccess
                 ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
                 ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
                 mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
-                    for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                for (int x=0; x<mod_noBiomesX.IndevWidthX/16; x++){
+                    for (int z=0; z<mod_noBiomesX.IndevWidthZ/16; z++){
                         chunkProvider.provideChunk(x,z);
                     }
                 }
