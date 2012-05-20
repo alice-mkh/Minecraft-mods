@@ -1158,7 +1158,7 @@ public class RenderGlobal implements IWorldAccess
         if (i1 > mod_noBiomesX.IndevWidthZ){
             i1 = mod_noBiomesX.IndevWidthZ;
         }
-        Block block = Block.blocksList[mod_noBiomesX.SurrGroundType];
+//         Block block = Block.blocksList[mod_noBiomesX.SurrGroundType];
 //         if (block==Block.grass && (mod_noBiomesX.SurrGroundHeight <= mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID)){
 //             block = Block.dirt;
 //         }
@@ -1176,20 +1176,20 @@ public class RenderGlobal implements IWorldAccess
         double dd1 = (double)i1;
         double dd2 = 0D;
         double dd3 = (double)i1;
-        int i = block.colorMultiplier(worldObj, 0, mod_noBiomesX.SurrWaterHeight, 0);
-        float ff1 = (float)(i >> 16 & 0xff) / 255F;
-        float ff2 = (float)(i >> 8 & 0xff) / 255F;
-        float ff3 = (float)(i & 0xff) / 255F;
-        if (EntityRenderer.anaglyphEnable)
-        {
-            float ff4 = (ff1 * 30F + ff2 * 59F + ff3 * 11F) / 100F;
-            float ff5 = (ff1 * 30F + ff2 * 70F) / 100F;
-            float ff6 = (ff1 * 30F + ff3 * 70F) / 100F;
-            ff1 = ff4;
-            ff2 = ff5;
-            ff3 = ff6;
-        }
-        tessellator.setColorOpaque_F(ff1, ff2, ff3);
+//         int i = block.colorMultiplier(worldObj, 0, mod_noBiomesX.SurrWaterHeight, 0);
+//         float ff1 = (float)(i >> 16 & 0xff) / 255F;
+//         float ff2 = (float)(i >> 8 & 0xff) / 255F;
+//         float ff3 = (float)(i & 0xff) / 255F;
+//         if (EntityRenderer.anaglyphEnable)
+//         {
+//             float ff4 = (ff1 * 30F + ff2 * 59F + ff3 * 11F) / 100F;
+//             float ff5 = (ff1 * 30F + ff2 * 70F) / 100F;
+//             float ff6 = (ff1 * 30F + ff3 * 70F) / 100F;
+//             ff1 = ff4;
+//             ff2 = ff5;
+//             ff3 = ff6;
+//         }
+//         tessellator.setColorOpaque_F(ff1, ff2, ff3);
         int i2 = 2048 / i1;
         tessellator.startDrawingQuads();
         double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
@@ -1312,15 +1312,17 @@ public class RenderGlobal implements IWorldAccess
 
     public final void renderBounds(float f)
     {
+        if (mod_noBiomesX.SurrGroundType<=0 || mod_noBiomesX.SurrWaterType<=0){
+            return;
+        }
         int id = mod_noBiomesX.SurrGroundType;
-        if (mod_noBiomesX.SurrGroundHeight<=mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID){
+        if (mod_noBiomesX.SurrGroundHeight<=mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
             id = Block.dirt.blockID;
         }
         if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
             id = Block.bedrock.blockID;
         }
         GL11.glPushMatrix();
-//         System.out.println(GL11.glGetInteger(GL11.GL_FOG_DENSITY)+" "+GL11.glGetInteger(GL11.GL_FOG_START)+" "+GL11.glGetInteger(GL11.GL_FOG_END));
         mc.entityRenderer.enableLightmap(f);
         int l = mod_noBiomesX.getLightInBounds(0, mod_noBiomesX.SurrGroundHeight, 0);
         int i1 = l % 0x10000;
@@ -1334,7 +1336,6 @@ public class RenderGlobal implements IWorldAccess
         String name = Block.blocksList[id].getBlockName().replace("tile.", "");
         String texname = name.startsWith("grass") ? "/nbxlite/textures/grasstop.png" : "/nbxlite/textures/bounds/"+name+".png";
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(texname));
-//         System.out.println(texname);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f);
         if (mod_noBiomesX.SurrGroundHeight>=0){

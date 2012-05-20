@@ -396,6 +396,7 @@ public class World implements IBlockAccess
                     mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                     mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                     mod_noBiomesX.IndevWorld = null;
+                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
                 }else{
                     ModLoader.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading blocks..");
@@ -405,15 +406,15 @@ public class World implements IBlockAccess
                             chunkProvider.provideChunk(x,z);
                         }
                     }
-                    worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.getTime());
-                    List tentlist = mod_noBiomesX.mclevelimporter.getTileEntities();
+                    worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.timeofday);
+                    List tentlist = mod_noBiomesX.mclevelimporter.tileentities;
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks..");
                     for (int x = 0; x < mod_noBiomesX.IndevWidthX; x++){
                         ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((int)(((float)x / (float)mod_noBiomesX.IndevWidthX) * 100F));
                         for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
                             for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);
-                                int meta = mod_noBiomesX.mclevelimporter.getData()[indexIndev(x, y, z)] >> 4;
+                                int meta = mod_noBiomesX.mclevelimporter.data[indexIndev(x, y, z)] >> 4;
                                 if (mod_noBiomesX.mclevelimporter.needsFixing(id)){
                                     setBlockAndMetadata(x, y, z, mod_noBiomesX.mclevelimporter.getRightId(id), mod_noBiomesX.mclevelimporter.getRightMetadata(id));
                                 }else if (id != 0 && meta != 0){
@@ -435,11 +436,12 @@ public class World implements IBlockAccess
                         }
                     }
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading entities..");
-                    List entlist = mod_noBiomesX.mclevelimporter.getEntities();
+                    List entlist = mod_noBiomesX.mclevelimporter.entities;
                     for (int i = 0; i < entlist.size(); i++){
                         Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
                         spawnEntityInWorld(entity);
                     }
+                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.mclevelimporter.surrgroundtype, mod_noBiomesX.mclevelimporter.surrgroundheight, mod_noBiomesX.mclevelimporter.surrwatertype, mod_noBiomesX.mclevelimporter.surrwaterheight);
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
@@ -465,6 +467,7 @@ public class World implements IBlockAccess
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                mod_noBiomesX.setIndevBounds(5, mod_noBiomesX.MapTheme);
             }else{
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);
@@ -480,6 +483,10 @@ public class World implements IBlockAccess
                 mod_noBiomesX.IndevWidthX = worldInfo.getIndevX();
                 mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
                 mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
+                mod_noBiomesX.SurrWaterType = worldInfo.surrwatertype;
+                mod_noBiomesX.SurrWaterHeight = worldInfo.surrwaterheight;
+                mod_noBiomesX.SurrGroundType = worldInfo.surrgroundtype;
+                mod_noBiomesX.SurrGroundHeight = worldInfo.surrgroundheight;
                 mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
             }else{
                 mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, mod_noBiomesX.SnowCovered, mod_noBiomesX.GenerateNewOres);
@@ -492,6 +499,10 @@ public class World implements IBlockAccess
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.surrwatertype = mod_noBiomesX.SurrWaterType;
+                worldInfo.surrwaterheight = mod_noBiomesX.SurrWaterHeight;
+                worldInfo.surrgroundtype = mod_noBiomesX.SurrGroundType;
+                worldInfo.surrgroundheight = mod_noBiomesX.SurrGroundHeight;
             }
             worldProvider.registerWorld(this);
         }
@@ -770,7 +781,7 @@ public class World implements IBlockAccess
         {
             NBTTagCompound nbttagcompound = worldInfo.getPlayerNBTTagCompound();
             if (mod_noBiomesX.isFinite() && mod_noBiomesX.Import){
-                par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.getLocalPlayer());
+                par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.localplayer);
                 mod_noBiomesX.mclevelimporter = null;
             }
             mod_noBiomesX.Import = false;
@@ -879,6 +890,9 @@ public class World implements IBlockAccess
             if (par2<mod_noBiomesX.SurrGroundHeight){
                 if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
                     return Block.dirt.blockID;
+                }
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                    return Block.bedrock.blockID;
                 }
                 return mod_noBiomesX.SurrGroundType;
             }

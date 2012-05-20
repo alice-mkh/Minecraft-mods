@@ -440,6 +440,7 @@ public class mod_noBiomesX extends BaseModMp{
         }else{
             IndevMapType=0;
         }
+        /*
         if (features==FEATURES_INDEV){
             if (type==TYPE_ISLAND){
                 SurrWaterHeight = IndevHeight-32;
@@ -458,6 +459,7 @@ public class mod_noBiomesX extends BaseModMp{
             SurrGroundType = Block.bedrock.blockID;
         }
         SurrWaterType = theme==THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
+        */
         if (Generator==2){
             VoidFog = 0;
         }else if (Generator==1 && MapFeatures==5){
@@ -471,6 +473,31 @@ public class mod_noBiomesX extends BaseModMp{
         }
         GenerateNewOres=ores;
         FallbackColors=!hasEntry("nbxlite/textures");
+    }
+
+    public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
+        SurrGroundType = groundtype;
+        SurrGroundHeight = groundheight;
+        SurrWaterType = watertype;
+        SurrWaterHeight = waterheight;
+    }
+
+    public static void setIndevBounds(int type, int theme){
+        SurrGroundType = Block.grass.blockID;
+        SurrWaterType = theme==THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
+        if (type==5){
+            SurrWaterHeight = IndevHeight-32;
+            SurrGroundHeight = SurrWaterHeight-2;
+        }else if (type==TYPE_FLOATING){
+            SurrGroundHeight = -128;
+            SurrWaterHeight = SurrGroundHeight+1;
+        }else if (type==TYPE_ISLAND){
+            SurrWaterHeight = IndevHeight-32;
+            SurrGroundHeight = SurrWaterHeight-9;
+        }else{
+            SurrGroundHeight = IndevHeight-31;
+            SurrWaterHeight = SurrGroundHeight-16;
+        }
     }
 
     private static boolean hasEntry(String str){

@@ -18,19 +18,19 @@ import net.minecraft.src.World;
 import net.minecraft.src.mod_noBiomesX;
 
 public class McLevelImporter{
-    private NBTTagCompound localplayer;
-    private List entities;
-    private List tileentities;
+    public NBTTagCompound localplayer;
+    public List entities;
+    public List tileentities;
     private long createdon;
     private String author;
     private String name;
     private byte skybrightness;
-    private byte surrgroundtype;
-    private byte surrwatertype;
+    public byte surrgroundtype;
+    public byte surrwatertype;
     private int cloudheight;
-    private int surrgroundheight;
-    private int surrwaterheight;
-    private int timeofday;
+    public int surrgroundheight;
+    public int surrwaterheight;
+    public int timeofday;
     private int cloudcolor;
     private int fogcolor;
     private int skycolor;
@@ -38,7 +38,7 @@ public class McLevelImporter{
     private int length;
     private int width;
     private byte[] blocks;
-    private byte[] data;
+    public byte[] data;
     private short spawnx;
     private short spawny;
     private short spawnz;
@@ -160,26 +160,6 @@ public class McLevelImporter{
 
     public boolean needsFixing(int id){
         return (id >= 21 && id <= 36) || id == 52 || id == 55 || id==Block.leaves.blockID || id==Block.sapling.blockID || id==Block.wood.blockID || id==Block.planks.blockID;
-    }
-
-    public List getEntities(){
-        return entities;
-    }
-
-    public List getTileEntities(){
-        return tileentities;
-    }
-
-    public NBTTagCompound getLocalPlayer(){
-        return localplayer;
-    }
-
-    public int getTime(){
-        return timeofday;
-    }
-
-    public byte[] getData(){
-        return data;
     }
 
     public void importLevel(World world){

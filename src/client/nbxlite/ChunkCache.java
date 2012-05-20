@@ -75,6 +75,9 @@ public class ChunkCache implements IBlockAccess
                 if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
                     return Block.dirt.blockID;
                 }
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                    return Block.bedrock.blockID;
+                }
                 return mod_noBiomesX.SurrGroundType;
             }
             if (par2<mod_noBiomesX.SurrWaterHeight){

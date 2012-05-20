@@ -66,6 +66,10 @@ public class WorldInfo
     private int indevX;
     private int indevY;
     private int indevZ;
+    public int surrwatertype;
+    public int surrwaterheight;
+    public int surrgroundtype;
+    public int surrgroundheight;
     private boolean newOres;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
@@ -134,6 +138,10 @@ public class WorldInfo
                     indevX = finiteTag.getInteger("X");
                     indevY = finiteTag.getInteger("Y");
                     indevZ = finiteTag.getInteger("Z");
+                    surrgroundtype = finiteTag.getInteger("SurroundingGroundType");
+                    surrwatertype = finiteTag.getInteger("SurroundingWaterType");
+                    surrgroundheight = finiteTag.getInteger("SurroundingGroundHeight");
+                    surrwaterheight = finiteTag.getInteger("SurroundingWaterHeight");
                     mapType = finiteTag.getInteger("Type");
                 }
             }
