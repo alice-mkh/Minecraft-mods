@@ -500,6 +500,33 @@ public class mod_noBiomesX extends BaseModMp{
         }
     }
 
+    public static float setCloudHeight(){
+        if (Generator==GEN_NEWBIOMES){
+            CloudHeight = 128F;
+        }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
+            CloudHeight = 8F;
+        }else if (Generator==GEN_BIOMELESS){
+            if (MapFeatures==FEATURES_INFDEV0227 || MapFeatures==FEATURES_INFDEV0420 || MapFeatures==FEATURES_INFDEV0608){
+                CloudHeight = MapTheme==THEME_PARADISE ? 182F : 120F;
+            }else if (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC){
+                if (MapTheme==THEME_PARADISE){
+                    CloudHeight = IndevHeight+64;
+                }else if (IndevMapType==TYPE_FLOATING && MapTheme!=THEME_HELL){
+                    CloudHeight = -16F;
+                }else{
+                    CloudHeight = IndevHeight+2;
+                }
+            }else if(MapTheme==THEME_PARADISE){
+                CloudHeight = 170F;
+            }else{
+                CloudHeight = 108F;
+            }
+        }else{
+            CloudHeight = 108F;
+        }
+        return CloudHeight;
+    }
+
     private static boolean hasEntry(String str){
         try{
             TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
@@ -547,6 +574,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int SurrWaterHeight;
     public static int SurrWaterType;
     public static int SurrGroundType;
+    public static float CloudHeight;
     public static boolean Import = false;
     public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");

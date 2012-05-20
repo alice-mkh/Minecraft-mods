@@ -372,6 +372,9 @@ public class World implements IBlockAccess
             }else{
                 mod_noBiomesX.SnowCovered=false;
             }
+            if (!(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && mod_noBiomesX.Import)){
+                worldInfo.cloudheight = mod_noBiomesX.setCloudHeight();
+            }
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 if (!mod_noBiomesX.Import){
                     IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
@@ -442,6 +445,7 @@ public class World implements IBlockAccess
                         spawnEntityInWorld(entity);
                     }
                     mod_noBiomesX.setIndevBounds(mod_noBiomesX.mclevelimporter.surrgroundtype, mod_noBiomesX.mclevelimporter.surrgroundheight, mod_noBiomesX.mclevelimporter.surrwatertype, mod_noBiomesX.mclevelimporter.surrwaterheight);
+                    mod_noBiomesX.CloudHeight = (float)mod_noBiomesX.mclevelimporter.cloudheight;
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
@@ -472,7 +476,7 @@ public class World implements IBlockAccess
                 mapTypeIndev=0;
                 worldInfo.setIndevMapType(0);
             }
-             generateSpawnPoint();
+            generateSpawnPoint();
         } else
         {
             if (worldInfo.getNBXlite()){
@@ -487,6 +491,7 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SurrWaterHeight = worldInfo.surrwaterheight;
                 mod_noBiomesX.SurrGroundType = worldInfo.surrgroundtype;
                 mod_noBiomesX.SurrGroundHeight = worldInfo.surrgroundheight;
+                mod_noBiomesX.CloudHeight = worldInfo.cloudheight;
                 mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
             }else{
                 mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, mod_noBiomesX.SnowCovered, mod_noBiomesX.GenerateNewOres);
@@ -503,6 +508,7 @@ public class World implements IBlockAccess
                 worldInfo.surrwaterheight = mod_noBiomesX.SurrWaterHeight;
                 worldInfo.surrgroundtype = mod_noBiomesX.SurrGroundType;
                 worldInfo.surrgroundheight = mod_noBiomesX.SurrGroundHeight;
+                worldInfo.cloudheight = mod_noBiomesX.CloudHeight;
             }
             worldProvider.registerWorld(this);
         }

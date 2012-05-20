@@ -27,7 +27,7 @@ public class McLevelImporter{
     private byte skybrightness;
     public byte surrgroundtype;
     public byte surrwatertype;
-    private int cloudheight;
+    public int cloudheight;
     public int surrgroundheight;
     public int surrwaterheight;
     public int timeofday;
