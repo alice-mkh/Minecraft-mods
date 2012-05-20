@@ -1890,6 +1890,8 @@ public class EntityRenderer
             if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
             {
                 GL11.glFogi(34138, 34139);
+            }else{
+                GL11.glFogi(34138, 34140);
             }
 
             GL11.glFogf(GL11.GL_FOG_START, 0.0F);
@@ -1927,6 +1929,8 @@ public class EntityRenderer
             if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
             {
                 GL11.glFogi(34138, 34139);
+            }else{
+                GL11.glFogi(34138, 34140);
             }
         }
         else if (cloudFog)
@@ -2038,6 +2042,8 @@ public class EntityRenderer
             if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
             {
                 GL11.glFogi(34138, 34139);
+            }else{
+                GL11.glFogi(34138, 34140);
             }
 
             if (mc.theWorld.worldProvider.func_48218_b((int)entityliving.posX, (int)entityliving.posZ))
