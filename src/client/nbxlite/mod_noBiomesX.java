@@ -108,6 +108,10 @@ public class mod_noBiomesX extends BaseModMp{
         registerGears();
     }
 
+    public static boolean isFinite(){
+        return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC);
+    }
+
     public boolean onTickInGame(float f, Minecraft minecraft){
         if (Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && !minecraft.theWorld.isRemote && minecraft.theWorld.worldProvider.worldType==0){
             tickPushing(minecraft);

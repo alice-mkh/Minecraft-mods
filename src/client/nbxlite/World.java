@@ -697,7 +697,7 @@ public class World implements IBlockAccess
      */
     public void setSpawnLocation()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
+        if (mod_noBiomesX.isFinite()){
             findingSpawnPoint = true;
             worldInfo.setSpawnX(worldInfo.getSpawnX());
             worldInfo.setSpawnY(worldInfo.getSpawnY());
@@ -769,7 +769,7 @@ public class World implements IBlockAccess
         try
         {
             NBTTagCompound nbttagcompound = worldInfo.getPlayerNBTTagCompound();
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV) && mod_noBiomesX.Import){
+            if (mod_noBiomesX.isFinite() && mod_noBiomesX.Import){
                 par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.getLocalPlayer());
                 mod_noBiomesX.mclevelimporter = null;
             }

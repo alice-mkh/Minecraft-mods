@@ -140,7 +140,7 @@ public class WorldProviderSurface extends WorldProvider
 
     public int getAverageGroundLevel()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
+        if (mod_noBiomesX.isFinite()){
             return mod_noBiomesX.IndevHeight - 32;
         }
         return terrainType.getSeaLevel(worldObj);

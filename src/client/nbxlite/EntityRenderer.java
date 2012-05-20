@@ -1186,7 +1186,7 @@ public class EntityRenderer
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 //             GL11.glShadeModel(GL11.GL_SMOOTH);
 //             GL11.glShadeModel(GL11.GL_FLAT);
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
+            if (mod_noBiomesX.isFinite()){
                 renderglobal.renderBounds(par1);
             }
             GL11.glShadeModel(GL11.GL_FLAT);
@@ -1887,7 +1887,7 @@ public class EntityRenderer
             GL11.glFogf(GL11.GL_FOG_START, 0.0F);
             GL11.glFogf(GL11.GL_FOG_END, 8F);
 
-            if (GLContext.getCapabilities().GL_NV_fog_distance)
+            if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
             {
                 GL11.glFogi(34138, 34139);
             }
@@ -1924,7 +1924,7 @@ public class EntityRenderer
                 GL11.glFogf(GL11.GL_FOG_END, f);
             }
 
-            if (GLContext.getCapabilities().GL_NV_fog_distance)
+            if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
             {
                 GL11.glFogi(34138, 34139);
             }
@@ -2035,7 +2035,7 @@ public class EntityRenderer
                 GL11.glFogf(GL11.GL_FOG_END, f4);
             }
 
-            if (GLContext.getCapabilities().GL_NV_fog_distance)
+            if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
             {
                 GL11.glFogi(34138, 34139);
             }

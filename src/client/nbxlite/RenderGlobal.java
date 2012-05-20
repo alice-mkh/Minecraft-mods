@@ -830,7 +830,7 @@ public class RenderGlobal implements IWorldAccess
         for (int j1 = 0; j1 < glRenderLists.size(); j1++)
         {
             WorldRenderer worldrenderer = (WorldRenderer)glRenderLists.get(j1);
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+            if (mod_noBiomesX.isFinite()){
                 if (worldrenderer.posX<0 || worldrenderer.posZ<0 || worldrenderer.posX>mod_noBiomesX.IndevWidthX-16 || worldrenderer.posZ>mod_noBiomesX.IndevWidthZ-16){
                     continue;
                 }
@@ -1314,6 +1314,7 @@ public class RenderGlobal implements IWorldAccess
             id = Block.bedrock.blockID;
         }
         GL11.glPushMatrix();
+//         System.out.println(GL11.glGetInteger(GL11.GL_FOG_DENSITY)+" "+GL11.glGetInteger(GL11.GL_FOG_START)+" "+GL11.glGetInteger(GL11.GL_FOG_END));
         mc.entityRenderer.enableLightmap(f);
         int l = mod_noBiomesX.getLightInBounds(0, mod_noBiomesX.SurrGroundHeight, 0);
         int i1 = l % 0x10000;
