@@ -217,6 +217,9 @@ public class World implements IBlockAccess
         setWorldTheme();
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
+        mod_noBiomesX.SetGenerator(this, mod_noBiomesX.GEN_NEWBIOMES, mod_noBiomesX.FEATURES_12, mod_noBiomesX.THEME_NORMAL, mod_noBiomesX.TYPE_INLAND, false, false);
+        mod_noBiomesX NBX = new mod_noBiomesX();
+        NBX.RequestGeneratorInfo();
         calculateInitialSkylight();
         calculateInitialWeather();
     }
