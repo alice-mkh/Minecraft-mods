@@ -146,6 +146,7 @@ public class RenderGlobal implements IWorldAccess
      */
     int frustumCheckOffset;
     private java.nio.FloatBuffer J;
+    private java.nio.ByteBuffer imageData;
 
     public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine)
     {
@@ -165,6 +166,11 @@ public class RenderGlobal implements IWorldAccess
         frustumCheckOffset = 0;
         mc = par1Minecraft;
         renderEngine = par2RenderEngine;
+        try{
+            imageData = ((java.nio.ByteBuffer)ModLoader.getPrivateValue(net.minecraft.src.RenderEngine.class, renderEngine, 5));
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
         byte byte0 = 34;
         byte byte1 = 32;
         glRenderListBase = GLAllocation.generateDisplayLists(byte0 * byte0 * byte1 * 3);
@@ -1320,7 +1326,7 @@ public class RenderGlobal implements IWorldAccess
         int i1 = l % 0x10000;
         int j1 = l / 0x10000;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
-        boolean anim = false;
+        boolean anim = mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
 //         float scale = 1F;
@@ -1344,6 +1350,29 @@ public class RenderGlobal implements IWorldAccess
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         name = Block.blocksList[mod_noBiomesX.SurrWaterType].getBlockName().replace("tile.", "").replace("Still", "").replace("Moving", "");
         texname = anim ? "/nbxlite/textures/bounds/"+name+"anim.png" : "/nbxlite/textures/bounds/"+name+".png";
+        if (anim){
+            TextureFX texturefx = null;
+            try{
+                if (name.startsWith("lava")){
+                    texturefx = ((TextureLavaFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, "textureLavaFX"));
+                }else{
+                    texturefx = ((TextureWaterFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, "textureWaterFX"));
+                }
+            }catch(Exception ex){
+                System.out.println(ex);
+            }
+//             texturefx.anaglyphEnabled = mc.gameSettings.anaglyph;
+//             texturefx.onTick();
+            imageData.clear();
+            imageData.put(texturefx.imageData);
+            imageData.position(0).limit(texturefx.imageData.length);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(texname));
+            for (int kk = 0; kk < texturefx.tileSize; kk++){
+                for (int ll = 0; ll < texturefx.tileSize; ll++){
+                    GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, kk, ll, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
+                }
+            }
+        }
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(texname));
         renderLiquidBounds(f);
