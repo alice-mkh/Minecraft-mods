@@ -892,11 +892,11 @@ public class World implements IBlockAccess
                 return Block.bedrock.blockID;
             }
             if (par2<mod_noBiomesX.SurrGroundHeight){
-                if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
-                    return Block.dirt.blockID;
-                }
                 if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                     return Block.bedrock.blockID;
+                }
+                if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
+                    return Block.dirt.blockID;
                 }
                 return mod_noBiomesX.SurrGroundType;
             }
