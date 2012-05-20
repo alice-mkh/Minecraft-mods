@@ -1153,15 +1153,15 @@ public class RenderGlobal implements IWorldAccess
             i1 = mod_noBiomesX.IndevWidthZ;
         }
         Block block = Block.blocksList[mod_noBiomesX.SurrGroundType];
-        if (block==Block.grass && (mod_noBiomesX.SurrGroundHeight <= mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID)){
-            block = Block.dirt;
-        }
-        int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-        if (globalRenderBlocks.overrideBlockTexture >= 0){
-            j = globalRenderBlocks.overrideBlockTexture;
-        }
-        int k = (j & 0xf) << 4;
-        int l = j & 0xf0;
+//         if (block==Block.grass && (mod_noBiomesX.SurrGroundHeight <= mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID)){
+//             block = Block.dirt;
+//         }
+//         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
+//         if (globalRenderBlocks.overrideBlockTexture >= 0){
+//             j = globalRenderBlocks.overrideBlockTexture;
+//         }
+//         int k = (j & 0xf) << 4;
+//         int l = j & 0xf0;
 //         double dd = (float)k / 256F;
 //         double dd1 = ((float)k + 15.999F) / 256F;
 //         double dd2 = (float)l / 256F;
@@ -1213,13 +1213,13 @@ public class RenderGlobal implements IWorldAccess
         if (i1 > mod_noBiomesX.IndevWidthZ){
             i1 = mod_noBiomesX.IndevWidthZ;
         }
-        Block block = Block.bedrock;
-        int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-        if (globalRenderBlocks.overrideBlockTexture >= 0){
-            j = globalRenderBlocks.overrideBlockTexture;
-        }
-        int k = (j & 0xf) << 4;
-        int l = j & 0xf0;
+//         Block block = Block.bedrock;
+//         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
+//         if (globalRenderBlocks.overrideBlockTexture >= 0){
+//             j = globalRenderBlocks.overrideBlockTexture;
+//         }
+//         int k = (j & 0xf) << 4;
+//         int l = j & 0xf0;
         double dd = (double)i1;
         double dd1 = 0D;
         double dd2 = 0D;
@@ -1234,24 +1234,32 @@ public class RenderGlobal implements IWorldAccess
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
         int i = mod_noBiomesX.SurrGroundHeight-i1;
         tessellator.setTranslation(-d, -d1, -d2);
-        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
-        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
-        tessellator.addVertexWithUV(0, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
-        tessellator.addVertexWithUV(0, i, 0, dd, dd2);
-        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd2);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
-        tessellator.addVertexWithUV(0, i, mod_noBiomesX.IndevWidthZ, dd, dd2);
+        for (int i3 = 0; i3 < mod_noBiomesX.IndevWidthZ; i3 += i1){
+            tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, i3, dd1, dd2);
+            tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, i3 + i1, dd1, dd3);
+            tessellator.addVertexWithUV(0, i, i3 + i1, dd, dd3);
+            tessellator.addVertexWithUV(0, i, i3, dd, dd2);
+        }
+        for (int i3 = 0; i3 < mod_noBiomesX.IndevWidthX; i3 += i1){
+            tessellator.addVertexWithUV(i3, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd2);
+            tessellator.addVertexWithUV(i3 + i1, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
+            tessellator.addVertexWithUV(i3 + i1, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
+            tessellator.addVertexWithUV(i3, i, mod_noBiomesX.IndevWidthZ, dd, dd2);
+        }
         dd2 = (double)i1;
         dd3 = 0D;
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, 0, dd, dd2);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, mod_noBiomesX.IndevWidthZ, dd, dd3);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, mod_noBiomesX.IndevWidthZ, dd1, dd3);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
-        tessellator.addVertexWithUV(0, i, 0, dd, dd2);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, 0, dd, dd3);
-        tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd3);
-        tessellator.addVertexWithUV(0, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
+        for (int i3 = 0; i3 < mod_noBiomesX.IndevWidthZ; i3 += i1){
+            tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, i3, dd, dd2);
+            tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, i, i3 + i1, dd, dd3);
+            tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, i3 + i1, dd1, dd3);
+            tessellator.addVertexWithUV(mod_noBiomesX.IndevWidthX, mod_noBiomesX.SurrGroundHeight, i3, dd1, dd2);
+        }
+        for (int i3 = 0; i3 < mod_noBiomesX.IndevWidthX; i3 += i1){
+            tessellator.addVertexWithUV(i3, i, 0, dd, dd2);
+            tessellator.addVertexWithUV(i3 + i1, i, 0, dd, dd3);
+            tessellator.addVertexWithUV(i3 + i1, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd3);
+            tessellator.addVertexWithUV(i3, mod_noBiomesX.SurrGroundHeight, 0, dd1, dd2);
+        }
         tessellator.draw();
     }
 
@@ -1265,13 +1273,13 @@ public class RenderGlobal implements IWorldAccess
         if (i1 > mod_noBiomesX.IndevWidthZ){
             i1 = mod_noBiomesX.IndevWidthZ;
         }
-        Block block = Block.bedrock;
-        int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-        if (globalRenderBlocks.overrideBlockTexture >= 0){
-            j = globalRenderBlocks.overrideBlockTexture;
-        }
-        int k = (j & 0xf) << 4;
-        int l = j & 0xf0;
+//         Block block = Block.bedrock;
+//         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
+//         if (globalRenderBlocks.overrideBlockTexture >= 0){
+//             j = globalRenderBlocks.overrideBlockTexture;
+//         }
+//         int k = (j & 0xf) << 4;
+//         int l = j & 0xf0;
 //         double dd = (float)k / 256F;
 //         double dd1 = ((float)k + 15.999F) / 256F;
 //         double dd2 = (float)l / 256F;
@@ -1322,8 +1330,8 @@ public class RenderGlobal implements IWorldAccess
 //         System.out.println(texname);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/bounds/bedrock.png"));
         if (mod_noBiomesX.SurrGroundHeight>=0){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/bounds/bedrock.png"));
             renderSideBounds(f);
             renderBottomBounds(f);
         }
@@ -1359,12 +1367,12 @@ public class RenderGlobal implements IWorldAccess
         if (i1 > mod_noBiomesX.IndevWidthZ){
             i1 = mod_noBiomesX.IndevWidthZ;
         }
-        int j = Block.blocksList[mod_noBiomesX.SurrWaterType].getBlockTextureFromSideAndMetadata(1, 0);
-        if (globalRenderBlocks.overrideBlockTexture >= 0){
-            j = globalRenderBlocks.overrideBlockTexture;
-        }
-        int k = (j & 0xf) << 4;
-        int l = j & 0xf0;
+//         int j = Block.blocksList[mod_noBiomesX.SurrWaterType].getBlockTextureFromSideAndMetadata(1, 0);
+//         if (globalRenderBlocks.overrideBlockTexture >= 0){
+//             j = globalRenderBlocks.overrideBlockTexture;
+//         }
+//         int k = (j & 0xf) << 4;
+//         int l = j & 0xf0;
 //         double dd = (float)k / 256F;
 //         double dd1 = ((float)k + 15.999F) / 256F;
 //         double dd2 = (float)l / 256F;
