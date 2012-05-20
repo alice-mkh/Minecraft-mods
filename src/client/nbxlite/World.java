@@ -444,8 +444,6 @@ public class World implements IBlockAccess
                         Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
                         spawnEntityInWorld(entity);
                     }
-                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.mclevelimporter.surrgroundtype, mod_noBiomesX.mclevelimporter.surrgroundheight, mod_noBiomesX.mclevelimporter.surrwatertype, mod_noBiomesX.mclevelimporter.surrwaterheight);
-                    mod_noBiomesX.CloudHeight = (float)mod_noBiomesX.mclevelimporter.cloudheight;
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
@@ -5132,11 +5130,8 @@ public class World implements IBlockAccess
      */
     public double getSeaLevel()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-            if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
-                return -16;
-            }
-            return mod_noBiomesX.IndevHeight-32;
+        if (mod_noBiomesX.isFinite()){
+            return mod_noBiomesX.SurrWaterHeight;
         }
         if (mod_noBiomesX.VoidFog>1){
             return -9999D;

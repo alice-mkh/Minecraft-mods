@@ -531,6 +531,9 @@ public class EntityRenderer
     private void setupCameraTransform(float par1, int par2)
     {
         farPlaneDistance = 256 >> mc.gameSettings.renderDistance;
+        if (mod_noBiomesX.isFinite()){
+            farPlaneDistance = (512 >> (mc.gameSettings.renderDistance << 1));
+        }
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         float f = 0.07F;

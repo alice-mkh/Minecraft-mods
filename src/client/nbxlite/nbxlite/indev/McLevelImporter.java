@@ -71,6 +71,8 @@ public class McLevelImporter{
         mod_noBiomesX.IndevSpawnZ = spawnz;
         mod_noBiomesX.MapTheme = getTheme();
         mod_noBiomesX.IndevMapType = getType();
+        mod_noBiomesX.setIndevBounds(surrgroundtype, surrgroundheight, surrwatertype, surrwaterheight);
+        mod_noBiomesX.CloudHeight = (float)cloudheight;
     }
 
     public int getTheme(){
