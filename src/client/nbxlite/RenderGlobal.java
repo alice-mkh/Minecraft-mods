@@ -1375,9 +1375,9 @@ public class RenderGlobal implements IWorldAccess
             TextureFX texturefx = null;
             try{
                 if (name.startsWith("lava")){
-                    texturefx = ((TextureLavaFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, "textureLavaFX"));
+                    texturefx = ((TextureLavaFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, 51));
                 }else{
-                    texturefx = ((TextureWaterFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, "textureWaterFX"));
+                    texturefx = ((TextureWaterFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, 50));
                 }
             }catch(Exception ex){
                 System.out.println(ex);
