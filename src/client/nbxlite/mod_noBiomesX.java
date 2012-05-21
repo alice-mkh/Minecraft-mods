@@ -106,6 +106,8 @@ public class mod_noBiomesX extends BaseModMp{
         replaceBlocks();
 //         replaceHoes();
         registerGears();
+        terrfx = new TextureTerrainPngFX();
+        bedrockfx = new TextureTerrainPngFX();
     }
 
     public static boolean isFinite(){
@@ -475,6 +477,19 @@ public class mod_noBiomesX extends BaseModMp{
         FallbackColors=!hasEntry("nbxlite/textures");
     }
 
+    public static void setTextureFX(){
+        int id = SurrGroundType;
+        if (SurrGroundHeight<=SurrWaterHeight || SurrWaterType==Block.lavaStill.blockID && SurrGroundType==Block.grass.blockID){
+            id = Block.dirt.blockID;
+        }
+        if (MapFeatures==FEATURES_CLASSIC){
+            id = Block.bedrock.blockID;
+        }
+        int tid = Block.blocksList[id].getBlockTextureFromSideAndMetadata(1, 0);
+        terrfx.changeIndex(tid, false);
+        bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
+    }
+
     public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
         SurrGroundType = groundtype;
         SurrGroundHeight = groundheight;
@@ -590,6 +605,8 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean DefaultNewOres = false;
     public static McLevelImporter mclevelimporter = null;
     public static int gearId = 200;
+    public static TextureTerrainPngFX terrfx;
+    public static TextureTerrainPngFX bedrockfx;
    
     public static int LightTintRed = 255;
     public static int LightTintGreen = 255;

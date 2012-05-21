@@ -510,6 +510,7 @@ public class World implements IBlockAccess
             }
             worldProvider.registerWorld(this);
         }
+        mod_noBiomesX.setTextureFX();
         calculateInitialSkylight();
         calculateInitialWeather();
     }
