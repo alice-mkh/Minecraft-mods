@@ -517,29 +517,30 @@ public class mod_noBiomesX extends BaseModMp{
 
     public static float setCloudHeight(){
         if (Generator==GEN_NEWBIOMES){
-            CloudHeight = 128F;
-        }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
-            CloudHeight = 8F;
-        }else if (Generator==GEN_BIOMELESS){
-            if (MapFeatures==FEATURES_INFDEV0227 || MapFeatures==FEATURES_INFDEV0420 || MapFeatures==FEATURES_INFDEV0608){
-                CloudHeight = MapTheme==THEME_PARADISE ? 182F : 120F;
-            }else if (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC){
-                if (MapTheme==THEME_PARADISE){
-                    CloudHeight = IndevHeight+64;
-                }else if (IndevMapType==TYPE_FLOATING && MapTheme!=THEME_HELL){
-                    CloudHeight = -16F;
-                }else{
-                    CloudHeight = IndevHeight+2;
-                }
-            }else if(MapTheme==THEME_PARADISE){
-                CloudHeight = 170F;
-            }else{
-                CloudHeight = 108F;
-            }
-        }else{
-            CloudHeight = 108F;
+            return CloudHeight = 128F;
         }
-        return CloudHeight;
+        if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
+            return CloudHeight = 8F;
+        }
+        if (Generator==GEN_BIOMELESS){
+            if (MapFeatures==FEATURES_INFDEV0227 || MapFeatures==FEATURES_INFDEV0420 || MapFeatures==FEATURES_INFDEV0608){
+                return CloudHeight = MapTheme==THEME_PARADISE ? 182F : 120F;
+            }
+            if (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC){
+                if (MapTheme==THEME_PARADISE){
+                    return CloudHeight = IndevHeight+64;
+                }
+                if (IndevMapType==TYPE_FLOATING && MapTheme!=THEME_HELL){
+                    return CloudHeight = -16F;
+                }
+                return CloudHeight = IndevHeight+2;
+            }
+            if(MapTheme==THEME_PARADISE){
+                return CloudHeight = 170F;
+            }
+            return CloudHeight = 108F;
+        }
+        return CloudHeight = 108F;
     }
 
     private static boolean hasEntry(String str){
