@@ -515,27 +515,27 @@ public class mod_noBiomesX extends BaseModMp{
         }
     }
 
-    public static float setCloudHeight(){
-        if (Generator==GEN_NEWBIOMES){
+    public static float setCloudHeight(int gen, int feats, int theme, int type){
+        if (gen==GEN_NEWBIOMES){
             return CloudHeight = 128F;
         }
-        if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
+        if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
             return CloudHeight = 8F;
         }
-        if (Generator==GEN_BIOMELESS){
-            if (MapFeatures==FEATURES_INFDEV0227 || MapFeatures==FEATURES_INFDEV0420 || MapFeatures==FEATURES_INFDEV0608){
-                return CloudHeight = MapTheme==THEME_PARADISE ? 182F : 120F;
+        if (gen==GEN_BIOMELESS){
+            if (feats==FEATURES_INFDEV0227 || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                return CloudHeight = theme==THEME_PARADISE ? 182F : 120F;
             }
-            if (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC){
-                if (MapTheme==THEME_PARADISE){
+            if (feats==FEATURES_INDEV || feats==FEATURES_CLASSIC){
+                if (theme==THEME_PARADISE){
                     return CloudHeight = IndevHeight+64;
                 }
-                if (IndevMapType==TYPE_FLOATING && MapTheme!=THEME_HELL){
+                if (type==TYPE_FLOATING && theme!=THEME_HELL){
                     return CloudHeight = -16F;
                 }
                 return CloudHeight = IndevHeight+2;
             }
-            if(MapTheme==THEME_PARADISE){
+            if(theme==THEME_PARADISE){
                 return CloudHeight = 170F;
             }
             return CloudHeight = 108F;

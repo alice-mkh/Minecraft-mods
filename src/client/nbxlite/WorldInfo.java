@@ -132,11 +132,6 @@ public class WorldInfo
             mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
             snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
             newOres = nbxliteTag.getBoolean("NewOres");
-            if (!nbxliteTag.hasKey("CloudHeight")){
-                cloudheight = mod_noBiomesX.setCloudHeight();
-            }else{
-                cloudheight = nbxliteTag.getFloat("CloudHeight");
-            }
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
                 mapTheme = nbxliteTag.getInteger("Theme");
                 if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
@@ -150,6 +145,11 @@ public class WorldInfo
                     surrwaterheight = finiteTag.getInteger("SurroundingWaterHeight");
                     mapType = finiteTag.getInteger("Type");
                 }
+            }
+            if (!nbxliteTag.hasKey("CloudHeight")){
+                cloudheight = mod_noBiomesX.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+            }else{
+                cloudheight = nbxliteTag.getFloat("CloudHeight");
             }
             if (par1NBTTagCompound.hasKey("snowCovered")){
                 snowCovered = par1NBTTagCompound.getBoolean("snowCovered");

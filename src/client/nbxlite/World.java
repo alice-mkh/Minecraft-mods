@@ -373,7 +373,7 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SnowCovered=false;
             }
             if (!(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && mod_noBiomesX.Import)){
-                worldInfo.cloudheight = mod_noBiomesX.setCloudHeight();
+                worldInfo.cloudheight = mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
             }
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 if (!mod_noBiomesX.Import){
