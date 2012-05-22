@@ -1354,7 +1354,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/empty.png"));
-        if (mod_noBiomesX.SurrGroundHeight>=0){
+        if (mod_noBiomesX.SurrGroundHeight>=0 || mod_noBiomesX.SurrWaterHeight>=0){
             imageData.clear();
             imageData.put(mod_noBiomesX.bedrockfx.imageData);
             imageData.position(0).limit(mod_noBiomesX.bedrockfx.imageData.length);
