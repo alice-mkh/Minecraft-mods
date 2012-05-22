@@ -19,7 +19,7 @@ public class mod_noBiomesX extends BaseModMp{
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 properties.setProperty("UseNewSpawning",Boolean.toString(false));
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
-                properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(false));
+                properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(true));
                 properties.setProperty("TexturedClouds",Boolean.toString(false));
                 properties.setProperty("HideGUI",Boolean.toString(false));
                 properties.setProperty("DefaultGenerator",Integer.toString(6));
