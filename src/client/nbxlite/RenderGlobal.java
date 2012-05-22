@@ -1353,11 +1353,11 @@ public class RenderGlobal implements IWorldAccess
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/empty.png"));
         if (mod_noBiomesX.SurrGroundHeight>=0){
             imageData.clear();
             imageData.put(mod_noBiomesX.bedrockfx.imageData);
             imageData.position(0).limit(mod_noBiomesX.bedrockfx.imageData.length);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/empty.png"));
             for (int kk = 0; kk < mod_noBiomesX.bedrockfx.tileSize; kk++){
                 for (int ll = 0; ll < mod_noBiomesX.bedrockfx.tileSize; ll++){
                     GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, kk, ll, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
@@ -1384,7 +1384,7 @@ public class RenderGlobal implements IWorldAccess
             }
             imageData.clear();
             imageData.put(texturefx.imageData);
-            imageData.position(0).limit(texturefx.imageData.length);
+            imageData.position(0).limit(texturefx.imageData.length);;
             for (int kk = 0; kk < texturefx.tileSize; kk++){
                 for (int ll = 0; ll < texturefx.tileSize; ll++){
                     GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, kk, ll, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
