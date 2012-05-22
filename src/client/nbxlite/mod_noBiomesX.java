@@ -242,7 +242,9 @@ public class mod_noBiomesX extends BaseModMp{
                 SnowCovered=false;
             }
         }
-        world.setWorldTheme();
+        setSkyColor(Generator, MapFeatures, MapTheme, 0);
+        setSkyColor(Generator, MapFeatures, MapTheme, 1);
+        setSkyColor(Generator, MapFeatures, MapTheme, 2);
         world.worldProvider.registerWorld(world);
         if (packet.dataInt[0]==0){
             SunriseEffect=false;
@@ -401,7 +403,6 @@ public class mod_noBiomesX extends BaseModMp{
             SunriseEffect=true;
         }
         world.worldProvider.registerWorld(world);
-        world.setWorldTheme();
         if (gen==0 && (theme==0||theme==2)){
             SnowCovered=snow;
         }else{
@@ -556,6 +557,70 @@ public class mod_noBiomesX extends BaseModMp{
         return SkyBrightness = 15;
     }
 
+    public static int setSkyColor(int gen, int feats, int theme, int num){
+        if (num==0){
+            if (theme==THEME_HELL){
+                return SkyColor = 0x100400;
+            }
+            if (theme==THEME_WOODS){
+                return SkyColor = 0x757d87;
+            }
+            if (theme==THEME_PARADISE){
+                return SkyColor = 0xc6deff;
+            }
+            if (gen==GEN_BIOMELESS){
+                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV){
+                    return SkyColor = 0x99ccff;
+                }
+                if (feats==FEATURES_INFDEV0227){
+                    return SkyColor = 0x0000ff;
+                }
+                if (feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                    return SkyColor = 0x99ccff;
+                }
+                return SkyColor = 0x88bbff;
+            }
+            if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+                return SkyColor = 0xb9b8f4;
+            }
+            return SkyColor = 0;
+        }
+        if (num==1){
+            if (theme==THEME_HELL){
+                return FogColor = 0x100400;
+            }
+            if (theme==THEME_WOODS){
+                return FogColor = 0x4d5a5b;
+            }
+            if (theme==THEME_PARADISE){
+                return FogColor = 0xc6deff;
+            }
+            if (gen==GEN_BIOMELESS){
+                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0227){
+                    return FogColor = 0xffffff;
+                }
+                if (feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                    return FogColor = 0xb0d0ff;
+                }
+                return FogColor = 0;
+            }
+            if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+                return FogColor = 0x9493bb;
+            }
+            return FogColor = 0;
+        }
+        if (theme==THEME_HELL){
+            return CloudColor = 0x210800;
+        }
+        if (theme==THEME_WOODS){
+            return CloudColor = 0x4d5a5b;
+        }
+        if (theme==THEME_PARADISE){
+            return CloudColor = 0xeeeeff;
+        }
+        return CloudColor = 0xffffff;
+    }
+
     private static boolean hasEntry(String str){
         try{
             TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
@@ -605,6 +670,9 @@ public class mod_noBiomesX extends BaseModMp{
     public static int SurrGroundType;
     public static float CloudHeight;
     public static int SkyBrightness;
+    public static int SkyColor;
+    public static int FogColor;
+    public static int CloudColor;
     public static boolean Import = false;
     public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");

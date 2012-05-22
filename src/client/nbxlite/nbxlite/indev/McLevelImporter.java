@@ -31,9 +31,9 @@ public class McLevelImporter{
     public int surrgroundheight;
     public int surrwaterheight;
     public int timeofday;
-    private int cloudcolor;
-    private int fogcolor;
-    private int skycolor;
+    public int cloudcolor;
+    public int fogcolor;
+    public int skycolor;
     private int height;
     private int length;
     private int width;
@@ -69,24 +69,14 @@ public class McLevelImporter{
         mod_noBiomesX.IndevSpawnX = spawnx;
         mod_noBiomesX.IndevSpawnY = spawny-3;
         mod_noBiomesX.IndevSpawnZ = spawnz;
-        mod_noBiomesX.MapTheme = getTheme();
+        mod_noBiomesX.MapTheme = mod_noBiomesX.THEME_NORMAL;
         mod_noBiomesX.IndevMapType = getType();
         mod_noBiomesX.setIndevBounds(surrgroundtype, surrgroundheight, surrwatertype, surrwaterheight);
         mod_noBiomesX.CloudHeight = (float)cloudheight;
         mod_noBiomesX.SkyBrightness = skybrightness;
-    }
-
-    public int getTheme(){
-        if (cloudcolor==5069403 || fogcolor==5069403 || skycolor==7699847){
-            return mod_noBiomesX.THEME_WOODS;
-        }
-        if (cloudcolor==2164736 || fogcolor==1049600 || skycolor==1049600 || surrwatertype==10){
-            return mod_noBiomesX.THEME_HELL;
-        }
-        if (cloudcolor==15658751 || fogcolor==13033215 || skycolor==13033215){
-            return mod_noBiomesX.THEME_PARADISE;
-        }
-        return mod_noBiomesX.THEME_NORMAL;
+        mod_noBiomesX.SkyColor = skycolor;
+        mod_noBiomesX.FogColor = fogcolor;
+        mod_noBiomesX.CloudColor = cloudcolor;
     }
 
     public int getType(){

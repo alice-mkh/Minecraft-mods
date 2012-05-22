@@ -72,6 +72,9 @@ public class WorldInfo
     public int surrgroundheight;
     public float cloudheight;
     public int skybrightness;
+    public int skycolor;
+    public int fogcolor;
+    public int cloudcolor;
     private boolean newOres;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
@@ -141,10 +144,16 @@ public class WorldInfo
                     mapTheme = mod_noBiomesX.THEME_NORMAL;
                 }
                 skybrightness = themeTag.getInteger("SkyBrightness");
+                skycolor = themeTag.getInteger("SkyColor");
+                fogcolor = themeTag.getInteger("FogColor");
+                cloudcolor = themeTag.getInteger("CloudColor");
             }catch(Exception ex){
                 if (ex.getMessage().contains("cannot be cast")){
                     mapTheme = nbxliteTag.getInteger("Theme");
                     skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
+                    skycolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                    fogcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                    cloudcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
                 }
             }
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
@@ -227,6 +236,9 @@ public class WorldInfo
         surrwatertype = par1WorldInfo.surrwatertype;
         cloudheight = par1WorldInfo.cloudheight;
         skybrightness = par1WorldInfo.skybrightness;
+        skycolor = par1WorldInfo.skycolor;
+        fogcolor = par1WorldInfo.fogcolor;
+        cloudcolor = par1WorldInfo.cloudcolor;
     }
 
     /**
@@ -291,9 +303,9 @@ public class WorldInfo
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
                 NBTTagCompound themeTag = new NBTTagCompound();
                 themeTag.setInteger("Generation", mapTheme);
-//                 themeTag.setInteger("SkyColor", mapTheme);
-//                 themeTag.setInteger("FogColor", mapTheme);
-//                 themeTag.setInteger("CloudColor", mapTheme);
+                themeTag.setInteger("SkyColor", skycolor);
+                themeTag.setInteger("FogColor", fogcolor);
+                themeTag.setInteger("CloudColor", cloudcolor);
                 themeTag.setInteger("SkyBrightness", skybrightness);
                 nbxliteTag.setCompoundTag("Theme", themeTag);
                 if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
