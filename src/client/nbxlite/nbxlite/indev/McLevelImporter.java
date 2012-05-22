@@ -24,7 +24,7 @@ public class McLevelImporter{
     private long createdon;
     private String author;
     private String name;
-    private byte skybrightness;
+    public byte skybrightness;
     public byte surrgroundtype;
     public byte surrwatertype;
     public int cloudheight;
@@ -73,16 +73,17 @@ public class McLevelImporter{
         mod_noBiomesX.IndevMapType = getType();
         mod_noBiomesX.setIndevBounds(surrgroundtype, surrgroundheight, surrwatertype, surrwaterheight);
         mod_noBiomesX.CloudHeight = (float)cloudheight;
+        mod_noBiomesX.SkyBrightness = skybrightness;
     }
 
     public int getTheme(){
-        if (skybrightness==12 || cloudcolor==5069403 || fogcolor==5069403 || skycolor==7699847){
+        if (cloudcolor==5069403 || fogcolor==5069403 || skycolor==7699847){
             return mod_noBiomesX.THEME_WOODS;
         }
-        if (skybrightness==7 || cloudcolor==2164736 || fogcolor==1049600 || skycolor==1049600 || surrwatertype==10){
+        if (cloudcolor==2164736 || fogcolor==1049600 || skycolor==1049600 || surrwatertype==10){
             return mod_noBiomesX.THEME_HELL;
         }
-        if (skybrightness==16 || cloudcolor==15658751 || fogcolor==13033215 || skycolor==13033215){
+        if (cloudcolor==15658751 || fogcolor==13033215 || skycolor==13033215){
             return mod_noBiomesX.THEME_PARADISE;
         }
         return mod_noBiomesX.THEME_NORMAL;

@@ -71,6 +71,7 @@ public class WorldInfo
     public int surrgroundtype;
     public int surrgroundheight;
     public float cloudheight;
+    public int skybrightness;
     private boolean newOres;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
@@ -132,8 +133,22 @@ public class WorldInfo
             mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
             snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
             newOres = nbxliteTag.getBoolean("NewOres");
+            try{
+                NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
+                if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
+                    mapTheme = themeTag.getInteger("Generation");
+                }else{
+                    mapTheme = mod_noBiomesX.THEME_NORMAL;
+                }
+                skybrightness = themeTag.getInteger("SkyBrightness");
+            }catch(Exception ex){
+                if (ex.getMessage().startsWith("java.lang.ClassCastException")){
+                    mapTheme = par1NBTTagCompound.getInteger("Theme");
+                    skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
+                    System.out.println("FUCK");
+                }
+            }
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
-                mapTheme = nbxliteTag.getInteger("Theme");
                 if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
                     NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
                     indevX = finiteTag.getInteger("X");
@@ -212,6 +227,7 @@ public class WorldInfo
         surrwaterheight = par1WorldInfo.surrwaterheight;
         surrwatertype = par1WorldInfo.surrwatertype;
         cloudheight = par1WorldInfo.cloudheight;
+        skybrightness = par1WorldInfo.skybrightness;
     }
 
     /**
@@ -274,13 +290,13 @@ public class WorldInfo
             nbxliteTag.setBoolean("NewOres", newOres);
             nbxliteTag.setFloat("CloudHeight", cloudheight);
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
-//                 NBTTagCompound themeTag = new NBTTagCompound();
+                NBTTagCompound themeTag = new NBTTagCompound();
+                themeTag.setInteger("Generation", mapTheme);
 //                 themeTag.setInteger("SkyColor", mapTheme);
 //                 themeTag.setInteger("FogColor", mapTheme);
 //                 themeTag.setInteger("CloudColor", mapTheme);
-//                 themeTag.setInteger("SkyBrightness", mapTheme);
-//                 nbxliteTag.setCompoundTag("Theme", themeTag);
-                nbxliteTag.setInteger("Theme", mapTheme);
+                themeTag.setInteger("SkyBrightness", skybrightness);
+                nbxliteTag.setCompoundTag("Theme", themeTag);
                 if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
                     NBTTagCompound finiteTag = new NBTTagCompound();
                     finiteTag.setInteger("X", indevX);

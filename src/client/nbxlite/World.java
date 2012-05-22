@@ -144,7 +144,6 @@ public class World implements IBlockAccess
 
     public long skyColor;
     public long fogColor;
-    public int totalSkyLight;
     public boolean snowCovered;
     public boolean isHotWorld;
     public int mapGen;
@@ -374,6 +373,7 @@ public class World implements IBlockAccess
             }
             if (!(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && mod_noBiomesX.Import)){
                 worldInfo.cloudheight = mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
+                worldInfo.skybrightness = mod_noBiomesX.setSkyBrightness(mod_noBiomesX.MapTheme);
             }
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 if (!mod_noBiomesX.Import){
@@ -444,6 +444,7 @@ public class World implements IBlockAccess
                         Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
                         spawnEntityInWorld(entity);
                     }
+                    worldInfo.skybrightness = mod_noBiomesX.SkyBrightness;
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
@@ -490,6 +491,7 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SurrGroundType = worldInfo.surrgroundtype;
                 mod_noBiomesX.SurrGroundHeight = worldInfo.surrgroundheight;
                 mod_noBiomesX.CloudHeight = worldInfo.cloudheight;
+                mod_noBiomesX.SkyBrightness = worldInfo.skybrightness;
                 mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
             }else{
                 mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, mod_noBiomesX.SnowCovered, mod_noBiomesX.GenerateNewOres);
@@ -507,6 +509,7 @@ public class World implements IBlockAccess
                 worldInfo.surrgroundtype = mod_noBiomesX.SurrGroundType;
                 worldInfo.surrgroundheight = mod_noBiomesX.SurrGroundHeight;
                 worldInfo.cloudheight = mod_noBiomesX.CloudHeight;
+                worldInfo.skybrightness = mod_noBiomesX.SkyBrightness;
             }
             worldProvider.registerWorld(this);
         }
@@ -554,7 +557,6 @@ public class World implements IBlockAccess
                     fogColor = 0L;
                 }
                 cloudColour = 0xffffffL;
-                totalSkyLight = 15;
                 isHotWorld = false;
             }
             if(i == 1)
@@ -562,7 +564,6 @@ public class World implements IBlockAccess
                 skyColor = 0x100400L;
                 cloudColour = 0x210800L;
                 fogColor = 0x100400L;
-                totalSkyLight = 7;
                 isHotWorld = true;
             } else
             if(i == 2)
@@ -570,14 +571,12 @@ public class World implements IBlockAccess
                 skyColor = 0x757d87L;
                 cloudColour = 0x4d5a5bL;
                 fogColor = 0x4d5a5bL;
-                totalSkyLight = 12;
             } else
             if(i == 3)
             {
                 skyColor = 0xc6deffL;
                 cloudColour = 0xeeeeffL;
                 fogColor = 0xc6deffL;
-                totalSkyLight = 16;
                 isHotWorld = true;
             }
         }else{
@@ -589,7 +588,6 @@ public class World implements IBlockAccess
                 fogColor = 0L;
             }
             cloudColour = 0xffffffL;
-            totalSkyLight = 15;
             isHotWorld = false;
         }
     }
@@ -2063,8 +2061,8 @@ public class World implements IBlockAccess
      */
     public int calculateSkylightSubtracted(float f)
     {
-        float f1 = totalSkyLight;
-        if(totalSkyLight == 16 || (worldProvider instanceof WorldProviderEnd))
+        float f1 = (float)12F;
+        if(f1 == 16 || (worldProvider instanceof WorldProviderEnd) || mod_noBiomesX.DayNight==0)
         {
             f1 = 15F;
         }
@@ -2088,7 +2086,7 @@ public class World implements IBlockAccess
     public float func_35464_b(float par1)
     {
         float f = getCelestialAngle(par1);
-        float f1 = (Math.min(totalSkyLight+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
+        float f1 = (Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
 
         if (f1 < 0.0F)
         {
@@ -2100,9 +2098,9 @@ public class World implements IBlockAccess
             f1 = 1.0F;
         }
 
-        f1 = (Math.min(totalSkyLight+1, 16F) / 16F) - f1;
-        f1 = (float)((double)f1 * (((double)((Math.min(totalSkyLight+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
-        f1 = (float)((double)f1 * (((double)((Math.min(totalSkyLight+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
+        f1 = (Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F) - f1;
+        f1 = (float)((double)f1 * (((double)((Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
+        f1 = (float)((double)f1 * (((double)((Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
         return f1 * 0.8F + 0.2F;
     }
 
@@ -2212,7 +2210,7 @@ public class World implements IBlockAccess
         if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
             return 1.0F;
         }
-        if(totalSkyLight == 16){
+        if(mod_noBiomesX.SkyBrightness == 16){
             return 1.0F;
         }
         return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);

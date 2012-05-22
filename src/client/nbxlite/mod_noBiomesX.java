@@ -543,6 +543,19 @@ public class mod_noBiomesX extends BaseModMp{
         return CloudHeight = 108F;
     }
 
+    public static int setSkyBrightness(int theme){
+        if (theme==THEME_HELL){
+            return SkyBrightness = 7;
+        }
+        if (theme==THEME_WOODS){
+            return SkyBrightness = 12;
+        }
+        if (theme==THEME_PARADISE){
+            return SkyBrightness = 16;
+        }
+        return SkyBrightness = 15;
+    }
+
     private static boolean hasEntry(String str){
         try{
             TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
@@ -591,6 +604,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int SurrWaterType;
     public static int SurrGroundType;
     public static float CloudHeight;
+    public static int SkyBrightness;
     public static boolean Import = false;
     public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
