@@ -2014,7 +2014,7 @@ public class World implements IBlockAccess
      */
     public int calculateSkylightSubtracted(float f)
     {
-        float f1 = (float)12F;
+        float f1 = (float)mod_noBiomesX.SkyBrightness;
         if(f1 == 16 || (worldProvider instanceof WorldProviderEnd) || mod_noBiomesX.DayNight==0)
         {
             f1 = 15F;
