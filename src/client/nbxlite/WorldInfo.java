@@ -142,8 +142,8 @@ public class WorldInfo
                 }
                 skybrightness = themeTag.getInteger("SkyBrightness");
             }catch(Exception ex){
-                if (ex.getMessage().startsWith("java.lang.ClassCastException")){
-                    mapTheme = par1NBTTagCompound.getInteger("Theme");
+                if (ex.getMessage().contains("cannot be cast")){
+                    mapTheme = nbxliteTag.getInteger("Theme");
                     skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
                 }
             }
