@@ -145,7 +145,6 @@ public class WorldInfo
                 if (ex.getMessage().startsWith("java.lang.ClassCastException")){
                     mapTheme = par1NBTTagCompound.getInteger("Theme");
                     skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
-                    System.out.println("FUCK");
                 }
             }
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
