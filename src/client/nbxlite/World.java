@@ -443,6 +443,7 @@ public class World implements IBlockAccess
                         Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
                         spawnEntityInWorld(entity);
                     }
+                    worldInfo.cloudheight = mod_noBiomesX.CloudHeight;
                     worldInfo.skybrightness = mod_noBiomesX.SkyBrightness;
                     worldInfo.skycolor = mod_noBiomesX.SkyColor;
                     worldInfo.fogcolor = mod_noBiomesX.FogColor;
