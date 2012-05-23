@@ -2081,14 +2081,9 @@ public class World implements IBlockAccess
             int k;
             if (mod_noBiomesX.SkyColor==0 && worldProvider.worldType != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
                 if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
-                    if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
-                        f7 = 0.2146759F;
-                        k = biomegenbase.getSkyColorByTemp(f7);
-                    }else{
-                        BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                        f7 = biomegenbase.getFloatTemperature();
-                        k = biomegenbase.getSkyColorByTemp(f7);
-                    }
+                    BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
+                    f7 = mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12 ? 0.2146759F : biomegenbase.getFloatTemperature();
+                    k = biomegenbase.getSkyColorByTemp(f7);
                 }else{
                     f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
                     k = getWorldChunkManager().oldGetBiomeGenAt(i, j).getSkyColorByTemp(f7);

@@ -136,24 +136,35 @@ public class WorldInfo
             mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
             snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
             newOres = nbxliteTag.getBoolean("NewOres");
-            try{
-                NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
-                if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
-                    mapTheme = themeTag.getInteger("Generation");
-                }else{
-                    mapTheme = mod_noBiomesX.THEME_NORMAL;
-                }
-                skybrightness = themeTag.getInteger("SkyBrightness");
-                skycolor = themeTag.getInteger("SkyColor");
-                fogcolor = themeTag.getInteger("FogColor");
-                cloudcolor = themeTag.getInteger("CloudColor");
-            }catch(Exception ex){
-                if (ex.getMessage().contains("cannot be cast")){
-                    mapTheme = nbxliteTag.getInteger("Theme");
-                    skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
-                    skycolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                    fogcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                    cloudcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+            if (!nbxliteTag.hasKey("Theme")){
+                mapTheme = mod_noBiomesX.THEME_NORMAL;
+                cloudheight = mod_noBiomesX.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+                skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
+                skycolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                fogcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                cloudcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+            }else{
+                try{
+                    NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
+                    if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
+                        mapTheme = themeTag.getInteger("Generation");
+                    }else{
+                        mapTheme = mod_noBiomesX.THEME_NORMAL;
+                    }
+                    cloudheight = themeTag.getFloat("CloudHeight");
+                    skybrightness = themeTag.getInteger("SkyBrightness");
+                    skycolor = themeTag.getInteger("SkyColor");
+                    fogcolor = themeTag.getInteger("FogColor");
+                    cloudcolor = themeTag.getInteger("CloudColor");
+                }catch(Exception ex){
+                    if (ex.getMessage().contains("cannot be cast")){
+                        mapTheme = nbxliteTag.getInteger("Theme");
+                        cloudheight = mod_noBiomesX.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+                        skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
+                        skycolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                        fogcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                        cloudcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                    }
                 }
             }
             if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
@@ -168,11 +179,6 @@ public class WorldInfo
                     surrwaterheight = finiteTag.getInteger("SurroundingWaterHeight");
                     mapType = finiteTag.getInteger("Type");
                 }
-            }
-            if (!nbxliteTag.hasKey("CloudHeight")){
-                cloudheight = mod_noBiomesX.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-            }else{
-                cloudheight = nbxliteTag.getFloat("CloudHeight");
             }
             if (par1NBTTagCompound.hasKey("snowCovered")){
                 snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
@@ -299,9 +305,9 @@ public class WorldInfo
             NBTTagCompound nbxliteTag = new NBTTagCompound();
             nbxliteTag.setString("Generator", getGenName(mapGen, mapGenExtra, snowCovered));
             nbxliteTag.setBoolean("NewOres", newOres);
-            nbxliteTag.setFloat("CloudHeight", cloudheight);
             NBTTagCompound themeTag = new NBTTagCompound();
             themeTag.setInteger("Generation", mapTheme);
+            themeTag.setFloat("CloudHeight", cloudheight);
             themeTag.setInteger("SkyColor", skycolor);
             themeTag.setInteger("FogColor", fogcolor);
             themeTag.setInteger("CloudColor", cloudcolor);
