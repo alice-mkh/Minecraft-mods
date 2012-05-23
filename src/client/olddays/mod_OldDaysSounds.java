@@ -19,12 +19,17 @@ public class mod_OldDaysSounds extends mod_OldDays{
         addProperty(12,"Lava sound",          false, "Lava",       "");
         addProperty(13,"Enderman sounds",     2,     "Enderman",   "", new String[]{"1.0", "1.8.1", "OFF"});
         addProperty(14,"Use calm4.ogg music", true,  "Calm4",      "");
+        addProperty(15,"Old creeper sound",   false, "Creeper",    "");
         addSound(5, "door_open");
         addSound(5, "door_close");
         addSound(6, "door_open");
         addSound(6, "door_close");
         addSound(7, "bow");
         addMusic(14,"calm4");
+        addSound(15,"creeper1");
+        addSound(15,"creeper2");
+        addSound(15,"creeper3");
+        addSound(15,"creeper4");
         loadModuleProperties();
     }
 
@@ -44,6 +49,7 @@ public class mod_OldDaysSounds extends mod_OldDays{
             case 12:setBool(net.minecraft.src.SoundManager.class, "lava", !Lava); break;
             case 13:setInt(net.minecraft.src.SoundManager.class, "enderman", Enderman-1); break;
             case 14:setBool(net.minecraft.src.SoundManager.class, "calm4", Calm4); break;
+            case 15:setBool(net.minecraft.src.SoundManager.class, "creeper", Creeper); break;
         }
     }
 
@@ -60,5 +66,6 @@ public class mod_OldDaysSounds extends mod_OldDays{
     public static boolean Break;
     public static boolean Lava;
     public static boolean Calm4;
+    public static boolean Creeper;
     public static int Enderman = 2;
 }

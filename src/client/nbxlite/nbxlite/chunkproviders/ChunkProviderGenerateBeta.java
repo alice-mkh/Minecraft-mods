@@ -167,7 +167,11 @@ public class ChunkProviderGenerateBeta
         byte byte0 = 64;
         double d = 0.03125D;
         sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
-        gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
+        if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_BETA14){
+            gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
+        }else{
+            gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
+        }
         stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
         for(int k = 0; k < 16; k++)
         {
@@ -183,6 +187,9 @@ public class ChunkProviderGenerateBeta
                 for(int k1 = 127; k1 >= 0; k1--)
                 {
                     int l1 = (l * 16 + k) * 128 + k1;
+                    if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_BETA14){
+                        l1 = (k * 16 + l) * 128 + k1;
+                    }
                     if(k1 <= 0 + rand.nextInt(5))
                     {
                         abyte0[l1] = (byte)Block.bedrock.blockID;
@@ -240,20 +247,24 @@ public class ChunkProviderGenerateBeta
                         }
                         continue;
                     }
-                    if(j1 <= 0)
-                    {
-                        continue;
-                    }
-                    j1--;
-                    abyte0[l1] = byte2;
-                    if(j1 != 0 || byte2 != Block.sand.blockID)
-                    {
-                        continue;
-                    }
-                    j1 = rand.nextInt(4);
-                    if(mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_BETA14)
-                    {
-                        byte2 = (byte)Block.sandStone.blockID;
+                    if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_BETA14){
+                        if(j1 > 0)
+                        {
+                            j1--;
+                            abyte0[l1] = byte2;
+                        }
+                    }else{
+                        if(j1 <= 0)
+                        {
+                            continue;
+                        }
+                        j1--;
+                        abyte0[l1] = byte2;
+                        if(j1 == 0 && byte2 == Block.sand.blockID)
+                        {
+                            j1 = rand.nextInt(4);
+                            byte2 = (byte)Block.sandStone.blockID;
+                        }
                     }
                 }
 
