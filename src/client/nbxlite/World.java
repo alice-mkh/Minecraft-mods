@@ -2079,7 +2079,7 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (ModLoader.getMinecraftInstance().thePlayer.dimension != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
+            if (mod_noBiomesX.SkyColor==0 && worldProvider.worldType != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
                 if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
                     if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
                         f7 = 0.2146759F;
@@ -2094,7 +2094,7 @@ public class World implements IBlockAccess
                     k = getWorldChunkManager().oldGetBiomeGenAt(i, j).getSkyColorByTemp(f7);
                 }
             }else{
-                k = 0;
+                k = mod_noBiomesX.SkyColor;
             }
             float f9 = (float)(k >> 16 & 0xff) / 255F;
             float f10 = (float)(k >> 8 & 0xff) / 255F;
