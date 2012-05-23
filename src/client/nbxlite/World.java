@@ -2083,7 +2083,7 @@ public class World implements IBlockAccess
                 if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
                     if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
                         f7 = 0.2146759F;
-                        k = -8477697;
+                        k = biomegenbase.getSkyColorByTemp(f7);
                     }else{
                         BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
                         f7 = biomegenbase.getFloatTemperature();
