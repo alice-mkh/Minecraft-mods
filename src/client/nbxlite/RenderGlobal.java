@@ -1458,10 +1458,12 @@ public class RenderGlobal implements IWorldAccess
                     tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + i1 + f3, dd1, dd2);
                     tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + f3, dd, dd2);
                     tessellator.addVertexWithUV(i3 + f2, f4, i5 + f3, dd, dd3);
-                    tessellator.addVertexWithUV(i3 + f2, f4, i5 + f3, dd, dd3);
-                    tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + f3, dd, dd2);
-                    tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + i1 + f3, dd1, dd2);
-                    tessellator.addVertexWithUV(i3 + f2, f4, i5 + i1 + f3, dd1, dd3);
+                    if (mod_noBiomesX.SurrWaterType==Block.waterStill.blockID || mod_noBiomesX.SurrWaterType==Block.waterMoving.blockID){
+                        tessellator.addVertexWithUV(i3 + f2, f4, i5 + f3, dd, dd3);
+                        tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + f3, dd, dd2);
+                        tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + i1 + f3, dd1, dd2);
+                        tessellator.addVertexWithUV(i3 + f2, f4, i5 + i1 + f3, dd1, dd3);
+                    }
                 }
             }
         }
