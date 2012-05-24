@@ -215,6 +215,7 @@ public class World implements IBlockAccess
         mod_noBiomesX.SetGenerator(this, mod_noBiomesX.GEN_NEWBIOMES, mod_noBiomesX.FEATURES_12, mod_noBiomesX.THEME_NORMAL, mod_noBiomesX.TYPE_INLAND, false, false);
         mod_noBiomesX NBX = new mod_noBiomesX();
         NBX.RequestGeneratorInfo();
+        turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -261,6 +262,7 @@ public class World implements IBlockAccess
         mapGenExtra = worldInfo.getMapGenExtra();
         snowCovered = worldInfo.getSnowCovered();
         mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), worldInfo.getIndevMapType(), snowCovered, worldInfo.getNewOres());
+        turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         calculateInitialSkylight();
@@ -526,6 +528,7 @@ public class World implements IBlockAccess
             worldProvider.registerWorld(this);
         }
         mod_noBiomesX.setTextureFX();
+        turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();
     }

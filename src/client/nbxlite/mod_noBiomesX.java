@@ -68,7 +68,6 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(0));
         ModLoader.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(1));
         gearRenderID = ModLoader.getUniqueBlockModelID(this, false);
-//         ModLoader.addRecipe(new ItemStack(gear, 1), new Object[]{" # ","###"," # ",Character.valueOf('#'), Item.ingotIron});
     }
 
     public static int getLightInBounds(int par1, int par2, int par3){
@@ -104,7 +103,6 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.setInGameHook(this, true, true);
         ModLoader.setInGUIHook(this, true, true);
         replaceBlocks();
-//         replaceHoes();
         registerGears();
         terrfx = new TextureTerrainPngFX();
         bedrockfx = new TextureTerrainPngFX();
@@ -176,21 +174,8 @@ public class mod_noBiomesX extends BaseModMp{
 
     private static void replaceBlocks(){
         try{
-//             ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png", 0);
             Block.grass.toptex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png");
             Block.grass.sidetex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grassside.png");
-/*
-            Block.blocksList[Block.grass.blockID] = null;
-            BlockGrass2 grass2 = (BlockGrass2)(new BlockGrass2(Block.grass.blockID)).setHardness(0.6F).setStepSound(Block.soundGrassFootstep).setBlockName("grass");
-            Block.blocksList[Block.grass.blockID] = grass2;
-            grass2.toptex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png");
-            grass2.sidetex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grassside.png");
-            Block.blocksList[Block.leaves.blockID] = null;
-            BlockLeaves2 leaves2 = (BlockLeaves2)(new BlockLeaves2(Block.leaves.blockID, 52)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setBlockName("leaves").setRequiresSelfNotify();
-            Block.blocksList[Block.leaves.blockID] = leaves2;
-            leaves2.fasttex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfast.png");
-            leaves2.fancytex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfancy.png");
-*/
             Block.leaves.fasttex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfast.png");
             Block.leaves.fancytex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfancy.png");
             Block.blocksList[Block.tallGrass.blockID] = null;
@@ -203,90 +188,20 @@ public class mod_noBiomesX extends BaseModMp{
             System.out.println(exception);
         }
     }
-/*
-    private static void replaceHoes(){
-        try{
-            Item.itemsList[34] = null;
-            ItemHoe2 hoeWood2 = (ItemHoe2)(new ItemHoe2(34, EnumToolMaterial.WOOD)).setIconCoord(0, 8).setItemName("hoeWood");
-            Item.itemsList[34] = hoeWood2;
 
-//             hoeWood = (new ItemHoe(34, EnumToolMaterial.WOOD)).setIconCoord(0, 8).setItemName("hoeWood");
-//             hoeStone = (new ItemHoe(35, EnumToolMaterial.STONE)).setIconCoord(1, 8).setItemName("hoeStone");
-//             hoeSteel = (new ItemHoe(36, EnumToolMaterial.IRON)).setIconCoord(2, 8).setItemName("hoeIron");
-//             hoeDiamond = (new ItemHoe(37, EnumToolMaterial.EMERALD)).setIconCoord(3, 8).setItemName("hoeDiamond");
-//             hoeGold = (new ItemHoe(38, EnumToolMaterial.GOLD)).setIconCoord(4, 8).setItemName("hoeGold");
-        }catch (Exception exception){
-            System.out.println(exception);
-        }
-    }
-*/
     public String getVersion(){
         return "1.2.5";
     }
 
     public void handlePacket(Packet230ModLoader packet)
     {
-        Generator=packet.dataInt[0];
-        MapFeatures=packet.dataInt[1];
-        IndevHeight=packet.dataInt[4];
-        IndevWidthX=packet.dataInt[5];
-        IndevWidthZ=packet.dataInt[6];
-        long seed=Long.parseLong(packet.dataString[0]);
         World world = ModLoader.getMinecraftInstance().theWorld;
+        long seed=Long.parseLong(packet.dataString[0]);
         world.getWorldChunkManager().initNoise(seed);
-        if (packet.dataInt[0]==0){
-            MapTheme=packet.dataInt[2];
-            if (packet.dataInt[3]==1){
-                SnowCovered=true;
-            }else{
-                SnowCovered=false;
-            }
-        }
+        SetGenerator(world, packet.dataInt[0], packet.dataInt[1], packet.dataInt[2], 0, packet.dataInt[3]>0, false);
         setSkyColor(Generator, MapFeatures, MapTheme, 0);
         setSkyColor(Generator, MapFeatures, MapTheme, 1);
         setSkyColor(Generator, MapFeatures, MapTheme, 2);
-        world.worldProvider.registerWorld(world);
-        if (packet.dataInt[0]==0){
-            SunriseEffect=false;
-        }else{
-            SunriseEffect=true;
-        }
-        if (packet.dataInt[0]==2 && packet.dataInt[1]!=0){
-            SunriseAtNorth=false;
-        }else{
-            SunriseAtNorth=true;
-        }
-        if (packet.dataInt[0]==2){
-            ClassicLight=false;
-        }else{
-            ClassicLight=true;
-        }
-        if (packet.dataInt[0]==1 && packet.dataInt[1]<=2 && !NoGreenGrassSides){
-            GreenGrassSides=true;
-        }else{
-            GreenGrassSides=false;
-        }
-        if (packet.dataInt[0]==0 &&  packet.dataInt[1]>0 && UseOpaqueFlatClouds){
-            OpaqueFlatClouds=true;
-        }else{
-            OpaqueFlatClouds=false;
-        }
-        if (packet.dataInt[0]==0 && packet.dataInt[1]==1){
-            LeavesDecay=false;
-        }else{
-            LeavesDecay=true;
-        }
-        if (Generator==2){
-            VoidFog = 0;
-        }else if (Generator==1 && MapFeatures==5){
-            VoidFog = 3;
-        }else if (Generator==0 & MapTheme>0){
-            VoidFog = 3;
-        }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
-            VoidFog = 2;
-        }else if (Generator==0 && MapFeatures>0){
-            VoidFog = 4;
-        }
     }
 
     public void RequestGeneratorInfo()
@@ -372,106 +287,32 @@ public class mod_noBiomesX extends BaseModMp{
     public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
         Generator=gen;
         MapFeatures=features;
-        if (gen==2){
-            if (features==0){
-                BiomeGenBase.ocean.maxHeight = 0.5F;
-            }else{
-                BiomeGenBase.ocean.maxHeight = 0.4F;
-            }
-            if (features>=2){
-                BiomeGenBase.taiga.temperature = 0.05F;
-                BiomeGenBase.extremeHills.maxHeight = 1.3F;
-            }else{
-                BiomeGenBase.taiga.temperature = 0.3F;
-                BiomeGenBase.extremeHills.maxHeight = 1.8F;
-            }
-            if (features>=2){
-                BiomeGenBase.swampland.waterColorMultiplier = 0xe0ffae;
-            }else if (features==1){
-                BiomeGenBase.swampland.waterColorMultiplier = 0xe0ff70;
-            }else{
-                BiomeGenBase.swampland.waterColorMultiplier = 0xffffff;
-            }
-        }else{
-            BiomeGenBase.swampland.waterColorMultiplier = 0xffffff;
+        if (gen==GEN_NEWBIOMES){
+            BiomeGenBase.ocean.maxHeight = features==FEATURES_BETA181 ? 0.5F : 0.4F;
+            BiomeGenBase.taiga.temperature = features>=FEATURES_11 ? 0.05F : 0.3F;
+            BiomeGenBase.extremeHills.maxHeight = features>=FEATURES_11 ? 1.3F : 1.8F;
+            BiomeGenBase.swampland.waterColorMultiplier = features>=FEATURES_11 ? 0xe0ffae : 0xe0ff70;
         }
-        if (gen==0){
-            MapTheme=theme;
-            SunriseEffect=false;
-            world.turnOnOldSpawners();
-        }else{
-            SunriseEffect=true;
-        }
+        SunriseEffect = gen>GEN_BIOMELESS;
+        MapTheme = gen==GEN_BIOMELESS ? theme : 0;
         world.worldProvider.registerWorld(world);
-        if (gen==0 && (theme==0||theme==2)){
-            SnowCovered=snow;
-        }else{
-            SnowCovered=false;
-        }
-        if (gen==2 && features!=0){
-            SunriseAtNorth=false;
-        }else{
-            SunriseAtNorth=true;
-        }
-        if (gen==2){
-            ClassicLight=false;
-        }else{
-            ClassicLight=true;
-        }
-        if (gen==1 && features<=2 && !NoGreenGrassSides){
-            GreenGrassSides=true;
-        }else{
-            GreenGrassSides=false;
-        }
-        if (gen==0 && features>0 && UseOpaqueFlatClouds){
-            OpaqueFlatClouds=true;
-        }else{
-            OpaqueFlatClouds=false;
-        }
-        if (gen==0 && (features==3 || features==4)){
-            RestrictSlimes=true;
-        }else{
-            RestrictSlimes=false;
-        }
-        if (gen==0 && features==1){
-            LeavesDecay=false;
-        }else{
-            LeavesDecay=true;
-        }
-        if (gen==0 && features==3){
-            IndevMapType=type;
-        }else{
-            IndevMapType=0;
-        }
-        /*
-        if (features==FEATURES_INDEV){
-            if (type==TYPE_ISLAND){
-                SurrWaterHeight = IndevHeight-32;
-                SurrGroundHeight = SurrWaterHeight - 9;
-            }else if (type==TYPE_FLOATING){
-                SurrGroundHeight = -128;
-                SurrWaterHeight = SurrGroundHeight + 1;
-            }else{
-                SurrGroundHeight = IndevHeight-31;
-                SurrWaterHeight = SurrGroundHeight - 16;
-            }
-            SurrGroundType = Block.grass.blockID;
-        }else if (features==FEATURES_CLASSIC){
-            SurrWaterHeight = IndevHeight-32;
-            SurrGroundHeight = SurrWaterHeight - 2;
-            SurrGroundType = Block.bedrock.blockID;
-        }
-        SurrWaterType = theme==THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
-        */
-        if (Generator==2){
+        SnowCovered = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && (theme==THEME_NORMAL||theme==THEME_WOODS);
+        SunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
+        ClassicLight = gen<GEN_NEWBIOMES;
+        GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
+        OpaqueFlatClouds = gen==GEN_BIOMELESS && features>FEATURES_ALPHA11201 && UseOpaqueFlatClouds;
+        RestrictSlimes = isFinite() && IndevHeight<96;
+        LeavesDecay = gen!=GEN_BIOMELESS || features!=FEATURES_INFDEV0420;
+        IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;
+        if (Generator==GEN_NEWBIOMES){
             VoidFog = 0;
-        }else if (Generator==1 && MapFeatures==5){
+        }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
             VoidFog = 3;
-        }else if (Generator==0 && MapFeatures==0 && MapTheme>0){
+        }else if (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201 && MapTheme>THEME_NORMAL){
             VoidFog = 3;
-        }else if (Generator==1 || (Generator==0 && MapFeatures==0)){
+        }else if (Generator==GEN_OLDBIOMES || (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201)){
             VoidFog = 2;
-        }else if (Generator==0 && MapFeatures>0){
+        }else if (Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201){
             VoidFog = 4;
         }
         GenerateNewOres=ores;
