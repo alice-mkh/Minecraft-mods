@@ -40,7 +40,7 @@ public class OldSpawnerAnimals
     protected ChunkPosition func_1151_a(World world, int i, int j)
     {
         int k = i + world.rand.nextInt(16);
-        int l = world.rand.nextInt(128);
+        int l = world.rand.nextInt(256);
         int i1 = j + world.rand.nextInt(16);
         return new ChunkPosition(k, l, i1);
     }
