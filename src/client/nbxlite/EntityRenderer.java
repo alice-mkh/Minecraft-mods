@@ -1187,11 +1187,6 @@ public class EntityRenderer
             Profiler.endStartSection("terrain");
             renderglobal.sortAndRender(entityliving, 0, par1);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-//             GL11.glShadeModel(GL11.GL_SMOOTH);
-//             GL11.glShadeModel(GL11.GL_FLAT);
-            if (mod_noBiomesX.isFinite()){
-                renderglobal.renderBounds(par1);
-            }
             GL11.glShadeModel(GL11.GL_FLAT);
 
             if (debugViewDirection == 0)
@@ -1217,6 +1212,9 @@ public class EntityRenderer
                     renderglobal.drawSelectionBox(entityplayer, mc.objectMouseOver, 0, entityplayer.inventory.getCurrentItem(), par1);
                     GL11.glEnable(GL11.GL_ALPHA_TEST);
                 }
+            }
+            if (mod_noBiomesX.isFinite()){
+                renderglobal.renderBounds(par1);
             }
 
             GL11.glDisable(GL11.GL_BLEND);
