@@ -51,6 +51,26 @@ public class mod_OldDaysActions extends mod_OldDays{
 //Old blocks
 //Unflammable fences and stairs
 
+    protected void toggleRecipe(boolean b, String str1, String str2, ItemStack i1, ItemStack i2, Object[] o){
+        try{
+            List list = CraftingManager.getInstance().getRecipeList();
+            for (int i = 0; i < list.size(); i++){
+                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+                if (match.equals(b ? str1 : str2)){
+                    list.remove(i);
+                    break;
+                }
+            }
+            if (b){
+                CraftingManager.getInstance().addRecipe(i1, o);
+            }else{
+                CraftingManager.getInstance().addRecipe(i2, o);
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
     private void setPlanks(boolean b){
         String str = "4xtile.wood@";
         Block log = Block.wood;
