@@ -203,6 +203,8 @@ public class mod_noBiomesX extends BaseModMp{
         setSkyColor(Generator, MapFeatures, MapTheme, 0);
         setSkyColor(Generator, MapFeatures, MapTheme, 1);
         setSkyColor(Generator, MapFeatures, MapTheme, 2);
+        setCloudHeight(Generator, MapFeatures, MapTheme, IndevMapType);
+        setSkyBrightness(MapTheme);
     }
 
     public void RequestGeneratorInfo()
