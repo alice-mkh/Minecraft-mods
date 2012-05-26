@@ -95,7 +95,7 @@ public class ChunkProviderFinite
                 fixDeepMaps(chunk, i, j);
             }
         }else{
-            chunk = new Chunk(worldObj, new byte[32768], i, j);
+            chunk = new BoundChunk(worldObj, i, j);
         }
         chunk.generateSkylightMap();
         return chunk;
