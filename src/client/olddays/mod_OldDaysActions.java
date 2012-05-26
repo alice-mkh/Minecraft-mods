@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.*;
+
 public class mod_OldDaysActions extends mod_OldDays{
     public void load(){
         registerModule(this, 0);
@@ -13,6 +15,7 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(8, "Solid TNT",             false, true,  "SolidTNT",        "");
         addProperty(9, "Big fences",            false, true,  "BigFences",       "");
         addProperty(10,"Less Nether lava flow", false, false, "LessLavaFlow",    "");
+        addProperty(11,"Old planks",            false, false, "OldPlanks",       "");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -30,6 +33,7 @@ public class mod_OldDaysActions extends mod_OldDays{
             case 8: setSolidTNT(SolidTNT); break;
             case 9: setBool(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
             case 10:setBool(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
+            case 11:setPlanks(OldPlanks); break;
         }
     }
 
@@ -43,8 +47,19 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean SolidTNT = true;
     public static boolean BigFences = true;
     public static boolean LessLavaFlow;
+    public static boolean OldPlanks;
 //Old blocks
 //Unflammable fences and stairs
+
+    private void setPlanks(boolean b){
+        String str = "4xtile.wood@";
+        Block log = Block.wood;
+        Block planks = Block.planks;
+        toggleRecipe(b, str+"3", str+"0", new ItemStack(planks, 4, 0), new ItemStack(planks, 4, 3), new Object[] {"#", '#', new ItemStack(log, 1, 3)});
+        toggleRecipe(b, str+"2", str+"0", new ItemStack(planks, 4, 0), new ItemStack(planks, 4, 2), new Object[] {"#", '#', new ItemStack(log, 1, 2)});
+        toggleRecipe(b, str+"1", str+"0", new ItemStack(planks, 4, 0), new ItemStack(planks, 4, 1), new Object[] {"#", '#', new ItemStack(log, 1, 1)});
+        toggleRecipe(b, str+"0", str+"0", new ItemStack(planks, 4, 0), new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 0)});
+    }
 
     private void setSolidTNT(boolean b){
         try{
