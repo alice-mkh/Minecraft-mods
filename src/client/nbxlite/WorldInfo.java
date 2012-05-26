@@ -819,6 +819,11 @@ public class WorldInfo
         nbxlite = b;
     }
 
+    public void setSeed(long l)
+    {
+        randomSeed = l;
+    }
+
     public void setSizeOnDisk(long l)
     {
         sizeOnDisk = l;

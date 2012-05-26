@@ -198,7 +198,7 @@ public class mod_noBiomesX extends BaseModMp{
     {
         World world = ModLoader.getMinecraftInstance().theWorld;
         long seed=Long.parseLong(packet.dataString[0]);
-        world.getWorldChunkManager().initNoise(seed);
+        world.setSeed(seed);
         SetGenerator(world, packet.dataInt[0], packet.dataInt[1], packet.dataInt[2], 0, packet.dataInt[3]>0, false);
         setSkyColor(Generator, MapFeatures, MapTheme, 0);
         setSkyColor(Generator, MapFeatures, MapTheme, 1);

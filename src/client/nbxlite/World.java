@@ -4660,6 +4660,11 @@ public class World implements IBlockAccess
         return worldInfo.getSeed();
     }
 
+    public void setSeed(long l)
+    {
+        worldInfo.setSeed(l);
+    }
+
     public long getWorldTime()
     {
         return worldInfo.getWorldTime();
