@@ -410,14 +410,11 @@ public class mod_noBiomesX extends BaseModMp{
                 return SkyColor = 0xc6deff;
             }
             if (gen==GEN_BIOMELESS){
-                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV){
+                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
                     return SkyColor = 0x99ccff;
                 }
                 if (feats==FEATURES_INFDEV0227){
                     return SkyColor = 0x0000ff;
-                }
-                if (feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
-                    return SkyColor = 0x99ccff;
                 }
                 return SkyColor = 0x88bbff;
             }
