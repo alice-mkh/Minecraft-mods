@@ -826,7 +826,7 @@ public class World implements IBlockAccess
     }
 
     private boolean isBounds(int x, int y, int z){
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && worldProvider.worldType==0){
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || y<0){
                     return true;
