@@ -6,12 +6,13 @@ import java.io.*;
 public class mod_noBiomesX extends BaseModMp{
     public mod_noBiomesX(){
         PropertyManager pmanager = new PropertyManager(new File("server.properties"));
-        Generator = pmanager.getIntProperty("generator", 2);
-        MapFeatures = pmanager.getIntProperty("features", 2);
+        String str = pmanager.getStringProperty("generator", "newbiomes/12");
+        Generator = getGen(str, 0);
+        MapFeatures = getGen(str, 1);
         MapTheme = pmanager.getIntProperty("theme", 0);
         UseNewSpawning = pmanager.getBooleanProperty("new-spawning", false);
         if (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201 && MapTheme!=THEME_HELL && MapTheme!=THEME_PARADISE){
-            SnowCovered = pmanager.getBooleanProperty("snow-covered", false);
+            SnowCovered = getGen(str, 2)>0;
         }else{
             SnowCovered = false;
         }
@@ -22,6 +23,96 @@ public class mod_noBiomesX extends BaseModMp{
             IndevHeight = pmanager.getIntProperty("indev-height", 64);
         }
         GenerateNewOres = pmanager.getBooleanProperty("generate-new-ores", false);
+        setIndevBounds(IndevMapType, MapTheme);
+        setSkyBrightness(MapTheme);
+        setCloudHeight(Generator, MapFeatures, MapTheme, IndevMapType);
+        setSkyColor(Generator, MapFeatures, MapTheme, 0);
+        setSkyColor(Generator, MapFeatures, MapTheme, 1);
+        setSkyColor(Generator, MapFeatures, MapTheme, 2);
+    }
+
+    private int getGen(String gen, int what){
+        if (what==0){
+            if (gen.startsWith("nobiomes/")){
+                return mod_noBiomesX.GEN_BIOMELESS;
+            }
+            if (gen.startsWith("oldbiomes/")){
+                return mod_noBiomesX.GEN_OLDBIOMES;
+            }
+            if (gen.startsWith("newbiomes/")){
+                return mod_noBiomesX.GEN_NEWBIOMES;
+            }
+            return 0;
+        }
+        if (what==1){
+            if (gen.startsWith("nobiomes/")){
+                if (gen.contains("alpha11201")){
+                    return mod_noBiomesX.FEATURES_ALPHA11201;
+                }
+                if (gen.contains("indev")){
+                    return mod_noBiomesX.FEATURES_INDEV;
+                }
+                if (gen.contains("classic")){
+                    return mod_noBiomesX.FEATURES_CLASSIC;
+                }
+                if (gen.contains("infdev")){
+                    if (gen.contains("0608")){
+                        return mod_noBiomesX.FEATURES_INFDEV0608;
+                    }
+                    if (gen.contains("0420")){
+                        return mod_noBiomesX.FEATURES_INFDEV0420;
+                    }
+                    if (gen.contains("0227")){
+                        return mod_noBiomesX.FEATURES_INFDEV0227;
+                    }
+                }
+            }
+            if (gen.startsWith("oldbiomes/")){
+                if (gen.contains("halloween")){
+                    return mod_noBiomesX.FEATURES_ALPHA120;
+                }
+                if (gen.contains("sky")){
+                    return mod_noBiomesX.FEATURES_SKY;
+                }
+                if (gen.contains("beta12")){
+                    return mod_noBiomesX.FEATURES_BETA12;
+                }
+                if (gen.contains("beta14")){
+                    return mod_noBiomesX.FEATURES_BETA14;
+                }
+                if (gen.contains("beta15")){
+                    return mod_noBiomesX.FEATURES_BETA15;
+                }
+                if (gen.contains("beta173")){
+                    if (gen.endsWith("/jungle")){
+                        return mod_noBiomesX.FEATURES_JUNGLE;
+                    }else{
+                        return mod_noBiomesX.FEATURES_BETA173;
+                    }
+                }
+                return 0;
+            }
+            if (gen.startsWith("newbiomes/")){
+                if (gen.contains("beta181")){
+                    return mod_noBiomesX.FEATURES_BETA181;
+                }
+                if (gen.contains("10")){
+                    return mod_noBiomesX.FEATURES_10;
+                }
+                if (gen.contains("11")){
+                    return mod_noBiomesX.FEATURES_11;
+                }
+                if (gen.contains("12")){
+                    return mod_noBiomesX.FEATURES_12;
+                }
+                return 0;
+            }
+            return 0;
+        }
+        if (what==2){
+            return gen.endsWith("/snow") ? 1 : 0;
+        }
+        return 0;
     }
 
     public void load(){
@@ -122,6 +213,133 @@ public class mod_noBiomesX extends BaseModMp{
         return false;
     }
 
+    public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
+        SurrGroundType = groundtype;
+        SurrGroundHeight = groundheight;
+        SurrWaterType = watertype;
+        SurrWaterHeight = waterheight;
+    }
+
+    public static void setIndevBounds(int type, int theme){
+        SurrGroundType = Block.grass.blockID;
+        SurrWaterType = theme==THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
+        if (type==5){
+            SurrWaterHeight = IndevHeight-32;
+            SurrGroundHeight = SurrWaterHeight-2;
+        }else if (type==TYPE_FLOATING){
+            SurrGroundHeight = -128;
+            SurrWaterHeight = SurrGroundHeight+1;
+        }else if (type==TYPE_ISLAND){
+            SurrWaterHeight = IndevHeight-32;
+            SurrGroundHeight = SurrWaterHeight-9;
+        }else{
+            SurrGroundHeight = IndevHeight-31;
+            SurrWaterHeight = SurrGroundHeight-16;
+        }
+    }
+
+    public static float setCloudHeight(int gen, int feats, int theme, int type){
+        if (gen==GEN_NEWBIOMES){
+            return CloudHeight = 128F;
+        }
+        if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+            return CloudHeight = 8F;
+        }
+        if (gen==GEN_BIOMELESS){
+            if (feats==FEATURES_INFDEV0227 || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                return CloudHeight = theme==THEME_PARADISE ? 182F : 120F;
+            }
+            if (feats==FEATURES_INDEV || feats==FEATURES_CLASSIC){
+                if (theme==THEME_PARADISE){
+                    return CloudHeight = IndevHeight+64;
+                }
+                if (type==TYPE_FLOATING && theme!=THEME_HELL){
+                    return CloudHeight = -16F;
+                }
+                return CloudHeight = IndevHeight+2;
+            }
+            if(theme==THEME_PARADISE){
+                return CloudHeight = 170F;
+            }
+            return CloudHeight = 108F;
+        }
+        return CloudHeight = 108F;
+    }
+
+    public static int setSkyBrightness(int theme){
+        if (theme==THEME_HELL){
+            return SkyBrightness = 7;
+        }
+        if (theme==THEME_WOODS){
+            return SkyBrightness = 12;
+        }
+        if (theme==THEME_PARADISE){
+            return SkyBrightness = 16;
+        }
+        return SkyBrightness = 15;
+    }
+
+    public static int setSkyColor(int gen, int feats, int theme, int num){
+        if (num==0){
+            if (theme==THEME_HELL){
+                return SkyColor = 0x100400;
+            }
+            if (theme==THEME_WOODS){
+                return SkyColor = 0x757d87;
+            }
+            if (theme==THEME_PARADISE){
+                return SkyColor = 0xc6deff;
+            }
+            if (gen==GEN_BIOMELESS){
+                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                    return SkyColor = 0x99ccff;
+                }
+                if (feats==FEATURES_INFDEV0227){
+                    return SkyColor = 0x0000ff;
+                }
+                return SkyColor = 0x88bbff;
+            }
+            if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+                return SkyColor = 0xb9b8f4;
+            }
+            return SkyColor = 0;
+        }
+        if (num==1){
+            if (theme==THEME_HELL){
+                return FogColor = 0x100400;
+            }
+            if (theme==THEME_WOODS){
+                return FogColor = 0x4d5a5b;
+            }
+            if (theme==THEME_PARADISE){
+                return FogColor = 0xc6deff;
+            }
+            if (gen==GEN_BIOMELESS){
+                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0227){
+                    return FogColor = 0xffffff;
+                }
+                if (feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                    return FogColor = 0xb0d0ff;
+                }
+                return FogColor = 0;
+            }
+            if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+                return FogColor = 0x9493bb;
+            }
+            return FogColor = 0;
+        }
+        if (theme==THEME_HELL){
+            return CloudColor = 0x210800;
+        }
+        if (theme==THEME_WOODS){
+            return CloudColor = 0x4d5a5b;
+        }
+        if (theme==THEME_PARADISE){
+            return CloudColor = 0xeeeeff;
+        }
+        return CloudColor = 0xffffff;
+    }
+
     public static int Generator = 1;
     public static boolean OldSpawners = false;
     public static boolean GenerateNewOres = true;
@@ -138,6 +356,15 @@ public class mod_noBiomesX extends BaseModMp{
     public static int IndevSpawnX;
     public static int IndevSpawnY;
     public static int IndevSpawnZ;
+    public static int SurrGroundHeight;
+    public static int SurrWaterHeight;
+    public static int SurrWaterType;
+    public static int SurrGroundType;
+    public static float CloudHeight;
+    public static int SkyBrightness;
+    public static int SkyColor;
+    public static int FogColor;
+    public static int CloudColor;
     public static byte[] IndevWorld;
     public static boolean UseNewSpawning;
     public static int DayNight = 2;//0 - none, 1 - old, 2 - new

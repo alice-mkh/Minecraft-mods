@@ -56,62 +56,6 @@ public class ChunkProviderFinite
         }
     }
 
-    private void generateBoundaries(byte abyte0[], boolean tall)
-    {
-        int altitude = mod_noBiomesX.IndevHeight-32;
-        for (int j = 0; j < 16; j++)
-        {
-            for (int k = 0; k < 16; k++)
-            {
-                for (int l = 0; l <= altitude; l++)
-                {
-                    int i1 = 0;
-                    if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                        if (l <= altitude-3){
-                            i1 = Block.bedrock.blockID;
-                        }else if (l < altitude && l > altitude-3){
-                            if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
-                                i1 = Block.lavaStill.blockID;
-                            }else{
-                                i1 = Block.waterStill.blockID;
-                            }
-                        }
-                    }else{
-                        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
-                            if (l <= altitude-11){
-                                i1 = Block.bedrock.blockID;
-                            }else  if (l == altitude-10){
-                                i1 = Block.dirt.blockID;
-                            }else if (l < altitude && l > altitude-11){
-                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
-                                    i1 = Block.lavaStill.blockID;
-                                }else{
-                                    i1 = Block.waterStill.blockID;
-                                }
-                            }
-                        }
-                        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_INLAND || mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
-                            if (l <= altitude-1){
-                                i1 = Block.bedrock.blockID;
-                            }else if (l == altitude){
-                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
-                                    i1 = Block.dirt.blockID;
-                                }else{
-                                    i1 = Block.grass.blockID;
-                                }
-                            }
-                        }
-                    }
-                    if (tall){
-                        abyte0[j << 11 | k << 8 | l] = (byte)i1;
-                    }else{
-                        abyte0[j << 11 | k << 7 | l] = (byte)i1;
-                    }
-                }
-            }
-        }
-    }
-
     public Chunk loadChunk(int i, int j)
     {
         return provideChunk(i, j);
@@ -148,16 +92,7 @@ public class ChunkProviderFinite
                 fixDeepMaps(chunk, i, j);
             }
         }else{
-            byte abyte0[];
-            if (tall2){
-                abyte0= new byte[32768*2];
-            }else{
-                abyte0= new byte[32768];
-            }
-            if (mod_noBiomesX.IndevMapType!=mod_noBiomesX.TYPE_FLOATING){
-                generateBoundaries(abyte0, tall2);
-            }
-            chunk = new Chunk(worldObj, abyte0, i, j);
+            chunk = new BoundChunk(worldObj, i, j);
         }
         chunk.generateSkylightMap();
         return chunk;

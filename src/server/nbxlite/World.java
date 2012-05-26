@@ -143,15 +143,29 @@ public class World implements IBlockAccess
      */
     public boolean isRemote;
 
-    public int totalSkyLight;
     public boolean snowCovered;
-    public boolean isHotWorld;
     public int mapGen;
     public int mapGenExtra;
     public int mapTypeIndev;
     private OldSpawnerAnimals animalSpawner;
     private OldSpawnerMonsters monsterSpawner;
     private OldSpawnerAnimals waterMobSpawner;
+
+    private boolean isBounds(int x, int y, int z){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || y<0){
+                    return true;
+                }
+            }
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ || y<0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Gets the biome for a given set of x/z coordinates
@@ -178,8 +192,6 @@ public class World implements IBlockAccess
 
     public World(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider)
     {
-        totalSkyLight = 15;
-        isHotWorld = false;
         scheduledUpdatesAreImmediate = false;
         loadedEntityList = new ArrayList();
         unloadedEntityList = new ArrayList();
@@ -537,10 +549,23 @@ public class World implements IBlockAccess
      */
     public int getBlockId(int par1, int par2, int par3)
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-            if (par2<0){
-                return (byte)Block.bedrock.blockID;
+        if (isBounds(par1, par2, par3)){
+            if (par2<mod_noBiomesX.SurrGroundHeight-1){
+                return Block.bedrock.blockID;
             }
+            if (par2<mod_noBiomesX.SurrGroundHeight){
+                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                    return Block.bedrock.blockID;
+                }
+                if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
+                    return Block.dirt.blockID;
+                }
+                return mod_noBiomesX.SurrGroundType;
+            }
+            if (par2<mod_noBiomesX.SurrWaterHeight){
+                return mod_noBiomesX.SurrWaterType;
+            }
+            return 0;
         }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
@@ -679,6 +704,9 @@ public class World implements IBlockAccess
      */
     public boolean setBlockAndMetadata(int par1, int par2, int par3, int par4, int par5)
     {
+        if (isBounds(par1, par2, par3)){
+            return false;
+        }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return false;
@@ -709,6 +737,9 @@ public class World implements IBlockAccess
      */
     public boolean setBlock(int par1, int par2, int par3, int par4)
     {
+        if (isBounds(par1, par2, par3)){
+            return false;
+        }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
             return false;
@@ -1614,8 +1645,8 @@ public class World implements IBlockAccess
      */
     public int calculateSkylightSubtracted(float f)
     {
-        float f1 = totalSkyLight;
-        if(totalSkyLight == 16 || (worldProvider instanceof WorldProviderEnd))
+        float f1 = (float)mod_noBiomesX.SkyBrightness;
+        if(mod_noBiomesX.SkyBrightness == 16 || (worldProvider instanceof WorldProviderEnd))
         {
             f1 = 15F;
         }
