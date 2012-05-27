@@ -1065,13 +1065,11 @@ label0:
 
   public final void setData(IndevLevel world, int paramInt1, int paramInt2, int paramInt3, byte[] paramArrayOfByte1, byte[] paramArrayOfByte2)
   {
-    if ((paramArrayOfByte2 != null) && (paramArrayOfByte2.length == 0))
-      paramArrayOfByte2 = null;
+//     if ((paramArrayOfByte2 != null) && (paramArrayOfByte2.length == 0))
+//       paramArrayOfByte2 = null;
     world.a = paramInt1;
     world.b = paramInt3;
     world.c = paramInt2;
-    world.d = paramArrayOfByte1;
-    byte[] arrayOfByte;
     int i3;
     for (int j1 = 0; j1 < world.a; j1++){
         for (int j2 = 0; j2 < world.b; j2++){
@@ -1100,10 +1098,11 @@ label0:
             }
         }
     }
+/*//     world.d = paramArrayOfByte1;
 //     world.p = new int[paramInt1 * paramInt3];
 //     Arrays.fill(world.p, world.c);
     if (paramArrayOfByte2 == null){
-     /*   e = new byte[paramArrayOfByte1.length];
+        e = new byte[paramArrayOfByte1.length];
 //           world.M = new h(world);
         int jj0 = 1;
         int jj1 = world.B;
@@ -1125,7 +1124,7 @@ label0:
                     e[i1] = (byte)((e[i1] & 0xF0) + i2);
                 }
             }
-        }*/
+        }
 //         world.M.a(0, 0, 0, world.a, world.c, world.b);
     }
     else
@@ -1137,6 +1136,7 @@ label0:
 //         ((d)world.n.get(iparamInt2)).a();
 //     }
 //     world.G.clear();
+*/
     b(world);
     world.a();
     System.gc();
