@@ -398,8 +398,8 @@ public class World implements IBlockAccess
      */
     protected void generateSpawnPoint()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || worldProvider.worldType==1){
-            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || worldProvider.worldType!=0){
+            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11 && mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
                 findingSpawnPoint = true;
                 WorldChunkManager worldchunkmanager = worldProvider.worldChunkMgr;
                 List list = worldchunkmanager.getBiomesToSpawnIn();
