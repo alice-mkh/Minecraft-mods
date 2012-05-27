@@ -3,6 +3,7 @@ package net.minecraft.src.nbxlite.chunkproviders;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
+import net.minecraft.src.nbxlite.BoundChunk;
 import net.minecraft.src.nbxlite.indev.*;
 
 public class ChunkProviderFinite

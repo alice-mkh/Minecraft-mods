@@ -1,7 +1,8 @@
-package net.minecraft.src;
+package net.minecraft.src.nbxlite;
 
 import java.util.List;
 import java.util.Random;
+import net.minecraft.src.*;
 
 public class BoundChunk extends Chunk
 {
