@@ -406,14 +406,9 @@ public class GuiIngame extends Gui
                 drawString(fontrenderer, (new StringBuilder()).append("lc: ").append(chunk.getTopFilledSegment() + 15).append(" b: ").append(chunk.func_48490_a(l7 & 0xf, k9 & 0xf, mc.theWorld.getWorldChunkManager()).biomeName).append(" bl: ").append(chunk.getSavedLightValue(EnumSkyBlock.Block, l7 & 0xf, l8, k9 & 0xf)).append(" sl: ").append(chunk.getSavedLightValue(EnumSkyBlock.Sky, l7 & 0xf, l8, k9 & 0xf)).append(" rl: ").append(chunk.getBlockLightValue(l7 & 0xf, l8, k9 & 0xf, 0)).toString(), 2, 96, 0xe0e0e0);
             }
 
-            if (!mc.theWorld.isRemote || true)
+            if (!mc.theWorld.isRemote)
             {
                 drawString(fontrenderer, (new StringBuilder()).append("Seed: ").append(mc.theWorld.getSeed()).toString(), 2, 112, 0xe0e0e0);
-                WorldChunkManager man = ModLoader.getMinecraftInstance().theWorld.getWorldChunkManager();
-                man.oldFunc_4069_a(l7, k9, 1, 1);
-                double d = man.temperature[0];
-                double d1 = man.humidity[0];
-                drawString(fontrenderer, "Temperature: "+d+" Humidity:"+d1, 2, 120, 0xe0e0e0);
             }
 
             GL11.glPopMatrix();
