@@ -2069,7 +2069,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getSkyColor(Entity entity, float f)
     {
-        if((mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || ModLoader.getMinecraftInstance().thePlayer.dimension == 1) && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0))
+        if((mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || worldProvider.worldType == 1) && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0))
         {
             float f1 = getCelestialAngle(f);
             float f3 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -2085,10 +2085,10 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (mod_noBiomesX.SkyColor==0 && worldProvider.worldType != 1 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
-                if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension != 0){
+            if (mod_noBiomesX.SkyColor==0 && worldProvider.worldType == 0 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
+                if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || worldProvider.worldType != 0){
                     BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                    f7 = mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12 ? 0.2146759F : biomegenbase.getFloatTemperature();
+                    f7 = (worldProvider.worldType==0 && mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12) ? 0.2146759F : biomegenbase.getFloatTemperature();
                     k = biomegenbase.getSkyColorByTemp(f7);
                 }else{
                     f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
@@ -2257,7 +2257,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getFogColor(float par1)
     {
-        if(mod_noBiomesX.FogColor != 0L && ModLoader.getMinecraftInstance().thePlayer.dimension == 0){
+        if(mod_noBiomesX.FogColor != 0L && worldProvider.worldType == 0){
             return computeFogColor(par1);
         }
         float f = getCelestialAngle(par1);
@@ -3255,10 +3255,10 @@ public class World implements IBlockAccess
 
         Profiler.startSection("mobSpawner");
 //         SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-        if (ModLoader.getMinecraftInstance().thePlayer.dimension!=1){
+        if (worldProvider.worldType!=1){
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.UseNewSpawning){
                 SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES || ModLoader.getMinecraftInstance().thePlayer.dimension!=0){
+            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES || worldProvider.worldType!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
             } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
                 animalSpawner.func_1150_a(this);
@@ -3541,7 +3541,7 @@ public class World implements IBlockAccess
             }
 
             Profiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && snowCovered && mod_noBiomesX.SnowCovered && ModLoader.getMinecraftInstance().thePlayer.dimension==0)
+            if(rand.nextInt(4) == 0 && mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && snowCovered && mod_noBiomesX.SnowCovered && worldProvider.worldType==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
