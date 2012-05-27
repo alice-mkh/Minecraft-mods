@@ -299,7 +299,7 @@ public class mod_noBiomesX extends BaseModMp{
         SunriseEffect = gen>GEN_BIOMELESS;
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
         world.worldProvider.registerWorld(world);
-        SnowCovered = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && (theme==THEME_NORMAL||theme==THEME_WOODS);
+        SnowCovered = (gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && (theme==THEME_NORMAL || theme==THEME_WOODS)) ? snow : false;
         SunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
         ClassicLight = gen<GEN_NEWBIOMES;
         GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
