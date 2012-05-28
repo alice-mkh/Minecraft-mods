@@ -163,35 +163,6 @@ public class BoundChunk extends Chunk
     }
 
     /**
-     * Adds an entity to the chunk. Args: entity
-     */
-    public void addEntity(Entity entity)
-    {
-    }
-
-    /**
-     * removes entity using its y chunk coordinate as its index
-     */
-    public void removeEntity(Entity entity)
-    {
-    }
-
-    /**
-     * Removes entity at the specified index from the entity array.
-     */
-    public void removeEntityAtIndex(Entity entity, int i)
-    {
-    }
-
-    /**
-     * Returns whether is not a block above this one blocking sight to the sky (done via checking against the heightmap)
-     */
-    public boolean canBlockSeeTheSky(int par1, int par2, int par3)
-    {
-        return false;
-    }
-
-    /**
      * Gets the TileEntity for a given block in this chunk
      */
     public TileEntity getChunkBlockTileEntity(int par1, int par2, int par3)
@@ -238,21 +209,6 @@ public class BoundChunk extends Chunk
      * Sets the isModified flag for this Chunk
      */
     public void setChunkModified()
-    {
-    }
-
-    /**
-     * Fills the given list of all entities that intersect within the given bounding box that aren't the passed entity
-     * Args: entity, aabb, listToFill
-     */
-    public void getEntitiesWithinAABBForEntity(Entity entity, AxisAlignedBB axisalignedbb, List list)
-    {
-    }
-
-    /**
-     * Gets all entities that can be assigned to the specified class. Args: entityClass, aabb, listToFill
-     */
-    public void getEntitiesOfTypeWithinAAAB(Class class1, AxisAlignedBB axisalignedbb, List list)
     {
     }
 
