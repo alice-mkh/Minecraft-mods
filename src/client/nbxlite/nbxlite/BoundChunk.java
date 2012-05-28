@@ -108,7 +108,11 @@ public class BoundChunk extends Chunk
     public static int getSkyLightInBounds(int par1, int par2, int par3){
         int sky = 15;
         if (par2<mod_noBiomesX.SurrWaterHeight){
-            sky-=3*(mod_noBiomesX.SurrWaterHeight-par2);
+            if (Block.blocksList[mod_noBiomesX.SurrWaterType].blockMaterial!=Material.lava){
+                sky-=3*(mod_noBiomesX.SurrWaterHeight-par2);
+            }else{
+                sky = 0;
+            }
         }
         if (sky<0){
             sky = 0;
@@ -119,7 +123,7 @@ public class BoundChunk extends Chunk
     public static int getBlockLightInBounds(int par1, int par2, int par3){
         int block = 0;
         if (par2>=mod_noBiomesX.SurrGroundHeight){
-            if (par2<=mod_noBiomesX.SurrWaterHeight){
+            if (par2<mod_noBiomesX.SurrWaterHeight){
                 block = Block.lightValue[mod_noBiomesX.SurrWaterType];
             }else{
                 block = Block.lightValue[mod_noBiomesX.SurrWaterType]-(par2-mod_noBiomesX.SurrWaterHeight)-1;
@@ -155,7 +159,7 @@ public class BoundChunk extends Chunk
      */
     public int getBlockLightValue(int par1, int par2, int par3, int i)
     {
-        return Math.max(getSkyLightInBounds(par2, par3, i), getBlockLightInBounds(par2, par3, i));
+        return Math.max(getSkyLightInBounds(par1, par2, par3), getBlockLightInBounds(par1, par2, par3));
     }
 
     /**
