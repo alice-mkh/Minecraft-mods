@@ -245,6 +245,7 @@ public class WorldInfo
         skycolor = par1WorldInfo.skycolor;
         fogcolor = par1WorldInfo.fogcolor;
         cloudcolor = par1WorldInfo.cloudcolor;
+        nbxlite = par1WorldInfo.nbxlite;
     }
 
     /**
