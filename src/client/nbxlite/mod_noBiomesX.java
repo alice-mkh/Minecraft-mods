@@ -337,6 +337,9 @@ public class mod_noBiomesX extends BaseModMp{
         int tid = Block.blocksList[id].getBlockTextureFromSideAndMetadata(1, 0);
         terrfx.changeIndex(tid, false);
         bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
+        org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+        textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
+        emptyImage = ModLoader.getMinecraftInstance().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));
     }
 
     public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
@@ -535,6 +538,8 @@ public class mod_noBiomesX extends BaseModMp{
     public static int gearId = 200;
     public static TextureTerrainPngFX terrfx;
     public static TextureTerrainPngFX bedrockfx;
+    public static int emptyImage;
+    public static int textureWidth;
    
     public static int LightTintRed = 255;
     public static int LightTintGreen = 255;

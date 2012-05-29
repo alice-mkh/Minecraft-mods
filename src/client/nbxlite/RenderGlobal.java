@@ -1318,6 +1318,7 @@ public class RenderGlobal implements IWorldAccess
         if (mod_noBiomesX.SurrGroundType<=0 || mod_noBiomesX.SurrWaterType<=0){
             return;
         }
+        int width = 16;
         mod_noBiomesX.terrfx.anaglyphEnabled = mc.gameSettings.anaglyph;
         mod_noBiomesX.terrfx.onTick();
         mod_noBiomesX.bedrockfx.anaglyphEnabled = mc.gameSettings.anaglyph;
@@ -1335,7 +1336,7 @@ public class RenderGlobal implements IWorldAccess
         int i1 = l % 0x10000;
         int j1 = l / 0x10000;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
-        boolean anim = mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.SurrWaterType!=Block.waterStill.blockID;
+        boolean anim = mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
         if (id==Block.grass.blockID && !mod_noBiomesX.FallbackColors){
@@ -1344,25 +1345,17 @@ public class RenderGlobal implements IWorldAccess
             imageData.clear();
             imageData.put(mod_noBiomesX.terrfx.imageData);
             imageData.position(0).limit(mod_noBiomesX.terrfx.imageData.length);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/empty.png"));
-            for (int kk = 0; kk < mod_noBiomesX.terrfx.tileSize; kk++){
-                for (int ll = 0; ll < mod_noBiomesX.terrfx.tileSize; ll++){
-                    GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, kk, ll, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-                }
-            }
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_noBiomesX.emptyImage);
+            GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/empty.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_noBiomesX.emptyImage);
         if (mod_noBiomesX.SurrGroundHeight>=0 || mod_noBiomesX.SurrWaterHeight>=0){
             imageData.clear();
             imageData.put(mod_noBiomesX.bedrockfx.imageData);
             imageData.position(0).limit(mod_noBiomesX.bedrockfx.imageData.length);
-            for (int kk = 0; kk < mod_noBiomesX.bedrockfx.tileSize; kk++){
-                for (int ll = 0; ll < mod_noBiomesX.bedrockfx.tileSize; ll++){
-                    GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, kk, ll, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-                }
-            }
+            GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
             renderSideBounds(f);
             renderBottomBounds(f);
         }
@@ -1372,6 +1365,7 @@ public class RenderGlobal implements IWorldAccess
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         String name = Block.blocksList[mod_noBiomesX.SurrWaterType].getBlockName().replace("tile.", "").replace("Still", "").replace("Moving", "");
         if (anim){
+            width = mod_noBiomesX.textureWidth;
             TextureFX texturefx = null;
             try{
                 List list = ((ArrayList)ModLoader.getPrivateValue(net.minecraft.src.RenderEngine.class, renderEngine, 6));
@@ -1381,19 +1375,16 @@ public class RenderGlobal implements IWorldAccess
                         break;
                     }
                 }
+                imageData.clear();
+                imageData.put(texturefx.imageData);
+                imageData.position(0).limit(texturefx.imageData.length);;
+                GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
             }catch(Exception ex){
-                System.out.println(ex);
-            }
-            imageData.clear();
-            imageData.put(texturefx.imageData);
-            imageData.position(0).limit(texturefx.imageData.length);;
-            for (int kk = 0; kk < texturefx.tileSize; kk++){
-                for (int ll = 0; ll < texturefx.tileSize; ll++){
-                    GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, kk, ll, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-                }
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+"water.png"));
+//                 System.out.println(ex);
             }
         }else{
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/water.png"));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+".png"));
         }
         GL11.glEnable(GL11.GL_BLEND);
         renderLiquidBounds(f);
