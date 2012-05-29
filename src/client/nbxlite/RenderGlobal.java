@@ -1374,10 +1374,12 @@ public class RenderGlobal implements IWorldAccess
         if (anim){
             TextureFX texturefx = null;
             try{
-                if (name.startsWith("lava")){
-                    texturefx = ((TextureLavaFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, 51));
-                }else{
-                    texturefx = ((TextureWaterFX)ModLoader.getPrivateValue(net.minecraft.client.Minecraft.class, mc, 50));
+                List list = ((ArrayList)ModLoader.getPrivateValue(net.minecraft.src.RenderEngine.class, renderEngine, 6));
+                for (int i = 0; i < list.size(); i++){
+                    if (((TextureFX)list.get(i)).iconIndex==((name.startsWith("lava") ? 14 : 12) * 16 + 13)){
+                        texturefx = ((TextureFX)list.get(i));
+                        break;
+                    }
                 }
             }catch(Exception ex){
                 System.out.println(ex);
