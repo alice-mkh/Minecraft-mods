@@ -1318,11 +1318,15 @@ public class RenderGlobal implements IWorldAccess
         if (mod_noBiomesX.SurrGroundType<=0 || mod_noBiomesX.SurrWaterType<=0){
             return;
         }
-        int width = 16;
+        int width = mod_noBiomesX.textureWidth;
         mod_noBiomesX.terrfx.anaglyphEnabled = mc.gameSettings.anaglyph;
         mod_noBiomesX.terrfx.onTick();
         mod_noBiomesX.bedrockfx.anaglyphEnabled = mc.gameSettings.anaglyph;
         mod_noBiomesX.bedrockfx.onTick();
+        mod_noBiomesX.waterfx.anaglyphEnabled = mc.gameSettings.anaglyph;
+        mod_noBiomesX.waterfx.onTick();
+        mod_noBiomesX.lavafx.anaglyphEnabled = mc.gameSettings.anaglyph;
+        mod_noBiomesX.lavafx.onTick();
         int id = mod_noBiomesX.SurrGroundType;
         if (mod_noBiomesX.SurrGroundHeight<=mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
             id = Block.dirt.blockID;
@@ -1365,7 +1369,6 @@ public class RenderGlobal implements IWorldAccess
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         String name = Block.blocksList[mod_noBiomesX.SurrWaterType].getBlockName().replace("tile.", "").replace("Still", "").replace("Moving", "");
         if (anim){
-            width = mod_noBiomesX.textureWidth;
             TextureFX texturefx = null;
             try{
                 List list = ((ArrayList)ModLoader.getPrivateValue(net.minecraft.src.RenderEngine.class, renderEngine, 6));
@@ -1380,11 +1383,23 @@ public class RenderGlobal implements IWorldAccess
                 imageData.position(0).limit(texturefx.imageData.length);;
                 GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
             }catch(Exception ex){
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+"water.png"));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_noBiomesX.emptyImage);
+                TextureFX fx = name.startsWith("lava") ? mod_noBiomesX.lavafx : mod_noBiomesX.waterfx;
+                imageData.clear();
+                imageData.put(fx.imageData);
+                imageData.position(0).limit(fx.imageData.length);
+                GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
+//                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+".png"));
 //                 System.out.println(ex);
             }
         }else{
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+".png"));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_noBiomesX.emptyImage);
+            TextureFX fx = name.startsWith("lava") ? mod_noBiomesX.lavafx : mod_noBiomesX.waterfx;
+            imageData.clear();
+            imageData.put(fx.imageData);
+            imageData.position(0).limit(fx.imageData.length);
+            GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
+//             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+".png"));
         }
         GL11.glEnable(GL11.GL_BLEND);
         renderLiquidBounds(f);

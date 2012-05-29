@@ -110,6 +110,8 @@ public class mod_noBiomesX extends BaseModMp{
         registerGears();
         terrfx = new TextureTerrainPngFX();
         bedrockfx = new TextureTerrainPngFX();
+        waterfx = new TextureTerrainPngFX();
+        lavafx = new TextureTerrainPngFX();
     }
 
     public static boolean isFinite(){
@@ -327,6 +329,8 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public static void setTextureFX(){
+        org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+        textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
         int id = SurrGroundType;
         if (SurrGroundHeight<=SurrWaterHeight || SurrWaterType==Block.lavaStill.blockID && SurrGroundType==Block.grass.blockID){
             id = Block.dirt.blockID;
@@ -337,8 +341,8 @@ public class mod_noBiomesX extends BaseModMp{
         int tid = Block.blocksList[id].getBlockTextureFromSideAndMetadata(1, 0);
         terrfx.changeIndex(tid, false);
         bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
-        org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
-        textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
+        waterfx.changeIndex(Block.waterStill.blockIndexInTexture, false);
+        lavafx.changeIndex(Block.lavaStill.blockIndexInTexture, false);
         emptyImage = ModLoader.getMinecraftInstance().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));
     }
 
@@ -538,6 +542,8 @@ public class mod_noBiomesX extends BaseModMp{
     public static int gearId = 200;
     public static TextureTerrainPngFX terrfx;
     public static TextureTerrainPngFX bedrockfx;
+    public static TextureTerrainPngFX waterfx;
+    public static TextureTerrainPngFX lavafx;
     public static int emptyImage;
     public static int textureWidth;
    

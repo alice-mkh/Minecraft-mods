@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.TextureFX;
+import net.minecraft.src.mod_noBiomesX;
 
 public class TextureTerrainPngFX extends TextureFX
 {
@@ -23,12 +24,13 @@ public class TextureTerrainPngFX extends TextureFX
     public TextureTerrainPngFX()
     {
         super(0);
-        spriteData = new int[256];
         renderEngine = ModLoader.getMinecraftInstance().renderEngine;
         changeIndex(255, false);
     }
 
     public void changeIndex(int index, boolean b){
+        spriteData = new int[mod_noBiomesX.textureWidth * mod_noBiomesX.textureWidth];
+        imageData = new byte[mod_noBiomesX.textureWidth * mod_noBiomesX.textureWidth * 4];
         currentIndex = index;
         try
         {
@@ -36,9 +38,9 @@ public class TextureTerrainPngFX extends TextureFX
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource("/terrain.png"));
             }
-            int i = (currentIndex % 16) * 16;
-            int j = (currentIndex / 16) * 16;
-            bufferedimage.getRGB(i, j, 16, 16, spriteData, 0, 16);
+            int i = (currentIndex % 16) * mod_noBiomesX.textureWidth;
+            int j = (currentIndex / 16) * mod_noBiomesX.textureWidth;
+            bufferedimage.getRGB(i, j, mod_noBiomesX.textureWidth, mod_noBiomesX.textureWidth, spriteData, 0, mod_noBiomesX.textureWidth);
         }
         catch (Exception ex)
         {
@@ -48,7 +50,7 @@ public class TextureTerrainPngFX extends TextureFX
 
     public void onTick()
     {
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < spriteData.length; i++)
         {
             int j = spriteData[i] >> 24 & 0xff;
             int k = spriteData[i] >> 16 & 0xff;
