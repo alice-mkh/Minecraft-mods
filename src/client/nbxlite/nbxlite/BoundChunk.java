@@ -122,7 +122,7 @@ public class BoundChunk extends Chunk
 
     public static int getBlockLightInBounds(int par1, int par2, int par3){
         int block = 0;
-        if (par2>=mod_noBiomesX.SurrGroundHeight){
+        if (par2>=mod_noBiomesX.SurrGroundHeight && mod_noBiomesX.SurrWaterHeight>mod_noBiomesX.SurrGroundHeight){
             if (par2<mod_noBiomesX.SurrWaterHeight){
                 block = Block.lightValue[mod_noBiomesX.SurrWaterType];
             }else{
