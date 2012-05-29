@@ -163,6 +163,14 @@ public class BoundChunk extends Chunk
     }
 
     /**
+     * Returns whether is not a block above this one blocking sight to the sky (done via checking against the heightmap)
+     */
+    public boolean canBlockSeeTheSky(int par1, int par2, int par3)
+    {
+        return false;
+    }
+
+    /**
      * Gets the TileEntity for a given block in this chunk
      */
     public TileEntity getChunkBlockTileEntity(int par1, int par2, int par3)
