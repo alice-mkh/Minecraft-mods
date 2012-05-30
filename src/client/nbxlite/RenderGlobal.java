@@ -1336,7 +1336,7 @@ public class RenderGlobal implements IWorldAccess
         }
         GL11.glPushMatrix();
         mc.entityRenderer.enableLightmap(f);
-        int l = mod_noBiomesX.getLightInBounds(0, mod_noBiomesX.SurrGroundHeight, 0);
+        int l = mod_noBiomesX.getLightInBounds(mod_noBiomesX.SurrGroundHeight);
         int i1 = l % 0x10000;
         int j1 = l / 0x10000;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
@@ -1363,7 +1363,7 @@ public class RenderGlobal implements IWorldAccess
             renderSideBounds(f);
             renderBottomBounds(f);
         }
-        l = mod_noBiomesX.getLightInBounds(0, mod_noBiomesX.SurrWaterHeight, 0);
+        l = mod_noBiomesX.getLightInBounds(mod_noBiomesX.SurrWaterHeight);
         i1 = l % 0x10000;
         j1 = l / 0x10000;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);

@@ -132,9 +132,9 @@ public class WorldInfo
         nbxlite = par1NBTTagCompound.hasKey("NBXlite");
         if (nbxlite){
             NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
-            mapGen = getGen(nbxliteTag.getString("Generator"), 0);
-            mapGenExtra = getGen(nbxliteTag.getString("Generator"), 1);
-            snowCovered = getGen(nbxliteTag.getString("Generator"), 2)>0;
+            mapGen = mod_noBiomesX.getGen(nbxliteTag.getString("Generator"), 0);
+            mapGenExtra = mod_noBiomesX.getGen(nbxliteTag.getString("Generator"), 1);
+            snowCovered = mod_noBiomesX.getGen(nbxliteTag.getString("Generator"), 2)>0;
             newOres = nbxliteTag.getBoolean("NewOres");
             if (!nbxliteTag.hasKey("Theme")){
                 mapTheme = mod_noBiomesX.THEME_NORMAL;
@@ -304,7 +304,7 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
         if (nbxlite){
             NBTTagCompound nbxliteTag = new NBTTagCompound();
-            nbxliteTag.setString("Generator", getGenName(mapGen, mapGenExtra, snowCovered));
+            nbxliteTag.setString("Generator", mod_noBiomesX.getGenName(mapGen, mapGenExtra, snowCovered));
             nbxliteTag.setBoolean("NewOres", newOres);
             NBTTagCompound themeTag = new NBTTagCompound();
             themeTag.setInteger("Generation", mapTheme);
@@ -333,148 +333,6 @@ public class WorldInfo
         {
             par1NBTTagCompound.setCompoundTag("Player", par2NBTTagCompound);
         }
-    }
-
-    private String getGenName(int gen, int feats, boolean snow){
-        StringBuilder result = new StringBuilder();
-        if (gen==mod_noBiomesX.GEN_BIOMELESS){
-            result.append("nobiomes/");
-            if (feats==mod_noBiomesX.FEATURES_ALPHA11201){
-                result.append("alpha");
-                if (snow){
-                    result.append("/snow");
-                }
-            }else if (feats==mod_noBiomesX.FEATURES_INDEV){
-                result.append("indev");
-            }else if (feats==mod_noBiomesX.FEATURES_CLASSIC){
-                result.append("classic");
-            }else{
-                result.append("infdev");
-                if (feats==mod_noBiomesX.FEATURES_INFDEV0608){
-                    result.append("0608");
-                }else if (feats==mod_noBiomesX.FEATURES_INFDEV0420){
-                    result.append("0420");
-                }else if (feats==mod_noBiomesX.FEATURES_INFDEV0227){
-                    result.append("0227");
-                }
-            }
-        }else if (gen==mod_noBiomesX.GEN_OLDBIOMES){
-            result.append("oldbiomes/");
-            if (feats==mod_noBiomesX.FEATURES_ALPHA120){
-                result.append("halloween");
-            }else if (feats==mod_noBiomesX.FEATURES_SKY){
-                result.append("sky");
-            }else{
-                result.append("beta1");
-                if (feats==mod_noBiomesX.FEATURES_BETA12){
-                    result.append("2");
-                }else if (feats==mod_noBiomesX.FEATURES_BETA14){
-                    result.append("4");
-                }else if (feats==mod_noBiomesX.FEATURES_BETA15){
-                    result.append("5");
-                }else if (feats==mod_noBiomesX.FEATURES_BETA173){
-                    result.append("73");
-                }else if (feats==mod_noBiomesX.FEATURES_JUNGLE){
-                    result.append("73/jungle");
-                }
-            }
-        }else if (gen==mod_noBiomesX.GEN_NEWBIOMES){
-            result.append("newbiomes/");
-            if (feats==mod_noBiomesX.FEATURES_BETA181){
-                result.append("beta181");
-            }else if (feats==mod_noBiomesX.FEATURES_10){
-                result.append("10");
-            }else if (feats==mod_noBiomesX.FEATURES_11){
-                result.append("11");
-            }else if (feats==mod_noBiomesX.FEATURES_12){
-                result.append("12");
-            }
-        }
-        return result.toString();
-    }
-
-    private int getGen(String gen, int what){
-        if (what==0){
-            if (gen.startsWith("nobiomes/")){
-                return mod_noBiomesX.GEN_BIOMELESS;
-            }
-            if (gen.startsWith("oldbiomes/")){
-                return mod_noBiomesX.GEN_OLDBIOMES;
-            }
-            if (gen.startsWith("newbiomes/")){
-                return mod_noBiomesX.GEN_NEWBIOMES;
-            }
-            return 0;
-        }
-        if (what==1){
-            if (gen.startsWith("nobiomes/")){
-                if (gen.contains("alpha11201")){
-                    return mod_noBiomesX.FEATURES_ALPHA11201;
-                }
-                if (gen.contains("indev")){
-                    return mod_noBiomesX.FEATURES_INDEV;
-                }
-                if (gen.contains("classic")){
-                    return mod_noBiomesX.FEATURES_CLASSIC;
-                }
-                if (gen.contains("infdev")){
-                    if (gen.contains("0608")){
-                        return mod_noBiomesX.FEATURES_INFDEV0608;
-                    }
-                    if (gen.contains("0420")){
-                        return mod_noBiomesX.FEATURES_INFDEV0420;
-                    }
-                    if (gen.contains("0227")){
-                        return mod_noBiomesX.FEATURES_INFDEV0227;
-                    }
-                }
-            }
-            if (gen.startsWith("oldbiomes/")){
-                if (gen.contains("halloween")){
-                    return mod_noBiomesX.FEATURES_ALPHA120;
-                }
-                if (gen.contains("sky")){
-                    return mod_noBiomesX.FEATURES_SKY;
-                }
-                if (gen.contains("beta12")){
-                    return mod_noBiomesX.FEATURES_BETA12;
-                }
-                if (gen.contains("beta14")){
-                    return mod_noBiomesX.FEATURES_BETA14;
-                }
-                if (gen.contains("beta15")){
-                    return mod_noBiomesX.FEATURES_BETA15;
-                }
-                if (gen.contains("beta173")){
-                    if (gen.endsWith("/jungle")){
-                        return mod_noBiomesX.FEATURES_JUNGLE;
-                    }else{
-                        return mod_noBiomesX.FEATURES_BETA173;
-                    }
-                }
-                return 0;
-            }
-            if (gen.startsWith("newbiomes/")){
-                if (gen.contains("beta181")){
-                    return mod_noBiomesX.FEATURES_BETA181;
-                }
-                if (gen.contains("10")){
-                    return mod_noBiomesX.FEATURES_10;
-                }
-                if (gen.contains("11")){
-                    return mod_noBiomesX.FEATURES_11;
-                }
-                if (gen.contains("12")){
-                    return mod_noBiomesX.FEATURES_12;
-                }
-                return 0;
-            }
-            return 0;
-        }
-        if (what==2){
-            return gen.endsWith("/snow") ? 1 : 0;
-        }
-        return 0;
     }
 
     /**

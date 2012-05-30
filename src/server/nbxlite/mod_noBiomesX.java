@@ -31,90 +31,6 @@ public class mod_noBiomesX extends BaseModMp{
         setSkyColor(Generator, MapFeatures, MapTheme, 2);
     }
 
-    private int getGen(String gen, int what){
-        if (what==0){
-            if (gen.startsWith("nobiomes/")){
-                return mod_noBiomesX.GEN_BIOMELESS;
-            }
-            if (gen.startsWith("oldbiomes/")){
-                return mod_noBiomesX.GEN_OLDBIOMES;
-            }
-            if (gen.startsWith("newbiomes/")){
-                return mod_noBiomesX.GEN_NEWBIOMES;
-            }
-            return 0;
-        }
-        if (what==1){
-            if (gen.startsWith("nobiomes/")){
-                if (gen.contains("alpha11201")){
-                    return mod_noBiomesX.FEATURES_ALPHA11201;
-                }
-                if (gen.contains("indev")){
-                    return mod_noBiomesX.FEATURES_INDEV;
-                }
-                if (gen.contains("classic")){
-                    return mod_noBiomesX.FEATURES_CLASSIC;
-                }
-                if (gen.contains("infdev")){
-                    if (gen.contains("0608")){
-                        return mod_noBiomesX.FEATURES_INFDEV0608;
-                    }
-                    if (gen.contains("0420")){
-                        return mod_noBiomesX.FEATURES_INFDEV0420;
-                    }
-                    if (gen.contains("0227")){
-                        return mod_noBiomesX.FEATURES_INFDEV0227;
-                    }
-                }
-            }
-            if (gen.startsWith("oldbiomes/")){
-                if (gen.contains("halloween")){
-                    return mod_noBiomesX.FEATURES_ALPHA120;
-                }
-                if (gen.contains("sky")){
-                    return mod_noBiomesX.FEATURES_SKY;
-                }
-                if (gen.contains("beta12")){
-                    return mod_noBiomesX.FEATURES_BETA12;
-                }
-                if (gen.contains("beta14")){
-                    return mod_noBiomesX.FEATURES_BETA14;
-                }
-                if (gen.contains("beta15")){
-                    return mod_noBiomesX.FEATURES_BETA15;
-                }
-                if (gen.contains("beta173")){
-                    if (gen.endsWith("/jungle")){
-                        return mod_noBiomesX.FEATURES_JUNGLE;
-                    }else{
-                        return mod_noBiomesX.FEATURES_BETA173;
-                    }
-                }
-                return 0;
-            }
-            if (gen.startsWith("newbiomes/")){
-                if (gen.contains("beta181")){
-                    return mod_noBiomesX.FEATURES_BETA181;
-                }
-                if (gen.contains("10")){
-                    return mod_noBiomesX.FEATURES_10;
-                }
-                if (gen.contains("11")){
-                    return mod_noBiomesX.FEATURES_11;
-                }
-                if (gen.contains("12")){
-                    return mod_noBiomesX.FEATURES_12;
-                }
-                return 0;
-            }
-            return 0;
-        }
-        if (what==2){
-            return gen.endsWith("/snow") ? 1 : 0;
-        }
-        return 0;
-    }
-
     public void load(){
         ModLoader.setInGameHook(this, true, true);
     }
@@ -192,6 +108,182 @@ public class mod_noBiomesX extends BaseModMp{
         dataString[0] = String.valueOf(ModLoader.getMinecraftServerInstance().getWorldManager(0).getSeed());
         packet.dataString = dataString;
         ModLoaderMp.sendPacketTo(this, entityplayermp, packet);
+    }
+
+    public static int getSkyLightInBounds(int par2){
+        int sky = 15;
+        if (par2<SurrWaterHeight){
+            if (Block.blocksList[SurrWaterType].blockMaterial!=Material.lava){
+                sky-=3*(SurrWaterHeight-par2);
+            }else{
+                sky = 0;
+            }
+        }
+        if (sky<0){
+            sky = 0;
+        }
+        return sky;
+    }
+
+    public static int getBlockLightInBounds(int par2){
+        int block = 0;
+        if (par2>=SurrGroundHeight && SurrWaterHeight>SurrGroundHeight){
+            if (par2<SurrWaterHeight){
+                block = Block.lightValue[SurrWaterType];
+            }else{
+                block = Block.lightValue[SurrWaterType]-(par2-SurrWaterHeight)-1;
+            }
+        }
+        if (block<0){
+            block = 0;
+        }
+        return block;
+    }
+
+    public static int getLightInBounds(int par2){
+        return getSkyLightInBounds(par2) << 20 | getBlockLightInBounds(par2) << 4;
+    }
+
+    public static String getGenName(int gen, int feats, boolean snow){
+        StringBuilder result = new StringBuilder();
+        if (gen==GEN_BIOMELESS){
+            result.append("nobiomes/");
+            if (feats==FEATURES_ALPHA11201){
+                result.append("alpha");
+                if (snow){
+                    result.append("/snow");
+                }
+            }else if (feats==FEATURES_INDEV){
+                result.append("indev");
+            }else if (feats==FEATURES_CLASSIC){
+                result.append("classic");
+            }else{
+                result.append("infdev");
+                if (feats==FEATURES_INFDEV0608){
+                    result.append("0608");
+                }else if (feats==FEATURES_INFDEV0420){
+                    result.append("0420");
+                }else if (feats==FEATURES_INFDEV0227){
+                    result.append("0227");
+                }
+            }
+        }else if (gen==GEN_OLDBIOMES){
+            result.append("oldbiomes/");
+            if (feats==FEATURES_ALPHA120){
+                result.append("halloween");
+            }else if (feats==FEATURES_SKY){
+                result.append("sky");
+            }else{
+                result.append("beta1");
+                if (feats==FEATURES_BETA12){
+                    result.append("2");
+                }else if (feats==FEATURES_BETA14){
+                    result.append("4");
+                }else if (feats==FEATURES_BETA15){
+                    result.append("5");
+                }else if (feats==FEATURES_BETA173){
+                    result.append("73");
+                }else if (feats==FEATURES_JUNGLE){
+                    result.append("73/jungle");
+                }
+            }
+        }else if (gen==GEN_NEWBIOMES){
+            result.append("newbiomes/");
+            if (feats==FEATURES_BETA181){
+                result.append("beta181");
+            }else if (feats==FEATURES_10){
+                result.append("10");
+            }else if (feats==FEATURES_11){
+                result.append("11");
+            }else if (feats==FEATURES_12){
+                result.append("12");
+            }
+        }
+        return result.toString();
+    }
+
+    public static int getGen(String gen, int what){
+        if (what==0){
+            if (gen.startsWith("nobiomes/")){
+                return GEN_BIOMELESS;
+            }
+            if (gen.startsWith("oldbiomes/")){
+                return GEN_OLDBIOMES;
+            }
+            if (gen.startsWith("newbiomes/")){
+                return GEN_NEWBIOMES;
+            }
+            return 0;
+        }
+        if (what==1){
+            if (gen.startsWith("nobiomes/")){
+                if (gen.contains("alpha11201")){
+                    return FEATURES_ALPHA11201;
+                }
+                if (gen.contains("indev")){
+                    return FEATURES_INDEV;
+                }
+                if (gen.contains("classic")){
+                    return FEATURES_CLASSIC;
+                }
+                if (gen.contains("infdev")){
+                    if (gen.contains("0608")){
+                        return FEATURES_INFDEV0608;
+                    }
+                    if (gen.contains("0420")){
+                        return FEATURES_INFDEV0420;
+                    }
+                    if (gen.contains("0227")){
+                        return FEATURES_INFDEV0227;
+                    }
+                }
+            }
+            if (gen.startsWith("oldbiomes/")){
+                if (gen.contains("halloween")){
+                    return FEATURES_ALPHA120;
+                }
+                if (gen.contains("sky")){
+                    return FEATURES_SKY;
+                }
+                if (gen.contains("beta12")){
+                    return FEATURES_BETA12;
+                }
+                if (gen.contains("beta14")){
+                    return FEATURES_BETA14;
+                }
+                if (gen.contains("beta15")){
+                    return FEATURES_BETA15;
+                }
+                if (gen.contains("beta173")){
+                    if (gen.endsWith("/jungle")){
+                        return FEATURES_JUNGLE;
+                    }else{
+                        return FEATURES_BETA173;
+                    }
+                }
+                return 0;
+            }
+            if (gen.startsWith("newbiomes/")){
+                if (gen.contains("beta181")){
+                    return FEATURES_BETA181;
+                }
+                if (gen.contains("10")){
+                    return FEATURES_10;
+                }
+                if (gen.contains("11")){
+                    return FEATURES_11;
+                }
+                if (gen.contains("12")){
+                    return FEATURES_12;
+                }
+                return 0;
+            }
+            return 0;
+        }
+        if (what==2){
+            return gen.endsWith("/snow") ? 1 : 0;
+        }
+        return 0;
     }
 
     public void handlePacket(Packet230ModLoader packet, EntityPlayerMP player)
