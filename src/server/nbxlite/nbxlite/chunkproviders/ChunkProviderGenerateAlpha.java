@@ -42,7 +42,6 @@ public class ChunkProviderGenerateAlpha
     double detail[];
     double roughness[];
     float field_35388_l[];
-    int unusedIntArray32x32[][];
 
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
     {
@@ -73,7 +72,6 @@ public class ChunkProviderGenerateAlpha
             villageGenerator = new MapGenVillage(0);
             mineshaftGenerator = new MapGenMineshaft();
         }
-        unusedIntArray32x32 = new int[32][32];
         worldObj = world;
         mapFeaturesEnabled = flag;
         rand = new Random(l);
