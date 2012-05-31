@@ -144,6 +144,25 @@ public class mod_noBiomesX extends BaseModMp{
         return getSkyLightInBounds(par2) << 20 | getBlockLightInBounds(par2) << 4;
     }
 
+    public static int getBlockIdInBounds(int par2){
+        if (par2<SurrGroundHeight-1){
+            return Block.bedrock.blockID;
+        }
+        if (par2<SurrGroundHeight){
+            if (MapFeatures==FEATURES_CLASSIC){
+                return Block.bedrock.blockID;
+            }
+            if ((par2<SurrWaterHeight || SurrWaterType==Block.lavaStill.blockID) && SurrGroundType==Block.grass.blockID){
+                return Block.dirt.blockID;
+            }
+            return SurrGroundType;
+        }
+        if (par2<SurrWaterHeight){
+            return SurrWaterType;
+        }
+        return 0;
+    }
+
     public static String getGenName(int gen, int feats, boolean snow){
         StringBuilder result = new StringBuilder();
         if (gen==GEN_BIOMELESS){

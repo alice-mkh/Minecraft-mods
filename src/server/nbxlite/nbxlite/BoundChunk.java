@@ -50,22 +50,7 @@ public class BoundChunk extends Chunk
      */
     public int getBlockID(int par1, int par2, int par3)
     {
-        if (par2<mod_noBiomesX.SurrGroundHeight-1){
-            return Block.bedrock.blockID;
-        }
-        if (par2<mod_noBiomesX.SurrGroundHeight){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                return Block.bedrock.blockID;
-            }
-            if ((par2<mod_noBiomesX.SurrWaterHeight || mod_noBiomesX.SurrWaterType==Block.lavaStill.blockID) && mod_noBiomesX.SurrGroundType==Block.grass.blockID){
-                return Block.dirt.blockID;
-            }
-            return mod_noBiomesX.SurrGroundType;
-        }
-        if (par2<mod_noBiomesX.SurrWaterHeight){
-            return mod_noBiomesX.SurrWaterType;
-        }
-        return 0;
+        return mod_noBiomesX.getBlockIdInBounds(par2);
     }
 
     public int getBlockLightOpacity(int par1, int par2, int par3)
