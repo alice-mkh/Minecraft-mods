@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.AlphaNoiseGeneratorOctaves;
-import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
 import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
@@ -37,7 +36,6 @@ public class ChunkProviderGenerateAlpha
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
-    private OldBiomeGenBase biomesForGeneration[];
     double terrainMain[];
     double terrainAlt1[];
     double terrainAlt2[];
@@ -170,7 +168,7 @@ public class ChunkProviderGenerateAlpha
 
     }
 
-    public void replaceBlocksForBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[])
+    public void replaceBlocksForBiome(int i, int j, byte abyte0[])
     {
         byte byte0 = 64;
         double d = 0.03125D;
@@ -310,8 +308,7 @@ public class ChunkProviderGenerateAlpha
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         generateTerrain(i, j, abyte0);
-        biomesForGeneration = worldObj.getWorldChunkManager().oldLoadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
-        replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
+        replaceBlocksForBiome(i, j, abyte0);
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if(mapFeaturesEnabled)
         {
