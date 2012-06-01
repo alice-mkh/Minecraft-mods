@@ -180,6 +180,20 @@ public class mod_OldDays extends BaseModMp{
         }catch (Exception ex){}
     }
 
+    protected void removeRecipe(String str1){
+        try{
+            List list = CraftingManager.getInstance().getRecipeList();
+            for (int i = 0; i < list.size(); i++){
+                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+                if (match.equals(str1)){
+                    list.remove(i);
+                }
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
     public static String[][] propname;
     public static int[][] propmax;
     public static int[][] propvalue;

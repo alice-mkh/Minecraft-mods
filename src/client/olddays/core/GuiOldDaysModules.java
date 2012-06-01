@@ -26,7 +26,11 @@ public class GuiOldDaysModules extends GuiScreen{
     public void addModule(int i, String name){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         int margin = 30;
-        controlList.add(moduleButtons[i]=new GuiButton(i+1, width / 2 - 75, height / 6 - 15 + (i*margin), 150, 20, name));
+        int x = width / 2 - 155;
+        if (i % 2 != 0){
+            x+=160;
+        }
+        controlList.add(moduleButtons[i]=new GuiButton(i+1, x, height / 6 + 15 + ((i/2)*margin), 150, 20, name));
         if (!ModLoader.isModLoaded("mod_OldDays"+name)){
             moduleButtons[i].enabled = false;
             moduleButtons[i].drawButton = false;
