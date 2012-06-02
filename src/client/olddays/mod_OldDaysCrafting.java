@@ -13,7 +13,8 @@ public class mod_OldDaysCrafting extends mod_OldDays{
         addProperty(6, "Old glowstone",         false, false, "Glowstone",  "");
         addProperty(7, "Old golden apple",      false, false, "Apple",      "");
         addProperty(8, "Old mushroom stew",     false, false, "Stew",       "");
-        addProperty(9, "12w17a books",          false, false, "Books",      "");
+        addProperty(9, "Old ore blocks",        false, false, "OreBlocks",  "");
+        addProperty(10,"12w17a books",          false, false, "Books",      "");
         loadModuleProperties();
     }
 
@@ -27,7 +28,8 @@ public class mod_OldDaysCrafting extends mod_OldDays{
             case 6: setGlowstone(Glowstone); break;
             case 7: setApple(Apple); break;
             case 8: setStew(Stew); break;
-            case 9: setBook(!Books); break;
+            case 9: setOreBlocks(OreBlocks); break;
+            case 10:setBook(!Books); break;
         }
     }
 
@@ -39,6 +41,7 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     public static boolean Glowstone;
     public static boolean Apple;
     public static boolean Stew;
+    public static boolean OreBlocks;
     public static boolean Books;
 
     private void setPlanks(boolean b){
@@ -67,16 +70,12 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     }
 
     private void setArmor(int b){
-        String helmet = "1xitem.helmetCloth@0";
-        String plate = "1xitem.chestplateCloth@0";
-        String legs = "1xitem.leggingsCloth@0";
-        String boots = "1xitem.bootsCloth@0";
         Block cloth = Block.cloth;
         Item leather = Item.leather;
-        removeRecipe(helmet);
-        removeRecipe(plate);
-        removeRecipe(legs);
-        removeRecipe(boots);
+        removeRecipe("1xitem.helmetCloth@0");
+        removeRecipe("1xitem.chestplateCloth@0");
+        removeRecipe("1xitem.leggingsCloth@0");
+        removeRecipe("1xitem.bootsCloth@0");
         if (b>1){
             ModLoader.addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', leather});
             ModLoader.addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', leather});
@@ -152,9 +151,8 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     }
 
     private void setGlowstone(boolean b){
-        String str = "1xtile.lightgem@0";
         Block glowstone = Block.glowStone;
-        removeRecipe(str);
+        removeRecipe("1xtile.lightgem@0");
         if (b){
             ModLoader.addRecipe(new ItemStack(glowstone, 1), new Object[]{"###", "###", "###", '#', Item.lightStoneDust});
         }else{
@@ -163,9 +161,8 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     }
 
     private void setCloth(boolean b){
-        String str = "1xtile.cloth@0";
         Block cloth = Block.cloth;
-        removeRecipe(str);
+        removeRecipe("1xtile.cloth@0");
         if (b){
             ModLoader.addRecipe(new ItemStack(cloth, 1), new Object[]{"###", "###", "###", '#', Item.silk});
         }else{
@@ -179,8 +176,7 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     }
 
     private void setApple(boolean b){
-        String str = "1xitem.appleGold@0";
-        removeRecipe(str);
+        removeRecipe("1xitem.appleGold@0");
         if (b){
             ModLoader.addRecipe(new ItemStack(Item.appleGold, 1), new Object[]{"###", "#X#", "###", '#', Block.blockGold, 'X', Item.appleRed});
         }else{
@@ -189,8 +185,7 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     }
 
     private void setStew(boolean b){
-        String str = "1xitem.mushroomStew@0";
-        removeRecipe(str);
+        removeRecipe("1xitem.mushroomStew@0");
         if (b){
             ModLoader.addRecipe(new ItemStack(Item.bowlSoup), new Object[]{
                 "Y", "X", "#", Character.valueOf('X'), Block.mushroomBrown, Character.valueOf('Y'), Block.mushroomRed, Character.valueOf('#'), Item.bowlEmpty
@@ -201,12 +196,26 @@ public class mod_OldDaysCrafting extends mod_OldDays{
     }
 
     private void setBook(boolean b){
-        String str = "1xitem.book@0";
-        removeRecipe(str);
+        removeRecipe("1xitem.book@0");
         if (b){
             ModLoader.addRecipe(new ItemStack(Item.book, 1), new Object[]{"#", "#", "#", Character.valueOf('#'), Item.paper});
         }else{
             ModLoader.addShapelessRecipe(new ItemStack(Item.book, 1), new Object[]{Item.paper, Item.paper, Item.paper, Item.leather});
+        }
+    }
+
+    private void setOreBlocks(boolean b){
+        removeRecipe("1xtile.blockIron@0");
+        removeRecipe("1xtile.blockGold@0");
+        removeRecipe("1xtile.blockDiamond@0");
+        if (b){
+            ModLoader.addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"##", "##", '#', Item.ingotIron});
+            ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"##", "##", '#', Item.ingotGold});
+            ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"##", "##", '#', Item.diamond});
+        }else{
+            ModLoader.addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
+            ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
+            ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
         }
     }
 }
