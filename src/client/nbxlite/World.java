@@ -515,15 +515,16 @@ public class World implements IBlockAccess
                 worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
                 worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
                 worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
                 worldInfo.surrwatertype = mod_noBiomesX.SurrWaterType;
                 worldInfo.surrwaterheight = mod_noBiomesX.SurrWaterHeight;
                 worldInfo.surrgroundtype = mod_noBiomesX.SurrGroundType;
                 worldInfo.surrgroundheight = mod_noBiomesX.SurrGroundHeight;
-                worldInfo.cloudheight = mod_noBiomesX.CloudHeight;
-                worldInfo.skybrightness = mod_noBiomesX.SkyBrightness;
-                worldInfo.skycolor = mod_noBiomesX.SkyColor;
-                worldInfo.fogcolor = mod_noBiomesX.FogColor;
-                worldInfo.cloudcolor = mod_noBiomesX.CloudColor;
+                worldInfo.cloudheight = mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
+                worldInfo.skybrightness = mod_noBiomesX.setSkyBrightness(mod_noBiomesX.MapTheme);
+                worldInfo.skycolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 0);
+                worldInfo.fogcolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 1);
+                worldInfo.cloudcolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 2);
             }
             worldProvider.registerWorld(this);
         }
