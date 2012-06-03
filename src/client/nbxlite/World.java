@@ -381,6 +381,7 @@ public class World implements IBlockAccess
             }
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 if (!mod_noBiomesX.Import){
+                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
                     IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
                     if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
                         gen2.island=true;
@@ -403,7 +404,6 @@ public class World implements IBlockAccess
                     mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                     mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                     mod_noBiomesX.IndevWorld = null;
-                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
                 }else{
                     ModLoader.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading blocks..");
@@ -3750,23 +3750,25 @@ public class World implements IBlockAccess
             int i1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3 + 1, par4) - par6;
             int j1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 - 1) - par6;
             int k1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 + 1) - par6;
-            if (isBounds(par2-1, par3, par4)){
-                j = 0;
-            }
-            if (isBounds(par2+1, par3, par4)){
-                k = 0;
-            }
-            if (isBounds(par2, par3-1, par4)){
-                l = 0;
-            }
-            if (isBounds(par2, par3+1, par4)){
-                i1 = 0;
-            }
-            if (isBounds(par2, par3, par4-1)){
-                j1 = 0;
-            }
-            if (isBounds(par2, par3, par4+1)){
-                k1 = 0;
+            if (mod_noBiomesX.SurrWaterType==Block.waterStill.blockID || mod_noBiomesX.SurrWaterType==Block.waterMoving.blockID){
+                if (isBounds(par2-1, par3, par4)){
+                    j = mod_noBiomesX.getSkyLightInBounds(par3);
+                }
+                if (isBounds(par2+1, par3, par4)){
+                    k = mod_noBiomesX.getSkyLightInBounds(par3);
+                }
+                if (isBounds(par2, par3-1, par4)){
+                    l = mod_noBiomesX.getSkyLightInBounds(par3-1);
+                }
+                if (isBounds(par2, par3+1, par4)){
+                    i1 = mod_noBiomesX.getSkyLightInBounds(par3+1);
+                }
+                if (isBounds(par2, par3, par4-1)){
+                    j1 = mod_noBiomesX.getSkyLightInBounds(par3);
+                }
+                if (isBounds(par2, par3, par4+1)){
+                    k1 = mod_noBiomesX.getSkyLightInBounds(par3);
+                }
             }
 
             if (j > i)
