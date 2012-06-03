@@ -256,7 +256,7 @@ public class World implements IBlockAccess
 
          if (flag)
          {
-            worldInfo.setNBXlite(true);
+            worldInfo.nbxlite = true;
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
                 if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
                     BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;
@@ -273,11 +273,13 @@ public class World implements IBlockAccess
                     BiomeGenBase.extremeHills.maxHeight = 1.8F;
                 }
             }
-            worldInfo.setMapGen(mod_noBiomesX.Generator);
+            worldInfo.mapGen = mod_noBiomesX.Generator;
             mapGen=mod_noBiomesX.Generator;
-            worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
+            worldInfo.mapGenExtra = mod_noBiomesX.MapFeatures;
             mapGenExtra=mod_noBiomesX.MapFeatures;
-            worldInfo.setMapTheme(mapGenExtra);
+            worldInfo.mapTheme = mod_noBiomesX.MapTheme;
+            worldInfo.snowCovered = mod_noBiomesX.SnowCovered;
+            worldInfo.newOres = mod_noBiomesX.GenerateNewOres;
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && worldProvider.worldType == 0){
                 IndevGenerator gen2 = new IndevGenerator(getSeed());
                 if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
@@ -300,10 +302,10 @@ public class World implements IBlockAccess
                 mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                 mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
-                worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
-                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
-                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.mapType = mod_noBiomesX.IndevMapType;
+                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
+                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
+                worldInfo.indevY = mod_noBiomesX.IndevHeight;
             }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC && worldProvider.worldType == 0){
                 mod_noBiomesX.IndevHeight = 64;
                 ClassicGenerator gen2 = new ClassicGenerator(getSeed());
@@ -317,27 +319,29 @@ public class World implements IBlockAccess
                 mod_noBiomesX.IndevSpawnY = gen2.spawnY;
                 mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mapTypeIndev=0;
-                worldInfo.setIndevMapType(0);
-                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
-                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.mapType = 0;
+                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
+                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
+                worldInfo.indevY = mod_noBiomesX.IndevHeight;
             }else{
                 mapTypeIndev=0;
-                worldInfo.setIndevMapType(0);
+                worldInfo.mapType = 0;
             }
             generateSpawnPoint();
         }else{
-            worldInfo.setNBXlite(true);
-            snowCovered = worldInfo.getSnowCovered();
+            worldInfo.nbxlite = true;
+            mapGen = worldInfo.mapGen;
+            mapGenExtra = worldInfo.mapGenExtra;
+            snowCovered = worldInfo.snowCovered;
             if (mapGen==2){
-                if (worldInfo.getMapGenExtra()==0){
+                if (worldInfo.mapGenExtra==0){
                     BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 0;
                     BiomeGenBase.ocean.maxHeight = 0.5F;
                 }else{
                     BiomeGenBase.swampland.biomeDecorator.waterlilyPerChunk = 4;
                     BiomeGenBase.ocean.maxHeight = 0.4F;
                 }
-                if (worldInfo.getMapGenExtra()>=2){
+                if (worldInfo.mapGenExtra>=2){
                     BiomeGenBase.taiga.temperature = 0.05F;
                     BiomeGenBase.extremeHills.maxHeight = 1.3F;
                 }else{
@@ -345,8 +349,6 @@ public class World implements IBlockAccess
                     BiomeGenBase.extremeHills.maxHeight = 1.8F;
                 }
             }
-            mapGen = worldInfo.getMapGen();
-            mapGenExtra = worldInfo.getMapGenExtra();
             if (mapGen==0 && mapGenExtra==1){
                 mod_noBiomesX.LeavesDecay=false;
             }else{
@@ -357,7 +359,8 @@ public class World implements IBlockAccess
             }else{
                 mod_noBiomesX.RestrictSlimes=false;
             }
-            mapTypeIndev = worldInfo.getIndevMapType();
+            mapTypeIndev = worldInfo.mapType;
+            mod_noBiomesX.GenerateNewOres = worldInfo.newOres;
             worldProvider.registerWorld(this);
         }
         if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS)

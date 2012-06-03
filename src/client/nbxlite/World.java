@@ -258,10 +258,10 @@ public class World implements IBlockAccess
         worldInfo = new WorldInfo(par1World.worldInfo);
         mapStorage = new MapStorage(saveHandler);
         worldProvider = par2WorldProvider;
-        mapGen = worldInfo.getMapGen();
-        mapGenExtra = worldInfo.getMapGenExtra();
-        snowCovered = worldInfo.getSnowCovered();
-        mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), worldInfo.getIndevMapType(), snowCovered, worldInfo.getNewOres());
+        mapGen = worldInfo.mapGen;
+        mapGenExtra = worldInfo.mapGenExtra;
+        snowCovered = worldInfo.snowCovered;
+        mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, snowCovered, worldInfo.newOres);
         turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
@@ -341,11 +341,11 @@ public class World implements IBlockAccess
         chunkProvider = createChunkProvider();
         if(flag)
          {
-            worldInfo.setNBXlite(true);
-            worldInfo.setMapGen(mod_noBiomesX.Generator);
-            worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
-            worldInfo.setMapTheme(mod_noBiomesX.MapTheme);
-            worldInfo.setNewOres(mod_noBiomesX.GenerateNewOres);
+            worldInfo.nbxlite = true;
+            worldInfo.mapGen = mod_noBiomesX.Generator;
+            worldInfo.mapGenExtra = mod_noBiomesX.MapFeatures;
+            worldInfo.mapTheme = mod_noBiomesX.MapTheme;
+            worldInfo.newOres = mod_noBiomesX.GenerateNewOres;
             mapGen=mod_noBiomesX.Generator;
             mapGenExtra=mod_noBiomesX.MapFeatures;
             mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false, mod_noBiomesX.GenerateNewOres);
@@ -353,21 +353,21 @@ public class World implements IBlockAccess
             {
                 if (!mod_noBiomesX.Import){
                     byte byte0 = 4;
-                    if(worldInfo.getMapTheme() == 2)
+                    if(worldInfo.mapTheme == 2)
                     {
                         byte0 = 2;
                     }
                     if(rand.nextInt(byte0) == 0)
                     {
-                        worldInfo.setSnowCovered(true);
+                        worldInfo.snowCovered = true;
                         snowCovered = true;
                         mod_noBiomesX.SnowCovered=true;
                     }else{
                         mod_noBiomesX.SnowCovered=false;
                     }
                 }else{
-                    snowCovered = worldInfo.getSnowCovered();
-                    mod_noBiomesX.SnowCovered=worldInfo.getSnowCovered();
+                    snowCovered = worldInfo.snowCovered;
+                    mod_noBiomesX.SnowCovered=worldInfo.snowCovered;
                 }
             }else{
                 mod_noBiomesX.SnowCovered=false;
@@ -455,10 +455,10 @@ public class World implements IBlockAccess
                     worldInfo.cloudcolor = mod_noBiomesX.CloudColor;
                 }
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
-                worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
-                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
-                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.mapType = mod_noBiomesX.IndevMapType;
+                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
+                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
+                worldInfo.indevY = mod_noBiomesX.IndevHeight;
             }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
                 mod_noBiomesX.IndevHeight = 64;
                 ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, getSeed());
@@ -474,26 +474,26 @@ public class World implements IBlockAccess
                 mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mod_noBiomesX.IndevWorld = null;
                 mapTypeIndev=0;
-                worldInfo.setIndevMapType(0);
-                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
-                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.mapType = 0;
+                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
+                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
+                worldInfo.indevY = mod_noBiomesX.IndevHeight;
                 mod_noBiomesX.setIndevBounds(5, mod_noBiomesX.MapTheme);
             }else{
                 mapTypeIndev=0;
-                worldInfo.setIndevMapType(0);
+                worldInfo.mapType = 0;
             }
             generateSpawnPoint();
         } else
         {
-            if (worldInfo.getNBXlite()){
-                mapGen = worldInfo.getMapGen();
-                mapGenExtra = worldInfo.getMapGenExtra();
-                snowCovered = worldInfo.getSnowCovered();
-                mapTypeIndev = worldInfo.getIndevMapType();
-                mod_noBiomesX.IndevWidthX = worldInfo.getIndevX();
-                mod_noBiomesX.IndevWidthZ = worldInfo.getIndevZ();
-                mod_noBiomesX.IndevHeight = worldInfo.getIndevY();
+            if (worldInfo.nbxlite){
+                mapGen = worldInfo.mapGen;
+                mapGenExtra = worldInfo.mapGenExtra;
+                snowCovered = worldInfo.snowCovered;
+                mapTypeIndev = worldInfo.mapType;
+                mod_noBiomesX.IndevWidthX = worldInfo.indevX;
+                mod_noBiomesX.IndevWidthZ = worldInfo.indevZ;
+                mod_noBiomesX.IndevHeight = worldInfo.indevY;
                 mod_noBiomesX.SurrWaterType = worldInfo.surrwatertype;
                 mod_noBiomesX.SurrWaterHeight = worldInfo.surrwaterheight;
                 mod_noBiomesX.SurrGroundType = worldInfo.surrgroundtype;
@@ -503,18 +503,18 @@ public class World implements IBlockAccess
                 mod_noBiomesX.SkyColor = worldInfo.skycolor;
                 mod_noBiomesX.FogColor = worldInfo.fogcolor;
                 mod_noBiomesX.CloudColor = worldInfo.cloudcolor;
-                mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.getMapTheme(), mapTypeIndev, snowCovered, worldInfo.getNewOres());
+                mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, mapTypeIndev, snowCovered, worldInfo.newOres);
             }else{
                 mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, mod_noBiomesX.SnowCovered, mod_noBiomesX.GenerateNewOres);
-                worldInfo.setNBXlite(true);
-                worldInfo.setMapGen(mod_noBiomesX.Generator);
-                worldInfo.setMapGenExtra(mod_noBiomesX.MapFeatures);
-                worldInfo.setMapTheme(mod_noBiomesX.MapTheme);
-                worldInfo.setNewOres(mod_noBiomesX.GenerateNewOres);
-                worldInfo.setIndevMapType(mod_noBiomesX.IndevMapType);
-                worldInfo.setIndevX(mod_noBiomesX.IndevWidthX);
-                worldInfo.setIndevZ(mod_noBiomesX.IndevWidthZ);
-                worldInfo.setIndevY(mod_noBiomesX.IndevHeight);
+                worldInfo.nbxlite = true;
+                worldInfo.mapGen = mod_noBiomesX.Generator;
+                worldInfo.mapGenExtra = mod_noBiomesX.MapFeatures;
+                worldInfo.mapTheme = mod_noBiomesX.MapTheme;
+                worldInfo.newOres = mod_noBiomesX.GenerateNewOres;
+                worldInfo.mapType = mod_noBiomesX.IndevMapType;
+                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
+                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
+                worldInfo.indevY = mod_noBiomesX.IndevHeight;
                 mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
                 worldInfo.surrwatertype = mod_noBiomesX.SurrWaterType;
                 worldInfo.surrwaterheight = mod_noBiomesX.SurrWaterHeight;

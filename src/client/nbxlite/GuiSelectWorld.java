@@ -200,7 +200,7 @@ public class GuiSelectWorld extends GuiScreen
             }
             return;
         }
-        if (!mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().getNBXlite()){
+        if (!mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().nbxlite){
             mod_noBiomesX.Import = true;
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(new GuiNBXlite(this, getSaveFileName(par1), par1));

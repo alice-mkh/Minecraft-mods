@@ -57,15 +57,15 @@ public class WorldInfo
     /** Hardcore mode flag */
     private boolean hardcore;
 
-    private boolean nbxlite;
-    private boolean snowCovered;
-    private int mapTheme;
-    private int mapGen;
-    private int mapGenExtra;
-    private int mapType;
-    private int indevX;
-    private int indevY;
-    private int indevZ;
+    public boolean nbxlite;
+    public boolean snowCovered;
+    public int mapTheme;
+    public int mapGen;
+    public int mapGenExtra;
+    public int mapType;
+    public int indevX;
+    public int indevY;
+    public int indevZ;
     public int surrwatertype;
     public int surrwaterheight;
     public int surrgroundtype;
@@ -75,7 +75,7 @@ public class WorldInfo
     public int skycolor;
     public int fogcolor;
     public int cloudcolor;
-    private boolean newOres;
+    public boolean newOres;
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
@@ -576,106 +576,6 @@ public class WorldInfo
     public void setTerrainType(WorldType par1WorldType)
     {
         terrainType = par1WorldType;
-    }
-
-    public boolean getSnowCovered()
-    {
-        return snowCovered;
-    }
-
-    public void setSnowCovered(boolean flag)
-    {
-        snowCovered = flag;
-    }
-
-    public void setMapTheme(int i)
-    {
-        mapTheme = i;
-    }
-
-    public int getMapTheme()
-    {
-        return mapTheme;
-    }
-
-    public void setMapGen(int i)
-    {
-        mapGen = i;
-    }
-
-    public int getMapGen()
-    {
-        return mapGen;
-    }
-
-    public void setMapGenExtra(int i)
-    {
-        mapGenExtra = i;
-    }
-
-    public int getMapGenExtra()
-    {
-        return mapGenExtra;
-    }
-
-    public int getIndevMapType()
-    {
-        return mapType;
-    }
-
-    public void setIndevMapType(int i)
-    {
-        mapType = i;
-    }
-
-    public int getIndevX()
-    {
-        return indevX;
-    }
-
-    public void setIndevX(int i)
-    {
-        indevX = i;
-    }
-
-    public int getIndevY()
-    {
-        return indevY;
-    }
-
-    public void setIndevY(int i)
-    {
-        indevY = i;
-    }
-
-    public int getIndevZ()
-    {
-        return indevZ;
-    }
-
-    public void setIndevZ(int i)
-    {
-        indevZ = i;
-    }
-
-    public boolean getNewOres()
-    {
-        return newOres;
-    }
-
-    public void setNewOres(boolean b)
-    {
-        newOres = b;
-    }
-
-    public boolean getNBXlite()
-    {
-        return nbxlite;
-    }
-
-    public void setNBXlite(boolean b)
-    {
-        nbxlite = b;
     }
 
     public void setSeed(long l)
