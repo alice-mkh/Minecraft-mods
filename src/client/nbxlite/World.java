@@ -3750,6 +3750,24 @@ public class World implements IBlockAccess
             int i1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3 + 1, par4) - par6;
             int j1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 - 1) - par6;
             int k1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 + 1) - par6;
+            if (isBounds(par2-1, par3, par4)){
+                j = 0;
+            }
+            if (isBounds(par2+1, par3, par4)){
+                k = 0;
+            }
+            if (isBounds(par2, par3-1, par4)){
+                l = 0;
+            }
+            if (isBounds(par2, par3+1, par4)){
+                i1 = 0;
+            }
+            if (isBounds(par2, par3, par4-1)){
+                j1 = 0;
+            }
+            if (isBounds(par2, par3, par4+1)){
+                k1 = 0;
+            }
 
             if (j > i)
             {
