@@ -141,10 +141,6 @@ public class SaveConverterMcRegion extends SaveFormatOld
         {
             func_22182_a(arraylist3, arraylist.size() + arraylist2.size() + arraylist1.size(), i, iprogressupdate);
         }
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201){
-            System.out.println("HALP");
-            System.out.println(worldinfo.getSnowCovered());
-        }
         return true;
     }
 
