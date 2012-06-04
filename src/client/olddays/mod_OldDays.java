@@ -228,13 +228,16 @@ public class mod_OldDays extends BaseModMp{
                     System.out.println(ex);
                 }
                 if (proptype[modulenum][i]==0 || proptype[modulenum][i]==1){
-                    int val2 = 0;
+                    int val2 = 1;
                     try{
                         val2 = Integer.parseInt(val);
                     }catch(Exception ex){}
                     propvalue[modulenum][i] = val2;
                     sendCallback(modulenum, i, val2);
                 }else if (proptype[modulenum][i]==2){
+                    if (val==null || val==""){
+                        val="OFF";
+                    }
                     propvaluestr[modulenum][i] = val;
                     sendCallbackStr(modulenum, i, val);
                 }
