@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Collections;
 import java.lang.reflect.Field;
+import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
 
 public class GuiOldDaysSettings extends GuiScreen{
@@ -12,6 +13,9 @@ public class GuiOldDaysSettings extends GuiScreen{
     private int currenty = 0;
     private int scrolled = 0;
     private static boolean scrolling = false;
+    private GuiTextField field;
+    private boolean displayField = false;
+    private int fieldId = 0;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, int i){
         parent = guiscreen;
@@ -20,6 +24,12 @@ public class GuiOldDaysSettings extends GuiScreen{
 
     public void updateScreen()
     {
+        field.updateCursorCounter();
+    }
+
+    public void onGuiClosed()
+    {
+        Keyboard.enableRepeatEvents(false);
     }
 
     public void initGui()
@@ -45,26 +55,28 @@ public class GuiOldDaysSettings extends GuiScreen{
                 }
             }
             int y = height / 6 - top + (((i-1)/2) * margin);
-            GuiButton button = new GuiButton(i+1, x, y, 150, 20, getState(i, id, i));
+            GuiButton button = new GuiButton(i+1, x, y, 150, 20, getState(i, id));
             button.enabled = !mod_OldDays.disabled[id][i] && !(mod_OldDays.propsmp[id][i]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote);
             controlList.add(button);
+            Keyboard.enableRepeatEvents(false);
         }
+        field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
         if (scrolling){
             updatePos(height/6-10);
         }
     }
     
-    private String getState(int i2, int id, int i){
+    private String getState(int i2, int id){
         String res = mod_OldDays.propname[id][i2];
         if (mod_OldDays.proptype[id][i2]==0){
             res = res+": ";
-            int state = mod_OldDays.propvalue[id][i];
+            int state = mod_OldDays.propvalue[id][i2];
             StringTranslate stringtranslate = StringTranslate.getInstance();
             return state>0 ? res+stringtranslate.translateKey("options.on") : res+stringtranslate.translateKey("options.off");
         }
         if (mod_OldDays.proptype[id][i2]==1){
             res = res+": ";
-            int state = mod_OldDays.propvalue[id][i];
+            int state = mod_OldDays.propvalue[id][i2];
             if (mod_OldDays.propnames[id][i2][state]!=null){
                 return res+mod_OldDays.propnames[id][i2][state];
             }else{
@@ -72,7 +84,7 @@ public class GuiOldDaysSettings extends GuiScreen{
             }
         }
         if (mod_OldDays.proptype[id][i2]==2){
-            return res+": "+mod_OldDays.propvaluestr[id][i];
+            return res+": "+mod_OldDays.propvaluestr[id][i2];
         }
         return "NULL";
     }
@@ -89,6 +101,7 @@ public class GuiOldDaysSettings extends GuiScreen{
             mc.displayGuiScreen(parent);
         }
         if (guibutton.id > 1){
+            displayField = false;
             if (mod_OldDays.proptype[id][guibutton.id-1]==0){
                 boolean b = mod_OldDays.propvalue[id][guibutton.id-1]==0;
                 mod_OldDays.propvalue[id][guibutton.id-1]=b ? 1 : 0;
@@ -96,8 +109,12 @@ public class GuiOldDaysSettings extends GuiScreen{
                 boolean b = mod_OldDays.propvalue[id][guibutton.id-1]<mod_OldDays.propmax[id][guibutton.id-1];
                 mod_OldDays.propvalue[id][guibutton.id-1]=b ? mod_OldDays.propvalue[id][guibutton.id-1]+1 : 1;
             }else if (mod_OldDays.proptype[id][guibutton.id-1]==2){
-                String newstr = "test"+(new java.util.Random()).nextInt(9999);
-                mod_OldDays.propvaluestr[id][guibutton.id-1] = newstr;
+                field = new GuiTextField(fontRenderer, guibutton.xPosition+1, guibutton.yPosition+1, 148, 18);
+                displayField = true;
+                Keyboard.enableRepeatEvents(true);
+                field.setFocused(true);
+                field.setText(mod_OldDays.propvaluestr[id][guibutton.id-1]);
+                fieldId = guibutton.id-1;
             }
             mod_OldDays.saveModuleProperties(id);
             if (mod_OldDays.proptype[id][guibutton.id-1]==0 || mod_OldDays.proptype[id][guibutton.id-1]==1){
@@ -105,7 +122,7 @@ public class GuiOldDaysSettings extends GuiScreen{
             }else if (mod_OldDays.proptype[id][guibutton.id-1]==2){
                 mod_OldDays.sendCallbackStr(id, guibutton.id-1, mod_OldDays.propvaluestr[id][guibutton.id-1]);
             }
-            guibutton.displayString = getState(guibutton.id-1, id, guibutton.id-1);
+            guibutton.displayString = getState(guibutton.id-1, id);
         }
     }
 
@@ -135,6 +152,11 @@ public class GuiOldDaysSettings extends GuiScreen{
         if (par2 < height - 55 && par2 > height / 6 - 10 && needScrolling() && scrolling){
             dragging = true;
             currenty = par2 - scrolled;
+        }
+        if (displayField){
+            field.mouseClicked(par1, par2, par3);
+            displayField = false;
+            Keyboard.enableRepeatEvents(false);
         }
         super.mouseClicked(par1, par2, par3);
     }
@@ -188,6 +210,34 @@ public class GuiOldDaysSettings extends GuiScreen{
                 }
                 drawTooltip(str, i + 4, j - 13, smp);
             }
+        }
+        if (displayField){
+            field.drawTextBox();
+        }
+    }
+
+    protected void keyTyped(char par1, int par2)
+    {
+        if (!displayField){
+            return;
+        }
+        field.textboxKeyTyped(par1, par2);
+        if (par2 == 1){
+            displayField = false;
+            Keyboard.enableRepeatEvents(false);
+        }
+        if (par1 == '\r')
+        {
+            String str = field.getText().trim();
+            if (str==null || str.equals("")){
+                return;
+            }
+            mod_OldDays.propvaluestr[id][fieldId] = str;
+            mod_OldDays.sendCallbackStr(id, fieldId, str);
+            GuiButton button = ((GuiButton)controlList.get(fieldId));
+            button.displayString = getState(fieldId, id);
+            displayField = false;
+            Keyboard.enableRepeatEvents(false);
         }
     }
 }
