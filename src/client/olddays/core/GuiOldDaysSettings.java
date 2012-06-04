@@ -67,26 +67,32 @@ public class GuiOldDaysSettings extends GuiScreen{
     }
     
     private String getState(int i2, int id){
-        String res = mod_OldDays.propname[id][i2];
+        String res = mod_OldDays.propname[id][i2]+": ";
         if (mod_OldDays.proptype[id][i2]==0){
-            res = res+": ";
             int state = mod_OldDays.propvalue[id][i2];
             StringTranslate stringtranslate = StringTranslate.getInstance();
-            return state>0 ? res+stringtranslate.translateKey("options.on") : res+stringtranslate.translateKey("options.off");
+            if (state>0){
+                res = res+stringtranslate.translateKey("options.on");
+            }else{
+                res = res+stringtranslate.translateKey("options.off");
+            }
         }
         if (mod_OldDays.proptype[id][i2]==1){
-            res = res+": ";
             int state = mod_OldDays.propvalue[id][i2];
             if (mod_OldDays.propnames[id][i2][state]!=null){
-                return res+mod_OldDays.propnames[id][i2][state];
+               res = res+mod_OldDays.propnames[id][i2][state];
             }else{
-                return res+state;
+                res = res+state;
             }
         }
         if (mod_OldDays.proptype[id][i2]==2){
-            return res+": "+mod_OldDays.propvaluestr[id][i2];
+            res = res+mod_OldDays.propvaluestr[id][i2];
         }
-        return "NULL";
+        int max = 146;
+        if (fontRenderer.getStringWidth(res)>max){
+            res = fontRenderer.trimStringToWidth(res, max);
+        }
+        return res;
     }
 
     protected void actionPerformed(GuiButton guibutton)
@@ -109,12 +115,18 @@ public class GuiOldDaysSettings extends GuiScreen{
                 boolean b = mod_OldDays.propvalue[id][guibutton.id-1]<mod_OldDays.propmax[id][guibutton.id-1];
                 mod_OldDays.propvalue[id][guibutton.id-1]=b ? mod_OldDays.propvalue[id][guibutton.id-1]+1 : 1;
             }else if (mod_OldDays.proptype[id][guibutton.id-1]==2){
-                field = new GuiTextField(fontRenderer, guibutton.xPosition+1, guibutton.yPosition+1, 148, 18);
-                displayField = true;
-                Keyboard.enableRepeatEvents(true);
+                /*int offset = fontRenderer.getStringWidth(mod_OldDays.propname[id][guibutton.id-1]+":")-2;
+                offset += (150-fontRenderer.getStringWidth(getState(guibutton.id-1, id)))/2;
+                if (fontRenderer.getStringWidth(mod_OldDays.propvaluestr[id][guibutton.id-1])>138-offset){
+                    offset = 0;
+                }*/
+                int offset = 0;
+                field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
+                showField(true, guibutton);
                 field.setFocused(true);
                 field.setText(mod_OldDays.propvaluestr[id][guibutton.id-1]);
                 fieldId = guibutton.id-1;
+                guibutton.enabled = false;
             }
             mod_OldDays.saveModuleProperties(id);
             if (mod_OldDays.proptype[id][guibutton.id-1]==0 || mod_OldDays.proptype[id][guibutton.id-1]==1){
@@ -148,6 +160,12 @@ public class GuiOldDaysSettings extends GuiScreen{
         return false;
     }
 
+    private void showField(boolean b, GuiButton button){
+        displayField = b;
+        Keyboard.enableRepeatEvents(b);
+        button.enabled = !b;
+    }
+
     protected void mouseClicked(int par1, int par2, int par3){
         if (par2 < height - 55 && par2 > height / 6 - 10 && needScrolling() && scrolling){
             dragging = true;
@@ -155,8 +173,7 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         if (displayField){
             field.mouseClicked(par1, par2, par3);
-            displayField = false;
-            Keyboard.enableRepeatEvents(false);
+            showField(false, ((GuiButton)controlList.get(fieldId)));
         }
         super.mouseClicked(par1, par2, par3);
     }
@@ -219,25 +236,24 @@ public class GuiOldDaysSettings extends GuiScreen{
     protected void keyTyped(char par1, int par2)
     {
         if (!displayField){
+            super.keyTyped(par1, par2);
             return;
         }
         field.textboxKeyTyped(par1, par2);
+        String str = field.getText().trim();
+        mod_OldDays.propvaluestr[id][fieldId] = str;
+        mod_OldDays.sendCallbackStr(id, fieldId, str);
         if (par2 == 1){
-            displayField = false;
-            Keyboard.enableRepeatEvents(false);
+            showField(false, ((GuiButton)controlList.get(fieldId)));
         }
         if (par1 == '\r')
         {
-            String str = field.getText().trim();
             if (str==null || str.equals("")){
                 return;
             }
-            mod_OldDays.propvaluestr[id][fieldId] = str;
-            mod_OldDays.sendCallbackStr(id, fieldId, str);
             GuiButton button = ((GuiButton)controlList.get(fieldId));
             button.displayString = getState(fieldId, id);
-            displayField = false;
-            Keyboard.enableRepeatEvents(false);
+            showField(false, button);
         }
     }
 }

@@ -268,6 +268,13 @@ public class mod_OldDays extends BaseModMp{
             disableProperty(lastmodule, lastoption);
         }
     }
+    protected void setStr(Class where, String what, String value){
+        try{
+            where.getDeclaredField(what).set(null, ((Object)value));
+        }catch(Exception ex){
+            disableProperty(lastmodule, lastoption);
+        }
+    }
 
     private static void addProp(int i2, String name, int mp, int val, String var, String desc, int max){
         propname[modulenum][i2]=name;
