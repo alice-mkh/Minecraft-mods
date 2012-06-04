@@ -124,7 +124,11 @@ public class GuiOldDaysSettings extends GuiScreen{
                 field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
                 showField(true, guibutton);
                 field.setFocused(true);
-                field.setText(mod_OldDays.propvaluestr[id][guibutton.id-1]);
+                if (!mod_OldDays.propvaluestr[id][guibutton.id-1].equals("OFF")){
+                    field.setText(mod_OldDays.propvaluestr[id][guibutton.id-1]);
+                }else{
+                    field.setText("");
+                }
                 fieldId = guibutton.id-1;
                 guibutton.enabled = false;
             }
@@ -241,6 +245,9 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         field.textboxKeyTyped(par1, par2);
         String str = field.getText().trim();
+        if (str==null || str.equals("")){
+            str = "OFF";
+        }
         mod_OldDays.propvaluestr[id][fieldId] = str;
         mod_OldDays.sendCallbackStr(id, fieldId, str);
         if (par2 == 1){
@@ -248,9 +255,6 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         if (par1 == '\r')
         {
-            if (str==null || str.equals("")){
-                return;
-            }
             GuiButton button = ((GuiButton)controlList.get(fieldId));
             button.displayString = getState(fieldId, id);
             showField(false, button);
