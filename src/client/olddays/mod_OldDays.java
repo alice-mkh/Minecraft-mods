@@ -51,8 +51,13 @@ public class mod_OldDays extends BaseModMp{
         for (int i = 1; i < proplength[module]; i++){
             try{
                 if (propsmp[module][i]>=0){
-                    propvalue[module][i] = propsmp[module][i];
-                    sendCallback(module, i, propsmp[module][i]);
+                    if (proptype[module][i]==0 || proptype[module][i]==1){
+                        propvalue[module][i] = propsmp[module][i];
+                        sendCallback(module, i, propsmp[module][i]);
+                    }else if (proptype[module][i]==2){
+                        propvaluestr[module][i] = propsmpstr[module][i];
+                        sendCallbackStr(module, i, propsmpstr[module][i]);
+                    }
                 }
             }catch(Exception ex){
                 System.out.println(ex);
@@ -72,8 +77,13 @@ public class mod_OldDays extends BaseModMp{
         int module = settings[1];
         try{
             for (int i = 1; i < settings.length-1; i++){
-                propvalue[module][i] = settings[i+1];
-                sendCallback(module, i, settings[i+1]);
+                if (proptype[module][i]==0 || proptype[module][i]==1){
+                    propvalue[module][i] = settings[i+1];
+                    sendCallback(module, i, settings[i+1]);
+                }else if (proptype[module][i]==2){
+                    propvaluestr[module][i] = "FIXME";
+                    sendCallbackStr(module, i, "FIXME");
+                }
             }
         }catch(Exception ex){
             System.out.println(ex);
@@ -86,10 +96,12 @@ public class mod_OldDays extends BaseModMp{
             File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString());
             FileOutputStream fileoutputstream = new FileOutputStream(file);
             for (int i = 1; i <= proplength[id]; i++){
-                if (propmax[id][i]<=2){
+                if (proptype[id][i]==0){
                     properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]>0));
-                }else{
+                }else if (proptype[id][i]==1){
                     properties.setProperty(propfield[id][i].getName(), Integer.toString(propvalue[id][i]));
+                }else if (proptype[id][i]==2){
+                    properties.setProperty(propfield[id][i].getName(), propvaluestr[id][i]);
                 }
             }
             properties.store(fileoutputstream, "Old Days config");
@@ -124,6 +136,12 @@ public class mod_OldDays extends BaseModMp{
         if (propvalue==null){
             propvalue=new int[10][30];
         }
+        if (propvaluestr==null){
+            propvaluestr=new String[10][30];
+        }
+        if (proptype==null){
+            proptype=new int[10][30];
+        }
         if (propfield==null){
             propfield=new Field[10][30];
         }
@@ -132,6 +150,9 @@ public class mod_OldDays extends BaseModMp{
         }
         if (propsmp==null){
             propsmp=new int[10][30];
+        }
+        if (propsmpstr==null){
+            propsmpstr=new String[10][30];
         }
         if (propmax==null){
             propmax=new int[10][30];
@@ -183,10 +204,12 @@ public class mod_OldDays extends BaseModMp{
             if(flag){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 for (int i = 1; i <= proplength[modulenum]; i++){
-                    if (propmax[modulenum][i]<=2){
+                    if (proptype[modulenum][i]==0){
                         properties.setProperty(propfield[modulenum][i].getName(), Boolean.toString(propvalue[modulenum][i]>0));
-                    }else{
+                    }else if (proptype[modulenum][i]==1){
                         properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
+                    }else if (proptype[modulenum][i]==2){
+                        properties.setProperty(propfield[modulenum][i].getName(), propvaluestr[modulenum][i]);
                     }
                 }
                 properties.store(fileoutputstream, "Old Days config");
@@ -194,18 +217,27 @@ public class mod_OldDays extends BaseModMp{
             }
             properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString()));
             for (int i = 1; i <= proplength[modulenum]; i++){
-                int val = 0;
+                String val = "0";
                 try{
-                    if (propmax[modulenum][i]<=2){
-                        val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName())) ? 1 : 0;
+                    if (proptype[modulenum][i]==0){
+                        val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName())) ? "1" : "0";
                     }else{
-                        val = Integer.parseInt(properties.getProperty(propfield[modulenum][i].getName()));
+                        val = properties.getProperty(propfield[modulenum][i].getName());
                     }
                 }catch(Exception ex){
                     System.out.println(ex);
                 }
-                propvalue[modulenum][i] = val;
-                sendCallback(modulenum, i, val);
+                if (proptype[modulenum][i]==0 || proptype[modulenum][i]==1){
+                    int val2 = 0;
+                    try{
+                        val2 = Integer.parseInt(val);
+                    }catch(Exception ex){}
+                    propvalue[modulenum][i] = val2;
+                    sendCallback(modulenum, i, val2);
+                }else if (proptype[modulenum][i]==2){
+                    propvaluestr[modulenum][i] = val;
+                    sendCallbackStr(modulenum, i, val);
+                }
             }
         }
         catch(IOException ioexception){
@@ -244,6 +276,29 @@ public class mod_OldDays extends BaseModMp{
         propsmp[modulenum][i2]=mp;
         propdesc[modulenum][i2]=desc;
         propmax[modulenum][i2]=max;
+        if (max==2){
+            proptype[modulenum][i2] = 0;
+        }else{
+            proptype[modulenum][i2] = 1;
+        }
+        try{
+            propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
+        }catch (Exception ex){
+            disableProperty(modulenum, i2);
+        }
+        proplength[modulenum]++;
+    }
+
+    private static void addPropStr(int i2, String name, String mp, String val, String var, String desc){
+        propname[modulenum][i2]=name;
+        propvaluestr[modulenum][i2]=val;
+        disabled[modulenum][i2]=false;
+        propsmpstr[modulenum][i2]=mp;
+        if (mp.startsWith("This.Should.Never.Happen.")){
+            propsmp[modulenum][i2]=-1;
+        }
+        propdesc[modulenum][i2]=desc;
+        proptype[modulenum][i2] = 2;
         try{
             propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
         }catch (Exception ex){
@@ -290,6 +345,14 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
+    protected static void addProperty(int i2, String name, String mp, String val, String var, String desc){
+        addPropStr(i2, name, mp, val, var, desc);
+    }
+
+    protected static void addProperty(int i2, String name, String val, String var, String desc){
+        addPropStr(i2, name, "This.Should.Never.Happen.", val, var, desc);
+    }
+
     public void keyboardEvent(KeyBinding keybinding){
         if (keybinding==keySettings && ModLoader.getMinecraftInstance().currentScreen==null){
             ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, moduleGui);
@@ -308,6 +371,33 @@ public class mod_OldDays extends BaseModMp{
             }else{
                 mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b);
             }
+        }catch(Exception ex){}
+        lastmodule = id;
+        lastoption = i2;
+        int id2 = 0;
+        List list = ModLoader.getLoadedMods();
+        Object obj = null;
+        for(int i = 0; i < list.size(); i++){
+            try{
+                if (list.get(i).getClass() == Class.forName(modules[id])){
+                    obj = list.get(i);
+                    break;
+                }
+            }catch (Exception ex){
+                continue;
+            }
+        }
+        try{
+            ((mod_OldDays)obj).callback(i2);
+        }catch (Exception ex){}
+    }
+
+    protected static void sendCallbackStr(int id, int i2, String b){
+        if (disabled[id][i2]){
+            return;
+        }
+        try{
+        mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b);
         }catch(Exception ex){}
         lastmodule = id;
         lastoption = i2;
@@ -381,12 +471,15 @@ public class mod_OldDays extends BaseModMp{
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static String[][] propname;
     public static int[][] propvalue;
+    public static String[][] propvaluestr;
     public static Field[][] propfield;
     public static String[][] propdesc;
     public static int[][] propmax;
     public static String[][][] propnames;
+    public static int[][] proptype;
     public static boolean[][] disabled;
     public static int[][] propsmp;
+    public static String[][] propsmpstr;
     public static int[] proplength;
     public static String[] modules = new String[10];
     public static String[] modules2 = new String[10];
