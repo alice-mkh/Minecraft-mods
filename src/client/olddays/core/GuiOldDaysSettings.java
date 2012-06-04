@@ -168,6 +168,9 @@ public class GuiOldDaysSettings extends GuiScreen{
         displayField = b;
         Keyboard.enableRepeatEvents(b);
         button.enabled = !b;
+        if(!b){
+            mod_OldDays.saveModuleProperties(id);
+        }
     }
 
     protected void mouseClicked(int par1, int par2, int par3){
