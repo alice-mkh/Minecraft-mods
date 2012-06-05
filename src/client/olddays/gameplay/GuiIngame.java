@@ -14,6 +14,7 @@ public class GuiIngame extends Gui
     public static boolean hidehunger = false;
     public static boolean nodebug = false;
     public static boolean fallbacktex = false;
+    public static String version = "OFF";
 
     private static RenderItem itemRenderer = new RenderItem();
 
@@ -379,7 +380,7 @@ public class GuiIngame extends Gui
                 GL11.glTranslatef(0.0F, 32F, 0.0F);
             }
 
-            fontrenderer.drawStringWithShadow((new StringBuilder()).append("Minecraft 1.2.5 (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
+            fontrenderer.drawStringWithShadow((new StringBuilder()).append(version.equals("OFF") ? "Minecraft 1.2.5" : version).append(" (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoRenders(), 2, 12, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.getEntityDebug(), 2, 22, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoEntities(), 2, 32, 0xffffff);
@@ -412,6 +413,10 @@ public class GuiIngame extends Gui
             }
 
             GL11.glPopMatrix();
+        }else{
+            if (!version.equals("OFF")){
+                fontrenderer.drawStringWithShadow(version, 2, 2, 0xffffff);   
+            }
         }
 
         if (recordPlayingUpFor > 0)

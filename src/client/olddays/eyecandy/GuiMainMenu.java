@@ -14,6 +14,7 @@ import org.lwjgl.util.glu.GLU;
 
 public class GuiMainMenu extends GuiScreen
 {
+    public static String version = "OFF";
     public static boolean panorama = true;
     public static boolean oldlogo = false;
     String minecraftLogo[] = {
@@ -411,10 +412,11 @@ public class GuiMainMenu extends GuiScreen
         GL11.glScalef(f, f, f);
         drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
         GL11.glPopMatrix();
+        String v = version.equals("OFF") ? "Minecraft 1.2.5" : version;
         if (panorama){
-            drawString(fontRenderer, "Minecraft 1.2.5", 2, height - 10, 0xffffff);
+            drawString(fontRenderer, v, 2, height - 10, 0xffffff);
         }else{
-            drawString(fontRenderer, "Minecraft 1.2.5", 2, 2, 0x505050);
+            drawString(fontRenderer, v, 2, 2, 0x505050);
         }
         String s = "Copyright Mojang AB. Do not distribute!";
         drawString(fontRenderer, s, width - fontRenderer.getStringWidth(s) - 2, height - 10, 0xffffff);

@@ -20,6 +20,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(14,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
         addProperty(15,"Old fences",            true,  "OldFences",         "");
         addProperty(16,"Arrows stick to mobs",  true,  "Arrows",            "");
+        addProperty(17,"Version",               "OFF", "Version",           "");
         loadModuleProperties();
         replaceBlocks();
         setWireRendering();
@@ -53,6 +54,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 15:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
                     reload(); break;
             case 16:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
+            case 17:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
+                    setStr(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
         }
     }
 
@@ -86,6 +89,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static int Tooltips = 2;
     public static boolean OldFences = true;
     public static boolean Arrows = true;
+    public static String Version = "OFF";
     public static int redstoneRenderID;
 
     private void replaceBlocks(){
