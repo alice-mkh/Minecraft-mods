@@ -9,13 +9,14 @@ import net.minecraft.client.Minecraft;
 public class GuiOldDaysSettings extends GuiScreen{
     private GuiScreen parent;
     private int id;
-    private boolean dragging = false;
-    private int currenty = 0;
-    private int scrolled = 0;
-    private static boolean scrolling = false;
     private GuiTextField field;
     private boolean displayField = false;
     private int fieldId = 0;
+    private int page = 0;
+    private int max = 12;
+    private int maxpage = 1;
+    private GuiButton left;
+    private GuiButton right;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, int i){
         parent = guiscreen;
@@ -38,34 +39,50 @@ public class GuiOldDaysSettings extends GuiScreen{
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         for (int i = 1; i <= mod_OldDays.proplength[id]; i++){
             int x = width / 2 - 155;
-            if (i % 2 == 0){
+            int i2 = (i-1) % max;
+            if (i2 % 2 != 0){
                 x+=160;
             }
             int margin = 30;
-            int top = 10;
-            if (!scrolling){
-                if (mod_OldDays.proplength[id] > 14){
-                    top += (margin / 1.8);
-                    margin -= 6;
-                }else if (mod_OldDays.proplength[id] > 12){
-                    margin -= 3;
-                    top += (margin / 2);
-                }else if (mod_OldDays.proplength[id] > 10){
-                    top += (margin / 3);
-                }
-            }
-            int y = height / 6 - top + (((i-1)/2) * margin);
+            int top = 15;
+            int y = height / 6 - top + (((i2)/2) * margin);
             GuiButton button = new GuiButton(i+1, x, y, 150, 20, getState(i, id));
             button.enabled = !mod_OldDays.disabled[id][i] && !(mod_OldDays.propsmp[id][i]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote);
+            button.drawButton = false;
             controlList.add(button);
             Keyboard.enableRepeatEvents(false);
         }
+        controlList.add(left = new GuiButtonPage(98, 30, height, width, false, this));
+        controlList.add(right = new GuiButtonPage(99, 30, height, width, true, this));
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
-        if (scrolling){
-            updatePos(height/6-10);
+        maxpage = (mod_OldDays.proplength[id]-1) / max;
+        setPage(0);
+    }
+
+    private void setPage(int to){
+        if (to>maxpage || to<0){
+            return;
+        }
+        for (int i = 0; i < max; i++){
+            int i2 = i+(page*max)+1;
+            if (i2<=controlList.size()-2){
+                ((GuiButton)controlList.get(i2)).drawButton = false;
+            }
+        }
+        page = to;
+        for (int i = 0; i < max; i++){
+            int i2 = i+(page*max)+1;
+            if (i2<=controlList.size()-2){
+                ((GuiButton)controlList.get(i2)).drawButton = true;
+            }
+        }
+        left.drawButton = page>0;
+        right.drawButton = page<maxpage;
+        if (displayField){
+            showField(false, ((GuiButton)controlList.get(fieldId)));
         }
     }
-    
+
     private String getState(int i2, int id){
         String res = mod_OldDays.propname[id][i2]+": ";
         if (mod_OldDays.proptype[id][i2]==0){
@@ -102,9 +119,19 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         if (guibutton.id == 0){
             mc.displayGuiScreen(parent);
+            return;
         }
         if (guibutton.id == 1){
             mc.displayGuiScreen(parent);
+            return;
+        }
+        if (guibutton.id == 98){
+            setPage(page-1);
+            return;
+        }
+        if (guibutton.id == 99){
+            setPage(page+1);
+            return;
         }
         if (guibutton.id > 1){
             displayField = false;
@@ -142,28 +169,6 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
     }
 
-    private void updatePos(int scroll){
-        List list = controlList;
-        int margin = 30;
-        for (int i = 1; i < list.size(); i++){
-            GuiButton button = ((GuiButton)list.get(i));
-            int y = (((i-1)/2) * margin) + scroll;
-            button.yPosition = y;
-            button.drawButton = !(button.yPosition > height - 55 || button.yPosition < height / 6 - 10);
-        }
-        scrolled = scroll;
-    }
-
-    private boolean needScrolling(){
-        List list = controlList;
-        for (int i = list.size()-1; i >= 0; i--){
-            if (!((GuiButton)list.get(i)).drawButton){
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void showField(boolean b, GuiButton button){
         displayField = b;
         Keyboard.enableRepeatEvents(b);
@@ -174,28 +179,11 @@ public class GuiOldDaysSettings extends GuiScreen{
     }
 
     protected void mouseClicked(int par1, int par2, int par3){
-        if (par2 < height - 55 && par2 > height / 6 - 10 && needScrolling() && scrolling){
-            dragging = true;
-            currenty = par2 - scrolled;
-        }
         if (displayField){
             field.mouseClicked(par1, par2, par3);
             showField(false, ((GuiButton)controlList.get(fieldId)));
         }
         super.mouseClicked(par1, par2, par3);
-    }
-
-    protected void mouseMovedOrUp(int par1, int par2, int par3)
-    {
-        if (!scrolling){
-            if (par3==0){
-                dragging = false;
-            }
-            if (dragging && par3==-1){
-                updatePos(Math.max(Math.min(height/6-10, par2 - currenty), ((14-((mod_OldDays.proplength[id]-1)/2))*30)-235));
-            }
-        }
-        super.mouseMovedOrUp(par1, par2, par3);
     }
 
     private void drawTooltip(String str, int x, int y, boolean smp){
@@ -206,17 +194,6 @@ public class GuiOldDaysSettings extends GuiScreen{
 //         drawRect(x, y, x + 5 + fontRenderer.getStringWidth(str2), y + 13, 0x80000000);
 //         drawString(fontRenderer, str2, x + 3, y + 3, smp ? 0xff0000 : 0xffffff);
         int top = 23;
-        if (scrolling){
-            top = 20;
-        }else{
-            if (mod_OldDays.proplength[id] > 14){
-                top += 16;
-            }else if (mod_OldDays.proplength[id] > 12){
-                top += 13;
-            }else if (mod_OldDays.proplength[id] > 10){
-                top += 10;
-            }
-        }
        drawCenteredString(fontRenderer, str2, width / 2, height / 6 - top, smp ? 0xff0000 : 0xffffff);
     }
 

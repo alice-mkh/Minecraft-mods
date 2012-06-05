@@ -75,14 +75,15 @@ public class mod_OldDays extends BaseModMp{
     public void handlePacket(Packet230ModLoader packet){
         int[] settings = packet.dataInt;
         int module = settings[1];
+        String[] settingsStr = packet.dataString;
         try{
             for (int i = 1; i < settings.length-1; i++){
                 if (proptype[module][i]==0 || proptype[module][i]==1){
                     propvalue[module][i] = settings[i+1];
                     sendCallback(module, i, settings[i+1]);
                 }else if (proptype[module][i]==2){
-                    propvaluestr[module][i] = "FIXME";
-                    sendCallbackStr(module, i, "FIXME");
+                    propvaluestr[module][i] = settingsStr[i+1];
+                    sendCallbackStr(module, i, settingsStr[i+1]);
                 }
             }
         }catch(Exception ex){
