@@ -17,6 +17,7 @@ public class GuiOldDaysSettings extends GuiScreen{
     private int maxpage = 1;
     private GuiButton left;
     private GuiButton right;
+    private String current;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, int i){
         parent = guiscreen;
@@ -152,8 +153,10 @@ public class GuiOldDaysSettings extends GuiScreen{
                 showField(true, guibutton);
                 field.setFocused(true);
                 if (!mod_OldDays.propvaluestr[id][guibutton.id-1].equals("OFF")){
+                    current = mod_OldDays.propvaluestr[id][guibutton.id-1];
                     field.setText(mod_OldDays.propvaluestr[id][guibutton.id-1]);
                 }else{
+                    current = "";
                     field.setText("");
                 }
                 fieldId = guibutton.id-1;
@@ -174,6 +177,7 @@ public class GuiOldDaysSettings extends GuiScreen{
         Keyboard.enableRepeatEvents(b);
         button.enabled = !b;
         if(!b){
+            current = "";
             mod_OldDays.saveModuleProperties(id);
         }
     }
@@ -181,6 +185,8 @@ public class GuiOldDaysSettings extends GuiScreen{
     protected void mouseClicked(int par1, int par2, int par3){
         if (displayField){
             field.mouseClicked(par1, par2, par3);
+            mod_OldDays.propvaluestr[id][fieldId] = current;
+            mod_OldDays.sendCallbackStr(id, fieldId, current);
             showField(false, ((GuiButton)controlList.get(fieldId)));
         }
         super.mouseClicked(par1, par2, par3);
@@ -228,10 +234,14 @@ public class GuiOldDaysSettings extends GuiScreen{
         if (str==null || str.equals("")){
             str = "OFF";
         }
-        mod_OldDays.propvaluestr[id][fieldId] = str;
-        mod_OldDays.sendCallbackStr(id, fieldId, str);
         if (par2 == 1){
+            mod_OldDays.propvaluestr[id][fieldId] = current;
+            mod_OldDays.sendCallbackStr(id, fieldId, current);
+            GuiButton button = ((GuiButton)controlList.get(fieldId));
             showField(false, ((GuiButton)controlList.get(fieldId)));
+        }else{
+            mod_OldDays.propvaluestr[id][fieldId] = str;
+            mod_OldDays.sendCallbackStr(id, fieldId, str);
         }
         if (par1 == '\r')
         {
