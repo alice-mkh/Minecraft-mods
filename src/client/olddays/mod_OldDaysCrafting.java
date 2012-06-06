@@ -217,5 +217,13 @@ public class mod_OldDaysCrafting extends mod_OldDays{
             ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
             ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
         }
+        int n = b ? 9 : 4;
+        removeRecipe(n+"xitem.ingotIron@0");
+        removeRecipe(n+"xitem.ingotGold@0");
+        removeRecipe(n+"xitem.emerald@0");
+        n = b ? 4 : 9;
+        ModLoader.addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
+        ModLoader.addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
+        ModLoader.addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
     }
 }
