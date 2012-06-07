@@ -3756,7 +3756,7 @@ public class World implements IBlockAccess
             int i1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3 + 1, par4) - par6;
             int j1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 - 1) - par6;
             int k1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 + 1) - par6;
-            if (mod_noBiomesX.SurrWaterType==Block.waterStill.blockID || mod_noBiomesX.SurrWaterType==Block.waterMoving.blockID){
+            if ((mod_noBiomesX.SurrWaterType==Block.waterStill.blockID||mod_noBiomesX.SurrWaterType==Block.waterMoving.blockID) && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 if (isBounds(par2-1, par3, par4)){
                     j = mod_noBiomesX.getSkyLightInBounds(par3);
                 }
