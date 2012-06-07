@@ -14,7 +14,7 @@ public class mod_OldDaysBugs extends mod_OldDays{
 
     public void callback (int i){
         switch(i){
-            case 1: setBool(net.minecraft.src.EntityMinecart.class, "boosters", WaterLifts); break;
+            case 1: setBool(net.minecraft.src.EntityMinecart.class, "boosters", Boosters); break;
             case 2: setBool(net.minecraft.src.EntityBoat.class, "waterlift", WaterLifts); break;
             case 3: setBool(net.minecraft.src.Entity.class, "toaster", LavaToasters); break;
             case 4: setBool(net.minecraft.src.Entity.class, "waterladder", WaterLadders); break;
