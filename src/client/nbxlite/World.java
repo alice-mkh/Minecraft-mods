@@ -213,6 +213,12 @@ public class World implements IBlockAccess
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         mod_noBiomesX.SetGenerator(this, mod_noBiomesX.GEN_NEWBIOMES, mod_noBiomesX.FEATURES_12, mod_noBiomesX.THEME_NORMAL, mod_noBiomesX.TYPE_INLAND, false, false);
+        mod_noBiomesX.setSkyBrightness(mod_noBiomesX.MapTheme);
+        mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 0);
+        mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 1);
+        mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 2);
+        mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
+        mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
         mod_noBiomesX NBX = new mod_noBiomesX();
         NBX.RequestGeneratorInfo();
         turnOnOldSpawners();
