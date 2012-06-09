@@ -4,7 +4,7 @@ import java.util.*;
 
 public abstract class EntityPlayer extends EntityLiving
 {
-    public static boolean oldarmor = false;
+    public static int armor = 3;
     public static int combat = 3;
     public static boolean sprint = true;
     public static int startitems = 0;
@@ -1119,7 +1119,7 @@ public abstract class EntityPlayer extends EntityLiving
 
     protected void damageArmor(int par1)
     {
-        if (oldarmor){
+        if (armor<2){
             for(int j = 0; j < inventory.armorInventory.length; j++)
             {
                 if(inventory.armorInventory[j] == null || !(inventory.armorInventory[j].getItem() instanceof ItemArmor))
@@ -1143,7 +1143,7 @@ public abstract class EntityPlayer extends EntityLiving
      */
     public int getTotalArmorValue()
     {
-        if (oldarmor){
+        if (armor<2){
             int i = 0;
             int j = 0;
             int k = 0;
@@ -1167,8 +1167,9 @@ public abstract class EntityPlayer extends EntityLiving
             {
                 return ((i - 1) * j) / k + 1;
             }
+        }else{
+            return inventory.getTotalArmorValue();
         }
-        return inventory.getTotalArmorValue();
     }
 
     /**
@@ -1182,14 +1183,18 @@ public abstract class EntityPlayer extends EntityLiving
             par2 = 1 + par2 >> 1;
         }
 
-        if (oldarmor){
+        if (armor<2){
             par2 = applyArmorCalculations_old(par1DamageSource, par2);
         }else{
             par2 = applyArmorCalculations(par1DamageSource, par2);
         }
         par2 = applyPotionDamageCalculations(par1DamageSource, par2);
         addExhaustion(par1DamageSource.getHungerDamage());
-        health -= par2;
+        if (armor==2){
+            super.damageEntity(par1DamageSource, par2);
+        }else{
+            health -= par2;
+        }
     }
 
     /**

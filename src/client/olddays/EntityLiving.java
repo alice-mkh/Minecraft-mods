@@ -10,6 +10,7 @@ public abstract class EntityLiving extends Entity
     public static boolean oldloot = false;
     public static boolean jumpdelay = true;
     public static boolean survivaltest = false;
+    public static boolean armorblocksall = false;
     public static int nonewmobs = 10;
 
     public boolean newai(){
@@ -1052,7 +1053,7 @@ public abstract class EntityLiving extends Entity
      */
     protected int applyArmorCalculations(DamageSource par1DamageSource, int par2)
     {
-        if (!par1DamageSource.isUnblockable())
+        if ((!par1DamageSource.isUnblockable() || armorblocksall))
         {
             int i = 25 - getTotalArmorValue();
             int j = par2 * i + carryoverDamage;

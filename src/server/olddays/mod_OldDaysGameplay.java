@@ -12,11 +12,11 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         addProperty(7, "Machine bow",        false, true,  "InstantBow",      "");
         addProperty(8, "Bow durability",     true,  false, "FiniteBow",       "");
         addProperty(9, "Combat system",      3,     2,     "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
-        addProperty(10,"Old armor",          false, true,  "OldArmor",        "");
+        addProperty(10,"Armor",              4,     1,     "Armor",           "", new String[]{"Beta 1.7.3", "Beta 1.8.1", "1.0", "1.1"});
         addProperty(11,"Allow debug screen", true,  true,  "AllowDebug",      "");
         addProperty(12,"Allow sprint",       true,  true,  "AllowSprint",     "");
         addProperty(13,"Jump delay",         true,  false, "JumpDelay",       "");
-        addProperty(14,"Start items",           1,     1,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
+        addProperty(14,"Start items",        1,     1,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
         loadModuleProperties();
     }
 
@@ -36,8 +36,9 @@ public class mod_OldDaysGameplay extends mod_OldDays{
             case 9: setInt(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem-1);
                     setBool(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=4);
                     setSwordDamage(CombatSystem<3); break;
-            case 10:setBool(net.minecraft.src.EntityPlayer.class, "oldarmor", OldArmor);
-                    setArmorDamage(OldArmor); break;
+            case 10:setInt(net.minecraft.src.EntityPlayer.class, "armor", Armor-1);
+                    setBool(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=1);
+                    setArmorDamage(Armor<3); break;
             case 12:setBool(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
                     setInt(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
             case 13:setBool(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
@@ -54,7 +55,7 @@ public class mod_OldDaysGameplay extends mod_OldDays{
     public static boolean InstantBow = true;
     public static boolean FiniteBow;
     public static int CombatSystem = 1;
-    public static boolean OldArmor = true;
+    public static int Armor = 1;
     public static boolean AllowDebug = true;
     public static boolean AllowSprint = true;
     public static boolean JumpDelay;
