@@ -6,6 +6,7 @@ public abstract class EntityLiving extends Entity
 {
     public static boolean laddergaps = false;
     public static boolean newai = true;
+    public static boolean infdevai = false;
     public static boolean rareloot = true;
     public static boolean oldloot = false;
     public static boolean jumpdelay = true;
@@ -1745,8 +1746,47 @@ public abstract class EntityLiving extends Entity
     {
     }
 
+    protected void updateEntityActionStateInfdev()
+    {
+        entityAge++;
+        despawnEntity();
+        if(rand.nextFloat() < 0.07F)
+        {
+            moveStrafing = (rand.nextFloat() - 0.5F) * moveSpeed;
+            moveForward = rand.nextFloat() * moveSpeed;
+        }
+        isJumping = rand.nextFloat() < 0.01F;
+        float f = 8F;
+        if(rand.nextFloat() < 0.04F)
+        {
+            EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, f);
+
+            if (entityplayer != null)
+            {
+                currentTarget = entityplayer;
+                numTicksToChaseTarget = 10 + rand.nextInt(20);
+            }
+            else
+            {
+                randomYawVelocity = (rand.nextFloat() - 0.5F) * 60F;
+            }
+        }
+        rotationYaw += randomYawVelocity;
+        rotationPitch = 0.0F;
+        boolean flag = isInWater();
+        boolean flag1 = handleLavaMovement();
+        if(flag || flag1)
+        {
+            isJumping = rand.nextFloat() < 0.8F;
+        }
+    }
+
     protected void updateEntityActionState()
     {
+        if (infdevai){
+            updateEntityActionStateInfdev();
+            return;
+        }
         entityAge++;
         despawnEntity();
         moveStrafing = 0.0F;
