@@ -1868,11 +1868,12 @@ public class EntityRenderer
     }
 
     private void setFog(){
-        if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
-        {
-            GL11.glFogi(34138, 34139);
-//        }else{
-//            GL11.glFogi(34138, 34140);
+        if (GLContext.getCapabilities().GL_NV_fog_distance){
+            if(!mod_noBiomesX.isFinite()){
+                GL11.glFogi(34138, 34139);
+            }else{
+                GL11.glFogi(34138, 34140);
+            }
         }
     }
 
