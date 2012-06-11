@@ -1867,6 +1867,15 @@ public class EntityRenderer
         GL11.glClearColor(fogColorRed, fogColorGreen, fogColorBlue, 0.0F);
     }
 
+    private void setFog(){
+        if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
+        {
+            GL11.glFogi(34138, 34139);
+//        }else{
+//            GL11.glFogi(34138, 34140);
+        }
+    }
+
     /**
      * Sets up the fog to be rendered. If the arg passed in is -1 the fog starts at 0 and goes to 80% of far plane
      * distance and is used for sky rendering.
@@ -1888,12 +1897,7 @@ public class EntityRenderer
             GL11.glFogf(GL11.GL_FOG_START, 0.0F);
             GL11.glFogf(GL11.GL_FOG_END, 8F);
 
-            if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
-            {
-                GL11.glFogi(34138, 34139);
-            }else{
-                GL11.glFogi(34138, 34140);
-            }
+            setFog();
 
             GL11.glFogf(GL11.GL_FOG_START, 0.0F);
             return;
@@ -1927,12 +1931,8 @@ public class EntityRenderer
                 GL11.glFogf(GL11.GL_FOG_END, f);
             }
 
-            if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
-            {
-                GL11.glFogi(34138, 34139);
-            }else{
-                GL11.glFogi(34138, 34140);
-            }
+            setFog();
+
         }
         else if (cloudFog)
         {
@@ -2040,12 +2040,7 @@ public class EntityRenderer
                 GL11.glFogf(GL11.GL_FOG_END, f4);
             }
 
-            if (GLContext.getCapabilities().GL_NV_fog_distance && !mod_noBiomesX.isFinite())
-            {
-                GL11.glFogi(34138, 34139);
-            }else{
-                GL11.glFogi(34138, 34140);
-            }
+            setFog();
 
             if (mc.theWorld.worldProvider.func_48218_b((int)entityliving.posX, (int)entityliving.posZ))
             {
