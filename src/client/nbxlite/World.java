@@ -848,6 +848,19 @@ public class World implements IBlockAccess
         return false;
     }
 
+    private boolean isBounds2(int x, int y, int z){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                if(x==0 || x==mod_noBiomesX.IndevWidthX-1 || z==0 || z==mod_noBiomesX.IndevWidthZ-1){
+                    if(y<mod_noBiomesX.SurrWaterHeight && y>=mod_noBiomesX.SurrGroundHeight){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Returns the block ID at coords x,y,z
      */
@@ -1022,6 +1035,9 @@ public class World implements IBlockAccess
     {
         if (isBounds(par1, par2, par3)){
             return false;
+        }
+        if (isBounds2(par1, par2, par3) && par4==0){
+            par4 = Block.waterMoving.blockID;
         }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
