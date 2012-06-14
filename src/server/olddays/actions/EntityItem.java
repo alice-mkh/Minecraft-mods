@@ -148,7 +148,8 @@ public class EntityItem extends Entity
             if (item != itemstack && itemstack != null){
                 item.itemID = itemstack.itemID;
                 item.setItemDamage(itemstack.getItemDamage());
-                for (int i = 0; i < item.stackSize; i++){
+                int j = item.stackSize;
+                for (int i = 0; i < j; i++){
                     item.stackSize+=(new Random()).nextInt(2);
                 }
             }
