@@ -119,6 +119,9 @@ public class mod_noBiomesX extends BaseModMp{
                 sky = 0;
             }
         }
+        if (par2<SurrGroundHeight){
+            sky = 0;
+        }
         if (sky<0){
             sky = 0;
         }
