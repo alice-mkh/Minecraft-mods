@@ -37,6 +37,22 @@ public class OldSpawnerAnimals
         }
     }
 
+    private boolean isBounds(int x, int z){
+        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1){
+                    return true;
+                }
+            }
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     protected ChunkPosition func_1151_a(World world, int i, int j)
     {
         int k = i + world.rand.nextInt(16);
@@ -140,6 +156,9 @@ public class OldSpawnerAnimals
                         entityliving.setLocationAndAngles(f, f1, f2, world.rand.nextFloat() * 360F, 0.0F);
                         if(!entityliving.getCanSpawnHere())
                         {
+                            continue;
+                        }
+                        if(isBounds(i3, k3)){
                             continue;
                         }
                         if(entityliving instanceof EntitySlime && entityliving.posY > 16D && mod_noBiomesX.RestrictSlimes)
@@ -256,6 +275,9 @@ public class OldSpawnerAnimals
                         entityliving.setLocationAndAngles(f, f1, f2, world.rand.nextFloat() * 360F, 0.0F);
                         if(!entityliving.getCanSpawnHere())
                         {
+                            continue;
+                        }
+                        if(isBounds(i3, k3)){
                             continue;
                         }
                         k++;
