@@ -315,6 +315,10 @@ public class ChunkProviderGenerateAlpha
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
         }
         Chunk chunk = new Chunk(worldObj, abyte0, i, j);
+        ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
+        if (extendedblockstorage == null){
+            extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
+        }
         chunk.generateSkylightMap();
         return chunk;
     }
