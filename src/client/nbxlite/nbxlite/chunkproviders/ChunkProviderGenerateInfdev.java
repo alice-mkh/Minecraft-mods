@@ -266,10 +266,16 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBase{
         }
     }
 
-    public void populate(IChunkProvider ichunkprovider2, int x, int z){
+    public void populate(IChunkProvider ichunkprovider, int x, int z){
         rand.setSeed((long)x * 0x12f88dd3L + (long)z * 0x36d41eecL);
         int x1 = x << 4;
         int z1 = z << 4;
+        if(mapFeaturesEnabled)
+        {
+            strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+        }
         for(int i = 0; i < 20; i++)
         {
             int x2 = x1 + rand.nextInt(16);

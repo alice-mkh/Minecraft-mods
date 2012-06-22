@@ -58,8 +58,7 @@ public class ChunkProviderBase implements IChunkProvider{
             replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
         }else if (biomes==mod_noBiomesX.GEN_OLDBIOMES){
             oldBiomesForGeneration = worldObj.getWorldChunkManager().oldLoadBlockGeneratorData(oldBiomesForGeneration, i * 16, j * 16, 16, 16);
-            double ad[] = worldObj.getWorldChunkManager().temperature;
-            generateTerrainForOldBiome(i, j, abyte0, oldBiomesForGeneration, ad);
+            generateTerrainForOldBiome(i, j, abyte0, oldBiomesForGeneration, worldObj.getWorldChunkManager().temperature);
             replaceBlocksForOldBiome(i, j, abyte0, oldBiomesForGeneration);
         }else{
             generateTerrain(i, j, abyte0);
