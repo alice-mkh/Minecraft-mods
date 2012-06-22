@@ -235,8 +235,8 @@ public class ChunkProviderSky
         double d1 = 684.41200000000003D;
         double ad1[] = worldObj.getWorldChunkManager().temperature;
         double ad2[] = worldObj.getWorldChunkManager().humidity;
-        noise5 = noiseGen5.generateNoiseOctaves(noise5, i, k, l, j1, 1.121D, 1.121D, 0.5D);
-        noise6 = noiseGen6.generateNoiseOctaves(noise6, i, k, l, j1, 200D, 200D, 0.5D);
+        noise5 = noiseGen5.generateNoiseOctaves(noise5, i, j, k, l, i1, j1, 1.121D, 1.121D, 0.5D);
+        noise6 = noiseGen6.generateNoiseOctaves(noise6, i, j, k, l, i1, j1, 200D, 200D, 0.5D);
         d *= 2D;
         noise3 = noiseGen3.generateNoiseOctaves(noise3, i, j, k, l, i1, j1, d / 80D, d1 / 160D, d / 80D);
         noise1 = noiseGen1.generateNoiseOctaves(noise1, i, j, k, l, i1, j1, d, d1, d);
