@@ -14,17 +14,17 @@ public class ChunkProviderGenerateInfdev
     implements IChunkProvider
 {
     private Random rand;
-    private InfdevNoiseGeneratorOctaves b;
-    private InfdevNoiseGeneratorOctaves c;
-    private InfdevNoiseGeneratorOctaves d;
-    private InfdevNoiseGeneratorOctaves e;
-    private InfdevNoiseGeneratorOctaves f;
-    private InfdevNoiseGeneratorOctaves g;
+    private InfdevNoiseGeneratorOctaves terrainAlt1Generator;
+    private InfdevNoiseGeneratorOctaves terrainAlt2Generator;
+    private InfdevNoiseGeneratorOctaves terrainGenerator;
+    private InfdevNoiseGeneratorOctaves noiseSandGen;
+    private InfdevNoiseGeneratorOctaves rockSandGen;
+    private InfdevNoiseGeneratorOctaves treeGen;
     private World worldObj;
-    private double i[];
-    private double j[];
-    private double k[];
-    private double l[];
+    private double field_4180_q[];
+    private double terrainMain[];
+    private double terrainAlt1[];
+    private double terrainAlt2[];
     private final boolean mapFeaturesEnabled;
     public MapGenStronghold2 strongholdGenerator;
     public MapGenVillage villageGenerator;
@@ -51,13 +51,12 @@ public class ChunkProviderGenerateInfdev
     {
         worldObj = world;
         rand = new Random(l);
-        b = new InfdevNoiseGeneratorOctaves(rand, 16);
-        c = new InfdevNoiseGeneratorOctaves(rand, 16);
-        d = new InfdevNoiseGeneratorOctaves(rand, 8);
-        e = new InfdevNoiseGeneratorOctaves(rand, 4);
-        f = new InfdevNoiseGeneratorOctaves(rand, 4);
-        new InfdevNoiseGeneratorOctaves(rand, 5);
-        g = new InfdevNoiseGeneratorOctaves(rand, 5);
+        terrainAlt1Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
+        terrainAlt2Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
+        terrainGenerator = new InfdevNoiseGeneratorOctaves(rand, 8);
+        noiseSandGen = new InfdevNoiseGeneratorOctaves(rand, 4);
+        rockSandGen = new InfdevNoiseGeneratorOctaves(rand, 4);
+        treeGen = new InfdevNoiseGeneratorOctaves(rand, 5);
         if(flag)
         {
             strongholdGenerator = new MapGenSkyStronghold();
@@ -71,14 +70,14 @@ public class ChunkProviderGenerateInfdev
         byte byte00 = 5;
         byte byte01 = 17;
         byte byte02 = 5;
-        double ad[] = i;
+        double ad[] = field_4180_q;
         if(ad == null)
         {
             ad = new double[425];
         }
-        j = d.a(j, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
-        k = b.a(k, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
-        l = c.a(l, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainMain = terrainGenerator.a(terrainMain, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
+        terrainAlt1 = terrainAlt1Generator.a(terrainAlt1, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainAlt2 = terrainAlt2Generator.a(terrainAlt2, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
         int k2 = 0;
         for(int j3 = 0; j3 < byte00; j3++)
         {
@@ -86,16 +85,16 @@ public class ChunkProviderGenerateInfdev
             {
                 for(int l3 = 0; l3 < byte01; l3++)
                 {
-                    double d23;
-                    if((d23 = ((double)l3 - 8.5D) * 12D) < 0.0D)
+                    double d23 = ((double)l3 - 8.5D) * 12D;
+                    if(d23 < 0.0D)
                     {
                         d23 *= 2D;
                     }
-                    double d24 = k[k2] / 512D;
-                    double d25 = l[k2] / 512D;
+                    double d24 = terrainAlt1[k2] / 512D;
+                    double d25 = terrainAlt2[k2] / 512D;
                     double d22;
-                    double d26;
-                    if((d26 = (j[k2] / 10D + 1.0D) / 2D) < 0.0D)
+                    double d26 = (terrainMain[k2] / 10D + 1.0D) / 2D;
+                    if(d26 < 0.0D)
                     {
                         d22 = d24;
                     } else
@@ -115,21 +114,21 @@ public class ChunkProviderGenerateInfdev
 
         }
 
-        i = ad;
+        field_4180_q = ad;
         for(int k1 = 0; k1 < 4; k1++)
         {
             for(int i2 = 0; i2 < 4; i2++)
             {
                 for(int l2 = 0; l2 < 16; l2++)
                 {
-                    double d3 = i[(k1 * byte00 + i2) * byte01 + l2];
-                    double d5 = i[(k1 * byte00 + (i2 + 1)) * byte01 + l2];
-                    double d6 = i[((k1 + 1) * byte00 + i2) * byte01 + l2];
-                    double d7 = i[((k1 + 1) * byte00 + (i2 + 1)) * byte01 + l2];
-                    double d8 = i[(k1 * byte00 + i2) * byte01 + (l2 + 1)];
-                    double d9 = i[(k1 * byte00 + (i2 + 1)) * byte01 + (l2 + 1)];
-                    double d10 = i[((k1 + 1) * byte00 + i2) * byte01 + (l2 + 1)];
-                    double d11 = i[((k1 + 1) * byte00 + (i2 + 1)) * byte01 + (l2 + 1)];
+                    double d3 = field_4180_q[(k1 * byte00 + i2) * byte01 + l2];
+                    double d5 = field_4180_q[(k1 * byte00 + (i2 + 1)) * byte01 + l2];
+                    double d6 = field_4180_q[((k1 + 1) * byte00 + i2) * byte01 + l2];
+                    double d7 = field_4180_q[((k1 + 1) * byte00 + (i2 + 1)) * byte01 + l2];
+                    double d8 = field_4180_q[(k1 * byte00 + i2) * byte01 + (l2 + 1)];
+                    double d9 = field_4180_q[(k1 * byte00 + (i2 + 1)) * byte01 + (l2 + 1)];
+                    double d10 = field_4180_q[((k1 + 1) * byte00 + i2) * byte01 + (l2 + 1)];
+                    double d11 = field_4180_q[((k1 + 1) * byte00 + (i2 + 1)) * byte01 + (l2 + 1)];
                     for(int k5 = 0; k5 < 8; k5++)
                     {
                         double d12 = (double)k5 / 8D;
@@ -187,9 +186,9 @@ public class ChunkProviderGenerateInfdev
                 {
                     asd = -0.29999999999999999D;
                 }
-                boolean flag = e.a(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > asd;
-                boolean flag1 = e.a(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
-                int i4 = (int)(f.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
+                boolean flag = noiseSandGen.a(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > asd;
+                boolean flag1 = noiseSandGen.a(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                int i4 = (int)(rockSandGen.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int j4 = l1 << 11 | j2 << 7 | 0x7f;
                 int k4 = -1;
                 int l4;
@@ -369,7 +368,8 @@ public class ChunkProviderGenerateInfdev
                 (new SuperOldWorldGenMinable(Block.oreLapis.blockID,0)).generate_infdev(worldObj, rand, j16, i19, l20);
             }
         }
-        if((j1 = (int)(g.func_806_a((double)ii1 * 0.050000000000000003D, (double)i1 * 0.050000000000000003D) - rand.nextDouble())) < 0)
+        j1 = (int)(treeGen.func_806_a((double)ii1 * 0.050000000000000003D, (double)i1 * 0.050000000000000003D) - rand.nextDouble());
+        if(j1 < 0)
         {
             j1 = 0;
         }
