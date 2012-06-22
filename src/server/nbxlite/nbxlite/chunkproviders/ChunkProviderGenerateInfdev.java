@@ -33,6 +33,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBase{
         terrainGenerator = new InfdevNoiseGeneratorOctaves(rand, 8);
         noiseSandGen = new InfdevNoiseGeneratorOctaves(rand, 4);
         rockSandGen = new InfdevNoiseGeneratorOctaves(rand, 4);
+        new InfdevNoiseGeneratorOctaves(rand, 5);
         treeGen = new InfdevNoiseGeneratorOctaves(rand, 5);
         if(flag)
         {

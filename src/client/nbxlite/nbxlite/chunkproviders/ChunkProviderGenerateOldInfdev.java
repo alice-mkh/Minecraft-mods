@@ -22,6 +22,9 @@ public class ChunkProviderGenerateOldInfdev extends ChunkProviderBase{
         noiseSandGen = new InfdevOldNoiseGeneratorOctaves(rand, 4);
         rockSandGen = new InfdevOldNoiseGeneratorOctaves(rand, 4);
         unknownGen = new InfdevOldNoiseGeneratorOctaves(rand, 5);
+        new InfdevOldNoiseGeneratorOctaves(a,3);
+        new InfdevOldNoiseGeneratorOctaves(a,3);
+        new InfdevOldNoiseGeneratorOctaves(a,3);
     }
 
     protected void generateTerrain(int i11, int j11, byte abyte0[]){
