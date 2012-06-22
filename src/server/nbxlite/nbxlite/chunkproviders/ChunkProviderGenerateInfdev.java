@@ -64,17 +64,13 @@ public class ChunkProviderGenerateInfdev
             mineshaftGenerator = new MapGenMineshaft();
         }
         mapFeaturesEnabled = flag;
+        field_4180_q = new double[425];
     }
 
     public void generateTerrain(int i, int j, byte abyte0[]){
         byte byte00 = 5;
         byte byte01 = 17;
         byte byte02 = 5;
-        double ad[] = field_4180_q;
-        if(ad == null)
-        {
-            ad = new double[425];
-        }
         terrainMain = terrainGenerator.a(terrainMain, i << 2, 0, j << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
         terrainAlt1 = terrainAlt1Generator.a(terrainAlt1, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
         terrainAlt2 = terrainAlt2Generator.a(terrainAlt2, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
@@ -106,7 +102,7 @@ public class ChunkProviderGenerateInfdev
                         d22 = d24 + (d25 - d24) * d26;
                     }
                     d22 -= d23;
-                    ad[k2] = d22;
+                    field_4180_q[k2] = d22;
                     k2++;
                 }
 
@@ -114,7 +110,6 @@ public class ChunkProviderGenerateInfdev
 
         }
 
-        field_4180_q = ad;
         for(int k1 = 0; k1 < 4; k1++)
         {
             for(int i2 = 0; i2 < 4; i2++)
