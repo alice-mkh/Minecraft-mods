@@ -39,16 +39,17 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBase{
 
     public ChunkProviderGenerateAlpha(World world, long l, boolean flag){
         super(world, l, flag);
+        fixLight = true;
         stoneNoise = new double[256];
         gravelNoise = new double[256];
         stoneNoise = new double[256];
         caveGenerator = new OldMapGenCaves();
         if(flag)
         {
-            ravineGenerator = new MapGenRavine();
+			ravineGenerator = new MapGenRavine();
             strongholdGenerator = new MapGenSkyStronghold();
             villageGenerator = new MapGenVillage(0);
-            mineshaftGenerator = new MapGenMineshaft();
+			mineshaftGenerator = new MapGenMineshaft();
         }
         terrainAlt1Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
@@ -162,9 +163,9 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBase{
                 byte byte1;
                 if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
                     byte1 = (byte)Block.dirt.blockID;
-                }else{
+				}else{
                     byte1 = (byte)Block.grass.blockID;
-                }
+				}
                 byte byte2 = (byte)Block.dirt.blockID;
                 for(int l1 = 127; l1 >= 0; l1--)
                 {
@@ -269,11 +270,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBase{
 
     }
 
-    public Chunk provideChunk(int i, int j){
-        rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
-        byte abyte0[] = new byte[32768];
-        generateTerrain(i, j, abyte0);
-        replaceBlocks(i, j, abyte0);
+    protected void generateStructures(int i, int j, byte abyte0[]){
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if(mapFeaturesEnabled)
         {
@@ -282,13 +279,6 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBase{
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
         }
-        Chunk chunk = new Chunk(worldObj, abyte0, i, j);
-        ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
-        if (extendedblockstorage == null){
-            extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
-        }
-        chunk.generateSkylightMap();
-        return chunk;
     }
 
     private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1){

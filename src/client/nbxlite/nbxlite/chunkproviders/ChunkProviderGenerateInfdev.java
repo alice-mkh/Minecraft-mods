@@ -27,6 +27,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBase{
 
     public ChunkProviderGenerateInfdev(World world, long l, boolean flag){
         super(world, l, flag);
+        fixLight = true;
         terrainAlt1Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
         terrainGenerator = new InfdevNoiseGeneratorOctaves(rand, 8);
@@ -256,24 +257,12 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBase{
         }
     }
 
-    public Chunk provideChunk(int i, int j){
-        rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
-        byte abyte0[] = new byte[32768];
-        generateTerrain(i, j, abyte0);
-        replaceBlocks(i, j, abyte0);
-        if(mapFeaturesEnabled)
-        {
+    protected void generateStructures(int i, int j, byte abyte0[]){
+        if(mapFeaturesEnabled){
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
         }
-        Chunk chunk = new Chunk(worldObj, abyte0, i, j);
-        ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
-        if (extendedblockstorage == null){
-            extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
-        }
-        chunk.generateSkylightMap();
-        return chunk;
     }
 
     public void populate(IChunkProvider ichunkprovider2, int x, int z){

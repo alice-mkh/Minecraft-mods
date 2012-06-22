@@ -123,15 +123,6 @@ public class ChunkProviderGenerateOldInfdev extends ChunkProviderBase{
         }
     }
 
-    public Chunk provideChunk(int i11, int j11){
-        rand.setSeed((long)i11 * 0x4f9939f508L + (long)j11 * 0x1ef1565bd5L);
-        byte abyte0[] = new byte[32768];
-        generateTerrain(i11, j11, abyte0);
-        Chunk chunk = new Chunk(worldObj, abyte0, i11, j11);
-        chunk.generateSkylightMap();
-        return chunk;
-    }
-
     public void populate(IChunkProvider ichunkprovider2, int i1, int j1){
         if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS){
             int l3 = (int)((noiseSandGen.func_806_a((double)i1 * 8D, (double)j1 * 8D) / 8D + rand.nextDouble() * 4D + 4D) / 3D);

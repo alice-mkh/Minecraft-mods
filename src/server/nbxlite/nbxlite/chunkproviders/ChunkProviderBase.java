@@ -9,11 +9,21 @@ public class ChunkProviderBase implements IChunkProvider{
     protected Random rand;
     protected World worldObj;
     protected final boolean mapFeaturesEnabled;
+    protected int biomes;
+    protected BiomeGenBase biomesForGeneration[];
+    protected OldBiomeGenBase oldBiomesForGeneration[];
+    protected boolean fixLight;
 
-    public ChunkProviderBase(World world, long l, boolean flag){
+    public ChunkProviderBase(World world, long l, boolean flag, int b){
         rand = new Random(l);
         worldObj = world;
         mapFeaturesEnabled = flag;
+        biomes = b;
+        fixLight = false;
+    }
+
+    public ChunkProviderBase(World world, long l, boolean flag){
+        this(world, l, flag, mod_noBiomesX.GEN_BIOMELESS);
     }
 
     protected void generateTerrain(int i, int j, byte abyte0[]){}
@@ -22,7 +32,7 @@ public class ChunkProviderBase implements IChunkProvider{
         generateTerrain(i, j, abyte0);
     }
 
-    protected void generateTerrainForBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[], double ad[]){
+    protected void generateTerrainForBiome(int i, int j, byte abyte0[], BiomeGenBase abiomegenbase[]){
         generateTerrain(i, j, abyte0);
     }
 
@@ -32,19 +42,36 @@ public class ChunkProviderBase implements IChunkProvider{
         replaceBlocks(i, j, abyte0);
     }
 
-    protected void replaceBlocksForBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[]){
+    protected void replaceBlocksForBiome(int i, int j, byte abyte0[], BiomeGenBase abiomegenbase[]){
         replaceBlocks(i, j, abyte0);
     }
+
+    protected void generateStructures(int i, int j, byte abyte0[]){}
 
     public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
-        generateTerrain(i, j, abyte0);
-        replaceBlocks(i, j, abyte0);
+        if (biomes==mod_noBiomesX.GEN_NEWBIOMES){
+            biomesForGeneration = worldObj.getWorldChunkManager().getBiomesForGeneration(biomesForGeneration, i * 4 - 2, j * 4 - 2, 10, 10);
+            generateTerrainForBiome(i, j, abyte0, biomesForGeneration);
+            biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
+            replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
+        }else if (biomes==mod_noBiomesX.GEN_OLDBIOMES){
+            oldBiomesForGeneration = worldObj.getWorldChunkManager().oldLoadBlockGeneratorData(oldBiomesForGeneration, i * 16, j * 16, 16, 16);
+            double ad[] = worldObj.getWorldChunkManager().temperature;
+            generateTerrainForOldBiome(i, j, abyte0, oldBiomesForGeneration, ad);
+            replaceBlocksForOldBiome(i, j, abyte0, oldBiomesForGeneration);
+        }else{
+            generateTerrain(i, j, abyte0);
+            replaceBlocks(i, j, abyte0);
+        }
+        generateStructures(i, j, abyte0);
         Chunk chunk = new Chunk(worldObj, abyte0, i, j);
-        ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
-        if (extendedblockstorage == null){
-            extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
+        if (fixLight){
+            ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
+            if (extendedblockstorage == null){
+                extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
+            }
         }
         chunk.generateSkylightMap();
         return chunk;

@@ -19,7 +19,6 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBase{
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
-    private BiomeGenBase biomesForGeneration[];
     double noise3[];
     double noise1[];
     double noise2[];
@@ -29,7 +28,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBase{
     int unusedIntArray32x32[][];
 
     public ChunkProviderGenerateRelease(World world, long l, Boolean flag){
-        super(world, l, flag);
+        super(world, l, flag, mod_noBiomesX.GEN_NEWBIOMES);
         stoneNoise = new double[256];
         caveGenerator = new MapGenCaves();
         strongholdGenerator = new MapGenStronghold();
@@ -46,14 +45,13 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBase{
         mobSpawnerNoise = new NoiseGeneratorOctaves(rand, 8);
     }
 
-    protected void generateTerrain(int i, int j, byte abyte0[]){
+    protected void generateTerrainForBiome(int i, int j, byte abyte0[], BiomeGenBase biomes[]){
         byte byte0 = 4;
         int k = 16;
         int l = 63;
         int i1 = byte0 + 1;
         int j1 = 17;
         int k1 = byte0 + 1;
-        biomesForGeneration = worldObj.getWorldChunkManager().getBiomesForGeneration(biomesForGeneration, i * 4 - 2, j * 4 - 2, i1 + 5, k1 + 5);
         field_4180_q = initializeNoiseField(field_4180_q, i * byte0, 0, j * byte0, i1, j1, k1);
         for (int l1 = 0; l1 < byte0; l1++)
         {
@@ -219,12 +217,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBase{
         }
     }
 
-    public Chunk provideChunk(int i, int j){
-        rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
-        byte abyte0[] = new byte[32768];
-        generateTerrain(i, j, abyte0);
-        biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
-        replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
+    protected void generateStructures(int i, int j, byte abyte0[]){
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
@@ -238,9 +231,6 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBase{
         if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
         }
-        Chunk chunk = new Chunk(worldObj, abyte0, i, j);
-        chunk.generateSkylightMap();
-        return chunk;
     }
 
     private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1){
