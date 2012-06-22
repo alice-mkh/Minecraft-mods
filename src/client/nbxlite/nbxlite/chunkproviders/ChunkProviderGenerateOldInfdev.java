@@ -9,13 +9,13 @@ import net.minecraft.src.nbxlite.noise.InfdevOldNoiseGeneratorOctaves;
 public class ChunkProviderGenerateOldInfdev
     implements IChunkProvider
 {
-    private Random a;
-    private InfdevOldNoiseGeneratorOctaves b;
-    private InfdevOldNoiseGeneratorOctaves c;
-    private InfdevOldNoiseGeneratorOctaves d;
-    private InfdevOldNoiseGeneratorOctaves e;
-    private InfdevOldNoiseGeneratorOctaves f;
-    private InfdevOldNoiseGeneratorOctaves g;
+    private Random rand;
+    private InfdevOldNoiseGeneratorOctaves terrainAlt1Generator;
+    private InfdevOldNoiseGeneratorOctaves terrainAlt2Generator;
+    private InfdevOldNoiseGeneratorOctaves terrainGenerator;
+    private InfdevOldNoiseGeneratorOctaves noiseSandGen;
+    private InfdevOldNoiseGeneratorOctaves rockSandGen;
+    private InfdevOldNoiseGeneratorOctaves unknownGen;
     private World worldObj;
 
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
@@ -25,40 +25,22 @@ public class ChunkProviderGenerateOldInfdev
 
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
     {
- /*       if("Stronghold".equals(s) && strongholdGenerator != null)
-        {
-            return strongholdGenerator.getNearestInstance(world, i, j, k);
-        } else
-        {
-            return null;
-        }*/
         return null;
     }
 
     public ChunkProviderGenerateOldInfdev(World world, long l, boolean flag)
     {
         worldObj = world;
-        a = new Random(l);
-        b = new InfdevOldNoiseGeneratorOctaves(a,16);
-        c = new InfdevOldNoiseGeneratorOctaves(a,16);
-        d = new InfdevOldNoiseGeneratorOctaves(a,8);
-        e = new InfdevOldNoiseGeneratorOctaves(a,4);
-        f = new InfdevOldNoiseGeneratorOctaves(a,4);
-        g = new InfdevOldNoiseGeneratorOctaves(a,5);
-        new InfdevOldNoiseGeneratorOctaves(a,3);
-        new InfdevOldNoiseGeneratorOctaves(a,3);
-        new InfdevOldNoiseGeneratorOctaves(a,3);
+        rand = new Random(l);
+        terrainAlt1Generator = new InfdevOldNoiseGeneratorOctaves(rand, 16);
+        terrainAlt2Generator = new InfdevOldNoiseGeneratorOctaves(rand, 16);
+        terrainGenerator = new InfdevOldNoiseGeneratorOctaves(rand, 8);
+        noiseSandGen = new InfdevOldNoiseGeneratorOctaves(rand, 4);
+        rockSandGen = new InfdevOldNoiseGeneratorOctaves(rand, 4);
+        unknownGen = new InfdevOldNoiseGeneratorOctaves(rand, 5);
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i11, int j11)
-    {
-        a.setSeed((long)i11 * 0x4f9939f508L + (long)j11 * 0x1ef1565bd5L);
-        byte abyte0[] = new byte[32768];
+    public void generateTerrain(int i11, int j11, byte abyte0[]){
         int i = i11 << 4;
         int g11 = j11 << 4;
         int j = 0;
@@ -68,15 +50,15 @@ public class ChunkProviderGenerateOldInfdev
             {
                 int i1 = k / 1024;
                 int j1 = l / 1024;
-                float f1 = (float)(b.a((float)k / 0.03125F, 0.0D, (float)l / 0.03125F) - c.a((float)k / 0.015625F, 0.0D, (float)l / 0.015625F)) / 512F / 4F;
-                float f2 = (float)f.func_806_a((float)k / 4F, (float)l / 4F);
-                float f3 = (float)g.func_806_a((float)k / 8F, (float)l / 8F) / 8F;
-                f2 = f2 <= 0.0F ? (float)(e.func_806_a((float)k * 0.2571428F, (float)l * 0.2571428F) * (double)f3) : (float)((d.func_806_a((float)k * 0.2571428F * 2.0F, (float)l * 0.2571428F * 2.0F) * (double)f3) / 4D);
+                float f1 = (float)(terrainAlt1Generator.a((float)k / 0.03125F, 0.0D, (float)l / 0.03125F) - terrainAlt2Generator.a((float)k / 0.015625F, 0.0D, (float)l / 0.015625F)) / 512F / 4F;
+                float f2 = (float)rockSandGen.func_806_a((float)k / 4F, (float)l / 4F);
+                float f3 = (float)unknownGen.func_806_a((float)k / 8F, (float)l / 8F) / 8F;
+                f2 = f2 <= 0.0F ? (float)(noiseSandGen.func_806_a((float)k * 0.2571428F, (float)l * 0.2571428F) * (double)f3) : (float)((terrainGenerator.func_806_a((float)k * 0.2571428F * 2.0F, (float)l * 0.2571428F * 2.0F) * (double)f3) / 4D);
                 f1 = (int)(f1 + 64F + f2);
-                if((float)f.func_806_a((double)k, (double)l) < 0.0F)
+                if((float)rockSandGen.func_806_a((double)k, (double)l) < 0.0F)
                 {
                     f1 = (int)f1 / 2 << 1;
-                    if((float)f.func_806_a((double)k / 5, (double)l / 5) < 0.0F)
+                    if((float)rockSandGen.func_806_a((double)k / 5, (double)l / 5) < 0.0F)
                     {
                         f1++;
                     }
@@ -116,9 +98,9 @@ public class ChunkProviderGenerateOldInfdev
                             l1 = Block.waterStill.blockID;
                         }
                     }
-                    a.setSeed(i11 + j11 * 13871);
-                    int i2 = (i11 << 10) + 128 + a.nextInt(512);
-                    int j2 = (j11 << 10) + 128 + a.nextInt(512);
+                    rand.setSeed(i11 + j11 * 13871);
+                    int i2 = (i11 << 10) + 128 + rand.nextInt(512);
+                    int j2 = (j11 << 10) + 128 + rand.nextInt(512);
                     i2 = k - i2;
                     j2 = l - j2;
                     if(i2 < 0)
@@ -155,11 +137,21 @@ public class ChunkProviderGenerateOldInfdev
             }
 
         }
+    }
 
+    public Chunk loadChunk(int i, int j)
+    {
+        return provideChunk(i, j);
+    }
+
+    public Chunk provideChunk(int i11, int j11)
+    {
+        rand.setSeed((long)i11 * 0x4f9939f508L + (long)j11 * 0x1ef1565bd5L);
+        byte abyte0[] = new byte[32768];
+        generateTerrain(i11, j11, abyte0);
         Chunk chunk = new Chunk(worldObj, abyte0, i11, j11);
         chunk.generateSkylightMap();
         return chunk;
-//         return abyte0;
     }
 
     public boolean chunkExists(int i, int j)
@@ -170,12 +162,12 @@ public class ChunkProviderGenerateOldInfdev
     public void populate(IChunkProvider ichunkprovider2, int i1, int j1)
     {
         if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS){
-            int l3 = (int)((d.func_806_a((double)i1 * 8D, (double)j1 * 8D) / 8D + a.nextDouble() * 4D + 4D) / 3D);
+            int l3 = (int)((noiseSandGen.func_806_a((double)i1 * 8D, (double)j1 * 8D) / 8D + rand.nextDouble() * 4D + 4D) / 3D);
             if(l3 < 0)
             {
                 l3 = 0;
             }
-            if(a.nextInt(10) == 0)
+            if(rand.nextInt(10) == 0)
             {
                 l3++;
             }
@@ -183,15 +175,15 @@ public class ChunkProviderGenerateOldInfdev
             Object obj = new OldWorldGenTrees(false);
             for(int i11 = 0; i11 < l3; i11++)
             {
-                int l13 = i1 * 16 + a.nextInt(16) + 8;
-                int k16 = j1 * 16 + a.nextInt(16) + 8;
+                int l13 = i1 * 16 + rand.nextInt(16) + 8;
+                int k16 = j1 * 16 + rand.nextInt(16) + 8;
                 ((WorldGenerator)obj).setScale(1.0D, 1.0D, 1.0D);
-                ((WorldGenerator)obj).generate(worldObj, a, l13, worldObj.getHeightValue(l13, k16), k16);
+                ((WorldGenerator)obj).generate(worldObj, rand, l13, worldObj.getHeightValue(l13, k16), k16);
             }
         }
         if (mod_noBiomesX.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i1 * 16) + 16, (j1 * 16) + 16);
-            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i1 * 16) + 8, (j1 * 16) + 8, 16, 16, a);
+            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i1 * 16) + 8, (j1 * 16) + 8, 16, 16, rand);
         }
     }
 
