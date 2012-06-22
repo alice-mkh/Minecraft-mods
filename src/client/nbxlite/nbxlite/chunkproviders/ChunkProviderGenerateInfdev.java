@@ -66,7 +66,7 @@ public class ChunkProviderGenerateInfdev
         mapFeaturesEnabled = flag;
     }
 
-    public void generateTerrain(int i1, int j1, byte abyte0[]){
+    public void generateTerrain(int i, int j, byte abyte0[]){
         byte byte00 = 5;
         byte byte01 = 17;
         byte byte02 = 5;
@@ -75,9 +75,9 @@ public class ChunkProviderGenerateInfdev
         {
             ad = new double[425];
         }
-        terrainMain = terrainGenerator.a(terrainMain, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
-        terrainAlt1 = terrainAlt1Generator.a(terrainAlt1, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
-        terrainAlt2 = terrainAlt2Generator.a(terrainAlt2, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainMain = terrainGenerator.a(terrainMain, i << 2, 0, j << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
+        terrainAlt1 = terrainAlt1Generator.a(terrainAlt1, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainAlt2 = terrainAlt2Generator.a(terrainAlt2, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
         int k2 = 0;
         for(int j3 = 0; j3 < byte00; j3++)
         {
@@ -174,13 +174,13 @@ public class ChunkProviderGenerateInfdev
         }
     }
 
-    public void replaceBlocks(int i1, int j1, byte abyte0[]){
+    public void replaceBlocks(int i, int j, byte abyte0[]){
         for(int l1 = 0; l1 < 16; l1++)
         {
             for(int j2 = 0; j2 < 16; j2++)
             {
-                double d2 = (i1 << 4) + l1;
-                double d4 = (j1 << 4) + j2;
+                double d2 = (i << 4) + l1;
+                double d4 = (j << 4) + j2;
                 double asd = 0.0D;
                 if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_PARADISE)
                 {
@@ -291,19 +291,19 @@ public class ChunkProviderGenerateInfdev
         return provideChunk(i, j);
     }
 
-    public Chunk provideChunk(int i1, int j1)
+    public Chunk provideChunk(int i, int j)
     {
-        rand.setSeed((long)i1 * 0x4f9939f508L + (long)j1 * 0x1ef1565bd5L);
+        rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
-        generateTerrain(i1, j1, abyte0);
-        replaceBlocks(i1, j1, abyte0);
+        generateTerrain(i, j, abyte0);
+        replaceBlocks(i, j, abyte0);
         if(mapFeaturesEnabled)
         {
-            mineshaftGenerator.generate(this, worldObj, i1, j1, abyte0);
-            villageGenerator.generate(this, worldObj, i1, j1, abyte0);
-            strongholdGenerator.generate(this, worldObj, i1, j1, abyte0);
+            mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
+            villageGenerator.generate(this, worldObj, i, j, abyte0);
+            strongholdGenerator.generate(this, worldObj, i, j, abyte0);
         }
-        Chunk chunk = new Chunk(worldObj, abyte0, i1, j1);
+        Chunk chunk = new Chunk(worldObj, abyte0, i, j);
         ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
         if (extendedblockstorage == null){
             extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
@@ -317,85 +317,81 @@ public class ChunkProviderGenerateInfdev
         return true;
     }
 
-    public void populate(IChunkProvider ichunkprovider2, int i1, int j1)
+    public void populate(IChunkProvider ichunkprovider2, int x, int z)
     {
-        rand.setSeed((long)i1 * 0x12f88dd3L + (long)j1 * 0x36d41eecL);
-        int ii1 = i1 << 4;
-        i1 = j1 << 4;
-        for(j1 = 0; j1 < 20; j1++)
+        rand.setSeed((long)x * 0x12f88dd3L + (long)z * 0x36d41eecL);
+        int x1 = x << 4;
+        int z1 = z << 4;
+        for(int i = 0; i < 20; i++)
         {
-            int k1 = ii1 + rand.nextInt(16);
-            int k2 = rand.nextInt(128);
-            int l3 = i1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreCoal.blockID,0)).generate_infdev(worldObj, rand, k1, k2, l3);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(128);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreCoal.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
 
-        for(j1 = 0; j1 < 10; j1++)
+        for(int i = 0; i < 10; i++)
         {
-            int l1 = ii1 + rand.nextInt(16);
-            int l2 = rand.nextInt(64);
-            int i4 = i1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreIron.blockID,0)).generate_infdev(worldObj, rand, l1, l2, i4);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(64);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreIron.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
 
         if(rand.nextInt(2) == 0)
         {
-            j1 = ii1 + rand.nextInt(16);
-            int i2 = rand.nextInt(32);
-            int i3 = i1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreGold.blockID,0)).generate_infdev(worldObj, rand, j1, i2, i3);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(32);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreGold.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
         if(rand.nextInt(8) == 0)
         {
-            j1 = ii1 + rand.nextInt(16);
-            int j2 = rand.nextInt(16);
-            int j3 = i1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID,0)).generate_infdev(worldObj, rand, j1, j2, j3);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(16);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
         if (mod_noBiomesX.GenerateNewOres){
-            for(int j3 = 0; j3 < 8; j3++)
+            for(int i = 0; i < 8; i++)
             {
-                int l5 = ii1 + rand.nextInt(16);
-                int j8 = rand.nextInt(16);
-                int k10 = i1 + rand.nextInt(16);
-                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID,0)).generate_infdev(worldObj, rand, l5, j8, k10);
+                int x2 = x1 + rand.nextInt(16);
+                int y2 = rand.nextInt(16);
+                int z2 = z1 + rand.nextInt(16);
+                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
             }
-            for(int k13 = 0; k13 < 1; k13++)
+            for(int i = 0; i < 1; i++)
             {
-                int j16 = ii1 + rand.nextInt(16);
-                int i19 = rand.nextInt(16) + rand.nextInt(16);
-                int l20 = i1 + rand.nextInt(16);
-                (new SuperOldWorldGenMinable(Block.oreLapis.blockID,0)).generate_infdev(worldObj, rand, j16, i19, l20);
+                int x2 = x1 + rand.nextInt(16);
+                int y2 = rand.nextInt(16) + rand.nextInt(16);
+                int z2 = z1 + rand.nextInt(16);
+                (new SuperOldWorldGenMinable(Block.oreLapis.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
             }
         }
-        j1 = (int)(treeGen.func_806_a((double)ii1 * 0.050000000000000003D, (double)i1 * 0.050000000000000003D) - rand.nextDouble());
-        if(j1 < 0)
+        int trees = (int)(treeGen.func_806_a((double)x1 * 0.050000000000000003D, (double)z1 * 0.050000000000000003D) - rand.nextDouble());
+        if(trees < 0)
         {
-            j1 = 0;
+            trees = 0;
         }
-        Object treegen = new OldWorldGenBigTree();
-        if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608)
-        {
-            treegen = new OldWorldGenTrees(false);
-        }
+        Object treegen = mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
         if(rand.nextInt(100) == 0)
         {
-            j1++;
+            trees++;
         }
         if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS)
         {
-            j1 += 20;
+            trees += 20;
         }
-        for(int k3 = 0; k3 < j1; k3++)
+        for(int i = 0; i < trees; i++)
         {
-            int j4 = ii1 + rand.nextInt(16) + 8;
-            int k4 = i1 + rand.nextInt(16) + 8;
+            int x2 = x1 + rand.nextInt(16) + 8;
+            int z2 = z1 + rand.nextInt(16) + 8;
             ((WorldGenerator)treegen).setScale(1.0D, 1.0D, 1.0D);
-            ((WorldGenerator)treegen).generate(worldObj, rand, j4, worldObj.getHeightValue(j4, k4), k4);
+            ((WorldGenerator)treegen).generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
         }
         if (mod_noBiomesX.UseNewSpawning){
-            BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i1 * 16) + 16, (j1 * 16) + 16);
-            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i1 * 16) + 8, (j1 * 16) + 8, 16, 16, rand);
+            BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((x * 16) + 16, (z * 16) + 16);
+            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (x * 16) + 8, (z * 16) + 8, 16, 16, rand);
         }
     }
 
