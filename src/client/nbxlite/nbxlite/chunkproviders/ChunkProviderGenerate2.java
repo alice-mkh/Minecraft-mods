@@ -105,7 +105,7 @@ public class ChunkProviderGenerate2
 
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
     {
-        return releaseGen.getPossibleCreatures_release(enumcreaturetype,i,j,k);
+        return releaseGen.getPossibleCreatures(enumcreaturetype, i, j, k);
     }
 
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)

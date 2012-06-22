@@ -1,21 +1,15 @@
 package net.minecraft.src.nbxlite.chunkproviders;
 
 import java.util.List;
-import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.BoundChunk;
 import net.minecraft.src.nbxlite.indev.*;
 
-public class ChunkProviderFinite
-    implements IChunkProvider
-{
+public class ChunkProviderFinite implements IChunkProvider{
     private World worldObj;
-    private Random rand;
 
-    public ChunkProviderFinite(World world, long l, boolean flag)
-    {
+    public ChunkProviderFinite(World world, long l, boolean flag){
         worldObj = world;
-        rand = new Random(l);
     }
 
     private int indexIndev(int x, int y, int z){
@@ -57,13 +51,11 @@ public class ChunkProviderFinite
         }
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
+    public Chunk loadChunk(int i, int j){
         return provideChunk(i, j);
     }
 
-    public Chunk provideChunk(int i, int j)
-    {
+    public Chunk provideChunk(int i, int j){
         boolean tall = mod_noBiomesX.IndevHeight>128;
         boolean tall2 = mod_noBiomesX.IndevHeight>160;
         boolean bounds = i>=0 && i<mod_noBiomesX.IndevWidthX/16 && j>=0 && j<mod_noBiomesX.IndevWidthZ/16;
@@ -102,13 +94,11 @@ public class ChunkProviderFinite
         return chunk;
     }
 
-    public boolean chunkExists(int i, int j)
-    {
+    public boolean chunkExists(int i, int j){
         return true;
     }
 
-    public void populate(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate(IChunkProvider ichunkprovider, int i, int j){
         for (int x = i * 16; x < (i + 1) * 16; x++){
             for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
                 for (int z = j * 16; z < (j + 1) * 16; z++){
@@ -120,33 +110,27 @@ public class ChunkProviderFinite
         }
     }
 
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
+    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate){
         return true;
     }
 
-    public boolean unload100OldestChunks()
-    {
+    public boolean unload100OldestChunks(){
         return false;
     }
 
-    public boolean canSave()
-    {
+    public boolean canSave(){
         return true;
     }
 
-    public String makeString()
-    {
+    public String makeString(){
         return "FlatLevelSource";
     }
 
-    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
+    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k){
         return null;
     }
 
-    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
-    {
+    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         return null;
     }
 }

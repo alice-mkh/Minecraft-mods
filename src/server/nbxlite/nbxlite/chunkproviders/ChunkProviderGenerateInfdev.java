@@ -10,47 +10,23 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenBigTree;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateInfdev
-    implements IChunkProvider
-{
-    private Random rand;
+public class ChunkProviderGenerateInfdev extends ChunkProviderBase{
     private InfdevNoiseGeneratorOctaves terrainAlt1Generator;
     private InfdevNoiseGeneratorOctaves terrainAlt2Generator;
     private InfdevNoiseGeneratorOctaves terrainGenerator;
     private InfdevNoiseGeneratorOctaves noiseSandGen;
     private InfdevNoiseGeneratorOctaves rockSandGen;
     private InfdevNoiseGeneratorOctaves treeGen;
-    private World worldObj;
     private double field_4180_q[];
     private double terrainMain[];
     private double terrainAlt1[];
     private double terrainAlt2[];
-    private final boolean mapFeaturesEnabled;
     public MapGenStronghold2 strongholdGenerator;
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
 
-    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
-    {
- /*       if("Stronghold".equals(s) && strongholdGenerator != null)
-        {
-            return strongholdGenerator.getNearestInstance(world, i, j, k);
-        } else
-        {
-            return null;
-        }*/
-        return null;
-    }
-
-    public ChunkProviderGenerateInfdev(World world, long l, boolean flag)
-    {
-        worldObj = world;
-        rand = new Random(l);
+    public ChunkProviderGenerateInfdev(World world, long l, boolean flag){
+        super(world, l, flag);
         terrainAlt1Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
         terrainGenerator = new InfdevNoiseGeneratorOctaves(rand, 8);
@@ -63,11 +39,10 @@ public class ChunkProviderGenerateInfdev
             villageGenerator = new MapGenVillage(0);
             mineshaftGenerator = new MapGenMineshaft();
         }
-        mapFeaturesEnabled = flag;
         field_4180_q = new double[425];
     }
 
-    public void generateTerrain(int i, int j, byte abyte0[]){
+    protected void generateTerrain(int i, int j, byte abyte0[]){
         byte byte00 = 5;
         byte byte01 = 17;
         byte byte02 = 5;
@@ -169,7 +144,7 @@ public class ChunkProviderGenerateInfdev
         }
     }
 
-    public void replaceBlocks(int i, int j, byte abyte0[]){
+    protected void replaceBlocks(int i, int j, byte abyte0[]){
         for(int l1 = 0; l1 < 16; l1++)
         {
             for(int j2 = 0; j2 < 16; j2++)
@@ -281,13 +256,7 @@ public class ChunkProviderGenerateInfdev
         }
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i, int j)
-    {
+    public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         generateTerrain(i, j, abyte0);
@@ -307,13 +276,7 @@ public class ChunkProviderGenerateInfdev
         return chunk;
     }
 
-    public boolean chunkExists(int i, int j)
-    {
-        return true;
-    }
-
-    public void populate(IChunkProvider ichunkprovider2, int x, int z)
-    {
+    public void populate(IChunkProvider ichunkprovider2, int x, int z){
         rand.setSeed((long)x * 0x12f88dd3L + (long)z * 0x36d41eecL);
         int x1 = x << 4;
         int z1 = z << 4;
@@ -388,25 +351,5 @@ public class ChunkProviderGenerateInfdev
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((x * 16) + 16, (z * 16) + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (x * 16) + 8, (z * 16) + 8, 16, 16, rand);
         }
-    }
-
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
-        return true;
-    }
-
-    public boolean unload100OldestChunks()
-    {
-        return false;
-    }
-
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    public String makeString()
-    {
-        return "RandomLevelSource";
     }
 }

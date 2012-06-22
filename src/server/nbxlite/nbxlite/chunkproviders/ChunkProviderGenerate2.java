@@ -98,9 +98,14 @@ public class ChunkProviderGenerate2
         return true;
     }
 
+    public String makeString()
+    {
+        return "RandomLevelSource";
+    }
+
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
     {
-        return releaseGen.func_40377_a_release(enumcreaturetype,i,j,k);
+        return releaseGen.getPossibleCreatures(enumcreaturetype, i, j, k);
     }
 
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)

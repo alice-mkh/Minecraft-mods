@@ -13,10 +13,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 
-public class ChunkProviderSky
-    implements IChunkProvider
-{
-    private Random rand;
+public class ChunkProviderSky extends ChunkProviderBase{
     private BetaNoiseGeneratorOctaves noiseGen1;
     private BetaNoiseGeneratorOctaves noiseGen2;
     private BetaNoiseGeneratorOctaves noiseGen3;
@@ -25,8 +22,6 @@ public class ChunkProviderSky
     public BetaNoiseGeneratorOctaves noiseGen5;
     public BetaNoiseGeneratorOctaves noiseGen6;
     public BetaNoiseGeneratorOctaves mobSpawnerNoise;
-    private World worldObj;
-    private final boolean mapFeaturesEnabled;
     private double field_4180_q[];
     private double sandNoise[];
     private double gravelNoise[];
@@ -42,27 +37,14 @@ public class ChunkProviderSky
     int unusedIntArray32x32[][];
     private double generatedTemperatures[];
 
-    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkProviderSky(World world, long l, boolean boolean1)
-    {
+    public ChunkProviderSky(World world, long l, boolean boolean1){
+        super(world, l, boolean1);
         sandNoise = new double[256];
         gravelNoise = new double[256];
         stoneNoise = new double[256];
         caveGenerator = new OldMapGenCaves();
         strongholdGen = new MapGenSkyStronghold();
         unusedIntArray32x32 = new int[32][32];
-        worldObj = world;
-        mapFeaturesEnabled = boolean1;
-        rand = new Random(l);
         noiseGen1 = new BetaNoiseGeneratorOctaves(rand, 16);
         noiseGen2 = new BetaNoiseGeneratorOctaves(rand, 16);
         noiseGen3 = new BetaNoiseGeneratorOctaves(rand, 8);
@@ -73,8 +55,7 @@ public class ChunkProviderSky
         mobSpawnerNoise = new BetaNoiseGeneratorOctaves(rand, 8);
     }
 
-    public void generateTerrain(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[], double ad[])
-    {
+    protected void generateTerrainForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[], double ad[]){
         byte byte0 = 2;
         int k = byte0 + 1;
         byte byte1 = 33;
@@ -139,8 +120,7 @@ public class ChunkProviderSky
 
     }
 
-    public void replaceBlocksForBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[])
-    {
+    protected void replaceBlocksForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[]){
         double d = 0.03125D;
         sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
         gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
@@ -203,19 +183,13 @@ public class ChunkProviderSky
 
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i, int j)
-    {
+    public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         biomesForGeneration = worldObj.getWorldChunkManager().oldLoadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
         double ad[] = worldObj.getWorldChunkManager().temperature;
-        generateTerrain(i, j, abyte0, biomesForGeneration, ad);
-        replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
+        generateTerrainForOldBiome(i, j, abyte0, biomesForGeneration, ad);
+        replaceBlocksForOldBiome(i, j, abyte0, biomesForGeneration);
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if (mapFeaturesEnabled){
             strongholdGen.generate(this, worldObj, i, j, abyte0);
@@ -225,8 +199,7 @@ public class ChunkProviderSky
         return chunk;
     }
 
-    private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1)
-    {
+    private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1){
         if(ad == null)
         {
             ad = new double[l * i1 * j1];
@@ -235,8 +208,8 @@ public class ChunkProviderSky
         double d1 = 684.41200000000003D;
         double ad1[] = worldObj.getWorldChunkManager().temperature;
         double ad2[] = worldObj.getWorldChunkManager().humidity;
-        noise5 = noiseGen5.generateNoiseOctaves(noise5, i, j, k, l, i1, j1, 1.121D, 1.121D, 0.5D);
-        noise6 = noiseGen6.generateNoiseOctaves(noise6, i, j, k, l, i1, j1, 200D, 200D, 0.5D);
+        noise5 = noiseGen5.generateNoiseOctaves(noise5, i, k, l, j1, 1.121D, 1.121D, 0.5D);
+        noise6 = noiseGen6.generateNoiseOctaves(noise6, i, k, l, j1, 200D, 200D, 0.5D);
         d *= 2D;
         noise3 = noiseGen3.generateNoiseOctaves(noise3, i, j, k, l, i1, j1, d / 80D, d1 / 160D, d / 80D);
         noise1 = noiseGen1.generateNoiseOctaves(noise1, i, j, k, l, i1, j1, d, d1, d);
@@ -328,13 +301,7 @@ public class ChunkProviderSky
         return ad;
     }
 
-    public boolean chunkExists(int i, int j)
-    {
-        return true;
-    }
-
-    public void populate(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
@@ -576,25 +543,5 @@ public class ChunkProviderSky
         }
 
         BlockSand.fallInstantly = false;
-    }
-
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
-        return true;
-    }
-
-    public boolean unload100OldestChunks()
-    {
-        return false;
-    }
-
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    public String makeString()
-    {
-        return "RandomLevelSource";
     }
 }

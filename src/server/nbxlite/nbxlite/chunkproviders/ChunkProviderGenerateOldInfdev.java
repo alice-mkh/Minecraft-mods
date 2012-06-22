@@ -6,32 +6,16 @@ import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.noise.InfdevOldNoiseGeneratorOctaves;
 
-public class ChunkProviderGenerateOldInfdev
-    implements IChunkProvider
-{
-    private Random rand;
+public class ChunkProviderGenerateOldInfdev extends ChunkProviderBase{
     private InfdevOldNoiseGeneratorOctaves terrainAlt1Generator;
     private InfdevOldNoiseGeneratorOctaves terrainAlt2Generator;
     private InfdevOldNoiseGeneratorOctaves terrainGenerator;
     private InfdevOldNoiseGeneratorOctaves noiseSandGen;
     private InfdevOldNoiseGeneratorOctaves rockSandGen;
     private InfdevOldNoiseGeneratorOctaves unknownGen;
-    private World worldObj;
 
-    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkProviderGenerateOldInfdev(World world, long l, boolean flag)
-    {
-        worldObj = world;
-        rand = new Random(l);
+    protected ChunkProviderGenerateOldInfdev(World world, long l, boolean flag){
+        super(world, l, flag);
         terrainAlt1Generator = new InfdevOldNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new InfdevOldNoiseGeneratorOctaves(rand, 16);
         terrainGenerator = new InfdevOldNoiseGeneratorOctaves(rand, 8);
@@ -40,7 +24,7 @@ public class ChunkProviderGenerateOldInfdev
         unknownGen = new InfdevOldNoiseGeneratorOctaves(rand, 5);
     }
 
-    public void generateTerrain(int i11, int j11, byte abyte0[]){
+    protected void generateTerrain(int i11, int j11, byte abyte0[]){
         int i = i11 << 4;
         int g11 = j11 << 4;
         int j = 0;
@@ -139,13 +123,7 @@ public class ChunkProviderGenerateOldInfdev
         }
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i11, int j11)
-    {
+    public Chunk provideChunk(int i11, int j11){
         rand.setSeed((long)i11 * 0x4f9939f508L + (long)j11 * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         generateTerrain(i11, j11, abyte0);
@@ -154,13 +132,7 @@ public class ChunkProviderGenerateOldInfdev
         return chunk;
     }
 
-    public boolean chunkExists(int i, int j)
-    {
-        return true;
-    }
-
-    public void populate(IChunkProvider ichunkprovider2, int i1, int j1)
-    {
+    public void populate(IChunkProvider ichunkprovider2, int i1, int j1){
         if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS){
             int l3 = (int)((noiseSandGen.func_806_a((double)i1 * 8D, (double)j1 * 8D) / 8D + rand.nextDouble() * 4D + 4D) / 3D);
             if(l3 < 0)
@@ -185,25 +157,5 @@ public class ChunkProviderGenerateOldInfdev
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i1 * 16) + 16, (j1 * 16) + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i1 * 16) + 8, (j1 * 16) + 8, 16, 16, rand);
         }
-    }
-
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
-        return true;
-    }
-
-    public boolean unload100OldestChunks()
-    {
-        return false;
-    }
-
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    public String makeString()
-    {
-        return "RandomLevelSource";
     }
 }

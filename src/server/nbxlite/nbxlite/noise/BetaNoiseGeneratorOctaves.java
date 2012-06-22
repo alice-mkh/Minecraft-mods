@@ -57,7 +57,7 @@ public class BetaNoiseGeneratorOctaves extends NoiseGenerator
         return ad;
     }
 
-    public double[] func_4109_a(double ad[], int i, int j, int k, int l, double d, 
+    public double[] generateNoiseOctaves(double ad[], int i, int j, int k, int l, double d, 
             double d1, double d2)
     {
         return generateNoiseOctaves(ad, i, 10D, j, k, 1, l, d, 1.0D, d1);

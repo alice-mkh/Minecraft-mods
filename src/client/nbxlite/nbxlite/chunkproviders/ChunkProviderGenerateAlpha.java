@@ -13,10 +13,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateAlpha
-    implements IChunkProvider
-{
-    private Random rand;
+public class ChunkProviderGenerateAlpha extends ChunkProviderBase{
     private AlphaNoiseGeneratorOctaves terrainAlt1Generator;
     private AlphaNoiseGeneratorOctaves terrainAlt2Generator;
     private AlphaNoiseGeneratorOctaves terrainGenerator;
@@ -25,8 +22,6 @@ public class ChunkProviderGenerateAlpha
     public AlphaNoiseGeneratorOctaves detailGenerator;
     public AlphaNoiseGeneratorOctaves roughnessGenerator;
     public AlphaNoiseGeneratorOctaves mobSpawnerNoise;
-    private World worldObj;
-    private final boolean mapFeaturesEnabled;
     private double field_4180_q[];
     private double sandNoise[];
     private double gravelNoise[];
@@ -42,24 +37,8 @@ public class ChunkProviderGenerateAlpha
     double detail[];
     double roughness[];
 
-    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
-    {
-        if("Stronghold".equals(s) && strongholdGenerator != null)
-        {
-            return strongholdGenerator.getNearestInstance(world, i, j, k);
-        } else
-        {
-            return null;
-        }
-    }
-
-    public ChunkProviderGenerateAlpha(World world, long l, boolean flag)
-    {
+    public ChunkProviderGenerateAlpha(World world, long l, boolean flag){
+        super(world, l, flag);
         stoneNoise = new double[256];
         gravelNoise = new double[256];
         stoneNoise = new double[256];
@@ -71,9 +50,6 @@ public class ChunkProviderGenerateAlpha
             villageGenerator = new MapGenVillage(0);
 			mineshaftGenerator = new MapGenMineshaft();
         }
-        worldObj = world;
-        mapFeaturesEnabled = flag;
-        rand = new Random(l);
         terrainAlt1Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
         terrainGenerator = new AlphaNoiseGeneratorOctaves(rand, 8);
@@ -84,8 +60,7 @@ public class ChunkProviderGenerateAlpha
         mobSpawnerNoise = new AlphaNoiseGeneratorOctaves(rand, 8);
     }
 
-    public void generateTerrain(int i, int j, byte abyte0[])
-    {
+    protected void generateTerrain(int i, int j, byte abyte0[]){
         byte byte0 = 4;
         byte byte1 = 64;
         int k = byte0 + 1;
@@ -165,8 +140,7 @@ public class ChunkProviderGenerateAlpha
 
     }
 
-    public void replaceBlocks(int i, int j, byte abyte0[])
-    {
+    protected void replaceBlocks(int i, int j, byte abyte0[]){
         byte byte0 = 64;
         double d = 0.03125D;
         sandNoise = noiseSandGen.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
@@ -295,13 +269,7 @@ public class ChunkProviderGenerateAlpha
 
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i, int j)
-    {
+    public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         generateTerrain(i, j, abyte0);
@@ -323,8 +291,7 @@ public class ChunkProviderGenerateAlpha
         return chunk;
     }
 
-    private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1)
-    {
+    private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1){
         if(ad == null)
         {
             ad = new double[l * i1 * j1];
@@ -428,13 +395,7 @@ public class ChunkProviderGenerateAlpha
         return ad;
     }
 
-    public boolean chunkExists(int i, int j)
-    {
-        return true;
-    }
-
-    public void populate(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
@@ -642,25 +603,5 @@ public class ChunkProviderGenerateAlpha
             }
         }
         BlockSand.fallInstantly = false;
-    }
-
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
-        return true;
-    }
-
-    public boolean unload100OldestChunks()
-    {
-        return false;
-    }
-
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    public String makeString()
-    {
-        return "RandomLevelSource";
     }
 }

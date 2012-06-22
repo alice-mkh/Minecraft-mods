@@ -15,10 +15,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateBeta
-    implements IChunkProvider
-{
-    private Random rand;
+public class ChunkProviderGenerateBeta extends ChunkProviderBase{
     private BetaNoiseGeneratorOctaves noiseGen1;
     private BetaNoiseGeneratorOctaves noiseGen2;
     private BetaNoiseGeneratorOctaves noiseGen3;
@@ -27,8 +24,6 @@ public class ChunkProviderGenerateBeta
     public BetaNoiseGeneratorOctaves noiseGen5;
     public BetaNoiseGeneratorOctaves noiseGen6;
     public BetaNoiseGeneratorOctaves mobSpawnerNoise;
-    private World worldObj;
-    private final boolean mapFeaturesEnabled;
     private double field_4180_q[];
     private double sandNoise[];
     private double gravelNoise[];
@@ -47,18 +42,8 @@ public class ChunkProviderGenerateBeta
     int unusedIntArray32x32[][];
     private double generatedTemperatures[];
 
-    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
-    {
-        return null;
-    }
-
-    public ChunkProviderGenerateBeta(World world, long l, Boolean boolean1)
-    {
+    public ChunkProviderGenerateBeta(World world, long l, Boolean boolean1){
+        super(world, l, boolean1);
         sandNoise = new double[256];
         gravelNoise = new double[256];
         stoneNoise = new double[256];
@@ -71,9 +56,6 @@ public class ChunkProviderGenerateBeta
             mineshaftGenerator = new MapGenMineshaft();
         }
         unusedIntArray32x32 = new int[32][32];
-        worldObj = world;
-        mapFeaturesEnabled = boolean1;
-        rand = new Random(l);
         noiseGen1 = new BetaNoiseGeneratorOctaves(rand, 16);
         noiseGen2 = new BetaNoiseGeneratorOctaves(rand, 16);
         noiseGen3 = new BetaNoiseGeneratorOctaves(rand, 8);
@@ -84,8 +66,7 @@ public class ChunkProviderGenerateBeta
         mobSpawnerNoise = new BetaNoiseGeneratorOctaves(rand, 8);
     }
 
-    public void generateTerrain(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[], double ad[])
-    {
+    protected void generateTerrainForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[], double ad[]){
         byte byte0 = 4;
         byte byte1 = 64;
         int k = byte0 + 1;
@@ -162,8 +143,7 @@ public class ChunkProviderGenerateBeta
 
     }
 
-    public void replaceBlocksForBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[])
-    {
+    protected void replaceBlocksForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[]){
         byte byte0 = 64;
         double d = 0.03125D;
         sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
@@ -274,19 +254,13 @@ public class ChunkProviderGenerateBeta
 
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i, int j)
-    {
+    public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         biomesForGeneration = worldObj.getWorldChunkManager().oldLoadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
         double ad[] = worldObj.getWorldChunkManager().temperature;
-        generateTerrain(i, j, abyte0, biomesForGeneration, ad);
-        replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
+        generateTerrainForOldBiome(i, j, abyte0, biomesForGeneration, ad);
+        replaceBlocksForOldBiome(i, j, abyte0, biomesForGeneration);
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if(mapFeaturesEnabled)
         {
@@ -304,8 +278,7 @@ public class ChunkProviderGenerateBeta
         return chunk;
     }
 
-    private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1)
-    {
+    private double[] initializeNoiseField(double ad[], int i, int j, int k, int l, int i1, int j1){
         if(ad == null)
         {
             ad = new double[l * i1 * j1];
@@ -314,8 +287,8 @@ public class ChunkProviderGenerateBeta
         double d1 = 684.41200000000003D;
         double ad1[] = worldObj.getWorldChunkManager().temperature;
         double ad2[] = worldObj.getWorldChunkManager().humidity;
-        noise5 = noiseGen5.func_4109_a(noise5, i, k, l, j1, 1.121D, 1.121D, 0.5D);
-        noise6 = noiseGen6.func_4109_a(noise6, i, k, l, j1, 200D, 200D, 0.5D);
+        noise5 = noiseGen5.generateNoiseOctaves(noise5, i, k, l, j1, 1.121D, 1.121D, 0.5D);
+        noise6 = noiseGen6.generateNoiseOctaves(noise6, i, k, l, j1, 200D, 200D, 0.5D);
         noise3 = noiseGen3.generateNoiseOctaves(noise3, i, j, k, l, i1, j1, d / 80D, d1 / 160D, d / 80D);
         noise1 = noiseGen1.generateNoiseOctaves(noise1, i, j, k, l, i1, j1, d, d1, d);
         noise2 = noiseGen2.generateNoiseOctaves(noise2, i, j, k, l, i1, j1, d, d1, d);
@@ -411,13 +384,7 @@ public class ChunkProviderGenerateBeta
         return ad;
     }
 
-    public boolean chunkExists(int i, int j)
-    {
-        return true;
-    }
-
-    public void populate(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate(IChunkProvider ichunkprovider, int i, int j){
         int k = mod_noBiomesX.MapFeatures;
         if(k == 0)
         {
@@ -437,7 +404,7 @@ public class ChunkProviderGenerateBeta
             }
             return;
         }
-        if(k == 2 || k == 3)
+        if(k == 2|| k == 3)
         {
             populate_14(ichunkprovider, i, j);
             if (mod_noBiomesX.UseNewSpawning){
@@ -752,16 +719,14 @@ public class ChunkProviderGenerateBeta
             {
                 int j24 = k19 - (l + 8);
                 int k25 = k22 - (i1 + 8);
-                int l25 = worldObj.getTopSolidOrLiquidBlock(k19, k22);
+                int l25 = worldObj.getPrecipitationHeight(k19, k22);
                 double d1 = generatedTemperatures[j24 * 16 + k25] - ((double)(l25 - 64) / 64D) * 0.29999999999999999D;
                 if(d1 < 0.5D && l25 > 0 && l25 < 128 && worldObj.isAirBlock(k19, l25, k22) && worldObj.getBlockMaterial(k19, l25 - 1, k22).isSolid() && worldObj.getBlockMaterial(k19, l25 - 1, k22) != Material.ice)
                 {
                     worldObj.setBlockWithNotify(k19, l25, k22, Block.snow.blockID);
                 }
             }
-
         }
-
         BlockSand.fallInstantly = false;
         if (mod_noBiomesX.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(l + 16, i1 + 16);
@@ -769,8 +734,7 @@ public class ChunkProviderGenerateBeta
         }
     }
 
-    public void populate_14(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate_14(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
@@ -1025,21 +989,19 @@ public class ChunkProviderGenerateBeta
             {
                 int j22 = j18 - (k + 8);
                 int j23 = l20 - (l + 8);
-                int k23 = worldObj.getTopSolidOrLiquidBlock(j18, l20);
+                int k23 = worldObj.getPrecipitationHeight(j18, l20);
                 double d1 = generatedTemperatures[j22 * 16 + j23] - ((double)(k23 - 64) / 64D) * 0.29999999999999999D;
                 if(d1 < 0.5D && k23 > 0 && k23 < 128 && worldObj.isAirBlock(j18, k23, l20) && worldObj.getBlockMaterial(j18, k23 - 1, l20).isSolid() && worldObj.getBlockMaterial(j18, k23 - 1, l20) != Material.ice)
                 {
                     worldObj.setBlockWithNotify(j18, k23, l20, Block.snow.blockID);
                 }
             }
-
         }
 
         BlockSand.fallInstantly = false;
     }
 
-    public void populate_12(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate_12(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
@@ -1277,21 +1239,19 @@ public class ChunkProviderGenerateBeta
             {
                 int j22 = j18 - (k + 8);
                 int j23 = l20 - (l + 8);
-                int k23 = worldObj.getTopSolidOrLiquidBlock(j18, l20);
+                int k23 = worldObj.getPrecipitationHeight(j18, l20);
                 double d1 = generatedTemperatures[j22 * 16 + j23] - ((double)(k23 - 64) / 64D) * 0.29999999999999999D;
                 if(d1 < 0.5D && k23 > 0 && k23 < 128 && worldObj.isAirBlock(j18, k23, l20) && worldObj.getBlockMaterial(j18, k23 - 1, l20).isSolid() && worldObj.getBlockMaterial(j18, k23 - 1, l20) != Material.ice)
                 {
                     worldObj.setBlockWithNotify(j18, k23, l20, Block.snow.blockID);
                 }
             }
-
         }
 
         BlockSand.fallInstantly = false;
     }
 
-    public void populate_halloween(IChunkProvider ichunkprovider, int i, int j)
-    {
+    public void populate_halloween(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
@@ -1512,7 +1472,7 @@ public class ChunkProviderGenerateBeta
             {
                 int j20 = k15 - (k + 8);
                 int k21 = k18 - (l + 8);
-                int i22 = worldObj.getTopSolidOrLiquidBlock(k15, k18);
+                int i22 = worldObj.getPrecipitationHeight(k15, k18);
                 double d1 = generatedTemperatures[j20 * 16 + k21] - ((double)(i22 - 64) / 64D) * 0.29999999999999999D;
                 if(d1 < 0.5D && i22 > 0 && i22 < 128 && worldObj.isAirBlock(k15, i22, k18) && worldObj.getBlockMaterial(k15, i22 - 1, k18).isSolid() && worldObj.getBlockMaterial(k15, i22 - 1, k18) != Material.ice)
                 {
@@ -1534,25 +1494,5 @@ public class ChunkProviderGenerateBeta
 
         }
         BlockSand.fallInstantly = false;
-    }
-
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
-        return true;
-    }
-
-    public boolean unload100OldestChunks()
-    {
-        return false;
-    }
-
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    public String makeString()
-    {
-        return "RandomLevelSource";
     }
 }
