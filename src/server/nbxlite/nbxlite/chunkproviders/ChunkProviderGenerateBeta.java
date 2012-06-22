@@ -372,34 +372,6 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
     }
 
     public void populate(IChunkProvider ichunkprovider, int x, int z){
-        int k = mod_noBiomesX.MapFeatures;
-        if(k == 0)
-        {
-            populate_halloween(ichunkprovider, x, z);
-            if (mod_noBiomesX.UseNewSpawning){
-                BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((x * 16) + 16, (z * 16) + 16);
-                SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (x * 16) + 8, (z * 16) + 8, 16, 16, rand);
-            }
-            return;
-        }
-        if(k == 1)
-        {
-            populate_12(ichunkprovider, x, z);
-            if (mod_noBiomesX.UseNewSpawning){
-                BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((x * 16) + 16, (z * 16) + 16);
-                SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (x * 16) + 8, (z * 16) + 8, 16, 16, rand);
-            }
-            return;
-        }
-        if(k == 2|| k == 3)
-        {
-            populate_14(ichunkprovider, x, z);
-            if (mod_noBiomesX.UseNewSpawning){
-                BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((x * 16) + 16, (z * 16) + 16);
-                SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (x * 16) + 8, (z * 16) + 8, 16, 16, rand);
-            }
-            return;
-        }
         BlockSand.fallInstantly = true;
         int x1 = x * 16;
         int z1 = z * 16;
@@ -416,21 +388,23 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
         }
         double d = 0.25D;
-        if(!flag && rand.nextInt(4) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(!flag && rand.nextInt(8) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(120) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            if(y2 < 64 || rand.nextInt(10) == 0)
+        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if(!flag && rand.nextInt(4) == 0)
             {
-                (new WorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, x2, y2, z2);
+                int x2 = x1 + rand.nextInt(16) + 8;
+                int y2 = rand.nextInt(128);
+                int z2 = z1 + rand.nextInt(16) + 8;
+                (new WorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, x2, y2, z2);
+            }
+            if(!flag && rand.nextInt(8) == 0)
+            {
+                int x2 = x1 + rand.nextInt(16) + 8;
+                int y2 = rand.nextInt(rand.nextInt(120) + 8);
+                int z2 = z1 + rand.nextInt(16) + 8;
+                if(y2 < 64 || rand.nextInt(10) == 0)
+                {
+                    (new WorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, x2, y2, z2);
+                }
             }
         }
         for(int i = 0; i < 8; i++)
@@ -454,7 +428,11 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         for(int i = 0; i < 10; i++)
@@ -462,7 +440,11 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         for(int i = 0; i < 20; i++)
@@ -470,7 +452,11 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         for(int i = 0; i < 20; i++)
@@ -478,7 +464,11 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(64);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         for(int i = 0; i < 2; i++)
@@ -486,7 +476,11 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(32);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         for(int i = 0; i < 8; i++)
@@ -494,7 +488,11 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         for(int i = 0; i < 1; i++)
@@ -502,17 +500,26 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                (new OldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            }else{
+                (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            }
+            
         }
 
-        if(true)
+        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120 || mod_noBiomesX.GenerateNewOres)
         {
             for(int i = 0; i < 1; i++)
             {
                 int x2 = x1 + rand.nextInt(16);
                 int y2 = rand.nextInt(16) + rand.nextInt(16);
                 int z2 = z1 + rand.nextInt(16);
-                (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
+                if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                   (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
+                }else{
+                    (new SuperOldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
+                }
             }
 
         }
@@ -557,31 +564,52 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
         {
             trees -= 20;
         }
-        for(int i = 0; i < trees; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int z2 = z1 + rand.nextInt(16) + 8;
-            WorldGenerator treegen = oldbiomegenbase.getRandomWorldGenForTrees(rand);
-            treegen.setScale(1.0D, 1.0D, 1.0D);
-            treegen.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
+        if(mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            for(int i = 0; i < trees; i++)
+            {
+                int x2 = x1 + rand.nextInt(16) + 8;
+                int z2 = z1 + rand.nextInt(16) + 8;
+                WorldGenerator treegen = oldbiomegenbase.getRandomWorldGenForTrees(rand);
+                treegen.setScale(1.0D, 1.0D, 1.0D);
+                treegen.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
+            }
+        }else{
+            Object treegen = new OldWorldGenTrees(false);
+            if(rand.nextInt(10) == 0)
+            {
+                treegen = new WorldGenBigTree(false);
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.rainforest && rand.nextInt(3) == 0)
+            {
+                treegen = new WorldGenBigTree(false);
+            }
+            for(int i = 0; i < trees; i++)
+            {
+                int x2 = x1 + rand.nextInt(16) + 8;
+                int z2 = z1 + rand.nextInt(16) + 8;
+                ((WorldGenerator)treegen).setScale(1.0D, 1.0D, 1.0D);
+                ((WorldGenerator)treegen).generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
+            }
         }
-
-        byte flowers = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.forest)
-        {
-            flowers = 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
-        {
-            flowers = 4;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.taiga)
-        {
-            flowers = 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.plains)
-        {
-            flowers = 3;
+        byte flowers = 2;
+        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA12){
+            flowers = 0;
+            if(oldbiomegenbase == OldBiomeGenBase.forest)
+            {
+                flowers = 2;
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
+            {
+                flowers = 4;
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.taiga)
+            {
+                flowers = 2;
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.plains)
+            {
+                flowers = 3;
+            }
         }
         for(int i = 0; i < flowers; i++)
         {
@@ -591,51 +619,53 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
 
-        byte grass = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.forest)
-        {
-            grass = 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.rainforest)
-        {
-            grass = 10;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
-        {
-            grass = 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.taiga)
-        {
-            grass = 1;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.plains)
-        {
-            grass = 10;
-        }
-        for(int i = 0; i < grass; i++)
-        {
-            byte grasstype = 1;
-            if(oldbiomegenbase == OldBiomeGenBase.rainforest && rand.nextInt(3) != 0)
+        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA15){
+            byte grass = 0;
+            if(oldbiomegenbase == OldBiomeGenBase.forest)
             {
-                grasstype = 2;
+                grass = 2;
             }
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenTallGrass(Block.tallGrass.blockID, grasstype)).generate(worldObj, rand, x2, y2, z2);
-        }
+            if(oldbiomegenbase == OldBiomeGenBase.rainforest)
+            {
+                grass = 10;
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
+            {
+                grass = 2;
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.taiga)
+            {
+                grass = 1;
+            }
+            if(oldbiomegenbase == OldBiomeGenBase.plains)
+            {
+                grass = 10;
+            }
+            for(int i = 0; i < grass; i++)
+            {
+                byte grasstype = 1;
+                if(oldbiomegenbase == OldBiomeGenBase.rainforest && rand.nextInt(3) != 0)
+                {
+                    grasstype = 2;
+                }
+                int x2 = x1 + rand.nextInt(16) + 8;
+                int y2 = rand.nextInt(128);
+                int z2 = z1 + rand.nextInt(16) + 8;
+                (new WorldGenTallGrass(Block.tallGrass.blockID, grasstype)).generate(worldObj, rand, x2, y2, z2);
+            }
 
-        grass = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            grass = 2;
-        }
-        for(int i = 0; i < grass; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenDeadBush(Block.deadBush.blockID)).generate(worldObj, rand, x2, y2, z2);
+            grass = 0;
+            if(oldbiomegenbase == OldBiomeGenBase.desert)
+            {
+                grass = 2;
+            }
+            for(int i = 0; i < grass; i++)
+            {
+                int x2 = x1 + rand.nextInt(16) + 8;
+                int y2 = rand.nextInt(128);
+                int z2 = z1 + rand.nextInt(16) + 8;
+                (new WorldGenDeadBush(Block.deadBush.blockID)).generate(worldObj, rand, x2, y2, z2);
+            }
         }
 
         if(rand.nextInt(2) == 0)
@@ -723,770 +753,5 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBase{
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(x1 + 16, z1 + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, x1 + 8, z1 + 8, 16, 16, rand);
         }
-    }
-
-    public void populate_14(IChunkProvider ichunkprovider, int x, int z){
-        BlockSand.fallInstantly = true;
-        int x1 = x * 16;
-        int z1 = z * 16;
-        OldBiomeGenBase oldbiomegenbase = worldObj.getWorldChunkManager().oldGetBiomeGenAt(x1 + 16, z1 + 16);
-        rand.setSeed(worldObj.getSeed());
-        long l1 = (rand.nextLong() / 2L) * 2L + 1L;
-        long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)x * l1 + (long)z * l2 ^ worldObj.getSeed());
-        boolean flag = false;
-        if(mapFeaturesEnabled)
-        {
-            strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            flag = villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-        }
-        double d = 0.25D;
-        if(!flag && rand.nextInt(4) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(!flag && rand.nextInt(8) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(120) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            if(y2 < 64 || rand.nextInt(10) == 0)
-            {
-                (new WorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, x2, y2, z2);
-            }
-        }
-        for(int i = 0; i < 8; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenDungeons()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenClay(32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(64);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 2; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(32);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 8; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(16);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 1; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(16);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(true)
-        {
-            for(int i = 0; i < 1; i++)
-            {
-                int x2 = x1 + rand.nextInt(16);
-                int y2 = rand.nextInt(16) + rand.nextInt(16);
-                int z2 = z1 + rand.nextInt(16);
-                (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
-            }
-
-        }
-
-        d = 0.5D;
-        int treenoise = (int)((mobSpawnerNoise.func_806_a((double)x1 * d, (double)z1 * d) / 8D + rand.nextDouble() * 4D + 4D) / 3D);
-        int trees = 0;
-        if(rand.nextInt(10) == 0)
-        {
-            trees++;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.forest)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.rainforest)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
-        {
-            trees += treenoise + 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.taiga)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            trees -= 20;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.tundra)
-        {
-            trees -= 20;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.plains)
-        {
-            trees -= 20;
-        }
-        for(int i = 0; i < trees; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int z2 = z1 + rand.nextInt(16) + 8;
-            WorldGenerator treegen = oldbiomegenbase.getRandomWorldGenForTrees(rand);
-            treegen.setScale(1.0D, 1.0D, 1.0D);
-            treegen.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
-        }
-        byte flowers = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.forest)
-        {
-            flowers = 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
-        {
-            flowers = 4;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.taiga)
-        {
-            flowers = 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.plains)
-        {
-            flowers = 3;
-        }
-        for(int i = 0; i < flowers; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(rand.nextInt(2) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(rand.nextInt(4) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(rand.nextInt(8) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new OldWorldGenReed()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(rand.nextInt(32) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenPumpkin()).generate(worldObj, rand, x2, y2, z2);
-        }
-        int cacti = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            cacti += 10;
-        }
-        for(int i = 0; i < cacti; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenCactus()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 50; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(120) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.waterMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(rand.nextInt(112) + 8) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures_old(generatedTemperatures, x1 + 8, z1 + 8, 16, 16);
-        for(int i = x1 + 8; i < x1 + 8 + 16; i++)
-        {
-            for(int j = z1 + 8; j < z1 + 8 + 16; j++)
-            {
-                int x2 = i - (x1 + 8);
-                int z2 = j - (z1 + 8);
-                int y2 = worldObj.getPrecipitationHeight(i, j);
-                double d1 = generatedTemperatures[x2 * 16 + z2] - ((double)(y2 - 64) / 64D) * 0.29999999999999999D;
-                if(d1 < 0.5D && y2 > 0 && y2 < 128 && worldObj.isAirBlock(i, y2, j) && worldObj.getBlockMaterial(i, y2 - 1, j).isSolid() && worldObj.getBlockMaterial(i, y2 - 1, j) != Material.ice)
-                {
-                    worldObj.setBlockWithNotify(i, y2, j, Block.snow.blockID);
-                }
-            }
-        }
-        BlockSand.fallInstantly = false;
-    }
-
-    public void populate_12(IChunkProvider ichunkprovider, int x, int z){
-        BlockSand.fallInstantly = true;
-        int x1 = x * 16;
-        int z1 = z * 16;
-        OldBiomeGenBase oldbiomegenbase = worldObj.getWorldChunkManager().oldGetBiomeGenAt(x1 + 16, z1 + 16);
-        rand.setSeed(worldObj.getSeed());
-        long l1 = (rand.nextLong() / 2L) * 2L + 1L;
-        long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)x * l1 + (long)z * l2 ^ worldObj.getSeed());
-        boolean flag = false;
-        if(mapFeaturesEnabled)
-        {
-            strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            flag = villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-        }
-        double d = 0.25D;
-        if(!flag && rand.nextInt(4) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(!flag && rand.nextInt(8) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(120) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            if(y2 < 64 || rand.nextInt(10) == 0)
-            {
-                (new WorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, x2, y2, z2);
-            }
-        }
-        for(int i = 0; i < 8; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenDungeons()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenClay(32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(64);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 2; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(32);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 8; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(16);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 1; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(16);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(true)
-        {
-            for(int i = 0; i < 1; i++)
-            {
-                int x2 = x1 + rand.nextInt(16);
-                int y2 = rand.nextInt(16) + rand.nextInt(16);
-                int z2 = z1 + rand.nextInt(16);
-                (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
-            }
-
-        }
-
-        d = 0.5D;
-        int treenoise = (int)((mobSpawnerNoise.func_806_a((double)x1 * d, (double)z1 * d) / 8D + rand.nextDouble() * 4D + 4D) / 3D);
-        int trees = 0;
-        if(rand.nextInt(10) == 0)
-        {
-            trees++;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.forest)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.rainforest)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
-        {
-            trees += treenoise + 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.taiga)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            trees -= 20;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.tundra)
-        {
-            trees -= 20;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.plains)
-        {
-            trees -= 20;
-        }
-        for(int i = 0; i < trees; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int z2 = z1 + rand.nextInt(16) + 8;
-            WorldGenerator treegen = oldbiomegenbase.getRandomWorldGenForTrees(rand);
-            treegen.setScale(1.0D, 1.0D, 1.0D);
-            treegen.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
-        }
-        byte flowers = 2;
-        for(int i = 0; i < flowers; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(rand.nextInt(2) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(rand.nextInt(4) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(rand.nextInt(8) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new OldWorldGenReed()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(rand.nextInt(32) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenPumpkin()).generate(worldObj, rand, x2, y2, z2);
-        }
-        int cacti = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            cacti += 10;
-        }
-        for(int i = 0; i < cacti; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenCactus()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 50; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(120) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.waterMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(rand.nextInt(112) + 8) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures_old(generatedTemperatures, x1 + 8, z1 + 8, 16, 16);
-        for(int i = x1 + 8; i < x1 + 8 + 16; i++)
-        {
-            for(int j = z1 + 8; j < z1 + 8 + 16; j++)
-            {
-                int x2 = i - (x1 + 8);
-                int z2 = j - (z1 + 8);
-                int y2 = worldObj.getPrecipitationHeight(i, j);
-                double d1 = generatedTemperatures[x2 * 16 + z2] - ((double)(y2 - 64) / 64D) * 0.29999999999999999D;
-                if(d1 < 0.5D && y2 > 0 && y2 < 128 && worldObj.isAirBlock(i, y2, j) && worldObj.getBlockMaterial(i, y2 - 1, j).isSolid() && worldObj.getBlockMaterial(i, y2 - 1, j) != Material.ice)
-                {
-                    worldObj.setBlockWithNotify(i, y2, j, Block.snow.blockID);
-                }
-            }
-        }
-        BlockSand.fallInstantly = false;
-    }
-
-    public void populate_halloween(IChunkProvider ichunkprovider, int x, int z){
-        BlockSand.fallInstantly = true;
-        int x1 = x * 16;
-        int z1 = z * 16;
-        OldBiomeGenBase oldbiomegenbase = worldObj.getWorldChunkManager().oldGetBiomeGenAt(x1 + 16, z1 + 16);
-        rand.setSeed(worldObj.getSeed());
-        long l1 = (rand.nextLong() / 2L) * 2L + 1L;
-        long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)x * l1 + (long)z * l2 ^ worldObj.getSeed());
-        boolean flag = false;
-        if(mapFeaturesEnabled)
-        {
-            strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            flag = villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-        }
-        double d = 0.25D;
-        for(int i = 0; i < 8; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenDungeons()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenClay(32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(64);
-            int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 2; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(32);
-            int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 8; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(16);
-            int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 1; i++)
-        {
-            int x2 = x1 + rand.nextInt(16);
-            int y2 = rand.nextInt(16);
-            int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(mod_noBiomesX.GenerateNewOres)
-        {
-            for(int i = 0; i < 1; i++)
-            {
-                int x2 = x1 + rand.nextInt(16);
-                int y2 = rand.nextInt(16) + rand.nextInt(16);
-                int z2 = z1 + rand.nextInt(16);
-                (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
-            }
-        }
-
-        d = 0.5D;
-        int treenoise = (int)((mobSpawnerNoise.func_806_a((double)x1 * d, (double)z1 * d) / 8D + rand.nextDouble() * 4D + 4D) / 3D);
-        int trees = 0;
-        if(rand.nextInt(10) == 0)
-        {
-            trees++;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.forest)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.rainforest)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.seasonalForest)
-        {
-            trees += treenoise + 2;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.taiga)
-        {
-            trees += treenoise + 5;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            trees -= 20;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.tundra)
-        {
-            trees -= 20;
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.plains)
-        {
-            trees -= 20;
-        }
-        Object treegen = new OldWorldGenTrees(false);
-        if(rand.nextInt(10) == 0)
-        {
-            treegen = new WorldGenBigTree(false);
-        }
-        if(oldbiomegenbase == OldBiomeGenBase.rainforest && rand.nextInt(3) == 0)
-        {
-            treegen = new WorldGenBigTree(false);
-        }
-        for(int i = 0; i < trees; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int z2 = z1 + rand.nextInt(16) + 8;
-            ((WorldGenerator)treegen).setScale(1.0D, 1.0D, 1.0D);
-            ((WorldGenerator)treegen).generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
-        }
-        byte flowers = 2;
-        for(int i = 0; i < flowers; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(rand.nextInt(2) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(rand.nextInt(4) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        if(rand.nextInt(8) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-        for(int i = 0; i < 10; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new OldWorldGenReed()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        if(rand.nextInt(32) == 0)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenPumpkin()).generate(worldObj, rand, x2, y2, z2);
-        }
-        int cacti = 0;
-        if(oldbiomegenbase == OldBiomeGenBase.desert)
-        {
-            cacti += 10;
-        }
-        for(int i = 0; i < cacti; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(128);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenCactus()).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 50; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(120) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.waterMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-            int x2 = x1 + rand.nextInt(16) + 8;
-            int y2 = rand.nextInt(rand.nextInt(rand.nextInt(112) + 8) + 8);
-            int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
-        }
-
-        generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures_old(generatedTemperatures, x1 + 8, z1 + 8, 16, 16);
-        for(int i = x1 + 8; i < x1 + 8 + 16; i++)
-        {
-            for(int j = z1 + 8; j < z1 + 8 + 16; j++)
-            {
-                int x2 = i - (x1 + 8);
-                int z2 = j - (z1 + 8);
-                int y2 = worldObj.getPrecipitationHeight(i, j);
-                double d1 = generatedTemperatures[x2 * 16 + z2] - ((double)(y2 - 64) / 64D) * 0.29999999999999999D;
-                if(d1 < 0.5D && y2 > 0 && y2 < 128 && worldObj.isAirBlock(i, y2, j) && worldObj.getBlockMaterial(i, y2 - 1, j).isSolid() && worldObj.getBlockMaterial(i, y2 - 1, j) != Material.ice)
-                {
-                    worldObj.setBlockWithNotify(i, y2, j, Block.snow.blockID);
-                }
-            }
-        }
-        BlockSand.fallInstantly = false;
     }
 }
