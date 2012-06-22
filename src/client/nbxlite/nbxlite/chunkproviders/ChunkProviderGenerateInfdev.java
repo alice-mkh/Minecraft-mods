@@ -51,7 +51,6 @@ public class ChunkProviderGenerateInfdev
     {
         worldObj = world;
         rand = new Random(l);
-        new Random(l);
         b = new InfdevNoiseGeneratorOctaves(rand, 16);
         c = new InfdevNoiseGeneratorOctaves(rand, 16);
         d = new InfdevNoiseGeneratorOctaves(rand, 8);
@@ -68,35 +67,24 @@ public class ChunkProviderGenerateInfdev
         mapFeaturesEnabled = flag;
     }
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
-
-    public Chunk provideChunk(int i1, int j1)
-    {
-        rand.setSeed((long)i1 * 0x4f9939f508L + (long)j1 * 0x1ef1565bd5L);
-        byte abyte0[] = new byte[32768];
-        byte byte0 = 5;
-        byte0 = 17;
-        byte0 = 5;
-        int i3 = j1 << 2;
-        byte0 = 0;
-        int k2 = i1 << 2;
+    public void generateTerrain(int i1, int j1, byte abyte0[]){
+        byte byte00 = 5;
+        byte byte01 = 17;
+        byte byte02 = 5;
         double ad[] = i;
         if(ad == null)
         {
             ad = new double[425];
         }
-        j = d.a(j, k2, 0, i3, 5, 17, 5, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
-        k = b.a(k, k2, 0, i3, 5, 17, 5, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
-        l = c.a(l, k2, 0, i3, 5, 17, 5, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
-        k2 = 0;
-        for(int j3 = 0; j3 < 5; j3++)
+        j = d.a(j, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
+        k = b.a(k, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        l = c.a(l, i1 << 2, 0, j1 << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        int k2 = 0;
+        for(int j3 = 0; j3 < byte00; j3++)
         {
-            for(int k3 = 0; k3 < 5; k3++)
+            for(int k3 = 0; k3 < byte02; k3++)
             {
-                for(int l3 = 0; l3 < 17; l3++)
+                for(int l3 = 0; l3 < byte01; l3++)
                 {
                     double d23;
                     if((d23 = ((double)l3 - 8.5D) * 12D) < 0.0D)
@@ -134,14 +122,14 @@ public class ChunkProviderGenerateInfdev
             {
                 for(int l2 = 0; l2 < 16; l2++)
                 {
-                    double d3 = i[(k1 * 5 + i2) * 17 + l2];
-                    double d5 = i[(k1 * 5 + (i2 + 1)) * 17 + l2];
-                    double d6 = i[((k1 + 1) * 5 + i2) * 17 + l2];
-                    double d7 = i[((k1 + 1) * 5 + (i2 + 1)) * 17 + l2];
-                    double d8 = i[(k1 * 5 + i2) * 17 + (l2 + 1)];
-                    double d9 = i[(k1 * 5 + (i2 + 1)) * 17 + (l2 + 1)];
-                    double d10 = i[((k1 + 1) * 5 + i2) * 17 + (l2 + 1)];
-                    double d11 = i[((k1 + 1) * 5 + (i2 + 1)) * 17 + (l2 + 1)];
+                    double d3 = i[(k1 * byte00 + i2) * byte01 + l2];
+                    double d5 = i[(k1 * byte00 + (i2 + 1)) * byte01 + l2];
+                    double d6 = i[((k1 + 1) * byte00 + i2) * byte01 + l2];
+                    double d7 = i[((k1 + 1) * byte00 + (i2 + 1)) * byte01 + l2];
+                    double d8 = i[(k1 * byte00 + i2) * byte01 + (l2 + 1)];
+                    double d9 = i[(k1 * byte00 + (i2 + 1)) * byte01 + (l2 + 1)];
+                    double d10 = i[((k1 + 1) * byte00 + i2) * byte01 + (l2 + 1)];
+                    double d11 = i[((k1 + 1) * byte00 + (i2 + 1)) * byte01 + (l2 + 1)];
                     for(int k5 = 0; k5 < 8; k5++)
                     {
                         double d12 = (double)k5 / 8D;
@@ -185,7 +173,9 @@ public class ChunkProviderGenerateInfdev
             }
 
         }
+    }
 
+    public void replaceBlocks(int i1, int j1, byte abyte0[]){
         for(int l1 = 0; l1 < 16; l1++)
         {
             for(int j2 = 0; j2 < 16; j2++)
@@ -295,6 +285,19 @@ public class ChunkProviderGenerateInfdev
             }
 
         }
+    }
+
+    public Chunk loadChunk(int i, int j)
+    {
+        return provideChunk(i, j);
+    }
+
+    public Chunk provideChunk(int i1, int j1)
+    {
+        rand.setSeed((long)i1 * 0x4f9939f508L + (long)j1 * 0x1ef1565bd5L);
+        byte abyte0[] = new byte[32768];
+        generateTerrain(i1, j1, abyte0);
+        replaceBlocks(i1, j1, abyte0);
         if(mapFeaturesEnabled)
         {
             mineshaftGenerator.generate(this, worldObj, i1, j1, abyte0);

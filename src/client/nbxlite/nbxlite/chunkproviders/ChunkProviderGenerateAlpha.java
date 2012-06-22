@@ -165,7 +165,7 @@ public class ChunkProviderGenerateAlpha
 
     }
 
-    public void replaceBlocksForBiome(int i, int j, byte abyte0[])
+    public void replaceBlocks(int i, int j, byte abyte0[])
     {
         byte byte0 = 64;
         double d = 0.03125D;
@@ -305,7 +305,7 @@ public class ChunkProviderGenerateAlpha
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         generateTerrain(i, j, abyte0);
-        replaceBlocksForBiome(i, j, abyte0);
+        replaceBlocks(i, j, abyte0);
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if(mapFeaturesEnabled)
         {
