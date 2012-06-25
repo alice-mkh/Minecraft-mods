@@ -92,4 +92,9 @@ public class TextureSpriteFX extends TextureFX
             imageData[i * 4 + 3] = (byte)j;
         }
     }
+
+    public void bindImage(RenderEngine par1RenderEngine)
+    {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture(sprite2));
+    }
 }
