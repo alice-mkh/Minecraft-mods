@@ -4,6 +4,7 @@ import java.io.*;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
 import java.util.zip.*;
+import org.lwjgl.opengl.GL11;
 
 public class mod_OldDays extends BaseModMp{
     public String getVersion(){
@@ -14,6 +15,9 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public void load(){
+        if (textureHooks == null){
+            textureHooks = new ArrayList();
+        }
         moduleGui = new GuiOldDaysModules(null);
         ModLoader.registerKey(this, this.keySettings, false);
         ModLoader.addLocalization("key_settings", "Old Days Settings");
@@ -37,6 +41,9 @@ public class mod_OldDays extends BaseModMp{
         if (currentpack==null || currentpack!=ModLoader.getMinecraftInstance().gameSettings.skin){
             currentpack=ModLoader.getMinecraftInstance().gameSettings.skin;
             fallbacktex = !hasEntry("olddays");
+            for (int i = 0; i < textureHooks.size(); i++){
+                ((TextureSpriteFX)textureHooks.get(i)).refresh(false);
+            }
             List list = getModuleList();
             for (int i = 0; i < list.size(); i++){
                 ((mod_OldDays)list.get(i)).onFallbackChange(fallbacktex);
@@ -478,6 +485,35 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
+    protected void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
+        RenderEngine renderEngine = ModLoader.getMinecraftInstance().renderEngine;
+        if (textureHooks == null){
+            textureHooks = new ArrayList();
+        }
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain.png"));
+        TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
+        TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
+        renderEngine.registerTextureFX(fx);
+        textureHooks.add(fx);
+    }
+
+    protected void toggleTextureHook(String name, int i2, boolean b){
+        TextureSpriteFX fx2 = null;
+        for (int i = 0; i < textureHooks.size(); i++){
+            TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
+            if (fx.sprite2 == name && fx.index2 == i2){
+                fx2 = fx;
+                break;
+            }
+        }
+        if (fx2 == null){
+            System.out.println("No such texture hook: "+name+" "+i2);
+            return;
+        }
+        fx2.changeIndex(fx2.currentIndex, b, false);
+        ModLoader.getMinecraftInstance().renderEngine.updateDynamicTextures();
+    }
+
     protected GuiOldDaysModules moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static String[][] propname;
@@ -502,4 +538,5 @@ public class mod_OldDays extends BaseModMp{
     public static boolean needSettings = true;
     public static boolean fallbacktex = true;
     private static String currentpack;
+    protected static List textureHooks;
 }
