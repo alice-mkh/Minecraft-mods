@@ -308,6 +308,22 @@ public class mod_noBiomesX extends BaseModMp{
         return 0;
     }
 
+    public static boolean leavesDecay(){
+        return Generator!=GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
+    }
+
+    public static boolean allowOldHoe(){
+        return Generator==GEN_BIOMELESS || (Generator==GEN_OLDBIOMES && MapFeatures<=FEATURES_BETA15);
+    }
+
+    public static boolean mineshaftFloor(){
+        return Generator!=GEN_NEWBIOMES || MapFeatures>=FEATURES_12;
+    }
+
+    public static boolean mineshaftFences(){
+        return true;
+    }
+
     public void handlePacket(Packet230ModLoader packet, EntityPlayerMP player)
     {
         switch(packet.packetType){
@@ -459,7 +475,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean GenerateNewOres = true;
     public static boolean SnowCovered = false;
     public static boolean ClassicLight=true;
-    public static boolean LeavesDecay=true;
     public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static int MapTheme = 0;
     public static int MapFeatures = 2;

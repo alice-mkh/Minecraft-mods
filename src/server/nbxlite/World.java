@@ -362,11 +362,6 @@ public class World implements IBlockAccess
                     BiomeGenBase.extremeHills.maxHeight = 1.8F;
                 }
             }
-            if (mapGen==0 && mapGenExtra==1){
-                mod_noBiomesX.LeavesDecay=false;
-            }else{
-                mod_noBiomesX.LeavesDecay=true;
-            }
             if (mapGen==0 && (mapGenExtra==3 || mapGenExtra==4)){
                 mod_noBiomesX.RestrictSlimes=true;
             }else{

@@ -33,13 +33,14 @@ public class ItemHoe extends Item
             if (par3World.isRemote)
             {
                 return true;
-            }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA173)){
+            }
+            else
+            {
                 par3World.setBlockWithNotify(par4, par5, par6, block.blockID);
                 par1ItemStack.damageItem(1, par2EntityPlayer);
-                return true;
-            }else{
-                par3World.setBlockWithNotify(par4, par5, par6, block.blockID);
-                par1ItemStack.damageItem(1, par2EntityPlayer);
+                if (!mod_noBiomesX.allowOldHoe()){
+                    return true;
+                }
                 if(par3World.rand.nextInt(8) == 0 && i == Block.grass.blockID){
                     int k1 = 1;
                     for(int l1 = 0; l1 < k1; l1++){

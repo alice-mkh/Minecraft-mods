@@ -465,6 +465,44 @@ public class mod_noBiomesX extends BaseModMp{
         }
     }
 
+    public static int GetWaterColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z){
+        if (Generator==GEN_NEWBIOMES && MapFeatures>FEATURES_BETA181){
+            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_10){
+                return iblockaccess.getBiomeGenForCoords(x, z).waterColorMultiplier;
+            }else{
+                int i = 0;
+                int j = 0;
+                int k = 0;
+                for (int l = -1; l <= 1; l++){
+                    for (int i1 = -1; i1 <= 1; i1++){
+                        int j1 = iblockaccess.getBiomeGenForCoords(x + i1, z + l).waterColorMultiplier;
+                        i += (j1 & 0xff0000) >> 16;
+                        j += (j1 & 0xff00) >> 8;
+                        k += j1 & 0xff;
+                    }
+                }
+                return (i / 9 & 0xff) << 16 | (j / 9 & 0xff) << 8 | k / 9 & 0xff;
+            }
+        }
+        return 0xffffff;
+    }
+
+    public static boolean leavesDecay(){
+        return Generator!=GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
+    }
+
+    public static boolean allowOldHoe(){
+        return Generator==GEN_BIOMELESS || (Generator==GEN_OLDBIOMES && MapFeatures<=FEATURES_BETA15);
+    }
+
+    public static boolean mineshaftFloor(){
+        return Generator!=GEN_NEWBIOMES || MapFeatures>=FEATURES_12;
+    }
+
+    public static boolean mineshaftFences(){
+        return true;
+    }
+
     public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
         Generator=gen;
         MapFeatures=features;
@@ -483,7 +521,6 @@ public class mod_noBiomesX extends BaseModMp{
         GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
         OpaqueFlatClouds = gen==GEN_BIOMELESS && features>FEATURES_ALPHA11201 && UseOpaqueFlatClouds;
         RestrictSlimes = isFinite() && IndevHeight<96;
-        LeavesDecay = gen!=GEN_BIOMELESS || features!=FEATURES_INFDEV0420;
         IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;
         if (Generator==GEN_NEWBIOMES){
             VoidFog = 0;
@@ -672,7 +709,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static boolean UseOpaqueFlatClouds=false;
     public static boolean TexturedClouds=false;
     public static boolean SunriseAtNorth=false;
-    public static boolean LeavesDecay=true;
     public static boolean FallbackColors=false;
     public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha

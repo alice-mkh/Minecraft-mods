@@ -15,7 +15,7 @@ public class BlockLeaves extends BlockLeavesBase
     {
         super(par1, par2, Material.leaves, false);
         baseIndexInPNG = par2;
-        if (mod_noBiomesX.LeavesDecay){
+        if (mod_noBiomesX.leavesDecay()){
             setTickRandomly(true);
         }
     }
@@ -58,7 +58,7 @@ public class BlockLeaves extends BlockLeavesBase
         {
             return;
         }
-        if (!mod_noBiomesX.LeavesDecay){
+        if (!mod_noBiomesX.leavesDecay()){
             return;
         }
 
