@@ -54,8 +54,8 @@ public class TextureSpriteFX extends TextureFX
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource(spr));
             }
-            int i = (enabled ? currentIndex : index2 % swidth) * w;
-            int j = (enabled ? currentIndex : index2 / sheight) * w;
+            int i = ((enabled ? currentIndex : index2) % swidth) * w;
+            int j = ((enabled ? currentIndex : index2) / sheight) * w;
             bufferedimage.getRGB(i, j, w, w, spriteData, 0, w);
         }
         catch (Exception ex)
