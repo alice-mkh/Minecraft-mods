@@ -39,6 +39,8 @@ public class mod_OldDays extends BaseModMp{
             needSettings = !needSettings;
         }
         if (currentpack==null || currentpack!=ModLoader.getMinecraftInstance().gameSettings.skin){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+            TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=ModLoader.getMinecraftInstance().gameSettings.skin;
             fallbacktex = !hasEntry("olddays");
             for (int i = 0; i < textureHooks.size(); i++){
@@ -494,8 +496,6 @@ public class mod_OldDays extends BaseModMp{
         if (textureHooks == null){
             textureHooks = new ArrayList();
         }
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain.png"));
-        TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
         TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
         renderEngine.registerTextureFX(fx);
         textureHooks.add(fx);
