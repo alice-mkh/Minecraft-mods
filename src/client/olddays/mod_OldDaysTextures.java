@@ -32,7 +32,7 @@ public class mod_OldDaysTextures extends mod_OldDays{
         addProperty(25,"Old slimes",          false, "Slimes",      "");
         addProperty(26,"Steve with beard",    false, "Steve",       "");
         addProperty(27,"Old explosion",       true,  "Explosion",   "");
-        addProperty(28,"Moon phases",         true,  "Moon",        "");
+        addProperty(28,"Moon phases",         false, "Moon",        "");
         loadModuleProperties();
         replaceBlocks();
     }
@@ -102,7 +102,7 @@ public class mod_OldDaysTextures extends mod_OldDays{
     public static boolean Slimes;
     public static boolean Steve;
     public static boolean Explosion = true;
-    public static boolean Moon = true;
+    public static boolean Moon;
 
     protected void onFallbackChange(boolean fallback){
         setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OreBlocks<2 && !fallback);
