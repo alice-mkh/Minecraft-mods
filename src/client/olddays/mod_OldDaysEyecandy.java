@@ -15,12 +15,11 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(9, "Mob armor",             false, "MobArmor",          "");
         addProperty(10,"Main menu",             1,     "MainMenu",          "", new String[]{"Alpha", "1.7.3", "1.8.1"});
         addProperty(11,"Old digging particles", true,  "OldDigging",        "");
-        addProperty(12,"Old ore blocks",        true,  "OldOreBlocks",      "");
-        addProperty(13,"Old redstone wire",     true,  "OldWires",          "");
-        addProperty(14,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
-        addProperty(15,"Old fences",            true,  "OldFences",         "");
-        addProperty(16,"Arrows stick to mobs",  true,  "Arrows",            "");
-        addProperty(17,"Version",               "OFF", "Version",           "");
+        addProperty(12,"Old redstone wire",     true,  "OldWires",          "");
+        addProperty(13,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
+        addProperty(14,"Old fences",            true,  "OldFences",         "");
+        addProperty(15,"Arrows stick to mobs",  true,  "Arrows",            "");
+        addProperty(16,"Version",               "OFF", "Version",           "");
         loadModuleProperties();
         replaceBlocks();
         setWireRendering();
@@ -45,16 +44,14 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>2);
                     setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", MainMenu<2); break;
             case 11:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
-            case 12:setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks && !fallbacktex);
+            case 12:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
-            case 13:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
-                    reload(); break;
-            case 14:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<3);
+            case 13:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<3);
                     setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>1); break;
-            case 15:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
+            case 14:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
                     reload(); break;
-            case 16:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
-            case 17:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
+            case 15:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
+            case 16:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
                     setStr(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
         }
     }
@@ -63,7 +60,6 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallback);
         setBool(net.minecraft.src.RenderZombie.class, "fallback", fallback);
         setBool(net.minecraft.src.RenderSkeleton.class, "fallback", fallback);
-        setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OldOreBlocks && !fallback);
     }
 
     public void addRenderer(Map map){
@@ -84,7 +80,6 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
     public static boolean MobArmor;
     public static int MainMenu = 0;
     public static boolean OldDigging = true;
-    public static boolean OldOreBlocks = true;
     public static boolean OldWires = true;
     public static int Tooltips = 2;
     public static boolean OldFences = true;
@@ -101,33 +96,6 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             customchest.setBlockName("chest");
             customchest.setRequiresSelfNotify();
             Block.blocksList[Block.chest.blockID] = customchest;
-            Block.blocksList[Block.blockSteel.blockID] = null;
-            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID, 22));
-            customsteel.setHardness(5F);
-            customsteel.setResistance(10F);
-            customsteel.setStepSound(Block.soundMetalFootstep);
-            customsteel.setBlockName("blockIron");
-            customsteel.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/ironside.png");
-            customsteel.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/ironbottom.png");
-            Block.blocksList[Block.blockSteel.blockID] = customsteel;
-            Block.blocksList[Block.blockGold.blockID] = null;
-            BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, 23));
-            customgold.setHardness(3F);
-            customgold.setResistance(10F);
-            customgold.setStepSound(Block.soundMetalFootstep);
-            customgold.setBlockName("blockGold");
-            customgold.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/goldside.png");
-            customgold.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/goldbottom.png");
-            Block.blocksList[Block.blockGold.blockID] = customgold;
-            Block.blocksList[Block.blockDiamond .blockID] = null;
-            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID, 24));
-            customdiamond.setHardness(5F);
-            customdiamond.setResistance(10F);
-            customdiamond.setStepSound(Block.soundMetalFootstep);
-            customdiamond.setBlockName("blockDiamond");
-            customdiamond.sidetex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/diamondside.png");
-            customdiamond.bottomtex = ModLoader.addOverride("/terrain.png", "/olddays/oreblocks/diamondbottom.png");
-            Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
             Block.blocksList[Block.redstoneWire.blockID] = null;
             BlockRedstoneWireOld customwire = (BlockRedstoneWireOld)(new BlockRedstoneWireOld(Block.redstoneWire.blockID, 164));
             customwire.setHardness(0F);
