@@ -485,7 +485,11 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    protected void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
+    protected void addTextureHook(String origname, int origi, String newname, int newi){
+        addTextureHook(origname, origi, newname, newi, 16, 16);
+    }
+
+    private void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
         RenderEngine renderEngine = ModLoader.getMinecraftInstance().renderEngine;
         if (textureHooks == null){
             textureHooks = new ArrayList();
@@ -497,7 +501,7 @@ public class mod_OldDays extends BaseModMp{
         textureHooks.add(fx);
     }
 
-    protected void toggleTextureHook(String name, int i2, boolean b){
+    protected void setTextureHook(String name, int i2, String name2, int index, boolean b){
         TextureSpriteFX fx2 = null;
         for (int i = 0; i < textureHooks.size(); i++){
             TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
@@ -507,11 +511,28 @@ public class mod_OldDays extends BaseModMp{
             }
         }
         if (fx2 == null){
-            System.out.println("No such texture hook: "+name+" "+i2);
-            return;
+            addTextureHook(name, i2, name2, index);
+            for (int i = 0; i < textureHooks.size(); i++){
+                TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
+                if (fx.sprite2 == name && fx.index2 == i2){
+                    fx2 = fx;
+                    break;
+                }
+            }
         }
-        fx2.changeIndex(fx2.currentIndex, b, false);
+        fx2.sprite = name2;
+        fx2.changeIndex(index, b, false);
         ModLoader.getMinecraftInstance().renderEngine.updateDynamicTextures();
+    }
+
+    protected void setTextureHook(String origname, String newname, boolean b){
+        RenderEngine engine = ModLoader.getMinecraftInstance().renderEngine;
+        int i = engine.getTexture(origname);
+        try{
+            engine.setupTexture(ModLoader.loadImage(ModLoader.getMinecraftInstance().renderEngine, b ? newname : origname), i);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 
     protected GuiOldDaysModules moduleGui;
