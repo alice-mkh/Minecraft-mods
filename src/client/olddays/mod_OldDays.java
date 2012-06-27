@@ -527,11 +527,11 @@ public class mod_OldDays extends BaseModMp{
 
     protected void setTextureHook(String origname, String newname, boolean b){
         RenderEngine engine = ModLoader.getMinecraftInstance().renderEngine;
-        int i = engine.getTexture(origname);
         try{
+            int i = engine.getTexture(origname);
             engine.setupTexture(ModLoader.loadImage(ModLoader.getMinecraftInstance().renderEngine, b ? newname : origname), i);
         }catch(Exception ex){
-            System.out.println(ex);
+            fallbacktex = true;
         }
     }
 
