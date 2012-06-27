@@ -5,9 +5,11 @@ import java.util.Random;
 
 public class EntityEnderman extends EntityMob
 {
-    public static boolean smoke = false;
+    public static boolean oldPicking = false;
+    public static boolean oldhealth = false;
 
     private static boolean canCarryBlocks[];
+    private static boolean canCarryBlocksOld[];
 
     /** Is the enderman attacking another entity? */
     public boolean isAttacking;
@@ -16,14 +18,14 @@ public class EntityEnderman extends EntityMob
      * Counter to delay the teleportation of an enderman towards the currently attacked target
      */
     private int teleportDelay;
-    private int field_35185_e;
+    private int field_35236_h;
 
     public EntityEnderman(World par1World)
     {
         super(par1World);
         isAttacking = false;
         teleportDelay = 0;
-        field_35185_e = 0;
+        field_35236_h = 0;
         texture = "/mob/enderman.png";
         moveSpeed = 0.2F;
         attackStrength = 7;
@@ -33,7 +35,7 @@ public class EntityEnderman extends EntityMob
 
     public int getMaxHealth()
     {
-        return 40;
+        return oldhealth ? 20 : 40;
     }
 
     protected void entityInit()
@@ -75,24 +77,19 @@ public class EntityEnderman extends EntityMob
         {
             if (shouldAttackPlayer(entityplayer))
             {
-                if (field_35185_e++ == 5)
+                if (field_35236_h++ == 5)
                 {
-                    field_35185_e = 0;
+                    field_35236_h = 0;
                     return entityplayer;
                 }
             }
             else
             {
-                field_35185_e = 0;
+                field_35236_h = 0;
             }
         }
 
         return null;
-    }
-
-    public int getBrightnessForRender(float par1)
-    {
-        return super.getBrightnessForRender(par1);
     }
 
     /**
@@ -156,7 +153,7 @@ public class EntityEnderman extends EntityMob
                     int j1 = MathHelper.floor_double((posZ - 2D) + rand.nextDouble() * 4D);
                     int l1 = worldObj.getBlockId(i, l, j1);
 
-                    if (canCarryBlocks[l1])
+                    if ((!oldPicking && canCarryBlocks[l1]) || (oldPicking && canCarryBlocksOld[l1]))
                     {
                         setCarried(worldObj.getBlockId(i, l, j1));
                         setCarryingData(worldObj.getBlockMetadata(i, l, j1));
@@ -182,11 +179,7 @@ public class EntityEnderman extends EntityMob
 
         for (int k = 0; k < 2; k++)
         {
-            if (smoke){
-                worldObj.spawnParticle("largesmoke", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + rand.nextDouble() * (double)height, posZ + (rand.nextDouble() - 0.5D) * (double)width, 0.0D, 0.0D, 0.0D);
-            }else{
-                worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, (posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)width, (rand.nextDouble() - 0.5D) * 2D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2D);
-            }
+            worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, (posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)width, (rand.nextDouble() - 0.5D) * 2D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2D);
         }
 
         if (worldObj.isDaytime() && !worldObj.isRemote)
@@ -331,11 +324,7 @@ public class EntityEnderman extends EntityMob
             double d4 = d + (posX - d) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
             double d5 = d1 + (posY - d1) * d3 + rand.nextDouble() * (double)height;
             double d6 = d2 + (posZ - d2) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
-            if (smoke){
-                worldObj.spawnParticle("largesmoke", d4, d5, d6, f, f1, f2);
-            }else{
-                worldObj.spawnParticle("portal", d4, d5, d6, f, f1, f2);
-            }
+            worldObj.spawnParticle("portal", d4, d5, d6, f, f1, f2);
         }
 
         worldObj.playSoundEffect(d, d1, d2, "mob.endermen.portal", 1.0F, 1.0F);
@@ -465,5 +454,52 @@ public class EntityEnderman extends EntityMob
         canCarryBlocks[Block.pumpkin.blockID] = true;
         canCarryBlocks[Block.melon.blockID] = true;
         canCarryBlocks[Block.mycelium.blockID] = true;
+        canCarryBlocksOld = new boolean[256];
+        canCarryBlocksOld[Block.stone.blockID] = true;
+        canCarryBlocksOld[Block.grass.blockID] = true;
+        canCarryBlocksOld[Block.dirt.blockID] = true;
+        canCarryBlocksOld[Block.cobblestone.blockID] = true;
+        canCarryBlocksOld[Block.planks.blockID] = true;
+        canCarryBlocksOld[Block.sand.blockID] = true;
+        canCarryBlocksOld[Block.gravel.blockID] = true;
+        canCarryBlocksOld[Block.oreGold.blockID] = true;
+        canCarryBlocksOld[Block.oreIron.blockID] = true;
+        canCarryBlocksOld[Block.oreCoal.blockID] = true;
+        canCarryBlocksOld[Block.wood.blockID] = true;
+        canCarryBlocksOld[Block.leaves.blockID] = true;
+        canCarryBlocksOld[Block.sponge.blockID] = true;
+        canCarryBlocksOld[Block.glass.blockID] = true;
+        canCarryBlocksOld[Block.oreLapis.blockID] = true;
+        canCarryBlocksOld[Block.blockLapis.blockID] = true;
+        canCarryBlocksOld[Block.sandStone.blockID] = true;
+        canCarryBlocksOld[Block.cloth.blockID] = true;
+        canCarryBlocksOld[Block.plantYellow.blockID] = true;
+        canCarryBlocksOld[Block.plantRed.blockID] = true;
+        canCarryBlocksOld[Block.mushroomBrown.blockID] = true;
+        canCarryBlocksOld[Block.mushroomRed.blockID] = true;
+        canCarryBlocksOld[Block.blockGold.blockID] = true;
+        canCarryBlocksOld[Block.blockSteel.blockID] = true;
+        canCarryBlocksOld[Block.brick.blockID] = true;
+        canCarryBlocksOld[Block.tnt.blockID] = true;
+        canCarryBlocksOld[Block.bookShelf.blockID] = true;
+        canCarryBlocksOld[Block.cobblestoneMossy.blockID] = true;
+        canCarryBlocksOld[Block.oreDiamond.blockID] = true;
+        canCarryBlocksOld[Block.blockDiamond.blockID] = true;
+        canCarryBlocksOld[Block.workbench.blockID] = true;
+        canCarryBlocksOld[Block.oreRedstone.blockID] = true;
+        canCarryBlocksOld[Block.oreRedstoneGlowing.blockID] = true;
+        canCarryBlocksOld[Block.ice.blockID] = true;
+        canCarryBlocksOld[Block.cactus.blockID] = true;
+        canCarryBlocksOld[Block.blockClay.blockID] = true;
+        canCarryBlocksOld[Block.pumpkin.blockID] = true;
+        canCarryBlocksOld[Block.netherrack.blockID] = true;
+        canCarryBlocksOld[Block.slowSand.blockID] = true;
+        canCarryBlocksOld[Block.glowStone.blockID] = true;
+        canCarryBlocksOld[Block.pumpkinLantern.blockID] = true;
+        canCarryBlocksOld[Block.stoneBrick.blockID] = true;
+        canCarryBlocksOld[Block.mushroomCapBrown.blockID] = true;
+        canCarryBlocksOld[Block.mushroomCapRed.blockID] = true;
+        canCarryBlocksOld[Block.melon.blockID] = true;
+        canCarryBlocksOld[Block.mycelium.blockID] = true;
     }
 }

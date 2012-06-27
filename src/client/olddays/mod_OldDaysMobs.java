@@ -13,6 +13,7 @@ public class mod_OldDaysMobs extends mod_OldDays{
         addProperty(8, "Allowed mobs",        11,    11,    "Mobs",             "", new String[]{"Classic", "Indev", "Alpha 1.0.8", "Alpha 1.0.11", "Alpha 1.0.14", "Alpha 1.2.0",
                                                                                                  "Beta 1.2", "Beta 1.7.3", "Beta 1.8.1", "1.1", "1.2"});
         addProperty(9, "Slime spawning",      4,     4,     "Slimes",           "", new String[]{"OFF", "Alpha 1.0.11", "Beta", "1.0"});
+        addProperty(10,"Unnerfed endermen",   false, false, "Endermen",         "");
         loadModuleProperties();
     }
 
@@ -41,7 +42,8 @@ public class mod_OldDaysMobs extends mod_OldDays{
                     setBool(net.minecraft.src.EntityLiving.class, "survivaltest", SurvivalTestMobs); break;
             case 6: setBool(net.minecraft.src.EntitySkeleton.class, "fast", FastSkeletons); break;
             case 7: setBool(net.minecraft.src.EntitySheep.class, "oldhealth", OldHealth);
-                    setBool(net.minecraft.src.EntitySpider.class, "oldhealth", OldHealth); break;
+                    setBool(net.minecraft.src.EntitySpider.class, "oldhealth", OldHealth);
+                    setBool(net.minecraft.src.EntityEnderman.class, "oldhealth", OldHealth); break;
             case 8: setInt(net.minecraft.src.EntityLiving.class, "nonewmobs", Mobs-1);
                     int color = 0;
                     if (Mobs>6){
@@ -55,11 +57,12 @@ public class mod_OldDaysMobs extends mod_OldDays{
                     setBool(net.minecraft.src.EntitySquid.class, "allow", Mobs>=7);
                     setBool(net.minecraft.src.EntitySlime.class, "allow", Mobs>=4); break;
             case 9: setInt(net.minecraft.src.EntitySlime.class, "slimeSpawn", Slimes-1); break;
+            case 10:setBool(net.minecraft.src.EntityEnderman.class, "oldPicking", Endermen); break;
         }
     }
 
     public static int AI = 2;
-    public static boolean AnimalsFlee = false;
+    public static boolean AnimalsFlee;
     public static boolean SheepEatGrass = true;
     public static boolean SpidersCanClimb = true;
     public static boolean SurvivalTestMobs;
@@ -68,5 +71,5 @@ public class mod_OldDaysMobs extends mod_OldDays{
     public static boolean OldHealth = true;
     public static int Mobs = 11;
     public static int Slimes = 4;
-//Creepers see through blocks;
+    public static boolean Endermen;
 }
