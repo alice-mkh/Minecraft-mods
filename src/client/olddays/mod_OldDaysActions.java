@@ -15,8 +15,10 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(8, "Solid TNT",             false, true,  "SolidTNT",        "");
         addProperty(9, "Big fences",            false, true,  "BigFences",       "");
         addProperty(10,"Less Nether lava flow", false, false, "LessLavaFlow",    "");
+        addProperty(11,"Enable fog key",        false, false, "FogKey",    "");
         loadModuleProperties();
         replaceBlocks();
+        ModLoader.registerKey(this, this.keyFog, false);
     }
 
     public void callback (int i){
@@ -35,6 +37,13 @@ public class mod_OldDaysActions extends mod_OldDays{
         }
     }
 
+    public void keyboardEvent(KeyBinding keybinding){
+        if (keybinding==keyFog && ModLoader.getMinecraftInstance().currentScreen==null && FogKey){
+            boolean flag = org.lwjgl.input.Keyboard.isKeyDown(42) | org.lwjgl.input.Keyboard.isKeyDown(54);
+            ModLoader.getMinecraftInstance().gameSettings.setOptionValue(EnumOptions.RENDER_DISTANCE, flag ? -1 : 1);
+        }
+    }
+
     public static boolean SmeltOnFire;
     public static boolean PunchTNT = true;
     public static boolean ExtinguishTNT;
@@ -45,8 +54,8 @@ public class mod_OldDaysActions extends mod_OldDays{
     public static boolean SolidTNT = true;
     public static boolean BigFences = true;
     public static boolean LessLavaFlow;
-//Old blocks
-//Unflammable fences and stairs
+    public static boolean FogKey;
+    public KeyBinding keyFog = new KeyBinding("Toggle Fog", 33);
 
     private void setSolidTNT(boolean b){
         try{
