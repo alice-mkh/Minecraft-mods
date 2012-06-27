@@ -3,13 +3,13 @@ package net.minecraft.src;
 public class mod_OldDaysBugs extends mod_OldDays{
     public void load(){
         registerModule(this, 1);
-        addProperty(1, "Boosters",           false, true,  "Boosters",      "");
-        addProperty(2, "Water lifts",        false, true,  "WaterLifts",    "");
-        addProperty(3, "Toasters",           false, true,  "LavaToasters",  "");
-        addProperty(4, "Water ladders",      false, true,  "WaterLadders",  "");
-        addProperty(5, "Ladder gaps",        false, true,  "LadderGaps",    "");
-        addProperty(6, "Piston dupe",        false, false, "PistonDupe",    "");
-        addProperty(7, "Crafting slots bug", false, false, "CraftingSlots", "");
+        addProperty(1, "Boosters",          false, true,  "Boosters",      "");
+        addProperty(2, "Water lifts",       false, true,  "WaterLifts",    "");
+        addProperty(3, "Toasters",          false, true,  "LavaToasters",  "");
+        addProperty(4, "Water ladders",     false, true,  "WaterLadders",  "");
+        addProperty(5, "Ladder gaps",       false, true,  "LadderGaps",    "");
+        addProperty(6, "Piston dupe",       false, false, "PistonDupe",    "");
+        addProperty(7, "Crafting grid bug", false, false, "CraftingSlots", "");
         loadModuleProperties();
     }
 
