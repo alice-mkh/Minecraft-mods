@@ -48,7 +48,8 @@ public class TextureSpriteFX extends TextureFX
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(sprite));
         ww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / swidth;
         enabled = e;
-        spriteData = new int[ww * ww];
+        int www = enabled ? ww : w;
+        spriteData = new int[www * www];
         imageData = new byte[w * w * 4];
         currentIndex = index;
         try
@@ -58,9 +59,9 @@ public class TextureSpriteFX extends TextureFX
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource(spr));
             }
-            int i = ((enabled ? currentIndex : index2) % swidth) * ww;
-            int j = ((enabled ? currentIndex : index2) / sheight) * ww;
-            bufferedimage.getRGB(i, j, ww, ww, spriteData, 0, ww);
+            int i = ((enabled ? currentIndex : index2) % swidth) * www;
+            int j = ((enabled ? currentIndex : index2) / sheight) * www;
+            bufferedimage.getRGB(i, j, www, www, spriteData, 0, www);
         }
         catch (Exception ex)
         {
@@ -78,27 +79,36 @@ public class TextureSpriteFX extends TextureFX
 
     public void onTick()
     {
-        int n = w / ww;
-        for (int iix = 0; iix < n; iix++){
-            for (int iiy = 0; iiy < n; iiy++){
-                for (int x = 0; x < ww; x++){
-                    for (int y = 0; y < ww; y++){
-                        int index1 = x + y * ww;
-                        int xx = x + iix * ww;
-                        int yy = y + iiy * ww;
-                        int index2 = xx + yy * w;
-                        int j = spriteData[index1] >> 24 & 0xff;
-                        int k = spriteData[index1] >> 16 & 0xff;
-                        int l = spriteData[index1] >> 8 & 0xff;
-                        int i1 = spriteData[index1] >> 0 & 0xff;
-                        if (anaglyphEnabled){
-                            int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
-                            int k1 = (k * 30 + l * 70) / 100;
-                            int l1 = (k * 30 + i1 * 70) / 100;
-                            k = j1;
-                            l = k1;
-                            i1 = l1;
-                        }
+        if (ModLoader.getMinecraftInstance().theWorld == null){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+            int wwww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
+            if (wwww != w){
+                w = wwww;
+                imageData = new byte[w * w * 4];
+            }
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(sprite));
+            ww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / swidth;
+        }
+        int www = enabled ? ww : w;
+        int n = w / www;
+        for (int x = 0; x < www; x++){
+            for (int y = 0; y < www; y++){
+                int index1 = x + y * www;
+                int j = spriteData[index1] >> 24 & 0xff;
+                int k = spriteData[index1] >> 16 & 0xff;
+                int l = spriteData[index1] >> 8 & 0xff;
+                int i1 = spriteData[index1] >> 0 & 0xff;
+                if (anaglyphEnabled){
+                    int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
+                    int k1 = (k * 30 + l * 70) / 100;
+                    int l1 = (k * 30 + i1 * 70) / 100;
+                    k = j1;
+                    l = k1;
+                    i1 = l1;
+                }
+                for (int xx = 0; xx < n; xx++){
+                    for (int yy = 0; yy < n; yy++){
+                        int index2 = ((x * n) + xx) + ((y * n) + yy) * w;
                         imageData[index2 * 4 + 0] = (byte)k;
                         imageData[index2 * 4 + 1] = (byte)l;
                         imageData[index2 * 4 + 2] = (byte)i1;
