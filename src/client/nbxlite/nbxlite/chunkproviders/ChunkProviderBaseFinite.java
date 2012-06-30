@@ -5,23 +5,25 @@ import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.BoundChunk;
 import net.minecraft.src.nbxlite.indev.*;
 
-public class ChunkProviderFinite implements IChunkProvider{
-    private World worldObj;
+public class ChunkProviderBaseFinite implements IChunkProvider{
+    protected World worldObj;
+    protected long seed;
 
-    public ChunkProviderFinite(World world, long l, boolean flag){
+    public ChunkProviderBaseFinite(World world, long l){
         worldObj = world;
+        seed = l;
     }
 
-    private int indexIndev(int x, int y, int z){
+    protected int IndexFinite(int x, int y, int z){
         return x+(y*mod_noBiomesX.IndevWidthZ+z)*mod_noBiomesX.IndevWidthX;
     }
 
-    private byte[] getChunkArray(int x1, int z1){
+    protected byte[] getChunkArray(int x1, int z1){
         byte[] result = new byte[32768];
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
                 for (int y=0; y<Math.min(mod_noBiomesX.IndevHeight, 128); y++){
-                    byte block = mod_noBiomesX.IndevWorld[indexIndev(x+(x1*16), y, z+(z1*16))];
+                    byte block = mod_noBiomesX.IndevWorld[IndexFinite(x+(x1*16), y, z+(z1*16))];
                     if (block==0){
                         continue;
                     }
@@ -32,11 +34,11 @@ public class ChunkProviderFinite implements IChunkProvider{
         return result;
     }
 
-    private void fixDeepMaps(Chunk chunk, int x1, int z1){
+    protected void fixDeepMaps(Chunk chunk, int x1, int z1){
         for (int x=0; x<16; x++){
             for (int z=0; z<16; z++){
                 for (int y=128; y<mod_noBiomesX.IndevHeight; y++){
-                    byte block = mod_noBiomesX.IndevWorld[indexIndev(x+(x1*16), y, z+(z1*16))];
+                    byte block = mod_noBiomesX.IndevWorld[IndexFinite(x+(x1*16), y, z+(z1*16))];
                     if (block==0){
                         continue;
                     }
@@ -55,6 +57,8 @@ public class ChunkProviderFinite implements IChunkProvider{
         return provideChunk(i, j);
     }
 
+    public void generateFiniteLevel(){}
+
     public Chunk provideChunk(int i, int j){
         boolean tall = mod_noBiomesX.IndevHeight>128;
         boolean tall2 = mod_noBiomesX.IndevHeight>160;
@@ -62,26 +66,7 @@ public class ChunkProviderFinite implements IChunkProvider{
         Chunk chunk;
         if (bounds){
             if (mod_noBiomesX.IndevWorld==null && mod_noBiomesX.Import){
-                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                    IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
-                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
-                        gen2.island=true;
-                    }
-                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
-                        gen2.floating=true;
-                    }
-                    if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
-                        gen2.flat=true;
-                    }
-                    gen2.theme=mod_noBiomesX.MapTheme;
-                    ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
-                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                }else{
-                    mod_noBiomesX.IndevHeight = 64;
-                    ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, worldObj.getSeed());
-                    ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
-                    mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
-                }
+                generateFiniteLevel();
             }
             chunk = new Chunk(worldObj, getChunkArray(i, j), i, j);
             if (tall){
@@ -123,7 +108,7 @@ public class ChunkProviderFinite implements IChunkProvider{
     }
 
     public String makeString(){
-        return "FlatLevelSource";
+        return "RandomLevelSource";
     }
 
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k){

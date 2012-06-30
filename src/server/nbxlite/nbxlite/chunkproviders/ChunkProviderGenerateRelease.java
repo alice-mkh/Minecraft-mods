@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 
-public class ChunkProviderGenerateRelease extends ChunkProviderInfinite{
+public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private NoiseGeneratorOctaves noiseGen1;
     private NoiseGeneratorOctaves noiseGen2;
     private NoiseGeneratorOctaves noiseGen3;

@@ -8,7 +8,8 @@ public class ChunkProviderGenerate2
 {
     public ChunkProviderGenerateInfdev infdevGen;
     public ChunkProviderGenerateOldInfdev oldInfdevGen;
-    public ChunkProviderFinite indevGen;
+    public ChunkProviderIndev indevGen;
+    public ChunkProviderClassic classicGen;
     public ChunkProviderGenerateAlpha alphaGen;
     public ChunkProviderGenerateBeta betaGen;
     public ChunkProviderSky betaGenSky;
@@ -18,7 +19,8 @@ public class ChunkProviderGenerate2
     {
         infdevGen = new ChunkProviderGenerateInfdev(world, l, flag);
         oldInfdevGen = new ChunkProviderGenerateOldInfdev(world, l, flag);
-        indevGen = new ChunkProviderFinite(world, l, flag);
+        indevGen = new ChunkProviderIndev(world, l);
+        classicGen = new ChunkProviderClassic(world, l);
         alphaGen = new ChunkProviderGenerateAlpha(world, l, flag);
         betaGen = new ChunkProviderGenerateBeta(world, l, flag);
         betaGenSky = new ChunkProviderSky(world, l, flag);
@@ -40,8 +42,10 @@ public class ChunkProviderGenerate2
                 return infdevGen.provideChunk(i, j);
             }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                 return oldInfdevGen.provideChunk(i, j);
+            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+                return indevGen.provideChunk(i, j);
             }
-            return indevGen.provideChunk(i, j);
+            return classicGen.provideChunk(i, j);
         } else if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES)
         {
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
@@ -67,8 +71,10 @@ public class ChunkProviderGenerate2
                 infdevGen.populate(ichunkprovider, i, j);
             }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                 oldInfdevGen.populate(ichunkprovider, i, j);
-            }else{
+            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
                 indevGen.populate(ichunkprovider, i, j);
+            }else{
+                classicGen.populate(ichunkprovider, i, j);
             }
         } else if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES)
         {
@@ -118,8 +124,10 @@ public class ChunkProviderGenerate2
                 return infdevGen.findClosestStructure(world, s, i, j, k);
             }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
                 return oldInfdevGen.findClosestStructure(world, s, i, j, k);
+            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
+                return indevGen.findClosestStructure(world, s, i, j, k);
             }
-            return indevGen.findClosestStructure(world, s, i, j, k);
+            return classicGen.findClosestStructure(world, s, i, j, k);
         } else if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES)
         {
             if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){

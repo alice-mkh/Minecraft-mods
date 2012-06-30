@@ -294,43 +294,24 @@ public class World implements IBlockAccess
             worldInfo.snowCovered = mod_noBiomesX.SnowCovered;
             worldInfo.newOres = mod_noBiomesX.GenerateNewOres;
             if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && worldProvider.worldType == 0){
-                IndevGenerator gen2 = new IndevGenerator(getSeed());
-                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
-                    gen2.island=true;
-                }
-                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
-                    gen2.floating=true;
-                }
-                if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
-                    gen2.flat=true;
-                }
-                gen2.theme=mod_noBiomesX.MapTheme;
-                mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                mod_noBiomesX.generateIndevLevel(getSeed());
                 for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
                     for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
                     }
                 }
-                mod_noBiomesX.IndevSpawnX = gen2.spawnX;
-                mod_noBiomesX.IndevSpawnY = gen2.spawnY;
-                mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mapTypeIndev=mod_noBiomesX.IndevMapType;
                 worldInfo.mapType = mod_noBiomesX.IndevMapType;
                 worldInfo.indevX = mod_noBiomesX.IndevWidthX;
                 worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
                 worldInfo.indevY = mod_noBiomesX.IndevHeight;
             }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC && worldProvider.worldType == 0){
-                mod_noBiomesX.IndevHeight = 64;
-                ClassicGenerator gen2 = new ClassicGenerator(getSeed());
-                mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+                mod_noBiomesX.generateClassicLevel(getSeed());
                 for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
                     for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
                     }
                 }
-                mod_noBiomesX.IndevSpawnX = gen2.spawnX;
-                mod_noBiomesX.IndevSpawnY = gen2.spawnY;
-                mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
                 mapTypeIndev=0;
                 worldInfo.mapType = 0;
                 worldInfo.indevX = mod_noBiomesX.IndevWidthX;

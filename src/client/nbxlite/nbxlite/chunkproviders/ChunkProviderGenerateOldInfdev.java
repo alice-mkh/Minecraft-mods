@@ -6,7 +6,7 @@ import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.noise.InfdevOldNoiseGeneratorOctaves;
 
-public class ChunkProviderGenerateOldInfdev extends ChunkProviderInfinite{
+public class ChunkProviderGenerateOldInfdev extends ChunkProviderBaseInfinite{
     private InfdevOldNoiseGeneratorOctaves terrainAlt1Generator;
     private InfdevOldNoiseGeneratorOctaves terrainAlt2Generator;
     private InfdevOldNoiseGeneratorOctaves terrainGenerator;

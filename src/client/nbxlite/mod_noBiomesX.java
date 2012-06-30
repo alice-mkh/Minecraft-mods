@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
+import net.minecraft.src.nbxlite.indev.*;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
 import net.minecraft.src.nbxlite.lib.EasyLocalization;
 import java.util.zip.*;
@@ -696,6 +697,35 @@ public class mod_noBiomesX extends BaseModMp{
         }catch(Exception ex){
             return true;
         }
+    }
+
+    public static void generateIndevLevel(long seed){
+        IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, seed);
+        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
+            gen2.island=true;
+        }
+        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
+            gen2.floating=true;
+        }
+        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
+            gen2.flat=true;
+        }
+        gen2.theme=mod_noBiomesX.MapTheme;
+        ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+        mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+        mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+        mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+        mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
+    }
+
+    public static void generateClassicLevel(long seed){
+        ClassicGenerator gen2 = new ClassicGenerator(ModLoader.getMinecraftInstance().loadingScreen, seed);
+        mod_noBiomesX.IndevHeight = 64;
+        ModLoader.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+        mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+        mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+        mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+        mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
     }
 
     public static int Generator = 2;

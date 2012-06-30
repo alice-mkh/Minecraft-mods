@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.server.MinecraftServer;
 import java.io.*;
+import net.minecraft.src.nbxlite.indev.*;
 
 public class mod_noBiomesX extends BaseModMp{
     public mod_noBiomesX(){
@@ -468,6 +469,33 @@ public class mod_noBiomesX extends BaseModMp{
             return CloudColor = 0xeeeeff;
         }
         return CloudColor = 0xffffff;
+    }
+
+    public static void generateIndevLevel(long seed){
+        IndevGenerator gen2 = new IndevGenerator(seed);
+        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_ISLAND){
+            gen2.island=true;
+        }
+        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLOATING){
+            gen2.floating=true;
+        }
+        if (mod_noBiomesX.IndevMapType==mod_noBiomesX.TYPE_FLAT){
+            gen2.flat=true;
+        }
+        gen2.theme=mod_noBiomesX.MapTheme;
+       mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+        mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+        mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+        mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
+    }
+
+    public static void generateClassicLevel(long seed){
+        ClassicGenerator gen2 = new ClassicGenerator(seed);
+        mod_noBiomesX.IndevHeight = 64;
+        mod_noBiomesX.IndevWorld = gen2.generateLevel("Created with NBXlite!", mod_noBiomesX.IndevWidthX, mod_noBiomesX.IndevWidthZ, mod_noBiomesX.IndevHeight);
+        mod_noBiomesX.IndevSpawnX = gen2.spawnX;
+        mod_noBiomesX.IndevSpawnY = gen2.spawnY;
+        mod_noBiomesX.IndevSpawnZ = gen2.spawnZ;
     }
 
     public static int Generator = 1;
