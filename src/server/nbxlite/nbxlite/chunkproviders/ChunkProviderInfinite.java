@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
 
-public class ChunkProviderBase implements IChunkProvider{
+public class ChunkProviderInfinite implements IChunkProvider{
     protected Random rand;
     protected World worldObj;
     protected final boolean mapFeaturesEnabled;
@@ -14,7 +14,7 @@ public class ChunkProviderBase implements IChunkProvider{
     protected OldBiomeGenBase oldBiomesForGeneration[];
     protected boolean fixLight;
 
-    public ChunkProviderBase(World world, long l, boolean flag, int b){
+    public ChunkProviderInfinite(World world, long l, boolean flag, int b){
         rand = new Random(l);
         worldObj = world;
         mapFeaturesEnabled = flag;
@@ -22,7 +22,7 @@ public class ChunkProviderBase implements IChunkProvider{
         fixLight = false;
     }
 
-    public ChunkProviderBase(World world, long l, boolean flag){
+    public ChunkProviderInfinite(World world, long l, boolean flag){
         this(world, l, flag, mod_noBiomesX.GEN_BIOMELESS);
     }
 

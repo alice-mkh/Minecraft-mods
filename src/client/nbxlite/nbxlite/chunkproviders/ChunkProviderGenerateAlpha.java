@@ -13,7 +13,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateAlpha extends ChunkProviderBase{
+public class ChunkProviderGenerateAlpha extends ChunkProviderInfinite{
     private AlphaNoiseGeneratorOctaves terrainAlt1Generator;
     private AlphaNoiseGeneratorOctaves terrainAlt2Generator;
     private AlphaNoiseGeneratorOctaves terrainGenerator;

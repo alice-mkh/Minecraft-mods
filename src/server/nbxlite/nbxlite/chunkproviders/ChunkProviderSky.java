@@ -13,7 +13,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 
-public class ChunkProviderSky extends ChunkProviderBase{
+public class ChunkProviderSky extends ChunkProviderInfinite{
     private BetaNoiseGeneratorOctaves noiseGen1;
     private BetaNoiseGeneratorOctaves noiseGen2;
     private BetaNoiseGeneratorOctaves noiseGen3;

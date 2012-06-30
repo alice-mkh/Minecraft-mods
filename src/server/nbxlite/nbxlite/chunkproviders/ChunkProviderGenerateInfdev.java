@@ -10,7 +10,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenBigTree;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateInfdev extends ChunkProviderBase{
+public class ChunkProviderGenerateInfdev extends ChunkProviderInfinite{
     private InfdevNoiseGeneratorOctaves terrainAlt1Generator;
     private InfdevNoiseGeneratorOctaves terrainAlt2Generator;
     private InfdevNoiseGeneratorOctaves terrainGenerator;

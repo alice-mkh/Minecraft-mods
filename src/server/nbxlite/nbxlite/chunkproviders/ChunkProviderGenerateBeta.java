@@ -15,7 +15,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateBeta extends ChunkProviderBase{
+public class ChunkProviderGenerateBeta extends ChunkProviderInfinite{
     private BetaNoiseGeneratorOctaves noiseGen1;
     private BetaNoiseGeneratorOctaves noiseGen2;
     private BetaNoiseGeneratorOctaves noiseGen3;
