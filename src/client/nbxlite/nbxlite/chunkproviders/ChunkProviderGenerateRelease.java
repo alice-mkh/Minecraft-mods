@@ -427,6 +427,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     }
 
     protected void spawnAnimals(int i, int j){
-        SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
+        BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(i + 16, j + 16);
+        SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, i + 8, j + 8, 16, 16, rand);
     }
 }
