@@ -749,9 +749,6 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }
         }
         BlockSand.fallInstantly = false;
-        if (mod_noBiomesX.UseNewSpawning){
-            BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(x1 + 16, z1 + 16);
-            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, x1 + 8, z1 + 8, 16, 16, rand);
-        }
+        spawnAnimals(x1, z1);
     }
 }

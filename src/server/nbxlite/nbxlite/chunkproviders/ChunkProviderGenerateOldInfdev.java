@@ -147,9 +147,6 @@ public class ChunkProviderGenerateOldInfdev extends ChunkProviderBaseInfinite{
                 ((WorldGenerator)obj).generate(worldObj, rand, l13, worldObj.getHeightValue(l13, k16), k16);
             }
         }
-        if (mod_noBiomesX.UseNewSpawning){
-            BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt((i1 * 16) + 16, (j1 * 16) + 16);
-            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, (i1 * 16) + 8, (j1 * 16) + 8, 16, 16, rand);
-        }
+        spawnAnimals(i1 * 16, j1 * 16);
     }
 }

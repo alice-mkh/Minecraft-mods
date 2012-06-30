@@ -78,6 +78,13 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
 
     public void populate(IChunkProvider ichunkprovider2, int x, int z){}
 
+    protected void spawnAnimals(int i, int j){
+        if (mod_noBiomesX.UseNewSpawning){
+            BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(i + 16, j + 16);
+            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, i + 8, j + 8, 16, 16, rand);
+        }
+    }
+
     public Chunk loadChunk(int i, int j){
         return provideChunk(i, j);
     }

@@ -574,10 +574,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             int j20 = l + rand.nextInt(16) + 8;
             (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, l15, k18, j20);
         }
-        if (mod_noBiomesX.UseNewSpawning){
-            BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(k + 16, l + 16);
-            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
-        }
+        spawnAnimals(k, l);
 
         for(int j13 = k + 8; j13 < k + 8 + 16; j13++)
         {

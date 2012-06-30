@@ -403,9 +403,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             if (!(new WorldGenDungeons()).generate(worldObj, rand, i3, i4, k4));
         }
         biomegenbase.decorate(worldObj, rand, k, l);
-        if (mod_noBiomesX.UseNewSpawning){
-            SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
-        }
+        spawnAnimals(k, l);
         if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
             k += 8;
             l += 8;
@@ -426,5 +424,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             }
         }
         BlockSand.fallInstantly = false;
+    }
+
+    protected void spawnAnimals(int i, int j){
+        SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, k + 8, l + 8, 16, 16, rand);
     }
 }
