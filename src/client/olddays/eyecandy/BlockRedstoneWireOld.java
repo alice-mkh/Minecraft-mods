@@ -16,6 +16,6 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
      */
     public int getRenderType()
     {
-        return cross ? mod_OldDaysEyecandy.redstoneRenderID : super.getRenderType();
+        return cross ? ODEyecandy.redstoneRenderID : super.getRenderType();
     }
 }

@@ -1,9 +1,8 @@
 package net.minecraft.src;
-import net.minecraft.client.Minecraft;
 
-public class mod_OldDaysGameplay extends mod_OldDays{
-    public void load(){
-        registerModule(this, 2);
+public class ODGameplay extends OldDaysModule{
+    public ODGameplay(mod_OldDays c){
+        super(c, 2, "Gameplay");
         addProperty(1, "Experience",         true,  false, "EnableXP",        "");
         addProperty(2, "Hunger",             true,  false, "EnableHunger",    "");
         addProperty(3, "Instant food",       false, true,  "InstantFood",     "");
@@ -18,8 +17,6 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         addProperty(12,"Allow sprint",       true,  true,  "AllowSprint",     "");
         addProperty(13,"Jump delay",         true,  false, "JumpDelay",       "");
         addProperty(14,"Start items",        1,     1,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
-        loadModuleProperties();
-        ModLoader.setInGameHook(this, true, true);
     }
 
     public void callback (int i){
@@ -174,15 +171,11 @@ public class mod_OldDaysGameplay extends mod_OldDays{
         }
     }
 
-    public boolean onTickInGame(float f, Minecraft minecraft){
-        tickDebug(minecraft);
-        return true;
-    }
-
-    public void tickDebug(Minecraft minecraft){
+    public boolean onTick(){
         if (AllowDebug){
-            return;
+            return true;
         }
         minecraft.gameSettings.showDebugInfo = false;
+        return true;
     }
 }

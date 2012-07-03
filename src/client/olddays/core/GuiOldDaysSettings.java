@@ -38,7 +38,8 @@ public class GuiOldDaysSettings extends GuiScreen{
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
-        for (int i = 1; i <= mod_OldDays.proplength[id]; i++){
+        int count = mod_OldDays.getModuleById(id).properties.size();
+        for (int i = 1; i <= count; i++){
             int x = width / 2 - 155;
             int i2 = (i-1) % max;
             if (i2 % 2 != 0){
@@ -47,16 +48,16 @@ public class GuiOldDaysSettings extends GuiScreen{
             int margin = 30;
             int top = 15;
             int y = height / 6 - top + (((i2)/2) * margin);
-            GuiButton button = new GuiButton(i+1, x, y, 150, 20, getState(i, id));
-            button.enabled = !mod_OldDays.disabled[id][i] && !(mod_OldDays.propsmp[id][i]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote);
+            GuiButton button = new GuiButton(i+1, x, y, 150, 20, mod_OldDays.getPropertyButtonText(id, i));
+            button.enabled = !mod_OldDays.getModuleById(id).getPropertyById(i).isDisabled();
             button.drawButton = false;
             controlList.add(button);
-            Keyboard.enableRepeatEvents(false);
         }
+        Keyboard.enableRepeatEvents(false);
         controlList.add(left = new GuiButtonPage(98, 30, height, width, false, this));
         controlList.add(right = new GuiButtonPage(99, 30, height, width, true, this));
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
-        maxpage = (mod_OldDays.proplength[id]-1) / max;
+        maxpage = (count-1) / max;
         setPage(0);
     }
 
@@ -84,35 +85,6 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
     }
 
-    private String getState(int i2, int id){
-        String res = mod_OldDays.propname[id][i2]+": ";
-        if (mod_OldDays.proptype[id][i2]==0){
-            int state = mod_OldDays.propvalue[id][i2];
-            StringTranslate stringtranslate = StringTranslate.getInstance();
-            if (state>0){
-                res = res+stringtranslate.translateKey("options.on");
-            }else{
-                res = res+stringtranslate.translateKey("options.off");
-            }
-        }
-        if (mod_OldDays.proptype[id][i2]==1){
-            int state = mod_OldDays.propvalue[id][i2];
-            if (mod_OldDays.propnames[id][i2][state]!=null){
-               res = res+mod_OldDays.propnames[id][i2][state];
-            }else{
-                res = res+state;
-            }
-        }
-        if (mod_OldDays.proptype[id][i2]==2){
-            res = res+mod_OldDays.propvaluestr[id][i2];
-        }
-        int max = 146;
-        if (fontRenderer.getStringWidth(res)>max){
-            res = fontRenderer.trimStringToWidth(res, max);
-        }
-        return res;
-    }
-
     protected void actionPerformed(GuiButton guibutton)
     {
         if (!guibutton.enabled){
@@ -136,25 +108,22 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         if (guibutton.id > 1){
             displayField = false;
-            if (mod_OldDays.proptype[id][guibutton.id-1]==0){
-                boolean b = mod_OldDays.propvalue[id][guibutton.id-1]==0;
-                mod_OldDays.propvalue[id][guibutton.id-1]=b ? 1 : 0;
-            }else if (mod_OldDays.proptype[id][guibutton.id-1]==1){
-                boolean b = mod_OldDays.propvalue[id][guibutton.id-1]<mod_OldDays.propmax[id][guibutton.id-1];
-                mod_OldDays.propvalue[id][guibutton.id-1]=b ? mod_OldDays.propvalue[id][guibutton.id-1]+1 : 1;
-            }else if (mod_OldDays.proptype[id][guibutton.id-1]==2){
-                /*int offset = fontRenderer.getStringWidth(mod_OldDays.propname[id][guibutton.id-1]+":")-2;
-                offset += (150-fontRenderer.getStringWidth(getState(guibutton.id-1, id)))/2;
-                if (fontRenderer.getStringWidth(mod_OldDays.propvaluestr[id][guibutton.id-1])>138-offset){
+            if (mod_OldDays.getPropertyType(id, guibutton.id-1) == OldDaysProperty.TYPE_BOOLEAN ||
+                mod_OldDays.getPropertyType(id, guibutton.id-1) == OldDaysProperty.TYPE_INTEGER){
+                mod_OldDays.getModuleById(id).getPropertyById(guibutton.id-1).incrementValue();
+            }else if (mod_OldDays.getPropertyType(id, guibutton.id-1) == OldDaysProperty.TYPE_STRING){
+                /*int offset = fontRenderer.getStringWidth(mod_OldDays.getPropertyName(id, guibutton.id-1)+":")-2;
+                offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(id, guibutton.id-1)))/2;
+                if (fontRenderer.getStringWidth(mod_OldDays.getStringPropValue(id, guibutton.id-1)>138-offset){
                     offset = 0;
                 }*/
                 int offset = 0;
                 field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
                 showField(true, guibutton);
                 field.setFocused(true);
-                if (!mod_OldDays.propvaluestr[id][guibutton.id-1].equals("OFF")){
-                    current = mod_OldDays.propvaluestr[id][guibutton.id-1];
-                    field.setText(mod_OldDays.propvaluestr[id][guibutton.id-1]);
+                if (!mod_OldDays.getStringPropValue(id, guibutton.id-1).equals("OFF")){
+                    current = mod_OldDays.getStringPropValue(id, guibutton.id-1);
+                    field.setText(mod_OldDays.getStringPropValue(id, guibutton.id-1));
                 }else{
                     current = "";
                     field.setText("");
@@ -163,12 +132,8 @@ public class GuiOldDaysSettings extends GuiScreen{
                 guibutton.enabled = false;
             }
             mod_OldDays.saveModuleProperties(id);
-            if (mod_OldDays.proptype[id][guibutton.id-1]==0 || mod_OldDays.proptype[id][guibutton.id-1]==1){
-                mod_OldDays.sendCallback(id, guibutton.id-1, mod_OldDays.propvalue[id][guibutton.id-1]);
-            }else if (mod_OldDays.proptype[id][guibutton.id-1]==2){
-                mod_OldDays.sendCallbackStr(id, guibutton.id-1, mod_OldDays.propvaluestr[id][guibutton.id-1]);
-            }
-            guibutton.displayString = getState(guibutton.id-1, id);
+            mod_OldDays.sendCallback(id, guibutton.id-1);
+            guibutton.displayString = mod_OldDays.getPropertyButtonText(id, guibutton.id-1);
         }
     }
 
@@ -185,8 +150,8 @@ public class GuiOldDaysSettings extends GuiScreen{
     protected void mouseClicked(int par1, int par2, int par3){
         if (displayField){
             field.mouseClicked(par1, par2, par3);
-            mod_OldDays.propvaluestr[id][fieldId] = current;
-            mod_OldDays.sendCallbackStr(id, fieldId, current);
+            mod_OldDays.setStringPropValue(id, fieldId, current);
+            mod_OldDays.sendCallback(id, fieldId);
             showField(false, ((GuiButton)controlList.get(fieldId)));
         }
         super.mouseClicked(par1, par2, par3);
@@ -210,8 +175,8 @@ public class GuiOldDaysSettings extends GuiScreen{
         for (int k = 1; k < controlList.size(); k++){
             GuiButton button = ((GuiButton)controlList.get(k));
             if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20){
-                String str = mod_OldDays.propdesc[id][k];
-                boolean smp = mod_OldDays.propsmp[id][k]>=0 && ModLoader.getMinecraftInstance().theWorld.isRemote;
+                String str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
+                boolean smp = !mod_OldDays.getModuleById(id).getPropertyById(k).allowedInSMP && ModLoader.getMinecraftInstance().theWorld.isRemote;
                 if (str == null && !smp){
                     return;
                 }
@@ -235,18 +200,18 @@ public class GuiOldDaysSettings extends GuiScreen{
             str = "OFF";
         }
         if (par2 == 1){
-            mod_OldDays.propvaluestr[id][fieldId] = current;
-            mod_OldDays.sendCallbackStr(id, fieldId, current);
+            mod_OldDays.setStringPropValue(id, fieldId, current);
+            mod_OldDays.sendCallback(id, fieldId);
             GuiButton button = ((GuiButton)controlList.get(fieldId));
             showField(false, ((GuiButton)controlList.get(fieldId)));
         }else{
-            mod_OldDays.propvaluestr[id][fieldId] = str;
-            mod_OldDays.sendCallbackStr(id, fieldId, str);
+            mod_OldDays.setStringPropValue(id, fieldId, str);
+            mod_OldDays.sendCallback(id, fieldId);
         }
         if (par1 == '\r')
         {
             GuiButton button = ((GuiButton)controlList.get(fieldId));
-            button.displayString = getState(fieldId, id);
+            button.displayString = mod_OldDays.getPropertyButtonText(id, fieldId);
             showField(false, button);
         }
     }

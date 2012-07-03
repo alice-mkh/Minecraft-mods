@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
-public class mod_OldDaysBugs extends mod_OldDays{
-    public void load(){
-        registerModule(this, 1);
+public class ODBugs extends OldDaysModule{
+    public ODBugs(mod_OldDays c){
+        super(c, 1, "Bugs");
         addProperty(1, "Boosters",          false, true,  "Boosters",      "");
         addProperty(2, "Water lifts",       false, true,  "WaterLifts",    "");
         addProperty(3, "Toasters",          false, true,  "LavaToasters",  "");
@@ -10,7 +10,6 @@ public class mod_OldDaysBugs extends mod_OldDays{
         addProperty(5, "Ladder gaps",       false, true,  "LadderGaps",    "");
         addProperty(6, "Piston dupe",       false, false, "PistonDupe",    "");
         addProperty(7, "Crafting grid bug", false, false, "CraftingSlots", "");
-        loadModuleProperties();
     }
 
     public void callback (int i){

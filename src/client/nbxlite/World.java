@@ -395,6 +395,7 @@ public class World implements IBlockAccess
                         }
                     }
                     mod_noBiomesX.IndevWorld = null;
+                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
                 }else{
                     ModLoader.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading blocks..");

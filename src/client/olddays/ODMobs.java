@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
-public class mod_OldDaysMobs extends mod_OldDays{
-    public void load(){
-        registerModule(this, 3);
+public class ODMobs extends OldDaysModule{
+    public ODMobs(mod_OldDays c){
+        super(c, 3, "Mobs");
         addProperty(1, "Mob AI",              4,     2,     "AI",            "", new String[]{"Infdev", "Alpha", "Beta", "1.2"});
         addProperty(2, "Animal panic",        true,  false, "AnimalsFlee",      "");
         addProperty(3, "Sheep eat grass",     true,  true,  "SheepEatGrass",    "");
@@ -14,7 +14,6 @@ public class mod_OldDaysMobs extends mod_OldDays{
                                                                                                  "Beta 1.2", "Beta 1.7.3", "Beta 1.8.1", "1.1", "1.2"});
         addProperty(9, "Slime spawning",      4,     4,     "Slimes",           "", new String[]{"OFF", "Alpha 1.0.11", "Beta", "1.0"});
         addProperty(10,"Unnerfed endermen",   false, false, "Endermen",         "");
-        loadModuleProperties();
     }
 
     public void callback (int i){

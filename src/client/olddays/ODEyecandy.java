@@ -1,9 +1,10 @@
 package net.minecraft.src;
+
 import java.util.*;
 
-public class mod_OldDaysEyecandy extends mod_OldDays{
-    public void load(){
-        registerModule(this, 4);
+public class ODEyecandy extends OldDaysModule{
+    public ODEyecandy(mod_OldDays c){
+        super(c, 4, "Eyecandy");
         addProperty(1, "Old walking",           true,  "OldWalking",        "");
         addProperty(2, "Bobbing",               false, "Bobbing",           "");
         addProperty(3, "Old endermen",          true,  "OldEndermen",       "");
@@ -19,8 +20,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         addProperty(13,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
         addProperty(14,"Old fences",            true,  "OldFences",         "");
         addProperty(15,"Arrows stick to mobs",  true,  "Arrows",            "");
-        addProperty(16,"Version",               "OFF", "Version",           "");
-        loadModuleProperties();
+        addProperty(16,"Version",               "OFF", "Version",           "");\
         replaceBlocks();
         setWireRendering();
     }
@@ -30,7 +30,7 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
             case 1: setBool(net.minecraft.src.ModelBiped.class, "oldwalking", OldWalking); break;
             case 2: setBool(net.minecraft.src.RenderLiving.class, "bobbing", Bobbing); break;
             case 3: setBool(net.minecraft.src.EntityEnderman.class, "smoke", OldEndermen);
-                    setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallbacktex); break;
+                    setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !getFallback()); break;
             case 4: setBool(net.minecraft.src.ModelEnderman.class, "openmouth", EndermenOpenMouth); break;
             case 5: setBool(net.minecraft.src.ItemRenderer.class, "sway", ItemSway); break;
             case 6: setBool(net.minecraft.src.ItemRenderer.class, "items2d", Items2D); break;
@@ -109,12 +109,8 @@ public class mod_OldDaysEyecandy extends mod_OldDays{
         }
     }
 
-    private void reload(){
-        ModLoader.getMinecraftInstance().renderGlobal.loadRenderers();
-    }
-
     private void setWireRendering(){
-        redstoneRenderID = ModLoader.getUniqueBlockModelID(this, false);
+        redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
 
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){

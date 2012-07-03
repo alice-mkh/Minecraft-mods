@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import java.io.File;
 
-public class mod_OldDaysSounds extends mod_OldDays{
-    public void load(){
-        registerModule(this, 5);
+public class ODSounds extends OldDaysModule{
+    public ODSounds(mod_OldDays c){
+        super(c, 5, "Sounds");
         addProperty(1, "Old explosion sound", true,  "Explode",    "");
         addProperty(2, "Old XP orb sound",    true,  "XPOrb",      "");
         addProperty(3, "Old hurt sound",      true,  "Ooh",        "");
@@ -30,7 +30,6 @@ public class mod_OldDaysSounds extends mod_OldDays{
         addSound(15,"creeper2");
         addSound(15,"creeper3");
         addSound(15,"creeper4");
-        loadModuleProperties();
     }
 
     public void callback (int i){

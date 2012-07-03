@@ -1,10 +1,10 @@
 package net.minecraft.src;
-import java.util.*;
 import java.io.*;
+import java.net.URL;
+import java.util.*;
+import java.util.zip.*;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
-import java.util.zip.*;
-import org.lwjgl.opengl.GL11;
 
 public class mod_OldDays extends BaseModMp{
     public String getVersion(){
@@ -12,552 +12,124 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public mod_OldDays(){
+        texman = new TextureManager();
+        modules = new ArrayList();
     }
 
     public void load(){
-        if (textureHooks == null){
-            textureHooks = new ArrayList();
-        }
-        moduleGui = new GuiOldDaysModules(null);
         ModLoader.registerKey(this, this.keySettings, false);
         ModLoader.addLocalization("key_settings", "Old Days Settings");
         ModLoader.setInGameHook(this, true, true);
-    }
-
-    public boolean onTickInGame(float f, Minecraft minecraft){
-        if (minecraft.theWorld.isRemote == needSettings){
-            for (int i = 0; i < modules.length; i++){
-                if (modules[i]!=null){
-                    modulenum = i;
-                    loadModuleProperties();
-                    if (minecraft.theWorld.isRemote){
-                        setDefaultSMPSettings(i);
-                        requestSettings(i);
-                    }
-                }
-            }
-            needSettings = !needSettings;
-        }
-        if (currentpack==null || currentpack!=ModLoader.getMinecraftInstance().gameSettings.skin){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
-            TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
-            currentpack=ModLoader.getMinecraftInstance().gameSettings.skin;
-            fallbacktex = !hasEntry("olddays");
-            for (int i = 0; i < textureHooks.size(); i++){
-                ((TextureSpriteFX)textureHooks.get(i)).refresh(false);
-            }
-            List list = getModuleList();
-            for (int i = 0; i < list.size(); i++){
-                ((mod_OldDays)list.get(i)).onFallbackChange(fallbacktex);
-            }
-        }
-        return true;
-    }
-
-    protected void onFallbackChange(boolean fallback){}
-
-    private void setDefaultSMPSettings(int module){
-        for (int i = 1; i < proplength[module]; i++){
-            try{
-                if (propsmp[module][i]>=0){
-                    if (proptype[module][i]==0 || proptype[module][i]==1){
-                        propvalue[module][i] = propsmp[module][i];
-                        sendCallback(module, i, propsmp[module][i]);
-                    }else if (proptype[module][i]==2){
-                        propvaluestr[module][i] = propsmpstr[module][i];
-                        sendCallbackStr(module, i, propsmpstr[module][i]);
-                    }
-                }
-            }catch(Exception ex){
-                System.out.println(ex);
-            }
-        }
-    }
-
-    public void requestSettings(int module){
-        Packet230ModLoader packet = new Packet230ModLoader();
-        packet.packetType = 1;
-        packet.dataInt = new int[]{module};
-        ModLoaderMp.sendPacket(this, packet);
-    }
-
-    public void handlePacket(Packet230ModLoader packet){
-        int[] settings = packet.dataInt;
-        int module = settings[1];
-        String[] settingsStr = packet.dataString;
-        try{
-            for (int i = 1; i < settings.length-1; i++){
-                if (proptype[module][i]==0 || proptype[module][i]==1){
-                    propvalue[module][i] = settings[i+1];
-                    sendCallback(module, i, settings[i+1]);
-                }else if (proptype[module][i]==2){
-                    propvaluestr[module][i] = settingsStr[i+1];
-                    sendCallbackStr(module, i, settingsStr[i+1]);
-                }
-            }
-        }catch(Exception ex){
-            System.out.println(ex);
-        }
-    }
-
-    public static void saveModuleProperties(int id){
-        Properties properties = new Properties();
-        try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[id].replaceFirst("mod_OldDays","")+".properties").toString());
-            FileOutputStream fileoutputstream = new FileOutputStream(file);
-            for (int i = 1; i <= proplength[id]; i++){
-                if (proptype[id][i]==0){
-                    properties.setProperty(propfield[id][i].getName(), Boolean.toString(propvalue[id][i]>0));
-                }else if (proptype[id][i]==1){
-                    properties.setProperty(propfield[id][i].getName(), Integer.toString(propvalue[id][i]));
-                }else if (proptype[id][i]==2){
-                    properties.setProperty(propfield[id][i].getName(), propvaluestr[id][i]);
-                }
-            }
-            properties.store(fileoutputstream, "Old Days config");
-            fileoutputstream.close();
-        }
-        catch(IOException ioexception){
-            ioexception.printStackTrace();
-        }
-    }
-
-    protected static void registerModule(Object module, int num){
-        modulenum = num;
-        modulegui[modulenum] = null;
-        String modulename = module.getClass().getName();
-        if (modules[modulenum]==null || modules2[modulenum]==null){
-            if (modulename.startsWith("net.minecraft.src.mod_OldDays") && modulename != "net.minecraft.src.mod_OldDays"){
-                modules[modulenum]=modulename;
-                modules2[modulenum]=modulename.replaceFirst("net.minecraft.src.", "");
-                modulecount++;
-            }else if (modulename.startsWith("mod_OldDays") && modulename != "mod_OldDays"){
-                modules[modulenum]=modulename;
-                modules2[modulenum]=modulename;
-                modulecount++;
-            }
-        }
-        if (propname==null){
-            propname=new String[10][30];
-        }
-        if (propdesc==null){
-            propdesc=new String[10][30];
-        }
-        if (propvalue==null){
-            propvalue=new int[10][30];
-        }
-        if (propvaluestr==null){
-            propvaluestr=new String[10][30];
-        }
-        if (proptype==null){
-            proptype=new int[10][30];
-        }
-        if (propfield==null){
-            propfield=new Field[10][30];
-        }
-        if (disabled==null){
-            disabled=new boolean[10][30];
-        }
-        if (propsmp==null){
-            propsmp=new int[10][30];
-        }
-        if (propsmpstr==null){
-            propsmpstr=new String[10][30];
-        }
-        if (propmax==null){
-            propmax=new int[10][30];
-        }
-        if (propnames==null){
-            propnames=new String[10][30][15];
-        }
-        if (proplength==null){
-            proplength=new int[10];
-            proplength[modulenum]=0;
-        }
-    }
-
-    protected static void registerGui(GuiScreen gui){
-        modulegui[modulenum] = gui;
-    }
-
-    protected void addSound(int id, String name){
-        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
-        if (sound.exists()){
-            ModLoader.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
-        }else{
-            disableProperty(modulenum, id);
-        }
-    }
-
-    protected void addMusic(int id, String name){
-        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/music/"+name+".ogg");
-        if (sound.exists()){
-            ModLoader.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
-        }else{
-            disableProperty(modulenum, id);
-        }
-    }
-
-    private static void disableProperty(int id, int i2){
-        if (disabled[id][i2]){
-            return;
-        }
-        System.out.println("Error, disabling option "+id+" "+i2);
-        disabled[id][i2]=true;
-    }
-
-    protected static void loadModuleProperties(){
-        Properties properties = new Properties();
-        try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString());
-            boolean flag = file.createNewFile();
-            if(flag){
-                FileOutputStream fileoutputstream = new FileOutputStream(file);
-                for (int i = 1; i <= proplength[modulenum]; i++){
-                    if (proptype[modulenum][i]==0){
-                        properties.setProperty(propfield[modulenum][i].getName(), Boolean.toString(propvalue[modulenum][i]>0));
-                    }else if (proptype[modulenum][i]==1){
-                        properties.setProperty(propfield[modulenum][i].getName(), Integer.toString(propvalue[modulenum][i]));
-                    }else if (proptype[modulenum][i]==2){
-                        properties.setProperty(propfield[modulenum][i].getName(), propvaluestr[modulenum][i]);
-                    }
-                }
-                properties.store(fileoutputstream, "Old Days config");
-                fileoutputstream.close();
-            }
-            properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/OldDays"+modules2[modulenum].replaceFirst("mod_OldDays","")+".properties").toString()));
-            for (int i = 1; i <= proplength[modulenum]; i++){
-                String val = "0";
-                try{
-                    if (proptype[modulenum][i]==0){
-                        val = Boolean.parseBoolean(properties.getProperty(propfield[modulenum][i].getName())) ? "1" : "0";
-                    }else{
-                        val = properties.getProperty(propfield[modulenum][i].getName());
-                    }
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
-                if (proptype[modulenum][i]==0 || proptype[modulenum][i]==1){
-                    int val2 = 1;
-                    try{
-                        val2 = Integer.parseInt(val);
-                    }catch(Exception ex){}
-                    propvalue[modulenum][i] = val2;
-                    sendCallback(modulenum, i, val2);
-                }else if (proptype[modulenum][i]==2){
-                    if (val==null || val==""){
-                        val="OFF";
-                    }
-                    propvaluestr[modulenum][i] = val;
-                    sendCallbackStr(modulenum, i, val);
-                }
-            }
-        }
-        catch(IOException ioexception){
-            ioexception.printStackTrace();
-        }
-    }
-
-    public static void addModules(GuiOldDaysModules gui){
-        for (int i = 0; i < modules2.length; i++){
-            if (modules2[i]!=null){
-                gui.addModule(i, modules2[i].replaceFirst("mod_OldDays", ""));
-            }
-        }
-    }
-
-    protected void setBool(Class where, String what, boolean value){
-        try{
-            where.getDeclaredField(what).setBoolean(null, value);
-        }catch(Exception ex){
-            disableProperty(lastmodule, lastoption);
-        }
-    }
-
-    protected void setInt(Class where, String what, int value){
-        try{
-            where.getDeclaredField(what).setInt(null, value);
-        }catch(Exception ex){
-            disableProperty(lastmodule, lastoption);
-        }
-    }
-    protected void setStr(Class where, String what, String value){
-        try{
-            where.getDeclaredField(what).set(null, ((Object)value));
-        }catch(Exception ex){
-            disableProperty(lastmodule, lastoption);
-        }
-    }
-
-    private static void addProp(int i2, String name, int mp, int val, String var, String desc, int max){
-        propname[modulenum][i2]=name;
-        propvalue[modulenum][i2]=val;
-        disabled[modulenum][i2]=false;
-        propsmp[modulenum][i2]=mp;
-        propdesc[modulenum][i2]=desc;
-        propmax[modulenum][i2]=max;
-        if (max==2){
-            proptype[modulenum][i2] = 0;
-        }else{
-            proptype[modulenum][i2] = 1;
-        }
-        try{
-            propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
-        }catch (Exception ex){
-            disableProperty(modulenum, i2);
-        }
-        proplength[modulenum]++;
-    }
-
-    private static void addPropStr(int i2, String name, String mp, String val, String var, String desc){
-        propname[modulenum][i2]=name;
-        propvaluestr[modulenum][i2]=val;
-        disabled[modulenum][i2]=false;
-        propsmpstr[modulenum][i2]=mp;
-        if (mp.startsWith("This.Should.Never.Happen.")){
-            propsmp[modulenum][i2]=-1;
-        }
-        propdesc[modulenum][i2]=desc;
-        proptype[modulenum][i2] = 2;
-        try{
-            propfield[modulenum][i2]=Class.forName(modules[modulenum]).getDeclaredField(var);
-        }catch (Exception ex){
-            disableProperty(modulenum, i2);
-        }
-        proplength[modulenum]++;
-    }
-
-    protected static void addProperty(int i2, String name, boolean mp, boolean val, String var, String desc){
-        addProp(i2, name, mp ? 1 : 0, val ? 1 : 0, var, desc, 2);
-    }
-
-    protected static void addProperty(int i2, String name, boolean val, String var, String desc){
-        addProp(i2, name, -1, val ? 1 : 0, var, desc, 2);
-    }
-
-    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc, int max){
-        addProp(i2, name, mp, val, var, desc, max);
-    }
-
-    protected static void addProperty(int i2, String name, int val, String var, String desc, int max){
-        addProp(i2, name, -1, val, var, desc, max);
-    }
-
-    protected static void addProperty(int i2, String name, int mp, int val, String var, String desc, String[] names){
-        if (names==null){
-            System.out.println("Failed to add option "+modulenum+" "+i2);
-            return;
-        }
-        addProp(i2, name, mp, val, var, desc, names.length);
-        for (int i = 0; i < names.length; i++){
-            propnames[modulenum][i2][i+1]=names[i];
-        }
-    }
-
-    protected static void addProperty(int i2, String name, int val, String var, String desc, String[] names){
-        if (names==null){
-            System.out.println("Failed to add option "+modulenum+" "+i2);
-            return;
-        }
-        addProp(i2, name, -1, val, var, desc, names.length);
-        for (int i = 0; i < names.length; i++){
-            propnames[modulenum][i2][i+1]=names[i];
-        }
-    }
-
-    protected static void addProperty(int i2, String name, String mp, String val, String var, String desc){
-        addPropStr(i2, name, mp, val, var, desc);
-    }
-
-    protected static void addProperty(int i2, String name, String val, String var, String desc){
-        addPropStr(i2, name, "This.Should.Never.Happen.", val, var, desc);
+        loadModules(this);
     }
 
     public void keyboardEvent(KeyBinding keybinding){
         if (keybinding==keySettings && ModLoader.getMinecraftInstance().currentScreen==null){
-            ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, moduleGui);
+            ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
         }
     }
 
-    public void callback (int i){}
+    public boolean onTickInGame(float f, Minecraft minecraft){
+        texman.onTick();
+        return true;
+    }
 
-    protected static void sendCallback(int id, int i2, int b){
-        if (disabled[id][i2]){
-            return;
-        }
-        try{
-            if (propmax[id][i2]<=2){
-                mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b>0);
-            }else{
-                mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b);
-            }
-        }catch(Exception ex){}
-        lastmodule = id;
-        lastoption = i2;
-        int id2 = 0;
-        List list = ModLoader.getLoadedMods();
-        Object obj = null;
-        for(int i = 0; i < list.size(); i++){
+    public static void loadModules(mod_OldDays core){
+        Class c = net.minecraft.src.mod_OldDays.class;
+        String p = c.getPackage().getName();
+        File file = new File(c.getProtectionDomain().getCodeSource().getLocation().getPath()+p.replace(".", "/"));
+        List classes = new ArrayList();
+        List classes2 = new ArrayList();
+        if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")){
             try{
-                if (list.get(i).getClass() == Class.forName(modules[id])){
-                    obj = list.get(i);
-                    break;
+                ZipFile jar = new ZipFile(file);
+                Enumeration entries = jar.entries();
+                while (entries.hasMoreElements()){
+                    System.out.println(entries.nextElement());
                 }
-            }catch (Exception ex){
+            }catch(Exception ex){
+                System.out.println(ex);
+            }
+        }else{
+            String[] str = file.list();
+            for (int i = 0; i < str.length; i++){
+                classes.add(str[i]);
+            }
+        }
+        for (int i = 0; i < classes.size(); i++){
+            String s = ((String)classes.get(i));
+            if (s.startsWith("OD") && s.endsWith(".class")){
+                classes2.add(s.replace(".class", ""));
+            }
+        }
+        for (int i = 0; i < classes2.size(); i++){
+            String name = ((String)classes2.get(i));
+            Class c2 = null;
+            try{
+                c2 = c.getClassLoader().loadClass(p+"."+name);
+            }catch(Exception ex){
+                System.out.println("OldDays: Failed to load module: "+ex);
                 continue;
             }
-        }
-        try{
-            ((mod_OldDays)obj).callback(i2);
-        }catch (Exception ex){}
-    }
-
-    protected static void sendCallbackStr(int id, int i2, String b){
-        if (disabled[id][i2]){
-            return;
-        }
-        try{
-        mod_OldDays.propfield[id][i2].set(Class.forName(modules[id]), b);
-        }catch(Exception ex){}
-        lastmodule = id;
-        lastoption = i2;
-        int id2 = 0;
-        List list = ModLoader.getLoadedMods();
-        Object obj = null;
-        for(int i = 0; i < list.size(); i++){
-            try{
-                if (list.get(i).getClass() == Class.forName(modules[id])){
-                    obj = list.get(i);
-                    break;
-                }
-            }catch (Exception ex){
+            if (!((net.minecraft.src.OldDaysModule.class).isAssignableFrom(c2))){
                 continue;
             }
+            OldDaysModule module = null;
+            try{
+                module = ((OldDaysModule)c2.getDeclaredConstructor(c).newInstance(core));
+            }catch(Exception ex){
+                System.out.println("OldDays: Failed to load module: "+ex);
+                continue;
+            }
+            modules.add(module);
+            System.out.println("OldDays: Loaded "+module.name+" module");
         }
-        try{
-            ((mod_OldDays)obj).callback(i2);
-        }catch (Exception ex){}
     }
 
-    private static List getModuleList(){
-        List list = ModLoader.getLoadedMods();
-        List list2 =new ArrayList();
-        for(int i = 0; i < list.size(); i++){
-            for (int i2 = 0; i2 < modules.length; i2++){
-                try{
-                    if (list.get(i).getClass().getName()==modules[i2]){
-                        list2.add(list.get(i));
-                        list.remove(list.get(i));
-                    }
-                }catch (Exception ex){
-                    continue;
-                }
+    public void handlePacket(Packet230ModLoader packet){}
+
+    public static void loadModuleProperties(){}
+    
+    public static int getPropertyType(int id, int id2){
+        return getModuleById(id).getPropertyById(id2).type;
+    }
+
+    public static String getPropertyButtonText(int id, int id2){
+        return getModuleById(id).getPropertyById(id2).getButtonText();
+    }
+
+    public static OldDaysModule getModuleById(int id){
+        for (int i = 0; i < modules.size(); i++){
+            OldDaysModule module = ((OldDaysModule)modules.get(i));
+            if (module.id == id){
+                return module;
             }
         }
-        return list2;
+        return null;
     }
 
-    public static boolean hasEntry(String str){
-        try{
-            TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
-            if (texpack instanceof TexturePackFolder){
-                File orig = ((File)ModLoader.getPrivateValue(net.minecraft.src.TexturePackFolder.class, texpack, 2));
-                File file = new File(orig, str);
-                return file.exists();
-            }else{
-                ZipFile file = ((ZipFile)ModLoader.getPrivateValue(net.minecraft.src.TexturePackCustom.class, texpack, 0));
-                return file.getEntry(str)!=null;
-            }
-        }catch(Exception ex){
-            return true;
+    public static void saveModuleProperties(int id){}
+
+    public static String getStringPropValue(int id, int id2){
+        if (getPropertyType(id, id2) != OldDaysProperty.TYPE_STRING){
+            return "";
         }
+        return ((OldDaysPropertyString)getModuleById(id).getPropertyById(id2)).value;
     }
 
-    protected void removeRecipe(String str1){
-        try{
-            List list = CraftingManager.getInstance().getRecipeList();
-            for (int i = 0; i < list.size(); i++){
-                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
-                if (match.equals(str1)){
-                    list.remove(i);
-                }
-            }
-        }catch(Exception ex){
-            System.out.println(ex);
+    public static void setStringPropValue(int id, int id2, String str){
+        if (getPropertyType(id, id2) != OldDaysProperty.TYPE_STRING){
+            return;
         }
+        ((OldDaysPropertyString)getModuleById(id).getPropertyById(id2)).value = str;
     }
 
-    protected void addTextureHook(String origname, int origi, String newname, int newi){
-        addTextureHook(origname, origi, newname, newi, 16, 16);
+    public static void sendCallback(int id, int id2){
+        getModuleById(id).last = id2;
+        getModuleById(id).getPropertyById(id2).onChange();
     }
 
-    private void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
-        RenderEngine renderEngine = ModLoader.getMinecraftInstance().renderEngine;
-        if (textureHooks == null){
-            textureHooks = new ArrayList();
-        }
-        TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
-        renderEngine.registerTextureFX(fx);
-        textureHooks.add(fx);
-    }
-
-    protected void setTextureHook(String name, int i2, String name2, int index, boolean b){
-        TextureSpriteFX fx2 = null;
-        for (int i = 0; i < textureHooks.size(); i++){
-            TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
-            if (fx.sprite2 == name && fx.index2 == i2){
-                fx2 = fx;
-                break;
-            }
-        }
-        if (fx2 == null){
-            addTextureHook(name, i2, name2, index);
-            for (int i = 0; i < textureHooks.size(); i++){
-                TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
-                if (fx.sprite2 == name && fx.index2 == i2){
-                    fx2 = fx;
-                    break;
-                }
-            }
-        }
-        fx2.sprite = name2;
-        fx2.changeIndex(index, b, false);
-        ModLoader.getMinecraftInstance().renderEngine.updateDynamicTextures();
-    }
-
-    protected void setTextureHook(String origname, String newname, boolean b){
-        RenderEngine engine = ModLoader.getMinecraftInstance().renderEngine;
-        try{
-            int i = engine.getTexture(origname);
-            engine.setupTexture(ModLoader.loadImage(ModLoader.getMinecraftInstance().renderEngine, b ? newname : origname), i);
-        }catch(Exception ex){
-            fallbacktex = true;
-        }
-    }
-
-    protected GuiOldDaysModules moduleGui;
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
-    public static String[][] propname;
-    public static int[][] propvalue;
-    public static String[][] propvaluestr;
-    public static Field[][] propfield;
-    public static String[][] propdesc;
-    public static int[][] propmax;
-    public static String[][][] propnames;
-    public static int[][] proptype;
-    public static boolean[][] disabled;
-    public static int[][] propsmp;
-    public static String[][] propsmpstr;
-    public static int[] proplength;
-    public static String[] modules = new String[10];
-    public static String[] modules2 = new String[10];
-    public static int modulecount = 0;
-    private static int modulenum;
-    public static GuiScreen[] modulegui = new GuiScreen[10];
-    public static int lastmodule = 0;
-    public static int lastoption = 0;
-    public static boolean needSettings = true;
-    public static boolean fallbacktex = true;
-    private static String currentpack;
-    protected static List textureHooks;
+    public static TextureManager texman;
+    public static List modules;
 }

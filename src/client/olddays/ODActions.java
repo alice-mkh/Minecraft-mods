@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import java.util.*;
 
-public class mod_OldDaysActions extends mod_OldDays{
-    public void load(){
-        registerModule(this, 0);
+public class ODActions extends OldDaysModule{
+    public ODActions(mod_OldDays c){
+        super(c, 0, "Actions");
         addProperty(1, "Punch TNT",             false, true,  "PunchTNT",        "");
         addProperty(2, "Extinguish TNT",        false, false, "ExtinguishTNT",   "");
         addProperty(3, "Smelt items on fire",   false, false, "SmeltOnFire",     "");
@@ -16,9 +16,8 @@ public class mod_OldDaysActions extends mod_OldDays{
         addProperty(9, "Big fences",            false, true,  "BigFences",       "");
         addProperty(10,"Less Nether lava flow", false, false, "LessLavaFlow",    "");
         addProperty(11,"Enable fog key",        false, false, "FogKey",    "");
-        loadModuleProperties();
         replaceBlocks();
-        ModLoader.registerKey(this, this.keyFog, false);
+        ModLoader.registerKey(core, this.keyFog, false);
     }
 
     public void callback (int i){
@@ -38,9 +37,9 @@ public class mod_OldDaysActions extends mod_OldDays{
     }
 
     public void keyboardEvent(KeyBinding keybinding){
-        if (keybinding==keyFog && ModLoader.getMinecraftInstance().currentScreen==null && FogKey){
+        if (keybinding==keyFog && minecraft.currentScreen==null && FogKey){
             boolean flag = org.lwjgl.input.Keyboard.isKeyDown(42) | org.lwjgl.input.Keyboard.isKeyDown(54);
-            ModLoader.getMinecraftInstance().gameSettings.setOptionValue(EnumOptions.RENDER_DISTANCE, flag ? -1 : 1);
+            minecraft.gameSettings.setOptionValue(EnumOptions.RENDER_DISTANCE, flag ? -1 : 1);
         }
     }
 

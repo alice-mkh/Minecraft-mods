@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import java.util.*;
 
-public class mod_OldDaysCrafting extends mod_OldDays{
-    public void load(){
-        registerModule(this, 6);
+public class ODCrafting extends OldDaysModule{
+    public ODCrafting(mod_OldDays c){
+        super(c, 6, "Crafting");
         addProperty(1, "Old planks",            false, false, "OldPlanks",  "");
         addProperty(2, "Leather armor",         2,     2,     "ClothArmor", "", new String[]{"Cloth", "Leather", "Both"});
         addProperty(3, "Slabs",                 3,     3,     "OldSlabs",   "", new String[]{"Alpha", "Beta", "1.2.1"});
@@ -15,7 +15,6 @@ public class mod_OldDaysCrafting extends mod_OldDays{
         addProperty(8, "Old mushroom stew",     false, false, "Stew",       "");
         addProperty(9, "Old ore blocks",        false, false, "OreBlocks",  "");
         addProperty(10,"12w17a books",          false, false, "Books",      "");
-        loadModuleProperties();
     }
 
     public void callback (int i){

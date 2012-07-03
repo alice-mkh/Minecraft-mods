@@ -1,15 +1,10 @@
 package net.minecraft.src;
 
-import java.util.List;
-import java.util.Collections;
-
 public class GuiOldDaysModules extends GuiScreen{
     private GuiScreen parent;
-    private GuiButton[] moduleButtons;
 
     public GuiOldDaysModules(GuiScreen guiscreen){
         parent = guiscreen;
-        moduleButtons = new GuiButton[10];
     }
 
     public void updateScreen()
@@ -20,7 +15,10 @@ public class GuiOldDaysModules extends GuiScreen{
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
-        mod_OldDays.addModules(this);
+        for (int i = 0; i < mod_OldDays.modules.size(); i++){
+            OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
+            addModule(module.id, module.name);
+        }
     }
     
     public void addModule(int i, String name){
@@ -30,11 +28,8 @@ public class GuiOldDaysModules extends GuiScreen{
         if (i % 2 != 0){
             x+=160;
         }
-        controlList.add(moduleButtons[i]=new GuiButton(i+1, x, height / 6 + 15 + ((i/2)*margin), 150, 20, name));
-        if (!ModLoader.isModLoaded("mod_OldDays"+name)){
-            moduleButtons[i].enabled = false;
-            moduleButtons[i].drawButton = false;
-        }
+        GuiButton button = new GuiButton(i+1, x, height / 6 + 15 + ((i/2)*margin), 150, 20, name);
+        controlList.add(button);
     }
 
     protected void actionPerformed(GuiButton guibutton)
@@ -46,11 +41,7 @@ public class GuiOldDaysModules extends GuiScreen{
         {
             mc.displayGuiScreen(parent);
         }else{
-            if (mod_OldDays.modulegui[guibutton.id-1] == null){
-                mc.displayGuiScreen(new GuiOldDaysSettings(this,guibutton.id-1));
-            }else{
-                mc.displayGuiScreen(mod_OldDays.modulegui[guibutton.id-1]);
-            }
+            mc.displayGuiScreen(new GuiOldDaysSettings(this, guibutton.id-1));
         }
     }
 
