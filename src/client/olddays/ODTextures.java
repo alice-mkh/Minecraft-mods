@@ -5,19 +5,19 @@ import java.util.*;
 public class ODTextures extends OldDaysModule{
     public ODTextures(mod_OldDays c){
         super(c, 7, "Textures");
-        addProperty(1, "Cobblestone",         2,     "Cobblestone", "", new String[]{"0.013a_03", "Alpha", "Beta 1.7"});
+        addProperty(1, "Cobblestone",         1,     "Cobblestone", "", new String[]{"0.013a_03", "Alpha", "Beta 1.7"});
         addProperty(2, "Old mossy stone",     true,  "MossStone",   "");
         addProperty(3, "Old stone",           true,  "Stone",       "");
-        addProperty(4, "Bricks",              1,     "Brick",       "", new String[]{"Classic", "Alpha", "Beta 1.8"});
+        addProperty(4, "Bricks",              0,     "Brick",       "", new String[]{"Classic", "Alpha", "Beta 1.8"});
         addProperty(5, "Old sand",            true,  "Sand",        "");
         addProperty(6, "Old gravel",          true,  "Gravel",      "");
         addProperty(7, "Old dirt",            true,  "Dirt",        "");
         addProperty(8, "Old grass",           true,  "Grass",       "");
-        addProperty(9, "Planks",              2,     "Planks",      "", new String[]{"0.013a_03", "Beta", "1.0"});
-        addProperty(10,"Sapling",             2,     "Sapling",     "", new String[]{"Classic", "Beta", "1.2"});
-        addProperty(11,"Cloth",               2,     "Wool",        "", new String[]{"Classic", "Beta", "1.2"});
+        addProperty(9, "Planks",              1,     "Planks",      "", new String[]{"0.013a_03", "Beta", "1.0"});
+        addProperty(10,"Sapling",             1,     "Sapling",     "", new String[]{"Classic", "Beta", "1.2"});
+        addProperty(11,"Cloth",               1,     "Wool",        "", new String[]{"Classic", "Beta", "1.2"});
         addProperty(12,"Old glowstone",       true,  "Glowstone",   "");
-        addProperty(13,"Ore blocks",          1,     "OreBlocks",   "", new String[]{"Classic", "Beta", "1.0"});
+        addProperty(13,"Ore blocks",          0,     "OreBlocks",   "", new String[]{"Classic", "Beta", "1.0"});
         addProperty(14,"Old mob spawner",     true,  "Spawner",     "");
         addProperty(15,"Stone furnace top",   true,  "Furnace",     "");
         addProperty(16,"Old dispenser",       true,  "Dispenser",   "");
@@ -38,17 +38,17 @@ public class ODTextures extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: setTextureHook("/terrain.png", 16, "/olddays/textures.png", Cobblestone<2 ? 0 : 1, Cobblestone<3 && !getFallback()); break;
+            case 1: setTextureHook("/terrain.png", 16, "/olddays/textures.png", Cobblestone<1 ? 0 : 1, Cobblestone<2 && !getFallback()); break;
             case 2: setTextureHook("/terrain.png", 36, "/olddays/textures.png", 2, MossStone && !getFallback()); break;
             case 3: setStone(); break;
-            case 4: setTextureHook("/terrain.png", 7, "/olddays/textures.png", Brick<2 ? 6 : 7, Brick<3 && !getFallback()); break;
+            case 4: setTextureHook("/terrain.png", 7, "/olddays/textures.png", Brick<1 ? 6 : 7, Brick<2 && !getFallback()); break;
             case 5: setTextureHook("/terrain.png", 18, "/olddays/textures.png", 11, Sand && !getFallback()); break;
             case 6: setTextureHook("/terrain.png", 19, "/olddays/textures.png", 12, Gravel && !getFallback()); break;
             case 7: setTextureHook("/terrain.png", 2, "/olddays/textures.png", 14, Dirt && !getFallback());
                     setTextureHook("/terrain.png", 3, "/olddays/textures.png", 15, Dirt && !getFallback()); break;
             case 8: setTextureHook("/terrain.png", 0, "/olddays/textures.png", 13, Grass && !getFallback()); break;
-            case 9: setTextureHook("/terrain.png", 4, "/olddays/textures.png", Planks<2 ? 4 : 5, Planks<3 && !getFallback()); break;
-            case 10:setTextureHook("/terrain.png", 15, "/olddays/textures.png", Sapling<2 ? 9 : 10, Sapling<3 && !getFallback()); break;
+            case 9: setTextureHook("/terrain.png", 4, "/olddays/textures.png", Planks<1 ? 4 : 5, Planks<2 && !getFallback()); break;
+            case 10:setTextureHook("/terrain.png", 15, "/olddays/textures.png", Sapling<1 ? 9 : 10, Sapling<2 && !getFallback()); break;
             case 11:setCloth(); break;
             case 12:setTextureHook("/terrain.png", 105, "/olddays/textures.png", 17, Glowstone && !getFallback()); break;
             case 13:setOreBlocks(); break;
@@ -74,19 +74,19 @@ public class ODTextures extends OldDaysModule{
         }
     }
 
-    public static int Cobblestone = 2;
+    public static int Cobblestone = 1;
     public static boolean MossStone = true;
     public static boolean Stone = true;
-    public static int Brick = 1;
+    public static int Brick = 0;
     public static boolean Sand = true;
     public static boolean Gravel = true;
     public static boolean Dirt = true;
     public static boolean Grass = true;
-    public static int Planks = 2;
-    public static int Sapling = 2;
-    public static int Wool = 2;
+    public static int Planks = 1;
+    public static int Sapling = 1;
+    public static int Wool = 1;
     public static boolean Glowstone = true;
-    public static int OreBlocks = 1;
+    public static int OreBlocks = 0;
     public static boolean Spawner = true;
     public static boolean Furnace = true;
     public static boolean Dispenser = true;
@@ -145,10 +145,10 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void setOreBlocks(){
-        setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OreBlocks<2 && !getFallback());
-        setTextureHook("/terrain.png", 22, "/olddays/textures.png", 49, OreBlocks<3 && !getFallback());
-        setTextureHook("/terrain.png", 23, "/olddays/textures.png", 50, OreBlocks<3 && !getFallback());
-        setTextureHook("/terrain.png", 24, "/olddays/textures.png", 51, OreBlocks<3 && !getFallback());
+        setBool(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OreBlocks<1 && !getFallback());
+        setTextureHook("/terrain.png", 22, "/olddays/textures.png", 49, OreBlocks<2 && !getFallback());
+        setTextureHook("/terrain.png", 23, "/olddays/textures.png", 50, OreBlocks<2 && !getFallback());
+        setTextureHook("/terrain.png", 24, "/olddays/textures.png", 51, OreBlocks<2 && !getFallback());
         if (OreBlocks<3){
             reload();
         }
@@ -159,7 +159,7 @@ public class ODTextures extends OldDaysModule{
         int[] beta =    new int[]{47, 18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  61};
         int[] classic = new int[]{47, 45,  45,  32,  44,  36,  35,  24,  34,  40,  39,  41,  43,  38,  33,  46};
         for (int i = 0; i < 16; i++){
-            setTextureHook("/terrain.png", orig[i], "/olddays/textures.png", Wool<2 ? classic[i] : beta[i], Wool<3 && !getFallback());
+            setTextureHook("/terrain.png", orig[i], "/olddays/textures.png", Wool<1 ? classic[i] : beta[i], Wool<2 && !getFallback());
         }
     }
 }

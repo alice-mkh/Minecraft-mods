@@ -28,4 +28,9 @@ public class OldDaysPropertyString extends OldDaysProperty{
             disable();
         }
     }
+
+    protected void disable(){
+        super.disable();
+        value = smpValue;
+    }
 }

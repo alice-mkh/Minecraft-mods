@@ -6,9 +6,9 @@ public class ODCrafting extends OldDaysModule{
     public ODCrafting(mod_OldDays c){
         super(c, 6, "Crafting");
         addProperty(1, "Old planks",            false, false, "OldPlanks",  "");
-        addProperty(2, "Leather armor",         2,     2,     "ClothArmor", "", new String[]{"Cloth", "Leather", "Both"});
-        addProperty(3, "Slabs",                 3,     3,     "OldSlabs",   "", new String[]{"Alpha", "Beta", "1.2.1"});
-        addProperty(4, "Ladders from crafting", 3,     3,     "Ladders",    "", 3);
+        addProperty(2, "Leather armor",         1,     1,     "ClothArmor", "", new String[]{"Cloth", "Leather", "Both"});
+        addProperty(3, "Slabs",                 2,     2,     "OldSlabs",   "", new String[]{"Alpha", "Beta", "1.2.1"});
+        addProperty(4, "Ladders from crafting", 2,     2,     "Ladders",    "", new String[]{"1", "2", "3"});
         addProperty(5, "Old cloth",             false, false, "Cloth",      "");
         addProperty(6, "Old glowstone",         false, false, "Glowstone",  "");
         addProperty(7, "Old golden apple",      false, false, "Apple",      "");
@@ -33,9 +33,9 @@ public class ODCrafting extends OldDaysModule{
     }
 
     public static boolean OldPlanks;
-    public static int ClothArmor = 2;
-    public static int OldSlabs = 3;
-    public static int Ladders = 3;
+    public static int ClothArmor = 1;
+    public static int OldSlabs = 2;
+    public static int Ladders = 2;
     public static boolean Cloth;
     public static boolean Glowstone;
     public static boolean Apple;
@@ -75,13 +75,13 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1xitem.chestplateCloth@0");
         removeRecipe("1xitem.leggingsCloth@0");
         removeRecipe("1xitem.bootsCloth@0");
-        if (b>1){
+        if (b>0){
             ModLoader.addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', leather});
             ModLoader.addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', leather});
             ModLoader.addRecipe(new ItemStack(Item.legsLeather, 1), new Object[] {"###", "# #", "# #", '#', leather});
             ModLoader.addRecipe(new ItemStack(Item.bootsLeather, 1), new Object[] {"# #", "# #", '#', leather});
         }
-        if (b==1 || b>2){
+        if (b==0 || b>1){
             ModLoader.addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', cloth});
             ModLoader.addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', cloth});
             ModLoader.addRecipe(new ItemStack(Item.legsLeather, 1), new Object[] {"###", "# #", "# #", '#', cloth});
@@ -110,12 +110,12 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe(slab6+"5");
         removeRecipe(plate);
         removeRecipe(plate);
-        if (b==1){
+        if (b==0){
             ModLoader.addRecipe(new ItemStack(slab, 3, 0), new Object[] {"###", '#', Block.cobblestone});
             ModLoader.addRecipe(new ItemStack(platestone, 1), new Object[] {"###", '#', Block.stone});
             ModLoader.addRecipe(new ItemStack(plateplanks, 1), new Object[] {"###", '#', Block.planks});
         }
-        if (b==2){
+        if (b==1){
             ModLoader.addRecipe(new ItemStack(slab, 3, 0), new Object[] {"###", '#', Block.stone});
             ModLoader.addRecipe(new ItemStack(slab, 3, 2), new Object[] {"###", '#', Block.planks});
             ModLoader.addRecipe(new ItemStack(slab, 3, 3), new Object[] {"###", '#', Block.cobblestone});
@@ -125,7 +125,7 @@ public class ODCrafting extends OldDaysModule{
             ModLoader.addRecipe(new ItemStack(platestone, 1), new Object[] {"##", '#', Block.stone});
             ModLoader.addRecipe(new ItemStack(plateplanks, 1), new Object[] {"##", '#', Block.planks});
         }
-        if (b==3){
+        if (b==2){
             ModLoader.addRecipe(new ItemStack(slab, 6, 0), new Object[] {"###", '#', Block.stone});
             ModLoader.addRecipe(new ItemStack(slab, 6, 2), new Object[] {"###", '#', Block.planks});
             ModLoader.addRecipe(new ItemStack(slab, 6, 3), new Object[] {"###", '#', Block.cobblestone});
@@ -138,15 +138,15 @@ public class ODCrafting extends OldDaysModule{
     }
 
     private void setLadders(int b){
-        if (b<=0){
-            b = 1;
+        if (b<0){
+            b = 0;
         }
         String str = "xtile.ladder@0";
         Block ladder = Block.ladder;
         removeRecipe("1"+str);
         removeRecipe("2"+str);
         removeRecipe("3"+str);
-        ModLoader.addRecipe(new ItemStack(ladder, b), new Object[]{"# #", "###", "# #", '#', Item.stick});
+        ModLoader.addRecipe(new ItemStack(ladder, b + 1), new Object[]{"# #", "###", "# #", '#', Item.stick});
     }
 
     private void setGlowstone(boolean b){

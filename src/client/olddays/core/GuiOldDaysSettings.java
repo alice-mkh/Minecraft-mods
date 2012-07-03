@@ -133,6 +133,7 @@ public class GuiOldDaysSettings extends GuiScreen{
             }
             mod_OldDays.saveModuleProperties(id);
             mod_OldDays.sendCallback(id, guibutton.id-1);
+            guibutton.enabled = !mod_OldDays.getModuleById(id).getPropertyById(guibutton.id-1).isDisabled();
             guibutton.displayString = mod_OldDays.getPropertyButtonText(id, guibutton.id-1);
         }
     }
@@ -176,11 +177,10 @@ public class GuiOldDaysSettings extends GuiScreen{
             GuiButton button = ((GuiButton)controlList.get(k));
             if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20){
                 String str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
-                boolean smp = !mod_OldDays.getModuleById(id).getPropertyById(k).allowedInSMP && ModLoader.getMinecraftInstance().theWorld.isRemote;
-                if (str == null && !smp){
+                if (str == null){
                     return;
                 }
-                drawTooltip(str, i + 4, j - 13, smp);
+                drawTooltip(str, i + 4, j - 13, false);
             }
         }
         if (displayField){

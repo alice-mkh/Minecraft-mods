@@ -14,13 +14,13 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(7, "Old chests",            true,  "OldChest",          "");
         addProperty(8, "Show mob IDs in F3",    true,  "MobLabels",         "");
         addProperty(9, "Mob armor",             false, "MobArmor",          "");
-        addProperty(10,"Main menu",             1,     "MainMenu",          "", new String[]{"Alpha", "1.7.3", "1.8.1"});
+        addProperty(10,"Main menu",             0,     "MainMenu",          "", new String[]{"Alpha", "1.7.3", "1.8.1"});
         addProperty(11,"Old digging particles", true,  "OldDigging",        "");
         addProperty(12,"Old redstone wire",     true,  "OldWires",          "");
-        addProperty(13,"Item tooltips",         2,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
+        addProperty(13,"Item tooltips",         1,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
         addProperty(14,"Old fences",            true,  "OldFences",         "");
         addProperty(15,"Arrows stick to mobs",  true,  "Arrows",            "");
-        addProperty(16,"Version",               "OFF", "Version",           "");\
+        addProperty(16,"Version",               "OFF", "Version",           "");
         replaceBlocks();
         setWireRendering();
     }
@@ -41,13 +41,13 @@ public class ODEyecandy extends OldDaysModule{
             case 8: setBool(net.minecraft.src.RenderLiving.class, "labels", MobLabels); break;
             case 9: setBool(net.minecraft.src.RenderZombie.class, "mobArmor", MobArmor);
                     setBool(net.minecraft.src.RenderSkeleton.class, "mobArmor", MobArmor); break;
-            case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>2);
-                    setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", MainMenu<2); break;
+            case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>1);
+                    setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", MainMenu<1); break;
             case 11:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
             case 12:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
-            case 13:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<3);
-                    setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>1); break;
+            case 13:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<2);
+                    setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>0); break;
             case 14:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
                     reload(); break;
             case 15:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
@@ -81,7 +81,7 @@ public class ODEyecandy extends OldDaysModule{
     public static int MainMenu = 0;
     public static boolean OldDigging = true;
     public static boolean OldWires = true;
-    public static int Tooltips = 2;
+    public static int Tooltips = 1;
     public static boolean OldFences = true;
     public static boolean Arrows = true;
     public static String Version = "OFF";

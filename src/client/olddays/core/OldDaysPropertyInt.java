@@ -5,11 +5,14 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     public int smpValue;
     public int count;
     private String[] names;
+    public boolean useNames;
 
     public OldDaysPropertyInt(OldDaysModule m, int i, String s, int v, int c, String f){
         super(m, i, s, TYPE_INTEGER, f);
         value = v;
         count = c;
+        names = null;
+        useNames = false;
     }
 
     public OldDaysPropertyInt(OldDaysModule m, int i, String s, int v, int c, int smp, String f){
@@ -20,10 +23,11 @@ public class OldDaysPropertyInt extends OldDaysProperty{
 
     public void setNames(String[] str){
         names = str;
+        useNames = true;
     }
 
     public String getButtonText(){
-        return name+": "+(names==null ? value : names[value]);
+        return name+": "+(useNames ? names[value] : value);
     }
 
     public void onChange(){
@@ -42,5 +46,10 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }else{
             value = 0;
         }
+    }
+
+    protected void disable(){
+        super.disable();
+        value = smpValue;
     }
 }

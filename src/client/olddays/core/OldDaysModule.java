@@ -24,9 +24,9 @@ public class OldDaysModule{
 
     public OldDaysProperty getPropertyById(int id){
         for (int i = 0; i < properties.size(); i++){
-            OldDaysProperty m = ((OldDaysProperty)properties.get(i));
-            if (m.id == id){
-                return m;
+            OldDaysProperty prop = ((OldDaysProperty)properties.get(i));
+            if (prop.id == id){
+                return prop;
             }
         }
         return null;
@@ -37,7 +37,7 @@ public class OldDaysModule{
         if (sound.exists()){
             ModLoader.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
         }else{
-            getPropertyById(id).error = true;
+            getPropertyById(id).disable();
         }
     }
 
@@ -46,7 +46,7 @@ public class OldDaysModule{
         if (sound.exists()){
             ModLoader.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
         }else{
-            getPropertyById(id).error = true;
+            getPropertyById(id).disable();
         }
     }
 
@@ -103,7 +103,6 @@ public class OldDaysModule{
     public void addProperty(int num, String name, boolean smp, boolean value, String fname, String desc){
         OldDaysProperty prop = new OldDaysPropertyBool(this, num, name, value, smp, fname);
         prop.description = desc;
-        prop.field = null;
         properties.add(prop);
     }
 

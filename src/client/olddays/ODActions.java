@@ -8,14 +8,14 @@ public class ODActions extends OldDaysModule{
         addProperty(1, "Punch TNT",             false, true,  "PunchTNT",        "");
         addProperty(2, "Extinguish TNT",        false, false, "ExtinguishTNT",   "");
         addProperty(3, "Smelt items on fire",   false, false, "SmeltOnFire",     "");
-        addProperty(4, "Fire",                  3,     2,     "Fire",            "", new String[]{"Alpha", "Beta 1.5", "Beta 1.6"});
+        addProperty(4, "Fire",                  2,     1,     "Fire",            "", new String[]{"Alpha", "Beta 1.5", "Beta 1.6"});
         addProperty(5, "Punch sheep",           false, true,  "PunchSheep",      "");
         addProperty(6, "Old tool durability",   false, false, "OldTools",        "");
         addProperty(7, "Mushroom spreading",    true,  true,  "ShroomSpreading", "");
         addProperty(8, "Solid TNT",             false, true,  "SolidTNT",        "");
         addProperty(9, "Big fences",            false, true,  "BigFences",       "");
         addProperty(10,"Less Nether lava flow", false, false, "LessLavaFlow",    "");
-        addProperty(11,"Enable fog key",        false, false, "FogKey",    "");
+        addProperty(11,"Enable fog key",        false, false, "FogKey",          "");
         replaceBlocks();
         ModLoader.registerKey(core, this.keyFog, false);
     }
@@ -25,8 +25,8 @@ public class ODActions extends OldDaysModule{
             case 1: setBool(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
             case 2: setBool(net.minecraft.src.EntityTNTPrimed.class, "extinguish", ExtinguishTNT); break;
             case 3: setBool(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
-            case 4: setBool(net.minecraft.src.BlockFire.class, "oldFire", Fire<3);
-                    setBool(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<2); break;
+            case 4: setBool(net.minecraft.src.BlockFire.class, "oldFire", Fire<2);
+                    setBool(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<1); break;
             case 5: setBool(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
             case 6: setToolDurability(OldTools); break;
             case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
@@ -46,7 +46,7 @@ public class ODActions extends OldDaysModule{
     public static boolean SmeltOnFire;
     public static boolean PunchTNT = true;
     public static boolean ExtinguishTNT;
-    public static int Fire = 2;
+    public static int Fire = 1;
     public static boolean PunchSheep = true;
     public static boolean OldTools;
     public static boolean ShroomSpreading = true;

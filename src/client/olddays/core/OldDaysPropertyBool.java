@@ -25,11 +25,17 @@ public class OldDaysPropertyBool extends OldDaysProperty{
             field.set(module.getClass(), value);
             module.callback(id);
         }catch(Exception ex){
+            System.out.println(ex);
             disable();
         }
     }
 
     public void incrementValue(){
         value = !value;
+    }
+
+    protected void disable(){
+        super.disable();
+        value = smpValue;
     }
 }

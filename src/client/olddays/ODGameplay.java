@@ -11,12 +11,12 @@ public class ODGameplay extends OldDaysModule{
         addProperty(6, "Rare loot",          true,  false, "RareLoot",        "");
         addProperty(7, "Machine bow",        false, true,  "InstantBow",      "");
         addProperty(8, "Bow durability",     true,  false, "FiniteBow",       "");
-        addProperty(9, "Combat system",      3,     2,     "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
-        addProperty(10,"Armor",              4,     1,     "Armor",           "", new String[]{"Beta 1.7.3", "Beta 1.8.1", "1.0", "1.1"});
+        addProperty(9, "Combat system",      2,     1,     "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
+        addProperty(10,"Armor",              3,     0,     "Armor",           "", new String[]{"Beta 1.7.3", "Beta 1.8.1", "1.0", "1.1"});
         addProperty(11,"Allow debug screen", true,  true,  "AllowDebug",      "");
         addProperty(12,"Allow sprint",       true,  true,  "AllowSprint",     "");
         addProperty(13,"Jump delay",         true,  false, "JumpDelay",       "");
-        addProperty(14,"Start items",        1,     1,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
+        addProperty(14,"Start items",        0,     0,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
     }
 
     public void callback (int i){
@@ -34,17 +34,17 @@ public class ODGameplay extends OldDaysModule{
             case 7: setBool(net.minecraft.src.EntityArrow.class, "olddamage", InstantBow);
                     setBool(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
             case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
-            case 9: setInt(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem-1);
-                    setBool(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=4);
-                    setSwordDamage(CombatSystem<3); break;
-            case 10:setInt(net.minecraft.src.EntityPlayer.class, "armor", Armor-1);
-                    setBool(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=1);
-                    setArmorDamage(Armor<3); break;
+            case 9: setInt(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem);
+                    setBool(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=3);
+                    setSwordDamage(CombatSystem<2); break;
+            case 10:setInt(net.minecraft.src.EntityPlayer.class, "armor", Armor);
+                    setBool(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=0);
+                    setArmorDamage(Armor<2); break;
             case 11:setBool(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
             case 12:setBool(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
                     setInt(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
             case 13:setBool(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
-            case 14:setInt(net.minecraft.src.EntityPlayer.class, "startitems", StartItems-1); break;
+            case 14:setInt(net.minecraft.src.EntityPlayer.class, "startitems", StartItems); break;
         }
     }
 
@@ -60,12 +60,12 @@ public class ODGameplay extends OldDaysModule{
     public static boolean RareLoot;
     public static boolean InstantBow = true;
     public static boolean FiniteBow;
-    public static int CombatSystem = 1;
-    public static int Armor = 1;
+    public static int CombatSystem = 0;
+    public static int Armor = 0;
     public static boolean AllowDebug = true;
     public static boolean AllowSprint = true;
     public static boolean JumpDelay;
-    public static int StartItems = 1;
+    public static int StartItems = 0;
 
     private void setSwordDamage(boolean b){
         try{

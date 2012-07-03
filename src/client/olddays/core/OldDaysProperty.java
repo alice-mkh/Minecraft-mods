@@ -41,7 +41,10 @@ public class OldDaysProperty{
     }
 
     public boolean isDisabled(){
-        return error || (!allowedInSMP && ModLoader.getMinecraftInstance().theWorld.isRemote);
+        if (error){
+            return true;
+        }
+        return !allowedInSMP && ModLoader.getMinecraftInstance().theWorld.isRemote;
     }
 
     public void setFieldValue(){
