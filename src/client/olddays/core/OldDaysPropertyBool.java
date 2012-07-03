@@ -20,9 +20,11 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     }
 
     public void onChange(){
-        super.onChange();
+        if (isDisabled()){
+            return;
+        }
         try{
-            field.set(module.getClass(), value);
+            field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
             System.out.println(ex);
@@ -34,8 +36,20 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         value = !value;
     }
 
+    public void setSMPValue(){
+        value = smpValue;
+    }
+
     protected void disable(){
         super.disable();
         value = smpValue;
+    }
+
+    public void loadFromString(String str){
+        value = Boolean.parseBoolean(str);
+    }
+
+    public String saveToString(){
+        return ""+value;
     }
 }

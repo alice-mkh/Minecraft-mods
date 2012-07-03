@@ -8,19 +8,18 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(1, "Old walking",           true,  "OldWalking",        "");
         addProperty(2, "Bobbing",               false, "Bobbing",           "");
         addProperty(3, "Old endermen",          true,  "OldEndermen",       "");
-        addProperty(4, "Endermen open mouth",   true,  "EndermenOpenMouth", "");
-        addProperty(5, "Item sway",             true,  "ItemSway",          "");
-        addProperty(6, "2D items",              false, "Items2D",           "");
-        addProperty(7, "Old chests",            true,  "OldChest",          "");
-        addProperty(8, "Show mob IDs in F3",    true,  "MobLabels",         "");
-        addProperty(9, "Mob armor",             false, "MobArmor",          "");
-        addProperty(10,"Main menu",             0,     "MainMenu",          "", new String[]{"Alpha", "1.7.3", "1.8.1"});
-        addProperty(11,"Old digging particles", true,  "OldDigging",        "");
-        addProperty(12,"Old redstone wire",     true,  "OldWires",          "");
-        addProperty(13,"Item tooltips",         1,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
-        addProperty(14,"Old fences",            true,  "OldFences",         "");
-        addProperty(15,"Arrows stick to mobs",  true,  "Arrows",            "");
-        addProperty(16,"Version",               "OFF", "Version",           "");
+        addProperty(4, "Item sway",             true,  "ItemSway",          "");
+        addProperty(5, "2D items",              false, "Items2D",           "");
+        addProperty(6, "Old chests",            true,  "OldChest",          "");
+        addProperty(7, "Show mob IDs in F3",    true,  "MobLabels",         "");
+        addProperty(8, "Mob armor",             false, "MobArmor",          "");
+        addProperty(9, "Main menu",             0,     "MainMenu",          "", new String[]{"Alpha", "1.7.3", "1.8.1"});
+        addProperty(10,"Old digging particles", true,  "OldDigging",        "");
+        addProperty(11,"Old redstone wire",     true,  "OldWires",          "");
+        addProperty(12,"Item tooltips",         1,     "Tooltips",          "", new String[]{"OFF", "Beta", "1.0"});
+        addProperty(13,"Old fences",            true,  "OldFences",         "");
+        addProperty(14,"Arrows stick to mobs",  true,  "Arrows",            "");
+        addProperty(15,"Version",               "OFF", "Version",           "");
         replaceBlocks();
         setWireRendering();
     }
@@ -31,35 +30,30 @@ public class ODEyecandy extends OldDaysModule{
             case 2: setBool(net.minecraft.src.RenderLiving.class, "bobbing", Bobbing); break;
             case 3: setBool(net.minecraft.src.EntityEnderman.class, "smoke", OldEndermen);
                     setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !getFallback()); break;
-            case 4: setBool(net.minecraft.src.ModelEnderman.class, "openmouth", EndermenOpenMouth); break;
-            case 5: setBool(net.minecraft.src.ItemRenderer.class, "sway", ItemSway); break;
-            case 6: setBool(net.minecraft.src.ItemRenderer.class, "items2d", Items2D); break;
-            case 7: setBool(net.minecraft.src.BlockChestOld.class, "normalblock", OldChest);
+            case 4: setBool(net.minecraft.src.ItemRenderer.class, "sway", ItemSway); break;
+            case 5: setBool(net.minecraft.src.ItemRenderer.class, "items2d", Items2D); break;
+            case 6: setBool(net.minecraft.src.BlockChestOld.class, "normalblock", OldChest);
                     setBool(net.minecraft.src.TileEntityChestRenderer.class, "hidemodel", OldChest);
                     setBool(net.minecraft.src.RenderMinecart2.class, "shiftChest", OldChest);
                     reload(); break;
-            case 8: setBool(net.minecraft.src.RenderLiving.class, "labels", MobLabels); break;
-            case 9: setBool(net.minecraft.src.RenderZombie.class, "mobArmor", MobArmor);
-                    setBool(net.minecraft.src.RenderSkeleton.class, "mobArmor", MobArmor); break;
-            case 10:setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>1);
+            case 7: setBool(net.minecraft.src.RenderLiving.class, "labels", MobLabels); break;
+            case 8: setBool(net.minecraft.src.RenderZombie.class, "mobArmor", MobArmor);
+                    setBool(net.minecraft.src.RenderSkeleton.class, "mobArmor", MobArmor);
+                    setBool(net.minecraft.src.RenderZombie.class, "fallback", getFallback());
+                    setBool(net.minecraft.src.RenderSkeleton.class, "fallback", getFallback()); break;
+            case 9: setBool(net.minecraft.src.GuiMainMenu.class, "panorama", MainMenu>1);
                     setBool(net.minecraft.src.GuiMainMenu.class, "oldlogo", MainMenu<1); break;
-            case 11:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
-            case 12:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
+            case 10:setBool(net.minecraft.src.EntityDiggingFX.class, "oldparticles", OldDigging); break;
+            case 11:setBool(net.minecraft.src.BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
-            case 13:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<2);
+            case 12:setBool(net.minecraft.src.GuiContainer.class, "oldtooltips", Tooltips<2);
                     setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>0); break;
-            case 14:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
+            case 13:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
                     reload(); break;
-            case 15:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
-            case 16:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
+            case 14:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
+            case 15:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
                     setStr(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
         }
-    }
-
-    protected void onFallbackChange(boolean fallback){
-        setBool(net.minecraft.src.RenderEnderman2.class, "greeneyes", OldEndermen && !fallback);
-        setBool(net.minecraft.src.RenderZombie.class, "fallback", fallback);
-        setBool(net.minecraft.src.RenderSkeleton.class, "fallback", fallback);
     }
 
     public void addRenderer(Map map){
@@ -74,7 +68,6 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean Bobbing;
     public static boolean OldWalking = true;
     public static boolean OldEndermen = true;
-    public static boolean EndermenOpenMouth = true;
     public static boolean OldChest = true;
     public static boolean MobLabels = true;
     public static boolean MobArmor;
@@ -104,6 +97,13 @@ public class ODEyecandy extends OldDaysModule{
             customwire.disableStats();
             customwire.setRequiresSelfNotify();
             Block.blocksList[Block.redstoneWire.blockID] = customwire;
+            Block.blocksList[Block.fence.blockID] = null;
+            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, 4));
+            customfence.setHardness(2.0F);
+            customfence.setResistance(5F);
+            customfence.setStepSound(Block.soundWoodFootstep);
+            customfence.setBlockName("fence");
+            Block.blocksList[Block.fence.blockID] = customfence;
         }catch (Exception ex){
             System.out.println(ex);
         }

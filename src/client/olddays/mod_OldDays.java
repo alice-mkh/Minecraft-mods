@@ -13,6 +13,8 @@ public class mod_OldDays extends BaseModMp{
 
     public mod_OldDays(){
         texman = new TextureManager();
+        saveman = new SavingManager(this);
+        smpman = new SMPManager(this);
         modules = new ArrayList();
     }
 
@@ -21,6 +23,7 @@ public class mod_OldDays extends BaseModMp{
         ModLoader.addLocalization("key_settings", "Old Days Settings");
         ModLoader.setInGameHook(this, true, true);
         loadModules(this);
+        saveman.loadAll();
     }
 
     public void keyboardEvent(KeyBinding keybinding){
@@ -30,6 +33,7 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public boolean onTickInGame(float f, Minecraft minecraft){
+        smpman.onTick();
         texman.onTick();
         return true;
     }
@@ -129,7 +133,22 @@ public class mod_OldDays extends BaseModMp{
         getModuleById(id).getPropertyById(id2).onChange();
     }
 
+    public static void sendCallbackAndSave(int id, int id2){
+        sendCallback(id, id2);
+        saveman.saveAll();
+    }
+
+    public static void bumpProperties(){
+        for (int i = 0; i < modules.size(); i++){
+            for (int j = 1; j < getModuleById(i).properties.size(); j++){
+                sendCallback(i, j);
+            }
+        }
+    }
+
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static TextureManager texman;
+    public static SavingManager saveman;
+    public static SMPManager smpman;
     public static List modules;
 }

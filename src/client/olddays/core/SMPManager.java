@@ -10,19 +10,16 @@ public class SMPManager{
     }
  
     public void onTick(){
-    /*    if (ModLoader.getMinecraftInstance().theWorld.isRemote == needSettings){
-            for (int i = 0; i < modules.length; i++){
-                if (modules[i]!=null){
-                    modulenum = i;
-                    loadModuleProperties();
-                    if (ModLoader.getMinecraftInstance().theWorld.isRemote){
-                        setDefaultSMPSettings(i);
-                        requestSettings(i);
-                    }
+        if (ModLoader.getMinecraftInstance().theWorld.isRemote == needSettings){
+            for (int i = 1; i < core.modules.size(); i++){
+                core.saveman.loadModuleProperties(i);
+                if (ModLoader.getMinecraftInstance().theWorld.isRemote){
+                    setSMPSettings(i);
+                    requestSettings(i);
                 }
             }
             needSettings = !needSettings;
-        }*/
+        }
     }
 
     public void requestSettings(int module){
@@ -30,5 +27,16 @@ public class SMPManager{
         packet.packetType = 1;
         packet.dataInt = new int[]{module};
         ModLoaderMp.sendPacket(core, packet);
+    }
+
+    public void setSMPSettings(int id){
+        OldDaysModule module = core.getModuleById(id);
+        for(int i = 1; i < module.properties.size(); i++){
+            OldDaysProperty prop = module.getPropertyById(i);
+            if (!prop.allowedInSMP){
+                prop.setSMPValue();
+                core.sendCallback(id, i);
+            }
+        }
     }
 }

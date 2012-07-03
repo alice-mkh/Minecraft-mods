@@ -65,7 +65,9 @@ public class OldDaysModule{
     }
 
     public void reload(){
-        minecraft.renderGlobal.loadRenderers();
+        try{
+            minecraft.renderGlobal.loadRenderers();
+        }catch(Exception ex){}
     }
 
     public static void addTextureHook(String origname, int origi, String newname, int newi){
@@ -154,14 +156,14 @@ public class OldDaysModule{
         }
     }
 
-    protected void setInt(Class c, String name, int value){
+    public void setInt(Class c, String name, int value){
         try{
             c.getDeclaredField(name).setInt(null, value);
         }catch(Exception ex){
             getPropertyById(last).disable();
         }
     }
-    protected void setStr(Class c, String name, String value){
+    public void setStr(Class c, String name, String value){
         try{
             c.getDeclaredField(name).set(null, ((Object)value));
         }catch(Exception ex){

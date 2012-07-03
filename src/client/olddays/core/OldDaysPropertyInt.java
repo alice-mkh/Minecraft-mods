@@ -31,12 +31,15 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     }
 
     public void onChange(){
-        super.onChange();
+        if (isDisabled()){
+            return;
+        }
         try{
-            field.set(module.getClass(), value);
+            field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
-           disable();
+            System.out.println(ex);
+            disable();
         }
     }
 
@@ -48,8 +51,20 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    public void setSMPValue(){
+        value = smpValue;
+    }
+
     protected void disable(){
         super.disable();
         value = smpValue;
+    }
+
+    public void loadFromString(String str){
+        value = Integer.parseInt(str);
+    }
+
+    public String saveToString(){
+        return ""+value;
     }
 }

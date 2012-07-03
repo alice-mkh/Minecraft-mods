@@ -15,6 +15,7 @@ public class OldDaysProperty{
     public OldDaysModule module;
     public boolean error;
     public boolean allowedInSMP;
+    public boolean allowedInFallback;
 
     public OldDaysProperty(OldDaysModule m, int i, String s, int t, String f){
         module = m;
@@ -23,6 +24,7 @@ public class OldDaysProperty{
         type = t;
         error = false;
         allowedInSMP = true;
+        allowedInFallback = true;
         try{
             field = module.getClass().getDeclaredField(f);
         }catch(Exception ex){
@@ -34,17 +36,21 @@ public class OldDaysProperty{
         return name;
     }
 
-    public void onChange(){
-        if (isDisabled()){
-            return;
-        }
-    }
+    public void onChange(){}
 
     public boolean isDisabled(){
         if (error){
             return true;
         }
-        return !allowedInSMP && ModLoader.getMinecraftInstance().theWorld.isRemote;
+        if (!allowedInFallback && mod_OldDays.texman.fallbacktex){
+            return true;
+        }
+        if (!allowedInSMP && ModLoader.getMinecraftInstance().theWorld!=null){
+            if (ModLoader.getMinecraftInstance().theWorld.isRemote){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setFieldValue(){
@@ -56,7 +62,13 @@ public class OldDaysProperty{
         error = true;
     }
 
-    public void incrementValue(){
-        return;
+    public void incrementValue(){}
+
+    public void setSMPValue(){}
+
+    public void loadFromString(String str){}
+
+    public String saveToString(){
+        return "";
     }
 }

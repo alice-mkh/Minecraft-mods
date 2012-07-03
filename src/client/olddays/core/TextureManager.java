@@ -38,14 +38,14 @@ public class TextureManager{
             }
         }
         fx2.sprite = name2;
-        fx2.changeIndex(index, b, false);
+        fx2.changeIndex(index, b && !fallbacktex, false);
         renderEngine.updateDynamicTextures();
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
         try{
             int i = renderEngine.getTexture(origname);
-            renderEngine.setupTexture(ModLoader.loadImage(renderEngine, b ? newname : origname), i);
+            renderEngine.setupTexture(ModLoader.loadImage(renderEngine, (b && !fallbacktex) ? newname : origname), i);
         }catch(Exception ex){
             fallbacktex = true;
         }
@@ -60,10 +60,7 @@ public class TextureManager{
             for (int i = 0; i < textureHooks.size(); i++){
                 ((TextureSpriteFX)textureHooks.get(i)).refresh(false);
             }
-//FIXME
-//             for (int i = 0; i < modules.size(); i++){
-//                 ((mod_OldDays)modules.get(i)).onFallbackChange(fallbacktex);
-//             }
+            mod_OldDays.bumpProperties();
         }
     }
 

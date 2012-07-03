@@ -132,7 +132,7 @@ public class GuiOldDaysSettings extends GuiScreen{
                 guibutton.enabled = false;
             }
             mod_OldDays.saveModuleProperties(id);
-            mod_OldDays.sendCallback(id, guibutton.id-1);
+            mod_OldDays.sendCallbackAndSave(id, guibutton.id-1);
             guibutton.enabled = !mod_OldDays.getModuleById(id).getPropertyById(guibutton.id-1).isDisabled();
             guibutton.displayString = mod_OldDays.getPropertyButtonText(id, guibutton.id-1);
         }
@@ -152,7 +152,7 @@ public class GuiOldDaysSettings extends GuiScreen{
         if (displayField){
             field.mouseClicked(par1, par2, par3);
             mod_OldDays.setStringPropValue(id, fieldId, current);
-            mod_OldDays.sendCallback(id, fieldId);
+            mod_OldDays.sendCallbackAndSave(id, fieldId);
             showField(false, ((GuiButton)controlList.get(fieldId)));
         }
         super.mouseClicked(par1, par2, par3);
@@ -201,7 +201,7 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         if (par2 == 1){
             mod_OldDays.setStringPropValue(id, fieldId, current);
-            mod_OldDays.sendCallback(id, fieldId);
+            mod_OldDays.sendCallbackAndSave(id, fieldId);
             GuiButton button = ((GuiButton)controlList.get(fieldId));
             showField(false, ((GuiButton)controlList.get(fieldId)));
         }else{
