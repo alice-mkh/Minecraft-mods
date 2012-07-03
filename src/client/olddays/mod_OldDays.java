@@ -151,4 +151,5 @@ public class mod_OldDays extends BaseModMp{
     public static SavingManager saveman;
     public static SMPManager smpman;
     public static List modules;
+    public static Map map;
 }

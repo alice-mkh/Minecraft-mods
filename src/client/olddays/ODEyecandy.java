@@ -54,13 +54,12 @@ public class ODEyecandy extends OldDaysModule{
             case 15:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
                     setStr(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
         }
-    }
-
-    public void addRenderer(Map map){
-        map.put(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
-        map.put(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
-        map.put(net.minecraft.src.EntityZombie.class, new RenderZombie(new ModelZombie()));
-        map.put(net.minecraft.src.EntitySkeleton.class, new RenderSkeleton(new ModelSkeleton()));
+        if (!renderersAdded && RenderManager.instance!=null){
+            addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
+            addRenderer(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
+            addRenderer(net.minecraft.src.EntityZombie.class, new RenderZombie(new ModelZombie()));
+            addRenderer(net.minecraft.src.EntitySkeleton.class, new RenderSkeleton(new ModelSkeleton()));
+        }
     }
 
     public static boolean ItemSway = true;

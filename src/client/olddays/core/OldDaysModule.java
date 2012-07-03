@@ -3,7 +3,9 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OldDaysModule{
     public int id;
@@ -12,6 +14,7 @@ public class OldDaysModule{
     protected mod_OldDays core;
     protected Minecraft minecraft;
     public int last;
+    public boolean renderersAdded;
 
     public OldDaysModule(mod_OldDays c, int i, String s){
         core = c;
@@ -20,6 +23,7 @@ public class OldDaysModule{
         properties = new ArrayList();
         minecraft = ModLoader.getMinecraftInstance();
         last = 0;
+        renderersAdded = false;
     }
 
     public OldDaysProperty getPropertyById(int id){
@@ -168,6 +172,19 @@ public class OldDaysModule{
             c.getDeclaredField(name).set(null, ((Object)value));
         }catch(Exception ex){
             getPropertyById(last).disable();
+        }
+    }
+
+    public void addRenderer(Class c, Render r){
+        RenderManager renderMan = RenderManager.instance;
+        try{
+            r.setRenderManager(renderMan);
+            HashMap map = ((HashMap)ModLoader.getPrivateValue(net.minecraft.src.RenderManager.class, renderMan, "entityRenderMap"));
+            map.put(c, r);
+            renderersAdded = true;
+            System.out.println("OldDays: Added renderer");
+        }catch(Exception ex){
+            System.out.println("OldDays: Failed to add renderer: "+ex);
         }
     }
 }

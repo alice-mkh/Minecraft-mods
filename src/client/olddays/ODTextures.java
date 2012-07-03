@@ -33,8 +33,8 @@ public class ODTextures extends OldDaysModule{
         addProperty(26,"Steve with beard",    false, "Steve",       "");
         addProperty(27,"Old explosion",       true,  "Explosion",   "");
         addProperty(28,"Moon phases",         false, "Moon",        "");
-        for (int i = 1; i < properties.size(); i++){
-            getPropertyById(i).allowedInFallback = (i != 15);
+        for (int i = 1; i <= properties.size(); i++){
+            getPropertyById(i).allowedInFallback = (i == 15);
         }
         replaceBlocks();
     }
