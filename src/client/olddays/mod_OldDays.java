@@ -40,16 +40,21 @@ public class mod_OldDays extends BaseModMp{
 
     public static void loadModules(mod_OldDays core){
         Class c = net.minecraft.src.mod_OldDays.class;
-        String p = c.getPackage().getName();
+        String p = "";
+        try{
+            p = c.getPackage().getName()+".";
+        }catch(Exception ex){}
         File file = new File(c.getProtectionDomain().getCodeSource().getLocation().getPath()+p.replace(".", "/"));
         List classes = new ArrayList();
-        List classes2 = new ArrayList();
         if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")){
             try{
                 ZipFile jar = new ZipFile(file);
                 Enumeration entries = jar.entries();
                 while (entries.hasMoreElements()){
-                    System.out.println(entries.nextElement());
+                    String str = ((ZipEntry)entries.nextElement()).getName();
+                    if (str.startsWith("OD") && str.endsWith(".class")){
+                        classes.add(str.replace(".class", ""));
+                    }
                 }
             }catch(Exception ex){
                 System.out.println(ex);
@@ -57,20 +62,16 @@ public class mod_OldDays extends BaseModMp{
         }else{
             String[] str = file.list();
             for (int i = 0; i < str.length; i++){
-                classes.add(str[i]);
+                if (str[i].startsWith("OD") && str[i].endsWith(".class")){
+                    classes.add(str[i].replace(".class", ""));
+                }
             }
         }
         for (int i = 0; i < classes.size(); i++){
-            String s = ((String)classes.get(i));
-            if (s.startsWith("OD") && s.endsWith(".class")){
-                classes2.add(s.replace(".class", ""));
-            }
-        }
-        for (int i = 0; i < classes2.size(); i++){
-            String name = ((String)classes2.get(i));
+            String name = ((String)classes.get(i));
             Class c2 = null;
             try{
-                c2 = c.getClassLoader().loadClass(p+"."+name);
+                c2 = c.getClassLoader().loadClass(p+name);
             }catch(Exception ex){
                 System.out.println("OldDays: Failed to load module: "+ex);
                 continue;
