@@ -20,6 +20,7 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(13,"Old fences",            true,  "OldFences",         "");
         addProperty(14,"Arrows stick to mobs",  true,  "Arrows",            "");
         addProperty(15,"Version",               "OFF", "Version",           "");
+        addProperty(16,"Inv. block shadow",     true,  "Shadow",            "");
         replaceBlocks();
         setWireRendering();
     }
@@ -50,9 +51,10 @@ public class ODEyecandy extends OldDaysModule{
                     setBool(net.minecraft.src.GuiContainer.class, "tooltips", Tooltips>0); break;
             case 13:setBool(net.minecraft.src.BlockFence2.class, "connect", !OldFences);
                     reload(); break;
-            case 14:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows);
+            case 14:setBool(net.minecraft.src.RenderLiving.class, "stick", Arrows); break;
             case 15:setStr(net.minecraft.src.GuiIngame.class, "version", Version);
                     setStr(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
+            case 16:setBool(net.minecraft.src.RenderHelper.class, "shadows", Shadow); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -77,6 +79,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean OldFences = true;
     public static boolean Arrows = true;
     public static String Version = "OFF";
+    public static boolean Shadow = true;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){
