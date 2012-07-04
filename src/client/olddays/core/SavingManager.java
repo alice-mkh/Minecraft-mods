@@ -18,7 +18,9 @@ public class SavingManager{
             dir.mkdirs();
             File file = new File(dir, module.name+".properties");
             if(file.createNewFile()){
-                return;
+                for (int i = 1; i <= module.properties.size(); i++){
+                    core.sendCallback(id, i);
+                }
             }
             properties.load(new FileInputStream(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays/"+module.name+".properties"));
             for (int i = 1; i <= module.properties.size(); i++){
