@@ -13,7 +13,7 @@ public class TextureManager{
     private String currentpack;
 
     public TextureManager(){
-        renderEngine = ModLoader.getMinecraftInstance().renderEngine;
+        renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
         textureHooks = new ArrayList();
         fallbacktex = true;
     }
@@ -52,10 +52,10 @@ public class TextureManager{
     }
  
     public void onTick(){
-        if (currentpack==null || currentpack!=ModLoader.getMinecraftInstance().gameSettings.skin){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+        if (currentpack==null || currentpack!=mod_OldDays.getMinecraftInstance().gameSettings.skin){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
-            currentpack=ModLoader.getMinecraftInstance().gameSettings.skin;
+            currentpack=mod_OldDays.getMinecraftInstance().gameSettings.skin;
             fallbacktex = !hasEntry("olddays");
             for (int i = 0; i < textureHooks.size(); i++){
                 ((TextureSpriteFX)textureHooks.get(i)).refresh(false);
@@ -66,7 +66,7 @@ public class TextureManager{
 
     public boolean hasEntry(String str){
         try{
-            TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
+            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getMinecraftInstance().texturePackList.selectedTexturePack);
             if (texpack instanceof TexturePackFolder){
                 File orig = ((File)ModLoader.getPrivateValue(net.minecraft.src.TexturePackFolder.class, texpack, 2));
                 File file = new File(orig, str);
@@ -85,7 +85,7 @@ public class TextureManager{
     }
 
     public void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
-        RenderEngine renderEngine = ModLoader.getMinecraftInstance().renderEngine;
+        RenderEngine renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
         if (textureHooks == null){
             textureHooks = new ArrayList();
         }

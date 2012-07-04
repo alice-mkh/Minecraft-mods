@@ -21,7 +21,7 @@ public class OldDaysModule{
         id = i;
         name = s;
         properties = new ArrayList();
-        minecraft = ModLoader.getMinecraftInstance();
+        minecraft = mod_OldDays.getMinecraftInstance();
         last = 0;
         renderersAdded = false;
     }
@@ -37,18 +37,18 @@ public class OldDaysModule{
     }
 
     public void addSound(int id, String name){
-        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
         if (sound.exists()){
-            ModLoader.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
+            mod_OldDays.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
         }else{
             getPropertyById(id).disable();
         }
     }
 
     public void addMusic(int id, String name){
-        File sound = new File(ModLoader.getMinecraftInstance().mcDataDir, "resources/music/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraftInstance().mcDataDir, "resources/music/"+name+".ogg");
         if (sound.exists()){
-            ModLoader.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
+            mod_OldDays.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
         }else{
             getPropertyById(id).disable();
         }
@@ -179,7 +179,7 @@ public class OldDaysModule{
         RenderManager renderMan = RenderManager.instance;
         try{
             r.setRenderManager(renderMan);
-            HashMap map = ((HashMap)ModLoader.getPrivateValue(net.minecraft.src.RenderManager.class, renderMan, "entityRenderMap"));
+            HashMap map = ((HashMap)ModLoader.getPrivateValue(net.minecraft.src.RenderManager.class, renderMan, 0));
             map.put(c, r);
             renderersAdded = true;
             System.out.println("OldDays: Added renderer");

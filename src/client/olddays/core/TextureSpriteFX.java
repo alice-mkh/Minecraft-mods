@@ -40,7 +40,7 @@ public class TextureSpriteFX extends TextureFX
         swidth = sw;
         sheight = sh;
         enabled = true;
-        renderEngine = ModLoader.getMinecraftInstance().renderEngine;
+        renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
         changeIndex(j, true, false);
     }
 
@@ -79,8 +79,8 @@ public class TextureSpriteFX extends TextureFX
 
     public void onTick()
     {
-        if (ModLoader.getMinecraftInstance().theWorld == null){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ModLoader.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+        if (mod_OldDays.getMinecraftInstance().theWorld == null){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
             int wwww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             if (wwww != w){
                 w = wwww;

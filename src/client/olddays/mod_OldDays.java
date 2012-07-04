@@ -27,8 +27,8 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public void keyboardEvent(KeyBinding keybinding){
-        if (keybinding==keySettings && ModLoader.getMinecraftInstance().currentScreen==null){
-            ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
+        if (keybinding==keySettings && getMinecraftInstance().currentScreen==null){
+            ModLoader.openGUI(getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
         }
     }
 
@@ -147,10 +147,13 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
+    public static Minecraft getMinecraftInstance(){
+        return ModLoader.getMinecraftInstance();
+    }
+
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static TextureManager texman;
     public static SavingManager saveman;
     public static SMPManager smpman;
     public static List modules;
-    public static Map map;
 }
