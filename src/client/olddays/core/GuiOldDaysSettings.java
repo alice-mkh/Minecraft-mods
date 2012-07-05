@@ -173,7 +173,7 @@ public class GuiOldDaysSettings extends GuiScreen{
     {
         drawDefaultBackground();
         super.drawScreen(i,j,f);
-        for (int k = 1; k < controlList.size(); k++){
+ /*       for (int k = 1; k < controlList.size(); k++){
             GuiButton button = ((GuiButton)controlList.get(k));
             if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20){
                 String str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
@@ -182,7 +182,7 @@ public class GuiOldDaysSettings extends GuiScreen{
                 }
                 drawTooltip(str, i + 4, j - 13, false);
             }
-        }
+        }*/
         if (displayField){
             field.drawTextBox();
         }
