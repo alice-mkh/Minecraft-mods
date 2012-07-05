@@ -10,6 +10,7 @@ public class ODBugs extends OldDaysModule{
         addProperty(5, "Ladder gaps",       false, true,  "LadderGaps",    "");
         addProperty(6, "Piston dupe",       false, false, "PistonDupe",    "");
         addProperty(7, "Crafting grid bug", false, false, "CraftingSlots", "");
+        addProperty(8, "Inventory walking", false, false, "InvWalking",    "");
     }
 
     public void callback (int i){
@@ -21,6 +22,7 @@ public class ODBugs extends OldDaysModule{
             case 5: setBool(net.minecraft.src.EntityLiving.class, "laddergaps", LadderGaps); break;
             case 6: setBool(net.minecraft.src.BlockPistonBase.class, "dupe", PistonDupe); break;
             case 7: setBool(net.minecraft.src.ContainerPlayer.class, "dropCrafting", !CraftingSlots); break;
+            case 8: setBool(net.minecraft.src.GuiInventory.class, "walking", InvWalking); break;
         }
     }
 
@@ -31,4 +33,5 @@ public class ODBugs extends OldDaysModule{
     public static boolean WaterLifts = true;
     public static boolean PistonDupe;
     public static boolean CraftingSlots;
+    public static boolean InvWalking;
 }
