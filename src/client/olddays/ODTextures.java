@@ -33,8 +33,9 @@ public class ODTextures extends OldDaysModule{
         addProperty(26,"Steve with beard",    false, "Steve",       "");
         addProperty(27,"Old explosion",       true,  "Explosion",   "");
         addProperty(28,"Moon phases",         false, "Moon",        "");
+        addProperty(29,"Armor slot shapes",   true,  "ArmorShape",  "");
         for (int i = 1; i <= properties.size(); i++){
-            getPropertyById(i).allowedInFallback = (i == 15);
+            getPropertyById(i).allowedInFallback = (i == 15 || i == 29);
         }
         replaceBlocks();
     }
@@ -74,6 +75,10 @@ public class ODTextures extends OldDaysModule{
             case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve); break;
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
             case 28:setTextureHook("/terrain/moon_phases.png", "/olddays/moon_phases.png", !Moon); break;
+            case 29:setTextureHook("/gui/items.png", 15, "/gui/items.png", 239, !ArmorShape);
+                    setTextureHook("/gui/items.png", 31, "/gui/items.png", 239, !ArmorShape);
+                    setTextureHook("/gui/items.png", 47, "/gui/items.png", 239, !ArmorShape);
+                    setTextureHook("/gui/items.png", 63, "/gui/items.png", 239, !ArmorShape); break;
         }
     }
 
@@ -105,6 +110,7 @@ public class ODTextures extends OldDaysModule{
     public static boolean Steve;
     public static boolean Explosion = true;
     public static boolean Moon;
+    public static boolean ArmorShape = true;
 
     private void replaceBlocks(){
         try{
