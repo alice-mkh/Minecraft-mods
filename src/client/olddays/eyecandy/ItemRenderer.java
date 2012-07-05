@@ -8,6 +8,7 @@ public class ItemRenderer
 {
     public static boolean sway = true;
     public static boolean items2d = false;
+    public static int hand = 2;
 
     /** A reference to the Minecraft object. */
     private Minecraft mc;
@@ -305,7 +306,7 @@ public class ItemRenderer
                 RenderPlayer renderplayer1 = (RenderPlayer)render1;
                 float f34 = 1.0F;
                 GL11.glScalef(f34, f34, f34);
-                renderplayer1.drawFirstPersonHand();
+                drawFirstPersonHand(renderplayer1, 2);
                 GL11.glPopMatrix();
             }
 
@@ -432,7 +433,7 @@ public class ItemRenderer
                     float f32 = 1.0F + f29 * 0.2F;
                     GL11.glScalef(1.0F, 1.0F, f32);
                     GL11.glTranslatef(0.0F, -0.5F, 0.0F);
-                  if (!items2d|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
+                    if (!items2d|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(50F, 0.0F, 1.0F, 0.0F);
                         GL11.glRotatef(335F, 0.0F, 0.0F, 1.0F);
                     }
@@ -488,7 +489,13 @@ public class ItemRenderer
             RenderPlayer renderplayer = (RenderPlayer)render;
             f26 = 1.0F;
             GL11.glScalef(f26, f26, f26);
-            renderplayer.drawFirstPersonHand();
+            if (hand==0){
+                GL11.glRotatef(22F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(-35F, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(20F, 0.0F, 0.0F, 1.0F);
+                GL11.glTranslatef(0.08F, 0.21F, 0.12F);
+            }
+            drawFirstPersonHand(renderplayer, hand);
             GL11.glPopMatrix();
         }
 
@@ -709,5 +716,20 @@ public class ItemRenderer
     public void func_9450_c()
     {
         equippedProgress = 0.0F;
+    }
+
+    public void drawFirstPersonHand(RenderPlayer r, int h)
+    {
+        ModelBiped modelBipedMain = null;
+        try{
+            modelBipedMain = ((ModelBiped)ModLoader.getPrivateValue(net.minecraft.src.RenderPlayer.class, r, 0));
+        }catch(Exception ex){
+            return;
+        }
+        if (h!=1){
+            modelBipedMain.onGround = 0.0F;
+            modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+        }
+        modelBipedMain.bipedRightArm.render(0.0625F);
     }
 }

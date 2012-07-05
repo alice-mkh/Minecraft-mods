@@ -22,8 +22,15 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(15,"Version",               "OFF", "Version",           "");
         addProperty(16,"Inv. block shadow",     true,  "Shadow",            "");
         addProperty(17,"Liquid drops",          false, "Drops",             "");
+        addProperty(18,"Hand",                  2,     "Hand",              "", new String[]{"Survival Test", "Indev", "Beta"});
+        addProperty(19,"X",                     "0",   "X",                 "");
+        addProperty(20,"Y",                     "0",   "Y",                 "");
+        addProperty(21,"Z",                     "0",   "Z",                 "");
+        addProperty(22,"TX",                    "0",   "TX",                "");
+        addProperty(23,"TY",                    "0",   "TY",                "");
+        addProperty(24,"TZ",                    "0",   "TZ",                "");
         replaceBlocks();
-        setWireRendering();
+        redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
 
     public void callback (int i){
@@ -57,6 +64,7 @@ public class ODEyecandy extends OldDaysModule{
                     setStr(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
             case 16:setBool(net.minecraft.src.RenderHelper.class, "shadows", Shadow); break;
             case 17:setBool(net.minecraft.src.EntityDropParticleFX.class, "allow", Drops); break;
+            case 18:setInt(net.minecraft.src.ItemRenderer.class, "hand", Hand); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -83,7 +91,14 @@ public class ODEyecandy extends OldDaysModule{
     public static String Version = "OFF";
     public static boolean Shadow = true;
     public static boolean Drops;
+    public static int Hand = 2;
     public static int redstoneRenderID;
+    public static String X = "0";
+    public static String Y = "0";
+    public static String Z = "0";
+    public static String TX = "0";
+    public static String TY = "0";
+    public static String TZ = "0";
 
     private void replaceBlocks(){
         try{
@@ -112,10 +127,6 @@ public class ODEyecandy extends OldDaysModule{
         }catch (Exception ex){
             System.out.println(ex);
         }
-    }
-
-    private void setWireRendering(){
-        redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
 
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
