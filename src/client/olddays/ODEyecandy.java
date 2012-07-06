@@ -23,12 +23,6 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(16,"Inv. block shadow",     true,  "Shadow",            "");
         addProperty(17,"Liquid drops",          false, "Drops",             "");
         addProperty(18,"Hand",                  2,     "Hand",              "", new String[]{"Survival Test", "Indev", "Beta"});
-        addProperty(19,"X",                     "0",   "X",                 "");
-        addProperty(20,"Y",                     "0",   "Y",                 "");
-        addProperty(21,"Z",                     "0",   "Z",                 "");
-        addProperty(22,"TX",                    "0",   "TX",                "");
-        addProperty(23,"TY",                    "0",   "TY",                "");
-        addProperty(24,"TZ",                    "0",   "TZ",                "");
         replaceBlocks();
         redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
@@ -93,12 +87,6 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean Drops;
     public static int Hand = 2;
     public static int redstoneRenderID;
-    public static String X = "0";
-    public static String Y = "0";
-    public static String Z = "0";
-    public static String TX = "0";
-    public static String TY = "0";
-    public static String TZ = "0";
 
     private void replaceBlocks(){
         try{
