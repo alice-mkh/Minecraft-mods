@@ -45,7 +45,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     }
 
     public void incrementValue(){
-        if (value < count - 1){
+        if (value < count - 1 || count <= 0){
             value++;
         }else{
             value = 0;
@@ -62,7 +62,17 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     }
 
     public void loadFromString(String str){
-        value = Integer.parseInt(str);
+        int i = 0;
+        try{
+            i = Integer.parseInt(str);
+        }catch(Exception ex){}
+        if (i < 0){
+            i = 0;
+        }
+        if (count > 0 && i >= count){
+            i = count - 1;
+        }
+        value = i;
     }
 
     public String saveToString(){
