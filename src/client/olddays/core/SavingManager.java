@@ -26,7 +26,7 @@ public class SavingManager{
             for (int i = 1; i <= module.properties.size(); i++){
                 OldDaysProperty prop = module.getPropertyById(i);
                 try{
-                    String value = properties.getProperty(prop.field.getName());
+                    String value = properties.getProperty(prop.field.getName()).trim();
                     if (value==null){
                         core.sendCallback(id, i);
                         continue;

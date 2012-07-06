@@ -47,7 +47,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     }
 
     public void loadFromString(String str){
-        value = str.matches("^*([Oo][Nn]|[Tt][Rr][Uu]|[Yy])*$");
+        value = str.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
     }
 
     public String saveToString(){
