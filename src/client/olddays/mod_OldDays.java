@@ -30,6 +30,9 @@ public class mod_OldDays extends BaseModMp{
         if (keybinding==keySettings && getMinecraftInstance().currentScreen==null){
             ModLoader.openGUI(getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
         }
+        for (int i = 0; i < modules.size(); i++){
+            getModuleById(i).keyboardEvent(keybinding);
+        }
     }
 
     public boolean onTickInGame(float f, Minecraft minecraft){

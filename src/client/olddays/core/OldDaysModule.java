@@ -187,4 +187,6 @@ public class OldDaysModule{
             System.out.println("OldDays: Failed to add renderer: "+ex);
         }
     }
+
+    public void keyboardEvent(KeyBinding keybinding){}
 }
