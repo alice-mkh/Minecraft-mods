@@ -28,6 +28,7 @@ public class SavingManager{
                 try{
                     String value = properties.getProperty(prop.field.getName());
                     if (value==null){
+                        core.sendCallback(id, i);
                         continue;
                     }
                     prop.loadFromString(value);
