@@ -7,10 +7,15 @@ public class OldDaysProperty{
     public static int TYPE_INTEGER = 2;
     public static int TYPE_STRING = 3;
 
+    public static int GUI_TYPE_BUTTON = 1;
+    public static int GUI_TYPE_DROPDOWN = 2;
+    public static int GUI_TYPE_FIELD = 3;
+
     public int id;
     public String name;
     public String description;
     public int type;
+    public int guitype;
     public Field field;
     public OldDaysModule module;
     public boolean error;
@@ -22,6 +27,7 @@ public class OldDaysProperty{
         id = i;
         name = s;
         type = t;
+        guitype = GUI_TYPE_BUTTON;
         error = false;
         allowedInSMP = true;
         allowedInFallback = true;

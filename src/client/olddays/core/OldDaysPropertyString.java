@@ -7,6 +7,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
     public OldDaysPropertyString(OldDaysModule m, int i, String s, String str, String f){
         super(m, i, s, TYPE_STRING, f);
         value = str;
+        guitype = GUI_TYPE_FIELD;
     }
 
     public OldDaysPropertyString(OldDaysModule m, int i, String s, String str, String smp, String f){

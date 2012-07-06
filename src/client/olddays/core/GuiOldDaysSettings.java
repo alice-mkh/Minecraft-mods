@@ -108,10 +108,9 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         if (guibutton.id > 1){
             displayField = false;
-            if (mod_OldDays.getPropertyType(id, guibutton.id-1) == OldDaysProperty.TYPE_BOOLEAN ||
-                mod_OldDays.getPropertyType(id, guibutton.id-1) == OldDaysProperty.TYPE_INTEGER){
+            if (mod_OldDays.getPropertyGuiType(id, guibutton.id-1) == OldDaysProperty.GUI_TYPE_BUTTON){
                 mod_OldDays.getModuleById(id).getPropertyById(guibutton.id-1).incrementValue();
-            }else if (mod_OldDays.getPropertyType(id, guibutton.id-1) == OldDaysProperty.TYPE_STRING){
+            }else if (mod_OldDays.getPropertyGuiType(id, guibutton.id-1) == OldDaysProperty.GUI_TYPE_FIELD){
                 /*int offset = fontRenderer.getStringWidth(mod_OldDays.getPropertyName(id, guibutton.id-1)+":")-2;
                 offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(id, guibutton.id-1)))/2;
                 if (fontRenderer.getStringWidth(mod_OldDays.getStringPropValue(id, guibutton.id-1)>138-offset){

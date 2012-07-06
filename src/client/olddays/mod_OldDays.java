@@ -101,6 +101,10 @@ public class mod_OldDays extends BaseModMp{
     public static int getPropertyType(int id, int id2){
         return getModuleById(id).getPropertyById(id2).type;
     }
+    
+    public static int getPropertyGuiType(int id, int id2){
+        return getModuleById(id).getPropertyById(id2).guitype;
+    }
 
     public static String getPropertyButtonText(int id, int id2){
         return getModuleById(id).getPropertyById(id2).getButtonText();
@@ -119,17 +123,11 @@ public class mod_OldDays extends BaseModMp{
     public static void saveModuleProperties(int id){}
 
     public static String getStringPropValue(int id, int id2){
-        if (getPropertyType(id, id2) != OldDaysProperty.TYPE_STRING){
-            return "";
-        }
-        return ((OldDaysPropertyString)getModuleById(id).getPropertyById(id2)).value;
+        return getModuleById(id).getPropertyById(id2).saveToString();
     }
 
     public static void setStringPropValue(int id, int id2, String str){
-        if (getPropertyType(id, id2) != OldDaysProperty.TYPE_STRING){
-            return;
-        }
-        ((OldDaysPropertyString)getModuleById(id).getPropertyById(id2)).value = str;
+        getModuleById(id).getPropertyById(id2).loadFromString(str);
     }
 
     public static void sendCallback(int id, int id2){

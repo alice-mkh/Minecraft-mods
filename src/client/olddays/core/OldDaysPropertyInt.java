@@ -10,6 +10,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     public OldDaysPropertyInt(OldDaysModule m, int i, String s, int v, int c, String f){
         super(m, i, s, TYPE_INTEGER, f);
         value = v;
+        guitype = GUI_TYPE_BUTTON;
         count = c;
         names = null;
         useNames = false;

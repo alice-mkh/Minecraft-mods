@@ -7,6 +7,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     public OldDaysPropertyBool(OldDaysModule m, int i, String s, boolean b, String f){
         super(m, i, s, TYPE_BOOLEAN, f);
         value = b;
+        guitype = GUI_TYPE_BUTTON;
     }
 
     public OldDaysPropertyBool(OldDaysModule m, int i, String s, boolean b, boolean smp, String f){
