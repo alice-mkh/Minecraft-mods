@@ -13,6 +13,7 @@ public abstract class EntityLiving extends Entity
     public static boolean survivaltest = false;
     public static boolean armorblocksall = false;
     public static int nonewmobs = 10;
+    public static boolean toolbreakanim = true;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -2316,16 +2317,18 @@ public abstract class EntityLiving extends Entity
     {
         worldObj.playSoundAtEntity(this, "random.break", 0.8F, 0.8F + worldObj.rand.nextFloat() * 0.4F);
 
-        for (int i = 0; i < 5; i++)
-        {
-            Vec3D vec3d = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
-            vec3d.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
-            vec3d.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-            Vec3D vec3d1 = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
-            vec3d1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
-            vec3d1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-            vec3d1 = vec3d1.addVector(posX, posY + (double)getEyeHeight(), posZ);
-            worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3d1.xCoord, vec3d1.yCoord, vec3d1.zCoord, vec3d.xCoord, vec3d.yCoord + 0.050000000000000003D, vec3d.zCoord);
+        if (toolbreakanim){
+            for (int i = 0; i < 5; i++)
+            {
+                Vec3D vec3d = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
+                vec3d.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
+                vec3d.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
+                Vec3D vec3d1 = Vec3D.createVector(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
+                vec3d1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
+                vec3d1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
+                vec3d1 = vec3d1.addVector(posX, posY + (double)getEyeHeight(), posZ);
+                worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3d1.xCoord, vec3d1.yCoord, vec3d1.zCoord, vec3d.xCoord, vec3d.yCoord + 0.050000000000000003D, vec3d.zCoord);
+            }
         }
     }
 }
