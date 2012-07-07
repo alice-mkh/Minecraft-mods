@@ -38,14 +38,14 @@ public class TextureManager{
             }
         }
         fx2.sprite = name2;
-        fx2.changeIndex(index, b && !fallbacktex, false);
+        fx2.changeIndex(index, b, false);
         renderEngine.updateDynamicTextures();
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
         try{
             int i = renderEngine.getTexture(origname);
-            renderEngine.setupTexture(ModLoader.loadImage(renderEngine, (b && !fallbacktex) ? newname : origname), i);
+            renderEngine.setupTexture(ModLoader.loadImage(renderEngine, b ? newname : origname), i);
         }catch(Exception ex){
             fallbacktex = true;
         }
@@ -57,10 +57,14 @@ public class TextureManager{
             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=mod_OldDays.getMinecraftInstance().gameSettings.skin;
             fallbacktex = !hasEntry("olddays");
+            for (int i = 0; i < mod_OldDays.modules.size(); i++){
+                for (int j = 1; j < mod_OldDays.getModuleById(i).properties.size(); j++){
+                    mod_OldDays.sendCallback(i, j);
+                }
+            }
             for (int i = 0; i < textureHooks.size(); i++){
                 ((TextureSpriteFX)textureHooks.get(i)).refresh(false);
             }
-            mod_OldDays.bumpProperties();
         }
     }
 

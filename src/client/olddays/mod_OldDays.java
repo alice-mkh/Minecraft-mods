@@ -133,19 +133,12 @@ public class mod_OldDays extends BaseModMp{
     public static void sendCallback(int id, int id2){
         getModuleById(id).last = id2;
         getModuleById(id).getPropertyById(id2).onChange();
+        texman.onTick();
     }
 
     public static void sendCallbackAndSave(int id, int id2){
         sendCallback(id, id2);
         saveman.saveAll();
-    }
-
-    public static void bumpProperties(){
-        for (int i = 0; i < modules.size(); i++){
-            for (int j = 1; j < getModuleById(i).properties.size(); j++){
-                sendCallback(i, j);
-            }
-        }
     }
 
     public static Minecraft getMinecraftInstance(){
