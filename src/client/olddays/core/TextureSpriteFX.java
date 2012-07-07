@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.TextureFX;
-import net.minecraft.src.mod_noBiomesX;
 
 public class TextureSpriteFX extends TextureFX
 {
@@ -82,12 +81,11 @@ public class TextureSpriteFX extends TextureFX
         if (mod_OldDays.getMinecraftInstance().theWorld == null){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
             int wwww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
-            if (wwww != w){
-                w = wwww;
-                imageData = new byte[w * w * 4];
-            }
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(sprite));
-            ww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / swidth;
+            if (wwww != w || ww != GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / swidth){
+                w = wwww;
+                refresh(false);
+            }
         }
         int www = enabled ? ww : w;
         int n = w / www;
