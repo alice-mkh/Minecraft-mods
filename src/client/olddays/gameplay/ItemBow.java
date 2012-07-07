@@ -112,7 +112,7 @@ public class ItemBow extends Item
     {
         boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
         if(!nocharging){
-            if(par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
+            if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
         }else if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
