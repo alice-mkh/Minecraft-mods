@@ -71,6 +71,29 @@ public class mod_noBiomesX extends BaseModMp{
         gearRenderID = ModLoader.getUniqueBlockModelID(this, false);
     }
 
+    private void register13(){
+        BlockOreStorage emeraldBlock = new BlockOreStorage(133, 25);
+        emeraldBlock.setHardness(5F);
+        emeraldBlock.setResistance(10F);
+        emeraldBlock.setStepSound(Block.soundMetalFootstep);
+        emeraldBlock.setBlockName("blockEmerald");
+        ModLoader.addName(emeraldBlock, "Block of Emerald");
+        ModLoader.registerBlock(emeraldBlock);
+        BlockOre2 emeraldOre = new BlockOre2(129, 171);
+        emeraldOre.setHardness(3F);
+        emeraldOre.setResistance(5F);
+        emeraldOre.setStepSound(Block.soundStoneFootstep);
+        emeraldOre.setBlockName("oreEmerald");
+        ModLoader.addName(emeraldOre, "Emerald Ore");
+        ModLoader.registerBlock(emeraldOre);
+        Item emerald = new Item(132);
+        emerald.setIconCoord(/*10, 11*/0, 0);
+        emerald.setItemName("emerald");
+        ModLoader.addName(emerald, "Emerald");
+        ModLoader.addRecipe(new ItemStack(emeraldBlock, 1), new Object[]{"###", "###", "###", '#', emerald});
+        ModLoader.addRecipe(new ItemStack(emerald, 9), new Object[]{"#", '#', emeraldBlock});
+    }
+
     public static int getSkyLightInBounds(int par2){
         int sky = 15;
         if (par2<SurrWaterHeight){
@@ -281,6 +304,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.setInGUIHook(this, true, true);
         replaceBlocks();
         registerGears();
+        register13();
         terrfx = new TextureTerrainPngFX();
         bedrockfx = new TextureTerrainPngFX();
         waterfx = new TextureTerrainPngFX();
