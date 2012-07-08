@@ -79,6 +79,7 @@ public class mod_noBiomesX extends BaseModMp{
         emeraldBlock.setBlockName("blockEmerald");
         ModLoader.addName(emeraldBlock, "Block of Emerald");
         ModLoader.registerBlock(emeraldBlock);
+
         BlockOre2 emeraldOre = new BlockOre2(129, 171);
         emeraldOre.setHardness(3F);
         emeraldOre.setResistance(5F);
@@ -86,12 +87,23 @@ public class mod_noBiomesX extends BaseModMp{
         emeraldOre.setBlockName("oreEmerald");
         ModLoader.addName(emeraldOre, "Emerald Ore");
         ModLoader.registerBlock(emeraldOre);
+
         Item emerald = new Item(132);
         emerald.setIconCoord(/*10, 11*/0, 0);
-        emerald.setItemName("emerald");
+        emerald.setItemName("emerald2");
         ModLoader.addName(emerald, "Emerald");
+
         ModLoader.addRecipe(new ItemStack(emeraldBlock, 1), new Object[]{"###", "###", "###", '#', emerald});
         ModLoader.addRecipe(new ItemStack(emerald, 9), new Object[]{"#", '#', emeraldBlock});
+        ModLoader.addSmelting(emeraldOre.blockID, new ItemStack(emerald, 1));
+
+        BlockCocoa cocoa = new BlockCocoa(127);
+        cocoa.setHardness(0.2F);
+        cocoa.setResistance(5F);
+        cocoa.setStepSound(Block.soundWoodFootstep);
+        cocoa.setRequiresSelfNotify();
+        ModLoader.registerBlock(cocoa);
+        cocoaRenderID = ModLoader.getUniqueBlockModelID(this, false);
     }
 
     public static int getSkyLightInBounds(int par2){
@@ -295,6 +307,9 @@ public class mod_noBiomesX extends BaseModMp{
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
         if (id == gearRenderID){
             return BlockGear.renderBlockGear(r, i, b, x, y, z);
+        }
+        if (id == cocoaRenderID){
+            return BlockCocoa.renderBlockCocoa(r, i, b, x, y, z);
         }
         return false;
     }
@@ -850,4 +865,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int gearRenderID;
     public static boolean gearsCreative = true;
     private static GuiScreen lastGui;
+
+    public static int cocoaRenderID;
 }
