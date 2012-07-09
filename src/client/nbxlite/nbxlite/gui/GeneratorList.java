@@ -25,11 +25,11 @@ public class GeneratorList{
 
     public static int feat2default = mod_noBiomesX.DefaultFeaturesRelease;
     public static int feat2current;
-    public static int feat2length = 3;
-    public static String[] feat2id = {"181", "100", "11", "12"};
-    public static String[] feat2name = {"featuresBeta181", "features10", "features11", "features12"};
-    public static String[] feat2desc = {"descriptionFeaturesBeta181", "descriptionFeatures10", "descriptionFeatures11", "descriptionFeatures12"};
-    public static boolean[] feat2worldtype = {false, false, true, true};
+    public static int feat2length = 4;
+    public static String[] feat2id = {"181", "100", "11", "12", "13"};
+    public static String[] feat2name = {"featuresBeta181", "features10", "features11", "features12", "features13"};
+    public static String[] feat2desc = {"descriptionFeaturesBeta181", "descriptionFeatures10", "descriptionFeatures11", "descriptionFeatures12", "descriptionFeatures13"};
+    public static boolean[] feat2worldtype = {false, false, true, true, true};
 
     public static int themedefault = mod_noBiomesX.DefaultTheme;
     public static int themecurrent;

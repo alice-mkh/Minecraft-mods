@@ -252,6 +252,8 @@ public class mod_noBiomesX extends BaseModMp{
                 result.append("11");
             }else if (feats==FEATURES_12){
                 result.append("12");
+            }else if (feats==FEATURES_13){
+                result.append("13");
             }
         }
         return result.toString();
@@ -330,6 +332,9 @@ public class mod_noBiomesX extends BaseModMp{
                 }
                 if (gen.contains("12")){
                     return FEATURES_12;
+                }
+                if (gen.contains("13")){
+                    return FEATURES_13;
                 }
                 return 0;
             }
@@ -888,6 +893,7 @@ public class mod_noBiomesX extends BaseModMp{
     public static int FEATURES_10 = 1;
     public static int FEATURES_11 = 2;
     public static int FEATURES_12 = 3;
+    public static int FEATURES_13 = 4;
 
     public static int THEME_NORMAL = 0;
     public static int THEME_HELL = 1;

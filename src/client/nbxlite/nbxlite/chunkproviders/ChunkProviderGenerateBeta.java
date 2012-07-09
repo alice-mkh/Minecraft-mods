@@ -523,6 +523,19 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }
 
         }
+        if (mod_noBiomesX.GenerateNewOres){
+            for (int i = 0; i < 3 + rand.nextInt(6); i++)
+            {
+                int x2 = x1 + rand.nextInt(16);
+                int y2 = rand.nextInt(28) + 4;
+                int z2 = z1 + rand.nextInt(16);
+                int id = worldObj.getBlockId(x2, y2, z2);
+                if (id == Block.stone.blockID)
+                {
+                    worldObj.setBlock(x2, y2, z2, 129);
+                }
+            }
+        }
 
         d = 0.5D;
         int treenoise = (int)((mobSpawnerNoise.func_806_a((double)x1 * d, (double)z1 * d) / 8D + rand.nextDouble() * 4D + 4D) / 3D);

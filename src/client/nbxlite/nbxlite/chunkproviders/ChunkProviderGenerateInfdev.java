@@ -321,6 +321,17 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                 int z2 = z1 + rand.nextInt(16);
                 (new SuperOldWorldGenMinable(Block.oreLapis.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
             }
+            for (int i = 0; i < 3 + rand.nextInt(6); i++)
+            {
+                int x2 = x1 + rand.nextInt(16);
+                int y2 = rand.nextInt(28) + 4;
+                int z2 = z1 + rand.nextInt(16);
+                int id = worldObj.getBlockId(x2, y2, z2);
+                if (id == Block.stone.blockID)
+                {
+                    worldObj.setBlock(x2, y2, z2, 129);
+                }
+            }
         }
         int trees = (int)(treeGen.func_806_a((double)x1 * 0.050000000000000003D, (double)z1 * 0.050000000000000003D) - rand.nextDouble());
         if(trees < 0)

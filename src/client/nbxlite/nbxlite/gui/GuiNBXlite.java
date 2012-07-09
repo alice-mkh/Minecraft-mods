@@ -118,15 +118,19 @@ public class GuiNBXlite extends GuiScreen{
             if (GeneratorList.feat2desc[i]!=""){
                 name += " ("+mod_noBiomesX.lang.get(GeneratorList.feat2desc[i])+")";
             }
-            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + 20 + (i * 21), 210, 20, name));
+            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + ((i + 1) * 21), 210, 20, name));
             releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
         }
         releaseFeaturesButton[GeneratorList.feat2current].enabled=false;
         controlList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, (mod_noBiomesX.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
-        newOresButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==0) || GeneratorList.genores[GeneratorList.gencurrent];
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent]){
-            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-                newOresButton.yPosition=height / 6 + 135;
+        newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<4);
+        if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
+            if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
+                if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
+                    newOresButton.yPosition=height / 6 + 127;
+                }else{
+                    newOresButton.yPosition=height / 6 + 135;
+                }
                 newOresButton.xPosition=width / 2 - 85 + leftmargin;
             }else if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
                 newOresButton.yPosition=height / 6 + 84;
@@ -136,7 +140,7 @@ public class GuiNBXlite extends GuiScreen{
                 newOresButton.xPosition=width / 2 - 75 + leftmargin;
             }
         }
-        controlList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 135, 150, 20, (mod_noBiomesX.lang.get("betaJungle") + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
+        controlList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, (mod_noBiomesX.lang.get("betaJungle") + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
         jungleButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4);
     }
 
@@ -249,17 +253,21 @@ public class GuiNBXlite extends GuiScreen{
             indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
-            newOresButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==0) || GeneratorList.genores[GeneratorList.gencurrent];
+            newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<3);
             for (int i=0; i<=GeneratorList.feat1length; i++){
                 betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
             }
             for (int i=0; i<=GeneratorList.feat2length; i++){
                 releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
             }
-            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent]){
+            if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
                 newOresButton.displayString=mod_noBiomesX.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
-                if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-                    newOresButton.yPosition=height / 6 + 135;
+                if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
+                    if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
+                        newOresButton.yPosition=height / 6 + 127;
+                    }else{
+                        newOresButton.yPosition=height / 6 + 135;
+                    }
                     newOresButton.xPosition=width / 2 - 85 + leftmargin;
                 }else if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
                     newOresButton.yPosition=height / 6 + 84;
@@ -301,7 +309,12 @@ public class GuiNBXlite extends GuiScreen{
             betaFeaturesButton[GeneratorList.feat1current].enabled = true;
             GeneratorList.feat1current = guibutton.id-70;
             guibutton.enabled = false;
-            newOresButton.drawButton = GeneratorList.feat1current==0;
+            newOresButton.drawButton = true;
+            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
+                newOresButton.yPosition=height / 6 + 127;
+            }else{
+                newOresButton.yPosition=height / 6 + 135;
+            }
             jungleButton.drawButton = GeneratorList.feat1current==4;
         }
 //Release
@@ -309,6 +322,7 @@ public class GuiNBXlite extends GuiScreen{
             releaseFeaturesButton[GeneratorList.feat2current].enabled = true;
             GeneratorList.feat2current = guibutton.id-80;
             guibutton.enabled = false;
+            newOresButton.drawButton = GeneratorList.feat2current<4;
         }
     }
 
