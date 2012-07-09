@@ -107,6 +107,7 @@ public class mod_noBiomesX extends BaseModMp{
         emerald.setIconCoord(10, 11);
         emerald.setItemName("emerald2");
         ModLoader.addName(emerald, "Emerald");
+        Item.itemsList[132] = emerald;
 
         ModLoader.addRecipe(new ItemStack(emeraldBlock, 1), new Object[]{"###", "###", "###", '#', emerald});
         ModLoader.addRecipe(new ItemStack(emerald, 9), new Object[]{"#", '#', emeraldBlock});
@@ -124,12 +125,14 @@ public class mod_noBiomesX extends BaseModMp{
         bookAndQuill.setIconCoord(11, 11);
         bookAndQuill.setItemName("writingBook");
         ModLoader.addName(bookAndQuill, "Book and Quill");
+        Item.itemsList[130] = bookAndQuill;
         ModLoader.addShapelessRecipe(new ItemStack(bookAndQuill, 1), new Object[]{
             Item.book, new ItemStack(Item.dyePowder, 1, 0), Item.feather});
 
         ItemEditableBook writtenBook = new ItemEditableBook(131);
         writtenBook.setIconCoord(12, 11);
         writtenBook.setItemName("writtenBook");
+        Item.itemsList[131] = writtenBook;
 
         ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
         ModLoader.addLocalization("book.byAuthor", "by %1$s");

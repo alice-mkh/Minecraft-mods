@@ -254,7 +254,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
             }
         }
 
-        if (par1MerchantRecipe.func_57067_a().itemID == Item.diamond.shiftedIndex)
+        if (par1MerchantRecipe.func_57067_a().itemID == 132 + 256)
         {
             field_56236_as += par1MerchantRecipe.func_57067_a().stackSize;
         }
@@ -292,7 +292,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
 
                 if (rand.nextFloat() < 0.5F)
                 {
-                    merchantrecipelist.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.diamond), new ItemStack(Item.flint.shiftedIndex, 2 + rand.nextInt(2), 0)));
+                    merchantrecipelist.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.itemsList[132]), new ItemStack(Item.flint.shiftedIndex, 2 + rand.nextInt(2), 0)));
                 }
 
                 break;
@@ -314,7 +314,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
                 func_56225_a(merchantrecipelist, Item.coal.shiftedIndex, rand, 0.7F);
                 func_56225_a(merchantrecipelist, Item.ingotIron.shiftedIndex, rand, 0.5F);
                 func_56225_a(merchantrecipelist, Item.ingotGold.shiftedIndex, rand, 0.5F);
-                func_56225_a(merchantrecipelist, 132 + 256, rand, 0.5F);
+                func_56225_a(merchantrecipelist, Item.diamond.shiftedIndex, rand, 0.5F);
                 func_56229_b(merchantrecipelist, Item.swordSteel.shiftedIndex, rand, 0.5F);
                 func_56229_b(merchantrecipelist, Item.swordDiamond.shiftedIndex, rand, 0.5F);
                 func_56229_b(merchantrecipelist, Item.axeSteel.shiftedIndex, rand, 0.3F);
@@ -367,7 +367,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
 
                     if (rand.nextFloat() < 0.1F)
                     {
-                        merchantrecipelist.add(new MerchantRecipe(new ItemStack(l, 1, 0), new ItemStack(Item.diamond, 2 + rand.nextInt(3), 0), func_57624_a(rand, new ItemStack(l, 1, 0), 5 + rand.nextInt(15))));
+                        merchantrecipelist.add(new MerchantRecipe(new ItemStack(l, 1, 0), new ItemStack(132 + 256, 2 + rand.nextInt(3), 0), func_57624_a(rand, new ItemStack(l, 1, 0), 5 + rand.nextInt(15))));
                     }
                 }
 
@@ -400,7 +400,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
     {
         if (par2Random.nextFloat() < par3)
         {
-            par0MerchantRecipeList.add(new MerchantRecipe(func_56230_a(par1, par2Random), Item.diamond));
+            par0MerchantRecipeList.add(new MerchantRecipe(func_56230_a(par1, par2Random), Item.itemsList[132]));
         }
     }
 
@@ -438,12 +438,12 @@ public class EntityVillager extends EntityAgeable implements IMerchant
 
             if (i < 0)
             {
-                itemstack = new ItemStack(Item.diamond.shiftedIndex, 1, 0);
+                itemstack = new ItemStack(132 + 256, 1, 0);
                 itemstack1 = new ItemStack(par1, -i, 0);
             }
             else
             {
-                itemstack = new ItemStack(Item.diamond.shiftedIndex, i, 0);
+                itemstack = new ItemStack(132 + 256, i, 0);
                 itemstack1 = new ItemStack(par1, 1, 0);
             }
 
@@ -501,7 +501,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
         field_56235_at.put(Integer.valueOf(Item.coal.shiftedIndex), new Tuple(Integer.valueOf(16), Integer.valueOf(24)));
         field_56235_at.put(Integer.valueOf(Item.ingotIron.shiftedIndex), new Tuple(Integer.valueOf(8), Integer.valueOf(10)));
         field_56235_at.put(Integer.valueOf(Item.ingotGold.shiftedIndex), new Tuple(Integer.valueOf(8), Integer.valueOf(10)));
-        field_56235_at.put(Integer.valueOf(132 + 256), new Tuple(Integer.valueOf(4), Integer.valueOf(6)));
+        field_56235_at.put(Integer.valueOf(Item.diamond.shiftedIndex), new Tuple(Integer.valueOf(4), Integer.valueOf(6)));
         field_56235_at.put(Integer.valueOf(Item.paper.shiftedIndex), new Tuple(Integer.valueOf(19), Integer.valueOf(30)));
         field_56235_at.put(Integer.valueOf(Item.book.shiftedIndex), new Tuple(Integer.valueOf(12), Integer.valueOf(15)));
         field_56235_at.put(Integer.valueOf(131 + 256), new Tuple(Integer.valueOf(1), Integer.valueOf(1)));
