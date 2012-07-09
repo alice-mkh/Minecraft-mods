@@ -9,6 +9,7 @@ import net.minecraft.src.nbxlite.indev.*;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
 import net.minecraft.src.nbxlite.lib.EasyLocalization;
 import java.util.zip.*;
+import net.minecraft.src.backport.*;
 
 public class mod_noBiomesX extends BaseModMp{
     public mod_noBiomesX(){
@@ -104,6 +105,22 @@ public class mod_noBiomesX extends BaseModMp{
         cocoa.setRequiresSelfNotify();
         ModLoader.registerBlock(cocoa);
         cocoaRenderID = ModLoader.getUniqueBlockModelID(this, false);
+
+        ItemWritableBook book = new ItemWritableBook(130);
+        book.setIconCoord(/*11, 11*/0, 1);
+        book.setItemName("writingBook");
+        ModLoader.addName(book, "Book and Quill");
+
+        ItemEditableBook writtenBook = new ItemEditableBook(131);
+        writtenBook.setIconCoord(/*12, 11*/0, 2);
+        writtenBook.setItemName("writtenBook");
+
+        ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
+        ModLoader.addLocalization("book.byAuthor", "by %1$s");
+        ModLoader.addLocalization("book.signButton", "Sign");
+        ModLoader.addLocalization("book.editTitle", "Enter Book Title");
+        ModLoader.addLocalization("book.finalizeButton", "Sign and Close");
+        ModLoader.addLocalization("book.finalizeWarning", "Note! When you sign the book, it will no longer be editable.");
     }
 
     public static int getSkyLightInBounds(int par2){
