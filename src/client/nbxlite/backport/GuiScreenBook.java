@@ -176,7 +176,7 @@ public class GuiScreenBook extends GuiScreen
 
             try
             {
-                writeItemStack(field_55124_b, dataoutputstream);
+                MerchantRecipeList.writeItemStack(field_55124_b, dataoutputstream);
                 Packet250CustomPayload pa = new Packet250CustomPayload();
                 pa.data = bytearrayoutputstream.toByteArray();
                 pa.channel = s;
@@ -186,42 +186,6 @@ public class GuiScreenBook extends GuiScreen
             {
                 exception.printStackTrace();
             }
-        }
-    }
-
-    public static void writeItemStack(ItemStack par0ItemStack, DataOutputStream par1DataOutputStream) throws IOException
-    {
-        if (par0ItemStack == null)
-        {
-            par1DataOutputStream.writeShort(-1);
-        }
-        else
-        {
-            par1DataOutputStream.writeShort(par0ItemStack.itemID);
-            par1DataOutputStream.writeByte(par0ItemStack.stackSize);
-            par1DataOutputStream.writeShort(par0ItemStack.getItemDamage());
-            NBTTagCompound nbttagcompound = null;
-
-            if (par0ItemStack.getItem().isDamageable() || par0ItemStack.getItem().func_46056_k())
-            {
-                nbttagcompound = par0ItemStack.stackTagCompound;
-            }
-
-            writeNBTTagCompound(nbttagcompound, par1DataOutputStream);
-        }
-    }
-
-    protected static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOutputStream par1DataOutputStream) throws IOException
-    {
-        if (par0NBTTagCompound == null)
-        {
-            par1DataOutputStream.writeShort(-1);
-        }
-        else
-        {
-            byte abyte0[] = CompressedStreamTools.compress(par0NBTTagCompound);
-            par1DataOutputStream.writeShort((short)abyte0.length);
-            par1DataOutputStream.write(abyte0);
         }
     }
 
