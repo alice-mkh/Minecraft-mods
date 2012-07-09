@@ -3,6 +3,7 @@ package net.minecraft.src.nbxlite.chunkproviders;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
+import net.minecraft.src.backport.*;
 
 public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private NoiseGeneratorOctaves noiseGen1;
@@ -19,6 +20,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
+    private MapGenScatteredFeature templeGenerator;
     double noise3[];
     double noise1[];
     double noise2[];
@@ -34,6 +36,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         strongholdGenerator = new MapGenStronghold();
         villageGenerator = new MapGenVillage(0);
         mineshaftGenerator = new MapGenMineshaft();
+        templeGenerator = new MapGenScatteredFeature();
         ravineGenerator = new MapGenRavine();
         unusedIntArray32x32 = new int[32][32];
         noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
@@ -227,6 +230,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            if (mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_13){
+                templeGenerator.generate(this, worldObj, i, j, abyte0);
+            }
         }
         if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
@@ -376,6 +382,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             flag = villageGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             if(mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
+            }
+            if(mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_13){
+                templeGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
         }
         if (!flag && rand.nextInt(4) == 0)
