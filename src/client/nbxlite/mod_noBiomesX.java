@@ -106,10 +106,12 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.registerBlock(cocoa);
         cocoaRenderID = ModLoader.getUniqueBlockModelID(this, false);
 
-        ItemWritableBook book = new ItemWritableBook(130);
-        book.setIconCoord(/*11, 11*/0, 1);
-        book.setItemName("writingBook");
-        ModLoader.addName(book, "Book and Quill");
+        ItemWritableBook bookAndQuill = new ItemWritableBook(130);
+        bookAndQuill.setIconCoord(/*11, 11*/0, 1);
+        bookAndQuill.setItemName("writingBook");
+        ModLoader.addName(bookAndQuill, "Book and Quill");
+        ModLoader.addShapelessRecipe(new ItemStack(bookAndQuill, 1), new Object[]{
+            Item.book, new ItemStack(Item.dyePowder, 1, 0), Item.feather});
 
         ItemEditableBook writtenBook = new ItemEditableBook(131);
         writtenBook.setIconCoord(/*12, 11*/0, 2);
