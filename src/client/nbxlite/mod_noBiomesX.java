@@ -60,8 +60,7 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     private void registerGears(){
-        Block gear = new BlockGear(gearId, ModLoader.getUniqueSpriteIndex("/terrain.png"));
-        ModLoader.getUniqueSpriteIndex("/terrain.png");
+        Block gear = new BlockGear(gearId, 57);
         gear.setHardness(0.5F);
         gear.setBlockName("gear");
         gear.disableStats();
@@ -73,6 +72,21 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     private void register13(){
+        try{
+            for (int i = 168; i <= 173; i++){
+                ModLoader.setPrivateValue(net.minecraft.src.ModLoader.class, null, "terrainSpriteIndex", i);
+                ModLoader.getUniqueSpriteIndex("/terrain.png");
+            }
+            ModLoader.setPrivateValue(net.minecraft.src.ModLoader.class, null, "terrainSpriteIndex", 0);
+            for (int i = 170; i <= 172; i++){
+                ModLoader.setPrivateValue(net.minecraft.src.ModLoader.class, null, "itemSpriteIndex", i);
+                ModLoader.getUniqueSpriteIndex("/gui/items.png");
+            }
+            ModLoader.setPrivateValue(net.minecraft.src.ModLoader.class, null, "itemSpriteIndex", 0);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+
         BlockOreStorage emeraldBlock = new BlockOreStorage(133, 25);
         emeraldBlock.setHardness(5F);
         emeraldBlock.setResistance(10F);
@@ -90,7 +104,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.registerBlock(emeraldOre);
 
         Item emerald = new Item(132);
-        emerald.setIconCoord(/*10, 11*/0, 0);
+        emerald.setIconCoord(10, 11);
         emerald.setItemName("emerald2");
         ModLoader.addName(emerald, "Emerald");
 
@@ -107,14 +121,14 @@ public class mod_noBiomesX extends BaseModMp{
         cocoaRenderID = ModLoader.getUniqueBlockModelID(this, false);
 
         ItemWritableBook bookAndQuill = new ItemWritableBook(130);
-        bookAndQuill.setIconCoord(/*11, 11*/0, 1);
+        bookAndQuill.setIconCoord(11, 11);
         bookAndQuill.setItemName("writingBook");
         ModLoader.addName(bookAndQuill, "Book and Quill");
         ModLoader.addShapelessRecipe(new ItemStack(bookAndQuill, 1), new Object[]{
             Item.book, new ItemStack(Item.dyePowder, 1, 0), Item.feather});
 
         ItemEditableBook writtenBook = new ItemEditableBook(131);
-        writtenBook.setIconCoord(/*12, 11*/0, 2);
+        writtenBook.setIconCoord(12, 11);
         writtenBook.setItemName("writtenBook");
 
         ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
@@ -123,6 +137,10 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("book.editTitle", "Enter Book Title");
         ModLoader.addLocalization("book.finalizeButton", "Sign and Close");
         ModLoader.addLocalization("book.finalizeWarning", "Note! When you sign the book, it will no longer be editable.");
+    }
+
+    public String getPriorities(){
+        return "before:*";
     }
 
     public static int getSkyLightInBounds(int par2){
@@ -336,9 +354,9 @@ public class mod_noBiomesX extends BaseModMp{
     public void load(){
         ModLoader.setInGameHook(this, true, true);
         ModLoader.setInGUIHook(this, true, true);
+        register13();
         replaceBlocks();
         registerGears();
-        register13();
         terrfx = new TextureTerrainPngFX();
         bedrockfx = new TextureTerrainPngFX();
         waterfx = new TextureTerrainPngFX();
@@ -412,10 +430,10 @@ public class mod_noBiomesX extends BaseModMp{
 
     private static void replaceBlocks(){
         try{
-            Block.grass.toptex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png");
-            Block.grass.sidetex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grassside.png");
-            Block.leaves.fasttex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfast.png");
-            Block.leaves.fancytex = ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfancy.png");
+            Block.grass.toptex = 26; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png", 26);
+            Block.grass.sidetex = 27; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grassside.png", 27);
+            Block.leaves.fasttex = 41; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfast.png", 41);
+            Block.leaves.fancytex = 42; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfancy.png", 42);
             Block.blocksList[Block.tallGrass.blockID] = null;
             BlockTallGrass2 tallgrass2 = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID, 39)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("tallgrass");
             Block.blocksList[Block.tallGrass.blockID] = tallgrass2;
