@@ -95,8 +95,8 @@ public class ComponentScatteredFeatureDesertPyramid extends ComponentScatteredFe
         fillWithBlocks(par1World, par3StructureBoundingBox, field_56297_a - 3, 1, 3, field_56297_a - 2, 2, 3, Block.sandStone.blockID, Block.sandStone.blockID, false);
         placeBlockAtCurrentPosition(par1World, 128, 0, 1, 1, 2, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, 128, 0, field_56297_a - 2, 1, 2, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_55133_ak.blockID, 1, 1, 2, 2, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_55133_ak.blockID, 1, field_56297_a - 2, 2, 2, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, Block.stairSingle.blockID, 1, 1, 2, 2, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, Block.stairSingle.blockID, 1, field_56297_a - 2, 2, 2, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, 128, k1, 2, 1, 2, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, 128, j1, field_56297_a - 3, 1, 2, par3StructureBoundingBox);
         fillWithBlocks(par1World, par3StructureBoundingBox, 4, 3, 5, 4, 3, 18, Block.sandStone.blockID, Block.sandStone.blockID, false);

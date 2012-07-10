@@ -158,6 +158,20 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addName(plank3Stairs, "Jungle Wood Stairs");
         ModLoader.registerBlock(plank3Stairs);
 
+        BlockTripWireSource wireHook = (BlockTripWireSource)(new BlockTripWireSource(131));
+        wireHook.setBlockName("tripWireSource");
+        wireHook.setRequiresSelfNotify();
+        ModLoader.addName(wireHook, "Tripwire Hook");
+        ModLoader.registerBlock(wireHook);
+        hookRenderID = ModLoader.getUniqueBlockModelID(this, false);
+
+        BlockTripWire wire = new BlockTripWire(132);
+        wire.setBlockName("tripWire");
+        wire.setRequiresSelfNotify();
+        ModLoader.addName(wire, "Tripwire");
+        ModLoader.registerBlock(wire);
+        wireRenderID = ModLoader.getUniqueBlockModelID(this, false);
+
         ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
         ModLoader.addLocalization("book.byAuthor", "by %1$s");
         ModLoader.addLocalization("book.signButton", "Sign");
@@ -379,6 +393,12 @@ public class mod_noBiomesX extends BaseModMp{
         }
         if (id == cocoaRenderID){
             return BlockCocoa.renderBlockCocoa(r, i, b, x, y, z);
+        }
+        if (id == wireRenderID){
+            return BlockTripWire.renderBlockWire(r, i, b, x, y, z);
+        }
+        if (id == hookRenderID){
+            return BlockTripWireSource.renderBlockWireHook(r, i, b, x, y, z);
         }
         return false;
     }
@@ -618,8 +638,18 @@ public class mod_noBiomesX extends BaseModMp{
         if (gen==GEN_NEWBIOMES){
             BiomeGenBase.ocean.maxHeight = features==FEATURES_BETA181 ? 0.5F : 0.4F;
             BiomeGenBase.taiga.temperature = features>=FEATURES_11 ? 0.05F : 0.3F;
-            BiomeGenBase.extremeHills.maxHeight = features>=FEATURES_11 ? 1.3F : 1.8F;
+            BiomeGenBase.extremeHills.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
+            BiomeGenBase.extremeHills.maxHeight = features<FEATURES_13 ? (features>=FEATURES_11 ? 1.3F : 1.8F) : 1.5F;
             BiomeGenBase.swampland.waterColorMultiplier = features>=FEATURES_11 ? 0xe0ffae : 0xe0ff70;
+            BiomeGenBase.iceMountains.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
+            BiomeGenBase.iceMountains.maxHeight = features<FEATURES_13 ? 1.2F : 1.3F;
+            BiomeGenBase.desertHills.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
+            BiomeGenBase.desertHills.maxHeight = features<FEATURES_13 ? 0.7F : 0.8F;
+            BiomeGenBase.forestHills.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
+            BiomeGenBase.forestHills.maxHeight = features<FEATURES_13 ? 0.6F : 0.7F;
+            BiomeGenBase.taigaHills.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
+            BiomeGenBase.taigaHills.maxHeight = features<FEATURES_13 ? 0.7F : 0.8F;
+            BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
         }
         SunriseEffect = gen>GEN_BIOMELESS;
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
@@ -937,4 +967,6 @@ public class mod_noBiomesX extends BaseModMp{
     private static GuiScreen lastGui;
 
     public static int cocoaRenderID;
+    public static int wireRenderID;
+    public static int hookRenderID;
 }

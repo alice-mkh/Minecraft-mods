@@ -136,10 +136,10 @@ public class ComponentScatteredFeatureJunglePyramid extends ComponentScatteredFe
         fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 7, -2, 1, 9, -2, 1, false, par2Random, field_56301_n);
         fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 6, -3, 1, 6, -3, 1, false, par2Random, field_56301_n);
         fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 6, -1, 1, 6, -1, 1, false, par2Random, field_56301_n);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56334_bT.blockID, getMetadataWithOffset(Block.field_56334_bT.blockID, 3) | 4, 1, -3, 8, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56334_bT.blockID, getMetadataWithOffset(Block.field_56334_bT.blockID, 1) | 4, 4, -3, 8, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56333_bU.blockID, 4, 2, -3, 8, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56333_bU.blockID, 4, 3, -3, 8, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 131, getMetadataWithOffset(131, 3) | 4, 1, -3, 8, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 131, getMetadataWithOffset(131, 1) | 4, 4, -3, 8, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 132, 4, 2, -3, 8, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 132, 4, 3, -3, 8, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, Block.redstoneWire.blockID, 0, 5, -3, 7, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, Block.redstoneWire.blockID, 0, 5, -3, 6, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, Block.redstoneWire.blockID, 0, 5, -3, 5, par3StructureBoundingBox);
@@ -156,11 +156,11 @@ public class ComponentScatteredFeatureJunglePyramid extends ComponentScatteredFe
         }
 
         placeBlockAtCurrentPosition(par1World, Block.vine.blockID, 15, 3, -2, 2, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56334_bT.blockID, getMetadataWithOffset(Block.field_56334_bT.blockID, 2) | 4, 7, -3, 1, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56334_bT.blockID, getMetadataWithOffset(Block.field_56334_bT.blockID, 0) | 4, 7, -3, 5, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56333_bU.blockID, 4, 7, -3, 2, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56333_bU.blockID, 4, 7, -3, 3, par3StructureBoundingBox);
-//         placeBlockAtCurrentPosition(par1World, Block.field_56333_bU.blockID, 4, 7, -3, 4, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 131, getMetadataWithOffset(131, 2) | 4, 7, -3, 1, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 131, getMetadataWithOffset(131, 0) | 4, 7, -3, 5, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 132, 4, 7, -3, 2, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 132, 4, 7, -3, 3, par3StructureBoundingBox);
+        placeBlockAtCurrentPosition(par1World, 132, 4, 7, -3, 4, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, Block.redstoneWire.blockID, 0, 8, -3, 6, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, Block.redstoneWire.blockID, 0, 9, -3, 6, par3StructureBoundingBox);
         placeBlockAtCurrentPosition(par1World, Block.redstoneWire.blockID, 0, 9, -3, 5, par3StructureBoundingBox);
