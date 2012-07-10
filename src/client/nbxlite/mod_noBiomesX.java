@@ -134,6 +134,30 @@ public class mod_noBiomesX extends BaseModMp{
         writtenBook.setItemName("writtenBook");
         Item.itemsList[131] = writtenBook;
 
+        BlockStairs2 sandstairs = new BlockStairs2(128, Block.sandStone, 0);
+        sandstairs.setBlockName("stairsSandStone");
+        sandstairs.setRequiresSelfNotify();
+        ModLoader.addName(sandstairs, "Sandstone Stairs");
+        ModLoader.registerBlock(sandstairs);
+
+        BlockStairs2 plank1Stairs = new BlockStairs2(134, Block.planks, 1);
+        plank1Stairs.setBlockName("stairsWoodSpruce");
+        plank1Stairs.setRequiresSelfNotify();
+        ModLoader.addName(plank1Stairs, "Spruce Wood Stairs");
+        ModLoader.registerBlock(plank1Stairs);
+
+        BlockStairs2 plank2Stairs = new BlockStairs2(135, Block.planks, 2);
+        plank2Stairs.setBlockName("stairsWoodBirch");
+        plank2Stairs.setRequiresSelfNotify();
+        ModLoader.addName(plank2Stairs, "Birch Wood Stairs");
+        ModLoader.registerBlock(plank2Stairs);
+
+        BlockStairs2 plank3Stairs = new BlockStairs2(136, Block.planks, 3);
+        plank3Stairs.setBlockName("stairsWoodJungle");
+        plank3Stairs.setRequiresSelfNotify();
+        ModLoader.addName(plank3Stairs, "Jungle Wood Stairs");
+        ModLoader.registerBlock(plank3Stairs);
+
         ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
         ModLoader.addLocalization("book.byAuthor", "by %1$s");
         ModLoader.addLocalization("book.signButton", "Sign");
