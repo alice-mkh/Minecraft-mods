@@ -109,10 +109,6 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addName(emerald, "Emerald");
         Item.itemsList[132] = emerald;
 
-        ModLoader.addRecipe(new ItemStack(emeraldBlock, 1), new Object[]{"###", "###", "###", '#', emerald});
-        ModLoader.addRecipe(new ItemStack(emerald, 9), new Object[]{"#", '#', emeraldBlock});
-        ModLoader.addSmelting(emeraldOre.blockID, new ItemStack(emerald, 1));
-
         BlockCocoa cocoa = new BlockCocoa(127);
         cocoa.setHardness(0.2F);
         cocoa.setResistance(5F);
@@ -126,8 +122,6 @@ public class mod_noBiomesX extends BaseModMp{
         bookAndQuill.setItemName("writingBook");
         ModLoader.addName(bookAndQuill, "Book and Quill");
         Item.itemsList[130] = bookAndQuill;
-        ModLoader.addShapelessRecipe(new ItemStack(bookAndQuill, 1), new Object[]{
-            Item.book, new ItemStack(Item.dyePowder, 1, 0), Item.feather});
 
         ItemEditableBook writtenBook = new ItemEditableBook(131);
         writtenBook.setIconCoord(12, 11);
@@ -172,12 +166,44 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.registerBlock(wire);
         wireRenderID = ModLoader.getUniqueBlockModelID(this, false);
 
+        ModLoader.addRecipe(new ItemStack(emeraldBlock, 1), new Object[]{"###", "###", "###", '#', emerald});
+        ModLoader.addRecipe(new ItemStack(emerald, 9), new Object[]{"#", '#', emeraldBlock});
+        ModLoader.addSmelting(emeraldOre.blockID, new ItemStack(emerald, 1));
+        ModLoader.addShapelessRecipe(new ItemStack(bookAndQuill, 1), new Object[]{
+            Item.book, new ItemStack(Item.dyePowder, 1, 0), Item.feather});
+        ModLoader.addRecipe(new ItemStack(sandstairs, 1), new Object[]{"#  ", "## ", "###", '#', Block.sandStone});
+        ModLoader.addRecipe(new ItemStack(sandstairs, 1), new Object[]{"  #", " ##", "###", '#', Block.sandStone});
+        removeRecipe("4xtile.stairsWood@0");
+        ModLoader.addRecipe(new ItemStack(Block.stairCompactPlanks, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 0)});
+        ModLoader.addRecipe(new ItemStack(Block.stairCompactPlanks, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 0)});
+        ModLoader.addRecipe(new ItemStack(plank1Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 1)});
+        ModLoader.addRecipe(new ItemStack(plank1Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 1)});
+        ModLoader.addRecipe(new ItemStack(plank2Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 2)});
+        ModLoader.addRecipe(new ItemStack(plank2Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 2)});
+        ModLoader.addRecipe(new ItemStack(plank3Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 3)});
+        ModLoader.addRecipe(new ItemStack(plank3Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 3)});
+        ModLoader.addRecipe(new ItemStack(wireHook, 1),new Object[]{"#", "$", "%", '#', Item.ingotIron, '$', Item.stick, '%', Block.planks});
+
         ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
         ModLoader.addLocalization("book.byAuthor", "by %1$s");
         ModLoader.addLocalization("book.signButton", "Sign");
         ModLoader.addLocalization("book.editTitle", "Enter Book Title");
         ModLoader.addLocalization("book.finalizeButton", "Sign and Close");
         ModLoader.addLocalization("book.finalizeWarning", "Note! When you sign the book, it will no longer be editable.");
+    }
+
+    public void removeRecipe(String str1){
+        try{
+            List list = CraftingManager.getInstance().getRecipeList();
+            for (int i = 0; i < list.size(); i++){
+                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+                if (match.equals(str1)){
+                    list.remove(i);
+                }
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 
     public String getPriorities(){
