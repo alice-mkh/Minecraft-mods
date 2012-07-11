@@ -17,7 +17,7 @@ public class TileEntityEnderChestRenderer extends TileEntitySpecialRenderer
     {
         int i = 0;
 
-        if (par1TileEntityEnderChest.worldObj == null)
+        if (par1TileEntityEnderChest.worldObj != null)
         {
             i = par1TileEntityEnderChest.getBlockMetadata();
         }
