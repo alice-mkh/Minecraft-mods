@@ -194,6 +194,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addRecipe(new ItemStack(plank3Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 3)});
         ModLoader.addRecipe(new ItemStack(plank3Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 3)});
         ModLoader.addRecipe(new ItemStack(wireHook, 1),new Object[]{"#", "$", "%", '#', Item.ingotIron, '$', Item.stick, '%', Block.planks});
+        ModLoader.addRecipe(new ItemStack(chest, 1),new Object[]{"###", "#$#", "###", '#', Block.obsidian, '$', Item.eyeOfEnder});
 
         ModLoader.addLocalization("book.pageIndicator", "Page %1$s of %2$s");
         ModLoader.addLocalization("book.byAuthor", "by %1$s");
@@ -201,6 +202,7 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.addLocalization("book.editTitle", "Enter Book Title");
         ModLoader.addLocalization("book.finalizeButton", "Sign and Close");
         ModLoader.addLocalization("book.finalizeWarning", "Note! When you sign the book, it will no longer be editable.");
+        ModLoader.addLocalization("container.enderchest", "Ender Chest");
     }
 
     public void removeRecipe(String str1){

@@ -22,7 +22,7 @@ public class TileEntityEnderChestRenderer extends TileEntitySpecialRenderer
             i = par1TileEntityEnderChest.getBlockMetadata();
         }
 
-        bindTextureByName("/item/chest.png");
+        bindTextureByName("/item/enderchest.png");
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
