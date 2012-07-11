@@ -813,7 +813,7 @@ public class BlockTripWireSource extends Block
             double d2 = (float)(j2 + 16) / 256F;
             double d3 = (float)(k2 + (flag ? 2 : 0)) / 256F;
             double d4 = (float)(k2 + (flag ? 4 : 2)) / 256F;
-            double d5 = (double)(flag2 ? 3.5F : 1.5F) / 16D;
+            double d5 = (double)(!flag2 ? 3.5F : 1.5F) / 16D;
             float f6 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4) * 0.75F;
             tessellator.setColorOpaque_F(f6, f6, f6);
 

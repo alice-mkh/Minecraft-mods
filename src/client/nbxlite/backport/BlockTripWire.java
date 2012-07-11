@@ -127,17 +127,20 @@ public class BlockTripWire extends Block
         func_56790_e(par1World, par2, par3, par4, par6 | 1);
     }
 
-    public void func_56767_a(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
+    public boolean blockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par6EntityPlayer)
     {
+        int par5 = par1World.getBlockMetadata(par2, par3, par4);
         if (par1World.isRemote)
         {
-            return;
+            return false;
         }
 
         if (par6EntityPlayer.getCurrentEquippedItem() != null && par6EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.shiftedIndex)
         {
             par1World.setBlockMetadataWithNotify(par2, par3, par4, par5 | 8);
+            return true;
         }
+        return super.blockActivated(par1World, par2, par3, par4, par6EntityPlayer);
     }
 
     private void func_56790_e(World par1World, int par2, int par3, int par4, int par5)
