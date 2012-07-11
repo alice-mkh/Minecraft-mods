@@ -166,6 +166,17 @@ public class mod_noBiomesX extends BaseModMp{
         ModLoader.registerBlock(wire);
         wireRenderID = ModLoader.getUniqueBlockModelID(this, false);
 
+        BlockEnderChest chest = new BlockEnderChest(130);
+        chest.setHardness(22.5F);
+        chest.setResistance(1000F);
+        chest.setStepSound(Block.soundStoneFootstep);
+        chest.setBlockName("enderChest");
+        chest.setRequiresSelfNotify();
+        chest.setLightValue(0.5F);
+        ModLoader.addName(chest, "Ender Chest");
+        ModLoader.registerBlock(chest);
+        ModLoader.registerTileEntity(net.minecraft.src.backport.TileEntityEnderChest.class, "EnderChest", new TileEntityEnderChestRenderer());
+
         ModLoader.addRecipe(new ItemStack(emeraldBlock, 1), new Object[]{"###", "###", "###", '#', emerald});
         ModLoader.addRecipe(new ItemStack(emerald, 9), new Object[]{"#", '#', emeraldBlock});
         ModLoader.addSmelting(emeraldOre.blockID, new ItemStack(emerald, 1));
