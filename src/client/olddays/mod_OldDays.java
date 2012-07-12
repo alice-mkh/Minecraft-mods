@@ -35,6 +35,15 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
+    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+        for (int j = 0; j < modules.size(); j++){
+            if (getModuleById(j).renderWorldBlock(r, i, x, y, z, b, id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean onTickInGame(float f, Minecraft minecraft){
         smpman.onTick();
         texman.onTick();

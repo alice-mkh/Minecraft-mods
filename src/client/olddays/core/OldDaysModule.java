@@ -188,5 +188,9 @@ public class OldDaysModule{
         }
     }
 
+    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+        return false;
+    }
+
     public void keyboardEvent(KeyBinding keybinding){}
 }
