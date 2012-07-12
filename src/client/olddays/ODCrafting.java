@@ -15,6 +15,7 @@ public class ODCrafting extends OldDaysModule{
         addProperty(8, "Old mushroom stew",     false, false, "Stew",       "");
         addProperty(9, "Old ore blocks",        false, false, "OreBlocks",  "");
         addProperty(10,"Old books",             true,  true,  "Books",      "");
+        addProperty(11,"Old signs",             true,  true,  "OldSigns",   "");
     }
 
     public void callback (int i){
@@ -29,6 +30,7 @@ public class ODCrafting extends OldDaysModule{
             case 8: setStew(Stew); break;
             case 9: setOreBlocks(OreBlocks); break;
             case 10:setBook(Books); break;
+            case 11:setSign(OldSigns); break;
         }
     }
 
@@ -42,6 +44,7 @@ public class ODCrafting extends OldDaysModule{
     public static boolean Stew;
     public static boolean OreBlocks;
     public static boolean Books;
+    public static boolean OldSigns;
 
     private void setPlanks(boolean b){
         String str = "4xtile.wood@";
@@ -224,5 +227,13 @@ public class ODCrafting extends OldDaysModule{
         ModLoader.addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
         ModLoader.addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
         ModLoader.addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
+    }
+
+    private void setSign(boolean b){
+        int count = b ? 1 : 3;
+        String str = "xitem.sign@0";
+        removeRecipe("1"+str);
+        removeRecipe("3"+str);
+        ModLoader.addRecipe(new ItemStack(Item.sign, count), new Object[]{"###", "###", " X ", '#', Block.planks, 'X', Item.stick});
     }
 }

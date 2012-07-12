@@ -36,11 +36,12 @@ public class mod_backport extends BaseMod{
         ModLoader.addName(emeraldOre, "Emerald Ore");
         ModLoader.registerBlock(emeraldOre);
 
+        Item.itemsList[256 + 132] = null;
         Item emerald = new Item(132);
         emerald.setIconCoord(10, 11);
         emerald.setItemName("emerald2");
         ModLoader.addName(emerald, "Emerald");
-        Item.itemsList[132] = emerald;
+        Item.itemsList[256 + 132] = emerald;
 
         BlockCocoa cocoa = new BlockCocoa(127);
         cocoa.setHardness(0.2F);
@@ -50,16 +51,18 @@ public class mod_backport extends BaseMod{
         ModLoader.registerBlock(cocoa);
         cocoaRenderID = ModLoader.getUniqueBlockModelID(this, false);
 
+        Item.itemsList[256 + 131] = null;
         ItemWritableBook bookAndQuill = new ItemWritableBook(130);
         bookAndQuill.setIconCoord(11, 11);
         bookAndQuill.setItemName("writingBook");
         ModLoader.addName(bookAndQuill, "Book and Quill");
-        Item.itemsList[130] = bookAndQuill;
+        Item.itemsList[256 + 130] = bookAndQuill;
 
+        Item.itemsList[256 + 131] = null;
         ItemEditableBook writtenBook = new ItemEditableBook(131);
         writtenBook.setIconCoord(12, 11);
         writtenBook.setItemName("writtenBook");
-        Item.itemsList[131] = writtenBook;
+        Item.itemsList[256 + 131] = writtenBook;
 
         BlockStairs2 sandstairs = new BlockStairs2(128, Block.sandStone, 0);
         sandstairs.setBlockName("stairsSandStone");
@@ -100,11 +103,11 @@ public class mod_backport extends BaseMod{
         ModLoader.registerBlock(wire);
         wireRenderID = ModLoader.getUniqueBlockModelID(this, false);
 
-        Item.itemsList[31] = null;
+        Item.itemsList[256 + 31] = null;
         ItemReed silk = new ItemReed(31, wire);
         silk.setIconCoord(8, 0);
         silk.setItemName("string");
-        Item.itemsList[31] = silk;
+//         Item.itemsList[256 + 31] = silk;
 
         BlockEnderChest chest = new BlockEnderChest(130);
         chest.setHardness(22.5F);
