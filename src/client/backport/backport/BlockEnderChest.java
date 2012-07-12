@@ -93,7 +93,13 @@ public class BlockEnderChest extends BlockContainer
 
     public boolean blockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
-        InventoryEnderChest inventoryenderchest = new  InventoryEnderChest();//par5EntityPlayer.func_56242_aN();
+        InventoryEnderChest inventoryenderchest = null;
+        try{
+            inventoryenderchest = ((EntityPlayerSP)par5EntityPlayer).func_56242_aN();
+        }catch(Exception ex){
+            System.out.println(ex);
+            inventoryenderchest = new InventoryEnderChest();
+        }
         TileEntityEnderChest tileentityenderchest = (TileEntityEnderChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (inventoryenderchest == null || tileentityenderchest == null)
