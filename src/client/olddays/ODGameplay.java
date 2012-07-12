@@ -17,6 +17,7 @@ public class ODGameplay extends OldDaysModule{
         addProperty(12,"Allow sprint",       true,  true,  "AllowSprint",     "");
         addProperty(13,"Jump delay",         true,  false, "JumpDelay",       "");
         addProperty(14,"Start items",        0,     0,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
+        addProperty(15,"Sign stacking",      false, false, "SignStacking",    "");
     }
 
     public void callback (int i){
@@ -45,6 +46,7 @@ public class ODGameplay extends OldDaysModule{
                     setInt(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
             case 13:setBool(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
             case 14:setInt(net.minecraft.src.EntityPlayer.class, "startitems", StartItems); break;
+            case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
         }
     }
 
@@ -66,6 +68,7 @@ public class ODGameplay extends OldDaysModule{
     public static boolean AllowSprint = true;
     public static boolean JumpDelay;
     public static int StartItems = 0;
+    public static boolean SignStacking;
 
     private void setSwordDamage(boolean b){
         try{
