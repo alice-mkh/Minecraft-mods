@@ -78,7 +78,7 @@ public class BlockChestOld extends BlockChest
                 byte1 = 4;
             }
 
-            return par5 != byte1 ? (i1 != 0 ? texfrontleft : texfrontright) : (i1 != 0 ? texbackleft : texbackright);
+            return par5 == byte1 ? (i1 != 0 ? texfrontleft : texfrontright) : (i1 != 0 ? texbackleft : texbackright);
         }
 
         if (k == blockID || l == blockID)
@@ -114,7 +114,7 @@ public class BlockChestOld extends BlockChest
             {
                 byte2 = 2;
             }
-            return par5 != byte2 ? (j1 != 0 ? texfrontleft : texfrontright) : (j1 != 0 ? texbackleft : texbackright);
+            return par5 == byte2 ? (j1 != 0 ? texfrontleft : texfrontright) : (j1 != 0 ? texbackleft : texbackright);
         }
 
         byte byte0 = 3;
