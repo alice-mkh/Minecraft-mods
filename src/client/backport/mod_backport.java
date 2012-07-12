@@ -69,21 +69,25 @@ public class mod_backport extends BaseMod{
         sandstairs.setRequiresSelfNotify();
         ModLoader.addName(sandstairs, "Sandstone Stairs");
         ModLoader.registerBlock(sandstairs);
+        Block.useNeighborBrightness[128] = true;
 
         BlockStairs2 plank1Stairs = new BlockStairs2(134, Block.planks, 1);
         plank1Stairs.setBlockName("stairsWoodSpruce");
         plank1Stairs.setRequiresSelfNotify();
         ModLoader.registerBlock(plank1Stairs);
+        Block.useNeighborBrightness[134] = true;
 
         BlockStairs2 plank2Stairs = new BlockStairs2(135, Block.planks, 2);
         plank2Stairs.setBlockName("stairsWoodBirch");
         plank2Stairs.setRequiresSelfNotify();
         ModLoader.registerBlock(plank2Stairs);
+        Block.useNeighborBrightness[135] = true;
 
         BlockStairs2 plank3Stairs = new BlockStairs2(136, Block.planks, 3);
         plank3Stairs.setBlockName("stairsWoodJungle");
         plank3Stairs.setRequiresSelfNotify();
         ModLoader.registerBlock(plank3Stairs);
+        Block.useNeighborBrightness[136] = true;
 
         ModLoader.addName(plank1Stairs, "Wooden Stairs");
         ModLoader.addName(plank2Stairs, "Wooden Stairs");
@@ -107,7 +111,6 @@ public class mod_backport extends BaseMod{
         ItemReed silk = new ItemReed(31, wire);
         silk.setIconCoord(8, 0);
         silk.setItemName("string");
-//         Item.itemsList[256 + 31] = silk;
 
         BlockEnderChest chest = new BlockEnderChest(130);
         chest.setHardness(22.5F);
