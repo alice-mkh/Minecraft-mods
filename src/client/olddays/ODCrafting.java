@@ -14,7 +14,7 @@ public class ODCrafting extends OldDaysModule{
         addProperty(7, "Old golden apple",      false, false, "Apple",      "");
         addProperty(8, "Old mushroom stew",     false, false, "Stew",       "");
         addProperty(9, "Old ore blocks",        false, false, "OreBlocks",  "");
-        addProperty(10,"12w17a books",          false, false, "Books",      "");
+        addProperty(10,"Old books",             true,  true,  "Books",      "");
     }
 
     public void callback (int i){
@@ -28,7 +28,7 @@ public class ODCrafting extends OldDaysModule{
             case 7: setApple(Apple); break;
             case 8: setStew(Stew); break;
             case 9: setOreBlocks(OreBlocks); break;
-            case 10:setBook(!Books); break;
+            case 10:setBook(Books); break;
         }
     }
 
