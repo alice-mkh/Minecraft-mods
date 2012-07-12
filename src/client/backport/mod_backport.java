@@ -20,7 +20,7 @@ public class mod_backport extends BaseMod{
             System.out.println(ex);
         }
 
-        BlockOreStorage emeraldBlock = new BlockOreStorage(133, 25);
+        emeraldBlock = new BlockOreStorage(133, 25);
         emeraldBlock.setHardness(5F);
         emeraldBlock.setResistance(10F);
         emeraldBlock.setStepSound(Block.soundMetalFootstep);
@@ -28,7 +28,7 @@ public class mod_backport extends BaseMod{
         ModLoader.addName(emeraldBlock, "Block of Emerald");
         ModLoader.registerBlock(emeraldBlock);
 
-        BlockOre2 emeraldOre = new BlockOre2(129, 171);
+        emeraldOre = new BlockOre2(129, 171);
         emeraldOre.setHardness(3F);
         emeraldOre.setResistance(5F);
         emeraldOre.setStepSound(Block.soundStoneFootstep);
@@ -99,6 +99,12 @@ public class mod_backport extends BaseMod{
         ModLoader.addName(wire, "Tripwire");
         ModLoader.registerBlock(wire);
         wireRenderID = ModLoader.getUniqueBlockModelID(this, false);
+
+        Item.itemsList[31] = null;
+        ItemReed silk = new ItemReed(31, wire);
+        silk.setIconCoord(8, 0);
+        silk.setItemName("string");
+        Item.itemsList[31] = silk;
 
         BlockEnderChest chest = new BlockEnderChest(130);
         chest.setHardness(22.5F);
@@ -179,4 +185,6 @@ public class mod_backport extends BaseMod{
     public static int cocoaRenderID;
     public static int wireRenderID;
     public static int hookRenderID;
+    public static Block emeraldBlock;
+    public static Block emeraldOre;
 }
