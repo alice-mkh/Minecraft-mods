@@ -18,10 +18,12 @@ public class GuiOldDaysSettings extends GuiScreen{
     private GuiButton left;
     private GuiButton right;
     private String current;
+    private int tooltipTimer;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, int i){
         parent = guiscreen;
         id = i;
+        tooltipTimer = 0;
     }
 
     public void updateScreen()
@@ -172,16 +174,22 @@ public class GuiOldDaysSettings extends GuiScreen{
     {
         drawDefaultBackground();
         super.drawScreen(i,j,f);
- /*       for (int k = 1; k < controlList.size(); k++){
+        for (int k = 1; k < controlList.size(); k++){
             GuiButton button = ((GuiButton)controlList.get(k));
-            if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20){
+            if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.drawButton){
                 String str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
-                if (str == null){
+                if (str == null || str == ""){
                     return;
                 }
-                drawTooltip(str, i + 4, j - 13, false);
+                if (tooltipTimer>=15){
+                    drawTooltip(str, i + 4, j - 13, false);
+                }else{
+                    tooltipTimer++;
+                }
+                return;
             }
-        }*/
+        }
+        tooltipTimer = 0;
         if (displayField){
             field.drawTextBox();
         }
