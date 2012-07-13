@@ -44,19 +44,23 @@ public class OldDaysProperty{
 
     public void onChange(){}
 
-    public boolean isDisabled(){
+    public int getDisableReason(){
         if (error){
-            return true;
+            return 1;
         }
         if (!allowedInFallback && mod_OldDays.texman.fallbacktex){
-            return true;
+            return 2;
         }
         if (!allowedInSMP && mod_OldDays.getMinecraftInstance().theWorld!=null){
             if (mod_OldDays.getMinecraftInstance().theWorld.isRemote){
-                return true;
+                return 3;
             }
         }
-        return false;
+        return 0;
+    }
+
+    public boolean isDisabled(){
+        return getDisableReason() > 0;
     }
 
     public void setFieldValue(){

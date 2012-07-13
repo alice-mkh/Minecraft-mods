@@ -159,15 +159,46 @@ public class GuiOldDaysSettings extends GuiScreen{
         super.mouseClicked(par1, par2, par3);
     }
 
-    private void drawTooltip(String str, int x, int y, boolean smp){
-        String str2 = str;
-        if (smp){
-            str2 = "";
+    private void drawTooltip(int i, int x, int y){
+        int margin = 10;
+        String[] origdesc = new String[]{"First line", "Second line"};
+        String[] propnames = new String[]{"Alpha", "Beta"};
+        String[] propdesc = new String[]{"Turns Qwerty to Asd", "Turns Asd to Qwerty"};
+        String[] desc = new String[origdesc.length + propnames.length + 4];
+        String[] errors = new String[]{"Mod conflict", "Texture pack", "Multiplayer"};
+        int length = desc.length - 2;
+        desc[0] = mod_OldDays.getModuleById(id).getPropertyById(i).name;
+        desc[1] = "";
+        for (int j = 0; j < origdesc.length; j++){
+            desc[j + 2] = "§7"+origdesc[j];
         }
-//         drawRect(x, y, x + 5 + fontRenderer.getStringWidth(str2), y + 13, 0x80000000);
-//         drawString(fontRenderer, str2, x + 3, y + 3, smp ? 0xff0000 : 0xffffff);
-        int top = 23;
-       drawCenteredString(fontRenderer, str2, width / 2, height / 6 - top, smp ? 0xff0000 : 0xffffff);
+        for (int j = 0; j < propnames.length; j++){
+            desc[j + 2 + origdesc.length] = "<- "+propnames[j]+"§7: "+propdesc[j];
+        }
+        if (mod_OldDays.getModuleById(id).getPropertyById(i).isDisabled()){
+            desc[desc.length - 2] = "";
+            desc[desc.length - 1] = "§4Disabled: "+errors[mod_OldDays.getModuleById(id).getPropertyById(i).getDisableReason() - 1];
+            length += 2;
+        }
+        int w = 0;
+        for (int j = 0; j < length; j++){
+            if (w < fontRenderer.getStringWidth(desc[j])){
+                w = fontRenderer.getStringWidth(desc[j]) + margin * 2;
+            }
+        }
+        int h = (length * 10) + margin;
+        drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
+        for (int j = 0; j < length; j++){
+            String str = desc[j].replace("<-", "").replace("->", "");
+            int y2 = y + (j * 10) - (length * 5);
+            if (desc[j].startsWith("<-")  || desc[j].startsWith("§7<-")){
+                drawString(fontRenderer, str, x - w / 2 + margin, y2, 0xffffff);
+            }else if (desc[j].endsWith("->")){
+                drawString(fontRenderer, str, x + w / 2 - margin - fontRenderer.getStringWidth(str), y2, 0xffffff);
+            }else{
+                drawCenteredString(fontRenderer, str, x, y2, 0xffffff);
+            }
+        }
     }
 
     public void drawScreen(int i, int j, float f)
@@ -178,11 +209,11 @@ public class GuiOldDaysSettings extends GuiScreen{
             GuiButton button = ((GuiButton)controlList.get(k));
             if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.drawButton){
                 String str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
-                if (str == null || str == ""){
+                if (str == null){
                     return;
                 }
                 if (tooltipTimer>=15){
-                    drawTooltip(str, i + 4, j - 13, false);
+                    drawTooltip(k, /*i + 4*/width / 2, /*j - 13*/height / 2);
                 }else{
                     tooltipTimer++;
                 }
