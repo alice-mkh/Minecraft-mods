@@ -100,7 +100,7 @@ public class OldDaysProperty{
             if (num > 0){
                 list.add("");
             }
-            list.add("  §4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
+            list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
         return (String[])list.toArray(new String[list.size()]);
     }

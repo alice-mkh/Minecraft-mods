@@ -92,7 +92,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
         if (useNames){
             for (int i = (fromOne ? 1 : 0); i < (fromOne ? count + 1 : count); i++){
-                list.add("<-  • "+mod_OldDays.lang.get(getName()+(i+1))+"§7: "+mod_OldDays.lang.get(getName()+(i+1)+".desc"));
+                list.add("<- • "+mod_OldDays.lang.get(getName()+(i+1))+"§7: "+mod_OldDays.lang.get(getName()+(i+1)+".desc"));
             }
         }else{
             list.add("§7"+mod_OldDays.lang.get("gui.possible")+": "+(fromOne ? "1" : "0")+"-"+(fromOne ? count : count-1));

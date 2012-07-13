@@ -168,8 +168,9 @@ public class GuiOldDaysSettings extends GuiScreen{
         }
         int w = 0;
         for (int j = 0; j < length; j++){
-            if (w < fontRenderer.getStringWidth(strings[j])){
-                w = fontRenderer.getStringWidth(strings[j]) + margin * 2;
+            int width = fontRenderer.getStringWidth(strings[j].replace(" ", "d").replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
+            if (w < width + margin * 2){
+                w = width + margin * 2;
             }
         }
         int h = (length * 10) + margin;
