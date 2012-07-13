@@ -20,6 +20,8 @@ public class ODActions extends OldDaysModule{
         ModLoader.registerKey(core, this.keyFog, false);
     }
 
+    public static int FogKeyd = 0;
+
     public void callback (int i){
         switch(i){
             case 1: setBool(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;

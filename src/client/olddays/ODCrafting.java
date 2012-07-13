@@ -8,7 +8,7 @@ public class ODCrafting extends OldDaysModule{
         addProperty(1, "Old planks",            false, false, "OldPlanks",  "");
         addProperty(2, "Leather armor",         1,     1,     "ClothArmor", "", new String[]{"Cloth", "Leather", "Both"});
         addProperty(3, "Slabs",                 2,     2,     "OldSlabs",   "", new String[]{"Alpha", "Beta", "1.2.1"});
-        addProperty(4, "Ladders from crafting", 2,     2,     "Ladders",    "", new String[]{"1", "2", "3"});
+        addProperty(4, "Ladders from crafting", 2,     2,     "Ladders",    "", 3, true);
         addProperty(5, "Old cloth",             false, false, "Cloth",      "");
         addProperty(6, "Old glowstone",         false, false, "Glowstone",  "");
         addProperty(7, "Old golden apple",      false, false, "Apple",      "");

@@ -161,39 +161,25 @@ public class GuiOldDaysSettings extends GuiScreen{
 
     private void drawTooltip(int i, int x, int y){
         int margin = 10;
-        String[] origdesc = new String[]{"First line", "Second line"};
-        String[] propnames = new String[]{"Alpha", "Beta"};
-        String[] propdesc = new String[]{"Turns Qwerty to Asd", "Turns Asd to Qwerty"};
-        String[] desc = new String[origdesc.length + propnames.length + 4];
-        String[] errors = new String[]{"Mod conflict", "Texture pack", "Multiplayer"};
-        int length = desc.length - 2;
-        desc[0] = mod_OldDays.getModuleById(id).getPropertyById(i).name;
-        desc[1] = "";
-        for (int j = 0; j < origdesc.length; j++){
-            desc[j + 2] = "§7"+origdesc[j];
-        }
-        for (int j = 0; j < propnames.length; j++){
-            desc[j + 2 + origdesc.length] = "<- "+propnames[j]+"§7: "+propdesc[j];
-        }
-        if (mod_OldDays.getModuleById(id).getPropertyById(i).isDisabled()){
-            desc[desc.length - 2] = "";
-            desc[desc.length - 1] = "§4Disabled: "+errors[mod_OldDays.getModuleById(id).getPropertyById(i).getDisableReason() - 1];
-            length += 2;
+        String[] strings = mod_OldDays.getModuleById(id).getPropertyById(i).getTooltip();
+        int length = strings.length;
+        if (strings[length - 1] == null || strings[length - 1] == ""){
+            return;
         }
         int w = 0;
         for (int j = 0; j < length; j++){
-            if (w < fontRenderer.getStringWidth(desc[j])){
-                w = fontRenderer.getStringWidth(desc[j]) + margin * 2;
+            if (w < fontRenderer.getStringWidth(strings[j])){
+                w = fontRenderer.getStringWidth(strings[j]) + margin * 2;
             }
         }
         int h = (length * 10) + margin;
         drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
         for (int j = 0; j < length; j++){
-            String str = desc[j].replace("<-", "").replace("->", "");
+            String str = strings[j].replace("<-", "").replace("->", "");
             int y2 = y + (j * 10) - (length * 5);
-            if (desc[j].startsWith("<-")  || desc[j].startsWith("§7<-")){
+            if (strings[j].startsWith("<-") || strings[j].startsWith("§7<-") || strings[j].startsWith("§4<-")){
                 drawString(fontRenderer, str, x - w / 2 + margin, y2, 0xffffff);
-            }else if (desc[j].endsWith("->")){
+            }else if (strings[j].endsWith("->")){
                 drawString(fontRenderer, str, x + w / 2 - margin - fontRenderer.getStringWidth(str), y2, 0xffffff);
             }else{
                 drawCenteredString(fontRenderer, str, x, y2, 0xffffff);

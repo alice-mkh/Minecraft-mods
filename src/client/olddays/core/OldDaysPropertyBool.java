@@ -17,7 +17,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     }
 
     public String getButtonText(){
-        return name+": "+(value ? "ON" : "OFF");
+        return mod_OldDays.lang.get(getName()+".name")+": "+(mod_OldDays.lang.get(value ? "gui.on" : "gui.off"));
     }
 
     public void onChange(){

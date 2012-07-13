@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OldDaysProperty{
     public static int TYPE_BOOLEAN = 1;
@@ -39,7 +41,7 @@ public class OldDaysProperty{
     }
 
     public String getButtonText(){
-        return name;
+        return mod_OldDays.lang.get(getName());
     }
 
     public void onChange(){}
@@ -80,5 +82,26 @@ public class OldDaysProperty{
 
     public String saveToString(){
         return "";
+    }
+
+    public String getName(){
+        return module.name.toLowerCase()+"."+field.getName().toLowerCase();
+    }
+
+    public String[] getTooltip(){
+        List list = new ArrayList();
+        list.add(mod_OldDays.lang.get(getName()+".name"));
+        list.add("");
+        int num = mod_OldDays.getDescriptionNumber(getName()+".desc");
+        for (int i = 0; i < num; i++){
+            list.add("§7"+mod_OldDays.lang.get(getName()+".desc"+(i+1)));
+        }
+        if (isDisabled()){
+            if (num > 0){
+                list.add("");
+            }
+            list.add("  §4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
+        }
+        return (String[])list.toArray(new String[list.size()]);
     }
 }

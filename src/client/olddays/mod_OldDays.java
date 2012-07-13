@@ -16,6 +16,7 @@ public class mod_OldDays extends BaseModMp{
         saveman = new SavingManager(this);
         smpman = new SMPManager(this);
         modules = new ArrayList();
+        lang = new OldDaysEasyLocalization("olddays");
     }
 
     public void load(){
@@ -154,9 +155,20 @@ public class mod_OldDays extends BaseModMp{
         return ModLoader.getMinecraftInstance();
     }
 
+    public static int getDescriptionNumber(String s){
+        boolean end = false;
+        int i = 0;
+        while (!end){
+            i++;
+            end = (s+i).startsWith(lang.get(s+i));
+        }
+        return i - 1;
+    }
+
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static TextureManager texman;
     public static SavingManager saveman;
     public static SMPManager smpman;
     public static List modules;
+    public static OldDaysEasyLocalization lang;
 }

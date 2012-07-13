@@ -17,7 +17,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
     }
 
     public String getButtonText(){
-        return name+": "+value;
+        return mod_OldDays.lang.get(getName()+".name")+": "+value;
     }
 
     public void onChange(){

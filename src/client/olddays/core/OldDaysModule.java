@@ -112,15 +112,17 @@ public class OldDaysModule{
         properties.add(prop);
     }
 
-    public void addProperty(int num, String name, int value, String fname, String desc, int count){
+    public void addProperty(int num, String name, int value, String fname, String desc, int count, boolean one){
         OldDaysProperty prop = new OldDaysPropertyInt(this, num, name, value, count, fname);
         prop.description = desc;
+        ((OldDaysPropertyInt)prop).fromOne = one;
         properties.add(prop);
     }
 
-    public void addProperty(int num, String name, int smp, int value, String fname, String desc, int count){
+    public void addProperty(int num, String name, int smp, int value, String fname, String desc, int count, boolean one){
         OldDaysProperty prop = new OldDaysPropertyInt(this, num, name, value, count, smp, fname);
         prop.description = desc;
+        ((OldDaysPropertyInt)prop).fromOne = one;
         properties.add(prop);
     }
 

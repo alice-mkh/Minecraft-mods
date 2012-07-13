@@ -17,12 +17,12 @@ public class GuiOldDaysModules extends GuiScreen{
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         for (int i = 0; i < mod_OldDays.modules.size(); i++){
             OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
-            addModule(module.id, module.name);
+            addModule(module.id);
         }
     }
     
-    public void addModule(int i, String name){
-        StringTranslate stringtranslate = StringTranslate.getInstance();
+    public void addModule(int i){
+        String name = mod_OldDays.lang.get("module."+mod_OldDays.getModuleById(i).name.toLowerCase());
         int margin = 30;
         int x = width / 2 - 155;
         if (i % 2 != 0){

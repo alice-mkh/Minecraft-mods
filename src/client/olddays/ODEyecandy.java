@@ -5,7 +5,7 @@ import java.util.*;
 public class ODEyecandy extends OldDaysModule{
     public ODEyecandy(mod_OldDays c){
         super(c, 4, "Eyecandy");
-        addProperty(1, "Old walking",           true,  "OldWalking",        "");
+        addProperty(1, "Old walking",           true,  "OldWalking",        "TEST THING!!!");
         addProperty(2, "Bobbing",               false, "Bobbing",           "");
         addProperty(3, "Old endermen",          true,  "OldEndermen",       "");
         addProperty(4, "Item sway",             true,  "ItemSway",          "");

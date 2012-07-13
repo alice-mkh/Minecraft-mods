@@ -10,7 +10,7 @@ public class ODSounds extends OldDaysModule{
         addProperty(3, "Old hurt sound",      true,  "Ooh",        "");
         addProperty(4, "Falling sound",       false, "Fall",       "");
         addProperty(5, "Old door sounds",     true,  "Door",       "");
-        addProperty(6, "Chest sound",         2,     "Chest",      "", new String[]{"1.0", "1.8.1", "OFF"});
+        addProperty(6, "Chest sound",         0,     "Chest",      "", new String[]{"1.0", "1.8.1", "OFF"});
         addProperty(7, "Old bow sound",       true,  "Bow",        "");
         addProperty(8, "Old arrow hit sound", true,  "Drr",        "");
         addProperty(9, "Eating sound",        false, "Eat",        "");
@@ -57,7 +57,7 @@ public class ODSounds extends OldDaysModule{
     public static boolean Ooh = true;
     public static boolean Fall;
     public static boolean Door = true;
-    public static int Chest = 2;
+    public static int Chest = 0;
     public static boolean Bow = true;
     public static boolean Drr = true;
     public static boolean Eat;
