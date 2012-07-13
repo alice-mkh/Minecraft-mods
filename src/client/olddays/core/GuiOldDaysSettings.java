@@ -167,10 +167,12 @@ public class GuiOldDaysSettings extends GuiScreen{
             return;
         }
         int w = 0;
+        int w2 = 0;
         for (int j = 0; j < length; j++){
-            int width = fontRenderer.getStringWidth(strings[j].replace(" ", "d").replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
-            if (w < width + margin * 2){
+            int width = fontRenderer.getStringWidth(strings[j].replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
+           if (w < width + margin * 2){
                 w = width + margin * 2;
+                w2 = width;
             }
         }
         int h = (length * 10) + margin;
@@ -183,7 +185,7 @@ public class GuiOldDaysSettings extends GuiScreen{
             }else if (strings[j].endsWith("->")){
                 drawString(fontRenderer, str, x + w / 2 - margin - fontRenderer.getStringWidth(str), y2, 0xffffff);
             }else{
-                drawCenteredString(fontRenderer, str, x, y2, 0xffffff);
+                drawString(fontRenderer, str, x - w2 / 2, y2, 0xffffff);
             }
         }
     }
