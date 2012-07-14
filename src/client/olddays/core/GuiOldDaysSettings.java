@@ -197,7 +197,10 @@ public class GuiOldDaysSettings extends GuiScreen{
         for (int k = 1; k < controlList.size(); k++){
             GuiButton button = ((GuiButton)controlList.get(k));
             if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.drawButton){
-                String str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
+                String str = null;
+                try{
+                    str = mod_OldDays.getModuleById(id).getPropertyById(k).description;
+                }catch(Exception ex){}
                 if (str == null){
                     return;
                 }
