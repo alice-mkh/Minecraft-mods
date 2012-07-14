@@ -480,15 +480,27 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                 int l20 = l + rand.nextInt(16);
                 (new WorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, j16, i19, l20);
             }
-            for (int iiii = 0; iiii < 3 + rand.nextInt(6); iiii++)
-            {
-                int x2 = k + rand.nextInt(16);
-                int y2 = rand.nextInt(28) + 4;
-                int z2 = l + rand.nextInt(16);
-                int id = worldObj.getBlockId(x2, y2, z2);
-                if (id == Block.stone.blockID)
-                {
-                    worldObj.setBlock(x2, y2, z2, 129);
+            int max = 0;
+            detection: for(int iii = k; iii < k + 16; iii++){
+                for(int jjj = l; jjj < l + 16; jjj++){
+                    int h = worldObj.getPrecipitationHeight(iii, jjj);
+                    if (max < h){
+                        max = h;
+                    }
+                    if (max > 108){
+                        break detection;
+                    }
+                }
+            }
+            if (max > 108){
+                for (int iiii = 0; iiii < 3 + rand.nextInt(6); iiii++){
+                    int x2 = k + rand.nextInt(16);
+                    int y2 = rand.nextInt(28) + 4;
+                    int z2 = l + rand.nextInt(16);
+                    int id = worldObj.getBlockId(x2, y2, z2);
+                    if (id == Block.stone.blockID){
+                        worldObj.setBlock(x2, y2, z2, 129);
+                    }
                 }
             }
         }
