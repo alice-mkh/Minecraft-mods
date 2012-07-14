@@ -58,6 +58,31 @@ public class EntityVillager extends EntityAgeable implements IMerchant
         return true;
     }
 
+    protected void updateEntityActionState(){
+        super.updateEntityActionState();
+        if (!func_56227_A() && field_58023_g > 0)
+        {
+            field_58023_g--;
+
+            if (field_58023_g <= 0)
+            {
+                if (field_58024_as)
+                {
+                    func_56231_i(1);
+                    field_58024_as = false;
+                }
+
+                if (field_58025_au != null)
+                {
+                    field_56232_f.remove(field_58025_au);
+                    field_58025_au = null;
+                }
+
+                addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
+            }
+        }
+    }
+
     /**
      * main AI tick function, replaces updateEntityActionState
      */
@@ -77,6 +102,28 @@ public class EntityVillager extends EntityAgeable implements IMerchant
             {
                 ChunkCoordinates chunkcoordinates = villageObj.getCenter();
                 setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, villageObj.getVillageRadius());
+            }
+        }
+
+        if (!func_56227_A() && field_58023_g > 0)
+        {
+            field_58023_g--;
+
+            if (field_58023_g <= 0)
+            {
+                if (field_58024_as)
+                {
+                    func_56231_i(1);
+                    field_58024_as = false;
+                }
+
+                if (field_58025_au != null)
+                {
+                    field_56232_f.remove(field_58025_au);
+                    field_58025_au = null;
+                }
+
+                addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
             }
         }
 
@@ -110,6 +157,12 @@ public class EntityVillager extends EntityAgeable implements IMerchant
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("Profession", getProfession());
+        par1NBTTagCompound.setInteger("Riches", field_56236_as);
+
+        if (field_56232_f != null)
+        {
+            par1NBTTagCompound.setCompoundTag("Offers", field_56232_f.func_57496_a());
+        }
     }
 
     /**
@@ -119,6 +172,13 @@ public class EntityVillager extends EntityAgeable implements IMerchant
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         setProfession(par1NBTTagCompound.getInteger("Profession"));
+        field_56236_as = par1NBTTagCompound.getInteger("Riches");
+
+        if (par1NBTTagCompound.hasKey("Offers"))
+        {
+            NBTTagCompound nbttagcompound = par1NBTTagCompound.getCompoundTag("Offers");
+            field_56232_f = new MerchantRecipeList(nbttagcompound);
+        }
     }
 
     /**
@@ -292,7 +352,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
 
                 if (rand.nextFloat() < 0.5F)
                 {
-                    merchantrecipelist.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.itemsList[132]), new ItemStack(Item.flint.shiftedIndex, 2 + rand.nextInt(2), 0)));
+                    merchantrecipelist.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.itemsList[132 + 256]), new ItemStack(Item.flint.shiftedIndex, 2 + rand.nextInt(2), 0)));
                 }
 
                 break;
@@ -400,7 +460,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
     {
         if (par2Random.nextFloat() < par3)
         {
-            par0MerchantRecipeList.add(new MerchantRecipe(func_56230_a(par1, par2Random), Item.itemsList[132]));
+            par0MerchantRecipeList.add(new MerchantRecipe(func_56230_a(par1, par2Random), Item.itemsList[132 + 256]));
         }
     }
 
