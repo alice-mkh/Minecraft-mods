@@ -58,8 +58,11 @@ public class EntityVillager extends EntityAgeable implements IMerchant
         return true;
     }
 
+    protected boolean isMovementBlocked(){
+        return field_56234_e != null;
+    }
+
     protected void updateEntityActionState(){
-        super.updateEntityActionState();
         if (!func_56227_A() && field_58023_g > 0)
         {
             field_58023_g--;
@@ -81,6 +84,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant
                 addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
             }
         }
+        super.updateEntityActionState();
     }
 
     /**
