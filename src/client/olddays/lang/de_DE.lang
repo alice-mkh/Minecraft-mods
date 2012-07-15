@@ -393,7 +393,7 @@ sounds.enderman.name=Enderman Geräusche
  sounds.enderman3=1.0
  Geräusche.enderman3.desc=Normale Geräusche
 sounds.calm4.name=Benutze calm4.ogg
- sounds.calm4.desc1=§aUnbekannt wann genau entfernt wurde.
+ sounds.calm4.desc1=§aEntfernt in Alpha 1.1.0.
 sounds.creeper.name=Alte Creeper Geräusche
  sounds.creeper.desc1=§aIn der Alpha 1.2.0 geändert.
 
@@ -555,7 +555,7 @@ textures.explosion.name=Alte Explosion
 textures.moon.name=Mondphasen
  textures.moon.desc1=§aIn der 1.0 hinzugefügt.
 textures.armorshArmor slot shapesgsumrisse
- textures.armorshape.desc1=§aUnbekannt wann genau entfernt, in der 1.2.4 hinzugefügt.
+ textures.armorshape.desc1=§aEntfernt in Beta 1.0, in der 1.2.4 hinzugefügt.
 textures.cocoa.name=Alte Kakaobohnen
  textures.cocoa.desc1=§aIn der 1.3 geädert.
 textures.netherrack.name=Alter Netherrack

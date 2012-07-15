@@ -394,7 +394,7 @@ sounds.enderman.name=Endermen sounds
  sounds.enderman3=1.0
  sounds.enderman3.desc=Default sounds
 sounds.calm4.name=Use calm4.ogg music
- sounds.calm4.desc1=§aRemoved in unknown version.
+ sounds.calm4.desc1=§aRemoved in Alpha 1.1.0.
 sounds.creeper.name=Old creeper sounds
  sounds.creeper.desc1=§aChanged in Alpha 1.2.0.
 
@@ -547,7 +547,7 @@ textures.pigs.name=Pig snouts
  textures.pigs.desc1=§aAdded in Beta 1.8.
 textures.slimes.name=Old slimes
  textures.slimes.desc1=Opaque texture with black eyes.
- textures.slimes.desc2=§aChanged in Beta 1.2_01.
+ textures.slimes.desc2=§aChanged in unknown version.
 textures.steve.name=Steve with beard
  textures.steve.desc1=§aChanged in Beta 1.6.6.
 textures.explosion.name=Old explosion
