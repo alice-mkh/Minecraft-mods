@@ -1,4 +1,4 @@
-﻿module.actions=Aktionen
+module.actions=Aktionen
 module.bugs=Bugs
 module.gameplay=Gameplay
 module.mobs=Mobs
@@ -130,20 +130,24 @@ gameplay.rareloot.name=Seltene Drops
  gameplay.rareloot.desc1=Wenn deaktiviert lassen Monster
  gameplay.rareloot.desc2=keine Waffen, Werkzeuge und Rüstung fallen.
  gameplay.rareloot.desc3=§aIn der 1.2 hinzugefügt.
-gameplay.instantbow.name=Maschinenbogen gameplay.instantbow.desc1=Entfernt das aufladen von Bögen
+gameplay.instantbow.name=Maschinenbogen
+ gameplay.instantbow.desc1=Entfernt das aufladen von Bögen
  gameplay.instantbow.desc2=um so schnell wie möglich zu schiessen.
  gameplay.instantbow.desc3=§aIn der Beta 1.8 geändert.
-gameplay.finitebow.name=Bogen-Haltbarkeit gameplay.finitebow.desc1=Wenn deaktiviert können Bögen
+gameplay.finitebow.name=Bogen-Haltbarkeit
+ gameplay.finitebow.desc1=Wenn deaktiviert können Bögen
  gameplay.finitebow.desc2=unendlich lange benutzt werden, ohne kaputtzugehen.
  gameplay.finitebow.desc3=§aIn der 1.0 geändert.
 gameplay.combatsystem.name=Kampfsystem
- gameplay.combatsystem.desc1=Ermöglicht kritische Treffer, blocken mit.combatsystem.desc2=dem Schwert und (Zombie)Pigman Rüstung.
+ gameplay.combatsystem.desc1=Ermöglicht kritische Treffer, blocken mit.
+ gameplay.combatsystem.desc2=dem Schwert und (Zombie)Pigman Rüstung.
  gameplay.combatsystem1=Beta 1.3
-gameplay.combatsystem1.desc=Keine kritischen Treffer, fäuste machen 0.5 Herzen Schaden
+ gameplay.combatsystem1.desc=Keine kritischen Treffer, fäuste machen 0.5 Herzen Schaden
  gameplay.combatsystem2=Beta 1.7.3
  gameplay.combatsystem2.desc=Keine krit. Treffer, Fäuste machen 1 Herz Schaden. damage
  gameplay.combatsystem3=Beta 1.8.1
- gameplay.combatsystem3.desc=Kritische Treffer, blocken mit Schwertern.combatsystem4=1.0
+ gameplay.combatsystem3.desc=Kritische Treffer, blocken mit Schwertern
+ gameplay.combatsystem4=1.0
  gameplay.combatsystem4.desc=Zufällige krit. Treffer, Rüstung für Zombies
 gameplay.armor.name=Rüstung
  gameplay.armor.desc1=Verändert die Rüstungsmechanik.
@@ -152,9 +156,12 @@ gameplay.armor.name=Rüstung
  gameplay.armor2=Beta 1.8.1
  gameplay.armor2.desc=Rüstung basiert auf Haltbarkeit
  gameplay.armor3=1.0
- gameplay.armor3.desc=Veränderter Schutz-Wert. gameplay.armor4=1.1
+ gameplay.armor3.desc=Veränderter Schutz-Wert.
+ gameplay.armor4=1.1
  gameplay.armor4.desc=Veränderter Schutz-Wert
-gameplay.allowdebug.name=Debug-Bildschirm erlauben gameplay.allowdebug.desc1=Wenn deaktiviert, blockiert es F3 gameplay.allowdebug.desc2=und den Shift+F3 Debug-Bildschirm
+gameplay.allowdebug.name=Debug-Bildschirm erlauben
+ gameplay.allowdebug.desc1=Wenn deaktiviert, blockiert es F3 
+ gameplay.allowdebug.desc2=und den Shift+F3 Debug-Bildschirm
  gameplay.allowdebug.desc3=§aIn der Alpha 1.1.0. hinzugefügt.
 gameplay.allowsprint.name=Sprinten erlauben
  gameplay.allowsprint.desc1=Wenn deaktiviert, kann
@@ -183,8 +190,10 @@ mobs.ai.name=Mob AI
  mobs.ai1=Infdev
  Mobs.ai1.desc=Mobs halten nie an, und springen oft
  mobs.ai2=Alpha
- Mobs.ai2.desc=Mehr herumstehen, weniger springen mobs.ai3=Beta
- Mobs.ai3.desc=Mobs springen nicht wenn sie ein Hindernis treffen mobs.ai4=1.2
+ Mobs.ai2.desc=Mehr herumstehen, weniger springen
+ mobs.ai3=Beta
+ Mobs.ai3.desc=Mobs springen nicht wenn sie ein Hindernis treffen
+ mobs.ai4=1.2
  Mobs.ai4.desc=Viel mehr künstliche Intelligenz 
 mobs.animalsflee.name=Tier-Panik
  mobs.animalsflee.desc1=Wenn aktiviert rennen Tiere davon
@@ -227,10 +236,12 @@ mobs.mobs.desc2=§4FEHLER§7: Alpha 1.2.0 ist dasselbe wie 1.0.14.
  mobs.mobs1=Classic
  mobs.mobs1.desc=Keine Mobs
  mobs.mobs2=Indev
- mobs.mobs2.desc=Keine Kühe mobs.mobs3=Alpha 1.0.8
+ mobs.mobs2.desc=Keine Kühe
+ mobs.mobs3=Alpha 1.0.8
  mobs.mobs3.desc=Keine Schleime
  mobs.mobs4=Alpha 1.0.11
- mobs.mobs4.desc=Keine Hühner mobs.mobs5=Alpha 1.0.14
+ mobs.mobs4.desc=Keine Hühner
+ mobs.mobs5=Alpha 1.0.14
  mobs.mobs5.desc=Keine Spinnenreiter
  mobs.mobs6=Alpha 1.2.0
  mobs.mobs6.desc=Keine Tintenfische
@@ -244,38 +255,47 @@ mobs.mobs.desc2=§4FEHLER§7: Alpha 1.2.0 ist dasselbe wie 1.0.14.
  mobs.mobs10.desc=Keine Ozelots
  mobs.mobs11=1.2
  mobs.mobs11.desc=Normal
-mobs.slimes.name=Schleim-spawning mobs.slimes.desc1=Verändert den Spawn-Alghorhythmus von Schleimen.
+mobs.slimes.name=Schleim-spawning
+ mobs.slimes.desc1=Verändert den Spawn-Alghorhythmus von Schleimen.
  mobs.slimes1=AUS
  mobs.slimes1.desc=Keine Schleime
  mobs.slimes2=Alpha 1.0.11
  mobs.slimes2.desc=Max. Höhe: §r32§7, 10 mal mehr Schleime
  mobs.slimes3=Beta
- mobs.slimes3.desc=Max. height: §r16§7 Blöcke, in speziellen Chunks.slimes4=1.0
+ mobs.slimes3.desc=Max. height: §r16§7 Blöcke, in speziellen Chunks
+ mobs.slimes4=1.0
  mobs.slimes4.desc=Max. height: §r40§7 Blöcke, spezielle Chunks 
 mobs.endermen.name=Ungenerfte Endermen
  mobs.endermen.desc1=Erlaubt es Endermen fast jeden Block zu tragen.
  mobs.endermen.desc2=§aIn der 1.0 verändert.
 
-eyecandy.oldwalking.name=Altes Laufen eyecandy.oldwalking.desc1=Maxht dass der Spieler seine Arme
- eyecandy.oldwalking.desc2=während des Laufens flattern lässt. eyecandy.oldwalking.desc3=Entfernt auch Schwingen animation.
+eyecandy.oldwalking.name=Altes Laufen
+ eyecandy.oldwalking.desc1=Maxht dass der Spieler seine Arme
+ eyecandy.oldwalking.desc2=während des Laufens flattern lässt.
+ eyecandy.oldwalking.desc3=Entfernt auch Schwingen animation.
  eyecandy.oldwalking.desc4=§aIn der Alpha 1.0.9 geändert.
 eyecandy.bobbing.name=Wackeln
- eyecandy.bobbing.desc1=Macht dass der Spieler und einige Mobs eyecandy.bobbing.desc2=beim Laufen Auf -und abwackeln eyecandy.bobbing.desc3=Verändert auch die Animationsgeschwindigkeit.
+ eyecandy.bobbing.desc1=Macht dass der Spieler und einige Mobs
+ eyecandy.bobbing.desc2=beim Laufen Auf -und abwackeln
+ eyecandy.bobbing.desc3=Verändert auch die Animationsgeschwindigkeit.
  eyecandy.bobbing.desc4=§aIn der 0.31 entfernt.
 eyecandy.oldendermen.name=Alte Endermen
  eyecandy.oldendermen.desc1=Macht das Endermen schwarzen Rauch abgeben
  eyecandy.oldendermen.desc2=, anstatt von purpurfarbenen and have
  eyecandy.oldendermen.desc3=Grüne Augen anstatt von purpurfarbenen.
  eyecandy.oldendermen.desc4=§aIn der Beta 1.8 geändert.
-eyecandy.itemsway.name=Gegenstands
-verzögerung eyecandy.itemsway.desc1=Schaltet die Gegnstandsverzögerung beim Drehen.
+eyecandy.itemsway.name=Gegenstands verzögerung
+ eyecandy.itemsway.desc1=Schaltet die Gegnstandsverzögerung beim Drehen.
  eyecandy.itemsway.desc2=§aIn der 1.8 hinzugefügt.
 eyecandy.items2d.name=2d-Items
  eyecandy.items2d.desc1=Macht dass Items in 2d dargestellt werden.
  eyecandy.items2d.desc2=§aIn der Indev entfernt.
-eyecandy.oldchest.name=Alte Kisten eyecandy.oldchest.desc1=Macht Kisten größer und eyecandy.oldchest.desc2=entfernt die Öffnungs-Animation.
+eyecandy.oldchest.name=Alte Kisten
+ eyecandy.oldchest.desc1=Macht Kisten größer und
+ eyecandy.oldchest.desc2=entfernt die Öffnungs-Animation.
  eyecandy.oldchest.desc2=§aIn der Beta 1.8 geändert.
-eyecandy.moblabels.name=Mob-ID's im F3-Modus eyecandy.moblabels.desc1=§aEntfernt in der Beta 1.8.
+eyecandy.moblabels.name=Mob-ID's im F3-Modus
+ eyecandy.moblabels.desc1=§aEntfernt in der Beta 1.8.
 eyecandy.mobarmor.name=Mob-Rüstung
  eyecandy.mobarmor.desc1=Wenn aktiviert haben einige Zombies,
  eyecandy.mobarmor.desc2=Skelette und Zombie-Pigmans
@@ -292,10 +312,12 @@ eyecandy.mainmenu.name=Hauptmenü
  eyecandy.olddigging.desc1=Macht dass beim Graben sie Seiten-Textur
  eyecandy.olddigging.desc2=anstatt der unteren verwendet wird.
  eyecandy.olddigging.desc3=§aIrgendwann in der Beta geändert.
-eyecandy.oldwires.name=Alte Redstone-Kabel eyecandy.oldwires.desc1=Macht dass ein einzelnes Redstone eher wie
+eyecandy.oldwires.name=Alte Redstone-Kabel
+ eyecandy.oldwires.desc1=Macht dass ein einzelnes Redstone eher wie
  eyecandy.oldwires.desc2=ein Kreuz anstatt wie ein Punkt aussieht.
  eyecandy.oldwires.desc3=§aIn der 1.0 geändert.
-eyecandy.tooltips.name=Item-Namen eyecandy.tooltips.desc1=Verändert Aussehen der Item-Namen.
+eyecandy.tooltips.name=Item-Namen
+ eyecandy.tooltips.desc1=Verändert Aussehen der Item-Namen.
  eyecandy.tooltips1=AUS
  eyecandy.tooltips1.desc=Keine Item-Namen
  eyecandy.tooltips2=Beta
@@ -331,7 +353,8 @@ eyecandy.toolbreaking.name=Werkzeugsbruch-Animation
 
 sounds.explode.name=Altes Explosions-Geräusch
  sounds.explode.desc1=§aVerändert in der 1.0.
-sounds.xporb.name=Altes XPOrb Geräusch sounds.xporb.desc1=Genauso für Items.
+sounds.xporb.name=Altes XPOrb Geräusch
+ sounds.xporb.desc1=Genauso für Items.
  sounds.xporb.desc2=§aIn der 1.0 geändert.
 sounds.ooh.name=Altes Schmerz-Geräusch
  sounds.ooh.desc1=Uh!
@@ -350,11 +373,13 @@ sounds.chest.name=Kisten-Geräusch
  sounds.chest3.desc=Normales Geräusch 
 sounds.bow.name=Altes Bogen-Geräusch
  sounds.bow.desc1=§aIn der 1.0 geändert.
-sounds.drr.name=Altes Pfeil-Teff-Geräuschsounds.drr.desc1=Drr!
+sounds.drr.name=Altes Pfeil-Teff-Geräusch
+ sounds.drr.desc1=Drr!
  sounds.drr.desc2=§aIn der 1.0 geändert.
 sounds.eat.name=Ess-Geräusch
- sounds.eat.desc1=Om nom Added in 1.0at.desc2=§aIn der 1.0 hinzugefügt.
- sounds.drink.name=Trinkgreäusch
+ sounds.eat.desc1=Om nom Added in 1.0
+ sounds.eat.desc2=§aIn der 1.0 hinzugefügt.
+sounds.drink.name=Trinkgreäusch
  sounds.drink.desc1=§aIn der 1.0 geändert.
 sounds.break.name=Werkzeugsbruchgeräusch
  sounds.break.desc1=§aIn der 1.0 hinzugefügt.
@@ -362,36 +387,46 @@ sounds.lava.name=Lavageräusch
  sounds.lava.desc1=§aIn der 1.2 hinzugefügt.
 sounds.enderman.name=Enderman Geräusche
  sounds.enderman1=AUS
- sounds.enderman1.desc=Keine Geräusche sounds.enderman2=Beta 1.8.1
+ sounds.enderman1.desc=Keine Geräusche
+ sounds.enderman2=Beta 1.8.1
  sounds.enderman2.desc=Zombie Geräusche
  sounds.enderman3=1.0
- Geräusche.enderman3.desc=Normale Geräusche 
+ Geräusche.enderman3.desc=Normale Geräusche
 sounds.calm4.name=Benutze calm4.ogg
  sounds.calm4.desc1=§aUnbekannt wann genau entfernt wurde.
 sounds.creeper.name=Alte Creeper Geräusche
  sounds.creeper.desc1=§aIn der Alpha 1.2.0 geändert.
 
-crafting.oldplanks.name=Altes Planken-Crafting.oldplanks.desc1=Eichenplanken von jeder Art Baumstamm.
+crafting.oldplanks.name=Altes Planken-Crafting.
+ crafting.oldplanks.desc1=Eichenplanken von jeder Art Baumstamm.
  crafting.oldplanks.desc2=§aIn der 1.2.4 geändert.
-crafting.clotharmor.name=Lederrüstungscrating.clotharmor.desc1=Erlaubt es Lederrüstung crafting.clotharmor.desc2=auch mit Wolle herzustellen.
+crafting.clotharmor.name=Lederrüstungscrating.
+ crafting.clotharmor.desc1=Erlaubt es Lederrüstung
+ crafting.clotharmor.desc2=auch mit Wolle herzustellen.
  crafting.clotharmor.desc3=§aIn der Alpha 1.0.8 geändert.
- crafting.clotharmor1=Woll-Crafting.clotharmor1.desc=Altes Rezept
+ crafting.clotharmor1=Woll-Crafting.
+ crafting.clotharmor1.desc=Altes Rezept
  crafting.clotharmor2=Leder
- crafting.clotharmor2.desc=Neues Rezept.clotharmor3=Beides.clotharmor3.desc1=Wolle und Leder 
+ crafting.clotharmor2.desc=Neues Rezept
+ crafting.clotharmor3=Beides
+ crafting.clotharmor3=Wolle und Leder
 crafting.oldslabs.name=Stufen
  crafting.oldslabs.desc1=<- §r3§7 Pflasterstein gibt §r3§7 Steinstufen.
  crafting.oldslabs.desc2=<- Keine anderen Stufen.
  crafting.oldslabs.desc3=<- Druckplatten benötigen §r3§7 Steine oder Planken
  crafting.oldslabs1=Alpha
--Crafting.oldslabs1.desc=^
+ Crafting.oldslabs1.desc=^
  Crafting.oldslabs2=Beta
--Crafting.oldslabs2.desc=Gibt §r3§7 Stufen anstatt von §r6
+ Crafting.oldslabs2.desc=Gibt §r3§7 Stufen anstatt von §r6
  crafting.oldslabs3=1.2.1
--Crafting.oldslabs3.desc=Normale Rezepte 
-crafting.ladders.name=Leitern vom Crafting crafting.ladders.desc1=§aIn der Beta 1.5 und 1.2 geändert.
-crafting.cloth.name=Altes Woll-crafting.cloth.desc1=Benötigt §r9§7 Fäden anstatt von §r4§7.
+ Crafting.oldslabs3.desc=Normale Rezepte 
+crafting.ladders.name=Leitern vom Crafting
+ crafting.ladders.desc1=§aIn der Beta 1.5 und 1.2 geändert.
+crafting.cloth.name=Altes Woll
+ crafting.cloth.desc1=Benötigt §r9§7 Fäden anstatt von §r4§7.
  crafting.cloth.desc2=§aIn der Beta 1.6.6 geändert.
-crafting.glowstone.name=Altes Glowstone-Crafting.glowstone.desc1=Braucht §r9§7 Staub anstatt von §r4§7.
+crafting.glowstone.name=Altes Glowstone-Crafting
+ crafting.glowstone.desc1=Braucht §r9§7 Staub anstatt von §r4§7.
  crafting.glowstone.desc2=§aIn der Beta 1.6.6 geändert.
 crafting.apple.name=Alter Goldapfel
  crafting.apple.desc1=Braucht Goldblöcke anstatt von Barren.
@@ -400,23 +435,29 @@ crafting.stew.name=Alte Pilzsuppe
  crafting.stew.desc1=Spezielles Rezept.
  crafting.stew.desc2=vertikal platziert.
  crafting.stew.desc3=§aIn der 1.0 geändert.
-crafting.oreblocks.name=Alte Erz-Blöcke crafting.oreblocks.desc1=Braucht §r4§7 Items anstatt §r9§7.
+crafting.oreblocks.name=Alte Erz-Blöcke
+ crafting.oreblocks.desc1=Braucht §r4§7 Items anstatt §r9§7.
  crafting.oreblocks.desc2=§aIn der Indev geändert.
 crafting.books.name=Alte Bücher
  crafting.books.desc1=Braucht nur Papier, kein Leder.
  crafting.books.desc2=Spezielles Rezept, vertikal platziert.
  crafting.books.desc3=§aIn der 1.3 geändert.
-crafting.oldsigns.name=Alte Schilder crafting.oldsigns.desc1=Gibt §r1§7 Schild anstatt von §r3§7.
+crafting.oldsigns.name=Alte Schilder
+ crafting.oldsigns.desc1=Gibt §r1§7 Schild anstatt von §r3§7.
  crafting.olChanged in 1.3er 1.3 geändert.
 
-textures.cobblestone.name=Pflasterstein-Texturen.cobblestone1=0.013a_03
+textures.cobblestone.name=Pflasterstein-Texturen.
+ textures.cobblestone1=0.013a_03
  textures.cobblestone1.desc=Weichere Textur
  textures.cobblestone2=Alpha
  textures.cobblestone2.desc=Mehr Kontrast
  textures.cobblestone3=Beta 1.7
  textures.cobblestone3.desc=Normal cobblestone
-textures.mossstone.name=Alter Moosiger Pflasterstein textures.mosstone.desc1=Mehr Kontrast .textures.mosstone.desc2=§aIn der Beta 1.8 geändert.
-textures.stone.name=Alter Stein textures.stone.desc1=Kleine Änderungen.
+textures.mossstone.name=Alter Moosiger Pflasterstein
+ textures.mosstone.desc1=Mehr Kontrast.
+ textures.mosstone.desc2=§aIn der Beta 1.8 geändert.
+textures.stone.name=Alter Stein
+ textures.stone.desc1=Kleine Änderungen.
  textures.stone.desc2=§aIn der 1.0 geändert.
 textures.brick.name=Ziegel
  textures.brick1=Classic
@@ -424,7 +465,7 @@ textures.brick.name=Ziegel
  textures.brick2=Alpha
  textures.brick2.desc=Hellere Textur
  textures.brick3=Beta 1.7
- textures.brick3.desc=Normale Ziegel 
+ textures.brick3.desc=Normale Ziegel
 textures.sand.name=Alter Sand
  textures.sand.desc1=Kleine Änderungen.
  textures.sand.desc2=§aIn der 1.0 geändert.
@@ -435,7 +476,8 @@ textures.gravel.name=Kies
  textures.gravel2.desc=Stärkere Textur
  textures.gravel3=1.3
  textures.gravel3.desc=Normale Textur 
-textures.dirt.name=Alte Erde textures.dirt.desc1=Kleine Änderungen.
+textures.dirt.name=Alte Erde
+ textures.dirt.desc1=Kleine Änderungen.
  textures.dirt.desc2=§aIn der 1.0 geändert.
 textures.grass.name=Altes Gras
  textures.grass.desc1=Kleine Änderungen.
@@ -443,27 +485,35 @@ textures.grass.name=Altes Gras
  textures.grass.desc3=§aIn der 1.0 geändert.
 textures.planks.name=Planken
  textures.planks1=0.013a_03
- textures.planks1.desc=Seltsame graue Textur textures.planks2=Beta
- textures.planks2.desc=Fast gleich wie 1.0 textures.planks3=1.0
- textures.planks3.desc=Normale Textur textures.sapling.name=Setzling
+ textures.planks1.desc=Seltsame graue Textur
+ textures.planks2=Beta
+ textures.planks2.desc=Fast gleich wie 1.0
+ textures.planks3=1.0
+ textures.planks3.desc=Normale Textur
+ textures.sapling.name=Setzling
  textures.sapling1=Classic
- textures.sapling1.desc=Weniger Kontrast textures.sapling2=Beta
+ textures.sapling1.desc=Weniger Kontrast
+ textures.sapling2=Beta
  textures.sapling2.desc=Hellere Textur
  textures.sapling3=1.2
- textures.sapling3.desc=Normale Textur 
+ textures.sapling3.desc=Normale Textur
 textures.wool.name=Wolle
  textures.wool1=Classic
- textures.wool1.desc=Helle Texturen textures.wool2=Beta
- textures.wool2.desc=Hellere Texturen textures.wool3=1.2
- textures.wool3.desc=Normale Texturen 
+ textures.wool1.desc=Helle Texturen
+ textures.wool2=Beta
+ textures.wool2.desc=Hellere Texturen
+ textures.wool3=1.2
+ textures.wool3.desc=Normale Texturen
 textures.glowstone.name=Alter Glowstone
  textures.glowstone.desc1=Kleine Änderungen.
  textures.glowstone.desc2=§aIn der 1.0 geändert.
 textures.oreblocks.name=Erz-Blöcke
  textures.oreblocks1=Classic
- textures.oreblocks1.desc=Benutzt §r3§7 Texturen pro Block textures.oreblocks2=Beta
- textures.oreblocks2.desc=Mehr Kontrast, keine "Abgestandendenen" textures.oreblocks3=1.0
- textures.oreblocks3.desc=Normale Texturen 
+ textures.oreblocks1.desc=Benutzt §r3§7 Texturen pro Block
+ textures.oreblocks2=Beta
+ textures.oreblocks2.desc=Mehr Kontrast, keine "Abgestandendenen"
+ textures.oreblocks3=1.0
+ textures.oreblocks3.desc=Normale Texturen
 textures.spawner.name=Alter Mob-Spawner
  textures.spawner.desc1=Blau anstatt Schwarz.
  textures.spawner.desc2=§aIn der 1.0 geändert.
@@ -472,7 +522,8 @@ textures.furnace.name=Steinofen Oberseite
 textures.dispenser.name=Alter Dispenser
  textures.dispenser.desc1=Anderes "Gesicht".
  textures.dispenser.desc2=§aIn der 1.2 geändert.
-textures.web.name=Altes Spinnennetz textures.web.desc1=Totale weiße Textur.
+textures.web.name=Altes Spinnennetz
+ textures.web.desc1=Totale weiße Textur.
 textures.porkchop.name=Altes Schweinefleisch
  textures.porkchop.desc1=Sieht aus wie Beef.
  textures.porkchop.desc2=§aIn der Beta 1.8 geändert.
@@ -485,16 +536,21 @@ textures.coal.name=Alte Kohle
 textures.flint.name=Alter Feuerstein
  textures.flint.desc1=Sieht Kohle ähnich.
  textures.flint.desc2=§aIn der Indev geändert.
-textures.flintsteel.name=Altes Feuerzeug textures.flintsteel.desc1=Nutzt alten Feuerstein.
+textures.flintsteel.name=Altes Feuerzeug
+ textures.flintsteel.desc1=Nutzt alten Feuerstein.
  textures.flintsteel.desc2=§aIn der Indev geändert.
-textures.feather.name=Alte Feder textures.feather.desc1=Feder ist mehr gerade.
+textures.feather.name=Alte Feder
+ textures.feather.desc1=Feder ist mehr gerade.
  textures.feather.desc2=§aIn der Indev geändert.
-textures.pigs.name=Schweineschnauzen textures.pigs.desc1=§aIn der Beta 1.8 hinzugefügt.
+textures.pigs.name=Schweineschnauzen
+ textures.pigs.desc1=§aIn der Beta 1.8 hinzugefügt.
 textures.slimes.name=Alte Schleims
  textures.slimes.desc1=Undurchsichtige Textur mit schwarzen Augen.
  textures.slimes.desc2=§aUnbekannt wann genau geändert.
-textures.steve.name=Steve mit Bart textures.steve.desc1=§aUnbekannt wann genau geändert.
-textures.explosion.name=Alte Explosion textures.explosion.desc1=Entfernt die Schockwellen.
+textures.steve.name=Steve mit Bart
+ textures.steve.desc1=§aUnbekannt wann genau geändert.
+textures.explosion.name=Alte Explosion
+ textures.explosion.desc1=Entfernt die Schockwellen.
  textures.explosion.desc2=§aIn der Beta 1.8 geändert.
 textures.moon.name=Mondphasen
  textures.moon.desc1=§aIn der 1.0 hinzugefügt.
@@ -502,5 +558,6 @@ textures.armorshArmor slot shapesgsumrisse
  textures.armorshape.desc1=§aUnbekannt wann genau entfernt, in der 1.2.4 hinzugefügt.
 textures.cocoa.name=Alte Kakaobohnen
  textures.cocoa.desc1=§aIn der 1.3 geädert.
-textures.netherrack.name=Alter Netherrack textures.netherrack.desc1=Kleine Änderungen
+textures.netherrack.name=Alter Netherrack
+ textures.netherrack.desc1=Kleine Änderungen.
  textures.netherrack.desc2=§aIn der 1.0 geändert.
