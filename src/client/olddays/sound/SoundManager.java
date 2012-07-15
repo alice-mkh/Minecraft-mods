@@ -258,14 +258,14 @@ public class SoundManager
     public static boolean nofall = true;
     public static boolean hurt = false;
     public static boolean door = false;
-    public static int chest = 0;
+    public static int chest = 2;
     public static boolean bow = false;
     public static boolean drr = false;
     public static boolean eat = false;
     public static boolean drink = false;
     public static boolean breaking = false;
     public static boolean lava = false;
-    public static int enderman = 0;
+    public static int enderman = 2;
     public static boolean calm4 = false;
     public static boolean creeper = false;
 
@@ -304,8 +304,8 @@ public class SoundManager
         if (par1Str.startsWith("liquid.lava") && lava){
             return "nothing";
         }
-        if (par1Str.startsWith("mob.endermen.") && enderman>0){
-            if (enderman>1){
+        if (par1Str.startsWith("mob.endermen.") && enderman<2){
+            if (enderman<1){
                 return "nothing";
             }
             if (par1Str.endsWith("death")){
@@ -330,14 +330,14 @@ public class SoundManager
         if (par1Str.startsWith("random.door_close") && door){
             str = "olddays.door_close";
         }
-        if (par1Str.startsWith("random.chestopen") && chest>0){
-            if (chest>1){
+        if (par1Str.startsWith("random.chestopen") && chest<2){
+            if (chest<1){
                 return "nothing";
             }
             str = "olddays.door_open";
         }
-        if (par1Str.startsWith("random.chestclosed") && chest>0){
-            if (chest>1){
+        if (par1Str.startsWith("random.chestclosed") && chest<2){
+            if (chest<1){
                 return "nothing";
             }
             str = "olddays.door_close";
