@@ -82,20 +82,22 @@ public class GuiMerchant extends GuiContainer
         if (flag)
         {
             ((ContainerMerchant)inventorySlots).func_56984_c(field_56487_k);
-            ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-            DataOutputStream dataoutputstream = new DataOutputStream(bytearrayoutputstream);
-
-            try
+            if (mc.theWorld.isRemote)
             {
-                dataoutputstream.writeInt(field_56487_k);
-                Packet250CustomPayload p = new Packet250CustomPayload();
-                p.data = bytearrayoutputstream.toByteArray();
-                p.channel = "MC|TrSel";
-                mc.getSendQueue().addToSendQueue(p);
-            }
-            catch (Exception exception)
-            {
-                exception.printStackTrace();
+                ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+                DataOutputStream dataoutputstream = new DataOutputStream(bytearrayoutputstream);
+                try
+                {
+                    dataoutputstream.writeInt(field_56487_k);
+                    Packet250CustomPayload p = new Packet250CustomPayload();
+                    p.data = bytearrayoutputstream.toByteArray();
+                    p.channel = "MC|TrSel";
+                    mc.getSendQueue().addToSendQueue(p);
+                }
+                catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
             }
         }
     }

@@ -171,20 +171,23 @@ public class GuiScreenBook extends GuiScreen
                 field_55124_b.itemID = 131 + 256;
             }
 
-            ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-            DataOutputStream dataoutputstream = new DataOutputStream(bytearrayoutputstream);
+            if (mc.theWorld.isRemote)
+            {
+                ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+                DataOutputStream dataoutputstream = new DataOutputStream(bytearrayoutputstream);
 
-            try
-            {
-                MerchantRecipeList.writeItemStack(field_55124_b, dataoutputstream);
-                Packet250CustomPayload pa = new Packet250CustomPayload();
-                pa.data = bytearrayoutputstream.toByteArray();
-                pa.channel = s;
-                mc.getSendQueue().addToSendQueue(pa);
-            }
-            catch (Exception exception)
-            {
-                exception.printStackTrace();
+                try
+                {
+                    MerchantRecipeList.writeItemStack(field_55124_b, dataoutputstream);
+                    Packet250CustomPayload pa = new Packet250CustomPayload();
+                    pa.data = bytearrayoutputstream.toByteArray();
+                    pa.channel = s;
+                    mc.getSendQueue().addToSendQueue(pa);
+                }
+                catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
             }
         }
     }
