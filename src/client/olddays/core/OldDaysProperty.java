@@ -23,6 +23,7 @@ public class OldDaysProperty{
     public boolean error;
     public boolean allowedInSMP;
     public boolean allowedInFallback;
+    public boolean noSounds;
 
     public OldDaysProperty(OldDaysModule m, int i, String s, int t, String f){
         module = m;
@@ -33,6 +34,7 @@ public class OldDaysProperty{
         error = false;
         allowedInSMP = true;
         allowedInFallback = true;
+        noSounds = false;
         try{
             field = module.getClass().getDeclaredField(f);
         }catch(Exception ex){
@@ -57,6 +59,9 @@ public class OldDaysProperty{
             if (mod_OldDays.getMinecraftInstance().theWorld.isRemote){
                 return 3;
             }
+        }
+        if (noSounds){
+            return 4;
         }
         return 0;
     }

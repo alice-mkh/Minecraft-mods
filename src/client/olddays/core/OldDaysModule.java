@@ -41,7 +41,7 @@ public class OldDaysModule{
         if (sound.exists()){
             mod_OldDays.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
         }else{
-            getPropertyById(id).disable();
+            getPropertyById(id).noSounds = true;
         }
     }
 
@@ -50,7 +50,7 @@ public class OldDaysModule{
         if (sound.exists()){
             mod_OldDays.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
         }else{
-            getPropertyById(id).disable();
+            getPropertyById(id).noSounds = true;
         }
     }
 
