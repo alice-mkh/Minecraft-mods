@@ -24,6 +24,7 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(17,"Liquid drops",          false, "Drops",             "");
         addProperty(18,"Hand",                  2,     "Hand",              "", new String[]{"Survival Test", "Indev", "Beta"});
         addProperty(19,"Tool breaking anim",    false, "ToolBreaking",      "");
+        addProperty(20,"Old labels",            false, "Labels",            "");
         replaceBlocks();
         redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
@@ -61,6 +62,7 @@ public class ODEyecandy extends OldDaysModule{
             case 17:setBool(net.minecraft.src.EntityDropParticleFX.class, "allow", Drops); break;
             case 18:setInt(net.minecraft.src.ItemRenderer.class, "hand", Hand); break;
             case 19:setBool(net.minecraft.src.EntityLiving.class, "toolbreakanim", ToolBreaking); break;
+            case 20:setBool(net.minecraft.src.RenderLiving.class, "labels", Labels); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -89,6 +91,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean Drops;
     public static int Hand = 2;
     public static boolean ToolBreaking;
+    public static boolean Labels;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){

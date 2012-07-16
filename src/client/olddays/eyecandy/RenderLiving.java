@@ -10,6 +10,7 @@ public class RenderLiving extends Render
     public static boolean bobbing = false;
     public static boolean labels = false;
     public static boolean stick = false;
+    public static boolean oldlabels = false;
 
     protected ModelBase mainModel;
 
@@ -384,7 +385,7 @@ public class RenderLiving extends Render
     {
         float f = par1EntityLiving.getDistanceToEntity(renderManager.livingPlayer);
 
-        if (f > (float)par9)
+        if (f > (float)par9 && !oldlabels)
         {
             return;
         }
@@ -392,6 +393,9 @@ public class RenderLiving extends Render
         FontRenderer fontrenderer = getFontRendererFromRenderManager();
         float f1 = 1.6F;
         float f2 = 0.01666667F * f1;
+        if (oldlabels){
+            f2 = (float)((double)f2 * (Math.sqrt(f) / 2D));
+        }
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);

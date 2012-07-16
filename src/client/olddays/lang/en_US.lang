@@ -351,6 +351,10 @@ eyecandy.hand.name=Hand
  eyecandy.hand3.desc=Default hand
 eyecandy.toolbreaking.name=Tool breaking anim
  eyecandy.toolbreaking.desc1=§aAdded in 1.0.
+eyecandy.labels.name=Old labels
+ eyecandy.labels.desc1=They are smaller when mob
+ eyecandy.labels.desc2=or player is far away.
+ eyecandy.labels.desc3=§aChanged in unknown Beta.
 
 sounds.explode.name=Old explosion sound
  sounds.explode.desc1=§aChanged in 1.0.
