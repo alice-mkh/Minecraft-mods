@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class BlockLeaves extends BlockLeavesBase
 {
+    public static boolean apples = true;
+
     public int fasttex;
     public int fancytex;
 
@@ -275,7 +277,7 @@ public class BlockLeaves extends BlockLeavesBase
                 dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(i, 1, damageDropped(par5)));
             }
 
-            if ((par5 & 3) == 0 && par1World.rand.nextInt(200) == 0)
+            if ((par5 & 3) == 0 && par1World.rand.nextInt(200) == 0 && apples)
             {
                 dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.appleRed, 1, 0));
             }
