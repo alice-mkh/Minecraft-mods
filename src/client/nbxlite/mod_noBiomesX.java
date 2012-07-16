@@ -289,6 +289,7 @@ public class mod_noBiomesX extends BaseModMp{
         bedrockfx = new TextureTerrainPngFX();
         waterfx = new TextureTerrainPngFX();
         lavafx = new TextureTerrainPngFX();
+        LoadingScreenRenderer.smooth = true;
     }
 
     public static boolean isFinite(){
@@ -368,6 +369,27 @@ public class mod_noBiomesX extends BaseModMp{
             Block.blocksList[Block.vine.blockID] = null;
             BlockVine2 vine2 = (BlockVine2)(new BlockVine2(Block.vine.blockID)).setHardness(0.2F).setStepSound(Block.soundGrassFootstep).setBlockName("vine").setRequiresSelfNotify();
             Block.blocksList[Block.vine.blockID] = vine2;
+
+            Item.itemsList[256 + 34] = null;
+            ItemHoe2 hoeWood = new ItemHoe2(34, EnumToolMaterial.WOOD);
+            hoeWood.setIconCoord(0, 8);
+            hoeWood.setItemName("hoeWood");
+            Item.itemsList[256 + 35] = null;
+            ItemHoe2 hoeStone = new ItemHoe2(35, EnumToolMaterial.STONE);
+            hoeStone.setIconCoord(1, 8);
+            hoeStone.setItemName("hoeStone");
+            Item.itemsList[256 + 36] = null;
+            ItemHoe2 hoeSteel = new ItemHoe2(36, EnumToolMaterial.IRON);
+            hoeSteel.setIconCoord(2, 8);
+            hoeSteel.setItemName("hoeIron");
+            Item.itemsList[256 + 37] = null;
+            ItemHoe2 hoeDiamond = new ItemHoe2(37, EnumToolMaterial.EMERALD);
+            hoeDiamond.setIconCoord(3, 8);
+            hoeDiamond.setItemName("hoeDiamond");
+            Item.itemsList[256 + 38] = null;
+            ItemHoe2 hoeGold = new ItemHoe2(38, EnumToolMaterial.GOLD);
+            hoeGold.setIconCoord(4, 8);
+            hoeGold.setItemName("hoeGold");
         }catch (Exception exception){
             System.out.println(exception);
         }
@@ -537,6 +559,7 @@ public class mod_noBiomesX extends BaseModMp{
         OpaqueFlatClouds = gen==GEN_BIOMELESS && features>FEATURES_ALPHA11201 && UseOpaqueFlatClouds;
         RestrictSlimes = isFinite() && IndevHeight<96;
         IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;
+        EntityAnimal.despawn = Generator!=GEN_NEWBIOMES && !UseNewSpawning;
         if (Generator==GEN_NEWBIOMES){
             VoidFog = 0;
         }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
@@ -778,7 +801,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static int FogColor;
     public static int CloudColor;
     public static boolean Import = false;
-    public static boolean SmoothLoading = true;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
     public static boolean HideGUI = true;
     public static int DefaultGenerator = 6;

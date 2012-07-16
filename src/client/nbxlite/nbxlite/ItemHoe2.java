@@ -1,14 +1,13 @@
-package net.minecraft.src;
+package net.minecraft.src.nbxlite;
 
 import java.util.Random;
+import net.minecraft.src.*;
 
-public class ItemHoe extends Item
+public class ItemHoe2 extends ItemHoe
 {
-    public ItemHoe(int par1, EnumToolMaterial par2EnumToolMaterial)
+    public ItemHoe2(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
-        super(par1);
-        maxStackSize = 1;
-        setMaxDamage(par2EnumToolMaterial.getMaxUses());
+        super(par1, par2EnumToolMaterial);
     }
 
     /**
@@ -60,13 +59,5 @@ public class ItemHoe extends Item
         {
             return false;
         }
-    }
-
-    /**
-     * Returns True is the item is renderer in full 3D when hold.
-     */
-    public boolean isFull3D()
-    {
-        return true;
     }
 }
