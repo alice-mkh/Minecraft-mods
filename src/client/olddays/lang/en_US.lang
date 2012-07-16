@@ -404,7 +404,7 @@ sounds.creeper.name=Old creeper sounds
 
 crafting.oldplanks.name=Old planks
  crafting.oldplanks.desc1=Gives oak planks from every log.
- crafting.oldplanks.desc2=§aChanged in Minecraft 1.2.4.
+ crafting.oldplanks.desc2=§aChanged in 1.2.4.
 crafting.clotharmor.name=Leather armor
  crafting.clotharmor.desc1=Allows to craft leather
  crafting.clotharmor.desc2=armor from cloth block.
