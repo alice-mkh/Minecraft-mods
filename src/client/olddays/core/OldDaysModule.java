@@ -195,4 +195,12 @@ public class OldDaysModule{
     }
 
     public void keyboardEvent(KeyBinding keybinding){}
+
+    public boolean onTick(){
+        return true;
+    }
+
+    public boolean onGUITick(GuiScreen gui){
+        return true;
+    }
 }

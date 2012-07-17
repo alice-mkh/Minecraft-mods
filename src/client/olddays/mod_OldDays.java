@@ -23,6 +23,7 @@ public class mod_OldDays extends BaseModMp{
         ModLoader.registerKey(this, this.keySettings, false);
         ModLoader.addLocalization("key_settings", "Old Days Settings");
         ModLoader.setInGameHook(this, true, true);
+        ModLoader.setInGUIHook(this, true, true);
         loadModules(this);
         saveman.loadAll();
     }
@@ -48,6 +49,16 @@ public class mod_OldDays extends BaseModMp{
     public boolean onTickInGame(float f, Minecraft minecraft){
         smpman.onTick();
         texman.onTick();
+        for (int i = 0; i < modules.size(); i++){
+            getModuleById(i).onTick();
+        }
+        return true;
+    }
+
+    public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui){
+        for (int i = 0; i < modules.size(); i++){
+            getModuleById(i).onGUITick(gui);
+        }
         return true;
     }
 
