@@ -574,6 +574,7 @@ public class mod_noBiomesX extends BaseModMp{
             RenderGlobal.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
             RenderGlobal.opaqueFlatClouds = gen==GEN_BIOMELESS && features>FEATURES_ALPHA11201 && UseOpaqueFlatClouds;
             RenderGlobal.sunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
+            EntityRenderer.sunriseFog = gen>=GEN_NEWBIOMES;
             EntityRenderer.sunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
         }catch(Exception ex){}
         try{
@@ -581,6 +582,7 @@ public class mod_noBiomesX extends BaseModMp{
             EntityRenderer.voidFog = Generator>=GEN_NEWBIOMES;
             EntityRenderer.oldFog = isFinite();
             EntityRenderer.snow = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && SnowCovered;
+            EntityRenderer.bounds = isFinite();
         }catch(Exception ex){}
         RenderGhast2.bright = gen<GEN_NEWBIOMES;
         GenerateNewOres=ores;

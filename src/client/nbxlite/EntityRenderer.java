@@ -10,7 +10,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
-import net.minecraft.src.nbxlite.oldbiomes.*;
 
 public class EntityRenderer
 {
@@ -21,6 +20,7 @@ public class EntityRenderer
     public static boolean voidFog = true;
     public static boolean oldFog = false;
     public static boolean snow = false;
+    public static boolean bounds = false;
 
     private float[] lightTable;
 
@@ -1244,8 +1244,8 @@ public class EntityRenderer
                     GL11.glEnable(GL11.GL_ALPHA_TEST);
                 }
             }
-            if (mod_noBiomesX.isFinite()){
-                renderglobal.renderBounds(par1);
+            if (bounds){
+                net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, par1);
             }
 
             GL11.glDisable(GL11.GL_BLEND);
