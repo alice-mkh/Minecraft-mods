@@ -548,6 +548,7 @@ public class mod_noBiomesX extends BaseModMp{
             BiomeGenBase.taigaHills.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
             BiomeGenBase.taigaHills.maxHeight = features<FEATURES_13 ? 0.7F : 0.8F;
             BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
+            WorldGenDesertWells.enable = features>=FEATURES_12;
         }
         SunriseEffect = gen>GEN_BIOMELESS;
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
@@ -560,6 +561,7 @@ public class mod_noBiomesX extends BaseModMp{
         RestrictSlimes = isFinite() && IndevHeight<96;
         IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;
         EntityAnimal.despawn = Generator!=GEN_NEWBIOMES && !UseNewSpawning;
+        EntityWolf.despawn = Generator!=GEN_NEWBIOMES && !UseNewSpawning;
         if (Generator==GEN_NEWBIOMES){
             VoidFog = 0;
         }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){

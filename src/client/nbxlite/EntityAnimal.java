@@ -5,6 +5,8 @@ import java.util.Random;
 
 public abstract class EntityAnimal extends EntityAgeable
 {
+    public static boolean despawn = false;
+
     private int inLove;
 
     /**
@@ -312,7 +314,7 @@ public abstract class EntityAnimal extends EntityAgeable
      */
     protected boolean canDespawn()
     {
-        return mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES && !mod_noBiomesX.UseNewSpawning && !breeded;
+        return despawn && !breeded;
     }
 
     /**

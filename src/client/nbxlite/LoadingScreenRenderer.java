@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 
 public class LoadingScreenRenderer implements IProgressUpdate
 {
+    public static boolean smooth = false;
+
     private String field_1004_a;
 
     /** A reference to the Minecraft object. */
@@ -115,7 +117,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
 
         long l = System.currentTimeMillis();
 
-        if (l - field_1006_d < (mod_noBiomesX.SmoothLoading ? 20L : 100L))
+        if (l - field_1006_d < (smooth ? 20L : 100L))
         {
             return;
         }

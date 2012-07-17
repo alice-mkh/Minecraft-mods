@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class EntityWolf extends EntityTameable
 {
+    public static boolean despawn = false;
+
     /**
      * This flag is set when the wolf is looking at a player with interest, i.e. with tilted head. This happens when
      * tamed wolf is wound and player holds porkchop (raw or cooked), or when wild wolf sees bone in player's hands.
@@ -138,7 +140,7 @@ public class EntityWolf extends EntityTameable
      */
     protected boolean canDespawn()
     {
-        return (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.UseNewSpawning) ? isAngry() : !isTamed();
+        return despawn ? !isTamed() : isAngry();
     }
 
     /**
