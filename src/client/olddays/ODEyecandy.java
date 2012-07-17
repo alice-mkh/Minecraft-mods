@@ -25,6 +25,7 @@ public class ODEyecandy extends OldDaysModule{
         addProperty(18,"Hand",                  2,     "Hand",              "", new String[]{"Survival Test", "Indev", "Beta"});
         addProperty(19,"Tool breaking anim",    false, "ToolBreaking",      "");
         addProperty(20,"Old labels",            false, "Labels",            "");
+        addProperty(21,"Smooth loading bar",    true,  "SmoothLoading",     "");
         replaceBlocks();
         redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
@@ -63,6 +64,7 @@ public class ODEyecandy extends OldDaysModule{
             case 18:setInt(net.minecraft.src.ItemRenderer.class, "hand", Hand); break;
             case 19:setBool(net.minecraft.src.EntityLiving.class, "toolbreakanim", ToolBreaking); break;
             case 20:setBool(net.minecraft.src.RenderLiving.class, "labels", Labels); break;
+            case 21:setBool(net.minecraft.src.LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -92,6 +94,7 @@ public class ODEyecandy extends OldDaysModule{
     public static int Hand = 2;
     public static boolean ToolBreaking;
     public static boolean Labels;
+    public static boolean SmoothLoading = true;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){

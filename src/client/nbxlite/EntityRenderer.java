@@ -14,6 +14,16 @@ import net.minecraft.src.nbxlite.oldbiomes.*;
 
 public class EntityRenderer
 {
+    public static boolean sunriseFog = true;
+    public static boolean sunriseAtNorth = false;
+    public static boolean thirdPersonBobbing = true;
+    public static boolean classicLight = false;
+    public static boolean voidFog = true;
+    public static boolean oldFog = false;
+    public static boolean snow = false;
+
+    private float[] lightTable;
+
     public static boolean anaglyphEnable = false;
 
     /** Anaglyph field (0=R, 1=GB) */
@@ -186,6 +196,7 @@ public class EntityRenderer
         itemRenderer = new ItemRenderer(par1Minecraft);
         lightmapTexture = par1Minecraft.renderEngine.allocateAndSetupTexture(new BufferedImage(16, 16, 1));
         lightmapColors = new int[256];
+        calculateLightTable();
     }
 
     /**
@@ -395,7 +406,7 @@ public class EntityRenderer
      */
     private void setupViewBobbing(float par1)
     {
-        if (!(mc.renderViewEntity instanceof EntityPlayer))
+        if (!(mc.renderViewEntity instanceof EntityPlayer) || (!thirdPersonBobbing && mc.gameSettings.thirdPersonView > 0))
         {
             return;
         }
@@ -531,7 +542,7 @@ public class EntityRenderer
     private void setupCameraTransform(float par1, int par2)
     {
         farPlaneDistance = 256 >> mc.gameSettings.renderDistance;
-        if (mod_noBiomesX.isFinite()){
+        if (oldFog){
             farPlaneDistance = (512 >> (mc.gameSettings.renderDistance << 1));
         }
         GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -749,7 +760,7 @@ public class EntityRenderer
         {
             return;
         }
-        if(mod_noBiomesX.ClassicLight){
+        if(classicLight){
             updateLightmap_classicStyle();
             return;
         }
@@ -855,31 +866,51 @@ public class EntityRenderer
         mc.renderEngine.createTextureFromBytes(lightmapColors, 16, 16, lightmapTexture);
     }
 
+    private void calculateLightTable(){
+        lightTable = new float[16];
+        float f = 0.05F;
+        for (int i = 0; i <= 15; i++)
+        {
+            float f1 = 1.0F - (float)i / 15F;
+            lightTable[i] = ((1.0F - f1) / (f1 * 3F + 1.0F)) * (1.0F - f) + f;
+        }
+    }
+
     private void updateLightmap_classicStyle()
     {
+   
+        int lightTintRed = 255;
+        int lightTintGreen = 255;
+        int lightTintBlue = 255;
         World world = mc.theWorld;
+        float[] lightBrightnessTable = null;
+        if (world.worldProvider.worldType == 0 || world.worldProvider.worldType == 1){
+            lightBrightnessTable = lightTable;
+        }else{
+            lightBrightnessTable = world.worldProvider.lightBrightnessTable;
+        }
         int i = world.calculateSkylightSubtracted(1.0F);
         int j = 0;
         for(int k = 0; k < 16; k++)
         {
             for(int l = 0; l < 16; l++)
             {
-                float f = world.worldProvider.lightBrightnessTable[l];
+                float f = lightBrightnessTable[l];
                 int i1 = k - i;
                 if(i1 < 0)
                 {
                     i1 = 0;
                 }
-                float f1 = world.worldProvider.lightBrightnessTable[i1];
+                float f1 = lightBrightnessTable[i1];
                 if (world.worldProvider.worldType == 1)
                 {
                     f1 = 0.22F + f1 * 0.75F;
                 }
                 int j1 = (int)(f * 255F);
                 int k1 = (int)(f1 * 255F);
-                float f2 = 1.0F - (float)mod_noBiomesX.LightTintRed / 255F;
-                float f3 = 1.0F - (float)mod_noBiomesX.LightTintGreen / 255F;
-                float f4 = 1.0F - (float)mod_noBiomesX.LightTintBlue / 255F;
+                float f2 = 1.0F - (float)lightTintRed / 255F;
+                float f3 = 1.0F - (float)lightTintGreen / 255F;
+                float f4 = 1.0F - (float)lightTintBlue / 255F;
                 float f5 = (float)(15 - k) / 15F;
                 f2 *= f5;
                 f3 *= f5;
@@ -1282,7 +1313,7 @@ public class EntityRenderer
             }
 
             Profiler.endStartSection("weather");
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+            if (snow){
                 renderSnow(par1);
             }else{
                 renderRainSnow(par1);
@@ -1412,7 +1443,7 @@ public class EntityRenderer
 
     protected void renderSnow(float f)
     {
-        if(!mod_noBiomesX.SnowCovered || mc.thePlayer.dimension!=0)
+        if(mc.thePlayer.dimension!=0)
         {
             return;
         }
@@ -1748,10 +1779,10 @@ public class EntityRenderer
         fogColorGreen = (float)vec3d1.yCoord;
         fogColorBlue = (float)vec3d1.zCoord;
 
-        if (mc.gameSettings.renderDistance < 2)
+        if (mc.gameSettings.renderDistance < 2 && sunriseFog)
         {
             Vec3D vec3d2 = MathHelper.sin(world.getCelestialAngleRadians(par1)) <= 0.0F ? Vec3D.createVector(1.0D, 0.0D, 0.0D) : Vec3D.createVector(-1D, 0.0D, 0.0D);
-            if (mod_noBiomesX.SunriseAtNorth){
+            if (sunriseAtNorth){
                 vec3d2 = MathHelper.sin(world.getCelestialAngleRadians(f)) <= 0.0F ? Vec3D.createVector(0.0D, 0.0D, -1D) : Vec3D.createVector(0.0D, 0.0D, 1.0D);
             }
             float f5 = (float)entityliving.getLook(par1).dotProduct(vec3d2);
@@ -1841,7 +1872,7 @@ public class EntityRenderer
             }
         }
 
-        if (d < 1.0D && mod_noBiomesX.VoidFog==0)
+        if (d < 1.0D && voidFog)
         {
             if (d < 0.0D)
             {
@@ -1869,7 +1900,7 @@ public class EntityRenderer
 
     private void setFog(){
         if (GLContext.getCapabilities().GL_NV_fog_distance){
-            if(!mod_noBiomesX.isFinite()){
+            if(!oldFog){
                 GL11.glFogi(34138, 34139);
             }else{
                 GL11.glFogi(34138, 34140);
@@ -2006,7 +2037,7 @@ public class EntityRenderer
             {
                 double d = (double)((entityliving.getBrightnessForRender(par2) & 0xf00000) >> 20) / 16D + (entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par2 + 4D) / 32D;
 
-                if (d < 1.0D && mod_noBiomesX.VoidFog==0)
+                if (d < 1.0D && voidFog)
                 {
                     if (d < 0.0D)
                     {

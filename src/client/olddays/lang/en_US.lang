@@ -355,6 +355,8 @@ eyecandy.labels.name=Old labels
  eyecandy.labels.desc1=They are smaller when mob
  eyecandy.labels.desc2=or player is far away.
  eyecandy.labels.desc3=§aChanged in unknown Beta.
+eyecandy.smoothloading.name=Smooth loading bar
+ eyecandy.smoothloading.desc1=§aChanged in 1.2.
 
 sounds.explode.name=Old explosion sound
  sounds.explode.desc1=§aChanged in 1.0.

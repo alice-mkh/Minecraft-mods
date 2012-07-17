@@ -23,24 +23,6 @@ public class WorldProviderSurface extends WorldProvider
     }
 
     /**
-     * Creates the light to brightness table
-     */
-    protected void generateLightBrightnessTable()
-    {
-        float f = 0.0F;
-        if(mod_noBiomesX.ClassicLight)
-        {
-            f = 0.05F;
-        }
-
-        for (int i = 0; i <= 15; i++)
-        {
-            float f1 = 1.0F - (float)i / 15F;
-            lightBrightnessTable[i] = ((1.0F - f1) / (f1 * 3F + 1.0F)) * (1.0F - f) + f;
-        }
-    }
-
-    /**
      * Returns the chunk provider back for the world provider
      */
     public IChunkProvider getChunkProvider()
@@ -72,17 +54,6 @@ public class WorldProviderSurface extends WorldProvider
             return i == Block.grass.blockID;
         }
         return i == Block.sand.blockID;
-    }
-
-    /**
-     * Returns array with sunrise/sunset colors
-     */
-    public float[] calcSunriseSunsetColors(float par1, float par2)
-    {
-        if(!mod_noBiomesX.SunriseEffect || (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY)){
-            return null;
-        }
-        return super.calcSunriseSunsetColors(par1, par2);
     }
 
     /**

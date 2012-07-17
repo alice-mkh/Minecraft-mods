@@ -40,7 +40,9 @@ public class mod_noBiomesX extends BaseModMp{
             UseNewSpawning = Boolean.parseBoolean(properties.getProperty("UseNewSpawning"));
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
             UseOpaqueFlatClouds = Boolean.parseBoolean(properties.getProperty("UseOpaqueFlatClouds"));
-            TexturedClouds = Boolean.parseBoolean(properties.getProperty("TexturedClouds"));
+            try{
+                RenderGlobal.texClouds = Boolean.parseBoolean(properties.getProperty("TexturedClouds"));
+            }catch(Exception ex){}
             HideGUI = Boolean.parseBoolean(properties.getProperty("HideGUI"));
             DefaultGenerator = properties.getProperty("DefaultGenerator") == null ? 6 : Integer.parseInt(properties.getProperty("DefaultGenerator"));
             DefaultFeaturesBeta = properties.getProperty("DefaultFeaturesBeta") == null ? 4 : Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
@@ -289,7 +291,6 @@ public class mod_noBiomesX extends BaseModMp{
         bedrockfx = new TextureTerrainPngFX();
         waterfx = new TextureTerrainPngFX();
         lavafx = new TextureTerrainPngFX();
-        LoadingScreenRenderer.smooth = true;
     }
 
     public static boolean isFinite(){
@@ -550,14 +551,10 @@ public class mod_noBiomesX extends BaseModMp{
             BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
             WorldGenDesertWells.enable = features>=FEATURES_12;
         }
-        SunriseEffect = gen>GEN_BIOMELESS;
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
         world.worldProvider.registerWorld(world);
         SnowCovered = (gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && (theme==THEME_NORMAL || theme==THEME_WOODS)) ? snow : false;
-        SunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
-        ClassicLight = gen<GEN_NEWBIOMES;
         GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
-        OpaqueFlatClouds = gen==GEN_BIOMELESS && features>FEATURES_ALPHA11201 && UseOpaqueFlatClouds;
         RestrictSlimes = isFinite() && IndevHeight<96;
         IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;
         EntityAnimal.despawn = Generator!=GEN_NEWBIOMES && !UseNewSpawning;
@@ -573,6 +570,19 @@ public class mod_noBiomesX extends BaseModMp{
         }else if (Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201){
             VoidFog = 4;
         }
+        try{
+            RenderGlobal.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
+            RenderGlobal.opaqueFlatClouds = gen==GEN_BIOMELESS && features>FEATURES_ALPHA11201 && UseOpaqueFlatClouds;
+            RenderGlobal.sunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
+            EntityRenderer.sunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
+        }catch(Exception ex){}
+        try{
+            EntityRenderer.classicLight = gen<GEN_NEWBIOMES;
+            EntityRenderer.voidFog = Generator>=GEN_NEWBIOMES;
+            EntityRenderer.oldFog = isFinite();
+            EntityRenderer.snow = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && SnowCovered;
+        }catch(Exception ex){}
+        RenderGhast2.bright = gen<GEN_NEWBIOMES;
         GenerateNewOres=ores;
         FallbackColors=!hasEntry("nbxlite/textures");
     }
@@ -768,16 +778,11 @@ public class mod_noBiomesX extends BaseModMp{
     }
 
     public static int Generator = 2;
-    public static boolean SunriseEffect = true;
     public static boolean SnowCovered = false;
-    public static boolean ClassicLight=true;
     public static int VoidFog=0;//0 - default; 1 - no void fog, horizon moves; 2 - no void fog, horizon doesn't move; 3 - no void fog, no bottom color; 4 - no void fog, no horizon
     public static boolean GreenGrassSides=false;
     public static boolean NoGreenGrassSides=false;
-    public static boolean OpaqueFlatClouds=false;
     public static boolean UseOpaqueFlatClouds=false;
-    public static boolean TexturedClouds=false;
-    public static boolean SunriseAtNorth=false;
     public static boolean FallbackColors=false;
     public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha
@@ -822,10 +827,6 @@ public class mod_noBiomesX extends BaseModMp{
     public static TextureTerrainPngFX lavafx;
     public static int emptyImage;
     public static int textureWidth;
-   
-    public static int LightTintRed = 255;
-    public static int LightTintGreen = 255;
-    public static int LightTintBlue = 255;
 
     public static int GEN_BIOMELESS = 0;
     public static int GEN_OLDBIOMES = 1;

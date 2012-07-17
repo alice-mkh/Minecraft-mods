@@ -10,6 +10,8 @@ import net.minecraft.src.RenderLiving;
 
 public class RenderGhast2 extends RenderLiving
 {
+    public static boolean bright = false;
+
     public RenderGhast2()
     {
         super(new ModelGhast(), 0.5F);
@@ -27,7 +29,7 @@ public class RenderGhast2 extends RenderLiving
         float f2 = (8F + f1) / 2.0F;
         float f3 = (8F + 1.0F / f1) / 2.0F;
         GL11.glScalef(f3, f2, f3);
-        if (mod_noBiomesX.ClassicLight){
+        if (bright){
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(61680 % 0x10000) / 1.0F, (float)(61680 / 0x10000) / 1.0F);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -8,6 +8,11 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderGlobal implements IWorldAccess
 {
+    public static boolean texClouds = false;
+    public static boolean opaqueFlatClouds = false;
+    public static boolean sunriseColors = true;
+    public static boolean sunriseAtNorth = false;
+
     public List tileEntities;
 
     /** A reference to the World object. */
@@ -979,6 +984,9 @@ public class RenderGlobal implements IWorldAccess
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
         float af[] = worldObj.worldProvider.calcSunriseSunsetColors(worldObj.getCelestialAngle(par1), par1);
+        if (!sunriseColors){
+            af = null;
+        }
 
         if (af != null)
         {
@@ -987,7 +995,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glPushMatrix();
             GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(worldObj.getCelestialAngleRadians(par1)) >= 0.0F ? 0.0F : 180F, 0.0F, 0.0F, 1.0F);
-            if (!mod_noBiomesX.SunriseAtNorth){
+            if (!sunriseAtNorth){
                 GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
             }
             float f6 = af[0];
@@ -1032,7 +1040,7 @@ public class RenderGlobal implements IWorldAccess
         float f12 = 0.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) d);
         GL11.glTranslatef(f7, f9, f12);
-        if (!mod_noBiomesX.SunriseAtNorth){
+        if (!sunriseAtNorth){
             GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
         }else{
             GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
@@ -1487,7 +1495,7 @@ public class RenderGlobal implements IWorldAccess
             return;
         }
 
-        if (mc.gameSettings.fancyGraphics && !mod_noBiomesX.OpaqueFlatClouds)
+        if (mc.gameSettings.fancyGraphics && !opaqueFlatClouds)
         {
             renderCloudsFancy(par1);
             return;
@@ -1496,7 +1504,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glDisable(GL11.GL_CULL_FACE);
         float f = (float)(mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)par1);
         byte byte0 = 32;
-        int i = (mod_noBiomesX.OpaqueFlatClouds ? 1024 : 256) / byte0;
+        int i = (opaqueFlatClouds ? 1024 : 256) / byte0;
         Tessellator tessellator = Tessellator.instance;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
@@ -1528,7 +1536,7 @@ public class RenderGlobal implements IWorldAccess
         float f9 = (float)(d1 * (double)f5);
         float f10 = (float)(d2 * (double)f5);
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, mod_noBiomesX.OpaqueFlatClouds ? 1.0F : 0.8F);
+        tessellator.setColorRGBA_F(f1, f2, f3, opaqueFlatClouds ? 1.0F : 0.8F);
 
         for (int l = -byte0 * i; l < byte0 * i; l += byte0)
         {
@@ -1578,7 +1586,7 @@ public class RenderGlobal implements IWorldAccess
         int j = MathHelper.floor_double(d2 / 2048D);
         d1 -= i * 2048;
         d2 -= j * 2048;
-        if (mod_noBiomesX.TexturedClouds){
+        if (texClouds){
             OpenGlHelper.setActiveTexture(33985);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/fluff.png"));
             GL11.glTexGeni(8192, 9472, 9217);
@@ -1742,7 +1750,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        if (mod_noBiomesX.TexturedClouds){
+        if (texClouds){
             OpenGlHelper.setActiveTexture(33985);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(3168);
