@@ -7,12 +7,14 @@ public class GuiButtonPage extends GuiButton
 {
     public boolean right = false;
     private GuiScreen parent;
+    public int timer;
 
     public GuiButtonPage(int id, int w, int sh, int sw, boolean r, GuiScreen p)
     {
         super(id, r ? sw - w : 0, 0, w, sh, r ? ">" : "<");
         right = r;
         parent = p;
+        timer = 0;
     }
 
     /**
@@ -20,6 +22,9 @@ public class GuiButtonPage extends GuiButton
      */
     public void drawButton(Minecraft par1Minecraft, int par2, int par3)
     {
+        if (timer > 0){
+            timer--;
+        }
         if (!drawButton)
         {
             return;
@@ -36,7 +41,8 @@ public class GuiButtonPage extends GuiButton
         {
             j = 0xffffa0;
         }
-        if(flag2){
+        if(flag2 && timer <= 0){
+            timer = 5;
             parent.actionPerformed(this);
         }
         drawRect(xPosition, yPosition, xPosition+width, yPosition+height, flag ? 0x90000000 : 0x80000000);

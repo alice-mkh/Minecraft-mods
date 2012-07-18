@@ -75,7 +75,7 @@ public class OldDaysProperty{
     }
 
     protected void disable(){
-        System.out.println("Error in module "+module.name+", property "+name+", disabling");
+        System.out.println("Error in "+module.name+" module, "+name+" property, disabling");
         error = true;
     }
 
