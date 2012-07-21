@@ -33,7 +33,7 @@ public class OldDaysEasyLocalization {
             throw new InvalidParameterException("Mod name can't be null");
         }
         this.modName = modName;
-        load(getCurrentLanguage());
+        load(getCurrentLanguage(), true);
     }
 
     /**
@@ -45,12 +45,12 @@ public class OldDaysEasyLocalization {
     public synchronized String get(String key) {
         String currentLanguage = getCurrentLanguage();
         if (!currentLanguage.equals(loadedLanguage)) {
-            load(currentLanguage);
+            load(currentLanguage, true);
         }
         return mappings.getProperty(key, defaultMappings.getProperty(key, key));
     }
 
-    private void load(String newLanguage) {
+    private void load(String newLanguage, boolean force) {
         defaultMappings.clear();
         mappings.clear();
         try {
@@ -65,6 +65,9 @@ public class OldDaysEasyLocalization {
             }
             defaultLangStream.close();
         } catch (Exception e) {
+            if (force){
+                load(DEFAULT_LANGUAGE, false);
+            }
             return;
         }
         loadedLanguage = newLanguage;
