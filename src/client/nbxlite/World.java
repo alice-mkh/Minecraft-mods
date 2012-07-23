@@ -220,8 +220,8 @@ public class World implements IBlockAccess
         ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
         ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
         ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
-        ODNBXlite NBX = new ODNBXlite();
-        NBX.RequestGeneratorInfo();
+//         ODNBXlite NBX = new ODNBXlite();
+//         NBX.RequestGeneratorInfo();
         turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();

@@ -10,9 +10,17 @@ import net.minecraft.src.nbxlite.indev.McLevelImporter;
 import net.minecraft.src.nbxlite.lib.EasyLocalization;
 import java.util.zip.*;
 
-public class ODNBXlite extends BaseModMp{
-    public ODNBXlite(){
-        Properties properties = new Properties();
+public class ODNBXlite extends OldDaysModule{
+    public ODNBXlite(mod_OldDays c){
+        super(c, 8, "NBXlite");
+        new OldDaysPropertyInt(this, 1, 32, "SurrGroundHeight", 64);
+        replaceBlocks();
+        registerGears();
+        terrfx = new TextureTerrainPngFX();
+        bedrockfx = new TextureTerrainPngFX();
+        waterfx = new TextureTerrainPngFX();
+        lavafx = new TextureTerrainPngFX();
+/*        Properties properties = new Properties();
         try{
             File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/NBXlite.properties").toString());
             boolean flag = file.createNewFile();
@@ -57,6 +65,12 @@ public class ODNBXlite extends BaseModMp{
         }
         catch(IOException exception){
             System.out.println(exception);
+        }*/
+    }
+
+    public void callback (int i){
+        if (!renderersAdded && RenderManager.instance!=null){
+            addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
         }
     }
 
@@ -69,7 +83,7 @@ public class ODNBXlite extends BaseModMp{
         ModLoader.registerBlock(gear);
         ModLoader.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(0));
         ModLoader.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(1));
-        gearRenderID = ModLoader.getUniqueBlockModelID(this, false);
+        gearRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
 
     public static int getSkyLightInBounds(int par2){
@@ -282,23 +296,13 @@ public class ODNBXlite extends BaseModMp{
         return false;
     }
 
-    public void load(){
-        ModLoader.setInGameHook(this, true, true);
-        ModLoader.setInGUIHook(this, true, true);
-        replaceBlocks();
-        registerGears();
-        terrfx = new TextureTerrainPngFX();
-        bedrockfx = new TextureTerrainPngFX();
-        waterfx = new TextureTerrainPngFX();
-        lavafx = new TextureTerrainPngFX();
-    }
-
     public static boolean isFinite(){
         World world = ModLoader.getMinecraftInstance().theWorld;
         return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && (world==null || world.worldProvider.worldType==0);
     }
 
-    public boolean onTickInGame(float f, Minecraft minecraft){
+    public boolean onTick(){
+        Minecraft minecraft = ModLoader.getMinecraftInstance();
         if (isFinite() && !minecraft.theWorld.isRemote){
             tickPushing(minecraft);
         }
@@ -308,7 +312,8 @@ public class ODNBXlite extends BaseModMp{
         return true;
     }
 
-    public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui){
+    public boolean onGUITick(GuiScreen gui){
+        Minecraft minecraft = ModLoader.getMinecraftInstance();
         if (gearsCreative && gui instanceof GuiContainerCreative && !(lastGui instanceof GuiContainerCreative) && !minecraft.theWorld.isRemote){
             ContainerCreative creative = ((ContainerCreative)((GuiContainerCreative)gui).inventorySlots);
             creative.itemList.add(new ItemStack(gearId, 1, 0));
@@ -395,11 +400,7 @@ public class ODNBXlite extends BaseModMp{
             System.out.println(exception);
         }
     }
-
-    public String getVersion(){
-        return "1.2.5";
-    }
-
+/*
     public void handlePacket(Packet230ModLoader packet)
     {
         World world = ModLoader.getMinecraftInstance().theWorld;
@@ -419,11 +420,7 @@ public class ODNBXlite extends BaseModMp{
         packet.packetType = 1;
         ModLoaderMp.sendPacket(this,packet);
     }
-
-    public void addRenderer(Map map){   
-        map.put(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
-    }
-
+*/
     public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if (Generator==GEN_BIOMELESS){
             if (tex && !FallbackColors){
