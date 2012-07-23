@@ -28,32 +28,32 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             return;
         }
         displayField = false;
-        if (mod_OldDays.getPropertyGuiType(id, guibutton.id-1) == OldDaysProperty.GUI_TYPE_BUTTON){
-            mod_OldDays.getModuleById(id).getPropertyById(guibutton.id-1).incrementValue();
-        }else if (mod_OldDays.getPropertyGuiType(id, guibutton.id-1) == OldDaysProperty.GUI_TYPE_FIELD){
-            /*int offset = fontRenderer.getStringWidth(mod_OldDays.getPropertyName(id, guibutton.id-1)+":")-2;
-            offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(id, guibutton.id-1)))/2;
-            if (fontRenderer.getStringWidth(mod_OldDays.getStringPropValue(id, guibutton.id-1)>138-offset){
+        if (mod_OldDays.getPropertyGuiType(id, guibutton.id) == OldDaysProperty.GUI_TYPE_BUTTON){
+            mod_OldDays.getModuleById(id).getPropertyById(guibutton.id).incrementValue();
+        }else if (mod_OldDays.getPropertyGuiType(id, guibutton.id) == OldDaysProperty.GUI_TYPE_FIELD){
+            /*int offset = fontRenderer.getStringWidth(mod_OldDays.getPropertyName(id, guibutton.id)+":")-2;
+            offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(id, guibutton.id)))/2;
+            if (fontRenderer.getStringWidth(mod_OldDays.getStringPropValue(id, guibutton.id)>138-offset){
                 offset = 0;
             }*/
             int offset = 0;
             field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
             showField(true, guibutton);
             field.setFocused(true);
-            if (!mod_OldDays.getStringPropValue(id, guibutton.id-1).equals("OFF")){
-                current = mod_OldDays.getStringPropValue(id, guibutton.id-1);
-                field.setText(mod_OldDays.getStringPropValue(id, guibutton.id-1));
+            if (!mod_OldDays.getStringPropValue(id, guibutton.id).equals("OFF")){
+                current = mod_OldDays.getStringPropValue(id, guibutton.id);
+                field.setText(mod_OldDays.getStringPropValue(id, guibutton.id));
             }else{
                 current = "";
                 field.setText("");
             }
-            fieldId = guibutton.id-1;
+            fieldId = guibutton.id;
             guibutton.enabled = false;
         }
         mod_OldDays.saveModuleProperties(id);
-        mod_OldDays.sendCallbackAndSave(id, guibutton.id-1);
-        guibutton.enabled = !mod_OldDays.getModuleById(id).getPropertyById(guibutton.id-1).isDisabled();
-        guibutton.displayString = mod_OldDays.getPropertyButtonText(id, guibutton.id-1);
+        mod_OldDays.sendCallbackAndSave(id, guibutton.id);
+        guibutton.enabled = !mod_OldDays.getModuleById(id).getPropertyById(guibutton.id).isDisabled();
+        guibutton.displayString = mod_OldDays.getPropertyButtonText(id, guibutton.id);
     }
 
     protected void showField(boolean b, GuiButton button){

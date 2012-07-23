@@ -9,7 +9,7 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
         super.initGui();
         int count = mod_OldDays.modules.size();
         for (int i = 0; i < count; i++){
-            OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
+            OldDaysModule module = mod_OldDays.getModuleById(i);
             addButton(module.id, false, i, mod_OldDays.lang.get("module."+module.name.toLowerCase()), true);
         }
         postInitGui(count);
