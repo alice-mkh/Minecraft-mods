@@ -33,13 +33,13 @@ public class mod_OldDays extends BaseModMp{
             ModLoader.openGUI(getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
         }
         for (int i = 0; i < modules.size(); i++){
-            getModuleById(i).keyboardEvent(keybinding);
+            ((OldDaysModule)mod_OldDays.modules.get(i)).keyboardEvent(keybinding);
         }
     }
 
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
         for (int j = 0; j < modules.size(); j++){
-            if (getModuleById(j).renderWorldBlock(r, i, x, y, z, b, id)){
+            if (((OldDaysModule)mod_OldDays.modules.get(j)).renderWorldBlock(r, i, x, y, z, b, id)){
                 return true;
             }
         }
@@ -50,14 +50,14 @@ public class mod_OldDays extends BaseModMp{
         smpman.onTick();
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
-            getModuleById(i).onTick();
+            ((OldDaysModule)mod_OldDays.modules.get(i)).onTick();
         }
         return true;
     }
 
     public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui){
         for (int i = 0; i < modules.size(); i++){
-            getModuleById(i).onGUITick(gui);
+            ((OldDaysModule)mod_OldDays.modules.get(i)).onGUITick(gui);
         }
         return true;
     }

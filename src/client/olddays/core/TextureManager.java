@@ -58,8 +58,9 @@ public class TextureManager{
             currentpack=mod_OldDays.getMinecraftInstance().gameSettings.skin;
             fallbacktex = !hasEntry("olddays");
             for (int i = 0; i < mod_OldDays.modules.size(); i++){
-                for (int j = 1; j < mod_OldDays.getModuleById(i).properties.size(); j++){
-                    mod_OldDays.sendCallback(i, j);
+                OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
+                for (int j = 1; j < module.properties.size(); j++){
+                    mod_OldDays.sendCallback(module.id, j);
                 }
             }
             for (int i = 0; i < textureHooks.size(); i++){

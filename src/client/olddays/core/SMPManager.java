@@ -12,10 +12,11 @@ public class SMPManager{
     public void onTick(){
         if (mod_OldDays.getMinecraftInstance().theWorld.isRemote == needSettings){
             for (int i = 1; i < core.modules.size(); i++){
-                core.saveman.loadModuleProperties(i);
+                OldDaysModule module = ((OldDaysModule)core.modules.get(i));
+                core.saveman.loadModuleProperties(module.id);
                 if (mod_OldDays.getMinecraftInstance().theWorld.isRemote){
-                    setSMPSettings(i);
-                    requestSettings(i);
+                    setSMPSettings(module.id);
+                    requestSettings(module.id);
                 }
             }
             needSettings = !needSettings;
