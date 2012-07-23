@@ -20,7 +20,7 @@ public class BlockLeaves extends BlockLeavesBase
     {
         super(par1, par2, Material.leaves, false);
         baseIndexInPNG = par2;
-        if (mod_noBiomesX.leavesDecay()){
+        if (ODNBXlite.leavesDecay()){
             setTickRandomly(true);
         }
     }
@@ -48,15 +48,15 @@ public class BlockLeaves extends BlockLeavesBase
         }
         if ((par1 & 3) == 3)
         {
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
                 return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
             }
             return ColorizerFoliage.getFoliageColorBasic();
         }
         else
         {
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-                if (!mod_noBiomesX.FallbackColors){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+                if (!ODNBXlite.FallbackColors){
                     return 0xffffff;
                 }
                 return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -84,9 +84,9 @@ public class BlockLeaves extends BlockLeavesBase
         }
         if ((i & 3) == 3)
         {
-            return mod_noBiomesX.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, false);
+            return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, false);
         }
-        return mod_noBiomesX.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
+        return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
     }
 
     /**
@@ -127,7 +127,7 @@ public class BlockLeaves extends BlockLeavesBase
         {
             return;
         }
-        if (!mod_noBiomesX.leavesDecay()){
+        if (!ODNBXlite.leavesDecay()){
             return;
         }
 
@@ -334,7 +334,7 @@ public class BlockLeaves extends BlockLeavesBase
         }
         else
         {
-            if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || (par2 & 3) == 2 || mod_noBiomesX.FallbackColors){
+            if (ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || (par2 & 3) == 2 || ODNBXlite.FallbackColors){
                 return blockIndexInTexture;
             }
             if (graphicsLevel){

@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.src.*;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class GuiCreateWorld2 extends GuiScreen
 {
@@ -117,27 +117,27 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.typecurrent = GeneratorList.typedefault;
         GeneratorList.xcurrent = GeneratorList.xdefault;
         GeneratorList.zcurrent = GeneratorList.zdefault;
-        mod_noBiomesX.Generator = GeneratorList.genfeatures[GeneratorList.gendefault];
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-            mod_noBiomesX.MapFeatures = GeneratorList.genfeats[GeneratorList.gendefault];
-        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
-            mod_noBiomesX.MapFeatures = GeneratorList.feat1default;
-        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
-            mod_noBiomesX.MapFeatures = GeneratorList.feat2default;
+        ODNBXlite.Generator = GeneratorList.genfeatures[GeneratorList.gendefault];
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+            ODNBXlite.MapFeatures = GeneratorList.genfeats[GeneratorList.gendefault];
+        }else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES){
+            ODNBXlite.MapFeatures = GeneratorList.feat1default;
+        }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
+            ODNBXlite.MapFeatures = GeneratorList.feat2default;
         }
-        mod_noBiomesX.MapTheme = GeneratorList.themedefault;
-        mod_noBiomesX.IndevMapType = GeneratorList.typedefault;
-        mod_noBiomesX.IndevWidthX = GeneratorList.sizes[GeneratorList.xdefault];
-        mod_noBiomesX.IndevWidthZ = GeneratorList.sizes[GeneratorList.zdefault];
-        mod_noBiomesX.IndevHeight = mod_noBiomesX.DefaultFiniteDepth+32;
-        mod_noBiomesX.GenerateNewOres = mod_noBiomesX.DefaultNewOres;
+        ODNBXlite.MapTheme = GeneratorList.themedefault;
+        ODNBXlite.IndevMapType = GeneratorList.typedefault;
+        ODNBXlite.IndevWidthX = GeneratorList.sizes[GeneratorList.xdefault];
+        ODNBXlite.IndevWidthZ = GeneratorList.sizes[GeneratorList.zdefault];
+        ODNBXlite.IndevHeight = ODNBXlite.DefaultFiniteDepth+32;
+        ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
     }
 
     public static String genNBXliteButtonName(){
         StringBuilder str = new StringBuilder();
-        str.append(mod_noBiomesX.lang.get("settings"));
+        str.append(ODNBXlite.lang.get("settings"));
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(mod_noBiomesX.lang.get(GeneratorList.genname[GeneratorList.gencurrent]));
+            str.append(ODNBXlite.lang.get(GeneratorList.genname[GeneratorList.gencurrent]));
             if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
                 str.append(", ");
             }
@@ -149,22 +149,22 @@ public class GuiCreateWorld2 extends GuiScreen
             str.append(GeneratorList.sizes[GeneratorList.zcurrent]);
             if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
                 str.append("x");
-                str.append(mod_noBiomesX.IndevHeight-32);
+                str.append(ODNBXlite.IndevHeight-32);
             }
             str.append("), ");
         }
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
-            str.append(mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
+            str.append(ODNBXlite.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
             str.append(", ");
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
+            str.append(ODNBXlite.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-            str.append(mod_noBiomesX.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
+            str.append(ODNBXlite.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-            str.append(mod_noBiomesX.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]));
+            str.append(ODNBXlite.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]));
         }
         return str.toString();
     }
@@ -295,7 +295,7 @@ public class GuiCreateWorld2 extends GuiScreen
             gameModeButton.drawButton = !moreOptions;
             generateStructuresButton.drawButton = moreOptions;
             worldTypeButton.drawButton = moreOptions;
-            nbxliteButton.drawButton = moreOptions && !mod_noBiomesX.HideGUI;
+            nbxliteButton.drawButton = moreOptions && !ODNBXlite.HideGUI;
 
             if (moreOptions)
             {

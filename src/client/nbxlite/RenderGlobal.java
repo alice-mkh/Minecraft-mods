@@ -835,8 +835,8 @@ public class RenderGlobal implements IWorldAccess
         for (int j1 = 0; j1 < glRenderLists.size(); j1++)
         {
             WorldRenderer worldrenderer = (WorldRenderer)glRenderLists.get(j1);
-            if (mod_noBiomesX.isFinite()){
-                if (worldrenderer.posX<0 || worldrenderer.posZ<0 || worldrenderer.posX>mod_noBiomesX.IndevWidthX-16 || worldrenderer.posZ>mod_noBiomesX.IndevWidthZ-16){
+            if (ODNBXlite.isFinite()){
+                if (worldrenderer.posX<0 || worldrenderer.posZ<0 || worldrenderer.posX>ODNBXlite.IndevWidthX-16 || worldrenderer.posZ>ODNBXlite.IndevWidthZ-16){
                     continue;
                 }
             }
@@ -1040,7 +1040,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
         }
         GL11.glRotatef(worldObj.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
-        if (mod_noBiomesX.DayNight>0){
+        if (ODNBXlite.DayNight>0){
             float f15 = 30F;
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
             tessellator1.startDrawingQuads();
@@ -1080,10 +1080,10 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
         d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
-        if (mod_noBiomesX.VoidFog<2){
+        if (ODNBXlite.VoidFog<2){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
-            if (d < 0.0D && mod_noBiomesX.VoidFog==0)
+            if (d < 0.0D && ODNBXlite.VoidFog==0)
             {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 12F, 0.0F);
@@ -1123,22 +1123,22 @@ public class RenderGlobal implements IWorldAccess
         {
             GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
         }
-        else if (mod_noBiomesX.VoidFog<4)
+        else if (ODNBXlite.VoidFog<4)
         {
             GL11.glColor3f(f, f1, f2);
         }
 
-        if (mod_noBiomesX.VoidFog==0){
+        if (ODNBXlite.VoidFog==0){
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, -(float)(d - 16D), 0.0F);
             GL11.glCallList(glSkyList2);
             GL11.glPopMatrix();
-        }else if (mod_noBiomesX.VoidFog==1){
+        }else if (ODNBXlite.VoidFog==1){
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, -(float)(Math.max(d, 1.0D) - 16D), 0.0F);
             GL11.glCallList(glSkyList2);
             GL11.glPopMatrix();
-        }else if (mod_noBiomesX.VoidFog<4){
+        }else if (ODNBXlite.VoidFog<4){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glCallList(glSkyList2);
         }

@@ -47,14 +47,14 @@ public class ChunkCache implements IBlockAccess
     }
 
     private boolean isBounds(int x, int y, int z){
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (worldObj.worldProvider==null || worldObj.worldProvider.worldType==0)){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || y<0){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldObj.worldProvider==null || worldObj.worldProvider.worldType==0)){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
                     return true;
                 }
             }
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ || y<0){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ || y<0){
                     return true;
                 }
             }
@@ -68,7 +68,7 @@ public class ChunkCache implements IBlockAccess
     public int getBlockId(int par1, int par2, int par3)
     {
         if (isBounds(par1, par2, par3)){
-            return mod_noBiomesX.getBlockIdInBounds(par2);
+            return ODNBXlite.getBlockIdInBounds(par2);
         }
         if (par2 < 0)
         {
@@ -128,7 +128,7 @@ public class ChunkCache implements IBlockAccess
     public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
     {
         if (isBounds(par1, par2, par3)){
-            return mod_noBiomesX.getLightInBounds(par2);
+            return ODNBXlite.getLightInBounds(par2);
         }
         int i = getSkyBlockTypeBrightness(EnumSkyBlock.Sky, par1, par2, par3);
         int j = getSkyBlockTypeBrightness(EnumSkyBlock.Block, par1, par2, par3);

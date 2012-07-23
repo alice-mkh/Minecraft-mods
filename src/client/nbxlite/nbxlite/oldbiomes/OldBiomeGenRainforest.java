@@ -9,7 +9,7 @@ import net.minecraft.src.WorldGenBigTree;
 import net.minecraft.src.WorldGenHugeTrees;
 import net.minecraft.src.WorldGenShrub;
 import net.minecraft.src.WorldGenTrees;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class OldBiomeGenRainforest extends OldBiomeGenBase
 {
@@ -21,7 +21,7 @@ public class OldBiomeGenRainforest extends OldBiomeGenBase
 
     public WorldGenerator getRandomWorldGenForTrees(Random random)
     {
-        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_JUNGLE){
+        if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){
             if (random.nextInt(10) == 0)
             {
                 return new WorldGenBigTree(false);

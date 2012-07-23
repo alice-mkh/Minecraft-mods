@@ -393,7 +393,7 @@ public abstract class BiomeGenBase
 
     public int getBiomeGrassColor2()
     {
-        if (this==swampland && mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_10){
+        if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
             double d = getFloatTemperature();
             double d1 = getFloatRainfall();
             return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
@@ -415,7 +415,7 @@ public abstract class BiomeGenBase
 
     public int getBiomeFoliageColor2()
     {
-        if (this==swampland && mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_10){
+        if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
             double d = getFloatTemperature();
             double d1 = getFloatRainfall();
             return ((ColorizerFoliage.getFoliageColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;

@@ -121,7 +121,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                                 int k6 = 0;
                                 if((l2 << 3) + k5 < 64)
                                 {
-                                    if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+                                    if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                                         k6 = Block.lavaStill.blockID;
                                     }else{
                                         k6 = Block.waterStill.blockID;
@@ -154,7 +154,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                 double d2 = (i << 4) + l1;
                 double d4 = (j << 4) + j2;
                 double asd = 0.0D;
-                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_PARADISE)
+                if(ODNBXlite.MapTheme==ODNBXlite.THEME_PARADISE)
                 {
                     asd = -0.29999999999999999D;
                 }
@@ -164,7 +164,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                 int j4 = l1 << 11 | j2 << 7 | 0x7f;
                 int k4 = -1;
                 int l4;
-                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+                if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                     l4 = Block.dirt.blockID;
                 }else{
                     l4 = Block.grass.blockID;
@@ -187,7 +187,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                             } else
                             if(j5 >= 60 && j5 <= 65)
                             {
-                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+                                if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                                     l4 = Block.dirt.blockID;
                                     i5 = Block.dirt.blockID;
                                     if(flag1)
@@ -229,7 +229,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                             }
                             if(j5 < 64 && l4 == 0)
                             {
-                                if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+                                if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                                     l4 = Block.lavaStill.blockID;
                                 }else{
                                     l4 = Block.waterStill.blockID;
@@ -306,7 +306,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
             int z2 = z1 + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
-        if (mod_noBiomesX.GenerateNewOres){
+        if (ODNBXlite.GenerateNewOres){
             for(int i = 0; i < 8; i++)
             {
                 int x2 = x1 + rand.nextInt(16);
@@ -350,12 +350,12 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         {
             trees = 0;
         }
-        Object treegen = mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
+        Object treegen = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
         if(rand.nextInt(100) == 0)
         {
             trees++;
         }
-        if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS)
+        if(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS)
         {
             trees += 20;
         }

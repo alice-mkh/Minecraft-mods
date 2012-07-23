@@ -15,7 +15,7 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 
 public final class MinecraftHook extends Minecraft{

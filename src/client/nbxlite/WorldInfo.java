@@ -113,7 +113,7 @@ public class WorldInfo
         }
         else
         {
-            mapFeaturesEnabled = mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES;
+            mapFeaturesEnabled = ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES;
         }
 
         spawnX = par1NBTTagCompound.getInteger("SpawnX");
@@ -132,24 +132,24 @@ public class WorldInfo
         nbxlite = par1NBTTagCompound.hasKey("NBXlite");
         if (nbxlite){
             NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
-            mapGen = mod_noBiomesX.getGen(nbxliteTag.getString("Generator"), 0);
-            mapGenExtra = mod_noBiomesX.getGen(nbxliteTag.getString("Generator"), 1);
-            snowCovered = mod_noBiomesX.getGen(nbxliteTag.getString("Generator"), 2)>0;
+            mapGen = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 0);
+            mapGenExtra = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 1);
+            snowCovered = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 2)>0;
             newOres = nbxliteTag.getBoolean("NewOres");
             if (!nbxliteTag.hasKey("Theme")){
-                mapTheme = mod_noBiomesX.THEME_NORMAL;
-                cloudheight = mod_noBiomesX.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-                skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
-                skycolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                fogcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                cloudcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                mapTheme = ODNBXlite.THEME_NORMAL;
+                cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+                skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
+                skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
             }else{
                 try{
                     NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
-                    if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
+                    if (mapGen==ODNBXlite.GEN_BIOMELESS){
                         mapTheme = themeTag.getInteger("Generation");
                     }else{
-                        mapTheme = mod_noBiomesX.THEME_NORMAL;
+                        mapTheme = ODNBXlite.THEME_NORMAL;
                     }
                     cloudheight = themeTag.getFloat("CloudHeight");
                     skybrightness = themeTag.getInteger("SkyBrightness");
@@ -159,16 +159,16 @@ public class WorldInfo
                 }catch(Exception ex){
                     if (ex.getMessage().contains("cannot be cast")){
                         mapTheme = nbxliteTag.getInteger("Theme");
-                        cloudheight = mod_noBiomesX.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-                        skybrightness = mod_noBiomesX.setSkyBrightness(mapTheme);
-                        skycolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                        fogcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                        cloudcolor = mod_noBiomesX.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                        cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+                        skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
+                        skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                        fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                        cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
                     }
                 }
             }
-            if (mapGen==mod_noBiomesX.GEN_BIOMELESS){
-                if (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC){
+            if (mapGen==ODNBXlite.GEN_BIOMELESS){
+                if (mapGenExtra==ODNBXlite.FEATURES_INDEV || mapGenExtra==ODNBXlite.FEATURES_CLASSIC){
                     NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
                     indevX = finiteTag.getInteger("X");
                     indevY = finiteTag.getInteger("Y");
@@ -304,7 +304,7 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
         if (nbxlite){
             NBTTagCompound nbxliteTag = new NBTTagCompound();
-            nbxliteTag.setString("Generator", mod_noBiomesX.getGenName(mapGen, mapGenExtra, snowCovered));
+            nbxliteTag.setString("Generator", ODNBXlite.getGenName(mapGen, mapGenExtra, snowCovered));
             nbxliteTag.setBoolean("NewOres", newOres);
             NBTTagCompound themeTag = new NBTTagCompound();
             themeTag.setInteger("Generation", mapTheme);
@@ -314,16 +314,16 @@ public class WorldInfo
             themeTag.setInteger("CloudColor", cloudcolor);
             themeTag.setInteger("SkyBrightness", skybrightness);
             nbxliteTag.setCompoundTag("Theme", themeTag);
-            if (mapGen==mod_noBiomesX.GEN_BIOMELESS && (mapGenExtra==mod_noBiomesX.FEATURES_INDEV || mapGenExtra==mod_noBiomesX.FEATURES_CLASSIC)){
+            if (mapGen==ODNBXlite.GEN_BIOMELESS && (mapGenExtra==ODNBXlite.FEATURES_INDEV || mapGenExtra==ODNBXlite.FEATURES_CLASSIC)){
                 NBTTagCompound finiteTag = new NBTTagCompound();
                 finiteTag.setInteger("X", indevX);
                 finiteTag.setInteger("Y", indevY);
                 finiteTag.setInteger("Z", indevZ);
                 finiteTag.setInteger("Type", mapType);
-                finiteTag.setInteger("SurroundingGroundType", mod_noBiomesX.SurrGroundType);
-                finiteTag.setInteger("SurroundingWaterType", mod_noBiomesX.SurrWaterType);
-                finiteTag.setInteger("SurroundingGroundHeight", mod_noBiomesX.SurrGroundHeight);
-                finiteTag.setInteger("SurroundingWaterHeight", mod_noBiomesX.SurrWaterHeight);
+                finiteTag.setInteger("SurroundingGroundType", ODNBXlite.SurrGroundType);
+                finiteTag.setInteger("SurroundingWaterType", ODNBXlite.SurrWaterType);
+                finiteTag.setInteger("SurroundingGroundHeight", ODNBXlite.SurrGroundHeight);
+                finiteTag.setInteger("SurroundingWaterHeight", ODNBXlite.SurrWaterHeight);
                 nbxliteTag.setCompoundTag("Indev", finiteTag);
             }
             par1NBTTagCompound.setCompoundTag("NBXlite", nbxliteTag);

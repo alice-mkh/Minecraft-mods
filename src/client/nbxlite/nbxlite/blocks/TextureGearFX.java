@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import net.minecraft.src.Block;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TextureFX;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class TextureGearFX extends TextureFX
 {
@@ -17,7 +17,7 @@ public class TextureGearFX extends TextureFX
 
     public TextureGearFX(int paramInt)
     {
-        super(Block.blocksList[mod_noBiomesX.gearId].blockIndexInTexture + paramInt);
+        super(Block.blocksList[ODNBXlite.gearId].blockIndexInTexture + paramInt);
         this.h = ((paramInt << 1) - 1);
         tickCounter = 2;
         try{

@@ -15,7 +15,7 @@ import net.minecraft.src.NBTTagList;
 import net.minecraft.src.NBTTagShort;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class McLevelImporter{
     public NBTTagCompound localplayer;
@@ -58,35 +58,35 @@ public class McLevelImporter{
         }catch(Exception ex){
             System.out.println("Failed: "+ex);
         }
-        mod_noBiomesX.Generator = mod_noBiomesX.GEN_BIOMELESS;
-        mod_noBiomesX.MapFeatures = mod_noBiomesX.FEATURES_INDEV;
-        mod_noBiomesX.GenerateNewOres = false;
-        mod_noBiomesX.Import = true;
-        mod_noBiomesX.IndevWorld = blocks;
-        mod_noBiomesX.IndevWidthX = width;
-        mod_noBiomesX.IndevWidthZ = length;
-        mod_noBiomesX.IndevHeight = Math.min(height, 256);
-        mod_noBiomesX.IndevSpawnX = spawnx;
-        mod_noBiomesX.IndevSpawnY = spawny-3;
-        mod_noBiomesX.IndevSpawnZ = spawnz;
-        mod_noBiomesX.MapTheme = mod_noBiomesX.THEME_NORMAL;
-        mod_noBiomesX.IndevMapType = getType();
-        mod_noBiomesX.setIndevBounds(surrgroundtype, surrgroundheight, surrwatertype, surrwaterheight);
-        mod_noBiomesX.CloudHeight = (float)cloudheight;
-        mod_noBiomesX.SkyBrightness = skybrightness;
-        mod_noBiomesX.SkyColor = skycolor;
-        mod_noBiomesX.FogColor = fogcolor;
-        mod_noBiomesX.CloudColor = cloudcolor;
+        ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
+        ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INDEV;
+        ODNBXlite.GenerateNewOres = false;
+        ODNBXlite.Import = true;
+        ODNBXlite.IndevWorld = blocks;
+        ODNBXlite.IndevWidthX = width;
+        ODNBXlite.IndevWidthZ = length;
+        ODNBXlite.IndevHeight = Math.min(height, 256);
+        ODNBXlite.IndevSpawnX = spawnx;
+        ODNBXlite.IndevSpawnY = spawny-3;
+        ODNBXlite.IndevSpawnZ = spawnz;
+        ODNBXlite.MapTheme = ODNBXlite.THEME_NORMAL;
+        ODNBXlite.IndevMapType = getType();
+        ODNBXlite.setIndevBounds(surrgroundtype, surrgroundheight, surrwatertype, surrwaterheight);
+        ODNBXlite.CloudHeight = (float)cloudheight;
+        ODNBXlite.SkyBrightness = skybrightness;
+        ODNBXlite.SkyColor = skycolor;
+        ODNBXlite.FogColor = fogcolor;
+        ODNBXlite.CloudColor = cloudcolor;
     }
 
     public int getType(){
         if (surrgroundheight<0 || surrwaterheight<0){
-            return mod_noBiomesX.TYPE_FLOATING;
+            return ODNBXlite.TYPE_FLOATING;
         }
         if (surrwaterheight-surrgroundheight>8){
-            return mod_noBiomesX.TYPE_ISLAND;
+            return ODNBXlite.TYPE_ISLAND;
         }
-        return mod_noBiomesX.TYPE_INLAND;
+        return ODNBXlite.TYPE_INLAND;
     }
 
     public int getRightMetadata(int id){
@@ -146,7 +146,7 @@ public class McLevelImporter{
             return Block.waterStill.blockID;
         }
         if (id == 55){
-            return mod_noBiomesX.gearId;
+            return ODNBXlite.gearId;
         }
         return id;
     }

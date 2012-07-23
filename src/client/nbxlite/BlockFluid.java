@@ -30,7 +30,7 @@ public abstract class BlockFluid extends Block
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (blockMaterial == Material.water){
-            return mod_noBiomesX.GetWaterColorAtCoords(par1IBlockAccess, par2, par3, par4);
+            return ODNBXlite.GetWaterColorAtCoords(par1IBlockAccess, par2, par3, par4);
         }
         return 0xffffff;
     }

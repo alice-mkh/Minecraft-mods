@@ -42,7 +42,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
     private double generatedTemperatures[];
 
     public ChunkProviderGenerateBeta(World world, long l, Boolean boolean1){
-        super(world, l, boolean1, mod_noBiomesX.GEN_OLDBIOMES);
+        super(world, l, boolean1, ODNBXlite.GEN_OLDBIOMES);
         fixLight = true;
         sandNoise = new double[256];
         gravelNoise = new double[256];
@@ -147,7 +147,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         byte byte0 = 64;
         double d = 0.03125D;
         sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
-        if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_BETA14){
+        if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
             gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
         }else{
             gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
@@ -167,7 +167,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                 for(int k1 = 127; k1 >= 0; k1--)
                 {
                     int l1 = (l * 16 + k) * 128 + k1;
-                    if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_BETA14){
+                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
                         l1 = (k * 16 + l) * 128 + k1;
                     }
                     if(k1 <= 0 + rand.nextInt(5))
@@ -227,7 +227,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                         }
                         continue;
                     }
-                    if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_BETA14){
+                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
                         if(j1 > 0)
                         {
                             j1--;
@@ -388,7 +388,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
         }
         double d = 0.25D;
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
             if(!flag && rand.nextInt(4) == 0)
             {
                 int x2 = x1 + rand.nextInt(16) + 8;
@@ -428,7 +428,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
@@ -440,7 +440,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
@@ -452,7 +452,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
@@ -464,7 +464,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(64);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
@@ -476,7 +476,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(32);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
@@ -488,7 +488,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
@@ -500,7 +500,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                 (new OldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
@@ -508,14 +508,14 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             
         }
 
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120 || mod_noBiomesX.GenerateNewOres)
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120 || ODNBXlite.GenerateNewOres)
         {
             for(int i = 0; i < 1; i++)
             {
                 int x2 = x1 + rand.nextInt(16);
                 int y2 = rand.nextInt(16) + rand.nextInt(16);
                 int z2 = z1 + rand.nextInt(16);
-                if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+                if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                    (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
                 }else{
                     (new SuperOldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
@@ -523,7 +523,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }
 
         }
-        if (mod_noBiomesX.GenerateNewOres){
+        if (ODNBXlite.GenerateNewOres){
             int max = 0;
             detection: for(int i = x1; i < x1 + 16; i++){
                 for(int j = z1; j < z1 + 16; j++){
@@ -562,7 +562,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         }
         if(oldbiomegenbase == OldBiomeGenBase.rainforest)
         {
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_JUNGLE){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){
                 trees += treenoise + 50;
                 trees *= 2;
             }else{
@@ -589,7 +589,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         {
             trees -= 20;
         }
-        if(mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_ALPHA120){
+        if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
             for(int i = 0; i < trees; i++)
             {
                 int x2 = x1 + rand.nextInt(16) + 8;
@@ -617,7 +617,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }
         }
         byte flowers = 2;
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA12){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA12){
             flowers = 0;
             if(oldbiomegenbase == OldBiomeGenBase.forest)
             {
@@ -644,7 +644,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
 
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA15){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA15){
             byte grass = 0;
             if(oldbiomegenbase == OldBiomeGenBase.forest)
             {

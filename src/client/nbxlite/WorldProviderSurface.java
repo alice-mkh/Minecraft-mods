@@ -15,7 +15,7 @@ public class WorldProviderSurface extends WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        if (worldType==0 && mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
+        if (worldType==0 && ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
             worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.betaSky, 0.5F, 0.0F, OldBiomeGenBase.sky);
         }else{
             super.registerWorldChunkManager();
@@ -43,14 +43,14 @@ public class WorldProviderSurface extends WorldProvider
      */
     public boolean canCoordinateBeSpawn(int par1, int par2)
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_INFDEV0420){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420){
             return true;
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
             return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();
         }
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
             return i == Block.grass.blockID;
         }
         return i == Block.sand.blockID;
@@ -61,7 +61,7 @@ public class WorldProviderSurface extends WorldProvider
      */
     public float getCloudHeight()
     {
-        return mod_noBiomesX.CloudHeight;
+        return ODNBXlite.CloudHeight;
     }
 
     /**
@@ -69,10 +69,10 @@ public class WorldProviderSurface extends WorldProvider
      */
     public float calculateCelestialAngle(long par1, float par3)
     {
-        if (mod_noBiomesX.DayNight==0){
+        if (ODNBXlite.DayNight==0){
             return 0F;
         }
-        if (mod_noBiomesX.DayNight==1){
+        if (ODNBXlite.DayNight==1){
             return (par1 + par3) / 24000F - 0.15F;
         }
         return super.calculateCelestialAngle(par1, par3);
@@ -80,7 +80,7 @@ public class WorldProviderSurface extends WorldProvider
 
     public boolean isSkyColored()
     {
-        if (mod_noBiomesX.VoidFog>2){
+        if (ODNBXlite.VoidFog>2){
             return false;
         }
         return true;
@@ -88,8 +88,8 @@ public class WorldProviderSurface extends WorldProvider
 
     public int getAverageGroundLevel()
     {
-        if (mod_noBiomesX.isFinite()){
-            return mod_noBiomesX.IndevHeight - 32;
+        if (ODNBXlite.isFinite()){
+            return ODNBXlite.IndevHeight - 32;
         }
         return terrainType.getSeaLevel(worldObj);
     }

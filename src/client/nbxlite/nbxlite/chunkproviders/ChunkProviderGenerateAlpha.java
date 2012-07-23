@@ -102,11 +102,11 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                                 int i3 = 0;
                                 if(l1 * 8 + i2 < byte1)
                                 {
-                                    if(mod_noBiomesX.SnowCovered && l1 * 8 + i2 >= byte1 - 1 && mod_noBiomesX.MapTheme != 1)
+                                    if(ODNBXlite.SnowCovered && l1 * 8 + i2 >= byte1 - 1 && ODNBXlite.MapTheme != 1)
                                     {
                                         i3 = Block.ice.blockID;
                                     } else
-                                    if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
+                                    if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
                                     {
                                         i3 = Block.lavaStill.blockID;
                                     } else
@@ -152,7 +152,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             for(int i1 = 0; i1 < 16; i1++)
             {
                 double d1 = 0.0D;
-                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_PARADISE)
+                if(ODNBXlite.MapTheme==ODNBXlite.THEME_PARADISE)
                 {
                     d1 = -0.29999999999999999D;
                 }
@@ -161,7 +161,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                 int j1 = (int)(stoneNoise[l + i1 * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
                 int k1 = -1;
                 byte byte1;
-                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+                if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                     byte1 = (byte)Block.dirt.blockID;
 				}else{
                     byte1 = (byte)Block.grass.blockID;
@@ -194,7 +194,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                         } else
                         if(l1 >= byte0 - 4 && l1 <= byte0 + 1)
                         {
-                            if (mod_noBiomesX.MapTheme!=1){
+                            if (ODNBXlite.MapTheme!=1){
                                 byte1 = (byte)Block.grass.blockID;
                                 byte2 = (byte)Block.dirt.blockID;
                                 if(flag1)
@@ -236,10 +236,10 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                         }
                         if(l1 < byte0 && byte1 == 0)
                         {
-                            if(mod_noBiomesX.SnowCovered && l1 >= byte0 - 1 && mod_noBiomesX.MapTheme != 1)
+                            if(ODNBXlite.SnowCovered && l1 >= byte0 - 1 && ODNBXlite.MapTheme != 1)
                             {
                                 byte1 = (byte)Block.ice.blockID;
-                            } else if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
+                            } else if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
                             {
                                 byte1 = (byte)Block.lavaStill.blockID;
                             } else
@@ -471,7 +471,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             int l10 = l + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, i6, k8, l10);
         }
-        if(mod_noBiomesX.GenerateNewOres)
+        if(ODNBXlite.GenerateNewOres)
         {
             for(int k13 = 0; k13 < 1; k13++)
             {
@@ -515,7 +515,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
         {
             l3++;
         }
-        if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS)
+        if(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS)
         {
             l3 += 20;
         }
@@ -583,7 +583,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             int k15 = k + rand.nextInt(16) + 8;
             int j18 = rand.nextInt(rand.nextInt(120) + 8);
             int i20 = l + rand.nextInt(16) + 8;
-            if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL){
+            if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                 (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, k15, j18, i20);
             }else{
                 (new WorldGenLiquids(Block.waterMoving.blockID)).generate(worldObj, rand, k15, j18, i20);
@@ -606,7 +606,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                 int l18 = j13 - (k + 8);
                 int k20 = i16 - (l + 8);
                 int i21 = worldObj.getPrecipitationHeight(j13, i16);
-                if(mod_noBiomesX.SnowCovered && i21 > 0 && i21 < 128 && worldObj.isAirBlock(j13, i21, i16) && worldObj.getBlockMaterial(j13, i21 - 1, i16).isSolid() && worldObj.getBlockMaterial(j13, i21 - 1, i16) != Material.ice)
+                if(ODNBXlite.SnowCovered && i21 > 0 && i21 < 128 && worldObj.isAirBlock(j13, i21, i16) && worldObj.getBlockMaterial(j13, i21 - 1, i16).isSolid() && worldObj.getBlockMaterial(j13, i21 - 1, i16) != Material.ice)
                 {
                     worldObj.setBlockWithNotify(j13, i21, i16, Block.snow.blockID);
                 }

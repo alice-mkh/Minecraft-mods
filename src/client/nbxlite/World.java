@@ -156,7 +156,7 @@ public class World implements IBlockAccess
      */
     public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES && blockExists(par1, 0, par2))
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES && blockExists(par1, 0, par2))
         {
             Chunk chunk = getChunkFromBlockCoords(par1, par2);
 
@@ -213,14 +213,14 @@ public class World implements IBlockAccess
         mapStorage = new MapStorage(par1ISaveHandler);
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
-        mod_noBiomesX.SetGenerator(this, mod_noBiomesX.GEN_NEWBIOMES, mod_noBiomesX.FEATURES_12, mod_noBiomesX.THEME_NORMAL, mod_noBiomesX.TYPE_INLAND, false, false);
-        mod_noBiomesX.setSkyBrightness(mod_noBiomesX.MapTheme);
-        mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 0);
-        mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 1);
-        mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 2);
-        mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
-        mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
-        mod_noBiomesX NBX = new mod_noBiomesX();
+        ODNBXlite.SetGenerator(this, ODNBXlite.GEN_NEWBIOMES, ODNBXlite.FEATURES_12, ODNBXlite.THEME_NORMAL, ODNBXlite.TYPE_INLAND, false, false);
+        ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
+        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
+        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
+        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+        ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
+        ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
+        ODNBXlite NBX = new ODNBXlite();
         NBX.RequestGeneratorInfo();
         turnOnOldSpawners();
         calculateInitialSkylight();
@@ -268,7 +268,7 @@ public class World implements IBlockAccess
         mapGen = worldInfo.mapGen;
         mapGenExtra = worldInfo.mapGenExtra;
         snowCovered = worldInfo.snowCovered;
-        mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, snowCovered, worldInfo.newOres);
+        ODNBXlite.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, snowCovered, worldInfo.newOres);
         turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
@@ -349,16 +349,16 @@ public class World implements IBlockAccess
         if(flag)
          {
             worldInfo.nbxlite = true;
-            worldInfo.mapGen = mod_noBiomesX.Generator;
-            worldInfo.mapGenExtra = mod_noBiomesX.MapFeatures;
-            worldInfo.mapTheme = mod_noBiomesX.MapTheme;
-            worldInfo.newOres = mod_noBiomesX.GenerateNewOres;
-            mapGen=mod_noBiomesX.Generator;
-            mapGenExtra=mod_noBiomesX.MapFeatures;
-            mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, false, mod_noBiomesX.GenerateNewOres);
-            if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_NORMAL || mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS) && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201)
+            worldInfo.mapGen = ODNBXlite.Generator;
+            worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
+            worldInfo.mapTheme = ODNBXlite.MapTheme;
+            worldInfo.newOres = ODNBXlite.GenerateNewOres;
+            mapGen=ODNBXlite.Generator;
+            mapGenExtra=ODNBXlite.MapFeatures;
+            ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, false, ODNBXlite.GenerateNewOres);
+            if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201)
             {
-                if (!mod_noBiomesX.Import){
+                if (!ODNBXlite.Import){
                     byte byte0 = 4;
                     if(worldInfo.mapTheme == 2)
                     {
@@ -368,54 +368,54 @@ public class World implements IBlockAccess
                     {
                         worldInfo.snowCovered = true;
                         snowCovered = true;
-                        mod_noBiomesX.SnowCovered=true;
+                        ODNBXlite.SnowCovered=true;
                     }else{
-                        mod_noBiomesX.SnowCovered=false;
+                        ODNBXlite.SnowCovered=false;
                     }
                 }else{
                     snowCovered = worldInfo.snowCovered;
-                    mod_noBiomesX.SnowCovered=worldInfo.snowCovered;
+                    ODNBXlite.SnowCovered=worldInfo.snowCovered;
                 }
             }else{
-                mod_noBiomesX.SnowCovered=false;
+                ODNBXlite.SnowCovered=false;
             }
-            if (!(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV && mod_noBiomesX.Import)){
-                worldInfo.cloudheight = mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
-                worldInfo.skybrightness = mod_noBiomesX.setSkyBrightness(mod_noBiomesX.MapTheme);
-                worldInfo.skycolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 0);
-                worldInfo.fogcolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 1);
-                worldInfo.cloudcolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 2);
+            if (!(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && ODNBXlite.Import)){
+                worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
+                worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
+                worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
+                worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
+                worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
             }
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if (!mod_noBiomesX.Import){
-                    mod_noBiomesX.generateIndevLevel(getSeed());
-                    for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
-                        for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                if (!ODNBXlite.Import){
+                    ODNBXlite.generateIndevLevel(getSeed());
+                    for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
+                        for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
                             chunkProvider.provideChunk(x,z);
                         }
                     }
-                    mod_noBiomesX.IndevWorld = null;
-                    mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
+                    ODNBXlite.IndevWorld = null;
+                    ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
                 }else{
                     ModLoader.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading blocks..");
-                    for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
-                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((x / ((mod_noBiomesX.IndevWidthX/16)+2)) * 100);
-                        for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                    for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
+                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((x / ((ODNBXlite.IndevWidthX/16)+2)) * 100);
+                        for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
                             chunkProvider.provideChunk(x,z);
                         }
                     }
-                    worldInfo.setWorldTime(mod_noBiomesX.mclevelimporter.timeofday);
-                    List tentlist = mod_noBiomesX.mclevelimporter.tileentities;
+                    worldInfo.setWorldTime(ODNBXlite.mclevelimporter.timeofday);
+                    List tentlist = ODNBXlite.mclevelimporter.tileentities;
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks..");
-                    for (int x = 0; x < mod_noBiomesX.IndevWidthX; x++){
-                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((int)(((float)x / (float)mod_noBiomesX.IndevWidthX) * 100F));
-                        for (int y = 0; y < mod_noBiomesX.IndevHeight; y++){
-                            for (int z = 0; z < mod_noBiomesX.IndevWidthZ; z++){
+                    for (int x = 0; x < ODNBXlite.IndevWidthX; x++){
+                        ModLoader.getMinecraftInstance().loadingScreen.setLoadingProgress((int)(((float)x / (float)ODNBXlite.IndevWidthX) * 100F));
+                        for (int y = 0; y < ODNBXlite.IndevHeight; y++){
+                            for (int z = 0; z < ODNBXlite.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);
-                                int meta = mod_noBiomesX.mclevelimporter.data[IndexFinite(x, y, z)] >> 4;
-                                if (mod_noBiomesX.mclevelimporter.needsFixing(id)){
-                                    setBlockAndMetadata(x, y, z, mod_noBiomesX.mclevelimporter.getRightId(id), mod_noBiomesX.mclevelimporter.getRightMetadata(id));
+                                int meta = ODNBXlite.mclevelimporter.data[IndexFinite(x, y, z)] >> 4;
+                                if (ODNBXlite.mclevelimporter.needsFixing(id)){
+                                    setBlockAndMetadata(x, y, z, ODNBXlite.mclevelimporter.getRightId(id), ODNBXlite.mclevelimporter.getRightMetadata(id));
                                 }else if (id != 0 && meta != 0){
                                     setBlockMetadata(x, y, z, meta);
                                 }
@@ -435,36 +435,36 @@ public class World implements IBlockAccess
                         }
                     }
                     ModLoader.getMinecraftInstance().loadingScreen.displayLoadingString("Loading entities..");
-                    List entlist = mod_noBiomesX.mclevelimporter.entities;
+                    List entlist = ODNBXlite.mclevelimporter.entities;
                     for (int i = 0; i < entlist.size(); i++){
                         Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
                         spawnEntityInWorld(entity);
                     }
-                    worldInfo.cloudheight = mod_noBiomesX.CloudHeight;
-                    worldInfo.skybrightness = mod_noBiomesX.SkyBrightness;
-                    worldInfo.skycolor = mod_noBiomesX.SkyColor;
-                    worldInfo.fogcolor = mod_noBiomesX.FogColor;
-                    worldInfo.cloudcolor = mod_noBiomesX.CloudColor;
+                    worldInfo.cloudheight = ODNBXlite.CloudHeight;
+                    worldInfo.skybrightness = ODNBXlite.SkyBrightness;
+                    worldInfo.skycolor = ODNBXlite.SkyColor;
+                    worldInfo.fogcolor = ODNBXlite.FogColor;
+                    worldInfo.cloudcolor = ODNBXlite.CloudColor;
                 }
-                mapTypeIndev=mod_noBiomesX.IndevMapType;
-                worldInfo.mapType = mod_noBiomesX.IndevMapType;
-                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
-                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
-                worldInfo.indevY = mod_noBiomesX.IndevHeight;
-            }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                mod_noBiomesX.generateClassicLevel(getSeed());
-                for (int x=-2; x<(mod_noBiomesX.IndevWidthX/16)+2; x++){
-                    for (int z=-2; z<(mod_noBiomesX.IndevWidthZ/16)+2; z++){
+                mapTypeIndev=ODNBXlite.IndevMapType;
+                worldInfo.mapType = ODNBXlite.IndevMapType;
+                worldInfo.indevX = ODNBXlite.IndevWidthX;
+                worldInfo.indevZ = ODNBXlite.IndevWidthZ;
+                worldInfo.indevY = ODNBXlite.IndevHeight;
+            }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                ODNBXlite.generateClassicLevel(getSeed());
+                for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
+                    for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
                         chunkProvider.provideChunk(x,z);
                     }
                 }
-                mod_noBiomesX.IndevWorld = null;
+                ODNBXlite.IndevWorld = null;
                 mapTypeIndev=0;
                 worldInfo.mapType = 0;
-                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
-                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
-                worldInfo.indevY = mod_noBiomesX.IndevHeight;
-                mod_noBiomesX.setIndevBounds(5, mod_noBiomesX.MapTheme);
+                worldInfo.indevX = ODNBXlite.IndevWidthX;
+                worldInfo.indevZ = ODNBXlite.IndevWidthZ;
+                worldInfo.indevY = ODNBXlite.IndevHeight;
+                ODNBXlite.setIndevBounds(5, ODNBXlite.MapTheme);
             }else{
                 mapTypeIndev=0;
                 worldInfo.mapType = 0;
@@ -477,51 +477,51 @@ public class World implements IBlockAccess
                 mapGenExtra = worldInfo.mapGenExtra;
                 snowCovered = worldInfo.snowCovered;
                 mapTypeIndev = worldInfo.mapType;
-                mod_noBiomesX.IndevWidthX = worldInfo.indevX;
-                mod_noBiomesX.IndevWidthZ = worldInfo.indevZ;
-                mod_noBiomesX.IndevHeight = worldInfo.indevY;
-                mod_noBiomesX.SurrWaterType = worldInfo.surrwatertype;
-                mod_noBiomesX.SurrWaterHeight = worldInfo.surrwaterheight;
-                mod_noBiomesX.SurrGroundType = worldInfo.surrgroundtype;
-                mod_noBiomesX.SurrGroundHeight = worldInfo.surrgroundheight;
-                mod_noBiomesX.CloudHeight = worldInfo.cloudheight;
-                mod_noBiomesX.SkyBrightness = worldInfo.skybrightness;
-                mod_noBiomesX.SkyColor = worldInfo.skycolor;
-                mod_noBiomesX.FogColor = worldInfo.fogcolor;
-                mod_noBiomesX.CloudColor = worldInfo.cloudcolor;
-                mod_noBiomesX.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, mapTypeIndev, snowCovered, worldInfo.newOres);
+                ODNBXlite.IndevWidthX = worldInfo.indevX;
+                ODNBXlite.IndevWidthZ = worldInfo.indevZ;
+                ODNBXlite.IndevHeight = worldInfo.indevY;
+                ODNBXlite.SurrWaterType = worldInfo.surrwatertype;
+                ODNBXlite.SurrWaterHeight = worldInfo.surrwaterheight;
+                ODNBXlite.SurrGroundType = worldInfo.surrgroundtype;
+                ODNBXlite.SurrGroundHeight = worldInfo.surrgroundheight;
+                ODNBXlite.CloudHeight = worldInfo.cloudheight;
+                ODNBXlite.SkyBrightness = worldInfo.skybrightness;
+                ODNBXlite.SkyColor = worldInfo.skycolor;
+                ODNBXlite.FogColor = worldInfo.fogcolor;
+                ODNBXlite.CloudColor = worldInfo.cloudcolor;
+                ODNBXlite.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, mapTypeIndev, snowCovered, worldInfo.newOres);
             }else{
-                mod_noBiomesX.SetGenerator(this, mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType, mod_noBiomesX.SnowCovered, mod_noBiomesX.GenerateNewOres);
+                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
                 worldInfo.nbxlite = true;
-                worldInfo.mapGen = mod_noBiomesX.Generator;
-                worldInfo.mapGenExtra = mod_noBiomesX.MapFeatures;
-                worldInfo.mapTheme = mod_noBiomesX.MapTheme;
-                worldInfo.newOres = mod_noBiomesX.GenerateNewOres;
-                worldInfo.mapType = mod_noBiomesX.IndevMapType;
-                worldInfo.indevX = mod_noBiomesX.IndevWidthX;
-                worldInfo.indevZ = mod_noBiomesX.IndevWidthZ;
-                worldInfo.indevY = mod_noBiomesX.IndevHeight;
-                mod_noBiomesX.setIndevBounds(mod_noBiomesX.IndevMapType, mod_noBiomesX.MapTheme);
-                worldInfo.surrwatertype = mod_noBiomesX.SurrWaterType;
-                worldInfo.surrwaterheight = mod_noBiomesX.SurrWaterHeight;
-                worldInfo.surrgroundtype = mod_noBiomesX.SurrGroundType;
-                worldInfo.surrgroundheight = mod_noBiomesX.SurrGroundHeight;
-                worldInfo.cloudheight = mod_noBiomesX.setCloudHeight(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, mod_noBiomesX.IndevMapType);
-                worldInfo.skybrightness = mod_noBiomesX.setSkyBrightness(mod_noBiomesX.MapTheme);
-                worldInfo.skycolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 0);
-                worldInfo.fogcolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 1);
-                worldInfo.cloudcolor = mod_noBiomesX.setSkyColor(mod_noBiomesX.Generator, mod_noBiomesX.MapFeatures, mod_noBiomesX.MapTheme, 2);
+                worldInfo.mapGen = ODNBXlite.Generator;
+                worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
+                worldInfo.mapTheme = ODNBXlite.MapTheme;
+                worldInfo.newOres = ODNBXlite.GenerateNewOres;
+                worldInfo.mapType = ODNBXlite.IndevMapType;
+                worldInfo.indevX = ODNBXlite.IndevWidthX;
+                worldInfo.indevZ = ODNBXlite.IndevWidthZ;
+                worldInfo.indevY = ODNBXlite.IndevHeight;
+                ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
+                worldInfo.surrwatertype = ODNBXlite.SurrWaterType;
+                worldInfo.surrwaterheight = ODNBXlite.SurrWaterHeight;
+                worldInfo.surrgroundtype = ODNBXlite.SurrGroundType;
+                worldInfo.surrgroundheight = ODNBXlite.SurrGroundHeight;
+                worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
+                worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
+                worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
+                worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
+                worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
             }
             worldProvider.registerWorld(this);
         }
-        mod_noBiomesX.setTextureFX();
+        ODNBXlite.setTextureFX();
         turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();
     }
 
     private int IndexFinite(int x, int y, int z){
-        return x+(y*mod_noBiomesX.IndevWidthZ+z)*mod_noBiomesX.IndevWidthX;
+        return x+(y*ODNBXlite.IndevWidthZ+z)*ODNBXlite.IndevWidthX;
     }
 
     public void turnOnOldSpawners()
@@ -553,8 +553,8 @@ public class World implements IBlockAccess
      */
     protected void generateSpawnPoint()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
-            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
+            if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_11){
                 findingSpawnPoint = true;
                 WorldChunkManager worldchunkmanager = getWorldChunkManager();
                 List list = worldchunkmanager.getBiomesToSpawnIn();
@@ -620,17 +620,17 @@ public class World implements IBlockAccess
                 worldInfo.setSpawnPosition(i, j, k);
                 findingSpawnPoint = false;
             }
-        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+        }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
             findingSpawnPoint = true;
-            worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
-            if (!mod_noBiomesX.Import){
-                setBlockWithNotify(mod_noBiomesX.IndevSpawnX-2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
-                setBlockWithNotify(mod_noBiomesX.IndevSpawnX+2, mod_noBiomesX.IndevSpawnY+3, mod_noBiomesX.IndevSpawnZ, Block.torchWood.blockID);
+            worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
+            if (!ODNBXlite.Import){
+                setBlockWithNotify(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+                setBlockWithNotify(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
             }
             findingSpawnPoint = false;
-        }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
+        }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
             findingSpawnPoint = true;
-            worldInfo.setSpawnPosition(mod_noBiomesX.IndevSpawnX, mod_noBiomesX.IndevSpawnY, mod_noBiomesX.IndevSpawnZ);
+            worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
             findingSpawnPoint = false;
         }else{
             findingSpawnPoint = true;
@@ -658,13 +658,13 @@ public class World implements IBlockAccess
      */
     public void setSpawnLocation()
     {
-        if (mod_noBiomesX.isFinite()){
+        if (ODNBXlite.isFinite()){
             findingSpawnPoint = true;
             worldInfo.setSpawnX(worldInfo.getSpawnX());
             worldInfo.setSpawnY(worldInfo.getSpawnY());
             worldInfo.setSpawnZ(worldInfo.getSpawnZ());
             findingSpawnPoint = false;
-        }else if (mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES){
+        }else if (ODNBXlite.Generator!=ODNBXlite.GEN_NEWBIOMES){
             if(worldInfo.getSpawnY() <= 0)
             {
                 worldInfo.setSpawnY(64);
@@ -694,7 +694,7 @@ public class World implements IBlockAccess
                 i += rand.nextInt(8) - rand.nextInt(8);
                 j += rand.nextInt(8) - rand.nextInt(8);
             } while(++k != 10000);
-            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_11){
+            if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_11){
                 for(j = worldInfo.getSpawnZ(); getFirstUncoveredBlock(i, j) == 0; j += rand.nextInt(8) - rand.nextInt(8))
                 {
                     i += rand.nextInt(8) - rand.nextInt(8);
@@ -730,11 +730,11 @@ public class World implements IBlockAccess
         try
         {
             NBTTagCompound nbttagcompound = worldInfo.getPlayerNBTTagCompound();
-            if (mod_noBiomesX.isFinite() && mod_noBiomesX.Import){
-                par1EntityPlayer.readFromNBT(mod_noBiomesX.mclevelimporter.localplayer);
-                mod_noBiomesX.mclevelimporter = null;
+            if (ODNBXlite.isFinite() && ODNBXlite.Import){
+                par1EntityPlayer.readFromNBT(ODNBXlite.mclevelimporter.localplayer);
+                ODNBXlite.mclevelimporter = null;
             }
-            mod_noBiomesX.Import = false;
+            ODNBXlite.Import = false;
 
             if (nbttagcompound != null)
             {
@@ -813,14 +813,14 @@ public class World implements IBlockAccess
     }
 
     private boolean isBounds(int x, int y, int z){
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1 || y<0){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
                     return true;
                 }
             }
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ || y<0){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ || y<0){
                     return true;
                 }
             }
@@ -829,10 +829,10 @@ public class World implements IBlockAccess
     }
 
     private boolean isBounds2(int x, int y, int z){
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                if(x==0 || x==mod_noBiomesX.IndevWidthX-1 || z==0 || z==mod_noBiomesX.IndevWidthZ-1){
-                    if(y<mod_noBiomesX.SurrWaterHeight && y>=mod_noBiomesX.SurrGroundHeight){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                if(x==0 || x==ODNBXlite.IndevWidthX-1 || z==0 || z==ODNBXlite.IndevWidthZ-1){
+                    if(y<ODNBXlite.SurrWaterHeight && y>=ODNBXlite.SurrGroundHeight){
                         return true;
                     }
                 }
@@ -847,7 +847,7 @@ public class World implements IBlockAccess
     public int getBlockId(int par1, int par2, int par3)
     {
         if (isBounds(par1, par2, par3)){
-            return mod_noBiomesX.getBlockIdInBounds(par2);
+            return ODNBXlite.getBlockIdInBounds(par2);
         }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
@@ -1017,7 +1017,7 @@ public class World implements IBlockAccess
             return false;
         }
         if (isBounds2(par1, par2, par3) && par4==0){
-            par4 = mod_noBiomesX.SurrWaterType;
+            par4 = ODNBXlite.SurrWaterType;
         }
         if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
         {
@@ -1536,7 +1536,7 @@ public class World implements IBlockAccess
     public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
     {
         if (isBounds(par1, par2, par3)){
-            return mod_noBiomesX.getLightInBounds(par2);
+            return ODNBXlite.getLightInBounds(par2);
         }
         int i = getSkyBlockTypeBrightness(EnumSkyBlock.Sky, par1, par2, par3);
         int j = getSkyBlockTypeBrightness(EnumSkyBlock.Block, par1, par2, par3);
@@ -2009,8 +2009,8 @@ public class World implements IBlockAccess
      */
     public int calculateSkylightSubtracted(float f)
     {
-        float f1 = (float)mod_noBiomesX.SkyBrightness;
-        if(f1 == 16 || (worldProvider instanceof WorldProviderEnd) || mod_noBiomesX.DayNight==0)
+        float f1 = (float)ODNBXlite.SkyBrightness;
+        if(f1 == 16 || (worldProvider instanceof WorldProviderEnd) || ODNBXlite.DayNight==0)
         {
             f1 = 15F;
         }
@@ -2034,7 +2034,7 @@ public class World implements IBlockAccess
     public float func_35464_b(float par1)
     {
         float f = getCelestialAngle(par1);
-        float f1 = (Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
+        float f1 = (Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
 
         if (f1 < 0.0F)
         {
@@ -2046,9 +2046,9 @@ public class World implements IBlockAccess
             f1 = 1.0F;
         }
 
-        f1 = (Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F) - f1;
-        f1 = (float)((double)f1 * (((double)((Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
-        f1 = (float)((double)f1 * (((double)((Math.min(mod_noBiomesX.SkyBrightness+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
+        f1 = (Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F) - f1;
+        f1 = (float)((double)f1 * (((double)((Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
+        f1 = (float)((double)f1 * (((double)((Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
         return f1 * 0.8F + 0.2F;
     }
 
@@ -2057,7 +2057,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getSkyColor(Entity entity, float f)
     {
-        if((mod_noBiomesX.Generator!=mod_noBiomesX.GEN_BIOMELESS || worldProvider.worldType == 1) && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0))
+        if((ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || worldProvider.worldType == 1) && !(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && worldProvider.worldType==0))
         {
             float f1 = getCelestialAngle(f);
             float f3 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -2073,17 +2073,17 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (mod_noBiomesX.SkyColor==0 && worldProvider.worldType == 0 && !(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0)){
-                if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || worldProvider.worldType != 0){
+            if (ODNBXlite.SkyColor==0 && worldProvider.worldType == 0 && !(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && worldProvider.worldType==0)){
+                if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || worldProvider.worldType != 0){
                     BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                    f7 = (worldProvider.worldType==0 && mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12) ? 0.2146759F : biomegenbase.getFloatTemperature();
+                    f7 = (worldProvider.worldType==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12) ? 0.2146759F : biomegenbase.getFloatTemperature();
                     k = biomegenbase.getSkyColorByTemp(f7);
                 }else{
                     f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
                     k = getWorldChunkManager().oldGetBiomeGenAt(i, j).getSkyColorByTemp(f7);
                 }
             }else{
-                k = mod_noBiomesX.SkyColor;
+                k = ODNBXlite.SkyColor;
             }
             float f9 = (float)(k >> 16 & 0xff) / 255F;
             float f10 = (float)(k >> 8 & 0xff) / 255F;
@@ -2133,9 +2133,9 @@ public class World implements IBlockAccess
         {
             f4 = 1.0F;
         }
-        float f5 = (float)(mod_noBiomesX.SkyColor >> 16 & 255L) / 255F;
-        float f6 = (float)(mod_noBiomesX.SkyColor >> 8 & 255L) / 255F;
-        float f8 = (float)(mod_noBiomesX.SkyColor & 255L) / 255F;
+        float f5 = (float)(ODNBXlite.SkyColor >> 16 & 255L) / 255F;
+        float f6 = (float)(ODNBXlite.SkyColor >> 8 & 255L) / 255F;
+        float f8 = (float)(ODNBXlite.SkyColor & 255L) / 255F;
         f5 *= f4;
         f6 *= f4;
         f8 *= f4;
@@ -2147,13 +2147,13 @@ public class World implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
-        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY && worldProvider.worldType==0){
+        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && worldProvider.worldType==0){
             return 0.0F;
         }
-        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
+        if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
             return 1.0F;
         }
-        if(mod_noBiomesX.SkyBrightness == 16){
+        if(ODNBXlite.SkyBrightness == 16){
             return 1.0F;
         }
         return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
@@ -2188,9 +2188,9 @@ public class World implements IBlockAccess
             f1 = 1.0F;
         }
 
-        float f2 = (float)(mod_noBiomesX.CloudColor >> 16 & 255L) / 255F;
-        float f3 = (float)(mod_noBiomesX.CloudColor >> 8 & 255L) / 255F;
-        float f4 = (float)(mod_noBiomesX.CloudColor & 255L) / 255F;
+        float f2 = (float)(ODNBXlite.CloudColor >> 16 & 255L) / 255F;
+        float f3 = (float)(ODNBXlite.CloudColor >> 8 & 255L) / 255F;
+        float f4 = (float)(ODNBXlite.CloudColor & 255L) / 255F;
         float f5 = getRainStrength(par1);
 
         if (f5 > 0.0F)
@@ -2231,9 +2231,9 @@ public class World implements IBlockAccess
         {
             f2 = 1.0F;
         }
-        float f3 = (float)(mod_noBiomesX.FogColor >> 16 & 255L) / 255F;
-        float f4 = (float)(mod_noBiomesX.FogColor >> 8 & 255L) / 255F;
-        float f5 = (float)(mod_noBiomesX.FogColor & 255L) / 255F;
+        float f3 = (float)(ODNBXlite.FogColor >> 16 & 255L) / 255F;
+        float f4 = (float)(ODNBXlite.FogColor >> 8 & 255L) / 255F;
+        float f5 = (float)(ODNBXlite.FogColor & 255L) / 255F;
         f3 *= f2 * 0.94F + 0.06F;
         f4 *= f2 * 0.94F + 0.06F;
         f5 *= f2 * 0.91F + 0.09F;
@@ -2245,7 +2245,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getFogColor(float par1)
     {
-        if(mod_noBiomesX.FogColor != 0L && worldProvider.worldType == 0){
+        if(ODNBXlite.FogColor != 0L && worldProvider.worldType == 0){
             return computeFogColor(par1);
         }
         float f = getCelestialAngle(par1);
@@ -3220,7 +3220,7 @@ public class World implements IBlockAccess
         }
 
         worldProvider.worldChunkMgr.cleanupCache();
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES ||(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA15 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA173))){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))){
             updateWeather();
         }
 
@@ -3244,11 +3244,11 @@ public class World implements IBlockAccess
         Profiler.startSection("mobSpawner");
 //         SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
         if (worldProvider.worldType!=1){
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES || mod_noBiomesX.UseNewSpawning){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || ODNBXlite.UseNewSpawning){
                 SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES || worldProvider.worldType!=0){
+            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || worldProvider.worldType!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
-            } else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
+            } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
                 animalSpawner.func_1150_a(this);
                 monsterSpawner.func_1150_a(this);
                 waterMobSpawner.func_1150_a(this);
@@ -3529,7 +3529,7 @@ public class World implements IBlockAccess
             }
 
             Profiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && snowCovered && mod_noBiomesX.SnowCovered && worldProvider.worldType==0)
+            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && snowCovered && ODNBXlite.SnowCovered && worldProvider.worldType==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
@@ -3549,7 +3549,7 @@ public class World implements IBlockAccess
                         setBlockWithNotify(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
                     }
                 }
-            }else if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+            }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l7 = updateLCG >> 2;
                 int l8 = l7 & 0xf;
@@ -3564,7 +3564,7 @@ public class World implements IBlockAccess
                     setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
                 }
             }else{
-                if(rand.nextInt(16) == 0 && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA15 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA173))
+                if(rand.nextInt(16) == 0 && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))
                 {
                     updateLCG = updateLCG * 3 + 0x3c6ef35f;
                     int l7 = updateLCG >> 2;
@@ -3752,24 +3752,24 @@ public class World implements IBlockAccess
             int i1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3 + 1, par4) - par6;
             int j1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 - 1) - par6;
             int k1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 + 1) - par6;
-            if ((mod_noBiomesX.SurrWaterType==Block.waterStill.blockID||mod_noBiomesX.SurrWaterType==Block.waterMoving.blockID) && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+            if ((ODNBXlite.SurrWaterType==Block.waterStill.blockID||ODNBXlite.SurrWaterType==Block.waterMoving.blockID) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if (isBounds(par2-1, par3, par4)){
-                    j = mod_noBiomesX.getSkyLightInBounds(par3);
+                    j = ODNBXlite.getSkyLightInBounds(par3);
                 }
                 if (isBounds(par2+1, par3, par4)){
-                    k = mod_noBiomesX.getSkyLightInBounds(par3);
+                    k = ODNBXlite.getSkyLightInBounds(par3);
                 }
                 if (isBounds(par2, par3-1, par4)){
-                    l = mod_noBiomesX.getSkyLightInBounds(par3-1);
+                    l = ODNBXlite.getSkyLightInBounds(par3-1);
                 }
                 if (isBounds(par2, par3+1, par4)){
-                    i1 = mod_noBiomesX.getSkyLightInBounds(par3+1);
+                    i1 = ODNBXlite.getSkyLightInBounds(par3+1);
                 }
                 if (isBounds(par2, par3, par4-1)){
-                    j1 = mod_noBiomesX.getSkyLightInBounds(par3);
+                    j1 = ODNBXlite.getSkyLightInBounds(par3);
                 }
                 if (isBounds(par2, par3, par4+1)){
-                    k1 = mod_noBiomesX.getSkyLightInBounds(par3);
+                    k1 = ODNBXlite.getSkyLightInBounds(par3);
                 }
             }
 
@@ -4168,7 +4168,7 @@ public class World implements IBlockAccess
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky() && mod_noBiomesX.VoidFog==0)
+            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasNoSky() && ODNBXlite.VoidFog==0)
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
@@ -4954,7 +4954,7 @@ public class World implements IBlockAccess
             return false;
         }
 
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_NEWBIOMES){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
             BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
             if (biomegenbase.getEnableSnow())
             {
@@ -5097,10 +5097,10 @@ public class World implements IBlockAccess
      */
     public double getSeaLevel()
     {
-        if (mod_noBiomesX.isFinite()){
-            return mod_noBiomesX.SurrWaterHeight;
+        if (ODNBXlite.isFinite()){
+            return ODNBXlite.SurrWaterHeight;
         }
-        if (mod_noBiomesX.VoidFog>1){
+        if (ODNBXlite.VoidFog>1){
             return -9999D;
         }
         return worldInfo.getTerrainType() != WorldType.FLAT ? 63D : 0.0D;

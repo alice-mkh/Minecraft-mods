@@ -28,19 +28,19 @@ public class ChunkProviderGenerate2
     }
 
     private IChunkProvider getCurrentProvider(){
-        if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_ALPHA11201){
+        if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201){
                 return alphaGen;
-            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0420 || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0608){
+            }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0420 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608){
                 return infdevGen;
-            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INFDEV0227){
+            }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
                 return oldInfdevGen;
-            }else if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
+            }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 return indevGen;
             }
             return classicGen;
-        } else if(mod_noBiomesX.Generator==mod_noBiomesX.GEN_OLDBIOMES){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_SKY){
+        } else if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
                 return betaGenSky;
             }
             return betaGen;

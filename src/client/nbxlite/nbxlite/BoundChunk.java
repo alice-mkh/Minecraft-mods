@@ -50,7 +50,7 @@ public class BoundChunk extends Chunk
      */
     public int getBlockID(int par1, int par2, int par3)
     {
-        return mod_noBiomesX.getBlockIdInBounds(par2);
+        return ODNBXlite.getBlockIdInBounds(par2);
     }
 
     public int getBlockLightOpacity(int par1, int par2, int par3)
@@ -96,9 +96,9 @@ public class BoundChunk extends Chunk
     public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int i)
     {
         if (par1EnumSkyBlock==EnumSkyBlock.Sky){
-            return mod_noBiomesX.getSkyLightInBounds(par3);
+            return ODNBXlite.getSkyLightInBounds(par3);
         }
-        return mod_noBiomesX.getBlockLightInBounds(par3);
+        return ODNBXlite.getBlockLightInBounds(par3);
     }
 
     /**
@@ -114,7 +114,7 @@ public class BoundChunk extends Chunk
      */
     public int getBlockLightValue(int par1, int par2, int par3, int i)
     {
-        return Math.max(mod_noBiomesX.getSkyLightInBounds(par2), mod_noBiomesX.getBlockLightInBounds(par2));
+        return Math.max(ODNBXlite.getSkyLightInBounds(par2), ODNBXlite.getBlockLightInBounds(par2));
     }
 
     /**

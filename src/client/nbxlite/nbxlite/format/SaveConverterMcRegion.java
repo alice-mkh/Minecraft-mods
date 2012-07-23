@@ -10,7 +10,7 @@ import net.minecraft.src.RegionFile;
 import net.minecraft.src.SaveFormatOld;
 import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.WorldInfo;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class SaveConverterMcRegion extends SaveFormatOld
 {

@@ -13,7 +13,7 @@ public class BiomeGenEmeraldHills extends BiomeGenHills
     public void decorate(World par1World, Random par2Random, int par3, int par4)
     {
         super.decorate(par1World, par2Random, par3, par4);
-        if (mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_13 || mod_noBiomesX.GenerateNewOres){
+        if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13 || ODNBXlite.GenerateNewOres){
             int i = 3 + par2Random.nextInt(6);
 
             for (int j = 0; j < i; j++)

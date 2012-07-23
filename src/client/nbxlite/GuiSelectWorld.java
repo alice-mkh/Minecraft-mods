@@ -183,7 +183,7 @@ public class GuiSelectWorld extends GuiScreen
             File dir = ((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory();
             try{
                 File mclevel = new File(dir, getSaveFileName(par1));
-                mod_noBiomesX.mclevelimporter = new McLevelImporter(mclevel);
+                ODNBXlite.mclevelimporter = new McLevelImporter(mclevel);
                 mc.playerController = new PlayerControllerSP(mc);
                 mc.startWorld(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, 0, false, false, WorldType.DEFAULT));
                 mclevel.renameTo(new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+mclevel.getName()));
@@ -201,7 +201,7 @@ public class GuiSelectWorld extends GuiScreen
             return;
         }
         if (!mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().nbxlite){
-            mod_noBiomesX.Import = true;
+            ODNBXlite.Import = true;
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(new GuiNBXlite(this, getSaveFileName(par1), par1));
             return;
@@ -232,7 +232,7 @@ public class GuiSelectWorld extends GuiScreen
             s = (new StringBuilder()).append("World").append(par1).toString();
         }
 
-        mod_noBiomesX.Import = false;
+        ODNBXlite.Import = false;
         MinecraftHook.startWorldHook(s, getSaveName(par1), null);
         mc.displayGuiScreen(null);
     }

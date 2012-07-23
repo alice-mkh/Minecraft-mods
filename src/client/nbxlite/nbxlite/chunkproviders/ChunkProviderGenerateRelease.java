@@ -30,7 +30,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     int unusedIntArray32x32[][];
 
     public ChunkProviderGenerateRelease(World world, long l, Boolean flag){
-        super(world, l, flag, mod_noBiomesX.GEN_NEWBIOMES);
+        super(world, l, flag, ODNBXlite.GEN_NEWBIOMES);
         stoneNoise = new double[256];
         caveGenerator = new MapGenCaves();
         strongholdGenerator = new MapGenStronghold();
@@ -82,18 +82,18 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
                         {
                             int i3 = l2 + l1 * 4 << 11 | 0 + i2 * 4 << 7 | j2 * 8 + k2;
                             int j3 = 1 << 7;
-                            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+                            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
                                 i3 -= j3;
                             }
                             double d14 = 0.25D;
                             double d15 = d10;
                             double d16 = (d11 - d10) * d14;
-                            if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+                            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
                                 d15 -= d16;
                             }
                             for (int k3 = 0; k3 < 4; k3++)
                             {
-                                if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
+                                if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
                                     int k4 = 0;
                                     if (j2 * 8 + k2 < l)
                                     {
@@ -184,7 +184,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
                         }
                         if (l1 < k && byte0 == 0)
                         {
-                            if (f < 0.15F && mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181)
+                            if (f < 0.15F && ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181)
                             {
                                 byte0 = (byte)Block.ice.blockID;
                             }
@@ -222,7 +222,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
 
     protected void generateStructures(int i, int j, byte abyte0[]){
         caveGenerator.generate(this, worldObj, i, j, abyte0);
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
         }
         if (mapFeaturesEnabled)
@@ -230,11 +230,11 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
-            if (mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_13){
+            if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
                 templeGenerator.generate(this, worldObj, i, j, abyte0);
             }
         }
-        if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
         }
     }
@@ -375,15 +375,15 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         boolean flag = false;
         if (mapFeaturesEnabled)
         {
-            if(mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_BETA181){
+            if(ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
             mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             flag = villageGenerator.generateStructuresInChunk(worldObj, rand, i, j);
-            if(mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+            if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
-            if(mod_noBiomesX.MapFeatures>=mod_noBiomesX.FEATURES_13){
+            if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
                 templeGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
         }
@@ -413,7 +413,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         }
         biomegenbase.decorate(worldObj, rand, k, l);
         spawnAnimals(k, l);
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
             k += 8;
             l += 8;
             for (int i2 = 0; i2 < 16; i2++)

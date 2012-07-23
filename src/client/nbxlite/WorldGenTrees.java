@@ -181,7 +181,7 @@ public class WorldGenTrees extends WorldGenerator
                 }
             }
 
-            if (par2Random.nextInt(5) == 0 && i > 5 && (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_12 || mod_noBiomesX.Generator!=mod_noBiomesX.GEN_NEWBIOMES))
+            if (par2Random.nextInt(5) == 0 && i > 5 && (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_12 || ODNBXlite.Generator!=ODNBXlite.GEN_NEWBIOMES))
             {
                 for (int j2 = 0; j2 < 2; j2++)
                 {

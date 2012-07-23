@@ -13,7 +13,7 @@ import net.minecraft.src.LoadingScreenRenderer;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.Material;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public final class IndevGenerator
 {
@@ -90,7 +90,7 @@ public final class IndevGenerator
                 nextPhase();
             } else
             {
-                progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.raising"));
+                progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.raising"));
                 nextPhase();
                 IndevGenerator a1 = this;
                 IndevNoiseGenerator2 d1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
@@ -141,7 +141,7 @@ public final class IndevGenerator
                 }
 
                 ai = ai3;
-                progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.eroding"));
+                progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.eroding"));
                 nextPhase();
                 int ai1[] = ai;
                 a1 = this;
@@ -165,7 +165,7 @@ public final class IndevGenerator
                 }
 
             }
-            progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.soiling"));
+            progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.soiling"));
             nextPhase();
             int ai2[] = ai;
             IndevGenerator a2 = this;
@@ -227,7 +227,7 @@ public final class IndevGenerator
 
             }
 
-            progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.growing"));
+            progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.growing"));
             nextPhase();
             ai2 = ai;
             a2 = this;
@@ -289,7 +289,7 @@ public final class IndevGenerator
 
         }
 
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.carving"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.carving"));
         nextPhase();
         IndevGenerator a3 = this;
         int k4 = a3.width;
@@ -365,14 +365,14 @@ label0:
         int j3 = a(Block.oreIron.blockID, 800, 8, (k1 * 3) / 5);
         int l3 = a(Block.oreGold.blockID, 500, 6, (k1 << 1) / 5);
         l1 = a(Block.oreDiamond.blockID, 800, 2, k1 / 5);
-        if (mod_noBiomesX.GenerateNewOres){
+        if (ODNBXlite.GenerateNewOres){
             int redstone = a(Block.oreRedstone.blockID, 800, 4, (k1 << 1) / 5);
             int lapis = a(Block.oreLapis.blockID, 600, 4, (k1 << 1) / 5);
             System.out.println("Coal: "+j2+", Iron: "+j3+", Lapis: "+lapis+", Gold: "+l3+", Redstone: "+redstone+", Diamond: "+l1);
         }else{
             System.out.println("Coal: "+j2+", Iron: "+j3+", Gold: "+l3+", Diamond: "+l1);
         }
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.melting"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.melting"));
         nextPhase();
         c();
         world.u = k1 + 2;
@@ -390,7 +390,7 @@ label0:
         {
             l = k - 9;
         }
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.watering"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.watering"));
         nextPhase();
         a();
         if(!floating)
@@ -450,16 +450,16 @@ label0:
         }
         world.waterLevel = k;
         world.t = l;
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.assembling"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.assembling"));
         nextPhase();
         a(0.0F);
         /*world.*/setData(world, i1, k1, j1, blocks, null);
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.building"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.building"));
         nextPhase();
         a(0.0F);
         world.a();
         spawnHouse(world);
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.planting"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.planting"));
         nextPhase();
         if(theme != 1)
         {
@@ -488,7 +488,7 @@ label0:
         generateFlowers(world, Block.mushroomBrown, 50);
         nextPhase();
         generateFlowers(world, Block.mushroomRed, 50);
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.lighting"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.lighting"));
         nextPhase();
         for(int i3 = 0; i3 < 10000; i3++)
         {
@@ -496,7 +496,7 @@ label0:
             world.d();
         }
 
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.spawning"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.spawning"));
         nextPhase();
 /*
         net.minecraft.a.a.b b1 = new net.minecraft.a.a.b(world);

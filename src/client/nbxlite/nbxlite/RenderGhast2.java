@@ -1,7 +1,7 @@
 package net.minecraft.src.nbxlite;
 
 import org.lwjgl.opengl.GL11;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.EntityGhast;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.ModelGhast;

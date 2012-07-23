@@ -38,14 +38,14 @@ public class OldSpawnerAnimals
     }
 
     private boolean isBounds(int x, int z){
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                if(x<=0 || x>=mod_noBiomesX.IndevWidthX-1 || z<=0 || z>=mod_noBiomesX.IndevWidthZ-1){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1){
                     return true;
                 }
             }
-            if (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC){
-                if(x<0 || x>=mod_noBiomesX.IndevWidthX || z<0 || z>=mod_noBiomesX.IndevWidthZ){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ){
                     return true;
                 }
             }
@@ -161,7 +161,7 @@ public class OldSpawnerAnimals
                         if(isBounds(i3, k3)){
                             continue;
                         }
-                        if(entityliving instanceof EntitySlime && entityliving.posY > 16D && mod_noBiomesX.RestrictSlimes)
+                        if(entityliving instanceof EntitySlime && entityliving.posY > 16D && ODNBXlite.RestrictSlimes)
                         {
                             continue;
                         }

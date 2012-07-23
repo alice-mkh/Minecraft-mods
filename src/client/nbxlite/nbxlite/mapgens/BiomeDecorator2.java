@@ -11,14 +11,14 @@ import net.minecraft.src.WorldGenLiquids;
 import net.minecraft.src.WorldGenPumpkin;
 import net.minecraft.src.WorldGenTallGrass;
 import net.minecraft.src.WorldGenTrees;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class BiomeDecorator2 extends BiomeDecorator
 {
     public BiomeDecorator2(BiomeGenBase par1BiomeGenBase)
     {
         super(par1BiomeGenBase);
-        if (mod_noBiomesX.MapFeatures<=mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
             plantRedGen = new WorldGenFlowers(Block.plantYellow.blockID);
         }
     }
@@ -63,14 +63,14 @@ public class BiomeDecorator2 extends BiomeDecorator
             int j6 = chunk_X + randomGenerator.nextInt(16) + 8;
             int k10 = chunk_Z + randomGenerator.nextInt(16) + 8;
             WorldGenerator worldgenerator = biome.getRandomWorldGenForTrees(randomGenerator);
-            if (worldgenerator instanceof WorldGenTrees && mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
+            if (worldgenerator instanceof WorldGenTrees && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                 worldgenerator = biome.oldWorldGenTrees;
             }
             worldgenerator.setScale(1.0D, 1.0D, 1.0D);
             worldgenerator.generate(currentWorld, randomGenerator, j6, currentWorld.getHeightValue(j6, k10), k10);
         }
 
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
             for (int i2 = 0; i2 < bigMushroomsPerChunk; i2++)
             {
                 int k6 = chunk_X + randomGenerator.nextInt(16) + 8;
@@ -100,7 +100,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             int j7 = chunk_X + randomGenerator.nextInt(16) + 8;
             int k11 = randomGenerator.nextInt(128);
             int j15 = chunk_Z + randomGenerator.nextInt(16) + 8;
-            if (mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
+            if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                 (new WorldGenTallGrass(Block.tallGrass.blockID, 1)).generate(currentWorld, randomGenerator, j7, k11, j15);
             }else{
                 WorldGenerator worldgenerator1 = biome.func_48410_b(randomGenerator);
@@ -116,7 +116,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             (new WorldGenDeadBush(Block.deadBush.blockID)).generate(currentWorld, randomGenerator, k7, l11, k15);
         }
 
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
             for (int i3 = 0; i3 < waterlilyPerChunk; i3++)
             {
                 int l7 = chunk_X + randomGenerator.nextInt(16) + 8;
@@ -196,7 +196,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             cactusGen.generate(currentWorld, randomGenerator, l9, i14, i17);
         }
 
-        if (mod_noBiomesX.MapFeatures>mod_noBiomesX.FEATURES_BETA181){
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
             if (generateLakes)
             {
                 for (int i5 = 0; i5 < 50; i5++)

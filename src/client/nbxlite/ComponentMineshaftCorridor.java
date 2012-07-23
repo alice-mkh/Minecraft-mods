@@ -225,7 +225,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
         for (int j = 0; j < sectionCount; j++)
         {
             int i1 = 2 + j * 5;
-            if (mod_noBiomesX.mineshaftFences()){
+            if (ODNBXlite.mineshaftFences()){
                 fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, i1, 0, 1, i1, Block.fence.blockID, 0, false);
                 fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, i1, 2, 1, i1, Block.fence.blockID, 0, false);
             }else{
@@ -289,7 +289,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
             }
         }
 
-        if (mod_noBiomesX.mineshaftFloor()){
+        if (ODNBXlite.mineshaftFloor()){
             for (int k = 0; k <= 2; k++)
             {
                 for (int j1 = 0; j1 <= i; j1++)

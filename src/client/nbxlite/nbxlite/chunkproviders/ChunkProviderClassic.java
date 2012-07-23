@@ -8,6 +8,6 @@ public class ChunkProviderClassic extends ChunkProviderBaseFinite{
     }
 
     public void generateFiniteLevel(){
-        mod_noBiomesX.generateClassicLevel(seed);
+        ODNBXlite.generateClassicLevel(seed);
     }
 }

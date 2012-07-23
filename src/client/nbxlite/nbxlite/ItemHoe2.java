@@ -37,7 +37,7 @@ public class ItemHoe2 extends ItemHoe
             {
                 par3World.setBlockWithNotify(par4, par5, par6, block.blockID);
                 par1ItemStack.damageItem(1, par2EntityPlayer);
-                if (!mod_noBiomesX.allowOldHoe()){
+                if (!ODNBXlite.allowOldHoe()){
                     return true;
                 }
                 if(par3World.rand.nextInt(8) == 0 && i == Block.grass.blockID){

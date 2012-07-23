@@ -23,7 +23,7 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
     }
 
     public ChunkProviderBaseInfinite(World world, long l, boolean flag){
-        this(world, l, flag, mod_noBiomesX.GEN_BIOMELESS);
+        this(world, l, flag, ODNBXlite.GEN_BIOMELESS);
     }
 
     protected void generateTerrain(int i, int j, byte abyte0[]){}
@@ -51,12 +51,12 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
     public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
-        if (biomes==mod_noBiomesX.GEN_NEWBIOMES){
+        if (biomes==ODNBXlite.GEN_NEWBIOMES){
             biomesForGeneration = worldObj.getWorldChunkManager().getBiomesForGeneration(biomesForGeneration, i * 4 - 2, j * 4 - 2, 10, 10);
             generateTerrainForBiome(i, j, abyte0, biomesForGeneration);
             biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
             replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
-        }else if (biomes==mod_noBiomesX.GEN_OLDBIOMES){
+        }else if (biomes==ODNBXlite.GEN_OLDBIOMES){
             oldBiomesForGeneration = worldObj.getWorldChunkManager().oldLoadBlockGeneratorData(oldBiomesForGeneration, i * 16, j * 16, 16, 16);
             generateTerrainForOldBiome(i, j, abyte0, oldBiomesForGeneration, worldObj.getWorldChunkManager().temperature);
             replaceBlocksForOldBiome(i, j, abyte0, oldBiomesForGeneration);
@@ -79,7 +79,7 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
     public void populate(IChunkProvider ichunkprovider2, int x, int z){}
 
     protected void spawnAnimals(int i, int j){
-        if (mod_noBiomesX.UseNewSpawning){
+        if (ODNBXlite.UseNewSpawning){
             BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(i + 16, j + 16);
             SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, i + 8, j + 8, 16, 16, rand);
         }

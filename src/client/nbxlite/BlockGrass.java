@@ -21,7 +21,7 @@ public class BlockGrass extends Block
     {
         if (par1 == 1)
         {
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !mod_noBiomesX.FallbackColors){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && !ODNBXlite.FallbackColors){
                 return toptex;
             }
             return 0;
@@ -37,7 +37,7 @@ public class BlockGrass extends Block
     {
         if (par5 == 1)
         {
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && !mod_noBiomesX.FallbackColors){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && !ODNBXlite.FallbackColors){
                 return toptex;
             }
             return 0;
@@ -49,7 +49,7 @@ public class BlockGrass extends Block
         }
 
         Material material = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-        if ((mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS || (mod_noBiomesX.GreenGrassSides && !mod_noBiomesX.NoGreenGrassSides)) && !mod_noBiomesX.FallbackColors){
+        if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && !ODNBXlite.FallbackColors){
             return material != Material.snow && material != Material.craftedSnow ? sidetex : 68;
         }
         return material != Material.snow && material != Material.craftedSnow ? 3 : 68;
@@ -57,8 +57,8 @@ public class BlockGrass extends Block
 
     public int getBlockColor()
     {
-        if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS){
-            if (!mod_noBiomesX.FallbackColors){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+            if (!ODNBXlite.FallbackColors){
                 return 0xffffff;
             }
             ColorizerGrass.getGrassColor(1.0F, 1.0F);
@@ -82,7 +82,7 @@ public class BlockGrass extends Block
      */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        return mod_noBiomesX.GetGrassColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
+        return ODNBXlite.GetGrassColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
     }
 
     /**

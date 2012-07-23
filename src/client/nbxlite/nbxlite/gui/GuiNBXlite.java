@@ -10,7 +10,7 @@ import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.ModLoader;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.nbxlite.MinecraftHook;
 
 public class GuiNBXlite extends GuiScreen{
@@ -39,7 +39,7 @@ public class GuiNBXlite extends GuiScreen{
     public GuiNBXlite(GuiScreen guiscreen){
         parent = guiscreen;
         newworld = true;
-        newores = mod_noBiomesX.DefaultNewOres;
+        newores = ODNBXlite.DefaultNewOres;
         jungle = false;
     }
 
@@ -47,7 +47,7 @@ public class GuiNBXlite extends GuiScreen{
         parent = guiscreen;
         newworld = true;
         olddays = true;
-        newores = mod_noBiomesX.DefaultNewOres;
+        newores = ODNBXlite.DefaultNewOres;
         jungle = false;
     }
 
@@ -57,7 +57,7 @@ public class GuiNBXlite extends GuiScreen{
         parent = guiscreen;
         number = i;
         newworld = false;
-        newores = mod_noBiomesX.DefaultNewOres;
+        newores = ODNBXlite.DefaultNewOres;
         jungle = false;
     }
 
@@ -69,19 +69,19 @@ public class GuiNBXlite extends GuiScreen{
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         if (!olddays){
-            controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_noBiomesX.lang.get("continue")));
+            controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, ODNBXlite.lang.get("continue")));
             controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StringTranslate.getInstance().translateKey("gui.cancel")));
         }else{
             controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         }
         genButtons = new GuiButton[GeneratorList.genlength+1];
         for (int i = 0; i<=GeneratorList.genlength; i++){
-            controlList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 170, height / 6 + (i * 21), 100, 20, mod_noBiomesX.lang.get(GeneratorList.genname[i])));
+            controlList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 170, height / 6 + (i * 21), 100, 20, ODNBXlite.lang.get(GeneratorList.genname[i])));
         }
         genButtons[GeneratorList.gencurrent].enabled = false;
 //Indev and classic
-        controlList.add(indevTypeButton = new GuiButton(39, width / 2 - 75 + leftmargin, height / 6 + 94, 150, 20, mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent])));
-        controlList.add(indevThemeButton = new GuiButton(40, width / 2 - 75 + leftmargin, height / 6 + 126, 150, 20, mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
+        controlList.add(indevTypeButton = new GuiButton(39, width / 2 - 75 + leftmargin, height / 6 + 94, 150, 20, ODNBXlite.lang.get("indevType")+ODNBXlite.lang.get(GeneratorList.typename[GeneratorList.typecurrent])));
+        controlList.add(indevThemeButton = new GuiButton(40, width / 2 - 75 + leftmargin, height / 6 + 126, 150, 20, ODNBXlite.lang.get("theme")+ODNBXlite.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
         indevWidthButton = new GuiButton[4];
         indevLengthButton = new GuiButton[4];
         for (int i=0; i<4; i++){
@@ -92,20 +92,20 @@ public class GuiNBXlite extends GuiScreen{
         }
         indevWidthButton[GeneratorList.xcurrent].enabled=false;
         indevLengthButton[GeneratorList.zcurrent].enabled=false;
-        controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, mod_noBiomesX.lang.get("depth"), GuiSliderCustom.setSizeValue(mod_noBiomesX.IndevHeight)));
+        controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, ODNBXlite.lang.get("depth"), GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
         indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
         indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
         indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
 //Alpha and Infdev
-        controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
+        controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, ODNBXlite.lang.get("theme")+ODNBXlite.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
         alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
 //Beta
         String name;
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         for (int i=0; i<=GeneratorList.feat1length; i++){
-            name = mod_noBiomesX.lang.get(GeneratorList.feat1name[i]);
+            name = ODNBXlite.lang.get(GeneratorList.feat1name[i]);
             if (GeneratorList.feat1desc[i]!=""){
-                name += " ("+mod_noBiomesX.lang.get(GeneratorList.feat1desc[i])+")";
+                name += " ("+ODNBXlite.lang.get(GeneratorList.feat1desc[i])+")";
             }
             controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, name));
             betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
@@ -114,15 +114,15 @@ public class GuiNBXlite extends GuiScreen{
 //Release
         releaseFeaturesButton = new GuiButton[GeneratorList.feat2length+1];
         for (int i=0; i<=GeneratorList.feat2length; i++){
-            name = mod_noBiomesX.lang.get(GeneratorList.feat2name[i]);
+            name = ODNBXlite.lang.get(GeneratorList.feat2name[i]);
             if (GeneratorList.feat2desc[i]!=""){
-                name += " ("+mod_noBiomesX.lang.get(GeneratorList.feat2desc[i])+")";
+                name += " ("+ODNBXlite.lang.get(GeneratorList.feat2desc[i])+")";
             }
             controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + ((i + 1) * 21), 210, 20, name));
             releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
         }
         releaseFeaturesButton[GeneratorList.feat2current].enabled=false;
-        controlList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, (mod_noBiomesX.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
+        controlList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, (ODNBXlite.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
         newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<4);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
@@ -140,7 +140,7 @@ public class GuiNBXlite extends GuiScreen{
                 newOresButton.xPosition=width / 2 - 75 + leftmargin;
             }
         }
-        controlList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, (mod_noBiomesX.lang.get("betaJungle") + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
+        controlList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, (ODNBXlite.lang.get("betaJungle") + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
         jungleButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4);
     }
 
@@ -161,34 +161,34 @@ public class GuiNBXlite extends GuiScreen{
             if (gen==0 && feats==3){
                 type=GeneratorList.typecurrent;
             }
-            mod_noBiomesX.SetGenerator(ModLoader.getMinecraftInstance().theWorld, gen, feats, GeneratorList.themecurrent, type, mod_noBiomesX.SnowCovered, newores);
+            ODNBXlite.SetGenerator(ModLoader.getMinecraftInstance().theWorld, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
             if (gen==0 && feats>=3){
-                mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
-                mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
-                mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();
+                ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
+                ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
+                ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
             }
             ModLoader.getMinecraftInstance().renderGlobal.loadRenderers();
         }else{
-            mod_noBiomesX.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
+            ODNBXlite.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-                mod_noBiomesX.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
+                ODNBXlite.MapFeatures=GeneratorList.genfeats[GeneratorList.gencurrent];
             }
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-                mod_noBiomesX.MapFeatures=jungle ? 6 : GeneratorList.feat1current;
+                ODNBXlite.MapFeatures=jungle ? 6 : GeneratorList.feat1current;
             }
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-                mod_noBiomesX.MapFeatures=GeneratorList.feat2current;
+                ODNBXlite.MapFeatures=GeneratorList.feat2current;
             }
-            mod_noBiomesX.MapTheme=GeneratorList.themecurrent;
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV){
-                mod_noBiomesX.IndevMapType=GeneratorList.typecurrent;
+            ODNBXlite.MapTheme=GeneratorList.themecurrent;
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                ODNBXlite.IndevMapType=GeneratorList.typecurrent;
             }
-            if (mod_noBiomesX.Generator==mod_noBiomesX.GEN_BIOMELESS && (mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_INDEV || mod_noBiomesX.MapFeatures==mod_noBiomesX.FEATURES_CLASSIC)){
-                mod_noBiomesX.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
-                mod_noBiomesX.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
-                mod_noBiomesX.IndevHeight=indevHeightSlider.getSizeValue();
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC)){
+                ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
+                ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
+                ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
             }
-            mod_noBiomesX.GenerateNewOres=newores;
+            ODNBXlite.GenerateNewOres=newores;
         }
     }
 
@@ -235,11 +235,11 @@ public class GuiNBXlite extends GuiScreen{
         }else if (guibutton.id==2){
             StringTranslate stringtranslate = StringTranslate.getInstance();
             newores=!newores;
-            newOresButton.displayString=mod_noBiomesX.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
+            newOresButton.displayString=ODNBXlite.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
         }else if (guibutton.id==3){
             StringTranslate stringtranslate = StringTranslate.getInstance();
             jungle=!jungle;
-            jungleButton.displayString=mod_noBiomesX.lang.get("betaJungle") + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
+            jungleButton.displayString=ODNBXlite.lang.get("betaJungle") + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
         }else if (guibutton.id>=10 && guibutton.id<30){
             StringTranslate stringtranslate = StringTranslate.getInstance();
             genButtons[GeneratorList.gencurrent].enabled = true;
@@ -261,7 +261,7 @@ public class GuiNBXlite extends GuiScreen{
                 releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
             }
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
-                newOresButton.displayString=mod_noBiomesX.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
+                newOresButton.displayString=ODNBXlite.lang.get("genNewOres") + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
                 if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
                     if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
                         newOresButton.yPosition=height / 6 + 127;
@@ -286,14 +286,14 @@ public class GuiNBXlite extends GuiScreen{
             }else{
                 GeneratorList.typecurrent=0;
             }
-            indevTypeButton.displayString = mod_noBiomesX.lang.get("indevType")+mod_noBiomesX.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
+            indevTypeButton.displayString = ODNBXlite.lang.get("indevType")+ODNBXlite.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
         }else if (guibutton.id == 40 || guibutton.id == 60){
             if (GeneratorList.themecurrent<GeneratorList.themelength){
                 GeneratorList.themecurrent++;
             }else{
                 GeneratorList.themecurrent=0;
             }
-            guibutton.displayString = mod_noBiomesX.lang.get("theme")+mod_noBiomesX.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+            guibutton.displayString = ODNBXlite.lang.get("theme")+ODNBXlite.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
         }else if (guibutton.id>=30 && guibutton.id<=33){
             indevWidthButton[GeneratorList.xcurrent].enabled = true;
             GeneratorList.xcurrent = guibutton.id-30;
@@ -329,24 +329,24 @@ public class GuiNBXlite extends GuiScreen{
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
-        drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
+        drawCenteredString(fontRenderer, ODNBXlite.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2){
-            drawString(fontRenderer, mod_noBiomesX.lang.get("width"), width / 2 - 120 + leftmargin, height / 6 - 10, 0xa0a0a0);
-            drawString(fontRenderer, mod_noBiomesX.lang.get("length"), width / 2 - 120 + leftmargin, height / 6 + 20, 0xa0a0a0);
-            drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 148, 0xa0a0a0);
+            drawString(fontRenderer, ODNBXlite.lang.get("width"), width / 2 - 120 + leftmargin, height / 6 - 10, 0xa0a0a0);
+            drawString(fontRenderer, ODNBXlite.lang.get("length"), width / 2 - 120 + leftmargin, height / 6 + 20, 0xa0a0a0);
+            drawCenteredString(fontRenderer, ODNBXlite.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 148, 0xa0a0a0);
         }
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
             if (GeneratorList.typecurrent==2){
                 int count = (indevHeightSlider.getSizeValue() - 64) / 48 + 1;
                 if (count==1){
-                    drawCenteredString(fontRenderer, mod_noBiomesX.lang.get("1Layer"), width / 2 + leftmargin, height / 6 + 114, 0xa0a0a0);
+                    drawCenteredString(fontRenderer, ODNBXlite.lang.get("1Layer"), width / 2 + leftmargin, height / 6 + 114, 0xa0a0a0);
                 }else{
-                    drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(count+"Layers"), width / 2 + leftmargin, height / 6 + 114, 0xa0a0a0);
+                    drawCenteredString(fontRenderer, ODNBXlite.lang.get(count+"Layers"), width / 2 + leftmargin, height / 6 + 114, 0xa0a0a0);
                 }
             }
         }
         if (GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            drawCenteredString(fontRenderer, mod_noBiomesX.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 67, 0xa0a0a0);
+            drawCenteredString(fontRenderer, ODNBXlite.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 67, 0xa0a0a0);
         }
         super.drawScreen(i, j, f); 
     }

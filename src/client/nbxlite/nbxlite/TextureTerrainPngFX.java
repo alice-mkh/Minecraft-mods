@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.TextureFX;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public class TextureTerrainPngFX extends TextureFX
 {
@@ -29,8 +29,8 @@ public class TextureTerrainPngFX extends TextureFX
     }
 
     public void changeIndex(int index, boolean b){
-        spriteData = new int[mod_noBiomesX.textureWidth * mod_noBiomesX.textureWidth];
-        imageData = new byte[mod_noBiomesX.textureWidth * mod_noBiomesX.textureWidth * 4];
+        spriteData = new int[ODNBXlite.textureWidth * ODNBXlite.textureWidth];
+        imageData = new byte[ODNBXlite.textureWidth * ODNBXlite.textureWidth * 4];
         currentIndex = index;
         try
         {
@@ -38,9 +38,9 @@ public class TextureTerrainPngFX extends TextureFX
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource("/terrain.png"));
             }
-            int i = (currentIndex % 16) * mod_noBiomesX.textureWidth;
-            int j = (currentIndex / 16) * mod_noBiomesX.textureWidth;
-            bufferedimage.getRGB(i, j, mod_noBiomesX.textureWidth, mod_noBiomesX.textureWidth, spriteData, 0, mod_noBiomesX.textureWidth);
+            int i = (currentIndex % 16) * ODNBXlite.textureWidth;
+            int j = (currentIndex / 16) * ODNBXlite.textureWidth;
+            bufferedimage.getRGB(i, j, ODNBXlite.textureWidth, ODNBXlite.textureWidth, spriteData, 0, ODNBXlite.textureWidth);
         }
         catch (Exception ex)
         {

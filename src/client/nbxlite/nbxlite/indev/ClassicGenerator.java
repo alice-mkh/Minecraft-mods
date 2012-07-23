@@ -15,7 +15,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.StatCollector;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 
 public final class ClassicGenerator
 {
@@ -47,7 +47,7 @@ public final class ClassicGenerator
         d = l;
         g = d - 32;
         f = new byte[j * k << 6];
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.raising"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.raising"));
         java.lang.Object obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         IndevNoiseGenerator2 c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         java.lang.Object obj1 = new IndevNoiseGeneratorOctaves(rand, 6);
@@ -71,7 +71,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.eroding"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.eroding"));
         int arrayf1[] = ai;
         c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         obj1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
@@ -92,7 +92,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.soiling"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.soiling"));
         arrayf1 = ai;
         int intf2 = b;
         int k1 = this.c;
@@ -128,7 +128,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.carving"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.carving"));
         float f2 = 4;
         float f1 = 0;
         int k5 = (this.b * this.c * this.d) / 256 / 64 << 1;
@@ -192,14 +192,14 @@ label0:
         a(Block.oreCoal.blockID, 90, 1, 4);
         a(Block.oreIron.blockID, 70, 2, 4);
         a(Block.oreGold.blockID, 50, 3, 4);
-        if (mod_noBiomesX.GenerateNewOres){
+        if (ODNBXlite.GenerateNewOres){
             a(Block.oreLapis.blockID, 30, 4, 4);
             a(Block.oreRedstone.blockID, 40, 5, 4);
             a(Block.oreDiamond.blockID, 30, 6, 4);
         }
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.watering"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.watering"));
         i2 = Block.waterStill.blockID;
-        if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
+        if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
             {
             i2 = Block.lavaStill.blockID;
         }
@@ -229,7 +229,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.melting"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.melting"));
         int intf22 = (this.b * this.c * this.d) / 20000;
         for(int intk1 = 0; intk1 < intf22; intk1++)
         {
@@ -245,7 +245,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.growing"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.growing"));
         arrayf1 = ai;
         IndevNoiseGeneratorOctaves j2 = new IndevNoiseGeneratorOctaves(rand, 8);
         IndevNoiseGeneratorOctaves b2 = new IndevNoiseGeneratorOctaves(rand, 8);
@@ -265,13 +265,13 @@ label0:
                     continue;
                 }
                 int i15 = Block.grass.blockID;
-                if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
+                if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
                 {
                     i15 = Block.dirt.blockID;
                 }
                 if(i12 <= this.d / 2 - 1 && flag){
                     i15 = Block.sand.blockID;
-                    if(mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_HELL)
+                    if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
                     {
                         i15 = Block.grass.blockID;
                     }
@@ -281,7 +281,7 @@ label0:
 
         }
 
-        progressupdate.displayLoadingString(mod_noBiomesX.lang.get("indev.planting"));
+        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.planting"));
         arrayf1 = ai;
         if (this.b==64 || this.c==64){
             k1 = (this.b * this.c) / 2000;
@@ -378,7 +378,7 @@ label0:
             i2 = (this.b * this.c) / 4000;
         }
         int iii = 1;
-        if (mod_noBiomesX.MapTheme==mod_noBiomesX.THEME_WOODS){
+        if (ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS){
             iii = 51;
         }
         for (int ii = 0; ii<iii; ii++){

@@ -1,7 +1,7 @@
 package net.minecraft.src.nbxlite.blocks;
 
 import java.util.Random;
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
@@ -34,7 +34,7 @@ public class BlockGear extends Block
     }
 
     public int getRenderType(){
-        return mod_noBiomesX.gearRenderID;
+        return ODNBXlite.gearRenderID;
     }
 
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5){

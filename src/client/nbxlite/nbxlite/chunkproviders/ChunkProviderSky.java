@@ -37,7 +37,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
     private double generatedTemperatures[];
 
     public ChunkProviderSky(World world, long l, boolean boolean1){
-        super(world, l, boolean1, mod_noBiomesX.GEN_OLDBIOMES);
+        super(world, l, boolean1, ODNBXlite.GEN_OLDBIOMES);
         sandNoise = new double[256];
         gravelNoise = new double[256];
         stoneNoise = new double[256];
@@ -410,7 +410,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int j15 = l + rand.nextInt(16);
             (new WorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, k7, l10, j15);
         }
-        if (mod_noBiomesX.GenerateNewOres){
+        if (ODNBXlite.GenerateNewOres){
             int max = 0;
             detection: for(int iii = k; iii < k + 16; iii++){
                 for(int jjj = l; jjj < l + 16; jjj++){

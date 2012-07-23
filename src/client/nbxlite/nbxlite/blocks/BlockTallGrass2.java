@@ -1,6 +1,6 @@
 package net.minecraft.src.nbxlite.blocks;
 
-import net.minecraft.src.mod_noBiomesX;
+import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.BlockTallGrass;
 import net.minecraft.src.IBlockAccess;
 
@@ -19,7 +19,7 @@ public class BlockTallGrass2 extends BlockTallGrass
             return 0xffffff;
         }
         else{
-            return mod_noBiomesX.GetGrassColorAtCoords(iblockaccess, i, j, k, false, false);
+            return ODNBXlite.GetGrassColorAtCoords(iblockaccess, i, j, k, false, false);
         }
     }
 }
