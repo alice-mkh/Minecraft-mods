@@ -4,14 +4,14 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     public boolean value;
     public boolean smpValue;
 
-    public OldDaysPropertyBool(OldDaysModule m, int i, String s, boolean b, String f){
-        super(m, i, s, TYPE_BOOLEAN, f);
+    public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, String f){
+        super(m, i, TYPE_BOOLEAN, f);
         value = b;
         guitype = GUI_TYPE_BUTTON;
     }
 
-    public OldDaysPropertyBool(OldDaysModule m, int i, String s, boolean b, boolean smp, String f){
-        this(m, i, s, b, f);
+    public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, boolean smp, String f){
+        this(m, i, b, f);
         smpValue = smp;
         allowedInSMP = false;
     }

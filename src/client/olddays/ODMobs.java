@@ -3,17 +3,16 @@ package net.minecraft.src;
 public class ODMobs extends OldDaysModule{
     public ODMobs(mod_OldDays c){
         super(c, 3, "Mobs");
-        addProperty(1, "Mob AI",              3,     1,     "AI",            "", new String[]{"Infdev", "Alpha", "Beta", "1.2"});
-        addProperty(2, "Animal panic",        true,  false, "AnimalsFlee",      "");
-        addProperty(3, "Sheep eat grass",     true,  true,  "SheepEatGrass",    "");
-        addProperty(4, "Spiders climb walls", true,  true,  "SpidersCanClimb",  "");
-        addProperty(5, "Survival Test mobs",  false, false, "SurvivalTestMobs", "");
-        addProperty(6, "Old skeleton fire",   false, false, "FastSkeletons",    "");
-        addProperty(7, "Old mob health",      false, false, "OldHealth",        "");
-        addProperty(8, "Allowed mobs",        10,    10,    "Mobs",             "", new String[]{"Classic", "Indev", "Alpha 1.0.8", "Alpha 1.0.11", "Alpha 1.0.14", "Alpha 1.2.0",
-                                                                                                 "Beta 1.2", "Beta 1.7.3", "Beta 1.8.1", "1.1", "1.2"});
-        addProperty(9, "Slime spawning",      3,     3,     "Slimes",           "", new String[]{"OFF", "Alpha 1.0.11", "Beta", "1.0"});
-        addProperty(10,"Unnerfed endermen",   false, false, "Endermen",         "");
+        new OldDaysPropertyInt(this,  1, 3,     1,     "AI", 4).setUseNames();
+        new OldDaysPropertyBool(this, 2, true,  false, "AnimalsFlee");
+        new OldDaysPropertyBool(this, 3, true,  true,  "SheepEatGrass");
+        new OldDaysPropertyBool(this, 4, true,  true,  "SpidersCanClimb");
+        new OldDaysPropertyBool(this, 5, false, false, "SurvivalTestMobs");
+        new OldDaysPropertyBool(this, 6, false, false, "FastSkeletons");
+        new OldDaysPropertyBool(this, 7, false, false, "OldHealth");
+        new OldDaysPropertyInt(this,  8, 10,    10,    "Mobs", 11).setUseNames();
+        new OldDaysPropertyInt(this,  9, 3,     3,     "Slimes", 4).setUseNames();
+        new OldDaysPropertyBool(this, 10,false, false, "Endermen");
     }
 
     public void callback (int i){

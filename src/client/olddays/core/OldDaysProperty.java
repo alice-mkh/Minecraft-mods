@@ -14,8 +14,6 @@ public class OldDaysProperty{
     public static int GUI_TYPE_FIELD = 3;
 
     public int id;
-    public String name;
-    public String description;
     public int type;
     public int guitype;
     public Field field;
@@ -25,10 +23,9 @@ public class OldDaysProperty{
     public boolean allowedInFallback;
     public boolean noSounds;
 
-    public OldDaysProperty(OldDaysModule m, int i, String s, int t, String f){
+    public OldDaysProperty(OldDaysModule m, int i, int t, String f){
         module = m;
         id = i;
-        name = s;
         type = t;
         guitype = GUI_TYPE_BUTTON;
         error = false;
@@ -40,6 +37,7 @@ public class OldDaysProperty{
         }catch(Exception ex){
             disable();
         }
+        module.properties.add(this);
     }
 
     public String getButtonText(){
@@ -75,7 +73,7 @@ public class OldDaysProperty{
     }
 
     protected void disable(){
-        System.out.println("Error in "+module.name+" module, "+name+" property, disabling");
+        System.out.println("Error in "+module.name+" module, "+field.getName()+" property, disabling");
         error = true;
     }
 

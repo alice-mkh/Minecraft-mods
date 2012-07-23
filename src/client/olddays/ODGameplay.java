@@ -3,21 +3,21 @@ package net.minecraft.src;
 public class ODGameplay extends OldDaysModule{
     public ODGameplay(mod_OldDays c){
         super(c, 2, "Gameplay");
-        addProperty(1, "Experience",         true,  false, "EnableXP",        "");
-        addProperty(2, "Hunger",             true,  false, "EnableHunger",    "");
-        addProperty(3, "Instant food",       false, true,  "InstantFood",     "");
-        addProperty(4, "Food stacking",      true,  false, "FoodStacking",    "");
-        addProperty(5, "Old loot",           false, true,  "OldDrops",        "");
-        addProperty(6, "Rare loot",          true,  false, "RareLoot",        "");
-        addProperty(7, "Machine bow",        false, true,  "InstantBow",      "");
-        addProperty(8, "Bow durability",     true,  false, "FiniteBow",       "");
-        addProperty(9, "Combat system",      2,     1,     "CombatSystem",    "", new String[]{"Beta 1.3", "Beta 1.7.3", "Beta 1.8.1", "1.0"});
-        addProperty(10,"Armor",              3,     0,     "Armor",           "", new String[]{"Beta 1.7.3", "Beta 1.8.1", "1.0", "1.1"});
-        addProperty(11,"Allow debug screen", true,  true,  "AllowDebug",      "");
-        addProperty(12,"Allow sprint",       true,  true,  "AllowSprint",     "");
-        addProperty(13,"Jump delay",         true,  false, "JumpDelay",       "");
-        addProperty(14,"Start items",        0,     0,     "StartItems",      "", new String[]{"OFF", "Survival Test", "0.31", "02.27 Infdev"});
-        addProperty(15,"Sign stacking",      false, false, "SignStacking",    "");
+        new OldDaysPropertyBool(this, 1, true,  false, "EnableXP");
+        new OldDaysPropertyBool(this, 2, true,  false, "EnableHunger");
+        new OldDaysPropertyBool(this, 3, false, true,  "InstantFood");
+        new OldDaysPropertyBool(this, 4, true,  false, "FoodStacking");
+        new OldDaysPropertyBool(this, 5, false, true,  "OldDrops");
+        new OldDaysPropertyBool(this, 6, true,  false, "RareLoot");
+        new OldDaysPropertyBool(this, 7, false, true,  "InstantBow");
+        new OldDaysPropertyBool(this, 8, true,  false, "FiniteBow");
+        new OldDaysPropertyInt(this,  9, 2,     1,     "CombatSystem", 4).setUseNames();
+        new OldDaysPropertyInt(this,  10,3,     0,     "Armor", 4).setUseNames();
+        new OldDaysPropertyBool(this, 11,true,  true,  "AllowDebug");
+        new OldDaysPropertyBool(this, 12,true,  true,  "AllowSprint");
+        new OldDaysPropertyBool(this, 13,true,  false, "JumpDelay");
+        new OldDaysPropertyInt(this,  14,0,     0,     "StartItems", 4).setUseNames();
+        new OldDaysPropertyBool(this, 15,false, false, "SignStacking");
     }
 
     public void callback (int i){

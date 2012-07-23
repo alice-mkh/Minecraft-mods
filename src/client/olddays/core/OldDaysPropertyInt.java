@@ -8,29 +8,22 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     public int smpValue;
     public int count;
     public boolean fromOne;
-    private String[] names;
     public boolean useNames;
 
-    public OldDaysPropertyInt(OldDaysModule m, int i, String s, int v, int c, String f){
-        super(m, i, s, TYPE_INTEGER, f);
+    public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int c){
+        super(m, i, TYPE_INTEGER, f);
         value = v;
         guitype = GUI_TYPE_BUTTON;
         count = c;
-        names = null;
         useNames = false;
         fromOne = false;
     }
 
-    public OldDaysPropertyInt(OldDaysModule m, int i, String s, int v, int c, int smp, String f){
-        this(m, i, s, v, c, f);
+    public OldDaysPropertyInt(OldDaysModule m, int i, int v, int smp, String f, int c){
+        this(m, i, v, f, c);
         smpValue = smp;
         allowedInSMP = false;
         fromOne = false;
-    }
-
-    public void setNames(String[] str){
-        names = str;
-        useNames = true;
     }
 
     public String getButtonText(){
@@ -104,5 +97,13 @@ public class OldDaysPropertyInt extends OldDaysProperty{
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
         return (String[])list.toArray(new String[list.size()]);
+    }
+
+    public void setFromOne(){
+        fromOne = true;
+    }
+
+    public void setUseNames(){
+        useNames = true;
     }
 }

@@ -5,17 +5,17 @@ import java.util.*;
 public class ODActions extends OldDaysModule{
     public ODActions(mod_OldDays c){
         super(c, 0, "Actions");
-        addProperty(1, "Punch TNT",             false, true,  "PunchTNT",        "");
-        addProperty(2, "Extinguish TNT",        false, false, "ExtinguishTNT",   "");
-        addProperty(3, "Smelt items on fire",   false, false, "SmeltOnFire",     "");
-        addProperty(4, "Fire",                  2,     1,     "Fire",            "", new String[]{"Alpha", "Beta 1.5", "Beta 1.6"});
-        addProperty(5, "Punch sheep",           false, true,  "PunchSheep",      "");
-        addProperty(6, "Old tool durability",   false, false, "OldTools",        "");
-        addProperty(7, "Mushroom spreading",    true,  true,  "ShroomSpreading", "");
-        addProperty(8, "Solid TNT",             false, true,  "SolidTNT",        "");
-        addProperty(9, "Big fences",            false, true,  "BigFences",       "");
-        addProperty(10,"Less Nether lava flow", false, false, "LessLavaFlow",    "");
-        addProperty(11,"Enable fog key",        false, false, "FogKey",          "");
+        new OldDaysPropertyBool(this, 1, false, true,  "PunchTNT");
+        new OldDaysPropertyBool(this, 2, false, false, "ExtinguishTNT");
+        new OldDaysPropertyBool(this, 3, false, false, "SmeltOnFire");
+        new OldDaysPropertyInt(this,  4, 2,     1,     "Fire", 3).setUseNames();
+        new OldDaysPropertyBool(this, 5, false, true,  "PunchSheep");
+        new OldDaysPropertyBool(this, 6, false, false, "OldTools");
+        new OldDaysPropertyBool(this, 7, true,  true,  "ShroomSpreading");
+        new OldDaysPropertyBool(this, 8, false, true,  "SolidTNT");
+        new OldDaysPropertyBool(this, 9, false, true,  "BigFences");
+        new OldDaysPropertyBool(this, 10,false, false, "LessLavaFlow");
+        new OldDaysPropertyBool(this, 11,false, false, "FogKey");
         replaceBlocks();
         ModLoader.registerKey(core, this.keyFog, false);
     }

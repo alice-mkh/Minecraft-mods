@@ -5,17 +5,17 @@ import java.util.*;
 public class ODCrafting extends OldDaysModule{
     public ODCrafting(mod_OldDays c){
         super(c, 6, "Crafting");
-        addProperty(1, "Old planks",            false, false, "OldPlanks",  "");
-        addProperty(2, "Leather armor",         1,     1,     "ClothArmor", "", new String[]{"Cloth", "Leather", "Both"});
-        addProperty(3, "Slabs",                 2,     2,     "OldSlabs",   "", new String[]{"Alpha", "Beta", "1.2.1"});
-        addProperty(4, "Ladders from crafting", 2,     2,     "Ladders",    "", 3, true);
-        addProperty(5, "Old cloth",             false, false, "Cloth",      "");
-        addProperty(6, "Old glowstone",         false, false, "Glowstone",  "");
-        addProperty(7, "Old golden apple",      false, false, "Apple",      "");
-        addProperty(8, "Old mushroom stew",     false, false, "Stew",       "");
-        addProperty(9, "Old ore blocks",        false, false, "OreBlocks",  "");
-        addProperty(10,"Old books",             true,  true,  "Books",      "");
-        addProperty(11,"Old signs",             true,  true,  "OldSigns",   "");
+        new OldDaysPropertyBool(this, 1, false, false, "OldPlanks");
+        new OldDaysPropertyInt(this,  2, 1,     1,     "ClothArmor", 3).setUseNames();
+        new OldDaysPropertyInt(this,  3, 2,     2,     "OldSlabs", 3).setUseNames();
+        new OldDaysPropertyInt(this,  4, 2,     2,     "Ladders", 3).setFromOne();
+        new OldDaysPropertyBool(this, 5, false, false, "Cloth");
+        new OldDaysPropertyBool(this, 6, false, false, "Glowstone");
+        new OldDaysPropertyBool(this, 7, false, false, "Apple");
+        new OldDaysPropertyBool(this, 8, false, false, "Stew");
+        new OldDaysPropertyBool(this, 9, false, false, "OreBlocks");
+        new OldDaysPropertyBool(this, 10,true,  true,  "Books");
+        new OldDaysPropertyBool(this, 11,true,  true,  "OldSigns");
     }
 
     public void callback (int i){

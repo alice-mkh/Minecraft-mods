@@ -96,64 +96,6 @@ public class OldDaysModule{
 
     public void callback(int i){}
 
-    public void addProperty(OldDaysProperty prop){
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, boolean value, String fname, String desc){
-        OldDaysProperty prop = new OldDaysPropertyBool(this, num, name, value, fname);
-        prop.description = desc;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, boolean smp, boolean value, String fname, String desc){
-        OldDaysProperty prop = new OldDaysPropertyBool(this, num, name, value, smp, fname);
-        prop.description = desc;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, int value, String fname, String desc, int count, boolean one){
-        OldDaysProperty prop = new OldDaysPropertyInt(this, num, name, value, count, fname);
-        prop.description = desc;
-        ((OldDaysPropertyInt)prop).fromOne = one;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, int smp, int value, String fname, String desc, int count, boolean one){
-        OldDaysProperty prop = new OldDaysPropertyInt(this, num, name, value, count, smp, fname);
-        prop.description = desc;
-        ((OldDaysPropertyInt)prop).fromOne = one;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, int value, String fname, String desc, String[] names){
-        int count = names.length;
-        OldDaysProperty prop = new OldDaysPropertyInt(this, num, name, value, count, fname);
-        ((OldDaysPropertyInt)prop).setNames(names);
-        prop.description = desc;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, int smp, int value, String fname, String desc, String[] names){
-        int count = names.length;
-        OldDaysProperty prop = new OldDaysPropertyInt(this, num, name, value, count, smp, fname);
-        ((OldDaysPropertyInt)prop).setNames(names);
-        prop.description = desc;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, String value, String fname, String desc){
-        OldDaysProperty prop = new OldDaysPropertyString(this, num, name, value, fname);
-        prop.description = desc;
-        properties.add(prop);
-    }
-
-    public void addProperty(int num, String name, String smp, String value, String fname, String desc){
-        OldDaysProperty prop = new OldDaysPropertyString(this, num, name, value, fname, smp);
-        prop.description = desc;
-        properties.add(prop);
-    }
-
     public void setBool(Class c, String name, boolean value){
         try{
             c.getDeclaredField(name).setBoolean(null, value);

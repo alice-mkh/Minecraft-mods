@@ -3,14 +3,14 @@ package net.minecraft.src;
 public class ODBugs extends OldDaysModule{
     public ODBugs(mod_OldDays c){
         super(c, 1, "Bugs");
-        addProperty(1, "Boosters",          false, true,  "Boosters",      "");
-        addProperty(2, "Water lifts",       false, true,  "WaterLifts",    "");
-        addProperty(3, "Toasters",          false, true,  "LavaToasters",  "");
-        addProperty(4, "Water ladders",     false, true,  "WaterLadders",  "");
-        addProperty(5, "Ladder gaps",       false, true,  "LadderGaps",    "");
-        addProperty(6, "Piston dupe",       false, false, "PistonDupe",    "");
-        addProperty(7, "Crafting grid bug", false, false, "CraftingSlots", "");
-        addProperty(8, "Inventory walking", false, false, "InvWalking",    "");
+        new OldDaysPropertyBool(this, 1,  false, true,  "Boosters");
+        new OldDaysPropertyBool(this, 2,  false, true,  "WaterLifts");
+        new OldDaysPropertyBool(this, 3,  false, true,  "LavaToasters");
+        new OldDaysPropertyBool(this, 4,  false, true,  "WaterLadders");
+        new OldDaysPropertyBool(this, 5,  false, true,  "LadderGaps");
+        new OldDaysPropertyBool(this, 6,  false, false, "PistonDupe");
+        new OldDaysPropertyBool(this, 7,  false, false, "CraftingSlots");
+        new OldDaysPropertyBool(this, 8,  false, false, "InvWalking");
     }
 
     public void callback (int i){
