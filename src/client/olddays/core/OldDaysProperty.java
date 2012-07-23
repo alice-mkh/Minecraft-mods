@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OldDaysProperty{
-    public static int TYPE_BOOLEAN = 1;
-    public static int TYPE_INTEGER = 2;
-    public static int TYPE_STRING = 3;
-
     public static int GUI_TYPE_BUTTON = 1;
     public static int GUI_TYPE_DROPDOWN = 2;
     public static int GUI_TYPE_FIELD = 3;
@@ -23,10 +19,9 @@ public class OldDaysProperty{
     public boolean allowedInFallback;
     public boolean noSounds;
 
-    public OldDaysProperty(OldDaysModule m, int i, int t, String f){
+    public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
         id = i;
-        type = t;
         guitype = GUI_TYPE_BUTTON;
         error = false;
         allowedInSMP = true;

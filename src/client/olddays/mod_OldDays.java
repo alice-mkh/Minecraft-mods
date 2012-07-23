@@ -119,10 +119,6 @@ public class mod_OldDays extends BaseModMp{
 
     public static void loadModuleProperties(){}
     
-    public static int getPropertyType(int id, int id2){
-        return getModuleById(id).getPropertyById(id2).type;
-    }
-    
     public static int getPropertyGuiType(int id, int id2){
         return getModuleById(id).getPropertyById(id2).guitype;
     }

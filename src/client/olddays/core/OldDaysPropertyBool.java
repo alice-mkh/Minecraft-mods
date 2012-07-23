@@ -5,7 +5,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     public boolean smpValue;
 
     public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, String f){
-        super(m, i, TYPE_BOOLEAN, f);
+        super(m, i, f);
         value = b;
         guitype = GUI_TYPE_BUTTON;
     }

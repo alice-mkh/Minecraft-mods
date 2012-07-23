@@ -11,7 +11,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     public boolean useNames;
 
     public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int c){
-        super(m, i, TYPE_INTEGER, f);
+        super(m, i, f);
         value = v;
         guitype = GUI_TYPE_BUTTON;
         count = c;
