@@ -3,38 +3,27 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OldDaysPropertyInt extends OldDaysProperty{
-    public int value;
-    public int smpValue;
-    public int min;
-    public int max;
-    public boolean useNames;
+public class OldDaysPropertyFloat extends OldDaysProperty{
+    public float value;
+    public float smpValue;
+    public float min;
+    public float max;
 
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int m1, int m2){
+    public OldDaysPropertyFloat(OldDaysModule m, int i, float v, String f, float m1, float m2){
         super(m, i, f);
         value = v;
-        guitype = GUI_TYPE_BUTTON;
+        guitype = GUI_TYPE_FIELD;
         min = m1;
         max = m2;
-        useNames = false;
     }
 
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, int smp, String f, int m1, int m2){
+    public OldDaysPropertyFloat(OldDaysModule m, int i, float v, float smp, String f, float m1, float m2){
         this(m, i, v, f, m1, m2);
         smpValue = smp;
-        allowedInSMP = false;
-    }
-
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int m2){
-        this(m, i, v, f, 0, m2);
-    }
-
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, int smp, String f, int m2){
-        this(m, i, v, smp, f, 0, m2);
     }
 
     public String getButtonText(){
-        return mod_OldDays.lang.get(getName()+".name")+": "+(useNames ? mod_OldDays.lang.get(getName()+(value+1)) : value);
+        return mod_OldDays.lang.get(getName()+".name")+": "+value;
     }
 
     public void onChange(){
@@ -48,8 +37,8 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     }
 
     public void incrementValue(){
-        if (value < max){
-            value++;
+        if (value < max || max <= min){
+            value += 1.0F;
         }else{
             value = min;
         }
@@ -65,9 +54,10 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     }
 
     public void loadFromString(String str){
-        int i = 0;
+        float i = 0;
+        str = str.replace(",", ".");
         try{
-            i = Integer.parseInt(str);
+            i = Float.parseFloat(str);
         }catch(Exception ex){}
         if (i < min){
             i = min;
@@ -90,27 +80,11 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         for (int i = 0; i < num; i++){
             list.add("§7"+mod_OldDays.lang.get(getName()+".desc"+(i+1)));
         }
-        if (useNames){
-            for (int i = min; i <= max; i++){
-                list.add("<- • §a"+mod_OldDays.lang.get(getName()+(i+1))+"§7: "+mod_OldDays.lang.get(getName()+(i+1)+".desc"));
-            }
-        }else{
-            list.add("§7"+mod_OldDays.lang.get("gui.possible")+": §r"+min+"-"+max);
-        }
+        list.add("§7"+mod_OldDays.lang.get("gui.possible")+": §r"+min+"-"+max);
         if (isDisabled()){
-            if (num > 0 || useNames){
-                list.add("");
-            }
+            list.add("");
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
         return (String[])list.toArray(new String[list.size()]);
-    }
-
-    public void setUseNames(){
-        useNames = true;
-    }
-
-    public void setField(){
-        guitype = GUI_TYPE_FIELD;
     }
 }

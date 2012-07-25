@@ -11,12 +11,12 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyBool(this, 6, true,  false, "RareLoot");
         new OldDaysPropertyBool(this, 7, false, true,  "InstantBow");
         new OldDaysPropertyBool(this, 8, true,  false, "FiniteBow");
-        new OldDaysPropertyInt(this,  9, 2,     1,     "CombatSystem", 4).setUseNames();
-        new OldDaysPropertyInt(this,  10,3,     0,     "Armor", 4).setUseNames();
+        new OldDaysPropertyInt(this,  9, 2,     1,     "CombatSystem", 3).setUseNames();
+        new OldDaysPropertyInt(this,  10,3,     0,     "Armor", 3).setUseNames();
         new OldDaysPropertyBool(this, 11,true,  true,  "AllowDebug");
         new OldDaysPropertyBool(this, 12,true,  true,  "AllowSprint");
         new OldDaysPropertyBool(this, 13,true,  false, "JumpDelay");
-        new OldDaysPropertyInt(this,  14,0,     0,     "StartItems", 4).setUseNames();
+        new OldDaysPropertyInt(this,  14,0,     0,     "StartItems", 3).setUseNames();
         new OldDaysPropertyBool(this, 15,false, false, "SignStacking");
     }
 

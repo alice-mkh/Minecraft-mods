@@ -6,9 +6,9 @@ public class ODCrafting extends OldDaysModule{
     public ODCrafting(mod_OldDays c){
         super(c, 6, "Crafting");
         new OldDaysPropertyBool(this, 1, false, false, "OldPlanks");
-        new OldDaysPropertyInt(this,  2, 1,     1,     "ClothArmor", 3).setUseNames();
-        new OldDaysPropertyInt(this,  3, 2,     2,     "OldSlabs", 3).setUseNames();
-        new OldDaysPropertyInt(this,  4, 2,     2,     "Ladders", 3).setFromOne();
+        new OldDaysPropertyInt(this,  2, 1,     1,     "ClothArmor", 2).setUseNames();
+        new OldDaysPropertyInt(this,  3, 2,     2,     "OldSlabs", 2).setUseNames();
+        new OldDaysPropertyInt(this,  4, 2,     2,     "Ladders", 1, 3);
         new OldDaysPropertyBool(this, 5, false, false, "Cloth");
         new OldDaysPropertyBool(this, 6, false, false, "Glowstone");
         new OldDaysPropertyBool(this, 7, false, false, "Apple");

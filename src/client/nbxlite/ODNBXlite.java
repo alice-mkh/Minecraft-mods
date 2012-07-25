@@ -13,9 +13,19 @@ import java.util.zip.*;
 public class ODNBXlite extends OldDaysModule{
     public ODNBXlite(mod_OldDays c){
         super(c, 8, "NBXlite");
-//         new OldDaysPropertyBool(this, 1, false, "ShowGUI");
-//         new OldDaysPropertyBool(this, 2, false, "TexturedClouds");
-        new OldDaysPropertyCond(this, 1, 1, "OpaqueFlatClouds");
+        new OldDaysPropertyRGB(this,   1, 0xffffff, "SkyColor");
+        new OldDaysPropertyRGB(this,   2, 0xffffff, "FogColor");
+        new OldDaysPropertyRGB(this,   3, 0xffffff, "CloudColor");
+        new OldDaysPropertyInt(this,   4, 15, "SkyBrightness", 16).setField();
+        new OldDaysPropertyFloat(this, 5, 128, "CloudHeight", -999.0F, 999.0F);
+        new OldDaysPropertyCond(this,  6, 1, "LeavesDecay");
+        new OldDaysPropertyBool(this,  7, false, "OldSpawning");
+        new OldDaysPropertyBool(this,  8, false, "TexturedClouds");
+        new OldDaysPropertyCond(this,  9, 1, "OpaqueFlatClouds");
+        new OldDaysPropertyCond(this,  10,1, "ClassicLight");
+        new OldDaysPropertyCond(this,  11,1, "BedrockFog");
+        new OldDaysPropertyCond(this,  12,1, "SunriseAtNorth");
+        new OldDaysPropertyBool(this,  13,false, "ShowGUI");
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -28,10 +38,7 @@ public class ODNBXlite extends OldDaysModule{
             boolean flag = file.createNewFile();
             if(flag){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
-                properties.setProperty("UseNewSpawning",Boolean.toString(false));
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
-                properties.setProperty("OpaqueFlatClouds",Boolean.toString(true));
-                properties.setProperty("TexturedClouds",Boolean.toString(false));
                 properties.setProperty("ShowGUI",Boolean.toString(false));
                 properties.setProperty("DefaultGenerator",Integer.toString(6));
                 properties.setProperty("DefaultFeaturesBeta",Integer.toString(4));
@@ -47,11 +54,7 @@ public class ODNBXlite extends OldDaysModule{
                 fileoutputstream.close();
             }
             properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/NBXlite.properties").toString()));
-            UseNewSpawning = Boolean.parseBoolean(properties.getProperty("UseNewSpawning"));
             NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
-            try{
-                RenderGlobal.texClouds = Boolean.parseBoolean(properties.getProperty("TexturedClouds"));
-            }catch(Exception ex){}
             ShowGUI = Boolean.parseBoolean(properties.getProperty("ShowGUI"));
             DefaultGenerator = properties.getProperty("DefaultGenerator") == null ? 6 : Integer.parseInt(properties.getProperty("DefaultGenerator"));
             DefaultFeaturesBeta = properties.getProperty("DefaultFeaturesBeta") == null ? 4 : Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
@@ -77,7 +80,17 @@ public class ODNBXlite extends OldDaysModule{
                                  (Gen == 2 ? FEATURES_INFDEV0608 :
                                  (Gen == 3 ? FEATURES_ALPHA11201 : 0)));
                     reload(); break;*/
-            case 1: setBool(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 1-5: System.out.println("WTF");
+            case 6: ((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
+            case 7: setBool(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning);
+                    setBool(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning); break;
+            case 8: setBool(net.minecraft.src.RenderGlobal.class, "texClouds", TexturedClouds); break;
+            case 9: setBool(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 10:setBool(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
+                    setBool(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight); break;
+            case 11:setBool(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
+            case 12:setBool(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
+                    setBool(net.minecraft.src.RenderGlobal.class, "sunriseAtNorth", SunriseAtNorth); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
@@ -85,10 +98,32 @@ public class ODNBXlite extends OldDaysModule{
     }
 
 //     public static int Gen = 1;
+    public static boolean LeavesDecay;
+    public static boolean OldSpawning;
+    public static boolean TexturedClouds;
     public static boolean OpaqueFlatClouds;
+    public static boolean ClassicLight;
+    public static boolean BedrockFog;
+    public static boolean SunriseAtNorth;
+
+    public static boolean LeavesDecay(){
+        return Generator>GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
+    }
 
     public static boolean OpaqueFlatClouds(){
         return Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201;
+    }
+
+    public static boolean ClassicLight(){
+        return Generator<GEN_NEWBIOMES;
+    }
+
+    public static boolean BedrockFog(){
+        return Generator>=GEN_NEWBIOMES;
+    }
+
+    public static boolean SunriseAtNorth(){
+        return Generator<GEN_NEWBIOMES || MapFeatures==FEATURES_BETA181;
     }
 
     private void registerGears(){
@@ -529,10 +564,6 @@ public class ODNBXlite extends OldDaysModule{
         return 0xffffff;
     }
 
-    public static boolean leavesDecay(){
-        return Generator!=GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
-    }
-
     public static boolean allowOldHoe(){
         return Generator==GEN_BIOMELESS || (Generator==GEN_OLDBIOMES && MapFeatures<=FEATURES_BETA15);
     }
@@ -571,8 +602,6 @@ public class ODNBXlite extends OldDaysModule{
         GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
         RestrictSlimes = isFinite() && IndevHeight<96;
         IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;
-        EntityAnimal.despawn = Generator!=GEN_NEWBIOMES && !UseNewSpawning;
-        EntityWolf.despawn = Generator!=GEN_NEWBIOMES && !UseNewSpawning;
         if (Generator==GEN_NEWBIOMES){
             VoidFog = 0;
         }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
@@ -586,18 +615,13 @@ public class ODNBXlite extends OldDaysModule{
         }
         try{
             RenderGlobal.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
-            RenderGlobal.sunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
             EntityRenderer.sunriseFog = gen>=GEN_NEWBIOMES;
-            EntityRenderer.sunriseAtNorth = gen<GEN_NEWBIOMES || features==FEATURES_BETA181;
         }catch(Exception ex){}
         try{
-            EntityRenderer.classicLight = gen<GEN_NEWBIOMES;
-            EntityRenderer.voidFog = Generator>=GEN_NEWBIOMES;
             EntityRenderer.oldFog = isFinite();
             EntityRenderer.snow = SnowCovered;
             EntityRenderer.bounds = isFinite();
         }catch(Exception ex){}
-        RenderGhast2.bright = gen<GEN_NEWBIOMES;
         GenerateNewOres=ores;
         mod_OldDays.refreshConditionProperties();
     }
@@ -785,7 +809,6 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha
     public static int MapTheme = 0;
     public static int MapFeatures = 3;
-    public static boolean UseNewSpawning = false;
     public static int DayNight = 2;//0 - none, 1 - old, 2 - new
     public static int IndevMapType=0;
     public static int IndevHeight = 64;

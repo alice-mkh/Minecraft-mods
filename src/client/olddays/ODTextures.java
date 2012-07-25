@@ -5,19 +5,19 @@ import java.util.*;
 public class ODTextures extends OldDaysModule{
     public ODTextures(mod_OldDays c){
         super(c, 7, "Textures");
-        new OldDaysPropertyInt(this,  1, 1,     "Cobblestone", 3).setUseNames();
+        new OldDaysPropertyInt(this,  1, 1,     "Cobblestone", 2).setUseNames();
         new OldDaysPropertyBool(this, 2, true,  "MossStone");
         new OldDaysPropertyBool(this, 3, true,  "Stone");
-        new OldDaysPropertyInt(this,  4, 0,     "Brick", 3).setUseNames();
+        new OldDaysPropertyInt(this,  4, 0,     "Brick", 2).setUseNames();
         new OldDaysPropertyBool(this, 5, true,  "Sand");
-        new OldDaysPropertyInt(this,  6, 0,     "Gravel", 3).setUseNames();
+        new OldDaysPropertyInt(this,  6, 0,     "Gravel", 2).setUseNames();
         new OldDaysPropertyBool(this, 7, true,  "Dirt");
         new OldDaysPropertyBool(this, 8, true,  "Grass");
-        new OldDaysPropertyInt(this,  9, 1,     "Planks", 3).setUseNames();
-        new OldDaysPropertyInt(this,  10,1,     "Sapling", 3).setUseNames();
-        new OldDaysPropertyInt(this,  11,1,     "Wool", 3).setUseNames();
+        new OldDaysPropertyInt(this,  9, 1,     "Planks", 2).setUseNames();
+        new OldDaysPropertyInt(this,  10,1,     "Sapling", 2).setUseNames();
+        new OldDaysPropertyInt(this,  11,1,     "Wool", 2).setUseNames();
         new OldDaysPropertyBool(this, 12,true,  "Glowstone");
-        new OldDaysPropertyInt(this,  13,0,     "OreBlocks", 3).setUseNames();
+        new OldDaysPropertyInt(this,  13,0,     "OreBlocks", 2).setUseNames();
         new OldDaysPropertyBool(this, 14,true,  "Spawner");
         new OldDaysPropertyBool(this, 15,true,  "Furnace");
         new OldDaysPropertyBool(this, 16,true,  "Dispenser");

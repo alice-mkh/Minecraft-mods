@@ -5,6 +5,7 @@ import java.util.Random;
 public class BlockLeaves extends BlockLeavesBase
 {
     public static boolean apples = true;
+    public static boolean decay = true;
 
     public int fasttex;
     public int fancytex;
@@ -20,9 +21,7 @@ public class BlockLeaves extends BlockLeavesBase
     {
         super(par1, par2, Material.leaves, false);
         baseIndexInPNG = par2;
-        if (ODNBXlite.leavesDecay()){
-            setTickRandomly(true);
-        }
+        setTickRandomly(true);
     }
 
     public int getBlockColor()
@@ -118,6 +117,11 @@ public class BlockLeaves extends BlockLeavesBase
         }
     }
 
+    public void setDecay(boolean b){
+        decay = b;
+        setTickRandomly(b);
+    }
+
     /**
      * Ticks the block if it's been scheduled
      */
@@ -127,7 +131,7 @@ public class BlockLeaves extends BlockLeavesBase
         {
             return;
         }
-        if (!ODNBXlite.leavesDecay()){
+        if (!decay){
             return;
         }
 

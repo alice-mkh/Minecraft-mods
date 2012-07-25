@@ -10,14 +10,14 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 3, true,  "Ooh");
         new OldDaysPropertyBool(this, 4, false, "Fall");
         new OldDaysPropertyBool(this, 5, true,  "Door");
-        new OldDaysPropertyInt(this,  6, 0,     "Chest", 3).setUseNames();
+        new OldDaysPropertyInt(this,  6, 0,     "Chest", 2).setUseNames();
         new OldDaysPropertyBool(this, 7, true,  "Bow");
         new OldDaysPropertyBool(this, 8, true,  "Drr");
         new OldDaysPropertyBool(this, 9, false, "Eat");
         new OldDaysPropertyBool(this, 10,true,  "Drink");
         new OldDaysPropertyBool(this, 11,false, "Break");
         new OldDaysPropertyBool(this, 12,false, "Lava");
-        new OldDaysPropertyInt(this,  13,1,     "Enderman", 3).setUseNames();
+        new OldDaysPropertyInt(this,  13,1,     "Enderman", 2).setUseNames();
         new OldDaysPropertyBool(this, 14,true,  "Calm4");
         new OldDaysPropertyBool(this, 15,false, "Creeper");
         addSound(5, "door_open");

@@ -3244,7 +3244,7 @@ public class World implements IBlockAccess
         Profiler.startSection("mobSpawner");
 //         SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
         if (worldProvider.worldType!=1){
-            if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || ODNBXlite.UseNewSpawning){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
                 SpawnerAnimals.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
             } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || worldProvider.worldType!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);

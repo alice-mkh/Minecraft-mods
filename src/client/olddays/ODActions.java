@@ -8,7 +8,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 1, false, true,  "PunchTNT");
         new OldDaysPropertyBool(this, 2, false, false, "ExtinguishTNT");
         new OldDaysPropertyBool(this, 3, false, false, "SmeltOnFire");
-        new OldDaysPropertyInt(this,  4, 2,     1,     "Fire", 3).setUseNames();
+        new OldDaysPropertyInt(this,  4, 2,     1,     "Fire", 2).setUseNames();
         new OldDaysPropertyBool(this, 5, false, true,  "PunchSheep");
         new OldDaysPropertyBool(this, 6, false, false, "OldTools");
         new OldDaysPropertyBool(this, 7, true,  true,  "ShroomSpreading");
