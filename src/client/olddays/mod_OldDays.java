@@ -174,6 +174,22 @@ public class mod_OldDays extends BaseModMp{
         return i - 1;
     }
 
+    public static void refreshConditionProperties(){
+        for (int i = 0; i < modules.size(); i++){
+            OldDaysModule module = ((OldDaysModule)modules.get(i));
+            for (int j = 0; j < module.properties.size(); j++){
+                OldDaysProperty prop = ((OldDaysProperty)module.properties.get(j));
+                if (prop instanceof OldDaysPropertyCond){
+                    OldDaysPropertyCond prop2 = ((OldDaysPropertyCond)prop);
+                    if (prop2.value == 1){
+                        prop2.boolValue = prop2.getBoolValue(1);
+                        prop2.onChange();
+                    }
+                }
+            }
+        }
+    }
+
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
     public static TextureManager texman;
     public static SavingManager saveman;

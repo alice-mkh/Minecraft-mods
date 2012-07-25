@@ -1,19 +1,20 @@
 package net.minecraft.src;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OldDaysPropertyNBXlite extends OldDaysPropertyInt{
+public class OldDaysPropertyCond extends OldDaysPropertyInt{
     public boolean boolValue;
     public boolean smpValue2;
 
-    public OldDaysPropertyNBXlite(OldDaysModule m, int i, int v, String f){
+    public OldDaysPropertyCond(OldDaysModule m, int i, int v, String f){
         super(m, i, v, f, 3);
         useNames = true;
         boolValue = getBoolValue(v);
     }
 
-    public OldDaysPropertyNBXlite(OldDaysModule m, int i, int v, boolean smp, String f){
+    public OldDaysPropertyCond(OldDaysModule m, int i, int v, boolean smp, String f){
         this(m, i, v, f);
         smpValue2 = smp;
         allowedInSMP = false;
@@ -22,7 +23,14 @@ public class OldDaysPropertyNBXlite extends OldDaysPropertyInt{
 
     public boolean getBoolValue(int i){
         if (i == 1){
-            return true;
+            try{
+                Method method = module.getClass().getMethod(field.getName(), new Class[]{});
+                boolean b = ((Boolean)method.invoke(module));
+                return b;
+            }catch(Exception ex){
+                System.out.println(ex);
+                return false;
+            }
         }
         return i > 0;
     }
