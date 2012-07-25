@@ -21,7 +21,7 @@ public class BlockGrass extends Block
     {
         if (par1 == 1)
         {
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && !ODNBXlite.FallbackColors){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && !mod_OldDays.texman.fallbacktex){
                 return toptex;
             }
             return 0;
@@ -37,7 +37,7 @@ public class BlockGrass extends Block
     {
         if (par5 == 1)
         {
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && !ODNBXlite.FallbackColors){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && !mod_OldDays.texman.fallbacktex){
                 return toptex;
             }
             return 0;
@@ -49,7 +49,7 @@ public class BlockGrass extends Block
         }
 
         Material material = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-        if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && !ODNBXlite.FallbackColors){
+        if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && !mod_OldDays.texman.fallbacktex){
             return material != Material.snow && material != Material.craftedSnow ? sidetex : 68;
         }
         return material != Material.snow && material != Material.craftedSnow ? 3 : 68;
@@ -58,7 +58,7 @@ public class BlockGrass extends Block
     public int getBlockColor()
     {
         if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-            if (!ODNBXlite.FallbackColors){
+            if (!mod_OldDays.texman.fallbacktex){
                 return 0xffffff;
             }
             ColorizerGrass.getGrassColor(1.0F, 1.0F);

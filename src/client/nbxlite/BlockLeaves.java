@@ -56,7 +56,7 @@ public class BlockLeaves extends BlockLeavesBase
         else
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-                if (!ODNBXlite.FallbackColors){
+                if (!mod_OldDays.texman.fallbacktex){
                     return 0xffffff;
                 }
                 return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -334,7 +334,7 @@ public class BlockLeaves extends BlockLeavesBase
         }
         else
         {
-            if (ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || (par2 & 3) == 2 || ODNBXlite.FallbackColors){
+            if (ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || (par2 & 3) == 2 || mod_OldDays.texman.fallbacktex){
                 return blockIndexInTexture;
             }
             if (graphicsLevel){

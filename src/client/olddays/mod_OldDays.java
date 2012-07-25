@@ -98,6 +98,7 @@ public class mod_OldDays extends BaseModMp{
                 c2 = c.getClassLoader().loadClass(p+name);
             }catch(Exception ex){
                 System.out.println("OldDays: Failed to load module: "+ex);
+                ex.printStackTrace();
                 continue;
             }
             if (!((net.minecraft.src.OldDaysModule.class).isAssignableFrom(c2))){
@@ -108,6 +109,7 @@ public class mod_OldDays extends BaseModMp{
                 module = ((OldDaysModule)c2.getDeclaredConstructor(c).newInstance(core));
             }catch(Exception ex){
                 System.out.println("OldDays: Failed to load module: "+ex);
+                ex.printStackTrace();
                 continue;
             }
             modules.add(module);

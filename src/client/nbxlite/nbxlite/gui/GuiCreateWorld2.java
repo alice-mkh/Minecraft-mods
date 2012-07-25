@@ -295,7 +295,7 @@ public class GuiCreateWorld2 extends GuiScreen
             gameModeButton.drawButton = !moreOptions;
             generateStructuresButton.drawButton = moreOptions;
             worldTypeButton.drawButton = moreOptions;
-            nbxliteButton.drawButton = moreOptions && !ODNBXlite.HideGUI;
+            nbxliteButton.drawButton = moreOptions && ODNBXlite.ShowGUI;
 
             if (moreOptions)
             {

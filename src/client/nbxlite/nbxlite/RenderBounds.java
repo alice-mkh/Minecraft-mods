@@ -218,7 +218,7 @@ public class RenderBounds{
         boolean anim = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
-        if (id==Block.grass.blockID && !ODNBXlite.FallbackColors){
+        if (id==Block.grass.blockID && !mod_OldDays.texman.fallbacktex){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/grasstop.png"));
         }else{
             imageData.clear();

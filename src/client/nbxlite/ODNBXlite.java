@@ -13,7 +13,9 @@ import java.util.zip.*;
 public class ODNBXlite extends OldDaysModule{
     public ODNBXlite(mod_OldDays c){
         super(c, 8, "NBXlite");
-        new OldDaysPropertyInt(this, 1, 32, "SurrGroundHeight", 64);
+        new OldDaysPropertyBool(this, 1, false, "ShowGUI");
+//         new OldDaysPropertyBool(this, 2, false, "TexturedClouds");
+        new OldDaysPropertyNBXlite(this, 2, 1, "UseOpaqueFlatClouds");
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -30,7 +32,7 @@ public class ODNBXlite extends OldDaysModule{
                 properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
                 properties.setProperty("UseOpaqueFlatClouds",Boolean.toString(true));
                 properties.setProperty("TexturedClouds",Boolean.toString(false));
-                properties.setProperty("HideGUI",Boolean.toString(false));
+                properties.setProperty("ShowGUI",Boolean.toString(false));
                 properties.setProperty("DefaultGenerator",Integer.toString(6));
                 properties.setProperty("DefaultFeaturesBeta",Integer.toString(4));
                 properties.setProperty("DefaultFeaturesRelease",Integer.toString(3));
@@ -51,7 +53,7 @@ public class ODNBXlite extends OldDaysModule{
             try{
                 RenderGlobal.texClouds = Boolean.parseBoolean(properties.getProperty("TexturedClouds"));
             }catch(Exception ex){}
-            HideGUI = Boolean.parseBoolean(properties.getProperty("HideGUI"));
+            ShowGUI = Boolean.parseBoolean(properties.getProperty("ShowGUI"));
             DefaultGenerator = properties.getProperty("DefaultGenerator") == null ? 6 : Integer.parseInt(properties.getProperty("DefaultGenerator"));
             DefaultFeaturesBeta = properties.getProperty("DefaultFeaturesBeta") == null ? 4 : Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
             DefaultFeaturesRelease =properties.getProperty("DefaultFeaturesRelease") == null ? 3 : Integer.parseInt(properties.getProperty("DefaultFeaturesRelease"));
@@ -69,10 +71,21 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public void callback (int i){
+        switch(i){
+            case 1: Generator = Gen > 3 ? Gen - 3 : 0;
+                    MapFeatures = Gen == 0 ? FEATURES_INFDEV0227 :
+                                 (Gen == 1 ? FEATURES_INFDEV0420 :
+                                 (Gen == 2 ? FEATURES_INFDEV0608 :
+                                 (Gen == 3 ? FEATURES_ALPHA11201 : 0)));
+                    reload(); break;
+            case 2: setBool(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", UseOpaqueFlatClouds); break;
+        }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
         }
     }
+
+    public static int Gen = 1;
 
     private void registerGears(){
         Block gear = new BlockGear(gearId, 57);
@@ -423,7 +436,7 @@ public class ODNBXlite extends OldDaysModule{
 */
     public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if (Generator==GEN_BIOMELESS){
-            if (tex && !FallbackColors){
+            if (tex && !getFallback()){
                 return 0xffffff;
             }
             return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -458,7 +471,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int GetGrassColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if(Generator==GEN_BIOMELESS){
-            if (tex && !FallbackColors){
+            if (tex && !getFallback()){
                 return 0xffffff;
             }
             return ColorizerGrass.getGrassColor(1.0F, 1.0F);
@@ -583,7 +596,6 @@ public class ODNBXlite extends OldDaysModule{
         }catch(Exception ex){}
         RenderGhast2.bright = gen<GEN_NEWBIOMES;
         GenerateNewOres=ores;
-        FallbackColors=!hasEntry("nbxlite/textures");
     }
 
     public static void setTextureFX(){
@@ -731,22 +743,6 @@ public class ODNBXlite extends OldDaysModule{
         return CloudColor = 0xffffff;
     }
 
-    private static boolean hasEntry(String str){
-        try{
-            TexturePackBase texpack = ((TexturePackBase)ModLoader.getMinecraftInstance().texturePackList.selectedTexturePack);
-            if (texpack instanceof TexturePackFolder){
-                File orig = ((File)ModLoader.getPrivateValue(net.minecraft.src.TexturePackFolder.class, texpack, 2));
-                File file = new File(orig, str);
-                return file.exists();
-            }else{
-                ZipFile file = ((ZipFile)ModLoader.getPrivateValue(net.minecraft.src.TexturePackCustom.class, texpack, 0));
-                return file.getEntry(str)!=null;
-            }
-        }catch(Exception ex){
-            return true;
-        }
-    }
-
     public static void generateIndevLevel(long seed){
         IndevGenerator gen2 = new IndevGenerator(ModLoader.getMinecraftInstance().loadingScreen, seed);
         if (ODNBXlite.IndevMapType==ODNBXlite.TYPE_ISLAND){
@@ -782,7 +778,6 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean GreenGrassSides=false;
     public static boolean NoGreenGrassSides=false;
     public static boolean UseOpaqueFlatClouds=false;
-    public static boolean FallbackColors=false;
     public static boolean RestrictSlimes=false;//Makes slimes not spawn higher than 16 blocks altitude
     public static boolean GenerateNewOres=true;//Lapis, redstone and diamonds in Classic, Lapis and redstone in Indev and 04.20 Infdev, Lapis in Alpha
     public static int MapTheme = 0;
@@ -808,7 +803,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int CloudColor;
     public static boolean Import = false;
     public static EasyLocalization lang = new EasyLocalization("nbxlite");
-    public static boolean HideGUI = true;
+    public static boolean ShowGUI = true;
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 4;
     public static int DefaultFeaturesRelease = 3;
