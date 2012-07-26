@@ -10,9 +10,9 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.LoadingScreenRenderer;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.Material;
+import net.minecraft.src.mod_OldDays;
 import net.minecraft.src.ODNBXlite;
 
 public final class IndevGenerator
@@ -51,7 +51,7 @@ public final class IndevGenerator
 
     public IndevGenerator(long seed)
     {
-        this(new LoadingScreenRenderer(ModLoader.getMinecraftInstance()), seed);
+        this(new LoadingScreenRenderer(mod_OldDays.getMinecraftInstance()), seed);
     }
 
     public final byte[] generateLevel(String s, int i1, int j1, int k1)

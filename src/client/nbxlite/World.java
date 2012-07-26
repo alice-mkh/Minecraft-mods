@@ -156,7 +156,7 @@ public class World implements IBlockAccess
      */
     public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
-        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES && blockExists(par1, 0, par2))
+        if (false/*ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES*/ && blockExists(par1, 0, par2))
         {
             Chunk chunk = getChunkFromBlockCoords(par1, par2);
 
@@ -357,20 +357,14 @@ public class World implements IBlockAccess
             worldInfo.newOres = ODNBXlite.GenerateNewOres;
             mapGen=ODNBXlite.Generator;
             mapGenExtra=ODNBXlite.MapFeatures;
-            ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, false, ODNBXlite.GenerateNewOres);
             if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201)
             {
                 if (!ODNBXlite.Import){
-                    byte byte0 = 4;
-                    if(worldInfo.mapTheme == 2)
-                    {
-                        byte0 = 2;
-                    }
-                    if(rand.nextInt(byte0) == 0)
+                    if(rand.nextInt(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS ? 2 : 4) == 0)
                     {
                         worldInfo.snowCovered = true;
                         snowCovered = true;
-                        ODNBXlite.SnowCovered=true;
+                        ODNBXlite.SnowCovered = true;
                     }else{
                         ODNBXlite.SnowCovered=false;
                     }
@@ -381,6 +375,7 @@ public class World implements IBlockAccess
             }else{
                 ODNBXlite.SnowCovered=false;
             }
+            ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
             if (!(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && ODNBXlite.Import)){
                 worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
                 worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);

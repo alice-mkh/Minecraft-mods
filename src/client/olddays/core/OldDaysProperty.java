@@ -19,6 +19,7 @@ public class OldDaysProperty{
     public boolean allowedInFallback;
     public boolean noSounds;
     public int disabled;
+    public boolean guiRefresh;
 
     public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
@@ -29,6 +30,7 @@ public class OldDaysProperty{
         allowedInFallback = true;
         noSounds = false;
         disabled = 0;
+        guiRefresh = false;
         try{
             field = module.getClass().getDeclaredField(f);
         }catch(Exception ex){
@@ -38,11 +40,11 @@ public class OldDaysProperty{
     }
 
     public String getButtonText(){
-        return mod_OldDays.lang.get(getName());
+        return mod_OldDays.lang.get(getName()+".name");
     }
 
     public String getDisabledButtonText(){
-        return mod_OldDays.lang.get(getName());
+        return mod_OldDays.lang.get(getName()+".name");
     }
 
     public void onChange(){}
@@ -109,5 +111,9 @@ public class OldDaysProperty{
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
         return (String[])list.toArray(new String[list.size()]);
+    }
+
+    public void setGUIRefresh(){
+        guiRefresh = true;
     }
 }

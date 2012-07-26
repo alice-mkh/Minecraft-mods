@@ -2,15 +2,7 @@ package net.minecraft.src.nbxlite.gui;
 
 import java.util.List;
 import java.util.Collections;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.ISaveFormat;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.PlayerControllerSP;
-import net.minecraft.src.SaveFormatComparator;
-import net.minecraft.src.StringTranslate;
-import net.minecraft.src.ModLoader;
-import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.MinecraftHook;
 
 public class GuiNBXlite extends GuiScreen{
@@ -161,13 +153,14 @@ public class GuiNBXlite extends GuiScreen{
             if (gen==0 && feats==3){
                 type=GeneratorList.typecurrent;
             }
-            ODNBXlite.SetGenerator(ModLoader.getMinecraftInstance().theWorld, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
+            ODNBXlite.SetGenerator(mod_OldDays.getMinecraftInstance().theWorld, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
+            mod_OldDays.refreshConditionProperties();
             if (gen==0 && feats>=3){
                 ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
                 ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
             }
-            ModLoader.getMinecraftInstance().renderGlobal.loadRenderers();
+            mod_OldDays.getMinecraftInstance().renderGlobal.loadRenderers();
         }else{
             ODNBXlite.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){

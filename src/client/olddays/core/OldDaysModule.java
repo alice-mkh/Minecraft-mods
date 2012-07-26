@@ -68,9 +68,9 @@ public class OldDaysModule{
         }
     }
 
-    public void reload(){
+    public static void reload(){
         try{
-            minecraft.renderGlobal.loadRenderers();
+            mod_OldDays.getMinecraftInstance().renderGlobal.loadRenderers();
         }catch(Exception ex){}
     }
 
@@ -130,6 +130,14 @@ public class OldDaysModule{
         }catch(Exception ex){
             System.out.println("OldDays: Failed to add renderer: "+ex);
         }
+    }
+
+    public static void saveWorld(){
+        World world = mod_OldDays.getMinecraftInstance().theWorld;
+        if (world==null){
+            return;
+        }
+        world.quickSaveWorld(0);
     }
 
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){

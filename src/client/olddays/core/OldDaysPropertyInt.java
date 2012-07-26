@@ -116,8 +116,9 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         return (String[])list.toArray(new String[list.size()]);
     }
 
-    public void setUseNames(){
+    public OldDaysPropertyInt setUseNames(){
         useNames = true;
+        return this;
     }
 
     public void setField(){

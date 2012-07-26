@@ -28,8 +28,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             return;
         }
         displayField = false;
+        OldDaysProperty prop = mod_OldDays.getModuleById(id).getPropertyById(guibutton.id);
         if (mod_OldDays.getPropertyGuiType(id, guibutton.id) == OldDaysProperty.GUI_TYPE_BUTTON){
-            mod_OldDays.getModuleById(id).getPropertyById(guibutton.id).incrementValue();
+            prop.incrementValue();
         }else if (mod_OldDays.getPropertyGuiType(id, guibutton.id) == OldDaysProperty.GUI_TYPE_FIELD){
             /*int offset = fontRenderer.getStringWidth(mod_OldDays.getPropertyName(id, guibutton.id)+":")-2;
             offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(id, guibutton.id)))/2;
@@ -52,8 +53,11 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
         mod_OldDays.saveModuleProperties(id);
         mod_OldDays.sendCallbackAndSave(id, guibutton.id);
-        guibutton.enabled = !mod_OldDays.getModuleById(id).getPropertyById(guibutton.id).isDisabled();
+        guibutton.enabled = !prop.isDisabled();
         guibutton.displayString = mod_OldDays.getPropertyButtonText(id, guibutton.id);
+        if (prop.guiRefresh){
+            refresh();
+        }
     }
 
     protected void showField(boolean b, GuiButton button){
@@ -151,6 +155,14 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }else{
             mod_OldDays.setStringPropValue(id, fieldId, str);
             mod_OldDays.sendCallback(id, fieldId);
+        }
+    }
+
+    private void refresh(){
+        for (int i = 1; i < controlList.size() - 2; i++){
+            GuiButton button = ((GuiButton)controlList.get(i));
+            button.enabled = !mod_OldDays.getModuleById(id).getPropertyById(i).isDisabled();
+            button.displayString = mod_OldDays.getPropertyButtonText(id, i);
         }
     }
 }

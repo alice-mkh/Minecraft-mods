@@ -4,24 +4,13 @@ import java.awt.*;
 import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MinecraftApplet;
-import net.minecraft.src.ISaveFormat;
-import net.minecraft.src.ISaveHandler;
-import net.minecraft.src.ModLoader;
-import net.minecraft.src.PanelCrashReport;
-import net.minecraft.src.StatList;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.UnexpectedThrowable;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldInfo;
-import net.minecraft.src.WorldSettings;
-import net.minecraft.src.WorldType;
-import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 
 public final class MinecraftHook extends Minecraft{
     final Frame mcFrame;
 
-    public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(ModLoader.getMinecraftInstance().getMinecraftDir(), "saves"));
+    public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraftInstance().getMinecraftDir(), "saves"));
 
     public MinecraftHook(Component component, Canvas canvas, MinecraftApplet minecraftapplet, int i, int j, boolean flag, Frame frame)
     {
@@ -43,7 +32,7 @@ public final class MinecraftHook extends Minecraft{
 
     public static void startWorldHook(String s, String s1, WorldSettings worldsettings)
     {
-        Minecraft mc = ModLoader.getMinecraftInstance();
+        Minecraft mc = mod_OldDays.getMinecraftInstance();
         mc.changeWorld(null, "", null);
         System.gc();
         if (getSaveLoader2().isOldMapFormat(s) || getSaveLoader2().getWorldInfo(s).getSaveVersion() == 19132)
@@ -80,7 +69,7 @@ public final class MinecraftHook extends Minecraft{
 
     private static void convertMapFormatOld(String s, String s1)
     {
-        Minecraft mc = ModLoader.getMinecraftInstance();
+        Minecraft mc = mod_OldDays.getMinecraftInstance();
         mc.loadingScreen.printText((new StringBuilder()).append("Converting World to ").append(getSaveLoader2().getFormatName()).toString());
         mc.loadingScreen.displayLoadingString("This may take a while :)");
         getSaveLoader2().convertMapFormat(s, mc.loadingScreen);
@@ -89,7 +78,7 @@ public final class MinecraftHook extends Minecraft{
 
     private static void convertMapFormat(String s, String s1)
     {
-        Minecraft mc = ModLoader.getMinecraftInstance();
+        Minecraft mc = mod_OldDays.getMinecraftInstance();
         mc.loadingScreen.printText((new StringBuilder()).append("Converting World to ").append(mc.getSaveLoader().getFormatName()).toString());
         mc.loadingScreen.displayLoadingString("This may take a while :)");
         mc.getSaveLoader().convertMapFormat(s, mc.loadingScreen);

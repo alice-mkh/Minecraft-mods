@@ -5,10 +5,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.ModLoader;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.TextureFX;
-import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.*;
 
 public class TextureTerrainPngFX extends TextureFX
 {
@@ -24,7 +21,7 @@ public class TextureTerrainPngFX extends TextureFX
     public TextureTerrainPngFX()
     {
         super(0);
-        renderEngine = ModLoader.getMinecraftInstance().renderEngine;
+        renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
         changeIndex(255, false);
     }
 
@@ -34,7 +31,7 @@ public class TextureTerrainPngFX extends TextureFX
         currentIndex = index;
         try
         {
-            BufferedImage bufferedimage = ModLoader.loadImage(ModLoader.getMinecraftInstance().renderEngine, "/terrain.png");
+            BufferedImage bufferedimage = ModLoader.loadImage(mod_OldDays.getMinecraftInstance().renderEngine, "/terrain.png");
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource("/terrain.png"));
             }
