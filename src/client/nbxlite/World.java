@@ -220,6 +220,7 @@ public class World implements IBlockAccess
         ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
         ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
         ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
+        ODNBXlite.refreshProperties();
 //         ODNBXlite NBX = new ODNBXlite();
 //         NBX.RequestGeneratorInfo();
         turnOnOldSpawners();
@@ -269,6 +270,7 @@ public class World implements IBlockAccess
         mapGenExtra = worldInfo.mapGenExtra;
         snowCovered = worldInfo.snowCovered;
         ODNBXlite.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, snowCovered, worldInfo.newOres);
+        ODNBXlite.refreshProperties();
         turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
@@ -514,6 +516,7 @@ public class World implements IBlockAccess
             }
             worldProvider.registerWorld(this);
         }
+        ODNBXlite.refreshProperties();
         ODNBXlite.setTextureFX();
         turnOnOldSpawners();
         calculateInitialSkylight();

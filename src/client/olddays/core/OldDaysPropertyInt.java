@@ -55,6 +55,16 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    public void updateValue(){
+        try{
+            value = ((Integer)field.get(module));
+        }catch(Exception ex){
+            System.out.println(ex);
+            disable();
+        }
+        onChange();
+    }
+
     public void setSMPValue(){
         value = smpValue;
     }

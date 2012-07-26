@@ -34,6 +34,16 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         value = !value;
     }
 
+    public void updateValue(){
+        try{
+            value = ((Boolean)field.get(module));
+        }catch(Exception ex){
+            System.out.println(ex);
+            disable();
+        }
+        onChange();
+    }
+
     public void setSMPValue(){
         value = smpValue;
     }

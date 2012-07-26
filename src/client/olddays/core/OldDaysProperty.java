@@ -18,6 +18,7 @@ public class OldDaysProperty{
     public boolean allowedInSMP;
     public boolean allowedInFallback;
     public boolean noSounds;
+    public int disabled;
 
     public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
@@ -27,6 +28,7 @@ public class OldDaysProperty{
         allowedInSMP = true;
         allowedInFallback = true;
         noSounds = false;
+        disabled = 0;
         try{
             field = module.getClass().getDeclaredField(f);
         }catch(Exception ex){
@@ -36,6 +38,10 @@ public class OldDaysProperty{
     }
 
     public String getButtonText(){
+        return mod_OldDays.lang.get(getName());
+    }
+
+    public String getDisabledButtonText(){
         return mod_OldDays.lang.get(getName());
     }
 
@@ -56,7 +62,7 @@ public class OldDaysProperty{
         if (noSounds){
             return 4;
         }
-        return 0;
+        return disabled;
     }
 
     public boolean isDisabled(){
@@ -73,6 +79,8 @@ public class OldDaysProperty{
     }
 
     public void incrementValue(){}
+
+    public void updateValue(){}
 
     public void setSMPValue(){}
 

@@ -126,7 +126,8 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public static String getPropertyButtonText(int id, int id2){
-        return getModuleById(id).getPropertyById(id2).getButtonText();
+        OldDaysProperty prop = getModuleById(id).getPropertyById(id2);
+        return prop.isDisabled() ? prop.getDisabledButtonText() : prop.getButtonText();
     }
 
     public static OldDaysModule getModuleById(int id){
