@@ -132,12 +132,17 @@ public class OldDaysModule{
         }
     }
 
-    public static void saveWorld(){
+    public static void setInWorldInfo(String var, Object b){
         World world = mod_OldDays.getMinecraftInstance().theWorld;
         if (world==null){
             return;
         }
-        world.quickSaveWorld(0);
+        WorldInfo info = world.getWorldInfo();
+        try{
+            info.getClass().getDeclaredField(var).set(info, b);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){

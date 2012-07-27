@@ -9,7 +9,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
     public boolean smpValue2;
 
     public OldDaysPropertyCond(OldDaysModule m, int i, int v, String f){
-        super(m, i, v, f, 3);
+        super(m, i, v, f, 2);
         useNames = true;
         boolValue = getBoolValue(v);
     }

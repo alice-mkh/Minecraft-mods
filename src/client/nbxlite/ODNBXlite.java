@@ -81,20 +81,24 @@ public class ODNBXlite extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: setGen(0); saveWorld(); break;
-            case 2: saveWorld(); break;
-            case 3: setGen(1); saveWorld(); break;
-            case 4: setGen(2); saveWorld(); break;
-            case 5: saveWorld(); break;
-            case 6: saveWorld(); break;
-            case 7: saveWorld(); break;
-            case 8: saveWorld(); break;
-            case 9: saveWorld(); break;
-            case 10: saveWorld(); break;
-            case 11: saveWorld(); break;
-            case 12: saveWorld(); break;
-            case 13: saveWorld(); break;
-            case 14: saveWorld(); break;
+            case 1: setGen(0);
+                    setInWorldInfo("mapGen", Generator);
+                    setInWorldInfo("mapGenExtra", MapFeatures); break;
+            case 2: setInWorldInfo("mapTheme", MapTheme); break;
+            case 3: setGen(1);
+                    setInWorldInfo("mapGenExtra", MapFeatures); break;
+            case 4: setGen(2);
+                    setInWorldInfo("mapGenExtra", MapFeatures); break;
+            case 5: setInWorldInfo("newOres", GenerateNewOres); break;
+            case 6: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
+            case 7: setInWorldInfo("surrgroundtype", SurrGroundType); break;
+            case 8: setInWorldInfo("surrwaterheight", SurrWaterHeight); break;
+            case 9: setInWorldInfo("surrwatertype", SurrWaterType); break;
+            case 10:setInWorldInfo("skycolor", SkyColor); break;
+            case 11:setInWorldInfo("fogcolor", FogColor); break;
+            case 12:setInWorldInfo("cloudcolor", CloudColor); break;
+            case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
+            case 14:setInWorldInfo("cloudheight", CloudHeight); break;
             case 15:((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
             case 16:setBool(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning);
                     setBool(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning); break;
