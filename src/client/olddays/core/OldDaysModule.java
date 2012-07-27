@@ -96,24 +96,9 @@ public class OldDaysModule{
 
     public void callback(int i){}
 
-    public void setBool(Class c, String name, boolean value){
+    public void set(Class c, String name, Object value){
         try{
-            c.getDeclaredField(name).setBoolean(null, value);
-        }catch(Exception ex){
-            getPropertyById(last).disable();
-        }
-    }
-
-    public void setInt(Class c, String name, int value){
-        try{
-            c.getDeclaredField(name).setInt(null, value);
-        }catch(Exception ex){
-            getPropertyById(last).disable();
-        }
-    }
-    public void setStr(Class c, String name, String value){
-        try{
-            c.getDeclaredField(name).set(null, ((Object)value));
+            c.getDeclaredField(name).set(null, value);
         }catch(Exception ex){
             getPropertyById(last).disable();
         }

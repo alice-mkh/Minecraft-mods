@@ -24,17 +24,17 @@ public class ODActions extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: setBool(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
-            case 2: setBool(net.minecraft.src.EntityTNTPrimed.class, "extinguish", ExtinguishTNT); break;
-            case 3: setBool(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
-            case 4: setBool(net.minecraft.src.BlockFire.class, "oldFire", Fire<2);
-                    setBool(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<1); break;
-            case 5: setBool(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
+            case 1: set(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
+            case 2: set(net.minecraft.src.EntityTNTPrimed.class, "extinguish", ExtinguishTNT); break;
+            case 3: set(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
+            case 4: set(net.minecraft.src.BlockFire.class, "oldFire", Fire<2);
+                    set(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<1); break;
+            case 5: set(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
             case 6: setToolDurability(OldTools); break;
-            case 7: setBool(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
+            case 7: set(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
-            case 9: setBool(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
-            case 10:setBool(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
+            case 9: set(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
+            case 10:set(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
         }
     }
 

@@ -22,36 +22,36 @@ public class ODGameplay extends OldDaysModule{
 
     public void callback (int i){
         switch (i){
-            case 1: setBool(net.minecraft.src.EntityXPOrb.class, "noxp", !EnableXP);
-                    setBool(net.minecraft.src.GuiIngame.class, "hidexp", !EnableXP); break;
-            case 2: setBool(net.minecraft.src.FoodStats.class, "disabled", !EnableHunger);
-                    setBool(net.minecraft.src.ItemFood.class, "heal", !EnableHunger);
-                    setBool(net.minecraft.src.BlockCake.class, "heal", !EnableHunger);
-                    setBool(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger); break;
-            case 3: setBool(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
-            case 4: setBool(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
-            case 5: setBool(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
-            case 6: setBool(net.minecraft.src.EntityLiving.class, "rareloot", RareLoot); break;
-            case 7: setBool(net.minecraft.src.EntityArrow.class, "olddamage", InstantBow);
-                    setBool(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
-            case 8: setBool(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
-            case 9: setInt(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem);
-                    setBool(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=3);
+            case 1: set(net.minecraft.src.EntityXPOrb.class, "noxp", !EnableXP);
+                    set(net.minecraft.src.GuiIngame.class, "hidexp", !EnableXP); break;
+            case 2: set(net.minecraft.src.FoodStats.class, "disabled", !EnableHunger);
+                    set(net.minecraft.src.ItemFood.class, "heal", !EnableHunger);
+                    set(net.minecraft.src.BlockCake.class, "heal", !EnableHunger);
+                    set(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger); break;
+            case 3: set(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
+            case 4: set(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
+            case 5: set(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
+            case 6: set(net.minecraft.src.EntityLiving.class, "rareloot", RareLoot); break;
+            case 7: set(net.minecraft.src.EntityArrow.class, "olddamage", InstantBow);
+                    set(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
+            case 8: set(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
+            case 9: set(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem);
+                    set(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=3);
                     setSwordDamage(CombatSystem<2); break;
-            case 10:setInt(net.minecraft.src.EntityPlayer.class, "armor", Armor);
-                    setBool(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=0);
+            case 10:set(net.minecraft.src.EntityPlayer.class, "armor", Armor);
+                    set(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=0);
                     setArmorDamage(Armor<2); break;
-            case 11:setBool(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
-            case 12:setBool(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
-                    setInt(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
-            case 13:setBool(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
-            case 14:setInt(net.minecraft.src.EntityPlayer.class, "startitems", StartItems); break;
+            case 11:set(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
+            case 12:set(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
+                    set(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
+            case 13:set(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
+            case 14:set(net.minecraft.src.EntityPlayer.class, "startitems", StartItems); break;
             case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
         }
     }
 
     protected void onFallbackChange(boolean fallback){
-        setBool(net.minecraft.src.GuiIngame.class, "fallbacktex", fallback);
+        set(net.minecraft.src.GuiIngame.class, "fallbacktex", fallback);
     }
 
     public static boolean EnableXP;

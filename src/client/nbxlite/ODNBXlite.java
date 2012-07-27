@@ -100,15 +100,15 @@ public class ODNBXlite extends OldDaysModule{
             case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
             case 14:setInWorldInfo("cloudheight", CloudHeight); break;
             case 15:((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
-            case 16:setBool(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning);
-                    setBool(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning); break;
-            case 17:setBool(net.minecraft.src.RenderGlobal.class, "texClouds", TexturedClouds); break;
-            case 18:setBool(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
-            case 19:setBool(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
-                    setBool(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight); break;
-            case 20:setBool(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
-            case 21:setBool(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
-                    setBool(net.minecraft.src.RenderGlobal.class, "sunriseAtNorth", SunriseAtNorth); break;
+            case 16:set(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning);
+                    set(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning); break;
+            case 17:set(net.minecraft.src.RenderGlobal.class, "texClouds", TexturedClouds); break;
+            case 18:set(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 19:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
+                    set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight); break;
+            case 20:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
+            case 21:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
+                    set(net.minecraft.src.RenderGlobal.class, "sunriseAtNorth", SunriseAtNorth); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
