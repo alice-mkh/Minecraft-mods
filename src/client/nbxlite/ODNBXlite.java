@@ -154,6 +154,9 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void setGen(int i){
+        if (isFinite()){
+            return;
+        }
         if (Gen == 0){
             MapFeatures = FEATURES_INFDEV0227;
             Generator = GEN_BIOMELESS;
