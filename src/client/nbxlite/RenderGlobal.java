@@ -1246,7 +1246,7 @@ public class RenderGlobal implements IWorldAccess
         d2 -= j * 2048;
         if (texClouds){
             OpenGlHelper.setActiveTexture(33985);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/fluff.png"));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/fluff.png"));
             GL11.glTexGeni(8192, 9472, 9217);
             GL11.glTexGen(8192, 9473, a(1.0F, 0.0F, 0.0F, 0.0F));
             GL11.glTexGeni(8193, 9472, 9217);

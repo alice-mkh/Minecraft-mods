@@ -503,10 +503,10 @@ public class ODNBXlite extends OldDaysModule{
 
     private static void replaceBlocks(){
         try{
-            Block.grass.toptex = 26; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grasstop.png", 26);
-            Block.grass.sidetex = 27; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/grassside.png", 27);
-            Block.leaves.fasttex = 41; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfast.png", 41);
-            Block.leaves.fancytex = 42; ModLoader.addOverride("/terrain.png", "/nbxlite/textures/leavesfancy.png", 42);
+            Block.grass.toptex = 26; ModLoader.addOverride("/terrain.png", "/olddays/grasstop.png", 26);
+            Block.grass.sidetex = 27; ModLoader.addOverride("/terrain.png", "/olddays/grassside.png", 27);
+            Block.leaves.fasttex = 41; ModLoader.addOverride("/terrain.png", "/olddays/leavesfast.png", 41);
+            Block.leaves.fancytex = 42; ModLoader.addOverride("/terrain.png", "/olddays/leavesfancy.png", 42);
             Block.blocksList[Block.tallGrass.blockID] = null;
             BlockTallGrass2 tallgrass2 = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID, 39)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("tallgrass");
             Block.blocksList[Block.tallGrass.blockID] = tallgrass2;

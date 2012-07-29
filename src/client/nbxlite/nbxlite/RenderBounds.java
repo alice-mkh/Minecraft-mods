@@ -219,7 +219,7 @@ public class RenderBounds{
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
         if (id==Block.grass.blockID && !mod_OldDays.texman.fallbacktex){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/grasstop.png"));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/grasstop.png"));
         }else{
             imageData.clear();
             imageData.put(ODNBXlite.terrfx.imageData);
@@ -264,7 +264,7 @@ public class RenderBounds{
                 imageData.put(fx.imageData);
                 imageData.position(0).limit(fx.imageData.length);
                 GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-//                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+".png"));
+//                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/"+name+".png"));
 //                 System.out.println(ex);
             }
         }else{
@@ -274,7 +274,7 @@ public class RenderBounds{
             imageData.put(fx.imageData);
             imageData.position(0).limit(fx.imageData.length);
             GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-//             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/nbxlite/textures/"+name+".png"));
+//             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/"+name+".png"));
         }
         GL11.glEnable(GL11.GL_BLEND);
         renderLiquidBounds(f);

@@ -21,8 +21,8 @@ public class TextureGearFX extends TextureFX
         this.h = ((paramInt << 1) - 1);
         tickCounter = 2;
         try{
-            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/nbxlite/textures/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
-            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/nbxlite/textures/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
+            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
+            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
             return;
         }catch (IOException localIOException){
             localIOException.printStackTrace();
