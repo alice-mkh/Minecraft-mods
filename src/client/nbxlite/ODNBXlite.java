@@ -89,10 +89,10 @@ public class ODNBXlite extends OldDaysModule{
             case 4: setGen(2);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
             case 5: setInWorldInfo("newOres", GenerateNewOres); break;
-            case 6: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
-            case 7: setInWorldInfo("surrgroundtype", SurrGroundType); break;
-            case 8: setInWorldInfo("surrwaterheight", SurrWaterHeight); break;
-            case 9: setInWorldInfo("surrwatertype", SurrWaterType); break;
+            case 6: setInWorldInfo("surrgroundheight", SurrGroundHeight); setTextureFX(); break;
+            case 7: setInWorldInfo("surrgroundtype", SurrGroundType); setTextureFX(); break;
+            case 8: setInWorldInfo("surrwaterheight", SurrWaterHeight); setTextureFX(); break;
+            case 9: setInWorldInfo("surrwatertype", SurrWaterType); setTextureFX(); break;
             case 10:setInWorldInfo("skycolor", SkyColor); break;
             case 11:setInWorldInfo("fogcolor", FogColor); break;
             case 12:setInWorldInfo("cloudcolor", CloudColor); break;
