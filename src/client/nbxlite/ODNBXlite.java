@@ -99,8 +99,8 @@ public class ODNBXlite extends OldDaysModule{
             case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
             case 14:setInWorldInfo("cloudheight", CloudHeight); break;
             case 15:((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
-            case 16:set(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning);
-                    set(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning); break;
+            case 16:set(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
+                    set(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
             case 17:set(net.minecraft.src.RenderGlobal.class, "texClouds", TexturedClouds); break;
             case 18:set(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
             case 19:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
@@ -710,6 +710,10 @@ public class ODNBXlite extends OldDaysModule{
             EntityRenderer.bounds = isFinite();
         }catch(Exception ex){}
         GenerateNewOres=ores;
+        try{
+            EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
+            EntityWolf.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
+        }catch(Exception ex){}
         mod_OldDays.refreshConditionProperties();
     }
 
