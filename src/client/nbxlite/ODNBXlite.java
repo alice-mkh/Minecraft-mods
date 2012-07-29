@@ -7,7 +7,6 @@ import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
 import net.minecraft.src.nbxlite.indev.*;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
-import net.minecraft.src.nbxlite.lib.EasyLocalization;
 import java.util.zip.*;
 
 public class ODNBXlite extends OldDaysModule{
@@ -910,7 +909,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int SurrWaterType;
     public static int SurrGroundType;
     public static boolean Import = false;
-    public static EasyLocalization lang = new EasyLocalization("nbxlite");
+    public static OldDaysEasyLocalization lang = new OldDaysEasyLocalization("nbxlite");
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 4;
     public static int DefaultFeaturesRelease = 3;
