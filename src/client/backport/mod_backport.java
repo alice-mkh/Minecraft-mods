@@ -128,17 +128,17 @@ public class mod_backport extends BaseMod{
         ModLoader.addSmelting(emeraldOre.blockID, new ItemStack(emerald, 1));
         ModLoader.addShapelessRecipe(new ItemStack(bookAndQuill, 1), new Object[]{
             Item.book, new ItemStack(Item.dyePowder, 1, 0), Item.feather});
-        ModLoader.addRecipe(new ItemStack(sandstairs, 1), new Object[]{"#  ", "## ", "###", '#', Block.sandStone});
-        ModLoader.addRecipe(new ItemStack(sandstairs, 1), new Object[]{"  #", " ##", "###", '#', Block.sandStone});
+        ModLoader.addRecipe(new ItemStack(sandstairs, 4), new Object[]{"#  ", "## ", "###", '#', Block.sandStone});
+        ModLoader.addRecipe(new ItemStack(sandstairs, 4), new Object[]{"  #", " ##", "###", '#', Block.sandStone});
         removeRecipe("4xtile.stairsWood@0");
-        ModLoader.addRecipe(new ItemStack(Block.stairCompactPlanks, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 0)});
-        ModLoader.addRecipe(new ItemStack(Block.stairCompactPlanks, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 0)});
-        ModLoader.addRecipe(new ItemStack(plank1Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 1)});
-        ModLoader.addRecipe(new ItemStack(plank1Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 1)});
-        ModLoader.addRecipe(new ItemStack(plank2Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 2)});
-        ModLoader.addRecipe(new ItemStack(plank2Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 2)});
-        ModLoader.addRecipe(new ItemStack(plank3Stairs, 1), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 3)});
-        ModLoader.addRecipe(new ItemStack(plank3Stairs, 1), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 3)});
+        ModLoader.addRecipe(new ItemStack(Block.stairCompactPlanks, 4), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 0)});
+        ModLoader.addRecipe(new ItemStack(Block.stairCompactPlanks, 4), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 0)});
+        ModLoader.addRecipe(new ItemStack(plank1Stairs, 4), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 1)});
+        ModLoader.addRecipe(new ItemStack(plank1Stairs, 4), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 1)});
+        ModLoader.addRecipe(new ItemStack(plank2Stairs, 4), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 2)});
+        ModLoader.addRecipe(new ItemStack(plank2Stairs, 4), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 2)});
+        ModLoader.addRecipe(new ItemStack(plank3Stairs, 4), new Object[]{"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 3)});
+        ModLoader.addRecipe(new ItemStack(plank3Stairs, 4), new Object[]{"  #", " ##", "###", '#', new ItemStack(Block.planks, 1, 3)});
         ModLoader.addRecipe(new ItemStack(wireHook, 1),new Object[]{"#", "$", "%", '#', Item.ingotIron, '$', Item.stick, '%', Block.planks});
         ModLoader.addRecipe(new ItemStack(chest, 1),new Object[]{"###", "#$#", "###", '#', Block.obsidian, '$', Item.eyeOfEnder});
 
