@@ -1,12 +1,5 @@
-// Decompiled by Jad v1.5.8e. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.geocities.com/kpdus/jad.html
-// Decompiler options: fullnames deadcode fieldsfirst 
-
 package net.minecraft.src.nbxlite.indev;
 
-// import com.mojang.minecraft.level.Level;
-// import IndevNoiseGeneratorOctaves;
-// import IndevNoiseGenerator2;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,6 +9,7 @@ import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.mod_OldDays;
 
 public final class ClassicGenerator
 {
@@ -47,7 +41,7 @@ public final class ClassicGenerator
         d = l;
         g = d - 32;
         f = new byte[j * k << 6];
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.raising"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.raising"));
         java.lang.Object obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         IndevNoiseGenerator2 c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         java.lang.Object obj1 = new IndevNoiseGeneratorOctaves(rand, 6);
@@ -71,7 +65,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.eroding"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.eroding"));
         int arrayf1[] = ai;
         c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         obj1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
@@ -92,7 +86,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.soiling"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.soiling"));
         arrayf1 = ai;
         int intf2 = b;
         int k1 = this.c;
@@ -128,7 +122,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.carving"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.carving"));
         float f2 = 4;
         float f1 = 0;
         int k5 = (this.b * this.c * this.d) / 256 / 64 << 1;
@@ -197,7 +191,7 @@ label0:
             a(Block.oreRedstone.blockID, 40, 5, 4);
             a(Block.oreDiamond.blockID, 30, 6, 4);
         }
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.watering"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.watering"));
         i2 = Block.waterStill.blockID;
         if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
             {
@@ -229,7 +223,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.melting"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.melting"));
         int intf22 = (this.b * this.c * this.d) / 20000;
         for(int intk1 = 0; intk1 < intf22; intk1++)
         {
@@ -245,7 +239,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.growing"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.growing"));
         arrayf1 = ai;
         IndevNoiseGeneratorOctaves j2 = new IndevNoiseGeneratorOctaves(rand, 8);
         IndevNoiseGeneratorOctaves b2 = new IndevNoiseGeneratorOctaves(rand, 8);
@@ -281,7 +275,7 @@ label0:
 
         }
 
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.planting"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.planting"));
         arrayf1 = ai;
         if (this.b==64 || this.c==64){
             k1 = (this.b * this.c) / 2000;

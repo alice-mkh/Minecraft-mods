@@ -15,7 +15,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   1, 0,        "Gen", 5).setUseNames().setGUIRefresh();
         new OldDaysPropertyInt(this,   2, 0,        "MapTheme", 3).setUseNames();
         new OldDaysPropertyInt(this,   3, 0,        "BetaFeatures", 6).setUseNames();
-        new OldDaysPropertyInt(this,   4, 0,        "ReleaseFeatures", 3).setUseNames();
+        new OldDaysPropertyInt(this,   4, 0,        "ReleaseFeatures", 4).setUseNames();
         new OldDaysPropertyBool(this,  5, false,    "GenerateNewOres");
         new OldDaysPropertyInt(this,   6, 32,       "SurrGroundHeight", -999, 256).setField();
         new OldDaysPropertyInt(this,   7, 1,        "SurrGroundType", 1, 256).setField();
@@ -909,7 +909,6 @@ public class ODNBXlite extends OldDaysModule{
     public static int SurrWaterType;
     public static int SurrGroundType;
     public static boolean Import = false;
-    public static OldDaysEasyLocalization lang = new OldDaysEasyLocalization("nbxlite");
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 4;
     public static int DefaultFeaturesRelease = 3;

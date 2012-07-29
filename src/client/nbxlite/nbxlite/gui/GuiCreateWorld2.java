@@ -135,9 +135,10 @@ public class GuiCreateWorld2 extends GuiScreen
 
     public static String genNBXliteButtonName(){
         StringBuilder str = new StringBuilder();
-        str.append(ODNBXlite.lang.get("settings"));
+        str.append(mod_OldDays.lang.get("settings"));
+        str.append(": ");
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(ODNBXlite.lang.get(GeneratorList.genname[GeneratorList.gencurrent]));
+            str.append(mod_OldDays.lang.get(GeneratorList.genname[GeneratorList.gencurrent]));
             if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
                 str.append(", ");
             }
@@ -154,17 +155,17 @@ public class GuiCreateWorld2 extends GuiScreen
             str.append("), ");
         }
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
-            str.append(ODNBXlite.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
+            str.append(mod_OldDays.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
             str.append(", ");
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(ODNBXlite.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
+            str.append(mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-            str.append(ODNBXlite.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
+            str.append(mod_OldDays.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-            str.append(ODNBXlite.lang.get(GeneratorList.feat2name[GeneratorList.feat2current]));
+            str.append(mod_OldDays.lang.get("nbxlite.releasefeatures"+(GeneratorList.feat2current+1)));
         }
         return str.toString();
     }

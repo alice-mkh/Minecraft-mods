@@ -12,8 +12,8 @@ import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.LoadingScreenRenderer;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.Material;
-import net.minecraft.src.mod_OldDays;
 import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.mod_OldDays;
 
 public final class IndevGenerator
 {
@@ -90,7 +90,7 @@ public final class IndevGenerator
                 nextPhase();
             } else
             {
-                progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.raising"));
+                progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.raising"));
                 nextPhase();
                 IndevGenerator a1 = this;
                 IndevNoiseGenerator2 d1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
@@ -141,7 +141,7 @@ public final class IndevGenerator
                 }
 
                 ai = ai3;
-                progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.eroding"));
+                progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.eroding"));
                 nextPhase();
                 int ai1[] = ai;
                 a1 = this;
@@ -165,7 +165,7 @@ public final class IndevGenerator
                 }
 
             }
-            progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.soiling"));
+            progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.soiling"));
             nextPhase();
             int ai2[] = ai;
             IndevGenerator a2 = this;
@@ -227,7 +227,7 @@ public final class IndevGenerator
 
             }
 
-            progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.growing"));
+            progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.growing"));
             nextPhase();
             ai2 = ai;
             a2 = this;
@@ -289,7 +289,7 @@ public final class IndevGenerator
 
         }
 
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.carving"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.carving"));
         nextPhase();
         IndevGenerator a3 = this;
         int k4 = a3.width;
@@ -372,7 +372,7 @@ label0:
         }else{
             System.out.println("Coal: "+j2+", Iron: "+j3+", Gold: "+l3+", Diamond: "+l1);
         }
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.melting"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.melting"));
         nextPhase();
         c();
         world.u = k1 + 2;
@@ -390,7 +390,7 @@ label0:
         {
             l = k - 9;
         }
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.watering"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.watering"));
         nextPhase();
         a();
         if(!floating)
@@ -450,16 +450,16 @@ label0:
         }
         world.waterLevel = k;
         world.t = l;
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.assembling"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.assembling"));
         nextPhase();
         a(0.0F);
         /*world.*/setData(world, i1, k1, j1, blocks, null);
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.building"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.building"));
         nextPhase();
         a(0.0F);
         world.a();
         spawnHouse(world);
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.planting"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.planting"));
         nextPhase();
         if(theme != 1)
         {
@@ -488,7 +488,7 @@ label0:
         generateFlowers(world, Block.mushroomBrown, 50);
         nextPhase();
         generateFlowers(world, Block.mushroomRed, 50);
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.lighting"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.lighting"));
         nextPhase();
         for(int i3 = 0; i3 < 10000; i3++)
         {
@@ -496,7 +496,7 @@ label0:
             world.d();
         }
 
-        progressupdate.displayLoadingString(ODNBXlite.lang.get("indev.spawning"));
+        progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.spawning"));
         nextPhase();
 /*
         net.minecraft.a.a.b b1 = new net.minecraft.a.a.b(world);
