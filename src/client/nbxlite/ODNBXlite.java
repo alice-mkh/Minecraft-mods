@@ -682,7 +682,7 @@ public class ODNBXlite extends OldDaysModule{
             WorldGenDesertWells.enable = features>=FEATURES_12;
         }
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
-        if (Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_BETA173 || MapFeatures == FEATURES_SKY)){
+        if (Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)){
             world.worldProvider.registerWorld(world);
         }
         SnowCovered = snow;
