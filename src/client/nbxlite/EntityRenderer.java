@@ -1131,7 +1131,7 @@ public class EntityRenderer
         Profiler.endStartSection("pick");
         getMouseOver(par1);
         EntityLiving entityliving = mc.renderViewEntity;
-        RenderGlobal renderglobal = mc.renderGlobal;
+        net.minecraft.src.nbxlite.RenderGlobal2 renderglobal = (net.minecraft.src.nbxlite.RenderGlobal2)mc.renderGlobal;
         EffectRenderer effectrenderer = mc.effectRenderer;
         double d = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
         double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;

@@ -72,12 +72,15 @@ public class TextureManager{
     public boolean hasEntry(String str){
         try{
             TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getMinecraftInstance().texturePackList.selectedTexturePack);
+            if (texpack instanceof TexturePackDefault){
+                return true;
+            }
             if (texpack instanceof TexturePackFolder){
-                File orig = ((File)ModLoader.getPrivateValue(net.minecraft.src.TexturePackFolder.class, texpack, 2));
+                File orig = ((File)mod_OldDays.getField(net.minecraft.src.TexturePackFolder.class, texpack, 2));
                 File file = new File(orig, str);
                 return file.exists();
             }else{
-                ZipFile file = ((ZipFile)ModLoader.getPrivateValue(net.minecraft.src.TexturePackCustom.class, texpack, 0));
+                ZipFile file = ((ZipFile)mod_OldDays.getField(net.minecraft.src.TexturePackCustom.class, texpack, 0));
                 return file.getEntry(str)!=null;
             }
         }catch(Exception ex){

@@ -721,11 +721,7 @@ public class ItemRenderer
     public void drawFirstPersonHand(RenderPlayer r, int h)
     {
         ModelBiped modelBipedMain = null;
-        try{
-            modelBipedMain = ((ModelBiped)ModLoader.getPrivateValue(net.minecraft.src.RenderPlayer.class, r, 0));
-        }catch(Exception ex){
-            return;
-        }
+        modelBipedMain = ((ModelBiped)mod_OldDays.getField(net.minecraft.src.RenderPlayer.class, r, 0));
         if (h!=1){
             modelBipedMain.onGround = 0.0F;
             modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);

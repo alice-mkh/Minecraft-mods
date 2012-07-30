@@ -8,22 +8,13 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderGlobal implements IWorldAccess
 {
-    public static boolean texClouds = false;
-    public static boolean opaqueFlatClouds = false;
-    public static boolean sunriseColors = true;
-    public static boolean sunriseAtNorth = false;
-
     public List tileEntities;
 
     /** A reference to the World object. */
-//FOR FORGE COMPATIBILITY
-//     private World worldObj;
-    public World worldObj;
+    private World worldObj;
 
     /** The RenderEngine instance used by RenderGlobal */
-//FOR FORGE COMPATIBILITY
-//     private RenderEngine renderEngine;
-    public RenderEngine renderEngine;
+    private RenderEngine renderEngine;
     private List worldRenderersToUpdate;
     private WorldRenderer sortedWorldRenderers[];
     private WorldRenderer worldRenderers[];
@@ -35,14 +26,10 @@ public class RenderGlobal implements IWorldAccess
     private int glRenderListBase;
 
     /** A reference to the Minecraft object. */
-//FOR FORGE COMPATIBILITY
-//     private Minecraft mc;
-    public Minecraft mc;
+    private Minecraft mc;
 
     /** Global render blocks */
-//FOR FORGE COMPATIBILITY
-//     private RenderBlocks globalRenderBlocks;
-    public RenderBlocks globalRenderBlocks;
+    private RenderBlocks globalRenderBlocks;
 
     /** OpenGL occlusion query base */
     private IntBuffer glOcclusionQueryBase;
@@ -150,7 +137,6 @@ public class RenderGlobal implements IWorldAccess
      * The offset used to determine if a renderer is one of the sixteenth that are being updated this frame
      */
     int frustumCheckOffset;
-    private java.nio.FloatBuffer J;
 
     public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine)
     {
@@ -163,7 +149,6 @@ public class RenderGlobal implements IWorldAccess
         dummyBuf50k = new int[50000];
         occlusionResult = GLAllocation.createDirectIntBuffer(64);
         glRenderLists = new ArrayList();
-        J = org.lwjgl.BufferUtils.createFloatBuffer(16);
         prevSortX = -9999D;
         prevSortY = -9999D;
         prevSortZ = -9999D;
@@ -398,6 +383,7 @@ public class RenderGlobal implements IWorldAccess
                 Arrays.sort(sortedWorldRenderers, new EntitySorter(entityliving));
             }
         }
+
         renderEntitiesStartupCounter = 2;
     }
 
@@ -840,7 +826,6 @@ public class RenderGlobal implements IWorldAccess
                     continue;
                 }
             }
-            
             int k1 = -1;
 
             for (int l1 = 0; l1 < l; l1++)
@@ -978,9 +963,6 @@ public class RenderGlobal implements IWorldAccess
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
         float af[] = worldObj.worldProvider.calcSunriseSunsetColors(worldObj.getCelestialAngle(par1), par1);
-        if (!sunriseColors){
-            af = null;
-        }
 
         if (af != null)
         {
@@ -989,9 +971,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glPushMatrix();
             GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(worldObj.getCelestialAngleRadians(par1)) >= 0.0F ? 0.0F : 180F, 0.0F, 0.0F, 1.0F);
-            if (!sunriseAtNorth){
-                GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
-            }
+            GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
             float f6 = af[0];
             float f8 = af[1];
             float f11 = af[2];
@@ -1034,44 +1014,38 @@ public class RenderGlobal implements IWorldAccess
         float f12 = 0.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) d);
         GL11.glTranslatef(f7, f9, f12);
-        if (!sunriseAtNorth){
-            GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-        }else{
-            GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
-        }
+        GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(worldObj.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
-        if (ODNBXlite.DayNight>0){
-            float f15 = 30F;
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
-            tessellator1.startDrawingQuads();
-            tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
-            tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
-            tessellator1.addVertexWithUV(f15, 100D, f15, 1.0D, 1.0D);
-            tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
-            tessellator1.draw();
-            f15 = 20F;
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
-            int i18 = worldObj.getMoonPhase(par1);
-            int l = i18 % 4;
-            int i1 = (i18 / 4) % 2;
-            float f24 = (float)(l + 0) / 4F;
-            float f25 = (float)(i1 + 0) / 2.0F;
-            float f26 = (float)(l + 1) / 4F;
-            float f27 = (float)(i1 + 1) / 2.0F;
-            tessellator1.startDrawingQuads();
-            tessellator1.addVertexWithUV(-f15, -100D, f15, f26, f27);
-            tessellator1.addVertexWithUV(f15, -100D, f15, f24, f27);
-            tessellator1.addVertexWithUV(f15, -100D, -f15, f24, f25);
-            tessellator1.addVertexWithUV(-f15, -100D, -f15, f26, f25);
-            tessellator1.draw();
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            float f18 = (float)(worldObj.getStarBrightness(par1) * d);
+        float f15 = 30F;
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
+        tessellator1.startDrawingQuads();
+        tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
+        tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
+        tessellator1.addVertexWithUV(f15, 100D, f15, 1.0D, 1.0D);
+        tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
+        tessellator1.draw();
+        f15 = 20F;
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
+        int i18 = worldObj.getMoonPhase(par1);
+        int l = i18 % 4;
+        int i1 = (i18 / 4) % 2;
+        float f24 = (float)(l + 0) / 4F;
+        float f25 = (float)(i1 + 0) / 2.0F;
+        float f26 = (float)(l + 1) / 4F;
+        float f27 = (float)(i1 + 1) / 2.0F;
+        tessellator1.startDrawingQuads();
+        tessellator1.addVertexWithUV(-f15, -100D, f15, f26, f27);
+        tessellator1.addVertexWithUV(f15, -100D, f15, f24, f27);
+        tessellator1.addVertexWithUV(f15, -100D, -f15, f24, f25);
+        tessellator1.addVertexWithUV(-f15, -100D, -f15, f26, f25);
+        tessellator1.draw();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        float f18 = (float)(worldObj.getStarBrightness(par1) * d);
 
-            if (f18 > 0.0F)
-            {
-                GL11.glColor4f(f18, f18, f18, f18);
-                GL11.glCallList(starGLCallList);
-            }
+        if (f18 > 0.0F)
+        {
+            GL11.glColor4f(f18, f18, f18, f18);
+            GL11.glCallList(starGLCallList);
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -1079,69 +1053,58 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor3f(0.0F, 0.0F, 0.0F);
         d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
-        if (ODNBXlite.VoidFog<2){
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glColor3f(0.0F, 0.0F, 0.0F);
-            if (d < 0.0D && ODNBXlite.VoidFog==0)
-            {
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0.0F, 12F, 0.0F);
-                GL11.glCallList(glSkyList2);
-                GL11.glPopMatrix();
-                float f10 = 1.0F;
-                float f13 = -(float)(d + 65D);
-                float f16 = -f10;
-                float f19 = f13;
-                tessellator1.startDrawingQuads();
-                tessellator1.setColorRGBA_I(0, 255);
-                tessellator1.addVertex(-f10, f19, f10);
-                tessellator1.addVertex(f10, f19, f10);
-                tessellator1.addVertex(f10, f16, f10);
-                tessellator1.addVertex(-f10, f16, f10);
-                tessellator1.addVertex(-f10, f16, -f10);
-                tessellator1.addVertex(f10, f16, -f10);
-                tessellator1.addVertex(f10, f19, -f10);
-                tessellator1.addVertex(-f10, f19, -f10);
-                tessellator1.addVertex(f10, f16, -f10);
-                tessellator1.addVertex(f10, f16, f10);
-                tessellator1.addVertex(f10, f19, f10);
-                tessellator1.addVertex(f10, f19, -f10);
-                tessellator1.addVertex(-f10, f19, -f10);
-                tessellator1.addVertex(-f10, f19, f10);
-                tessellator1.addVertex(-f10, f16, f10);
-                tessellator1.addVertex(-f10, f16, -f10);
-                tessellator1.addVertex(-f10, f16, -f10);
-                tessellator1.addVertex(-f10, f16, f10);
-                tessellator1.addVertex(f10, f16, f10);
-                tessellator1.addVertex(f10, f16, -f10);
-                tessellator1.draw();
-            }
+
+        if (d < 0.0D)
+        {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 12F, 0.0F);
+            GL11.glCallList(glSkyList2);
+            GL11.glPopMatrix();
+            float f10 = 1.0F;
+            float f13 = -(float)(d + 65D);
+            float f16 = -f10;
+            float f19 = f13;
+            tessellator1.startDrawingQuads();
+            tessellator1.setColorRGBA_I(0, 255);
+            tessellator1.addVertex(-f10, f19, f10);
+            tessellator1.addVertex(f10, f19, f10);
+            tessellator1.addVertex(f10, f16, f10);
+            tessellator1.addVertex(-f10, f16, f10);
+            tessellator1.addVertex(-f10, f16, -f10);
+            tessellator1.addVertex(f10, f16, -f10);
+            tessellator1.addVertex(f10, f19, -f10);
+            tessellator1.addVertex(-f10, f19, -f10);
+            tessellator1.addVertex(f10, f16, -f10);
+            tessellator1.addVertex(f10, f16, f10);
+            tessellator1.addVertex(f10, f19, f10);
+            tessellator1.addVertex(f10, f19, -f10);
+            tessellator1.addVertex(-f10, f19, -f10);
+            tessellator1.addVertex(-f10, f19, f10);
+            tessellator1.addVertex(-f10, f16, f10);
+            tessellator1.addVertex(-f10, f16, -f10);
+            tessellator1.addVertex(-f10, f16, -f10);
+            tessellator1.addVertex(-f10, f16, f10);
+            tessellator1.addVertex(f10, f16, f10);
+            tessellator1.addVertex(f10, f16, -f10);
+            tessellator1.draw();
         }
 
         if (worldObj.worldProvider.isSkyColored())
         {
             GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
         }
-        else if (ODNBXlite.VoidFog<4)
+        else
         {
             GL11.glColor3f(f, f1, f2);
         }
 
-        if (ODNBXlite.VoidFog==0){
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, -(float)(d - 16D), 0.0F);
-            GL11.glCallList(glSkyList2);
-            GL11.glPopMatrix();
-        }else if (ODNBXlite.VoidFog==1){
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, -(float)(Math.max(d, 1.0D) - 16D), 0.0F);
-            GL11.glCallList(glSkyList2);
-            GL11.glPopMatrix();
-        }else if (ODNBXlite.VoidFog<4){
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glCallList(glSkyList2);
-        }
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, -(float)(d - 16D), 0.0F);
+        GL11.glCallList(glSkyList2);
+        GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
     }
@@ -1153,7 +1116,7 @@ public class RenderGlobal implements IWorldAccess
             return;
         }
 
-        if (mc.gameSettings.fancyGraphics && !opaqueFlatClouds)
+        if (mc.gameSettings.fancyGraphics)
         {
             renderCloudsFancy(par1);
             return;
@@ -1162,7 +1125,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glDisable(GL11.GL_CULL_FACE);
         float f = (float)(mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)par1);
         byte byte0 = 32;
-        int i = (opaqueFlatClouds ? 1024 : 256) / byte0;
+        int i = 256 / byte0;
         Tessellator tessellator = Tessellator.instance;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
@@ -1194,7 +1157,7 @@ public class RenderGlobal implements IWorldAccess
         float f9 = (float)(d1 * (double)f5);
         float f10 = (float)(d2 * (double)f5);
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, opaqueFlatClouds ? 1.0F : 0.8F);
+        tessellator.setColorRGBA_F(f1, f2, f3, 0.8F);
 
         for (int l = -byte0 * i; l < byte0 * i; l += byte0)
         {
@@ -1218,14 +1181,6 @@ public class RenderGlobal implements IWorldAccess
         return false;
     }
 
-    private java.nio.FloatBuffer a(float f1, float f2, float f3, float f4)
-    {
-        J.clear();
-        J.put(f1).put(0.0F).put(f3).put(0.0F);
-        J.flip();
-        return J;
-    }
-
     /**
      * Renders the 3d fancy clouds
      */
@@ -1244,24 +1199,6 @@ public class RenderGlobal implements IWorldAccess
         int j = MathHelper.floor_double(d2 / 2048D);
         d1 -= i * 2048;
         d2 -= j * 2048;
-        if (texClouds){
-            OpenGlHelper.setActiveTexture(33985);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/fluff.png"));
-            GL11.glTexGeni(8192, 9472, 9217);
-            GL11.glTexGen(8192, 9473, a(1.0F, 0.0F, 0.0F, 0.0F));
-            GL11.glTexGeni(8193, 9472, 9217);
-            GL11.glTexGen(8193, 9473, a(0.0F, 0.0F, 1.0F, 0.0F));
-            GL11.glEnable(3168);
-            GL11.glEnable(3169);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glMatrixMode(5890);
-            GL11.glLoadIdentity();
-            GL11.glScalef(0.25F, 0.25F, 0.25F);
-            GL11.glTranslatef((float)d1, (float)d2, 0.0F);
-            GL11.glMatrixMode(5888);
-            OpenGlHelper.setActiveTexture(33984);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-        }
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -1408,13 +1345,6 @@ public class RenderGlobal implements IWorldAccess
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        if (texClouds){
-            OpenGlHelper.setActiveTexture(33985);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(3168);
-            GL11.glDisable(3169);
-            OpenGlHelper.setActiveTexture(33984);
-        }
     }
 
     /**
@@ -1589,6 +1519,7 @@ public class RenderGlobal implements IWorldAccess
         {
             worldRenderersToUpdate.remove(j2);
         }
+
         return l == i1 + l1;
     }
 

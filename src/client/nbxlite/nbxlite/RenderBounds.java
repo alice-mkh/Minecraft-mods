@@ -188,7 +188,7 @@ public class RenderBounds{
         worldObj = mc.theWorld;
         if (imageData == null){
             try{
-                imageData = ((java.nio.ByteBuffer)ModLoader.getPrivateValue(net.minecraft.src.RenderEngine.class, renderEngine, 5));
+                imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 5));
             }catch(Exception ex){
                 System.out.println(ex);
             }
@@ -246,7 +246,7 @@ public class RenderBounds{
         if (anim){
             TextureFX texturefx = null;
             try{
-                List list = ((ArrayList)ModLoader.getPrivateValue(net.minecraft.src.RenderEngine.class, renderEngine, 6));
+                List list = ((ArrayList)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 6));
                 for (int i = 0; i < list.size(); i++){
                     if (((TextureFX)list.get(i)).iconIndex==((name.startsWith("lava") ? 14 : 12) * 16 + 13)){
                         texturefx = ((TextureFX)list.get(i));

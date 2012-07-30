@@ -125,11 +125,7 @@ public abstract class BiomeGenBase
         biome.temperature = temp;
         biome.rainfall = humid;
         biome.enableRain = rain;
-//         try{
-//             ModLoader.setPrivateValue(net.minecraft.src.BiomeGenBase.class, biome, 38, rain);
-//         }catch(Exception ex){
-//             System.out.println(ex);
-//         }
+//        mod_OldDays.setField(net.minecraft.src.BiomeGenBase.class, biome, 38, rain);
         BiomeGenBase.biomeList[id] = biome;
         return biome;
     }

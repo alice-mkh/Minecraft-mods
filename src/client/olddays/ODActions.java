@@ -59,11 +59,7 @@ public class ODActions extends OldDaysModule{
     public KeyBinding keyFog = new KeyBinding("Toggle Fog", 33);
 
     private void setSolidTNT(boolean b){
-        try{
-            ModLoader.setPrivateValue(net.minecraft.src.Material.class, Material.tnt, 33, !b);
-        }catch(Exception ex){
-            System.out.println(ex);
-        }
+        mod_OldDays.setField(net.minecraft.src.Material.class, Material.tnt, 33, !b);
     }
 
     private void replaceBlocks(){
@@ -87,46 +83,42 @@ public class ODActions extends OldDaysModule{
     }
 
     private void setToolDurability(boolean b){
-        try{
-            int wood = 59;
-            int stone = 131;
-            int iron = 250;
-            int gold = 32;
-            int diamond = 1561;
-            if (b){
-                wood = 31;
-                stone = 63;
-                iron = 127;
-                gold = 15;
-                diamond = 255;
-            }
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeWood, 145, wood);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeWood, 145, wood);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelWood, 145, wood);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordWood, 145, wood);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeWood, 145, wood);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeStone, 145, stone);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeStone, 145, stone);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelStone, 145, stone);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordStone, 145, stone);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeStone, 145, stone);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeSteel, 145, iron);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeSteel, 145, iron);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelSteel, 145, iron);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordSteel, 145, iron);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeSteel, 145, iron);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeGold, 145, gold);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeGold, 145, gold);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelGold, 145, gold);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordGold, 145, gold);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeGold, 145, gold);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.pickaxeDiamond, 145, diamond);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.axeDiamond, 145, diamond);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.shovelDiamond, 145, diamond);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.swordDiamond, 145, diamond);
-            ModLoader.setPrivateValue(net.minecraft.src.Item.class, Item.hoeDiamond, 145, diamond);
-        }catch(Exception ex){
-            System.out.println(ex);
+        int wood = 59;
+        int stone = 131;
+        int iron = 250;
+        int gold = 32;
+        int diamond = 1561;
+        if (b){
+            wood = 31;
+            stone = 63;
+            iron = 127;
+            gold = 15;
+            diamond = 255;
         }
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeWood, 145, wood);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeWood, 145, wood);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelWood, 145, wood);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordWood, 145, wood);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeWood, 145, wood);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeStone, 145, stone);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeStone, 145, stone);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelStone, 145, stone);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordStone, 145, stone);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeStone, 145, stone);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeSteel, 145, iron);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeSteel, 145, iron);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelSteel, 145, iron);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordSteel, 145, iron);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeSteel, 145, iron);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeGold, 145, gold);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeGold, 145, gold);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelGold, 145, gold);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordGold, 145, gold);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeGold, 145, gold);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeDiamond, 145, diamond);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeDiamond, 145, diamond);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelDiamond, 145, diamond);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordDiamond, 145, diamond);
+        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeDiamond, 145, diamond);
     }
 }

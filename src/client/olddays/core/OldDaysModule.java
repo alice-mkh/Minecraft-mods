@@ -108,10 +108,10 @@ public class OldDaysModule{
         RenderManager renderMan = RenderManager.instance;
         try{
             r.setRenderManager(renderMan);
-            HashMap map = ((HashMap)ModLoader.getPrivateValue(net.minecraft.src.RenderManager.class, renderMan, 0));
+            HashMap map = ((HashMap)mod_OldDays.getField(net.minecraft.src.RenderManager.class, renderMan, 0));
             map.put(c, r);
             renderersAdded = true;
-            System.out.println("OldDays: Added renderer");
+            System.out.println("OldDays: Added "+r.getClass().getName()+" renderer");
         }catch(Exception ex){
             System.out.println("OldDays: Failed to add renderer: "+ex);
         }

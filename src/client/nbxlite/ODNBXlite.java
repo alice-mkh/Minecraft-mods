@@ -101,13 +101,13 @@ public class ODNBXlite extends OldDaysModule{
             case 15:((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
             case 16:set(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
                     set(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
-            case 17:set(net.minecraft.src.RenderGlobal.class, "texClouds", TexturedClouds); break;
-            case 18:set(net.minecraft.src.RenderGlobal.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 17:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "texClouds", TexturedClouds); break;
+            case 18:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
             case 19:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
                     set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight); break;
             case 20:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
             case 21:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
-                    set(net.minecraft.src.RenderGlobal.class, "sunriseAtNorth", SunriseAtNorth); break;
+                    set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
@@ -457,6 +457,11 @@ public class ODNBXlite extends OldDaysModule{
             creative.itemList.add(new ItemStack(gearId, 1, 0));
         }
         lastGui = gui;
+        if (!rendererReplaced){
+//             minecraft.entityRenderer = new EntityRenderer2(minecraft);
+            minecraft.renderGlobal = new net.minecraft.src.nbxlite.RenderGlobal2(minecraft, minecraft.renderEngine);
+            rendererReplaced = true;
+        }
         return true;
     }
 
@@ -700,15 +705,11 @@ public class ODNBXlite extends OldDaysModule{
         }else if (Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201){
             VoidFog = 4;
         }
-        try{
-            RenderGlobal.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
-            EntityRenderer.sunriseFog = gen>=GEN_NEWBIOMES;
-        }catch(Exception ex){}
-        try{
-            EntityRenderer.oldFog = isFinite();
-            EntityRenderer.snow = SnowCovered;
-            EntityRenderer.bounds = isFinite();
-        }catch(Exception ex){}
+        net.minecraft.src.nbxlite.RenderGlobal2.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
+        EntityRenderer.sunriseFog = gen>=GEN_NEWBIOMES;
+        EntityRenderer.oldFog = isFinite();
+        EntityRenderer.snow = SnowCovered;
+        EntityRenderer.bounds = isFinite();
         GenerateNewOres=ores;
         try{
             EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
@@ -983,4 +984,5 @@ public class ODNBXlite extends OldDaysModule{
     public static int gearRenderID;
     public static boolean gearsCreative = true;
     private static GuiScreen lastGui;
+    public static boolean rendererReplaced = false;
 }

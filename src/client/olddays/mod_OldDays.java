@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.zip.*;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class mod_OldDays extends BaseModMp{
     public String getVersion(){
@@ -189,6 +190,63 @@ public class mod_OldDays extends BaseModMp{
                 }
             }
         }
+    }
+
+    public static Object getField(Class c, Object o, String str){
+        try{
+            Field f = c.getDeclaredField(str);
+            f.setAccessible(true);
+            return f.get(o);
+        }catch(Exception ex){
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static Object getField(Class c, Object o, int num){
+        try{
+            Field f = c.getDeclaredFields()[num];
+            f.setAccessible(true);
+            return f.get(o);
+        }catch(Exception ex){
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static void setField(Class c, Object o, String str, Object val){
+        try{
+            Field f = c.getDeclaredField(str);
+            f.setAccessible(true);
+            f.set(o, val);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    public static void setField(Class c, Object o, int num, Object val){
+        try{
+            Field f = c.getDeclaredFields()[num];
+            f.setAccessible(true);
+            f.set(o, val);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    public static Object callMethod(Class c, Object o, String str, Class[] pars, Object[] args){
+        try{
+            Method m = c.getDeclaredMethod(str, pars);
+            m.setAccessible(true);
+            return m.invoke(o, args);
+        }catch(Exception ex){
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static Object callMethod(Class c, Object o, String str){
+        return callMethod(c, o, str, new Class[]{}, new Object[]{});
     }
 
     public KeyBinding keySettings = new KeyBinding("key_settings", 35);
