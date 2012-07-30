@@ -2169,7 +2169,7 @@ public class World implements IBlockAccess
         if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
             return 1.0F;
         }
-        if(ODNBXlite.SkyBrightness == 16){
+        if(ODNBXlite.SkyBrightness == 16 || (ODNBXlite.SkyBrightness == -1 && ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme) == 16)){
             return 1.0F;
         }
         return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);

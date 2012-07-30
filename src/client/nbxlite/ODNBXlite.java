@@ -207,7 +207,7 @@ public class ODNBXlite extends OldDaysModule{
         for (int i = 6; i <= 9; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).disabled = isFinite() ? 0 : 6;
         }
-        mod_OldDays.getModuleById(8).getPropertyById(2).disabled = isFinite() ? 5 : (Generator == GEN_BIOMELESS ? 0 : 7);
+        mod_OldDays.getModuleById(8).getPropertyById(2).disabled = Generator == GEN_BIOMELESS ? 0 : 7;
         mod_OldDays.getModuleById(8).getPropertyById(3).disabled = isFinite() ? 5 : (Generator == GEN_OLDBIOMES ? 0 : 8);
         mod_OldDays.getModuleById(8).getPropertyById(4).disabled = isFinite() ? 5 : (Generator == GEN_NEWBIOMES ? 0 : 9);
     }
