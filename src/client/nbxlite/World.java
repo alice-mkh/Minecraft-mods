@@ -2007,7 +2007,13 @@ public class World implements IBlockAccess
      */
     public int calculateSkylightSubtracted(float f)
     {
-        float f1 = (float)ODNBXlite.SkyBrightness;
+        int brightness = 0;
+        if (ODNBXlite.SkyBrightness == -1){
+            brightness = ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme);
+        }else{
+            brightness = ODNBXlite.SkyBrightness;
+        }
+        float f1 = (float)brightness;
         if(f1 == 16 || (worldProvider instanceof WorldProviderEnd) || ODNBXlite.DayNight==0)
         {
             f1 = 15F;
@@ -2032,7 +2038,13 @@ public class World implements IBlockAccess
     public float func_35464_b(float par1)
     {
         float f = getCelestialAngle(par1);
-        float f1 = (Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
+        int brightness = 0;
+        if (ODNBXlite.SkyBrightness == -1){
+            brightness = ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme);
+        }else{
+            brightness = ODNBXlite.SkyBrightness;
+        }
+        float f1 = (Math.min(brightness+1, 16F) / 16F) - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
 
         if (f1 < 0.0F)
         {
@@ -2044,9 +2056,9 @@ public class World implements IBlockAccess
             f1 = 1.0F;
         }
 
-        f1 = (Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F) - f1;
-        f1 = (float)((double)f1 * (((double)((Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
-        f1 = (float)((double)f1 * (((double)((Math.min(ODNBXlite.SkyBrightness+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
+        f1 = (Math.min(brightness+1, 16F) / 16F) - f1;
+        f1 = (float)((double)f1 * (((double)((Math.min(brightness+1, 16F) / 16F))) - (double)(getRainStrength(par1) * 5F) / 16D));
+        f1 = (float)((double)f1 * (((double)((Math.min(brightness+1, 16F) / 16F))) - (double)(getWeightedThunderStrength(par1) * 5F) / 16D));
         return f1 * 0.8F + 0.2F;
     }
 
@@ -2055,7 +2067,7 @@ public class World implements IBlockAccess
      */
     public Vec3D getSkyColor(Entity entity, float f)
     {
-        if((ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || worldProvider.worldType == 1) && !(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && worldProvider.worldType==0))
+        if(true)
         {
             float f1 = getCelestialAngle(f);
             float f3 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -2071,14 +2083,20 @@ public class World implements IBlockAccess
             int j = MathHelper.floor_double(entity.posZ);
             float f7;
             int k;
-            if (ODNBXlite.SkyColor==0 && worldProvider.worldType == 0 && !(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && worldProvider.worldType==0)){
-                if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || worldProvider.worldType != 0){
+            if (ODNBXlite.SkyColor==0){
+                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES || worldProvider.worldType != 0){
                     BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                    f7 = (worldProvider.worldType==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12) ? 0.2146759F : biomegenbase.getFloatTemperature();
+                    if (worldProvider.worldType==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
+                        f7 = 0.2146759F;
+                    }else{
+                        f7 = biomegenbase.getFloatTemperature();
+                    }
                     k = biomegenbase.getSkyColorByTemp(f7);
-                }else{
+                }else if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures!=ODNBXlite.FEATURES_SKY){
                     f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
                     k = getWorldChunkManager().oldGetBiomeGenAt(i, j).getSkyColorByTemp(f7);
+                }else{
+                    k = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
                 }
             }else{
                 k = ODNBXlite.SkyColor;
@@ -2173,6 +2191,12 @@ public class World implements IBlockAccess
 
     public Vec3D drawClouds(float par1)
     {
+        int clouds = 0;
+        if (ODNBXlite.CloudColor == 0){
+            clouds = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+        }else{
+            clouds = ODNBXlite.CloudColor;
+        }
         float f = getCelestialAngle(par1);
         float f1 = MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
 
@@ -2186,9 +2210,9 @@ public class World implements IBlockAccess
             f1 = 1.0F;
         }
 
-        float f2 = (float)(ODNBXlite.CloudColor >> 16 & 255L) / 255F;
-        float f3 = (float)(ODNBXlite.CloudColor >> 8 & 255L) / 255F;
-        float f4 = (float)(ODNBXlite.CloudColor & 255L) / 255F;
+        float f2 = (float)(clouds >> 16 & 255L) / 255F;
+        float f3 = (float)(clouds >> 8 & 255L) / 255F;
+        float f4 = (float)(clouds & 255L) / 255F;
         float f5 = getRainStrength(par1);
 
         if (f5 > 0.0F)
@@ -2217,34 +2241,35 @@ public class World implements IBlockAccess
         return Vec3D.createVector(f2, f3, f4);
     }
 
-    public Vec3D computeFogColor(float f)
-    {
-        float f1 = getCelestialAngle(f);
-        float f2 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
-        if(f2 < 0.0F)
-        {
-            f2 = 0.0F;
-        }
-        if(f2 > 1.0F)
-        {
-            f2 = 1.0F;
-        }
-        float f3 = (float)(ODNBXlite.FogColor >> 16 & 255L) / 255F;
-        float f4 = (float)(ODNBXlite.FogColor >> 8 & 255L) / 255F;
-        float f5 = (float)(ODNBXlite.FogColor & 255L) / 255F;
-        f3 *= f2 * 0.94F + 0.06F;
-        f4 *= f2 * 0.94F + 0.06F;
-        f5 *= f2 * 0.91F + 0.09F;
-        return Vec3D.createVector(f3, f4, f5);
-    }
-
     /**
      * Returns vector(ish) with R/G/B for fog
      */
     public Vec3D getFogColor(float par1)
     {
-        if(ODNBXlite.FogColor != 0L && worldProvider.worldType == 0){
-            return computeFogColor(par1);
+        int fog = 0;
+        if (ODNBXlite.FogColor == 0 && worldProvider.worldType == 0){
+            fog = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
+        }else{
+            fog = ODNBXlite.FogColor;
+        }
+        if(fog != 0L && worldProvider.worldType == 0){
+            float f1 = getCelestialAngle(par1);
+            float f2 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
+            if(f2 < 0.0F)
+            {
+                f2 = 0.0F;
+            }
+            if(f2 > 1.0F)
+            {
+                f2 = 1.0F;
+            }
+            float f3 = (float)(fog >> 16 & 255L) / 255F;
+            float f4 = (float)(fog >> 8 & 255L) / 255F;
+            float f5 = (float)(fog & 255L) / 255F;
+            f3 *= f2 * 0.94F + 0.06F;
+            f4 *= f2 * 0.94F + 0.06F;
+            f5 *= f2 * 0.91F + 0.09F;
+            return Vec3D.createVector(f3, f4, f5);
         }
         float f = getCelestialAngle(par1);
         return worldProvider.getFogColor(f, par1);

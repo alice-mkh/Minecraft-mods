@@ -24,7 +24,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyRGB(this,   10,0xffffff, "SkyColor");
         new OldDaysPropertyRGB(this,   11,0xffffff, "FogColor");
         new OldDaysPropertyRGB(this,   12,0xffffff, "CloudColor");
-        new OldDaysPropertyInt(this,   13,15,       "SkyBrightness", 16).setField();
+        new OldDaysPropertyInt(this,   13,15,       "SkyBrightness", -1, 16).setField();
         new OldDaysPropertyFloat(this, 14,128,      "CloudHeight", -999.0F, 999.0F);
         new OldDaysPropertyCond(this,  15,1,        "LeavesDecay");
         new OldDaysPropertyBool(this,  16,false,    "OldSpawning");
@@ -789,77 +789,91 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static int setSkyBrightness(int theme){
+        return SkyBrightness = getSkyBrightness(theme);
+    }
+
+    public static int getSkyBrightness(int theme){
         if (theme==THEME_HELL){
-            return SkyBrightness = 7;
+            return 7;
         }
         if (theme==THEME_WOODS){
-            return SkyBrightness = 12;
+            return 12;
         }
         if (theme==THEME_PARADISE){
-            return SkyBrightness = 16;
+            return 16;
         }
-        return SkyBrightness = 15;
+        return 15;
     }
 
     public static int setSkyColor(int gen, int feats, int theme, int num){
         if (num==0){
+            return SkyColor = getSkyColor(gen, feats, theme, num);
+        }
+        if (num==1){
+            return FogColor = getSkyColor(gen, feats, theme, num);
+        }
+        return CloudColor = getSkyColor(gen, feats, theme, num);
+    }
+
+    public static int getSkyColor(int gen, int feats, int theme, int num){
+        if (num==0){
             if (theme==THEME_HELL){
-                return SkyColor = 0x100400;
+                return 0x100400;
             }
             if (theme==THEME_WOODS){
-                return SkyColor = 0x757d87;
+                return 0x757d87;
             }
             if (theme==THEME_PARADISE){
-                return SkyColor = 0xc6deff;
+                return 0xc6deff;
             }
             if (gen==GEN_BIOMELESS){
                 if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
-                    return SkyColor = 0x99ccff;
+                    return 0x99ccff;
                 }
                 if (feats==FEATURES_INFDEV0227){
-                    return SkyColor = 0x0000ff;
+                    return 0x0000ff;
                 }
-                return SkyColor = 0x88bbff;
+                return 0x88bbff;
             }
             if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
-                return SkyColor = 0xb9b8f4;
+                return 0xb9b8f4;
             }
-            return SkyColor = 0;
+            return 0;
         }
         if (num==1){
             if (theme==THEME_HELL){
-                return FogColor = 0x100400;
+                return 0x100400;
             }
             if (theme==THEME_WOODS){
-                return FogColor = 0x4d5a5b;
+                return 0x4d5a5b;
             }
             if (theme==THEME_PARADISE){
-                return FogColor = 0xc6deff;
+                return 0xc6deff;
             }
             if (gen==GEN_BIOMELESS){
                 if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0227){
-                    return FogColor = 0xffffff;
+                    return 0xffffff;
                 }
                 if (feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
-                    return FogColor = 0xb0d0ff;
+                    return 0xb0d0ff;
                 }
-                return FogColor = 0;
+                return 0;
             }
             if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
-                return FogColor = 0x9493bb;
+                return 0x9493bb;
             }
-            return FogColor = 0;
+            return 0;
         }
         if (theme==THEME_HELL){
-            return CloudColor = 0x210800;
+            return 0x210800;
         }
         if (theme==THEME_WOODS){
-            return CloudColor = 0x4d5a5b;
+            return 0x4d5a5b;
         }
         if (theme==THEME_PARADISE){
-            return CloudColor = 0xeeeeff;
+            return 0xeeeeff;
         }
-        return CloudColor = 0xffffff;
+        return 0xffffff;
     }
 
     public static void generateIndevLevel(long seed){
