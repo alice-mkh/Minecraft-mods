@@ -256,6 +256,9 @@ public class WorldChunkManager
 
     public double getTemperature_old(int i, int j)
     {
+        if (field_4194_e == null){
+            return 0D;
+        }
         temperature = field_4194_e.func_4112_a(temperature, i, j, 1, 1, 0.02500000037252903D, 0.02500000037252903D, 0.5D);
         return temperature[0];
     }
