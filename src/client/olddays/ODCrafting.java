@@ -55,19 +55,19 @@ public class ODCrafting extends OldDaysModule{
             removeRecipe(str+"2");
             removeRecipe(str+"1");
             removeRecipe(str+"0");
-            ModLoader.addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 0)});
-            ModLoader.addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 1)});
-            ModLoader.addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 2)});
-            ModLoader.addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 3)});
+            addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 0)});
+            addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 1)});
+            addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 2)});
+            addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 3)});
         }else{
             removeRecipe(str+"0");
             removeRecipe(str+"0");
             removeRecipe(str+"0");
             removeRecipe(str+"0");
-            ModLoader.addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 0)});
-            ModLoader.addRecipe(new ItemStack(planks, 4, 1), new Object[] {"#", '#', new ItemStack(log, 1, 1)});
-            ModLoader.addRecipe(new ItemStack(planks, 4, 2), new Object[] {"#", '#', new ItemStack(log, 1, 2)});
-            ModLoader.addRecipe(new ItemStack(planks, 4, 3), new Object[] {"#", '#', new ItemStack(log, 1, 3)});
+            addRecipe(new ItemStack(planks, 4, 0), new Object[] {"#", '#', new ItemStack(log, 1, 0)});
+            addRecipe(new ItemStack(planks, 4, 1), new Object[] {"#", '#', new ItemStack(log, 1, 1)});
+            addRecipe(new ItemStack(planks, 4, 2), new Object[] {"#", '#', new ItemStack(log, 1, 2)});
+            addRecipe(new ItemStack(planks, 4, 3), new Object[] {"#", '#', new ItemStack(log, 1, 3)});
         }
     }
 
@@ -79,16 +79,16 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1xitem.leggingsCloth@0");
         removeRecipe("1xitem.bootsCloth@0");
         if (b>0){
-            ModLoader.addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', leather});
-            ModLoader.addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', leather});
-            ModLoader.addRecipe(new ItemStack(Item.legsLeather, 1), new Object[] {"###", "# #", "# #", '#', leather});
-            ModLoader.addRecipe(new ItemStack(Item.bootsLeather, 1), new Object[] {"# #", "# #", '#', leather});
+            addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', leather});
+            addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', leather});
+            addRecipe(new ItemStack(Item.legsLeather, 1), new Object[] {"###", "# #", "# #", '#', leather});
+            addRecipe(new ItemStack(Item.bootsLeather, 1), new Object[] {"# #", "# #", '#', leather});
         }
         if (b==0 || b>1){
-            ModLoader.addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', cloth});
-            ModLoader.addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', cloth});
-            ModLoader.addRecipe(new ItemStack(Item.legsLeather, 1), new Object[] {"###", "# #", "# #", '#', cloth});
-            ModLoader.addRecipe(new ItemStack(Item.bootsLeather, 1), new Object[] {"# #", "# #", '#', cloth});
+            addRecipe(new ItemStack(Item.helmetLeather, 1), new Object[] {"###", "# #", '#', cloth});
+            addRecipe(new ItemStack(Item.plateLeather, 1), new Object[] {"# #", "###", "###", '#', cloth});
+            addRecipe(new ItemStack(Item.legsLeather, 1), new Object[] {"###", "# #", "# #", '#', cloth});
+            addRecipe(new ItemStack(Item.bootsLeather, 1), new Object[] {"# #", "# #", '#', cloth});
         }
     }
 
@@ -114,29 +114,29 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe(plate);
         removeRecipe(plate);
         if (b==0){
-            ModLoader.addRecipe(new ItemStack(slab, 3, 0), new Object[] {"###", '#', Block.cobblestone});
-            ModLoader.addRecipe(new ItemStack(platestone, 1), new Object[] {"###", '#', Block.stone});
-            ModLoader.addRecipe(new ItemStack(plateplanks, 1), new Object[] {"###", '#', Block.planks});
+            addRecipe(new ItemStack(slab, 3, 0), new Object[] {"###", '#', Block.cobblestone});
+            addRecipe(new ItemStack(platestone, 1), new Object[] {"###", '#', Block.stone});
+            addRecipe(new ItemStack(plateplanks, 1), new Object[] {"###", '#', Block.planks});
         }
         if (b==1){
-            ModLoader.addRecipe(new ItemStack(slab, 3, 0), new Object[] {"###", '#', Block.stone});
-            ModLoader.addRecipe(new ItemStack(slab, 3, 2), new Object[] {"###", '#', Block.planks});
-            ModLoader.addRecipe(new ItemStack(slab, 3, 3), new Object[] {"###", '#', Block.cobblestone});
-            ModLoader.addRecipe(new ItemStack(slab, 3, 1), new Object[] {"###", '#', Block.sandStone});
-            ModLoader.addRecipe(new ItemStack(slab, 3, 4), new Object[] {"###", '#', Block.brick});
-            ModLoader.addRecipe(new ItemStack(slab, 3, 5), new Object[] {"###", '#', Block.stoneBrick});
-            ModLoader.addRecipe(new ItemStack(platestone, 1), new Object[] {"##", '#', Block.stone});
-            ModLoader.addRecipe(new ItemStack(plateplanks, 1), new Object[] {"##", '#', Block.planks});
+            addRecipe(new ItemStack(slab, 3, 0), new Object[] {"###", '#', Block.stone});
+            addRecipe(new ItemStack(slab, 3, 2), new Object[] {"###", '#', Block.planks});
+            addRecipe(new ItemStack(slab, 3, 3), new Object[] {"###", '#', Block.cobblestone});
+            addRecipe(new ItemStack(slab, 3, 1), new Object[] {"###", '#', Block.sandStone});
+            addRecipe(new ItemStack(slab, 3, 4), new Object[] {"###", '#', Block.brick});
+            addRecipe(new ItemStack(slab, 3, 5), new Object[] {"###", '#', Block.stoneBrick});
+            addRecipe(new ItemStack(platestone, 1), new Object[] {"##", '#', Block.stone});
+            addRecipe(new ItemStack(plateplanks, 1), new Object[] {"##", '#', Block.planks});
         }
         if (b==2){
-            ModLoader.addRecipe(new ItemStack(slab, 6, 0), new Object[] {"###", '#', Block.stone});
-            ModLoader.addRecipe(new ItemStack(slab, 6, 2), new Object[] {"###", '#', Block.planks});
-            ModLoader.addRecipe(new ItemStack(slab, 6, 3), new Object[] {"###", '#', Block.cobblestone});
-            ModLoader.addRecipe(new ItemStack(slab, 6, 1), new Object[] {"###", '#', Block.sandStone});
-            ModLoader.addRecipe(new ItemStack(slab, 6, 4), new Object[] {"###", '#', Block.brick});
-            ModLoader.addRecipe(new ItemStack(slab, 6, 5), new Object[] {"###", '#', Block.stoneBrick});
-            ModLoader.addRecipe(new ItemStack(platestone, 1), new Object[] {"##", '#', Block.stone});
-            ModLoader.addRecipe(new ItemStack(plateplanks, 1), new Object[] {"##", '#', Block.planks});
+            addRecipe(new ItemStack(slab, 6, 0), new Object[] {"###", '#', Block.stone});
+            addRecipe(new ItemStack(slab, 6, 2), new Object[] {"###", '#', Block.planks});
+            addRecipe(new ItemStack(slab, 6, 3), new Object[] {"###", '#', Block.cobblestone});
+            addRecipe(new ItemStack(slab, 6, 1), new Object[] {"###", '#', Block.sandStone});
+            addRecipe(new ItemStack(slab, 6, 4), new Object[] {"###", '#', Block.brick});
+            addRecipe(new ItemStack(slab, 6, 5), new Object[] {"###", '#', Block.stoneBrick});
+            addRecipe(new ItemStack(platestone, 1), new Object[] {"##", '#', Block.stone});
+            addRecipe(new ItemStack(plateplanks, 1), new Object[] {"##", '#', Block.planks});
         }
     }
 
@@ -149,16 +149,16 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1"+str);
         removeRecipe("2"+str);
         removeRecipe("3"+str);
-        ModLoader.addRecipe(new ItemStack(ladder, b + 1), new Object[]{"# #", "###", "# #", '#', Item.stick});
+        addRecipe(new ItemStack(ladder, b + 1), new Object[]{"# #", "###", "# #", '#', Item.stick});
     }
 
     private void setGlowstone(boolean b){
         Block glowstone = Block.glowStone;
         removeRecipe("1xtile.lightgem@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(glowstone, 1), new Object[]{"###", "###", "###", '#', Item.lightStoneDust});
+            addRecipe(new ItemStack(glowstone, 1), new Object[]{"###", "###", "###", '#', Item.lightStoneDust});
         }else{
-            ModLoader.addRecipe(new ItemStack(glowstone, 1), new Object[]{"##", "##", '#', Item.lightStoneDust});
+            addRecipe(new ItemStack(glowstone, 1), new Object[]{"##", "##", '#', Item.lightStoneDust});
         }
     }
 
@@ -166,12 +166,12 @@ public class ODCrafting extends OldDaysModule{
         Block cloth = Block.cloth;
         removeRecipe("1xtile.cloth@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(cloth, 1), new Object[]{"###", "###", "###", '#', Item.silk});
+            addRecipe(new ItemStack(cloth, 1), new Object[]{"###", "###", "###", '#', Item.silk});
         }else{
-            ModLoader.addRecipe(new ItemStack(cloth, 1), new Object[]{"##", "##", '#', Item.silk});
+            addRecipe(new ItemStack(cloth, 1), new Object[]{"##", "##", '#', Item.silk});
         }
         for (int i = 0; i < 16; i++){
-            ModLoader.addShapelessRecipe(new ItemStack(cloth, 1, BlockCloth.getDyeFromBlock(i)), new Object[]{
+            addShapelessRecipe(new ItemStack(cloth, 1, BlockCloth.getDyeFromBlock(i)), new Object[]{
                 new ItemStack(Item.dyePowder, 1, i), new ItemStack(Item.itemsList[cloth.blockID], 1, 0)
             });
         }
@@ -180,29 +180,29 @@ public class ODCrafting extends OldDaysModule{
     private void setApple(boolean b){
         removeRecipe("1xitem.appleGold@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(Item.appleGold, 1), new Object[]{"###", "#X#", "###", '#', Block.blockGold, 'X', Item.appleRed});
+            addRecipe(new ItemStack(Item.appleGold, 1), new Object[]{"###", "#X#", "###", '#', Block.blockGold, 'X', Item.appleRed});
         }else{
-            ModLoader.addRecipe(new ItemStack(Item.appleGold, 1), new Object[]{"###", "#X#", "###", '#', Item.goldNugget, 'X', Item.appleRed});
+            addRecipe(new ItemStack(Item.appleGold, 1), new Object[]{"###", "#X#", "###", '#', Item.goldNugget, 'X', Item.appleRed});
         }
     }
 
     private void setStew(boolean b){
         removeRecipe("1xitem.mushroomStew@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(Item.bowlSoup), new Object[]{
+            addRecipe(new ItemStack(Item.bowlSoup), new Object[]{
                 "Y", "X", "#", Character.valueOf('X'), Block.mushroomBrown, Character.valueOf('Y'), Block.mushroomRed, Character.valueOf('#'), Item.bowlEmpty
             });
         }else{
-            ModLoader.addShapelessRecipe(new ItemStack(Item.bowlSoup), new Object[]{Block.mushroomBrown, Block.mushroomRed, Item.bowlEmpty});
+            addShapelessRecipe(new ItemStack(Item.bowlSoup), new Object[]{Block.mushroomBrown, Block.mushroomRed, Item.bowlEmpty});
         }
     }
 
     private void setBook(boolean b){
         removeRecipe("1xitem.book@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(Item.book, 1), new Object[]{"#", "#", "#", Character.valueOf('#'), Item.paper});
+            addRecipe(new ItemStack(Item.book, 1), new Object[]{"#", "#", "#", Character.valueOf('#'), Item.paper});
         }else{
-            ModLoader.addShapelessRecipe(new ItemStack(Item.book, 1), new Object[]{Item.paper, Item.paper, Item.paper, Item.leather});
+            addShapelessRecipe(new ItemStack(Item.book, 1), new Object[]{Item.paper, Item.paper, Item.paper, Item.leather});
         }
     }
 
@@ -211,22 +211,22 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1xtile.blockGold@0");
         removeRecipe("1xtile.blockDiamond@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"##", "##", '#', Item.ingotIron});
-            ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"##", "##", '#', Item.ingotGold});
-            ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"##", "##", '#', Item.diamond});
+            addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"##", "##", '#', Item.ingotIron});
+            addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"##", "##", '#', Item.ingotGold});
+            addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"##", "##", '#', Item.diamond});
         }else{
-            ModLoader.addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
-            ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
-            ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
+            addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
+            addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
+            addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
         }
         int n = b ? 9 : 4;
         removeRecipe(n+"xitem.ingotIron@0");
         removeRecipe(n+"xitem.ingotGold@0");
         removeRecipe(n+"xitem.emerald@0");
         n = b ? 4 : 9;
-        ModLoader.addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
-        ModLoader.addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
-        ModLoader.addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
+        addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
+        addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
+        addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
     }
 
     private void setSign(boolean b){
@@ -234,6 +234,6 @@ public class ODCrafting extends OldDaysModule{
         String str = "xitem.sign@0";
         removeRecipe("1"+str);
         removeRecipe("3"+str);
-        ModLoader.addRecipe(new ItemStack(Item.sign, count), new Object[]{"###", "###", " X ", '#', Block.planks, 'X', Item.stick});
+        addRecipe(new ItemStack(Item.sign, count), new Object[]{"###", "###", " X ", '#', Block.planks, 'X', Item.stick});
     }
 }

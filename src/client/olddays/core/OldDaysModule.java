@@ -54,6 +54,14 @@ public class OldDaysModule{
         }
     }
 
+    public void addRecipe(ItemStack stack, Object[] obj){
+        CraftingManager.getInstance().addRecipe(stack, obj);
+    }
+
+    public void addShapelessRecipe(ItemStack stack, Object[] obj){
+        CraftingManager.getInstance().addShapelessRecipe(stack, obj);
+    }
+
     public void removeRecipe(String str1){
         try{
             List list = CraftingManager.getInstance().getRecipeList();
