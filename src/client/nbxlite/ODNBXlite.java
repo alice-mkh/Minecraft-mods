@@ -175,7 +175,7 @@ public class ODNBXlite extends OldDaysModule{
             MapFeatures = ReleaseFeatures;
             Generator = GEN_NEWBIOMES;
         }
-        refreshProperties();
+        refreshProperties(false);
         if (mod_OldDays.getMinecraftInstance().theWorld != null){
             SetGenerator(mod_OldDays.getMinecraftInstance().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
             if ((i == 0 && (Gen == 0 || Gen > 3)) || (i == 1 && (BetaFeatures >= 5 || BetaFeatures == 3 || BetaFeatures == 0)) || i == 2){
@@ -184,7 +184,7 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    public static void refreshProperties(){
+    public static void refreshProperties(boolean force){
         if (Generator == GEN_NEWBIOMES){
             Gen = 5;
         }else if (Generator == GEN_OLDBIOMES){
@@ -198,7 +198,7 @@ public class ODNBXlite extends OldDaysModule{
         }else if (MapFeatures == FEATURES_INFDEV0227){
             Gen = 0;
         }
-        for (int i = 5; i <= 14; i++){
+        for (int i = force ? 1 : 5; i <= 14; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).updateValue();
         }
         for (int i = 1; i <= 5; i++){
