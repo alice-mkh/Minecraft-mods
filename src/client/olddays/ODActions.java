@@ -17,7 +17,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 10,false, false, "LessLavaFlow");
         new OldDaysPropertyBool(this, 11,false, false, "FogKey");
         replaceBlocks();
-        ModLoader.registerKey(core, this.keyFog, false);
+        registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
 
     public static int FogKeyd = 0;
@@ -38,7 +38,7 @@ public class ODActions extends OldDaysModule{
         }
     }
 
-    public void keyboardEvent(KeyBinding keybinding){
+    public void catchKeyEvent(KeyBinding keybinding){
         if (keybinding==keyFog && minecraft.currentScreen==null && FogKey){
             boolean flag = org.lwjgl.input.Keyboard.isKeyDown(42) | org.lwjgl.input.Keyboard.isKeyDown(54);
             minecraft.gameSettings.setOptionValue(EnumOptions.RENDER_DISTANCE, flag ? -1 : 1);
@@ -56,7 +56,7 @@ public class ODActions extends OldDaysModule{
     public static boolean BigFences = true;
     public static boolean LessLavaFlow;
     public static boolean FogKey;
-    public KeyBinding keyFog = new KeyBinding("Toggle Fog", 33);
+    public KeyBinding keyFog;
 
     private void setSolidTNT(boolean b){
         mod_OldDays.setField(net.minecraft.src.Material.class, Material.tnt, 33, !b);

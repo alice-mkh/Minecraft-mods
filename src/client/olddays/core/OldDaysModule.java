@@ -134,7 +134,11 @@ public class OldDaysModule{
         return false;
     }
 
-    public void keyboardEvent(KeyBinding keybinding){}
+    public void registerKey(KeyBinding key){
+        core.registerKey(key);
+    }
+
+    public void catchKeyEvent(KeyBinding keybinding){}
 
     public boolean onTick(){
         return true;

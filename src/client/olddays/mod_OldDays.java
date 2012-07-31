@@ -18,24 +18,15 @@ public class mod_OldDays extends BaseModMp{
         smpman = new SMPManager(this);
         modules = new ArrayList();
         lang = new OldDaysEasyLocalization("olddays");
+        keyBindings = new ArrayList();
     }
 
     public void load(){
-        ModLoader.registerKey(this, this.keySettings, false);
-        ModLoader.addLocalization("key_settings", "Old Days Settings");
+        registerKey(keySettings = new KeyBinding(lang.get("OldDays Settings"), 35));
         ModLoader.setInGameHook(this, true, true);
         ModLoader.setInGUIHook(this, true, true);
         loadModules(this);
         saveman.loadAll();
-    }
-
-    public void keyboardEvent(KeyBinding keybinding){
-        if (keybinding==keySettings && getMinecraftInstance().currentScreen==null){
-            ModLoader.openGUI(getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
-        }
-        for (int i = 0; i < modules.size(); i++){
-            ((OldDaysModule)mod_OldDays.modules.get(i)).keyboardEvent(keybinding);
-        }
     }
 
     public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
@@ -52,6 +43,18 @@ public class mod_OldDays extends BaseModMp{
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
             ((OldDaysModule)mod_OldDays.modules.get(i)).onTick();
+        }
+        for (int i = 0; i < keyBindings.size(); i++){
+            KeyBinding key = ((KeyBinding)keyBindings.get(i));
+            if (key.isPressed()){
+                if (key == keySettings && getMinecraftInstance().currentScreen == null){
+                    ModLoader.openGUI(getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
+                    continue;
+                }
+                for (int j = 0; j < modules.size(); j++){
+                    ((OldDaysModule)mod_OldDays.modules.get(j)).catchKeyEvent(key);
+                }
+            }
         }
         return true;
     }
@@ -249,10 +252,22 @@ public class mod_OldDays extends BaseModMp{
         return callMethod(c, o, str, new Class[]{}, new Object[]{});
     }
 
-    public KeyBinding keySettings = new KeyBinding("key_settings", 35);
+    public static void registerKey(KeyBinding key){
+        GameSettings s = getMinecraftInstance().gameSettings;
+        KeyBinding[] newb = new KeyBinding[s.keyBindings.length + 1];
+        for (int i = 0; i < s.keyBindings.length; i++){
+            newb[i] = s.keyBindings[i];
+        }
+        newb[s.keyBindings.length] = key;
+        s.keyBindings = newb;
+        keyBindings.add(key);
+    }
+
+    public KeyBinding keySettings ;
     public static TextureManager texman;
     public static SavingManager saveman;
     public static SMPManager smpman;
     public static List modules;
     public static OldDaysEasyLocalization lang;
+    public static List keyBindings;
 }
