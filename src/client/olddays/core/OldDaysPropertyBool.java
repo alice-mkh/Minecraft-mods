@@ -40,6 +40,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         }catch(Exception ex){
             System.out.println(ex);
             disable();
+            return;
         }
         onChange();
     }

@@ -60,7 +60,9 @@ public class TextureManager{
             for (int i = 0; i < mod_OldDays.modules.size(); i++){
                 OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
                 for (int j = 1; j < module.properties.size(); j++){
-                    mod_OldDays.sendCallback(module.id, j);
+                    if (!module.getPropertyById(j).allowedInFallback){
+                        mod_OldDays.sendCallback(module.id, j);
+                    }
                 }
             }
             for (int i = 0; i < textureHooks.size(); i++){

@@ -36,6 +36,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
         }catch(Exception ex){
             System.out.println(ex);
             disable();
+            return;
         }
         onChange();
     }

@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import net.minecraft.src.Block;
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.Entity;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagFloat;
 import net.minecraft.src.NBTTagDouble;
