@@ -706,10 +706,10 @@ public class ODNBXlite extends OldDaysModule{
             VoidFog = 4;
         }
         net.minecraft.src.nbxlite.RenderGlobal2.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
-        EntityRenderer.sunriseFog = gen>=GEN_NEWBIOMES;
-        EntityRenderer.oldFog = isFinite();
-        EntityRenderer.snow = SnowCovered;
-        EntityRenderer.bounds = isFinite();
+        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "sunriseFog", gen>=GEN_NEWBIOMES);
+        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "oldFog", isFinite());
+        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "snow", SnowCovered);
+        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "bounds", isFinite());
         GenerateNewOres=ores;
         try{
             EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;

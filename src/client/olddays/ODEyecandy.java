@@ -19,7 +19,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyInt(this,    12,1,     "Tooltips", 2).setUseNames();
         new OldDaysPropertyBool(this,   13,true,  "OldFences");
         new OldDaysPropertyBool(this,   14,true,  "Arrows");
-        new OldDaysPropertyString(this, 15,"OFF", "Version");
+        new OldDaysPropertyString(this, 15,"Minecraft 1.2.5", "Version");
         new OldDaysPropertyBool(this,   16,true,  "Shadow");
         new OldDaysPropertyBool(this,   17,false, "Drops");
         new OldDaysPropertyInt(this,    18,2,     "Hand", 2).setUseNames();

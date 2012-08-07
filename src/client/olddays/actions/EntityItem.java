@@ -5,6 +5,7 @@ import java.util.Random;
 public class EntityItem extends Entity
 {
     public static boolean smeltOnFire = false;
+    private static boolean modloader = true;
 
     /** The item stack of this EntityItem. */
     public ItemStack item;
@@ -219,7 +220,13 @@ public class EntityItem extends Entity
                 par1EntityPlayer.triggerAchievement(AchievementList.blazeRod);
             }
 
-            ModLoader.onItemPickup(par1EntityPlayer, item);
+            if (modloader){
+                try{
+                    ModLoader.onItemPickup(par1EntityPlayer, item);
+                }catch(Exception ex){
+                    modloader = false;
+                }
+            }
             worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, i);
 
