@@ -31,7 +31,9 @@ public class TextureTerrainPngFX extends TextureFX
         currentIndex = index;
         try
         {
-            BufferedImage bufferedimage = ModLoader.loadImage(mod_OldDays.getMinecraftInstance().renderEngine, "/terrain.png");
+            TexturePackList packList = mod_OldDays.getMinecraftInstance().texturePackList;
+            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
+            BufferedImage bufferedimage = ImageIO.read(texpack.getResourceAsStream("/terrain.png"));
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource("/terrain.png"));
             }

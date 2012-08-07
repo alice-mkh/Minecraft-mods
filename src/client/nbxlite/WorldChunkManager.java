@@ -4,6 +4,7 @@ import java.util.*;
 import net.minecraft.src.nbxlite.noise.NoiseGeneratorOctaves2;
 import net.minecraft.src.nbxlite.oldbiomes.*;
 
+
 public class WorldChunkManager
 {
     private GenLayer genBiomes;
@@ -52,7 +53,7 @@ public class WorldChunkManager
     public WorldChunkManager(long par1, WorldType par3WorldType)
     {
         this();
-        GenLayer agenlayer[] = GenLayer.func_48425_a(par1, par3WorldType);
+        GenLayer agenlayer[] = GenLayer.func_75901_a(par1, par3WorldType);
         genBiomes = agenlayer[0];
         biomeIndexLayer = agenlayer[1];
         if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
@@ -74,17 +75,30 @@ public class WorldChunkManager
         field_4192_g = new NoiseGeneratorOctaves2(new Random(seed * 0x84a59L), 2);
     }
 
-    /**
-     * Gets the list of valid biomes for the player to spawn in.
-     */
-    public List getBiomesToSpawnIn()
+    public boolean areBiomesViable_old(int par1, int par2, int par3, List par4List)
     {
-        return biomesToSpawnIn;
+        int i = par1 - par3 >> 2;
+        int j = par2 - par3 >> 2;
+        int k = par1 + par3 >> 2;
+        int l = par2 + par3 >> 2;
+        int i1 = (k - i) + 1;
+        int j1 = (l - j) + 1;
+        OldBiomeGenBase[] biomes = new OldBiomeGenBase[i1 * j1];
+        biomes = oldLoadBlockGeneratorData(biomes, i, j, i1, j1);
+        for (int k1 = 0; k1 < i1 * j1; k1++)
+        {
+            if (!par4List.contains(biomes[k1]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public OldBiomeGenBase oldGetBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
     {
-        return oldGetBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPosition << 4);
+        return oldGetBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
     }
 
     public OldBiomeGenBase oldGetBiomeGenAt(int i, int j)
@@ -189,7 +203,7 @@ public class WorldChunkManager
 
     public BiomeGenBase getBiomeGenAtChunkCoord(ChunkCoordIntPair chunkcoordintpair)
     {
-        return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPosition << 4);
+        return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
     }
 
     public float getRainfall(int i, int j)
@@ -322,6 +336,14 @@ public class WorldChunkManager
             }
         }
         return biomeCache.getBiomeGenAt(par1, par2);
+    }
+
+    /**
+     * Gets the list of valid biomes for the player to spawn in.
+     */
+    public List getBiomesToSpawnIn()
+    {
+        return biomesToSpawnIn;
     }
 
     /**

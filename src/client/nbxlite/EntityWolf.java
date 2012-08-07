@@ -6,17 +6,12 @@ public class EntityWolf extends EntityTameable
 {
     public static boolean despawn = false;
 
-    /**
-     * This flag is set when the wolf is looking at a player with interest, i.e. with tilted head. This happens when
-     * tamed wolf is wound and player holds porkchop (raw or cooked), or when wild wolf sees bone in player's hands.
-     */
-    private boolean looksWithInterest;
-    private float field_25048_b;
-    private float field_25054_c;
+    private float field_70926_e;
+    private float field_70924_f;
 
     /** true is the wolf is wet else false */
     private boolean isShaking;
-    private boolean field_25052_g;
+    private boolean field_70928_h;
 
     /**
      * This time increases while wolf is shaking and emitting water particles.
@@ -27,7 +22,6 @@ public class EntityWolf extends EntityTameable
     public EntityWolf(World par1World)
     {
         super(par1World);
-        looksWithInterest = false;
         texture = "/mob/wolf.png";
         setSize(0.6F, 0.8F);
         moveSpeed = 0.3F;
@@ -86,6 +80,7 @@ public class EntityWolf extends EntityTameable
     {
         super.entityInit();
         dataWatcher.addObject(18, new Integer(getHealth()));
+        dataWatcher.addObject(19, new Byte((byte)0));
     }
 
     /**
@@ -210,9 +205,9 @@ public class EntityWolf extends EntityTameable
     {
         super.onLivingUpdate();
 
-        if (!worldObj.isRemote && isShaking && !field_25052_g && !hasPath() && onGround)
+        if (!worldObj.isRemote && isShaking && !field_70928_h && !hasPath() && onGround)
         {
-            field_25052_g = true;
+            field_70928_h = true;
             timeWolfIsShaking = 0.0F;
             prevTimeWolfIsShaking = 0.0F;
             worldObj.setEntityState(this, (byte)8);
@@ -225,18 +220,18 @@ public class EntityWolf extends EntityTameable
     public void onUpdate()
     {
         super.onUpdate();
-        field_25054_c = field_25048_b;
+        field_70924_f = field_70926_e;
 
-        if (looksWithInterest)
+        if (func_70922_bv())
         {
-            field_25048_b = field_25048_b + (1.0F - field_25048_b) * 0.4F;
+            field_70926_e += (1.0F - field_70926_e) * 0.4F;
         }
         else
         {
-            field_25048_b = field_25048_b + (0.0F - field_25048_b) * 0.4F;
+            field_70926_e += (0.0F - field_70926_e) * 0.4F;
         }
 
-        if (looksWithInterest)
+        if (func_70922_bv())
         {
             numTicksToChaseTarget = 10;
         }
@@ -244,11 +239,11 @@ public class EntityWolf extends EntityTameable
         if (isWet())
         {
             isShaking = true;
-            field_25052_g = false;
+            field_70928_h = false;
             timeWolfIsShaking = 0.0F;
             prevTimeWolfIsShaking = 0.0F;
         }
-        else if ((isShaking || field_25052_g) && field_25052_g)
+        else if ((isShaking || field_70928_h) && field_70928_h)
         {
             if (timeWolfIsShaking == 0.0F)
             {
@@ -261,7 +256,7 @@ public class EntityWolf extends EntityTameable
             if (prevTimeWolfIsShaking >= 2.0F)
             {
                 isShaking = false;
-                field_25052_g = false;
+                field_70928_h = false;
                 prevTimeWolfIsShaking = 0.0F;
                 timeWolfIsShaking = 0.0F;
             }
@@ -312,7 +307,7 @@ public class EntityWolf extends EntityTameable
 
     public float getInterestedAngle(float par1)
     {
-        return (field_25054_c + (field_25048_b - field_25054_c) * par1) * 0.15F * (float)Math.PI;
+        return (field_70924_f + (field_70926_e - field_70924_f) * par1) * 0.15F * (float)Math.PI;
     }
 
     public float getEyeHeight()
@@ -342,7 +337,7 @@ public class EntityWolf extends EntityTameable
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         Entity entity = par1DamageSource.getEntity();
-        aiSit.func_48407_a(false);
+        aiSit.setSitting(false);
 
         if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
         {
@@ -365,44 +360,7 @@ public class EntityWolf extends EntityTameable
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (!isTamed())
-        {
-            if (itemstack != null && itemstack.itemID == Item.bone.shiftedIndex && !isAngry())
-            {
-                if (!par1EntityPlayer.capabilities.isCreativeMode)
-                {
-                    itemstack.stackSize--;
-                }
-
-                if (itemstack.stackSize <= 0)
-                {
-                    par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
-                }
-
-                if (!worldObj.isRemote)
-                {
-                    if (rand.nextInt(3) == 0)
-                    {
-                        setTamed(true);
-                        setPathToEntity(null);
-                        setAttackTarget(null);
-                        aiSit.func_48407_a(true);
-                        setEntityHealth(20);
-                        setOwner(par1EntityPlayer.username);
-                        func_48142_a(true);
-                        worldObj.setEntityState(this, (byte)7);
-                    }
-                    else
-                    {
-                        func_48142_a(false);
-                        worldObj.setEntityState(this, (byte)6);
-                    }
-                }
-
-                return true;
-            }
-        }
-        else
+        if (isTamed())
         {
             if (itemstack != null && (Item.itemsList[itemstack.itemID] instanceof ItemFood))
             {
@@ -428,10 +386,44 @@ public class EntityWolf extends EntityTameable
 
             if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isWheat(itemstack))
             {
-                aiSit.func_48407_a(!isSitting());
+                aiSit.setSitting(!isSitting());
                 isJumping = false;
                 setPathToEntity(null);
             }
+        }
+        else if (itemstack != null && itemstack.itemID == Item.bone.shiftedIndex && !isAngry())
+        {
+            if (!par1EntityPlayer.capabilities.isCreativeMode)
+            {
+                itemstack.stackSize--;
+            }
+
+            if (itemstack.stackSize <= 0)
+            {
+                par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+            }
+
+            if (!worldObj.isRemote)
+            {
+                if (rand.nextInt(3) == 0)
+                {
+                    setTamed(true);
+                    setPathToEntity(null);
+                    setAttackTarget(null);
+                    aiSit.setSitting(true);
+                    setEntityHealth(20);
+                    setOwner(par1EntityPlayer.username);
+                    playTameEffect(true);
+                    worldObj.setEntityState(this, (byte)7);
+                }
+                else
+                {
+                    playTameEffect(false);
+                    worldObj.setEntityState(this, (byte)6);
+                }
+            }
+
+            return true;
         }
 
         return super.interact(par1EntityPlayer);
@@ -441,7 +433,7 @@ public class EntityWolf extends EntityTameable
     {
         if (par1 == 8)
         {
-            field_25052_g = true;
+            field_70928_h = true;
             timeWolfIsShaking = 0.0F;
             prevTimeWolfIsShaking = 0.0F;
         }
@@ -532,12 +524,24 @@ public class EntityWolf extends EntityTameable
         return entitywolf;
     }
 
-    public void func_48150_h(boolean par1)
+    public void func_70918_i(boolean par1)
     {
-        looksWithInterest = par1;
+        byte byte0 = dataWatcher.getWatchableObjectByte(19);
+
+        if (par1)
+        {
+            dataWatcher.updateObject(19, Byte.valueOf((byte)1));
+        }
+        else
+        {
+            dataWatcher.updateObject(19, Byte.valueOf((byte)0));
+        }
     }
 
-    public boolean func_48135_b(EntityAnimal par1EntityAnimal)
+    /**
+     * Returns true if the mob is currently able to mate with the specified mob.
+     */
+    public boolean canMateWith(EntityAnimal par1EntityAnimal)
     {
         if (par1EntityAnimal == this)
         {
@@ -569,5 +573,10 @@ public class EntityWolf extends EntityTameable
         {
             return isInLove() && entitywolf.isInLove();
         }
+    }
+
+    public boolean func_70922_bv()
+    {
+        return dataWatcher.getWatchableObjectByte(19) == 1;
     }
 }

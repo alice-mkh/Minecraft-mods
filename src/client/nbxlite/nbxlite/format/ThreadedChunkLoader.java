@@ -83,15 +83,15 @@ public class ThreadedChunkLoader
             nbttagcompound.setInteger("zPos", j);
             chunk = OldChunkLoader.loadChunkIntoWorldFromCompound(world, nbttagcompound.getCompoundTag("Level"));
         }
-        chunk.removeUnknownBlocks();
+//         chunk.removeUnknownBlocks();
         return chunk;
     }
 
     public void saveChunk(World world, Chunk chunk)
     {
-        world.checkSessionLock();
         try
         {
+            world.checkSessionLock();
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
             nbttagcompound.setTag("Level", nbttagcompound1);
@@ -158,7 +158,7 @@ public class ThreadedChunkLoader
     public void writeChunk(ThreadedChunkLoaderPending threadedchunkloaderpending)
     throws IOException
     {
-        DataOutputStream dataoutputstream = RegionFileCache2.getChunkOutputStream(chunkSaveLocation, threadedchunkloaderpending.field_40739_a.chunkXPos, threadedchunkloaderpending.field_40739_a.chunkZPosition);
+        DataOutputStream dataoutputstream = RegionFileCache2.getChunkOutputStream(chunkSaveLocation, threadedchunkloaderpending.field_40739_a.chunkXPos, threadedchunkloaderpending.field_40739_a.chunkZPos);
         CompressedStreamTools.write(threadedchunkloaderpending.field_40738_b, dataoutputstream);
         dataoutputstream.close();
     }

@@ -5,7 +5,6 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.src.*;
-import net.minecraft.src.ODNBXlite;
 
 public class GuiCreateWorld2 extends GuiScreen
 {
@@ -14,10 +13,13 @@ public class GuiCreateWorld2 extends GuiScreen
     private GuiTextField textboxSeed;
     private String folderName;
 
-    /** 'hardcore', 'creative' or 'survival' */
+    /** hardcore', 'creative' or 'survival */
     private String gameMode;
-    private boolean field_35365_g;
-    private boolean field_40232_h;
+    private boolean field_73925_n;
+    private boolean field_73926_o;
+    private boolean field_73935_p;
+    private boolean field_73934_q;
+    private boolean field_73933_r;
     private boolean createClicked;
 
     /**
@@ -35,11 +37,13 @@ public class GuiCreateWorld2 extends GuiScreen
 
     /** The GuiButton in the 'More World Options' screen. Toggles ON/OFF */
     private GuiButton generateStructuresButton;
+    private GuiButton field_73938_x;
 
     /**
      * the GUIButton in the more world options screen. It's currently greyed out and unused in minecraft 1.0.0
      */
     private GuiButton worldTypeButton;
+    private GuiButton field_73936_z;
 
     /** The first line of text describing the currently selected game mode. */
     private String gameModeDescriptionLine1;
@@ -52,15 +56,24 @@ public class GuiCreateWorld2 extends GuiScreen
 
     /** E.g. New World, Neue Welt, Nieuwe wereld, Neuvo Mundo */
     private String localizedNewWorldText;
-    private int field_46030_z;
+    private int field_73916_E;
+    private static final String field_73917_F[] =
+    {
+        "CON", "COM", "PRN", "AUX", "CLOCK$", "NUL", "COM1", "COM2", "COM3", "COM4",
+        "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
+        "LPT6", "LPT7", "LPT8", "LPT9"
+    };
     private GuiButton nbxliteButton;
 
     public GuiCreateWorld2(GuiScreen par1GuiScreen)
     {
         gameMode = "survival";
-        field_35365_g = true;
-        field_40232_h = false;
-        field_46030_z = 0;
+        field_73925_n = true;
+        field_73926_o = false;
+        field_73935_p = false;
+        field_73934_q = false;
+        field_73933_r = false;
+        field_73916_E = 0;
         parentGuiScreen = par1GuiScreen;
         seed = "";
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
@@ -90,23 +103,27 @@ public class GuiCreateWorld2 extends GuiScreen
         controlList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 172, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
         controlList.add(generateStructuresButton = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
         generateStructuresButton.drawButton = false;
+        controlList.add(field_73938_x = new GuiButton(7, width / 2 + 5, 136, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
+        field_73938_x.drawButton = false;
         controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         worldTypeButton.drawButton = false;
+        controlList.add(field_73936_z = new GuiButton(6, width / 2 - 155, 136, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
+        field_73936_z.drawButton = false;
         if (!(GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2worldtype[GeneratorList.feat2current]) &&
             !(GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1worldtype[GeneratorList.feat1current])){
             worldTypeButton.enabled = false;
-            field_46030_z = 0;
+            field_73916_E = 0;
         }
-        field_35365_g = GeneratorList.genstructures[GeneratorList.gencurrent];
+        field_73925_n = GeneratorList.genstructures[GeneratorList.gencurrent];
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxWorldName.setFocused(true);
         textboxWorldName.setText(localizedNewWorldText);
         textboxSeed = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxSeed.setText(seed);
-        controlList.add(nbxliteButton = new GuiButton(6, width / 2 - 155, 135, 310, 20, genNBXliteButtonName()));
+        controlList.add(nbxliteButton = new GuiButton(8, width / 2 - 155, 192, 310, 20, genNBXliteButtonName()));
         nbxliteButton.drawButton = false;
         makeUseableName();
-        func_35363_g();
+        func_73914_h();
     }
 
     public static void setDefaultNBXliteSettings(){
@@ -191,34 +208,67 @@ public class GuiCreateWorld2 extends GuiScreen
             folderName = "World";
         }
 
-        folderName = func_25097_a(mc.getSaveLoader(), folderName);
+        folderName = func_73913_a(mc.getSaveLoader(), folderName);
     }
 
-    private void func_35363_g()
+    private void func_73914_h()
     {
-        StringTranslate stringtranslate;
-        stringtranslate = StringTranslate.getInstance();
-        gameModeButton.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.gameMode")).append(" ").append(stringtranslate.translateKey((new StringBuilder()).append("selectWorld.gameMode.").append(gameMode).toString())).toString();
-        gameModeDescriptionLine1 = stringtranslate.translateKey((new StringBuilder()).append("selectWorld.gameMode.").append(gameMode).append(".line1").toString());
-        gameModeDescriptionLine2 = stringtranslate.translateKey((new StringBuilder()).append("selectWorld.gameMode.").append(gameMode).append(".line2").toString());
-        generateStructuresButton.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.mapFeatures")).append(" ").toString();
+        StringTranslate var1 = StringTranslate.getInstance();
+        this.gameModeButton.displayString = var1.translateKey("selectWorld.gameMode") + " " + var1.translateKey("selectWorld.gameMode." + this.gameMode);
+        this.gameModeDescriptionLine1 = var1.translateKey("selectWorld.gameMode." + this.gameMode + ".line1");
+        this.gameModeDescriptionLine2 = var1.translateKey("selectWorld.gameMode." + this.gameMode + ".line2");
+        this.generateStructuresButton.displayString = var1.translateKey("selectWorld.mapFeatures") + " ";
 
-        if (!(!field_35365_g))
+        if (this.field_73925_n)
         {
-            generateStructuresButton.displayString += stringtranslate.translateKey("options.on");
+            this.generateStructuresButton.displayString = this.generateStructuresButton.displayString + var1.translateKey("options.on");
         }
         else
         {
-            generateStructuresButton.displayString += stringtranslate.translateKey("options.off");
+            this.generateStructuresButton.displayString = this.generateStructuresButton.displayString + var1.translateKey("options.off");
         }
 
-        worldTypeButton.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.mapType")).append(" ").append(stringtranslate.translateKey(WorldType.worldTypes[field_46030_z].getTranslateName())).toString();
-        return;
+        this.field_73938_x.displayString = var1.translateKey("selectWorld.bonusItems") + " ";
+
+        if (this.field_73934_q && !this.field_73933_r)
+        {
+            this.field_73938_x.displayString = this.field_73938_x.displayString + var1.translateKey("options.on");
+        }
+        else
+        {
+            this.field_73938_x.displayString = this.field_73938_x.displayString + var1.translateKey("options.off");
+        }
+
+        this.worldTypeButton.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey(WorldType.worldTypes[this.field_73916_E].getTranslateName());
+        this.field_73936_z.displayString = var1.translateKey("selectWorld.allowCommands") + " ";
+
+        if (this.field_73926_o && !this.field_73933_r)
+        {
+            this.field_73936_z.displayString = this.field_73936_z.displayString + var1.translateKey("options.on");
+        }
+        else
+        {
+            this.field_73936_z.displayString = this.field_73936_z.displayString + var1.translateKey("options.off");
+        }
     }
 
-    public static String func_25097_a(ISaveFormat par0ISaveFormat, String par1Str)
+    public static String func_73913_a(ISaveFormat par0ISaveFormat, String par1Str)
     {
-        for (par1Str = par1Str.replaceAll("[\\./\"]|COM", "_"); par0ISaveFormat.getWorldInfo(par1Str) != null; par1Str = (new StringBuilder()).append(par1Str).append("-").toString()) { }
+        par1Str = par1Str.replaceAll("[\\./\"]", "_");
+        String as[] = field_73917_F;
+        int i = as.length;
+
+        for (int j = 0; j < i; j++)
+        {
+            String s = as[j];
+
+            if (par1Str.equalsIgnoreCase(s))
+            {
+                par1Str = (new StringBuilder()).append("_").append(par1Str).append("_").toString();
+            }
+        }
+
+        for (; par0ISaveFormat.getWorldInfo(par1Str) != null; par1Str = (new StringBuilder()).append(par1Str).append("-").toString()) { }
 
         return par1Str;
     }
@@ -244,6 +294,11 @@ public class GuiCreateWorld2 extends GuiScreen
         if (par1GuiButton.id == 1)
         {
             mc.displayGuiScreen(parentGuiScreen);
+        }
+        else if (par1GuiButton.id == 8)
+        {
+             mc.displayGuiScreen(new GuiNBXlite(this));
+             moreOptions = false;
         }
         else if (par1GuiButton.id == 0)
         {
@@ -275,27 +330,36 @@ public class GuiCreateWorld2 extends GuiScreen
                 }
             }
 
-            int i = 0;
+            EnumGameType enumgametype = EnumGameType.func_77142_a(gameMode);
+            WorldSettings worldsettings = new WorldSettings(l, enumgametype, field_73925_n, field_73933_r, WorldType.worldTypes[field_73916_E]);
 
-            if (gameMode.equals("creative"))
+            if (field_73934_q && !field_73933_r)
             {
-                i = 1;
-                mc.playerController = new PlayerControllerCreative(mc);
-            }
-            else
-            {
-                mc.playerController = new PlayerControllerSP(mc);
+                worldsettings.func_77159_a();
             }
 
-            mc.startWorld(folderName, textboxWorldName.getText(), new WorldSettings(l, i, field_35365_g, field_40232_h, WorldType.worldTypes[field_46030_z]));
-            mc.displayGuiScreen(null);
+            if (field_73926_o && !field_73933_r)
+            {
+                worldsettings.func_77166_b();
+            }
+
+            mc.enableSP = true;
+            if (mc.enableSP){
+                mc.setController(enumgametype);
+                mc.startWorldSSP(folderName, textboxWorldName.getText().trim(), worldsettings);
+                mc.displayGuiScreen(null);
+            }else{
+                mc.func_71371_a(folderName, textboxWorldName.getText().trim(), worldsettings);
+            }
         }
         else if (par1GuiButton.id == 3)
         {
             moreOptions = !moreOptions;
             gameModeButton.drawButton = !moreOptions;
             generateStructuresButton.drawButton = moreOptions;
+            field_73938_x.drawButton = moreOptions;
             worldTypeButton.drawButton = moreOptions;
+            field_73936_z.drawButton = moreOptions;
             nbxliteButton.drawButton = moreOptions && ODNBXlite.ShowGUI;
 
             if (moreOptions)
@@ -309,67 +373,94 @@ public class GuiCreateWorld2 extends GuiScreen
                 moreWorldOptions.displayString = stringtranslate1.translateKey("selectWorld.moreWorldOptions");
             }
         }
-        else if (par1GuiButton.id == 6)
-        {
-            mc.displayGuiScreen(new GuiNBXlite(this));
-            moreOptions = false;
-        }
         else if (par1GuiButton.id == 2)
         {
             if (gameMode.equals("survival"))
             {
-                field_40232_h = false;
+                if (!field_73935_p)
+                {
+                    field_73926_o = false;
+                }
+
+                field_73933_r = false;
                 gameMode = "hardcore";
-                field_40232_h = true;
-                func_35363_g();
+                field_73933_r = true;
+                field_73936_z.enabled = false;
+                field_73938_x.enabled = false;
+                func_73914_h();
             }
             else if (gameMode.equals("hardcore"))
             {
-                field_40232_h = false;
+                if (!field_73935_p)
+                {
+                    field_73926_o = true;
+                }
+
+                field_73933_r = false;
                 gameMode = "creative";
-                func_35363_g();
-                field_40232_h = false;
+                func_73914_h();
+                field_73933_r = false;
+                field_73936_z.enabled = true;
+                field_73938_x.enabled = true;
             }
             else
             {
+                if (!field_73935_p)
+                {
+                    field_73926_o = false;
+                }
+
                 gameMode = "survival";
-                func_35363_g();
-                field_40232_h = false;
+                func_73914_h();
+                field_73936_z.enabled = true;
+                field_73938_x.enabled = true;
+                field_73933_r = false;
             }
 
-            func_35363_g();
+            func_73914_h();
         }
         else if (par1GuiButton.id == 4)
         {
-            field_35365_g = !field_35365_g;
-            func_35363_g();
+            field_73925_n = !field_73925_n;
+            func_73914_h();
+        }
+        else if (par1GuiButton.id == 7)
+        {
+            field_73934_q = !field_73934_q;
+            func_73914_h();
         }
         else if (par1GuiButton.id == 5)
         {
-            field_46030_z++;
+            field_73916_E++;
 
-            if (field_46030_z >= WorldType.worldTypes.length)
+            if (field_73916_E >= WorldType.worldTypes.length)
             {
-                field_46030_z = 0;
+                field_73916_E = 0;
             }
 
             do
             {
-                if (WorldType.worldTypes[field_46030_z] != null && WorldType.worldTypes[field_46030_z].getCanBeCreated())
+                if (WorldType.worldTypes[field_73916_E] != null && WorldType.worldTypes[field_73916_E].getCanBeCreated())
                 {
                     break;
                 }
 
-                field_46030_z++;
+                field_73916_E++;
 
-                if (field_46030_z >= WorldType.worldTypes.length)
+                if (field_73916_E >= WorldType.worldTypes.length)
                 {
-                    field_46030_z = 0;
+                    field_73916_E = 0;
                 }
             }
             while (true);
 
-            func_35363_g();
+            func_73914_h();
+        }
+        else if (par1GuiButton.id == 6)
+        {
+            field_73935_p = true;
+            field_73926_o = !field_73926_o;
+            func_73914_h();
         }
     }
 
@@ -378,12 +469,12 @@ public class GuiCreateWorld2 extends GuiScreen
      */
     protected void keyTyped(char par1, int par2)
     {
-        if (textboxWorldName.getIsFocused() && !moreOptions)
+        if (textboxWorldName.isFocused() && !moreOptions)
         {
             textboxWorldName.textboxKeyTyped(par1, par2);
             localizedNewWorldText = textboxWorldName.getText();
         }
-        else if (textboxSeed.getIsFocused() && moreOptions)
+        else if (textboxSeed.isFocused() && moreOptions)
         {
             textboxSeed.textboxKeyTyped(par1, par2);
             seed = textboxSeed.getText();
@@ -405,13 +496,13 @@ public class GuiCreateWorld2 extends GuiScreen
     {
         super.mouseClicked(par1, par2, par3);
 
-        if (!moreOptions)
+        if (moreOptions)
         {
-            textboxWorldName.mouseClicked(par1, par2, par3);
+            textboxSeed.mouseClicked(par1, par2, par3);
         }
         else
         {
-            textboxSeed.mouseClicked(par1, par2, par3);
+            textboxWorldName.mouseClicked(par1, par2, par3);
         }
     }
 
@@ -424,20 +515,21 @@ public class GuiCreateWorld2 extends GuiScreen
         drawDefaultBackground();
         drawCenteredString(fontRenderer, stringtranslate.translateKey("selectWorld.create"), width / 2, 20, 0xffffff);
 
-        if (!moreOptions)
+        if (moreOptions)
+        {
+            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
+            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
+            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
+            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.allowCommands.info"), width / 2 - 150, 157, 0xa0a0a0);
+            textboxSeed.drawTextBox();
+        }
+        else
         {
             drawString(fontRenderer, stringtranslate.translateKey("selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
             drawString(fontRenderer, (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.resultFolder")).append(" ").append(folderName).toString(), width / 2 - 100, 85, 0xa0a0a0);
             textboxWorldName.drawTextBox();
             drawString(fontRenderer, gameModeDescriptionLine1, width / 2 - 100, 122, 0xa0a0a0);
             drawString(fontRenderer, gameModeDescriptionLine2, width / 2 - 100, 134, 0xa0a0a0);
-        }
-        else
-        {
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
-            textboxSeed.drawTextBox();
         }
 
         super.drawScreen(par1, par2, par3);

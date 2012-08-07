@@ -24,7 +24,7 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
             for (int z=0; z<16; z++){
                 for (int y=0; y<Math.min(ODNBXlite.IndevHeight, 128); y++){
                     byte block = ODNBXlite.IndevWorld[IndexFinite(x+(x1*16), y, z+(z1*16))];
-                    if (block==0){
+                    if (block<=0){
                         continue;
                     }
                     result[x << 11 | z << 7 | y]=block;
@@ -39,7 +39,7 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
             for (int z=0; z<16; z++){
                 for (int y=128; y<ODNBXlite.IndevHeight; y++){
                     byte block = ODNBXlite.IndevWorld[IndexFinite(x+(x1*16), y, z+(z1*16))];
-                    if (block==0){
+                    if (block<=0){
                         continue;
                     }
                     ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
@@ -117,5 +117,10 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
 
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         return null;
+    }
+
+    public int func_73152_e()
+    {
+        return 0;
     }
 }

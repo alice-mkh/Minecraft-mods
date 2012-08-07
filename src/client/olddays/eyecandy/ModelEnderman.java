@@ -2,8 +2,6 @@ package net.minecraft.src;
 
 public class ModelEnderman extends ModelBiped
 {
-    public static boolean openmouth = true;
-
     /** Is the enderman carrying a block? */
     public boolean isCarrying;
 
@@ -132,7 +130,7 @@ public class ModelEnderman extends ModelBiped
         bipedHeadwear.rotateAngleY = bipedHead.rotateAngleY;
         bipedHeadwear.rotateAngleZ = bipedHead.rotateAngleZ;
 
-        if (isAttacking && openmouth)
+        if (isAttacking)
         {
             float f2 = 1.0F;
             bipedHead.rotationPointY -= f2 * 5F;

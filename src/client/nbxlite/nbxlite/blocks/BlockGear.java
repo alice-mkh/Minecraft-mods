@@ -100,10 +100,10 @@ public class BlockGear extends Block
     public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k){
         Tessellator tessellator = Tessellator.instance;
         int tex = b.getBlockTextureFromSide(0);
-        if(r.overrideBlockTexture >= 0)
+        /*if(r.overrideBlockTexture >= 0)
         {
             tex = r.overrideBlockTexture;
-        }
+        }*/
         tessellator.setBrightness(b.getMixedBrightnessForBlock(blockAccess, i, j, k));
         float f5 = /*b.getBlockBrightness(blockAccess, i, j, k)*/1.0F;
         tessellator.setColorOpaque_F(f5, f5, f5);

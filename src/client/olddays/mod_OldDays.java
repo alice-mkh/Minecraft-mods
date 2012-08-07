@@ -7,9 +7,17 @@ import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class mod_OldDays extends BaseModMp{
-    public String getVersion(){
-        return "1.2.5";
+public class mod_OldDays extends Mod{
+    public String getModVersion(){
+        return "2.0";
+    }
+
+    public String getMcVersion(){
+        return "1.3.1";
+    }
+
+    public String getModName(){
+        return "OldDays";
     }
 
     public mod_OldDays(){
@@ -22,9 +30,8 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public void load(){
+        setUseTick(true, true);
         registerKey(keySettings = new KeyBinding(lang.get("OldDays Settings"), 35));
-        ModLoader.setInGameHook(this, true, true);
-        ModLoader.setInGUIHook(this, true, true);
         loadModules(this);
         saveman.loadAll();
     }
@@ -38,7 +45,7 @@ public class mod_OldDays extends BaseModMp{
         return false;
     }
 
-    public boolean onTickInGame(float f, Minecraft minecraft){
+    public void onTick(){
         smpman.onTick();
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
@@ -48,7 +55,7 @@ public class mod_OldDays extends BaseModMp{
             KeyBinding key = ((KeyBinding)keyBindings.get(i));
             if (key.isPressed()){
                 if (key == keySettings && getMinecraftInstance().currentScreen == null){
-                    ModLoader.openGUI(getMinecraftInstance().thePlayer, new GuiOldDaysModules(null));
+                    getMinecraftInstance().displayGuiScreen(new GuiOldDaysModules(null));
                     continue;
                 }
                 for (int j = 0; j < modules.size(); j++){
@@ -56,14 +63,12 @@ public class mod_OldDays extends BaseModMp{
                 }
             }
         }
-        return true;
     }
 
-    public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui){
+    public void onGUITick(GuiScreen gui){
         for (int i = 0; i < modules.size(); i++){
             ((OldDaysModule)mod_OldDays.modules.get(i)).onGUITick(gui);
         }
-        return true;
     }
 
     public static void loadModules(mod_OldDays core){
@@ -121,7 +126,7 @@ public class mod_OldDays extends BaseModMp{
         }
     }
 
-    public void handlePacket(Packet230ModLoader packet){}
+//     public void handlePacket(Packet230ModLoader packet){}
 
     public static void loadModuleProperties(){}
     
@@ -166,7 +171,7 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public static Minecraft getMinecraftInstance(){
-        return ModLoader.getMinecraftInstance();
+        return Minecraft.getMinecraftInstance();
     }
 
     public static int getDescriptionNumber(String s){
@@ -186,16 +191,15 @@ public class mod_OldDays extends BaseModMp{
                 OldDaysProperty prop = ((OldDaysProperty)module.properties.get(j));
                 if (prop instanceof OldDaysPropertyCond){
                     OldDaysPropertyCond prop2 = ((OldDaysPropertyCond)prop);
-                    if (prop2.value == 1){
-                        prop2.boolValue = prop2.getBoolValue(1);
-                        prop2.onChange();
-                    }
+                    prop2.boolValue = prop2.getBoolValue(1);
+                    prop2.onChange();
                 }
             }
         }
     }
 
     public static Object getField(Class c, Object o, String str){
+        System.out.println("FIXME: Use number instead of \""+str+"\"!");
         try{
             Field f = c.getDeclaredField(str);
             f.setAccessible(true);
@@ -218,6 +222,7 @@ public class mod_OldDays extends BaseModMp{
     }
 
     public static void setField(Class c, Object o, String str, Object val){
+        System.out.println("FIXME: Use number instead of \""+str+"\"!");
         try{
             Field f = c.getDeclaredField(str);
             f.setAccessible(true);
@@ -261,6 +266,13 @@ public class mod_OldDays extends BaseModMp{
         newb[s.keyBindings.length] = key;
         s.keyBindings = newb;
         keyBindings.add(key);
+    }
+
+    public void onLoadingSP(String par1Str, String par2Str){
+        for (int i = 0; i < modules.size(); i++){
+            OldDaysModule module = ((OldDaysModule)modules.get(i));
+            module.onLoadingSP(par1Str, par2Str);
+        }
     }
 
     public KeyBinding keySettings ;

@@ -3,6 +3,7 @@ package net.minecraft.src;
 public class EntityDiggingFX extends EntityFX
 {
     public static boolean oldparticles = false;
+
     private Block blockInstance;
 
     public EntityDiggingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Block par14Block, int par15, int par16)
@@ -15,7 +16,7 @@ public class EntityDiggingFX extends EntityFX
         particleScale /= 2.0F;
     }
 
-    public EntityDiggingFX func_4041_a(int par1, int par2, int par3)
+    public EntityDiggingFX func_70596_a(int par1, int par2, int par3)
     {
         if (blockInstance == Block.grass)
         {

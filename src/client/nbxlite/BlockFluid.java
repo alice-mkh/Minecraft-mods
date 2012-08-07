@@ -45,8 +45,7 @@ public abstract class BlockFluid extends Block
             par0 = 0;
         }
 
-        float f = (float)(par0 + 1) / 9F;
-        return f;
+        return (float)(par0 + 1) / 9F;
     }
 
     /**
@@ -70,13 +69,13 @@ public abstract class BlockFluid extends Block
      */
     protected int getFlowDecay(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.getBlockMaterial(par2, par3, par4) != blockMaterial)
+        if (par1World.getBlockMaterial(par2, par3, par4) == blockMaterial)
         {
-            return -1;
+            return par1World.getBlockMetadata(par2, par3, par4);
         }
         else
         {
-            return par1World.getBlockMetadata(par2, par3, par4);
+            return -1;
         }
     }
 
@@ -218,9 +217,9 @@ public abstract class BlockFluid extends Block
     /**
      * Returns a vector indicating the direction and intensity of fluid flow.
      */
-    private Vec3D getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        Vec3D vec3d = Vec3D.createVector(0.0D, 0.0D, 0.0D);
+        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(0.0D, 0.0D, 0.0D);
         int i = getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
         for (int j = 0; j < 4; j++)
@@ -263,7 +262,7 @@ public abstract class BlockFluid extends Block
                 if (j1 >= 0)
                 {
                     int k1 = j1 - (i - 8);
-                    vec3d = vec3d.addVector((k - par2) * k1, (l - par3) * k1, (i1 - par4) * k1);
+                    vec3 = vec3.addVector((k - par2) * k1, (l - par3) * k1, (i1 - par4) * k1);
                 }
 
                 continue;
@@ -272,7 +271,7 @@ public abstract class BlockFluid extends Block
             if (j1 >= 0)
             {
                 int l1 = j1 - i;
-                vec3d = vec3d.addVector((k - par2) * l1, (l - par3) * l1, (i1 - par4) * l1);
+                vec3 = vec3.addVector((k - par2) * l1, (l - par3) * l1, (i1 - par4) * l1);
             }
         }
 
@@ -322,23 +321,23 @@ public abstract class BlockFluid extends Block
 
             if (flag)
             {
-                vec3d = vec3d.normalize().addVector(0.0D, -6D, 0.0D);
+                vec3 = vec3.normalize().addVector(0.0D, -6D, 0.0D);
             }
         }
 
-        vec3d = vec3d.normalize();
-        return vec3d;
+        vec3 = vec3.normalize();
+        return vec3;
     }
 
     /**
      * Can add to the passed in vector for a movement vector to be applied to the entity. Args: x, y, z, entity, vec3d
      */
-    public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3D par6Vec3D)
+    public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3)
     {
-        Vec3D vec3d = getFlowVector(par1World, par2, par3, par4);
-        par6Vec3D.xCoord += vec3d.xCoord;
-        par6Vec3D.yCoord += vec3d.yCoord;
-        par6Vec3D.zCoord += vec3d.zCoord;
+        Vec3 vec3 = getFlowVector(par1World, par2, par3, par4);
+        par6Vec3.xCoord += vec3.xCoord;
+        par6Vec3.yCoord += vec3.yCoord;
+        par6Vec3.zCoord += vec3.zCoord;
     }
 
     /**
@@ -376,14 +375,6 @@ public abstract class BlockFluid extends Block
         float f = par1IBlockAccess.getLightBrightness(par2, par3, par4);
         float f1 = par1IBlockAccess.getLightBrightness(par2, par3 + 1, par4);
         return f <= f1 ? f1 : f;
-    }
-
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        super.updateTick(par1World, par2, par3, par4, par5Random);
     }
 
     /**
@@ -500,7 +491,7 @@ public abstract class BlockFluid extends Block
 
             if (k > 0 && k < 8)
             {
-                par1World.playSoundEffect((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+                par1World.func_72980_b((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
             }
         }
 
@@ -512,16 +503,16 @@ public abstract class BlockFluid extends Block
                 double d2 = (double)par3 + maxY;
                 double d4 = (float)par4 + par5Random.nextFloat();
                 par1World.spawnParticle("lava", d, d2, d4, 0.0D, 0.0D, 0.0D);
-                par1World.playSoundEffect(d, d2, d4, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.func_72980_b(d, d2, d4, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
             }
 
             if (par5Random.nextInt(200) == 0)
             {
-                par1World.playSoundEffect(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.func_72980_b(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
             }
         }
 
-        if (par5Random.nextInt(10) == 0 && par1World.isBlockNormalCube(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement())
+        if (par5Random.nextInt(10) == 0 && par1World.func_72797_t(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement())
         {
             double d1 = (float)par2 + par5Random.nextFloat();
             double d3 = (double)par3 - 1.05D;
@@ -538,27 +529,27 @@ public abstract class BlockFluid extends Block
         }
     }
 
-    public static double func_293_a(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material)
+    public static double func_72204_a(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material)
     {
-        Vec3D vec3d = null;
+        Vec3 vec3 = null;
 
         if (par4Material == Material.water)
         {
-            vec3d = ((BlockFluid)Block.waterMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
+            vec3 = ((BlockFluid)Block.waterMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
         }
 
         if (par4Material == Material.lava)
         {
-            vec3d = ((BlockFluid)Block.lavaMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
+            vec3 = ((BlockFluid)Block.lavaMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
         }
 
-        if (vec3d.xCoord == 0.0D && vec3d.zCoord == 0.0D)
+        if (vec3.xCoord == 0.0D && vec3.zCoord == 0.0D)
         {
             return -1000D;
         }
         else
         {
-            return Math.atan2(vec3d.zCoord, vec3d.xCoord) - (Math.PI / 2D);
+            return Math.atan2(vec3.zCoord, vec3.xCoord) - (Math.PI / 2D);
         }
     }
 

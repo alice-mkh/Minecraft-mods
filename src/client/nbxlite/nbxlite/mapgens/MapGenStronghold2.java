@@ -66,7 +66,7 @@ public class MapGenStronghold2 extends MapGenStructure
         for(int i1 = 0; i1 < k; i1++)
         {
             ChunkCoordIntPair chunkcoordintpair = achunkcoordintpair[i1];
-            if(i == chunkcoordintpair.chunkXPos && j == chunkcoordintpair.chunkZPosition)
+            if(i == chunkcoordintpair.chunkXPos && j == chunkcoordintpair.chunkZPos)
             {
                 return true;
             }

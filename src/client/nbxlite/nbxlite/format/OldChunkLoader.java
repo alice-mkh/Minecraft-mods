@@ -7,6 +7,7 @@ import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityList;
 import net.minecraft.src.IChunkLoader;
+import net.minecraft.src.MinecraftException;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.NextTickListEntry;
@@ -109,7 +110,11 @@ public class OldChunkLoader
     public void saveChunk(World world, Chunk chunk)
     throws IOException
     {
-        world.checkSessionLock();
+        try{
+            world.checkSessionLock();
+        }catch(MinecraftException ex){
+            ex.printStackTrace();
+        }
         File file = chunkFileForXZ(chunk.xPosition, chunk.zPosition);
         if (file.exists())
         {
@@ -143,7 +148,11 @@ public class OldChunkLoader
     public static void storeChunkInCompound(Chunk chunk, World world, NBTTagCompound nbttagcompound)
     {
         OldChunk chunk2 = (OldChunk)chunk;
-        world.checkSessionLock();
+        try{
+            world.checkSessionLock();
+        }catch(MinecraftException ex){
+            ex.printStackTrace();
+        }
         nbttagcompound.setInteger("xPos", chunk2.xPosition);
         nbttagcompound.setInteger("zPos", chunk2.zPosition);
         nbttagcompound.setLong("LastUpdate", world.getWorldTime());
@@ -284,7 +293,6 @@ public class OldChunkLoader
     }
 
     public void saveExtraChunkData(World world, Chunk chunk)
-    throws IOException
     {
     }
 }

@@ -169,7 +169,7 @@ public class EntitySheep extends EntityAnimal
 
     protected void updateAITasks()
     {
-        sheepTimer = aiEatGrass.func_48396_h();
+        sheepTimer = aiEatGrass.func_75362_f();
         super.updateAITasks();
     }
 
@@ -240,7 +240,7 @@ public class EntitySheep extends EntityAnimal
         }
     }
 
-    public float func_44003_c(float par1)
+    public float func_70894_j(float par1)
     {
         if (sheepTimer <= 0)
         {
@@ -262,7 +262,7 @@ public class EntitySheep extends EntityAnimal
         }
     }
 
-    public float func_44002_d(float par1)
+    public float func_70890_k(float par1)
     {
         if (sheepTimer > 4 && sheepTimer <= 36)
         {

@@ -97,4 +97,9 @@ public class ChunkProviderGenerate2
     {
         return getCurrentProvider().findClosestStructure(world, s, i, j, k);
     }
+
+    public int func_73152_e()
+    {
+        return 0;
+    }
 }

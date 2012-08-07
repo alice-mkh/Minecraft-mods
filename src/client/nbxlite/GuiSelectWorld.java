@@ -9,10 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.gui.*;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
-import net.minecraft.src.nbxlite.MinecraftHook;
 
 public class GuiSelectWorld extends GuiScreen
 {
+    public static boolean nbxlite = false;
+
     /** simple date formater */
     private final DateFormat dateFormatter = new SimpleDateFormat();
 
@@ -47,6 +48,7 @@ public class GuiSelectWorld extends GuiScreen
 
     /** the select button in the world selection gui */
     private GuiButton buttonSelect;
+    private GuiButton buttonSelect2;
 
     /** the delete button in the world selection gui */
     private GuiButton buttonDelete;
@@ -55,7 +57,7 @@ public class GuiSelectWorld extends GuiScreen
     {
         screenTitle = "Select world";
         selected = false;
-        localizedGameModeText = new String[2];
+        localizedGameModeText = new String[3];
         parentScreen = par1GuiScreen;
     }
 
@@ -68,8 +70,9 @@ public class GuiSelectWorld extends GuiScreen
         screenTitle = stringtranslate.translateKey("selectWorld.title");
         localizedWorldText = stringtranslate.translateKey("selectWorld.world");
         localizedMustConvertText = stringtranslate.translateKey("selectWorld.conversion");
-        localizedGameModeText[0] = stringtranslate.translateKey("gameMode.survival");
-        localizedGameModeText[1] = stringtranslate.translateKey("gameMode.creative");
+        localizedGameModeText[EnumGameType.SURVIVAL.func_77148_a()] = stringtranslate.translateKey("gameMode.survival");
+        localizedGameModeText[EnumGameType.CREATIVE.func_77148_a()] = stringtranslate.translateKey("gameMode.creative");
+        localizedGameModeText[EnumGameType.ADVENTURE.func_77148_a()] = stringtranslate.translateKey("gameMode.adventure");
         loadSaves();
         worldSlotContainer = new GuiWorldSlot(this);
         worldSlotContainer.registerScrollButtons(controlList, 4, 5);
@@ -81,7 +84,11 @@ public class GuiSelectWorld extends GuiScreen
      */
     private void loadSaves()
     {
-        saveList = MinecraftHook.getSaveLoader2().getSaveList();
+        if (nbxlite){
+            saveList = ODNBXlite.saveLoader.getSaveList();
+        }else{
+            saveList = mc.getSaveLoader().getSaveList();
+        }
         Collections.sort(saveList);
         selectedWorld = -1;
     }
@@ -117,11 +124,13 @@ public class GuiSelectWorld extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.select")));
+        controlList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, stringtranslate.translateKey("Play SMP")));
         controlList.add(buttonDelete = new GuiButton(6, width / 2 - 154, height - 28, 70, 20, stringtranslate.translateKey("selectWorld.rename")));
         controlList.add(buttonRename = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, stringtranslate.translateKey("selectWorld.delete")));
         controlList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.create")));
         controlList.add(new GuiButton(0, width / 2 + 4, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
         buttonSelect.enabled = false;
+        buttonSelect2.enabled = false;
         buttonRename.enabled = false;
         buttonDelete.enabled = false;
     }
@@ -143,22 +152,27 @@ public class GuiSelectWorld extends GuiScreen
             if (s != null)
             {
                 deleting = true;
-                StringTranslate stringtranslate = StringTranslate.getInstance();
-                String s1 = stringtranslate.translateKey("selectWorld.deleteQuestion");
-                String s2 = (new StringBuilder()).append("'").append(s).append("' ").append(stringtranslate.translateKey("selectWorld.deleteWarning")).toString();
-                String s3 = stringtranslate.translateKey("selectWorld.deleteButton");
-                String s4 = stringtranslate.translateKey("gui.cancel");
-                GuiYesNo guiyesno = new GuiYesNo(this, s1, s2, s3, s4, selectedWorld);
+                GuiYesNo guiyesno = func_74061_a(this, s, selectedWorld);
                 mc.displayGuiScreen(guiyesno);
             }
         }
         else if (par1GuiButton.id == 1)
         {
+            mc.enableSP = true;
+            selectWorld(selectedWorld);
+        }
+        else if (par1GuiButton.id == -1)
+        {
+            mc.enableSP = false;
             selectWorld(selectedWorld);
         }
         else if (par1GuiButton.id == 3)
         {
-            mc.displayGuiScreen(new GuiCreateWorld2(this));
+            if (nbxlite){
+                mc.displayGuiScreen(new GuiCreateWorld2(this));
+            }else{
+                mc.displayGuiScreen(new GuiCreateWorld(this));
+            }
         }
         else if (par1GuiButton.id == 6)
         {
@@ -174,22 +188,33 @@ public class GuiSelectWorld extends GuiScreen
         }
     }
 
+
     /**
      * Gets the selected world.
      */
     public void selectWorld(int par1)
     {
-        if (getSaveFileName(par1).endsWith(".mclevel")){
-            File dir = ((SaveConverterMcRegion)MinecraftHook.getSaveLoader2()).getSaveDirectory();
+        if (nbxlite && getSaveFileName(par1).endsWith(".mclevel")){
+            File dir = ((SaveConverterMcRegion)ODNBXlite.saveLoader).getSaveDirectory();
             try{
                 File mclevel = new File(dir, getSaveFileName(par1));
                 ODNBXlite.mclevelimporter = new McLevelImporter(mclevel);
-                mc.playerController = new PlayerControllerSP(mc);
-                mc.startWorld(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, 0, false, false, WorldType.DEFAULT));
+                if (mc.enableSP){
+                    mc.setController(EnumGameType.SURVIVAL);
+                    mc.startWorldSSP(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, EnumGameType.SURVIVAL, false, false, WorldType.DEFAULT));
+//             MinecraftHook.startWorldHook(s, getSaveName(par1), null);
+                    mc.displayGuiScreen(null);
+                }else{
+                    String s1 = getSaveName(par1);
+                    if (s1 == null){
+                        s1 = (new StringBuilder()).append("World").append(par1).toString();
+                    }
+                    mc.func_71371_a(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, EnumGameType.SURVIVAL, false, false, WorldType.DEFAULT));
+                }
                 mclevel.renameTo(new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+mclevel.getName()));
                 mc.displayGuiScreen(null);
             }catch(Exception ex){
-                ISaveFormat isaveformat = MinecraftHook.getSaveLoader2();
+                ISaveFormat isaveformat = ODNBXlite.saveLoader;
                 isaveformat.flushCache();
                 File mclevel = new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+getSaveFileName(par1));
                 mclevel.renameTo(new File(dir, mclevel.getName()));
@@ -200,7 +225,7 @@ public class GuiSelectWorld extends GuiScreen
             }
             return;
         }
-        if (!mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().nbxlite){
+        if (nbxlite && !mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().nbxlite){
             ODNBXlite.Import = true;
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(new GuiNBXlite(this, getSaveFileName(par1), par1));
@@ -214,16 +239,6 @@ public class GuiSelectWorld extends GuiScreen
         }
 
         selected = true;
-        int i = ((SaveFormatComparator)saveList.get(par1)).getGameType();
-
-        if (i == 0)
-        {
-            mc.playerController = new PlayerControllerSP(mc);
-        }
-        else
-        {
-            mc.playerController = new PlayerControllerCreative(mc);
-        }
 
         String s = getSaveFileName(par1);
 
@@ -231,10 +246,21 @@ public class GuiSelectWorld extends GuiScreen
         {
             s = (new StringBuilder()).append("World").append(par1).toString();
         }
-
-        ODNBXlite.Import = false;
-        MinecraftHook.startWorldHook(s, getSaveName(par1), null);
-        mc.displayGuiScreen(null);
+        if (nbxlite){
+            ODNBXlite.Import = false;
+        }
+        if (mc.enableSP){
+            mc.setController(((SaveFormatComparator)saveList.get(par1)).func_75790_f());
+            mc.startWorldSSP(s, getSaveName(par1), null);
+//             MinecraftHook.startWorldHook(s, getSaveName(par1), null);
+            mc.displayGuiScreen(null);
+        }else{
+            String s1 = getSaveName(par1);
+            if (s1 == null){
+                s1 = (new StringBuilder()).append("World").append(par1).toString();
+            }
+            mc.func_71371_a(s, s1, null);
+        }
     }
 
     public void confirmClicked(boolean par1, int par2)
@@ -245,10 +271,7 @@ public class GuiSelectWorld extends GuiScreen
 
             if (par1)
             {
-                ISaveFormat isaveformat = MinecraftHook.getSaveLoader2();
-                File dir = ((SaveConverterMcRegion)isaveformat).getSaveDirectory();
-                File mclevel = new File(dir, getSaveFileName(par2)+"/"+getSaveFileName(par2)+".mclevel");
-                mclevel.renameTo(new File(dir, getSaveFileName(par2)+".mclevel"));
+                ISaveFormat isaveformat = mc.getSaveLoader();
                 isaveformat.flushCache();
                 isaveformat.deleteWorldDirectory(getSaveFileName(par2));
                 loadSaves();
@@ -266,6 +289,17 @@ public class GuiSelectWorld extends GuiScreen
         worldSlotContainer.drawScreen(par1, par2, par3);
         drawCenteredString(fontRenderer, screenTitle, width / 2, 20, 0xffffff);
         super.drawScreen(par1, par2, par3);
+    }
+
+    public static GuiYesNo func_74061_a(GuiScreen par0GuiScreen, String par1Str, int par2)
+    {
+        StringTranslate stringtranslate = StringTranslate.getInstance();
+        String s = stringtranslate.translateKey("selectWorld.deleteQuestion");
+        String s1 = (new StringBuilder()).append("'").append(par1Str).append("' ").append(stringtranslate.translateKey("selectWorld.deleteWarning")).toString();
+        String s2 = stringtranslate.translateKey("selectWorld.deleteButton");
+        String s3 = stringtranslate.translateKey("gui.cancel");
+        GuiYesNo guiyesno = new GuiYesNo(par0GuiScreen, s, s1, s2, s3, par2);
+        return guiyesno;
     }
 
     static List getSize(GuiSelectWorld par0GuiSelectWorld)
@@ -295,6 +329,11 @@ public class GuiSelectWorld extends GuiScreen
     static GuiButton getSelectButton(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.buttonSelect;
+    }
+
+    static GuiButton getSMPSelectButton(GuiSelectWorld par0GuiSelectWorld)
+    {
+        return par0GuiSelectWorld.buttonSelect2;
     }
 
     /**

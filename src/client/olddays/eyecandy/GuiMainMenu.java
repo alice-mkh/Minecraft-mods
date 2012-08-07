@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class GuiMainMenu extends GuiScreen
 
     /** The splash message. */
     private String splashText;
-    private GuiButton multiplayerButton;
+    private GuiButton field_73973_d;
 
     /** Timer used to rotate the panorama, increases every tick. */
     private int panoramaTimer;
@@ -43,33 +44,37 @@ public class GuiMainMenu extends GuiScreen
      * Texture allocated for the current viewport of the main menu's panorama background.
      */
     private int viewportTexture;
+    private static final String field_73978_o[] =
+    {
+        "/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"
+    };
 
     public GuiMainMenu()
     {
         updateCounter = 0.0F;
         panoramaTimer = 0;
         splashText = "missingno";
+        BufferedReader bufferedreader = null;
 
         try
         {
             ArrayList arraylist = new ArrayList();
-            BufferedReader bufferedreader = new BufferedReader(new InputStreamReader((net.minecraft.src.GuiMainMenu.class).getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
-            String s = "";
+            bufferedreader = new BufferedReader(new InputStreamReader((net.minecraft.src.GuiMainMenu.class).getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
 
             do
             {
-                String s1;
+                String s;
 
-                if ((s1 = bufferedreader.readLine()) == null)
+                if ((s = bufferedreader.readLine()) == null)
                 {
                     break;
                 }
 
-                s1 = s1.trim();
+                s = s.trim();
 
-                if (s1.length() > 0)
+                if (s.length() > 0)
                 {
-                    arraylist.add(s1);
+                    arraylist.add(s);
                 }
             }
             while (true);
@@ -80,7 +85,18 @@ public class GuiMainMenu extends GuiScreen
             }
             while (splashText.hashCode() == 0x77f432f);
         }
-        catch (Exception exception) { }
+        catch (IOException ioexception) { }
+        finally
+        {
+            if (bufferedreader != null)
+            {
+                try
+                {
+                    bufferedreader.close();
+                }
+                catch (IOException ioexception1) { }
+            }
+        }
 
         updateCounter = rand.nextFloat();
     }
@@ -151,8 +167,16 @@ public class GuiMainMenu extends GuiScreen
 
         StringTranslate stringtranslate = StringTranslate.getInstance();
         int i = height / 4 + 48;
-        controlList.add(new GuiButton(1, width / 2 - 100, i, stringtranslate.translateKey("menu.singleplayer")));
-        controlList.add(multiplayerButton = new GuiButton(2, width / 2 - 100, i + 24, stringtranslate.translateKey("menu.multiplayer")));
+
+        if (mc.func_71355_q())
+        {
+            func_73972_b(i, 24, stringtranslate);
+        }
+        else
+        {
+            func_73969_a(i, 24, stringtranslate);
+        }
+
         controlList.add(new GuiButton(3, width / 2 - 100, i + 48, stringtranslate.translateKey("menu.mods")));
 
         if (mc.hideQuitButton)
@@ -166,10 +190,24 @@ public class GuiMainMenu extends GuiScreen
         }
 
         controlList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
+    }
 
-        if (mc.session == null)
+    private void func_73969_a(int par1, int par2, StringTranslate par3StringTranslate)
+    {
+        controlList.add(new GuiButton(1, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.singleplayer")));
+        controlList.add(new GuiButton(2, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
+    }
+
+    private void func_73972_b(int par1, int par2, StringTranslate par3StringTranslate)
+    {
+        controlList.add(new GuiButton(11, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.playdemo")));
+        controlList.add(field_73973_d = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
+        ISaveFormat isaveformat = mc.getSaveLoader();
+        WorldInfo worldinfo = isaveformat.getWorldInfo("Demo_World");
+
+        if (worldinfo == null)
         {
-            multiplayerButton.enabled = false;
+            field_73973_d.enabled = false;
         }
     }
 
@@ -206,6 +244,41 @@ public class GuiMainMenu extends GuiScreen
         if (par1GuiButton.id == 4)
         {
             mc.shutdown();
+        }
+
+        if (par1GuiButton.id == 11)
+        {
+            mc.enableSP = true;
+            if (mc.enableSP){
+                mc.field_71442_b = new PlayerControllerDemo(mc);
+                mc.startWorldSSP("Demo_World", "Demo_World", DemoWorldServer.field_73071_a);
+                mc.displayGuiScreen(null);
+            }else{
+                mc.func_71371_a("Demo_World", "Demo_World", DemoWorldServer.field_73071_a);
+            }
+        }
+
+        if (par1GuiButton.id == 12)
+        {
+            ISaveFormat isaveformat = mc.getSaveLoader();
+            WorldInfo worldinfo = isaveformat.getWorldInfo("Demo_World");
+
+            if (worldinfo != null)
+            {
+                GuiYesNo guiyesno = GuiSelectWorld.func_74061_a(this, worldinfo.getWorldName(), 12);
+                mc.displayGuiScreen(guiyesno);
+            }
+        }
+    }
+
+    public void confirmClicked(boolean par1, int par2)
+    {
+        if (par1 && par2 == 12)
+        {
+            ISaveFormat isaveformat = mc.getSaveLoader();
+            isaveformat.flushCache();
+            isaveformat.deleteWorldDirectory("Demo_World");
+            mc.displayGuiScreen(this);
         }
     }
 
@@ -270,7 +343,7 @@ public class GuiMainMenu extends GuiScreen
                     GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture((new StringBuilder()).append("/title/bg/panorama").append(k).append(".png").toString()));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(field_73978_o[k]));
                 tessellator.startDrawingQuads();
                 tessellator.setColorRGBA_I(0xffffff, 255 / (j + 1));
                 float f3 = 0.0F;
@@ -407,19 +480,23 @@ public class GuiMainMenu extends GuiScreen
         GL11.glPushMatrix();
         GL11.glTranslatef(width / 2 + 90, 70F, 0.0F);
         GL11.glRotatef(-20F, 0.0F, 0.0F, 1.0F);
-        float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(System.currentTimeMillis() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
+        float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(Minecraft.func_71386_F() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
         f = (f * 100F) / (float)(fontRenderer.getStringWidth(splashText) + 32);
         GL11.glScalef(f, f, f);
         drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
         GL11.glPopMatrix();
-        String v = version.equals("OFF") ? "Minecraft 1.2.5" : version;
-        if (panorama){
-            drawString(fontRenderer, v, 2, height - 10, 0xffffff);
-        }else{
-            drawString(fontRenderer, v, 2, 2, 0x505050);
+        String s = version.equals("OFF") ? "Minecraft 1.3.1" : version;
+        if (mc.func_71355_q())
+        {
+            s = (new StringBuilder()).append(s).append(" Demo").toString();
         }
-        String s = "Copyright Mojang AB. Do not distribute!";
-        drawString(fontRenderer, s, width - fontRenderer.getStringWidth(s) - 2, height - 10, 0xffffff);
+        if (panorama){
+            drawString(fontRenderer, s, 2, height - 10, 0xffffff);
+        }else{
+            drawString(fontRenderer, s, 2, 2, 0x505050);
+        }
+        String s1 = "Copyright Mojang AB. Do not distribute!";
+        drawString(fontRenderer, s1, width - fontRenderer.getStringWidth(s1) - 2, height - 10, 0xffffff);
         super.drawScreen(par1, par2, par3);
     }
 
@@ -445,7 +522,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        int k = 120 * scaledresolution.scaleFactor;
+        int k = 120 * scaledresolution.func_78325_e();
         GLU.gluPerspective(70F, (float)mc.displayWidth / (float)k, 0.05F, 100F);
         GL11.glViewport(0, mc.displayHeight - k, mc.displayWidth, k);
         GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);

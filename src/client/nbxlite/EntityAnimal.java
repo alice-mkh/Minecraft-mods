@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public abstract class EntityAnimal extends EntityAgeable
+public abstract class EntityAnimal extends EntityAgeable implements IAnimals
 {
     public static boolean despawn = false;
 
@@ -178,13 +177,6 @@ public abstract class EntityAnimal extends EntityAgeable
     public abstract EntityAnimal spawnBabyAnimal(EntityAnimal entityanimal);
 
     /**
-     * Used when an entity is close enough to attack but cannot be seen (Creeper de-fuse)
-     */
-    protected void attackBlockedEntity(Entity entity, float f)
-    {
-    }
-
-    /**
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
@@ -237,56 +229,77 @@ public abstract class EntityAnimal extends EntityAgeable
      */
     protected Entity findPlayerToAttack()
     {
-        if (fleeingTick > 0)
+        label0:
         {
-            return null;
-        }
-
-        float f = 8F;
-
-        if (inLove > 0)
-        {
-            List list = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
-
-            for (int i = 0; i < list.size(); i++)
+            if (fleeingTick > 0)
             {
-                EntityAnimal entityanimal = (EntityAnimal)list.get(i);
-
-                if (entityanimal != this && entityanimal.inLove > 0)
-                {
-                    return entityanimal;
-                }
+                return null;
             }
-        }
-        else if (getGrowingAge() == 0)
-        {
-            List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityPlayer.class, boundingBox.expand(f, f, f));
 
-            for (int j = 0; j < list1.size(); j++)
+            float f = 8F;
+
+            if (inLove > 0)
             {
-                EntityPlayer entityplayer = (EntityPlayer)list1.get(j);
+                List list = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
+                Iterator iterator = list.iterator();
+                EntityAnimal entityanimal;
 
-                if (entityplayer.getCurrentEquippedItem() != null && isWheat(entityplayer.getCurrentEquippedItem()))
+                do
                 {
-                    return entityplayer;
+                    if (!iterator.hasNext())
+                    {
+                        break label0;
+                    }
+
+                    entityanimal = (EntityAnimal)iterator.next();
                 }
+                while (entityanimal == this || entityanimal.inLove <= 0);
+
+                return entityanimal;
             }
-        }
-        else if (getGrowingAge() > 0)
-        {
+
+            if (getGrowingAge() == 0)
+            {
+                List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityPlayer.class, boundingBox.expand(f, f, f));
+                Iterator iterator1 = list1.iterator();
+                EntityPlayer entityplayer;
+
+                do
+                {
+                    if (!iterator1.hasNext())
+                    {
+                        break label0;
+                    }
+
+                    entityplayer = (EntityPlayer)iterator1.next();
+                }
+                while (entityplayer.getCurrentEquippedItem() == null || !isWheat(entityplayer.getCurrentEquippedItem()));
+
+                return entityplayer;
+            }
+
+            if (getGrowingAge() <= 0)
+            {
+                break label0;
+            }
+
             List list2 = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
+            Iterator iterator2 = list2.iterator();
+            EntityAnimal entityanimal1;
 
-            for (int k = 0; k < list2.size(); k++)
+            do
             {
-                EntityAnimal entityanimal1 = (EntityAnimal)list2.get(k);
-
-                if (entityanimal1 != this && entityanimal1.getGrowingAge() < 0)
+                if (!iterator2.hasNext())
                 {
-                    return entityanimal1;
+                    break label0;
                 }
-            }
-        }
 
+                entityanimal1 = (EntityAnimal)iterator2.next();
+            }
+            while (entityanimal1 == this || entityanimal1.getGrowingAge() >= 0);
+
+            return entityanimal1;
+        }
         return null;
     }
 
@@ -384,7 +397,10 @@ public abstract class EntityAnimal extends EntityAgeable
         inLove = 0;
     }
 
-    public boolean func_48135_b(EntityAnimal par1EntityAnimal)
+    /**
+     * Returns true if the mob is currently able to mate with the specified mob.
+     */
+    public boolean canMateWith(EntityAnimal par1EntityAnimal)
     {
         if (par1EntityAnimal == this)
         {

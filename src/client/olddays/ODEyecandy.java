@@ -19,7 +19,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyInt(this,    12,1,     "Tooltips", 2).setUseNames();
         new OldDaysPropertyBool(this,   13,true,  "OldFences");
         new OldDaysPropertyBool(this,   14,true,  "Arrows");
-        new OldDaysPropertyString(this, 15,"Minecraft 1.2.5", "Version");
+        new OldDaysPropertyString(this, 15, "Minecraft "+core.getMcVersion(), "Version");
         new OldDaysPropertyBool(this,   16,true,  "Shadow");
         new OldDaysPropertyBool(this,   17,false, "Drops");
         new OldDaysPropertyInt(this,    18,2,     "Hand", 2).setUseNames();
@@ -27,7 +27,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   20,false, "Labels");
         new OldDaysPropertyBool(this,   21,true,  "SmoothLoading");
         replaceBlocks();
-        redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
+//         redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
     }
 
     public void callback (int i){
@@ -106,19 +106,19 @@ public class ODEyecandy extends OldDaysModule{
             customchest.setBlockName("chest");
             customchest.setRequiresSelfNotify();
             Block.blocksList[Block.chest.blockID] = customchest;
-            BlockChestOld.toptex = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.toptex = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.toptex, "/olddays/chest.png", 0, 3, 3);
-            BlockChestOld.sidetex = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.sidetex = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.sidetex, "/olddays/chest.png", 1, 3, 3);
-            BlockChestOld.fronttex = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.fronttex = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.fronttex, "/olddays/chest.png", 2, 3, 3);
-            BlockChestOld.texfrontleft = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.texfrontleft = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.texfrontleft, "/olddays/chest.png", 3, 3, 3);
-            BlockChestOld.texfrontright = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.texfrontright = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.texfrontright, "/olddays/chest.png", 4, 3, 3);
-            BlockChestOld.texbackleft = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.texbackleft = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.texbackleft, "/olddays/chest.png", 6, 3, 3);
-            BlockChestOld.texbackright = ModLoader.getUniqueSpriteIndex("/terrain.png");
+//             BlockChestOld.texbackright = ModLoader.getUniqueSpriteIndex("/terrain.png");
             addTextureHook("/terrain.png", BlockChestOld.texbackright, "/olddays/chest.png", 7, 3, 3);
             Block.blocksList[Block.redstoneWire.blockID] = null;
             BlockRedstoneWireOld customwire = (BlockRedstoneWireOld)(new BlockRedstoneWireOld(Block.redstoneWire.blockID, 164));

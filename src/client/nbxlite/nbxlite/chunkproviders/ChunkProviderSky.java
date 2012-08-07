@@ -562,7 +562,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
                 int j23 = l20 - (l + 8);
                 int k23 = worldObj.getPrecipitationHeight(i18, l20);
                 double d1 = generatedTemperatures[j22 * 16 + j23] - ((double)(k23 - 64) / 64D) * 0.29999999999999999D;
-                if((d1 < 0.5D || worldObj.snowCovered) && k23 > 0 && k23 < 128 && worldObj.isAirBlock(i18, k23, l20) && worldObj.getBlockMaterial(i18, k23 - 1, l20).isSolid() && worldObj.getBlockMaterial(i18, k23 - 1, l20) != Material.ice)
+                if(d1 < 0.5D && k23 > 0 && k23 < 128 && worldObj.isAirBlock(i18, k23, l20) && worldObj.getBlockMaterial(i18, k23 - 1, l20).isSolid() && worldObj.getBlockMaterial(i18, k23 - 1, l20) != Material.ice)
                 {
                     worldObj.setBlockWithNotify(i18, k23, l20, Block.snow.blockID);
                 }

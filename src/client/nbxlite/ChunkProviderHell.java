@@ -24,7 +24,7 @@ public class ChunkProviderHell implements IChunkProvider
 
     /** Is the world that the nether is getting generated. */
     private World worldObj;
-    private double field_4163_o[];
+    private double field_73186_p[];
     public MapGenNetherBridge genNetherBridge;
     private double slowsandNoise[];
     private double gravelNoise[];
@@ -66,7 +66,7 @@ public class ChunkProviderHell implements IChunkProvider
         int i = byte0 + 1;
         byte byte2 = 17;
         int j = byte0 + 1;
-        field_4163_o = func_4057_a(field_4163_o, par1 * byte0, 0, par2 * byte0, i, byte2, j);
+        field_73186_p = func_73164_a(field_73186_p, par1 * byte0, 0, par2 * byte0, i, byte2, j);
 
         for (int k = 0; k < byte0; k++)
         {
@@ -75,14 +75,14 @@ public class ChunkProviderHell implements IChunkProvider
                 for (int i1 = 0; i1 < 16; i1++)
                 {
                     double d = 0.125D;
-                    double d1 = field_4163_o[((k + 0) * j + (l + 0)) * byte2 + (i1 + 0)];
-                    double d2 = field_4163_o[((k + 0) * j + (l + 1)) * byte2 + (i1 + 0)];
-                    double d3 = field_4163_o[((k + 1) * j + (l + 0)) * byte2 + (i1 + 0)];
-                    double d4 = field_4163_o[((k + 1) * j + (l + 1)) * byte2 + (i1 + 0)];
-                    double d5 = (field_4163_o[((k + 0) * j + (l + 0)) * byte2 + (i1 + 1)] - d1) * d;
-                    double d6 = (field_4163_o[((k + 0) * j + (l + 1)) * byte2 + (i1 + 1)] - d2) * d;
-                    double d7 = (field_4163_o[((k + 1) * j + (l + 0)) * byte2 + (i1 + 1)] - d3) * d;
-                    double d8 = (field_4163_o[((k + 1) * j + (l + 1)) * byte2 + (i1 + 1)] - d4) * d;
+                    double d1 = field_73186_p[((k + 0) * j + (l + 0)) * byte2 + (i1 + 0)];
+                    double d2 = field_73186_p[((k + 0) * j + (l + 1)) * byte2 + (i1 + 0)];
+                    double d3 = field_73186_p[((k + 1) * j + (l + 0)) * byte2 + (i1 + 0)];
+                    double d4 = field_73186_p[((k + 1) * j + (l + 1)) * byte2 + (i1 + 0)];
+                    double d5 = (field_73186_p[((k + 0) * j + (l + 0)) * byte2 + (i1 + 1)] - d1) * d;
+                    double d6 = (field_73186_p[((k + 0) * j + (l + 1)) * byte2 + (i1 + 1)] - d2) * d;
+                    double d7 = (field_73186_p[((k + 1) * j + (l + 0)) * byte2 + (i1 + 1)] - d3) * d;
+                    double d8 = (field_73186_p[((k + 1) * j + (l + 1)) * byte2 + (i1 + 1)] - d4) * d;
 
                     for (int j1 = 0; j1 < 8; j1++)
                     {
@@ -133,7 +133,7 @@ public class ChunkProviderHell implements IChunkProvider
         }
     }
 
-    public void func_4058_b(int par1, int par2, byte par3ArrayOfByte[])
+    public void func_73166_b(int par1, int par2, byte par3ArrayOfByte[])
     {
         byte byte0 = 64;
         double d = 0.03125D;
@@ -156,13 +156,7 @@ public class ChunkProviderHell implements IChunkProvider
                 {
                     int j1 = (j * 16 + i) * 128 + i1;
 
-                    if (i1 >= 127 - hellRNG.nextInt(5))
-                    {
-                        par3ArrayOfByte[j1] = (byte)Block.bedrock.blockID;
-                        continue;
-                    }
-
-                    if (i1 <= 0 + hellRNG.nextInt(5))
+                    if (i1 >= 127 - hellRNG.nextInt(5) || i1 <= 0 + hellRNG.nextInt(5))
                     {
                         par3ArrayOfByte[j1] = (byte)Block.bedrock.blockID;
                         continue;
@@ -260,7 +254,7 @@ public class ChunkProviderHell implements IChunkProvider
         hellRNG.setSeed((long)par1 * 0x4f9939f508L + (long)par2 * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         generateNetherTerrain(par1, par2, abyte0);
-        func_4058_b(par1, par2, abyte0);
+        func_73166_b(par1, par2, abyte0);
         netherCaveGenerator.generate(this, worldObj, par1, par2, abyte0);
         if(generateStructures){
             genNetherBridge.generate(this, worldObj, par1, par2, abyte0);
@@ -278,7 +272,7 @@ public class ChunkProviderHell implements IChunkProvider
         return chunk;
     }
 
-    private double[] func_4057_a(double par1ArrayOfDouble[], int par2, int par3, int par4, int par5, int par6, int par7)
+    private double[] func_73164_a(double par1ArrayOfDouble[], int par2, int par3, int par4, int par5, int par6, int par7)
     {
         if (par1ArrayOfDouble == null)
         {
@@ -432,7 +426,9 @@ public class ChunkProviderHell implements IChunkProvider
         BlockSand.fallInstantly = true;
         int i = par2 * 16;
         int j = par3 * 16;
-        genNetherBridge.generateStructuresInChunk(worldObj, hellRNG, par2, par3);
+        if(generateStructures){
+            genNetherBridge.generateStructuresInChunk(worldObj, hellRNG, par2, par3);
+        }
 
         for (int k = 0; k < 8; k++)
         {
@@ -528,7 +524,7 @@ public class ChunkProviderHell implements IChunkProvider
      */
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
-        if (par1EnumCreatureType == EnumCreatureType.monster && genNetherBridge.func_40483_a(par2, par3, par4))
+        if (par1EnumCreatureType == EnumCreatureType.monster && genNetherBridge.func_75048_a(par2, par3, par4))
         {
             return genNetherBridge.getSpawnList();
         }
@@ -551,5 +547,10 @@ public class ChunkProviderHell implements IChunkProvider
     public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int i, int j)
     {
         return null;
+    }
+
+    public int func_73152_e()
+    {
+        return 0;
     }
 }

@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
-import java.util.*;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.input.Keyboard;
 
-public class GuiInventory extends GuiContainer
+public class GuiInventory extends InventoryEffectRenderer
 {
     public static boolean walking = false;
 
@@ -32,9 +32,9 @@ public class GuiInventory extends GuiContainer
      */
     public void updateScreen()
     {
-        if (mc.playerController.isInCreativeMode())
+        if (mc.field_71442_b.isInCreativeMode())
         {
-            mc.displayGuiScreen(new GuiContainerCreative(mc.thePlayer));
+            mc.displayGuiScreen(new GuiContainerCreative(mc.field_71439_g));
         }
     }
 
@@ -45,18 +45,13 @@ public class GuiInventory extends GuiContainer
     {
         controlList.clear();
 
-        if (mc.playerController.isInCreativeMode())
+        if (mc.field_71442_b.isInCreativeMode())
         {
-            mc.displayGuiScreen(new GuiContainerCreative(mc.thePlayer));
+            mc.displayGuiScreen(new GuiContainerCreative(mc.field_71439_g));
         }
         else
         {
             super.initGui();
-
-            if (!mc.thePlayer.getActivePotionEffects().isEmpty())
-            {
-                guiLeft = 160 + (width - xSize - 200) / 2;
-            }
         }
     }
 
@@ -89,33 +84,33 @@ public class GuiInventory extends GuiContainer
         int j = guiLeft;
         int k = guiTop;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
-        displayDebuffEffects();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        func_74223_a(mc, j + 51, k + 75, 30, (float)(j + 51) - xSize_lo, (float)((k + 75) - 50) - ySize_lo);
+    }
+
+    public static void func_74223_a(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
+    {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
-        GL11.glTranslatef(j + 51, k + 75, 50F);
-        float f = 30F;
-        GL11.glScalef(-f, f, f);
+        GL11.glTranslatef(par1, par2, 50F);
+        GL11.glScalef(-par3, par3, par3);
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-        float f1 = mc.thePlayer.renderYawOffset;
-        float f2 = mc.thePlayer.rotationYaw;
-        float f3 = mc.thePlayer.rotationPitch;
-        float f4 = (float)(j + 51) - xSize_lo;
-        float f5 = (float)((k + 75) - 50) - ySize_lo;
+        float f = par0Minecraft.field_71439_g.renderYawOffset;
+        float f1 = par0Minecraft.field_71439_g.rotationYaw;
+        float f2 = par0Minecraft.field_71439_g.rotationPitch;
         GL11.glRotatef(135F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-(float)Math.atan(f5 / 40F) * 20F, 1.0F, 0.0F, 0.0F);
-        mc.thePlayer.renderYawOffset = (float)Math.atan(f4 / 40F) * 20F;
-        mc.thePlayer.rotationYaw = (float)Math.atan(f4 / 40F) * 40F;
-        mc.thePlayer.rotationPitch = -(float)Math.atan(f5 / 40F) * 20F;
-        mc.thePlayer.rotationYawHead = mc.thePlayer.rotationYaw;
-        GL11.glTranslatef(0.0F, mc.thePlayer.yOffset, 0.0F);
+        GL11.glRotatef(-(float)Math.atan(par5 / 40F) * 20F, 1.0F, 0.0F, 0.0F);
+        par0Minecraft.field_71439_g.renderYawOffset = (float)Math.atan(par4 / 40F) * 20F;
+        par0Minecraft.field_71439_g.rotationYaw = (float)Math.atan(par4 / 40F) * 40F;
+        par0Minecraft.field_71439_g.rotationPitch = -(float)Math.atan(par5 / 40F) * 20F;
+        par0Minecraft.field_71439_g.rotationYawHead = par0Minecraft.field_71439_g.rotationYaw;
+        GL11.glTranslatef(0.0F, par0Minecraft.field_71439_g.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180F;
-        RenderManager.instance.renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        mc.thePlayer.renderYawOffset = f1;
-        mc.thePlayer.rotationYaw = f2;
-        mc.thePlayer.rotationPitch = f3;
+        RenderManager.instance.renderEntityWithPosYaw(par0Minecraft.field_71439_g, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        par0Minecraft.field_71439_g.renderYawOffset = f;
+        par0Minecraft.field_71439_g.rotationYaw = f1;
+        par0Minecraft.field_71439_g.rotationPitch = f2;
         GL11.glPopMatrix();
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -134,64 +129,6 @@ public class GuiInventory extends GuiContainer
         if (par1GuiButton.id == 1)
         {
             mc.displayGuiScreen(new GuiStats(this, mc.statFileWriter));
-        }
-    }
-
-    /**
-     * Displays debuff/potion effects that are currently being applied to the player
-     */
-    private void displayDebuffEffects()
-    {
-        int i = guiLeft - 124;
-        int j = guiTop;
-        int k = mc.renderEngine.getTexture("/gui/inventory.png");
-        Collection collection = mc.thePlayer.getActivePotionEffects();
-
-        if (collection.isEmpty())
-        {
-            return;
-        }
-
-        int l = 33;
-
-        if (collection.size() > 5)
-        {
-            l = 132 / (collection.size() - 1);
-        }
-
-        for (Iterator iterator = mc.thePlayer.getActivePotionEffects().iterator(); iterator.hasNext();)
-        {
-            PotionEffect potioneffect = (PotionEffect)iterator.next();
-            Potion potion = Potion.potionTypes[potioneffect.getPotionID()];
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            mc.renderEngine.bindTexture(k);
-            drawTexturedModalRect(i, j, 0, ySize, 140, 32);
-
-            if (potion.hasStatusIcon())
-            {
-                int i1 = potion.getStatusIconIndex();
-                drawTexturedModalRect(i + 6, j + 7, 0 + (i1 % 8) * 18, ySize + 32 + (i1 / 8) * 18, 18, 18);
-            }
-
-            String s = StatCollector.translateToLocal(potion.getName());
-
-            if (potioneffect.getAmplifier() == 1)
-            {
-                s = (new StringBuilder()).append(s).append(" II").toString();
-            }
-            else if (potioneffect.getAmplifier() == 2)
-            {
-                s = (new StringBuilder()).append(s).append(" III").toString();
-            }
-            else if (potioneffect.getAmplifier() == 3)
-            {
-                s = (new StringBuilder()).append(s).append(" IV").toString();
-            }
-
-            fontRenderer.drawStringWithShadow(s, i + 10 + 18, j + 6, 0xffffff);
-            String s1 = Potion.getDurationString(potioneffect);
-            fontRenderer.drawStringWithShadow(s1, i + 10 + 18, j + 6 + 10, 0x7f7f7f);
-            j += l;
         }
     }
 

@@ -19,7 +19,7 @@ public abstract class GenLayer
     /** base seed to the LCG prng provided via the constructor */
     private long baseSeed;
 
-    public static GenLayer[] func_48425_a(long par0, WorldType par2WorldType)
+    public static GenLayer[] func_75901_a(long par0, WorldType par2WorldType)
     {
         GenLayer obj = new GenLayerIsland(1L);
         obj = new GenLayerFuzzyZoom(2000L, ((GenLayer)(obj)));
@@ -50,33 +50,36 @@ public abstract class GenLayer
             obj = new GenLayerZoom(2004L, ((GenLayer)(obj)));
             obj = new GenLayerIsland18(3L, ((GenLayer)(obj)));
         }
-        byte byte0 = 4;//TODO: 6 for large biomes
+        byte byte0 = 4;
+        if (par2WorldType == WorldType.field_77135_d){
+            byte0 = 6;
+        }
         GenLayer obj1 = obj;
-        obj1 = GenLayerZoom.func_35515_a(1000L, ((GenLayer)(obj1)), 0);
+        obj1 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj1)), 0);
         obj1 = new GenLayerRiverInit(100L, ((GenLayer)(obj1)));
-        obj1 = GenLayerZoom.func_35515_a(1000L, ((GenLayer)(obj1)), byte0 + 2);
+        obj1 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj1)), byte0 + 2);
         if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_12){
-            obj1 = new GenLayerRiver(1L, ((GenLayer)(obj1)));
+            obj1 = new GenLayerRiver12(1L, ((GenLayer)(obj1)));
         }else{
-            obj1 = new GenLayerRiver13(1L, ((GenLayer)(obj1)));
+            obj1 = new GenLayerRiver(1L, ((GenLayer)(obj1)));
         }
         obj1 = new GenLayerSmooth(1000L, ((GenLayer)(obj1)));
         GenLayer obj2 = obj;
-        obj2 = GenLayerZoom.func_35515_a(1000L, ((GenLayer)(obj2)), 0);
+        obj2 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj2)), 0);
         if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
-            obj2 = new GenLayerBiome13(200L, ((GenLayer)(obj2)), par2WorldType);
-        }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_12){
             obj2 = new GenLayerBiome(200L, ((GenLayer)(obj2)), par2WorldType);
-        }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_11){
+        }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_12){
+            obj2 = new GenLayerBiome12(200L, ((GenLayer)(obj2)), par2WorldType);
+        }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_11 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_10){
             obj2 = new GenLayerVillageLandscape11(200L, ((GenLayer)(obj2)));
         }else{
             obj2 = new GenLayerVillageLandscape18(200L, ((GenLayer)(obj2)));
         }
-        obj2 = GenLayerZoom.func_35515_a(1000L, ((GenLayer)(obj2)), 2);
+        obj2 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj2)), 2);
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_11 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_12){
+            obj2 = new GenLayerHills12(1000L, ((GenLayer)(obj2)));
+        }else if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
             obj2 = new GenLayerHills(1000L, ((GenLayer)(obj2)));
-        }else if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_13){
-            obj2 = new GenLayerHills13(1000L, ((GenLayer)(obj2)));
         }
         GenLayer obj3 = null;
         GenLayer obj4 = null;
@@ -98,14 +101,14 @@ public abstract class GenLayer
             if(ODNBXlite.MapFeatures==ODNBXlite.FEATURES_10 && i == 0)
             {
                 obj2 = new GenLayerShore10(1000L, ((GenLayer)(obj2)));
-            }    
+            }
             if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_11 && i == 1)
             {
                 obj2 = new GenLayerShore(1000L, ((GenLayer)(obj2)));
-                if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_12){
+                if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
                     obj2 = new GenLayerSwampRivers(1000L, ((GenLayer)(obj2)));
                 }else{
-                    obj2 = new GenLayerSwampRivers13(1000L, ((GenLayer)(obj2)));
+                    obj2 = new GenLayerSwampRivers12(1000L, ((GenLayer)(obj2)));
                 }
             }
             if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){

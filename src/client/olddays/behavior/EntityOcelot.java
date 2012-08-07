@@ -43,12 +43,7 @@ public class EntityOcelot extends EntityTameable
      */
     public void updateAITick()
     {
-        if (!getMoveHelper().func_48186_a())
-        {
-            setSneaking(false);
-            setSprinting(false);
-        }
-        else
+        if (getMoveHelper().func_75640_a())
         {
             float f = getMoveHelper().getSpeed();
 
@@ -68,6 +63,11 @@ public class EntityOcelot extends EntityTameable
                 setSprinting(false);
             }
         }
+        else
+        {
+            setSneaking(false);
+            setSprinting(false);
+        }
     }
 
     /**
@@ -83,7 +83,7 @@ public class EntityOcelot extends EntityTameable
      */
     public String getTexture()
     {
-        switch (func_48148_ad())
+        switch (getTameSkin())
         {
             case 0:
                 return "/mob/ozelot.png";
@@ -127,7 +127,7 @@ public class EntityOcelot extends EntityTameable
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("CatType", func_48148_ad());
+        par1NBTTagCompound.setInteger("CatType", getTameSkin());
     }
 
     /**
@@ -136,7 +136,7 @@ public class EntityOcelot extends EntityTameable
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        func_48147_c(par1NBTTagCompound.getInteger("CatType"));
+        setTameSkin(par1NBTTagCompound.getInteger("CatType"));
     }
 
     /**
@@ -208,7 +208,7 @@ public class EntityOcelot extends EntityTameable
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        aiSit.func_48407_a(false);
+        aiSit.setSitting(false);
         return super.attackEntityFrom(par1DamageSource, par2);
     }
 
@@ -226,42 +226,44 @@ public class EntityOcelot extends EntityTameable
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (!isTamed())
+        if (isTamed())
         {
-            if (aiTempt.func_48270_h() && itemstack != null && itemstack.itemID == Item.fishRaw.shiftedIndex && par1EntityPlayer.getDistanceSqToEntity(this) < 9D)
+            if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isWheat(itemstack))
+            {
+                aiSit.setSitting(!isSitting());
+            }
+        }
+        else if (aiTempt.func_75277_f() && itemstack != null && itemstack.itemID == Item.fishRaw.shiftedIndex && par1EntityPlayer.getDistanceSqToEntity(this) < 9D)
+        {
+            if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
                 itemstack.stackSize--;
+            }
 
-                if (itemstack.stackSize <= 0)
+            if (itemstack.stackSize <= 0)
+            {
+                par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+            }
+
+            if (!worldObj.isRemote)
+            {
+                if (rand.nextInt(3) == 0)
                 {
-                    par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+                    setTamed(true);
+                    setTameSkin(1 + worldObj.rand.nextInt(3));
+                    setOwner(par1EntityPlayer.username);
+                    playTameEffect(true);
+                    aiSit.setSitting(true);
+                    worldObj.setEntityState(this, (byte)7);
                 }
-
-                if (!worldObj.isRemote)
+                else
                 {
-                    if (rand.nextInt(3) == 0)
-                    {
-                        setTamed(true);
-                        func_48147_c(1 + worldObj.rand.nextInt(3));
-                        setOwner(par1EntityPlayer.username);
-                        func_48142_a(true);
-                        aiSit.func_48407_a(true);
-                        worldObj.setEntityState(this, (byte)7);
-                    }
-                    else
-                    {
-                        func_48142_a(false);
-                        worldObj.setEntityState(this, (byte)6);
-                    }
+                    playTameEffect(false);
+                    worldObj.setEntityState(this, (byte)6);
                 }
             }
 
             return true;
-        }
-
-        if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isWheat(itemstack))
-        {
-            aiSit.func_48407_a(!isSitting());
         }
 
         return super.interact(par1EntityPlayer);
@@ -278,7 +280,7 @@ public class EntityOcelot extends EntityTameable
         {
             entityocelot.setOwner(getOwnerName());
             entityocelot.setTamed(true);
-            entityocelot.func_48147_c(func_48148_ad());
+            entityocelot.setTameSkin(getTameSkin());
         }
 
         return entityocelot;
@@ -292,7 +294,10 @@ public class EntityOcelot extends EntityTameable
         return par1ItemStack != null && par1ItemStack.itemID == Item.fishRaw.shiftedIndex;
     }
 
-    public boolean func_48135_b(EntityAnimal par1EntityAnimal)
+    /**
+     * Returns true if the mob is currently able to mate with the specified mob.
+     */
+    public boolean canMateWith(EntityAnimal par1EntityAnimal)
     {
         if (par1EntityAnimal == this)
         {
@@ -321,12 +326,12 @@ public class EntityOcelot extends EntityTameable
         }
     }
 
-    public int func_48148_ad()
+    public int getTameSkin()
     {
         return dataWatcher.getWatchableObjectByte(18);
     }
 
-    public void func_48147_c(int par1)
+    public void setTameSkin(int par1)
     {
         dataWatcher.updateObject(18, Byte.valueOf((byte)par1));
     }
@@ -344,7 +349,7 @@ public class EntityOcelot extends EntityTameable
             return false;
         }
 
-        if (worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox))
+        if (worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox))
         {
             int i = MathHelper.floor_double(posX);
             int j = MathHelper.floor_double(boundingBox.minY);
@@ -364,5 +369,17 @@ public class EntityOcelot extends EntityTameable
         }
 
         return false;
+    }
+
+    public String func_70023_ak()
+    {
+        if (isTamed())
+        {
+            return "entity.Cat.name";
+        }
+        else
+        {
+            return super.func_70023_ak();
+        }
     }
 }

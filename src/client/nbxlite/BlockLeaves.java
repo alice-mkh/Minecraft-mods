@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.List;
 import java.util.Random;
 
 public class BlockLeaves extends BlockLeavesBase
@@ -15,6 +16,10 @@ public class BlockLeaves extends BlockLeavesBase
      * switch the displayed version between fancy and fast graphics (fast is this index + 1).
      */
     private int baseIndexInPNG;
+    public static final String field_72136_a[] =
+    {
+        "oak", "spruce", "birch", "jungle"
+    };
     int adjacentTreeBlocks[];
 
     protected BlockLeaves(int par1, int par2)
@@ -22,6 +27,7 @@ public class BlockLeaves extends BlockLeavesBase
         super(par1, par2, Material.leaves, false);
         baseIndexInPNG = par2;
         setTickRandomly(true);
+        func_71849_a(CreativeTabs.field_78031_c);
     }
 
     public int getBlockColor()
@@ -88,10 +94,7 @@ public class BlockLeaves extends BlockLeavesBase
         return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
     }
 
-    /**
-     * Called whenever the block is removed.
-     */
-    public void onBlockRemoval(World par1World, int par2, int par3, int par4)
+    public void func_71852_a(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         int i = 1;
         int j = i + 1;
@@ -239,6 +242,20 @@ public class BlockLeaves extends BlockLeavesBase
         }
     }
 
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     */
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+        if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.func_72797_t(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1)
+        {
+            double d = (float)par2 + par5Random.nextFloat();
+            double d1 = (double)par3 - 0.050000000000000003D;
+            double d2 = (float)par4 + par5Random.nextFloat();
+            par1World.spawnParticle("dripWater", d, d1, d2, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
     private void removeLeaves(World par1World, int par2, int par3, int par4)
     {
         dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
@@ -357,11 +374,11 @@ public class BlockLeaves extends BlockLeavesBase
         blockIndexInTexture = baseIndexInPNG + (par1 ? 0 : 1);
     }
 
-    /**
-     * Called whenever an entity is walking on top of this block. Args: world, x, y, z, entity
-     */
-    public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    public void func_71879_a(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        super.onEntityWalking(par1World, par2, par3, par4, par5Entity);
+        par3List.add(new ItemStack(par1, 1, 0));
+        par3List.add(new ItemStack(par1, 1, 1));
+        par3List.add(new ItemStack(par1, 1, 2));
+        par3List.add(new ItemStack(par1, 1, 3));
     }
 }

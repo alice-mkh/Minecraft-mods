@@ -91,7 +91,7 @@ public class WorldProviderSurface extends WorldProvider
         if (ODNBXlite.isFinite()){
             return ODNBXlite.IndevHeight - 32;
         }
-        return terrainType.getSeaLevel(worldObj);
+        return super.getAverageGroundLevel();
     }
 
 //FORGE COMPATIBILITY

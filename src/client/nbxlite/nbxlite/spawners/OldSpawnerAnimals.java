@@ -22,7 +22,7 @@ public class OldSpawnerAnimals
 
     public void func_1150_a(World world)
     {
-        int i = world.countEntities2(spawnBaseClass);
+        int i = ((WorldSSP2)world).countEntities2(spawnBaseClass);
         if(i < maxSpawns)
         {
             for(int j = 0; j < 3; j++)
@@ -93,7 +93,7 @@ public class OldSpawnerAnimals
             if(world.rand.nextInt(10) == 0)
             {
                 int j1 = world.rand.nextInt(spawnSubclasses.length);
-                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPosition * 16);
+                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
                 int k2 = chunkposition.z;
@@ -128,9 +128,9 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
-                        float f3 = f - (float)world.worldInfo.getSpawnX();
-                        float f4 = f1 - (float)world.worldInfo.getSpawnY();
-                        float f5 = f2 - (float)world.worldInfo.getSpawnZ();
+                        float f3 = f - (float)world.getWorldInfo().getSpawnX();
+                        float f4 = f1 - (float)world.getWorldInfo().getSpawnY();
+                        float f5 = f2 - (float)world.getWorldInfo().getSpawnZ();
                         float f6 = f3 * f3 + f4 * f4 + f5 * f5;
                         if(f6 < 576F)
                         {
@@ -219,7 +219,7 @@ public class OldSpawnerAnimals
             if(world.rand.nextInt(10) == 0)
             {
                 int j1 = world.rand.nextInt(spawnSubclasses.length);
-                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPosition * 16);
+                ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
                 int k2 = chunkposition.z;
@@ -250,9 +250,9 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
-                        float f3 = f - (float)world.worldInfo.getSpawnX();
-                        float f4 = f1 - (float)world.worldInfo.getSpawnY();
-                        float f5 = f2 - (float)world.worldInfo.getSpawnZ();
+                        float f3 = f - (float)world.getWorldInfo().getSpawnX();
+                        float f4 = f1 - (float)world.getWorldInfo().getSpawnY();
+                        float f5 = f2 - (float)world.getWorldInfo().getSpawnZ();
                         float f6 = f3 * f3 + f4 * f4 + f5 * f5;
                         if(f6 < 576F)
                         {

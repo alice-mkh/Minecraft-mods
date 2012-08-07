@@ -107,17 +107,10 @@ public class FoodStats
     {
         if (par1NBTTagCompound.hasKey("foodLevel"))
         {
-            if(disabled){
-                foodLevel = disabledLevel;
-                foodTimer = disabledLevel;
-                foodSaturationLevel = disabledLevel;
-                foodExhaustionLevel = disabledLevel;
-            }else{
-                foodLevel = par1NBTTagCompound.getInteger("foodLevel");
-                foodTimer = par1NBTTagCompound.getInteger("foodTickTimer");
-                foodSaturationLevel = par1NBTTagCompound.getFloat("foodSaturationLevel");
-                foodExhaustionLevel = par1NBTTagCompound.getFloat("foodExhaustionLevel");
-            }
+            foodLevel = par1NBTTagCompound.getInteger("foodLevel");
+            foodTimer = par1NBTTagCompound.getInteger("foodTickTimer");
+            foodSaturationLevel = par1NBTTagCompound.getFloat("foodSaturationLevel");
+            foodExhaustionLevel = par1NBTTagCompound.getFloat("foodExhaustionLevel");
         }
     }
 
@@ -126,17 +119,10 @@ public class FoodStats
      */
     public void writeNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if(disabled){
-            par1NBTTagCompound.setInteger("foodLevel", disabledLevel);
-            par1NBTTagCompound.setInteger("foodTickTimer", disabledLevel);
-            par1NBTTagCompound.setFloat("foodSaturationLevel", disabledLevel);
-            par1NBTTagCompound.setFloat("foodExhaustionLevel", disabledLevel);
-        }else{
-            par1NBTTagCompound.setInteger("foodLevel", foodLevel);
-            par1NBTTagCompound.setInteger("foodTickTimer", foodTimer);
-            par1NBTTagCompound.setFloat("foodSaturationLevel", foodSaturationLevel);
-            par1NBTTagCompound.setFloat("foodExhaustionLevel", foodExhaustionLevel);
-        }
+        par1NBTTagCompound.setInteger("foodLevel", foodLevel);
+        par1NBTTagCompound.setInteger("foodTickTimer", foodTimer);
+        par1NBTTagCompound.setFloat("foodSaturationLevel", foodSaturationLevel);
+        par1NBTTagCompound.setFloat("foodExhaustionLevel", foodExhaustionLevel);
     }
 
     /**

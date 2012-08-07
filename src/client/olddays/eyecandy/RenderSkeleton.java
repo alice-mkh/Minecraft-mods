@@ -99,7 +99,7 @@ public class RenderSkeleton extends RenderLiving
 
             renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, 0);
 
-            if (itemstack.getItem().func_46058_c())
+            if (itemstack.getItem().requiresMultipleRenderPasses())
             {
                 renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, 1);
             }

@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.List;
-
 public class WorldInfo
 {
+    public static boolean useNBXlite = false;
+
     /** Holds the seed of the currently world. */
     private long randomSeed;
     private WorldType terrainType;
@@ -45,9 +45,7 @@ public class WorldInfo
 
     /** Number of ticks untils next thunderbolt. */
     private int thunderTime;
-
-    /** Indicates the type of the game. 0 for survival, 1 for creative. */
-    private int gameType;
+    private EnumGameType field_76113_q;
 
     /**
      * Whether the map features (e.g. strongholds) generation is enabled or disabled.
@@ -56,6 +54,8 @@ public class WorldInfo
 
     /** Hardcore mode flag */
     private boolean hardcore;
+    private boolean field_76110_t;
+    private boolean field_76109_u;
 
     public boolean nbxlite;
     public boolean snowCovered;
@@ -77,10 +77,14 @@ public class WorldInfo
     public int cloudcolor;
     public boolean newOres;
 
+    protected WorldInfo()
+    {
+        terrainType = WorldType.DEFAULT;
+    }
+
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
         terrainType = WorldType.DEFAULT;
-        hardcore = false;
         randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 
         if (par1NBTTagCompound.hasKey("generatorName"))
@@ -92,7 +96,7 @@ public class WorldInfo
             {
                 terrainType = WorldType.DEFAULT;
             }
-            else if (terrainType.func_48626_e())
+            else if (terrainType.func_77125_e())
             {
                 int i = 0;
 
@@ -101,11 +105,11 @@ public class WorldInfo
                     i = par1NBTTagCompound.getInteger("generatorVersion");
                 }
 
-                terrainType = terrainType.func_48629_a(i);
+                terrainType = terrainType.getWorldTypeForGeneratorVersion(i);
             }
         }
 
-        gameType = par1NBTTagCompound.getInteger("GameType");
+        field_76113_q = EnumGameType.func_77146_a(par1NBTTagCompound.getInteger("GameType"));
 
         if (par1NBTTagCompound.hasKey("MapFeatures"))
         {
@@ -129,59 +133,81 @@ public class WorldInfo
         thunderTime = par1NBTTagCompound.getInteger("thunderTime");
         thundering = par1NBTTagCompound.getBoolean("thundering");
         hardcore = par1NBTTagCompound.getBoolean("hardcore");
-        nbxlite = par1NBTTagCompound.hasKey("NBXlite");
-        if (nbxlite){
-            NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
-            mapGen = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 0);
-            mapGenExtra = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 1);
-            snowCovered = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 2)>0;
-            newOres = nbxliteTag.getBoolean("NewOres");
-            if (!nbxliteTag.hasKey("Theme")){
-                mapTheme = ODNBXlite.THEME_NORMAL;
-                cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-                skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
-                skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
-            }else{
-                try{
-                    NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
-                    if (mapGen==ODNBXlite.GEN_BIOMELESS){
-                        mapTheme = themeTag.getInteger("Generation");
-                    }else{
-                        mapTheme = ODNBXlite.THEME_NORMAL;
-                    }
-                    cloudheight = themeTag.getFloat("CloudHeight");
-                    skybrightness = themeTag.getInteger("SkyBrightness");
-                    skycolor = themeTag.getInteger("SkyColor");
-                    fogcolor = themeTag.getInteger("FogColor");
-                    cloudcolor = themeTag.getInteger("CloudColor");
-                }catch(Exception ex){
-                    if (ex.getMessage().contains("cannot be cast")){
-                        mapTheme = nbxliteTag.getInteger("Theme");
-                        cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-                        skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
-                        skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                        fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                        cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+
+        if (par1NBTTagCompound.hasKey("initialized"))
+        {
+            field_76109_u = par1NBTTagCompound.getBoolean("initialized");
+        }
+        else
+        {
+            field_76109_u = true;
+        }
+
+        if (par1NBTTagCompound.hasKey("allowCommands"))
+        {
+            field_76110_t = par1NBTTagCompound.getBoolean("allowCommands");
+        }
+        else
+        {
+            field_76110_t = field_76113_q == EnumGameType.CREATIVE;
+        }
+        
+        
+        if (useNBXlite){
+            nbxlite = par1NBTTagCompound.hasKey("NBXlite");
+            if (nbxlite){
+                NBTTagCompound nbxliteTag = par1NBTTagCompound.getCompoundTag("NBXlite");
+                mapGen = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 0);
+                mapGenExtra = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 1);
+                snowCovered = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 2)>0;
+                newOres = nbxliteTag.getBoolean("NewOres");
+                if (!nbxliteTag.hasKey("Theme")){
+                    mapTheme = ODNBXlite.THEME_NORMAL;
+                    cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+                    skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
+                    skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                    fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                    cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                }else{
+                    try{
+                        NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
+                        if (mapGen==ODNBXlite.GEN_BIOMELESS){
+                            mapTheme = themeTag.getInteger("Generation");
+                        }else{
+                            mapTheme = ODNBXlite.THEME_NORMAL;
+                        }
+                        cloudheight = themeTag.getFloat("CloudHeight");
+                        skybrightness = themeTag.getInteger("SkyBrightness");
+                        skycolor = themeTag.getInteger("SkyColor");
+                        fogcolor = themeTag.getInteger("FogColor");
+                        cloudcolor = themeTag.getInteger("CloudColor");
+                    }catch(Exception ex){
+                        if (ex.getMessage().contains("cannot be cast")){
+                            mapTheme = nbxliteTag.getInteger("Theme");
+                            cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
+                            skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
+                            skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
+                            fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
+                            cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                        }
                     }
                 }
-            }
-            if (mapGen==ODNBXlite.GEN_BIOMELESS){
-                if (mapGenExtra==ODNBXlite.FEATURES_INDEV || mapGenExtra==ODNBXlite.FEATURES_CLASSIC){
-                    NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
-                    indevX = finiteTag.getInteger("X");
-                    indevY = finiteTag.getInteger("Y");
-                    indevZ = finiteTag.getInteger("Z");
-                    surrgroundtype = finiteTag.getInteger("SurroundingGroundType");
-                    surrwatertype = finiteTag.getInteger("SurroundingWaterType");
-                    surrgroundheight = finiteTag.getInteger("SurroundingGroundHeight");
-                    surrwaterheight = finiteTag.getInteger("SurroundingWaterHeight");
-                    mapType = finiteTag.getInteger("Type");
+                if (mapGen==ODNBXlite.GEN_BIOMELESS){
+                    if (mapGenExtra==ODNBXlite.FEATURES_INDEV || mapGenExtra==ODNBXlite.FEATURES_CLASSIC){
+                        NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
+                        indevX = finiteTag.getInteger("X");
+                        indevY = finiteTag.getInteger("Y");
+                        indevZ = finiteTag.getInteger("Z");
+                        surrgroundtype = finiteTag.getInteger("SurroundingGroundType");
+                        surrwatertype = finiteTag.getInteger("SurroundingWaterType");
+                        surrgroundheight = finiteTag.getInteger("SurroundingGroundHeight");
+                        surrwaterheight = finiteTag.getInteger("SurroundingWaterHeight");
+                        mapType = finiteTag.getInteger("Type");
+                    }
                 }
-            }
-            if (par1NBTTagCompound.hasKey("snowCovered")){
-                snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+                if (par1NBTTagCompound.hasKey("snowCovered")){
+                    snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+                }
             }
         }
 
@@ -195,22 +221,22 @@ public class WorldInfo
     public WorldInfo(WorldSettings par1WorldSettings, String par2Str)
     {
         terrainType = WorldType.DEFAULT;
-        hardcore = false;
         randomSeed = par1WorldSettings.getSeed();
-        gameType = par1WorldSettings.getGameType();
+        field_76113_q = par1WorldSettings.func_77162_e();
         mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
         levelName = par2Str;
         hardcore = par1WorldSettings.getHardcoreEnabled();
         terrainType = par1WorldSettings.getTerrainType();
+        field_76110_t = par1WorldSettings.func_77163_i();
+        field_76109_u = false;
     }
 
     public WorldInfo(WorldInfo par1WorldInfo)
     {
         terrainType = WorldType.DEFAULT;
-        hardcore = false;
         randomSeed = par1WorldInfo.randomSeed;
         terrainType = par1WorldInfo.terrainType;
-        gameType = par1WorldInfo.gameType;
+        field_76113_q = par1WorldInfo.field_76113_q;
         mapFeaturesEnabled = par1WorldInfo.mapFeaturesEnabled;
         spawnX = par1WorldInfo.spawnX;
         spawnY = par1WorldInfo.spawnY;
@@ -227,6 +253,8 @@ public class WorldInfo
         thunderTime = par1WorldInfo.thunderTime;
         thundering = par1WorldInfo.thundering;
         hardcore = par1WorldInfo.hardcore;
+        field_76110_t = par1WorldInfo.field_76110_t;
+        field_76109_u = par1WorldInfo.field_76109_u;
         snowCovered = par1WorldInfo.snowCovered;
         mapTheme = par1WorldInfo.mapTheme;
         mapGen = par1WorldInfo.mapGen;
@@ -261,7 +289,7 @@ public class WorldInfo
     /**
      * Generates the NBTTagCompound for the world info plus the provided entity list. Arg: entityList
      */
-    public NBTTagCompound getNBTTagCompoundWithPlayers(List par1List)
+    public NBTTagCompound getNBTTagCompoundWithPlayers(java.util.List par1List)
     {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         EntityPlayer entityplayer = null;
@@ -282,12 +310,19 @@ public class WorldInfo
         return nbttagcompound;
     }
 
+    public NBTTagCompound func_76082_a(NBTTagCompound par1NBTTagCompound)
+    {
+        NBTTagCompound nbttagcompound = new NBTTagCompound();
+        updateTagCompound(nbttagcompound, par1NBTTagCompound);
+        return nbttagcompound;
+    }
+
     private void updateTagCompound(NBTTagCompound par1NBTTagCompound, NBTTagCompound par2NBTTagCompound)
     {
         par1NBTTagCompound.setLong("RandomSeed", randomSeed);
-        par1NBTTagCompound.setString("generatorName", terrainType.func_48628_a());
+        par1NBTTagCompound.setString("generatorName", terrainType.getWorldTypeName());
         par1NBTTagCompound.setInteger("generatorVersion", terrainType.getGeneratorVersion());
-        par1NBTTagCompound.setInteger("GameType", gameType);
+        par1NBTTagCompound.setInteger("GameType", field_76113_q.func_77148_a());
         par1NBTTagCompound.setBoolean("MapFeatures", mapFeaturesEnabled);
         par1NBTTagCompound.setInteger("SpawnX", spawnX);
         par1NBTTagCompound.setInteger("SpawnY", spawnY);
@@ -302,7 +337,9 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("thunderTime", thunderTime);
         par1NBTTagCompound.setBoolean("thundering", thundering);
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
-        if (nbxlite){
+        par1NBTTagCompound.setBoolean("allowCommands", field_76110_t);
+        par1NBTTagCompound.setBoolean("initialized", field_76109_u);
+        if (nbxlite && useNBXlite){
             NBTTagCompound nbxliteTag = new NBTTagCompound();
             nbxliteTag.setString("Generator", ODNBXlite.getGenName(mapGen, mapGenExtra, snowCovered));
             nbxliteTag.setBoolean("NewOres", newOres);
@@ -328,7 +365,6 @@ public class WorldInfo
             }
             par1NBTTagCompound.setCompoundTag("NBXlite", nbxliteTag);
         }
-
         if (par2NBTTagCompound != null)
         {
             par1NBTTagCompound.setCompoundTag("Player", par2NBTTagCompound);
@@ -544,12 +580,9 @@ public class WorldInfo
         rainTime = par1;
     }
 
-    /**
-     * Get the game type, 0 for survival, 1 for creative.
-     */
-    public int getGameType()
+    public EnumGameType func_76077_q()
     {
-        return gameType;
+        return field_76113_q;
     }
 
     /**
@@ -558,6 +591,11 @@ public class WorldInfo
     public boolean isMapFeaturesEnabled()
     {
         return mapFeaturesEnabled;
+    }
+
+    public void func_76060_a(EnumGameType par1EnumGameType)
+    {
+        field_76113_q = par1EnumGameType;
     }
 
     /**
@@ -576,6 +614,21 @@ public class WorldInfo
     public void setTerrainType(WorldType par1WorldType)
     {
         terrainType = par1WorldType;
+    }
+
+    public boolean func_76086_u()
+    {
+        return field_76110_t;
+    }
+
+    public boolean func_76070_v()
+    {
+        return field_76109_u;
+    }
+
+    public void func_76091_d(boolean par1)
+    {
+        field_76109_u = par1;
     }
 
     public void setSeed(long l)

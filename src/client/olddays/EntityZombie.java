@@ -60,7 +60,7 @@ public class EntityZombie extends EntityMob
 
     public int getMaxHealth()
     {
-        return survivaltest ? 10 : 20;
+        return /*FIXME survivaltest ? 10 : */20;
     }
 
     /**

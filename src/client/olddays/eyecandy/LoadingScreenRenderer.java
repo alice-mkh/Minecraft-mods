@@ -8,31 +8,31 @@ public class LoadingScreenRenderer implements IProgressUpdate
 {
     public static boolean smooth = false;
 
-    private String field_1004_a;
+    private String field_73727_a;
 
     /** A reference to the Minecraft object. */
     private Minecraft mc;
 
     /**
-     * The text currently displayed (i.e. the argument to the last call to printText or func_597_c)
+     * The text currently displayed (i.e. the argument to the last call to printText or func_73722_d)
      */
     private String currentlyDisplayedText;
-    private long field_1006_d;
-    private boolean field_1005_e;
+    private long field_73723_d;
+    private boolean field_73724_e;
 
     public LoadingScreenRenderer(Minecraft par1Minecraft)
     {
-        field_1004_a = "";
+        field_73727_a = "";
         currentlyDisplayedText = "";
-        field_1006_d = System.currentTimeMillis();
-        field_1005_e = false;
+        field_73723_d = Minecraft.func_71386_F();
+        field_73724_e = false;
         mc = par1Minecraft;
     }
 
     public void printText(String par1Str)
     {
-        field_1005_e = false;
-        func_597_c(par1Str);
+        field_73724_e = false;
+        func_73722_d(par1Str);
     }
 
     /**
@@ -40,15 +40,17 @@ public class LoadingScreenRenderer implements IProgressUpdate
      */
     public void displaySavingString(String par1Str)
     {
-        field_1005_e = true;
-        func_597_c(currentlyDisplayedText);
+        field_73724_e = true;
+        func_73722_d(par1Str);
     }
 
-    public void func_597_c(String par1Str)
+    public void func_73722_d(String par1Str)
     {
+        currentlyDisplayedText = par1Str;
+
         if (!mc.running)
         {
-            if (field_1005_e)
+            if (field_73724_e)
             {
                 return;
             }
@@ -59,12 +61,11 @@ public class LoadingScreenRenderer implements IProgressUpdate
         }
         else
         {
-            currentlyDisplayedText = par1Str;
             ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
             GL11.glClear(256);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
-            GL11.glOrtho(0.0D, scaledresolution.scaledWidthD, scaledresolution.scaledHeightD, 0.0D, 100D, 300D);
+            GL11.glOrtho(0.0D, scaledresolution.func_78327_c(), scaledresolution.func_78324_d(), 0.0D, 100D, 300D);
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
             GL11.glTranslatef(0.0F, 0.0F, -200F);
@@ -79,7 +80,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
     {
         if (!mc.running)
         {
-            if (field_1005_e)
+            if (field_73724_e)
             {
                 return;
             }
@@ -90,10 +91,10 @@ public class LoadingScreenRenderer implements IProgressUpdate
         }
         else
         {
-            field_1006_d = 0L;
-            field_1004_a = par1Str;
+            field_73723_d = 0L;
+            field_73727_a = par1Str;
             setLoadingProgress(-1);
-            field_1006_d = 0L;
+            field_73723_d = 0L;
             return;
         }
     }
@@ -105,7 +106,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
     {
         if (!mc.running)
         {
-            if (field_1005_e)
+            if (field_73724_e)
             {
                 return;
             }
@@ -115,21 +116,21 @@ public class LoadingScreenRenderer implements IProgressUpdate
             }
         }
 
-        long l = System.currentTimeMillis();
+        long l = Minecraft.func_71386_F();
 
-        if (l - field_1006_d < (smooth ? 20L : 100L))
+        if (l - field_73723_d < (smooth ? 20L : 100L))
         {
             return;
         }
 
-        field_1006_d = l;
+        field_73723_d = l;
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int i = scaledresolution.getScaledWidth();
         int j = scaledresolution.getScaledHeight();
         GL11.glClear(256);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0.0D, scaledresolution.scaledWidthD, scaledresolution.scaledHeightD, 0.0D, 100D, 300D);
+        GL11.glOrtho(0.0D, scaledresolution.func_78327_c(), scaledresolution.func_78324_d(), 0.0D, 100D, 300D);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0F, 0.0F, -200F);
@@ -169,7 +170,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
         }
 
         mc.fontRenderer.drawStringWithShadow(currentlyDisplayedText, (i - mc.fontRenderer.getStringWidth(currentlyDisplayedText)) / 2, j / 2 - 4 - 16, 0xffffff);
-        mc.fontRenderer.drawStringWithShadow(field_1004_a, (i - mc.fontRenderer.getStringWidth(field_1004_a)) / 2, (j / 2 - 4) + 8, 0xffffff);
+        mc.fontRenderer.drawStringWithShadow(field_73727_a, (i - mc.fontRenderer.getStringWidth(field_73727_a)) / 2, (j / 2 - 4) + 8, 0xffffff);
         Display.update();
 
         try
@@ -177,5 +178,9 @@ public class LoadingScreenRenderer implements IProgressUpdate
             Thread.yield();
         }
         catch (Exception exception) { }
+    }
+
+    public void func_73717_a()
+    {
     }
 }

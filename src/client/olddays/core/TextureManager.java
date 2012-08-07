@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import java.io.File;
 import java.util.ArrayList;
@@ -44,8 +46,10 @@ public class TextureManager{
 
     public void setTextureHook(String origname, String newname, boolean b){
         try{
-            int i = renderEngine.getTexture(origname);
-            renderEngine.setupTexture(ModLoader.loadImage(renderEngine, b ? newname : origname), i);
+            TexturePackList packList = mod_OldDays.getMinecraftInstance().texturePackList;
+            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
+            BufferedImage image = ImageIO.read(texpack.getResourceAsStream(b ? newname : origname));
+            renderEngine.setupTexture(image, renderEngine.getTexture(origname));
         }catch(Exception ex){
             fallbacktex = true;
         }
@@ -73,7 +77,8 @@ public class TextureManager{
 
     public boolean hasEntry(String str){
         try{
-            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getMinecraftInstance().texturePackList.selectedTexturePack);
+            TexturePackList packList = mod_OldDays.getMinecraftInstance().texturePackList;
+            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
             if (texpack instanceof TexturePackDefault){
                 return true;
             }

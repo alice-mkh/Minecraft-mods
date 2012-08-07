@@ -47,9 +47,9 @@ public class RenderGlobal2 extends RenderGlobal{
     /**
      * Changes the world reference in RenderGlobal
      */
-    public void changeWorld(World par1World)
+    public void func_72732_a(World par1World)
     {
-        super.changeWorld(par1World);
+        super.func_72732_a(par1World);
         worldObj = par1World;
     }
 
@@ -58,7 +58,7 @@ public class RenderGlobal2 extends RenderGlobal{
      */
     public void renderSky(float par1)
     {
-        if (mc.theWorld.worldProvider.worldType == 1)
+        if (mc.field_71441_e.worldProvider.worldType == 1)
         {
             GL11.glDisable(GL11.GL_FOG);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -114,13 +114,13 @@ public class RenderGlobal2 extends RenderGlobal{
             return;
         }
 
-        if (!mc.theWorld.worldProvider.func_48217_e())
+        if (!mc.field_71441_e.worldProvider.isSurfaceWorld())
         {
             return;
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Vec3D vec3d = worldObj.getSkyColor(mc.renderViewEntity, par1);
+        Vec3 vec3d = worldObj.getSkyColor(mc.renderViewEntity, par1);
         float f = (float)vec3d.xCoord;
         float f1 = (float)vec3d.yCoord;
         float f2 = (float)vec3d.zCoord;
@@ -248,7 +248,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
-        d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getSeaLevel();
+        d = mc.field_71439_g.getPosition(par1).yCoord - worldObj.getHorizon();
         if (ODNBXlite.VoidFog<2){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
@@ -317,7 +317,7 @@ public class RenderGlobal2 extends RenderGlobal{
 
     public void renderClouds(float par1)
     {
-        if (!mc.theWorld.worldProvider.func_48217_e())
+        if (!mc.field_71441_e.worldProvider.isSurfaceWorld())
         {
             return;
         }
@@ -336,7 +336,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Vec3D vec3d = worldObj.drawClouds(par1);
+        Vec3 vec3d = worldObj.drawClouds(par1);
         float f1 = (float)vec3d.xCoord;
         float f2 = (float)vec3d.yCoord;
         float f3 = (float)vec3d.zCoord;
@@ -429,7 +429,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Vec3D vec3d = worldObj.drawClouds(par1);
+        Vec3 vec3d = worldObj.drawClouds(par1);
         float f4 = (float)vec3d.xCoord;
         float f5 = (float)vec3d.yCoord;
         float f6 = (float)vec3d.zCoord;

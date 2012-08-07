@@ -6,6 +6,7 @@ import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.BetaNoiseGeneratorOctaves;
 import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
+import net.minecraft.src.nbxlite.mapgens.MapGenScatteredFeature2;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
@@ -33,6 +34,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
+    private MapGenScatteredFeature2 templeGenerator;
     double noise3[];
     double noise1[];
     double noise2[];
@@ -54,6 +56,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             strongholdGenerator = new MapGenSkyStronghold();
             villageGenerator = new MapGenVillage(0);
             mineshaftGenerator = new MapGenMineshaft();
+            templeGenerator = new MapGenScatteredFeature2();
         }
         unusedIntArray32x32 = new int[32][32];
         noiseGen1 = new BetaNoiseGeneratorOctaves(rand, 16);
@@ -262,6 +265,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            templeGenerator.generate(this, worldObj, i, j, abyte0);
         }
     }
 
@@ -386,6 +390,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
             flag = villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
             mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            templeGenerator.generateStructuresInChunk(worldObj, rand, x, z);
         }
         double d = 0.25D;
         if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){

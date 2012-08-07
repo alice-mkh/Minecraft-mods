@@ -16,16 +16,16 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
      */
     public int getRenderType()
     {
-        return cross ? ODEyecandy.redstoneRenderID : super.getRenderType();
+        return cross ? /*ODEyecandy.redstoneRenderID*/0 : super.getRenderType();
     }
 
     public static boolean renderBlockRedstoneWire(RenderBlocks r, IBlockAccess blockAccess, Block par1Block, int par2, int par3, int par4){
         Tessellator tessellator = Tessellator.instance;
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         int j = par1Block.getBlockTextureFromSideAndMetadata(1, i);
-        if (r.overrideBlockTexture >= 0){
+        /*if (r.overrideBlockTexture >= 0){
             j = r.overrideBlockTexture;
-        }
+        }*/
         tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
         float f = 1.0F;
         float f1 = (float)i / 15F;

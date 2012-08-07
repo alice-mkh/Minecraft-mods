@@ -6,13 +6,14 @@ import java.util.List;
 public class OldDaysPropertyInt extends OldDaysProperty{
     public int value;
     public int smpValue;
+    public int defaultValue;
     public int min;
     public int max;
     public boolean useNames;
 
     public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int m1, int m2){
         super(m, i, f);
-        value = v;
+        value = defaultValue = v;
         guitype = GUI_TYPE_BUTTON;
         min = m1;
         max = m2;
@@ -63,11 +64,14 @@ public class OldDaysPropertyInt extends OldDaysProperty{
             disable();
             return;
         }
-        onChange();
     }
 
     public void setSMPValue(){
         value = smpValue;
+    }
+
+    public void setDefaultValue(){
+        value = defaultValue;
     }
 
     protected void disable(){

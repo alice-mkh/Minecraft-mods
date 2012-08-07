@@ -11,7 +11,7 @@ public class ODMobs extends OldDaysModule{
         new OldDaysPropertyBool(this, 6, false, false, "FastSkeletons");
         new OldDaysPropertyBool(this, 7, false, false, "OldHealth");
         new OldDaysPropertyInt(this,  8, 10,    10,    "Mobs", 10).setUseNames();
-        new OldDaysPropertyInt(this,  9, 3,     3,     "Slimes", 3).setUseNames();
+        new OldDaysPropertyInt(this,  9, 4,     4,     "Slimes", 4).setUseNames();
         new OldDaysPropertyBool(this, 10,false, false, "Endermen");
     }
 

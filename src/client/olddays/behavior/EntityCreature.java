@@ -38,7 +38,7 @@ public abstract class EntityCreature extends EntityLiving
 
     protected void updateEntityActionState()
     {
-        Profiler.startSection("ai");
+        worldObj.field_72984_F.startSection("ai");
 
         if (fleeingTick > 0)
         {
@@ -61,11 +61,7 @@ public abstract class EntityCreature extends EntityLiving
                 pathToEntity = worldObj.getPathEntityToEntity(this, entityToAttack, f, true, false, false, true);
             }
         }
-        else if (!entityToAttack.isEntityAlive())
-        {
-            entityToAttack = null;
-        }
-        else
+        else if (entityToAttack.isEntityAlive())
         {
             float f1 = entityToAttack.getDistanceToEntity(this);
 
@@ -78,8 +74,12 @@ public abstract class EntityCreature extends EntityLiving
                 attackBlockedEntity(entityToAttack, f1);
             }
         }
+        else
+        {
+            entityToAttack = null;
+        }
 
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
 
         if (!hasAttacked && entityToAttack != null && (pathToEntity == null || rand.nextInt(20) == 0))
         {
@@ -102,38 +102,34 @@ public abstract class EntityCreature extends EntityLiving
             return;
         }
 
-        Profiler.startSection("followpath");
-        Vec3D vec3d = pathToEntity.getCurrentNodeVec3d(this);
+        worldObj.field_72984_F.startSection("followpath");
+        Vec3 vec3 = pathToEntity.getPosition(this);
 
-        for (double d = width * 2.0F; vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d;)
+        for (double d = width * 2.0F; vec3 != null && vec3.squareDistanceTo(posX, vec3.yCoord, posZ) < d * d;)
         {
             pathToEntity.incrementPathIndex();
 
             if (pathToEntity.isFinished())
             {
-                vec3d = null;
+                vec3 = null;
                 pathToEntity = null;
             }
             else
             {
-                vec3d = pathToEntity.getCurrentNodeVec3d(this);
+                vec3 = pathToEntity.getPosition(this);
             }
         }
 
         isJumping = false;
 
-        if (vec3d != null)
+        if (vec3 != null)
         {
-            double d1 = vec3d.xCoord - posX;
-            double d2 = vec3d.zCoord - posZ;
-            double d3 = vec3d.yCoord - (double)i;
+            double d1 = vec3.xCoord - posX;
+            double d2 = vec3.zCoord - posZ;
+            double d3 = vec3.yCoord - (double)i;
             float f2 = (float)((Math.atan2(d2, d1) * 180D) / Math.PI) - 90F;
-            float f3 = f2 - rotationYaw;
+            float f3 = MathHelper.func_76142_g(f2 - rotationYaw);
             moveForward = moveSpeed;
-
-            for (; f3 < -180F; f3 += 360F) { }
-
-            for (; f3 >= 180F; f3 -= 360F) { }
 
             if (f3 > 30F)
             {
@@ -179,7 +175,7 @@ public abstract class EntityCreature extends EntityLiving
             isJumping = true;
         }
 
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
     }
 
     /**
@@ -187,7 +183,7 @@ public abstract class EntityCreature extends EntityLiving
      */
     protected void updateWanderPath()
     {
-        Profiler.startSection("stroll");
+        worldObj.field_72984_F.startSection("stroll");
         boolean flag = false;
         int i = -1;
         int j = -1;
@@ -216,7 +212,7 @@ public abstract class EntityCreature extends EntityLiving
             pathToEntity = worldObj.getEntityPathToXYZ(this, i, j, k, 10F, true, false, false, true);
         }
 
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
     }
 
     /**

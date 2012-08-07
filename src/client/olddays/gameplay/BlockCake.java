@@ -44,7 +44,7 @@ public class BlockCake extends Block
         float f = 0.0625F;
         float f1 = (float)(1 + i * 2) / 16F;
         float f2 = 0.5F;
-        return AxisAlignedBB.getBoundingBoxFromPool((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, ((float)par3 + f2) - f, (float)(par4 + 1) - f);
+        return AxisAlignedBB.func_72332_a().func_72299_a((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, ((float)par3 + f2) - f, (float)(par4 + 1) - f);
     }
 
     /**
@@ -56,7 +56,7 @@ public class BlockCake extends Block
         float f = 0.0625F;
         float f1 = (float)(1 + i * 2) / 16F;
         float f2 = 0.5F;
-        return AxisAlignedBB.getBoundingBoxFromPool((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, (float)par3 + f2, (float)(par4 + 1) - f);
+        return AxisAlignedBB.func_72332_a().func_72299_a((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, (float)par3 + f2, (float)(par4 + 1) - f);
     }
 
     /**
@@ -121,11 +121,7 @@ public class BlockCake extends Block
         return false;
     }
 
-    /**
-     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
-     * block.
-     */
-    public boolean blockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    public boolean func_71903_a(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         eatCakeSlice(par1World, par2, par3, par4, par5EntityPlayer);
         return true;
@@ -145,38 +141,31 @@ public class BlockCake extends Block
     private void eatCakeSlice(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         if (heal){
-            eatCakeSliceOld(par1World, par2, par3, par4, par5EntityPlayer);
-        }else{
-            eatCakeSliceNew(par1World, par2, par3, par4, par5EntityPlayer);
-        }
-    }
+            if(par5EntityPlayer.health < 20){
+                par5EntityPlayer.heal(3);
+                int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
-    private void eatCakeSliceOld(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
-    {
-        if(par5EntityPlayer.health < 20){
-            par5EntityPlayer.heal(3);
-            int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
-
-            if (i >= 6){
-                par1World.setBlockWithNotify(par2, par3, par4, 0);
+                if (i >= 6){
+                    par1World.setBlockWithNotify(par2, par3, par4, 0);
+                }
+                else{
+                    par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
+                    par1World.markBlockAsNeedsUpdate(par2, par3, par4);
+                }
             }
-            else{
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
-                par1World.markBlockAsNeedsUpdate(par2, par3, par4);
-            }
+            return;
         }
-    }
-
-    private void eatCakeSliceNew(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
-    {
-        if (par5EntityPlayer.canEat(false)){
+        if (par5EntityPlayer.canEat(false))
+        {
             par5EntityPlayer.getFoodStats().addStats(2, 0.1F);
             int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
-            if (i >= 6){
+            if (i >= 6)
+            {
                 par1World.setBlockWithNotify(par2, par3, par4, 0);
             }
-            else{
+            else
+            {
                 par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
                 par1World.markBlockAsNeedsUpdate(par2, par3, par4);
             }
@@ -233,5 +222,10 @@ public class BlockCake extends Block
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return 0;
+    }
+
+    public int func_71922_a(World par1World, int par2, int par3, int par4)
+    {
+        return Item.cake.shiftedIndex;
     }
 }

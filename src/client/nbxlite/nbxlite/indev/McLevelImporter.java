@@ -154,12 +154,6 @@ public class McLevelImporter{
         return (id >= 21 && id <= 36) || id == 52 || id == 55 || id==Block.leaves.blockID || id==Block.sapling.blockID || id==Block.wood.blockID || id==Block.planks.blockID;
     }
 
-    public void importLevel(World world){
-        for (int i = 0; i < tileentities.size(); i++){
-            world.addTileEntity((TileEntity)tileentities.get(i));
-        }
-    }
-
     private NBTTagList newDoubleNBTList(double par1ArrayOfDouble[]){
         NBTTagList nbttaglist = new NBTTagList();
         double ad[] = par1ArrayOfDouble;

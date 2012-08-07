@@ -3,6 +3,7 @@ package net.minecraft.src.nbxlite.format;
 import java.io.*;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
+import net.minecraft.src.EnumGameType;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.ISaveHandler;
 import net.minecraft.src.MathHelper;
@@ -81,9 +82,9 @@ public class SaveConverterMcRegion extends SaveFormatOld
             }
             long l = 0L;
             if (format==0){
-                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.getGameType(), flag, worldinfo.isHardcoreModeEnabled()));
+                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.func_76077_q(), flag, worldinfo.isHardcoreModeEnabled(), true));
             }else{
-                arraylist.add(new SaveFormatComparator(s, s1, 0L, l, 0, true, true));
+                arraylist.add(new SaveFormatComparator(s, s1, 0L, l, EnumGameType.SURVIVAL, true, true, true));
             }
         }
         return arraylist;

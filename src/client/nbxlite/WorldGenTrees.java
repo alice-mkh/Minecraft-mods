@@ -4,10 +4,15 @@ import java.util.Random;
 
 public class WorldGenTrees extends WorldGenerator
 {
-    private final int field_48202_a;
-    private final boolean field_48200_b;
-    private final int field_48201_c;
-    private final int field_48199_d;
+    /** The minimum height of a generated tree. */
+    private final int minTreeHeight;
+    private final boolean field_76531_b;
+
+    /** The metadata value of the wood to use in tree generation. */
+    private final int metaWood;
+
+    /** The metadata value of the leaves to use in tree generation. */
+    private final int metaLeaves;
 
     public WorldGenTrees(boolean par1)
     {
@@ -17,15 +22,15 @@ public class WorldGenTrees extends WorldGenerator
     public WorldGenTrees(boolean par1, int par2, int par3, int par4, boolean par5)
     {
         super(par1);
-        field_48202_a = par2;
-        field_48201_c = par3;
-        field_48199_d = par4;
-        field_48200_b = par5;
+        minTreeHeight = par2;
+        metaWood = par3;
+        metaLeaves = par4;
+        field_76531_b = par5;
     }
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
-        int i = par2Random.nextInt(3) + field_48202_a;
+        int i = par2Random.nextInt(3) + minTreeHeight;
         boolean flag = true;
 
         if (par4 < 1 || par4 + i + 1 > 256)
@@ -53,9 +58,9 @@ public class WorldGenTrees extends WorldGenerator
                 {
                     if (j >= 0 && j < 256)
                     {
-                        int j2 = par1World.getBlockId(l, j, j1);
+                        int k2 = par1World.getBlockId(l, j, j1);
 
-                        if (j2 != 0 && j2 != Block.leaves.blockID && j2 != Block.grass.blockID && j2 != Block.dirt.blockID && j2 != Block.wood.blockID)
+                        if (k2 != 0 && k2 != Block.leaves.blockID && k2 != Block.grass.blockID && k2 != Block.dirt.blockID && k2 != Block.wood.blockID)
                         {
                             flag = false;
                         }
@@ -86,20 +91,20 @@ public class WorldGenTrees extends WorldGenerator
 
         for (int k1 = (par4 - byte1) + i; k1 <= par4 + i; k1++)
         {
-            int k2 = k1 - (par4 + i);
-            int j3 = (i1 + 1) - k2 / 2;
+            int l2 = k1 - (par4 + i);
+            int l3 = (i1 + 1) - l2 / 2;
 
-            for (int l3 = par3 - j3; l3 <= par3 + j3; l3++)
+            for (int k4 = par3 - l3; k4 <= par3 + l3; k4++)
             {
-                int j4 = l3 - par3;
+                int i5 = k4 - par3;
 
-                for (int l4 = par5 - j3; l4 <= par5 + j3; l4++)
+                for (int k5 = par5 - l3; k5 <= par5 + l3; k5++)
                 {
-                    int i5 = l4 - par5;
+                    int l5 = k5 - par5;
 
-                    if ((Math.abs(j4) != j3 || Math.abs(i5) != j3 || par2Random.nextInt(2) != 0 && k2 != 0) && !Block.opaqueCubeLookup[par1World.getBlockId(l3, k1, l4)])
+                    if ((Math.abs(i5) != l3 || Math.abs(l5) != l3 || par2Random.nextInt(2) != 0 && l2 != 0) && !Block.opaqueCubeLookup[par1World.getBlockId(k4, k1, k5)])
                     {
-                        setBlockAndMetadata(par1World, l3, k1, l4, Block.leaves.blockID, field_48199_d);
+                        setBlockAndMetadata(par1World, k4, k1, k5, Block.leaves.blockID, metaLeaves);
                     }
                 }
             }
@@ -107,16 +112,16 @@ public class WorldGenTrees extends WorldGenerator
 
         for (int l1 = 0; l1 < i; l1++)
         {
-            int l2 = par1World.getBlockId(par3, par4 + l1, par5);
+            int i3 = par1World.getBlockId(par3, par4 + l1, par5);
 
-            if (l2 != 0 && l2 != Block.leaves.blockID)
+            if (i3 != 0 && i3 != Block.leaves.blockID)
             {
                 continue;
             }
 
-            setBlockAndMetadata(par1World, par3, par4 + l1, par5, Block.wood.blockID, field_48201_c);
+            setBlockAndMetadata(par1World, par3, par4 + l1, par5, Block.wood.blockID, metaWood);
 
-            if (!field_48200_b || l1 <= 0)
+            if (!field_76531_b || l1 <= 0)
             {
                 continue;
             }
@@ -142,40 +147,40 @@ public class WorldGenTrees extends WorldGenerator
             }
         }
 
-        if (field_48200_b)
+        if (field_76531_b)
         {
             for (int i2 = (par4 - 3) + i; i2 <= par4 + i; i2++)
             {
-                int i3 = i2 - (par4 + i);
-                int k3 = 2 - i3 / 2;
+                int j3 = i2 - (par4 + i);
+                int i4 = 2 - j3 / 2;
 
-                for (int i4 = par3 - k3; i4 <= par3 + k3; i4++)
+                for (int l4 = par3 - i4; l4 <= par3 + i4; l4++)
                 {
-                    for (int k4 = par5 - k3; k4 <= par5 + k3; k4++)
+                    for (int j5 = par5 - i4; j5 <= par5 + i4; j5++)
                     {
-                        if (par1World.getBlockId(i4, i2, k4) != Block.leaves.blockID)
+                        if (par1World.getBlockId(l4, i2, j5) != Block.leaves.blockID)
                         {
                             continue;
                         }
 
-                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(i4 - 1, i2, k4) == 0)
+                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4 - 1, i2, j5) == 0)
                         {
-                            func_48198_a(par1World, i4 - 1, i2, k4, 8);
+                            func_76529_b(par1World, l4 - 1, i2, j5, 8);
                         }
 
-                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(i4 + 1, i2, k4) == 0)
+                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4 + 1, i2, j5) == 0)
                         {
-                            func_48198_a(par1World, i4 + 1, i2, k4, 2);
+                            func_76529_b(par1World, l4 + 1, i2, j5, 2);
                         }
 
-                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(i4, i2, k4 - 1) == 0)
+                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4, i2, j5 - 1) == 0)
                         {
-                            func_48198_a(par1World, i4, i2, k4 - 1, 1);
+                            func_76529_b(par1World, l4, i2, j5 - 1, 1);
                         }
 
-                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(i4, i2, k4 + 1) == 0)
+                        if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4, i2, j5 + 1) == 0)
                         {
-                            func_48198_a(par1World, i4, i2, k4 + 1, 4);
+                            func_76529_b(par1World, l4, i2, j5 + 1, 4);
                         }
                     }
                 }
@@ -190,7 +195,7 @@ public class WorldGenTrees extends WorldGenerator
                         if (par2Random.nextInt(4 - j2) == 0)
                         {
                             int j4 = par2Random.nextInt(3);
-                            setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[k3]], ((par4 + i) - 5) + j2, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[k3]], 127, j4 << 2 | k3);
+                            setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[k3]], ((par4 + i) - 5) + j2, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[k3]], Block.field_72086_bP.blockID, j4 << 2 | k3);
                         }
                     }
                 }
@@ -200,7 +205,7 @@ public class WorldGenTrees extends WorldGenerator
         return true;
     }
 
-    private void func_48198_a(World par1World, int par2, int par3, int par4, int par5)
+    private void func_76529_b(World par1World, int par2, int par3, int par4, int par5)
     {
         setBlockAndMetadata(par1World, par2, par3, par4, Block.vine.blockID, par5);
 

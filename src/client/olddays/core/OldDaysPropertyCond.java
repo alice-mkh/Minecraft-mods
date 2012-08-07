@@ -6,7 +6,7 @@ import java.util.List;
 
 public class OldDaysPropertyCond extends OldDaysPropertyInt{
     public boolean boolValue;
-    public boolean smpValue2;
+    public boolean smpBoolValue;
 
     public OldDaysPropertyCond(OldDaysModule m, int i, int v, String f){
         super(m, i, v, f, 2);
@@ -16,7 +16,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
 
     public OldDaysPropertyCond(OldDaysModule m, int i, int v, boolean smp, String f){
         this(m, i, v, f);
-        smpValue2 = smp;
+        smpBoolValue = smp;
         allowedInSMP = false;
     }
 
@@ -45,16 +45,22 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
     }
 
     public void setSMPValue(){
-        boolValue = smpValue2;
+        super.setSMPValue();
+        boolValue = smpBoolValue;
     }
 
     protected void disable(){
         super.disable();
-        boolValue = smpValue2;
+        boolValue = smpBoolValue;
     }
 
     public void incrementValue(){
         super.incrementValue();
+        boolValue = getBoolValue(value);
+    }
+
+    public void updateValue(){
+        super.updateValue();
         boolValue = getBoolValue(value);
     }
 

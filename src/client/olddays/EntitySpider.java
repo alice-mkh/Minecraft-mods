@@ -28,15 +28,6 @@ public class EntitySpider extends EntityMob
     }
 
     /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-    }
-
-    /**
      * Called to update the entity's position/logic.
      */
     public void onUpdate()
@@ -45,7 +36,7 @@ public class EntitySpider extends EntityMob
 
         if (!worldObj.isRemote)
         {
-            func_40148_a(isCollidedHorizontally);
+            setBesideClimbableBlock(isCollidedHorizontally);
         }
     }
 
@@ -156,22 +147,6 @@ public class EntitySpider extends EntityMob
     }
 
     /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-    }
-
-    /**
      * Returns the item ID for the item the mob drops on death.
      */
     protected int getDropItemId()
@@ -197,7 +172,7 @@ public class EntitySpider extends EntityMob
      */
     public boolean isOnLadder()
     {
-        return canclimb ? func_40149_l_() : super.isOnLadder();
+        return canclimb ? isBesideClimbableBlock() : super.isOnLadder();
     }
 
     /**
@@ -235,12 +210,20 @@ public class EntitySpider extends EntityMob
         }
     }
 
-    public boolean func_40149_l_()
+    /**
+     * Returns true if the WatchableObject (Byte) is 0x01 otherwise returns false. The WatchableObject is updated using
+     * setBesideClimableBlock.
+     */
+    public boolean isBesideClimbableBlock()
     {
         return (dataWatcher.getWatchableObjectByte(16) & 1) != 0;
     }
 
-    public void func_40148_a(boolean par1)
+    /**
+     * Updates the WatchableObject (Byte) created in entityInit(), setting it to 0x01 if par1 is true or 0x00 if it is
+     * false.
+     */
+    public void setBesideClimbableBlock(boolean par1)
     {
         byte byte0 = dataWatcher.getWatchableObjectByte(16);
 

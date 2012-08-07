@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BlockPistonBase extends Block
@@ -17,6 +17,7 @@ public class BlockPistonBase extends Block
         isSticky = par3;
         setStepSound(soundStoneFootstep);
         setHardness(0.5F);
+        func_71849_a(CreativeTabs.field_78028_d);
     }
 
     /**
@@ -73,11 +74,7 @@ public class BlockPistonBase extends Block
         return false;
     }
 
-    /**
-     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
-     * block.
-     */
-    public boolean blockActivated(World par1World, int par2, int par3, int i, EntityPlayer entityplayer)
+    public boolean func_71903_a(World par1World, int par2, int par3, int i, EntityPlayer entityplayer, int j, float f, float f1, float f2)
     {
         return false;
     }
@@ -90,7 +87,7 @@ public class BlockPistonBase extends Block
         int i = determineOrientation(par1World, par2, par3, par4, (EntityPlayer)par5EntityLiving);
         par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
 
-        if (!par1World.isRemote && !ignoreUpdates)
+        if (!par1World.isRemote)
         {
             updatePistonState(par1World, par2, par3, par4);
         }
@@ -102,7 +99,7 @@ public class BlockPistonBase extends Block
      */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        if (!par1World.isRemote && !ignoreUpdates)
+        if (!par1World.isRemote)
         {
             updatePistonState(par1World, par2, par3, par4);
         }
@@ -113,7 +110,7 @@ public class BlockPistonBase extends Block
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        if (!par1World.isRemote && par1World.getBlockTileEntity(par2, par3, par4) == null && !ignoreUpdates)
+        if (!par1World.isRemote && par1World.getBlockTileEntity(par2, par3, par4) == null)
         {
             updatePistonState(par1World, par2, par3, par4);
         }
@@ -124,6 +121,41 @@ public class BlockPistonBase extends Block
      */
     private void updatePistonState(World par1World, int par2, int par3, int par4)
     {
+        if (dupe){
+            updatePistonStateOld(par1World, par2, par3, par4);
+            return;
+        }
+        int i = par1World.getBlockMetadata(par2, par3, par4);
+        int j = getOrientation(i);
+
+        if (j == 7)
+        {
+            return;
+        }
+
+        boolean flag = isIndirectlyPowered(par1World, par2, par3, par4, j);
+
+        if (flag && !isExtended(i))
+        {
+            if (canExtend(par1World, par2, par3, par4, j))
+            {
+                par1World.sendClientEvent(par2, par3, par4, blockID, 0, j);
+            }
+        }
+        else if (!flag && isExtended(i))
+        {
+            par1World.sendClientEvent(par2, par3, par4, blockID, 1, j);
+        }
+    }
+
+    /**
+     * handles attempts to extend or retract the piston.
+     */
+    private void updatePistonStateOld(World par1World, int par2, int par3, int par4)
+    {
+        if (ignoreUpdates){
+            return;
+        }
         int i = par1World.getBlockMetadata(par2, par3, par4);
         int j = getOrientation(i);
         boolean flag = isIndirectlyPowered(par1World, par2, par3, par4, j);
@@ -137,14 +169,12 @@ public class BlockPistonBase extends Block
         {
             if (canExtend(par1World, par2, par3, par4, j))
             {
-                par1World.setBlockMetadata(par2, par3, par4, j | 8);
-                par1World.playNoteAt(par2, par3, par4, 0, j);
+                par1World.sendClientEvent(par2, par3, par4, blockID, 0, j);
             }
         }
         else if (!flag && isExtended(i))
         {
-            par1World.setBlockMetadata(par2, par3, par4, j);
-            par1World.playNoteAt(par2, par3, par4, 1, j);
+            par1World.sendClientEvent(par2, par3, par4, blockID, 1, j);
         }
     }
 
@@ -209,6 +239,99 @@ public class BlockPistonBase extends Block
         }
 
         return par1World.isBlockIndirectlyProvidingPowerTo(par2 + 1, par3 + 1, par4, 5);
+    }
+
+    /**
+     * Called when the block receives a client event - see World.sendClientEvent. By default, passes it on to the tile
+     * entity at this location. Args: world, x, y, z, event number, parameter
+     */
+    public void receiveClientEvent(World par1World, int par2, int par3, int par4, int par5, int par6)
+    {
+        if (dupe){
+            powerBlock(par1World, par2, par3, par4, par5, par6);
+            return;
+        }
+        if (par5 == 0)
+        {
+            par1World.setBlockMetadata(par2, par3, par4, par6 | 8);
+        }
+        else
+        {
+            par1World.setBlockMetadata(par2, par3, par4, par6);
+        }
+
+        if (par5 == 0)
+        {
+            if (tryExtend(par1World, par2, par3, par4, par6))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8);
+                par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.out", 0.5F, par1World.rand.nextFloat() * 0.25F + 0.6F);
+            }
+            else
+            {
+                par1World.setBlockMetadata(par2, par3, par4, par6);
+            }
+        }
+        else if (par5 == 1)
+        {
+            TileEntity tileentity = par1World.getBlockTileEntity(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
+
+            if (tileentity instanceof TileEntityPiston)
+            {
+                ((TileEntityPiston)tileentity).clearPistonTileEntity();
+            }
+
+            par1World.setBlockAndMetadata(par2, par3, par4, Block.pistonMoving.blockID, par6);
+            par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(blockID, par6, par6, false, true));
+
+            if (isSticky)
+            {
+                int i = par2 + Facing.offsetsXForSide[par6] * 2;
+                int j = par3 + Facing.offsetsYForSide[par6] * 2;
+                int k = par4 + Facing.offsetsZForSide[par6] * 2;
+                int l = par1World.getBlockId(i, j, k);
+                int i1 = par1World.getBlockMetadata(i, j, k);
+                boolean flag = false;
+
+                if (l == Block.pistonMoving.blockID)
+                {
+                    TileEntity tileentity1 = par1World.getBlockTileEntity(i, j, k);
+
+                    if (tileentity1 instanceof TileEntityPiston)
+                    {
+                        TileEntityPiston tileentitypiston = (TileEntityPiston)tileentity1;
+
+                        if (tileentitypiston.getPistonOrientation() == par6 && tileentitypiston.isExtending())
+                        {
+                            tileentitypiston.clearPistonTileEntity();
+                            l = tileentitypiston.getStoredBlockID();
+                            i1 = tileentitypiston.getBlockMetadata();
+                            flag = true;
+                        }
+                    }
+                }
+
+                if (((i1 > 0 && (flag || canPushBlock(i1, par1World, j, k, l, false)) && dupe) || (!flag && i1 > 0 && canPushBlock(i1, par1World, j, k, l, false) && !dupe)) && (Block.blocksList[i1].getMobilityFlag() == 0 || i1 == Block.pistonBase.blockID || i1 == Block.pistonStickyBase.blockID))
+                {
+                    par2 += Facing.offsetsXForSide[par6];
+                    par3 += Facing.offsetsYForSide[par6];
+                    par4 += Facing.offsetsZForSide[par6];
+                    par1World.setBlockAndMetadata(par2, par3, par4, Block.pistonMoving.blockID, i1);
+                    par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(l, i1, par6, false, false));
+                    par1World.setBlockWithNotify(i, j, k, 0);
+                }
+                else if (!flag)
+                {
+                    par1World.setBlockWithNotify(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6], 0);
+                }
+            }
+            else
+            {
+                par1World.setBlockWithNotify(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6], 0);
+            }
+
+            par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.in", 0.5F, par1World.rand.nextFloat() * 0.15F + 0.6F);
+        }
     }
 
     public void powerBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
@@ -348,14 +471,10 @@ public class BlockPistonBase extends Block
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    /**
-     * Adds to the supplied array any colliding bounding boxes with the passed in bounding box. Args: world, x, y, z,
-     * axisAlignedBB, arrayList
-     */
-    public void getCollidingBoundingBoxes(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, ArrayList par6ArrayList)
+    public void func_71871_a(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        super.getCollidingBoundingBoxes(par1World, par2, par3, par4, par5AxisAlignedBB, par6ArrayList);
+        super.func_71871_a(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
 
     /**
@@ -395,7 +514,7 @@ public class BlockPistonBase extends Block
     /**
      * gets the way this piston should face for that entity that placed it.
      */
-    private static int determineOrientation(World par0World, int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
+    public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
     {
         if (MathHelper.abs((float)par4EntityPlayer.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityPlayer.posZ - (float)par3) < 2.0F)
         {
@@ -451,7 +570,7 @@ public class BlockPistonBase extends Block
         }
         else
         {
-            if (Block.blocksList[par0].getHardness() == -1F)
+            if (Block.blocksList[par0].func_71934_m(par1World, par2, par3, par4) == -1F)
             {
                 return false;
             }
@@ -589,12 +708,12 @@ public class BlockPistonBase extends Block
 
             if (i2 == blockID && i1 == par2 && k1 == par3 && l1 == par4)
             {
-                par1World.setBlockAndMetadata(i, j, k, Block.pistonMoving.blockID, par5 | (isSticky ? 8 : 0));
+                par1World.func_72930_a(i, j, k, Block.pistonMoving.blockID, par5 | (isSticky ? 8 : 0), false);
                 par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(Block.pistonExtension.blockID, par5 | (isSticky ? 8 : 0), par5, true, false));
             }
             else
             {
-                par1World.setBlockAndMetadata(i, j, k, Block.pistonMoving.blockID, j2);
+                par1World.func_72930_a(i, j, k, Block.pistonMoving.blockID, j2, false);
                 par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(i2, j2, par5, true, false));
             }
 

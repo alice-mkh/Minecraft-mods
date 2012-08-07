@@ -185,10 +185,10 @@ public class RenderBounds{
         }
         mc = m;
         renderEngine = mc.renderEngine;
-        worldObj = mc.theWorld;
+        worldObj = mc.field_71441_e;
         if (imageData == null){
             try{
-                imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 5));
+                imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 4));
             }catch(Exception ex){
                 System.out.println(ex);
             }
@@ -246,9 +246,9 @@ public class RenderBounds{
         if (anim){
             TextureFX texturefx = null;
             try{
-                List list = ((ArrayList)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 6));
+                List list = ((ArrayList)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 5));
                 for (int i = 0; i < list.size(); i++){
-                    if (((TextureFX)list.get(i)).iconIndex==((name.startsWith("lava") ? 14 : 12) * 16 + 13)){
+                    if (((TextureFX)list.get(i)).iconIndex==Block.blocksList[ODNBXlite.SurrWaterType].blockIndexInTexture){
                         texturefx = ((TextureFX)list.get(i));
                         break;
                     }

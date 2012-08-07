@@ -12,6 +12,7 @@ public class ItemBow extends Item
         super(par1);
         maxStackSize = 1;
         setMaxDamage(384);
+        func_77637_a(CreativeTabs.field_78037_j);
     }
 
     /**
@@ -41,7 +42,7 @@ public class ItemBow extends Item
 
             if (f == 1.0F)
             {
-                entityarrow.arrowCritical = true;
+                entityarrow.func_70243_d(true);
             }
 
             int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
@@ -55,7 +56,7 @@ public class ItemBow extends Item
 
             if (k > 0)
             {
-                entityarrow.func_46023_b(k);
+                entityarrow.setKnockbackStrength(k);
             }
 
             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
@@ -68,13 +69,13 @@ public class ItemBow extends Item
             }
             par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-            if (!flag)
+            if (flag)
             {
-                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
+                entityarrow.field_70251_a = 2;
             }
             else
             {
-                entityarrow.doesArrowBelongToPlayer = false;
+                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
             }
 
             if (!par2World.isRemote)
@@ -128,7 +129,7 @@ public class ItemBow extends Item
             int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
             if (k > 0)
             {
-                entityarrow.func_46023_b(k);
+                entityarrow.setKnockbackStrength(k);
             }
             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
             {
@@ -138,7 +139,7 @@ public class ItemBow extends Item
             if (!flag){
                 par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
             }else{
-                entityarrow.doesArrowBelongToPlayer = false;
+                entityarrow.field_70251_a = 2;
             }
             if(!par2World.isRemote){
                 par2World.spawnEntityInWorld(entityarrow);

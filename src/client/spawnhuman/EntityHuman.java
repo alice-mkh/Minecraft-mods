@@ -1,18 +1,7 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
-
 package net.minecraft.src;
-
-
-// Referenced classes of package net.minecraft.src:
-//            EntityAnimal, DataWatcher, NBTTagCompound, World, 
-//            EntityPlayer, Item, EntityPigZombie, AchievementList, 
-//            EntityLightningBolt
 
 public class EntityHuman extends EntityAnimal
 {
-
     public EntityHuman(World world)
     {
         super(world);
@@ -54,8 +43,8 @@ public class EntityHuman extends EntityAnimal
             pathToEntity = null;
             return;
         }
-        Profiler.startSection("followpath");
-        Vec3D vec3d = pathToEntity.getVectorFromIndex(this, pathToEntity.getCurrentPathIndex());
+        worldObj.field_72984_F.startSection("followpath");
+        Vec3 vec3d = pathToEntity.getVectorFromIndex(this, pathToEntity.getCurrentPathIndex());
         for(double d = width * 2.0F; vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d;)
         {
             pathToEntity.incrementPathIndex();
@@ -94,12 +83,12 @@ public class EntityHuman extends EntityAnimal
                 isJumping = true;
             }
         }
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
     }
 
     protected void updateWanderPath()
     {
-        Profiler.startSection("stroll");
+        worldObj.field_72984_F.startSection("stroll");
         int i = -1;
         int j = -1;
         int k = -1;
@@ -114,7 +103,7 @@ public class EntityHuman extends EntityAnimal
         }
 //         pathToEntity = worldObj.getEntityPathToXYZ(this, i, j, k, 10F);
         setPathToEntity(worldObj.getEntityPathToXYZ(this, i, j, k, 10F, true, false, false, true));
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
     }
 
     public int getMaxHealth()

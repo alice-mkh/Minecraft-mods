@@ -44,15 +44,16 @@ public class ItemRenderer
     public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3)
     {
         GL11.glPushMatrix();
+        Block block = Block.blocksList[par2ItemStack.itemID];
 
-        if (par2ItemStack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[par2ItemStack.itemID].getRenderType()))
+        if (block != null && RenderBlocks.renderItemIn3d(block.getRenderType()))
         {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));
-            renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), 1.0F);
+            renderBlocksInstance.renderBlockAsItem(block, par2ItemStack.getItemDamage(), 1.0F);
         }
         else
         {
-            if (par2ItemStack.itemID < 256)
+            if (block != null)
             {
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));
             }
@@ -73,7 +74,7 @@ public class ItemRenderer
             GL11.glTranslatef(-f4, -f5, 0.0F);
             float f6 = 1.5F;
             GL11.glScalef(f6, f6, f6);
-           if (items2d){
+            if (items2d){
                 GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(360F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-0.5F, -0.0625F, 0.0F);
@@ -97,14 +98,14 @@ public class ItemRenderer
                 GL11.glPushMatrix();
                 float f8 = 0.125F;
                 GL11.glScalef(f8, f8, f8);
-                float f9 = ((float)(System.currentTimeMillis() % 3000L) / 3000F) * 8F;
+                float f9 = ((float)(Minecraft.func_71386_F() % 3000L) / 3000F) * 8F;
                 GL11.glTranslatef(f9, 0.0F, 0.0F);
                 GL11.glRotatef(-50F, 0.0F, 0.0F, 1.0F);
                 renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F);
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
                 GL11.glScalef(f8, f8, f8);
-                f9 = ((float)(System.currentTimeMillis() % 4873L) / 4873F) * 8F;
+                f9 = ((float)(Minecraft.func_71386_F() % 4873L) / 4873F) * 8F;
                 GL11.glTranslatef(-f9, 0.0F, 0.0F);
                 GL11.glRotatef(10F, 0.0F, 0.0F, 1.0F);
                 renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F);
@@ -119,18 +120,6 @@ public class ItemRenderer
         }
 
         GL11.glPopMatrix();
-    }
-
-    private void renderItemIn2D_old(Tessellator par1Tessellator, float par2, float par3, float par4, float par5){
-        float f = 1.0F;
-        float f1 = 0.0625F;
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, 0.0F, -1F);
-        par1Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0F - f1, par2, par3);
-        par1Tessellator.addVertexWithUV(f, 1.0D, 0.0F - f1, par4, par3);
-        par1Tessellator.addVertexWithUV(f, 0.0D, 0.0F - f1, par4, par5);
-        par1Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0F - f1, par2, par5);
-        par1Tessellator.draw();
     }
 
     /**
@@ -220,34 +209,47 @@ public class ItemRenderer
         par1Tessellator.draw();
     }
 
+    private void renderItemIn2D_old(Tessellator par1Tessellator, float par2, float par3, float par4, float par5){
+        float f = 1.0F;
+        float f1 = 0.0625F;
+        par1Tessellator.startDrawingQuads();
+        par1Tessellator.setNormal(0.0F, 0.0F, -1F);
+        par1Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0F - f1, par2, par3);
+        par1Tessellator.addVertexWithUV(f, 1.0D, 0.0F - f1, par4, par3);
+        par1Tessellator.addVertexWithUV(f, 0.0D, 0.0F - f1, par4, par5);
+        par1Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0F - f1, par2, par5);
+        par1Tessellator.draw();
+    }
+
     /**
      * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
      */
     public void renderItemInFirstPerson(float par1)
     {
         float f = prevEquippedProgress + (equippedProgress - prevEquippedProgress) * par1;
-        EntityPlayerSP entityplayersp = mc.thePlayer;
-        float f1 = ((EntityPlayer)(entityplayersp)).prevRotationPitch + (((EntityPlayer)(entityplayersp)).rotationPitch - ((EntityPlayer)(entityplayersp)).prevRotationPitch) * par1;
+        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        float f1 = ((EntityPlayer)(entityclientplayermp)).prevRotationPitch + (((EntityPlayer)(entityclientplayermp)).rotationPitch - ((EntityPlayer)(entityclientplayermp)).prevRotationPitch) * par1;
         GL11.glPushMatrix();
         GL11.glRotatef(f1, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(((EntityPlayer)(entityplayersp)).prevRotationYaw + (((EntityPlayer)(entityplayersp)).rotationYaw - ((EntityPlayer)(entityplayersp)).prevRotationYaw) * par1, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(((EntityPlayer)(entityclientplayermp)).prevRotationYaw + (((EntityPlayer)(entityclientplayermp)).rotationYaw - ((EntityPlayer)(entityclientplayermp)).prevRotationYaw) * par1, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
 
-        if (entityplayersp instanceof EntityPlayerSP)
+        if (entityclientplayermp instanceof EntityPlayerSP)
         {
-            EntityPlayerSP entityplayersp1 = (EntityPlayerSP)entityplayersp;
-            float f2 = entityplayersp1.prevRenderArmPitch + (entityplayersp1.renderArmPitch - entityplayersp1.prevRenderArmPitch) * par1;
-            float f4 = entityplayersp1.prevRenderArmYaw + (entityplayersp1.renderArmYaw - entityplayersp1.prevRenderArmYaw) * par1;            if (sway){
+            EntityPlayerSP entityplayersp = (EntityPlayerSP)entityclientplayermp;
+            float f2 = entityplayersp.prevRenderArmPitch + (entityplayersp.renderArmPitch - entityplayersp.prevRenderArmPitch) * par1;
+            float f4 = entityplayersp.prevRenderArmYaw + (entityplayersp.renderArmYaw - entityplayersp.prevRenderArmYaw) * par1;
+            if (sway){
                 GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationPitch - f2) * 0.1F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationYaw - f4) * 0.1F, 0.0F, 1.0F, 0.0F);
             }
         }
 
         ItemStack itemstack = itemToRender;
-        float f3 = mc.theWorld.getLightBrightness(MathHelper.floor_double(((EntityPlayer)(entityplayersp)).posX), MathHelper.floor_double(((EntityPlayer)(entityplayersp)).posY), MathHelper.floor_double(((EntityPlayer)(entityplayersp)).posZ));
+        float f3 = mc.field_71441_e.getLightBrightness(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ));
         f3 = 1.0F;
-        int i = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityplayersp)).posX), MathHelper.floor_double(((EntityPlayer)(entityplayersp)).posY), MathHelper.floor_double(((EntityPlayer)(entityplayersp)).posZ), 0);
+        int i = mc.field_71441_e.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ), 0);
         int k = i % 0x10000;
         int l = i / 0x10000;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)l / 1.0F);
@@ -270,7 +272,7 @@ public class ItemRenderer
         {
             GL11.glPushMatrix();
             float f5 = 0.8F;
-            float f9 = entityplayersp.getSwingProgress(par1);
+            float f9 = entityclientplayermp.getSwingProgress(par1);
             float f14 = MathHelper.sin(f9 * (float)Math.PI);
             float f20 = MathHelper.sin(MathHelper.sqrt_float(f9) * (float)Math.PI);
             GL11.glTranslatef(-f20 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(f9) * (float)Math.PI * 2.0F) * 0.2F, -f14 * 0.2F);
@@ -291,7 +293,7 @@ public class ItemRenderer
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(f9 * -85F, 0.0F, 0.0F, 1.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.thePlayer.skinUrl, mc.thePlayer.getTexture()));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.field_71439_g.skinUrl, mc.field_71439_g.getTexture()));
 
             for (f14 = 0; f14 < 2; f14++)
             {
@@ -302,27 +304,27 @@ public class ItemRenderer
                 GL11.glRotatef(-90F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(59F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(-65 * f20, 0.0F, 1.0F, 0.0F);
-                Render render1 = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
-                RenderPlayer renderplayer1 = (RenderPlayer)render1;
-                float f34 = 1.0F;
-                GL11.glScalef(f34, f34, f34);
-                drawFirstPersonHand(renderplayer1, 2);
+                Render render = RenderManager.instance.getEntityRenderObject(mc.field_71439_g);
+                RenderPlayer renderplayer = (RenderPlayer)render;
+                float f30 = 1.0F;
+                GL11.glScalef(f30, f30, f30);
+                drawFirstPersonHand(renderplayer, 2);
                 GL11.glPopMatrix();
             }
 
-            f14 = entityplayersp.getSwingProgress(par1);
+            f14 = entityclientplayermp.getSwingProgress(par1);
             f20 = MathHelper.sin(f14 * f14 * (float)Math.PI);
-            float f27 = MathHelper.sin(MathHelper.sqrt_float(f14) * (float)Math.PI);
+            float f25 = MathHelper.sin(MathHelper.sqrt_float(f14) * (float)Math.PI);
             GL11.glRotatef(-f20 * 20F, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-f27 * 20F, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(-f27 * 80F, 1.0F, 0.0F, 0.0F);
-            f14 = 0.38F;
-            GL11.glScalef(f14, f14, f14);
+            GL11.glRotatef(-f25 * 20F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-f25 * 80F, 1.0F, 0.0F, 0.0F);
+            float f28 = 0.38F;
+            GL11.glScalef(f28, f28, f28);
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(-1F, -1F, 0.0F);
-            f20 = 0.015625F;
-            GL11.glScalef(f20, f20, f20);
+            float f31 = 0.015625F;
+            GL11.glScalef(f31, f31, f31);
             mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/misc/mapbg.png"));
             Tessellator tessellator = Tessellator.instance;
             GL11.glNormal3f(0.0F, 0.0F, -1F);
@@ -333,8 +335,8 @@ public class ItemRenderer
             tessellator.addVertexWithUV(128 + byte0, 0 - byte0, 0.0D, 1.0D, 0.0D);
             tessellator.addVertexWithUV(0 - byte0, 0 - byte0, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
-            MapData mapdata = Item.map.getMapData(itemstack, mc.theWorld);
-            mapItemRenderer.renderMap(mc.thePlayer, mc.renderEngine, mapdata);
+            MapData mapdata = Item.map.getMapData(itemstack, mc.field_71441_e);
+            mapItemRenderer.renderMap(mc.field_71439_g, mc.renderEngine, mapdata);
             GL11.glPopMatrix();
         }
         else if (itemstack != null)
@@ -342,32 +344,29 @@ public class ItemRenderer
             GL11.glPushMatrix();
             float f6 = 0.8F;
 
-            if (entityplayersp.getItemInUseCount() > 0)
+            if (entityclientplayermp.getItemInUseCount() > 0)
             {
                 EnumAction enumaction = itemstack.getItemUseAction();
 
                 if (enumaction == EnumAction.eat || enumaction == EnumAction.drink)
                 {
-                    float f15 = ((float)entityplayersp.getItemInUseCount() - par1) + 1.0F;
+                    float f15 = ((float)entityclientplayermp.getItemInUseCount() - par1) + 1.0F;
                     float f21 = 1.0F - f15 / (float)itemstack.getMaxItemUseDuration();
-                    float f28 = f21;
-                    float f31 = 1.0F - f28;
-                    f31 = f31 * f31 * f31;
-                    f31 = f31 * f31 * f31;
-                    f31 = f31 * f31 * f31;
-                    float f35 = 1.0F - f31;
-                    GL11.glTranslatef(0.0F, MathHelper.abs(MathHelper.cos((f15 / 4F) * (float)Math.PI) * 0.1F) * (float)((double)f28 <= 0.20000000000000001D ? 0 : 1), 0.0F);
-                    if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
-                        GL11.glTranslatef(f35 * 0.6F, -f35 * 0.5F, 0.0F);
-                        GL11.glRotatef(f35 * 90F, 0.0F, 1.0F, 0.0F);
-                        GL11.glRotatef(f35 * 10F, 1.0F, 0.0F, 0.0F);
-                        GL11.glRotatef(f35 * 30F, 0.0F, 0.0F, 1.0F);
-                    }
+                    float f26 = 1.0F - f21;
+                    f26 = f26 * f26 * f26;
+                    f26 = f26 * f26 * f26;
+                    f26 = f26 * f26 * f26;
+                    float f29 = 1.0F - f26;
+                    GL11.glTranslatef(0.0F, MathHelper.abs(MathHelper.cos((f15 / 4F) * (float)Math.PI) * 0.1F) * (float)((double)f21 <= 0.20000000000000001D ? 0 : 1), 0.0F);
+                    GL11.glTranslatef(f29 * 0.6F, -f29 * 0.5F, 0.0F);
+                    GL11.glRotatef(f29 * 90F, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(f29 * 10F, 1.0F, 0.0F, 0.0F);
+                    GL11.glRotatef(f29 * 30F, 0.0F, 0.0F, 1.0F);
                 }
             }
             else
             {
-                float f10 = entityplayersp.getSwingProgress(par1);
+                float f10 = entityclientplayermp.getSwingProgress(par1);
                 float f16 = MathHelper.sin(f10 * (float)Math.PI);
                 float f22 = MathHelper.sin(MathHelper.sqrt_float(f10) * (float)Math.PI);
                 GL11.glTranslatef(-f22 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(f10) * (float)Math.PI * 2.0F) * 0.2F, -f16 * 0.2F);
@@ -378,7 +377,7 @@ public class ItemRenderer
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
             }
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            float f11 = entityplayersp.getSwingProgress(par1);
+            float f11 = entityclientplayermp.getSwingProgress(par1);
             float f17 = MathHelper.sin(f11 * f11 * (float)Math.PI);
             float f23 = MathHelper.sin(MathHelper.sqrt_float(f11) * (float)Math.PI);
             if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
@@ -386,10 +385,10 @@ public class ItemRenderer
                 GL11.glRotatef(-f23 * 20F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(-f23 * 80F, 1.0F, 0.0F, 0.0F);
             }
-            f11 = 0.4F;
-            GL11.glScalef(f11, f11, f11);
+            float f27 = 0.4F;
+            GL11.glScalef(f27, f27, f27);
 
-            if (entityplayersp.getItemInUseCount() > 0)
+            if (entityclientplayermp.getItemInUseCount() > 0)
             {
                 EnumAction enumaction1 = itemstack.getItemUseAction();
 
@@ -410,28 +409,28 @@ public class ItemRenderer
                         GL11.glRotatef(-8F, 1.0F, 0.0F, 0.0F);
                         GL11.glTranslatef(-0.9F, 0.2F, 0.0F);
                     }
-                    float f24 = (float)itemstack.getMaxItemUseDuration() - (((float)entityplayersp.getItemInUseCount() - par1) + 1.0F);
-                    float f29 = f24 / 20F;
-                    f29 = (f29 * f29 + f29 * 2.0F) / 3F;
+                    float f32 = (float)itemstack.getMaxItemUseDuration() - (((float)entityclientplayermp.getItemInUseCount() - par1) + 1.0F);
+                    float f35 = f32 / 20F;
+                    f35 = (f35 * f35 + f35 * 2.0F) / 3F;
 
-                    if (f29 > 1.0F)
+                    if (f35 > 1.0F)
                     {
-                        f29 = 1.0F;
+                        f35 = 1.0F;
                     }
 
-                    if (f29 > 0.1F)
+                    if (f35 > 0.1F)
                     {
-                        GL11.glTranslatef(0.0F, MathHelper.sin((f24 - 0.1F) * 1.3F) * 0.01F * (f29 - 0.1F), 0.0F);
+                        GL11.glTranslatef(0.0F, MathHelper.sin((f32 - 0.1F) * 1.3F) * 0.01F * (f35 - 0.1F), 0.0F);
                     }
 
-                    GL11.glTranslatef(0.0F, 0.0F, f29 * 0.1F);
+                    GL11.glTranslatef(0.0F, 0.0F, f35 * 0.1F);
                     if (!items2d || itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(-335F, 0.0F, 0.0F, 1.0F);
                         GL11.glRotatef(-50F, 0.0F, 1.0F, 0.0F);
                     }
                     GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-                    float f32 = 1.0F + f29 * 0.2F;
-                    GL11.glScalef(1.0F, 1.0F, f32);
+                    float f37 = 1.0F + f35 * 0.2F;
+                    GL11.glScalef(1.0F, 1.0F, f37);
                     GL11.glTranslatef(0.0F, -0.5F, 0.0F);
                     if (!items2d|| itemstack.itemID<256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType())){
                         GL11.glRotatef(50F, 0.0F, 1.0F, 0.0F);
@@ -445,19 +444,19 @@ public class ItemRenderer
                 GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
             }
 
-            if (itemstack.getItem().func_46058_c())
+            if (itemstack.getItem().requiresMultipleRenderPasses())
             {
-                renderItem(entityplayersp, itemstack, 0);
+                renderItem(entityclientplayermp, itemstack, 0);
                 int i1 = Item.itemsList[itemstack.itemID].getColorFromDamage(itemstack.getItemDamage(), 1);
-                float f25 = (float)(i1 >> 16 & 0xff) / 255F;
-                float f30 = (float)(i1 >> 8 & 0xff) / 255F;
-                float f33 = (float)(i1 & 0xff) / 255F;
-                GL11.glColor4f(f3 * f25, f3 * f30, f3 * f33, 1.0F);
-                renderItem(entityplayersp, itemstack, 1);
+                float f33 = (float)(i1 >> 16 & 0xff) / 255F;
+                float f36 = (float)(i1 >> 8 & 0xff) / 255F;
+                float f38 = (float)(i1 & 0xff) / 255F;
+                GL11.glColor4f(f3 * f33, f3 * f36, f3 * f38, 1.0F);
+                renderItem(entityclientplayermp, itemstack, 1);
             }
             else
             {
-                renderItem(entityplayersp, itemstack, 0);
+                renderItem(entityclientplayermp, itemstack, 0);
             }
 
             GL11.glPopMatrix();
@@ -466,36 +465,36 @@ public class ItemRenderer
         {
             GL11.glPushMatrix();
             float f7 = 0.8F;
-            float f12 = entityplayersp.getSwingProgress(par1);
+            float f12 = entityclientplayermp.getSwingProgress(par1);
             float f18 = MathHelper.sin(f12 * (float)Math.PI);
-            float f26 = MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI);
-            GL11.glTranslatef(-f26 * 0.3F, MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI * 2.0F) * 0.4F, -f18 * 0.4F);
+            float f24 = MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI);
+            GL11.glTranslatef(-f24 * 0.3F, MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI * 2.0F) * 0.4F, -f18 * 0.4F);
             GL11.glTranslatef(0.8F * f7, -0.75F * f7 - (1.0F - f) * 0.6F, -0.9F * f7);
             GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            f12 = entityplayersp.getSwingProgress(par1);
+            f12 = entityclientplayermp.getSwingProgress(par1);
             f18 = MathHelper.sin(f12 * f12 * (float)Math.PI);
-            f26 = MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI);
-            GL11.glRotatef(f26 * 70F, 0.0F, 1.0F, 0.0F);
+            f24 = MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI);
+            GL11.glRotatef(f24 * 70F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-f18 * 20F, 0.0F, 0.0F, 1.0F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.thePlayer.skinUrl, mc.thePlayer.getTexture()));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.field_71439_g.skinUrl, mc.field_71439_g.getTexture()));
             GL11.glTranslatef(-1F, 3.6F, 3.5F);
             GL11.glRotatef(120F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-135F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(5.6F, 0.0F, 0.0F);
-            Render render = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
-            RenderPlayer renderplayer = (RenderPlayer)render;
-            f26 = 1.0F;
-            GL11.glScalef(f26, f26, f26);
+            Render render1 = RenderManager.instance.getEntityRenderObject(mc.field_71439_g);
+            RenderPlayer renderplayer1 = (RenderPlayer)render1;
+            float f34 = 1.0F;
+            GL11.glScalef(f34, f34, f34);
             if (hand==0){
                 GL11.glRotatef(22F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(-35F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(20F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(0.08F, 0.21F, 0.12F);
             }
-            drawFirstPersonHand(renderplayer, hand);
+            drawFirstPersonHand(renderplayer1, hand);
             GL11.glPopMatrix();
         }
 
@@ -510,23 +509,23 @@ public class ItemRenderer
     {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-        if (mc.thePlayer.isBurning())
+        if (mc.field_71439_g.isBurning())
         {
             int i = mc.renderEngine.getTexture("/terrain.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, i);
             renderFireInFirstPerson(par1);
         }
 
-        if (mc.thePlayer.isEntityInsideOpaqueBlock())
+        if (mc.field_71439_g.isEntityInsideOpaqueBlock())
         {
-            int j = MathHelper.floor_double(mc.thePlayer.posX);
-            int l = MathHelper.floor_double(mc.thePlayer.posY);
-            int i1 = MathHelper.floor_double(mc.thePlayer.posZ);
+            int j = MathHelper.floor_double(mc.field_71439_g.posX);
+            int l = MathHelper.floor_double(mc.field_71439_g.posY);
+            int i1 = MathHelper.floor_double(mc.field_71439_g.posZ);
             int j1 = mc.renderEngine.getTexture("/terrain.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, j1);
-            int k1 = mc.theWorld.getBlockId(j, l, i1);
+            int k1 = mc.field_71441_e.getBlockId(j, l, i1);
 
-            if (mc.theWorld.isBlockNormalCube(j, l, i1))
+            if (mc.field_71441_e.isBlockNormalCube(j, l, i1))
             {
                 renderInsideOfBlock(par1, Block.blocksList[k1].getBlockTextureFromSide(2));
             }
@@ -534,16 +533,16 @@ public class ItemRenderer
             {
                 for (int l1 = 0; l1 < 8; l1++)
                 {
-                    float f = ((float)((l1 >> 0) % 2) - 0.5F) * mc.thePlayer.width * 0.9F;
-                    float f1 = ((float)((l1 >> 1) % 2) - 0.5F) * mc.thePlayer.height * 0.2F;
-                    float f2 = ((float)((l1 >> 2) % 2) - 0.5F) * mc.thePlayer.width * 0.9F;
+                    float f = ((float)((l1 >> 0) % 2) - 0.5F) * mc.field_71439_g.width * 0.9F;
+                    float f1 = ((float)((l1 >> 1) % 2) - 0.5F) * mc.field_71439_g.height * 0.2F;
+                    float f2 = ((float)((l1 >> 2) % 2) - 0.5F) * mc.field_71439_g.width * 0.9F;
                     int i2 = MathHelper.floor_float((float)j + f);
                     int j2 = MathHelper.floor_float((float)l + f1);
                     int k2 = MathHelper.floor_float((float)i1 + f2);
 
-                    if (mc.theWorld.isBlockNormalCube(i2, j2, k2))
+                    if (mc.field_71441_e.isBlockNormalCube(i2, j2, k2))
                     {
-                        k1 = mc.theWorld.getBlockId(i2, j2, k2);
+                        k1 = mc.field_71441_e.getBlockId(i2, j2, k2);
                     }
                 }
             }
@@ -554,7 +553,7 @@ public class ItemRenderer
             }
         }
 
-        if (mc.thePlayer.isInsideOfMaterial(Material.water))
+        if (mc.field_71439_g.isInsideOfMaterial(Material.water))
         {
             int k = mc.renderEngine.getTexture("/misc/water.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, k);
@@ -570,7 +569,7 @@ public class ItemRenderer
     private void renderInsideOfBlock(float par1, int par2)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f = mc.thePlayer.getBrightness(par1);
+        float f = mc.field_71439_g.getBrightness(par1);
         f = 0.1F;
         GL11.glColor4f(f, f, f, 0.5F);
         GL11.glPushMatrix();
@@ -601,7 +600,7 @@ public class ItemRenderer
     private void renderWarpedTextureOverlay(float par1)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f = mc.thePlayer.getBrightness(par1);
+        float f = mc.field_71439_g.getBrightness(par1);
         GL11.glColor4f(f, f, f, 0.5F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -612,8 +611,8 @@ public class ItemRenderer
         float f4 = -1F;
         float f5 = 1.0F;
         float f6 = -0.5F;
-        float f7 = -mc.thePlayer.rotationYaw / 64F;
-        float f8 = mc.thePlayer.rotationPitch / 64F;
+        float f7 = -mc.field_71439_g.rotationYaw / 64F;
+        float f8 = mc.field_71439_g.rotationPitch / 64F;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(f2, f4, f6, f1 + f7, f1 + f8);
         tessellator.addVertexWithUV(f3, f4, f6, 0.0F + f7, f1 + f8);
@@ -669,19 +668,18 @@ public class ItemRenderer
     public void updateEquippedItem()
     {
         prevEquippedProgress = equippedProgress;
-        EntityPlayerSP entityplayersp = mc.thePlayer;
-        ItemStack itemstack = ((EntityPlayer)(entityplayersp)).inventory.getCurrentItem();
-        ItemStack itemstack1 = itemstack;
-        boolean flag = equippedItemSlot == ((EntityPlayer)(entityplayersp)).inventory.currentItem && itemstack1 == itemToRender;
+        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        ItemStack itemstack = ((EntityPlayer)(entityclientplayermp)).inventory.getCurrentItem();
+        boolean flag = equippedItemSlot == ((EntityPlayer)(entityclientplayermp)).inventory.currentItem && itemstack == itemToRender;
 
-        if (itemToRender == null && itemstack1 == null)
+        if (itemToRender == null && itemstack == null)
         {
             flag = true;
         }
 
-        if (itemstack1 != null && itemToRender != null && itemstack1 != itemToRender && itemstack1.itemID == itemToRender.itemID && itemstack1.getItemDamage() == itemToRender.getItemDamage())
+        if (itemstack != null && itemToRender != null && itemstack != itemToRender && itemstack.itemID == itemToRender.itemID && itemstack.getItemDamage() == itemToRender.getItemDamage())
         {
-            itemToRender = itemstack1;
+            itemToRender = itemstack;
             flag = true;
         }
 
@@ -703,17 +701,17 @@ public class ItemRenderer
 
         if (equippedProgress < 0.1F)
         {
-            itemToRender = itemstack1;
-            equippedItemSlot = ((EntityPlayer)(entityplayersp)).inventory.currentItem;
+            itemToRender = itemstack;
+            equippedItemSlot = ((EntityPlayer)(entityclientplayermp)).inventory.currentItem;
         }
     }
 
-    public void func_9449_b()
+    public void func_78444_b()
     {
         equippedProgress = 0.0F;
     }
 
-    public void func_9450_c()
+    public void func_78445_c()
     {
         equippedProgress = 0.0F;
     }

@@ -5,7 +5,7 @@ public class ChunkCache implements IBlockAccess
     private int chunkX;
     private int chunkZ;
     private Chunk chunkArray[][];
-    private boolean field_48467_d;
+    private boolean field_72814_d;
 
     /** Reference to the World object. */
     private World worldObj;
@@ -18,7 +18,7 @@ public class ChunkCache implements IBlockAccess
         int i = par5 >> 4;
         int j = par7 >> 4;
         chunkArray = new Chunk[(i - chunkX) + 1][(j - chunkZ) + 1];
-        field_48467_d = true;
+        field_72814_d = true;
 
         for (int k = chunkX; k <= i; k++)
         {
@@ -35,15 +35,15 @@ public class ChunkCache implements IBlockAccess
 
                 if (!chunk.getAreLevelsEmpty(par3, par6))
                 {
-                    field_48467_d = false;
+                    field_72814_d = false;
                 }
             }
         }
     }
 
-    public boolean func_48452_a()
+    public boolean func_72806_N()
     {
-        return field_48467_d;
+        return field_72814_d;
     }
 
     private boolean isBounds(int x, int y, int z){
@@ -172,7 +172,7 @@ public class ChunkCache implements IBlockAccess
         {
             int i = getBlockId(par1, par2, par3);
 
-            if (i == Block.stairSingle.blockID || i == Block.tilledField.blockID || i == Block.stairCompactPlanks.blockID || i == Block.stairCompactCobblestone.blockID)
+            if (i == Block.field_72079_ak.blockID || i == Block.field_72092_bO.blockID || i == Block.tilledField.blockID || i == Block.stairCompactPlanks.blockID || i == Block.stairCompactCobblestone.blockID)
             {
                 int l = getLightValueExt(par1, par2 + 1, par3, false);
                 int j1 = getLightValueExt(par1 + 1, par2, par3, false);
@@ -306,6 +306,35 @@ public class ChunkCache implements IBlockAccess
         else
         {
             return block.blockMaterial.blocksMovement() && block.renderAsNormalBlock();
+        }
+    }
+
+    public boolean func_72797_t(int par1, int par2, int par3)
+    {
+        Block block = Block.blocksList[getBlockId(par1, par2, par3)];
+
+        if (block == null)
+        {
+            return false;
+        }
+
+        if (block.blockMaterial.isOpaque() && block.renderAsNormalBlock())
+        {
+            return true;
+        }
+
+        if (block instanceof BlockStairs)
+        {
+            return (getBlockMetadata(par1, par2, par3) & 4) == 4;
+        }
+
+        if (block instanceof BlockHalfSlab)
+        {
+            return (getBlockMetadata(par1, par2, par3) & 8) == 8;
+        }
+        else
+        {
+            return false;
         }
     }
 

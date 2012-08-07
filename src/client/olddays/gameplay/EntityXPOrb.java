@@ -13,7 +13,7 @@ public class EntityXPOrb extends Entity
 
     /** The age of the XP orb in ticks. */
     public int xpOrbAge;
-    public int field_35126_c;
+    public int field_70532_c;
 
     /** The health of this XP orb. */
     private int xpOrbHealth;
@@ -95,9 +95,9 @@ public class EntityXPOrb extends Entity
     {
         super.onUpdate();
 
-        if (field_35126_c > 0)
+        if (field_70532_c > 0)
         {
-            field_35126_c--;
+            field_70532_c--;
         }
 
         prevPosX = posX;
@@ -229,7 +229,7 @@ public class EntityXPOrb extends Entity
             return;
         }
 
-        if (field_35126_c == 0 && par1EntityPlayer.xpCooldown == 0)
+        if (field_70532_c == 0 && par1EntityPlayer.xpCooldown == 0)
         {
             par1EntityPlayer.xpCooldown = 2;
             worldObj.playSoundAtEntity(this, "random.orb", 0.1F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));

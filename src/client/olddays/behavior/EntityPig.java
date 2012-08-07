@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 public class EntityPig extends EntityAnimal
 {
     public static boolean survivaltest = false;
@@ -122,6 +124,26 @@ public class EntityPig extends EntityAnimal
         else
         {
             return Item.porkRaw.shiftedIndex;
+        }
+    }
+
+    /**
+     * Drop 0-2 items of this living's type
+     */
+    protected void dropFewItems(boolean par1, int par2)
+    {
+        int i = rand.nextInt(3) + 1 + rand.nextInt(1 + par2);
+
+        for (int j = 0; j < i; j++)
+        {
+            if (isBurning())
+            {
+                dropItem(Item.porkCooked.shiftedIndex, 1);
+            }
+            else
+            {
+                dropItem(Item.porkRaw.shiftedIndex, 1);
+            }
         }
     }
 

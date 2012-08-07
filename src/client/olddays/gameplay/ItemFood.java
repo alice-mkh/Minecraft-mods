@@ -8,7 +8,8 @@ public class ItemFood extends Item
     public static boolean instant = false;
     public static boolean stacks = true;
 
-    public final int field_35430_a = 32;
+    /** Number of ticks to run while 'EnumAction'ing until result. */
+    public final int itemUseDuration = 32;
 
     /** The amount this food item heals the player. */
     private final int healAmount;
@@ -42,11 +43,29 @@ public class ItemFood extends Item
         healAmount = par2;
         isWolfsFavoriteMeat = par4;
         saturationModifier = par3;
+        func_77637_a(CreativeTabs.field_78039_h);
     }
 
     public ItemFood(int par1, int par2, boolean par3)
     {
         this(par1, par2, 0.6F, par3);
+    }
+
+    public int getItemStackLimit(){
+        if (!stacks){
+            if (this.shiftedIndex==Item.cookie.shiftedIndex || this.shiftedIndex==Item.melon.shiftedIndex){
+                return 8;
+            }else{
+                return 1;
+            }
+        }else{
+            return maxStackSize;
+        }
+    }
+
+    public Item setMaxStackSize(int i){
+        maxStackSize = i;
+        return this;
     }
 
     public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
@@ -56,7 +75,12 @@ public class ItemFood extends Item
             par3EntityPlayer.getFoodStats().addStats(this);
         }
         par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
+        func_77849_c(par1ItemStack, par2World, par3EntityPlayer);
+        return par1ItemStack;
+    }
 
+    protected void func_77849_c(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
         if (!par2World.isRemote){
             if(heal){
                 if (this.shiftedIndex==Item.appleGold.shiftedIndex){
@@ -77,25 +101,6 @@ public class ItemFood extends Item
                 }
             }
         }
-
-        return par1ItemStack;
-    }
-
-    public int getItemStackLimit(){
-        if (!stacks){
-            if (this.shiftedIndex==Item.cookie.shiftedIndex || this.shiftedIndex==Item.melon.shiftedIndex){
-                return 8;
-            }else{
-                return 1;
-            }
-        }else{
-            return maxStackSize;
-        }
-    }
-
-    public Item setMaxStackSize(int i){
-        maxStackSize = i;
-        return this;
     }
 
     /**
@@ -174,13 +179,5 @@ public class ItemFood extends Item
     {
         alwaysEdible = true;
         return this;
-    }
-
-    /**
-     * set name of item from language file
-     */
-    public Item setItemName(String par1Str)
-    {
-        return super.setItemName(par1Str);
     }
 }

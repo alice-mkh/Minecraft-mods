@@ -29,7 +29,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
         }
         int i;
 
-        if (par1TileEntityChest.worldObj == null)
+        if (!par1TileEntityChest.func_70309_m())
         {
             i = 0;
         }
@@ -40,7 +40,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
             if (block != null && i == 0)
             {
-                ((BlockChest)block).unifyAdjacentChests(par1TileEntityChest.worldObj, par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                ((BlockChest)block).unifyAdjacentChests(par1TileEntityChest.func_70314_l(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 i = par1TileEntityChest.getBlockMetadata();
             }
 
@@ -138,9 +138,6 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
     public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
-        if (hidemodel){
-            return;
-        }
         renderTileEntityChestAt((TileEntityChest)par1TileEntity, par2, par4, par6, par8);
     }
 }

@@ -3,7 +3,6 @@ package net.minecraft.src.nbxlite.chunkproviders;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
-import net.minecraft.src.backport.*;
 
 public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private NoiseGeneratorOctaves noiseGen1;
@@ -230,9 +229,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
-            if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
+//             if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
                 templeGenerator.generate(this, worldObj, i, j, abyte0);
-            }
+//             }
         }
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
@@ -383,9 +382,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
-            if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
+//             if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
                 templeGenerator.generateStructuresInChunk(worldObj, rand, i, j);
-            }
+//             }
         }
         if (!flag && rand.nextInt(4) == 0)
         {

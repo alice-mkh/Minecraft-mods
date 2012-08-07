@@ -88,14 +88,11 @@ public class EntityTNTPrimed extends Entity
 
         if (fuse-- <= 0)
         {
+            setDead();
+
             if (!worldObj.isRemote)
             {
-                setDead();
                 explode();
-            }
-            else
-            {
-                setDead();
             }
         }
         else

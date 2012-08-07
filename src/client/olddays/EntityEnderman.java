@@ -9,24 +9,20 @@ public class EntityEnderman extends EntityMob
     public static boolean oldPicking = false;
     public static boolean oldhealth = false;
 
-    private static boolean canCarryBlocks[];
-    private static boolean canCarryBlocksOld[];
-
-    /** Is the enderman attacking another entity? */
-    public boolean isAttacking;
+    private static boolean carriableBlocks[];
+    private static boolean carriableBlocksOld[];
 
     /**
      * Counter to delay the teleportation of an enderman towards the currently attacked target
      */
     private int teleportDelay;
-    private int field_35185_e;
+    private int field_70826_g;
 
     public EntityEnderman(World par1World)
     {
         super(par1World);
-        isAttacking = false;
         teleportDelay = 0;
-        field_35185_e = 0;
+        field_70826_g = 0;
         texture = "/mob/enderman.png";
         moveSpeed = 0.2F;
         attackStrength = 7;
@@ -44,6 +40,7 @@ public class EntityEnderman extends EntityMob
         super.entityInit();
         dataWatcher.addObject(16, new Byte((byte)0));
         dataWatcher.addObject(17, new Byte((byte)0));
+        dataWatcher.addObject(18, new Byte((byte)0));
     }
 
     /**
@@ -78,32 +75,20 @@ public class EntityEnderman extends EntityMob
         {
             if (shouldAttackPlayer(entityplayer))
             {
-                if (field_35185_e++ == 5)
+                if (field_70826_g++ == 5)
                 {
-                    field_35185_e = 0;
+                    field_70826_g = 0;
+                    func_70819_e(true);
                     return entityplayer;
                 }
             }
             else
             {
-                field_35185_e = 0;
+                field_70826_g = 0;
             }
         }
 
         return null;
-    }
-
-    public int getBrightnessForRender(float par1)
-    {
-        return super.getBrightnessForRender(par1);
-    }
-
-    /**
-     * Gets how bright this entity is.
-     */
-    public float getBrightness(float par1)
-    {
-        return super.getBrightness(par1);
     }
 
     /**
@@ -118,11 +103,11 @@ public class EntityEnderman extends EntityMob
             return false;
         }
 
-        Vec3D vec3d = par1EntityPlayer.getLook(1.0F).normalize();
-        Vec3D vec3d1 = Vec3D.createVector(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
-        double d = vec3d1.lengthVector();
-        vec3d1 = vec3d1.normalize();
-        double d1 = vec3d.dotProduct(vec3d1);
+        Vec3 vec3 = par1EntityPlayer.getLook(1.0F).normalize();
+        Vec3 vec3_1 = Vec3.func_72437_a().func_72345_a(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
+        double d = vec3_1.lengthVector();
+        vec3_1 = vec3_1.normalize();
+        double d1 = vec3.dotProduct(vec3_1);
 
         if (d1 > 1.0D - 0.025000000000000001D / d)
         {
@@ -145,7 +130,6 @@ public class EntityEnderman extends EntityMob
             attackEntityFrom(DamageSource.drown, 1);
         }
 
-        isAttacking = entityToAttack != null;
         moveSpeed = entityToAttack == null ? 0.3F : 6.5F;
 
         if (!worldObj.isRemote)
@@ -159,7 +143,7 @@ public class EntityEnderman extends EntityMob
                     int j1 = MathHelper.floor_double((posZ - 2D) + rand.nextDouble() * 4D);
                     int l1 = worldObj.getBlockId(i, l, j1);
 
-                    if ((!oldPicking && canCarryBlocks[l1]) || (oldPicking && canCarryBlocksOld[l1]))
+                    if ((!oldPicking && carriableBlocks[l1]) || (oldPicking && carriableBlocksOld[l1]))
                     {
                         setCarried(worldObj.getBlockId(i, l, j1));
                         setCarryingData(worldObj.getBlockMetadata(i, l, j1));
@@ -199,6 +183,7 @@ public class EntityEnderman extends EntityMob
             if (f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
                 entityToAttack = null;
+                func_70819_e(false);
                 teleportRandomly();
             }
         }
@@ -206,6 +191,7 @@ public class EntityEnderman extends EntityMob
         if (isWet())
         {
             entityToAttack = null;
+            func_70819_e(false);
             teleportRandomly();
         }
 
@@ -239,6 +225,7 @@ public class EntityEnderman extends EntityMob
             }
             else
             {
+                func_70819_e(false);
                 teleportDelay = 0;
             }
         }
@@ -262,12 +249,12 @@ public class EntityEnderman extends EntityMob
      */
     protected boolean teleportToEntity(Entity par1Entity)
     {
-        Vec3D vec3d = Vec3D.createVector(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
-        vec3d = vec3d.normalize();
+        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
+        vec3 = vec3.normalize();
         double d = 16D;
-        double d1 = (posX + (rand.nextDouble() - 0.5D) * 8D) - vec3d.xCoord * d;
-        double d2 = (posY + (double)(rand.nextInt(16) - 8)) - vec3d.yCoord * d;
-        double d3 = (posZ + (rand.nextDouble() - 0.5D) * 8D) - vec3d.zCoord * d;
+        double d1 = (posX + (rand.nextDouble() - 0.5D) * 8D) - vec3.xCoord * d;
+        double d2 = (posY + (double)(rand.nextInt(16) - 8)) - vec3.yCoord * d;
+        double d3 = (posZ + (rand.nextDouble() - 0.5D) * 8D) - vec3.zCoord * d;
         return teleportTo(d1, d2, d3);
     }
 
@@ -310,40 +297,43 @@ public class EntityEnderman extends EntityMob
             {
                 setPosition(posX, posY, posZ);
 
-                if (worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox))
+                if (worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox))
                 {
                     flag = true;
                 }
             }
         }
 
-        if (!flag)
+        if (flag)
+        {
+            int l = 128;
+
+            for (int j1 = 0; j1 < l; j1++)
+            {
+                double d3 = (double)j1 / ((double)l - 1.0D);
+                float f = (rand.nextFloat() - 0.5F) * 0.2F;
+                float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
+                float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
+                double d4 = d + (posX - d) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
+                double d5 = d1 + (posY - d1) * d3 + rand.nextDouble() * (double)height;
+                double d6 = d2 + (posZ - d2) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
+                worldObj.spawnParticle("portal", d4, d5, d6, f, f1, f2);
+                if (smoke){
+                    worldObj.spawnParticle("largesmoke", d4, d5, d6, f, f1, f2);
+                }else{
+                    worldObj.spawnParticle("portal", d4, d5, d6, f, f1, f2);
+                }
+            }
+
+            worldObj.playSoundEffect(d, d1, d2, "mob.endermen.portal", 1.0F, 1.0F);
+            worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
+            return true;
+        }
+        else
         {
             setPosition(d, d1, d2);
             return false;
         }
-
-        int l = 128;
-
-        for (int j1 = 0; j1 < l; j1++)
-        {
-            double d3 = (double)j1 / ((double)l - 1.0D);
-            float f = (rand.nextFloat() - 0.5F) * 0.2F;
-            float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
-            float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
-            double d4 = d + (posX - d) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
-            double d5 = d1 + (posY - d1) * d3 + rand.nextDouble() * (double)height;
-            double d6 = d2 + (posZ - d2) * d3 + (rand.nextDouble() - 0.5D) * (double)width * 2D;
-            if (smoke){
-                worldObj.spawnParticle("largesmoke", d4, d5, d6, f, f1, f2);
-            }else{
-                worldObj.spawnParticle("portal", d4, d5, d6, f, f1, f2);
-            }
-        }
-
-        worldObj.playSoundEffect(d, d1, d2, "mob.endermen.portal", 1.0F, 1.0F);
-        worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
-        return true;
     }
 
     /**
@@ -445,75 +435,88 @@ public class EntityEnderman extends EntityMob
 
             return false;
         }
-        else
+
+        if (par1DamageSource.getEntity() instanceof EntityPlayer)
         {
-            return super.attackEntityFrom(par1DamageSource, par2);
+            func_70819_e(true);
         }
+
+        return super.attackEntityFrom(par1DamageSource, par2);
+    }
+
+    public boolean func_70823_r()
+    {
+        return dataWatcher.getWatchableObjectByte(18) > 0;
+    }
+
+    public void func_70819_e(boolean par1)
+    {
+        dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
     static
     {
-        canCarryBlocks = new boolean[256];
-        canCarryBlocks[Block.grass.blockID] = true;
-        canCarryBlocks[Block.dirt.blockID] = true;
-        canCarryBlocks[Block.sand.blockID] = true;
-        canCarryBlocks[Block.gravel.blockID] = true;
-        canCarryBlocks[Block.plantYellow.blockID] = true;
-        canCarryBlocks[Block.plantRed.blockID] = true;
-        canCarryBlocks[Block.mushroomBrown.blockID] = true;
-        canCarryBlocks[Block.mushroomRed.blockID] = true;
-        canCarryBlocks[Block.tnt.blockID] = true;
-        canCarryBlocks[Block.cactus.blockID] = true;
-        canCarryBlocks[Block.blockClay.blockID] = true;
-        canCarryBlocks[Block.pumpkin.blockID] = true;
-        canCarryBlocks[Block.melon.blockID] = true;
-        canCarryBlocks[Block.mycelium.blockID] = true;
-        canCarryBlocksOld = new boolean[256];
-        canCarryBlocksOld[Block.stone.blockID] = true;
-        canCarryBlocksOld[Block.grass.blockID] = true;
-        canCarryBlocksOld[Block.dirt.blockID] = true;
-        canCarryBlocksOld[Block.cobblestone.blockID] = true;
-        canCarryBlocksOld[Block.planks.blockID] = true;
-        canCarryBlocksOld[Block.sand.blockID] = true;
-        canCarryBlocksOld[Block.gravel.blockID] = true;
-        canCarryBlocksOld[Block.oreGold.blockID] = true;
-        canCarryBlocksOld[Block.oreIron.blockID] = true;
-        canCarryBlocksOld[Block.oreCoal.blockID] = true;
-        canCarryBlocksOld[Block.wood.blockID] = true;
-        canCarryBlocksOld[Block.leaves.blockID] = true;
-        canCarryBlocksOld[Block.sponge.blockID] = true;
-        canCarryBlocksOld[Block.glass.blockID] = true;
-        canCarryBlocksOld[Block.oreLapis.blockID] = true;
-        canCarryBlocksOld[Block.blockLapis.blockID] = true;
-        canCarryBlocksOld[Block.sandStone.blockID] = true;
-        canCarryBlocksOld[Block.cloth.blockID] = true;
-        canCarryBlocksOld[Block.plantYellow.blockID] = true;
-        canCarryBlocksOld[Block.plantRed.blockID] = true;
-        canCarryBlocksOld[Block.mushroomBrown.blockID] = true;
-        canCarryBlocksOld[Block.mushroomRed.blockID] = true;
-        canCarryBlocksOld[Block.blockGold.blockID] = true;
-        canCarryBlocksOld[Block.blockSteel.blockID] = true;
-        canCarryBlocksOld[Block.brick.blockID] = true;
-        canCarryBlocksOld[Block.tnt.blockID] = true;
-        canCarryBlocksOld[Block.bookShelf.blockID] = true;
-        canCarryBlocksOld[Block.cobblestoneMossy.blockID] = true;
-        canCarryBlocksOld[Block.oreDiamond.blockID] = true;
-        canCarryBlocksOld[Block.blockDiamond.blockID] = true;
-        canCarryBlocksOld[Block.workbench.blockID] = true;
-        canCarryBlocksOld[Block.oreRedstone.blockID] = true;
-        canCarryBlocksOld[Block.oreRedstoneGlowing.blockID] = true;
-        canCarryBlocksOld[Block.ice.blockID] = true;
-        canCarryBlocksOld[Block.cactus.blockID] = true;
-        canCarryBlocksOld[Block.blockClay.blockID] = true;
-        canCarryBlocksOld[Block.pumpkin.blockID] = true;
-        canCarryBlocksOld[Block.netherrack.blockID] = true;
-        canCarryBlocksOld[Block.slowSand.blockID] = true;
-        canCarryBlocksOld[Block.glowStone.blockID] = true;
-        canCarryBlocksOld[Block.pumpkinLantern.blockID] = true;
-        canCarryBlocksOld[Block.stoneBrick.blockID] = true;
-        canCarryBlocksOld[Block.mushroomCapBrown.blockID] = true;
-        canCarryBlocksOld[Block.mushroomCapRed.blockID] = true;
-        canCarryBlocksOld[Block.melon.blockID] = true;
-        canCarryBlocksOld[Block.mycelium.blockID] = true;
+        carriableBlocks = new boolean[256];
+        carriableBlocks[Block.grass.blockID] = true;
+        carriableBlocks[Block.dirt.blockID] = true;
+        carriableBlocks[Block.sand.blockID] = true;
+        carriableBlocks[Block.gravel.blockID] = true;
+        carriableBlocks[Block.plantYellow.blockID] = true;
+        carriableBlocks[Block.plantRed.blockID] = true;
+        carriableBlocks[Block.mushroomBrown.blockID] = true;
+        carriableBlocks[Block.mushroomRed.blockID] = true;
+        carriableBlocks[Block.tnt.blockID] = true;
+        carriableBlocks[Block.cactus.blockID] = true;
+        carriableBlocks[Block.blockClay.blockID] = true;
+        carriableBlocks[Block.pumpkin.blockID] = true;
+        carriableBlocks[Block.melon.blockID] = true;
+        carriableBlocks[Block.mycelium.blockID] = true;
+        carriableBlocksOld = new boolean[256];
+        carriableBlocksOld[Block.stone.blockID] = true;
+        carriableBlocksOld[Block.grass.blockID] = true;
+        carriableBlocksOld[Block.dirt.blockID] = true;
+        carriableBlocksOld[Block.cobblestone.blockID] = true;
+        carriableBlocksOld[Block.planks.blockID] = true;
+        carriableBlocksOld[Block.sand.blockID] = true;
+        carriableBlocksOld[Block.gravel.blockID] = true;
+        carriableBlocksOld[Block.oreGold.blockID] = true;
+        carriableBlocksOld[Block.oreIron.blockID] = true;
+        carriableBlocksOld[Block.oreCoal.blockID] = true;
+        carriableBlocksOld[Block.wood.blockID] = true;
+        carriableBlocksOld[Block.leaves.blockID] = true;
+        carriableBlocksOld[Block.sponge.blockID] = true;
+        carriableBlocksOld[Block.glass.blockID] = true;
+        carriableBlocksOld[Block.oreLapis.blockID] = true;
+        carriableBlocksOld[Block.blockLapis.blockID] = true;
+        carriableBlocksOld[Block.sandStone.blockID] = true;
+        carriableBlocksOld[Block.cloth.blockID] = true;
+        carriableBlocksOld[Block.plantYellow.blockID] = true;
+        carriableBlocksOld[Block.plantRed.blockID] = true;
+        carriableBlocksOld[Block.mushroomBrown.blockID] = true;
+        carriableBlocksOld[Block.mushroomRed.blockID] = true;
+        carriableBlocksOld[Block.blockGold.blockID] = true;
+        carriableBlocksOld[Block.blockSteel.blockID] = true;
+        carriableBlocksOld[Block.brick.blockID] = true;
+        carriableBlocksOld[Block.tnt.blockID] = true;
+        carriableBlocksOld[Block.bookShelf.blockID] = true;
+        carriableBlocksOld[Block.cobblestoneMossy.blockID] = true;
+        carriableBlocksOld[Block.field_72073_aw.blockID] = true;
+        carriableBlocksOld[Block.field_72071_ax.blockID] = true;
+        carriableBlocksOld[Block.workbench.blockID] = true;
+        carriableBlocksOld[Block.oreRedstone.blockID] = true;
+        carriableBlocksOld[Block.oreRedstoneGlowing.blockID] = true;
+        carriableBlocksOld[Block.ice.blockID] = true;
+        carriableBlocksOld[Block.cactus.blockID] = true;
+        carriableBlocksOld[Block.blockClay.blockID] = true;
+        carriableBlocksOld[Block.pumpkin.blockID] = true;
+        carriableBlocksOld[Block.netherrack.blockID] = true;
+        carriableBlocksOld[Block.slowSand.blockID] = true;
+        carriableBlocksOld[Block.glowStone.blockID] = true;
+        carriableBlocksOld[Block.pumpkinLantern.blockID] = true;
+        carriableBlocksOld[Block.stoneBrick.blockID] = true;
+        carriableBlocksOld[Block.mushroomCapBrown.blockID] = true;
+        carriableBlocksOld[Block.mushroomCapRed.blockID] = true;
+        carriableBlocksOld[Block.melon.blockID] = true;
+        carriableBlocksOld[Block.mycelium.blockID] = true;
     }
 }

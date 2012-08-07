@@ -3,7 +3,6 @@ package net.minecraft.src.nbxlite.gui;
 import java.util.List;
 import java.util.Collections;
 import net.minecraft.src.*;
-import net.minecraft.src.nbxlite.MinecraftHook;
 
 public class GuiNBXlite extends GuiScreen{
     private String selectedWorld;
@@ -151,7 +150,7 @@ public class GuiNBXlite extends GuiScreen{
             if (gen==0 && feats==3){
                 type=GeneratorList.typecurrent;
             }
-            ODNBXlite.SetGenerator(mod_OldDays.getMinecraftInstance().theWorld, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
+            ODNBXlite.SetGenerator(mod_OldDays.getMinecraftInstance().field_71441_e, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
             mod_OldDays.refreshConditionProperties();
             if (gen==0 && feats>=3){
                 ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
@@ -185,27 +184,24 @@ public class GuiNBXlite extends GuiScreen{
 
     public void selectWorld()
     {
-        ISaveFormat isaveformat = MinecraftHook.getSaveLoader2();
+        ISaveFormat isaveformat = ODNBXlite.saveLoader;
         List saveList = isaveformat.getSaveList();
         Collections.sort(saveList);
         mc.displayGuiScreen(null);
-        int j = ((SaveFormatComparator)saveList.get(number)).getGameType();
-        if (j == 0)
-        {
-            mc.playerController = new PlayerControllerSP(mc);
-        }
-        else
-        {
-            mc.playerController = new PlayerControllerCreative(mc);
-        }
         selectNBXliteSettings();
         String s = selectedWorld;
         if (s == null)
         {
             s = (new StringBuilder()).append("World").append(selectedWorld).toString();
         }
-        MinecraftHook.startWorldHook(s, selectedWorld, null);
-        mc.displayGuiScreen(null);
+        if (mc.enableSP){
+            mc.setController(((SaveFormatComparator)saveList.get(number)).func_75790_f());
+            mc.startWorldSSP(s, selectedWorld, null);
+//             MinecraftHook.startWorldHook(s, selectedWorld, null);
+            mc.displayGuiScreen(null);
+        }else{
+            mc.func_71371_a(s, selectedWorld, null);
+        }
     }
 
     protected void actionPerformed(GuiButton guibutton)

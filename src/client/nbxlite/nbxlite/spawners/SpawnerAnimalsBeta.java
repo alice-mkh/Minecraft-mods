@@ -58,7 +58,7 @@ public final class SpawnerAnimalsBeta
             for(int var37 = 0; var37 < var6; ++var37)
             {
                 EnumCreatureType var38 = var36[var37];
-                if((!var38.getPeacefulCreature() || var2) && (var38.getPeacefulCreature() || var1) && var0.countEntities2(var38.getCreatureClass()) <= var38.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256)
+                if((!var38.getPeacefulCreature() || var2) && (var38.getPeacefulCreature() || var1) && ((WorldSSP2)var0).countEntities2(var38.getCreatureClass()) <= var38.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256)
                 {
                     Iterator var39 = eligibleChunksForSpawning.iterator();
 
@@ -93,7 +93,7 @@ public final class SpawnerAnimalsBeta
                                 }
                             }
 
-                            ChunkPosition var41 = getRandomSpawningPointInChunk(var0, var10.chunkXPos * 16, var10.chunkZPosition * 16);
+                            ChunkPosition var41 = getRandomSpawningPointInChunk(var0, var10.chunkXPos * 16, var10.chunkZPos * 16);
                             int var42 = var41.x;
                             int var18 = var41.y;
                             int var19 = var41.z;

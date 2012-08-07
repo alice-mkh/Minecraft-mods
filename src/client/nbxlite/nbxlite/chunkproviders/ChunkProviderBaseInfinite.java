@@ -134,4 +134,9 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
             return biomegenbase.getSpawnableList(enumcreaturetype);
         }
     }
+
+    public int func_73152_e()
+    {
+        return 0;
+    }
 }

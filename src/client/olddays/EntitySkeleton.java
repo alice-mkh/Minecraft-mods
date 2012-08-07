@@ -106,7 +106,7 @@ public class EntitySkeleton extends EntityMob
             worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
             for(int j = 0; j < i; j++){
                 EntityArrow arrow = new EntityArrow(worldObj, this, 0.4F);
-                arrow.doesArrowBelongToPlayer = true;
+                arrow.field_70251_a = 1;
                 arrow.posY = posY + 0.2F;
                 arrow.rotationYaw = (float)Math.random() * 360F;
                 arrow.rotationPitch = -(float)Math.random() * 60F;
@@ -123,7 +123,7 @@ public class EntitySkeleton extends EntityMob
                 double d2 = rand.nextGaussian() * 0.02D;
                 worldObj.spawnParticle("explode", (posX + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, posY + (double)(rand.nextFloat() * height), (posZ + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, d, d1, d2);
             }
-            onEntityDeath();
+//             onEntityDeath();
             setDead();
         }else{
             super.onDeathUpdate();
@@ -257,7 +257,7 @@ public class EntitySkeleton extends EntityMob
         if (par1 > 0)
         {
             ItemStack itemstack = new ItemStack(Item.bow);
-            EnchantmentHelper.func_48441_a(rand, itemstack, 5);
+            EnchantmentHelper.func_77504_a(rand, itemstack, 5);
             entityDropItem(itemstack, 0.0F);
         }
         else

@@ -28,14 +28,20 @@ public class SavingManager{
                 try{
                     String value = properties.getProperty(prop.field.getName()).trim();
                     if (value==null){
+                        prop.setDefaultValue();
                         core.sendCallback(id, i);
                         continue;
                     }
                     prop.loadFromString(value);
                     core.sendCallback(id, i);
                 }catch(Exception ex){
-                    System.out.println("OldDays: Error with loading property "+prop.field.getName()+" in module "+module.name);
-                    System.out.println(ex);
+                    try{
+                        prop.setDefaultValue();
+                        core.sendCallback(id, i);
+                    }catch(Exception ex2){
+                        System.out.println("OldDays: Error with loading property "+prop.field.getName()+" in module "+module.name);
+                        System.out.println(ex2);
+                    }
                 }
             }
         }
@@ -45,8 +51,8 @@ public class SavingManager{
     }
 
     public void saveModuleProperties(int id){
-        if (mod_OldDays.getMinecraftInstance().theWorld != null){
-            if (mod_OldDays.getMinecraftInstance().theWorld.isRemote){
+        if (mod_OldDays.getMinecraftInstance().field_71441_e != null){
+            if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote){
                 return;
             }
         }

@@ -10,11 +10,11 @@ public class SMPManager{
     }
  
     public void onTick(){
-        if (mod_OldDays.getMinecraftInstance().theWorld.isRemote == needSettings){
+        if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote == needSettings){
             for (int i = 1; i < core.modules.size(); i++){
                 OldDaysModule module = ((OldDaysModule)core.modules.get(i));
                 core.saveman.loadModuleProperties(module.id);
-                if (mod_OldDays.getMinecraftInstance().theWorld.isRemote){
+                if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote){
                     setSMPSettings(module.id);
                     requestSettings(module.id);
                 }
@@ -24,10 +24,10 @@ public class SMPManager{
     }
 
     public void requestSettings(int module){
-        Packet230ModLoader packet = new Packet230ModLoader();
-        packet.packetType = 1;
-        packet.dataInt = new int[]{module};
-        ModLoaderMp.sendPacket(core, packet);
+//         Packet230ModLoader packet = new Packet230ModLoader();
+//         packet.packetType = 1;
+//         packet.dataInt = new int[]{module};
+//         ModLoaderMp.sendPacket(core, packet);
     }
 
     public void setSMPSettings(int id){

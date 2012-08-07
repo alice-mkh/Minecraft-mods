@@ -170,9 +170,6 @@ public class SoundManager
             }
 
             SoundPoolEntry soundpoolentry = soundPoolMusic.getRandomSound();
-            if (soundpoolentry.soundName.startsWith("calm4") && !calm4){
-                return;
-            }
 
             if (soundpoolentry != null)
             {

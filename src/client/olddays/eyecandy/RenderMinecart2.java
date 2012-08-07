@@ -11,7 +11,7 @@ public class RenderMinecart2 extends RenderMinecart
         super();
     }
 
-    public void func_152_a(EntityMinecart par1EntityMinecart, double par2, double par4, double par6, float par8, float par9)
+    public void func_77012_a(EntityMinecart par1EntityMinecart, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         long l = (long)par1EntityMinecart.entityId * 0x1d66f537L;
@@ -24,13 +24,13 @@ public class RenderMinecart2 extends RenderMinecart
         double d1 = par1EntityMinecart.lastTickPosY + (par1EntityMinecart.posY - par1EntityMinecart.lastTickPosY) * (double)par9;
         double d2 = par1EntityMinecart.lastTickPosZ + (par1EntityMinecart.posZ - par1EntityMinecart.lastTickPosZ) * (double)par9;
         double d3 = 0.30000001192092896D;
-        Vec3D vec3d = par1EntityMinecart.func_514_g(d, d1, d2);
+        Vec3 vec3d = par1EntityMinecart.func_70489_a(d, d1, d2);
         float f3 = par1EntityMinecart.prevRotationPitch + (par1EntityMinecart.rotationPitch - par1EntityMinecart.prevRotationPitch) * par9;
 
         if (vec3d != null)
         {
-            Vec3D vec3d1 = par1EntityMinecart.func_515_a(d, d1, d2, d3);
-            Vec3D vec3d2 = par1EntityMinecart.func_515_a(d, d1, d2, -d3);
+            Vec3 vec3d1 = par1EntityMinecart.func_70495_a(d, d1, d2, d3);
+            Vec3 vec3d2 = par1EntityMinecart.func_70495_a(d, d1, d2, -d3);
 
             if (vec3d1 == null)
             {
@@ -45,7 +45,7 @@ public class RenderMinecart2 extends RenderMinecart
             par2 += vec3d.xCoord - d;
             par4 += (vec3d1.yCoord + vec3d2.yCoord) / 2D - d1;
             par6 += vec3d.zCoord - d2;
-            Vec3D vec3d3 = vec3d2.addVector(-vec3d1.xCoord, -vec3d1.yCoord, -vec3d1.zCoord);
+            Vec3 vec3d3 = vec3d2.addVector(-vec3d1.xCoord, -vec3d1.yCoord, -vec3d1.zCoord);
 
             if (vec3d3.lengthVector() != 0.0D)
             {
@@ -58,8 +58,8 @@ public class RenderMinecart2 extends RenderMinecart
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(180F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-f3, 0.0F, 0.0F, 1.0F);
-        float f4 = (float)par1EntityMinecart.func_41023_l() - par9;
-        float f5 = (float)par1EntityMinecart.func_41025_i() - par9;
+        float f4 = (float)par1EntityMinecart.func_70496_j() - par9;
+        float f5 = (float)par1EntityMinecart.getDamage() - par9;
 
         if (f5 < 0.0F)
         {
@@ -68,7 +68,7 @@ public class RenderMinecart2 extends RenderMinecart
 
         if (f4 > 0.0F)
         {
-            GL11.glRotatef(((MathHelper.sin(f4) * f4 * f5) / 10F) * (float)par1EntityMinecart.func_41030_m(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(((MathHelper.sin(f4) * f4 * f5) / 10F) * (float)par1EntityMinecart.func_70493_k(), 1.0F, 0.0F, 0.0F);
         }
 
         if (par1EntityMinecart.minecartType != 0)

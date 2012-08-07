@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public abstract class Entity
 {
@@ -76,10 +75,10 @@ public abstract class Entity
     public boolean isCollided;
     public boolean velocityChanged;
     protected boolean isInWeb;
-    public boolean field_9293_aM;
+    public boolean field_70135_K;
 
     /**
-     * gets set by setEntityDead, so this must be the flag whether an Entity is dead (inactive may be better term)
+     * Gets set by setDead, so this must be the flag whether an Entity is dead (inactive may be better term)
      */
     public boolean isDead;
     public float yOffset;
@@ -176,6 +175,7 @@ public abstract class Entity
      */
     public boolean ignoreFrustumCheck;
     public boolean isAirBorne;
+    public EnumEntitySize field_70168_am;
 
     public Entity(World par1World)
     {
@@ -185,7 +185,7 @@ public abstract class Entity
         onGround = false;
         isCollided = false;
         velocityChanged = false;
-        field_9293_aM = true;
+        field_70135_K = true;
         isDead = false;
         yOffset = 0.0F;
         width = 0.6F;
@@ -208,6 +208,7 @@ public abstract class Entity
         isImmuneToFire = false;
         dataWatcher = new DataWatcher();
         addedToChunk = false;
+        field_70168_am = EnumEntitySize.SIZE_2;
         worldObj = par1World;
         setPosition(0.0D, 0.0D, 0.0D);
         dataWatcher.addObject(0, Byte.valueOf((byte)0));
@@ -259,7 +260,7 @@ public abstract class Entity
 
             setPosition(posX, posY, posZ);
 
-            if (worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0)
+            if (worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty())
             {
                 break;
             }
@@ -287,6 +288,32 @@ public abstract class Entity
     {
         width = par1;
         height = par2;
+        float f = par1 % 2.0F;
+
+        if ((double)f < 0.375D)
+        {
+            field_70168_am = EnumEntitySize.SIZE_1;
+        }
+        else if ((double)f < 0.75D)
+        {
+            field_70168_am = EnumEntitySize.SIZE_2;
+        }
+        else if ((double)f < 1.0D)
+        {
+            field_70168_am = EnumEntitySize.SIZE_3;
+        }
+        else if ((double)f < 1.375D)
+        {
+            field_70168_am = EnumEntitySize.SIZE_4;
+        }
+        else if ((double)f < 1.75D)
+        {
+            field_70168_am = EnumEntitySize.SIZE_5;
+        }
+        else
+        {
+            field_70168_am = EnumEntitySize.SIZE_6;
+        }
     }
 
     /**
@@ -311,6 +338,10 @@ public abstract class Entity
         boundingBox.setBounds(par1 - (double)f, (par3 - (double)yOffset) + (double)ySize, par5 - (double)f, par1 + (double)f, (par3 - (double)yOffset) + (double)ySize + (double)f1, par5 + (double)f);
     }
 
+    /**
+     * Adds par1*0.15 to the entity's yaw, and *subtracts* par2*0.15 from the pitch. Clamps pitch from -90 to 90. Both
+     * arguments in degrees.
+     */
     public void setAngles(float par1, float par2)
     {
         float f = rotationPitch;
@@ -345,7 +376,7 @@ public abstract class Entity
      */
     public void onEntityUpdate()
     {
-        Profiler.startSection("entityBaseTick");
+        worldObj.field_72984_F.startSection("entityBaseTick");
 
         if (ridingEntity != null && ridingEntity.isDead)
         {
@@ -455,7 +486,7 @@ public abstract class Entity
         }
 
         firstUpdate = false;
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
     }
 
     /**
@@ -507,7 +538,7 @@ public abstract class Entity
         AxisAlignedBB axisalignedbb = boundingBox.getOffsetBoundingBox(par1, par3, par5);
         List list = worldObj.getCollidingBoundingBoxes(this, axisalignedbb);
 
-        if (list.size() > 0)
+        if (!list.isEmpty())
         {
             return false;
         }
@@ -529,7 +560,7 @@ public abstract class Entity
             return;
         }
 
-        Profiler.startSection("move");
+        worldObj.field_72984_F.startSection("move");
         ySize *= 0.4F;
         double d = posX;
         double d1 = posZ;
@@ -555,7 +586,7 @@ public abstract class Entity
         {
             double d5 = 0.050000000000000003D;
 
-            for (; par1 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, 0.0D)).size() == 0; d2 = par1)
+            for (; par1 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, 0.0D)).isEmpty(); d2 = par1)
             {
                 if (par1 < d5 && par1 >= -d5)
                 {
@@ -573,7 +604,7 @@ public abstract class Entity
                 }
             }
 
-            for (; par5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(0.0D, -1D, par5)).size() == 0; d4 = par5)
+            for (; par5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(0.0D, -1D, par5)).isEmpty(); d4 = par5)
             {
                 if (par5 < d5 && par5 >= -d5)
                 {
@@ -591,7 +622,7 @@ public abstract class Entity
                 }
             }
 
-            while (par1 != 0.0D && par5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, par5)).size() == 0)
+            while (par1 != 0.0D && par5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.getOffsetBoundingBox(par1, -1D, par5)).isEmpty())
             {
                 if (par1 < d5 && par1 >= -d5)
                 {
@@ -626,40 +657,43 @@ public abstract class Entity
 
         List list = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(par1, par3, par5));
 
-        for (int i = 0; i < list.size(); i++)
+        for (Iterator iterator = list.iterator(); iterator.hasNext();)
         {
-            par3 = ((AxisAlignedBB)list.get(i)).calculateYOffset(boundingBox, par3);
+            AxisAlignedBB axisalignedbb1 = (AxisAlignedBB)iterator.next();
+            par3 = axisalignedbb1.calculateYOffset(boundingBox, par3);
         }
 
         boundingBox.offset(0.0D, par3, 0.0D);
 
-        if (!field_9293_aM && d3 != par3)
+        if (!field_70135_K && d3 != par3)
         {
             par1 = par3 = par5 = 0.0D;
         }
 
         boolean flag1 = onGround || d3 != par3 && d3 < 0.0D;
 
-        for (int j = 0; j < list.size(); j++)
+        for (Iterator iterator1 = list.iterator(); iterator1.hasNext();)
         {
-            par1 = ((AxisAlignedBB)list.get(j)).calculateXOffset(boundingBox, par1);
+            AxisAlignedBB axisalignedbb2 = (AxisAlignedBB)iterator1.next();
+            par1 = axisalignedbb2.calculateXOffset(boundingBox, par1);
         }
 
         boundingBox.offset(par1, 0.0D, 0.0D);
 
-        if (!field_9293_aM && d2 != par1)
+        if (!field_70135_K && d2 != par1)
         {
             par1 = par3 = par5 = 0.0D;
         }
 
-        for (int k = 0; k < list.size(); k++)
+        for (Iterator iterator2 = list.iterator(); iterator2.hasNext();)
         {
-            par5 = ((AxisAlignedBB)list.get(k)).calculateZOffset(boundingBox, par5);
+            AxisAlignedBB axisalignedbb3 = (AxisAlignedBB)iterator2.next();
+            par5 = axisalignedbb3.calculateZOffset(boundingBox, par5);
         }
 
         boundingBox.offset(0.0D, 0.0D, par5);
 
-        if (!field_9293_aM && d4 != par5)
+        if (!field_70135_K && d4 != par5)
         {
             par1 = par3 = par5 = 0.0D;
         }
@@ -672,47 +706,50 @@ public abstract class Entity
             par1 = d2;
             par3 = stepHeight;
             par5 = d4;
-            AxisAlignedBB axisalignedbb1 = boundingBox.copy();
+            AxisAlignedBB axisalignedbb4 = boundingBox.copy();
             boundingBox.setBB(axisalignedbb);
             List list1 = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(par1, par3, par5));
 
-            for (int j2 = 0; j2 < list1.size(); j2++)
+            for (Iterator iterator3 = list1.iterator(); iterator3.hasNext();)
             {
-                par3 = ((AxisAlignedBB)list1.get(j2)).calculateYOffset(boundingBox, par3);
+                AxisAlignedBB axisalignedbb5 = (AxisAlignedBB)iterator3.next();
+                par3 = axisalignedbb5.calculateYOffset(boundingBox, par3);
             }
 
             boundingBox.offset(0.0D, par3, 0.0D);
 
-            if (!field_9293_aM && d3 != par3)
+            if (!field_70135_K && d3 != par3)
             {
                 par1 = par3 = par5 = 0.0D;
             }
 
-            for (int k2 = 0; k2 < list1.size(); k2++)
+            for (Iterator iterator4 = list1.iterator(); iterator4.hasNext();)
             {
-                par1 = ((AxisAlignedBB)list1.get(k2)).calculateXOffset(boundingBox, par1);
+                AxisAlignedBB axisalignedbb6 = (AxisAlignedBB)iterator4.next();
+                par1 = axisalignedbb6.calculateXOffset(boundingBox, par1);
             }
 
             boundingBox.offset(par1, 0.0D, 0.0D);
 
-            if (!field_9293_aM && d2 != par1)
+            if (!field_70135_K && d2 != par1)
             {
                 par1 = par3 = par5 = 0.0D;
             }
 
-            for (int l2 = 0; l2 < list1.size(); l2++)
+            for (Iterator iterator5 = list1.iterator(); iterator5.hasNext();)
             {
-                par5 = ((AxisAlignedBB)list1.get(l2)).calculateZOffset(boundingBox, par5);
+                AxisAlignedBB axisalignedbb7 = (AxisAlignedBB)iterator5.next();
+                par5 = axisalignedbb7.calculateZOffset(boundingBox, par5);
             }
 
             boundingBox.offset(0.0D, 0.0D, par5);
 
-            if (!field_9293_aM && d4 != par5)
+            if (!field_70135_K && d4 != par5)
             {
                 par1 = par3 = par5 = 0.0D;
             }
 
-            if (!field_9293_aM && d3 != par3)
+            if (!field_70135_K && d3 != par3)
             {
                 par1 = par3 = par5 = 0.0D;
             }
@@ -720,9 +757,10 @@ public abstract class Entity
             {
                 par3 = -stepHeight;
 
-                for (int i3 = 0; i3 < list1.size(); i3++)
+                for (Iterator iterator6 = list1.iterator(); iterator6.hasNext();)
                 {
-                    par3 = ((AxisAlignedBB)list1.get(i3)).calculateYOffset(boundingBox, par3);
+                    AxisAlignedBB axisalignedbb8 = (AxisAlignedBB)iterator6.next();
+                    par3 = axisalignedbb8.calculateYOffset(boundingBox, par3);
                 }
 
                 boundingBox.offset(0.0D, par3, 0.0D);
@@ -733,7 +771,7 @@ public abstract class Entity
                 par1 = d6;
                 par3 = d8;
                 par5 = d10;
-                boundingBox.setBB(axisalignedbb1);
+                boundingBox.setBB(axisalignedbb4);
             }
             else
             {
@@ -746,8 +784,8 @@ public abstract class Entity
             }
         }
 
-        Profiler.endSection();
-        Profiler.startSection("rest");
+        worldObj.field_72984_F.endSection();
+        worldObj.field_72984_F.startSection("rest");
         posX = (boundingBox.minX + boundingBox.maxX) / 2D;
         posY = (boundingBox.minY + (double)yOffset) - (double)ySize;
         posZ = (boundingBox.minZ + boundingBox.maxZ) / 2D;
@@ -778,50 +816,25 @@ public abstract class Entity
         if (canTriggerWalking() && !flag && ridingEntity == null)
         {
             distanceWalkedModified += (double)MathHelper.sqrt_double(d7 * d7 + d9 * d9) * 0.59999999999999998D;
-            int l = MathHelper.floor_double(posX);
-            int j1 = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
-            int l1 = MathHelper.floor_double(posZ);
-            int j3 = worldObj.getBlockId(l, j1, l1);
+            int i = MathHelper.floor_double(posX);
+            int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
+            int k = MathHelper.floor_double(posZ);
+            int l = worldObj.getBlockId(i, j, k);
 
-            if (j3 == 0 && worldObj.getBlockId(l, j1 - 1, l1) == Block.fence.blockID)
+            if (l == 0 && worldObj.getBlockId(i, j - 1, k) == Block.fence.blockID)
             {
-                j3 = worldObj.getBlockId(l, j1 - 1, l1);
+                l = worldObj.getBlockId(i, j - 1, k);
             }
 
-            if (distanceWalkedModified > (float)nextStepDistance && j3 > 0)
+            if (distanceWalkedModified > (float)nextStepDistance && l > 0)
             {
                 nextStepDistance = (int)distanceWalkedModified + 1;
-                playStepSound(l, j1, l1, j3);
-                Block.blocksList[j3].onEntityWalking(worldObj, l, j1, l1, this);
+                playStepSound(i, j, k, l);
+                Block.blocksList[l].onEntityWalking(worldObj, i, j, k, this);
             }
         }
 
-        int i1 = MathHelper.floor_double(boundingBox.minX + 0.001D);
-        int k1 = MathHelper.floor_double(boundingBox.minY + 0.001D);
-        int i2 = MathHelper.floor_double(boundingBox.minZ + 0.001D);
-        int k3 = MathHelper.floor_double(boundingBox.maxX - 0.001D);
-        int l3 = MathHelper.floor_double(boundingBox.maxY - 0.001D);
-        int i4 = MathHelper.floor_double(boundingBox.maxZ - 0.001D);
-
-        if (worldObj.checkChunksExist(i1, k1, i2, k3, l3, i4))
-        {
-            for (int j4 = i1; j4 <= k3; j4++)
-            {
-                for (int k4 = k1; k4 <= l3; k4++)
-                {
-                    for (int l4 = i2; l4 <= i4; l4++)
-                    {
-                        int i5 = worldObj.getBlockId(j4, k4, l4);
-
-                        if (i5 > 0)
-                        {
-                            Block.blocksList[i5].onEntityCollidedWithBlock(worldObj, j4, k4, l4, this);
-                        }
-                    }
-                }
-            }
-        }
-
+        func_70017_D();
         boolean flag2 = isWet();
 
         if (worldObj.isBoundingBoxBurning(boundingBox.contract(0.001D, 0.001D, 0.001D)))
@@ -849,7 +862,36 @@ public abstract class Entity
             fire = -fireResistance;
         }
 
-        Profiler.endSection();
+        worldObj.field_72984_F.endSection();
+    }
+
+    protected void func_70017_D()
+    {
+        int i = MathHelper.floor_double(boundingBox.minX + 0.001D);
+        int j = MathHelper.floor_double(boundingBox.minY + 0.001D);
+        int k = MathHelper.floor_double(boundingBox.minZ + 0.001D);
+        int l = MathHelper.floor_double(boundingBox.maxX - 0.001D);
+        int i1 = MathHelper.floor_double(boundingBox.maxY - 0.001D);
+        int j1 = MathHelper.floor_double(boundingBox.maxZ - 0.001D);
+
+        if (worldObj.checkChunksExist(i, j, k, l, i1, j1))
+        {
+            for (int k1 = i; k1 <= l; k1++)
+            {
+                for (int l1 = j; l1 <= i1; l1++)
+                {
+                    for (int i2 = k; i2 <= j1; i2++)
+                    {
+                        int j2 = worldObj.getBlockId(k1, l1, i2);
+
+                        if (j2 > 0)
+                        {
+                            Block.blocksList[j2].onEntityCollidedWithBlock(worldObj, k1, l1, i2, this);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -1025,12 +1067,14 @@ public abstract class Entity
      */
     public void moveFlying(float par1, float par2, float par3)
     {
-        float f = MathHelper.sqrt_float(par1 * par1 + par2 * par2);
+        float f = par1 * par1 + par2 * par2;
 
-        if (f < 0.01F)
+        if (f < 0.0001F)
         {
             return;
         }
+
+        f = MathHelper.sqrt_float(f);
 
         if (f < 1.0F)
         {
@@ -1274,11 +1318,11 @@ public abstract class Entity
     /**
      * Checks using a Vec3d to determine if this entity is within range of that vector to be rendered. Args: vec3D
      */
-    public boolean isInRangeToRenderVec3D(Vec3D par1Vec3D)
+    public boolean isInRangeToRenderVec3D(Vec3 par1Vec3)
     {
-        double d = posX - par1Vec3D.xCoord;
-        double d1 = posY - par1Vec3D.yCoord;
-        double d2 = posZ - par1Vec3D.zCoord;
+        double d = posX - par1Vec3.xCoord;
+        double d1 = posY - par1Vec3.yCoord;
+        double d2 = posZ - par1Vec3.zCoord;
         double d3 = d * d + d1 * d1 + d2 * d2;
         return isInRangeToRenderDist(d3);
     }
@@ -1585,6 +1629,13 @@ public abstract class Entity
 
     public void updateRiderPosition()
     {
+        if (!(riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)riddenByEntity).func_71066_bF())
+        {
+            riddenByEntity.lastTickPosX = riddenByEntity.posX;
+            riddenByEntity.lastTickPosY = riddenByEntity.posY;
+            riddenByEntity.lastTickPosZ = riddenByEntity.posZ;
+        }
+
         riddenByEntity.setPosition(posX, posY + getMountedYOffset() + riddenByEntity.getYOffset(), posZ);
     }
 
@@ -1626,9 +1677,9 @@ public abstract class Entity
 
         if (ridingEntity == par1Entity)
         {
+            func_70061_h(par1Entity);
             ridingEntity.riddenByEntity = null;
             ridingEntity = null;
-            setLocationAndAngles(par1Entity.posX, par1Entity.boundingBox.minY + (double)par1Entity.height, par1Entity.posZ, rotationYaw, rotationPitch);
             return;
         }
 
@@ -1646,6 +1697,48 @@ public abstract class Entity
         par1Entity.riddenByEntity = this;
     }
 
+    public void func_70061_h(Entity par1Entity)
+    {
+        double d = par1Entity.posX;
+        double d1 = par1Entity.boundingBox.minY + (double)par1Entity.height;
+        double d2 = par1Entity.posZ;
+
+        for (double d3 = -1.5D; d3 < 2D; d3 += 1.5D)
+        {
+            for (double d4 = -1.5D; d4 < 2D; d4 += 1.5D)
+            {
+                if (d3 == 0.0D && d4 == 0.0D)
+                {
+                    continue;
+                }
+
+                int i = (int)(posX + d3);
+                int j = (int)(posZ + d4);
+                AxisAlignedBB axisalignedbb = boundingBox.getOffsetBoundingBox(d3, 1.0D, d4);
+
+                if (!worldObj.func_72840_a(axisalignedbb).isEmpty())
+                {
+                    continue;
+                }
+
+                if (worldObj.func_72797_t(i, (int)posY, j))
+                {
+                    setLocationAndAngles(posX + d3, posY + 1.0D, posZ + d4, rotationYaw, rotationPitch);
+                    return;
+                }
+
+                if (worldObj.func_72797_t(i, (int)posY - 1, j) || worldObj.getBlockMaterial(i, (int)posY - 1, j) == Material.water)
+                {
+                    d = posX + d3;
+                    d1 = posY + 1.0D;
+                    d2 = posZ + d4;
+                }
+            }
+        }
+
+        setLocationAndAngles(d, d1, d2, rotationYaw, rotationPitch);
+    }
+
     /**
      * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
      * posY, posZ, yaw, pitch
@@ -1656,19 +1749,26 @@ public abstract class Entity
         setRotation(par7, par8);
         List list = worldObj.getCollidingBoundingBoxes(this, boundingBox.contract(0.03125D, 0.0D, 0.03125D));
 
-        if (list.size() > 0)
+        if (!list.isEmpty())
         {
             double d = 0.0D;
+            Iterator iterator = list.iterator();
 
-            for (int i = 0; i < list.size(); i++)
+            do
             {
-                AxisAlignedBB axisalignedbb = (AxisAlignedBB)list.get(i);
+                if (!iterator.hasNext())
+                {
+                    break;
+                }
+
+                AxisAlignedBB axisalignedbb = (AxisAlignedBB)iterator.next();
 
                 if (axisalignedbb.maxY > d)
                 {
                     d = axisalignedbb.maxY;
                 }
             }
+            while (true);
 
             par3 += d - boundingBox.minY;
             setPosition(par1, par3, par5);
@@ -1683,7 +1783,7 @@ public abstract class Entity
     /**
      * returns a (normalized) vector of where this entity is looking
      */
-    public Vec3D getLookVec()
+    public Vec3 getLookVec()
     {
         return null;
     }
@@ -1720,11 +1820,12 @@ public abstract class Entity
     {
     }
 
-    /**
-     * Parameters: item slot, item ID, item damage. If slot >= 0 a new item will be generated with the specified item ID
-     * damage.
-     */
-    public void outfitWithItem(int i, int j, int k)
+    public ItemStack[] func_70035_c()
+    {
+        return null;
+    }
+
+    public void func_70062_b(int i, ItemStack itemstack)
     {
     }
 
@@ -1952,6 +2053,18 @@ public abstract class Entity
         fallDistance = 0.0F;
     }
 
+    public String func_70023_ak()
+    {
+        String s = EntityList.getEntityString(this);
+
+        if (s == null)
+        {
+            s = "generic";
+        }
+
+        return StatCollector.translateToLocal((new StringBuilder()).append("entity.").append(s).append(".name").toString());
+    }
+
     /**
      * Return the Entity parts making up this Entity (currently only for dragons)
      */
@@ -1968,7 +2081,15 @@ public abstract class Entity
         return this == par1Entity;
     }
 
-    public void func_48079_f(float f)
+    public float func_70079_am()
+    {
+        return 0.0F;
+    }
+
+    /**
+     * Sets the head's yaw rotation of the entity.
+     */
+    public void setHeadRotationYaw(float f)
     {
     }
 
@@ -1978,5 +2099,13 @@ public abstract class Entity
     public boolean canAttackWithItem()
     {
         return true;
+    }
+
+    public String toString()
+    {
+        return String.format("%s['%s'/%d, l='%s', x=%.2f, y=%.2f, z=%.2f]", new Object[]
+                {
+                    getClass().getSimpleName(), func_70023_ak(), Integer.valueOf(entityId), worldObj != null ? worldObj.getWorldInfo().getWorldName() : "~NULL~", Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
+                });
     }
 }

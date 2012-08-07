@@ -236,7 +236,7 @@ public final class IndevGenerator
             IndevNoiseGeneratorOctaves c2 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             c3 = new IndevNoiseGeneratorOctaves(a2.rand, 8);
             int i6 = a2.k - 1;
-            if(a2.theme == 3)
+            if(a2.theme == ODNBXlite.THEME_PARADISE)
             {
                 i6 += 2;
             }
@@ -250,12 +250,12 @@ public final class IndevGenerator
                     {
                         flag = c2.a(l6, l7) > -8D;
                     }
-                    if(a2.theme == 3)
+                    if(a2.theme == ODNBXlite.THEME_PARADISE)
                     {
                         flag = c2.a(l6, l7) > -32D;
                     }
                     boolean flag1 = c3.a(l6, l7) > 12D;
-                    if(a2.theme == 1 || a2.theme == 2)
+                    if(a2.theme == ODNBXlite.THEME_HELL || a2.theme == ODNBXlite.THEME_WOODS)
                     {
                         flag = c2.a(l6, l7) > -8D;
                     }
@@ -274,7 +274,7 @@ public final class IndevGenerator
                     if(l8 <= i6 && flag)
                     {
                         l9 = Block.sand.blockID;
-                        if(a2.theme == 1)
+                        if(a2.theme == ODNBXlite.THEME_HELL)
                         {
                             l9 = Block.grass.blockID;
                         }
@@ -396,7 +396,7 @@ label0:
         if(!floating)
         {
             l1 = Block.waterStill.blockID;
-            if(theme == 1)
+            if(theme == ODNBXlite.THEME_HELL)
             {
                 l1 = Block.lavaStill.blockID;
             }
@@ -413,13 +413,13 @@ label0:
             }
 
         }
-        if(theme == 0)
+        if(theme == ODNBXlite.THEME_NORMAL)
         {
             world.v = 0x99ccff;
             world.w = 0xffffff;
             world.x = 0xffffff;
         }
-        if(theme == 1)
+        if(theme == ODNBXlite.THEME_HELL)
         {
             world.x = 0x210800;
             world.w = 0x100400;
@@ -432,7 +432,7 @@ label0:
                 k = -16;
             }
         }
-        if(theme == 3)
+        if(theme == ODNBXlite.THEME_PARADISE)
         {
             world.v = 0xc6deff;
             world.w = 0xc6deff;
@@ -441,7 +441,7 @@ label0:
             world.A = 16;
             world.u = k1 + 64;
         }
-        if(theme == 2)
+        if(theme == ODNBXlite.THEME_WOODS)
         {
             world.v = 0x757d87;
             world.w = 0x4d5a5b;
@@ -461,13 +461,13 @@ label0:
         spawnHouse(world);
         progressupdate.displayLoadingString(mod_OldDays.lang.get("indev.planting"));
         nextPhase();
-        if(theme != 1)
+        if(theme != ODNBXlite.THEME_HELL)
         {
             generateGrass(world);
         }
         nextPhase();
         generateTrees(world);
-        if(theme == 2)
+        if(theme == ODNBXlite.THEME_WOODS)
         {
             for(l1 = 0; l1 < 50; l1++)
             {
@@ -476,7 +476,7 @@ label0:
 
         }
         l1 = 100;
-        if(theme == 3)
+        if(theme == ODNBXlite.THEME_PARADISE)
         {
             l1 = 1000;
         }
@@ -727,7 +727,7 @@ label0:
     private void a()
     {
         int i1 = Block.waterStill.blockID;
-        if(theme == 1)
+        if(theme == ODNBXlite.THEME_HELL)
         {
             i1 = Block.lavaStill.blockID;
         }
@@ -1057,7 +1057,7 @@ label0:
         {
             k1 = length - 1;
         }
-        if(blocks[(j1 * length + k1) * width + i1] == Block.stairSingle.blockID)
+        if(false/*blocks[(j1 * length + k1) * width + i1] == Block.stairSingle.blockID*/)
         {
             if(j1 < height - 1)
             {

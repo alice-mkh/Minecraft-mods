@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OldDaysPropertyRGB extends OldDaysPropertyInt{
-    public int def;
-
     public OldDaysPropertyRGB(OldDaysModule m, int i, int v, String f){
         super(m, i, v, f, 0xFFFFFF);
-        def = v;
+        defaultValue = v;
         guitype = GUI_TYPE_FIELD;
     }
 
@@ -24,7 +22,7 @@ public class OldDaysPropertyRGB extends OldDaysPropertyInt{
 
     public void loadFromString(String str){
         if (str.matches("^defau[l]?[t]?$")){
-            value = def;
+            value = defaultValue;
             return;
         }
         if (str.matches("^[0-9]{1,6}$")){

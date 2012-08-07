@@ -32,7 +32,7 @@ public class RenderLiving extends Render
         renderPassModel = par1ModelBase;
     }
 
-    private float func_48418_a(float par1, float par2, float par3)
+    private float func_77034_a(float par1, float par2, float par3)
     {
         float f;
 
@@ -70,8 +70,8 @@ public class RenderLiving extends Render
 
         try
         {
-            float f = func_48418_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-            float f1 = func_48418_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
+            float f = func_77034_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
+            float f1 = func_77034_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
             float f2 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
             renderLivingAt(par1EntityLiving, par2, par4, par6);
             float f3 = handleRotationFloat(par1EntityLiving, par9);
@@ -80,36 +80,36 @@ public class RenderLiving extends Render
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1F, -1F, 1.0F);
             preRenderCallback(par1EntityLiving, par9);
-            if (!bobbing){
+            if (!bobbing || par1EntityLiving.isChild()){
                 GL11.glTranslatef(0.0F, -24F * f4 - 0.0078125F, 0.0F);
             }
-            float f5 = par1EntityLiving.field_705_Q + (par1EntityLiving.field_704_R - par1EntityLiving.field_705_Q) * par9;
+            float f5 = par1EntityLiving.field_70722_aY + (par1EntityLiving.field_70721_aZ - par1EntityLiving.field_70722_aY) * par9;
             float f6;
-            if (bobbing){
-                f6 = par1EntityLiving.field_9359_x + (par1EntityLiving.field_9360_w - par1EntityLiving.field_9359_x) * par9;
+
+            if (bobbing && !par1EntityLiving.isChild()){
+                f6 = par1EntityLiving.field_70763_ax + (par1EntityLiving.field_70764_aw - par1EntityLiving.field_70763_ax) * par9;
                 if (par1EntityLiving.isChild()){
                     f6 *= 3F;
                 }
                 float bobStrength = 0F;
-                if ((par1EntityLiving instanceof EntityZombie || 
+                if (par1EntityLiving instanceof EntityZombie || 
                     par1EntityLiving instanceof EntitySkeleton || 
                     par1EntityLiving instanceof EntityCreeper || 
                     par1EntityLiving instanceof EntityPig || 
                     par1EntityLiving instanceof EntitySheep || 
                     par1EntityLiving instanceof EntityPlayer ||
-                    par1EntityLiving instanceof EntityOtherPlayerMP) && !par1EntityLiving.isChild()){
+                    par1EntityLiving instanceof EntityOtherPlayerMP){
                     bobStrength = 1.0F;
                 }
-                float f32 = par1EntityLiving.field_9362_u + (par1EntityLiving.field_9361_v - par1EntityLiving.field_9362_u) * par9;
+                float f32 = par1EntityLiving.field_70768_au + (par1EntityLiving.field_70766_av - par1EntityLiving.field_70768_au) * par9;
                 float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 * bobStrength - 23F;
                 GL11.glTranslatef(0.0F, bob * f4 - 0.0078125F, 0.0F);
             }else{
-                f6 = par1EntityLiving.field_703_S - par1EntityLiving.field_704_R * (1.0F - par9);
+                f6 = par1EntityLiving.field_70754_ba - par1EntityLiving.field_70721_aZ * (1.0F - par9);
                 if (par1EntityLiving.isChild()){
                     f6 *= 3F;
                 }
             }
-
 
             if (f5 > 1.0F)
             {
@@ -383,25 +383,25 @@ public class RenderLiving extends Render
      */
     protected void renderLivingLabel(EntityLiving par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9)
     {
-        float f = par1EntityLiving.getDistanceToEntity(renderManager.livingPlayer);
+        double d = par1EntityLiving.getDistanceSqToEntity(renderManager.livingPlayer);
 
-        if (f > (float)par9 && !oldlabels)
+        if (d > (double)(par9 * par9) && !oldlabels)
         {
             return;
         }
 
         FontRenderer fontrenderer = getFontRendererFromRenderManager();
-        float f1 = 1.6F;
-        float f2 = 0.01666667F * f1;
+        float f = 1.6F;
+        float f1 = 0.01666667F * f;
         if (oldlabels){
-            f2 = (float)((double)f2 * (Math.sqrt(f) / 2D));
+            f1 = (float)((double)f1 * (Math.sqrt(d) / 2D));
         }
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(-f2, -f2, f2);
+        GL11.glScalef(-f1, -f1, f1);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);

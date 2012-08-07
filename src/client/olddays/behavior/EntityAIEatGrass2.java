@@ -69,7 +69,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
         return eatGrassTick > 0;
     }
 
-    public int func_48396_h()
+    public int func_75362_f()
     {
         return eatGrassTick;
     }

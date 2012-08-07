@@ -96,7 +96,7 @@ public class ODCrafting extends OldDaysModule{
         String slab3 = "3xtile.stoneSlab@";
         String slab6 = "6xtile.stoneSlab@";
         String plate = "1xtile.pressurePlate@0";
-        Block slab = Block.stairSingle;
+        Block slab = Block.field_72079_ak;
         Block platestone = Block.pressurePlateStone;
         Block plateplanks = Block.pressurePlatePlanks;
         removeRecipe(slab3+"0");
@@ -209,15 +209,15 @@ public class ODCrafting extends OldDaysModule{
     private void setOreBlocks(boolean b){
         removeRecipe("1xtile.blockIron@0");
         removeRecipe("1xtile.blockGold@0");
-        removeRecipe("1xtile.blockDiamond@0");
+        removeRecipe("1xtile.blockDiamond0");
         if (b){
             addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"##", "##", '#', Item.ingotIron});
             addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"##", "##", '#', Item.ingotGold});
-            addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"##", "##", '#', Item.diamond});
+            addRecipe(new ItemStack(Block.field_72071_ax, 1), new Object[]{"##", "##", '#', Item.field_77702_n});
         }else{
             addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
             addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
-            addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
+            addRecipe(new ItemStack(Block.field_72071_ax, 1), new Object[]{"###", "###", "###", '#', Item.field_77702_n});
         }
         int n = b ? 9 : 4;
         removeRecipe(n+"xitem.ingotIron@0");
@@ -226,7 +226,7 @@ public class ODCrafting extends OldDaysModule{
         n = b ? 4 : 9;
         addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
         addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
-        addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
+        addRecipe(new ItemStack(Item.field_77702_n, n), new Object[]{"#", '#', Block.field_72071_ax});
     }
 
     private void setSign(boolean b){

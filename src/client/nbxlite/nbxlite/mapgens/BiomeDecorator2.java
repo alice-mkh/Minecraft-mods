@@ -103,7 +103,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                 (new WorldGenTallGrass(Block.tallGrass.blockID, 1)).generate(currentWorld, randomGenerator, j7, k11, j15);
             }else{
-                WorldGenerator worldgenerator1 = biome.func_48410_b(randomGenerator);
+                WorldGenerator worldgenerator1 = biome.getRandomWorldGenForGrass(randomGenerator);
                 worldgenerator1.generate(currentWorld, randomGenerator, j7, k11, j15);
             }
         }

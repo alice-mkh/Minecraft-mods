@@ -3,10 +3,11 @@ package net.minecraft.src;
 public class OldDaysPropertyBool extends OldDaysProperty{
     public boolean value;
     public boolean smpValue;
+    public boolean defaultValue;
 
     public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, String f){
         super(m, i, f);
-        value = b;
+        value = defaultValue = b;
         guitype = GUI_TYPE_BUTTON;
     }
 
@@ -42,11 +43,14 @@ public class OldDaysPropertyBool extends OldDaysProperty{
             disable();
             return;
         }
-        onChange();
     }
 
     public void setSMPValue(){
         value = smpValue;
+    }
+
+    public void setDefaultValue(){
+        value = defaultValue;
     }
 
     protected void disable(){

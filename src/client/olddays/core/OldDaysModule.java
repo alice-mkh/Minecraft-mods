@@ -126,7 +126,7 @@ public class OldDaysModule{
     }
 
     public static void setInWorldInfo(String var, Object b){
-        World world = mod_OldDays.getMinecraftInstance().theWorld;
+        World world = mod_OldDays.getMinecraftInstance().field_71441_e;
         if (world==null){
             return;
         }
@@ -155,4 +155,6 @@ public class OldDaysModule{
     public boolean onGUITick(GuiScreen gui){
         return true;
     }
+
+    public void onLoadingSP(String par1Str, String par2Str){}
 }

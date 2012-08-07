@@ -191,7 +191,7 @@ public class OldChunk extends Chunk
     public void setChunkBlockTileEntity(int i, int j, int k, TileEntity tileentity)
     {
         ChunkPosition chunkposition = new ChunkPosition(i, j, k);
-        tileentity.worldObj = worldObj;
+        tileentity.func_70308_a(worldObj);
         tileentity.xCoord = xPosition * 16 + i;
         tileentity.yCoord = j;
         tileentity.zCoord = zPosition * 16 + k;

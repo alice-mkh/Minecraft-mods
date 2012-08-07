@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.TextureFX;
 
@@ -54,7 +53,9 @@ public class TextureSpriteFX extends TextureFX
         try
         {
             String spr = enabled ? sprite : sprite2;
-            BufferedImage bufferedimage = ModLoader.loadImage(renderEngine, spr);
+            TexturePackList packList = mod_OldDays.getMinecraftInstance().texturePackList;
+            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
+            BufferedImage bufferedimage = ImageIO.read(texpack.getResourceAsStream(spr));
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource(spr));
             }
@@ -78,7 +79,7 @@ public class TextureSpriteFX extends TextureFX
 
     public void onTick()
     {
-        if (mod_OldDays.getMinecraftInstance().theWorld == null){
+        if (mod_OldDays.getMinecraftInstance().field_71441_e == null){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
             int wwww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(sprite));

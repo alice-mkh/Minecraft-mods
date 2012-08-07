@@ -7,9 +7,9 @@ public class EntitySlime extends EntityLiving implements IMob
     public static boolean allow = true;
     public static int slimeSpawn = 3;
 
-    public float field_40139_a;
-    public float field_768_a;
-    public float field_767_b;
+    public float field_70813_a;
+    public float field_70811_b;
+    public float field_70812_c;
 
     /** the time between each jump of the slime */
     private int slimeJumpDelay;
@@ -80,7 +80,10 @@ public class EntitySlime extends EntityLiving implements IMob
         return "slime";
     }
 
-    protected String func_40138_aj()
+    /**
+     * Returns the name of the sound played when the slime jumps.
+     */
+    protected String getJumpSound()
     {
         return "mob.slime";
     }
@@ -95,8 +98,8 @@ public class EntitySlime extends EntityLiving implements IMob
             isDead = true;
         }
 
-        field_768_a = field_768_a + (field_40139_a - field_768_a) * 0.5F;
-        field_767_b = field_768_a;
+        field_70811_b += (field_70813_a - field_70811_b) * 0.5F;
+        field_70812_c = field_70811_b;
         boolean flag = onGround;
         super.onUpdate();
 
@@ -113,15 +116,19 @@ public class EntitySlime extends EntityLiving implements IMob
                 worldObj.spawnParticle(getSlimeParticle(), posX + (double)f2, boundingBox.minY, posZ + (double)f3, 0.0D, 0.0D, 0.0D);
             }
 
-            if (func_40134_ak())
+            if (makesSoundOnLand())
             {
-                worldObj.playSoundAtEntity(this, func_40138_aj(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+                worldObj.playSoundAtEntity(this, getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             }
 
-            field_40139_a = -0.5F;
+            field_70813_a = -0.5F;
+        }
+        else if (!onGround && flag)
+        {
+            field_70813_a = 1.0F;
         }
 
-        func_40136_ag();
+        func_70808_l();
     }
 
     protected void updateEntityActionState()
@@ -136,7 +143,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
         if (onGround && slimeJumpDelay-- <= 0)
         {
-            slimeJumpDelay = func_40131_af();
+            slimeJumpDelay = getJumpDelay();
 
             if (entityplayer != null)
             {
@@ -145,12 +152,11 @@ public class EntitySlime extends EntityLiving implements IMob
 
             isJumping = true;
 
-            if (func_40133_ao())
+            if (makesSoundOnJump())
             {
-                worldObj.playSoundAtEntity(this, func_40138_aj(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+                worldObj.playSoundAtEntity(this, getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
             }
 
-            field_40139_a = 1.0F;
             moveStrafing = 1.0F - rand.nextFloat() * 2.0F;
             moveForward = 1 * getSlimeSize();
         }
@@ -165,12 +171,15 @@ public class EntitySlime extends EntityLiving implements IMob
         }
     }
 
-    protected void func_40136_ag()
+    protected void func_70808_l()
     {
-        field_40139_a = field_40139_a * 0.6F;
+        field_70813_a *= 0.6F;
     }
 
-    protected int func_40131_af()
+    /**
+     * Gets the amount of time the slime needs to wait between jumps.
+     */
+    protected int getJumpDelay()
     {
         return rand.nextInt(20) + 10;
     }
@@ -210,23 +219,29 @@ public class EntitySlime extends EntityLiving implements IMob
      */
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
-        if (func_40137_ah())
+        if (canDamagePlayer())
         {
             int i = getSlimeSize();
 
-            if (canEntityBeSeen(par1EntityPlayer) && (double)getDistanceToEntity(par1EntityPlayer) < 0.59999999999999998D * (double)i && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), func_40130_ai()))
+            if (canEntityBeSeen(par1EntityPlayer) && getDistanceSqToEntity(par1EntityPlayer) < 0.59999999999999998D * (double)i * (0.59999999999999998D * (double)i) && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength()))
             {
                 worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
             }
         }
     }
 
-    protected boolean func_40137_ah()
+    /**
+     * Indicates weather the slime is able to damage the player (based upon the slime's size)
+     */
+    protected boolean canDamagePlayer()
     {
         return getSlimeSize() > 1;
     }
 
-    protected int func_40130_ai()
+    /**
+     * Gets the amount of damage dealt to the player when "attacked" by the slime.
+     */
+    protected int getAttackStrength()
     {
         return getSlimeSize();
     }
@@ -279,6 +294,11 @@ public class EntitySlime extends EntityLiving implements IMob
         }
         Chunk chunk = worldObj.getChunkFromBlockCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
+        if (slimeSpawn==4 && worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
+        {
+            return false;
+        }
+
         if ((getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 40D)
         {
             return super.getCanSpawnHere();
@@ -306,12 +326,18 @@ public class EntitySlime extends EntityLiving implements IMob
         return 0;
     }
 
-    protected boolean func_40133_ao()
+    /**
+     * Returns true if the slime makes a sound when it jumps (based upon the slime's size)
+     */
+    protected boolean makesSoundOnJump()
     {
         return getSlimeSize() > 1;
     }
 
-    protected boolean func_40134_ak()
+    /**
+     * Returns true if the slime makes a sound when it lands after a jump (based upon the slime's size)
+     */
+    protected boolean makesSoundOnLand()
     {
         return getSlimeSize() > 2;
     }

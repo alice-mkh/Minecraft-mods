@@ -19,7 +19,7 @@ public class BlockMushroom extends BlockFlower
      */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (par5Random.nextInt(25) == 0)
+        if (par5Random.nextInt(25) == 0 && spreading)
         {
             byte byte0 = 4;
             int i = 5;
@@ -56,7 +56,7 @@ public class BlockMushroom extends BlockFlower
                 k1 = (par4 + par5Random.nextInt(3)) - 1;
             }
 
-            if (par1World.isAirBlock(k, i1, k1) && canBlockStay(par1World, k, i1, k1) && spreading)
+            if (par1World.isAirBlock(k, i1, k1) && canBlockStay(par1World, k, i1, k1))
             {
                 par1World.setBlockWithNotify(k, i1, k1, blockID);
             }

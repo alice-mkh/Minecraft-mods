@@ -5,13 +5,13 @@ import java.util.*;
 public class BlockChestOld extends BlockChest
 {
     public static boolean normalblock = false;
-    public static int sidetex = 26;
-    public static int fronttex = sidetex + 1;
-    public static int toptex = sidetex - 1;
-    public static int texfrontleft = sidetex + 31;
-    public static int texfrontright = sidetex + 32;
-    public static int texbackleft = sidetex + 15;
-    public static int texbackright = sidetex + 16;
+    public static int sidetex = 184;
+    public static int fronttex = 185;//sidetex + 1;
+    public static int toptex = 186;//sidetex - 1;
+    public static int texfrontleft = 187;//sidetex + 31;
+    public static int texfrontright = 188;//sidetex + 32;
+    public static int texbackleft = 189;//sidetex + 15;
+    public static int texbackright = 190;//sidetex + 16;
 
     protected BlockChestOld(int par1)
     {
@@ -29,6 +29,9 @@ public class BlockChestOld extends BlockChest
 
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
+        if (!normalblock){
+            return 4;
+        }
         if (par5 == 1)
         {
             return toptex;
@@ -147,6 +150,9 @@ public class BlockChestOld extends BlockChest
      */
     public int getBlockTextureFromSide(int par1)
     {
+        if (!normalblock){
+            return 4;
+        }
         if (par1 == 1)
         {
             return toptex;

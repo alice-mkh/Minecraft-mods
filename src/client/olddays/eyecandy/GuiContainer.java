@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
@@ -46,7 +47,7 @@ public abstract class GuiContainer extends GuiScreen
     public void initGui()
     {
         super.initGui();
-        mc.thePlayer.craftingInventory = inventorySlots;
+        mc.field_71439_g.craftingInventory = inventorySlots;
         guiLeft = (width - xSize) / 2;
         guiTop = (height - ySize) / 2;
     }
@@ -60,6 +61,11 @@ public abstract class GuiContainer extends GuiScreen
         int i = guiLeft;
         int j = guiTop;
         drawGuiContainerBackgroundLayer(par3, par1, par2);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        super.drawScreen(par1, par2, par3);
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glPushMatrix();
         GL11.glTranslatef(i, j, 0.0F);
@@ -90,7 +96,7 @@ public abstract class GuiContainer extends GuiScreen
         }
 
         drawGuiContainerForegroundLayer();
-        InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
+        InventoryPlayer inventoryplayer = mc.field_71439_g.inventory;
 
         if (inventoryplayer.getItemStack() != null)
         {
@@ -103,91 +109,133 @@ public abstract class GuiContainer extends GuiScreen
             itemRenderer.zLevel = 0.0F;
         }
 
+        if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack() && tooltips)
+        {
+            ItemStack itemstack = slot.getStack();
+            func_74184_a(itemstack, par1 - i, par2 - j);
+        }
+
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
+    }
+
+    protected void func_74184_a(ItemStack par1ItemStack, int par2, int par3)
+    {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
+        List list = par1ItemStack.getItemNameandInformation();
 
-        if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack() && tooltips)
+        if (!list.isEmpty())
         {
-            ItemStack itemstack = slot.getStack();
-            List list = itemstack.getItemNameandInformation();
+            int i = 0;
+            Iterator iterator = list.iterator();
 
-            if (list.size() > 0)
+            do
             {
-                int l1 = 0;
-
-                for (int i2 = 0; i2 < list.size(); i2++)
+                if (!iterator.hasNext())
                 {
-                    int k2 = fontRenderer.getStringWidth((String)list.get(i2));
-
-                    if (k2 > l1)
-                    {
-                        l1 = k2;
-                    }
+                    break;
                 }
 
-                int j2 = (par1 - i) + 12;
-                int l2 = par2 - j - 12;
-                int i3 = l1;
-                int j3 = 8;
+                String s = (String)iterator.next();
+                int l = fontRenderer.getStringWidth(s);
 
-                if (list.size() > 1)
+                if (l > i)
                 {
-                    j3 += 2 + (list.size() - 1) * 10;
+                    i = l;
                 }
-
-                zLevel = 300F;
-                itemRenderer.zLevel = 300F;
-                if (oldtooltips){
-                    drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, 0xc0000000, 0xc0000000);
-                }else{
-                    int k3 = 0xf0100010;
-                    drawGradientRect(j2 - 3, l2 - 4, j2 + i3 + 3, l2 - 3, k3, k3);
-                    drawGradientRect(j2 - 3, l2 + j3 + 3, j2 + i3 + 3, l2 + j3 + 4, k3, k3);
-                    drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, k3, k3);
-                    drawGradientRect(j2 - 4, l2 - 3, j2 - 3, l2 + j3 + 3, k3, k3);
-                    drawGradientRect(j2 + i3 + 3, l2 - 3, j2 + i3 + 4, l2 + j3 + 3, k3, k3);
-                    int l3 = 0x505000ff;
-                    int i4 = (l3 & 0xfefefe) >> 1 | l3 & 0xff000000;
-                    drawGradientRect(j2 - 3, (l2 - 3) + 1, (j2 - 3) + 1, (l2 + j3 + 3) - 1, l3, i4);
-                    drawGradientRect(j2 + i3 + 2, (l2 - 3) + 1, j2 + i3 + 3, (l2 + j3 + 3) - 1, l3, i4);
-                    drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, (l2 - 3) + 1, l3, l3);
-                    drawGradientRect(j2 - 3, l2 + j3 + 2, j2 + i3 + 3, l2 + j3 + 3, i4, i4);
-                }
-
-                for (int j4 = 0; j4 < list.size(); j4++)
-                {
-                    String s = (String)list.get(j4);
-
-                    if (j4 == 0)
-                    {
-                        s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
-                    }
-                    else
-                    {
-                        s = (new StringBuilder()).append("\2477").append(s).toString();
-                    }
-
-                    fontRenderer.drawStringWithShadow(s, j2, l2, -1);
-
-                    if (j4 == 0)
-                    {
-                        l2 += 2;
-                    }
-
-                    l2 += 10;
-                }
-
-                zLevel = 0.0F;
-                itemRenderer.zLevel = 0.0F;
             }
-        }
+            while (true);
 
-        GL11.glPopMatrix();
-        super.drawScreen(par1, par2, par3);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+            int j = par2 + 12;
+            int k = par3 - 12;
+            int i1 = i;
+            int j1 = 8;
+
+            if (list.size() > 1)
+            {
+                j1 += 2 + (list.size() - 1) * 10;
+            }
+
+            zLevel = 300F;
+            itemRenderer.zLevel = 300F;
+            if (oldtooltips){
+                drawGradientRect(j - 3, k - 3, j + i1 + 3, k + j1 + 3, 0xc0000000, 0xc0000000);
+            }else{
+                int k1 = 0xf0100010;
+                drawGradientRect(j - 3, k - 4, j + i1 + 3, k - 3, k1, k1);
+                drawGradientRect(j - 3, k + j1 + 3, j + i1 + 3, k + j1 + 4, k1, k1);
+                drawGradientRect(j - 3, k - 3, j + i1 + 3, k + j1 + 3, k1, k1);
+                drawGradientRect(j - 4, k - 3, j - 3, k + j1 + 3, k1, k1);
+                drawGradientRect(j + i1 + 3, k - 3, j + i1 + 4, k + j1 + 3, k1, k1);
+                int l1 = 0x505000ff;
+                int i2 = (l1 & 0xfefefe) >> 1 | l1 & 0xff000000;
+                drawGradientRect(j - 3, (k - 3) + 1, (j - 3) + 1, (k + j1 + 3) - 1, l1, i2);
+                drawGradientRect(j + i1 + 2, (k - 3) + 1, j + i1 + 3, (k + j1 + 3) - 1, l1, i2);
+                drawGradientRect(j - 3, k - 3, j + i1 + 3, (k - 3) + 1, l1, l1);
+                drawGradientRect(j - 3, k + j1 + 2, j + i1 + 3, k + j1 + 3, i2, i2);
+            }
+
+            for (int j2 = 0; j2 < list.size(); j2++)
+            {
+                String s1 = (String)list.get(j2);
+
+                if (j2 == 0)
+                {
+                    s1 = (new StringBuilder()).append("\247").append(Integer.toHexString(par1ItemStack.getRarity().rarityColor)).append(s1).toString();
+                }
+                else
+                {
+                    s1 = (new StringBuilder()).append("\2477").append(s1).toString();
+                }
+
+                fontRenderer.drawStringWithShadow(s1, j, k, -1);
+
+                if (j2 == 0)
+                {
+                    k += 2;
+                }
+
+                k += 10;
+            }
+
+            zLevel = 0.0F;
+            itemRenderer.zLevel = 0.0F;
+        }
+    }
+
+    protected void func_74190_a(String par1Str, int par2, int par3)
+    {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        int i = fontRenderer.getStringWidth(par1Str);
+        int j = par2 + 12;
+        int k = par3 - 12;
+        int l = i;
+        byte byte0 = 8;
+        zLevel = 300F;
+        itemRenderer.zLevel = 300F;
+        int i1 = 0xf0100010;
+        drawGradientRect(j - 3, k - 4, j + l + 3, k - 3, i1, i1);
+        drawGradientRect(j - 3, k + byte0 + 3, j + l + 3, k + byte0 + 4, i1, i1);
+        drawGradientRect(j - 3, k - 3, j + l + 3, k + byte0 + 3, i1, i1);
+        drawGradientRect(j - 4, k - 3, j - 3, k + byte0 + 3, i1, i1);
+        drawGradientRect(j + l + 3, k - 3, j + l + 4, k + byte0 + 3, i1, i1);
+        int j1 = 0x505000ff;
+        int k1 = (j1 & 0xfefefe) >> 1 | j1 & 0xff000000;
+        drawGradientRect(j - 3, (k - 3) + 1, (j - 3) + 1, (k + byte0 + 3) - 1, j1, k1);
+        drawGradientRect(j + l + 2, (k - 3) + 1, j + l + 3, (k + byte0 + 3) - 1, j1, k1);
+        drawGradientRect(j - 3, k - 3, j + l + 3, (k - 3) + 1, j1, j1);
+        drawGradientRect(j - 3, k + byte0 + 2, j + l + 3, k + byte0 + 3, k1, k1);
+        fontRenderer.drawStringWithShadow(par1Str, j, k, -1);
+        zLevel = 0.0F;
+        itemRenderer.zLevel = 0.0F;
     }
 
     /**
@@ -211,20 +259,18 @@ public abstract class GuiContainer extends GuiScreen
         int j = par1Slot.yDisplayPosition;
         ItemStack itemstack = par1Slot.getStack();
         boolean flag = false;
-        int k = i;
-        int l = j;
         zLevel = 100F;
         itemRenderer.zLevel = 100F;
 
         if (itemstack == null)
         {
-            int i1 = par1Slot.getBackgroundIconIndex();
+            int k = par1Slot.getBackgroundIconIndex();
 
-            if (i1 >= 0)
+            if (k >= 0)
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
                 mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/gui/items.png"));
-                drawTexturedModalRect(k, l, (i1 % 16) * 16, (i1 / 16) * 16, 16, 16);
+                drawTexturedModalRect(i, j, (k % 16) * 16, (k / 16) * 16, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 flag = true;
             }
@@ -232,8 +278,9 @@ public abstract class GuiContainer extends GuiScreen
 
         if (!flag)
         {
-            itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
-            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
+            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
         }
 
         itemRenderer.zLevel = 0.0F;
@@ -296,11 +343,16 @@ public abstract class GuiContainer extends GuiScreen
      */
     private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3)
     {
+        return func_74188_c(par1Slot.xDisplayPosition, par1Slot.yDisplayPosition, 16, 16, par2, par3);
+    }
+
+    protected boolean func_74188_c(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
         int i = guiLeft;
         int j = guiTop;
-        par2 -= i;
-        par3 -= j;
-        return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1 && par3 < par1Slot.yDisplayPosition + 16 + 1;
+        par5 -= i;
+        par6 -= j;
+        return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
     }
 
     protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
@@ -310,7 +362,7 @@ public abstract class GuiContainer extends GuiScreen
             par2 = par1Slot.slotNumber;
         }
 
-        mc.playerController.windowClick(inventorySlots.windowId, par2, par3, par4, mc.thePlayer);
+        mc.field_71442_b.windowClick(inventorySlots.windowId, par2, par3, par4, mc.field_71439_g);
     }
 
     /**
@@ -320,7 +372,7 @@ public abstract class GuiContainer extends GuiScreen
     {
         if (par2 == 1 || par2 == mc.gameSettings.keyBindInventory.keyCode)
         {
-            mc.thePlayer.closeScreen();
+            mc.field_71439_g.closeScreen();
         }
     }
 
@@ -329,14 +381,13 @@ public abstract class GuiContainer extends GuiScreen
      */
     public void onGuiClosed()
     {
-        if (mc.thePlayer == null)
+        if (mc.field_71439_g == null)
         {
             return;
         }
         else
         {
-            inventorySlots.onCraftGuiClosed(mc.thePlayer);
-            mc.playerController.func_20086_a(inventorySlots.windowId, mc.thePlayer);
+            inventorySlots.onCraftGuiClosed(mc.field_71439_g);
             return;
         }
     }
@@ -356,9 +407,9 @@ public abstract class GuiContainer extends GuiScreen
     {
         super.updateScreen();
 
-        if (!mc.thePlayer.isEntityAlive() || mc.thePlayer.isDead)
+        if (!mc.field_71439_g.isEntityAlive() || mc.field_71439_g.isDead)
         {
-            mc.thePlayer.closeScreen();
+            mc.field_71439_g.closeScreen();
         }
     }
 }
