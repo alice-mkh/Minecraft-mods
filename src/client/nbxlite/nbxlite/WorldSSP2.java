@@ -1885,7 +1885,7 @@ public class WorldSSP2 extends WorldSSP
         return (int)(f3 * (f1 - 4F) + (15F - f1));
     }
 
-    public float func_35464_b(float par1)
+    public float func_72971_b(float par1)
     {
         float f = getCelestialAngle(par1);
         int brightness = 0;
@@ -2713,62 +2713,6 @@ public class WorldSSP2 extends WorldSSP
             return tileentity;
         }
         return null;
-    }
-
-    /**
-     * Sets the TileEntity for a given block in X, Y, Z coordinates
-     */
-    public void setBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity)
-    {
-        if (par4TileEntity != null && !par4TileEntity.isInvalid())
-        {
-            if (scanningTileEntities)
-            {
-                par4TileEntity.xCoord = par1;
-                par4TileEntity.yCoord = par2;
-                par4TileEntity.zCoord = par3;
-                addedTileEntityList.add(par4TileEntity);
-            }
-            else
-            {
-                loadedTileEntityList.add(par4TileEntity);
-                Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
-
-                if (chunk != null)
-                {
-                    chunk.setChunkBlockTileEntity(par1 & 0xf, par2, par3 & 0xf, par4TileEntity);
-                }
-            }
-        }
-    }
-
-    /**
-     * Removes the TileEntity for a given block in X,Y,Z coordinates
-     */
-    public void removeBlockTileEntity(int par1, int par2, int par3)
-    {
-        TileEntity tileentity = getBlockTileEntity(par1, par2, par3);
-
-        if (tileentity != null && scanningTileEntities)
-        {
-            tileentity.invalidate();
-            addedTileEntityList.remove(tileentity);
-        }
-        else
-        {
-            if (tileentity != null)
-            {
-                addedTileEntityList.remove(tileentity);
-                loadedTileEntityList.remove(tileentity);
-            }
-
-            Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
-
-            if (chunk != null)
-            {
-                chunk.removeChunkBlockTileEntity(par1 & 0xf, par2, par3 & 0xf);
-            }
-        }
     }
 
     /**
