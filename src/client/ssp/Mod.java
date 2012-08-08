@@ -20,6 +20,10 @@ public abstract class Mod{
 
     public void onGUITick(GuiScreen screen){}
 
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
+        return false;
+    }
+
     protected void setUseTick(boolean game, boolean gui){
         usesTick = game;
         usesGUITick = gui;

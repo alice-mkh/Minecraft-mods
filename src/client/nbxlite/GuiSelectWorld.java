@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.lang.reflect.Method;
 import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.gui.*;
@@ -169,7 +170,13 @@ public class GuiSelectWorld extends GuiScreen
         else if (par1GuiButton.id == 3)
         {
             if (nbxlite){
-                mc.displayGuiScreen(new GuiCreateWorld2(this));
+                try{
+                    Class c = net.minecraft.src.nbxlite.gui.GuiCreateWorld2.class;
+                    Object o = c.getDeclaredConstructor(new Class[]{GuiScreen.class}).newInstance(new Object[]{this});
+                    mc.displayGuiScreen((GuiScreen)o);
+                }catch(Throwable t){
+                    nbxlite = false;
+                }
             }else{
                 mc.displayGuiScreen(new GuiCreateWorld(this));
             }
@@ -226,10 +233,19 @@ public class GuiSelectWorld extends GuiScreen
             return;
         }
         if (nbxlite && !mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().nbxlite){
-            ODNBXlite.Import = true;
-            GuiCreateWorld2.setDefaultNBXliteSettings();
-            mc.displayGuiScreen(new GuiNBXlite(this, getSaveFileName(par1), par1));
-            return;
+            try{
+                ODNBXlite.Import = true;
+                Class c = net.minecraft.src.nbxlite.gui.GuiCreateWorld2.class;
+                Method method = c.getDeclaredMethod("setDefaultNBXliteSettings", new Class[0]);
+                method.invoke(null);
+                Class c2 = net.minecraft.src.nbxlite.gui.GuiNBXlite.class;
+                Object o = c2.getDeclaredConstructor(new Class[]{GuiScreen.class, String.class, Integer.TYPE}).newInstance(new Object[]{this, getSaveFileName(par1), par1});
+                mc.displayGuiScreen((GuiScreen)o);
+                return;
+            }catch(Throwable t){
+                t.printStackTrace();
+                nbxlite = false;
+            }
         }
         mc.displayGuiScreen(null);
 

@@ -26,6 +26,7 @@ public class GuiMainMenu extends GuiScreen
         " *   * * *   * *** *** * * * * *    * "
     };
     private LogoEffectRandomizer logoEffects[][];
+    public static boolean replaceGuiSelectWorld = true;
 
     /** The RNG used by the Main Menu Screen. */
     private static final Random rand = new Random();

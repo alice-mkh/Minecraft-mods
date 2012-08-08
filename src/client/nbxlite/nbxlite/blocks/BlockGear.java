@@ -4,6 +4,7 @@ import java.util.Random;
 import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
@@ -15,6 +16,7 @@ public class BlockGear extends Block
     public BlockGear(int par1, int par2)
     {
         super(par1, par2, Material.circuits);
+        func_71849_a(CreativeTabs.field_78031_c);
     }
 
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int i){
@@ -97,13 +99,13 @@ public class BlockGear extends Block
         setBlockBounds(f, f1, f2, f3, f4, f5);
     }
 
-    public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k){
+    public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k, int override){
         Tessellator tessellator = Tessellator.instance;
         int tex = b.getBlockTextureFromSide(0);
-        /*if(r.overrideBlockTexture >= 0)
+        if(override >= 0)
         {
-            tex = r.overrideBlockTexture;
-        }*/
+            tex = override;
+        }
         tessellator.setBrightness(b.getMixedBrightnessForBlock(blockAccess, i, j, k));
         float f5 = /*b.getBlockBrightness(blockAccess, i, j, k)*/1.0F;
         tessellator.setColorOpaque_F(f5, f5, f5);

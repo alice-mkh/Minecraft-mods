@@ -1,6 +1,7 @@
 package net.minecraft.src.nbxlite;
 
 import java.nio.FloatBuffer;
+import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.BufferUtils;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ public class RenderGlobal2 extends RenderGlobal{
     public static boolean opaqueFlatClouds = false;
     public static boolean sunriseColors = true;
     public static boolean sunriseAtNorth = false;
+    public static boolean oldstars = false;
 
     protected Minecraft mc;
     protected RenderEngine renderEngine;
@@ -33,10 +35,24 @@ public class RenderGlobal2 extends RenderGlobal{
         mc = mc2;
         renderEngine = re;
         floatBuffer = BufferUtils.createFloatBuffer(16);
-        starGLCallList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 15));
-        glSkyList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 16));
-        glSkyList2 = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 17));
+        starGLCallList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 16));
+        GL11.glPushMatrix();
+        GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
+        renderStars();
+        GL11.glEndList();
+        GL11.glPopMatrix();
+        glSkyList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 17));
+        glSkyList2 = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 18));
         cloudOffsetX = 0;
+    }
+
+    public void setStars(boolean b){
+        oldstars = b;
+        GL11.glPushMatrix();
+        GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
+        renderStars();
+        GL11.glEndList();
+        GL11.glPopMatrix();
     }
 
     public void updateClouds()
@@ -99,7 +115,7 @@ public class RenderGlobal2 extends RenderGlobal{
                 }
 
                 tessellator.startDrawingQuads();
-                tessellator.setColorOpaque_I(0x181818);
+                tessellator.setColorOpaque_I(oldstars ? 0x181818 : 0x282828);
                 tessellator.addVertexWithUV(-100D, -100D, -100D, 0.0D, 0.0D);
                 tessellator.addVertexWithUV(-100D, -100D, 100D, 0.0D, 16D);
                 tessellator.addVertexWithUV(100D, -100D, 100D, 16D, 16D);
@@ -234,7 +250,20 @@ public class RenderGlobal2 extends RenderGlobal{
             tessellator1.addVertexWithUV(-f15, -100D, -f15, f26, f25);
             tessellator1.draw();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
-            float f18 = (float)(worldObj.getStarBrightness(par1) * d);
+            float f18 = 0;
+            if (oldstars){
+                f18 = 1.0F - (MathHelper.cos(worldObj.getCelestialAngle(par1) * (float)Math.PI * 2.0F) * 2.0F + 0.75F);
+
+                if (f18 < 0.0F){
+                    f18 = 0.0F;
+                }
+                if (f18 > 1.0F){
+                    f18 = 1.0F;
+                }
+                f18 = f18 * f18 * 0.5F;
+            }else{
+                f18 = (float)(worldObj.getStarBrightness(par1) * d);
+            }
 
             if (f18 > 0.0F)
             {
@@ -579,5 +608,62 @@ public class RenderGlobal2 extends RenderGlobal{
             GL11.glDisable(3169);
             OpenGlHelper.setActiveTexture(33984);
         }
+    }
+
+    private void renderStars()
+    {
+        Random random = new Random(10842L);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+
+        for (int i = 0; i < 1500; i++)
+        {
+            double d = random.nextFloat() * 2.0F - 1.0F;
+            double d1 = random.nextFloat() * 2.0F - 1.0F;
+            double d2 = random.nextFloat() * 2.0F - 1.0F;
+            double d3 = (oldstars ? 0.25F : 0.15F) + random.nextFloat() * (oldstars ? 0.25F : 0.1F);
+            double d4 = d * d + d1 * d1 + d2 * d2;
+
+            if (d4 >= 1.0D || d4 <= 0.01D)
+            {
+                continue;
+            }
+
+            d4 = 1.0D / Math.sqrt(d4);
+            d *= d4;
+            d1 *= d4;
+            d2 *= d4;
+            double d5 = d * 100D;
+            double d6 = d1 * 100D;
+            double d7 = d2 * 100D;
+            double d8 = Math.atan2(d, d2);
+            double d9 = Math.sin(d8);
+            double d10 = Math.cos(d8);
+            double d11 = Math.atan2(Math.sqrt(d * d + d2 * d2), d1);
+            double d12 = Math.sin(d11);
+            double d13 = Math.cos(d11);
+            double d14 = random.nextDouble() * Math.PI * 2D;
+            double d15 = Math.sin(d14);
+            double d16 = Math.cos(d14);
+
+            for (int j = 0; j < 4; j++)
+            {
+                double d17 = 0.0D;
+                double d18 = (double)((j & 2) - 1) * d3;
+                double d19 = (double)((j + 1 & 2) - 1) * d3;
+                double d20 = d17;
+                double d21 = d18 * d16 - d19 * d15;
+                double d22 = d19 * d16 + d18 * d15;
+                double d23 = d22;
+                double d24 = d21 * d12 + d20 * d13;
+                double d25 = d20 * d12 - d21 * d13;
+                double d26 = d25 * d9 - d23 * d10;
+                double d27 = d24;
+                double d28 = d23 * d9 + d25 * d10;
+                tessellator.addVertex(d5 + d26, d6 + d27, d7 + d28);
+            }
+        }
+
+        tessellator.draw();
     }
 }

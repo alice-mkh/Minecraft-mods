@@ -34,7 +34,8 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond(this,  19,1,        "ClassicLight");
         new OldDaysPropertyCond(this,  20,1,        "BedrockFog");
         new OldDaysPropertyCond(this,  21,1,        "SunriseAtNorth");
-        new OldDaysPropertyBool(this,  22,false,    "ShowGUI");
+        new OldDaysPropertyCond(this,  22,1,        "OldStars");
+        new OldDaysPropertyBool(this,  23,true,     "ShowGUI");
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -124,6 +125,9 @@ public class ODNBXlite extends OldDaysModule{
             case 20:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
             case 21:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
                     set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
+            case 22:if (Minecraft.getMinecraftInstance().renderGlobal instanceof RenderGlobal2){
+                        ((RenderGlobal2)Minecraft.getMinecraftInstance().renderGlobal).setStars(OldStars);
+                    }break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
@@ -146,6 +150,7 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean ClassicLight;
     public static boolean BedrockFog;
     public static boolean SunriseAtNorth;
+    public static boolean OldStars;
     public static boolean ShowGUI = true;
 
     public static boolean LeavesDecay(){
@@ -166,6 +171,10 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean SunriseAtNorth(){
         return Generator<GEN_NEWBIOMES || MapFeatures==FEATURES_BETA181;
+    }
+
+    public static boolean OldStars(){
+        return Generator<GEN_NEWBIOMES || MapFeatures<FEATURES_13;
     }
 
     public void onLoadingSP(String par1Str, String par2Str){
@@ -249,12 +258,16 @@ public class ODNBXlite extends OldDaysModule{
         Block gear = new BlockGear(gearId, 57);
         gear.setHardness(0.5F);
         gear.setBlockName("gear");
+        
         gear.disableStats();
 //         ModLoader.addName(gear, "Gear");
-        Block.blocksList[57] = gear;
+        Block.blocksList[gearId] = gear;
+        new ItemBlock(gearId - 256);
+        Item.itemsList[gearId].setItemName("gear");
+        Block.blocksList[gearId].initializeBlock();
         mod_OldDays.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(0));
         mod_OldDays.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(1));
-//         gearRenderID = ModLoader.getUniqueBlockModelID(core, false);
+        gearRenderID = 33;
     }
 
     public static int getSkyLightInBounds(int par2){
@@ -460,9 +473,9 @@ public class ODNBXlite extends OldDaysModule{
         return 0;
     }
 
-    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
         if (id == gearRenderID){
-            return BlockGear.renderBlockGear(r, i, b, x, y, z);
+            return BlockGear.renderBlockGear(r, i, b, x, y, z, override);
         }
         return false;
     }
@@ -477,19 +490,11 @@ public class ODNBXlite extends OldDaysModule{
         if (isFinite() && !minecraft.field_71441_e.isRemote){
             tickPushing(minecraft);
         }
-        if (minecraft.currentScreen==null){
-            lastGui = null;
-        }
         return true;
     }
 
     public boolean onGUITick(GuiScreen gui){
         Minecraft minecraft = mod_OldDays.getMinecraftInstance();
-        if (gearsCreative && gui instanceof GuiContainerCreative && !(lastGui instanceof GuiContainerCreative) && !minecraft.field_71441_e.isRemote){
-            ContainerCreative creative = ((ContainerCreative)((GuiContainerCreative)gui).inventorySlots);
-            creative.itemList.add(new ItemStack(gearId, 1, 0));
-        }
-        lastGui = gui;
         if (!rendererReplaced){
 //             minecraft.entityRenderer = new EntityRenderer2(minecraft);
             minecraft.renderGlobal = new net.minecraft.src.nbxlite.RenderGlobal2(minecraft, minecraft.renderEngine);
@@ -1023,8 +1028,6 @@ public class ODNBXlite extends OldDaysModule{
     public static int TYPE_FLAT = 3;
 
     public static int gearRenderID;
-    public static boolean gearsCreative = true;
-    private static GuiScreen lastGui;
     public static boolean rendererReplaced = false;
 
     public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraftInstance().getMinecraftDir(), "saves"));

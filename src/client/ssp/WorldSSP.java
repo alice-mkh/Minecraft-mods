@@ -1740,27 +1740,6 @@ public class WorldSSP extends World implements IBlockAccess
     }
 
     /**
-     * How bright are stars in the sky
-     */
-    public float getStarBrightness(float par1)
-    {
-        float f = getCelestialAngle(par1);
-        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.75F);
-
-        if (f1 < 0.0F)
-        {
-            f1 = 0.0F;
-        }
-
-        if (f1 > 1.0F)
-        {
-            f1 = 1.0F;
-        }
-
-        return f1 * f1 * 0.5F;
-    }
-
-    /**
      * Schedules a tick to a block with a delay (Most commonly the tick rate)
      */
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)

@@ -117,7 +117,11 @@ public class WorldInfo
         }
         else
         {
-            mapFeaturesEnabled = ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES;
+            if (useNBXlite){
+                mapFeaturesEnabled = ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES;
+            }else{
+                mapFeaturesEnabled = true;
+            }
         }
 
         spawnX = par1NBTTagCompound.getInteger("SpawnX");

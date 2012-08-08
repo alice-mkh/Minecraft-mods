@@ -718,6 +718,10 @@ public class ItemRenderer
 
     public void drawFirstPersonHand(RenderPlayer r, int h)
     {
+        if (h >= 2){
+            r.drawFirstPersonHand();
+            return;
+        }
         ModelBiped modelBipedMain = null;
         modelBipedMain = ((ModelBiped)mod_OldDays.getField(net.minecraft.src.RenderPlayer.class, r, 0));
         if (h!=1){

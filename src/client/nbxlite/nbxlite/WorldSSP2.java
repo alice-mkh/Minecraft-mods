@@ -66,6 +66,48 @@ public class WorldSSP2 extends WorldSSP
         return worldProvider.worldChunkMgr.getBiomeGenAt(par1, par2);
     }
 
+    protected void func_73047_i()
+    {
+        if (ODNBXlite.Generator == ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV){
+            int j = worldInfo.getSpawnX();
+            int k = worldInfo.getSpawnZ();
+            int l = worldInfo.getSpawnY() + 2;
+            int dir = rand.nextInt(3);
+            if (dir == 0){
+                j -= 2;
+            }else if (dir == 1){
+                j += 2;
+            }else if (dir == 2){
+                k += 2;
+            }
+            setBlockWithNotify(j, l, k, Block.chest.blockID);
+            TileEntityChest tileentitychest = (TileEntityChest)getBlockTileEntity(j, l, k);
+            if (tileentitychest != null && tileentitychest != null){
+                WeightedRandomChestContent.func_76293_a(rand, field_73069_S, tileentitychest, 10);
+            }
+            return;
+        }
+        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(field_73069_S, 10);
+        int i = 0;
+        do
+        {
+            if (i >= 10)
+            {
+                break;
+            }
+            int j = (worldInfo.getSpawnX() + rand.nextInt(6)) - rand.nextInt(6);
+            int k = (worldInfo.getSpawnZ() + rand.nextInt(6)) - rand.nextInt(6);
+            int l = getTopSolidOrLiquidBlock(j, k) + 1;
+
+            if (worldgeneratorbonuschest.generate(this, rand, j, l, k))
+            {
+                break;
+            }
+            i++;
+        }
+        while (true);
+    }
+
     public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
     {
         super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p);
@@ -280,6 +322,9 @@ public class WorldSSP2 extends WorldSSP
                 worldInfo.mapType = 0;
             }
             generateSpawnPoint();
+            if (par3WorldSettings.func_77167_c()){
+                func_73047_i();
+            }
         } else
         {
             if (worldInfo.nbxlite){
@@ -2113,27 +2158,6 @@ public class WorldSSP2 extends WorldSSP
         }
 
         return -1;
-    }
-
-    /**
-     * How bright are stars in the sky
-     */
-    public float getStarBrightness(float par1)
-    {
-        float f = getCelestialAngle(par1);
-        float f1 = 1.0F - (MathHelper.cos(f * (float)Math.PI * 2.0F) * 2.0F + 0.75F);
-
-        if (f1 < 0.0F)
-        {
-            f1 = 0.0F;
-        }
-
-        if (f1 > 1.0F)
-        {
-            f1 = 1.0F;
-        }
-
-        return f1 * f1 * 0.5F;
     }
 
     /**

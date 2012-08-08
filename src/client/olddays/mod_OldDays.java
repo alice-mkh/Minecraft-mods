@@ -36,9 +36,9 @@ public class mod_OldDays extends Mod{
         saveman.loadAll();
     }
 
-    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
         for (int j = 0; j < modules.size(); j++){
-            if (((OldDaysModule)mod_OldDays.modules.get(j)).renderWorldBlock(r, i, x, y, z, b, id)){
+            if (((OldDaysModule)mod_OldDays.modules.get(j)).renderBlocks(r, i, b, x, y, z, id, override)){
                 return true;
             }
         }

@@ -27,7 +27,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   20,false, "Labels");
         new OldDaysPropertyBool(this,   21,true,  "SmoothLoading");
         replaceBlocks();
-//         redstoneRenderID = ModLoader.getUniqueBlockModelID(core, false);
+        redstoneRenderID = 32;
     }
 
     public void callback (int i){
@@ -140,9 +140,9 @@ public class ODEyecandy extends OldDaysModule{
         }
     }
 
-    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
         if (id == redstoneRenderID){
-            return BlockRedstoneWireOld.renderBlockRedstoneWire(r, i, b, x, y, z);
+            return BlockRedstoneWireOld.renderBlockRedstoneWire(r, i, b, x, y, z, override);
         }
         return false;
     }

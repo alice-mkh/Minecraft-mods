@@ -138,7 +138,7 @@ public class OldDaysModule{
         }
     }
 
-    public boolean renderWorldBlock(RenderBlocks r, IBlockAccess i, int x, int y, int z, Block b, int id){
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
         return false;
     }
 
