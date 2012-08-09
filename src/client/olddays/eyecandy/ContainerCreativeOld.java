@@ -21,7 +21,7 @@ class ContainerCreativeOld extends Container
             Block.oreLapis,
             Block.oreRedstone,
             Block.oreDiamond,
-            Block.stoneBrick, Block.stoneBrick, Block.stoneBrick, Block.stoneBrick,
+            Block.stoneBrick,
             Block.blockClay,
             Block.blockDiamond,
             Block.field_72071_ax,
@@ -31,23 +31,21 @@ class ContainerCreativeOld extends Container
             Block.blockLapis,
             Block.brick,
             Block.cobblestoneMossy,
-            Block.field_72079_ak, Block.field_72079_ak,
-            Block.field_72092_bO, Block.field_72092_bO, Block.field_72092_bO, Block.field_72092_bO,
-            Block.field_72079_ak, Block.field_72079_ak, Block.field_72079_ak, Block.field_72079_ak,
+            Block.field_72092_bO,
             Block.obsidian,
             Block.netherrack,
             Block.slowSand,
             Block.glowStone,
-            Block.wood, Block.wood, Block.wood, Block.wood,
-            Block.leaves, Block.leaves, Block.leaves, Block.leaves,
+            Block.wood,
+            Block.leaves,
             Block.dirt,
             Block.grass,
             Block.sand,
-            Block.sandStone, Block.sandStone, Block.sandStone,
+            Block.sandStone,
             Block.gravel,
             Block.web,
-            Block.planks, Block.planks, Block.planks, Block.planks,
-            Block.sapling, Block.sapling, Block.sapling, Block.sapling,
+            Block.planks,
+            Block.sapling,
             Block.deadBush,
             Block.sponge,
             Block.ice,
@@ -71,15 +69,14 @@ class ContainerCreativeOld extends Container
             Block.endPortalFrame,
             Block.mycelium,
             Block.waterlily,
-            Block.tallGrass, Block.tallGrass,
+            Block.tallGrass,
             Block.chest,
             Block.field_72066_bS,
             Block.workbench,
             Block.glass,
             Block.tnt,
             Block.bookShelf,
-            Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth,
-            Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth, Block.cloth,
+            Block.cloth,
             Block.dispenser,
             Block.stoneOvenIdle,
             Block.music,
@@ -111,87 +108,47 @@ class ContainerCreativeOld extends Container
             Block.enchantmentTable,
             Block.redstoneLampIdle
         };
-        int i = 0;
-        int j = 0;
-        int k = 0;
-        int l = 0;
-        int i1 = 0;
-        int j1 = 0;
-        int k1 = 0;
-        int l1 = 0;
-        int i2 = 1;
-        int jj = 0;
 
         for (int j2 = 0; j2 < ablock.length; j2++)
         {
-            int i3 = 0;
-
-            if (ablock[j2] == Block.cloth)
-            {
-                i3 = i++;
+            if (Item.itemsList[ablock[j2].blockID] == null){
+                continue;
             }
-            else if (ablock[j2] == Block.field_72079_ak)
-            {
-                i3 = j++;
+            if (ablock[j2].blockID == Block.field_72092_bO.blockID){
+                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 0));
+                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 1));
+                Item.itemsList[ablock[j2].blockID].func_77633_a(ablock[j2].blockID, null, itemList);
+//                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 2));
+                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 3));
+                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 4));
+                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 5));
+            }else{
+                Item.itemsList[ablock[j2].blockID].func_77633_a(ablock[j2].blockID, null, itemList);
             }
-            else if (ablock[j2] == Block.field_72092_bO)
-            {
-                i3 = jj++;
-            }
-            else if (ablock[j2] == Block.wood)
-            {
-                i3 = k++;
-            }
-            else if (ablock[j2] == Block.planks)
-            {
-                i3 = l++;
-            }
-            else if (ablock[j2] == Block.sapling)
-            {
-                i3 = i1++;
-            }
-            else if (ablock[j2] == Block.stoneBrick)
-            {
-                i3 = j1++;
-            }
-            else if (ablock[j2] == Block.sandStone)
-            {
-                i3 = k1++;
-            }
-            else if (ablock[j2] == Block.tallGrass)
-            {
-                i3 = i2++;
-            }
-            else if (ablock[j2] == Block.leaves)
-            {
-                i3 = l1++;
-            }
-
-            itemList.add(new ItemStack(ablock[j2], 1, i3));
         }
 
         for (int k2 = 256; k2 < Item.itemsList.length; k2++)
         {
-            if (Item.itemsList[k2] != null &&
-                Item.itemsList[k2].shiftedIndex != Item.potion.shiftedIndex &&
-                Item.itemsList[k2].shiftedIndex != Item.monsterPlacer.shiftedIndex &&
-                Item.itemsList[k2].shiftedIndex != Item.field_77823_bG.shiftedIndex)
-            {
-                itemList.add(new ItemStack(Item.itemsList[k2]));
+            if (Item.itemsList[k2] == null){
+                continue;
+            }
+            int id = Item.itemsList[k2].shiftedIndex;
+            if (id == Item.monsterPlacer.shiftedIndex ||
+                id == Item.potion.shiftedIndex ||
+                id == Item.field_77823_bG.shiftedIndex){
+                continue;
+            }else if (Item.itemsList[k2].shiftedIndex == Item.dyePowder.shiftedIndex){
+                itemList.add(new ItemStack(k2, 1, 0));
+            }else{
+                Item.itemsList[k2].func_77633_a(k2, null, itemList);
             }
         }
-
         for (int l2 = 1; l2 < 16; l2++)
         {
             itemList.add(new ItemStack(Item.dyePowder.shiftedIndex, 1, l2));
         }
-
-        Integer integer;
-
-        for (Iterator iterator = EntityList.entityEggs.keySet().iterator(); iterator.hasNext(); itemList.add(new ItemStack(Item.monsterPlacer.shiftedIndex, 1, integer.intValue())))
-        {
-            integer = (Integer)iterator.next();
-        }
+        Item.itemsList[Item.monsterPlacer.shiftedIndex].func_77633_a(Item.monsterPlacer.shiftedIndex, null, itemList);
+        Item.itemsList[Item.potion.shiftedIndex].func_77633_a(Item.potion.shiftedIndex, null, itemList);
 
         InventoryPlayer inventoryplayer = par1EntityPlayer.inventory;
 
