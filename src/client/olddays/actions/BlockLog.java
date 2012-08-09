@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class BlockLog extends Block
 {
-    public static boolean rotate = false;
+    public static boolean rotate = true;
 
     public static final String field_72142_a[] =
     {
