@@ -45,6 +45,9 @@ public class TextureSpriteFX extends TextureFX
     public void changeIndex(int index, boolean e, boolean b){
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(sprite));
         ww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / swidth;
+        if (ww <= 0){
+            ww = 16;
+        }
         enabled = e;
         int www = enabled ? ww : w;
         spriteData = new int[www * www];
@@ -87,6 +90,9 @@ public class TextureSpriteFX extends TextureFX
                 w = wwww;
                 refresh(false);
             }
+        }
+        if (w <= 0){
+            w = 256;
         }
         int www = enabled ? ww : w;
         int n = w / www;
