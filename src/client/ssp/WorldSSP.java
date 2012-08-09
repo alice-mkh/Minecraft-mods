@@ -12,7 +12,6 @@ public class WorldSSP extends World implements IBlockAccess
 
     /** Set of scheduled ticks (used for checking if a tick already exists) */
     private Set scheduledTickSet;
-    private List addedTileEntityList;
 
     /** Entities marked for removal. */
     private List entityRemoval;
@@ -51,7 +50,6 @@ public class WorldSSP extends World implements IBlockAccess
         super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
-        addedTileEntityList = new ArrayList();
         entityRemoval = new ArrayList();
         cloudColour = 0xffffffL;
         lockTimestamp = System.currentTimeMillis();
@@ -71,7 +69,6 @@ public class WorldSSP extends World implements IBlockAccess
         super(par1World.saveHandler, par1World.getWorldInfo().getWorldName(), par2WorldProvider, new WorldSettings(par1World.getWorldInfo()), p);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
-        addedTileEntityList = new ArrayList();
         entityRemoval = new ArrayList();
         cloudColour = 0xffffffL;
         lockTimestamp = System.currentTimeMillis();
@@ -97,7 +94,6 @@ public class WorldSSP extends World implements IBlockAccess
         super(par1ISaveHandler, par2Str, par3WorldSettings, par4WorldProvider, p);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
-        addedTileEntityList = new ArrayList();
         entityRemoval = new ArrayList();
         cloudColour = 0xffffffL;
         lockTimestamp = System.currentTimeMillis();
@@ -1775,18 +1771,6 @@ public class WorldSSP extends World implements IBlockAccess
         }
     }
 
-    public void addTileEntity(Collection par1Collection)
-    {
-        if (scanningTileEntities)
-        {
-            addedTileEntityList.addAll(par1Collection);
-        }
-        else
-        {
-            loadedTileEntityList.addAll(par1Collection);
-        }
-    }
-
     /**
      * Will update the entity in the world if the chunk the entity is in is currently loaded. Args: entity
      */
@@ -2241,56 +2225,6 @@ public class WorldSSP extends World implements IBlockAccess
     public String getProviderName()
     {
         return chunkProvider.makeString();
-    }
-
-    /**
-     * Returns the TileEntity associated with a given block in X,Y,Z coordinates, or null if no TileEntity exists
-     */
-    public TileEntity getBlockTileEntity(int par1, int par2, int par3)
-    {
-        label0:
-        {
-            TileEntity tileentity;
-            label1:
-            {
-                if (par2 >= 256)
-                {
-                    return null;
-                }
-
-                Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
-
-                if (chunk == null)
-                {
-                    break label0;
-                }
-
-                tileentity = chunk.getChunkBlockTileEntity(par1 & 0xf, par2, par3 & 0xf);
-
-                if (tileentity != null)
-                {
-                    break label1;
-                }
-
-                Iterator iterator = addedTileEntityList.iterator();
-                TileEntity tileentity1;
-
-                do
-                {
-                    if (!iterator.hasNext())
-                    {
-                        break label1;
-                    }
-
-                    tileentity1 = (TileEntity)iterator.next();
-                }
-                while (tileentity1.isInvalid() || tileentity1.xCoord != par1 || tileentity1.yCoord != par2 || tileentity1.zCoord != par3);
-
-                tileentity = tileentity1;
-            }
-            return tileentity;
-        }
-        return null;
     }
 
     /**
