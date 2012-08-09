@@ -3068,6 +3068,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 ex.printStackTrace();
                 continue;
             }
+            if (!mod.getMcVersion().equals(getVersion())){
+                System.out.println(mod.getModName()+" "+mod.getModVersion()+" is for Minecraft "+mod.getMcVersion()+", not "+getVersion());
+                return;
+            }
             mods.add(mod);
             mod.load();
             System.out.println("Loaded "+mod.getModName()+" "+mod.getModVersion()+" for Minecraft "+mod.getMcVersion());
@@ -3081,5 +3085,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
         }
         return false;
+    }
+
+    public String getVersion(){
+        return "1.3.1";
     }
 }
