@@ -9,6 +9,7 @@ import org.lwjgl.input.Keyboard;
 public class GuiInventory extends InventoryEffectRenderer
 {
     public static boolean walking = false;
+    public static boolean oldcreative = false;
 
     /**
      * x size of the inventory window in pixels. Defined as float, passed as int
@@ -34,7 +35,7 @@ public class GuiInventory extends InventoryEffectRenderer
     {
         if (mc.field_71442_b.isInCreativeMode())
         {
-            mc.displayGuiScreen(new GuiContainerCreative(mc.field_71439_g));
+            mc.displayGuiScreen(oldcreative ? new GuiContainerCreativeOld(mc.field_71439_g) : new GuiContainerCreative(mc.field_71439_g));
         }
     }
 
@@ -47,7 +48,7 @@ public class GuiInventory extends InventoryEffectRenderer
 
         if (mc.field_71442_b.isInCreativeMode())
         {
-            mc.displayGuiScreen(new GuiContainerCreative(mc.field_71439_g));
+            mc.displayGuiScreen(oldcreative ? new GuiContainerCreativeOld(mc.field_71439_g) : new GuiContainerCreative(mc.field_71439_g));
         }
         else
         {
