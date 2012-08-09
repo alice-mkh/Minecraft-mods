@@ -118,7 +118,7 @@ class ContainerCreativeOld extends Container
                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 0));
                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 1));
                 Item.itemsList[ablock[j2].blockID].func_77633_a(ablock[j2].blockID, null, itemList);
-//                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 2));
+                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 2));
                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 3));
                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 4));
                 itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 5));
