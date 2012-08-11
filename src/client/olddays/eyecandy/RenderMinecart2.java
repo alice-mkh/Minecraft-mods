@@ -81,14 +81,12 @@ public class RenderMinecart2 extends RenderMinecart
             {
                 if (shiftChest){
                     GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
-                    GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
                     (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
                     GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 }else{
-                    GL11.glTranslatef(-0.5F, 0.0F, 0.5F);
-                    GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+                    GL11.glTranslatef(0.0F, 0.5F, 0.0F);
                     (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
                     GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.5F, 0.0F, -0.5F);
@@ -98,7 +96,6 @@ public class RenderMinecart2 extends RenderMinecart
             else if (par1EntityMinecart.minecartType == 2)
             {
                 GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
-                GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
                 (new RenderBlocks()).renderBlockAsItem(Block.stoneOvenIdle, 0, par1EntityMinecart.getBrightness(par9));
                 GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
