@@ -2265,7 +2265,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             WorldSSP world = null;
             try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).
+                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
                            newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
                 world = (WorldSSP)o;
 //                world = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
@@ -2284,7 +2284,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             WorldSSP world1 = null;
             try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).
+                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
                            newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
                 world1 = (WorldSSP)o;
 //                world1 = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
@@ -2305,7 +2305,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             WorldSSP world2 = null;
             try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).
+                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
                            newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
                 world2 = (WorldSSP)o;
 //                world2 = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
@@ -3024,8 +3024,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         try{
             p = c.getPackage().getName()+".";
         }catch(Exception ex){}
-        File file = new File(c.getProtectionDomain().getCodeSource().getLocation().getPath()+p.replace(".", "/"));
-        List classes = new ArrayList();
+        String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(path.replace("%20", " ")+p.replace(".", "/"));        List classes = new ArrayList();
         if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")){
             try{
                 ZipFile jar = new ZipFile(file);
