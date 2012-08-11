@@ -2774,7 +2774,7 @@ public class WorldSSP2 extends WorldSSP
         }
 
         worldProvider.worldChunkMgr.cleanupCache();
-        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
             updateWeather();
         }
 
@@ -4349,19 +4349,6 @@ public class WorldSSP2 extends WorldSSP
         return chunkProvider;
     }
 
-    /**
-     * plays a given note at x, y, z. args: x, y, z, instrument, note
-     *//*
-    public void playNoteAt(int par1, int par2, int par3, int par4, int par5)
-    {
-        int i = getBlockId(par1, par2, par3);
-
-        if (i > 0)
-        {
-            Block.blocksList[i].powerBlock(this, par1, par2, par3, par4, par5);
-        }
-    }
-*/
     /**
      * Returns this world's current save handler
      */
