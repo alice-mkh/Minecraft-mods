@@ -713,7 +713,10 @@ nbxlite.oldstars.name=Старые звезды
 nbxlite.showgui.name=Интерфейс в Доп. настройках
  nbxlite.showgui.desc1=Определяет наличие кнопки параметров в диалоге
  nbxlite.showgui.desc2=создания мира в Дополнительных настройках.
- nbxlite.showgui.desc3=Ограниченные карты могут быть созданы только с ее помощью!
+ nbxlite.showgui.desc3=Ограниченные карты могут быть созданы только с его помощью!
+eyecandy.oldleaves.name=Старые листья
+ eyecandy.oldleaves.desc1=Отключает плавное освещение на листьях.
+ eyecandy.oldleaves.desc2=§aИзменены в Бете 1.8.
 
 convert=Укажите параметры мира
 continue=Продолжить
