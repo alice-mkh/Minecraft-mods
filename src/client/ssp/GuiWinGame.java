@@ -54,8 +54,16 @@ public class GuiWinGame extends GuiScreen
      */
     private void respawnPlayer()
     {
-        mc.field_71439_g.sendQueue.addToSendQueue(new Packet205ClientCommand(1));
-        mc.displayGuiScreen(null);
+        if (mc.enableSP)
+        {
+            mc.displayGuiScreen(null);
+            mc.respawn(mc.field_71441_e.isRemote, 0, true);
+        }
+        else
+        {
+            mc.field_71439_g.sendQueue.addToSendQueue(new Packet205ClientCommand(1));
+            mc.displayGuiScreen(null);
+        }
     }
 
     /**
