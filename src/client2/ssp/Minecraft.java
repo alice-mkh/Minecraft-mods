@@ -137,6 +137,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 import net.minecraft.src.*;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.zip.*;
 
@@ -325,6 +326,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         fullscreen = par5;
         theMinecraft = this;
         worldClass = net.minecraft.src.WorldSSP.class;
+        registerCustomPacket();
     }
 
     private void func_71389_H()
@@ -3089,5 +3091,17 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     public String getVersion(){
         return "1.3.1";
+    }
+
+    private void registerCustomPacket(){
+        try{
+            Class c = net.minecraft.src.Packet.class;
+            int id = 1;
+            Method m = c.getDeclaredMethods()[id];
+            m.setAccessible(true);
+            m.invoke(null, new Object[]{251, true, true, net.minecraft.src.Packet300Custom.class});
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }
