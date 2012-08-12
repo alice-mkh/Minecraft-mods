@@ -33,11 +33,10 @@ public class FoodStats
     {
         if(disabled){
             foodLevel = disabledLevel;
-            foodSaturationLevel = disabledLevel;
         }else{
             foodLevel = Math.min(par1 + foodLevel, 20);
-            foodSaturationLevel = Math.min(foodSaturationLevel + (float)par1 * par2 * 2.0F, foodLevel);
         }
+        foodSaturationLevel = Math.min(foodSaturationLevel + (float)par1 * par2 * 2.0F, foodLevel);
     }
 
     /**
@@ -55,6 +54,11 @@ public class FoodStats
     {
         int i = par1EntityPlayer.worldObj.difficultySetting;
         prevFoodLevel = foodLevel;
+
+        if (disabled){
+            foodLevel = disabledLevel;
+            return;
+        }
 
         if (foodExhaustionLevel > 4F)
         {
@@ -74,7 +78,7 @@ public class FoodStats
         {
             foodTimer++;
 
-            if (foodTimer >= 80 && !disabled)
+            if (foodTimer >= 80)
             {
                 par1EntityPlayer.heal(1);
                 foodTimer = 0;
@@ -86,7 +90,7 @@ public class FoodStats
 
             if (foodTimer >= 80)
             {
-                if (par1EntityPlayer.getHealth() > 10 || i >= 3 || par1EntityPlayer.getHealth() > 1 && i >= 2 && !disabled)
+                if (par1EntityPlayer.getHealth() > 10 || i >= 3 || par1EntityPlayer.getHealth() > 1 && i >= 2)
                 {
                     par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1);
                 }
@@ -107,7 +111,7 @@ public class FoodStats
     {
         if (par1NBTTagCompound.hasKey("foodLevel"))
         {
-            foodLevel = par1NBTTagCompound.getInteger("foodLevel");
+            foodLevel = disabled ? disabledLevel : par1NBTTagCompound.getInteger("foodLevel");
             foodTimer = par1NBTTagCompound.getInteger("foodTickTimer");
             foodSaturationLevel = par1NBTTagCompound.getFloat("foodSaturationLevel");
             foodExhaustionLevel = par1NBTTagCompound.getFloat("foodExhaustionLevel");
@@ -154,9 +158,7 @@ public class FoodStats
      */
     public void addExhaustion(float par1)
     {
-        if(!disabled){
-            foodExhaustionLevel = Math.min(foodExhaustionLevel + par1, 40F);
-        }
+        foodExhaustionLevel = Math.min(foodExhaustionLevel + par1, 40F);
     }
 
     /**
@@ -164,15 +166,12 @@ public class FoodStats
      */
     public float getSaturationLevel()
     {
-        if(disabled){
-            return disabledLevel;
-        }
         return foodSaturationLevel;
     }
 
     public void setFoodLevel(int par1)
     {
-        foodLevel = par1;
+        foodLevel = disabled ? disabledLevel : par1;
     }
 
     public void setFoodSaturationLevel(float par1)
