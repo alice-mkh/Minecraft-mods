@@ -41,15 +41,22 @@ public class MapGenScatteredFeature2 extends MapGenScatteredFeature
 
         if (par1 == k && par2 == l)
         {
-            boolean flag = worldObj.getWorldChunkManager().areBiomesViable_old(par1 * 16 + 8, par2 * 16 + 8, 0, field_75061_e);
-
-            if (flag)
+            int x = par1 * 16 + 8;
+            int z = par2 * 16 + 8;
+            boolean biome = worldObj.getWorldChunkManager().areBiomesViable_old(x, z, 0, field_75061_e);
+            boolean terrain = worldObj.isBlockOpaqueCube(x, worldObj.getTopSolidOrLiquidBlock(x, z), z);
+            if (biome && terrain)
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    protected StructureStart getStructureStart(int par1, int par2)
+    {
+        return new StructureScatteredFeatureStart2(worldObj, rand, par1, par2);
     }
 
     static
