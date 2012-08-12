@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderBlocks
 {
+    public static boolean smoothLeaves = true;
+
     /** The IBlockAccess used by this instance of RenderBlocks */
     public IBlockAccess blockAccess;
 
@@ -3905,7 +3907,7 @@ public class RenderBlocks
             f2 = f5;
         }
 
-        if (Minecraft.isAmbientOcclusionEnabled() && Block.lightValue[par1Block.blockID] == 0)
+        if (Minecraft.isAmbientOcclusionEnabled() && Block.lightValue[par1Block.blockID] == 0 && (par1Block.blockID != Block.leaves.blockID || smoothLeaves))
         {
             return renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, f, f1, f2);
         }
