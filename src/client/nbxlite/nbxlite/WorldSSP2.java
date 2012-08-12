@@ -819,37 +819,12 @@ public class WorldSSP2 extends WorldSSP
         return chunkProvider.provideChunk(par1, par2);
     }
 
-    /**
-     * Sets the block ID and metadata of a block in global coordinates
-     */
-    public boolean setBlockAndMetadata(int par1, int par2, int par3, int par4, int par5)
+    public boolean func_72930_a(int par1, int par2, int par3, int par4, int par5, boolean par6)
     {
         if (isBounds(par1, par2, par3)){
             return false;
         }
-        if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
-        {
-            return false;
-        }
-
-        if (par2 < 0)
-        {
-            return false;
-        }
-
-        if (par2 >= 256)
-        {
-            return false;
-        }
-        else
-        {
-            Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
-            boolean flag = chunk.setBlockIDWithMetadata(par1 & 0xf, par2, par3 & 0xf, par4, par5);
-            field_72984_F.startSection("checkLight");
-            updateAllLightTypes(par1, par2, par3);
-            field_72984_F.endSection();
-            return flag;
-        }
+        return super.func_72930_a(par1, par2, par3, par4, par5, par6);
     }
 
     /**
@@ -2774,7 +2749,11 @@ public class WorldSSP2 extends WorldSSP
         }
 
         worldProvider.worldChunkMgr.cleanupCache();
-        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
+           (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
+           (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 ||
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
             updateWeather();
         }
 
