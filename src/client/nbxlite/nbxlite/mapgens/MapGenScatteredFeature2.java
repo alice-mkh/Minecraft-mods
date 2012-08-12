@@ -44,7 +44,7 @@ public class MapGenScatteredFeature2 extends MapGenScatteredFeature
             int x = par1 * 16 + 8;
             int z = par2 * 16 + 8;
             boolean biome = worldObj.getWorldChunkManager().areBiomesViable_old(x, z, 0, field_75061_e);
-            boolean terrain = worldObj.isBlockOpaqueCube(x, worldObj.getTopSolidOrLiquidBlock(x, z), z);
+            boolean terrain = true;//Block.opaqueCubeLookup[worldObj.getBlockId(x, worldObj.getHeightValue(x, z), z)];
             if (biome && terrain)
             {
                 return true;
