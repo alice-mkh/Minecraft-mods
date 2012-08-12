@@ -717,6 +717,9 @@ nbxlite.showgui.name=GUI en Más opciones de mundo
  nbxlite.showgui.desc1=Determina si mostrar el botón de
  nbxlite.showgui.desc2=opciones en la GUI de creación del mundo.
  nbxlite.showgui.desc3=¡Los mundos finitos solo pueden ser creados con esta!
+eyecandy.oldleaves.name=Hojas antiguas
+ eyecandy.oldleaves.desc1=Desactiva la iluminación suave en las hojas.
+ eyecandy.oldleaves.desc2=§aCambiado en Beta 1.8.
 
 convert=Seleccionar opciones del mundo
 continue=Continuar
