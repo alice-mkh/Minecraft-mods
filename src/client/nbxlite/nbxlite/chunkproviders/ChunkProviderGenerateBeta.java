@@ -762,6 +762,13 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int z2 = z1 + rand.nextInt(16) + 8;
             (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
+        if(mapFeaturesEnabled && oldbiomegenbase == OldBiomeGenBase.desert && rand.nextInt(1000) == 0)
+        {
+            int x2 = x1 + rand.nextInt(16) + 8;
+            int z2 = z1 + rand.nextInt(16) + 8;
+            WorldGenDesertWells worldgendesertwells = new WorldGenDesertWells();
+            worldgendesertwells.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2) + 1, z2);
+        }
 
         generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures_old(generatedTemperatures, x1 + 8, z1 + 8, 16, 16);
         for(int i = x1 + 8; i < x1 + 8 + 16; i++)
