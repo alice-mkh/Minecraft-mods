@@ -77,7 +77,8 @@ public class mod_OldDays extends Mod{
         try{
             p = c.getPackage().getName()+".";
         }catch(Exception ex){}
-        File file = new File(c.getProtectionDomain().getCodeSource().getLocation().getPath()+p.replace(".", "/"));
+        String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(path.replace("%20", " ")+p.replace(".", "/"));
         List classes = new ArrayList();
         if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")){
             try{
