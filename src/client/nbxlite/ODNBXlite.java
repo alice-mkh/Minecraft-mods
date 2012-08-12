@@ -730,7 +730,6 @@ public class ODNBXlite extends OldDaysModule{
             BiomeGenBase.taigaHills.minHeight = features<FEATURES_13 ? 0.2F : 0.3F;
             BiomeGenBase.taigaHills.maxHeight = features<FEATURES_13 ? 0.7F : 0.8F;
             BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
-            WorldGenDesertWells.enable = features>=FEATURES_12;
         }
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
         if (Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)){
