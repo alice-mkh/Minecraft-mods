@@ -46,7 +46,6 @@ public class mod_OldDays extends Mod{
     }
 
     public void onTick(){
-        smpman.onTick();
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
             ((OldDaysModule)mod_OldDays.modules.get(i)).onTick();
@@ -63,6 +62,16 @@ public class mod_OldDays extends Mod{
                 }
             }
         }
+    }
+
+    public void handlePacketFromClient(Packet300Custom packet){
+        super.handlePacketFromClient(packet);
+        if (packet.getId() != SMPManager.PACKET_C2S_REQUEST){
+            return;
+        }
+        System.out.println("WTF");
+        sendPacketToAll(0, "Client, it's server, sending an answer.",
+                           "Do you see it?");
     }
 
     public void onGUITick(GuiScreen gui){
@@ -126,8 +135,6 @@ public class mod_OldDays extends Mod{
             System.out.println("OldDays: Loaded "+module.name+" module");
         }
     }
-
-//     public void handlePacket(Packet230ModLoader packet){}
 
     public static void loadModuleProperties(){}
     
@@ -274,6 +281,11 @@ public class mod_OldDays extends Mod{
             OldDaysModule module = ((OldDaysModule)modules.get(i));
             module.onLoadingSP(par1Str, par2Str);
         }
+    }
+
+    public void onLoadingMP(){
+        System.out.println("WTTF");
+        smpman.requestSettings();
     }
 
     public KeyBinding keySettings ;

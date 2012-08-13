@@ -21,6 +21,7 @@ gui.error6=Finite worlds only
 gui.error7=No biomes only
 gui.error8=Old biomes only
 gui.error9=New biomes only
+gui.ssp=SSP
 
 actions.punchtnt.name=Punch TNT
  actions.punchtnt.desc1=Allows lighting TNT by punching it.

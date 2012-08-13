@@ -249,7 +249,7 @@ public class GuiMainMenu extends GuiScreen
 
         if (par1GuiButton.id == 11)
         {
-            mc.enableSP = true;
+            mc.enableSP = mc.useSP;
             if (mc.enableSP){
                 mc.field_71442_b = new PlayerControllerDemo(mc);
                 mc.startWorldSSP("Demo_World", "Demo_World", DemoWorldServer.field_73071_a);

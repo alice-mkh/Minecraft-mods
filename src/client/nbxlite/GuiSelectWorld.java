@@ -134,6 +134,7 @@ public class GuiSelectWorld extends GuiScreen
         buttonSelect2.enabled = false;
         buttonRename.enabled = false;
         buttonDelete.enabled = false;
+        buttonSelect2.drawButton = mc.useSP;
     }
 
     /**
@@ -159,7 +160,7 @@ public class GuiSelectWorld extends GuiScreen
         }
         else if (par1GuiButton.id == 1)
         {
-            mc.enableSP = true;
+            mc.enableSP = mc.useSP;
             selectWorld(selectedWorld);
         }
         else if (par1GuiButton.id == -1)

@@ -1,42 +1,35 @@
 package net.minecraft.src;
 
 public class SMPManager{
-    public boolean needSettings;
+    public static final int PACKET_C2S_REQUEST = 0;
+
     public mod_OldDays core;
 
     public SMPManager(mod_OldDays c){
         core = c;
-        needSettings = true;
-    }
- 
-    public void onTick(){
-        if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote == needSettings){
-            for (int i = 1; i < core.modules.size(); i++){
-                OldDaysModule module = ((OldDaysModule)core.modules.get(i));
-                core.saveman.loadModuleProperties(module.id);
-                if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote){
-                    setSMPSettings(module.id);
-                    requestSettings(module.id);
-                }
-            }
-            needSettings = !needSettings;
-        }
     }
 
     public void requestSettings(int module){
-//         Packet230ModLoader packet = new Packet230ModLoader();
-//         packet.packetType = 1;
-//         packet.dataInt = new int[]{module};
-//         ModLoaderMp.sendPacket(core, packet);
+        setSMPSettings(module);
+        core.sendPacketToServer(PACKET_C2S_REQUEST, ""+module);
+    }
+
+    public void requestSettings(){
+        for (int i = 0; i < core.modules.size(); i++){
+            setSMPSettings(i);
+        }
+        core.sendPacketToServer(PACKET_C2S_REQUEST, "all");
     }
 
     public void setSMPSettings(int id){
-        OldDaysModule module = core.getModuleById(id);
-        for(int i = 1; i < module.properties.size(); i++){
-            OldDaysProperty prop = module.getPropertyById(i);
+        OldDaysModule module = ((OldDaysModule)core.modules.get(id));
+        for(int i = 0; i < module.properties.size(); i++){
+            OldDaysProperty prop = module.getPropertyById(i + 1);
             if (!prop.allowedInSMP){
                 prop.setSMPValue();
-                core.sendCallback(id, i);
+                module.last = prop.id;
+                prop.onChange();
+                core.texman.onTick();
             }
         }
     }

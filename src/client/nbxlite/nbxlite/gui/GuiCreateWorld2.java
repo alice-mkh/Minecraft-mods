@@ -343,7 +343,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 worldsettings.func_77166_b();
             }
 
-            mc.enableSP = true;
+            mc.enableSP = mc.useSP;
             if (mc.enableSP){
                 mc.setController(enumgametype);
                 mc.startWorldSSP(folderName, textboxWorldName.getText().trim(), worldsettings);

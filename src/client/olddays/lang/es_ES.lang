@@ -21,7 +21,7 @@ gui.error6=Sólo mundos finitos
 gui.error7=Sólo sin biomas
 gui.error8=Sólo antiguos biomas
 gui.error9=Sólo nuevos biomas
-gui.auto=Automático
+gui.ssp=SSP
 
 actions.punchtnt.name=Golpear TNT
  actions.punchtnt.desc1=Permite activar la TNT golpeándola.

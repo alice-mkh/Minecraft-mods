@@ -280,13 +280,15 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName;
     public boolean enableSP;
+    public boolean useSP;
     private String lastWorld;
     public List mods;
     public Class worldClass;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
-        enableSP = true;
+        useSP = true;
+        enableSP = useSP;
         mods = new ArrayList();
         fullscreen = false;
         hasCrashed = false;
@@ -2404,7 +2406,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
 
         displayGuiScreen(null);
-
         try
         {
             NetClientHandler netclienthandler = new NetClientHandler(this, field_71437_Z);
@@ -2414,6 +2415,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             func_71377_b(func_71396_d(new CrashReport("Connecting to integrated server", ioexception)));
         }
+        lastWorld = par1Str;
     }
 
     public void func_71403_a(World par1WorldClient)
@@ -2428,7 +2430,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (par1WorldClient == null)
         {
             NetClientHandler netclienthandler = getSendQueue();
-
             if (netclienthandler != null)
             {
                 netclienthandler.func_72547_c();
@@ -3095,9 +3096,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     private void registerCustomPacket(){
         try{
-            Class c = net.minecraft.src.Packet.class;
             int id = 1;
-            Method m = c.getDeclaredMethods()[id];
+            Method m = null;
+            Method[] methods = (net.minecraft.src.Packet.class).getDeclaredMethods();
+            for (int i = 0; i < methods.length; i++){
+                if (methods[i].toGenericString().matches("^static void (net.minecraft.src.)?([a-zA-Z]{1,6}).[a-zA-Z]{1,17}.int,boolean,boolean,java.lang.Class.$")){
+                    m = methods[i];
+                    break;
+                }
+            }
+            if (m == null){
+                return;
+            }
             m.setAccessible(true);
             m.invoke(null, new Object[]{251, true, true, net.minecraft.src.Packet300Custom.class});
         }catch(Exception ex){

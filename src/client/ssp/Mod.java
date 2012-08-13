@@ -17,6 +17,8 @@ public abstract class Mod{
 
     public void onLoadingSP(String par1Str, String par2Str){}
 
+    public void onLoadingMP(){}
+
     public void onTick(){}
 
     public void onGUITick(GuiScreen screen){}
@@ -49,7 +51,7 @@ public abstract class Mod{
         }
     }
 
-    private void sendPacket(boolean dir, int id, EntityPlayerMP player, String... data){
+    private void sendPacket(boolean dir, int id, EntityPlayerMP player, NetClientHandler handler, String... data){
         if (Minecraft.getMinecraftInstance().enableSP){
             return;
         }
@@ -66,19 +68,26 @@ public abstract class Mod{
             }
             return;
         }
-        Minecraft.getMinecraftInstance().getSendQueue().addToSendQueue(new Packet300Custom(this, dir, id, data));
+        if (handler == null){
+            handler = Minecraft.getMinecraftInstance().getSendQueue();
+        }
+        handler.addToSendQueue(new Packet300Custom(this, dir, id, data));
     }
 
     public void sendPacketToServer(int id, String... data){
-        sendPacket(false, id, null, data);
+        sendPacket(false, id, null, null, data);
+    }
+
+    public void sendPacketToServer(int id, NetClientHandler handler, String... data){
+        sendPacket(false, id, null, handler, data);
     }
 
     public void sendPacketToPlayer(EntityPlayerMP player, int id, String... data){
-        sendPacket(true, id, player, data);
+        sendPacket(true, id, player, null, data);
     }
 
     public void sendPacketToAll(int id, String... data){
-        sendPacket(true, id, null, data);
+        sendPacket(true, id, null, null, data);
     }
 
     protected void setUseTick(boolean game, boolean gui){

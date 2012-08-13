@@ -2,12 +2,55 @@ package net.minecraft.src;
 
 import java.io.*;
 import java.util.*;
+import net.minecraft.client.Minecraft;
 
 public class SavingManager{
     public mod_OldDays core;
 
     public SavingManager(mod_OldDays c){
         core = c;
+    }
+
+    public void loadCoreProperties(){
+        Properties properties = new Properties();
+        Minecraft mc = Minecraft.getMinecraftInstance();
+        try{
+            File dir = new File(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays");
+            dir.mkdirs();
+            File file = new File(dir, "Core.properties");
+            if(file.createNewFile()){
+                mc.useSP = false;
+                saveCoreProperties();
+                return;
+            }
+            properties.load(new FileInputStream(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays/Core.properties"));
+            try{
+                String value = properties.getProperty("ssp");
+                mc.useSP = value.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
+            }catch(Exception ex){
+                mc.useSP = false;
+            }
+        }
+        catch(Exception ex){
+            System.out.println("OldDays: Failed to load properties for core: "+ex);
+        }
+    }
+
+    public void saveCoreProperties(){
+        Properties properties = new Properties();
+        Minecraft mc = Minecraft.getMinecraftInstance();
+        try{
+            File dir = new File(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays");
+            dir.mkdirs();
+            File file = new File(dir, "Core.properties");
+            FileOutputStream fileoutputstream = new FileOutputStream(file);
+            properties.setProperty("ssp", ""+mc.useSP);
+            properties.store(fileoutputstream, "Old Days config");
+            fileoutputstream.close();
+        }
+        catch(Exception ex){
+            System.out.println("OldDays: Failed to save properties for core: "+ex);
+        }
     }
 
     public void loadModuleProperties(int id){
@@ -76,6 +119,7 @@ public class SavingManager{
     }
 
     public void loadAll(){
+        loadCoreProperties();
         for (int i = 0; i < core.modules.size(); i++){
             loadModuleProperties(((OldDaysModule)core.modules.get(i)).id);
         }
