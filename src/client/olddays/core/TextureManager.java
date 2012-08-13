@@ -51,6 +51,7 @@ public class TextureManager{
             BufferedImage image = ImageIO.read(texpack.getResourceAsStream(b ? newname : origname));
             renderEngine.setupTexture(image, renderEngine.getTexture(origname));
         }catch(Exception ex){
+            ex.printStackTrace();
             fallbacktex = true;
         }
     }
@@ -91,6 +92,7 @@ public class TextureManager{
                 return file.getEntry(str)!=null;
             }
         }catch(Exception ex){
+            ex.printStackTrace();
             return true;
         }
     }

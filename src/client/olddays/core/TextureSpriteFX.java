@@ -66,9 +66,8 @@ public class TextureSpriteFX extends TextureFX
             int j = ((enabled ? currentIndex : index2) / sheight) * www;
             bufferedimage.getRGB(i, j, www, www, spriteData, 0, www);
         }
-        catch (Exception ex)
-        {
-            System.out.println(ex);
+        catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -82,20 +81,11 @@ public class TextureSpriteFX extends TextureFX
 
     public void onTick()
     {
-        if (mod_OldDays.getMinecraftInstance().field_71441_e == null){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
-            int wwww = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture(sprite));
-            if (wwww != w || ww != GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / swidth){
-                w = wwww;
-                refresh(false);
-            }
-        }
-        if (w <= 0){
-            w = 256;
-        }
         int www = enabled ? ww : w;
         int n = w / www;
+        if (imageData.length <= (((www - 1) * n) + n - 1) * (w + 1)){
+            refresh(false);
+        }
         for (int x = 0; x < www; x++){
             for (int y = 0; y < www; y++){
                 int index1 = x + y * www;
