@@ -13,7 +13,7 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             if (module == null){
                 continue;
             }
-            addButton(module.id, false, module.id, mod_OldDays.lang.get("module."+module.name.toLowerCase()), true);
+            addButton(module.id, true, module.id, mod_OldDays.lang.get("module."+module.name.toLowerCase()), true);
         }
         postInitGui(count);
         controlList.add(new GuiButton(100, width / 2 - 75 - 80, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off")));
