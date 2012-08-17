@@ -283,11 +283,6 @@ public class mod_OldDays extends Mod{
         }
     }
 
-    public void onLoadingMP(){
-        System.out.println("WTTF");
-        smpman.requestSettings();
-    }
-
     public KeyBinding keySettings ;
     public static TextureManager texman;
     public static SavingManager saveman;
