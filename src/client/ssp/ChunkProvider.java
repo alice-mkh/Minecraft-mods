@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.*;
+import net.minecraft.client.Minecraft;
 
 public class ChunkProvider implements IChunkProvider
 {
@@ -193,7 +195,16 @@ public class ChunkProvider implements IChunkProvider
             if (chunkProvider != null)
             {
                 chunkProvider.populate(par1IChunkProvider, par2, par3);
-//                 ModLoader.populateChunk(chunkProvider, par2, par3, worldObj);
+                if (Minecraft.modloader > 0){
+                    try{
+                        Class c = Class.forName(Minecraft.getModLoaderClassName());
+                        Method m = c.getDeclaredMethod("populateChunk", IChunkProvider.class, Integer.TYPE, Integer.TYPE, World.class);
+                        m.invoke(null, chunkProvider, par2, par3, worldObj);
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                        Minecraft.modloader = 0;
+                    }
+                }
                 chunk.setChunkModified();
             }
         }

@@ -44,7 +44,12 @@ public class ItemRenderer
     public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3)
     {
         GL11.glPushMatrix();
-        Block block = Block.blocksList[par2ItemStack.itemID];
+        Block block = null;
+
+        if (par2ItemStack.itemID < Block.blocksList.length)
+        {
+            block = Block.blocksList[par2ItemStack.itemID];
+        }
 
         if (block != null && RenderBlocks.renderItemIn3d(block.getRenderType()))
         {

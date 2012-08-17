@@ -285,6 +285,16 @@ public class EntityItem extends Entity
                 par1EntityPlayer.triggerAchievement(AchievementList.blazeRod);
             }
 
+            if (net.minecraft.client.Minecraft.modloader > 0){
+                try{
+                    Class c = Class.forName(net.minecraft.client.Minecraft.getModLoaderClassName());
+                    java.lang.reflect.Method m = c.getDeclaredMethod("onItemPickup", EntityPlayer.class, ItemStack.class);
+                    m.invoke(null, par1EntityPlayer, item);
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                    net.minecraft.client.Minecraft.modloader = 0;
+                }
+            }
             worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, i);
 

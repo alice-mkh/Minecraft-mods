@@ -38,7 +38,7 @@ public class GuiInventory extends InventoryEffectRenderer
             if (oldcreative){
                 try{
                     Class c = net.minecraft.src.GuiContainerCreativeOld.class;
-                    Object o = c.getDeclaredConstructor(new Class[]{EntityPlayer.class}).newInstance(new Object[]{mc.field_71439_g});
+                    Object o = c.getDeclaredConstructor(EntityPlayer.class).newInstance(mc.field_71439_g);
                     mc.displayGuiScreen((GuiScreen)o);
                 }catch(Exception ex){
                     oldcreative = false;
@@ -61,7 +61,7 @@ public class GuiInventory extends InventoryEffectRenderer
             if (oldcreative){
                 try{
                     Class c = net.minecraft.src.GuiContainerCreativeOld.class;
-                    Object o = c.getDeclaredConstructor(new Class[]{EntityPlayer.class}).newInstance(new Object[]{mc.field_71439_g});
+                    Object o = c.getDeclaredConstructor(EntityPlayer.class).newInstance(mc.field_71439_g);
                     mc.displayGuiScreen((GuiScreen)o);
                 }catch(Exception ex){
                     oldcreative = false;

@@ -585,27 +585,7 @@ public class ODNBXlite extends OldDaysModule{
             System.out.println(exception);
         }
     }
-/*
-    public void handlePacket(Packet230ModLoader packet)
-    {
-        World world = mod_OldDays.getMinecraftInstance().field_71441_e;
-        long seed=Long.parseLong(packet.dataString[0]);
-        world.setSeed(seed);
-        SetGenerator(world, packet.dataInt[0], packet.dataInt[1], packet.dataInt[2], 0, packet.dataInt[3]>0, false);
-        setSkyColor(Generator, MapFeatures, MapTheme, 0);
-        setSkyColor(Generator, MapFeatures, MapTheme, 1);
-        setSkyColor(Generator, MapFeatures, MapTheme, 2);
-        setCloudHeight(Generator, MapFeatures, MapTheme, IndevMapType);
-        setSkyBrightness(MapTheme);
-    }
 
-    public void RequestGeneratorInfo()
-    {
-        Packet230ModLoader packet = new Packet230ModLoader();
-        packet.packetType = 1;
-        ModLoaderMp.sendPacket(this,packet);
-    }
-*/
     public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if (Generator==GEN_BIOMELESS){
             if (tex && !getFallback()){

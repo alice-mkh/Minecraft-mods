@@ -14,7 +14,7 @@ public class RenderBlocks
     /**
      * If set to >=0, all block faces will be rendered using this texture index
      */
-    private int overrideBlockTexture;
+    public int overrideBlockTexture;
 
     /**
      * Set to true if the texture should be flipped horizontally during render*Face
@@ -28,6 +28,7 @@ public class RenderBlocks
 
     /** Fancy grass side matching biome */
     public static boolean fancyGrass = true;
+    public static boolean cfgGrassFix = true;
     public boolean useInventoryTint;
     private int uvRotateEast;
     private int uvRotateWest;
@@ -6644,6 +6645,16 @@ public class RenderBlocks
 
             par1Block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
+        else if (net.minecraft.client.Minecraft.modloader > 0){
+            try{
+                Class c = Class.forName(net.minecraft.client.Minecraft.getModLoaderClassName());
+                java.lang.reflect.Method m = c.getDeclaredMethod("renderInvBlock", RenderBlocks.class, Block.class, Integer.TYPE, Integer.TYPE);
+                m.invoke(null, this, par1Block, par2, j);
+            }catch(Exception ex){
+                ex.printStackTrace();
+                net.minecraft.client.Minecraft.modloader = 0;
+            }
+        }
     }
 
     /**
@@ -6694,6 +6705,16 @@ public class RenderBlocks
         if (par0 == 16)
         {
             return true;
+        }
+        else if (net.minecraft.client.Minecraft.modloader > 0){
+            try{
+                Class c = Class.forName(net.minecraft.client.Minecraft.getModLoaderClassName());
+                java.lang.reflect.Method m = c.getDeclaredMethod("renderBlockIsItemFull3D", Integer.TYPE);
+                m.invoke(null, par0);
+            }catch(Exception ex){
+                ex.printStackTrace();
+                net.minecraft.client.Minecraft.modloader = 0;
+            }
         }
 
         return par0 == 26;
