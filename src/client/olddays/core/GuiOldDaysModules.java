@@ -27,7 +27,10 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             guibutton.displayString = mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off");
             mod_OldDays.saveman.saveCoreProperties();
         }
-        if (guibutton.id <= 0 || guibutton.id >= 98){
+        if (guibutton.id <= 0 || guibutton.id >= LEFT_ID){
+            return;
+        }
+        if (!guibutton.enabled){
             return;
         }
         mc.displayGuiScreen(new GuiOldDaysSettings(this, guibutton.id-1));
