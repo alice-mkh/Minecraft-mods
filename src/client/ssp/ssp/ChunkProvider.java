@@ -195,16 +195,9 @@ public class ChunkProvider implements IChunkProvider
             if (chunkProvider != null)
             {
                 chunkProvider.populate(par1IChunkProvider, par2, par3);
-                if (Minecraft.getIsCompatible("ModLoader")){
-                    try{
-                        Class c = Class.forName(Minecraft.getModClassName("ModLoader"));
-                        Method m = c.getDeclaredMethod("populateChunk", IChunkProvider.class, Integer.TYPE, Integer.TYPE, World.class);
-                        m.invoke(null, chunkProvider, par2, par3, worldObj);
-                    }catch(Exception ex){
-                        ex.printStackTrace();
-                        Minecraft.makeIncompatible("ModLoader");
-                    }
-                }
+                Minecraft.invokeModMethod("ModLoader", "populateChunk",
+                                          new Class[]{IChunkProvider.class, Integer.TYPE, Integer.TYPE, World.class},
+                                          chunkProvider, par2, par3, worldObj);
                 chunk.setChunkModified();
             }
         }

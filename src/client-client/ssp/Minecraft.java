@@ -3112,19 +3112,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 return true;
             }
         }
-        if (getIsCompatible("ModLoader")){
-            try{
-                Class c = Class.forName(getModClassName("ModLoader"));
-                Method m = c.getDeclaredMethod("renderWorldBlock", RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE);
-                boolean render = ((Boolean)m.invoke(null, r, i, x, y, z, b, id));
-                if (render){
-                    return render;
-                }
-            }catch(Exception ex){
-                ex.printStackTrace();
-                makeIncompatible("ModLoader");
-            }
-        }
+        invokeModMethod("ModLoader", "renderWorldBlock",
+                        new Class[]{RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE},
+                        r, i, x, y, z, b, id);
         return false;
     }
 
@@ -3171,15 +3161,21 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         compat.put(mod, 1);
     }
 
-    public static String getModClassName(String mod){
-        return (getMinecraftInstance().compat.get(mod) > 1 ? "net.minecraft.src." : "")+mod;
+    private void invokeModMethod_do(String mod, String method, Class[] pars, Object... args){
+        if (compat.get(mod) <= 0){
+            return;
+        }
+        try{
+            Class c = Class.forName((compat.get(mod) > 1 ? "net.minecraft.src." : "")+mod);
+            Method m = c.getDeclaredMethod(method, pars);
+            m.invoke(null, args);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            compat.put(mod, 0);
+        }
     }
 
-    public static boolean getIsCompatible(String mod){
-        return getMinecraftInstance().compat.get(mod) > 0;
-    }
-
-    public static void makeIncompatible(String mod){
-        getMinecraftInstance().compat.put(mod, 0);
+    public static void invokeModMethod(String mod, String method, Class[] pars, Object... args){
+        getMinecraftInstance().invokeModMethod_do(mod, method, pars, args);
     }
 }
