@@ -379,6 +379,13 @@ eyecandy.oldcreativeinv.name=Старый творческий инвентар�
  eyecandy.oldcreativeinv.desc1=Инвентарь Творческого режима.
  eyecandy.oldcreativeinv.desc2=Больше, без категорий.
  eyecandy.oldcreativeinv.desc3=§aИзменен в 1.3.
+eyecandy.oldleaves.name=Старые листья
+ eyecandy.oldleaves.desc1=Выключает плавно освещение на листьях.
+ eyecandy.oldleaves.desc2=§aИзменены в Бете 1.8.
+eyecandy.oldswing.name=Старое махание рукой
+ eyecandy.oldswing.desc1=Уменьшает скорость, игрок машет
+ eyecandy.oldswing.desc2=рукой даже тогда, когда нет цели.
+ eyecandy.oldswing.desc3=§aИзменено в Бете 1.8.
 
 sounds.explode.name=Старый звук взрыва
  sounds.explode.desc1=§aИзменен в 1.0.

@@ -380,6 +380,13 @@ eyecandy.oldcreativeinv.name=Old Creative inventory
  eyecandy.oldcreativeinv.desc1=Creative mode inventory.
  eyecandy.oldcreativeinv.desc2=Larger, no categories.
  eyecandy.oldcreativeinv.desc3=§aChanged in 1.3.
+eyecandy.oldleaves.name=Old leaves
+ eyecandy.oldleaves.desc1=Disables smooth light on leaves.
+ eyecandy.oldleaves.desc2=§aChanged in Beta 1.8.
+eyecandy.oldswing.name=Old arm swinging
+ eyecandy.oldswing.desc1=Reduces speed, makes arm
+ eyecandy.oldswing.desc2=swing when there is no target.
+ eyecandy.oldswing.desc3=§aChanged in Beta 1.8.
 
 sounds.explode.name=Alte Explosion
  sounds.explode.desc1=§aVerändert in der 1.0.

@@ -8,6 +8,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public static int combat = 3;
     public static boolean sprint = true;
     public static int startitems = 0;
+    public static boolean oldswing = false;
 
     /** Inventory of the player */
     public InventoryPlayer inventory;
@@ -549,16 +550,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
         if (isPotionActive(Potion.digSpeed))
         {
-            return 6 - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
+            return (oldswing ? 8 : 6) - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
         }
 
         if (isPotionActive(Potion.digSlowdown))
         {
-            return 6 + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
+            return (oldswing ? 8 : 6) + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
         }
         else
         {
-            return 6;
+            return (oldswing ? 8 : 6);
         }
     }
 

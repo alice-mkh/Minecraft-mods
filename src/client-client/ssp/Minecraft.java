@@ -284,6 +284,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private String lastWorld;
     public ArrayList<Mod> mods;
     public Class worldClass;
+    public int ticksRan;
+    public int mouseTicksRan;
+    public static boolean oldswing = false;
     public static int modloader = 1; //0 - disabled; 1 - normal; 2 - mcp
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
@@ -329,6 +332,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         fullscreen = par5;
         theMinecraft = this;
         worldClass = net.minecraft.src.WorldSSP.class;
+        ticksRan = 0;
+        mouseTicksRan = 0;
         registerCustomPacket();
         checkForModLoader();
     }
@@ -879,6 +884,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         for (int i = 0; i < timer.elapsedTicks; i++)
         {
+            ticksRan++;
             runTick();
         }
 
@@ -1258,6 +1264,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             mouseHelper.grabMouseCursor();
             displayGuiScreen(null);
             leftClickCounter = 10000;
+            mouseTicksRan = ticksRan + 10000;
             return;
         }
     }
@@ -1337,6 +1344,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      */
     private void clickMouse(int par1)
     {
+        mouseTicksRan = ticksRan;
         if (par1 == 0 && leftClickCounter > 0)
         {
             return;
@@ -1558,6 +1566,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (currentScreen != null)
         {
             leftClickCounter = 10000;
+            mouseTicksRan = ticksRan + 10000;
         }
 
         if (currentScreen != null)
@@ -1785,6 +1794,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 for (; gameSettings.keyBindPickBlock.isPressed(); clickMiddleMouseButton()) { }
             }
 
+            if (gameSettings.keyBindAttack.pressed && oldswing && (float)(ticksRan - mouseTicksRan) >= 10F){
+                field_71439_g.swingItem();
+                mouseTicksRan = ticksRan;
+            }
             if (gameSettings.keyBindUseItem.pressed && rightClickDelayTimer == 0 && !field_71439_g.isUsingItem())
             {
                 clickMouse(1);
