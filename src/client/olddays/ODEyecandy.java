@@ -29,6 +29,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   22,false, "OldCreativeInv");
         new OldDaysPropertyBool(this,   23,false, "OldLeaves");
         new OldDaysPropertyBool(this,   24,true,  "OldSwing");
+        new OldDaysPropertyBool(this,   25,true,  "TPBobbing");
         replaceBlocks();
         redstoneRenderID = 32;
     }
@@ -71,8 +72,9 @@ public class ODEyecandy extends OldDaysModule{
             case 22:set(net.minecraft.src.GuiInventory.class, "oldcreative", OldCreativeInv); break;
             case 23:set(net.minecraft.src.RenderBlocks.class, "smoothLeaves", !OldLeaves);
                     reload(); break;
-            case 24:set(net.minecraft.src.EntityPlayer.class, "oldswing", OldSwing);;
+            case 24:set(net.minecraft.src.EntityPlayer.class, "oldswing", OldSwing);
                     set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
+            case 25:set(net.minecraft.src.EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -105,7 +107,8 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean SmoothLoading = true;
     public static boolean OldCreativeInv;
     public static boolean OldLeaves;
-    public static boolean OldSwing;
+    public static boolean OldSwing = true;
+    public static boolean TPBobbing = true;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){

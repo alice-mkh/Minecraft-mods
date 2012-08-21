@@ -390,6 +390,10 @@ eyecandy.oldswing.name=Старое махание рукой
  eyecandy.oldswing.desc1=Уменьшает скорость, игрок машет
  eyecandy.oldswing.desc2=рукой даже тогда, когда нет цели.
  eyecandy.oldswing.desc3=§aИзменено в Бете 1.8.
+eyecandy.tpbobbing.name=Тряска от третьего лица
+ eyecandy.tpbobbing.desc1=Тряска камеры в режиме
+ eyecandy.tpbobbing.desc2=от третьего лица.
+ eyecandy.tpbobbing.desc3=§aДобавлена в Бете 1.3.
 
 sounds.explode.name=Старый звук взрыва
  sounds.explode.desc1=§aИзменен в 1.0.
