@@ -137,16 +137,16 @@ public class GuiOldDaysBase extends GuiScreen{
         Keyboard.enableRepeatEvents(b && hasFields);
         button.enabled = !b;
         field.setFocused(b);
-        if(!b){
-            current = "";
-        }
+//         if(!b){
+//             current = "";
+//         }
     }
 
     protected void keyTyped(char par1, int par2)
     {
         if (!displayField){
             super.keyTyped(par1, par2);
-            if (par2 == 1){
+            if (par2 == 1 || par1 == '\0'){
                 return;
             }
             GuiOldDaysSearch search = new GuiOldDaysSearch(this);

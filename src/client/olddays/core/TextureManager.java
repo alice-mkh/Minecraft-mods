@@ -5,25 +5,24 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.*;
 
 public class TextureManager{
     private RenderEngine renderEngine;
-    protected List textureHooks;
+    protected ArrayList<TextureSpriteFX> textureHooks;
     public boolean fallbacktex;
     private String currentpack;
 
     public TextureManager(){
         renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
-        textureHooks = new ArrayList();
+        textureHooks = new ArrayList<TextureSpriteFX>();
         fallbacktex = true;
     }
 
     public void setTextureHook(String name, int i2, String name2, int index, boolean b){
         TextureSpriteFX fx2 = null;
         for (int i = 0; i < textureHooks.size(); i++){
-            TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
+            TextureSpriteFX fx = textureHooks.get(i);
             if (fx.sprite2 == name && fx.index2 == i2){
                 fx2 = fx;
                 break;
@@ -32,7 +31,7 @@ public class TextureManager{
         if (fx2 == null){
             addTextureHook(name, i2, name2, index);
             for (int i = 0; i < textureHooks.size(); i++){
-                TextureSpriteFX fx = ((TextureSpriteFX)textureHooks.get(i));
+                TextureSpriteFX fx = textureHooks.get(i);
                 if (fx.sprite2 == name && fx.index2 == i2){
                     fx2 = fx;
                     break;
@@ -63,7 +62,7 @@ public class TextureManager{
             currentpack=mod_OldDays.getMinecraftInstance().gameSettings.skin;
             fallbacktex = !hasEntry("olddays");
             for (int i = 0; i < mod_OldDays.modules.size(); i++){
-                OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
+                OldDaysModule module = mod_OldDays.modules.get(i);
                 for (int j = 1; j < module.properties.size(); j++){
                     if (!module.getPropertyById(j).allowedInFallback){
                         mod_OldDays.sendCallback(module.id, j);
@@ -71,7 +70,7 @@ public class TextureManager{
                 }
             }
             for (int i = 0; i < textureHooks.size(); i++){
-                ((TextureSpriteFX)textureHooks.get(i)).refresh(false);
+                textureHooks.get(i).refresh(false);
             }
         }
     }
@@ -103,9 +102,6 @@ public class TextureManager{
 
     public void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
         RenderEngine renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
-        if (textureHooks == null){
-            textureHooks = new ArrayList();
-        }
         TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
         renderEngine.registerTextureFX(fx);
         textureHooks.add(fx);

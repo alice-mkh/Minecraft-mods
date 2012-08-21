@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 public class OldDaysPropertyCond extends OldDaysPropertyInt{
     public boolean boolValue;
@@ -69,7 +68,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
     }
 
     public String[] getTooltip(){
-        List list = new ArrayList();
+        ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));
         list.add("");
         int num = mod_OldDays.getDescriptionNumber(getName()+".desc");
@@ -82,6 +81,6 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
             }
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
-        return (String[])list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 }

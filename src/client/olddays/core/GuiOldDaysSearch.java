@@ -18,12 +18,14 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     public void initGui(){
         searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
         searchField.setFocused(true);
+        searchField.setCanLoseFocus(false);
         Keyboard.enableRepeatEvents(true);
     }
 
     protected void showField(boolean b, GuiButton button){
         super.showField(b, button);
         searchField.setFocused(!b);
+        searchField.setCanLoseFocus(b);
     }
 
     protected void mouseClicked(int par1, int par2, int par3){
@@ -31,7 +33,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         if (searchField.isFocused()){
             if (controlList.get(fieldId) instanceof GuiButtonProp){
                 GuiButtonProp button = ((GuiButtonProp)controlList.get(fieldId));
-                mod_OldDays.setStringPropValue(button.prop.module.id, button.prop.id, current);
+                button.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
                 showField(false, button);
              }
@@ -64,9 +66,9 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     protected void updateList(String str){
         props.clear();
         for (int i = 0; i < mod_OldDays.modules.size(); i++){
-            OldDaysModule module = ((OldDaysModule)mod_OldDays.modules.get(i));
+            OldDaysModule module = mod_OldDays.modules.get(i);
             for (int j = 0; j < module.properties.size(); j++){
-                OldDaysProperty prop = ((OldDaysProperty)module.properties.get(j));
+                OldDaysProperty prop = module.properties.get(j);
                 if (matches(prop, str)){
                     props.add(prop);
                 }
@@ -107,7 +109,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     protected void keyTyped(char par1, int par2){
         if (searchField.isFocused()){
             searchField.textboxKeyTyped(par1, par2);
-            if (par1 == '\r' || par2 == 1){
+            if (par1 == '\r' || par2 == 1 || ((par2 == 211 || par2 == 14) && searchField.getText().length() <= 0)){
                 mc.displayGuiScreen(parent);
                 return;
             }

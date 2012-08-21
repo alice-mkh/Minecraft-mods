@@ -1021,25 +1021,6 @@ public class WorldSSP2 extends WorldSSP
     }
 
     /**
-     * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
-     */
-    public void markBlockAsNeedsUpdate(int par1, int par2, int par3)
-    {
-        for (int i = 0; i < worldAccesses.size(); i++)
-        {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
-        }
-    }
-
-    public void markBlocksDirty(int par1, int par2, int par3, int par4, int par5, int par6)
-    {
-        for (int i = 0; i < worldAccesses.size(); i++)
-        {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
-        }
-    }
-
-    /**
      * Notifies neighboring blocks that this specified block changed  Args: x, y, z, blockID
      */
     public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4)
@@ -2659,36 +2640,6 @@ public class WorldSSP2 extends WorldSSP
     public boolean isBlockNormalCube(int par1, int par2, int par3)
     {
         return Block.isNormalCube(getBlockId(par1, par2, par3));
-    }
-
-    /**
-     * Checks if the block is a solid, normal cube. If the chunk does not exist, or is not loaded, it returns the
-     * boolean parameter.
-     */
-    public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4)
-    {
-        if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
-        {
-            return par4;
-        }
-
-        Chunk chunk = chunkProvider.provideChunk(par1 >> 4, par3 >> 4);
-
-        if (chunk == null || chunk.isEmpty())
-        {
-            return par4;
-        }
-
-        Block block = Block.blocksList[getBlockId(par1, par2, par3)];
-
-        if (block == null)
-        {
-            return false;
-        }
-        else
-        {
-            return block.blockMaterial.isOpaque() && block.renderAsNormalBlock();
-        }
     }
 
     public void saveWorldIndirectly(IProgressUpdate par1IProgressUpdate)

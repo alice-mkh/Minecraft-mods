@@ -22,7 +22,7 @@ public class SMPManager{
     }
 
     public void setSMPSettings(int id){
-        OldDaysModule module = ((OldDaysModule)core.modules.get(id));
+        OldDaysModule module = core.modules.get(id);
         for(int i = 0; i < module.properties.size(); i++){
             OldDaysProperty prop = module.getPropertyById(i + 1);
             if (!prop.allowedInSMP){

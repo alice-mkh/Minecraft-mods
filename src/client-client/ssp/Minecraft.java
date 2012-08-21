@@ -282,7 +282,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public boolean enableSP;
     public boolean useSP;
     private String lastWorld;
-    public List mods;
+    public ArrayList<Mod> mods;
     public Class worldClass;
     public static int modloader = 1; //0 - disabled; 1 - normal; 2 - mcp
 
@@ -290,7 +290,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     {
         useSP = true;
         enableSP = useSP;
-        mods = new ArrayList();
+        mods = new ArrayList<Mod>();
         fullscreen = false;
         hasCrashed = false;
         timer = new Timer(20F);
@@ -1016,8 +1016,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         field_71424_I.endSection();
         field_71424_I.startSection("mods");
-        for (Object obj : mods){
-            Mod mod = (Mod)obj;
+        for (Mod mod : mods){
             if (mod.usesTick && field_71441_e != null){
                 mod.onTick();
             }
@@ -1890,8 +1889,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     {
         changeWorld1(null);
         System.gc();
-        for (Object obj : mods){
-            Mod mod = (Mod)obj;
+        for (Mod mod : mods){
             mod.onLoadingSP(par1Str, par2Str);
         }
         if (saveLoader.isOldMapFormat(par1Str))
@@ -3095,8 +3093,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public boolean renderBlocksMod(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
-        for (Object obj : mods){
-            if (((Mod)obj).renderBlocks(r, i, b, x, y, z, id, override)){
+        for (Mod mod : mods){
+            if (mod.renderBlocks(r, i, b, x, y, z, id, override)){
                 return true;
             }
         }

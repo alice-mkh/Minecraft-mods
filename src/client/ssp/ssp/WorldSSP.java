@@ -2124,36 +2124,6 @@ public class WorldSSP extends World implements IBlockAccess
         return Block.isNormalCube(getBlockId(par1, par2, par3));
     }
 
-    /**
-     * Checks if the block is a solid, normal cube. If the chunk does not exist, or is not loaded, it returns the
-     * boolean parameter.
-     */
-    public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4)
-    {
-        if (par1 < 0xfe363c80 || par3 < 0xfe363c80 || par1 >= 0x1c9c380 || par3 >= 0x1c9c380)
-        {
-            return par4;
-        }
-
-        Chunk chunk = chunkProvider.provideChunk(par1 >> 4, par3 >> 4);
-
-        if (chunk == null || chunk.isEmpty())
-        {
-            return par4;
-        }
-
-        Block block = Block.blocksList[getBlockId(par1, par2, par3)];
-
-        if (block == null)
-        {
-            return false;
-        }
-        else
-        {
-            return block.blockMaterial.isOpaque() && block.renderAsNormalBlock();
-        }
-    }
-
     public void saveWorldIndirectly(IProgressUpdate par1IProgressUpdate)
     {
         saveWorld(true, par1IProgressUpdate);

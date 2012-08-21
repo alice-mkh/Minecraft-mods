@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OldDaysPropertyRGB extends OldDaysPropertyInt{
     public OldDaysPropertyRGB(OldDaysModule m, int i, int v, String f){
@@ -53,7 +52,7 @@ public class OldDaysPropertyRGB extends OldDaysPropertyInt{
     }
 
     public String[] getTooltip(){
-        List list = new ArrayList();
+        ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));
         list.add("");
         int num = mod_OldDays.getDescriptionNumber(getName()+".desc");
@@ -66,6 +65,6 @@ public class OldDaysPropertyRGB extends OldDaysPropertyInt{
             }
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
-        return (String[])list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 }

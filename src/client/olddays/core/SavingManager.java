@@ -121,13 +121,13 @@ public class SavingManager{
     public void loadAll(){
         loadCoreProperties();
         for (int i = 0; i < core.modules.size(); i++){
-            loadModuleProperties(((OldDaysModule)core.modules.get(i)).id);
+            loadModuleProperties(core.modules.get(i).id);
         }
     }
 
     public void saveAll(){
         for (int i = 0; i < core.modules.size(); i++){
-            saveModuleProperties(((OldDaysModule)core.modules.get(i)).id);
+            saveModuleProperties(core.modules.get(i).id);
         }
     }
 }

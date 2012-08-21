@@ -10,7 +10,7 @@ import java.util.Map;
 public class OldDaysModule{
     public int id;
     public String name;
-    public List properties;
+    public ArrayList<OldDaysProperty> properties;
     protected mod_OldDays core;
     protected Minecraft minecraft;
     public int last;
@@ -20,7 +20,7 @@ public class OldDaysModule{
         core = c;
         id = i;
         name = s;
-        properties = new ArrayList();
+        properties = new ArrayList<OldDaysProperty>();
         minecraft = mod_OldDays.getMinecraftInstance();
         last = 0;
         renderersAdded = false;
@@ -28,7 +28,7 @@ public class OldDaysModule{
 
     public OldDaysProperty getPropertyById(int id){
         for (int i = 0; i < properties.size(); i++){
-            OldDaysProperty prop = ((OldDaysProperty)properties.get(i));
+            OldDaysProperty prop = properties.get(i);
             if (prop.id == id){
                 return prop;
             }

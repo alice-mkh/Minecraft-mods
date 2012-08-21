@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 
 public class OldDaysProperty{
     public static int GUI_TYPE_BUTTON = 1;
@@ -99,7 +98,7 @@ public class OldDaysProperty{
     }
 
     public String[] getTooltip(){
-        List list = new ArrayList();
+        ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));
         list.add("");
         int num = mod_OldDays.getDescriptionNumber(getName()+".desc");
@@ -112,7 +111,7 @@ public class OldDaysProperty{
             }
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
-        return (String[])list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     public void setGUIRefresh(){

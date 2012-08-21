@@ -483,7 +483,7 @@ public class GuiTextFieldSearch extends Gui{
             drawRect(xPos, yPos, xPos + width, yPos + height, 0xff000000);
         }
 
-        int i = isEnabled ? enabledColor : disabledColor;
+        int i = correct ? (isEnabled ? enabledColor : disabledColor) : (isEnabled ? 0xffff0000 : 0xff990000);
         int j = cursorPosition - field_73816_n;
         int k = selectionEnd - field_73816_n;
         String s = fontRenderer.trimStringToWidth(text.substring(field_73816_n), getWidth());
