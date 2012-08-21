@@ -769,6 +769,16 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             WorldGenDesertWells worldgendesertwells = new WorldGenDesertWells();
             worldgendesertwells.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2) + 1, z2);
         }
+        if(oldbiomegenbase == OldBiomeGenBase.rainforest && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){
+            WorldGenVines worldgenvines = new WorldGenVines();
+            for (int i = 0; i < 50; i++)
+            {
+                int x2 = x1 + rand.nextInt(16) + 8;
+                byte y2 = 64;
+                int z2 = z1 + rand.nextInt(16) + 8;
+                worldgenvines.generate(worldObj, rand, x2, y2, z2);
+            }
+        }
 
         generatedTemperatures = worldObj.getWorldChunkManager().getTemperatures_old(generatedTemperatures, x1 + 8, z1 + 8, 16, 16);
         for(int i = x1 + 8; i < x1 + 8 + 16; i++)
