@@ -283,17 +283,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public boolean useSP;
     private String lastWorld;
     public ArrayList<Mod> mods;
+    private HashMap<String, Integer> compat; //0 - disabled; 1 - normal; 2 - mcp
     public Class worldClass;
     public int ticksRan;
     public int mouseTicksRan;
     public static boolean oldswing = false;
-    public static int modloader = 1; //0 - disabled; 1 - normal; 2 - mcp
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
         useSP = true;
         enableSP = useSP;
         mods = new ArrayList<Mod>();
+        compat = new HashMap<String, Integer>();
         fullscreen = false;
         hasCrashed = false;
         timer = new Timer(20F);
@@ -335,7 +336,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         ticksRan = 0;
         mouseTicksRan = 0;
         registerCustomPacket();
-        checkForModLoader();
+        checkCompatibility("ModLoader");
     }
 
     private void func_71389_H()
@@ -3111,9 +3112,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 return true;
             }
         }
-        if (modloader > 0){
+        if (getIsCompatible("ModLoader")){
             try{
-                Class c = Class.forName((modloader > 1 ? "net.minecraft.src." : "")+"ModLoader");
+                Class c = Class.forName(getModClassName("ModLoader"));
                 Method m = c.getDeclaredMethod("renderWorldBlock", RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE);
                 boolean render = ((Boolean)m.invoke(null, r, i, x, y, z, b, id));
                 if (render){
@@ -3121,7 +3122,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 }
             }catch(Exception ex){
                 ex.printStackTrace();
-                modloader = 0;
+                makeIncompatible("ModLoader");
             }
         }
         return false;
@@ -3152,25 +3153,33 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
     }
 
-    private void checkForModLoader(){
+    private void checkCompatibility(String mod){
         try{
-            Class.forName("ModLoader");
+            Class.forName(mod);
         }catch(ClassNotFoundException e){
             try{
-                Class.forName("net.minecraft.src.ModLoader");
+                Class.forName("net.minecraft.src."+mod);
             }catch(ClassNotFoundException ex){
-                modloader = 0;
+                compat.put(mod, 0);
                 return;
             }
-            System.out.println("SSP: Enabled ModLoader compatibility");
-            modloader = 2;
+            System.out.println("SSP: Enabled "+mod+" compatibility");
+            compat.put(mod, 2);
             return;
         }
-        System.out.println("SSP: Enabled ModLoader compatibility");
-        modloader = 1;
+        System.out.println("SSP: Enabled "+mod+" compatibility");
+        compat.put(mod, 1);
     }
 
-    public static String getModLoaderClassName(){
-        return (modloader > 1 ? "net.minecraft.src." : "")+"ModLoader";
+    public static String getModClassName(String mod){
+        return (getMinecraftInstance().compat.get(mod) > 1 ? "net.minecraft.src." : "")+mod;
+    }
+
+    public static boolean getIsCompatible(String mod){
+        return getMinecraftInstance().compat.get(mod) > 0;
+    }
+
+    public static void makeIncompatible(String mod){
+        getMinecraftInstance().compat.put(mod, 0);
     }
 }

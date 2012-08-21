@@ -6645,14 +6645,14 @@ public class RenderBlocks
 
             par1Block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
-        else if (net.minecraft.client.Minecraft.modloader > 0){
+        else if (net.minecraft.client.Minecraft.getIsCompatible("ModLoader")){
             try{
-                Class c = Class.forName(net.minecraft.client.Minecraft.getModLoaderClassName());
+                Class c = Class.forName(net.minecraft.client.Minecraft.getModClassName("ModLoader"));
                 java.lang.reflect.Method m = c.getDeclaredMethod("renderInvBlock", RenderBlocks.class, Block.class, Integer.TYPE, Integer.TYPE);
                 m.invoke(null, this, par1Block, par2, j);
             }catch(Exception ex){
                 ex.printStackTrace();
-                net.minecraft.client.Minecraft.modloader = 0;
+                Minecraft.makeIncompatible("ModLoader");
             }
         }
     }
@@ -6706,14 +6706,14 @@ public class RenderBlocks
         {
             return true;
         }
-        else if (net.minecraft.client.Minecraft.modloader > 0){
+        else if (net.minecraft.client.Minecraft.getIsCompatible("ModLoader")){
             try{
-                Class c = Class.forName(net.minecraft.client.Minecraft.getModLoaderClassName());
+                Class c = Class.forName(net.minecraft.client.Minecraft.getModClassName("ModLoader"));
                 java.lang.reflect.Method m = c.getDeclaredMethod("renderBlockIsItemFull3D", Integer.TYPE);
                 m.invoke(null, par0);
             }catch(Exception ex){
                 ex.printStackTrace();
-                net.minecraft.client.Minecraft.modloader = 0;
+                Minecraft.makeIncompatible("ModLoader");
             }
         }
 
