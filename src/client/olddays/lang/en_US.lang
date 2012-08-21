@@ -75,6 +75,10 @@ actions.logrotation.name=Log rotation
  actions.logrotation.desc1=Sets whether logs can be
  actions.logrotation.desc2=placed horizontally.
  actions.logrotation.desc3=§aAdded in 1.3.
+actions.oldcrops.name=Old crops
+ actions.oldcrops.desc1=Allows breaking crops
+ actions.oldcrops.desc2=by walking over them.
+ actions.oldcrops.desc3=§aChanged in 1.1.
 
 bugs.boosters.name=Boosters
  bugs.boosters.desc1=Allows boosting minecarts by

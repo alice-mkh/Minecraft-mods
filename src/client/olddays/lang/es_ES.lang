@@ -77,6 +77,10 @@ actions.logrotation.name=Troncos rotables
  actions.logrotation.desc1=Fija si los troncos pueden
  actions.logrotation.desc2=ser colocados horizontalmente.
  actions.logrotation.desc3=§aAñadido en 1.3.
+actions.oldcrops.name=Old crops
+ actions.oldcrops.desc1=Allows breaking crops
+ actions.oldcrops.desc2=by walking over them.
+ actions.oldcrops.desc3=§aChanged in 1.1.
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros
