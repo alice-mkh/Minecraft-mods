@@ -77,7 +77,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             return;
         }
         if(!b){
-            mod_OldDays.saveModuleProperties(((GuiButtonProp)button).prop.module.id);
+            GuiButtonProp propButton = (GuiButtonProp)button;
+            mod_OldDays.saveModuleProperties(propButton.prop.module.id);
+            mod_OldDays.sendCallbackAndSave(propButton.prop.module.id, propButton.prop.id);
         }
     }
 
