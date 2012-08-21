@@ -8,14 +8,14 @@ public class WorldSSP extends World implements IBlockAccess
     /**
      * TreeSet of scheduled ticks which is used as a priority queue for the ticks
      */
-    private TreeSet scheduledTickTreeSet;
+    protected TreeSet scheduledTickTreeSet;
 
     /** Set of scheduled ticks (used for checking if a tick already exists) */
-    private Set scheduledTickSet;
+    protected Set scheduledTickSet;
 
     /** Entities marked for removal. */
-    private List entityRemoval;
-    private long cloudColour;
+    protected List entityRemoval;
+    protected long cloudColour;
 
     /**
      * Contains a timestamp from when the World object was created. Is used in the session.lock file
@@ -31,19 +31,19 @@ public class WorldSSP extends World implements IBlockAccess
     /**
      * A flag indicating whether or not all players in the world are sleeping.
      */
-    private boolean allPlayersSleeping;
-    private ArrayList collidingBoundingBoxes;
-    private boolean scanningTileEntities;
+    protected boolean allPlayersSleeping;
+    protected ArrayList collidingBoundingBoxes;
+    protected boolean scanningTileEntities;
 
     /** number of ticks until the next random ambients play */
-    private int ambientTickCountdown;
+    protected int ambientTickCountdown;
 
     /**
      * entities within AxisAlignedBB excluding one, set and returned in getEntitiesWithinAABBExcludingEntity(Entity
      * var1, AxisAlignedBB var2)
      */
-    private List entitiesWithinAABBExcludingEntity;
-    private static final WeightedRandomChestContent field_73069_S[];
+    protected List entitiesWithinAABBExcludingEntity;
+    protected static final WeightedRandomChestContent field_73069_S[];
 
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
     {

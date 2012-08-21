@@ -9,46 +9,6 @@ import net.minecraft.src.nbxlite.chunkproviders.*;
 
 public class WorldSSP2 extends WorldSSP
 {
-    /**
-     * TreeSet of scheduled ticks which is used as a priority queue for the ticks
-     */
-    private TreeSet scheduledTickTreeSet;
-
-    /** Set of scheduled ticks (used for checking if a tick already exists) */
-    private Set scheduledTickSet;
-
-    /** Entities marked for removal. */
-    private List entityRemoval;
-    private long cloudColour;
-
-    /**
-     * Contains a timestamp from when the World object was created. Is used in the session.lock file
-     */
-    public long lockTimestamp;
-    protected int autosavePeriod;
-
-    /**
-     * Used to differentiate between a newly generated world and an already existing world.
-     */
-    public boolean isNewWorld;
-
-    /**
-     * A flag indicating whether or not all players in the world are sleeping.
-     */
-    private boolean allPlayersSleeping;
-    private ArrayList collidingBoundingBoxes;
-    private boolean scanningTileEntities;
-
-    /** number of ticks until the next random ambients play */
-    private int ambientTickCountdown;
-
-    /**
-     * entities within AxisAlignedBB excluding one, set and returned in getEntitiesWithinAABBExcludingEntity(Entity
-     * var1, AxisAlignedBB var2)
-     */
-    private List entitiesWithinAABBExcludingEntity;
-    private static final WeightedRandomChestContent field_73069_S[];
-
     public boolean snowCovered;
     public int mapGen;
     public int mapGenExtra;
@@ -110,17 +70,6 @@ public class WorldSSP2 extends WorldSSP
     public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
     {
         super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p);
-        scheduledTickTreeSet = new TreeSet();
-        scheduledTickSet = new HashSet();
-        entityRemoval = new ArrayList();
-        cloudColour = 0xffffffL;
-        lockTimestamp = System.currentTimeMillis();
-        autosavePeriod = 40;
-        isNewWorld = false;
-        collidingBoundingBoxes = new ArrayList();
-        ambientTickCountdown = rand.nextInt(12000);
-        entitiesWithinAABBExcludingEntity = new ArrayList();
-        worldInfo = new WorldInfo(par4WorldSettings, par2Str);
         par3WorldProvider.registerWorld(this);
         ODNBXlite.SetGenerator(this, ODNBXlite.GEN_NEWBIOMES, ODNBXlite.FEATURES_12, ODNBXlite.THEME_NORMAL, ODNBXlite.TYPE_INLAND, false, false);
         ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
@@ -139,19 +88,7 @@ public class WorldSSP2 extends WorldSSP
 
     public WorldSSP2(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p)
     {
-        super(par1World.saveHandler, par1World.getWorldInfo().getWorldName(), par2WorldProvider, new WorldSettings(par1World.getWorldInfo()), p);
-        scheduledTickTreeSet = new TreeSet();
-        scheduledTickSet = new HashSet();
-        entityRemoval = new ArrayList();
-        cloudColour = 0xffffffL;
-        lockTimestamp = System.currentTimeMillis();
-        autosavePeriod = 40;
-        isNewWorld = false;
-        collidingBoundingBoxes = new ArrayList();
-        ambientTickCountdown = rand.nextInt(12000);
-        entitiesWithinAABBExcludingEntity = new ArrayList();
-        lockTimestamp = par1World.lockTimestamp;
-        worldInfo = new WorldInfo(par1World.worldInfo);
+        super(par1World, par2WorldProvider, p);
         mapGen = worldInfo.mapGen;
         mapGenExtra = worldInfo.mapGenExtra;
         snowCovered = worldInfo.snowCovered;
@@ -171,16 +108,6 @@ public class WorldSSP2 extends WorldSSP
     public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p)
     {
         super(par1ISaveHandler, par2Str, par3WorldSettings, par4WorldProvider, p);
-        scheduledTickTreeSet = new TreeSet();
-        scheduledTickSet = new HashSet();
-        entityRemoval = new ArrayList();
-        cloudColour = 0xffffffL;
-        lockTimestamp = System.currentTimeMillis();
-        autosavePeriod = 40;
-        isNewWorld = false;
-        collidingBoundingBoxes = new ArrayList();
-        ambientTickCountdown = rand.nextInt(12000);
-        entitiesWithinAABBExcludingEntity = new ArrayList();
         worldInfo = par1ISaveHandler.loadWorldInfo();
         isNewWorld = worldInfo == null;
 
@@ -2102,63 +2029,6 @@ public class WorldSSP2 extends WorldSSP
     }
 
     /**
-     * Schedules a tick to a block with a delay (Most commonly the tick rate)
-     */
-    public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
-    {
-        NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
-        byte byte0 = 8;
-
-        if (scheduledUpdatesAreImmediate)
-        {
-            if (checkChunksExist(nextticklistentry.xCoord - byte0, nextticklistentry.yCoord - byte0, nextticklistentry.zCoord - byte0, nextticklistentry.xCoord + byte0, nextticklistentry.yCoord + byte0, nextticklistentry.zCoord + byte0))
-            {
-                int i = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
-
-                if (i == nextticklistentry.blockID && i > 0)
-                {
-                    Block.blocksList[i].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
-                }
-            }
-
-            return;
-        }
-
-        if (checkChunksExist(par1 - byte0, par2 - byte0, par3 - byte0, par1 + byte0, par2 + byte0, par3 + byte0))
-        {
-            if (par4 > 0)
-            {
-                nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
-            }
-
-            if (!scheduledTickSet.contains(nextticklistentry))
-            {
-                scheduledTickSet.add(nextticklistentry);
-                scheduledTickTreeSet.add(nextticklistentry);
-            }
-        }
-    }
-
-    /**
-     * Schedules a block update from the saved information in a chunk. Called when the chunk is loaded.
-     */
-    public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5)
-    {
-        NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
-
-        if (par4 > 0)
-        {
-            nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
-        }
-
-        if (!scheduledTickSet.contains(nextticklistentry))
-        {
-            scheduledTickSet.add(nextticklistentry);
-            scheduledTickTreeSet.add(nextticklistentry);
-        }
-    }
-
-    /**
      * Will update the entity in the world if the chunk the entity is in is currently loaded or its forced to update.
      * Args: entity, forceUpdate
      */
@@ -2596,14 +2466,6 @@ public class WorldSSP2 extends WorldSSP
     public String getDebugLoadedEntities()
     {
         return (new StringBuilder()).append("All: ").append(loadedEntityList.size()).toString();
-    }
-
-    /**
-     * Returns the name of the current chunk provider, by calling chunkprovider.makeString()
-     */
-    public String getProviderName()
-    {
-        return chunkProvider.makeString();
     }
 
     /**
@@ -3650,13 +3512,5 @@ public class WorldSSP2 extends WorldSSP
             return -9999D;
         }
         return super.getHorizon();
-    }
-
-    static
-    {
-        field_73069_S = (new WeightedRandomChestContent[]
-                {
-                    new WeightedRandomChestContent(Item.stick.shiftedIndex, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 2, 3, 3)
-                });
     }
 }
