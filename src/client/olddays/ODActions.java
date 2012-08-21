@@ -17,6 +17,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 10,false, false, "LessLavaFlow");
         new OldDaysPropertyBool(this, 11,false, false, "FogKey");
         new OldDaysPropertyBool(this, 12,false, false, "LogRotation");
+        new OldDaysPropertyBool(this, 13,false, true,  "OldCrops");
         replaceBlocks();
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
@@ -26,7 +27,7 @@ public class ODActions extends OldDaysModule{
     public void callback (int i){
         switch(i){
             case 1: set(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
-            case 2: set(net.minecraft.src.EntityTNTPrimed.class, "extinguish", ExtinguishTNT); break;
+            case 2: set(net.minecraft.src.EntityTNTPrimed2.class, "extinguish", ExtinguishTNT); break;
             case 3: set(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
             case 4: set(net.minecraft.src.BlockFire.class, "oldFire", Fire<2);
                     set(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<1); break;
@@ -36,7 +37,8 @@ public class ODActions extends OldDaysModule{
             case 8: setSolidTNT(SolidTNT); break;
             case 9: set(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
             case 10:set(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
-            case 12:set(net.minecraft.src.BlockLog.class, "rotate", LogRotation); break;
+            case 12:set(net.minecraft.src.BlockLog2.class, "rotate", LogRotation); break;
+            case 13:set(net.minecraft.src.BlockFarmlandOld.class, "oldbreaking", OldCrops); break;
         }
     }
 
@@ -59,6 +61,7 @@ public class ODActions extends OldDaysModule{
     public static boolean LessLavaFlow;
     public static boolean FogKey;
     public static boolean LogRotation;
+    public static boolean OldCrops = true;
     public KeyBinding keyFog;
 
     private void setSolidTNT(boolean b){
@@ -80,6 +83,20 @@ public class ODActions extends OldDaysModule{
             customfence.setStepSound(Block.soundWoodFootstep);
             customfence.setBlockName("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
+            Block.blocksList[Block.tilledField.blockID] = null;
+            BlockFarmlandOld customTilledField = (BlockFarmlandOld)(new BlockFarmlandOld(60));
+            customTilledField.setHardness(0.6F);
+            customTilledField.setStepSound(Block.soundGravelFootstep);
+            customTilledField.setBlockName("farmland");
+            customTilledField.setRequiresSelfNotify();
+            Block.blocksList[Block.tilledField.blockID] = customTilledField;
+            Block.blocksList[Block.wood.blockID] = null;
+            BlockLog2 customWood = (BlockLog2)(new BlockLog2(17));
+            customWood.setHardness(2.0F);
+            customWood.setStepSound(Block.soundWoodFootstep);
+            customWood.setBlockName("log");
+            customWood.setRequiresSelfNotify();
+            Block.blocksList[Block.wood.blockID] = customWood;
         }catch (Exception exception){
             System.out.println(exception);
         }

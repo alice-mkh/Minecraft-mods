@@ -27,7 +27,7 @@ public class BlockTNT2 extends BlockTNT
         }
         else
         {
-            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
+            EntityTNTPrimed2 entitytntprimed = new EntityTNTPrimed2(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F);
             par1World.spawnEntityInWorld(entitytntprimed);
             par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
         }

@@ -151,7 +151,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
 
     public void drawScreen(int i, int j, float f)
     {
-        System.out.println(current);
         super.drawScreen(i, j, f);
         boolean show = false;
         for (int k = 0; k < controlList.size(); k++){
