@@ -17,6 +17,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
 
     public void initGui(){
         searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
+        searchField.setMaxStringLength(999);
         searchField.setFocused(true);
         searchField.setCanLoseFocus(false);
         Keyboard.enableRepeatEvents(true);
