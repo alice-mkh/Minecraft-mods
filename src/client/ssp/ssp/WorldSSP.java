@@ -3275,6 +3275,31 @@ public class WorldSSP extends World implements IBlockAccess
         }
     }
 
+    public boolean func_72931_a(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
+    {
+        int i = getBlockId(par2, par3, par4);
+        Block block = Block.blocksList[i];
+        Block block1 = Block.blocksList[par1];
+        AxisAlignedBB axisalignedbb = block1.getCollisionBoundingBoxFromPool(this, par2, par3, par4);
+
+        if (par5)
+        {
+            axisalignedbb = null;
+        }
+
+        if (axisalignedbb != null && !checkIfAABBIsClear(axisalignedbb))
+        {
+            return false;
+        }
+
+        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isGroundCover()))
+        {
+            block = null;
+        }
+
+        return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
+    }
+
     static
     {
         field_73069_S = (new WeightedRandomChestContent[]
