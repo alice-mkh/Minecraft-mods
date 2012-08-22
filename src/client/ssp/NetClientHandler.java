@@ -66,6 +66,18 @@ public class NetClientHandler extends NetHandler
         par2IntegratedServer.func_71343_a().func_71754_a((MemoryConnection)netManager, par1Minecraft.session.username);
     }
 
+    public NetClientHandler(Minecraft par1Minecraft)
+    {
+        field_72554_f = false;
+        doneLoadingTerrain = false;
+        mapStorage = new MapStorage(null);
+        playerInfoMap = new HashMap();
+        playerInfoList = new ArrayList();
+        currentServerMaxPlayers = 1;
+        rand = new Random();
+        mc = par1Minecraft;
+    }
+
     public void func_72547_c()
     {
         if (netManager != null)

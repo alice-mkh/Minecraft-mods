@@ -11,8 +11,6 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     public static int startitems = 0;
     public static boolean oldswing = false;
 
-    public NetHandlerSP sendQueue;
-
     private MouseFilter field_71162_ch;
     private MouseFilter field_71160_ci;
     private MouseFilter field_71161_cj;

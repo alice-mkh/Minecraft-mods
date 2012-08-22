@@ -2154,24 +2154,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      */
     public NetClientHandler getSendQueue()
     {
-        if (enableSP){
-            if (field_71439_g instanceof EntityClientPlayerMP)
-            {
-                return ((EntityClientPlayerMP)field_71439_g).sendQueue;
-            }
-            else
-            {
-                return null;
-            }
-        }else{
-            if (field_71439_g != null)
-            {
-                return ((EntityClientPlayerMP)field_71439_g).sendQueue;
-            }
-            else
-            {
-                return null;
-            }
+        if (field_71439_g != null)
+        {
+            return ((EntityClientPlayerMP)field_71439_g).sendQueue;
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -2862,7 +2851,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         ((WorldSSP)field_71441_e).spawnPlayerWithLoadedChunks(field_71439_g);
         field_71439_g.movementInput = new MovementInputFromOptions(gameSettings);
         field_71439_g.entityId = i;
-        field_71439_g.func_6420_o();
+        ((EntityPlayerSP2)field_71439_g).func_6420_o();
         ((PlayerController)field_71442_b).setGameMode(field_71439_g);
         preloadWorld(StatCollector.translateToLocal("menu.respawning"));
 

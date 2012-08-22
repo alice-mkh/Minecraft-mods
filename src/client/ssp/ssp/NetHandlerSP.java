@@ -7,7 +7,7 @@ import java.util.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
-public class NetHandlerSP extends NetHandler
+public class NetHandlerSP extends NetClientHandler
 {
     /**
      * An ArrayList of GuiPlayerInfo (includes all the players' GuiPlayerInfo on the current server)
@@ -15,14 +15,9 @@ public class NetHandlerSP extends NetHandler
     public List playerInfoList;
     public int currentServerMaxPlayers;
 
-    public NetHandlerSP(Minecraft par1Minecraft, String par2Str, int par3) throws IOException
+    public NetHandlerSP(Minecraft par1Minecraft, String par2Str, int par3)
     {
-        playerInfoList = new ArrayList();
-        currentServerMaxPlayers = 1;
-    }
-
-    public NetHandlerSP(Minecraft par1Minecraft, IntegratedServer par2IntegratedServer) throws IOException
-    {
+        super(par1Minecraft);
         playerInfoList = new ArrayList();
         currentServerMaxPlayers = 1;
     }
