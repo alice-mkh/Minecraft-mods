@@ -7,10 +7,9 @@ public class PlayerControllerAdventure extends PlayerControllerSP{
         super(par1Minecraft);
     }
 
-    public void func_6473_b(EntityPlayer par1EntityPlayer)
+    public void setGameMode(EntityPlayer par1EntityPlayer)
     {
-        PlayerControllerCreative.disableAbilities(par1EntityPlayer);
-        disableAbilities(par1EntityPlayer);
+        mc.setGameMode(EnumGameType.ADVENTURE);
     }
 
     public static void enableAbilities(EntityPlayer par0EntityPlayer)

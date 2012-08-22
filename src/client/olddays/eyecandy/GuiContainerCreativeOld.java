@@ -109,7 +109,7 @@ public class GuiContainerCreativeOld extends GuiContainer
                 if (par3 == 0)
                 {
                     mc.field_71439_g.dropPlayerItem(inventoryplayer1.getItemStack());
-                    mc.field_71442_b.func_35639_a(inventoryplayer1.getItemStack());
+                    mc.field_71442_b.func_78752_a(inventoryplayer1.getItemStack());
                     inventoryplayer1.setItemStack(null);
                 }
 
@@ -117,7 +117,7 @@ public class GuiContainerCreativeOld extends GuiContainer
                 {
                     ItemStack itemstack3 = inventoryplayer1.getItemStack().splitStack(1);
                     mc.field_71439_g.dropPlayerItem(itemstack3);
-                    mc.field_71442_b.func_35639_a(itemstack3);
+                    mc.field_71442_b.func_78752_a(itemstack3);
 
                     if (inventoryplayer1.getItemStack().stackSize == 0)
                     {

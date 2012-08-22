@@ -51,7 +51,7 @@ public class mod_SpawnHuman extends Mod{
         Minecraft mc = Minecraft.getMinecraftInstance();
         EntityPlayer entityplayer = mc.field_71439_g;
         World theWorld = mc.field_71441_e;
-        PlayerController playerController = mc.field_71442_b;
+        PlayerControllerMP playerController = mc.field_71442_b;
         if(!theWorld.isRemote && (playerController.isInCreativeMode() || AllowInSurvival)){
             EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("human", theWorld);
             entityliving.setLocationAndAngles(entityplayer.posX, entityplayer.posY - 1.62D + entityplayer.getEyeHeight(), entityplayer.posZ, theWorld.rand.nextFloat() * 360F, 0.0F);

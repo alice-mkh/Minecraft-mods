@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 
-public class PlayerControllerMP extends PlayerController
+public class PlayerControllerMP
 {
     private final Minecraft field_78776_a;
     private final NetClientHandler netClientHandler;
@@ -41,7 +41,6 @@ public class PlayerControllerMP extends PlayerController
 
     public PlayerControllerMP(Minecraft par1Minecraft, NetClientHandler par2NetClientHandler)
     {
-        super(par1Minecraft);
         currentBlockX = -1;
         currentBlockY = -1;
         currentblockZ = -1;
@@ -367,6 +366,11 @@ public class PlayerControllerMP extends PlayerController
     public EntityClientPlayerMP func_78754_a(World par1World)
     {
         return new EntityClientPlayerMP(field_78776_a, par1World, field_78776_a.session, netClientHandler);
+    }
+
+    public EntityPlayerSP func_78754_a_2(World par1World)
+    {
+        return func_78754_a(par1World);
     }
 
     /**

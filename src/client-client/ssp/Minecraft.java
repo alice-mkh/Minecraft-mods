@@ -151,7 +151,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      * Set to 'this' in Minecraft constructor; used by some settings get methods
      */
     private static Minecraft theMinecraft;
-    public PlayerController field_71442_b;
+    public PlayerControllerMP field_71442_b;
     private boolean fullscreen;
     private boolean hasCrashed;
     private CrashReport field_71433_S;
@@ -1997,10 +1997,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (par1World != null)
         {
             commandManager = new ClientCommandManager();
-            if (field_71442_b != null)
-            {
-                field_71442_b.onWorldChange(par1World);
-            }
 
             if (!isMultiplayerWorld())
             {
@@ -2027,9 +2023,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             if (field_71439_g == null)
             {
                 if (enableSP){
-                    field_71439_g = (EntityPlayerSP)field_71442_b.func_78754_a(par1World);
+                    field_71439_g = field_71442_b.func_78754_a_2(par1World);
                 }else{
-                    field_71439_g = ((PlayerControllerMP)field_71442_b).func_78754_a(par1World);
+                    field_71439_g = field_71442_b.func_78754_a(par1World);
                 }
                 field_71439_g.preparePlayerToSpawn();
                 field_71442_b.flipPlayer(field_71439_g);
@@ -2063,7 +2059,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             par1World.spawnPlayerWithLoadedChunks(field_71439_g);
-            field_71442_b.func_6473_b(field_71439_g);
+            ((PlayerController)field_71442_b).setGameMode(field_71439_g);
 
             if (par1World.isNewWorld)
             {
@@ -2106,7 +2102,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         char c = '\200';
 
-        if (field_71442_b.func_35643_e())
+        if (((PlayerController)field_71442_b).func_35643_e())
         {
             c = '@';
         }
@@ -2140,7 +2136,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
                 field_71441_e.getBlockId(chunkcoordinates.posX + k, 64, chunkcoordinates.posZ + l);
 
-                if (field_71442_b.func_35643_e())
+                if (((PlayerController)field_71442_b).func_35643_e())
                 {
                     continue;
                 }
@@ -2149,7 +2145,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
         }
 
-        if (!field_71442_b.func_35643_e())
+        if (!((PlayerController)field_71442_b).func_35643_e())
         {
             if (loadingScreen != null)
             {
@@ -2216,7 +2212,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         EntityPlayerSP entityplayersp = field_71439_g;
         renderViewEntity = null;
-        field_71439_g = (EntityPlayerSP)field_71442_b.func_78754_a(field_71441_e);
+        field_71439_g = field_71442_b.func_78754_a_2(field_71441_e);
 
         if (par3)
         {
@@ -2238,7 +2234,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         field_71439_g.movementInput = new MovementInputFromOptions(gameSettings);
         field_71439_g.entityId = i;
         field_71439_g.func_6420_o();
-        field_71442_b.func_6473_b(field_71439_g);
+        ((PlayerController)field_71442_b).setGameMode(field_71439_g);
         preloadWorld(StatCollector.translateToLocal("menu.respawning"));
 
         if (currentScreen instanceof GuiGameOver)
@@ -2499,7 +2495,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (field_71439_g == null)
             {
-                field_71439_g = (EntityPlayerSP)field_71442_b.func_78754_a(par1WorldClient);
+                field_71439_g = field_71442_b.func_78754_a_2(par1WorldClient);
                 field_71442_b.flipPlayer(field_71439_g);
             }
 
@@ -2591,9 +2587,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         renderViewEntity = null;
         if (enableSP){
-            field_71439_g = (EntityPlayerSP)field_71442_b.func_78754_a(field_71441_e);
+            field_71439_g = field_71442_b.func_78754_a_2(field_71441_e);
         }else{
-            field_71439_g = ((PlayerControllerMP)field_71442_b).func_78754_a(field_71441_e);
+            field_71439_g = field_71442_b.func_78754_a(field_71441_e);
         }
         field_71439_g.dimension = par1;
         renderViewEntity = field_71439_g;

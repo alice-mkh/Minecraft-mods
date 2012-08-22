@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 
-public abstract class PlayerController
+public class PlayerController extends PlayerControllerMP
 {
     /** A reference to the Minecraft object. */
     protected final Minecraft mc;
@@ -10,15 +10,9 @@ public abstract class PlayerController
 
     public PlayerController(Minecraft par1Minecraft)
     {
+        super(par1Minecraft, null);
         isInTestMode = false;
         mc = par1Minecraft;
-    }
-
-    /**
-     * Called on world change with the new World as the only parameter.
-     */
-    public void onWorldChange(World world)
-    {
     }
 
     public boolean func_78763_f()
@@ -41,7 +35,9 @@ public abstract class PlayerController
     /**
      * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
      */
-    public abstract void clickBlock(int i, int j, int k, int l);
+    public void clickBlock(int i, int j, int k, int l)
+    {
+    }
 
     /**
      * Called when a player completes the destruction of a block
@@ -71,21 +67,23 @@ public abstract class PlayerController
     /**
      * Called when a player damages a block and updates damage counters
      */
-    public abstract void onPlayerDamageBlock(int i, int j, int k, int l);
+    public void onPlayerDamageBlock(int i, int j, int k, int l)
+    {
+    }
 
     /**
      * Resets current block damage and isHittingBlock
      */
-    public abstract void resetBlockRemoving();
-
-    public void setPartialTime(float f)
+    public void resetBlockRemoving()
     {
     }
 
     /**
      * player reach distance = 4F
      */
-    public abstract float getBlockReachDistance();
+    public float getBlockReachDistance(){
+        return 4F;
+    }
 
     /**
      * Notifies the server of things like consuming food, etc...
@@ -127,22 +125,31 @@ public abstract class PlayerController
     {
     }
 
-    public abstract boolean shouldDrawHUD();
+    public boolean shouldDrawHUD(){
+        return true;
+    }
 
-    public void func_6473_b(EntityPlayer par1EntityPlayer)
+    public void setGameMode(EntityPlayer par1EntityPlayer)
     {
-        PlayerControllerCreative.disableAbilities(par1EntityPlayer);
-        PlayerControllerAdventure.enableAbilities(par1EntityPlayer);
+        mc.setGameMode(EnumGameType.SURVIVAL);
     }
 
     /**
      * Handles a players right click
      */
-    public abstract boolean func_78760_a(EntityPlayer entityplayer, World world, ItemStack itemstack, int i, int j, int k, int l, Vec3 v);
+    public boolean func_78760_a(EntityPlayer entityplayer, World world, ItemStack itemstack, int i, int j, int k, int l, Vec3 v)
+    {
+        return false;
+    }
 
-    public EntityPlayer func_78754_a(World par1World)
+    public EntityPlayerSP func_78754_a_2(World par1World)
     {
         return new EntityPlayerSP(mc, par1World, mc.session, par1World.worldProvider.worldType);
+    }
+
+    public EntityClientPlayerMP func_78754_a(World par1World)
+    {
+        return (EntityClientPlayerMP)func_78754_a_2(par1World);
     }
 
     /**
@@ -171,16 +178,6 @@ public abstract class PlayerController
         return par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);
     }
 
-    public void func_20086_a(int par1, EntityPlayer par2EntityPlayer)
-    {
-        par2EntityPlayer.craftingInventory.onCraftGuiClosed(par2EntityPlayer);
-        par2EntityPlayer.craftingInventory = par2EntityPlayer.inventorySlots;
-    }
-
-    public void func_40593_a(int i, int j)
-    {
-    }
-
     public boolean func_35643_e()
     {
         return false;
@@ -189,11 +186,6 @@ public abstract class PlayerController
     public void onStoppedUsingItem(EntityPlayer par1EntityPlayer)
     {
         par1EntityPlayer.stopUsingItem();
-    }
-
-    public boolean func_35642_f()
-    {
-        return false;
     }
 
     /**
@@ -227,12 +219,12 @@ public abstract class PlayerController
     {
     }
 
-    public void func_35639_a(ItemStack itemstack)
-    {
-    }
-
     public void func_78748_a(EntityPlayer par1EntityPlayer)
     {
 //         field_78779_k.func_77147_a(par1EntityPlayer.capabilities);
+    }
+
+    public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5)
+    {
     }
 }

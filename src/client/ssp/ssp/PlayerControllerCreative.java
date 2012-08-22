@@ -34,10 +34,9 @@ public class PlayerControllerCreative extends PlayerController
         par0EntityPlayer.capabilities.disableDamage = false;
     }
 
-    public void func_6473_b(EntityPlayer par1EntityPlayer)
+    public void setGameMode(EntityPlayer par1EntityPlayer)
     {
-        enableAbilities(par1EntityPlayer);
-        PlayerControllerAdventure.enableAbilities(par1EntityPlayer);
+        mc.setGameMode(EnumGameType.CREATIVE);
 
         for (int i = 0; i < 9; i++)
         {
@@ -123,14 +122,6 @@ public class PlayerControllerCreative extends PlayerController
     public boolean shouldDrawHUD()
     {
         return false;
-    }
-
-    /**
-     * Called on world change with the new World as the only parameter.
-     */
-    public void onWorldChange(World par1World)
-    {
-        super.onWorldChange(par1World);
     }
 
     /**

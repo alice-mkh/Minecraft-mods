@@ -156,42 +156,13 @@ public class PlayerControllerSP extends PlayerController
             curBlockZ = par3;
         }
     }
-/*
-    public void setPartialTime(float par1)
-    {
-        if (curBlockDamage <= 0.0F)
-        {
-            mc.ingameGUI.damageGuiPartialTime = 0.0F;
-            mc.renderGlobal.damagePartialTime = 0.0F;
-        }
-        else
-        {
-            float f = prevBlockDamage + (curBlockDamage - prevBlockDamage) * par1;
-            mc.ingameGUI.damageGuiPartialTime = f;
-            mc.renderGlobal.damagePartialTime = f;
-        }
-    }
-*/
+
     /**
      * player reach distance = 4F
      */
     public float getBlockReachDistance()
     {
         return 4F;
-    }
-
-    /**
-     * Called on world change with the new World as the only parameter.
-     */
-    public void onWorldChange(World par1World)
-    {
-        super.onWorldChange(par1World);
-    }
-
-    public EntityPlayer func_78754_a(World par1World)
-    {
-        EntityPlayer entityplayer = super.func_78754_a(par1World);
-        return entityplayer;
     }
 
     public void updateController()
@@ -224,10 +195,5 @@ public class PlayerControllerSP extends PlayerController
             return par3ItemStack.func_77943_a(par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2);
 
         }
-    }
-
-    public boolean func_35642_f()
-    {
-        return true;
     }
 }
