@@ -232,7 +232,7 @@ public class ItemRenderer
     public void renderItemInFirstPerson(float par1)
     {
         float f = prevEquippedProgress + (equippedProgress - prevEquippedProgress) * par1;
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
         float f1 = ((EntityPlayer)(entityclientplayermp)).prevRotationPitch + (((EntityPlayer)(entityclientplayermp)).rotationPitch - ((EntityPlayer)(entityclientplayermp)).prevRotationPitch) * par1;
         GL11.glPushMatrix();
         GL11.glRotatef(f1, 1.0F, 0.0F, 0.0F);
@@ -673,7 +673,7 @@ public class ItemRenderer
     public void updateEquippedItem()
     {
         prevEquippedProgress = equippedProgress;
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
         ItemStack itemstack = ((EntityPlayer)(entityclientplayermp)).inventory.getCurrentItem();
         boolean flag = equippedItemSlot == ((EntityPlayer)(entityclientplayermp)).inventory.currentItem && itemstack == itemToRender;
 

@@ -368,11 +368,6 @@ public class PlayerControllerMP
         return new EntityClientPlayerMP(field_78776_a, par1World, field_78776_a.session, netClientHandler);
     }
 
-    public EntityPlayerSP func_78754_a_2(World par1World)
-    {
-        return func_78754_a(par1World);
-    }
-
     /**
      * Attacks an entity
      */

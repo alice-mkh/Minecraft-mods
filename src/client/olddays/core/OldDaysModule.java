@@ -105,6 +105,9 @@ public class OldDaysModule{
     public void callback(int i){}
 
     public void set(Class c, String name, Object value){
+        if (c == net.minecraft.src.EntityPlayer.class){
+            set(net.minecraft.src.EntityPlayerSP2.class, name, value);
+        }
         try{
             c.getDeclaredField(name).set(null, value);
         }catch(Exception ex){

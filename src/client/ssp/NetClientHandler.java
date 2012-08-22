@@ -490,7 +490,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleFlying(Packet10Flying par1Packet10Flying)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
         double d = ((EntityPlayer)(entityclientplayermp)).posX;
         double d1 = ((EntityPlayer)(entityclientplayermp)).posY;
         double d2 = ((EntityPlayer)(entityclientplayermp)).posZ;
@@ -915,7 +915,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleOpenWindow(Packet100OpenWindow par1Packet100OpenWindow)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
 
         switch (par1Packet100OpenWindow.inventoryType)
         {
@@ -958,7 +958,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleSetSlot(Packet103SetSlot par1Packet103SetSlot)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
 
         if (par1Packet103SetSlot.windowId == -1)
         {
@@ -995,7 +995,7 @@ public class NetClientHandler extends NetHandler
     public void handleTransaction(Packet106Transaction par1Packet106Transaction)
     {
         Container container = null;
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
 
         if (par1Packet106Transaction.windowId == 0)
         {
@@ -1014,7 +1014,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleWindowItems(Packet104WindowItems par1Packet104WindowItems)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
 
         if (par1Packet104WindowItems.windowId == 0)
         {
@@ -1067,7 +1067,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleUpdateProgressbar(Packet105UpdateProgressbar par1Packet105UpdateProgressbar)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
         registerPacket(par1Packet105UpdateProgressbar);
 
         if (((EntityPlayer)(entityclientplayermp)).craftingInventory != null && ((EntityPlayer)(entityclientplayermp)).craftingInventory.windowId == par1Packet105UpdateProgressbar.windowId)
@@ -1139,7 +1139,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleBed(Packet70GameEvent par1Packet70GameEvent)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
         int i = par1Packet70GameEvent.bedState;
         int j = par1Packet70GameEvent.gameMode;
 
@@ -1309,7 +1309,7 @@ public class NetClientHandler extends NetHandler
      */
     public void handlePlayerAbilities(Packet202PlayerAbilities par1Packet202PlayerAbilities)
     {
-        EntityPlayerSP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
         ((EntityPlayer)(entityclientplayermp)).capabilities.isFlying = par1Packet202PlayerAbilities.func_73350_f();
         ((EntityPlayer)(entityclientplayermp)).capabilities.isCreativeMode = par1Packet202PlayerAbilities.func_73346_h();
         ((EntityPlayer)(entityclientplayermp)).capabilities.disableDamage = par1Packet202PlayerAbilities.func_73352_d();

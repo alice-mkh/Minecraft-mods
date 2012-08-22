@@ -66,12 +66,7 @@ public class GuiSleepMP extends GuiChat
      */
     private void wakeEntity()
     {
-        if (mc.enableSP){
-            NetHandlerSP nethandlersp = mc.field_71439_g.sendQueue;
-            nethandlersp.addToSendQueue(new Packet19EntityAction(mc.field_71439_g, 3));
-        }else{
-            NetClientHandler netclienthandler = ((EntityClientPlayerMP)mc.field_71439_g).sendQueue;
-            netclienthandler.addToSendQueue(new Packet19EntityAction(mc.field_71439_g, 3));
-        }
+        NetClientHandler netclienthandler = mc.field_71439_g.sendQueue;
+        netclienthandler.addToSendQueue(new Packet19EntityAction(mc.field_71439_g, 3));
     }
 }

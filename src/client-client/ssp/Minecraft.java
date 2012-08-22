@@ -144,7 +144,6 @@ import java.util.zip.*;
 public abstract class Minecraft implements Runnable, IPlayerUsage
 {
     public static byte field_71444_a[] = new byte[0xa00000];
-    private ICommandManager commandManager;
     private ServerData field_71422_O;
 
     /**
@@ -161,7 +160,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private PlayerUsageSnooper field_71427_U;
     public World field_71441_e;
     public RenderGlobal renderGlobal;
-    public EntityPlayerSP field_71439_g;
+    public EntityClientPlayerMP field_71439_g;
 
     /**
      * The Entity from which the renderer determines the render viewpoint. Currently is always the parent Minecraft
@@ -279,6 +278,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName;
+
+    private ICommandManager commandManager;
     public boolean enableSP;
     public boolean useSP;
     private String lastWorld;
@@ -291,10 +292,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
-        useSP = true;
-        enableSP = useSP;
-        mods = new ArrayList<Mod>();
-        compat = new HashMap<String, Integer>();
         fullscreen = false;
         hasCrashed = false;
         timer = new Timer(20F);
@@ -332,6 +329,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         displayHeight = par4;
         fullscreen = par5;
         theMinecraft = this;
+        useSP = true;
+        enableSP = useSP;
+        mods = new ArrayList<Mod>();
+        compat = new HashMap<String, Integer>();
         worldClass = net.minecraft.src.WorldSSP.class;
         ticksRan = 0;
         mouseTicksRan = 0;
@@ -984,16 +985,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         boolean flag = isGamePaused;
         if (enableSP){
             isGamePaused = !isMultiplayerWorld() && currentScreen != null && currentScreen.doesGuiPauseGame();
-        }else{
-            isGamePaused = func_71356_B() && currentScreen != null && currentScreen.doesGuiPauseGame() && !field_71437_Z.func_71344_c();
-        }
 
-        if (enableSP){
             if (func_71387_A() && field_71439_g != null && getSendQueue() != null && isGamePaused != flag)
             {
                 ((MemoryConnection)getSendQueue().func_72548_f()).func_74437_a(isGamePaused);
             }
         }else{
+            isGamePaused = func_71356_B() && currentScreen != null && currentScreen.doesGuiPauseGame() && !field_71437_Z.func_71344_c();
+
             if (func_71387_A() && field_71439_g != null && ((EntityClientPlayerMP)field_71439_g).sendQueue != null && isGamePaused != flag)
             {
                 ((MemoryConnection)((EntityClientPlayerMP)field_71439_g).sendQueue.func_72548_f()).func_74437_a(isGamePaused);
@@ -1897,469 +1896,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     /**
-     * creates a new world or loads an existing one
-     */
-    public void startWorldSSP(String par1Str, String par2Str, WorldSettings par3WorldSettings)
-    {
-        changeWorld1(null);
-        System.gc();
-        for (Mod mod : mods){
-            mod.onLoadingSP(par1Str, par2Str);
-        }
-        if (saveLoader.isOldMapFormat(par1Str))
-        {
-            convertMapFormat(par1Str, par2Str);
-        }
-        else
-        {
-            if (loadingScreen != null)
-            {
-                loadingScreen.printText(StatCollector.translateToLocal("menu.switchingLevel"));
-                loadingScreen.displayLoadingString("");
-            }
-
-            net.minecraft.src.ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
-            WorldSSP world = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).
-                           newInstance(new Object[]{isavehandler, par2Str, par3WorldSettings, field_71424_I});
-                world = (WorldSSP)o;
-//                world = new WorldSSP(isavehandler, par2Str, par3WorldSettings, field_71424_I);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-
-            if (world.isNewWorld)
-            {
-                statFileWriter.readStat(StatList.createWorldStat, 1);
-                statFileWriter.readStat(StatList.startGameStat, 1);
-                changeWorld2(world, StatCollector.translateToLocal("menu.generatingLevel"));
-            }
-            else
-            {
-                statFileWriter.readStat(StatList.loadWorldStat, 1);
-                statFileWriter.readStat(StatList.startGameStat, 1);
-                changeWorld2(world, StatCollector.translateToLocal("menu.loadingLevel"));
-            }
-        }
-        lastWorld = par1Str;
-    }
-
-    /**
-     * Unloads the current world, and displays a String while waiting
-     */
-    public void exitToMainMenu(String par1Str)
-    {
-        field_71441_e = null;
-        changeWorld2(null, par1Str);
-    }
-
-    /**
-     * Changes the world, no message, no player.
-     */
-    public void changeWorld1(WorldSSP par1World)
-    {
-        changeWorld2(par1World, "");
-    }
-
-    /**
-     * Changes the world with given message, no player.
-     */
-    public void changeWorld2(WorldSSP par1World, String par2Str)
-    {
-        changeWorld(par1World, par2Str, null);
-    }
-
-    /**
-     * first argument is the world to change to, second one is a loading message and the third the player itself
-     */
-    public void changeWorld(WorldSSP par1World, String par2Str, EntityPlayer par3EntityPlayer)
-    {
-//         statFileWriter.func_27175_b();
-        statFileWriter.syncStats();
-        renderViewEntity = null;
-
-        if (loadingScreen != null)
-        {
-            loadingScreen.printText(par2Str);
-            loadingScreen.displayLoadingString("");
-        }
-
-        sndManager.playStreaming(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-
-        if (field_71441_e != null)
-        {
-            ((WorldSSP)field_71441_e).saveWorldIndirectly(loadingScreen);
-        }
-
-        field_71441_e = par1World;
-
-        if (par1World != null)
-        {
-            commandManager = new ClientCommandManager();
-
-            if (!isMultiplayerWorld())
-            {
-                if (par3EntityPlayer == null)
-                {
-                    field_71439_g = (EntityPlayerSP)par1World.func_4085_a(net.minecraft.src.EntityPlayerSP.class);
-                }
-            }
-            else if (field_71439_g != null)
-            {
-                field_71439_g.preparePlayerToSpawn();
-
-                if (par1World != null)
-                {
-                    par1World.spawnEntityInWorld(field_71439_g);
-                }
-            }
-
-            if (!par1World.isRemote)
-            {
-                preloadWorld(par2Str);
-            }
-
-            if (field_71439_g == null)
-            {
-                if (enableSP){
-                    field_71439_g = field_71442_b.func_78754_a_2(par1World);
-                }else{
-                    field_71439_g = field_71442_b.func_78754_a(par1World);
-                }
-                field_71439_g.preparePlayerToSpawn();
-                field_71442_b.flipPlayer(field_71439_g);
-            }
-
-            field_71439_g.movementInput = new MovementInputFromOptions(gameSettings);
-
-            if (renderGlobal != null)
-            {
-                renderGlobal.func_72732_a(par1World);
-            }
-
-            if (effectRenderer != null)
-            {
-                effectRenderer.clearEffects(par1World);
-            }
-
-            if (par3EntityPlayer != null)
-            {
-                par1World.func_6464_c();
-            }
-
-            net.minecraft.src.IChunkProvider ichunkprovider = par1World.getChunkProvider();
-
-            if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
-            {
-                ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
-                int i = MathHelper.floor_float((int)field_71439_g.posX) >> 4;
-                int j = MathHelper.floor_float((int)field_71439_g.posZ) >> 4;
-                chunkproviderloadorgenerate.setCurrentChunkOver(i, j);
-            }
-
-            par1World.spawnPlayerWithLoadedChunks(field_71439_g);
-            ((PlayerController)field_71442_b).setGameMode(field_71439_g);
-
-            if (par1World.isNewWorld)
-            {
-                ((WorldSSP)par1World).saveWorldIndirectly(loadingScreen);
-            }
-
-            renderViewEntity = field_71439_g;
-        }
-        else
-        {
-            saveLoader.flushCache();
-            field_71439_g = null;
-        }
-
-        System.gc();
-        systemTime = 0L;
-    }
-
-    /**
-     * Converts from old map format to new map format
-     */
-    private void convertMapFormat(String par1Str, String par2Str)
-    {
-        loadingScreen.printText((new StringBuilder()).append("Converting World to Anvil")/*.append(saveLoader.getFormatName())*/.toString());
-        loadingScreen.displayLoadingString("This may take a while :)");
-        saveLoader.convertMapFormat(par1Str, loadingScreen);
-        startWorldSSP(par1Str, par2Str, new WorldSettings(0L, EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT));
-    }
-
-    /**
-     * Display the preload world loading screen then load SP World.
-     */
-    private void preloadWorld(String par1Str)
-    {
-        if (loadingScreen != null)
-        {
-            loadingScreen.printText(par1Str);
-            loadingScreen.displayLoadingString(StatCollector.translateToLocal("menu.generatingTerrain"));
-        }
-
-        char c = '\200';
-
-        if (((PlayerController)field_71442_b).func_35643_e())
-        {
-            c = '@';
-        }
-
-        int i = 0;
-        int j = (c * 2) / 16 + 1;
-        j *= j;
-        IChunkProvider ichunkprovider = field_71441_e.getChunkProvider();
-        ChunkCoordinates chunkcoordinates = field_71441_e.getSpawnPoint();
-
-        if (field_71439_g != null)
-        {
-            chunkcoordinates.posX = (int)field_71439_g.posX;
-            chunkcoordinates.posZ = (int)field_71439_g.posZ;
-        }
-
-        if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
-        {
-            ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
-            chunkproviderloadorgenerate.setCurrentChunkOver(chunkcoordinates.posX >> 4, chunkcoordinates.posZ >> 4);
-        }
-
-        for (int k = -c; k <= c; k += 16)
-        {
-            for (int l = -c; l <= c; l += 16)
-            {
-                if (loadingScreen != null)
-                {
-                    loadingScreen.setLoadingProgress((i++ * 100) / j);
-                }
-
-                field_71441_e.getBlockId(chunkcoordinates.posX + k, 64, chunkcoordinates.posZ + l);
-
-                if (((PlayerController)field_71442_b).func_35643_e())
-                {
-                    continue;
-                }
-
-                while (field_71441_e.updatingLighting()) ;
-            }
-        }
-
-        if (!((PlayerController)field_71442_b).func_35643_e())
-        {
-            if (loadingScreen != null)
-            {
-                loadingScreen.displayLoadingString(StatCollector.translateToLocal("menu.simulating"));
-            }
-
-            char c1 = 2000;
-            ((WorldSSP)field_71441_e).dropOldChunks();
-        }
-    }
-
-    /**
-     * Called when the respawn button is pressed after the player dies.
-     */
-    public void respawn(boolean par1, int par2, boolean par3)
-    {
-        if (!field_71441_e.isRemote && !field_71441_e.worldProvider.canRespawnHere())
-        {
-            usePortal(0);
-        }
-
-        ChunkCoordinates chunkcoordinates = null;
-        ChunkCoordinates chunkcoordinates1 = null;
-        boolean flag = true;
-
-        if (field_71439_g != null && !par1)
-        {
-            chunkcoordinates = field_71439_g.getSpawnChunk();
-
-            if (chunkcoordinates != null)
-            {
-                chunkcoordinates1 = EntityPlayer.verifyRespawnCoordinates(field_71441_e, chunkcoordinates);
-
-                if (chunkcoordinates1 == null)
-                {
-                    field_71439_g.addChatMessage("tile.bed.notValid");
-                }
-            }
-        }
-
-        if (chunkcoordinates1 == null)
-        {
-            chunkcoordinates1 = field_71441_e.getSpawnPoint();
-            flag = false;
-        }
-
-        net.minecraft.src.IChunkProvider ichunkprovider = field_71441_e.getChunkProvider();
-
-        if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
-        {
-            ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
-            chunkproviderloadorgenerate.setCurrentChunkOver(chunkcoordinates1.posX >> 4, chunkcoordinates1.posZ >> 4);
-        }
-
-        field_71441_e.setSpawnLocation();
-        ((WorldSSP)field_71441_e).updateEntityList();
-        int i = 0;
-
-        if (field_71439_g != null)
-        {
-            i = field_71439_g.entityId;
-            field_71441_e.setEntityDead(field_71439_g);
-        }
-
-        EntityPlayerSP entityplayersp = field_71439_g;
-        renderViewEntity = null;
-        field_71439_g = field_71442_b.func_78754_a_2(field_71441_e);
-
-        if (par3)
-        {
-            field_71439_g.func_71049_a(entityplayersp, true);
-        }
-
-        field_71439_g.dimension = par2;
-        renderViewEntity = field_71439_g;
-        field_71439_g.preparePlayerToSpawn();
-
-        if (flag)
-        {
-            field_71439_g.setSpawnChunk(chunkcoordinates);
-            field_71439_g.setLocationAndAngles((float)chunkcoordinates1.posX + 0.5F, (float)chunkcoordinates1.posY + 0.1F, (float)chunkcoordinates1.posZ + 0.5F, 0.0F, 0.0F);
-        }
-
-        field_71442_b.flipPlayer(field_71439_g);
-        ((WorldSSP)field_71441_e).spawnPlayerWithLoadedChunks(field_71439_g);
-        field_71439_g.movementInput = new MovementInputFromOptions(gameSettings);
-        field_71439_g.entityId = i;
-        field_71439_g.func_6420_o();
-        ((PlayerController)field_71442_b).setGameMode(field_71439_g);
-        preloadWorld(StatCollector.translateToLocal("menu.respawning"));
-
-        if (currentScreen instanceof GuiGameOver)
-        {
-            displayGuiScreen(null);
-        }
-    }
-
-    /**
-     * Will use a portal teleport switching the dimension the player is in.
-     */
-    public void usePortal(int par1)
-    {
-        int i = field_71439_g.dimension;
-        field_71439_g.dimension = par1;
-        field_71441_e.setEntityDead(field_71439_g);
-        field_71439_g.isDead = false;
-        double d = field_71439_g.posX;
-        double d1 = field_71439_g.posZ;
-        double d2 = 1.0D;
-
-        if (i > -1 && field_71439_g.dimension == -1)
-        {
-            d2 = 0.125D;
-        }
-        else if (i == -1 && field_71439_g.dimension > -1)
-        {
-            d2 = 8D;
-        }
-
-        d *= d2;
-        d1 *= d2;
-
-        if (field_71439_g.dimension == -1)
-        {
-            field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, field_71439_g.rotationYaw, field_71439_g.rotationPitch);
-
-            if (field_71439_g.isEntityAlive())
-            {
-                field_71441_e.updateEntityWithOptionalForce(field_71439_g, false);
-            }
-
-            WorldSSP world = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
-                           newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
-                world = (WorldSSP)o;
-//                world = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-            changeWorld(world, "Entering the Nether", field_71439_g);
-        }
-        else if (field_71439_g.dimension == 0)
-        {
-            if (field_71439_g.isEntityAlive())
-            {
-                field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, field_71439_g.rotationYaw, field_71439_g.rotationPitch);
-                field_71441_e.updateEntityWithOptionalForce(field_71439_g, false);
-            }
-
-            WorldSSP world1 = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
-                           newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
-                world1 = (WorldSSP)o;
-//                world1 = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-
-            if (i == -1)
-            {
-                changeWorld(world1, "Leaving the Nether", field_71439_g);
-            }
-            else
-            {
-                changeWorld(world1, "Leaving the End", field_71439_g);
-            }
-        }
-        else
-        {
-            WorldSSP world2 = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
-                           newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
-                world2 = (WorldSSP)o;
-//                world2 = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-            ChunkCoordinates chunkcoordinates = world2.getEntrancePortalLocation();
-            d = chunkcoordinates.posX;
-            field_71439_g.posY = chunkcoordinates.posY;
-            d1 = chunkcoordinates.posZ;
-            field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, 90F, 0.0F);
-
-            if (field_71439_g.isEntityAlive())
-            {
-                world2.updateEntityWithOptionalForce(field_71439_g, false);
-            }
-
-            changeWorld(world2, "Entering the End", field_71439_g);
-        }
-
-        field_71439_g.worldObj = field_71441_e;
-        System.out.println((new StringBuilder()).append("Teleported to ").append(field_71441_e.worldProvider.worldType).toString());
-
-        if (field_71439_g.isEntityAlive() && i < 1)
-        {
-            field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, field_71439_g.rotationYaw, field_71439_g.rotationPitch);
-            field_71441_e.updateEntityWithOptionalForce(field_71439_g, false);
-            (new Teleporter()).placeInPortal(field_71441_e, field_71439_g);
-        }
-    }
-
-    /**
-     * Checks if the current world is a multiplayer world, returns true if it is, false otherwise.
-     */
-    public boolean isMultiplayerWorld()
-    {
-        return field_71441_e != null && field_71441_e.isRemote;
-    }
-
-    /**
      * Forces a reload of the sound manager and all the resources. Called in game by holding 'F3' and pressing 'S'.
      */
     private void forceReload()
@@ -2416,6 +1952,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
 
         displayGuiScreen(null);
+
         try
         {
             NetClientHandler netclienthandler = new NetClientHandler(this, field_71437_Z);
@@ -2495,7 +2032,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (field_71439_g == null)
             {
-                field_71439_g = field_71442_b.func_78754_a_2(par1WorldClient);
+                field_71439_g = field_71442_b.func_78754_a(par1WorldClient);
                 field_71442_b.flipPlayer(field_71439_g);
             }
 
@@ -2586,11 +2123,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
 
         renderViewEntity = null;
-        if (enableSP){
-            field_71439_g = field_71442_b.func_78754_a_2(field_71441_e);
-        }else{
-            field_71439_g = field_71442_b.func_78754_a(field_71441_e);
-        }
+        field_71439_g = field_71442_b.func_78754_a(field_71441_e);
         field_71439_g.dimension = par1;
         renderViewEntity = field_71439_g;
         field_71439_g.preparePlayerToSpawn();
@@ -2994,6 +2527,465 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public static Minecraft getMinecraftInstance()
     {
         return theMinecraft;
+    }
+
+    /**
+     * creates a new world or loads an existing one
+     */
+    public void startWorldSSP(String par1Str, String par2Str, WorldSettings par3WorldSettings)
+    {
+        changeWorld1(null);
+        System.gc();
+        for (Mod mod : mods){
+            mod.onLoadingSP(par1Str, par2Str);
+        }
+        if (saveLoader.isOldMapFormat(par1Str))
+        {
+            convertMapFormat(par1Str, par2Str);
+        }
+        else
+        {
+            if (loadingScreen != null)
+            {
+                loadingScreen.printText(StatCollector.translateToLocal("menu.switchingLevel"));
+                loadingScreen.displayLoadingString("");
+            }
+
+            net.minecraft.src.ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
+            WorldSSP world = null;
+            try{
+                Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).
+                           newInstance(new Object[]{isavehandler, par2Str, par3WorldSettings, field_71424_I});
+                world = (WorldSSP)o;
+//                world = new WorldSSP(isavehandler, par2Str, par3WorldSettings, field_71424_I);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+            if (world.isNewWorld)
+            {
+                statFileWriter.readStat(StatList.createWorldStat, 1);
+                statFileWriter.readStat(StatList.startGameStat, 1);
+                changeWorld2(world, StatCollector.translateToLocal("menu.generatingLevel"));
+            }
+            else
+            {
+                statFileWriter.readStat(StatList.loadWorldStat, 1);
+                statFileWriter.readStat(StatList.startGameStat, 1);
+                changeWorld2(world, StatCollector.translateToLocal("menu.loadingLevel"));
+            }
+        }
+        lastWorld = par1Str;
+    }
+
+    /**
+     * Unloads the current world, and displays a String while waiting
+     */
+    public void exitToMainMenu(String par1Str)
+    {
+        field_71441_e = null;
+        changeWorld2(null, par1Str);
+    }
+
+    /**
+     * Changes the world, no message, no player.
+     */
+    public void changeWorld1(WorldSSP par1World)
+    {
+        changeWorld2(par1World, "");
+    }
+
+    /**
+     * Changes the world with given message, no player.
+     */
+    public void changeWorld2(WorldSSP par1World, String par2Str)
+    {
+        changeWorld(par1World, par2Str, null);
+    }
+
+    /**
+     * first argument is the world to change to, second one is a loading message and the third the player itself
+     */
+    public void changeWorld(WorldSSP par1World, String par2Str, EntityPlayer par3EntityPlayer)
+    {
+//         statFileWriter.func_27175_b();
+        statFileWriter.syncStats();
+        renderViewEntity = null;
+
+        if (loadingScreen != null)
+        {
+            loadingScreen.printText(par2Str);
+            loadingScreen.displayLoadingString("");
+        }
+
+        sndManager.playStreaming(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+
+        if (field_71441_e != null)
+        {
+            ((WorldSSP)field_71441_e).saveWorldIndirectly(loadingScreen);
+        }
+
+        field_71441_e = par1World;
+
+        if (par1World != null)
+        {
+            commandManager = new ClientCommandManager();
+
+            if (!isMultiplayerWorld())
+            {
+                if (par3EntityPlayer == null)
+                {
+                    field_71439_g = (EntityPlayerSP2)par1World.func_4085_a(net.minecraft.src.EntityPlayerSP2.class);
+                }
+            }
+            else if (field_71439_g != null)
+            {
+                field_71439_g.preparePlayerToSpawn();
+
+                if (par1World != null)
+                {
+                    par1World.spawnEntityInWorld(field_71439_g);
+                }
+            }
+
+            if (!par1World.isRemote)
+            {
+                preloadWorld(par2Str);
+            }
+
+            if (field_71439_g == null)
+            {
+                field_71439_g = field_71442_b.func_78754_a(par1World);
+                field_71439_g.preparePlayerToSpawn();
+                field_71442_b.flipPlayer(field_71439_g);
+            }
+
+            field_71439_g.movementInput = new MovementInputFromOptions(gameSettings);
+
+            if (renderGlobal != null)
+            {
+                renderGlobal.func_72732_a(par1World);
+            }
+
+            if (effectRenderer != null)
+            {
+                effectRenderer.clearEffects(par1World);
+            }
+
+            if (par3EntityPlayer != null)
+            {
+                par1World.func_6464_c();
+            }
+
+            net.minecraft.src.IChunkProvider ichunkprovider = par1World.getChunkProvider();
+
+            if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
+            {
+                ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
+                int i = MathHelper.floor_float((int)field_71439_g.posX) >> 4;
+                int j = MathHelper.floor_float((int)field_71439_g.posZ) >> 4;
+                chunkproviderloadorgenerate.setCurrentChunkOver(i, j);
+            }
+
+            par1World.spawnPlayerWithLoadedChunks(field_71439_g);
+            ((PlayerController)field_71442_b).setGameMode(field_71439_g);
+
+            if (par1World.isNewWorld)
+            {
+                ((WorldSSP)par1World).saveWorldIndirectly(loadingScreen);
+            }
+
+            renderViewEntity = field_71439_g;
+        }
+        else
+        {
+            saveLoader.flushCache();
+            field_71439_g = null;
+        }
+
+        System.gc();
+        systemTime = 0L;
+    }
+
+    /**
+     * Converts from old map format to new map format
+     */
+    private void convertMapFormat(String par1Str, String par2Str)
+    {
+        loadingScreen.printText((new StringBuilder()).append("Converting World to Anvil")/*.append(saveLoader.getFormatName())*/.toString());
+        loadingScreen.displayLoadingString("This may take a while :)");
+        saveLoader.convertMapFormat(par1Str, loadingScreen);
+        startWorldSSP(par1Str, par2Str, new WorldSettings(0L, EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT));
+    }
+
+    /**
+     * Display the preload world loading screen then load SP World.
+     */
+    private void preloadWorld(String par1Str)
+    {
+        if (loadingScreen != null)
+        {
+            loadingScreen.printText(par1Str);
+            loadingScreen.displayLoadingString(StatCollector.translateToLocal("menu.generatingTerrain"));
+        }
+
+        char c = '\200';
+
+        if (((PlayerController)field_71442_b).func_35643_e())
+        {
+            c = '@';
+        }
+
+        int i = 0;
+        int j = (c * 2) / 16 + 1;
+        j *= j;
+        IChunkProvider ichunkprovider = field_71441_e.getChunkProvider();
+        ChunkCoordinates chunkcoordinates = field_71441_e.getSpawnPoint();
+
+        if (field_71439_g != null)
+        {
+            chunkcoordinates.posX = (int)field_71439_g.posX;
+            chunkcoordinates.posZ = (int)field_71439_g.posZ;
+        }
+
+        if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
+        {
+            ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
+            chunkproviderloadorgenerate.setCurrentChunkOver(chunkcoordinates.posX >> 4, chunkcoordinates.posZ >> 4);
+        }
+
+        for (int k = -c; k <= c; k += 16)
+        {
+            for (int l = -c; l <= c; l += 16)
+            {
+                if (loadingScreen != null)
+                {
+                    loadingScreen.setLoadingProgress((i++ * 100) / j);
+                }
+
+                field_71441_e.getBlockId(chunkcoordinates.posX + k, 64, chunkcoordinates.posZ + l);
+
+                if (((PlayerController)field_71442_b).func_35643_e())
+                {
+                    continue;
+                }
+
+                while (field_71441_e.updatingLighting()) ;
+            }
+        }
+
+        if (!((PlayerController)field_71442_b).func_35643_e())
+        {
+            if (loadingScreen != null)
+            {
+                loadingScreen.displayLoadingString(StatCollector.translateToLocal("menu.simulating"));
+            }
+
+            char c1 = 2000;
+            ((WorldSSP)field_71441_e).dropOldChunks();
+        }
+    }
+
+    /**
+     * Called when the respawn button is pressed after the player dies.
+     */
+    public void respawn(boolean par1, int par2, boolean par3)
+    {
+        if (!field_71441_e.isRemote && !field_71441_e.worldProvider.canRespawnHere())
+        {
+            usePortal(0);
+        }
+
+        ChunkCoordinates chunkcoordinates = null;
+        ChunkCoordinates chunkcoordinates1 = null;
+        boolean flag = true;
+
+        if (field_71439_g != null && !par1)
+        {
+            chunkcoordinates = field_71439_g.getSpawnChunk();
+
+            if (chunkcoordinates != null)
+            {
+                chunkcoordinates1 = EntityPlayer.verifyRespawnCoordinates(field_71441_e, chunkcoordinates);
+
+                if (chunkcoordinates1 == null)
+                {
+                    field_71439_g.addChatMessage("tile.bed.notValid");
+                }
+            }
+        }
+
+        if (chunkcoordinates1 == null)
+        {
+            chunkcoordinates1 = field_71441_e.getSpawnPoint();
+            flag = false;
+        }
+
+        net.minecraft.src.IChunkProvider ichunkprovider = field_71441_e.getChunkProvider();
+
+        if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
+        {
+            ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
+            chunkproviderloadorgenerate.setCurrentChunkOver(chunkcoordinates1.posX >> 4, chunkcoordinates1.posZ >> 4);
+        }
+
+        field_71441_e.setSpawnLocation();
+        ((WorldSSP)field_71441_e).updateEntityList();
+        int i = 0;
+
+        if (field_71439_g != null)
+        {
+            i = field_71439_g.entityId;
+            field_71441_e.setEntityDead(field_71439_g);
+        }
+
+        EntityPlayerSP entityplayersp = field_71439_g;
+        renderViewEntity = null;
+        field_71439_g = field_71442_b.func_78754_a(field_71441_e);
+
+        if (par3)
+        {
+            field_71439_g.func_71049_a(entityplayersp, true);
+        }
+
+        field_71439_g.dimension = par2;
+        renderViewEntity = field_71439_g;
+        field_71439_g.preparePlayerToSpawn();
+
+        if (flag)
+        {
+            field_71439_g.setSpawnChunk(chunkcoordinates);
+            field_71439_g.setLocationAndAngles((float)chunkcoordinates1.posX + 0.5F, (float)chunkcoordinates1.posY + 0.1F, (float)chunkcoordinates1.posZ + 0.5F, 0.0F, 0.0F);
+        }
+
+        field_71442_b.flipPlayer(field_71439_g);
+        ((WorldSSP)field_71441_e).spawnPlayerWithLoadedChunks(field_71439_g);
+        field_71439_g.movementInput = new MovementInputFromOptions(gameSettings);
+        field_71439_g.entityId = i;
+        field_71439_g.func_6420_o();
+        ((PlayerController)field_71442_b).setGameMode(field_71439_g);
+        preloadWorld(StatCollector.translateToLocal("menu.respawning"));
+
+        if (currentScreen instanceof GuiGameOver)
+        {
+            displayGuiScreen(null);
+        }
+    }
+
+    /**
+     * Will use a portal teleport switching the dimension the player is in.
+     */
+    public void usePortal(int par1)
+    {
+        int i = field_71439_g.dimension;
+        field_71439_g.dimension = par1;
+        field_71441_e.setEntityDead(field_71439_g);
+        field_71439_g.isDead = false;
+        double d = field_71439_g.posX;
+        double d1 = field_71439_g.posZ;
+        double d2 = 1.0D;
+
+        if (i > -1 && field_71439_g.dimension == -1)
+        {
+            d2 = 0.125D;
+        }
+        else if (i == -1 && field_71439_g.dimension > -1)
+        {
+            d2 = 8D;
+        }
+
+        d *= d2;
+        d1 *= d2;
+
+        if (field_71439_g.dimension == -1)
+        {
+            field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, field_71439_g.rotationYaw, field_71439_g.rotationPitch);
+
+            if (field_71439_g.isEntityAlive())
+            {
+                field_71441_e.updateEntityWithOptionalForce(field_71439_g, false);
+            }
+
+            WorldSSP world = null;
+            try{
+                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
+                           newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
+                world = (WorldSSP)o;
+//                world = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            changeWorld(world, "Entering the Nether", field_71439_g);
+        }
+        else if (field_71439_g.dimension == 0)
+        {
+            if (field_71439_g.isEntityAlive())
+            {
+                field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, field_71439_g.rotationYaw, field_71439_g.rotationPitch);
+                field_71441_e.updateEntityWithOptionalForce(field_71439_g, false);
+            }
+
+            WorldSSP world1 = null;
+            try{
+                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
+                           newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
+                world1 = (WorldSSP)o;
+//                world1 = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+            if (i == -1)
+            {
+                changeWorld(world1, "Leaving the Nether", field_71439_g);
+            }
+            else
+            {
+                changeWorld(world1, "Leaving the End", field_71439_g);
+            }
+        }
+        else
+        {
+            WorldSSP world2 = null;
+            try{
+                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
+                           newInstance(new Object[]{(WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I});
+                world2 = (WorldSSP)o;
+//                world2 = new WorldSSP((WorldSSP)field_71441_e, WorldProvider.getProviderForDimension(field_71439_g.dimension), field_71424_I);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            ChunkCoordinates chunkcoordinates = world2.getEntrancePortalLocation();
+            d = chunkcoordinates.posX;
+            field_71439_g.posY = chunkcoordinates.posY;
+            d1 = chunkcoordinates.posZ;
+            field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, 90F, 0.0F);
+
+            if (field_71439_g.isEntityAlive())
+            {
+                world2.updateEntityWithOptionalForce(field_71439_g, false);
+            }
+
+            changeWorld(world2, "Entering the End", field_71439_g);
+        }
+
+        field_71439_g.worldObj = field_71441_e;
+        System.out.println((new StringBuilder()).append("Teleported to ").append(field_71441_e.worldProvider.worldType).toString());
+
+        if (field_71439_g.isEntityAlive() && i < 1)
+        {
+            field_71439_g.setLocationAndAngles(d, field_71439_g.posY, d1, field_71439_g.rotationYaw, field_71439_g.rotationPitch);
+            field_71441_e.updateEntityWithOptionalForce(field_71439_g, false);
+            (new Teleporter()).placeInPortal(field_71441_e, field_71439_g);
+        }
+    }
+
+    /**
+     * Checks if the current world is a multiplayer world, returns true if it is, false otherwise.
+     */
+    public boolean isMultiplayerWorld()
+    {
+        return field_71441_e != null && field_71441_e.isRemote;
     }
 
     public void setController(EnumGameType enumgametype){

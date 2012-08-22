@@ -2162,4 +2162,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
         return field_71078_a;
     }
+
+    public final EntityPlayer getSuper(){
+        return this;
+    }
 }

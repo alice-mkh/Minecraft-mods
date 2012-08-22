@@ -142,14 +142,9 @@ public class PlayerController extends PlayerControllerMP
         return false;
     }
 
-    public EntityPlayerSP func_78754_a_2(World par1World)
-    {
-        return new EntityPlayerSP(mc, par1World, mc.session, par1World.worldProvider.worldType);
-    }
-
     public EntityClientPlayerMP func_78754_a(World par1World)
     {
-        return (EntityClientPlayerMP)func_78754_a_2(par1World);
+        return new EntityPlayerSP2(mc, par1World, mc.session, par1World.worldProvider.worldType);
     }
 
     /**

@@ -500,11 +500,11 @@ public class GuiIngame extends Gui
             int i3 = 0;
             java.util.List list = null;
             if (mc.enableSP){
-                NetHandlerSP nethandlersp = mc.field_71439_g.sendQueue;
+                NetHandlerSP nethandlersp = ((EntityPlayerSP2)mc.field_71439_g).sendQueue;
                 list = nethandlersp.playerInfoList;
                 i3 = nethandlersp.currentServerMaxPlayers;
             }else{
-                NetClientHandler netclienthandler = ((EntityClientPlayerMP)mc.field_71439_g).sendQueue;
+                NetClientHandler netclienthandler = mc.field_71439_g.sendQueue;
                 list = netclienthandler.playerInfoList;
                 i3 = netclienthandler.currentServerMaxPlayers;
             }

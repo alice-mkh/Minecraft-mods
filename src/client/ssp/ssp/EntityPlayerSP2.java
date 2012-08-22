@@ -3,33 +3,23 @@ package net.minecraft.src;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 
-public class EntityPlayerSP extends EntityPlayer
+public class EntityPlayerSP2 extends EntityClientPlayerMP
 {
+    public static int armor = 3;
+    public static int combat = 3;
+    public static boolean sprint = true;
+    public static int startitems = 0;
+    public static boolean oldswing = false;
+
     public NetHandlerSP sendQueue;
 
-    public MovementInput movementInput;
-    protected Minecraft mc;
-
-    /**
-     * Used to tell if the player pressed forward twice. If this is at 0 and it's pressed (And they are allowed to
-     * sprint, aka enough food on the ground etc) it sets this to 7. If it's pressed and it's greater than 0 enable
-     * sprinting.
-     */
-    protected int sprintToggleTimer;
-
-    /** Ticks left before sprinting is disabled. */
-    public int sprintingTicksLeft;
-    public float renderArmYaw;
-    public float renderArmPitch;
-    public float prevRenderArmYaw;
-    public float prevRenderArmPitch;
     private MouseFilter field_71162_ch;
     private MouseFilter field_71160_ci;
     private MouseFilter field_71161_cj;
 
-    public EntityPlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, int par4)
+    public EntityPlayerSP2(Minecraft par1Minecraft, World par2World, Session par3Session, int par4)
     {
-        super(par2World);
+        super(par1Minecraft, par2World, par3Session, null);
         sprintToggleTimer = 0;
         sprintingTicksLeft = 0;
         field_71162_ch = new MouseFilter();
@@ -379,7 +369,7 @@ public class EntityPlayerSP extends EntityPlayer
      */
     public void closeScreen()
     {
-        super.closeScreen();
+        craftingInventory = inventorySlots;
         mc.displayGuiScreen(null);
     }
 
@@ -651,5 +641,305 @@ public class EntityPlayerSP extends EntityPlayer
     public boolean func_70003_b(String par1Str)
     {
         return worldObj.getWorldInfo().func_76086_u();
+    }
+
+    /**
+     * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health
+     * second with the reduced value. Args: damageAmount
+     */
+    protected void damageEntity(DamageSource par1DamageSource, int par2)
+    {
+        if (!par1DamageSource.isUnblockable() && isBlocking())
+        {
+            par2 = 1 + par2 >> 1;
+        }
+
+        if (armor<2){
+            par2 = applyArmorCalculations_old(par1DamageSource, par2);
+        }else{
+            par2 = applyArmorCalculations(par1DamageSource, par2);
+        }
+        par2 = applyPotionDamageCalculations(par1DamageSource, par2);
+        addExhaustion(par1DamageSource.getHungerDamage());
+        if (armor==2){
+            par2 = applyArmorCalculations(par1DamageSource, par2);
+            par2 = applyPotionDamageCalculations(par1DamageSource, par2);
+        }
+        health -= par2;
+    }
+
+    public void func_71016_p()
+    {
+    }
+
+    public boolean func_71066_bF()
+    {
+        return false;
+    }
+
+    /**
+     * Called when the entity is attacked.
+     */
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    {
+        if (capabilities.disableDamage && !par1DamageSource.canHarmInCreative())
+        {
+            return false;
+        }
+
+        entityAge = 0;
+
+        if (getHealth() <= 0)
+        {
+            return false;
+        }
+
+        if (isPlayerSleeping() && !worldObj.isRemote)
+        {
+            wakeUpPlayer(true, true, false);
+        }
+
+        Entity entity = par1DamageSource.getEntity();
+
+        if (par1DamageSource.func_76350_n())
+        {
+            if (worldObj.difficultySetting == 0)
+            {
+                par2 = 0;
+            }
+
+            if (worldObj.difficultySetting == 1)
+            {
+                par2 = par2 / 2 + 1;
+            }
+
+            if (worldObj.difficultySetting == 3)
+            {
+                par2 = (par2 * 3) / 2;
+            }
+        }
+
+        if (par2 == 0)
+        {
+            return false;
+        }
+
+        Entity entity1 = par1DamageSource.getEntity();
+
+        if ((entity1 instanceof EntityArrow) && ((EntityArrow)entity1).shootingEntity != null)
+        {
+            entity1 = ((EntityArrow)entity1).shootingEntity;
+        }
+
+        if (entity1 instanceof EntityLiving)
+        {
+            alertWolves((EntityLiving)entity1, false);
+        }
+
+        addStat(StatList.damageTakenStat, par2);
+        if (worldObj.isRemote)
+        {
+            return false;
+        }
+
+        entityAge = 0;
+
+        if (health <= 0)
+        {
+            return false;
+        }
+
+        if (par1DamageSource.fireDamage() && isPotionActive(Potion.fireResistance))
+        {
+            return false;
+        }
+
+        field_70721_aZ = 1.5F;
+        boolean flag = true;
+
+        if ((float)heartsLife > (float)heartsHalvesLife / 2.0F)
+        {
+            if (par2 <= lastDamage)
+            {
+                return false;
+            }
+
+            damageEntity(par1DamageSource, par2 - lastDamage);
+            lastDamage = par2;
+            flag = false;
+        }
+        else
+        {
+            lastDamage = par2;
+            prevHealth = health;
+            heartsLife = heartsHalvesLife;
+            damageEntity(par1DamageSource, par2);
+            hurtTime = maxHurtTime = 10;
+        }
+
+        attackedAtYaw = 0.0F;
+
+        if (entity != null)
+        {
+            if (entity instanceof EntityLiving)
+            {
+                setRevengeTarget((EntityLiving)entity);
+            }
+
+            if (entity instanceof EntityPlayer)
+            {
+                recentlyHit = 60;
+                attackingPlayer = (EntityPlayer)entity;
+            }
+            else if (entity instanceof EntityWolf)
+            {
+                EntityWolf entitywolf = (EntityWolf)entity;
+
+                if (entitywolf.isTamed())
+                {
+                    recentlyHit = 60;
+                    attackingPlayer = null;
+                }
+            }
+        }
+
+        if (flag)
+        {
+            worldObj.setEntityState(this, (byte)2);
+
+            if (par1DamageSource != DamageSource.drown && par1DamageSource != DamageSource.field_76375_l)
+            {
+                setBeenAttacked();
+            }
+
+            if (entity != null)
+            {
+                double d = entity.posX - posX;
+                double d1;
+
+                for (d1 = entity.posZ - posZ; d * d + d1 * d1 < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D)
+                {
+                    d = (Math.random() - Math.random()) * 0.01D;
+                }
+
+                attackedAtYaw = (float)((Math.atan2(d1, d) * 180D) / Math.PI) - rotationYaw;
+                knockBack(entity, par2, d, d1);
+            }
+            else
+            {
+                attackedAtYaw = (int)(Math.random() * 2D) * 180;
+            }
+        }
+
+        if (health <= 0)
+        {
+            if (flag)
+            {
+                worldObj.playSoundAtEntity(this, getDeathSound(), getSoundVolume(), getSoundPitch());
+            }
+
+            onDeath(par1DamageSource);
+        }
+        else if (flag)
+        {
+            worldObj.playSoundAtEntity(this, getHurtSound(), getSoundVolume(), getSoundPitch());
+        }
+
+        return true;
+    }
+
+    /**
+     * Heal living entity (param: amount of half-hearts)
+     */
+    public void heal(int par1)
+    {
+        if (health <= 0)
+        {
+            return;
+        }
+
+        health += par1;
+
+        if (health > getMaxHealth())
+        {
+            health = getMaxHealth();
+        }
+
+        heartsLife = heartsHalvesLife / 2;
+    }
+
+    /**
+     * Called to update the entity's position/logic.
+     */
+    public void onUpdate()
+    {
+        super.onUpdate();
+    }
+
+    public void sendMotionUpdates()
+    {
+    }
+
+    /**
+     * Called when player presses the drop item key
+     */
+    public EntityItem dropOneItem()
+    {
+        return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, 1), false);
+    }
+
+    /**
+     * Joins the passed in entity item with the world. Args: entityItem
+     */
+    protected void joinEntityItemWithWorld(EntityItem entityitem)
+    {
+        worldObj.spawnEntityInWorld(entityitem);
+    }
+
+    /**
+     * Swings the item the player is holding.
+     */
+    public void swingItem()
+    {
+        if (!isSwinging || swingProgressInt >= getSwingSpeedModifier() / 2 || swingProgressInt < 0)
+        {
+            swingProgressInt = -1;
+            isSwinging = true;
+        }
+    }
+
+    /**
+     * Returns the swing speed modifier
+     */
+    private int getSwingSpeedModifier()
+    {
+        if (isPotionActive(Potion.digSpeed))
+        {
+            return (oldswing ? 8 : 6) - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
+        }
+
+        if (isPotionActive(Potion.digSlowdown))
+        {
+            return (oldswing ? 8 : 6) + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
+        }
+        else
+        {
+            return (oldswing ? 8 : 6);
+        }
+    }
+
+    /**
+     * Gets the pitch of living sounds in living entities.
+     */
+    private float getSoundPitch()
+    {
+        if (isChild())
+        {
+            return (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.5F;
+        }
+        else
+        {
+            return (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F;
+        }
     }
 }
