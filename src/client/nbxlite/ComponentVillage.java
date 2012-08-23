@@ -186,7 +186,7 @@ abstract class ComponentVillage extends StructureComponent
 
     protected int func_74892_e(int par1, int par2)
     {
-        if (field_74897_k.field_74927_b)
+        if (field_74897_k.field_74927_b && ODNBXlite.desertVillages())
         {
             if (par1 == Block.wood.blockID)
             {
