@@ -609,9 +609,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (isSprinting())
         {
-            if (!sprint){
-                setSprinting(false);
-            }
             landMovementFactor += (double)capabilities.func_75094_b() * 0.29999999999999999D;
             jumpMovementFactor += (double)speedInAir * 0.29999999999999999D;
         }
@@ -2163,7 +2160,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return field_71078_a;
     }
 
-    public final EntityPlayer getSuper(){
-        return this;
+    /**
+     * Set sprinting switch for Entity.
+     */
+    public void setSprinting(boolean par1)
+    {
+        if (!sprint){
+            par1 = false;
+        }
+        super.setSprinting(par1);
     }
 }

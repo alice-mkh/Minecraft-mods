@@ -48,9 +48,7 @@ public class ODNBXlite extends OldDaysModule{
         try{
             WorldInfo.useNBXlite = true;
         }catch(Exception ex){}
-        try{
-            RenderGlobal.nbxlite = true;
-        }catch(Exception ex){}
+        set(net.minecraft.src.RenderGlobal.class, "nbxlite", true);
         try{
             Minecraft.getMinecraftInstance().worldClass = net.minecraft.src.WorldSSP2.class;
         }catch(Exception ex){}

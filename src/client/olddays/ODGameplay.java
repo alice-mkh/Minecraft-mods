@@ -43,8 +43,7 @@ public class ODGameplay extends OldDaysModule{
                     set(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=0);
                     setArmorDamage(Armor<2); break;
             case 11:set(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
-            case 12:set(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint);
-                    set(net.minecraft.src.FoodStats.class, "disabledLevel", AllowSprint ? 20 : 5); break;
+            case 12:set(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint); break;
             case 13:set(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
             case 14:set(net.minecraft.src.EntityPlayer.class, "startitems", StartItems); break;
             case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
