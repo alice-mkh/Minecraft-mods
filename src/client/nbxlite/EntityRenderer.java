@@ -843,7 +843,7 @@ public class EntityRenderer
 
     private void updateLightmap()
     {
-        World worldclient = (World)mc.field_71441_e;
+        WorldClient worldclient = mc.field_71441_e;
 
         if (worldclient == null)
         {
@@ -1322,7 +1322,7 @@ public class EntityRenderer
 
         random.setSeed((long)rendererUpdateCount * 0x12a7ce5fL);
         EntityLiving entityliving = mc.renderViewEntity;
-        World worldclient = (World)mc.field_71441_e;
+        WorldClient worldclient = mc.field_71441_e;
         int i = MathHelper.floor_double(entityliving.posX);
         int j = MathHelper.floor_double(entityliving.posY);
         int k = MathHelper.floor_double(entityliving.posZ);
@@ -1550,7 +1550,7 @@ public class EntityRenderer
         }
 
         EntityLiving entityliving = mc.renderViewEntity;
-        World worldclient = (World)mc.field_71441_e;
+        WorldClient worldclient = mc.field_71441_e;
         int k = MathHelper.floor_double(entityliving.posX);
         int l = MathHelper.floor_double(entityliving.posY);
         int i1 = MathHelper.floor_double(entityliving.posZ);
@@ -1719,7 +1719,7 @@ public class EntityRenderer
      */
     private void updateFogColor(float par1)
     {
-        World worldclient = (World)mc.field_71441_e;
+        WorldClient worldclient = mc.field_71441_e;
         EntityLiving entityliving = mc.renderViewEntity;
         float f = 1.0F / (float)(4 - mc.gameSettings.renderDistance);
         f = 1.0F - (float)Math.pow(f, 0.25D);

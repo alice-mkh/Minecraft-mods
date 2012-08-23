@@ -158,7 +158,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public int displayHeight;
     private Timer timer;
     private PlayerUsageSnooper field_71427_U;
-    public World field_71441_e;
+    public WorldClient field_71441_e;
     public RenderGlobal renderGlobal;
     public EntityClientPlayerMP field_71439_g;
 
@@ -1871,11 +1871,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (!isGamePaused && field_71441_e != null)
             {
-                if (enableSP){
-                    ((WorldSSP)field_71441_e).func_73029_E(MathHelper.floor_double(field_71439_g.posX), MathHelper.floor_double(field_71439_g.posY), MathHelper.floor_double(field_71439_g.posZ));
-                }else{
-                    ((WorldClient)field_71441_e).func_73029_E(MathHelper.floor_double(field_71439_g.posX), MathHelper.floor_double(field_71439_g.posY),  MathHelper.floor_double(field_71439_g.posZ));
-                }
+                field_71441_e.func_73029_E(MathHelper.floor_double(field_71439_g.posX), MathHelper.floor_double(field_71439_g.posY), MathHelper.floor_double(field_71439_g.posZ));
             }
 
             field_71424_I.endStartSection("particles");
@@ -1965,12 +1961,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         lastWorld = par1Str;
     }
 
-    public void func_71403_a(World par1WorldClient)
+    public void func_71403_a(WorldClient par1WorldClient)
     {
         func_71353_a(par1WorldClient, "");
     }
 
-    public void func_71353_a(World par1WorldClient, String par2Str)
+    public void func_71353_a(WorldClient par1WorldClient, String par2Str)
     {
         statFileWriter.syncStats();
 
@@ -2109,10 +2105,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     public void func_71354_a(int par1)
     {
-        if (enableSP){
-            field_71441_e.setSpawnLocation();
-        }else{
-            ((WorldClient)field_71441_e).func_73022_a();
+        field_71441_e.setSpawnLocation();
+        if (!enableSP){
+            field_71441_e.func_73022_a();
         }
         int i = 0;
 
@@ -2156,7 +2151,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     {
         if (field_71439_g != null)
         {
-            return ((EntityClientPlayerMP)field_71439_g).sendQueue;
+            return field_71439_g.sendQueue;
         }
         else
         {

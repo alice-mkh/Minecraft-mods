@@ -15,7 +15,7 @@ public class NetHandlerSP extends NetClientHandler
     public List playerInfoList;
     public int currentServerMaxPlayers;
 
-    public NetHandlerSP(Minecraft par1Minecraft, String par2Str, int par3)
+    public NetHandlerSP(Minecraft par1Minecraft)
     {
         super(par1Minecraft);
         playerInfoList = new ArrayList();

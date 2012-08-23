@@ -11,7 +11,7 @@ public class RenderGlobal implements IWorldAccess
     public static boolean nbxlite = false;
 
     public List tileEntities;
-    private World field_72769_h;
+    private WorldClient field_72769_h;
 
     /** The RenderEngine instance used by RenderGlobal */
     private final RenderEngine renderEngine;
@@ -273,7 +273,7 @@ public class RenderGlobal implements IWorldAccess
         tessellator.draw();
     }
 
-    public void func_72732_a(World par1WorldClient)
+    public void func_72732_a(WorldClient par1WorldClient)
     {
         if (field_72769_h != null)
         {

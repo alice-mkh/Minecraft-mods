@@ -63,7 +63,7 @@ public class RenderGlobal2 extends RenderGlobal{
     /**
      * Changes the world reference in RenderGlobal
      */
-    public void func_72732_a(World par1World)
+    public void func_72732_a(WorldClient par1World)
     {
         super.func_72732_a(par1World);
         worldObj = par1World;

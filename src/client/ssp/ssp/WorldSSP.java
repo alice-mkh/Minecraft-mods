@@ -2,8 +2,9 @@ package net.minecraft.src;
 
 import java.io.PrintStream;
 import java.util.*;
+import net.minecraft.client.Minecraft;
 
-public class WorldSSP extends World implements IBlockAccess
+public class WorldSSP extends WorldClient implements IBlockAccess
 {
     /**
      * TreeSet of scheduled ticks which is used as a priority queue for the ticks
@@ -47,7 +48,7 @@ public class WorldSSP extends World implements IBlockAccess
 
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
     {
-        super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p);
+        super(par3WorldProvider, par1ISaveHandler, par4WorldSettings, par2Str, p);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
         entityRemoval = new ArrayList();
@@ -66,7 +67,7 @@ public class WorldSSP extends World implements IBlockAccess
 
     public WorldSSP(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p)
     {
-        super(par1World.saveHandler, par1World.getWorldInfo().getWorldName(), par2WorldProvider, new WorldSettings(par1World.getWorldInfo()), p);
+        super(par2WorldProvider, par1World.saveHandler, new WorldSettings(par1World.getWorldInfo()), par1World.getWorldInfo().getWorldName(), p);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
         entityRemoval = new ArrayList();
@@ -91,7 +92,7 @@ public class WorldSSP extends World implements IBlockAccess
 
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p)
     {
-        super(par1ISaveHandler, par2Str, par3WorldSettings, par4WorldProvider, p);
+        super(par4WorldProvider, par1ISaveHandler, par3WorldSettings, par2Str, p);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
         entityRemoval = new ArrayList();
@@ -3046,7 +3047,7 @@ public class WorldSSP extends World implements IBlockAccess
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.hasNoSky)
+            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasVoidParticles())
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
@@ -3298,6 +3299,55 @@ public class WorldSSP extends World implements IBlockAccess
         }
 
         return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
+    }
+
+    /**
+     * Invalidates an AABB region of blocks from the receive queue, in the event that the block has been modified
+     * client-side in the intervening 80 receive ticks.
+     */
+    public void invalidateBlockReceiveRegion(int i, int j, int k, int l, int i1, int j1)
+    {
+    }
+
+    public void doPreChunk(int par1, int par2, boolean par3)
+    {
+    }
+
+    /**
+     * Add an ID to Entity mapping to entityHashSet
+     */
+    public void addEntityToWorld(int par1, Entity par2Entity)
+    {
+    }
+
+    /**
+     * Lookup and return an Entity based on its ID
+     */
+    public Entity getEntityByID(int par1)
+    {
+        return null;
+    }
+
+    public Entity removeEntityFromWorld(int par1)
+    {
+        return null;
+    }
+
+    public boolean setBlockAndMetadataAndInvalidate(int par1, int par2, int par3, int par4, int par5)
+    {
+        return false;
+    }
+
+    public void func_73022_a()
+    {
+    }
+
+    public CrashReport func_72914_a(CrashReport par1CrashReport)
+    {
+        par1CrashReport.func_71500_a((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Entities").toString(), new CallableLvl1(this));
+        par1CrashReport.func_71500_a((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Players").toString(), new CallableLvl2(this));
+        par1CrashReport.func_71500_a((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Chunk Stats").toString(), new CallableLvl3(this));
+        return par1CrashReport;
     }
 
     static
