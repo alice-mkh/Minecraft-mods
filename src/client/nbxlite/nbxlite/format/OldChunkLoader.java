@@ -110,7 +110,12 @@ public class OldChunkLoader
     public void saveChunk(World world, Chunk chunk)
     throws IOException
     {
-        world.checkSessionLock();
+        try{
+            world.checkSessionLock();
+        }catch(MinecraftException ex){
+            ex.printStackTrace();
+            return;
+        }
         File file = chunkFileForXZ(chunk.xPosition, chunk.zPosition);
         if (file.exists())
         {
@@ -144,7 +149,12 @@ public class OldChunkLoader
     public static void storeChunkInCompound(Chunk chunk, World world, NBTTagCompound nbttagcompound)
     {
         OldChunk chunk2 = (OldChunk)chunk;
-        world.checkSessionLock();
+        try{
+            world.checkSessionLock();
+        }catch(MinecraftException ex){
+            ex.printStackTrace();
+            return;
+        }
         nbttagcompound.setInteger("xPos", chunk2.xPosition);
         nbttagcompound.setInteger("zPos", chunk2.zPosition);
         nbttagcompound.setLong("LastUpdate", world.getWorldTime());
