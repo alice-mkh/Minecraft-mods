@@ -702,6 +702,10 @@ public class ODNBXlite extends OldDaysModule{
         return Generator!=GEN_NEWBIOMES || MapFeatures>FEATURES_BETA181;
     }
 
+    public static boolean lowerVillages(){
+        return Generator==GEN_NEWBIOMES && MapFeatures<=FEATURES_BETA181;
+    }
+
     public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
         Generator=gen;
         MapFeatures=features;

@@ -76,7 +76,7 @@ abstract class ComponentVillage extends StructureComponent
             {
                 if (par2StructureBoundingBox.isVecInside(l, 64, k))
                 {
-                    i += Math.max(par1World.getTopSolidOrLiquidBlock(l, k), par1World.worldProvider.getAverageGroundLevel());
+                    i += Math.max(par1World.getTopSolidOrLiquidBlock(l, k), ODNBXlite.lowerVillages() ? 63 : par1World.worldProvider.getAverageGroundLevel());
                     j++;
                 }
             }
