@@ -17,7 +17,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
     public EntityPlayerSP2(Minecraft par1Minecraft, World par2World, Session par3Session, int par4)
     {
-        super(par1Minecraft, par2World, par3Session, new NetHandlerSP(par1Minecraft));
+        super(par1Minecraft, par2World, par3Session, new NetClientHandlerSP(par1Minecraft));
         sprintToggleTimer = 0;
         sprintingTicksLeft = 0;
         field_71162_ch = new MouseFilter();

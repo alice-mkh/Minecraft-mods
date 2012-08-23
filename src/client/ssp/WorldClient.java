@@ -42,7 +42,7 @@ public class WorldClient extends World
     public WorldClient(WorldProvider w, ISaveHandler i, WorldSettings s, String str, Profiler p)
     {
         super(i, str, s, w, p);
-        sendQueue = new NetHandlerSP(Minecraft.getMinecraftInstance());
+        sendQueue = new NetClientHandlerSP(Minecraft.getMinecraftInstance());
         mapStorage = new MapStorage(i);
     }
 

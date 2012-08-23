@@ -168,6 +168,7 @@ public class NetClientHandler extends NetHandler
         currentServerMaxPlayers = par1Packet1Login.maxPlayers;
         mc.field_71442_b.func_78746_a(par1Packet1Login.field_73557_d);
         addToSendQueue(new Packet204ClientInfo(mc.gameSettings.language, mc.gameSettings.renderDistance, mc.gameSettings.field_74343_n, mc.gameSettings.field_74344_o, mc.gameSettings.difficulty));
+        Minecraft.invokeModMethod("ModLoader", "clientConnect", new Class[]{NetClientHandler.class, Packet1Login.class}, this, par1Packet1Login);
     }
 
     public void handlePickupSpawn(Packet21PickupSpawn par1Packet21PickupSpawn)
@@ -618,6 +619,7 @@ public class NetClientHandler extends NetHandler
     {
         netManager.networkShutdown("disconnect.kicked", new Object[0]);
         field_72554_f = true;
+        Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
         mc.func_71403_a(null);
         mc.displayGuiScreen(new GuiDisconnected("disconnect.disconnected", "disconnect.genericReason", new Object[]
                 {
@@ -634,6 +636,7 @@ public class NetClientHandler extends NetHandler
         else
         {
             field_72554_f = true;
+            Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
             mc.func_71403_a(null);
             mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
             return;
@@ -699,6 +702,7 @@ public class NetClientHandler extends NetHandler
     public void handleChat(Packet3Chat par1Packet3Chat)
     {
         mc.ingameGUI.func_73827_b().func_73765_a(par1Packet3Chat.message);
+        Minecraft.invokeModMethod("ModLoader", "clientChat", new Class[]{String.class}, par1Packet3Chat.message);
     }
 
     public void handleAnimation(Packet18Animation par1Packet18Animation)
@@ -764,6 +768,7 @@ public class NetClientHandler extends NetHandler
     public void disconnect()
     {
         field_72554_f = true;
+        Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
         netManager.func_74427_a();
         netManager.networkShutdown("disconnect.closed", new Object[0]);
     }
@@ -964,6 +969,10 @@ public class NetClientHandler extends NetHandler
             case 6:
                 entityclientplayermp.func_71030_a(new NpcMerchant(entityclientplayermp));
                 ((EntityPlayerSP)(entityclientplayermp)).craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+                break;
+
+            default:
+                Minecraft.invokeModMethod("ModLoader", "clientOpenWindow", new Class[]{Packet100OpenWindow.class}, par1Packet100OpenWindow);
                 break;
         }
     }
@@ -1384,6 +1393,10 @@ public class NetClientHandler extends NetHandler
             {
                 ioexception.printStackTrace();
             }
+        }
+        else
+        {
+            Minecraft.invokeModMethod("ModLoader", "clientCustomPayload", new Class[]{Packet250CustomPayload.class}, par1Packet250CustomPayload);
         }
     }
 

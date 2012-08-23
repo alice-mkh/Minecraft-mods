@@ -2585,6 +2585,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public void changeWorld2(WorldSSP par1World, String par2Str)
     {
         changeWorld(par1World, par2Str, null);
+        if (!par2Str.equals("")){
+            if (par1World == null){
+                invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
+            }else{
+                invokeModMethod("ModLoader", "clientConnect", new Class[]{NetClientHandler.class, Packet1Login.class}, getSendQueue(), null);
+            }
+        }
     }
 
     /**
@@ -3141,6 +3148,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Class c = Class.forName((compat.get(mod) > 1 ? "net.minecraft.src." : "")+mod);
             Method m = c.getDeclaredMethod(method, pars);
             m.invoke(null, args);
+//             System.out.printlsn("SSP: Invoking "+m.toString());
         }catch(Exception ex){
             ex.printStackTrace();
             compat.put(mod, 0);
