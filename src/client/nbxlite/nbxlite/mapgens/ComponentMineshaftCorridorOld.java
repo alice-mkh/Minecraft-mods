@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-public class ComponentMineshaftCorridor extends StructureComponent
+public class ComponentMineshaftCorridorOld extends StructureComponent
 {
     private final boolean hasRails;
     private final boolean hasSpiders;
@@ -14,7 +14,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
      */
     private int sectionCount;
 
-    public ComponentMineshaftCorridor(int par1, Random par2Random, StructureBoundingBox par3StructureBoundingBox, int par4)
+    public ComponentMineshaftCorridorOld(int par1, Random par2Random, StructureBoundingBox par3StructureBoundingBox, int par4)
     {
         super(par1);
         coordBaseMode = par4;
@@ -163,7 +163,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
                 break;
         }
 
-        if (i < 8)
+        if (i < (ODNBXlite.mineshaftSomeValue() ?  8 : 10))
         {
             if (coordBaseMode == 2 || coordBaseMode == 0)
             {
