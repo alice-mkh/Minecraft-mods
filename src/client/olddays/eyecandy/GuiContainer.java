@@ -210,6 +210,9 @@ public abstract class GuiContainer extends GuiScreen
 
     protected void func_74190_a(String par1Str, int par2, int par3)
     {
+        if (!tooltips){
+            return;
+        }
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -221,18 +224,22 @@ public abstract class GuiContainer extends GuiScreen
         byte byte0 = 8;
         zLevel = 300F;
         itemRenderer.zLevel = 300F;
-        int i1 = 0xf0100010;
-        drawGradientRect(j - 3, k - 4, j + l + 3, k - 3, i1, i1);
-        drawGradientRect(j - 3, k + byte0 + 3, j + l + 3, k + byte0 + 4, i1, i1);
-        drawGradientRect(j - 3, k - 3, j + l + 3, k + byte0 + 3, i1, i1);
-        drawGradientRect(j - 4, k - 3, j - 3, k + byte0 + 3, i1, i1);
-        drawGradientRect(j + l + 3, k - 3, j + l + 4, k + byte0 + 3, i1, i1);
-        int j1 = 0x505000ff;
-        int k1 = (j1 & 0xfefefe) >> 1 | j1 & 0xff000000;
-        drawGradientRect(j - 3, (k - 3) + 1, (j - 3) + 1, (k + byte0 + 3) - 1, j1, k1);
-        drawGradientRect(j + l + 2, (k - 3) + 1, j + l + 3, (k + byte0 + 3) - 1, j1, k1);
-        drawGradientRect(j - 3, k - 3, j + l + 3, (k - 3) + 1, j1, j1);
-        drawGradientRect(j - 3, k + byte0 + 2, j + l + 3, k + byte0 + 3, k1, k1);
+        if (oldtooltips){
+            drawGradientRect(j - 3, k - 3, j + l + 3, k + byte0 + 3, 0xc0000000, 0xc0000000);
+        }else{
+            int i1 = 0xf0100010;
+            drawGradientRect(j - 3, k - 4, j + l + 3, k - 3, i1, i1);
+            drawGradientRect(j - 3, k + byte0 + 3, j + l + 3, k + byte0 + 4, i1, i1);
+            drawGradientRect(j - 3, k - 3, j + l + 3, k + byte0 + 3, i1, i1);
+            drawGradientRect(j - 4, k - 3, j - 3, k + byte0 + 3, i1, i1);
+            drawGradientRect(j + l + 3, k - 3, j + l + 4, k + byte0 + 3, i1, i1);
+            int j1 = 0x505000ff;
+            int k1 = (j1 & 0xfefefe) >> 1 | j1 & 0xff000000;
+            drawGradientRect(j - 3, (k - 3) + 1, (j - 3) + 1, (k + byte0 + 3) - 1, j1, k1);
+            drawGradientRect(j + l + 2, (k - 3) + 1, j + l + 3, (k + byte0 + 3) - 1, j1, k1);
+            drawGradientRect(j - 3, k - 3, j + l + 3, (k - 3) + 1, j1, j1);
+            drawGradientRect(j - 3, k + byte0 + 2, j + l + 3, k + byte0 + 3, k1, k1);
+        }
         fontRenderer.drawStringWithShadow(par1Str, j, k, -1);
         zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
