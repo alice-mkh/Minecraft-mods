@@ -3,6 +3,7 @@ package net.minecraft.src.nbxlite.chunkproviders;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
+import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 
 public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private NoiseGeneratorOctaves noiseGen1;
@@ -15,7 +16,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private double field_4180_q[];
     private double stoneNoise[];
     private MapGenBase caveGenerator;
-    public MapGenStronghold strongholdGenerator;
+    public MapGenStronghold2 strongholdGenerator;
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
@@ -32,7 +33,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         super(world, l, flag, ODNBXlite.GEN_NEWBIOMES);
         stoneNoise = new double[256];
         caveGenerator = new MapGenCaves();
-        strongholdGenerator = new MapGenStronghold();
+        strongholdGenerator = new MapGenStronghold2();
         villageGenerator = new MapGenVillage(0);
         mineshaftGenerator = new MapGenMineshaft();
         templeGenerator = new MapGenScatteredFeature();

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.AlphaNoiseGeneratorOctaves;
-import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
@@ -47,7 +46,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
         if(flag)
         {
 			ravineGenerator = new MapGenRavine();
-            strongholdGenerator = new MapGenSkyStronghold();
+            strongholdGenerator = new MapGenStronghold2();
             villageGenerator = new MapGenVillage(0);
 			mineshaftGenerator = new MapGenMineshaft();
         }

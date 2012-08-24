@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.InfdevNoiseGeneratorOctaves;
-import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenBigTree;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
@@ -37,7 +36,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         treeGen = new InfdevNoiseGeneratorOctaves(rand, 5);
         if(flag)
         {
-            strongholdGenerator = new MapGenSkyStronghold();
+            strongholdGenerator = new MapGenStronghold2();
             villageGenerator = new MapGenVillage(0);
             mineshaftGenerator = new MapGenMineshaft();
         }

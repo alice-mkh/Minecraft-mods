@@ -5,7 +5,6 @@ import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.BetaNoiseGeneratorOctaves;
 import net.minecraft.src.nbxlite.oldbiomes.*;
-import net.minecraft.src.nbxlite.mapgens.MapGenSkyStronghold;
 import net.minecraft.src.nbxlite.mapgens.MapGenScatteredFeature2;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
@@ -53,7 +52,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         if(boolean1)
         {
             ravineGenerator = new MapGenRavine();
-            strongholdGenerator = new MapGenSkyStronghold();
+            strongholdGenerator = new MapGenStronghold2();
             villageGenerator = new MapGenVillage(0);
             mineshaftGenerator = new MapGenMineshaft();
             templeGenerator = new MapGenScatteredFeature2();
