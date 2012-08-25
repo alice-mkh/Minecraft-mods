@@ -1,26 +1,24 @@
 package net.minecraft.src.nbxlite.mapgens;
 
 import java.util.Random;
-import net.minecraft.src.BiomeDecorator;
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.Block;
-import net.minecraft.src.WorldGenerator;
-import net.minecraft.src.WorldGenDeadBush;
-import net.minecraft.src.WorldGenFlowers;
-import net.minecraft.src.WorldGenLiquids;
-import net.minecraft.src.WorldGenPumpkin;
-import net.minecraft.src.WorldGenTallGrass;
-import net.minecraft.src.WorldGenTrees;
-import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.*;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenDeadBush;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 
 public class BiomeDecorator2 extends BiomeDecorator
 {
     public BiomeDecorator2(BiomeGenBase par1BiomeGenBase)
     {
         super(par1BiomeGenBase);
+        plantYellowGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
         if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
-            plantRedGen = new WorldGenFlowers(Block.plantYellow.blockID);
+            plantRedGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
+        }else{
+            plantRedGen = new OldWorldGenFlowers(Block.plantRed.blockID);
         }
+        mushroomBrownGen = new OldWorldGenFlowers(Block.mushroomBrown.blockID);
+        mushroomRedGen = new OldWorldGenFlowers(Block.mushroomRed.blockID);
     }
 
     /**
@@ -101,7 +99,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             int k11 = randomGenerator.nextInt(128);
             int j15 = chunk_Z + randomGenerator.nextInt(16) + 8;
             if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
-                (new WorldGenTallGrass(Block.tallGrass.blockID, 1)).generate(currentWorld, randomGenerator, j7, k11, j15);
+                (new OldWorldGenTallGrass(Block.tallGrass.blockID, 1)).generate(currentWorld, randomGenerator, j7, k11, j15);
             }else{
                 WorldGenerator worldgenerator1 = biome.getRandomWorldGenForGrass(randomGenerator);
                 worldgenerator1.generate(currentWorld, randomGenerator, j7, k11, j15);
@@ -113,7 +111,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             int k7 = chunk_X + randomGenerator.nextInt(16) + 8;
             int l11 = randomGenerator.nextInt(128);
             int k15 = chunk_Z + randomGenerator.nextInt(16) + 8;
-            (new WorldGenDeadBush(Block.deadBush.blockID)).generate(currentWorld, randomGenerator, k7, l11, k15);
+            (new OldWorldGenDeadBush(Block.deadBush.blockID)).generate(currentWorld, randomGenerator, k7, l11, k15);
         }
 
         if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){

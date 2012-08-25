@@ -10,8 +10,11 @@ import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenClay;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenDeadBush;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenMinable;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
@@ -645,7 +648,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16) + 8;
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
+            (new OldWorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
 
         if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA15){
@@ -680,7 +683,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                 int x2 = x1 + rand.nextInt(16) + 8;
                 int y2 = rand.nextInt(128);
                 int z2 = z1 + rand.nextInt(16) + 8;
-                (new WorldGenTallGrass(Block.tallGrass.blockID, grasstype)).generate(worldObj, rand, x2, y2, z2);
+                (new OldWorldGenTallGrass(Block.tallGrass.blockID, grasstype)).generate(worldObj, rand, x2, y2, z2);
             }
 
             grass = 0;
@@ -693,7 +696,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                 int x2 = x1 + rand.nextInt(16) + 8;
                 int y2 = rand.nextInt(128);
                 int z2 = z1 + rand.nextInt(16) + 8;
-                (new WorldGenDeadBush(Block.deadBush.blockID)).generate(worldObj, rand, x2, y2, z2);
+                (new OldWorldGenDeadBush(Block.deadBush.blockID)).generate(worldObj, rand, x2, y2, z2);
             }
         }
 
@@ -702,21 +705,21 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16) + 8;
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, x2, y2, z2);
+            (new OldWorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
         if(rand.nextInt(4) == 0)
         {
             int x2 = x1 + rand.nextInt(16) + 8;
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, x2, y2, z2);
+            (new OldWorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
         if(rand.nextInt(8) == 0)
         {
             int x2 = x1 + rand.nextInt(16) + 8;
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, x2, y2, z2);
+            (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, x2, y2, z2);
         }
         for(int i = 0; i < 10; i++)
         {

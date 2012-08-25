@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.mapgens.BiomeDecorator2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenHills2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenDesertOld;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 
 public abstract class BiomeGenBase
@@ -222,7 +223,7 @@ public abstract class BiomeGenBase
      */
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return new WorldGenTallGrass(Block.tallGrass.blockID, 1);
+        return new OldWorldGenTallGrass(Block.tallGrass.blockID, 1);
     }
 
     /**

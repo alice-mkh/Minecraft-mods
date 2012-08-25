@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
 
 public class ChunkProviderHell implements IChunkProvider
 {
@@ -471,7 +472,7 @@ public class ChunkProviderHell implements IChunkProvider
             int i2 = i + hellRNG.nextInt(16) + 8;
             int k3 = hellRNG.nextInt(128);
             int i5 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, hellRNG, i2, k3, i5);
+            (new OldWorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, hellRNG, i2, k3, i5);
         }
 
         if (hellRNG.nextInt(1) == 0)
@@ -479,7 +480,7 @@ public class ChunkProviderHell implements IChunkProvider
             int j2 = i + hellRNG.nextInt(16) + 8;
             int l3 = hellRNG.nextInt(128);
             int j5 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, hellRNG, j2, l3, j5);
+            (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, hellRNG, j2, l3, j5);
         }
 
         BlockSand.fallInstantly = false;

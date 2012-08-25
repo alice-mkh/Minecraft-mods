@@ -8,6 +8,7 @@ import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenClay;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenMinable;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
@@ -485,7 +486,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int l15 = k + rand.nextInt(16) + 8;
             int k18 = rand.nextInt(128);
             int i21 = l + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, l15, k18, i21);
+            (new OldWorldGenFlowers(Block.plantYellow.blockID)).generate(worldObj, rand, l15, k18, i21);
         }
 
         if(rand.nextInt(2) == 0)
@@ -493,21 +494,21 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int k11 = k + rand.nextInt(16) + 8;
             int i16 = rand.nextInt(128);
             int l18 = l + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, k11, i16, l18);
+            (new OldWorldGenFlowers(Block.plantRed.blockID)).generate(worldObj, rand, k11, i16, l18);
         }
         if(rand.nextInt(4) == 0)
         {
             int l11 = k + rand.nextInt(16) + 8;
             int j16 = rand.nextInt(128);
             int i19 = l + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, l11, j16, i19);
+            (new OldWorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, rand, l11, j16, i19);
         }
         if(rand.nextInt(8) == 0)
         {
             int i12 = k + rand.nextInt(16) + 8;
             int k16 = rand.nextInt(128);
             int j19 = l + rand.nextInt(16) + 8;
-            (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, i12, k16, j19);
+            (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, rand, i12, k16, j19);
         }
         for(int j12 = 0; j12 < 10; j12++)
         {
