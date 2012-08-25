@@ -30,6 +30,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   23,false, "OldLeaves");
         new OldDaysPropertyBool(this,   24,true,  "OldSwing");
         new OldDaysPropertyBool(this,   25,true,  "TPBobbing");
+        new OldDaysPropertyBool(this,   26,false, "WaterParticles");
         replaceBlocks();
         redstoneRenderID = 32;
     }
@@ -75,6 +76,7 @@ public class ODEyecandy extends OldDaysModule{
             case 24:set(net.minecraft.src.EntityPlayer.class, "oldswing", OldSwing);
                     set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
             case 25:set(net.minecraft.src.EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
+            case 26:set(net.minecraft.src.EntitySuspendFX.class, "allow", WaterParticles); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -109,6 +111,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean OldLeaves;
     public static boolean OldSwing = true;
     public static boolean TPBobbing = true;
+    public static boolean WaterParticles;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){

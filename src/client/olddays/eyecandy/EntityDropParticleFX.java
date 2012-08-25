@@ -39,10 +39,11 @@ public class EntityDropParticleFX extends EntityFX
 
     protected void entityInit()
     {
-        super.entityInit();
         if (!allow){
             setDead();
+            return;
         }
+        super.entityInit();
     }
 
     public int getBrightnessForRender(float par1)
