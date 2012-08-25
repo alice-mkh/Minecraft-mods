@@ -206,11 +206,6 @@ public class WorldChunkManager
         return getBiomeGenAt(chunkcoordintpair.chunkXPos << 4, chunkcoordintpair.chunkZPos << 4);
     }
 
-    public float getRainfall(int i, int j)
-    {
-        return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
-    }
-
     public ChunkPosition func_35556_a(int i, int j, int k, List list, Random random)
     {
         int l = i - k >> 2;
@@ -252,7 +247,6 @@ public class WorldChunkManager
         {
             int l2 = l + k2 % l1 << 2;
             int i3 = i1 + k2 / l1 << 2;
-            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[ai[k2]];
             if(chunkposition == null || random.nextInt(j2 + 1) == 0)
             {
                 chunkposition = new ChunkPosition(l2, 0, i3);
@@ -266,6 +260,11 @@ public class WorldChunkManager
     public float getTemperature(int i, int j, int k)
     {
         return getTemperatureAtHeight(biomeCache.getBiomeCacheBlock(i, k).temperatureValues[i & 0xf | (k & 0xf) << 4], j);
+    }
+
+    public float getRainfall(int i, int j)
+    {
+        return biomeCache.getBiomeCacheBlock(i, j).rainfallValues[i & 0xf | (j & 0xf) << 4];
     }
 
     public double getTemperature_old(int i, int j)
@@ -359,10 +358,13 @@ public class WorldChunkManager
         }
 
         int ai[] = biomeIndexLayer.getInts(par2, par3, par4, par5);
+        if (ODNBXlite.MapFeatures < ODNBXlite.FEATURES_12){
+            ai = rainfallLayer.getInts(par2, par3, par4, par5);
+        }
 
         for (int i = 0; i < par4 * par5; i++)
         {
-            float f = (float)BiomeGenBase.biomeList[ai[i]].getIntRainfall() / 65536F;
+            float f = (ODNBXlite.MapFeatures < ODNBXlite.FEATURES_12 ? ai[i] :(float)BiomeGenBase.biomeList[ai[i]].getIntRainfall()) / 65536F;
 
             if (f > 1.0F)
             {
@@ -396,10 +398,13 @@ public class WorldChunkManager
         }
 
         int ai[] = biomeIndexLayer.getInts(par2, par3, par4, par5);
+        if (ODNBXlite.MapFeatures < ODNBXlite.FEATURES_12){
+            ai = temperatureLayer.getInts(par2, par3, par4, par5);
+        }
 
         for (int i = 0; i < par4 * par5; i++)
         {
-            float f = (float)BiomeGenBase.biomeList[ai[i]].getIntTemperature() / 65536F;
+            float f = (ODNBXlite.MapFeatures < ODNBXlite.FEATURES_12 ? ai[i] : (float)BiomeGenBase.biomeList[ai[i]].getIntTemperature()) / 65536F;
 
             if (f > 1.0F)
             {

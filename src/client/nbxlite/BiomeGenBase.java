@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.mapgens.BiomeDecorator2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenHills2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenDesertOld;
@@ -413,6 +414,24 @@ public abstract class BiomeGenBase
         }
         double d = MathHelper.clamp_float(getFloatTemperature(), 0.0F, 1.0F);
         double d1 = MathHelper.clamp_float(getFloatRainfall(), 0.0F, 1.0F);
+        return ColorizerFoliage.getFoliageColor(d, d1);
+    }
+
+    public int getGrassColorAtCoords(int i, int j, int k){
+        double d = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getTemperature(i, j, k);
+        double d1 = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getRainfall(i, k);
+        if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
+            return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
+        }
+        return ColorizerGrass.getGrassColor(d, d1);
+    }
+
+    public int getFoliageColorAtCoords(int i, int j, int k){
+        double d = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getTemperature(i, j, k);
+        double d1 = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getRainfall(i, k);
+        if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
+            return ((ColorizerFoliage.getFoliageColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
+        }
         return ColorizerFoliage.getFoliageColor(d, d1);
     }
 }
