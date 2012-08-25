@@ -18,7 +18,7 @@ public class ComponentStrongholdStairs2 extends ComponentStrongholdStairs
     /**
      * Initiates construction of the Structure Component picked, at the current Location of StructGen
      */
-    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
+    public void buildComponent(StructureComponent par1StructureComponent, java.util.List par2List, Random par3Random)
     {
         if (ODNBXlite.oldStrongholds()){
             getNextComponentNormal((ComponentStrongholdStairs2)par1StructureComponent, par2List, par3Random, 1, 1);
