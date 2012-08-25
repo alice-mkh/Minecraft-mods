@@ -25,9 +25,9 @@ public class GeneratorList{
 
     public static int feat2default = ODNBXlite.DefaultFeaturesRelease;
     public static int feat2current;
-    public static int feat2length = 5;
-    public static String[] feat2id = {"181", "100", "11", "12", "13", "impr"};
-    public static boolean[] feat2worldtype = {false, false, true, true, true, true};
+    public static int feat2length = 4;
+    public static String[] feat2id = {"181", "100", "11", "12", "13"};
+    public static boolean[] feat2worldtype = {false, false, true, true, true};
 
     public static int themedefault = ODNBXlite.DefaultTheme;
     public static int themecurrent;
