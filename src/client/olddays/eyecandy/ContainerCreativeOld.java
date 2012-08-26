@@ -14,24 +14,24 @@ class ContainerCreativeOld extends Container
         {
             Block.cobblestone,
             Block.stone,
-            Block.field_72073_aw,
+            Block.oreDiamond,
             Block.oreGold,
             Block.oreIron,
             Block.oreCoal,
             Block.oreLapis,
             Block.oreRedstone,
-            Block.oreDiamond,
+            Block.oreEmerald,
             Block.stoneBrick,
             Block.blockClay,
+            Block.blockEmerald,
             Block.blockDiamond,
-            Block.field_72071_ax,
             Block.blockGold,
             Block.blockSteel,
             Block.bedrock,
             Block.blockLapis,
             Block.brick,
             Block.cobblestoneMossy,
-            Block.field_72092_bO,
+            Block.woodSingleSlab,
             Block.obsidian,
             Block.netherrack,
             Block.slowSand,
@@ -71,7 +71,7 @@ class ContainerCreativeOld extends Container
             Block.waterlily,
             Block.tallGrass,
             Block.chest,
-            Block.field_72066_bS,
+            Block.enderChest,
             Block.workbench,
             Block.glass,
             Block.tnt,
@@ -91,11 +91,11 @@ class ContainerCreativeOld extends Container
             Block.railDetector,
             Block.torchWood,
             Block.stairCompactPlanks,
-            Block.field_72074_bW,
-            Block.field_72072_bX,
-            Block.field_72070_bY,
+            Block.stairsWoodSpruce,
+            Block.stairsWoodBirch,
+            Block.stairsWoodJungle,
             Block.stairCompactCobblestone,
-            Block.field_72088_bQ,
+            Block.stairsSandStone,
             Block.stairsBrick,
             Block.stairsStoneBrickSmooth,
             Block.lever,
@@ -103,7 +103,7 @@ class ContainerCreativeOld extends Container
             Block.pressurePlatePlanks,
             Block.torchRedstoneActive,
             Block.button,
-            Block.field_72064_bT,
+            Block.tripWireSource,
             Block.trapdoor,
             Block.enchantmentTable,
             Block.redstoneLampIdle
@@ -114,16 +114,16 @@ class ContainerCreativeOld extends Container
             if (Item.itemsList[ablock[j2].blockID] == null){
                 continue;
             }
-            if (ablock[j2].blockID == Block.field_72092_bO.blockID){
-                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 0));
-                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 1));
-                Item.itemsList[ablock[j2].blockID].func_77633_a(ablock[j2].blockID, null, itemList);
-                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 2));
-                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 3));
-                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 4));
-                itemList.add(new ItemStack(Block.field_72079_ak.blockID, 1, 5));
+            if (ablock[j2].blockID == Block.woodSingleSlab.blockID){
+                itemList.add(new ItemStack(Block.stoneSingleSlab.blockID, 1, 0));
+                itemList.add(new ItemStack(Block.stoneSingleSlab.blockID, 1, 1));
+                Item.itemsList[ablock[j2].blockID].getSubItems(ablock[j2].blockID, null, itemList);
+                itemList.add(new ItemStack(Block.stoneSingleSlab.blockID, 1, 2));
+                itemList.add(new ItemStack(Block.stoneSingleSlab.blockID, 1, 3));
+                itemList.add(new ItemStack(Block.stoneSingleSlab.blockID, 1, 4));
+                itemList.add(new ItemStack(Block.stoneSingleSlab.blockID, 1, 5));
             }else{
-                Item.itemsList[ablock[j2].blockID].func_77633_a(ablock[j2].blockID, null, itemList);
+                Item.itemsList[ablock[j2].blockID].getSubItems(ablock[j2].blockID, null, itemList);
             }
         }
 
@@ -135,20 +135,20 @@ class ContainerCreativeOld extends Container
             int id = Item.itemsList[k2].shiftedIndex;
             if (id == Item.monsterPlacer.shiftedIndex ||
                 id == Item.potion.shiftedIndex ||
-                id == Item.field_77823_bG.shiftedIndex){
+                id == Item.writtenBook.shiftedIndex){
                 continue;
             }else if (Item.itemsList[k2].shiftedIndex == Item.dyePowder.shiftedIndex){
                 itemList.add(new ItemStack(k2, 1, 0));
             }else{
-                Item.itemsList[k2].func_77633_a(k2, null, itemList);
+                Item.itemsList[k2].getSubItems(k2, null, itemList);
             }
         }
         for (int l2 = 1; l2 < 16; l2++)
         {
             itemList.add(new ItemStack(Item.dyePowder.shiftedIndex, 1, l2));
         }
-        Item.itemsList[Item.monsterPlacer.shiftedIndex].func_77633_a(Item.monsterPlacer.shiftedIndex, null, itemList);
-        Item.itemsList[Item.potion.shiftedIndex].func_77633_a(Item.potion.shiftedIndex, null, itemList);
+        Item.itemsList[Item.monsterPlacer.shiftedIndex].getSubItems(Item.monsterPlacer.shiftedIndex, null, itemList);
+        Item.itemsList[Item.potion.shiftedIndex].getSubItems(Item.potion.shiftedIndex, null, itemList);
 
         InventoryPlayer inventoryplayer = par1EntityPlayer.inventory;
 
@@ -156,13 +156,13 @@ class ContainerCreativeOld extends Container
         {
             for (int l3 = 0; l3 < 8; l3++)
             {
-                func_75146_a(new Slot(GuiContainerCreativeOld.getInventory(), l3 + j3 * 8, 8 + l3 * 18, 18 + j3 * 18));
+                addSlotToContainer(new Slot(GuiContainerCreativeOld.getInventory(), l3 + j3 * 8, 8 + l3 * 18, 18 + j3 * 18));
             }
         }
 
         for (int k3 = 0; k3 < 9; k3++)
         {
-            func_75146_a(new Slot(inventoryplayer, k3, 8 + k3 * 18, 184));
+            addSlotToContainer(new Slot(inventoryplayer, k3, 8 + k3 * 18, 184));
         }
 
         scrollTo(0.0F);

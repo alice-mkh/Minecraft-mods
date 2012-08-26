@@ -53,7 +53,7 @@ public class WorldChunkManager
     public WorldChunkManager(long par1, WorldType par3WorldType)
     {
         this();
-        GenLayer agenlayer[] = GenLayer.func_75901_a(par1, par3WorldType);
+        GenLayer agenlayer[] = GenLayer.initializeAllBiomeGenerators(par1, par3WorldType);
         genBiomes = agenlayer[0];
         biomeIndexLayer = agenlayer[1];
         if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
@@ -505,7 +505,8 @@ public class WorldChunkManager
     }
 
     /**
-     * Finds a valid position within a range, that is once of the listed biomes.
+     * Finds a valid position within a range, that is in one of the listed biomes. Searches {par1,par2} +-par3 blocks.
+     * Strongly favors positive y positions.
      */
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {

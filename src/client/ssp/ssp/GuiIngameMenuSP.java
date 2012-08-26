@@ -38,7 +38,7 @@ public class GuiIngameMenuSP extends GuiScreen
         controlList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
         GuiButton guibutton;
         controlList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));
-        guibutton.enabled = !mc.isMultiplayerWorld() && mc.func_71401_C() == null;
+        guibutton.enabled = !mc.isMultiplayerWorld() && mc.getIntegratedServer() == null;
     }
 
     /**
@@ -62,7 +62,7 @@ public class GuiIngameMenuSP extends GuiScreen
 
                 if (mc.isMultiplayerWorld())
                 {
-                    mc.field_71441_e.sendQuittingDisconnectingPacket();
+                    mc.theWorld.sendQuittingDisconnectingPacket();
                 }
 
                 mc.changeWorld1(null);
@@ -103,7 +103,7 @@ public class GuiIngameMenuSP extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         drawDefaultBackground();
-        boolean flag = !((WorldSSP)mc.field_71441_e).quickSaveWorld(updateCounter2++);
+        boolean flag = !((WorldSSP)mc.theWorld).quickSaveWorld(updateCounter2++);
 
         if (flag || updateCounter < 20)
         {

@@ -82,7 +82,7 @@ class GuiWorldSlot extends GuiSlot
         }
         else
         {
-            s2 = GuiSelectWorld.getLocalizedGameMode(parentWorldGui)[saveformatcomparator.func_75790_f().func_77148_a()];
+            s2 = GuiSelectWorld.getLocalizedGameMode(parentWorldGui)[saveformatcomparator.func_75790_f().getID()];
 
             if (saveformatcomparator.isHardcoreModeEnabled())
             {

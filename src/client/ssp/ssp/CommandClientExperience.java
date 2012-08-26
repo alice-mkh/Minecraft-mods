@@ -10,14 +10,14 @@ public class CommandClientExperience extends CommandXP
 
     protected EntityPlayer func_71543_a(String par1Str)
     {
-        return Minecraft.getMinecraftInstance().field_71439_g;
+        return Minecraft.getMinecraft().thePlayer;
     }
 
     protected String[] func_71542_c()
     {
         return (new String[]
                 {
-                    Minecraft.getMinecraftInstance().field_71439_g.username
+                    Minecraft.getMinecraft().thePlayer.username
                 });
     }
 }

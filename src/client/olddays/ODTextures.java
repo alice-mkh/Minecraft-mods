@@ -142,8 +142,8 @@ public class ODTextures extends OldDaysModule{
             addTextureHook("/terrain.png", customgold.sidetex, "/olddays/oreblocks/goldside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customgold.bottomtex, "/olddays/oreblocks/goldbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockGold.blockID] = customgold;
-            Block.blocksList[Block.field_72071_ax .blockID] = null;
-            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.field_72071_ax.blockID, 24));
+            Block.blocksList[Block.blockDiamond .blockID] = null;
+            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID, 24));
             customdiamond.setHardness(5F);
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
@@ -152,7 +152,7 @@ public class ODTextures extends OldDaysModule{
             customdiamond.bottomtex = 215;
             addTextureHook("/terrain.png", customdiamond.sidetex, "/olddays/oreblocks/diamondside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customdiamond.bottomtex, "/olddays/oreblocks/diamondbottom.png", 0, 1, 1);
-            Block.blocksList[Block.field_72071_ax.blockID] = customdiamond;
+            Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
         }catch (Exception ex){
             System.out.println(ex);
         }

@@ -24,8 +24,8 @@ public class WorldClient extends World
      * spawn up to 10 pending entities with each subsequent tick until the spawn queue is empty.
      */
     private Set entitySpawnQueue;
-    private final Minecraft field_73037_M = Minecraft.func_71410_x();
-    private final Set field_73038_N = new HashSet();
+    private final Minecraft mc = Minecraft.getMinecraft();
+    private final Set previousActiveChunkSet = new HashSet();
 
     public WorldClient(NetClientHandler par1NetClientHandler, WorldSettings par2WorldSettings, int par3, int par4, Profiler par5Profiler)
     {
@@ -35,14 +35,14 @@ public class WorldClient extends World
         entitySpawnQueue = new HashSet();
         sendQueue = par1NetClientHandler;
         difficultySetting = par4;
-        func_72950_A(8, 64, 8);
+        setSpawnLocation(8, 64, 8);
         mapStorage = par1NetClientHandler.mapStorage;
     }
 
     public WorldClient(WorldProvider w, ISaveHandler i, WorldSettings s, String str, Profiler p)
     {
         super(i, str, s, w, p);
-        sendQueue = new NetClientHandlerSP(Minecraft.getMinecraftInstance());
+        sendQueue = new NetClientHandlerSP(Minecraft.getMinecraft());
         mapStorage = new MapStorage(i);
     }
 
@@ -53,7 +53,7 @@ public class WorldClient extends World
     {
         super.tick();
         setWorldTime(getWorldTime() + 1L);
-        field_72984_F.startSection("reEntryProcessing");
+        theProfiler.startSection("reEntryProcessing");
 
         for (int i = 0; i < 10 && !entitySpawnQueue.isEmpty(); i++)
         {
@@ -66,13 +66,13 @@ public class WorldClient extends World
             }
         }
 
-        field_72984_F.endStartSection("connection");
+        theProfiler.endStartSection("connection");
         sendQueue.processReadPackets();
-        field_72984_F.endStartSection("chunkCache");
+        theProfiler.endStartSection("chunkCache");
         clientChunkProvider.unload100OldestChunks();
-        field_72984_F.endStartSection("tiles");
+        theProfiler.endStartSection("tiles");
         tickBlocksAndAmbiance();
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     /**
@@ -99,11 +99,11 @@ public class WorldClient extends World
     protected void tickBlocksAndAmbiance()
     {
         super.tickBlocksAndAmbiance();
-        field_73038_N.retainAll(activeChunkSet);
+        previousActiveChunkSet.retainAll(activeChunkSet);
 
-        if (field_73038_N.size() == activeChunkSet.size())
+        if (previousActiveChunkSet.size() == activeChunkSet.size())
         {
-            field_73038_N.clear();
+            previousActiveChunkSet.clear();
         }
 
         int i = 0;
@@ -112,15 +112,15 @@ public class WorldClient extends World
         {
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
 
-            if (!field_73038_N.contains(chunkcoordintpair))
+            if (!previousActiveChunkSet.contains(chunkcoordintpair))
             {
                 int j = chunkcoordintpair.chunkXPos * 16;
                 int k = chunkcoordintpair.chunkZPos * 16;
-                field_72984_F.startSection("getChunk");
+                theProfiler.startSection("getChunk");
                 Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
-                func_72941_a(j, k, chunk);
-                field_72984_F.endSection();
-                field_73038_N.add(chunkcoordintpair);
+                moodSoundAndLightCheck(j, k, chunk);
+                theProfiler.endSection();
+                previousActiveChunkSet.add(chunkcoordintpair);
 
                 if (++i >= 10)
                 {
@@ -269,7 +269,7 @@ public class WorldClient extends World
      */
     protected void updateWeather()
     {
-        if (worldProvider.hasNoSky)
+        if (provider.hasNoSky)
         {
             return;
         }
@@ -334,7 +334,7 @@ public class WorldClient extends World
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasVoidParticles())
+            if (i1 == 0 && rand.nextInt(8) > k && provider.getWorldHasVoidParticles())
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
@@ -347,7 +347,10 @@ public class WorldClient extends World
         }
     }
 
-    public void func_73022_a()
+    /**
+     * also releases skins.
+     */
+    public void removeAllEntities()
     {
         loadedEntityList.removeAll(unloadedEntityList);
 
@@ -403,15 +406,21 @@ public class WorldClient extends World
         }
     }
 
-    public CrashReport func_72914_a(CrashReport par1CrashReport)
+    /**
+     * Adds some basic stats of the world to the given crash report.
+     */
+    public CrashReport addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport = super.func_72914_a(par1CrashReport);
-        par1CrashReport.func_71500_a("Forced Entities", new CallableMPL1(this));
-        par1CrashReport.func_71500_a("Retry Entities", new CallableMPL2(this));
+        par1CrashReport = super.addWorldInfoToCrashReport(par1CrashReport);
+        par1CrashReport.addCrashSectionCallable("Forced Entities", new CallableMPL1(this));
+        par1CrashReport.addCrashSectionCallable("Retry Entities", new CallableMPL2(this));
         return par1CrashReport;
     }
 
-    public void func_72980_b(double par1, double par3, double par5, String par7Str, float par8, float par9)
+    /**
+     * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
+     */
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9)
     {
         float f = 16F;
 
@@ -420,18 +429,18 @@ public class WorldClient extends World
             f *= par8;
         }
 
-        if (field_73037_M.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
+        if (mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
         {
-            field_73037_M.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
         }
     }
 
-    static Set func_73026_a(WorldClient par0WorldClient)
+    static Set getEntityList(WorldClient par0WorldClient)
     {
         return par0WorldClient.entityList;
     }
 
-    static Set func_73030_b(WorldClient par0WorldClient)
+    static Set getEntitySpawnQueue(WorldClient par0WorldClient)
     {
         return par0WorldClient.entitySpawnQueue;
     }

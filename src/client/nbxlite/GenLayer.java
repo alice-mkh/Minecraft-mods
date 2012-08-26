@@ -19,7 +19,11 @@ public abstract class GenLayer
     /** base seed to the LCG prng provided via the constructor */
     private long baseSeed;
 
-    public static GenLayer[] func_75901_a(long par0, WorldType par2WorldType)
+    /**
+     * the first array item is a linked list of the bioms, the second is the zoom function, the third is the same as the
+     * first.
+     */
+    public static GenLayer[] initializeAllBiomeGenerators(long par0, WorldType par2WorldType)
     {
         GenLayer obj = new GenLayerIsland(1L);
         obj = new GenLayerFuzzyZoom(2000L, ((GenLayer)(obj)));
@@ -51,9 +55,12 @@ public abstract class GenLayer
             obj = new GenLayerIsland18(3L, ((GenLayer)(obj)));
         }
         byte byte0 = 4;
-        if (par2WorldType == WorldType.field_77135_d){
+
+        if (par2WorldType == WorldType.LARGE_BIOMES)
+        {
             byte0 = 6;
         }
+
         GenLayer obj1 = obj;
         obj1 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj1)), 0);
         obj1 = new GenLayerRiverInit(100L, ((GenLayer)(obj1)));

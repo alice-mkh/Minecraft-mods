@@ -16,7 +16,7 @@ public class NetClientHandlerSP extends NetClientHandler
         super(par1Minecraft);
         playerInfoList = new ArrayList();
         currentServerMaxPlayers = 1;
-//         serverHandler = new NetServerHandlerSP(new EntityPlayerMP(null, par1Minecraft.field_71441_e, null, null));
+//         serverHandler = new NetServerHandlerSP(new EntityPlayerMP(null, par1Minecraft.theWorld, null, null));
     }
 
     public void func_72547_c()

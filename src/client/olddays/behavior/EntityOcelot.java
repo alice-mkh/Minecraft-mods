@@ -371,7 +371,10 @@ public class EntityOcelot extends EntityTameable
         return false;
     }
 
-    public String func_70023_ak()
+    /**
+     * Gets the username of the entity.
+     */
+    public String getEntityName()
     {
         if (isTamed())
         {
@@ -379,7 +382,7 @@ public class EntityOcelot extends EntityTameable
         }
         else
         {
-            return super.func_70023_ak();
+            return super.getEntityName();
         }
     }
 }

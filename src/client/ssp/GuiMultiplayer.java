@@ -83,7 +83,7 @@ public class GuiMultiplayer extends GuiScreen
         {
             field_74024_A = true;
             field_74030_m = new ServerList(mc);
-            field_74030_m.func_78853_a();
+            field_74030_m.loadServerList();
             field_74041_x = new LanServerList();
 
             try
@@ -166,7 +166,7 @@ public class GuiMultiplayer extends GuiScreen
 
         if (par1GuiButton.id == 2)
         {
-            String s = field_74030_m.func_78850_a(selectedServer).field_78847_a;
+            String s = field_74030_m.getServerData(selectedServer).serverName;
 
             if (s != null)
             {
@@ -197,8 +197,8 @@ public class GuiMultiplayer extends GuiScreen
         else if (par1GuiButton.id == 7)
         {
             editClicked = true;
-            ServerData serverdata = field_74030_m.func_78850_a(selectedServer);
-            mc.displayGuiScreen(new GuiScreenAddServer(this, field_74031_w = new ServerData(serverdata.field_78847_a, serverdata.field_78845_b)));
+            ServerData serverdata = field_74030_m.getServerData(selectedServer);
+            mc.displayGuiScreen(new GuiScreenAddServer(this, field_74031_w = new ServerData(serverdata.serverName, serverdata.serverIP)));
         }
         else if (par1GuiButton.id == 0)
         {
@@ -222,8 +222,8 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                field_74030_m.func_78851_b(par2);
-                field_74030_m.func_78855_b();
+                field_74030_m.removeServerData(par2);
+                field_74030_m.saveServerList();
                 selectedServer = -1;
             }
 
@@ -248,8 +248,8 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                field_74030_m.func_78849_a(field_74031_w);
-                field_74030_m.func_78855_b();
+                field_74030_m.addServerData(field_74031_w);
+                field_74030_m.saveServerList();
                 selectedServer = -1;
             }
 
@@ -261,10 +261,10 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                ServerData serverdata = field_74030_m.func_78850_a(selectedServer);
-                serverdata.field_78847_a = field_74031_w.field_78847_a;
-                serverdata.field_78845_b = field_74031_w.field_78845_b;
-                field_74030_m.func_78855_b();
+                ServerData serverdata = field_74030_m.getServerData(selectedServer);
+                serverdata.serverName = field_74031_w.serverName;
+                serverdata.serverIP = field_74031_w.serverIP;
+                field_74030_m.saveServerList();
             }
 
             mc.displayGuiScreen(this);
@@ -278,14 +278,21 @@ public class GuiMultiplayer extends GuiScreen
     {
         int i = selectedServer;
 
+        if (par2 == 59)
+        {
+            mc.gameSettings.field_80005_w = !mc.gameSettings.field_80005_w;
+            mc.gameSettings.saveOptions();
+            return;
+        }
+
         if (isShiftKeyDown() && par2 == 200)
         {
-            if (i > 0 && i < field_74030_m.func_78856_c())
+            if (i > 0 && i < field_74030_m.countServers())
             {
-                field_74030_m.func_78857_a(i, i - 1);
+                field_74030_m.swapServers(i, i - 1);
                 selectedServer--;
 
-                if (i < field_74030_m.func_78856_c() - 1)
+                if (i < field_74030_m.countServers() - 1)
                 {
                     serverSlotContainer.func_77208_b(-serverSlotContainer.slotHeight);
                 }
@@ -293,9 +300,9 @@ public class GuiMultiplayer extends GuiScreen
         }
         else if (isShiftKeyDown() && par2 == 208)
         {
-            if (i < field_74030_m.func_78856_c() - 1)
+            if (i < field_74030_m.countServers() - 1)
             {
-                field_74030_m.func_78857_a(i, i + 1);
+                field_74030_m.swapServers(i, i + 1);
                 selectedServer++;
 
                 if (i > 0)
@@ -334,13 +341,13 @@ public class GuiMultiplayer extends GuiScreen
     private void joinServer(int par1)
     {
         mc.enableSP = false;
-        if (par1 < field_74030_m.func_78856_c())
+        if (par1 < field_74030_m.countServers())
         {
-            func_74002_a(field_74030_m.func_78850_a(par1));
+            func_74002_a(field_74030_m.getServerData(par1));
             return;
         }
 
-        par1 -= field_74030_m.func_78856_c();
+        par1 -= field_74030_m.countServers();
 
         if (par1 < field_74026_B.size())
         {
@@ -356,7 +363,7 @@ public class GuiMultiplayer extends GuiScreen
 
     private void func_74017_b(ServerData par1ServerData) throws IOException
     {
-        ServerAddress serveraddress = ServerAddress.func_78860_a(par1ServerData.field_78845_b);
+        ServerAddress serveraddress = ServerAddress.func_78860_a(par1ServerData.serverIP);
         Socket socket = null;
         DataInputStream datainputstream = null;
         DataOutputStream dataoutputstream = null;
@@ -367,7 +374,7 @@ public class GuiMultiplayer extends GuiScreen
             socket.setSoTimeout(3000);
             socket.setTcpNoDelay(true);
             socket.setTrafficClass(18);
-            socket.connect(new InetSocketAddress(serveraddress.func_78861_a(), serveraddress.func_78864_b()), 3000);
+            socket.connect(new InetSocketAddress(serveraddress.getIP(), serveraddress.getPort()), 3000);
             datainputstream = new DataInputStream(socket.getInputStream());
             dataoutputstream = new DataOutputStream(socket.getOutputStream());
             dataoutputstream.write(254);
@@ -401,7 +408,7 @@ public class GuiMultiplayer extends GuiScreen
             }
             catch (Exception exception) { }
 
-            par1ServerData.field_78843_d = (new StringBuilder()).append("\2477").append(s).toString();
+            par1ServerData.serverMOTD = (new StringBuilder()).append("\2477").append(s).toString();
 
             if (j >= 0 && k > 0)
             {

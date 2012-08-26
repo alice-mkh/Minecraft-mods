@@ -27,7 +27,7 @@ public class BlockLeaves extends BlockLeavesBase
         super(par1, par2, Material.leaves, false);
         baseIndexInPNG = par2;
         setTickRandomly(true);
-        func_71849_a(CreativeTabs.field_78031_c);
+        setCreativeTab(CreativeTabs.tabDeco);
     }
 
     public int getBlockColor()
@@ -94,7 +94,10 @@ public class BlockLeaves extends BlockLeavesBase
         return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
     }
 
-    public void func_71852_a(World par1World, int par2, int par3, int par4, int par5, int par6)
+    /**
+     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
+     */
+    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         int i = 1;
         int j = i + 1;
@@ -247,7 +250,7 @@ public class BlockLeaves extends BlockLeavesBase
      */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.func_72797_t(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1)
+        if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1)
         {
             double d = (float)par2 + par5Random.nextFloat();
             double d1 = (double)par3 - 0.050000000000000003D;
@@ -374,7 +377,10 @@ public class BlockLeaves extends BlockLeavesBase
         blockIndexInTexture = baseIndexInPNG + (par1 ? 0 : 1);
     }
 
-    public void func_71879_a(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    /**
+     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+     */
+    public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));

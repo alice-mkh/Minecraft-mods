@@ -91,16 +91,15 @@ public class GuiShareToLan extends GuiScreen
             mc.displayGuiScreen(null);
             if (singleplayer){
                 mc.quitAndStartServer();
-                System.out.println("A");
             }
-            String s = mc.func_71401_C().func_71206_a(EnumGameType.func_77142_a(field_74089_d), field_74093_m);
+            String s = mc.getIntegratedServer().shareToLAN(EnumGameType.getByName(field_74089_d), field_74093_m);
             String s1 = "";
 
             if (!singleplayer){
                 if (s != null){
-                    s1 = mc.field_71439_g.func_70004_a("commands.publish.started", new Object[]{s});
+                    s1 = mc.thePlayer.translateString("commands.publish.started", new Object[]{s});
                 }else{
-                    s1 = mc.field_71439_g.func_70004_a("commands.publish.failed", new Object[0]);
+                    s1 = mc.thePlayer.translateString("commands.publish.failed", new Object[0]);
                 }
             }else{
                 if (s != null){
@@ -110,7 +109,7 @@ public class GuiShareToLan extends GuiScreen
                 }
             }
 
-            mc.ingameGUI.func_73827_b().func_73765_a(s1);
+            mc.ingameGUI.getChatGUI().printChatMessage(s1);
         }
     }
 

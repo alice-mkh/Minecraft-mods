@@ -45,7 +45,9 @@ public class WorldInfo
 
     /** Number of ticks untils next thunderbolt. */
     private int thunderTime;
-    private EnumGameType field_76113_q;
+
+    /** The Game Type. */
+    private EnumGameType theGameType;
 
     /**
      * Whether the map features (e.g. strongholds) generation is enabled or disabled.
@@ -54,8 +56,8 @@ public class WorldInfo
 
     /** Hardcore mode flag */
     private boolean hardcore;
-    private boolean field_76110_t;
-    private boolean field_76109_u;
+    private boolean allowCommands;
+    private boolean initialized;
 
     public boolean nbxlite;
     public boolean snowCovered;
@@ -96,7 +98,7 @@ public class WorldInfo
             {
                 terrainType = WorldType.DEFAULT;
             }
-            else if (terrainType.func_77125_e())
+            else if (terrainType.isVersioned())
             {
                 int i = 0;
 
@@ -109,7 +111,7 @@ public class WorldInfo
             }
         }
 
-        field_76113_q = EnumGameType.func_77146_a(par1NBTTagCompound.getInteger("GameType"));
+        theGameType = EnumGameType.getByID(par1NBTTagCompound.getInteger("GameType"));
 
         if (par1NBTTagCompound.hasKey("MapFeatures"))
         {
@@ -140,20 +142,20 @@ public class WorldInfo
 
         if (par1NBTTagCompound.hasKey("initialized"))
         {
-            field_76109_u = par1NBTTagCompound.getBoolean("initialized");
+            initialized = par1NBTTagCompound.getBoolean("initialized");
         }
         else
         {
-            field_76109_u = true;
+            initialized = true;
         }
 
         if (par1NBTTagCompound.hasKey("allowCommands"))
         {
-            field_76110_t = par1NBTTagCompound.getBoolean("allowCommands");
+            allowCommands = par1NBTTagCompound.getBoolean("allowCommands");
         }
         else
         {
-            field_76110_t = field_76113_q == EnumGameType.CREATIVE;
+            allowCommands = theGameType == EnumGameType.CREATIVE;
         }
         
         
@@ -226,13 +228,13 @@ public class WorldInfo
     {
         terrainType = WorldType.DEFAULT;
         randomSeed = par1WorldSettings.getSeed();
-        field_76113_q = par1WorldSettings.func_77162_e();
+        theGameType = par1WorldSettings.getGameType();
         mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
         levelName = par2Str;
         hardcore = par1WorldSettings.getHardcoreEnabled();
         terrainType = par1WorldSettings.getTerrainType();
-        field_76110_t = par1WorldSettings.func_77163_i();
-        field_76109_u = false;
+        allowCommands = par1WorldSettings.areCommandsAllowed();
+        initialized = false;
     }
 
     public WorldInfo(WorldInfo par1WorldInfo)
@@ -240,7 +242,7 @@ public class WorldInfo
         terrainType = WorldType.DEFAULT;
         randomSeed = par1WorldInfo.randomSeed;
         terrainType = par1WorldInfo.terrainType;
-        field_76113_q = par1WorldInfo.field_76113_q;
+        theGameType = par1WorldInfo.theGameType;
         mapFeaturesEnabled = par1WorldInfo.mapFeaturesEnabled;
         spawnX = par1WorldInfo.spawnX;
         spawnY = par1WorldInfo.spawnY;
@@ -257,8 +259,8 @@ public class WorldInfo
         thunderTime = par1WorldInfo.thunderTime;
         thundering = par1WorldInfo.thundering;
         hardcore = par1WorldInfo.hardcore;
-        field_76110_t = par1WorldInfo.field_76110_t;
-        field_76109_u = par1WorldInfo.field_76109_u;
+        allowCommands = par1WorldInfo.allowCommands;
+        initialized = par1WorldInfo.initialized;
         snowCovered = par1WorldInfo.snowCovered;
         mapTheme = par1WorldInfo.mapTheme;
         mapGen = par1WorldInfo.mapGen;
@@ -314,7 +316,10 @@ public class WorldInfo
         return nbttagcompound;
     }
 
-    public NBTTagCompound func_76082_a(NBTTagCompound par1NBTTagCompound)
+    /**
+     * Creates a new NBTTagCompound for the world, with the given NBTTag as the "Player"
+     */
+    public NBTTagCompound cloneNBTCompound(NBTTagCompound par1NBTTagCompound)
     {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         updateTagCompound(nbttagcompound, par1NBTTagCompound);
@@ -326,7 +331,7 @@ public class WorldInfo
         par1NBTTagCompound.setLong("RandomSeed", randomSeed);
         par1NBTTagCompound.setString("generatorName", terrainType.getWorldTypeName());
         par1NBTTagCompound.setInteger("generatorVersion", terrainType.getGeneratorVersion());
-        par1NBTTagCompound.setInteger("GameType", field_76113_q.func_77148_a());
+        par1NBTTagCompound.setInteger("GameType", theGameType.getID());
         par1NBTTagCompound.setBoolean("MapFeatures", mapFeaturesEnabled);
         par1NBTTagCompound.setInteger("SpawnX", spawnX);
         par1NBTTagCompound.setInteger("SpawnY", spawnY);
@@ -341,8 +346,8 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("thunderTime", thunderTime);
         par1NBTTagCompound.setBoolean("thundering", thundering);
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
-        par1NBTTagCompound.setBoolean("allowCommands", field_76110_t);
-        par1NBTTagCompound.setBoolean("initialized", field_76109_u);
+        par1NBTTagCompound.setBoolean("allowCommands", allowCommands);
+        par1NBTTagCompound.setBoolean("initialized", initialized);
         if (nbxlite && useNBXlite){
             NBTTagCompound nbxliteTag = new NBTTagCompound();
             nbxliteTag.setString("Generator", ODNBXlite.getGenName(mapGen, mapGenExtra, snowCovered));
@@ -584,9 +589,12 @@ public class WorldInfo
         rainTime = par1;
     }
 
-    public EnumGameType func_76077_q()
+    /**
+     * Gets the GameType.
+     */
+    public EnumGameType getGameType()
     {
-        return field_76113_q;
+        return theGameType;
     }
 
     /**
@@ -597,9 +605,12 @@ public class WorldInfo
         return mapFeaturesEnabled;
     }
 
-    public void func_76060_a(EnumGameType par1EnumGameType)
+    /**
+     * Sets the GameType.
+     */
+    public void setGameType(EnumGameType par1EnumGameType)
     {
-        field_76113_q = par1EnumGameType;
+        theGameType = par1EnumGameType;
     }
 
     /**
@@ -620,19 +631,28 @@ public class WorldInfo
         terrainType = par1WorldType;
     }
 
-    public boolean func_76086_u()
+    /**
+     * Returns true if commands are allowed on this World.
+     */
+    public boolean areCommandsAllowed()
     {
-        return field_76110_t;
+        return allowCommands;
     }
 
-    public boolean func_76070_v()
+    /**
+     * Returns true if the World is initialized.
+     */
+    public boolean isInitialized()
     {
-        return field_76109_u;
+        return initialized;
     }
 
-    public void func_76091_d(boolean par1)
+    /**
+     * Sets the initialization status of the World.
+     */
+    public void setServerInitialized(boolean par1)
     {
-        field_76109_u = par1;
+        initialized = par1;
     }
 
     public void setSeed(long l)

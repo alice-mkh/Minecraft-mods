@@ -33,18 +33,18 @@ public class GuiInventory extends InventoryEffectRenderer
      */
     public void updateScreen()
     {
-        if (mc.field_71442_b.isInCreativeMode())
+        if (mc.playerController.isInCreativeMode())
         {
             if (oldcreative){
                 try{
                     Class c = net.minecraft.src.GuiContainerCreativeOld.class;
-                    Object o = c.getDeclaredConstructor(EntityPlayer.class).newInstance(mc.field_71439_g);
+                    Object o = c.getDeclaredConstructor(EntityPlayer.class).newInstance(mc.thePlayer);
                     mc.displayGuiScreen((GuiScreen)o);
                 }catch(Exception ex){
                     oldcreative = false;
                 }
             }else{
-                mc.displayGuiScreen(new GuiContainerCreative(mc.field_71439_g));
+                mc.displayGuiScreen(new GuiContainerCreative(mc.thePlayer));
             }
         }
     }
@@ -56,18 +56,18 @@ public class GuiInventory extends InventoryEffectRenderer
     {
         controlList.clear();
 
-        if (mc.field_71442_b.isInCreativeMode())
+        if (mc.playerController.isInCreativeMode())
         {
             if (oldcreative){
                 try{
                     Class c = net.minecraft.src.GuiContainerCreativeOld.class;
-                    Object o = c.getDeclaredConstructor(EntityPlayer.class).newInstance(mc.field_71439_g);
+                    Object o = c.getDeclaredConstructor(EntityPlayer.class).newInstance(mc.thePlayer);
                     mc.displayGuiScreen((GuiScreen)o);
                 }catch(Exception ex){
                     oldcreative = false;
                 }
             }else{
-                mc.displayGuiScreen(new GuiContainerCreative(mc.field_71439_g));
+                mc.displayGuiScreen(new GuiContainerCreative(mc.thePlayer));
             }
         }
         else
@@ -77,7 +77,7 @@ public class GuiInventory extends InventoryEffectRenderer
     }
 
     /**
-     * Draw the foreground layer for the GuiContainer (everythin in front of the items)
+     * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer()
     {
@@ -115,23 +115,23 @@ public class GuiInventory extends InventoryEffectRenderer
         GL11.glTranslatef(par1, par2, 50F);
         GL11.glScalef(-par3, par3, par3);
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-        float f = par0Minecraft.field_71439_g.renderYawOffset;
-        float f1 = par0Minecraft.field_71439_g.rotationYaw;
-        float f2 = par0Minecraft.field_71439_g.rotationPitch;
+        float f = par0Minecraft.thePlayer.renderYawOffset;
+        float f1 = par0Minecraft.thePlayer.rotationYaw;
+        float f2 = par0Minecraft.thePlayer.rotationPitch;
         GL11.glRotatef(135F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-(float)Math.atan(par5 / 40F) * 20F, 1.0F, 0.0F, 0.0F);
-        par0Minecraft.field_71439_g.renderYawOffset = (float)Math.atan(par4 / 40F) * 20F;
-        par0Minecraft.field_71439_g.rotationYaw = (float)Math.atan(par4 / 40F) * 40F;
-        par0Minecraft.field_71439_g.rotationPitch = -(float)Math.atan(par5 / 40F) * 20F;
-        par0Minecraft.field_71439_g.rotationYawHead = par0Minecraft.field_71439_g.rotationYaw;
-        GL11.glTranslatef(0.0F, par0Minecraft.field_71439_g.yOffset, 0.0F);
+        par0Minecraft.thePlayer.renderYawOffset = (float)Math.atan(par4 / 40F) * 20F;
+        par0Minecraft.thePlayer.rotationYaw = (float)Math.atan(par4 / 40F) * 40F;
+        par0Minecraft.thePlayer.rotationPitch = -(float)Math.atan(par5 / 40F) * 20F;
+        par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
+        GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180F;
-        RenderManager.instance.renderEntityWithPosYaw(par0Minecraft.field_71439_g, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        par0Minecraft.field_71439_g.renderYawOffset = f;
-        par0Minecraft.field_71439_g.rotationYaw = f1;
-        par0Minecraft.field_71439_g.rotationPitch = f2;
+        RenderManager.instance.renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        par0Minecraft.thePlayer.renderYawOffset = f;
+        par0Minecraft.thePlayer.rotationYaw = f1;
+        par0Minecraft.thePlayer.rotationPitch = f2;
         GL11.glPopMatrix();
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);

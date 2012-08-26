@@ -10,104 +10,107 @@ import net.minecraft.server.MinecraftServer;
 
 public class DedicatedServer extends MinecraftServer implements IServer
 {
-    private final List field_71341_l = Collections.synchronizedList(new ArrayList());
+    private final List pendingCommandList = Collections.synchronizedList(new ArrayList());
     private RConThreadQuery field_71342_m;
     private RConThreadMain field_71339_n;
-    private PropertyManager field_71340_o;
-    private boolean field_71338_p;
-    private EnumGameType field_71337_q;
-    private NetworkListenThread field_71336_r;
-    private boolean field_71335_s;
+    private PropertyManager settings;
+    private boolean canSpawnStructures;
+    private EnumGameType gameType;
+    private NetworkListenThread networkThread;
+    private boolean guiIsEnabled;
 
     public DedicatedServer(File par1File)
     {
         super(par1File);
-        field_71335_s = false;
+        guiIsEnabled = false;
         new DedicatedServerSleepThread(this);
     }
 
-    protected boolean func_71197_b() throws IOException
+    /**
+     * Initialises the server and starts it.
+     */
+    protected boolean startServer() throws IOException
     {
         DedicatedServerCommandThread dedicatedservercommandthread = new DedicatedServerCommandThread(this);
         dedicatedservercommandthread.setDaemon(true);
         dedicatedservercommandthread.start();
         ConsoleLogManager.func_73699_a();
-        field_71306_a.info("Starting minecraft server version 1.3.1");
+        logger.info("Starting minecraft server version 1.3.2");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
-            field_71306_a.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
+            logger.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
         }
 
-        field_71306_a.info("Loading properties");
-        field_71340_o = new PropertyManager(new File("server.properties"));
+        logger.info("Loading properties");
+        settings = new PropertyManager(new File("server.properties"));
 
-        if (func_71264_H())
+        if (isSinglePlayer())
         {
-            func_71189_e("127.0.0.1");
+            getHostName("127.0.0.1");
         }
         else
         {
-            func_71229_d(field_71340_o.func_73670_a("online-mode", true));
-            func_71189_e(field_71340_o.func_73671_a("server-ip", ""));
+            setOnlineMode(settings.getOrSetBoolProperty("online-mode", true));
+            getHostName(settings.getOrSetProperty("server-ip", ""));
         }
 
-        func_71251_e(field_71340_o.func_73670_a("spawn-animals", true));
-        func_71257_f(field_71340_o.func_73670_a("spawn-npcs", true));
-        func_71188_g(field_71340_o.func_73670_a("pvp", true));
-        func_71245_h(field_71340_o.func_73670_a("allow-flight", false));
-        func_71269_o(field_71340_o.func_73671_a("texture-pack", ""));
-        func_71205_p(field_71340_o.func_73671_a("motd", "A Minecraft Server"));
-        field_71338_p = field_71340_o.func_73670_a("generate-structures", true);
-        int i = field_71340_o.func_73669_a("gamemode", EnumGameType.SURVIVAL.func_77148_a());
-        field_71337_q = WorldSettings.func_77161_a(i);
-        field_71306_a.info((new StringBuilder()).append("Default game type: ").append(field_71337_q).toString());
+        setSpawnAnimals(settings.getOrSetBoolProperty("spawn-animals", true));
+        setSpawnNpcs(settings.getOrSetBoolProperty("spawn-npcs", true));
+        setAllowPvp(settings.getOrSetBoolProperty("pvp", true));
+        setAllowFlight(settings.getOrSetBoolProperty("allow-flight", false));
+        setTexturePack(settings.getOrSetProperty("texture-pack", ""));
+        setMOTD(settings.getOrSetProperty("motd", "A Minecraft Server"));
+        canSpawnStructures = settings.getOrSetBoolProperty("generate-structures", true);
+        int i = settings.getOrSetIntProperty("gamemode", EnumGameType.SURVIVAL.getID());
+        gameType = WorldSettings.getGameTypeById(i);
+        logger.info((new StringBuilder()).append("Default game type: ").append(gameType).toString());
         InetAddress inetaddress = null;
 
-        if (func_71211_k().length() > 0)
+        if (getHostname().length() > 0)
         {
-            inetaddress = InetAddress.getByName(func_71211_k());
+            inetaddress = InetAddress.getByName(getHostname());
         }
 
-        if (func_71215_F() < 0)
+        if (getServerPort() < 0)
         {
-            func_71208_b(field_71340_o.func_73669_a("server-port", 25565));
+            setServerPort(settings.getOrSetIntProperty("server-port", 25565));
         }
 
-        field_71306_a.info("Generating keypair");
-        func_71253_a(CryptManager.func_75891_b());
-        field_71306_a.info((new StringBuilder()).append("Starting Minecraft server on ").append(func_71211_k().length() != 0 ? func_71211_k() : "*").append(":").append(func_71215_F()).toString());
+        logger.info("Generating keypair");
+        setKeyPair(CryptManager.createNewKeyPair());
+        logger.info((new StringBuilder()).append("Starting Minecraft server on ").append(getHostname().length() != 0 ? getHostname() : "*").append(":").append(getServerPort()).toString());
 
         try
         {
-            field_71336_r = new DedicatedServerListenThread(this, inetaddress, func_71215_F());
+            networkThread = new DedicatedServerListenThread(this, inetaddress, getServerPort());
         }
         catch (IOException ioexception)
         {
-            field_71306_a.warning("**** FAILED TO BIND TO PORT!");
-            field_71306_a.log(Level.WARNING, (new StringBuilder()).append("The exception was: ").append(ioexception.toString()).toString());
-            field_71306_a.warning("Perhaps a server is already running on that port?");
+            logger.warning("**** FAILED TO BIND TO PORT!");
+            logger.log(Level.WARNING, (new StringBuilder()).append("The exception was: ").append(ioexception.toString()).toString());
+            logger.warning("Perhaps a server is already running on that port?");
             return false;
         }
 
-        if (!func_71266_T())
+        if (!isServerInOnlineMode())
         {
-            field_71306_a.warning("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
-            field_71306_a.warning("The server will make no attempt to authenticate usernames. Beware.");
-            field_71306_a.warning("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
-            field_71306_a.warning("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
+            logger.warning("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
+            logger.warning("The server will make no attempt to authenticate usernames. Beware.");
+            logger.warning("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
+            logger.warning("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
         }
 
-        func_71210_a(new DedicatedPlayerList(this));
+        setConfigurationManager(new DedicatedPlayerList(this));
         long l = System.nanoTime();
 
-        if (func_71270_I() == null)
+        if (getFolderName() == null)
         {
-            func_71261_m(field_71340_o.func_73671_a("level-name", "world"));
+            setFolderName(settings.getOrSetProperty("level-name", "world"));
         }
 
-        String s = field_71340_o.func_73671_a("level-seed", "");
-        String s1 = field_71340_o.func_73671_a("level-type", "DEFAULT");
+        String s = settings.getOrSetProperty("level-seed", "");
+        String s1 = settings.getOrSetProperty("level-type", "DEFAULT");
         long l1 = (new Random()).nextLong();
 
         if (s.length() > 0)
@@ -134,29 +137,29 @@ public class DedicatedServer extends MinecraftServer implements IServer
             worldtype = WorldType.DEFAULT;
         }
 
-        func_71191_d(field_71340_o.func_73669_a("max-build-height", 256));
-        func_71191_d(((func_71207_Z() + 8) / 16) * 16);
-        func_71191_d(MathHelper.clamp_int(func_71207_Z(), 64, 256));
-        field_71340_o.func_73667_a("max-build-height", Integer.valueOf(func_71207_Z()));
-        field_71306_a.info((new StringBuilder()).append("Preparing level \"").append(func_71270_I()).append("\"").toString());
-        func_71247_a(func_71270_I(), func_71270_I(), l1, worldtype);
+        setBuildLimit(settings.getOrSetIntProperty("max-build-height", 256));
+        setBuildLimit(((getBuildLimit() + 8) / 16) * 16);
+        setBuildLimit(MathHelper.clamp_int(getBuildLimit(), 64, 256));
+        settings.setArbitraryProperty("max-build-height", Integer.valueOf(getBuildLimit()));
+        logger.info((new StringBuilder()).append("Preparing level \"").append(getFolderName()).append("\"").toString());
+        loadAllDimensions(getFolderName(), getFolderName(), l1, worldtype);
         long l3 = System.nanoTime() - l;
         String s2 = String.format("%.3fs", new Object[]
                 {
                     Double.valueOf((double)l3 / 1000000000D)
                 });
-        field_71306_a.info((new StringBuilder()).append("Done (").append(s2).append(")! For help, type \"help\" or \"?\"").toString());
+        logger.info((new StringBuilder()).append("Done (").append(s2).append(")! For help, type \"help\" or \"?\"").toString());
 
-        if (field_71340_o.func_73670_a("enable-query", false))
+        if (settings.getOrSetBoolProperty("enable-query", false))
         {
-            field_71306_a.info("Starting GS4 status listener");
+            logger.info("Starting GS4 status listener");
             field_71342_m = new RConThreadQuery(this);
             field_71342_m.func_72602_a();
         }
 
-        if (field_71340_o.func_73670_a("enable-rcon", false))
+        if (settings.getOrSetBoolProperty("enable-rcon", false))
         {
-            field_71306_a.info("Starting remote control listener");
+            logger.info("Starting remote control listener");
             field_71339_n = new RConThreadMain(this);
             field_71339_n.func_72602_a();
         }
@@ -164,31 +167,40 @@ public class DedicatedServer extends MinecraftServer implements IServer
         return true;
     }
 
-    public boolean func_71225_e()
+    public boolean canStructuresSpawn()
     {
-        return field_71338_p;
+        return canSpawnStructures;
     }
 
-    public EnumGameType func_71265_f()
+    public EnumGameType getGameType()
     {
-        return field_71337_q;
+        return gameType;
     }
 
-    public int func_71232_g()
+    /**
+     * defaults to "1" for the dedicated server
+     */
+    public int getDifficulty()
     {
-        return field_71340_o.func_73669_a("difficulty", 1);
+        return settings.getOrSetIntProperty("difficulty", 1);
     }
 
-    public boolean func_71199_h()
+    /**
+     * defaults to false
+     */
+    public boolean isHardcore()
     {
-        return field_71340_o.func_73670_a("hardcore", false);
+        return settings.getOrSetBoolProperty("hardcore", false);
     }
 
-    protected void func_71228_a(CrashReport par1CrashReport)
+    /**
+     * called on exit from the main run loop
+     */
+    protected void finalTick(CrashReport par1CrashReport)
     {
-        while (func_71278_l())
+        while (isServerRunning())
         {
-            func_71333_ah();
+            executePendingCommands();
 
             try
             {
@@ -201,103 +213,113 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
     }
 
-    public CrashReport func_71230_b(CrashReport par1CrashReport)
+    /**
+     * iterates the worldServers and adds their info also
+     */
+    public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.func_71500_a("Type", new CallableType(this));
-        return super.func_71230_b(par1CrashReport);
+        par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
+        par1CrashReport.addCrashSectionCallable("Type", new CallableType(this));
+        return par1CrashReport;
     }
 
-    protected void func_71240_o()
+    /**
+     * directly calls system.exit, instantly killing the program
+     */
+    protected void systemExitNow()
     {
         System.exit(0);
     }
 
-    public void func_71190_q()
+    public void updateTimeLightAndEntities()
     {
-        super.func_71190_q();
-        func_71333_ah();
+        super.updateTimeLightAndEntities();
+        executePendingCommands();
     }
 
-    public boolean func_71255_r()
+    public boolean getAllowNether()
     {
-        return field_71340_o.func_73670_a("allow-nether", true);
+        return settings.getOrSetBoolProperty("allow-nether", true);
     }
 
-    public boolean func_71193_K()
+    public boolean allowSpawnMonsters()
     {
-        return field_71340_o.func_73670_a("spawn-monsters", true);
+        return settings.getOrSetBoolProperty("spawn-monsters", true);
     }
 
-    public void func_70000_a(PlayerUsageSnooper par1PlayerUsageSnooper)
+    public void addServerStatsToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)
     {
-        par1PlayerUsageSnooper.addData("whitelist_enabled", Boolean.valueOf(func_71334_ai().func_72383_n()));
-        par1PlayerUsageSnooper.addData("whitelist_count", Integer.valueOf(func_71334_ai().func_72388_h().size()));
-        super.func_70000_a(par1PlayerUsageSnooper);
+        par1PlayerUsageSnooper.addData("whitelist_enabled", Boolean.valueOf(getDedicatedPlayerList().isWhiteListEnabled()));
+        par1PlayerUsageSnooper.addData("whitelist_count", Integer.valueOf(getDedicatedPlayerList().getIPWhiteList().size()));
+        super.addServerStatsToSnooper(par1PlayerUsageSnooper);
     }
 
-    public boolean func_70002_Q()
+    /**
+     * Returns whether snooping is enabled or not.
+     */
+    public boolean isSnooperEnabled()
     {
-        return field_71340_o.func_73670_a("snooper-enabled", true);
+        return settings.getOrSetBoolProperty("snooper-enabled", true);
     }
 
-    public void func_71331_a(String par1Str, ICommandSender par2ICommandSender)
+    public void addPendingCommand(String par1Str, ICommandSender par2ICommandSender)
     {
-        field_71341_l.add(new ServerCommand(par1Str, par2ICommandSender));
+        pendingCommandList.add(new ServerCommand(par1Str, par2ICommandSender));
     }
 
-    public void func_71333_ah()
+    public void executePendingCommands()
     {
         ServerCommand servercommand;
 
-        for (; !field_71341_l.isEmpty(); func_71187_D().func_71556_a(servercommand.field_73701_b, servercommand.field_73702_a))
+        for (; !pendingCommandList.isEmpty(); getCommandManager().executeCommand(servercommand.sender, servercommand.command))
         {
-            servercommand = (ServerCommand)field_71341_l.remove(0);
+            servercommand = (ServerCommand)pendingCommandList.remove(0);
         }
     }
 
-    public boolean func_71262_S()
+    public boolean isDedicatedServer()
     {
         return true;
     }
 
-    public DedicatedPlayerList func_71334_ai()
+    public DedicatedPlayerList getDedicatedPlayerList()
     {
-        return (DedicatedPlayerList)super.func_71203_ab();
+        return (DedicatedPlayerList)super.getConfigurationManager();
     }
 
-    public NetworkListenThread func_71212_ac()
+    public NetworkListenThread getNetworkThread()
     {
-        return field_71336_r;
+        return networkThread;
     }
 
-    public int func_71327_a(String par1Str, int par2)
+    public int getOrSetIntProperty(String par1Str, int par2)
     {
-        return field_71340_o.func_73669_a(par1Str, par2);
+        return settings.getOrSetIntProperty(par1Str, par2);
     }
 
-    public String func_71330_a(String par1Str, String par2Str)
+    public String getOrSetProperty(String par1Str, String par2Str)
     {
-        return field_71340_o.func_73671_a(par1Str, par2Str);
+        return settings.getOrSetProperty(par1Str, par2Str);
     }
 
-    public boolean func_71332_a(String par1Str, boolean par2)
+    public boolean getOrSetBoolProperty(String par1Str, boolean par2)
     {
-        return field_71340_o.func_73670_a(par1Str, par2);
+        return settings.getOrSetBoolProperty(par1Str, par2);
     }
 
-    public void func_71328_a(String par1Str, Object par2Obj)
+    public void setArbitraryProperty(String par1Str, Object par2Obj)
     {
-        field_71340_o.func_73667_a(par1Str, par2Obj);
+        settings.setArbitraryProperty(par1Str, par2Obj);
     }
 
-    public void func_71326_a()
+    public void saveSettingsToFile()
     {
-        field_71340_o.func_73668_b();
+        settings.saveSettingsToFile();
     }
 
-    public String func_71329_c()
+    public String getSettingsFilePath()
     {
-        File file = field_71340_o.func_73665_c();
+        File file = settings.getFile();
 
         if (file != null)
         {
@@ -309,24 +331,27 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
     }
 
-    public boolean func_71279_ae()
+    public boolean getGuiEnabled()
     {
-        return field_71335_s;
+        return guiIsEnabled;
     }
 
-    public String func_71206_a(EnumGameType par1EnumGameType, boolean par2)
+    /**
+     * does nothing on dedicated. on integrated, sets commandsAllowedForAll and gameType and allows external connections
+     */
+    public String shareToLAN(EnumGameType par1EnumGameType, boolean par2)
     {
         return "";
     }
 
-    public ServerConfigurationManager func_71203_ab()
+    public ServerConfigurationManager getConfigurationManager()
     {
-        return func_71334_ai();
+        return getDedicatedPlayerList();
     }
 
     public void func_79001_aj()
     {
         ServerGUI.func_79003_a(this);
-        field_71335_s = true;
+        guiIsEnabled = true;
     }
 }

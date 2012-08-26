@@ -24,21 +24,25 @@ public class LoadingScreenRenderer implements IProgressUpdate
     {
         field_73727_a = "";
         currentlyDisplayedText = "";
-        field_73723_d = Minecraft.func_71386_F();
+        field_73723_d = Minecraft.getSystemTime();
         field_73724_e = false;
         mc = par1Minecraft;
     }
 
-    public void printText(String par1Str)
+    /**
+     * this string, followed by "working..." and then the "% complete" are the 3 lines shown. This resets progress to 0,
+     * and the WorkingString to "working...".
+     */
+    public void resetProgressAndMessage(String par1Str)
     {
         field_73724_e = false;
         func_73722_d(par1Str);
     }
 
     /**
-     * Shows the 'Saving level' string.
+     * "Saving level", or the loading,or downloading equivelent
      */
-    public void displaySavingString(String par1Str)
+    public void displayProgressMessage(String par1Str)
     {
         field_73724_e = true;
         func_73722_d(par1Str);
@@ -65,7 +69,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
             GL11.glClear(256);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
-            GL11.glOrtho(0.0D, scaledresolution.func_78327_c(), scaledresolution.func_78324_d(), 0.0D, 100D, 300D);
+            GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 100D, 300D);
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
             GL11.glTranslatef(0.0F, 0.0F, -200F);
@@ -74,9 +78,9 @@ public class LoadingScreenRenderer implements IProgressUpdate
     }
 
     /**
-     * Displays a string on the loading screen supposed to indicate what is being done currently.
+     * This is called with "Working..." by resetProgressAndMessage
      */
-    public void displayLoadingString(String par1Str)
+    public void resetProgresAndWorkingMessage(String par1Str)
     {
         if (!mc.running)
         {
@@ -116,7 +120,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
             }
         }
 
-        long l = Minecraft.func_71386_F();
+        long l = Minecraft.getSystemTime();
 
         if (l - field_73723_d < (smooth ? 20L : 100L))
         {
@@ -130,7 +134,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
         GL11.glClear(256);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0.0D, scaledresolution.func_78327_c(), scaledresolution.func_78324_d(), 0.0D, 100D, 300D);
+        GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 100D, 300D);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0F, 0.0F, -200F);
@@ -180,7 +184,10 @@ public class LoadingScreenRenderer implements IProgressUpdate
         catch (Exception exception) { }
     }
 
-    public void func_73717_a()
+    /**
+     * called when there is no more progress to be had, both on completion and failure
+     */
+    public void onNoMoreProgress()
     {
     }
 }

@@ -150,14 +150,14 @@ public class GuiNBXlite extends GuiScreen{
             if (gen==0 && feats==3){
                 type=GeneratorList.typecurrent;
             }
-            ODNBXlite.SetGenerator(mod_OldDays.getMinecraftInstance().field_71441_e, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
+            ODNBXlite.SetGenerator(mod_OldDays.getMinecraft().theWorld, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
             mod_OldDays.refreshConditionProperties();
             if (gen==0 && feats>=3){
                 ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
                 ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
             }
-            mod_OldDays.getMinecraftInstance().renderGlobal.loadRenderers();
+            mod_OldDays.getMinecraft().renderGlobal.loadRenderers();
         }else{
             ODNBXlite.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
@@ -200,7 +200,7 @@ public class GuiNBXlite extends GuiScreen{
 //             MinecraftHook.startWorldHook(s, selectedWorld, null);
             mc.displayGuiScreen(null);
         }else{
-            mc.func_71371_a(s, selectedWorld, null);
+            mc.launchIntegratedServer(s, selectedWorld, null);
         }
     }
 

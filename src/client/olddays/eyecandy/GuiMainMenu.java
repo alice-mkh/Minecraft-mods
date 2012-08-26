@@ -169,7 +169,7 @@ public class GuiMainMenu extends GuiScreen
         StringTranslate stringtranslate = StringTranslate.getInstance();
         int i = height / 4 + 48;
 
-        if (mc.func_71355_q())
+        if (mc.isDemo())
         {
             func_73972_b(i, 24, stringtranslate);
         }
@@ -251,11 +251,11 @@ public class GuiMainMenu extends GuiScreen
         {
             mc.enableSP = mc.useSP;
             if (mc.enableSP){
-                mc.field_71442_b = new PlayerControllerDemo(mc);
-                mc.startWorldSSP("Demo_World", "Demo_World", DemoWorldServer.field_73071_a);
+                mc.playerController = new PlayerControllerDemo(mc);
+                mc.startWorldSSP("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
                 mc.displayGuiScreen(null);
             }else{
-                mc.func_71371_a("Demo_World", "Demo_World", DemoWorldServer.field_73071_a);
+                mc.launchIntegratedServer("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
             }
         }
 
@@ -481,13 +481,13 @@ public class GuiMainMenu extends GuiScreen
         GL11.glPushMatrix();
         GL11.glTranslatef(width / 2 + 90, 70F, 0.0F);
         GL11.glRotatef(-20F, 0.0F, 0.0F, 1.0F);
-        float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(Minecraft.func_71386_F() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
+        float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(Minecraft.getSystemTime() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
         f = (f * 100F) / (float)(fontRenderer.getStringWidth(splashText) + 32);
         GL11.glScalef(f, f, f);
         drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
         GL11.glPopMatrix();
-        String s = version.equals("OFF") ? "Minecraft 1.3.1" : version;
-        if (mc.func_71355_q())
+        String s = version.equals("OFF") ? "Minecraft 1.3.2" : version;
+        if (mc.isDemo())
         {
             s = (new StringBuilder()).append(s).append(" Demo").toString();
         }
@@ -523,7 +523,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        int k = 120 * scaledresolution.func_78325_e();
+        int k = 120 * scaledresolution.getScaleFactor();
         GLU.gluPerspective(70F, (float)mc.displayWidth / (float)k, 0.05F, 100F);
         GL11.glViewport(0, mc.displayHeight - k, mc.displayWidth, k);
         GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
@@ -588,7 +588,7 @@ public class GuiMainMenu extends GuiScreen
                     GL11.glTranslatef(j1, i1, f1);
                     GL11.glScalef(f2, f2, f2);
                     GL11.glRotatef(f4, 0.0F, 1.0F, 0.0F);
-                    /*renderblocks.*/func_1238_a(Block.stone, f3, renderblocks);
+                    renderMenuBlock(Block.stone, f3, renderblocks);
                     GL11.glPopMatrix();
                 }
 
@@ -611,7 +611,7 @@ public class GuiMainMenu extends GuiScreen
         return rand;
     }
 
-    private void func_1238_a(Block block, float f, RenderBlocks renderblocks)
+    private void renderMenuBlock(Block block, float f, RenderBlocks renderblocks)
     {
         int i = block.getRenderType();
         Tessellator tessellator = Tessellator.instance;

@@ -550,7 +550,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                     int z2 = z1 + rand.nextInt(16);
                     int id = worldObj.getBlockId(x2, y2, z2);
                     if (id == Block.stone.blockID){
-                        worldObj.setBlock(x2, y2, z2, 129);
+                        worldObj.setBlock(x2, y2, z2, Block.oreEmerald.blockID);
                     }
                 }
             }

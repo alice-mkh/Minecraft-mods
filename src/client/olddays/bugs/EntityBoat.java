@@ -215,7 +215,7 @@ public class EntityBoat extends Entity
         {
             double d2 = (boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(j + 0)) / (double)i) - 0.125D;
             double d8 = (boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(j + 1)) / (double)i) - 0.125D;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.func_72332_a().func_72299_a(boundingBox.minX, d2, boundingBox.minZ, boundingBox.maxX, d8, boundingBox.maxZ);
+            AxisAlignedBB axisalignedbb = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(boundingBox.minX, d2, boundingBox.minZ, boundingBox.maxX, d8, boundingBox.maxZ);
 
             if (worldObj.isAABBInMaterial(axisalignedbb, Material.water))
             {
@@ -257,7 +257,7 @@ public class EntityBoat extends Entity
                 double d4 = posX + (boatX - posX) / (double)boatPosRotationIncrements;
                 double d10 = posY + (boatY - posY) / (double)boatPosRotationIncrements;
                 double d14 = posZ + (boatZ - posZ) / (double)boatPosRotationIncrements;
-                double d18 = MathHelper.func_76138_g(boatYaw - (double)rotationYaw);
+                double d18 = MathHelper.wrapAngleTo180_double(boatYaw - (double)rotationYaw);
                 rotationYaw += d18 / (double)boatPosRotationIncrements;
                 rotationPitch += (boatPitch - (double)rotationPitch) / (double)boatPosRotationIncrements;
                 boatPosRotationIncrements--;
@@ -384,7 +384,7 @@ public class EntityBoat extends Entity
             d13 = (float)((Math.atan2(d19, d16) * 180D) / Math.PI);
         }
 
-        double d21 = MathHelper.func_76138_g(d13 - (double)rotationYaw);
+        double d21 = MathHelper.wrapAngleTo180_double(d13 - (double)rotationYaw);
 
         if (d21 > 20D)
         {

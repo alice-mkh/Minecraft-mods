@@ -104,7 +104,7 @@ public class EntityEnderman extends EntityMob
         }
 
         Vec3 vec3 = par1EntityPlayer.getLook(1.0F).normalize();
-        Vec3 vec3_1 = Vec3.func_72437_a().func_72345_a(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
+        Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
         double d = vec3_1.lengthVector();
         vec3_1 = vec3_1.normalize();
         double d1 = vec3.dotProduct(vec3_1);
@@ -249,7 +249,7 @@ public class EntityEnderman extends EntityMob
      */
     protected boolean teleportToEntity(Entity par1Entity)
     {
-        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
+        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
         vec3 = vec3.normalize();
         double d = 16D;
         double d1 = (posX + (rand.nextDouble() - 0.5D) * 8D) - vec3.xCoord * d;
@@ -499,8 +499,10 @@ public class EntityEnderman extends EntityMob
         carriableBlocksOld[Block.tnt.blockID] = true;
         carriableBlocksOld[Block.bookShelf.blockID] = true;
         carriableBlocksOld[Block.cobblestoneMossy.blockID] = true;
-        carriableBlocksOld[Block.field_72073_aw.blockID] = true;
-        carriableBlocksOld[Block.field_72071_ax.blockID] = true;
+        carriableBlocksOld[Block.oreDiamond.blockID] = true;
+        carriableBlocksOld[Block.blockDiamond.blockID] = true;
+        carriableBlocksOld[Block.oreEmerald.blockID] = true;
+        carriableBlocksOld[Block.blockEmerald.blockID] = true;
         carriableBlocksOld[Block.workbench.blockID] = true;
         carriableBlocksOld[Block.oreRedstone.blockID] = true;
         carriableBlocksOld[Block.oreRedstoneGlowing.blockID] = true;

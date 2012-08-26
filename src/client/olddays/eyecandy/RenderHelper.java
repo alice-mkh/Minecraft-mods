@@ -34,12 +34,12 @@ public class RenderHelper
         float f = 0.4F;
         float f1 = 0.6F;
         float f2 = 0.0F;
-        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(0.20000000298023224D, 1.0D, -0.69999998807907104D).normalize();
+        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(0.20000000298023224D, 1.0D, -0.69999998807907104D).normalize();
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(vec3.xCoord, vec3.yCoord, vec3.zCoord, 0.0D));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, setColorBuffer(f1, f1, f1, 1.0F));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, setColorBuffer(0.0F, 0.0F, 0.0F, 1.0F));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, setColorBuffer(f2, f2, f2, 1.0F));
-        vec3 = Vec3.func_72437_a().func_72345_a(-0.20000000298023224D, 1.0D, 0.69999998807907104D).normalize();
+        vec3 = Vec3.getVec3Pool().getVecFromPool(-0.20000000298023224D, 1.0D, 0.69999998807907104D).normalize();
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, setColorBuffer(vec3.xCoord, vec3.yCoord, vec3.zCoord, 0.0D));
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, setColorBuffer(f1, f1, f1, 1.0F));
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_AMBIENT, setColorBuffer(0.0F, 0.0F, 0.0F, 1.0F));

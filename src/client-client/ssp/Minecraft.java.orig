@@ -136,11 +136,6 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
-import net.minecraft.src.*;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.zip.*;
-
 public abstract class Minecraft implements Runnable, IPlayerUsage
 {
     public static byte clientExperience[] = new byte[0xa00000];
@@ -287,17 +282,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName;
 
-    private ICommandManager commandManager;
-    public boolean enableSP;
-    public boolean useSP;
-    private String lastWorld;
-    public ArrayList<Mod> mods;
-    private HashMap<String, Integer> compat; //0 - disabled; 1 - normal; 2 - mcp
-    public Class worldClass;
-    public int ticksRan;
-    public int mouseTicksRan;
-    public static boolean oldswing = false;
-
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
         fullscreen = false;
@@ -337,15 +321,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         displayHeight = par4;
         fullscreen = par5;
         theMinecraft = this;
-        useSP = true;
-        enableSP = useSP;
-        mods = new ArrayList<Mod>();
-        compat = new HashMap<String, Integer>();
-        worldClass = net.minecraft.src.WorldSSP.class;
-        ticksRan = 0;
-        mouseTicksRan = 0;
-        registerCustomPacket();
-        checkCompatibility("ModLoader");
     }
 
     private void startTimerHackThread()
@@ -461,7 +436,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         RenderManager.instance.itemRenderer = new ItemRenderer(this);
         statFileWriter = new StatFileWriter(session, mcDataDir);
         AchievementList.openInventory.setStatStringFormatter(new StatStringFormatKeyInv(this));
-        loadMods();
         loadScreen();
         Mouse.create();
         mouseHelper = new MouseHelper(mcCanvas);
@@ -897,7 +871,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         for (int i = 0; i < timer.elapsedTicks; i++)
         {
-            ticksRan++;
             runTick();
         }
 
@@ -994,20 +967,11 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         checkGLError("Post render");
         fpsCounter++;
         boolean flag = isGamePaused;
-        if (enableSP){
-            isGamePaused = !isMultiplayerWorld() && currentScreen != null && currentScreen.doesGuiPauseGame();
+        isGamePaused = isSingleplayer() && currentScreen != null && currentScreen.doesGuiPauseGame() && !theIntegratedServer.func_71344_c();
 
-            if (isIntegratedServerRunning() && thePlayer != null && getSendQueue() != null && isGamePaused != flag)
-            {
-                ((MemoryConnection)getSendQueue().getNetManager()).setGamePaused(isGamePaused);
-            }
-        }else{
-            isGamePaused = isSingleplayer() && currentScreen != null && currentScreen.doesGuiPauseGame() && !theIntegratedServer.func_71344_c();
-
-            if (isIntegratedServerRunning() && thePlayer != null && ((EntityClientPlayerMP)thePlayer).sendQueue != null && isGamePaused != flag)
-            {
-                ((MemoryConnection)((EntityClientPlayerMP)thePlayer).sendQueue.getNetManager()).setGamePaused(isGamePaused);
-            }
+        if (isIntegratedServerRunning() && thePlayer != null && thePlayer.sendQueue != null && isGamePaused != flag)
+        {
+            ((MemoryConnection)thePlayer.sendQueue.getNetManager()).setGamePaused(isGamePaused);
         }
 
         do
@@ -1031,16 +995,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
         while (true);
 
-        mcProfiler.endSection();
-        mcProfiler.startSection("mods");
-        for (Mod mod : mods){
-            if (mod.usesTick && theWorld != null){
-                mod.onTick();
-            }
-            if (mod.usesGUITick){
-                mod.onGUITick(currentScreen);
-            }
-        }
         mcProfiler.endSection();
 
         if (gameSettings.limitFramerate > 0)
@@ -1275,7 +1229,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             mouseHelper.grabMouseCursor();
             displayGuiScreen(null);
             leftClickCounter = 10000;
-            mouseTicksRan = ticksRan + 10000;
             return;
         }
     }
@@ -1309,11 +1262,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
         else
         {
-            if (enableSP){
-                displayGuiScreen(new GuiIngameMenuSP());
-            }else{
-                displayGuiScreen(new GuiIngameMenu());
-            }
+            displayGuiScreen(new GuiIngameMenu());
             return;
         }
     }
@@ -1355,7 +1304,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      */
     private void clickMouse(int par1)
     {
-        mouseTicksRan = ticksRan;
         if (par1 == 0 && leftClickCounter > 0)
         {
             return;
@@ -1564,7 +1512,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             {
                 displayGuiScreen(null);
             }
-            else if (thePlayer.isPlayerSleeping() && theWorld != null && theWorld.isRemote)
+            else if (thePlayer.isPlayerSleeping() && theWorld != null)
             {
                 displayGuiScreen(new GuiSleepMP());
             }
@@ -1577,7 +1525,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (currentScreen != null)
         {
             leftClickCounter = 10000;
-            mouseTicksRan = ticksRan + 10000;
         }
 
         if (currentScreen != null)
@@ -1805,10 +1752,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 for (; gameSettings.keyBindPickBlock.isPressed(); clickMiddleMouseButton()) { }
             }
 
-            if (gameSettings.keyBindAttack.pressed && oldswing && (float)(ticksRan - mouseTicksRan) >= 10F){
-                thePlayer.swingItem();
-                mouseTicksRan = ticksRan;
-            }
             if (gameSettings.keyBindUseItem.pressed && rightClickDelayTimer == 0 && !thePlayer.isUsingItem())
             {
                 clickMouse(1);
@@ -1827,22 +1770,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 {
                     joinPlayerCounter = 0;
                     theWorld.joinEntityInSurroundings(thePlayer);
-                }
-            }
-
-            if (enableSP){
-                if (theWorld.getWorldInfo().isHardcoreModeEnabled())
-                {
-                    theWorld.difficultySetting = 3;
-                }
-                else
-                {
-                    theWorld.difficultySetting = gameSettings.difficulty;
-                }
-
-                if (theWorld.isRemote)
-                {
-                    theWorld.difficultySetting = 1;
                 }
             }
 
@@ -1972,7 +1899,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             displayCrashReport(func_71396_d(new CrashReport("Connecting to integrated server", ioexception)));
         }
-        lastWorld = par1Str;
     }
 
     /**
@@ -1993,6 +1919,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (par1WorldClient == null)
         {
             NetClientHandler netclienthandler = getSendQueue();
+
             if (netclienthandler != null)
             {
                 netclienthandler.cleanup();
@@ -2126,9 +2053,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public void setDimensionAndSpawnPlayer(int par1)
     {
         theWorld.setSpawnLocation();
-        if (!enableSP){
-            theWorld.removeAllEntities();
-        }
+        theWorld.removeAllEntities();
         int i = 0;
 
         if (thePlayer != null)
@@ -2187,17 +2112,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     public static void main(String par0ArrayOfStr[])
     {
-        if (par0ArrayOfStr.length > 0){
-            if (par0ArrayOfStr[0].equals("--server") || par0ArrayOfStr[0].equals("-server") || par0ArrayOfStr[0].equals("server")){
-                String[] args2 = new String[par0ArrayOfStr.length - 1];
-                for (int i = 0; i < args2.length; i++){
-                    args2[i] = par0ArrayOfStr[i + 1];
-                }
-                new net.minecraft.src.MinecraftAppletImpl(null, null, null, 100, 100, false);
-                net.minecraft.server.MinecraftServer.main(args2);
-                return;
-            }
-        }
         HashMap hashmap = new HashMap();
         boolean flag = false;
         boolean flag1 = true;
@@ -2559,656 +2473,5 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public boolean isFullScreen()
     {
         return fullscreen;
-    }
-
-    public ICommandManager getCommandManager()
-    {
-        return commandManager;
-    }
-
-    /**
-     * creates a new world or loads an existing one
-     */
-    public void startWorldSSP(String par1Str, String par2Str, WorldSettings par3WorldSettings)
-    {
-        changeWorld1(null);
-        System.gc();
-        for (Mod mod : mods){
-            mod.onLoadingSP(par1Str, par2Str);
-        }
-        if (saveLoader.isOldMapFormat(par1Str))
-        {
-            convertMapFormat(par1Str, par2Str);
-        }
-        else
-        {
-            if (loadingScreen != null)
-            {
-                loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.switchingLevel"));
-                loadingScreen.resetProgresAndWorkingMessage("");
-            }
-
-            net.minecraft.src.ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
-            WorldSSP world = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).
-                           newInstance(new Object[]{isavehandler, par2Str, par3WorldSettings, mcProfiler});
-                world = (WorldSSP)o;
-//                world = new WorldSSP(isavehandler, par2Str, par3WorldSettings, mcProfiler);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-
-            if (world.isNewWorld)
-            {
-                statFileWriter.readStat(StatList.createWorldStat, 1);
-                statFileWriter.readStat(StatList.startGameStat, 1);
-                changeWorld2(world, StatCollector.translateToLocal("menu.generatingLevel"));
-            }
-            else
-            {
-                statFileWriter.readStat(StatList.loadWorldStat, 1);
-                statFileWriter.readStat(StatList.startGameStat, 1);
-                changeWorld2(world, StatCollector.translateToLocal("menu.loadingLevel"));
-            }
-        }
-        lastWorld = par1Str;
-    }
-
-    /**
-     * Unloads the current world, and displays a String while waiting
-     */
-    public void exitToMainMenu(String par1Str)
-    {
-        theWorld = null;
-        changeWorld2(null, par1Str);
-    }
-
-    /**
-     * Changes the world, no message, no player.
-     */
-    public void changeWorld1(WorldSSP par1World)
-    {
-        changeWorld2(par1World, "");
-    }
-
-    /**
-     * Changes the world with given message, no player.
-     */
-    public void changeWorld2(WorldSSP par1World, String par2Str)
-    {
-        changeWorld(par1World, par2Str, null);
-        if (!par2Str.equals("")){
-            if (par1World == null){
-                invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
-            }else{
-                invokeModMethod("ModLoader", "clientConnect", new Class[]{NetClientHandler.class, Packet1Login.class}, getSendQueue(), null);
-            }
-        }
-    }
-
-    /**
-     * first argument is the world to change to, second one is a loading message and the third the player itself
-     */
-    public void changeWorld(WorldSSP par1World, String par2Str, EntityPlayer par3EntityPlayer)
-    {
-//         statFileWriter.func_27175_b();
-        statFileWriter.syncStats();
-        renderViewEntity = null;
-
-        if (loadingScreen != null)
-        {
-            loadingScreen.resetProgressAndMessage(par2Str);
-            loadingScreen.resetProgresAndWorkingMessage("");
-        }
-
-        sndManager.playStreaming(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-
-        if (theWorld != null)
-        {
-            ((WorldSSP)theWorld).saveWorldIndirectly(loadingScreen);
-        }
-
-        theWorld = par1World;
-
-        if (par1World != null)
-        {
-            commandManager = new ClientCommandManager();
-
-            if (!isMultiplayerWorld())
-            {
-                if (par3EntityPlayer == null)
-                {
-                    thePlayer = (EntityPlayerSP2)par1World.func_4085_a(net.minecraft.src.EntityPlayerSP2.class);
-                }
-            }
-            else if (thePlayer != null)
-            {
-                thePlayer.preparePlayerToSpawn();
-
-                if (par1World != null)
-                {
-                    par1World.spawnEntityInWorld(thePlayer);
-                }
-            }
-
-            if (!par1World.isRemote)
-            {
-                preloadWorld(par2Str);
-            }
-
-            if (thePlayer == null)
-            {
-                thePlayer = playerController.func_78754_a(par1World);
-                thePlayer.preparePlayerToSpawn();
-                playerController.flipPlayer(thePlayer);
-            }
-
-            thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
-
-            if (renderGlobal != null)
-            {
-                renderGlobal.setWorldAndLoadRenderers(par1World);
-            }
-
-            if (effectRenderer != null)
-            {
-                effectRenderer.clearEffects(par1World);
-            }
-
-            if (par3EntityPlayer != null)
-            {
-                par1World.func_6464_c();
-            }
-
-            net.minecraft.src.IChunkProvider ichunkprovider = par1World.getChunkProvider();
-
-            if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
-            {
-                ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
-                int i = MathHelper.floor_float((int)thePlayer.posX) >> 4;
-                int j = MathHelper.floor_float((int)thePlayer.posZ) >> 4;
-                chunkproviderloadorgenerate.setCurrentChunkOver(i, j);
-            }
-
-            par1World.spawnPlayerWithLoadedChunks(thePlayer);
-            ((PlayerController)playerController).setGameMode(thePlayer);
-
-            if (par1World.isNewWorld)
-            {
-                ((WorldSSP)par1World).saveWorldIndirectly(loadingScreen);
-            }
-
-            renderViewEntity = thePlayer;
-        }
-        else
-        {
-            saveLoader.flushCache();
-            thePlayer = null;
-        }
-
-        System.gc();
-        systemTime = 0L;
-    }
-
-    /**
-     * Converts from old map format to new map format
-     */
-    private void convertMapFormat(String par1Str, String par2Str)
-    {
-        loadingScreen.resetProgressAndMessage((new StringBuilder()).append("Converting World to Anvil")/*.append(saveLoader.getFormatName())*/.toString());
-        loadingScreen.resetProgresAndWorkingMessage("This may take a while :)");
-        saveLoader.convertMapFormat(par1Str, loadingScreen);
-        startWorldSSP(par1Str, par2Str, new WorldSettings(0L, EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT));
-    }
-
-    /**
-     * Display the preload world loading screen then load SP World.
-     */
-    private void preloadWorld(String par1Str)
-    {
-        if (loadingScreen != null)
-        {
-            loadingScreen.resetProgressAndMessage(par1Str);
-            loadingScreen.resetProgresAndWorkingMessage(StatCollector.translateToLocal("menu.generatingTerrain"));
-        }
-
-        char c = '\200';
-
-        if (((PlayerController)playerController).func_35643_e())
-        {
-            c = '@';
-        }
-
-        int i = 0;
-        int j = (c * 2) / 16 + 1;
-        j *= j;
-        IChunkProvider ichunkprovider = theWorld.getChunkProvider();
-        ChunkCoordinates chunkcoordinates = theWorld.getSpawnPoint();
-
-        if (thePlayer != null)
-        {
-            chunkcoordinates.posX = (int)thePlayer.posX;
-            chunkcoordinates.posZ = (int)thePlayer.posZ;
-        }
-
-        if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
-        {
-            ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
-            chunkproviderloadorgenerate.setCurrentChunkOver(chunkcoordinates.posX >> 4, chunkcoordinates.posZ >> 4);
-        }
-
-        for (int k = -c; k <= c; k += 16)
-        {
-            for (int l = -c; l <= c; l += 16)
-            {
-                if (loadingScreen != null)
-                {
-                    loadingScreen.setLoadingProgress((i++ * 100) / j);
-                }
-
-                theWorld.getBlockId(chunkcoordinates.posX + k, 64, chunkcoordinates.posZ + l);
-
-                if (((PlayerController)playerController).func_35643_e())
-                {
-                    continue;
-                }
-
-                while (theWorld.updatingLighting()) ;
-            }
-        }
-
-        if (!((PlayerController)playerController).func_35643_e())
-        {
-            if (loadingScreen != null)
-            {
-                loadingScreen.resetProgresAndWorkingMessage(StatCollector.translateToLocal("menu.simulating"));
-            }
-
-            char c1 = 2000;
-            ((WorldSSP)theWorld).dropOldChunks();
-        }
-    }
-
-    /**
-     * Called when the respawn button is pressed after the player dies.
-     */
-    public void respawn(boolean par1, int par2, boolean par3)
-    {
-        if (!theWorld.isRemote && !theWorld.provider.canRespawnHere())
-        {
-            usePortal(0);
-        }
-
-        ChunkCoordinates chunkcoordinates = null;
-        ChunkCoordinates chunkcoordinates1 = null;
-        boolean flag = true;
-
-        if (thePlayer != null && !par1)
-        {
-            chunkcoordinates = thePlayer.getSpawnChunk();
-
-            if (chunkcoordinates != null)
-            {
-                chunkcoordinates1 = EntityPlayer.verifyRespawnCoordinates(theWorld, chunkcoordinates);
-
-                if (chunkcoordinates1 == null)
-                {
-                    thePlayer.addChatMessage("tile.bed.notValid");
-                }
-            }
-        }
-
-        if (chunkcoordinates1 == null)
-        {
-            chunkcoordinates1 = theWorld.getSpawnPoint();
-            flag = false;
-        }
-
-        net.minecraft.src.IChunkProvider ichunkprovider = theWorld.getChunkProvider();
-
-        if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
-        {
-            ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
-            chunkproviderloadorgenerate.setCurrentChunkOver(chunkcoordinates1.posX >> 4, chunkcoordinates1.posZ >> 4);
-        }
-
-        theWorld.setSpawnLocation();
-        ((WorldSSP)theWorld).updateEntityList();
-        int i = 0;
-
-        if (thePlayer != null)
-        {
-            i = thePlayer.entityId;
-            theWorld.setEntityDead(thePlayer);
-        }
-
-        EntityPlayerSP entityplayersp = thePlayer;
-        renderViewEntity = null;
-        thePlayer = playerController.func_78754_a(theWorld);
-
-        if (par3)
-        {
-            thePlayer.clonePlayer(entityplayersp, true);
-        }
-
-        thePlayer.dimension = par2;
-        renderViewEntity = thePlayer;
-        thePlayer.preparePlayerToSpawn();
-
-        if (flag)
-        {
-            thePlayer.setSpawnChunk(chunkcoordinates);
-            thePlayer.setLocationAndAngles((float)chunkcoordinates1.posX + 0.5F, (float)chunkcoordinates1.posY + 0.1F, (float)chunkcoordinates1.posZ + 0.5F, 0.0F, 0.0F);
-        }
-
-        playerController.flipPlayer(thePlayer);
-        ((WorldSSP)theWorld).spawnPlayerWithLoadedChunks(thePlayer);
-        thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
-        thePlayer.entityId = i;
-        ((EntityPlayerSP2)thePlayer).func_6420_o();
-        ((PlayerController)playerController).setGameMode(thePlayer);
-        preloadWorld(StatCollector.translateToLocal("menu.respawning"));
-
-        if (currentScreen instanceof GuiGameOver)
-        {
-            displayGuiScreen(null);
-        }
-    }
-
-    /**
-     * Will use a portal teleport switching the dimension the player is in.
-     */
-    public void usePortal(int par1)
-    {
-        int i = thePlayer.dimension;
-        thePlayer.dimension = par1;
-        theWorld.setEntityDead(thePlayer);
-        thePlayer.isDead = false;
-        double d = thePlayer.posX;
-        double d1 = thePlayer.posZ;
-        double d2 = 1.0D;
-
-        if (i > -1 && thePlayer.dimension == -1)
-        {
-            d2 = 0.125D;
-        }
-        else if (i == -1 && thePlayer.dimension > -1)
-        {
-            d2 = 8D;
-        }
-
-        d *= d2;
-        d1 *= d2;
-
-        if (thePlayer.dimension == -1)
-        {
-            thePlayer.setLocationAndAngles(d, thePlayer.posY, d1, thePlayer.rotationYaw, thePlayer.rotationPitch);
-
-            if (thePlayer.isEntityAlive())
-            {
-                theWorld.updateEntityWithOptionalForce(thePlayer, false);
-            }
-
-            WorldSSP world = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
-                           newInstance(new Object[]{(WorldSSP)theWorld, WorldProvider.getProviderForDimension(thePlayer.dimension), mcProfiler});
-                world = (WorldSSP)o;
-//                world = new WorldSSP((WorldSSP)theWorld, WorldProvider.getProviderForDimension(thePlayer.dimension), mcProfiler);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-            changeWorld(world, "Entering the Nether", thePlayer);
-        }
-        else if (thePlayer.dimension == 0)
-        {
-            if (thePlayer.isEntityAlive())
-            {
-                thePlayer.setLocationAndAngles(d, thePlayer.posY, d1, thePlayer.rotationYaw, thePlayer.rotationPitch);
-                theWorld.updateEntityWithOptionalForce(thePlayer, false);
-            }
-
-            WorldSSP world1 = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
-                           newInstance(new Object[]{(WorldSSP)theWorld, WorldProvider.getProviderForDimension(thePlayer.dimension), mcProfiler});
-                world1 = (WorldSSP)o;
-//                world1 = new WorldSSP((WorldSSP)theWorld, WorldProvider.getProviderForDimension(thePlayer.dimension), mcProfiler);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-
-            if (i == -1)
-            {
-                changeWorld(world1, "Leaving the Nether", thePlayer);
-            }
-            else
-            {
-                changeWorld(world1, "Leaving the End", thePlayer);
-            }
-        }
-        else
-        {
-            WorldSSP world2 = null;
-            try{
-                Object o = worldClass.getDeclaredConstructor(new Class[]{WorldSSP.class, WorldProvider.class, Profiler.class}).
-                           newInstance(new Object[]{(WorldSSP)theWorld, WorldProvider.getProviderForDimension(thePlayer.dimension), mcProfiler});
-                world2 = (WorldSSP)o;
-//                world2 = new WorldSSP((WorldSSP)theWorld, WorldProvider.getProviderForDimension(thePlayer.dimension), mcProfiler);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-            ChunkCoordinates chunkcoordinates = world2.getEntrancePortalLocation();
-            d = chunkcoordinates.posX;
-            thePlayer.posY = chunkcoordinates.posY;
-            d1 = chunkcoordinates.posZ;
-            thePlayer.setLocationAndAngles(d, thePlayer.posY, d1, 90F, 0.0F);
-
-            if (thePlayer.isEntityAlive())
-            {
-                world2.updateEntityWithOptionalForce(thePlayer, false);
-            }
-
-            changeWorld(world2, "Entering the End", thePlayer);
-        }
-
-        thePlayer.worldObj = theWorld;
-        System.out.println((new StringBuilder()).append("Teleported to ").append(theWorld.provider.worldType).toString());
-
-        if (thePlayer.isEntityAlive() && i < 1)
-        {
-            thePlayer.setLocationAndAngles(d, thePlayer.posY, d1, thePlayer.rotationYaw, thePlayer.rotationPitch);
-            theWorld.updateEntityWithOptionalForce(thePlayer, false);
-            (new Teleporter()).placeInPortal(theWorld, thePlayer);
-        }
-    }
-
-    /**
-     * Checks if the current world is a multiplayer world, returns true if it is, false otherwise.
-     */
-    public boolean isMultiplayerWorld()
-    {
-        return theWorld != null && theWorld.isRemote;
-    }
-
-    public void setController(EnumGameType enumgametype){
-        if (enumgametype == EnumGameType.SURVIVAL){
-            playerController = new PlayerControllerSP(this);
-            return;
-        }
-        if (enumgametype == EnumGameType.CREATIVE){
-            playerController = new PlayerControllerCreative(this);
-            return;
-        }
-        if (enumgametype == EnumGameType.ADVENTURE){
-            playerController = new PlayerControllerAdventure(this);
-            return;
-        }
-    }
-
-    public void setGameMode(EnumGameType enumgametype){
-        if (enumgametype == EnumGameType.SURVIVAL){
-            PlayerControllerCreative.disableAbilities(thePlayer);
-            PlayerControllerAdventure.enableAbilities(thePlayer);
-            return;
-        }
-        if (enumgametype == EnumGameType.CREATIVE){
-            PlayerControllerCreative.enableAbilities(thePlayer);
-            PlayerControllerAdventure.enableAbilities(thePlayer);
-            return;
-        }
-        if (enumgametype == EnumGameType.ADVENTURE){
-            PlayerControllerCreative.disableAbilities(thePlayer);
-            PlayerControllerAdventure.disableAbilities(thePlayer);
-            return;
-        }
-    }
-
-    public void quitAndStartServer(){
-        if (getIntegratedServer() != null || enableSP == false){
-            return;
-        }
-        WorldSSP world = (WorldSSP)theWorld;
-        changeWorld1(null);
-        displayGuiScreen(null);
-        enableSP = false;
-        String s = lastWorld;
-        String s1 = world.getWorldInfo().getWorldName();
-        launchIntegratedServer(s, s1, null);
-    }
-
-    public void loadMods(){
-        Class c = net.minecraft.src.Mod.class;
-        String p = "";
-        try{
-            p = c.getPackage().getName()+".";
-        }catch(Exception ex){}
-        String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
-        File file = new File(path.replace("%20", " ")+p.replace(".", "/"));        List classes = new ArrayList();
-        if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")){
-            try{
-                ZipFile jar = new ZipFile(file);
-                Enumeration entries = jar.entries();
-                while (entries.hasMoreElements()){
-                    String str = ((ZipEntry)entries.nextElement()).getName();
-                    if (str.startsWith("mod_") && str.endsWith(".class")){
-                        classes.add(str.replace(".class", ""));
-                    }
-                }
-            }catch(Exception ex){
-                System.out.println(ex);
-            }
-        }else{
-            String[] str = file.list();
-            for (int i = 0; i < str.length; i++){
-                if (str[i].startsWith("mod_") && str[i].endsWith(".class")){
-                    classes.add(str[i].replace(".class", ""));
-                }
-            }
-        }
-        for (int i = 0; i < classes.size(); i++){
-            String name = ((String)classes.get(i));
-            Class c2 = null;
-            try{
-                c2 = c.getClassLoader().loadClass(p+name);
-            }catch(Exception ex){
-                System.out.println("Failed to load mod: "+ex);
-                ex.printStackTrace();
-                continue;
-            }
-            if (!c.isAssignableFrom(c2)){
-                continue;
-            }
-            Mod mod = null;
-            try{
-                mod = ((Mod)c2.getDeclaredConstructor().newInstance());
-            }catch(Exception ex){
-                System.out.println("Failed to load mod: "+ex);
-                ex.printStackTrace();
-                continue;
-            }
-            if (!mod.getMcVersion().equals(getVersion())){
-                System.out.println(mod.getModName()+" "+mod.getModVersion()+" is for Minecraft "+mod.getMcVersion()+", not "+getVersion());
-                return;
-            }
-            mods.add(mod);
-            mod.load();
-            System.out.println("Loaded "+mod.getModName()+" "+mod.getModVersion()+" for Minecraft "+mod.getMcVersion());
-        }
-    }
-
-    public boolean renderBlocksMod(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
-        for (Mod mod : mods){
-            if (mod.renderBlocks(r, i, b, x, y, z, id, override)){
-                return true;
-            }
-        }
-        invokeModMethod("ModLoader", "renderWorldBlock",
-                        new Class[]{RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE},
-                        r, i, x, y, z, b, id);
-        return false;
-    }
-
-    public String getVersion(){
-        return "1.3.2";
-    }
-
-    private void registerCustomPacket(){
-        try{
-            int id = 1;
-            Method m = null;
-            Method[] methods = (net.minecraft.src.Packet.class).getDeclaredMethods();
-            for (int i = 0; i < methods.length; i++){
-                if (methods[i].toGenericString().matches("^static void (net.minecraft.src.)?([a-zA-Z]{1,6}).[a-zA-Z]{1,17}.int,boolean,boolean,java.lang.Class.$")){
-                    m = methods[i];
-                    break;
-                }
-            }
-            if (m == null){
-                return;
-            }
-            m.setAccessible(true);
-            m.invoke(null, new Object[]{251, true, true, net.minecraft.src.Packet300Custom.class});
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void checkCompatibility(String mod){
-        try{
-            Class.forName(mod);
-        }catch(ClassNotFoundException e){
-            try{
-                Class.forName("net.minecraft.src."+mod);
-            }catch(ClassNotFoundException ex){
-                compat.put(mod, 0);
-                return;
-            }
-            System.out.println("SSP: Enabled "+mod+" compatibility");
-            compat.put(mod, 2);
-            return;
-        }
-        System.out.println("SSP: Enabled "+mod+" compatibility");
-        compat.put(mod, 1);
-    }
-
-    private void invokeModMethod_do(String mod, String method, Class[] pars, Object... args){
-        if (compat.get(mod) <= 0){
-            return;
-        }
-        try{
-            Class c = Class.forName((compat.get(mod) > 1 ? "net.minecraft.src." : "")+mod);
-            Method m = c.getDeclaredMethod(method, pars);
-            m.invoke(null, args);
-//             System.out.printlsn("SSP: Invoking "+m.toString());
-        }catch(Exception ex){
-            ex.printStackTrace();
-            compat.put(mod, 0);
-        }
-    }
-
-    public static void invokeModMethod(String mod, String method, Class[] pars, Object... args){
-        getMinecraft().invokeModMethod_do(mod, method, pars, args);
     }
 }

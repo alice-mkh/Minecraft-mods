@@ -50,7 +50,7 @@ public class Packet300Custom extends Packet{
             par1NetHandler.registerPacket(this);
         }
         toClient = !par1NetHandler.isServerHandler();
-        Minecraft mc = Minecraft.getMinecraftInstance();
+        Minecraft mc = Minecraft.getMinecraft();
         for (int i = 0; i < mc.mods.size(); i++){
             Mod m = ((Mod)mc.mods.get(i));
             if (!m.getModName().equals(modName)){

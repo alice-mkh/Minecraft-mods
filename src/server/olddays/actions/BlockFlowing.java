@@ -46,7 +46,7 @@ public class BlockFlowing extends BlockFluid
         int i = getFlowDecay(par1World, par2, par3, par4);
         byte byte0 = 1;
 
-        if (blockMaterial == Material.lava && (!par1World.worldProvider.isHellWorld || lessNetherLavaFlow))
+        if (blockMaterial == Material.lava && (!par1World.provider.isHellWorld || lessNetherLavaFlow))
         {
             byte0 = 2;
         }

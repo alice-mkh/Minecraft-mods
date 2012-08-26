@@ -28,7 +28,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0)
         {
-            skinUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftSkins/").append(StringUtils.func_76338_a(par3Session.username)).append(".png").toString();
+            skinUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftSkins/").append(StringUtils.stripControlCodes(par3Session.username)).append(".png").toString();
         }
 
         username = par3Session.username;
@@ -45,11 +45,11 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     {
         if (par1Str.startsWith("/"))
         {
-            mc.getCommandManager().func_71556_a(this, par1Str.substring(1));
+            mc.getCommandManager().executeCommand(this, par1Str.substring(1));
         }
         else
         {
-            mc.ingameGUI.func_73827_b().func_73765_a((new StringBuilder()).append("<").append(username).append("> ").append(par1Str).toString());
+            mc.ingameGUI.getChatGUI().printChatMessage((new StringBuilder()).append("<").append(username).append("> ").append(par1Str).toString());
         }
     }
 
@@ -155,7 +155,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
     public void updateCloak()
     {
-        playerCloakUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftCloaks/").append(StringUtils.func_76338_a(username)).append(".png").toString();
+        playerCloakUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftCloaks/").append(StringUtils.stripControlCodes(username)).append(".png").toString();
         cloakUrl = playerCloakUrl;
     }
 
@@ -185,15 +185,18 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         mc.displayGuiScreen(new GuiEditSign(par1TileEntitySign));
     }
 
-    public void func_71048_c(ItemStack par1ItemStack)
+    /**
+     * Displays the GUI for interacting with a book.
+     */
+    public void displayGUIBook(ItemStack par1ItemStack)
     {
         Item item = par1ItemStack.getItem();
 
-        if (item == Item.field_77823_bG)
+        if (item == Item.writtenBook)
         {
             mc.displayGuiScreen(new GuiScreenBook(this, par1ItemStack, false));
         }
-        else if (item == Item.field_77821_bF)
+        else if (item == Item.writableBook)
         {
             mc.displayGuiScreen(new GuiScreenBook(this, par1ItemStack, true));
         }
@@ -244,7 +247,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         mc.displayGuiScreen(new GuiDispenser(inventory, par1TileEntityDispenser));
     }
 
-    public void func_71030_a(IMerchant par1IMerchant)
+    public void displayGUIMerchant(IMerchant par1IMerchant)
     {
         mc.displayGuiScreen(new GuiMerchant(inventory, par1IMerchant, worldObj));
     }
@@ -254,12 +257,12 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      */
     public void onCriticalHit(Entity par1Entity)
     {
-        mc.effectRenderer.addEffect(new EntityCrit2FX(mc.field_71441_e, par1Entity));
+        mc.effectRenderer.addEffect(new EntityCrit2FX(mc.theWorld, par1Entity));
     }
 
     public void onEnchantmentCritical(Entity par1Entity)
     {
-        EntityCrit2FX entitycrit2fx = new EntityCrit2FX(mc.field_71441_e, par1Entity, "magicCrit");
+        EntityCrit2FX entitycrit2fx = new EntityCrit2FX(mc.theWorld, par1Entity, "magicCrit");
         mc.effectRenderer.addEffect(entitycrit2fx);
     }
 
@@ -268,7 +271,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      */
     public void onItemPickup(Entity par1Entity, int par2)
     {
-        mc.effectRenderer.addEffect(new EntityPickupFX(mc.field_71441_e, par1Entity, this, -0.5F));
+        mc.effectRenderer.addEffect(new EntityPickupFX(mc.theWorld, par1Entity, this, -0.5F));
     }
 
     /**
@@ -292,14 +295,14 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
             if (i < 0)
             {
-                heartsLife = heartsHalvesLife / 2;
+                hurtResistantTime = maxHurtResistantTime / 2;
             }
         }
         else
         {
             lastDamage = i;
             setEntityHealth(getHealth());
-            heartsLife = heartsHalvesLife;
+            hurtResistantTime = maxHurtResistantTime;
             damageEntity(DamageSource.generic, i);
             hurtTime = maxHurtTime = 10;
         }
@@ -310,7 +313,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      */
     public void addChatMessage(String par1Str)
     {
-        mc.ingameGUI.func_73827_b().func_73757_a(par1Str, new Object[0]);
+        mc.ingameGUI.getChatGUI().func_73757_a(par1Str, new Object[0]);
     }
 
     /**
@@ -440,14 +443,14 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         experienceLevel = par3;
     }
 
-    public void func_70006_a(String par1Str)
+    public void sendChatToPlayer(String par1Str)
     {
-        mc.ingameGUI.func_73827_b().func_73765_a(par1Str);
+        mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
     }
 
     public boolean func_70003_b(String par1Str)
     {
-        return worldObj.getWorldInfo().func_76086_u();
+        return worldObj.getWorldInfo().areCommandsAllowed();
     }
 
     /**
@@ -561,10 +564,10 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             return false;
         }
 
-        field_70721_aZ = 1.5F;
+        legYaw = 1.5F;
         boolean flag = true;
 
-        if ((float)heartsLife > (float)heartsHalvesLife / 2.0F)
+        if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F)
         {
             if (par2 <= lastDamage)
             {
@@ -579,7 +582,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         {
             lastDamage = par2;
             prevHealth = health;
-            heartsLife = heartsHalvesLife;
+            hurtResistantTime = maxHurtResistantTime;
             damageEntity(par1DamageSource, par2);
             hurtTime = maxHurtTime = 10;
         }
@@ -672,7 +675,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             health = getMaxHealth();
         }
 
-        heartsLife = heartsHalvesLife / 2;
+        hurtResistantTime = maxHurtResistantTime / 2;
     }
 
     /**

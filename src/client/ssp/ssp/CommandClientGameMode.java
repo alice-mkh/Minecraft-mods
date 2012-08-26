@@ -10,14 +10,14 @@ public class CommandClientGameMode extends CommandGameMode
 
     protected EntityPlayer func_55243_a(String par1Str)
     {
-        return Minecraft.getMinecraftInstance().field_71439_g;
+        return Minecraft.getMinecraft().thePlayer;
     }
 
     protected String[] func_55242_c()
     {
         return (new String[]
                 {
-                    Minecraft.getMinecraftInstance().field_71439_g.username
+                    Minecraft.getMinecraft().thePlayer.username
                 });
     }
 
@@ -25,10 +25,10 @@ public class CommandClientGameMode extends CommandGameMode
     {
         if (par2ArrayOfStr.length == 1)
         {
-            EnumGameType mode = func_71539_b(par1ICommandSender, par2ArrayOfStr[0]);
-            Minecraft.getMinecraftInstance().setController(mode);
-            Minecraft.getMinecraftInstance().setGameMode(mode);
-            func_71524_a(par1ICommandSender, 1, "commands.gamemode.success.self", new Object[]
+            EnumGameType mode = getGameModeFromCommand(par1ICommandSender, par2ArrayOfStr[0]);
+            Minecraft.getMinecraft().setController(mode);
+            Minecraft.getMinecraft().setGameMode(mode);
+            notifyAdmins(par1ICommandSender, 1, "commands.gamemode.success.self", new Object[]
                     {
                         par2ArrayOfStr[0]
                     });

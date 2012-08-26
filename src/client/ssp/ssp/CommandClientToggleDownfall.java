@@ -10,6 +10,6 @@ public class CommandClientToggleDownfall extends CommandToggleDownfall
 
     protected void func_71554_c()
     {
-        Minecraft.getMinecraftInstance().field_71441_e.getWorldInfo().setRainTime(1);
+        Minecraft.getMinecraft().theWorld.getWorldInfo().setRainTime(1);
     }
 }

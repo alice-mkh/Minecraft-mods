@@ -14,9 +14,9 @@ final class ServerWindowAdapter extends WindowAdapter
 
     public void windowClosing(WindowEvent par1WindowEvent)
     {
-        field_79002_a.func_71263_m();
+        field_79002_a.setServerStopping();
 
-        while (!field_79002_a.func_71241_aa())
+        while (!field_79002_a.isServerStopped())
         {
             try
             {

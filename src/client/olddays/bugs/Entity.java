@@ -147,7 +147,11 @@ public abstract class Entity
      * Whether this entity is currently inside of water (if it handles water movement that is)
      */
     protected boolean inWater;
-    public int heartsLife;
+
+    /**
+     * Remaining time an entity will be "immune" to further damage after being hurt.
+     */
+    public int hurtResistantTime;
     private boolean firstUpdate;
 
     /** downloadable location of player's skin */
@@ -175,7 +179,7 @@ public abstract class Entity
      */
     public boolean ignoreFrustumCheck;
     public boolean isAirBorne;
-    public EnumEntitySize field_70168_am;
+    public EnumEntitySize myEntitySize;
 
     public Entity(World par1World)
     {
@@ -203,12 +207,12 @@ public abstract class Entity
         fireResistance = 1;
         fire = 0;
         inWater = false;
-        heartsLife = 0;
+        hurtResistantTime = 0;
         firstUpdate = true;
         isImmuneToFire = false;
         dataWatcher = new DataWatcher();
         addedToChunk = false;
-        field_70168_am = EnumEntitySize.SIZE_2;
+        myEntitySize = EnumEntitySize.SIZE_2;
         worldObj = par1World;
         setPosition(0.0D, 0.0D, 0.0D);
         dataWatcher.addObject(0, Byte.valueOf((byte)0));
@@ -292,27 +296,27 @@ public abstract class Entity
 
         if ((double)f < 0.375D)
         {
-            field_70168_am = EnumEntitySize.SIZE_1;
+            myEntitySize = EnumEntitySize.SIZE_1;
         }
         else if ((double)f < 0.75D)
         {
-            field_70168_am = EnumEntitySize.SIZE_2;
+            myEntitySize = EnumEntitySize.SIZE_2;
         }
         else if ((double)f < 1.0D)
         {
-            field_70168_am = EnumEntitySize.SIZE_3;
+            myEntitySize = EnumEntitySize.SIZE_3;
         }
         else if ((double)f < 1.375D)
         {
-            field_70168_am = EnumEntitySize.SIZE_4;
+            myEntitySize = EnumEntitySize.SIZE_4;
         }
         else if ((double)f < 1.75D)
         {
-            field_70168_am = EnumEntitySize.SIZE_5;
+            myEntitySize = EnumEntitySize.SIZE_5;
         }
         else
         {
-            field_70168_am = EnumEntitySize.SIZE_6;
+            myEntitySize = EnumEntitySize.SIZE_6;
         }
     }
 
@@ -376,7 +380,7 @@ public abstract class Entity
      */
     public void onEntityUpdate()
     {
-        worldObj.field_72984_F.startSection("entityBaseTick");
+        worldObj.theProfiler.startSection("entityBaseTick");
 
         if (ridingEntity != null && ridingEntity.isDead)
         {
@@ -486,7 +490,7 @@ public abstract class Entity
         }
 
         firstUpdate = false;
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     /**
@@ -560,7 +564,7 @@ public abstract class Entity
             return;
         }
 
-        worldObj.field_72984_F.startSection("move");
+        worldObj.theProfiler.startSection("move");
         ySize *= 0.4F;
         double d = posX;
         double d1 = posZ;
@@ -784,8 +788,8 @@ public abstract class Entity
             }
         }
 
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("rest");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("rest");
         posX = (boundingBox.minX + boundingBox.maxX) / 2D;
         posY = (boundingBox.minY + (double)yOffset) - (double)ySize;
         posZ = (boundingBox.minZ + boundingBox.maxZ) / 2D;
@@ -834,7 +838,7 @@ public abstract class Entity
             }
         }
 
-        func_70017_D();
+        doBlockCollisions();
         boolean flag2 = isWet();
 
         if (worldObj.isBoundingBoxBurning(boundingBox.contract(0.001D, 0.001D, 0.001D)))
@@ -862,10 +866,13 @@ public abstract class Entity
             fire = -fireResistance;
         }
 
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
-    protected void func_70017_D()
+    /**
+     * Checks for block collisions, and calls the associated onBlockCollided method for the collided block.
+     */
+    protected void doBlockCollisions()
     {
         int i = MathHelper.floor_double(boundingBox.minX + 0.001D);
         int j = MathHelper.floor_double(boundingBox.minY + 0.001D);
@@ -1677,7 +1684,7 @@ public abstract class Entity
 
         if (ridingEntity == par1Entity)
         {
-            func_70061_h(par1Entity);
+            unmountEntity(par1Entity);
             ridingEntity.riddenByEntity = null;
             ridingEntity = null;
             return;
@@ -1697,7 +1704,10 @@ public abstract class Entity
         par1Entity.riddenByEntity = this;
     }
 
-    public void func_70061_h(Entity par1Entity)
+    /**
+     * Called when a player unounts an entity.
+     */
+    public void unmountEntity(Entity par1Entity)
     {
         double d = par1Entity.posX;
         double d1 = par1Entity.boundingBox.minY + (double)par1Entity.height;
@@ -1716,18 +1726,18 @@ public abstract class Entity
                 int j = (int)(posZ + d4);
                 AxisAlignedBB axisalignedbb = boundingBox.getOffsetBoundingBox(d3, 1.0D, d4);
 
-                if (!worldObj.func_72840_a(axisalignedbb).isEmpty())
+                if (!worldObj.getAllCollidingBoundingBoxes(axisalignedbb).isEmpty())
                 {
                     continue;
                 }
 
-                if (worldObj.func_72797_t(i, (int)posY, j))
+                if (worldObj.doesBlockHaveSolidTopSurface(i, (int)posY, j))
                 {
                     setLocationAndAngles(posX + d3, posY + 1.0D, posZ + d4, rotationYaw, rotationPitch);
                     return;
                 }
 
-                if (worldObj.func_72797_t(i, (int)posY - 1, j) || worldObj.getBlockMaterial(i, (int)posY - 1, j) == Material.water)
+                if (worldObj.doesBlockHaveSolidTopSurface(i, (int)posY - 1, j) || worldObj.getBlockMaterial(i, (int)posY - 1, j) == Material.water)
                 {
                     d = posX + d3;
                     d1 = posY + 1.0D;
@@ -1820,7 +1830,7 @@ public abstract class Entity
     {
     }
 
-    public ItemStack[] func_70035_c()
+    public ItemStack[] getLastActiveItems()
     {
         return null;
     }
@@ -2053,7 +2063,10 @@ public abstract class Entity
         fallDistance = 0.0F;
     }
 
-    public String func_70023_ak()
+    /**
+     * Gets the username of the entity.
+     */
+    public String getEntityName()
     {
         String s = EntityList.getEntityString(this);
 
@@ -2105,7 +2118,7 @@ public abstract class Entity
     {
         return String.format("%s['%s'/%d, l='%s', x=%.2f, y=%.2f, z=%.2f]", new Object[]
                 {
-                    getClass().getSimpleName(), func_70023_ak(), Integer.valueOf(entityId), worldObj != null ? worldObj.getWorldInfo().getWorldName() : "~NULL~", Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
+                    getClass().getSimpleName(), getEntityName(), Integer.valueOf(entityId), worldObj != null ? worldObj.getWorldInfo().getWorldName() : "~NULL~", Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
                 });
     }
 }

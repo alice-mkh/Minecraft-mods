@@ -17,11 +17,15 @@ public final class SpawnerAnimals
         Chunk chunk = par0World.getChunkFromChunkCoords(par1, par2);
         int i = par1 * 16 + par0World.rand.nextInt(16);
         int j = par2 * 16 + par0World.rand.nextInt(16);
-        int k = par0World.rand.nextInt(chunk != null ? (chunk.getTopFilledSegment() + 16) - 1 : par0World.func_72940_L());
+        int k = par0World.rand.nextInt(chunk != null ? (chunk.getTopFilledSegment() + 16) - 1 : par0World.getActualHeight());
         return new ChunkPosition(i, k, j);
     }
 
-    public static final int func_77192_a(WorldServer par0WorldServer, boolean par1, boolean par2)
+    /**
+     * adds all chunks within the spawn radius of the players to eligibleChunksForSpawning. pars: the world,
+     * hostileCreatures, passiveCreatures. returns number of eligible chunks.
+     */
+    public static final int findChunksForSpawning(WorldServer par0WorldServer, boolean par1, boolean par2)
     {
         if (!par1 && !par2)
         {
@@ -125,7 +129,7 @@ public final class SpawnerAnimals
                                                         {
                                                             if (var21 == null)
                                                             {
-                                                                var21 = par0WorldServer.func_73057_a(var34, var17, var18, var19);
+                                                                var21 = par0WorldServer.spawnRandomCreature(var34, var17, var18, var19);
 
                                                                 if (var21 == null)
                                                                 {
@@ -355,7 +359,7 @@ public final class SpawnerAnimals
             return par1World.getBlockMaterial(par2, par3, par4).isLiquid() && !par1World.isBlockNormalCube(par2, par3 + 1, par4);
         }
 
-        if (!par1World.func_72797_t(par2, par3 - 1, par4))
+        if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
         {
             return false;
         }

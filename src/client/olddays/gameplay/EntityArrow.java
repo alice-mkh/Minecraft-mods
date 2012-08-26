@@ -12,7 +12,9 @@ public class EntityArrow extends Entity
     private int inTile;
     private int inData;
     private boolean inGround;
-    public int field_70251_a;
+
+    /** 1 if the player can pick up the arrow */
+    public int canBePickedUp;
 
     /** Seems to be some sort of timer for animating an arrow. */
     public int arrowShake;
@@ -35,7 +37,7 @@ public class EntityArrow extends Entity
         inTile = 0;
         inData = 0;
         inGround = false;
-        field_70251_a = 0;
+        canBePickedUp = 0;
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
@@ -51,7 +53,7 @@ public class EntityArrow extends Entity
         inTile = 0;
         inData = 0;
         inGround = false;
-        field_70251_a = 0;
+        canBePickedUp = 0;
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
@@ -69,7 +71,7 @@ public class EntityArrow extends Entity
         inTile = 0;
         inData = 0;
         inGround = false;
-        field_70251_a = 0;
+        canBePickedUp = 0;
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
@@ -77,7 +79,7 @@ public class EntityArrow extends Entity
 
         if (par2EntityLiving instanceof EntityPlayer)
         {
-            field_70251_a = 1;
+            canBePickedUp = 1;
         }
 
         posY = (par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight()) - 0.10000000149011612D;
@@ -113,7 +115,7 @@ public class EntityArrow extends Entity
         inTile = 0;
         inData = 0;
         inGround = false;
-        field_70251_a = 0;
+        canBePickedUp = 0;
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
@@ -121,7 +123,7 @@ public class EntityArrow extends Entity
 
         if (par2EntityLiving instanceof EntityPlayer)
         {
-            field_70251_a = 1;
+            canBePickedUp = 1;
         }
 
         setSize(0.5F, 0.5F);
@@ -219,7 +221,7 @@ public class EntityArrow extends Entity
             Block.blocksList[i].setBlockBoundsBasedOnState(worldObj, xTile, yTile, zTile);
             AxisAlignedBB axisalignedbb = Block.blocksList[i].getCollisionBoundingBoxFromPool(worldObj, xTile, yTile, zTile);
 
-            if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.func_72437_a().func_72345_a(posX, posY, posZ)))
+            if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ)))
             {
                 inGround = true;
             }
@@ -257,15 +259,15 @@ public class EntityArrow extends Entity
         }
 
         ticksInAir++;
-        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(posX, posY, posZ);
-        Vec3 vec3_1 = Vec3.func_72437_a().func_72345_a(posX + motionX, posY + motionY, posZ + motionZ);
+        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ);
+        Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
         MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks_do_do(vec3, vec3_1, false, true);
-        vec3 = Vec3.func_72437_a().func_72345_a(posX, posY, posZ);
-        vec3_1 = Vec3.func_72437_a().func_72345_a(posX + motionX, posY + motionY, posZ + motionZ);
+        vec3 = Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ);
+        vec3_1 = Vec3.getVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
 
         if (movingobjectposition != null)
         {
-            vec3_1 = Vec3.func_72437_a().func_72345_a(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3_1 = Vec3.getVec3Pool().getVecFromPool(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
         }
 
         Entity entity = null;
@@ -312,7 +314,7 @@ public class EntityArrow extends Entity
             if (movingobjectposition.entityHit != null)
             {
                 float f1 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-                int i1 = MathHelper.func_76143_f((double)f1 * damage);
+                int i1 = MathHelper.ceiling_double_int((double)f1 * damage);
 
                 if (func_70241_g())
                 {
@@ -432,7 +434,7 @@ public class EntityArrow extends Entity
         motionZ *= f4;
         motionY -= f6;
         setPosition(posX, posY, posZ);
-        func_70017_D();
+        doBlockCollisions();
     }
 
     /**
@@ -447,7 +449,7 @@ public class EntityArrow extends Entity
         par1NBTTagCompound.setByte("inData", (byte)inData);
         par1NBTTagCompound.setByte("shake", (byte)arrowShake);
         par1NBTTagCompound.setByte("inGround", (byte)(inGround ? 1 : 0));
-        par1NBTTagCompound.setByte("pickup", (byte)field_70251_a);
+        par1NBTTagCompound.setByte("pickup", (byte)canBePickedUp);
         par1NBTTagCompound.setDouble("damage", damage);
     }
 
@@ -471,11 +473,11 @@ public class EntityArrow extends Entity
 
         if (par1NBTTagCompound.hasKey("pickup"))
         {
-            field_70251_a = par1NBTTagCompound.getByte("pickup");
+            canBePickedUp = par1NBTTagCompound.getByte("pickup");
         }
         else if (par1NBTTagCompound.hasKey("player"))
         {
-            field_70251_a = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
+            canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
         }
     }
 
@@ -489,9 +491,9 @@ public class EntityArrow extends Entity
             return;
         }
 
-        boolean flag = field_70251_a == 1 || field_70251_a == 2 && par1EntityPlayer.capabilities.isCreativeMode;
+        boolean flag = canBePickedUp == 1 || canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-        if (field_70251_a == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1)))
+        if (canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1)))
         {
             flag = false;
         }

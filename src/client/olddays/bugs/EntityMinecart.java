@@ -353,7 +353,7 @@ public class EntityMinecart extends Entity implements IInventory
                 double d = posX + (minecartX - posX) / (double)turnProgress;
                 double d1 = posY + (minecartY - posY) / (double)turnProgress;
                 double d3 = posZ + (minecartZ - posZ) / (double)turnProgress;
-                double d5 = MathHelper.func_76138_g(minecartYaw - (double)rotationYaw);
+                double d5 = MathHelper.wrapAngleTo180_double(minecartYaw - (double)rotationYaw);
                 rotationYaw += d5 / (double)turnProgress;
                 rotationPitch += (minecartPitch - (double)rotationPitch) / (double)turnProgress;
                 turnProgress--;
@@ -670,7 +670,7 @@ public class EntityMinecart extends Entity implements IInventory
                 }
             }
 
-            func_70017_D();
+            doBlockCollisions();
         }
         else
         {
@@ -725,7 +725,7 @@ public class EntityMinecart extends Entity implements IInventory
             }
         }
 
-        double d8 = MathHelper.func_76142_g(rotationYaw - prevRotationYaw);
+        double d8 = MathHelper.wrapAngleTo180_float(rotationYaw - prevRotationYaw);
 
         if (d8 < -170D || d8 >= 170D)
         {
@@ -898,7 +898,7 @@ public class EntityMinecart extends Entity implements IInventory
                 par3 += 0.5D;
             }
 
-            return Vec3.func_72437_a().func_72345_a(par1, par3, par5);
+            return Vec3.getVec3Pool().getVecFromPool(par1, par3, par5);
         }
         else
         {
@@ -1029,8 +1029,8 @@ public class EntityMinecart extends Entity implements IInventory
                 }else{
                     double d4 = par1Entity.posX - posX;
                     double d5 = par1Entity.posZ - posZ;
-                    Vec3 vec3 = Vec3.func_72437_a().func_72345_a(d4, 0.0D, d5).normalize();
-                    Vec3 vec3_1 = Vec3.func_72437_a().func_72345_a(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
+                    Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(d4, 0.0D, d5).normalize();
+                    Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
                     double d6 = Math.abs(vec3.dotProduct(vec3_1));
 
                     if (d6 < 0.80000001192092896D)

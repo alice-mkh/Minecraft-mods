@@ -555,7 +555,7 @@ public class RenderBlocks
         }
         else
         {
-            return Minecraft.getMinecraftInstance().renderBlocksMod(this, blockAccess, par1Block, par2, par3, par4, i, overrideBlockTexture);
+            return Minecraft.getMinecraft().renderBlocksMod(this, blockAccess, par1Block, par2, par3, par4, i, overrideBlockTexture);
         }
     }
 
@@ -610,7 +610,7 @@ public class RenderBlocks
         Tessellator tessellator = Tessellator.instance;
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         int j = BlockBed.getDirection(i);
-        boolean flag = BlockBed.isBlockFootOfBed(i);
+        boolean flag = BlockBed.isBlockHeadOfBed(i);
         float f = 0.5F;
         float f1 = 1.0F;
         float f2 = 0.8F;
@@ -1409,14 +1409,14 @@ public class RenderBlocks
         float f8 = 0.0625F;
         float f9 = 0.0625F;
         float f10 = 0.625F;
-        avec3[0] = Vec3.func_72437_a().func_72345_a(-f8, 0.0D, -f9);
-        avec3[1] = Vec3.func_72437_a().func_72345_a(f8, 0.0D, -f9);
-        avec3[2] = Vec3.func_72437_a().func_72345_a(f8, 0.0D, f9);
-        avec3[3] = Vec3.func_72437_a().func_72345_a(-f8, 0.0D, f9);
-        avec3[4] = Vec3.func_72437_a().func_72345_a(-f8, f10, -f9);
-        avec3[5] = Vec3.func_72437_a().func_72345_a(f8, f10, -f9);
-        avec3[6] = Vec3.func_72437_a().func_72345_a(f8, f10, f9);
-        avec3[7] = Vec3.func_72437_a().func_72345_a(-f8, f10, f9);
+        avec3[0] = Vec3.getVec3Pool().getVecFromPool(-f8, 0.0D, -f9);
+        avec3[1] = Vec3.getVec3Pool().getVecFromPool(f8, 0.0D, -f9);
+        avec3[2] = Vec3.getVec3Pool().getVecFromPool(f8, 0.0D, f9);
+        avec3[3] = Vec3.getVec3Pool().getVecFromPool(-f8, 0.0D, f9);
+        avec3[4] = Vec3.getVec3Pool().getVecFromPool(-f8, f10, -f9);
+        avec3[5] = Vec3.getVec3Pool().getVecFromPool(f8, f10, -f9);
+        avec3[6] = Vec3.getVec3Pool().getVecFromPool(f8, f10, f9);
+        avec3[7] = Vec3.getVec3Pool().getVecFromPool(-f8, f10, f9);
 
         for (int j1 = 0; j1 < 8; j1++)
         {
@@ -1433,7 +1433,7 @@ public class RenderBlocks
 
             if (j == 0 || j == 7)
             {
-                avec3[j1].func_72446_c((float)Math.PI);
+                avec3[j1].rotateAroundZ((float)Math.PI);
             }
 
             if (j == 6 || j == 0)
@@ -1567,7 +1567,7 @@ public class RenderBlocks
         int j = i & 3;
         boolean flag = (i & 4) == 4;
         boolean flag1 = (i & 8) == 8;
-        boolean flag2 = !blockAccess.func_72797_t(par2, par3 - 1, par4);
+        boolean flag2 = !blockAccess.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4);
         boolean flag3 = overrideBlockTexture >= 0;
 
         if (!flag3)
@@ -1631,14 +1631,14 @@ public class RenderBlocks
         float f11 = 0.046875F;
         float f12 = 0.046875F;
         float f13 = 0.3125F;
-        avec3[0] = Vec3.func_72437_a().func_72345_a(-f11, 0.0D, -f12);
-        avec3[1] = Vec3.func_72437_a().func_72345_a(f11, 0.0D, -f12);
-        avec3[2] = Vec3.func_72437_a().func_72345_a(f11, 0.0D, f12);
-        avec3[3] = Vec3.func_72437_a().func_72345_a(-f11, 0.0D, f12);
-        avec3[4] = Vec3.func_72437_a().func_72345_a(-f11, f13, -f12);
-        avec3[5] = Vec3.func_72437_a().func_72345_a(f11, f13, -f12);
-        avec3[6] = Vec3.func_72437_a().func_72345_a(f11, f13, f12);
-        avec3[7] = Vec3.func_72437_a().func_72345_a(-f11, f13, f12);
+        avec3[0] = Vec3.getVec3Pool().getVecFromPool(-f11, 0.0D, -f12);
+        avec3[1] = Vec3.getVec3Pool().getVecFromPool(f11, 0.0D, -f12);
+        avec3[2] = Vec3.getVec3Pool().getVecFromPool(f11, 0.0D, f12);
+        avec3[3] = Vec3.getVec3Pool().getVecFromPool(-f11, 0.0D, f12);
+        avec3[4] = Vec3.getVec3Pool().getVecFromPool(-f11, f13, -f12);
+        avec3[5] = Vec3.getVec3Pool().getVecFromPool(f11, f13, -f12);
+        avec3[6] = Vec3.getVec3Pool().getVecFromPool(f11, f13, f12);
+        avec3[7] = Vec3.getVec3Pool().getVecFromPool(-f11, f13, f12);
 
         for (int j1 = 0; j1 < 8; j1++)
         {
@@ -1758,14 +1758,14 @@ public class RenderBlocks
         float f14 = 0.09375F;
         float f15 = 0.09375F;
         float f16 = 0.03125F;
-        avec3[0] = Vec3.func_72437_a().func_72345_a(-f14, 0.0D, -f15);
-        avec3[1] = Vec3.func_72437_a().func_72345_a(f14, 0.0D, -f15);
-        avec3[2] = Vec3.func_72437_a().func_72345_a(f14, 0.0D, f15);
-        avec3[3] = Vec3.func_72437_a().func_72345_a(-f14, 0.0D, f15);
-        avec3[4] = Vec3.func_72437_a().func_72345_a(-f14, f16, -f15);
-        avec3[5] = Vec3.func_72437_a().func_72345_a(f14, f16, -f15);
-        avec3[6] = Vec3.func_72437_a().func_72345_a(f14, f16, f15);
-        avec3[7] = Vec3.func_72437_a().func_72345_a(-f14, f16, f15);
+        avec3[0] = Vec3.getVec3Pool().getVecFromPool(-f14, 0.0D, -f15);
+        avec3[1] = Vec3.getVec3Pool().getVecFromPool(f14, 0.0D, -f15);
+        avec3[2] = Vec3.getVec3Pool().getVecFromPool(f14, 0.0D, f15);
+        avec3[3] = Vec3.getVec3Pool().getVecFromPool(-f14, 0.0D, f15);
+        avec3[4] = Vec3.getVec3Pool().getVecFromPool(-f14, f16, -f15);
+        avec3[5] = Vec3.getVec3Pool().getVecFromPool(f14, f16, -f15);
+        avec3[6] = Vec3.getVec3Pool().getVecFromPool(f14, f16, f15);
+        avec3[7] = Vec3.getVec3Pool().getVecFromPool(-f14, f16, f15);
 
         for (int l1 = 0; l1 < 8; l1++)
         {
@@ -1883,8 +1883,8 @@ public class RenderBlocks
             float f17 = 0.03125F;
             float f18 = 0.5F - f17 / 2.0F;
             float f19 = f18 + f17;
-            int j2 = (Block.field_72062_bU.blockIndexInTexture & 0xf) << 4;
-            int k2 = Block.field_72062_bU.blockIndexInTexture & 0xf0;
+            int j2 = (Block.tripWire.blockIndexInTexture & 0xf) << 4;
+            int k2 = Block.tripWire.blockIndexInTexture & 0xf0;
             double d1 = (float)j2 / 256F;
             double d2 = (float)(j2 + 16) / 256F;
             double d3 = (float)(k2 + (flag ? 2 : 0)) / 256F;
@@ -2101,7 +2101,7 @@ public class RenderBlocks
         double d6 = ((float)k + 15.99F) / 256F;
         float f = 1.4F;
 
-        if (blockAccess.func_72797_t(par2, par3 - 1, par4) || Block.fire.canBlockCatchFire(blockAccess, par2, par3 - 1, par4))
+        if (blockAccess.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || Block.fire.canBlockCatchFire(blockAccess, par2, par3 - 1, par4))
         {
             double d8 = (double)par2 + 0.5D + 0.20000000000000001D;
             double d9 = ((double)par2 + 0.5D) - 0.20000000000000001D;
@@ -3620,7 +3620,7 @@ public class RenderBlocks
         {
             flag2 = true;
             int k = par1Block.getBlockTextureFromSideAndMetadata(1, j);
-            float f8 = (float)BlockFluid.func_72204_a(blockAccess, par2, par3, par4, material);
+            float f8 = (float)BlockFluid.getFlowDirection(blockAccess, par2, par3, par4, material);
 
             if (f8 > -999F)
             {

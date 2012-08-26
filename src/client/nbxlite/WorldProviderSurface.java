@@ -107,4 +107,9 @@ public class WorldProviderSurface extends WorldProvider
     public double getMovementFactor(){
         return 1.0D;
     }
+
+    public String func_80007_l()
+    {
+        return "Overworld";
+    }
 }

@@ -13,9 +13,9 @@ public class SavingManager{
 
     public void loadCoreProperties(){
         Properties properties = new Properties();
-        Minecraft mc = Minecraft.getMinecraftInstance();
+        Minecraft mc = Minecraft.getMinecraft();
         try{
-            File dir = new File(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays");
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
             dir.mkdirs();
             File file = new File(dir, "Core.properties");
             if(file.createNewFile()){
@@ -23,7 +23,7 @@ public class SavingManager{
                 saveCoreProperties();
                 return;
             }
-            properties.load(new FileInputStream(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays/Core.properties"));
+            properties.load(new FileInputStream(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/Core.properties"));
             try{
                 String value = properties.getProperty("ssp");
                 mc.useSP = value.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
@@ -38,9 +38,9 @@ public class SavingManager{
 
     public void saveCoreProperties(){
         Properties properties = new Properties();
-        Minecraft mc = Minecraft.getMinecraftInstance();
+        Minecraft mc = Minecraft.getMinecraft();
         try{
-            File dir = new File(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays");
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
             dir.mkdirs();
             File file = new File(dir, "Core.properties");
             FileOutputStream fileoutputstream = new FileOutputStream(file);
@@ -57,7 +57,7 @@ public class SavingManager{
         Properties properties = new Properties();
         OldDaysModule module = core.getModuleById(id);
         try{
-            File dir = new File(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays");
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
             dir.mkdirs();
             File file = new File(dir, module.name+".properties");
             if(file.createNewFile()){
@@ -65,7 +65,7 @@ public class SavingManager{
                     core.sendCallback(id, i);
                 }
             }
-            properties.load(new FileInputStream(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays/"+module.name+".properties"));
+            properties.load(new FileInputStream(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/"+module.name+".properties"));
             for (int i = 1; i <= module.properties.size(); i++){
                 OldDaysProperty prop = module.getPropertyById(i);
                 try{
@@ -94,15 +94,15 @@ public class SavingManager{
     }
 
     public void saveModuleProperties(int id){
-        if (mod_OldDays.getMinecraftInstance().field_71441_e != null){
-            if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote){
+        if (mod_OldDays.getMinecraft().theWorld != null){
+            if (mod_OldDays.getMinecraft().theWorld.isRemote){
                 return;
             }
         }
         Properties properties = new Properties();
         OldDaysModule module = core.getModuleById(id);
         try{
-            File dir = new File(mod_OldDays.getMinecraftInstance().getMinecraftDir()+"/olddays");
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
             dir.mkdirs();
             File file = new File(dir, module.name+".properties");
             FileOutputStream fileoutputstream = new FileOutputStream(file);

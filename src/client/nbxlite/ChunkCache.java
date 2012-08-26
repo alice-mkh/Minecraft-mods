@@ -5,7 +5,9 @@ public class ChunkCache implements IBlockAccess
     private int chunkX;
     private int chunkZ;
     private Chunk chunkArray[][];
-    private boolean field_72814_d;
+
+    /** set by !chunk.getAreLevelsEmpty */
+    private boolean hasExtendedLevels;
 
     /** Reference to the World object. */
     private World worldObj;
@@ -18,7 +20,7 @@ public class ChunkCache implements IBlockAccess
         int i = par5 >> 4;
         int j = par7 >> 4;
         chunkArray = new Chunk[(i - chunkX) + 1][(j - chunkZ) + 1];
-        field_72814_d = true;
+        hasExtendedLevels = true;
 
         for (int k = chunkX; k <= i; k++)
         {
@@ -35,19 +37,22 @@ public class ChunkCache implements IBlockAccess
 
                 if (!chunk.getAreLevelsEmpty(par3, par6))
                 {
-                    field_72814_d = false;
+                    hasExtendedLevels = false;
                 }
             }
         }
     }
 
-    public boolean func_72806_N()
+    /**
+     * set by !chunk.getAreLevelsEmpty
+     */
+    public boolean extendedLevelsInChunkCache()
     {
-        return field_72814_d;
+        return hasExtendedLevels;
     }
 
     private boolean isBounds(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldObj.worldProvider==null || worldObj.worldProvider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldObj.provider==null || worldObj.provider.worldType==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
                     return true;
@@ -119,7 +124,7 @@ public class ChunkCache implements IBlockAccess
             i = par4;
         }
 
-        return worldObj.worldProvider.lightBrightnessTable[i];
+        return worldObj.provider.lightBrightnessTable[i];
     }
 
     /**
@@ -147,7 +152,7 @@ public class ChunkCache implements IBlockAccess
      */
     public float getLightBrightness(int par1, int par2, int par3)
     {
-        return worldObj.worldProvider.lightBrightnessTable[getLightValue(par1, par2, par3)];
+        return worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)];
     }
 
     /**
@@ -172,7 +177,7 @@ public class ChunkCache implements IBlockAccess
         {
             int i = getBlockId(par1, par2, par3);
 
-            if (i == Block.field_72079_ak.blockID || i == Block.field_72092_bO.blockID || i == Block.tilledField.blockID || i == Block.stairCompactPlanks.blockID || i == Block.stairCompactCobblestone.blockID)
+            if (i == Block.stoneSingleSlab.blockID || i == Block.woodSingleSlab.blockID || i == Block.tilledField.blockID || i == Block.stairCompactPlanks.blockID || i == Block.stairCompactCobblestone.blockID)
             {
                 int l = getLightValueExt(par1, par2 + 1, par3, false);
                 int j1 = getLightValueExt(par1 + 1, par2, par3, false);
@@ -309,7 +314,10 @@ public class ChunkCache implements IBlockAccess
         }
     }
 
-    public boolean func_72797_t(int par1, int par2, int par3)
+    /**
+     * Returns true if the block at the given coordinate has a solid (buildable) top surface.
+     */
+    public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[getBlockId(par1, par2, par3)];
 

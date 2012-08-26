@@ -96,7 +96,7 @@ public class ODCrafting extends OldDaysModule{
         String slab3 = "3xtile.stoneSlab@";
         String slab6 = "6xtile.stoneSlab@";
         String plate = "1xtile.pressurePlate@0";
-        Block slab = Block.field_72079_ak;
+        Block slab = Block.stoneSingleSlab;
         Block platestone = Block.pressurePlateStone;
         Block plateplanks = Block.pressurePlatePlanks;
         removeRecipe(slab3+"0");
@@ -213,11 +213,11 @@ public class ODCrafting extends OldDaysModule{
         if (b){
             addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"##", "##", '#', Item.ingotIron});
             addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"##", "##", '#', Item.ingotGold});
-            addRecipe(new ItemStack(Block.field_72071_ax, 1), new Object[]{"##", "##", '#', Item.field_77702_n});
+            addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"##", "##", '#', Item.diamond});
         }else{
             addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
             addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
-            addRecipe(new ItemStack(Block.field_72071_ax, 1), new Object[]{"###", "###", "###", '#', Item.field_77702_n});
+            addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
         }
         int n = b ? 9 : 4;
         removeRecipe(n+"xitem.ingotIron@0");
@@ -226,7 +226,7 @@ public class ODCrafting extends OldDaysModule{
         n = b ? 4 : 9;
         addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
         addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
-        addRecipe(new ItemStack(Item.field_77702_n, n), new Object[]{"#", '#', Block.field_72071_ax});
+        addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
     }
 
     private void setSign(boolean b){

@@ -12,7 +12,7 @@ public class ItemBow extends Item
         super(par1);
         maxStackSize = 1;
         setMaxDamage(384);
-        func_77637_a(CreativeTabs.field_78037_j);
+        setTabToDisplayOn(CreativeTabs.tabCombat);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ItemBow extends Item
 
             if (flag)
             {
-                entityarrow.field_70251_a = 2;
+                entityarrow.canBePickedUp = 2;
             }
             else
             {
@@ -139,7 +139,7 @@ public class ItemBow extends Item
             if (!flag){
                 par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
             }else{
-                entityarrow.field_70251_a = 2;
+                entityarrow.canBePickedUp = 2;
             }
             if(!par2World.isRemote){
                 par2World.spawnEntityInWorld(entityarrow);

@@ -135,7 +135,8 @@ public class WorldChunkManagerHell extends WorldChunkManager
     }
 
     /**
-     * Finds a valid position within a range, that is once of the listed biomes.
+     * Finds a valid position within a range, that is in one of the listed biomes. Searches {par1,par2} +-par3 blocks.
+     * Strongly favors positive y positions.
      */
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {

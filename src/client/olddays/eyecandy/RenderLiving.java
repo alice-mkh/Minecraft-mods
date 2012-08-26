@@ -83,7 +83,7 @@ public class RenderLiving extends Render
             if (!bobbing || par1EntityLiving.isChild()){
                 GL11.glTranslatef(0.0F, -24F * f4 - 0.0078125F, 0.0F);
             }
-            float f5 = par1EntityLiving.field_70722_aY + (par1EntityLiving.field_70721_aZ - par1EntityLiving.field_70722_aY) * par9;
+            float f5 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
             float f6;
 
             if (bobbing && !par1EntityLiving.isChild()){
@@ -105,7 +105,7 @@ public class RenderLiving extends Render
                 float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 * bobStrength - 23F;
                 GL11.glTranslatef(0.0F, bob * f4 - 0.0078125F, 0.0F);
             }else{
-                f6 = par1EntityLiving.field_70754_ba - par1EntityLiving.field_70721_aZ * (1.0F - par9);
+                f6 = par1EntityLiving.field_70754_ba - par1EntityLiving.legYaw * (1.0F - par9);
                 if (par1EntityLiving.isChild()){
                     f6 *= 3F;
                 }

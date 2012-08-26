@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 
 public class mod_SpawnHuman extends Mod{
     public String getMcVersion(){
-        return "1.3.1";
+        return "1.3.2";
     }
 
     public String getModVersion(){
@@ -48,10 +48,10 @@ public class mod_SpawnHuman extends Mod{
     }
 
     public void keyboardEvent(KeyBinding keybinding){
-        Minecraft mc = Minecraft.getMinecraftInstance();
-        EntityPlayer entityplayer = mc.field_71439_g;
-        World theWorld = mc.field_71441_e;
-        PlayerControllerMP playerController = mc.field_71442_b;
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer entityplayer = mc.thePlayer;
+        World theWorld = mc.theWorld;
+        PlayerControllerMP playerController = mc.playerController;
         if(!theWorld.isRemote && (playerController.isInCreativeMode() || AllowInSurvival)){
             EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("human", theWorld);
             entityliving.setLocationAndAngles(entityplayer.posX, entityplayer.posY - 1.62D + entityplayer.getEyeHeight(), entityplayer.posZ, theWorld.rand.nextFloat() * 360F, 0.0F);

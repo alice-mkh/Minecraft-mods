@@ -21,7 +21,7 @@ public class OldDaysModule{
         id = i;
         name = s;
         properties = new ArrayList<OldDaysProperty>();
-        minecraft = mod_OldDays.getMinecraftInstance();
+        minecraft = mod_OldDays.getMinecraft();
         last = 0;
         renderersAdded = false;
     }
@@ -37,18 +37,18 @@ public class OldDaysModule{
     }
 
     public void addSound(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraftInstance().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
         if (sound.exists()){
-            mod_OldDays.getMinecraftInstance().installResource("newsound/olddays/"+sound.getName(), sound);
+            mod_OldDays.getMinecraft().installResource("newsound/olddays/"+sound.getName(), sound);
         }else{
             getPropertyById(id).noSounds = true;
         }
     }
 
     public void addMusic(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraftInstance().mcDataDir, "resources/music/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/music/"+name+".ogg");
         if (sound.exists()){
-            mod_OldDays.getMinecraftInstance().installResource("music/"+sound.getName(), sound);
+            mod_OldDays.getMinecraft().installResource("music/"+sound.getName(), sound);
         }else{
             getPropertyById(id).noSounds = true;
         }
@@ -78,7 +78,7 @@ public class OldDaysModule{
 
     public static void reload(){
         try{
-            mod_OldDays.getMinecraftInstance().renderGlobal.loadRenderers();
+            mod_OldDays.getMinecraft().renderGlobal.loadRenderers();
         }catch(Exception ex){}
     }
 
@@ -129,7 +129,7 @@ public class OldDaysModule{
     }
 
     public static void setInWorldInfo(String var, Object b){
-        World world = mod_OldDays.getMinecraftInstance().field_71441_e;
+        World world = mod_OldDays.getMinecraft().theWorld;
         if (world==null){
             return;
         }

@@ -19,7 +19,10 @@ public interface ISaveHandler
      */
     public abstract IChunkLoader getChunkLoader(WorldProvider worldprovider);
 
-    public abstract void func_75755_a(WorldInfo worldinfo, NBTTagCompound nbttagcompound);
+    /**
+     * Saves the given World Info with the given NBTTagCompound as the Player.
+     */
+    public abstract void saveWorldInfoWithPlayer(WorldInfo worldinfo, NBTTagCompound nbttagcompound);
 
     /**
      * saves level.dat and backs up the existing one to level.dat_old
@@ -31,9 +34,15 @@ public interface ISaveHandler
      */
     public abstract void saveWorldInfo(WorldInfo worldinfo);
 
-    public abstract IPlayerFileData func_75756_e();
+    /**
+     * returns null if no saveHandler is relevent (eg. SMP)
+     */
+    public abstract IPlayerFileData getSaveHandler();
 
-    public abstract void func_75759_a();
+    /**
+     * Called to flush all changes to disk, waiting for them to complete.
+     */
+    public abstract void flush();
 
     /**
      * Gets the file location of the given map

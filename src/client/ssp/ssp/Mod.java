@@ -53,7 +53,7 @@ public abstract class Mod{
 
     private void sendPacket(boolean dir, int id, EntityPlayerMP player, NetClientHandler handler, String... data){
         Packet300Custom packet = new Packet300Custom(this, dir, id, data);
-        if (Minecraft.getMinecraftInstance().enableSP){
+        if (Minecraft.getMinecraft().enableSP){
             if (dir){
                 handlePacketFromServer(packet);
             }else{
@@ -63,19 +63,19 @@ public abstract class Mod{
         }
         if (dir){
             if (player == null){
-                ServerConfigurationManager man = MinecraftServer.func_71276_C().func_71203_ab();
-                String[] players = man.func_72369_d();
+                ServerConfigurationManager man = MinecraftServer.getServer().getConfigurationManager();
+                String[] players = man.getAllUsernames();
                 for (int i = 0; i < players.length; i++){
-                    player = man.func_72361_f(players[i]);
-                    player.field_71135_a.func_72567_b(packet);
+                    player = man.getPlayerForUsername(players[i]);
+                    player.serverForThisPlayer.sendPacketToPlayer(packet);
                 }
             }else{
-                player.field_71135_a.func_72567_b(packet);
+                player.serverForThisPlayer.sendPacketToPlayer(packet);
             }
             return;
         }
         if (handler == null){
-            handler = Minecraft.getMinecraftInstance().getSendQueue();
+            handler = Minecraft.getMinecraft().getSendQueue();
         }
         handler.addToSendQueue(packet);
     }

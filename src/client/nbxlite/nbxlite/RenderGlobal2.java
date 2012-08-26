@@ -63,9 +63,9 @@ public class RenderGlobal2 extends RenderGlobal{
     /**
      * Changes the world reference in RenderGlobal
      */
-    public void func_72732_a(WorldClient par1World)
+    public void setWorldAndLoadRenderers(WorldClient par1World)
     {
-        super.func_72732_a(par1World);
+        super.setWorldAndLoadRenderers(par1World);
         worldObj = par1World;
     }
 
@@ -74,7 +74,7 @@ public class RenderGlobal2 extends RenderGlobal{
      */
     public void renderSky(float par1)
     {
-        if (mc.field_71441_e.worldProvider.worldType == 1)
+        if (mc.theWorld.provider.worldType == 1)
         {
             GL11.glDisable(GL11.GL_FOG);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -130,7 +130,7 @@ public class RenderGlobal2 extends RenderGlobal{
             return;
         }
 
-        if (!mc.field_71441_e.worldProvider.isSurfaceWorld())
+        if (!mc.theWorld.provider.isSurfaceWorld())
         {
             return;
         }
@@ -162,7 +162,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        float af[] = worldObj.worldProvider.calcSunriseSunsetColors(worldObj.getCelestialAngle(par1), par1);
+        float af[] = worldObj.provider.calcSunriseSunsetColors(worldObj.getCelestialAngle(par1), par1);
         if (!sunriseColors){
             af = null;
         }
@@ -277,7 +277,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glPopMatrix();
-        d = mc.field_71439_g.getPosition(par1).yCoord - worldObj.getHorizon();
+        d = mc.thePlayer.getPosition(par1).yCoord - worldObj.getHorizon();
         if (ODNBXlite.VoidFog<2){
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
@@ -317,7 +317,7 @@ public class RenderGlobal2 extends RenderGlobal{
             }
         }
 
-        if (worldObj.worldProvider.isSkyColored())
+        if (worldObj.provider.isSkyColored())
         {
             GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
         }
@@ -346,7 +346,7 @@ public class RenderGlobal2 extends RenderGlobal{
 
     public void renderClouds(float par1)
     {
-        if (!mc.field_71441_e.worldProvider.isSurfaceWorld())
+        if (!mc.theWorld.provider.isSurfaceWorld())
         {
             return;
         }
@@ -388,7 +388,7 @@ public class RenderGlobal2 extends RenderGlobal{
         int k = MathHelper.floor_double(d2 / 2048D);
         d1 -= j * 2048;
         d2 -= k * 2048;
-        float f8 = (worldObj.worldProvider.getCloudHeight() - f) + 0.33F;
+        float f8 = (worldObj.provider.getCloudHeight() - f) + 0.33F;
         float f9 = (float)(d1 * (double)f5);
         float f10 = (float)(d2 * (double)f5);
         tessellator.startDrawingQuads();
@@ -432,7 +432,7 @@ public class RenderGlobal2 extends RenderGlobal{
         double d = (float)cloudOffsetX + par1;
         double d1 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.029999999329447746D) / (double)f1;
         double d2 = (mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * (double)par1) / (double)f1 + 0.33000001311302185D;
-        float f3 = (worldObj.worldProvider.getCloudHeight() - f) + 0.33F;
+        float f3 = (worldObj.provider.getCloudHeight() - f) + 0.33F;
         int i = MathHelper.floor_double(d1 / 2048D);
         int j = MathHelper.floor_double(d2 / 2048D);
         d1 -= i * 2048;

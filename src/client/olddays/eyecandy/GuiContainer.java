@@ -47,7 +47,7 @@ public abstract class GuiContainer extends GuiScreen
     public void initGui()
     {
         super.initGui();
-        mc.field_71439_g.craftingInventory = inventorySlots;
+        mc.thePlayer.craftingInventory = inventorySlots;
         guiLeft = (width - xSize) / 2;
         guiTop = (height - ySize) / 2;
     }
@@ -96,7 +96,7 @@ public abstract class GuiContainer extends GuiScreen
         }
 
         drawGuiContainerForegroundLayer();
-        InventoryPlayer inventoryplayer = mc.field_71439_g.inventory;
+        InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
 
         if (inventoryplayer.getItemStack() != null)
         {
@@ -246,7 +246,7 @@ public abstract class GuiContainer extends GuiScreen
     }
 
     /**
-     * Draw the foreground layer for the GuiContainer (everythin in front of the items)
+     * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer()
     {
@@ -369,7 +369,7 @@ public abstract class GuiContainer extends GuiScreen
             par2 = par1Slot.slotNumber;
         }
 
-        mc.field_71442_b.windowClick(inventorySlots.windowId, par2, par3, par4, mc.field_71439_g);
+        mc.playerController.windowClick(inventorySlots.windowId, par2, par3, par4, mc.thePlayer);
     }
 
     /**
@@ -379,7 +379,7 @@ public abstract class GuiContainer extends GuiScreen
     {
         if (par2 == 1 || par2 == mc.gameSettings.keyBindInventory.keyCode)
         {
-            mc.field_71439_g.closeScreen();
+            mc.thePlayer.closeScreen();
         }
     }
 
@@ -388,13 +388,13 @@ public abstract class GuiContainer extends GuiScreen
      */
     public void onGuiClosed()
     {
-        if (mc.field_71439_g == null)
+        if (mc.thePlayer == null)
         {
             return;
         }
         else
         {
-            inventorySlots.onCraftGuiClosed(mc.field_71439_g);
+            inventorySlots.onCraftGuiClosed(mc.thePlayer);
             return;
         }
     }
@@ -414,9 +414,9 @@ public abstract class GuiContainer extends GuiScreen
     {
         super.updateScreen();
 
-        if (!mc.field_71439_g.isEntityAlive() || mc.field_71439_g.isDead)
+        if (!mc.thePlayer.isEntityAlive() || mc.thePlayer.isDead)
         {
-            mc.field_71439_g.closeScreen();
+            mc.thePlayer.closeScreen();
         }
     }
 }

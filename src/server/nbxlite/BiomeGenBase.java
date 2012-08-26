@@ -100,17 +100,17 @@ public abstract class BiomeGenBase
     public final int biomeID;
 
     /** The tree generator. */
-    protected WorldGenTrees worldGenTrees;
-    public OldWorldGenTrees oldWorldGenTrees;
+    protected WorldGenTrees worldGeneratorTrees;
+    public OldWorldGenTrees oldWorldGeneratorTrees;
 
     /** The big tree generator. */
-    protected WorldGenBigTree worldGenBigTree;
+    protected WorldGenBigTree worldGeneratorBigTree;
 
     /** The forest generator. */
-    protected WorldGenForest worldGenForest;
+    protected WorldGenForest worldGeneratorForest;
 
     /** The swamp tree generator. */
-    protected WorldGenSwamp worldGenSwamp;
+    protected WorldGenSwamp worldGeneratorSwamp;
 
     public static final BiomeGenBase betaRainforest = (new BiomeGenJungle(30)).setColor(0x8fa36).setBiomeName("Beta Rainforest").setTemperatureRainfall(1F, 1F).func_4080_a(0x1ff458);
     public static final BiomeGenBase betaSwampland = (new BiomeGenPlains(31)).setColor(0x9be023).setBiomeName("Beta Swampland").setTemperatureRainfall(0.75F, 0.5F).func_4080_a(0x8baf48);
@@ -142,11 +142,11 @@ public abstract class BiomeGenBase
         spawnableCreatureList = new ArrayList();
         spawnableWaterCreatureList = new ArrayList();
         enableRain = true;
-        worldGenTrees = new WorldGenTrees(false);
-        oldWorldGenTrees = new OldWorldGenTrees(false);
-        worldGenBigTree = new WorldGenBigTree(false);
-        worldGenForest = new WorldGenForest(false);
-        worldGenSwamp = new WorldGenSwamp();
+        worldGeneratorTrees = new WorldGenTrees(false);
+        oldWorldGeneratorTrees = new OldWorldGenTrees(false);
+        worldGeneratorBigTree = new WorldGenBigTree(false);
+        worldGeneratorForest = new WorldGenForest(false);
+        worldGeneratorSwamp = new WorldGenSwamp();
         biomeID = par1;
         biomeList[par1] = this;
         biomeDecorator = createBiomeDecorator();
@@ -214,11 +214,11 @@ public abstract class BiomeGenBase
     {
         if (par1Random.nextInt(10) == 0)
         {
-            return worldGenBigTree;
+            return worldGeneratorBigTree;
         }
         else
         {
-            return worldGenTrees;
+            return worldGeneratorTrees;
         }
     }
 

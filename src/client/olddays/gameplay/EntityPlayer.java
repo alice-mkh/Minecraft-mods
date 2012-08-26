@@ -12,7 +12,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     /** Inventory of the player */
     public InventoryPlayer inventory;
-    private InventoryEnderChest field_71078_a;
+    private InventoryEnderChest theInventoryEnderChest;
 
     /** the crafting inventory in you get when opening your inventory */
     public Container inventorySlots;
@@ -121,7 +121,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
         super(par1World);
         inventory = new InventoryPlayer(this);
-        field_71078_a = new InventoryEnderChest();
+        theInventoryEnderChest = new InventoryEnderChest();
         foodStats = new FoodStats();
         flyToggleTimer = 0;
         field_71098_bD = 0;
@@ -449,10 +449,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             for (int i = 0; i < par2; i++)
             {
-                Vec3 vec3 = Vec3.func_72437_a().func_72345_a(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
+                Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
                 vec3.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-                Vec3 vec3_1 = Vec3.func_72437_a().func_72345_a(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
+                Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
                 vec3_1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3_1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
                 vec3_1 = vec3_1.addVector(posX, posY + (double)getEyeHeight(), posZ);
@@ -604,12 +604,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         inventory.decrementAnimations();
         prevCameraYaw = cameraYaw;
         super.onLivingUpdate();
-        landMovementFactor = capabilities.func_75094_b();
+        landMovementFactor = capabilities.getWalkSpeed();
         jumpMovementFactor = speedInAir;
 
         if (isSprinting())
         {
-            landMovementFactor += (double)capabilities.func_75094_b() * 0.29999999999999999D;
+            landMovementFactor += (double)capabilities.getWalkSpeed() * 0.29999999999999999D;
             jumpMovementFactor += (double)speedInAir * 0.29999999999999999D;
         }
 
@@ -879,7 +879,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         if (par1NBTTagCompound.hasKey("EnderItems"))
         {
             NBTTagList nbttaglist1 = par1NBTTagCompound.getTagList("EnderItems");
-            field_71078_a.func_70486_a(nbttaglist1);
+            theInventoryEnderChest.loadInventoryFromNBT(nbttaglist1);
         }
     }
 
@@ -906,7 +906,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         foodStats.writeNBT(par1NBTTagCompound);
         capabilities.writeCapabilitiesToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setTag("EnderItems", field_71078_a.func_70487_g());
+        par1NBTTagCompound.setTag("EnderItems", theInventoryEnderChest.saveInventoryToNBT());
     }
 
     /**
@@ -923,7 +923,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     /**
      * Displays the crafting GUI for a workbench.
      */
-    public void displayWorkbenchGUI(int i, int j, int k)
+    public void displayGUIWorkbench(int i, int j, int k)
     {
     }
 
@@ -1074,7 +1074,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             return;
         }
 
-        List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityWolf.class, AxisAlignedBB.func_72332_a().func_72299_a(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
+        List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityWolf.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
         Iterator iterator = list.iterator();
 
         do
@@ -1202,15 +1202,18 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
     }
 
-    public void func_71030_a(IMerchant imerchant)
+    public void displayGUIMerchant(IMerchant imerchant)
     {
     }
 
-    public void func_71048_c(ItemStack itemstack)
+    /**
+     * Displays the GUI for interacting with a book.
+     */
+    public void displayGUIBook(ItemStack itemstack)
     {
     }
 
-    public boolean func_70998_m(Entity par1Entity)
+    public boolean interactWith(Entity par1Entity)
     {
         if (par1Entity.interact(this))
         {
@@ -1226,7 +1229,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 itemstack = itemstack.copy();
             }
 
-            if (itemstack.func_77947_a((EntityLiving)par1Entity))
+            if (itemstack.interactWith((EntityLiving)par1Entity))
             {
                 if (itemstack.stackSize <= 0 && !capabilities.isCreativeMode)
                 {
@@ -1442,7 +1445,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 return EnumStatus.OTHER_PROBLEM;
             }
 
-            if (!worldObj.worldProvider.isSurfaceWorld())
+            if (!worldObj.provider.isSurfaceWorld())
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
@@ -1459,7 +1462,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
             double d = 8D;
             double d1 = 5D;
-            List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityMob.class, AxisAlignedBB.func_72332_a().func_72299_a((double)par1 - d, (double)par2 - d1, (double)par3 - d, (double)par1 + d, (double)par2 + d1, (double)par3 + d));
+            List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityMob.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par1 - d, (double)par2 - d1, (double)par3 - d, (double)par1 + d, (double)par2 + d1, (double)par3 + d));
 
             if (!list.isEmpty())
             {
@@ -1744,7 +1747,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             double d3 = motionY;
             float f = jumpMovementFactor;
-            jumpMovementFactor = capabilities.func_75093_a();
+            jumpMovementFactor = capabilities.getFlySpeed();
             super.moveEntityWithHeading(par1, par2);
             motionY = d3 * 0.59999999999999998D;
             jumpMovementFactor = f;
@@ -2070,7 +2073,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public boolean canPlayerEdit(int par1, int par2, int par3)
     {
-        return capabilities.field_75099_e;
+        return capabilities.allowEdit;
     }
 
     /**
@@ -2098,7 +2101,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return true;
     }
 
-    public String func_70023_ak()
+    /**
+     * Gets the username of the entity.
+     */
+    public String getEntityName()
     {
         return username;
     }
@@ -2107,7 +2113,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
     }
 
-    public void func_71049_a(EntityPlayer par1EntityPlayer, boolean par2)
+    /**
+     * Copies the values from the given player into this player if boolean par2 is true. Always clones Ender Chest
+     * Inventory.
+     */
+    public void clonePlayer(EntityPlayer par1EntityPlayer, boolean par2)
     {
         if (par2)
         {
@@ -2120,7 +2130,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             score = par1EntityPlayer.score;
         }
 
-        field_71078_a = par1EntityPlayer.field_71078_a;
+        theInventoryEnderChest = par1EntityPlayer.theInventoryEnderChest;
     }
 
     /**
@@ -2132,32 +2142,44 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return !capabilities.isFlying;
     }
 
-    public void func_71016_p()
+    /**
+     * Sends the player's abilities to the server (if there is one).
+     */
+    public void sendPlayerAbilities()
     {
     }
 
-    public void func_71033_a(EnumGameType enumgametype)
+    public void sendGameTypeToPlayer(EnumGameType enumgametype)
     {
     }
 
-    public String func_70005_c_()
+    /**
+     * Gets the name of this command sender (usually username, but possibly "Rcon")
+     */
+    public String getCommandSenderName()
     {
         return username;
     }
 
-    public StringTranslate func_71025_t()
+    public StringTranslate getTranslator()
     {
         return StringTranslate.getInstance();
     }
 
-    public String func_70004_a(String par1Str, Object par2ArrayOfObj[])
+    /**
+     * Translates and formats the given string key with the given arguments.
+     */
+    public String translateString(String par1Str, Object par2ArrayOfObj[])
     {
-        return func_71025_t().translateKeyFormat(par1Str, par2ArrayOfObj);
+        return getTranslator().translateKeyFormat(par1Str, par2ArrayOfObj);
     }
 
-    public InventoryEnderChest func_71005_bN()
+    /**
+     * Returns the InventoryEnderChest of this player.
+     */
+    public InventoryEnderChest getInventoryEnderChest()
     {
-        return field_71078_a;
+        return theInventoryEnderChest;
     }
 
     /**

@@ -275,7 +275,7 @@ public class EntityItem extends Entity
                 par1EntityPlayer.triggerAchievement(AchievementList.killCow);
             }
 
-            if (item.itemID == Item.field_77702_n.shiftedIndex)
+            if (item.itemID == Item.diamond.shiftedIndex)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.diamonds);
             }
@@ -298,7 +298,10 @@ public class EntityItem extends Entity
         }
     }
 
-    public String func_70023_ak()
+    /**
+     * Gets the username of the entity.
+     */
+    public String getEntityName()
     {
         return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(item.func_77977_a()).toString());
     }

@@ -520,7 +520,7 @@ public class World implements IBlockAccess
 
         if (par2IProgressUpdate != null)
         {
-            par2IProgressUpdate.displayLoadingString("Saving chunks");
+            par2IProgressUpdate.resetProgresAndWorkingMessage("Saving chunks");
         }
 
         chunkProvider.saveChunks(par1, par2IProgressUpdate);

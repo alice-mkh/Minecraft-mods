@@ -13,16 +13,16 @@ public class CommandClientTp extends CommandServerTp
     {
         if (par2ArrayOfStr.length == 3)
         {
-            Minecraft minecraft = Minecraft.getMinecraftInstance();
-            if (minecraft.field_71441_e != null)
+            Minecraft minecraft = Minecraft.getMinecraft();
+            if (minecraft.theWorld != null)
             {
                 int i = par2ArrayOfStr.length - 3;
                 int j = 0x1c9c380;
-                int k = func_71532_a(par1ICommandSender, par2ArrayOfStr[i++], -j, j);
-                int l = func_71532_a(par1ICommandSender, par2ArrayOfStr[i++], 0, 256);
-                int i1 = func_71532_a(par1ICommandSender, par2ArrayOfStr[i++], -j, j);
+                int k = parseIntBounded(par1ICommandSender, par2ArrayOfStr[i++], -j, j);
+                int l = parseIntBounded(par1ICommandSender, par2ArrayOfStr[i++], 0, 256);
+                int i1 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[i++], -j, j);
                 ((EntityPlayerSP)par1ICommandSender).setPositionAndUpdate((float)k + 0.5F, l, (float)i1 + 0.5F);
-                func_71522_a(par1ICommandSender, "commands.tp.coordinates", new Object[]
+                notifyAdmins(par1ICommandSender, "commands.tp.coordinates", new Object[]
                         {
                             ((EntityPlayerSP)par1ICommandSender).username, Integer.valueOf(k), Integer.valueOf(l), Integer.valueOf(i1)
                         });
@@ -40,7 +40,7 @@ public class CommandClientTp extends CommandServerTp
     {
         if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
         {
-            return func_71530_a(par2ArrayOfStr, null);
+            return getListOfStringsMatchingLastWord(par2ArrayOfStr, null);
         }
         else
         {

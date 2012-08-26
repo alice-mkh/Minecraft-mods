@@ -26,7 +26,7 @@ public class mod_OldDays extends Mod{
     }
 
     public String getMcVersion(){
-        return "1.3.1";
+        return "1.3.2";
     }
 
     public String getModName(){
@@ -57,8 +57,8 @@ public class mod_OldDays extends Mod{
         for (int i = 0; i < keyBindings.size(); i++){
             KeyBinding key = keyBindings.get(i);
             if (key.isPressed()){
-                if (key == keySettings && getMinecraftInstance().currentScreen == null){
-                    getMinecraftInstance().displayGuiScreen(new GuiOldDaysModules(null));
+                if (key == keySettings && getMinecraft().currentScreen == null){
+                    getMinecraft().displayGuiScreen(new GuiOldDaysModules(null));
                     continue;
                 }
                 for (int j = 0; j < modules.size(); j++){
@@ -169,8 +169,8 @@ public class mod_OldDays extends Mod{
         saveman.saveAll();
     }
 
-    public static Minecraft getMinecraftInstance(){
-        return Minecraft.getMinecraftInstance();
+    public static Minecraft getMinecraft(){
+        return Minecraft.getMinecraft();
     }
 
     public static int getDescriptionNumber(String s){
@@ -257,7 +257,7 @@ public class mod_OldDays extends Mod{
     }
 
     public static void registerKey(KeyBinding key){
-        GameSettings s = getMinecraftInstance().gameSettings;
+        GameSettings s = getMinecraft().gameSettings;
         KeyBinding[] newb = new KeyBinding[s.keyBindings.length + 1];
         for (int i = 0; i < s.keyBindings.length; i++){
             newb[i] = s.keyBindings[i];

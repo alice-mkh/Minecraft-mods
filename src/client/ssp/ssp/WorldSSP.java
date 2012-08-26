@@ -118,7 +118,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             worldInfo.setWorldName(par2Str);
         }
 
-        worldProvider.registerWorld(this);
+        provider.registerWorld(this);
         chunkProvider = createChunkProvider();
 
         if (flag)
@@ -163,8 +163,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     protected IChunkProvider createChunkProvider()
     {
-        IChunkLoader ichunkloader = saveHandler.getChunkLoader(worldProvider);
-        return new ChunkProvider(this, ichunkloader, worldProvider.getChunkProvider());
+        IChunkLoader ichunkloader = saveHandler.getChunkLoader(provider);
+        return new ChunkProvider(this, ichunkloader, provider.getChunkProvider());
     }
 
     /**
@@ -172,19 +172,19 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     protected void generateSpawnPoint(WorldSettings par1WorldSettings)
     {
-        if (!worldProvider.canRespawnHere())
+        if (!provider.canRespawnHere())
         {
-            worldInfo.setSpawnPosition(0, worldProvider.getAverageGroundLevel(), 0);
+            worldInfo.setSpawnPosition(0, provider.getAverageGroundLevel(), 0);
             return;
         }
 
         findingSpawnPoint = true;
-        WorldChunkManager worldchunkmanager = worldProvider.worldChunkMgr;
+        WorldChunkManager worldchunkmanager = provider.worldChunkMgr;
         List list = worldchunkmanager.getBiomesToSpawnIn();
         Random random = new Random(getSeed());
         ChunkPosition chunkposition = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
         int i = 0;
-        int j = worldProvider.getAverageGroundLevel();
+        int j = provider.getAverageGroundLevel();
         int k = 0;
 
         if (chunkposition != null)
@@ -201,7 +201,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         do
         {
-            if (worldProvider.canCoordinateBeSpawn(i, k))
+            if (provider.canCoordinateBeSpawn(i, k))
             {
                 break;
             }
@@ -214,7 +214,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         worldInfo.setSpawnPosition(i, j, k);
         findingSpawnPoint = false;
 
-        if (par1WorldSettings.func_77167_c())
+        if (par1WorldSettings.isBonusChestEnabled())
         {
             func_73047_i();
         }
@@ -225,7 +225,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public ChunkCoordinates getEntrancePortalLocation()
     {
-        return worldProvider.getEntrancePortalLocation();
+        return provider.getEntrancePortalLocation();
     }
 
     /**
@@ -305,14 +305,14 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         if (par2IProgressUpdate != null)
         {
-            par2IProgressUpdate.displaySavingString("Saving level");
+            par2IProgressUpdate.displayProgressMessage("Saving level");
         }
 
         saveLevel();
 
         if (par2IProgressUpdate != null)
         {
-            par2IProgressUpdate.displayLoadingString("Saving chunks");
+            par2IProgressUpdate.resetProgresAndWorkingMessage("Saving chunks");
         }
 
         chunkProvider.saveChunks(par1, par2IProgressUpdate);
@@ -520,9 +520,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         {
             Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
             boolean flag = chunk.setBlockID(par1 & 0xf, par2, par3 & 0xf, par4);
-            field_72984_F.startSection("checkLight");
+            theProfiler.startSection("checkLight");
             updateAllLightTypes(par1, par2, par3);
-            field_72984_F.endSection();
+            theProfiler.endSection();
             return flag;
         }
     }
@@ -684,7 +684,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             par3 = i;
         }
 
-        if (!worldProvider.hasNoSky)
+        if (!provider.hasNoSky)
         {
             for (int j = par3; j <= par4; j++)
             {
@@ -870,7 +870,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
     {
-        if (worldProvider.hasNoSky && par1EnumSkyBlock == EnumSkyBlock.Sky)
+        if (provider.hasNoSky && par1EnumSkyBlock == EnumSkyBlock.Sky)
         {
             return 0;
         }
@@ -1038,7 +1038,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             i = par4;
         }
 
-        return worldProvider.lightBrightnessTable[i];
+        return provider.lightBrightnessTable[i];
     }
 
     /**
@@ -1047,7 +1047,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public float getLightBrightness(int par1, int par2, int par3)
     {
-        return worldProvider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
+        return provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
     }
 
     /**
@@ -1455,7 +1455,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
                     if (block != null)
                     {
-                        block.func_71871_a(this, k1, i2, l1, par2AxisAlignedBB, collidingBoundingBoxes, par1Entity);
+                        block.addCollidingBlockToList(this, k1, i2, l1, par2AxisAlignedBB, collidingBoundingBoxes, par1Entity);
                     }
                 }
             }
@@ -1583,12 +1583,12 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
-        return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
+        return provider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
     }
 
     public int getMoonPhase(float par1)
     {
-        return worldProvider.getMoonPhase(worldInfo.getWorldTime(), par1);
+        return provider.getMoonPhase(worldInfo.getWorldTime(), par1);
     }
 
     /**
@@ -1652,7 +1652,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     public Vec3 getFogColor(float par1)
     {
         float f = getCelestialAngle(par1);
-        return worldProvider.getFogColor(f, par1);
+        return provider.getFogColor(f, par1);
     }
 
     /**
@@ -2176,7 +2176,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             difficultySetting = 3;
         }
 
-        worldProvider.worldChunkMgr.cleanupCache();
+        provider.worldChunkMgr.cleanupCache();
         updateWeather();
 
         if (isAllPlayersFullyAsleep())
@@ -2196,9 +2196,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             }
         }
 
-        field_72984_F.startSection("mobSpawner");
+        theProfiler.startSection("mobSpawner");
         SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-        field_72984_F.endStartSection("chunkSource");
+        theProfiler.endStartSection("chunkSource");
         chunkProvider.unload100OldestChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
@@ -2211,19 +2211,19 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         if (l1 % (long)autosavePeriod == 0L)
         {
-            field_72984_F.endStartSection("save");
+            theProfiler.endStartSection("save");
             saveWorld(false, null);
         }
 
         worldInfo.setWorldTime(l1);
-        field_72984_F.endStartSection("tickPending");
+        theProfiler.endStartSection("tickPending");
         tickUpdates(false);
-        field_72984_F.endStartSection("tickTiles");
+        theProfiler.endStartSection("tickTiles");
         tickBlocksAndAmbiance();
-        field_72984_F.endStartSection("village");
+        theProfiler.endStartSection("village");
         villageCollectionObj.tick();
         villageSiegeObj.tick();
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     /**
@@ -2247,7 +2247,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     protected void updateWeather()
     {
-        if (worldProvider.hasNoSky)
+        if (provider.hasNoSky)
         {
             return;
         }
@@ -2362,7 +2362,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     protected void func_48461_r()
     {
         activeChunkSet.clear();
-        field_72984_F.startSection("buildList");
+        theProfiler.startSection("buildList");
 
         for (int i = 0; i < playerEntities.size(); i++)
         {
@@ -2380,14 +2380,14 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             }
         }
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
 
         if (ambientTickCountdown > 0)
         {
             ambientTickCountdown--;
         }
 
-        field_72984_F.startSection("playerCheckLight");
+        theProfiler.startSection("playerCheckLight");
 
         if (!playerEntities.isEmpty())
         {
@@ -2399,14 +2399,14 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             updateAllLightTypes(l, j1, k1);
         }
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     protected void func_48458_a(int par1, int par2, Chunk par3Chunk)
     {
-        field_72984_F.endStartSection("tickChunk");
+        theProfiler.endStartSection("tickChunk");
         par3Chunk.updateSkylight();
-        field_72984_F.endStartSection("moodSound");
+        theProfiler.endStartSection("moodSound");
 
         if (ambientTickCountdown == 0)
         {
@@ -2431,7 +2431,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             }
         }
 
-        field_72984_F.endStartSection("checkLight");
+        theProfiler.endStartSection("checkLight");
         par3Chunk.enqueueRelightChecks();
     }
 
@@ -2445,15 +2445,15 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         int i = 0;
         int j = 0;
 
-        for (Iterator iterator = activeChunkSet.iterator(); iterator.hasNext(); field_72984_F.endSection())
+        for (Iterator iterator = activeChunkSet.iterator(); iterator.hasNext(); theProfiler.endSection())
         {
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             int k = chunkcoordintpair.chunkXPos * 16;
             int l = chunkcoordintpair.chunkZPos * 16;
-            field_72984_F.startSection("getChunk");
+            theProfiler.startSection("getChunk");
             Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
             func_48458_a(k, l, chunk);
-            field_72984_F.endStartSection("thunder");
+            theProfiler.endStartSection("thunder");
 
             if (rand.nextInt(0x186a0) == 0 && isRaining() && isThundering())
             {
@@ -2470,7 +2470,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                 }
             }
 
-            field_72984_F.endStartSection("iceandsnow");
+            theProfiler.endStartSection("iceandsnow");
 
             if (rand.nextInt(16) == 0)
             {
@@ -2491,7 +2491,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                 }
             }
 
-            field_72984_F.endStartSection("tickTiles");
+            theProfiler.endStartSection("tickTiles");
             ExtendedBlockStorage aextendedblockstorage[] = chunk.getBlockStorageArray();
             int i2 = aextendedblockstorage.length;
 
@@ -2627,7 +2627,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     public void updateAllLightTypes(int par1, int par2, int par3)
     {
-        if (!worldProvider.hasNoSky)
+        if (!provider.hasNoSky)
         {
             updateLightByType(EnumSkyBlock.Sky, par1, par2, par3);
         }
@@ -2743,7 +2743,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         int i = 0;
         int j = 0;
-        field_72984_F.startSection("getBrightness");
+        theProfiler.startSection("getBrightness");
         int k = getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
         int i1 = 0;
         int k1 = k;
@@ -2851,8 +2851,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             i = 0;
         }
 
-        field_72984_F.endSection();
-        field_72984_F.startSection("tcp < tcc");
+        theProfiler.endSection();
+        theProfiler.startSection("tcp < tcc");
 
         do
         {
@@ -2947,7 +2947,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
         while (true);
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     /**
@@ -3052,7 +3052,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasVoidParticles())
+            if (i1 == 0 && rand.nextInt(8) > k && provider.getWorldHasVoidParticles())
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;
@@ -3349,9 +3349,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     public CrashReport func_72914_a(CrashReport par1CrashReport)
     {
-        par1CrashReport.func_71500_a((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Entities").toString(), new CallableLvl1(this));
-        par1CrashReport.func_71500_a((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Players").toString(), new CallableLvl2(this));
-        par1CrashReport.func_71500_a((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Chunk Stats").toString(), new CallableLvl3(this));
+        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Entities").toString(), new CallableLvl1(this));
+        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Players").toString(), new CallableLvl2(this));
+        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Chunk Stats").toString(), new CallableLvl3(this));
         return par1CrashReport;
     }
 

@@ -22,7 +22,7 @@ public class BlockFence2 extends BlockFence
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         if (bigfences){
-            return AxisAlignedBB.func_72332_a().func_72299_a(par2, par3, par4, par2 + 1, (float)par3 + 1.5F, par4 + 1);
+            return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2, par3, par4, par2 + 1, (float)par3 + 1.5F, par4 + 1);
         }
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }

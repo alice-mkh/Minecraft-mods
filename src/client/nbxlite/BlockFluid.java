@@ -219,7 +219,7 @@ public abstract class BlockFluid extends Block
      */
     private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(0.0D, 0.0D, 0.0D);
+        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
         int i = getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
         for (int j = 0; j < 4; j++)
@@ -491,7 +491,7 @@ public abstract class BlockFluid extends Block
 
             if (k > 0 && k < 8)
             {
-                par1World.func_72980_b((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+                par1World.playSound((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
             }
         }
 
@@ -503,16 +503,16 @@ public abstract class BlockFluid extends Block
                 double d2 = (double)par3 + maxY;
                 double d4 = (float)par4 + par5Random.nextFloat();
                 par1World.spawnParticle("lava", d, d2, d4, 0.0D, 0.0D, 0.0D);
-                par1World.func_72980_b(d, d2, d4, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.playSound(d, d2, d4, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
             }
 
             if (par5Random.nextInt(200) == 0)
             {
-                par1World.func_72980_b(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.playSound(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
             }
         }
 
-        if (par5Random.nextInt(10) == 0 && par1World.func_72797_t(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement())
+        if (par5Random.nextInt(10) == 0 && par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement())
         {
             double d1 = (float)par2 + par5Random.nextFloat();
             double d3 = (double)par3 - 1.05D;
@@ -529,7 +529,10 @@ public abstract class BlockFluid extends Block
         }
     }
 
-    public static double func_72204_a(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material)
+    /**
+     * the sin and cos of this number determine the surface gradient of the flowing block.
+     */
+    public static double getFlowDirection(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material)
     {
         Vec3 vec3 = null;
 

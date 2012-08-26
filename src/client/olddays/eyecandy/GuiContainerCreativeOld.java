@@ -36,9 +36,9 @@ public class GuiContainerCreativeOld extends GuiContainer
      */
     public void updateScreen()
     {
-        if (!mc.field_71442_b.isInCreativeMode())
+        if (!mc.playerController.isInCreativeMode())
         {
-            mc.displayGuiScreen(new GuiInventory(mc.field_71439_g));
+            mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
         }
     }
 
@@ -48,7 +48,7 @@ public class GuiContainerCreativeOld extends GuiContainer
         {
             if (par1Slot.inventory == inventory)
             {
-                InventoryPlayer inventoryplayer = mc.field_71439_g.inventory;
+                InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
                 ItemStack itemstack1 = inventoryplayer.getItemStack();
                 ItemStack itemstack4 = par1Slot.getStack();
 
@@ -95,29 +95,29 @@ public class GuiContainerCreativeOld extends GuiContainer
             }
             else
             {
-                inventorySlots.slotClick(par1Slot.slotNumber, par3, par4, mc.field_71439_g);
+                inventorySlots.slotClick(par1Slot.slotNumber, par3, par4, mc.thePlayer);
                 ItemStack itemstack = inventorySlots.getSlot(par1Slot.slotNumber).getStack();
-                mc.field_71442_b.sendSlotPacket(itemstack, (par1Slot.slotNumber - inventorySlots.inventorySlots.size()) + 9 + 36);
+                mc.playerController.sendSlotPacket(itemstack, (par1Slot.slotNumber - inventorySlots.inventorySlots.size()) + 9 + 36);
             }
         }
         else
         {
-            InventoryPlayer inventoryplayer1 = mc.field_71439_g.inventory;
+            InventoryPlayer inventoryplayer1 = mc.thePlayer.inventory;
 
             if (inventoryplayer1.getItemStack() != null)
             {
                 if (par3 == 0)
                 {
-                    mc.field_71439_g.dropPlayerItem(inventoryplayer1.getItemStack());
-                    mc.field_71442_b.func_78752_a(inventoryplayer1.getItemStack());
+                    mc.thePlayer.dropPlayerItem(inventoryplayer1.getItemStack());
+                    mc.playerController.func_78752_a(inventoryplayer1.getItemStack());
                     inventoryplayer1.setItemStack(null);
                 }
 
                 if (par3 == 1)
                 {
                     ItemStack itemstack3 = inventoryplayer1.getItemStack().splitStack(1);
-                    mc.field_71439_g.dropPlayerItem(itemstack3);
-                    mc.field_71442_b.func_78752_a(itemstack3);
+                    mc.thePlayer.dropPlayerItem(itemstack3);
+                    mc.playerController.func_78752_a(itemstack3);
 
                     if (inventoryplayer1.getItemStack().stackSize == 0)
                     {
@@ -133,9 +133,9 @@ public class GuiContainerCreativeOld extends GuiContainer
      */
     public void initGui()
     {
-        if (!mc.field_71442_b.isInCreativeMode())
+        if (!mc.playerController.isInCreativeMode())
         {
-            mc.displayGuiScreen(new GuiInventory(mc.field_71439_g));
+            mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
         }
         else
         {

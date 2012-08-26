@@ -22,7 +22,7 @@ public class WorldSSP2 extends WorldSSP
      */
     public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
-        return worldProvider.worldChunkMgr.getBiomeGenAt(par1, par2);
+        return provider.worldChunkMgr.getBiomeGenAt(par1, par2);
     }
 
     protected void func_73047_i()
@@ -123,7 +123,7 @@ public class WorldSSP2 extends WorldSSP
             worldInfo.setWorldName(par2Str);
         }
 
-        worldProvider.registerWorld(this);
+        provider.registerWorld(this);
         chunkProvider = createChunkProvider();
 
         if (flag)
@@ -172,19 +172,19 @@ public class WorldSSP2 extends WorldSSP
                     ODNBXlite.IndevWorld = null;
                     ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
                 }else{
-                    mod_OldDays.getMinecraftInstance().loadingScreen.printText("Importing Indev level");
-                    mod_OldDays.getMinecraftInstance().loadingScreen.displayLoadingString("Loading blocks..");
+                    mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage("Importing Indev level");
+                    mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Loading blocks..");
                     for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
-                        mod_OldDays.getMinecraftInstance().loadingScreen.setLoadingProgress((x / ((ODNBXlite.IndevWidthX/16)+2)) * 100);
+                        mod_OldDays.getMinecraft().loadingScreen.setLoadingProgress((x / ((ODNBXlite.IndevWidthX/16)+2)) * 100);
                         for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
                             chunkProvider.provideChunk(x,z);
                         }
                     }
                     worldInfo.setWorldTime(ODNBXlite.mclevelimporter.timeofday);
                     List tentlist = ODNBXlite.mclevelimporter.tileentities;
-                    mod_OldDays.getMinecraftInstance().loadingScreen.displayLoadingString("Fixing blocks..");
+                    mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Fixing blocks..");
                     for (int x = 0; x < ODNBXlite.IndevWidthX; x++){
-                        mod_OldDays.getMinecraftInstance().loadingScreen.setLoadingProgress((int)(((float)x / (float)ODNBXlite.IndevWidthX) * 100F));
+                        mod_OldDays.getMinecraft().loadingScreen.setLoadingProgress((int)(((float)x / (float)ODNBXlite.IndevWidthX) * 100F));
                         for (int y = 0; y < ODNBXlite.IndevHeight; y++){
                             for (int z = 0; z < ODNBXlite.IndevWidthZ; z++){
                                 int id = getBlockId(x, y, z);
@@ -209,7 +209,7 @@ public class WorldSSP2 extends WorldSSP
                             }
                         }
                     }
-                    mod_OldDays.getMinecraftInstance().loadingScreen.displayLoadingString("Loading entities..");
+                    mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Loading entities..");
                     List entlist = ODNBXlite.mclevelimporter.entities;
                     for (int i = 0; i < entlist.size(); i++){
                         Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
@@ -245,7 +245,7 @@ public class WorldSSP2 extends WorldSSP
                 worldInfo.mapType = 0;
             }
             generateSpawnPoint();
-            if (par3WorldSettings.func_77167_c()){
+            if (par3WorldSettings.isBonusChestEnabled()){
                 func_73047_i();
             }
         } else
@@ -290,7 +290,7 @@ public class WorldSSP2 extends WorldSSP
                 worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
                 worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
             }
-            worldProvider.registerWorld(this);
+            provider.registerWorld(this);
         }
         ODNBXlite.refreshProperties();
         ODNBXlite.setTextureFX();
@@ -344,7 +344,7 @@ public class WorldSSP2 extends WorldSSP
                 int l = 0;
                 do
                 {
-                    if(worldProvider.canCoordinateBeSpawn(i, k))
+                    if(provider.canCoordinateBeSpawn(i, k))
                     {
                         break;
                     }
@@ -354,9 +354,9 @@ public class WorldSSP2 extends WorldSSP
                 worldInfo.setSpawnPosition(i, j, k);
                 findingSpawnPoint = false;
             }else{
-                if (!worldProvider.canRespawnHere())
+                if (!provider.canRespawnHere())
                 {
-                    worldInfo.setSpawnPosition(0, worldProvider.getAverageGroundLevel(), 0);
+                    worldInfo.setSpawnPosition(0, provider.getAverageGroundLevel(), 0);
                     return;
                 }
                 findingSpawnPoint = true;
@@ -365,7 +365,7 @@ public class WorldSSP2 extends WorldSSP
                 Random random = new Random(getSeed());
                 ChunkPosition chunkposition = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
                 int i = 0;
-                int j = worldProvider.getAverageGroundLevel();
+                int j = provider.getAverageGroundLevel();
                 int k = 0;
                 if (chunkposition != null)
                 {
@@ -379,7 +379,7 @@ public class WorldSSP2 extends WorldSSP
                 int l = 0;
                 do
                 {
-                    if (worldProvider.canCoordinateBeSpawn(i, k))
+                    if (provider.canCoordinateBeSpawn(i, k))
                     {
                         break;
                     }
@@ -407,7 +407,7 @@ public class WorldSSP2 extends WorldSSP
             int i = 0;
             byte byte0 = 64;
             int j;
-            for(j = 0; !worldProvider.canCoordinateBeSpawn(i, j); j += rand.nextInt(64) - rand.nextInt(64)){
+            for(j = 0; !provider.canCoordinateBeSpawn(i, j); j += rand.nextInt(64) - rand.nextInt(64)){
                 i += rand.nextInt(64) - rand.nextInt(64);
             }
             worldInfo.setSpawnPosition(i, byte0, j);
@@ -420,7 +420,7 @@ public class WorldSSP2 extends WorldSSP
      */
     public ChunkCoordinates getEntrancePortalLocation()
     {
-        return worldProvider.getEntrancePortalLocation();
+        return provider.getEntrancePortalLocation();
     }
 
     /**
@@ -527,14 +527,14 @@ public class WorldSSP2 extends WorldSSP
 
         if (par2IProgressUpdate != null)
         {
-            par2IProgressUpdate.displaySavingString("Saving level");
+            par2IProgressUpdate.displayProgressMessage("Saving level");
         }
 
         saveLevel();
 
         if (par2IProgressUpdate != null)
         {
-            par2IProgressUpdate.displayLoadingString("Saving chunks");
+            par2IProgressUpdate.resetProgresAndWorkingMessage("Saving chunks");
         }
 
         chunkProvider.saveChunks(par1, par2IProgressUpdate);
@@ -560,7 +560,7 @@ public class WorldSSP2 extends WorldSSP
     }
 
     private boolean isBounds(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.worldType==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
                     return true;
@@ -576,7 +576,7 @@ public class WorldSSP2 extends WorldSSP
     }
 
     private boolean isBounds2(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldProvider==null || worldProvider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.worldType==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
                 if(x==0 || x==ODNBXlite.IndevWidthX-1 || z==0 || z==ODNBXlite.IndevWidthZ-1){
                     if(y<ODNBXlite.SurrWaterHeight && y>=ODNBXlite.SurrGroundHeight){
@@ -735,12 +735,12 @@ public class WorldSSP2 extends WorldSSP
         return chunkProvider.provideChunk(par1, par2);
     }
 
-    public boolean func_72930_a(int par1, int par2, int par3, int par4, int par5, boolean par6)
+    public boolean setBlockAndMetadataWithUpdate(int par1, int par2, int par3, int par4, int par5, boolean par6)
     {
         if (isBounds(par1, par2, par3)){
             return false;
         }
-        return super.func_72930_a(par1, par2, par3, par4, par5, par6);
+        return super.setBlockAndMetadataWithUpdate(par1, par2, par3, par4, par5, par6);
     }
 
     /**
@@ -772,9 +772,9 @@ public class WorldSSP2 extends WorldSSP
         {
             Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
             boolean flag = chunk.setBlockID(par1 & 0xf, par2, par3 & 0xf, par4);
-            field_72984_F.startSection("checkLight");
+            theProfiler.startSection("checkLight");
             updateAllLightTypes(par1, par2, par3);
-            field_72984_F.endSection();
+            theProfiler.endSection();
             return flag;
         }
     }
@@ -936,7 +936,7 @@ public class WorldSSP2 extends WorldSSP
             par3 = i;
         }
 
-        if (!worldProvider.hasNoSky)
+        if (!provider.hasNoSky)
         {
             for (int j = par3; j <= par4; j++)
             {
@@ -1028,7 +1028,7 @@ public class WorldSSP2 extends WorldSSP
         {
             int i = getBlockId(par1, par2, par3);
 
-            if (i == Block.field_72079_ak.blockID || i == Block.field_72092_bO.blockID || i == Block.tilledField.blockID || i == Block.stairCompactCobblestone.blockID || i == Block.stairCompactPlanks.blockID)
+            if (i == Block.stoneSingleSlab.blockID || i == Block.woodSingleSlab.blockID || i == Block.tilledField.blockID || i == Block.stairCompactCobblestone.blockID || i == Block.stairCompactPlanks.blockID)
             {
                 int j = getBlockLightValue_do(par1, par2 + 1, par3, false);
                 int k = getBlockLightValue_do(par1 + 1, par2, par3, false);
@@ -1103,7 +1103,7 @@ public class WorldSSP2 extends WorldSSP
      */
     public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
     {
-        if (worldProvider.hasNoSky && par1EnumSkyBlock == EnumSkyBlock.Sky)
+        if (provider.hasNoSky && par1EnumSkyBlock == EnumSkyBlock.Sky)
         {
             return 0;
         }
@@ -1274,7 +1274,7 @@ public class WorldSSP2 extends WorldSSP
             i = par4;
         }
 
-        return worldProvider.lightBrightnessTable[i];
+        return provider.lightBrightnessTable[i];
     }
 
     /**
@@ -1283,7 +1283,7 @@ public class WorldSSP2 extends WorldSSP
      */
     public float getLightBrightness(int par1, int par2, int par3)
     {
-        return worldProvider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
+        return provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
     }
 
     /**
@@ -1691,7 +1691,7 @@ public class WorldSSP2 extends WorldSSP
 
                     if (block != null)
                     {
-                        block.func_71871_a(this, k1, i2, l1, par2AxisAlignedBB, collidingBoundingBoxes, par1Entity);
+                        block.addCollidingBlockToList(this, k1, i2, l1, par2AxisAlignedBB, collidingBoundingBoxes, par1Entity);
                     }
                 }
             }
@@ -1732,7 +1732,7 @@ public class WorldSSP2 extends WorldSSP
             brightness = ODNBXlite.SkyBrightness;
         }
         float f1 = (float)brightness;
-        if(f1 == 16 || (worldProvider instanceof WorldProviderEnd) || ODNBXlite.DayNight==0)
+        if(f1 == 16 || (provider instanceof WorldProviderEnd) || ODNBXlite.DayNight==0)
         {
             f1 = 15F;
         }
@@ -1802,9 +1802,9 @@ public class WorldSSP2 extends WorldSSP
             float f7;
             int k;
             if (ODNBXlite.SkyColor==0){
-                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES || worldProvider.worldType != 0){
+                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES || provider.worldType != 0){
                     BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                    if (worldProvider.worldType==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
+                    if (provider.worldType==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                         f7 = 0.2146759F;
                     }else{
                         f7 = biomegenbase.getFloatTemperature();
@@ -1855,7 +1855,7 @@ public class WorldSSP2 extends WorldSSP
                 f10 = f10 * (1.0F - f17) + 0.8F * f17;
                 f11 = f11 * (1.0F - f17) + 1.0F * f17;
             }
-            return Vec3.func_72437_a().func_72345_a(f9, f10, f11);
+            return Vec3.getVec3Pool().getVecFromPool(f9, f10, f11);
         }
         float f2 = getCelestialAngle(f);
         float f4 = MathHelper.cos(f2 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -1873,7 +1873,7 @@ public class WorldSSP2 extends WorldSSP
         f5 *= f4;
         f6 *= f4;
         f8 *= f4;
-        return Vec3.func_72437_a().func_72345_a(f5, f6, f8);
+        return Vec3.getVec3Pool().getVecFromPool(f5, f6, f8);
     }
 
     /**
@@ -1881,7 +1881,7 @@ public class WorldSSP2 extends WorldSSP
      */
     public float getCelestialAngle(float par1)
     {
-        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && worldProvider.worldType==0){
+        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.worldType==0){
             return 0.0F;
         }
         if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
@@ -1890,12 +1890,12 @@ public class WorldSSP2 extends WorldSSP
         if(ODNBXlite.SkyBrightness == 16 || (ODNBXlite.SkyBrightness == -1 && ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme) == 16)){
             return 1.0F;
         }
-        return worldProvider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
+        return provider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
     }
 
     public int getMoonPhase(float par1)
     {
-        return worldProvider.getMoonPhase(worldInfo.getWorldTime(), par1);
+        return provider.getMoonPhase(worldInfo.getWorldTime(), par1);
     }
 
     /**
@@ -1956,7 +1956,7 @@ public class WorldSSP2 extends WorldSSP
             f4 = f4 * f10 + f9 * (1.0F - f10);
         }
 
-        return Vec3.func_72437_a().func_72345_a(f2, f3, f4);
+        return Vec3.getVec3Pool().getVecFromPool(f2, f3, f4);
     }
 
     /**
@@ -1965,12 +1965,12 @@ public class WorldSSP2 extends WorldSSP
     public Vec3 getFogColor(float par1)
     {
         int fog = 0;
-        if (ODNBXlite.FogColor == 0 && worldProvider.worldType == 0){
+        if (ODNBXlite.FogColor == 0 && provider.worldType == 0){
             fog = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
         }else{
             fog = ODNBXlite.FogColor;
         }
-        if(fog != 0L && worldProvider.worldType == 0){
+        if(fog != 0L && provider.worldType == 0){
             float f1 = getCelestialAngle(par1);
             float f2 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
             if(f2 < 0.0F)
@@ -1987,10 +1987,10 @@ public class WorldSSP2 extends WorldSSP
             f3 *= f2 * 0.94F + 0.06F;
             f4 *= f2 * 0.94F + 0.06F;
             f5 *= f2 * 0.91F + 0.09F;
-            return Vec3.func_72437_a().func_72345_a(f3, f4, f5);
+            return Vec3.getVec3Pool().getVecFromPool(f3, f4, f5);
         }
         float f = getCelestialAngle(par1);
-        return worldProvider.getFogColor(f, par1);
+        return provider.getFogColor(f, par1);
     }
 
     /**
@@ -2061,7 +2061,7 @@ public class WorldSSP2 extends WorldSSP
             }
         }
 
-        field_72984_F.startSection("chunkCheck");
+        theProfiler.startSection("chunkCheck");
 
         if (Double.isNaN(par1Entity.posX) || Double.isInfinite(par1Entity.posX))
         {
@@ -2110,7 +2110,7 @@ public class WorldSSP2 extends WorldSSP
             }
         }
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
 
         if (par2 && par1Entity.addedToChunk && par1Entity.riddenByEntity != null)
         {
@@ -2550,7 +2550,7 @@ public class WorldSSP2 extends WorldSSP
             difficultySetting = 3;
         }
 
-        worldProvider.worldChunkMgr.cleanupCache();
+        provider.worldChunkMgr.cleanupCache();
         if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
@@ -2576,11 +2576,11 @@ public class WorldSSP2 extends WorldSSP
             }
         }
 
-        field_72984_F.startSection("mobSpawner");
-        if (worldProvider.worldType!=1){
+        theProfiler.startSection("mobSpawner");
+        if (provider.worldType!=1){
             if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
                 SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || worldProvider.worldType!=0){
+            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.worldType!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
             } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
                 animalSpawner.func_1150_a(this);
@@ -2590,7 +2590,7 @@ public class WorldSSP2 extends WorldSSP
         }else{
             SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
         }
-        field_72984_F.endStartSection("chunkSource");
+        theProfiler.endStartSection("chunkSource");
         chunkProvider.unload100OldestChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
@@ -2603,19 +2603,19 @@ public class WorldSSP2 extends WorldSSP
 
         if (l1 % (long)autosavePeriod == 0L)
         {
-            field_72984_F.endStartSection("save");
+            theProfiler.endStartSection("save");
             saveWorld(false, null);
         }
 
         worldInfo.setWorldTime(l1);
-        field_72984_F.endStartSection("tickPending");
+        theProfiler.endStartSection("tickPending");
         tickUpdates(false);
-        field_72984_F.endStartSection("tickTiles");
+        theProfiler.endStartSection("tickTiles");
         tickBlocksAndAmbiance();
-        field_72984_F.endStartSection("village");
+        theProfiler.endStartSection("village");
         villageCollectionObj.tick();
         villageSiegeObj.tick();
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     /**
@@ -2639,7 +2639,7 @@ public class WorldSSP2 extends WorldSSP
      */
     protected void updateWeather()
     {
-        if (worldProvider.hasNoSky)
+        if (provider.hasNoSky)
         {
             return;
         }
@@ -2754,7 +2754,7 @@ public class WorldSSP2 extends WorldSSP
     protected void func_48461_r()
     {
         activeChunkSet.clear();
-        field_72984_F.startSection("buildList");
+        theProfiler.startSection("buildList");
 
         for (int i = 0; i < playerEntities.size(); i++)
         {
@@ -2772,14 +2772,14 @@ public class WorldSSP2 extends WorldSSP
             }
         }
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
 
         if (ambientTickCountdown > 0)
         {
             ambientTickCountdown--;
         }
 
-        field_72984_F.startSection("playerCheckLight");
+        theProfiler.startSection("playerCheckLight");
 
         if (!playerEntities.isEmpty())
         {
@@ -2791,14 +2791,14 @@ public class WorldSSP2 extends WorldSSP
             updateAllLightTypes(l, j1, k1);
         }
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     protected void func_48458_a(int par1, int par2, Chunk par3Chunk)
     {
-        field_72984_F.endStartSection("tickChunk");
+        theProfiler.endStartSection("tickChunk");
         par3Chunk.updateSkylight();
-        field_72984_F.endStartSection("moodSound");
+        theProfiler.endStartSection("moodSound");
 
         if (ambientTickCountdown == 0)
         {
@@ -2823,7 +2823,7 @@ public class WorldSSP2 extends WorldSSP
             }
         }
 
-        field_72984_F.endStartSection("checkLight");
+        theProfiler.endStartSection("checkLight");
         par3Chunk.enqueueRelightChecks();
     }
 
@@ -2837,15 +2837,15 @@ public class WorldSSP2 extends WorldSSP
         int i = 0;
         int j = 0;
 
-        for (Iterator iterator = activeChunkSet.iterator(); iterator.hasNext(); field_72984_F.endSection())
+        for (Iterator iterator = activeChunkSet.iterator(); iterator.hasNext(); theProfiler.endSection())
         {
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             int k = chunkcoordintpair.chunkXPos * 16;
             int l = chunkcoordintpair.chunkZPos * 16;
-            field_72984_F.startSection("getChunk");
+            theProfiler.startSection("getChunk");
             Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
             func_48458_a(k, l, chunk);
-            field_72984_F.endStartSection("thunder");
+            theProfiler.endStartSection("thunder");
 
             if (rand.nextInt(0x186a0) == 0 && isRaining() && isThundering())
             {
@@ -2862,8 +2862,8 @@ public class WorldSSP2 extends WorldSSP
                 }
             }
 
-            field_72984_F.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && snowCovered && ODNBXlite.SnowCovered && worldProvider.worldType==0)
+            theProfiler.endStartSection("iceandsnow");
+            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && snowCovered && ODNBXlite.SnowCovered && provider.worldType==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
@@ -2920,7 +2920,7 @@ public class WorldSSP2 extends WorldSSP
                     }
                 }
             }
-            field_72984_F.endStartSection("tickTiles");
+            theProfiler.endStartSection("tickTiles");
             ExtendedBlockStorage aextendedblockstorage[] = chunk.getBlockStorageArray();
             int i2 = aextendedblockstorage.length;
 
@@ -3056,7 +3056,7 @@ public class WorldSSP2 extends WorldSSP
 
     public void updateAllLightTypes(int par1, int par2, int par3)
     {
-        if (!worldProvider.hasNoSky)
+        if (!provider.hasNoSky)
         {
             updateLightByType(EnumSkyBlock.Sky, par1, par2, par3);
         }
@@ -3192,7 +3192,7 @@ public class WorldSSP2 extends WorldSSP
 
         int i = 0;
         int j = 0;
-        field_72984_F.startSection("getBrightness");
+        theProfiler.startSection("getBrightness");
         int k = getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
         int i1 = 0;
         int k1 = k;
@@ -3300,8 +3300,8 @@ public class WorldSSP2 extends WorldSSP
             i = 0;
         }
 
-        field_72984_F.endSection();
-        field_72984_F.startSection("tcp < tcc");
+        theProfiler.endSection();
+        theProfiler.startSection("tcp < tcc");
 
         do
         {
@@ -3396,7 +3396,7 @@ public class WorldSSP2 extends WorldSSP
         }
         while (true);
 
-        field_72984_F.endSection();
+        theProfiler.endSection();
     }
 
     /**
@@ -3415,7 +3415,7 @@ public class WorldSSP2 extends WorldSSP
             int l = (par3 + rand.nextInt(byte0)) - rand.nextInt(byte0);
             int i1 = getBlockId(j, k, l);
 
-            if (i1 == 0 && rand.nextInt(8) > k && worldProvider.getWorldHasVoidParticles() && ODNBXlite.VoidFog==0)
+            if (i1 == 0 && rand.nextInt(8) > k && provider.getWorldHasVoidParticles() && ODNBXlite.VoidFog==0)
             {
                 spawnParticle("depthsuspend", (float)j + rand.nextFloat(), (float)k + rand.nextFloat(), (float)l + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
                 continue;

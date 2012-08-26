@@ -135,7 +135,7 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
         }
     }
 
-    public int func_73152_e()
+    public int getLoadedChunkCount()
     {
         return 0;
     }

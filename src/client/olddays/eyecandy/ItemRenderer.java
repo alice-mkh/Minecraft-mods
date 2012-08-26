@@ -103,14 +103,14 @@ public class ItemRenderer
                 GL11.glPushMatrix();
                 float f8 = 0.125F;
                 GL11.glScalef(f8, f8, f8);
-                float f9 = ((float)(Minecraft.func_71386_F() % 3000L) / 3000F) * 8F;
+                float f9 = ((float)(Minecraft.getSystemTime() % 3000L) / 3000F) * 8F;
                 GL11.glTranslatef(f9, 0.0F, 0.0F);
                 GL11.glRotatef(-50F, 0.0F, 0.0F, 1.0F);
                 renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F);
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
                 GL11.glScalef(f8, f8, f8);
-                f9 = ((float)(Minecraft.func_71386_F() % 4873L) / 4873F) * 8F;
+                f9 = ((float)(Minecraft.getSystemTime() % 4873L) / 4873F) * 8F;
                 GL11.glTranslatef(-f9, 0.0F, 0.0F);
                 GL11.glRotatef(10F, 0.0F, 0.0F, 1.0F);
                 renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F);
@@ -232,7 +232,7 @@ public class ItemRenderer
     public void renderItemInFirstPerson(float par1)
     {
         float f = prevEquippedProgress + (equippedProgress - prevEquippedProgress) * par1;
-        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.thePlayer;
         float f1 = ((EntityPlayer)(entityclientplayermp)).prevRotationPitch + (((EntityPlayer)(entityclientplayermp)).rotationPitch - ((EntityPlayer)(entityclientplayermp)).prevRotationPitch) * par1;
         GL11.glPushMatrix();
         GL11.glRotatef(f1, 1.0F, 0.0F, 0.0F);
@@ -252,9 +252,9 @@ public class ItemRenderer
         }
 
         ItemStack itemstack = itemToRender;
-        float f3 = mc.field_71441_e.getLightBrightness(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ));
+        float f3 = mc.theWorld.getLightBrightness(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ));
         f3 = 1.0F;
-        int i = mc.field_71441_e.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ), 0);
+        int i = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ), 0);
         int k = i % 0x10000;
         int l = i / 0x10000;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)l / 1.0F);
@@ -298,7 +298,7 @@ public class ItemRenderer
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(f9 * -85F, 0.0F, 0.0F, 1.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.field_71439_g.skinUrl, mc.field_71439_g.getTexture()));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.thePlayer.skinUrl, mc.thePlayer.getTexture()));
 
             for (f14 = 0; f14 < 2; f14++)
             {
@@ -309,7 +309,7 @@ public class ItemRenderer
                 GL11.glRotatef(-90F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(59F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(-65 * f20, 0.0F, 1.0F, 0.0F);
-                Render render = RenderManager.instance.getEntityRenderObject(mc.field_71439_g);
+                Render render = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
                 RenderPlayer renderplayer = (RenderPlayer)render;
                 float f30 = 1.0F;
                 GL11.glScalef(f30, f30, f30);
@@ -340,8 +340,8 @@ public class ItemRenderer
             tessellator.addVertexWithUV(128 + byte0, 0 - byte0, 0.0D, 1.0D, 0.0D);
             tessellator.addVertexWithUV(0 - byte0, 0 - byte0, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
-            MapData mapdata = Item.map.getMapData(itemstack, mc.field_71441_e);
-            mapItemRenderer.renderMap(mc.field_71439_g, mc.renderEngine, mapdata);
+            MapData mapdata = Item.map.getMapData(itemstack, mc.theWorld);
+            mapItemRenderer.renderMap(mc.thePlayer, mc.renderEngine, mapdata);
             GL11.glPopMatrix();
         }
         else if (itemstack != null)
@@ -482,14 +482,14 @@ public class ItemRenderer
             f24 = MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI);
             GL11.glRotatef(f24 * 70F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-f18 * 20F, 0.0F, 0.0F, 1.0F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.field_71439_g.skinUrl, mc.field_71439_g.getTexture()));
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.thePlayer.skinUrl, mc.thePlayer.getTexture()));
             GL11.glTranslatef(-1F, 3.6F, 3.5F);
             GL11.glRotatef(120F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-135F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(5.6F, 0.0F, 0.0F);
-            Render render1 = RenderManager.instance.getEntityRenderObject(mc.field_71439_g);
+            Render render1 = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
             RenderPlayer renderplayer1 = (RenderPlayer)render1;
             float f34 = 1.0F;
             GL11.glScalef(f34, f34, f34);
@@ -514,23 +514,23 @@ public class ItemRenderer
     {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-        if (mc.field_71439_g.isBurning())
+        if (mc.thePlayer.isBurning())
         {
             int i = mc.renderEngine.getTexture("/terrain.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, i);
             renderFireInFirstPerson(par1);
         }
 
-        if (mc.field_71439_g.isEntityInsideOpaqueBlock())
+        if (mc.thePlayer.isEntityInsideOpaqueBlock())
         {
-            int j = MathHelper.floor_double(mc.field_71439_g.posX);
-            int l = MathHelper.floor_double(mc.field_71439_g.posY);
-            int i1 = MathHelper.floor_double(mc.field_71439_g.posZ);
+            int j = MathHelper.floor_double(mc.thePlayer.posX);
+            int l = MathHelper.floor_double(mc.thePlayer.posY);
+            int i1 = MathHelper.floor_double(mc.thePlayer.posZ);
             int j1 = mc.renderEngine.getTexture("/terrain.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, j1);
-            int k1 = mc.field_71441_e.getBlockId(j, l, i1);
+            int k1 = mc.theWorld.getBlockId(j, l, i1);
 
-            if (mc.field_71441_e.isBlockNormalCube(j, l, i1))
+            if (mc.theWorld.isBlockNormalCube(j, l, i1))
             {
                 renderInsideOfBlock(par1, Block.blocksList[k1].getBlockTextureFromSide(2));
             }
@@ -538,16 +538,16 @@ public class ItemRenderer
             {
                 for (int l1 = 0; l1 < 8; l1++)
                 {
-                    float f = ((float)((l1 >> 0) % 2) - 0.5F) * mc.field_71439_g.width * 0.9F;
-                    float f1 = ((float)((l1 >> 1) % 2) - 0.5F) * mc.field_71439_g.height * 0.2F;
-                    float f2 = ((float)((l1 >> 2) % 2) - 0.5F) * mc.field_71439_g.width * 0.9F;
+                    float f = ((float)((l1 >> 0) % 2) - 0.5F) * mc.thePlayer.width * 0.9F;
+                    float f1 = ((float)((l1 >> 1) % 2) - 0.5F) * mc.thePlayer.height * 0.2F;
+                    float f2 = ((float)((l1 >> 2) % 2) - 0.5F) * mc.thePlayer.width * 0.9F;
                     int i2 = MathHelper.floor_float((float)j + f);
                     int j2 = MathHelper.floor_float((float)l + f1);
                     int k2 = MathHelper.floor_float((float)i1 + f2);
 
-                    if (mc.field_71441_e.isBlockNormalCube(i2, j2, k2))
+                    if (mc.theWorld.isBlockNormalCube(i2, j2, k2))
                     {
-                        k1 = mc.field_71441_e.getBlockId(i2, j2, k2);
+                        k1 = mc.theWorld.getBlockId(i2, j2, k2);
                     }
                 }
             }
@@ -558,7 +558,7 @@ public class ItemRenderer
             }
         }
 
-        if (mc.field_71439_g.isInsideOfMaterial(Material.water))
+        if (mc.thePlayer.isInsideOfMaterial(Material.water))
         {
             int k = mc.renderEngine.getTexture("/misc/water.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, k);
@@ -574,7 +574,7 @@ public class ItemRenderer
     private void renderInsideOfBlock(float par1, int par2)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f = mc.field_71439_g.getBrightness(par1);
+        float f = mc.thePlayer.getBrightness(par1);
         f = 0.1F;
         GL11.glColor4f(f, f, f, 0.5F);
         GL11.glPushMatrix();
@@ -605,7 +605,7 @@ public class ItemRenderer
     private void renderWarpedTextureOverlay(float par1)
     {
         Tessellator tessellator = Tessellator.instance;
-        float f = mc.field_71439_g.getBrightness(par1);
+        float f = mc.thePlayer.getBrightness(par1);
         GL11.glColor4f(f, f, f, 0.5F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -616,8 +616,8 @@ public class ItemRenderer
         float f4 = -1F;
         float f5 = 1.0F;
         float f6 = -0.5F;
-        float f7 = -mc.field_71439_g.rotationYaw / 64F;
-        float f8 = mc.field_71439_g.rotationPitch / 64F;
+        float f7 = -mc.thePlayer.rotationYaw / 64F;
+        float f8 = mc.thePlayer.rotationPitch / 64F;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(f2, f4, f6, f1 + f7, f1 + f8);
         tessellator.addVertexWithUV(f3, f4, f6, 0.0F + f7, f1 + f8);
@@ -673,7 +673,7 @@ public class ItemRenderer
     public void updateEquippedItem()
     {
         prevEquippedProgress = equippedProgress;
-        EntityClientPlayerMP entityclientplayermp = mc.field_71439_g;
+        EntityClientPlayerMP entityclientplayermp = mc.thePlayer;
         ItemStack itemstack = ((EntityPlayer)(entityclientplayermp)).inventory.getCurrentItem();
         boolean flag = equippedItemSlot == ((EntityPlayer)(entityclientplayermp)).inventory.currentItem && itemstack == itemToRender;
 

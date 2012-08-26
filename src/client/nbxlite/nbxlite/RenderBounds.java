@@ -185,7 +185,7 @@ public class RenderBounds{
         }
         mc = m;
         renderEngine = mc.renderEngine;
-        worldObj = mc.field_71441_e;
+        worldObj = mc.theWorld;
         if (imageData == null){
             try{
                 imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 4));

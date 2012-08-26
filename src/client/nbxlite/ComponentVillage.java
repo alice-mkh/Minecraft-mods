@@ -76,7 +76,7 @@ abstract class ComponentVillage extends StructureComponent
             {
                 if (par2StructureBoundingBox.isVecInside(l, 64, k))
                 {
-                    i += Math.max(par1World.getTopSolidOrLiquidBlock(l, k), ODNBXlite.lowerVillages() ? 63 : par1World.worldProvider.getAverageGroundLevel());
+                    i += Math.max(par1World.getTopSolidOrLiquidBlock(l, k), ODNBXlite.lowerVillages() ? 63 : par1World.provider.getAverageGroundLevel());
                     j++;
                 }
             }
@@ -167,12 +167,12 @@ abstract class ComponentVillage extends StructureComponent
 
             if (par1 == Block.stairCompactPlanks.blockID)
             {
-                return Block.field_72088_bQ.blockID;
+                return Block.stairsSandStone.blockID;
             }
 
             if (par1 == Block.stairCompactCobblestone.blockID)
             {
-                return Block.field_72088_bQ.blockID;
+                return Block.stairsSandStone.blockID;
             }
 
             if (par1 == Block.gravel.blockID)

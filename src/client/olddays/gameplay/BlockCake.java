@@ -44,7 +44,7 @@ public class BlockCake extends Block
         float f = 0.0625F;
         float f1 = (float)(1 + i * 2) / 16F;
         float f2 = 0.5F;
-        return AxisAlignedBB.func_72332_a().func_72299_a((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, ((float)par3 + f2) - f, (float)(par4 + 1) - f);
+        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, ((float)par3 + f2) - f, (float)(par4 + 1) - f);
     }
 
     /**
@@ -56,7 +56,7 @@ public class BlockCake extends Block
         float f = 0.0625F;
         float f1 = (float)(1 + i * 2) / 16F;
         float f2 = 0.5F;
-        return AxisAlignedBB.func_72332_a().func_72299_a((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, (float)par3 + f2, (float)(par4 + 1) - f);
+        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((float)par2 + f1, par3, (float)par4 + f, (float)(par2 + 1) - f, (float)par3 + f2, (float)(par4 + 1) - f);
     }
 
     /**
@@ -121,7 +121,10 @@ public class BlockCake extends Block
         return false;
     }
 
-    public boolean func_71903_a(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    /**
+     * Called upon block activation (right click on the block.)
+     */
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         eatCakeSlice(par1World, par2, par3, par4, par5EntityPlayer);
         return true;
@@ -224,7 +227,10 @@ public class BlockCake extends Block
         return 0;
     }
 
-    public int func_71922_a(World par1World, int par2, int par3, int par4)
+    /**
+     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+     */
+    public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.cake.shiftedIndex;
     }

@@ -55,8 +55,8 @@ public class OldDaysProperty{
         if (!allowedInFallback && mod_OldDays.texman.fallbacktex){
             return 2;
         }
-        if (!allowedInSMP && mod_OldDays.getMinecraftInstance().field_71441_e!=null){
-            if (mod_OldDays.getMinecraftInstance().field_71441_e.isRemote){
+        if (!allowedInSMP && mod_OldDays.getMinecraft().theWorld!=null){
+            if (mod_OldDays.getMinecraft().theWorld.isRemote){
                 return 3;
             }
         }

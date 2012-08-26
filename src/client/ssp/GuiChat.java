@@ -63,7 +63,7 @@ public class GuiChat extends GuiScreen
     public void initGui()
     {
         Keyboard.enableRepeatEvents(true);
-        sentHistoryCursor = mc.ingameGUI.func_73827_b().func_73756_b().size();
+        sentHistoryCursor = mc.ingameGUI.getChatGUI().func_73756_b().size();
         inputField = new GuiTextField(fontRenderer, 4, height - 12, width - 4, 12);
         inputField.setMaxStringLength(100);
         inputField.setEnableBackgroundDrawing(false);
@@ -78,7 +78,7 @@ public class GuiChat extends GuiScreen
     public void onGuiClosed()
     {
         Keyboard.enableRepeatEvents(false);
-        mc.ingameGUI.func_73827_b().func_73764_c();
+        mc.ingameGUI.getChatGUI().func_73764_c();
     }
 
     /**
@@ -115,11 +115,11 @@ public class GuiChat extends GuiScreen
 
             if (s.length() > 0)
             {
-                mc.ingameGUI.func_73827_b().func_73767_b(s);
+                mc.ingameGUI.getChatGUI().func_73767_b(s);
 
                 if (!mc.handleClientCommand(s))
                 {
-                    mc.field_71439_g.sendChatMessage(s);
+                    mc.thePlayer.sendChatMessage(s);
                 }
             }
 
@@ -135,11 +135,11 @@ public class GuiChat extends GuiScreen
         }
         else if (par2 == 201)
         {
-            mc.ingameGUI.func_73827_b().func_73758_b(19);
+            mc.ingameGUI.getChatGUI().func_73758_b(19);
         }
         else if (par2 == 209)
         {
-            mc.ingameGUI.func_73827_b().func_73758_b(-19);
+            mc.ingameGUI.getChatGUI().func_73758_b(-19);
         }
         else
         {
@@ -172,7 +172,7 @@ public class GuiChat extends GuiScreen
                 i *= 7;
             }
 
-            mc.ingameGUI.func_73827_b().func_73758_b(i);
+            mc.ingameGUI.getChatGUI().func_73758_b(i);
         }
     }
 
@@ -181,9 +181,9 @@ public class GuiChat extends GuiScreen
      */
     protected void mouseClicked(int par1, int par2, int par3)
     {
-        if (par3 == 0 && mc.gameSettings.field_74359_p)
+        if (par3 == 0 && mc.gameSettings.chatLinks)
         {
-            ChatClickData chatclickdata = mc.ingameGUI.func_73827_b().func_73766_a(Mouse.getX(), Mouse.getY());
+            ChatClickData chatclickdata = mc.ingameGUI.getChatGUI().func_73766_a(Mouse.getX(), Mouse.getY());
 
             if (chatclickdata != null)
             {
@@ -191,7 +191,7 @@ public class GuiChat extends GuiScreen
 
                 if (uri != null)
                 {
-                    if (mc.gameSettings.field_74358_q)
+                    if (mc.gameSettings.chatLinksPrompt)
                     {
                         clickedURI = uri;
                         mc.displayGuiScreen(new GuiChatConfirmLink(this, this, chatclickdata.func_78309_f(), 0, chatclickdata));
@@ -291,7 +291,7 @@ public class GuiChat extends GuiScreen
                 }
             }
 
-            mc.ingameGUI.func_73827_b().func_73763_a(stringbuilder.toString(), 1);
+            mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(stringbuilder.toString(), 1);
         }
 
         inputField.writeText((String)field_73904_o.get(field_73903_n++));
@@ -305,21 +305,21 @@ public class GuiChat extends GuiScreen
         }
         else if (!mc.enableSP)
         {
-            mc.field_71439_g.sendQueue.addToSendQueue(new Packet203AutoComplete(par1Str));
+            mc.thePlayer.sendQueue.addToSendQueue(new Packet203AutoComplete(par1Str));
             field_73905_m = true;
             return;
         }
 
-        if (mc.field_71439_g instanceof EntityClientPlayerMP)
+        if (mc.thePlayer instanceof EntityClientPlayerMP)
         {
-            EntityClientPlayerMP entityclientplayermp = (EntityClientPlayerMP)mc.field_71439_g;
+            EntityClientPlayerMP entityclientplayermp = (EntityClientPlayerMP)mc.thePlayer;
             entityclientplayermp.sendQueue.addToSendQueue(new Packet203AutoComplete(par1Str));
             field_73905_m = true;
         }
         else if (par1Str.startsWith("/"))
         {
             par1Str = par1Str.substring(1);
-            List list = mc.getCommandManager().func_71558_b(mc.field_71439_g, par1Str);
+            List list = mc.getCommandManager().getPossibleCommands(mc.thePlayer, par1Str);
 
             if (list != null)
             {
@@ -345,7 +345,7 @@ public class GuiChat extends GuiScreen
     public void getSentHistory(int par1)
     {
         int i = sentHistoryCursor + par1;
-        int j = mc.ingameGUI.func_73827_b().func_73756_b().size();
+        int j = mc.ingameGUI.getChatGUI().func_73756_b().size();
 
         if (i < 0)
         {
@@ -374,7 +374,7 @@ public class GuiChat extends GuiScreen
             field_73898_b = inputField.getText();
         }
 
-        inputField.setText((String)mc.ingameGUI.func_73827_b().func_73756_b().get(i));
+        inputField.setText((String)mc.ingameGUI.getChatGUI().func_73756_b().get(i));
         sentHistoryCursor = i;
     }
 

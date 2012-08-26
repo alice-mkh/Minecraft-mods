@@ -53,7 +53,7 @@ public class PlayerControllerCreative extends PlayerController
      */
     public static void clickBlockCreative(Minecraft par0Minecraft, PlayerController par1PlayerController, int par2, int par3, int par4, int par5)
     {
-        if (!par0Minecraft.field_71441_e.func_72886_a(par0Minecraft.field_71439_g, par2, par3, par4, par5))
+        if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.thePlayer, par2, par3, par4, par5))
         {
             par1PlayerController.onPlayerDestroyBlock(par2, par3, par4, par5);
         }
@@ -69,7 +69,7 @@ public class PlayerControllerCreative extends PlayerController
         float f = (float)par8Vec3.xCoord - (float)par4;
         float f1 = (float)par8Vec3.yCoord - (float)par5;
         float f2 = (float)par8Vec3.zCoord - (float)par6;
-        if (i > 0 && Block.blocksList[i].func_71903_a(par2World, par4, par5, par6, par1EntityPlayer, par7, f, f1, f2))
+        if (i > 0 && Block.blocksList[i].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, f, f1, f2))
         {
             return true;
         }
@@ -82,7 +82,7 @@ public class PlayerControllerCreative extends PlayerController
         {
             int j = par3ItemStack.getItemDamage();
             int k = par3ItemStack.stackSize;
-            boolean flag = par3ItemStack.func_77943_a(par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2);
+            boolean flag = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2);
             par3ItemStack.setItemDamage(j);
             par3ItemStack.stackSize = k;
             return flag;

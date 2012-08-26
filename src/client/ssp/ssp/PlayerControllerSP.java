@@ -42,26 +42,26 @@ public class PlayerControllerSP extends PlayerController
      */
     public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4)
     {
-        int i = mc.field_71441_e.getBlockId(par1, par2, par3);
-        int j = mc.field_71441_e.getBlockMetadata(par1, par2, par3);
+        int i = mc.theWorld.getBlockId(par1, par2, par3);
+        int j = mc.theWorld.getBlockMetadata(par1, par2, par3);
         boolean flag = super.onPlayerDestroyBlock(par1, par2, par3, par4);
-        ItemStack itemstack = mc.field_71439_g.getCurrentEquippedItem();
-        boolean flag1 = mc.field_71439_g.canHarvestBlock(Block.blocksList[i]);
+        ItemStack itemstack = mc.thePlayer.getCurrentEquippedItem();
+        boolean flag1 = mc.thePlayer.canHarvestBlock(Block.blocksList[i]);
 
         if (itemstack != null)
         {
-            itemstack.func_77941_a(mc.field_71441_e, i, par1, par2, par3, mc.field_71439_g);
+            itemstack.func_77941_a(mc.theWorld, i, par1, par2, par3, mc.thePlayer);
 
             if (itemstack.stackSize == 0)
             {
-//                 itemstack.onItemDestroyedByUse(mc.field_71439_g);
-                mc.field_71439_g.destroyCurrentEquippedItem();
+//                 itemstack.onItemDestroyedByUse(mc.thePlayer);
+                mc.thePlayer.destroyCurrentEquippedItem();
             }
         }
 
         if (flag && flag1)
         {
-            Block.blocksList[i].harvestBlock(mc.field_71441_e, mc.field_71439_g, par1, par2, par3, j);
+            Block.blocksList[i].harvestBlock(mc.theWorld, mc.thePlayer, par1, par2, par3, j);
         }
 
         return flag;
@@ -72,20 +72,20 @@ public class PlayerControllerSP extends PlayerController
      */
     public void clickBlock(int par1, int par2, int par3, int par4)
     {
-        if (!mc.field_71439_g.canPlayerEdit(par1, par2, par3))
+        if (!mc.thePlayer.canPlayerEdit(par1, par2, par3))
         {
             return;
         }
 
-        mc.field_71441_e.func_72886_a(mc.field_71439_g, par1, par2, par3, par4);
-        int i = mc.field_71441_e.getBlockId(par1, par2, par3);
+        mc.theWorld.extinguishFire(mc.thePlayer, par1, par2, par3, par4);
+        int i = mc.theWorld.getBlockId(par1, par2, par3);
 
         if (i > 0 && curBlockDamage == 0.0F)
         {
-            Block.blocksList[i].onBlockClicked(mc.field_71441_e, par1, par2, par3, mc.field_71439_g);
+            Block.blocksList[i].onBlockClicked(mc.theWorld, par1, par2, par3, mc.thePlayer);
         }
 
-        if (i > 0 && Block.blocksList[i].func_71908_a(mc.field_71439_g, mc.field_71439_g.worldObj, par1, par2, par3) >= 1.0F)
+        if (i > 0 && Block.blocksList[i].getPlayerRelativeBlockHardness(mc.thePlayer, mc.thePlayer.worldObj, par1, par2, par3) >= 1.0F)
         {
             onPlayerDestroyBlock(par1, par2, par3, par4);
         }
@@ -98,7 +98,7 @@ public class PlayerControllerSP extends PlayerController
     {
         curBlockDamage = 0.0F;
         blockHitWait = 0;
-        mc.field_71441_e.func_72888_f(mc.field_71439_g.entityId, curBlockX, curBlockY, curBlockZ, -1);
+        mc.theWorld.destroyBlockInWorldPartially(mc.thePlayer.entityId, curBlockX, curBlockY, curBlockZ, -1);
     }
 
     /**
@@ -114,9 +114,9 @@ public class PlayerControllerSP extends PlayerController
 
         if (par1 == curBlockX && par2 == curBlockY && par3 == curBlockZ)
         {
-            int i = mc.field_71441_e.getBlockId(par1, par2, par3);
+            int i = mc.theWorld.getBlockId(par1, par2, par3);
 
-            if (!mc.field_71439_g.canPlayerEdit(par1, par2, par3))
+            if (!mc.thePlayer.canPlayerEdit(par1, par2, par3))
             {
                 return;
             }
@@ -127,7 +127,7 @@ public class PlayerControllerSP extends PlayerController
             }
 
             Block block = Block.blocksList[i];
-            curBlockDamage += block.func_71908_a(mc.field_71439_g, mc.field_71439_g.worldObj, par1, par2, par3);
+            curBlockDamage += block.getPlayerRelativeBlockHardness(mc.thePlayer, mc.thePlayer.worldObj, par1, par2, par3);
 
             if (blockDestroySoundCounter % 4F == 0.0F && block != null)
             {
@@ -144,7 +144,7 @@ public class PlayerControllerSP extends PlayerController
                 blockDestroySoundCounter = 0.0F;
                 blockHitWait = 5;
             }
-            mc.field_71441_e.func_72888_f(mc.field_71439_g.entityId, curBlockX, curBlockY, curBlockZ, (int)(curBlockDamage * 10F) - 1);
+            mc.theWorld.destroyBlockInWorldPartially(mc.thePlayer.entityId, curBlockX, curBlockY, curBlockZ, (int)(curBlockDamage * 10F) - 1);
         }
         else
         {
@@ -181,7 +181,7 @@ public class PlayerControllerSP extends PlayerController
         float f = (float)par8Vec3.xCoord - (float)par4;
         float f1 = (float)par8Vec3.yCoord - (float)par5;
         float f2 = (float)par8Vec3.zCoord - (float)par6;
-        if (i > 0 && Block.blocksList[i].func_71903_a(par2World, par4, par5, par6, par1EntityPlayer, par7, f, f1, f2))
+        if (i > 0 && Block.blocksList[i].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, f, f1, f2))
         {
             return true;
         }
@@ -192,7 +192,7 @@ public class PlayerControllerSP extends PlayerController
         }
         else
         {
-            return par3ItemStack.func_77943_a(par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2);
+            return par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2);
 
         }
     }

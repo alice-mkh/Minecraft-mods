@@ -25,13 +25,13 @@ public class BlockFire extends Block
     public void initializeBlock()
     {
         setBurnRate(Block.planks.blockID, 5, 20);
-        setBurnRate(Block.field_72090_bN.blockID, 5, 20);
-        setBurnRate(Block.field_72092_bO.blockID, 5, 20);
+        setBurnRate(Block.woodDoubleSlab.blockID, 5, 20);
+        setBurnRate(Block.woodSingleSlab.blockID, 5, 20);
         setBurnRate(Block.fence.blockID, 5, 20);
         setBurnRate(Block.stairCompactPlanks.blockID, 5, 20);
-        setBurnRate(Block.field_72072_bX.blockID, 5, 20);
-        setBurnRate(Block.field_72074_bW.blockID, 5, 20);
-        setBurnRate(Block.field_72070_bY.blockID, 5, 20);
+        setBurnRate(Block.stairsWoodBirch.blockID, 5, 20);
+        setBurnRate(Block.stairsWoodSpruce.blockID, 5, 20);
+        setBurnRate(Block.stairsWoodJungle.blockID, 5, 20);
         setBurnRate(Block.wood.blockID, 5, 5);
         setBurnRate(Block.leaves.blockID, 30, 60);
         setBurnRate(Block.bookShelf.blockID, 30, 20);
@@ -186,7 +186,7 @@ public class BlockFire extends Block
         }
         boolean flag = par1World.getBlockId(par2, par3 - 1, par4) == Block.netherrack.blockID;
 
-        if ((par1World.worldProvider instanceof WorldProviderEnd) && par1World.getBlockId(par2, par3 - 1, par4) == Block.bedrock.blockID)
+        if ((par1World.provider instanceof WorldProviderEnd) && par1World.getBlockId(par2, par3 - 1, par4) == Block.bedrock.blockID)
         {
             flag = true;
         }
@@ -213,7 +213,7 @@ public class BlockFire extends Block
 
         if (!flag && !canNeighborBurn(par1World, par2, par3, par4))
         {
-            if (!par1World.func_72797_t(par2, par3 - 1, par4) || i > 3)
+            if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || i > 3)
             {
                 par1World.setBlockWithNotify(par2, par3, par4, 0);
             }
@@ -443,7 +443,7 @@ public class BlockFire extends Block
      */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-        return par1World.func_72797_t(par2, par3 - 1, par4) || canNeighborBurn(par1World, par2, par3, par4);
+        return par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || canNeighborBurn(par1World, par2, par3, par4);
     }
 
     /**
@@ -452,7 +452,7 @@ public class BlockFire extends Block
      */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        if (!par1World.func_72797_t(par2, par3 - 1, par4) && !canNeighborBurn(par1World, par2, par3, par4))
+        if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !canNeighborBurn(par1World, par2, par3, par4))
         {
             par1World.setBlockWithNotify(par2, par3, par4, 0);
         }
@@ -463,12 +463,12 @@ public class BlockFire extends Block
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.worldProvider.worldType <= 0 && par1World.getBlockId(par2, par3 - 1, par4) == Block.obsidian.blockID && Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
+        if (par1World.provider.worldType <= 0 && par1World.getBlockId(par2, par3 - 1, par4) == Block.obsidian.blockID && Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
         {
             return;
         }
 
-        if (!par1World.func_72797_t(par2, par3 - 1, par4) && !canNeighborBurn(par1World, par2, par3, par4))
+        if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !canNeighborBurn(par1World, par2, par3, par4))
         {
             par1World.setBlockWithNotify(par2, par3, par4, 0);
             return;
@@ -487,10 +487,10 @@ public class BlockFire extends Block
     {
         if (par5Random.nextInt(24) == 0)
         {
-            par1World.func_72980_b((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "fire.fire", 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F);
+            par1World.playSound((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "fire.fire", 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F);
         }
 
-        if (par1World.func_72797_t(par2, par3 - 1, par4) || Block.fire.canBlockCatchFire(par1World, par2, par3 - 1, par4))
+        if (par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || Block.fire.canBlockCatchFire(par1World, par2, par3 - 1, par4))
         {
             for (int i = 0; i < 3; i++)
             {

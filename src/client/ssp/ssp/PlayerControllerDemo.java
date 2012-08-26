@@ -23,7 +23,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     {
         super.updateController();
         field_55293_f++;
-        long l = mc.field_71441_e.getWorldTime();
+        long l = mc.theWorld.getWorldTime();
         long l1 = l / 24000L + 1L;
 
         if (!field_55296_c && field_55293_f > 20)
@@ -43,7 +43,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
         {
             if (l1 <= 6L)
             {
-                mc.ingameGUI.func_73827_b().func_73757_a((new StringBuilder()).append("demo.day.").append(l1).toString(), null);
+                mc.ingameGUI.getChatGUI().func_73757_a((new StringBuilder()).append("demo.day.").append(l1).toString(), null);
             }
         }
         else if (l1 == 1L)
@@ -79,12 +79,12 @@ public class PlayerControllerDemo extends PlayerControllerSP
 
             if (s != null)
             {
-                mc.ingameGUI.func_73827_b().func_73757_a(s, null);
+                mc.ingameGUI.getChatGUI().func_73757_a(s, null);
             }
         }
         else if (l1 == 5L && l % 24000L == 22000L)
         {
-            mc.ingameGUI.func_73827_b().func_73757_a("demo.day.warning", null);
+            mc.ingameGUI.getChatGUI().func_73757_a("demo.day.warning", null);
         }
     }
 
@@ -101,7 +101,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
         {
             s = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[]
                     {
-                        StringUtils.func_76337_a((int)(0x1d6b4L - mc.field_71441_e.getWorldTime()))
+                        StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.getWorldTime()))
                     });
         }
 
@@ -113,7 +113,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     {
         if (field_55295_e > 100)
         {
-            mc.ingameGUI.func_73827_b().func_73757_a("demo.reminder", null);
+            mc.ingameGUI.getChatGUI().func_73757_a("demo.reminder", null);
             field_55295_e = 0;
         }
     }

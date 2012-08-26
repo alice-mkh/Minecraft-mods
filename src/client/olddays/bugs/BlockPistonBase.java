@@ -17,7 +17,7 @@ public class BlockPistonBase extends Block
         isSticky = par3;
         setStepSound(soundStoneFootstep);
         setHardness(0.5F);
-        func_71849_a(CreativeTabs.field_78028_d);
+        setCreativeTab(CreativeTabs.tabRedstone);
     }
 
     /**
@@ -74,7 +74,10 @@ public class BlockPistonBase extends Block
         return false;
     }
 
-    public boolean func_71903_a(World par1World, int par2, int par3, int i, EntityPlayer entityplayer, int j, float f, float f1, float f2)
+    /**
+     * Called upon block activation (right click on the block.)
+     */
+    public boolean onBlockActivated(World par1World, int par2, int par3, int i, EntityPlayer entityplayer, int j, float f, float f1, float f2)
     {
         return false;
     }
@@ -139,12 +142,12 @@ public class BlockPistonBase extends Block
         {
             if (canExtend(par1World, par2, par3, par4, j))
             {
-                par1World.sendClientEvent(par2, par3, par4, blockID, 0, j);
+                par1World.addBlockEvent(par2, par3, par4, blockID, 0, j);
             }
         }
         else if (!flag && isExtended(i))
         {
-            par1World.sendClientEvent(par2, par3, par4, blockID, 1, j);
+            par1World.addBlockEvent(par2, par3, par4, blockID, 1, j);
         }
     }
 
@@ -169,12 +172,12 @@ public class BlockPistonBase extends Block
         {
             if (canExtend(par1World, par2, par3, par4, j))
             {
-                par1World.sendClientEvent(par2, par3, par4, blockID, 0, j);
+                par1World.addBlockEvent(par2, par3, par4, blockID, 0, j);
             }
         }
         else if (!flag && isExtended(i))
         {
-            par1World.sendClientEvent(par2, par3, par4, blockID, 1, j);
+            par1World.addBlockEvent(par2, par3, par4, blockID, 1, j);
         }
     }
 
@@ -242,10 +245,10 @@ public class BlockPistonBase extends Block
     }
 
     /**
-     * Called when the block receives a client event - see World.sendClientEvent. By default, passes it on to the tile
-     * entity at this location. Args: world, x, y, z, event number, parameter
+     * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile
+     * entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
      */
-    public void receiveClientEvent(World par1World, int par2, int par3, int par4, int par5, int par6)
+    public void onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         if (dupe){
             powerBlock(par1World, par2, par3, par4, par5, par6);
@@ -471,10 +474,13 @@ public class BlockPistonBase extends Block
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public void func_71871_a(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
+    /**
+     * if the specified block is in the given AABB, add its collision bounding box to the given list
+     */
+    public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        super.func_71871_a(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
 
     /**
@@ -570,7 +576,7 @@ public class BlockPistonBase extends Block
         }
         else
         {
-            if (Block.blocksList[par0].func_71934_m(par1World, par2, par3, par4) == -1F)
+            if (Block.blocksList[par0].getBlockHardness(par1World, par2, par3, par4) == -1F)
             {
                 return false;
             }
@@ -708,12 +714,12 @@ public class BlockPistonBase extends Block
 
             if (i2 == blockID && i1 == par2 && k1 == par3 && l1 == par4)
             {
-                par1World.func_72930_a(i, j, k, Block.pistonMoving.blockID, par5 | (isSticky ? 8 : 0), false);
+                par1World.setBlockAndMetadataWithUpdate(i, j, k, Block.pistonMoving.blockID, par5 | (isSticky ? 8 : 0), false);
                 par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(Block.pistonExtension.blockID, par5 | (isSticky ? 8 : 0), par5, true, false));
             }
             else
             {
-                par1World.func_72930_a(i, j, k, Block.pistonMoving.blockID, j2, false);
+                par1World.setBlockAndMetadataWithUpdate(i, j, k, Block.pistonMoving.blockID, j2, false);
                 par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(i2, j2, par5, true, false));
             }
 

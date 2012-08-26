@@ -499,7 +499,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                     int z2 = l + rand.nextInt(16);
                     int id = worldObj.getBlockId(x2, y2, z2);
                     if (id == Block.stone.blockID){
-                        worldObj.setBlock(x2, y2, z2, 129);
+                        worldObj.setBlock(x2, y2, z2, Block.oreEmerald.blockID);
                     }
                 }
             }

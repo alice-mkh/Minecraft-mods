@@ -75,7 +75,9 @@ public abstract class BiomeGenBase
 
     /** Color tint applied to water depending on biome */
     public int waterColorMultiplier;
-    public BiomeDecorator biomeDecorator;
+
+    /** The biome decorator. */
+    public BiomeDecorator theBiomeDecorator;
 
     /**
      * Holds the classes of IMobs (hostile mobs) that can be spawned in the biome.
@@ -102,11 +104,13 @@ public abstract class BiomeGenBase
 
     /** The id number to this biome, and its index in the biomeList array. */
     public final int biomeID;
-    protected WorldGenTrees worldGenTrees;
-    public OldWorldGenTrees oldWorldGenTrees;
-    protected WorldGenBigTree worldGenBigTree;
-    protected WorldGenForest worldGenForest;
-    protected WorldGenSwamp worldGenSwamp;
+    protected WorldGenTrees worldGeneratorTrees;
+    public OldWorldGenTrees oldWorldGeneratorTrees;
+
+    /** The big tree generator. */
+    protected WorldGenBigTree worldGeneratorBigTree;
+    protected WorldGenForest worldGeneratorForest;
+    protected WorldGenSwamp worldGeneratorSwamp;
 
     public static final BiomeGenBase betaRainforest = (new BiomeGenJungle(30)).setColor(0x8fa36).setBiomeName("Beta Rainforest").setTemperatureRainfall(1F, 1F).func_76733_a(0x1ff458);
     public static final BiomeGenBase betaSwampland = (new BiomeGenPlains(31)).setColor(0x9be023).setBiomeName("Beta Swampland").setTemperatureRainfall(0.75F, 0.5F).func_76733_a(0x8baf48);
@@ -138,14 +142,13 @@ public abstract class BiomeGenBase
         spawnableCreatureList = new ArrayList();
         spawnableWaterCreatureList = new ArrayList();
         enableRain = true;
-        worldGenTrees = new WorldGenTrees(false);
-        oldWorldGenTrees = new OldWorldGenTrees(false);
-        worldGenBigTree = new WorldGenBigTree(false);
-        worldGenForest = new WorldGenForest(false);
-        worldGenSwamp = new WorldGenSwamp();
+        worldGeneratorTrees = new WorldGenTrees(false);
+        worldGeneratorBigTree = new WorldGenBigTree(false);
+        worldGeneratorForest = new WorldGenForest(false);
+        worldGeneratorSwamp = new WorldGenSwamp();
         biomeID = par1;
         biomeList[par1] = this;
-        biomeDecorator = createBiomeDecorator();
+        theBiomeDecorator = createBiomeDecorator();
         spawnableCreatureList.add(new SpawnListEntry(net.minecraft.src.EntitySheep.class, 12, 4, 4));
         spawnableCreatureList.add(new SpawnListEntry(net.minecraft.src.EntityPig.class, 10, 4, 4));
         spawnableCreatureList.add(new SpawnListEntry(net.minecraft.src.EntityChicken.class, 10, 4, 4));
@@ -164,7 +167,7 @@ public abstract class BiomeGenBase
      */
     protected BiomeDecorator createBiomeDecorator()
     {
-        return new BiomeDecorator2(this);
+        return new BiomeDecorator(this);
     }
 
     /**
@@ -210,11 +213,11 @@ public abstract class BiomeGenBase
     {
         if (par1Random.nextInt(10) == 0)
         {
-            return worldGenBigTree;
+            return worldGeneratorBigTree;
         }
         else
         {
-            return worldGenTrees;
+            return worldGeneratorTrees;
         }
     }
 
@@ -223,7 +226,7 @@ public abstract class BiomeGenBase
      */
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return new OldWorldGenTallGrass(Block.tallGrass.blockID, 1);
+        return new WorldGenTallGrass(Block.tallGrass.blockID, 1);
     }
 
     /**
@@ -371,7 +374,7 @@ public abstract class BiomeGenBase
 
     public void decorate(World par1World, Random par2Random, int par3, int par4)
     {
-        biomeDecorator.decorate(par1World, par2Random, par3, par4);
+        theBiomeDecorator.decorate(par1World, par2Random, par3, par4);
     }
 
     /**
@@ -379,18 +382,6 @@ public abstract class BiomeGenBase
      */
     public int getBiomeGrassColor()
     {
-        double d = MathHelper.clamp_float(getFloatTemperature(), 0.0F, 1.0F);
-        double d1 = MathHelper.clamp_float(getFloatRainfall(), 0.0F, 1.0F);
-        return ColorizerGrass.getGrassColor(d, d1);
-    }
-
-    public int getBiomeGrassColor2()
-    {
-        if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
-            double d = getFloatTemperature();
-            double d1 = getFloatRainfall();
-            return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
-        }
         double d = MathHelper.clamp_float(getFloatTemperature(), 0.0F, 1.0F);
         double d1 = MathHelper.clamp_float(getFloatRainfall(), 0.0F, 1.0F);
         return ColorizerGrass.getGrassColor(d, d1);
@@ -406,6 +397,18 @@ public abstract class BiomeGenBase
         return ColorizerFoliage.getFoliageColor(d, d1);
     }
 
+    public int getBiomeGrassColor2()
+    {
+        if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
+            double d = getFloatTemperature();
+            double d1 = getFloatRainfall();
+            return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
+        }
+        double d = MathHelper.clamp_float(getFloatTemperature(), 0.0F, 1.0F);
+        double d1 = MathHelper.clamp_float(getFloatRainfall(), 0.0F, 1.0F);
+        return ColorizerGrass.getGrassColor(d, d1);
+    }
+
     public int getBiomeFoliageColor2()
     {
         if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
@@ -419,8 +422,8 @@ public abstract class BiomeGenBase
     }
 
     public int getGrassColorAtCoords(int i, int j, int k){
-        double d = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getTemperature(i, j, k);
-        double d1 = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getRainfall(i, k);
+        double d = Minecraft.getMinecraft().theWorld.getWorldChunkManager().getTemperature(i, j, k);
+        double d1 = Minecraft.getMinecraft().theWorld.getWorldChunkManager().getRainfall(i, k);
         if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
             return ((ColorizerGrass.getGrassColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
         }
@@ -428,8 +431,8 @@ public abstract class BiomeGenBase
     }
 
     public int getFoliageColorAtCoords(int i, int j, int k){
-        double d = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getTemperature(i, j, k);
-        double d1 = Minecraft.getMinecraftInstance().field_71441_e.getWorldChunkManager().getRainfall(i, k);
+        double d = Minecraft.getMinecraft().theWorld.getWorldChunkManager().getTemperature(i, j, k);
+        double d1 = Minecraft.getMinecraft().theWorld.getWorldChunkManager().getRainfall(i, k);
         if (this==swampland && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_10){
             return ((ColorizerFoliage.getFoliageColor(d, d1) & 0xfefefe) + 0x4e0e4e) / 2;
         }

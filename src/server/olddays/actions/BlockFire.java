@@ -201,7 +201,7 @@ public class BlockFire extends Block
         }
         boolean flag = par1World.getBlockId(par2, par3 - 1, par4) == Block.netherrack.blockID;
 
-        if ((par1World.worldProvider instanceof WorldProviderEnd) && par1World.getBlockId(par2, par3 - 1, par4) == Block.bedrock.blockID)
+        if ((par1World.provider instanceof WorldProviderEnd) && par1World.getBlockId(par2, par3 - 1, par4) == Block.bedrock.blockID)
         {
             flag = true;
         }
@@ -463,7 +463,7 @@ public class BlockFire extends Block
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.worldProvider.worldType <= 0 && par1World.getBlockId(par2, par3 - 1, par4) == Block.obsidian.blockID && Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
+        if (par1World.provider.worldType <= 0 && par1World.getBlockId(par2, par3 - 1, par4) == Block.obsidian.blockID && Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
         {
             return;
         }

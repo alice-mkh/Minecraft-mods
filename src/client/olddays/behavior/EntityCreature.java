@@ -38,7 +38,7 @@ public abstract class EntityCreature extends EntityLiving
 
     protected void updateEntityActionState()
     {
-        worldObj.field_72984_F.startSection("ai");
+        worldObj.theProfiler.startSection("ai");
 
         if (fleeingTick > 0)
         {
@@ -79,7 +79,7 @@ public abstract class EntityCreature extends EntityLiving
             entityToAttack = null;
         }
 
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
 
         if (!hasAttacked && entityToAttack != null && (pathToEntity == null || rand.nextInt(20) == 0))
         {
@@ -102,7 +102,7 @@ public abstract class EntityCreature extends EntityLiving
             return;
         }
 
-        worldObj.field_72984_F.startSection("followpath");
+        worldObj.theProfiler.startSection("followpath");
         Vec3 vec3 = pathToEntity.getPosition(this);
 
         for (double d = width * 2.0F; vec3 != null && vec3.squareDistanceTo(posX, vec3.yCoord, posZ) < d * d;)
@@ -128,7 +128,7 @@ public abstract class EntityCreature extends EntityLiving
             double d2 = vec3.zCoord - posZ;
             double d3 = vec3.yCoord - (double)i;
             float f2 = (float)((Math.atan2(d2, d1) * 180D) / Math.PI) - 90F;
-            float f3 = MathHelper.func_76142_g(f2 - rotationYaw);
+            float f3 = MathHelper.wrapAngleTo180_float(f2 - rotationYaw);
             moveForward = moveSpeed;
 
             if (f3 > 30F)
@@ -175,7 +175,7 @@ public abstract class EntityCreature extends EntityLiving
             isJumping = true;
         }
 
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     /**
@@ -183,7 +183,7 @@ public abstract class EntityCreature extends EntityLiving
      */
     protected void updateWanderPath()
     {
-        worldObj.field_72984_F.startSection("stroll");
+        worldObj.theProfiler.startSection("stroll");
         boolean flag = false;
         int i = -1;
         int j = -1;
@@ -212,7 +212,7 @@ public abstract class EntityCreature extends EntityLiving
             pathToEntity = worldObj.getEntityPathToXYZ(this, i, j, k, 10F, true, false, false, true);
         }
 
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     /**

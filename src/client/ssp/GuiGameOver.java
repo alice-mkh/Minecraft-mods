@@ -22,9 +22,9 @@ public class GuiGameOver extends GuiScreen
     public void initGui()
     {
         controlList.clear();
-        if (mc.field_71441_e.getWorldInfo().isHardcoreModeEnabled())
+        if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
         {
-            if (mc.func_71387_A())
+            if (mc.isIntegratedServerRunning())
             {
                 controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
             }
@@ -70,13 +70,13 @@ public class GuiGameOver extends GuiScreen
         switch (par1GuiButton.id)
         {
             case 1:
-                mc.field_71439_g.respawnPlayer();
+                mc.thePlayer.respawnPlayer();
                 mc.displayGuiScreen(null);
                 break;
 
             case 2:
-                mc.field_71441_e.sendQuittingDisconnectingPacket();
-                mc.func_71403_a(null);
+                mc.theWorld.sendQuittingDisconnectingPacket();
+                mc.loadWorld(null);
                 mc.displayGuiScreen(new GuiMainMenu());
                 break;
         }
@@ -93,9 +93,9 @@ public class GuiGameOver extends GuiScreen
                 break;
 
             case 1:
-                if (mc.field_71441_e.getWorldInfo().isHardcoreModeEnabled())
+                if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                 {
-                    String s = mc.field_71441_e.getSaveHandler().getSaveDirectoryName();
+                    String s = mc.theWorld.getSaveHandler().getSaveDirectoryName();
                     mc.exitToMainMenu("Deleting world");
                     ISaveFormat isaveformat = mc.getSaveLoader();
                     isaveformat.flushCache();
@@ -104,7 +104,7 @@ public class GuiGameOver extends GuiScreen
                 }
                 else
                 {
-                    mc.field_71439_g.respawnPlayer();
+                    mc.thePlayer.respawnPlayer();
                     mc.displayGuiScreen(null);
                     return;
                 }
@@ -114,7 +114,7 @@ public class GuiGameOver extends GuiScreen
             case 2:
                 if (mc.isMultiplayerWorld())
                 {
-                    mc.field_71441_e.sendQuittingDisconnectingPacket();
+                    mc.theWorld.sendQuittingDisconnectingPacket();
                 }
 
                 mc.changeWorld1(null);
@@ -131,7 +131,7 @@ public class GuiGameOver extends GuiScreen
         drawGradientRect(0, 0, width, height, 0x60500000, 0xa0803030);
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        boolean flag = mc.field_71441_e.getWorldInfo().isHardcoreModeEnabled();
+        boolean flag = mc.theWorld.getWorldInfo().isHardcoreModeEnabled();
         String s = flag ? StatCollector.translateToLocal("deathScreen.title.hardcore") : StatCollector.translateToLocal("deathScreen.title");
         drawCenteredString(fontRenderer, s, width / 2 / 2, 30, 0xffffff);
         GL11.glPopMatrix();
@@ -141,7 +141,7 @@ public class GuiGameOver extends GuiScreen
             drawCenteredString(fontRenderer, StatCollector.translateToLocal("deathScreen.hardcoreInfo"), width / 2, 144, 0xffffff);
         }
 
-        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(": \247e").append(mc.field_71439_g.getScore()).toString(), width / 2, 100, 0xffffff);
+        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(": \247e").append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
         super.drawScreen(par1, par2, par3);
     }
 

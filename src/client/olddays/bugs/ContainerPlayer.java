@@ -24,33 +24,33 @@ public class ContainerPlayer extends Container
         craftResult = new InventoryCraftResult();
         isLocalWorld = false;
         isLocalWorld = par2;
-        func_75146_a(new SlotCrafting(par1InventoryPlayer.player, craftMatrix, craftResult, 0, 144, 36));
+        addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, craftMatrix, craftResult, 0, 144, 36));
 
         for (int i = 0; i < 2; i++)
         {
             for (int i1 = 0; i1 < 2; i1++)
             {
-                func_75146_a(new Slot(craftMatrix, i1 + i * 2, 88 + i1 * 18, 26 + i * 18));
+                addSlotToContainer(new Slot(craftMatrix, i1 + i * 2, 88 + i1 * 18, 26 + i * 18));
             }
         }
 
         for (int j = 0; j < 4; j++)
         {
             int j1 = j;
-            func_75146_a(new SlotArmor(this, par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - j, 8, 8 + j * 18, j1));
+            addSlotToContainer(new SlotArmor(this, par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - j, 8, 8 + j * 18, j1));
         }
 
         for (int k = 0; k < 3; k++)
         {
             for (int k1 = 0; k1 < 9; k1++)
             {
-                func_75146_a(new Slot(par1InventoryPlayer, k1 + (k + 1) * 9, 8 + k1 * 18, 84 + k * 18));
+                addSlotToContainer(new Slot(par1InventoryPlayer, k1 + (k + 1) * 9, 8 + k1 * 18, 84 + k * 18));
             }
         }
 
         for (int l = 0; l < 9; l++)
         {
-            func_75146_a(new Slot(par1InventoryPlayer, l, 8 + l * 18, 142));
+            addSlotToContainer(new Slot(par1InventoryPlayer, l, 8 + l * 18, 142));
         }
 
         onCraftMatrixChanged(craftMatrix);
@@ -111,7 +111,7 @@ public class ContainerPlayer extends Container
                     return null;
                 }
 
-                slot.func_75220_a(itemstack1, itemstack);
+                slot.onSlotChange(itemstack1, itemstack);
             }
             else if (par1 >= 1 && par1 < 5)
             {

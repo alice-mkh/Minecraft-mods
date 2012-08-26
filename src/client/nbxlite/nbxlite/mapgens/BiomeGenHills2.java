@@ -25,7 +25,7 @@ public class BiomeGenHills2 extends BiomeGenHills
 
                 if (j1 == Block.stone.blockID)
                 {
-                    par1World.setBlock(k, l, i1, Block.oreDiamond.blockID);
+                    par1World.setBlock(k, l, i1, Block.oreEmerald.blockID);
                 }
             }
         }

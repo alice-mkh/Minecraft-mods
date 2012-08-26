@@ -10,14 +10,14 @@ public class CommandClientGive extends CommandGive
 
     protected EntityPlayer func_71537_a(String par1Str)
     {
-        return Minecraft.getMinecraftInstance().field_71439_g;
+        return Minecraft.getMinecraft().thePlayer;
     }
 
     protected String[] func_55240_c()
     {
         return (new String[]
                 {
-                    Minecraft.getMinecraftInstance().field_71439_g.username
+                    Minecraft.getMinecraft().thePlayer.username
                 });
     }
 }

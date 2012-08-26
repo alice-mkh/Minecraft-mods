@@ -150,9 +150,12 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         return null;
     }
 
-    public void func_75755_a(WorldInfo par1WorldInfo, NBTTagCompound par2NBTTagCompound)
+    /**
+     * Saves the given World Info with the given NBTTagCompound as the Player.
+     */
+    public void saveWorldInfoWithPlayer(WorldInfo par1WorldInfo, NBTTagCompound par2NBTTagCompound)
     {
-        NBTTagCompound nbttagcompound = par1WorldInfo.func_76082_a(par2NBTTagCompound);
+        NBTTagCompound nbttagcompound = par1WorldInfo.cloneNBTCompound(par2NBTTagCompound);
         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
         nbttagcompound1.setTag("Data", nbttagcompound);
 
@@ -270,7 +273,10 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    public void func_75753_a(EntityPlayer par1EntityPlayer)
+    /**
+     * Writes the player data to disk from the specified PlayerEntityMP.
+     */
+    public void writePlayerData(EntityPlayer par1EntityPlayer)
     {
         try
         {
@@ -293,9 +299,12 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    public void func_75752_b(EntityPlayer par1EntityPlayer)
+    /**
+     * Reads the player data from disk into the specified PlayerEntityMP.
+     */
+    public void readPlayerData(EntityPlayer par1EntityPlayer)
     {
-        NBTTagCompound nbttagcompound = func_75764_a(par1EntityPlayer.username);
+        NBTTagCompound nbttagcompound = getPlayerData(par1EntityPlayer.username);
 
         if (nbttagcompound != null)
         {
@@ -303,7 +312,10 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    public NBTTagCompound func_75764_a(String par1Str)
+    /**
+     * Gets the player data for the given playername as a NBTTagCompound.
+     */
+    public NBTTagCompound getPlayerData(String par1Str)
     {
         try
         {
@@ -322,12 +334,18 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         return null;
     }
 
-    public IPlayerFileData func_75756_e()
+    /**
+     * returns null if no saveHandler is relevent (eg. SMP)
+     */
+    public IPlayerFileData getSaveHandler()
     {
         return this;
     }
 
-    public String[] func_75754_f()
+    /**
+     * Gets an array of Usernames there are available player.dat files for.
+     */
+    public String[] getAvailablePlayerDat()
     {
         String as[] = playersDirectory.list();
 
@@ -342,7 +360,10 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         return as;
     }
 
-    public void func_75759_a()
+    /**
+     * Called to flush all changes to disk, waiting for them to complete.
+     */
+    public void flush()
     {
     }
 

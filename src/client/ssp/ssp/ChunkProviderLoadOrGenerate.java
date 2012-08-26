@@ -344,7 +344,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
         return chunkProvider.findClosestStructure(par1World, par2Str, par3, par4, par5);
     }
 
-    public int func_73152_e()
+    public int getLoadedChunkCount()
     {
         return 0;
     }

@@ -82,7 +82,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
             }
             long l = 0L;
             if (format==0){
-                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.func_76077_q(), flag, worldinfo.isHardcoreModeEnabled(), true));
+                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.getGameType(), flag, worldinfo.isHardcoreModeEnabled(), true));
             }else{
                 arraylist.add(new SaveFormatComparator(s, s1, 0L, l, EnumGameType.SURVIVAL, true, true, true));
             }

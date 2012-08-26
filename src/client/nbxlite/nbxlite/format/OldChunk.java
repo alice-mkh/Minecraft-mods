@@ -96,7 +96,7 @@ public class OldChunk extends Chunk
                 {
                     i = j1;
                 }
-                if (worldObj.worldProvider.hasNoSky)
+                if (worldObj.provider.hasNoSky)
                 {
                     continue;
                 }

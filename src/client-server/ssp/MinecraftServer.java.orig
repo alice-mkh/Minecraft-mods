@@ -56,10 +56,6 @@ import net.minecraft.src.WorldServerMulti;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
 
-import net.minecraft.src.DedicatedServer;
-import net.minecraft.src.StatList;
-import net.minecraft.src.ThreadDedicatedServer;
-
 public abstract class MinecraftServer implements Runnable, IPlayerUsage, ICommandSender
 {
     /** The logging system. */
@@ -1265,118 +1261,5 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public static ServerConfigurationManager func_71196_a(MinecraftServer par0MinecraftServer)
     {
         return par0MinecraftServer.serverConfigManager;
-    }
-
-    /**
-     * Adds a player's name to the list of online players.
-     */
-    public void addToOnlinePlayerList(IUpdatePlayerListBox par1IUpdatePlayerListBox)
-    {
-        playersOnline.add(par1IUpdatePlayerListBox);
-    }
-
-    public static void main(String par0ArrayOfStr[])
-    {
-        StatList.func_75919_a();
-
-        try
-        {
-            boolean flag = !java.awt.GraphicsEnvironment.isHeadless();
-            String s = null;
-            String s1 = ".";
-            String s2 = null;
-            boolean flag1 = false;
-            boolean flag2 = false;
-            int i = -1;
-
-            for (int j = 0; j < par0ArrayOfStr.length; j++)
-            {
-                String s3 = par0ArrayOfStr[j];
-                String s4 = j != par0ArrayOfStr.length - 1 ? par0ArrayOfStr[j + 1] : null;
-                boolean flag3 = false;
-
-                if (s3.equals("nogui") || s3.equals("--nogui"))
-                {
-                    flag = false;
-                }
-                else if (s3.equals("--port") && s4 != null)
-                {
-                    flag3 = true;
-
-                    try
-                    {
-                        i = Integer.parseInt(s4);
-                    }
-                    catch (NumberFormatException numberformatexception) { }
-                }
-                else if (s3.equals("--singleplayer") && s4 != null)
-                {
-                    flag3 = true;
-                    s = s4;
-                }
-                else if (s3.equals("--universe") && s4 != null)
-                {
-                    flag3 = true;
-                    s1 = s4;
-                }
-                else if (s3.equals("--world") && s4 != null)
-                {
-                    flag3 = true;
-                    s2 = s4;
-                }
-                else if (s3.equals("--demo"))
-                {
-                    flag1 = true;
-                }
-                else if (s3.equals("--bonusChest"))
-                {
-                    flag2 = true;
-                }
-
-                if (flag3)
-                {
-                    j++;
-                }
-            }
-
-            DedicatedServer dedicatedserver = new DedicatedServer(new File(s1));
-
-            if (s != null)
-            {
-                dedicatedserver.setServerOwner(s);
-            }
-
-            if (s2 != null)
-            {
-                dedicatedserver.setFolderName(s2);
-            }
-
-            if (i >= 0)
-            {
-                dedicatedserver.setServerPort(i);
-            }
-
-            if (flag1)
-            {
-                dedicatedserver.setDemo(true);
-            }
-
-            if (flag2)
-            {
-                dedicatedserver.canCreateBonusChest(true);
-            }
-
-            if (flag)
-            {
-                dedicatedserver.func_79001_aj();
-            }
-
-            dedicatedserver.startServerThread();
-            Runtime.getRuntime().addShutdownHook(new ThreadDedicatedServer(dedicatedserver));
-        }
-        catch (Exception exception)
-        {
-            logger.log(Level.SEVERE, "Failed to start the minecraft server", exception);
-        }
     }
 }

@@ -29,7 +29,7 @@ public class EntityAIHurtByTarget extends EntityAITarget
      */
     public boolean continueExecuting()
     {
-        if (Minecraft.getMinecraftInstance().enableSP){
+        if (Minecraft.getMinecraft().enableSP){
             return super.continueExecuting();
         }
         return taskOwner.getAITarget() != null && taskOwner.getAITarget() != field_75311_b;
@@ -45,7 +45,7 @@ public class EntityAIHurtByTarget extends EntityAITarget
 
         if (field_75312_a)
         {
-            List list = taskOwner.worldObj.getEntitiesWithinAABB(taskOwner.getClass(), AxisAlignedBB.func_72332_a().func_72299_a(taskOwner.posX, taskOwner.posY, taskOwner.posZ, taskOwner.posX + 1.0D, taskOwner.posY + 1.0D, taskOwner.posZ + 1.0D).expand(targetDistance, 4D, targetDistance));
+            List list = taskOwner.worldObj.getEntitiesWithinAABB(taskOwner.getClass(), AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(taskOwner.posX, taskOwner.posY, taskOwner.posZ, taskOwner.posX + 1.0D, taskOwner.posY + 1.0D, taskOwner.posZ + 1.0D).expand(targetDistance, 4D, targetDistance));
             Iterator iterator = list.iterator();
 
             do

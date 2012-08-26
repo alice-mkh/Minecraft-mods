@@ -11,7 +11,7 @@ public class RenderGlobal implements IWorldAccess
     public static boolean nbxlite = false;
 
     public List tileEntities;
-    private WorldClient field_72769_h;
+    private WorldClient theWorld;
 
     /** The RenderEngine instance used by RenderGlobal */
     private final RenderEngine renderEngine;
@@ -273,18 +273,21 @@ public class RenderGlobal implements IWorldAccess
         tessellator.draw();
     }
 
-    public void func_72732_a(WorldClient par1WorldClient)
+    /**
+     * set null to clear
+     */
+    public void setWorldAndLoadRenderers(WorldClient par1WorldClient)
     {
-        if (field_72769_h != null)
+        if (theWorld != null)
         {
-            field_72769_h.removeWorldAccess(this);
+            theWorld.removeWorldAccess(this);
         }
 
         prevSortX = -9999D;
         prevSortY = -9999D;
         prevSortZ = -9999D;
         RenderManager.instance.set(par1WorldClient);
-        field_72769_h = par1WorldClient;
+        theWorld = par1WorldClient;
         globalRenderBlocks = new RenderBlocks(par1WorldClient);
 
         if (par1WorldClient != null)
@@ -299,7 +302,7 @@ public class RenderGlobal implements IWorldAccess
      */
     public void loadRenderers()
     {
-        if (field_72769_h == null)
+        if (theWorld == null)
         {
             return;
         }
@@ -355,7 +358,7 @@ public class RenderGlobal implements IWorldAccess
             {
                 for (int l1 = 0; l1 < renderChunksDeep; l1++)
                 {
-                    worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1] = new WorldRenderer(field_72769_h, tileEntities, j1 * 16, k1 * 16, l1 * 16, glRenderListBase + k);
+                    worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1] = new WorldRenderer(theWorld, tileEntities, j1 * 16, k1 * 16, l1 * 16, glRenderListBase + k);
 
                     if (occlusionEnabled)
                     {
@@ -374,7 +377,7 @@ public class RenderGlobal implements IWorldAccess
             }
         }
 
-        if (field_72769_h != null)
+        if (theWorld != null)
         {
             EntityLiving entityliving = mc.renderViewEntity;
 
@@ -399,9 +402,9 @@ public class RenderGlobal implements IWorldAccess
             return;
         }
 
-        field_72769_h.field_72984_F.startSection("prepare");
-        TileEntityRenderer.instance.cacheActiveRenderInfo(field_72769_h, renderEngine, mc.fontRenderer, mc.renderViewEntity, par3);
-        RenderManager.instance.cacheActiveRenderInfo(field_72769_h, renderEngine, mc.fontRenderer, mc.renderViewEntity, mc.gameSettings, par3);
+        theWorld.theProfiler.startSection("prepare");
+        TileEntityRenderer.instance.cacheActiveRenderInfo(theWorld, renderEngine, mc.fontRenderer, mc.renderViewEntity, par3);
+        RenderManager.instance.cacheActiveRenderInfo(theWorld, renderEngine, mc.fontRenderer, mc.renderViewEntity, mc.gameSettings, par3);
         countEntitiesTotal = 0;
         countEntitiesRendered = 0;
         countEntitiesHidden = 0;
@@ -413,13 +416,13 @@ public class RenderGlobal implements IWorldAccess
         TileEntityRenderer.staticPlayerY = ((Entity)(entityliving)).lastTickPosY + (((Entity)(entityliving)).posY - ((Entity)(entityliving)).lastTickPosY) * (double)par3;
         TileEntityRenderer.staticPlayerZ = ((Entity)(entityliving)).lastTickPosZ + (((Entity)(entityliving)).posZ - ((Entity)(entityliving)).lastTickPosZ) * (double)par3;
         mc.entityRenderer.enableLightmap(par3);
-        field_72769_h.field_72984_F.endStartSection("global");
-        List list = field_72769_h.getLoadedEntityList();
+        theWorld.theProfiler.endStartSection("global");
+        List list = theWorld.getLoadedEntityList();
         countEntitiesTotal = list.size();
 
-        for (int i = 0; i < field_72769_h.weatherEffects.size(); i++)
+        for (int i = 0; i < theWorld.weatherEffects.size(); i++)
         {
-            Entity entity = (Entity)field_72769_h.weatherEffects.get(i);
+            Entity entity = (Entity)theWorld.weatherEffects.get(i);
             countEntitiesRendered++;
 
             if (entity.isInRangeToRenderVec3D(par1Vec3))
@@ -428,20 +431,20 @@ public class RenderGlobal implements IWorldAccess
             }
         }
 
-        field_72769_h.field_72984_F.endStartSection("entities");
+        theWorld.theProfiler.endStartSection("entities");
 
         for (int j = 0; j < list.size(); j++)
         {
             Entity entity1 = (Entity)list.get(j);
 
-            if (entity1.isInRangeToRenderVec3D(par1Vec3) && (entity1.ignoreFrustumCheck || par2ICamera.isBoundingBoxInFrustum(entity1.boundingBox)) && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && field_72769_h.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
+            if (entity1.isInRangeToRenderVec3D(par1Vec3) && (entity1.ignoreFrustumCheck || par2ICamera.isBoundingBoxInFrustum(entity1.boundingBox)) && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && theWorld.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
             {
                 countEntitiesRendered++;
                 RenderManager.instance.renderEntity(entity1, par3);
             }
         }
 
-        field_72769_h.field_72984_F.endStartSection("tileentities");
+        theWorld.theProfiler.endStartSection("tileentities");
         RenderHelper.enableStandardItemLighting();
         TileEntity tileentity;
 
@@ -451,7 +454,7 @@ public class RenderGlobal implements IWorldAccess
         }
 
         mc.entityRenderer.disableLightmap(par3);
-        field_72769_h.field_72984_F.endSection();
+        theWorld.theProfiler.endSection();
     }
 
     /**
@@ -566,7 +569,7 @@ public class RenderGlobal implements IWorldAccess
      */
     public int sortAndRender(EntityLiving par1EntityLiving, int par2, double par3)
     {
-        field_72769_h.field_72984_F.startSection("sortchunks");
+        theWorld.theProfiler.startSection("sortchunks");
 
         for (int i = 0; i < 10; i++)
         {
@@ -624,12 +627,12 @@ public class RenderGlobal implements IWorldAccess
                 sortedWorldRenderers[i1].isVisible = true;
             }
 
-            field_72769_h.field_72984_F.endStartSection("render");
+            theWorld.theProfiler.endStartSection("render");
             j += renderSortedRenderers(k, l, par2, par3);
 
             do
             {
-                field_72769_h.field_72984_F.endStartSection("occ");
+                theWorld.theProfiler.endStartSection("occ");
                 int byte0 = l;
                 l *= 2;
 
@@ -644,9 +647,9 @@ public class RenderGlobal implements IWorldAccess
                 GL11.glDisable(GL11.GL_FOG);
                 GL11.glColorMask(false, false, false, false);
                 GL11.glDepthMask(false);
-                field_72769_h.field_72984_F.startSection("check");
+                theWorld.theProfiler.startSection("check");
                 checkOcclusionQueryResult(byte0, l);
-                field_72769_h.field_72984_F.endSection();
+                theWorld.theProfiler.endSection();
                 GL11.glPushMatrix();
                 float f = 0.0F;
                 float f1 = 0.0F;
@@ -694,11 +697,11 @@ public class RenderGlobal implements IWorldAccess
                         f2 += f9;
                     }
 
-                    field_72769_h.field_72984_F.startSection("bb");
+                    theWorld.theProfiler.startSection("bb");
                     ARBOcclusionQuery.glBeginQueryARB(ARBOcclusionQuery.GL_SAMPLES_PASSED_ARB, sortedWorldRenderers[j1].glOcclusionQuery);
                     sortedWorldRenderers[j1].callOcclusionQueryList();
                     ARBOcclusionQuery.glEndQueryARB(ARBOcclusionQuery.GL_SAMPLES_PASSED_ARB);
-                    field_72769_h.field_72984_F.endSection();
+                    theWorld.theProfiler.endSection();
                     sortedWorldRenderers[j1].isWaitingOnOcclusionQuery = true;
                 }
 
@@ -724,18 +727,18 @@ public class RenderGlobal implements IWorldAccess
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL11.GL_FOG);
-                field_72769_h.field_72984_F.endStartSection("render");
+                theWorld.theProfiler.endStartSection("render");
                 j += renderSortedRenderers(byte0, l, par2, par3);
             }
             while (l < sortedWorldRenderers.length);
         }
         else
         {
-            field_72769_h.field_72984_F.endStartSection("render");
+            theWorld.theProfiler.endStartSection("render");
             j += renderSortedRenderers(0, sortedWorldRenderers.length, par2, par3);
         }
 
-        field_72769_h.field_72984_F.endSection();
+        theWorld.theProfiler.endSection();
         return j;
     }
 
@@ -877,7 +880,7 @@ public class RenderGlobal implements IWorldAccess
      */
     public void renderSky(float par1)
     {
-        if (mc.field_71441_e.worldProvider.worldType == 1)
+        if (mc.theWorld.provider.worldType == 1)
         {
             GL11.glDisable(GL11.GL_FOG);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -933,13 +936,13 @@ public class RenderGlobal implements IWorldAccess
             return;
         }
 
-        if (!mc.field_71441_e.worldProvider.isSurfaceWorld())
+        if (!mc.theWorld.provider.isSurfaceWorld())
         {
             return;
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Vec3 vec3 = field_72769_h.getSkyColor(mc.renderViewEntity, par1);
+        Vec3 vec3 = theWorld.getSkyColor(mc.renderViewEntity, par1);
         float f = (float)vec3.xCoord;
         float f1 = (float)vec3.yCoord;
         float f2 = (float)vec3.zCoord;
@@ -965,7 +968,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        float af[] = field_72769_h.worldProvider.calcSunriseSunsetColors(field_72769_h.getCelestialAngle(par1), par1);
+        float af[] = theWorld.provider.calcSunriseSunsetColors(theWorld.getCelestialAngle(par1), par1);
 
         if (af != null)
         {
@@ -973,7 +976,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(field_72769_h.getCelestialAngleRadians(par1)) >= 0.0F ? 0.0F : 180F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(MathHelper.sin(theWorld.getCelestialAngleRadians(par1)) >= 0.0F ? 0.0F : 180F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
             float f6 = af[0];
             float f7 = af[1];
@@ -1011,14 +1014,14 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
-        float dd = 1.0F - field_72769_h.getRainStrength(par1);
+        float dd = 1.0F - theWorld.getRainStrength(par1);
         float f8 = 0.0F;
         float f10 = 0.0F;
         float f13 = 0.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, dd);
         GL11.glTranslatef(f8, f10, f13);
         GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(field_72769_h.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(theWorld.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
         float f16 = 30F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
         tessellator1.startDrawingQuads();
@@ -1029,7 +1032,7 @@ public class RenderGlobal implements IWorldAccess
         tessellator1.draw();
         f16 = 20F;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
-        int l = field_72769_h.getMoonPhase(par1);
+        int l = theWorld.getMoonPhase(par1);
         int i1 = l % 4;
         int j1 = (l / 4) % 2;
         float f23 = (float)(i1 + 0) / 4F;
@@ -1043,7 +1046,7 @@ public class RenderGlobal implements IWorldAccess
         tessellator1.addVertexWithUV(-f16, -100D, -f16, f25, f24);
         tessellator1.draw();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float f27 = field_72769_h.getStarBrightness(par1) * dd;
+        float f27 = theWorld.getStarBrightness(par1) * dd;
 
         if (f27 > 0.0F)
         {
@@ -1058,7 +1061,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
-        double d = mc.field_71439_g.getPosition(par1).yCoord - field_72769_h.getHorizon();
+        double d = mc.thePlayer.getPosition(par1).yCoord - theWorld.getHorizon();
 
         if (d < 0.0D)
         {
@@ -1095,7 +1098,7 @@ public class RenderGlobal implements IWorldAccess
             tessellator1.draw();
         }
 
-        if (field_72769_h.worldProvider.isSkyColored())
+        if (theWorld.provider.isSkyColored())
         {
             GL11.glColor3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
         }
@@ -1114,7 +1117,7 @@ public class RenderGlobal implements IWorldAccess
 
     public void renderClouds(float par1)
     {
-        if (!mc.field_71441_e.worldProvider.isSurfaceWorld())
+        if (!mc.theWorld.provider.isSurfaceWorld())
         {
             return;
         }
@@ -1133,7 +1136,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Vec3 vec3 = field_72769_h.drawClouds(par1);
+        Vec3 vec3 = theWorld.drawClouds(par1);
         float f1 = (float)vec3.xCoord;
         float f2 = (float)vec3.yCoord;
         float f3 = (float)vec3.zCoord;
@@ -1156,7 +1159,7 @@ public class RenderGlobal implements IWorldAccess
         int k = MathHelper.floor_double(d2 / 2048D);
         d1 -= j * 2048;
         d2 -= k * 2048;
-        float f8 = (field_72769_h.worldProvider.getCloudHeight() - f) + 0.33F;
+        float f8 = (theWorld.provider.getCloudHeight() - f) + 0.33F;
         float f9 = (float)(d1 * (double)f5);
         float f10 = (float)(d2 * (double)f5);
         tessellator.startDrawingQuads();
@@ -1197,7 +1200,7 @@ public class RenderGlobal implements IWorldAccess
         double d = (float)cloudOffsetX + par1;
         double d1 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.029999999329447746D) / (double)f1;
         double d2 = (mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * (double)par1) / (double)f1 + 0.33000001311302185D;
-        float f3 = (field_72769_h.worldProvider.getCloudHeight() - f) + 0.33F;
+        float f3 = (theWorld.provider.getCloudHeight() - f) + 0.33F;
         int i = MathHelper.floor_double(d1 / 2048D);
         int j = MathHelper.floor_double(d2 / 2048D);
         d1 -= i * 2048;
@@ -1205,7 +1208,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Vec3 vec3 = field_72769_h.drawClouds(par1);
+        Vec3 vec3 = theWorld.drawClouds(par1);
         float f4 = (float)vec3.xCoord;
         float f5 = (float)vec3.yCoord;
         float f6 = (float)vec3.zCoord;
@@ -1361,7 +1364,7 @@ public class RenderGlobal implements IWorldAccess
         ArrayList arraylist = null;
         int i = worldRenderersToUpdate.size();
         int j = 0;
-        field_72769_h.field_72984_F.startSection("nearChunksSearch");
+        theWorld.theProfiler.startSection("nearChunksSearch");
 
         for (int k = 0; k < i; k++)
         {
@@ -1415,8 +1418,8 @@ public class RenderGlobal implements IWorldAccess
             worldRenderersToUpdate.set(k, null);
         }
 
-        field_72769_h.field_72984_F.endSection();
-        field_72769_h.field_72984_F.startSection("sort");
+        theWorld.theProfiler.endSection();
+        theWorld.theProfiler.startSection("sort");
 
         if (arraylist != null)
         {
@@ -1433,9 +1436,9 @@ public class RenderGlobal implements IWorldAccess
             }
         }
 
-        field_72769_h.field_72984_F.endSection();
+        theWorld.theProfiler.endSection();
         int i1 = 0;
-        field_72769_h.field_72984_F.startSection("rebuild");
+        theWorld.theProfiler.startSection("rebuild");
 
         for (int j1 = byte0 - 1; j1 >= 0; j1--)
         {
@@ -1458,8 +1461,8 @@ public class RenderGlobal implements IWorldAccess
             i1++;
         }
 
-        field_72769_h.field_72984_F.endSection();
-        field_72769_h.field_72984_F.startSection("cleanup");
+        theWorld.theProfiler.endSection();
+        theWorld.theProfiler.startSection("cleanup");
         int k1 = 0;
         int i2 = 0;
 
@@ -1495,15 +1498,15 @@ public class RenderGlobal implements IWorldAccess
             i2++;
         }
 
-        field_72769_h.field_72984_F.endSection();
-        field_72769_h.field_72984_F.startSection("trim");
+        theWorld.theProfiler.endSection();
+        theWorld.theProfiler.startSection("trim");
 
         while (--k1 >= i2)
         {
             worldRenderersToUpdate.remove(k1);
         }
 
-        field_72769_h.field_72984_F.endSection();
+        theWorld.theProfiler.endSection();
         return i == j + i1;
     }
 
@@ -1513,13 +1516,13 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)Minecraft.func_71386_F() / 100F) * 0.2F + 0.4F) * 0.5F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)Minecraft.getSystemTime() / 100F) * 0.2F + 0.4F) * 0.5F);
 
         if (par3 != 0 && par4ItemStack != null)
         {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            float f = MathHelper.sin((float)Minecraft.func_71386_F() / 100F) * 0.2F + 0.8F;
-            GL11.glColor4f(f, f, f, MathHelper.sin((float)Minecraft.func_71386_F() / 200F) * 0.2F + 0.5F);
+            float f = MathHelper.sin((float)Minecraft.getSystemTime() / 100F) * 0.2F + 0.8F;
+            GL11.glColor4f(f, f, f, MathHelper.sin((float)Minecraft.getSystemTime() / 200F) * 0.2F + 0.5F);
             int i = renderEngine.getTexture("/terrain.png");
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, i);
         }
@@ -1528,7 +1531,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 
-    public void func_72717_a(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3)
+    public void drawBlockDamageTexture(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3)
     {
         double d = par2EntityPlayer.lastTickPosX + (par2EntityPlayer.posX - par2EntityPlayer.lastTickPosX) * (double)par3;
         double d1 = par2EntityPlayer.lastTickPosY + (par2EntityPlayer.posY - par2EntityPlayer.lastTickPosY) * (double)par3;
@@ -1562,7 +1565,7 @@ public class RenderGlobal implements IWorldAccess
                 }
                 else
                 {
-                    int j = field_72769_h.getBlockId(destroyblockprogress.func_73110_b(), destroyblockprogress.func_73109_c(), destroyblockprogress.func_73108_d());
+                    int j = theWorld.getBlockId(destroyblockprogress.func_73110_b(), destroyblockprogress.func_73109_c(), destroyblockprogress.func_73108_d());
                     Block block = j <= 0 ? null : Block.blocksList[j];
 
                     if (block == null)
@@ -1599,15 +1602,15 @@ public class RenderGlobal implements IWorldAccess
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glDepthMask(false);
             float f = 0.002F;
-            int i = field_72769_h.getBlockId(par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ);
+            int i = theWorld.getBlockId(par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ);
 
             if (i > 0)
             {
-                Block.blocksList[i].setBlockBoundsBasedOnState(field_72769_h, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ);
+                Block.blocksList[i].setBlockBoundsBasedOnState(theWorld, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ);
                 double d = par1EntityPlayer.lastTickPosX + (par1EntityPlayer.posX - par1EntityPlayer.lastTickPosX) * (double)par5;
                 double d1 = par1EntityPlayer.lastTickPosY + (par1EntityPlayer.posY - par1EntityPlayer.lastTickPosY) * (double)par5;
                 double d2 = par1EntityPlayer.lastTickPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.lastTickPosZ) * (double)par5;
-                drawOutlinedBoundingBox(Block.blocksList[i].getSelectedBoundingBoxFromPool(field_72769_h, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ).expand(f, f, f).getOffsetBoundingBox(-d, -d1, -d2));
+                drawOutlinedBoundingBox(Block.blocksList[i].getSelectedBoundingBoxFromPool(theWorld, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ).expand(f, f, f).getOffsetBoundingBox(-d, -d1, -d2));
             }
 
             GL11.glDepthMask(true);
@@ -1794,7 +1797,7 @@ public class RenderGlobal implements IWorldAccess
 
         int i = mc.gameSettings.particleSetting;
 
-        if (i == 1 && field_72769_h.rand.nextInt(3) == 0)
+        if (i == 1 && theWorld.rand.nextInt(3) == 0)
         {
             i = 2;
         }
@@ -1806,11 +1809,11 @@ public class RenderGlobal implements IWorldAccess
 
         if (par1Str.equals("hugeexplosion"))
         {
-            mc.effectRenderer.addEffect(((EntityFX)(obj = new EntityHugeExplodeFX(field_72769_h, par2, par4, par6, par8, par10, par12))));
+            mc.effectRenderer.addEffect(((EntityFX)(obj = new EntityHugeExplodeFX(theWorld, par2, par4, par6, par8, par10, par12))));
         }
         else if (par1Str.equals("largeexplode"))
         {
-            mc.effectRenderer.addEffect(((EntityFX)(obj = new EntityLargeExplodeFX(renderEngine, field_72769_h, par2, par4, par6, par8, par10, par12))));
+            mc.effectRenderer.addEffect(((EntityFX)(obj = new EntityLargeExplodeFX(renderEngine, theWorld, par2, par4, par6, par8, par10, par12))));
         }
 
         if (obj != null)
@@ -1832,125 +1835,125 @@ public class RenderGlobal implements IWorldAccess
 
         if (par1Str.equals("bubble"))
         {
-            obj = new EntityBubbleFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityBubbleFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("suspended"))
         {
-            obj = new EntitySuspendFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntitySuspendFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("depthsuspend"))
         {
-            obj = new EntityAuraFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityAuraFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("townaura"))
         {
-            obj = new EntityAuraFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityAuraFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("crit"))
         {
-            obj = new EntityCritFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityCritFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("magicCrit"))
         {
-            obj = new EntityCritFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityCritFX(theWorld, par2, par4, par6, par8, par10, par12);
             ((EntityFX)(obj)).setRBGColorF(((EntityFX)(obj)).getRedColorF() * 0.3F, ((EntityFX)(obj)).getGreenColorF() * 0.8F, ((EntityFX)(obj)).getBlueColorF());
             ((EntityFX)(obj)).setParticleTextureIndex(((EntityFX)(obj)).getParticleTextureIndex() + 1);
         }
         else if (par1Str.equals("smoke"))
         {
-            obj = new EntitySmokeFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntitySmokeFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("mobSpell"))
         {
-            obj = new EntitySpellParticleFX(field_72769_h, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+            obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
             ((EntityFX)(obj)).setRBGColorF((float)par8, (float)par10, (float)par12);
         }
         else if (par1Str.equals("spell"))
         {
-            obj = new EntitySpellParticleFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("instantSpell"))
         {
-            obj = new EntitySpellParticleFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, par8, par10, par12);
             ((EntitySpellParticleFX)obj).func_70589_b(144);
         }
         else if (par1Str.equals("note"))
         {
-            obj = new EntityNoteFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityNoteFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("portal"))
         {
-            obj = new EntityPortalFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityPortalFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("enchantmenttable"))
         {
-            obj = new EntityEnchantmentTableParticleFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityEnchantmentTableParticleFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("explode"))
         {
-            obj = new EntityExplodeFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityExplodeFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("flame"))
         {
-            obj = new EntityFlameFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityFlameFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("lava"))
         {
-            obj = new EntityLavaFX(field_72769_h, par2, par4, par6);
+            obj = new EntityLavaFX(theWorld, par2, par4, par6);
         }
         else if (par1Str.equals("footstep"))
         {
-            obj = new EntityFootStepFX(renderEngine, field_72769_h, par2, par4, par6);
+            obj = new EntityFootStepFX(renderEngine, theWorld, par2, par4, par6);
         }
         else if (par1Str.equals("splash"))
         {
-            obj = new EntitySplashFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntitySplashFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("largesmoke"))
         {
-            obj = new EntitySmokeFX(field_72769_h, par2, par4, par6, par8, par10, par12, 2.5F);
+            obj = new EntitySmokeFX(theWorld, par2, par4, par6, par8, par10, par12, 2.5F);
         }
         else if (par1Str.equals("cloud"))
         {
-            obj = new EntityCloudFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityCloudFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("reddust"))
         {
-            obj = new EntityReddustFX(field_72769_h, par2, par4, par6, (float)par8, (float)par10, (float)par12);
+            obj = new EntityReddustFX(theWorld, par2, par4, par6, (float)par8, (float)par10, (float)par12);
         }
         else if (par1Str.equals("snowballpoof"))
         {
-            obj = new EntityBreakingFX(field_72769_h, par2, par4, par6, Item.snowball);
+            obj = new EntityBreakingFX(theWorld, par2, par4, par6, Item.snowball);
         }
         else if (par1Str.equals("dripWater"))
         {
-            obj = new EntityDropParticleFX(field_72769_h, par2, par4, par6, Material.water);
+            obj = new EntityDropParticleFX(theWorld, par2, par4, par6, Material.water);
         }
         else if (par1Str.equals("dripLava"))
         {
-            obj = new EntityDropParticleFX(field_72769_h, par2, par4, par6, Material.lava);
+            obj = new EntityDropParticleFX(theWorld, par2, par4, par6, Material.lava);
         }
         else if (par1Str.equals("snowshovel"))
         {
-            obj = new EntitySnowShovelFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntitySnowShovelFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.equals("slime"))
         {
-            obj = new EntityBreakingFX(field_72769_h, par2, par4, par6, Item.slimeBall);
+            obj = new EntityBreakingFX(theWorld, par2, par4, par6, Item.slimeBall);
         }
         else if (par1Str.equals("heart"))
         {
-            obj = new EntityHeartFX(field_72769_h, par2, par4, par6, par8, par10, par12);
+            obj = new EntityHeartFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
         else if (par1Str.startsWith("iconcrack_"))
         {
             int j = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
-            obj = new EntityBreakingFX(field_72769_h, par2, par4, par6, par8, par10, par12, Item.itemsList[j]);
+            obj = new EntityBreakingFX(theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[j]);
         }
         else if (par1Str.startsWith("tilecrack_"))
         {
             int k = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
-            obj = new EntityDiggingFX(field_72769_h, par2, par4, par6, par8, par10, par12, Block.blocksList[k], 0, 0);
+            obj = new EntityDiggingFX(theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[k], 0, 0);
         }
 
         if (obj != null)
@@ -2005,7 +2008,7 @@ public class RenderGlobal implements IWorldAccess
      */
     public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
-        Random random = field_72769_h.rand;
+        Random random = theWorld.rand;
 
         switch (par2)
         {
@@ -2013,15 +2016,15 @@ public class RenderGlobal implements IWorldAccess
                 break;
 
             case 1001:
-                field_72769_h.func_72980_b(par3, par4, par5, "random.click", 1.0F, 1.2F);
+                theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.2F);
                 break;
 
             case 1000:
-                field_72769_h.func_72980_b(par3, par4, par5, "random.click", 1.0F, 1.0F);
+                theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.0F);
                 break;
 
             case 1002:
-                field_72769_h.func_72980_b(par3, par4, par5, "random.bow", 1.0F, 1.2F);
+                theWorld.playSound(par3, par4, par5, "random.bow", 1.0F, 1.2F);
                 break;
 
             case 2000:
@@ -2103,7 +2106,7 @@ public class RenderGlobal implements IWorldAccess
                     }
                 }
 
-                field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
                 break;
 
             case 2001:
@@ -2121,11 +2124,11 @@ public class RenderGlobal implements IWorldAccess
             case 2004:
                 for (int i2 = 0; i2 < 20; i2++)
                 {
-                    double d14 = (double)par3 + 0.5D + ((double)field_72769_h.rand.nextFloat() - 0.5D) * 2D;
-                    double d17 = (double)par4 + 0.5D + ((double)field_72769_h.rand.nextFloat() - 0.5D) * 2D;
-                    double d20 = (double)par5 + 0.5D + ((double)field_72769_h.rand.nextFloat() - 0.5D) * 2D;
-                    field_72769_h.spawnParticle("smoke", d14, d17, d20, 0.0D, 0.0D, 0.0D);
-                    field_72769_h.spawnParticle("flame", d14, d17, d20, 0.0D, 0.0D, 0.0D);
+                    double d14 = (double)par3 + 0.5D + ((double)theWorld.rand.nextFloat() - 0.5D) * 2D;
+                    double d17 = (double)par4 + 0.5D + ((double)theWorld.rand.nextFloat() - 0.5D) * 2D;
+                    double d20 = (double)par5 + 0.5D + ((double)theWorld.rand.nextFloat() - 0.5D) * 2D;
+                    theWorld.spawnParticle("smoke", d14, d17, d20, 0.0D, 0.0D, 0.0D);
+                    theWorld.spawnParticle("flame", d14, d17, d20, 0.0D, 0.0D, 0.0D);
                 }
 
                 break;
@@ -2133,54 +2136,58 @@ public class RenderGlobal implements IWorldAccess
             case 1003:
                 if (Math.random() < 0.5D)
                 {
-                    field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
+                    theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
                 }
                 else
                 {
-                    field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
+                    theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
                 }
 
                 break;
 
             case 1004:
-                field_72769_h.func_72980_b((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.fizz", 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.fizz", 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
                 break;
 
             case 1005:
                 if (Item.itemsList[par6] instanceof ItemRecord)
                 {
-                    field_72769_h.playRecord(((ItemRecord)Item.itemsList[par6]).recordName, par3, par4, par5);
+                    theWorld.playRecord(((ItemRecord)Item.itemsList[par6]).recordName, par3, par4, par5);
                 }
                 else
                 {
-                    field_72769_h.playRecord(null, par3, par4, par5);
+                    theWorld.playRecord(null, par3, par4, par5);
                 }
 
                 break;
 
             case 1007:
-                field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
 
             case 1008:
-                field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
 
             case 1010:
-                field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
 
             case 1012:
-                field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
 
             case 1011:
-                field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
         }
     }
 
-    public void func_72705_a(int par1, int par2, int par3, int par4, int par5)
+    /**
+     * Starts (or continues) destroying a block with given ID at the given coordinates for the given partially destroyed
+     * value
+     */
+    public void destroyBlockPartially(int par1, int par2, int par3, int par4, int par5)
     {
         if (par5 < 0 || par5 >= 10)
         {

@@ -11,6 +11,6 @@ public class CommandClientHelp extends CommandHelp
 
     protected List func_71534_d(ICommandSender par1ICommandSender)
     {
-        return Minecraft.getMinecraftInstance().getCommandManager().func_71557_a(par1ICommandSender);
+        return Minecraft.getMinecraft().getCommandManager().getPossibleCommands(par1ICommandSender);
     }
 }

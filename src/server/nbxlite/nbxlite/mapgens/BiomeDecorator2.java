@@ -64,7 +64,7 @@ public class BiomeDecorator2 extends BiomeDecorator
             int k10 = chunk_Z + randomGenerator.nextInt(16) + 8;
             WorldGenerator worldgenerator = biome.getRandomWorldGenForTrees(randomGenerator);
             if (worldgenerator instanceof WorldGenTrees && mod_noBiomesX.MapFeatures<mod_noBiomesX.FEATURES_12){
-                worldgenerator = biome.oldWorldGenTrees;
+                worldgenerator = biome.oldWorldGeneratorTrees;
             }
             worldgenerator.setScale(1.0D, 1.0D, 1.0D);
             worldgenerator.generate(currentWorld, randomGenerator, j6, currentWorld.getHeightValue(j6, k10), k10);

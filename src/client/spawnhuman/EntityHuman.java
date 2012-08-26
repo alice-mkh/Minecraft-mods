@@ -43,7 +43,7 @@ public class EntityHuman extends EntityAnimal
             pathToEntity = null;
             return;
         }
-        worldObj.field_72984_F.startSection("followpath");
+        worldObj.theProfiler.startSection("followpath");
         Vec3 vec3d = pathToEntity.getVectorFromIndex(this, pathToEntity.getCurrentPathIndex());
         for(double d = width * 2.0F; vec3d != null && vec3d.squareDistanceTo(posX, vec3d.yCoord, posZ) < d * d;)
         {
@@ -83,12 +83,12 @@ public class EntityHuman extends EntityAnimal
                 isJumping = true;
             }
         }
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     protected void updateWanderPath()
     {
-        worldObj.field_72984_F.startSection("stroll");
+        worldObj.theProfiler.startSection("stroll");
         int i = -1;
         int j = -1;
         int k = -1;
@@ -103,7 +103,7 @@ public class EntityHuman extends EntityAnimal
         }
 //         pathToEntity = worldObj.getEntityPathToXYZ(this, i, j, k, 10F);
         setPathToEntity(worldObj.getEntityPathToXYZ(this, i, j, k, 10F, true, false, false, true));
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     public int getMaxHealth()

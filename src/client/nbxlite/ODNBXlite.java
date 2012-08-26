@@ -50,7 +50,7 @@ public class ODNBXlite extends OldDaysModule{
         }catch(Exception ex){}
         set(net.minecraft.src.RenderGlobal.class, "nbxlite", true);
         try{
-            Minecraft.getMinecraftInstance().worldClass = net.minecraft.src.WorldSSP2.class;
+            Minecraft.getMinecraft().worldClass = net.minecraft.src.WorldSSP2.class;
         }catch(Exception ex){}
 /*        Properties properties = new Properties();
         try{
@@ -123,8 +123,8 @@ public class ODNBXlite extends OldDaysModule{
             case 20:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
             case 21:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
                     set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
-            case 22:if (Minecraft.getMinecraftInstance().renderGlobal instanceof RenderGlobal2){
-                        ((RenderGlobal2)Minecraft.getMinecraftInstance().renderGlobal).setStars(OldStars);
+            case 22:if (Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
+                        ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(OldStars);
                     }break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
@@ -183,9 +183,9 @@ public class ODNBXlite extends OldDaysModule{
 
     private void convertMapFormatOld(String s, String s1)
     {
-        Minecraft mc = Minecraft.getMinecraftInstance();
-        mc.loadingScreen.printText("Converting World to Scaevolus' McRegion");
-        mc.loadingScreen.displayLoadingString("This may take a while :)");
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.loadingScreen.resetProgressAndMessage("Converting World to Scaevolus' McRegion");
+        mc.loadingScreen.resetProgresAndWorkingMessage("This may take a while :)");
         saveLoader.convertMapFormat(s, mc.loadingScreen);
 //         mc.startWorldSSP(s, s1, new WorldSettings(0L, EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT));
     }
@@ -214,8 +214,8 @@ public class ODNBXlite extends OldDaysModule{
             Generator = GEN_NEWBIOMES;
         }
         refreshProperties();
-        if (mod_OldDays.getMinecraftInstance().field_71441_e != null){
-            SetGenerator(mod_OldDays.getMinecraftInstance().field_71441_e, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
+        if (mod_OldDays.getMinecraft().theWorld != null){
+            SetGenerator(mod_OldDays.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
             if ((i == 0 && (Gen == 0 || Gen > 3)) || (i == 1 && (BetaFeatures >= 5 || BetaFeatures == 3 || BetaFeatures == 0)) || i == 2){
                 reload();
             }
@@ -263,8 +263,8 @@ public class ODNBXlite extends OldDaysModule{
         new ItemBlock(gearId - 256);
         Item.itemsList[gearId].setItemName("gear");
         Block.blocksList[gearId].initializeBlock();
-        mod_OldDays.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(0));
-        mod_OldDays.getMinecraftInstance().renderEngine.registerTextureFX(new TextureGearFX(1));
+        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(0));
+        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(1));
         gearRenderID = 33;
     }
 
@@ -379,6 +379,8 @@ public class ODNBXlite extends OldDaysModule{
                 result.append("12");
             }else if (feats==FEATURES_13){
                 result.append("13");
+            }else if (feats==FEATURES_132){
+                result.append("132");
             }
         }
         return result.toString();
@@ -458,6 +460,9 @@ public class ODNBXlite extends OldDaysModule{
                 if (gen.contains("12")){
                     return FEATURES_12;
                 }
+                if (gen.contains("132")){
+                    return FEATURES_132;
+                }
                 if (gen.contains("13")){
                     return FEATURES_13;
                 }
@@ -479,20 +484,20 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static boolean isFinite(){
-        World world = mod_OldDays.getMinecraftInstance().field_71441_e;
-        return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && (world==null || world.worldProvider.worldType==0);
+        World world = mod_OldDays.getMinecraft().theWorld;
+        return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && (world==null || world.provider.worldType==0);
     }
 
     public boolean onTick(){
-        Minecraft minecraft = mod_OldDays.getMinecraftInstance();
-        if (isFinite() && !minecraft.field_71441_e.isRemote){
+        Minecraft minecraft = mod_OldDays.getMinecraft();
+        if (isFinite() && !minecraft.theWorld.isRemote){
             tickPushing(minecraft);
         }
         return true;
     }
 
     public boolean onGUITick(GuiScreen gui){
-        Minecraft minecraft = mod_OldDays.getMinecraftInstance();
+        Minecraft minecraft = mod_OldDays.getMinecraft();
         if (!rendererReplaced){
 //             minecraft.entityRenderer = new EntityRenderer2(minecraft);
             minecraft.renderGlobal = new net.minecraft.src.nbxlite.RenderGlobal2(minecraft, minecraft.renderEngine);
@@ -503,9 +508,9 @@ public class ODNBXlite extends OldDaysModule{
 
     private boolean tickPushing(Minecraft minecraft){
         Entity entity;
-        for (int k = 0; k < minecraft.field_71441_e.loadedEntityList.size(); k++)
+        for (int k = 0; k < minecraft.theWorld.loadedEntityList.size(); k++)
         {
-            entity = (Entity)minecraft.field_71441_e.loadedEntityList.get(k);
+            entity = (Entity)minecraft.theWorld.loadedEntityList.get(k);
             pushBack(entity);
         }
         return true;
@@ -591,7 +596,7 @@ public class ODNBXlite extends OldDaysModule{
             }
             return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
         }else if (Generator==GEN_OLDBIOMES){
-            WorldChunkManager man = mod_OldDays.getMinecraftInstance().field_71441_e.getWorldChunkManager();
+            WorldChunkManager man = mod_OldDays.getMinecraft().theWorld.getWorldChunkManager();
             man.oldFunc_4069_a(x, z, 1, 1);
             double d = man.temperature[0];
             double d1 = man.humidity[0];
@@ -633,7 +638,7 @@ public class ODNBXlite extends OldDaysModule{
             }
             return ColorizerGrass.getGrassColor(1.0F, 1.0F);
         } else if(Generator==GEN_OLDBIOMES){
-            WorldChunkManager man = mod_OldDays.getMinecraftInstance().field_71441_e.getWorldChunkManager();
+            WorldChunkManager man = mod_OldDays.getMinecraft().theWorld.getWorldChunkManager();
             man.oldFunc_4069_a(x, z, 1, 1);
             double d = man.temperature[0];
             double d1 = man.humidity[0];
@@ -747,7 +752,7 @@ public class ODNBXlite extends OldDaysModule{
         }
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
         if (Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)){
-            world.worldProvider.registerWorld(world);
+            world.provider.registerWorld(world);
         }
         SnowCovered = snow;
         GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
@@ -778,7 +783,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void setTextureFX(){
-        org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraftInstance().renderEngine.getTexture("/terrain.png"));
+        org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraft().renderEngine.getTexture("/terrain.png"));
         textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
         int id = SurrGroundType;
         if (SurrGroundHeight<=SurrWaterHeight || SurrWaterType==Block.lavaStill.blockID && SurrGroundType==Block.grass.blockID){
@@ -792,7 +797,7 @@ public class ODNBXlite extends OldDaysModule{
         bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
         waterfx.changeIndex(Block.waterStill.blockIndexInTexture, false);
         lavafx.changeIndex(Block.lavaStill.blockIndexInTexture, false);
-        emptyImage = mod_OldDays.getMinecraftInstance().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));
+        emptyImage = mod_OldDays.getMinecraft().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));
     }
 
     public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
@@ -937,7 +942,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void generateIndevLevel(long seed){
-        IndevGenerator gen2 = new IndevGenerator(mod_OldDays.getMinecraftInstance().loadingScreen, seed);
+        IndevGenerator gen2 = new IndevGenerator(mod_OldDays.getMinecraft().loadingScreen, seed);
         if (ODNBXlite.IndevMapType==ODNBXlite.TYPE_ISLAND){
             gen2.island=true;
         }
@@ -948,7 +953,7 @@ public class ODNBXlite extends OldDaysModule{
             gen2.flat=true;
         }
         gen2.theme=ODNBXlite.MapTheme;
-        mod_OldDays.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+        mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.generatingLevel"));
         ODNBXlite.IndevWorld = gen2.generateLevel("Created with NBXlite!", ODNBXlite.IndevWidthX, ODNBXlite.IndevWidthZ, ODNBXlite.IndevHeight);
         ODNBXlite.IndevSpawnX = gen2.spawnX;
         ODNBXlite.IndevSpawnY = gen2.spawnY;
@@ -956,9 +961,9 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void generateClassicLevel(long seed){
-        ClassicGenerator gen2 = new ClassicGenerator(mod_OldDays.getMinecraftInstance().loadingScreen, seed);
+        ClassicGenerator gen2 = new ClassicGenerator(mod_OldDays.getMinecraft().loadingScreen, seed);
         ODNBXlite.IndevHeight = 64;
-        mod_OldDays.getMinecraftInstance().loadingScreen.printText(StatCollector.translateToLocal("menu.generatingLevel"));
+        mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.generatingLevel"));
         ODNBXlite.IndevWorld = gen2.generateLevel("Created with NBXlite!", ODNBXlite.IndevWidthX, ODNBXlite.IndevWidthZ, ODNBXlite.IndevHeight);
         ODNBXlite.IndevSpawnX = gen2.spawnX;
         ODNBXlite.IndevSpawnY = gen2.spawnY;
@@ -989,7 +994,7 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean Import = false;
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 4;
-    public static int DefaultFeaturesRelease = 4;
+    public static int DefaultFeaturesRelease = 5;
     public static int DefaultTheme = 0;
     public static int DefaultIndevType = 1;
     public static int DefaultFiniteWidth = 2;
@@ -1029,6 +1034,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int FEATURES_11 = 2;
     public static int FEATURES_12 = 3;
     public static int FEATURES_13 = 4;
+    public static int FEATURES_132 = 5;
 
     public static int THEME_NORMAL = 0;
     public static int THEME_HELL = 1;
@@ -1043,5 +1049,5 @@ public class ODNBXlite extends OldDaysModule{
     public static int gearRenderID;
     public static boolean rendererReplaced = false;
 
-    public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraftInstance().getMinecraftDir(), "saves"));
+    public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().getMinecraftDir(), "saves"));
 }

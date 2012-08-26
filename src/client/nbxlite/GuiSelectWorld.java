@@ -71,9 +71,9 @@ public class GuiSelectWorld extends GuiScreen
         screenTitle = stringtranslate.translateKey("selectWorld.title");
         localizedWorldText = stringtranslate.translateKey("selectWorld.world");
         localizedMustConvertText = stringtranslate.translateKey("selectWorld.conversion");
-        localizedGameModeText[EnumGameType.SURVIVAL.func_77148_a()] = stringtranslate.translateKey("gameMode.survival");
-        localizedGameModeText[EnumGameType.CREATIVE.func_77148_a()] = stringtranslate.translateKey("gameMode.creative");
-        localizedGameModeText[EnumGameType.ADVENTURE.func_77148_a()] = stringtranslate.translateKey("gameMode.adventure");
+        localizedGameModeText[EnumGameType.SURVIVAL.getID()] = stringtranslate.translateKey("gameMode.survival");
+        localizedGameModeText[EnumGameType.CREATIVE.getID()] = stringtranslate.translateKey("gameMode.creative");
+        localizedGameModeText[EnumGameType.ADVENTURE.getID()] = stringtranslate.translateKey("gameMode.adventure");
         loadSaves();
         worldSlotContainer = new GuiWorldSlot(this);
         worldSlotContainer.registerScrollButtons(controlList, 4, 5);
@@ -217,7 +217,7 @@ public class GuiSelectWorld extends GuiScreen
                     if (s1 == null){
                         s1 = (new StringBuilder()).append("World").append(par1).toString();
                     }
-                    mc.func_71371_a(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, EnumGameType.SURVIVAL, false, false, WorldType.DEFAULT));
+                    mc.launchIntegratedServer(getSaveFileName(par1).replace(".mclevel",""), getSaveName(par1), new WorldSettings(0L, EnumGameType.SURVIVAL, false, false, WorldType.DEFAULT));
                 }
                 mclevel.renameTo(new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+mclevel.getName()));
                 mc.displayGuiScreen(null);
@@ -276,7 +276,7 @@ public class GuiSelectWorld extends GuiScreen
             if (s1 == null){
                 s1 = (new StringBuilder()).append("World").append(par1).toString();
             }
-            mc.func_71371_a(s, s1, null);
+            mc.launchIntegratedServer(s, s1, null);
         }
     }
 

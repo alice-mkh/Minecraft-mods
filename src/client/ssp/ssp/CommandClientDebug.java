@@ -12,12 +12,12 @@ public class CommandClientDebug extends CommandDebug
         {
             if (par2ArrayOfStr[0].equals("start"))
             {
-                func_71522_a(par1ICommandSender, "FIXME: Debug starting is not implemented in SSP!", new Object[]{});
+                notifyAdmins(par1ICommandSender, "FIXME: Debug starting is not implemented in SSP!", new Object[]{});
             }
 
             if (par2ArrayOfStr[0].equals("stop"))
             {
-                func_71522_a(par1ICommandSender, "FIXME: Debug stopping is not implemented in SSP!", new Object[]{});
+                notifyAdmins(par1ICommandSender, "FIXME: Debug stopping is not implemented in SSP!", new Object[]{});
             }
             return;
         }

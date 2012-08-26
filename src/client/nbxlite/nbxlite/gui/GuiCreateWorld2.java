@@ -194,7 +194,7 @@ public class GuiCreateWorld2 extends GuiScreen
     private void makeUseableName()
     {
         folderName = textboxWorldName.getText().trim();
-        char ac[] = ChatAllowedCharacters.allowedCharactersArray;
+        char ac[] = ChatAllowedCharacters.invalidFilenameCharacters;
         int i = ac.length;
 
         for (int j = 0; j < i; j++)
@@ -330,17 +330,17 @@ public class GuiCreateWorld2 extends GuiScreen
                 }
             }
 
-            EnumGameType enumgametype = EnumGameType.func_77142_a(gameMode);
+            EnumGameType enumgametype = EnumGameType.getByName(gameMode);
             WorldSettings worldsettings = new WorldSettings(l, enumgametype, field_73925_n, field_73933_r, WorldType.worldTypes[field_73916_E]);
 
             if (field_73934_q && !field_73933_r)
             {
-                worldsettings.func_77159_a();
+                worldsettings.enableBonusChest();
             }
 
             if (field_73926_o && !field_73933_r)
             {
-                worldsettings.func_77166_b();
+                worldsettings.enableCommands();
             }
 
             mc.enableSP = mc.useSP;
@@ -349,7 +349,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 mc.startWorldSSP(folderName, textboxWorldName.getText().trim(), worldsettings);
                 mc.displayGuiScreen(null);
             }else{
-                mc.func_71371_a(folderName, textboxWorldName.getText().trim(), worldsettings);
+                mc.launchIntegratedServer(folderName, textboxWorldName.getText().trim(), worldsettings);
             }
         }
         else if (par1GuiButton.id == 3)

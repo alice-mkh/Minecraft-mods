@@ -20,6 +20,8 @@ public class EntityXPOrb extends Entity
 
     /** This is how much XP this orb has. */
     private int xpValue;
+    private EntityPlayer field_80001_f;
+    private int field_80002_g;
 
     public EntityXPOrb(World par1World, double par2, double par4, double par6, int par8)
     {
@@ -115,13 +117,22 @@ public class EntityXPOrb extends Entity
 
         pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2D, posZ);
         double d = 8D;
-        EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, d);
 
-        if (entityplayer != null)
+        if (field_80002_g < (xpColor - 20) + entityId % 100)
         {
-            double d1 = (entityplayer.posX - posX) / d;
-            double d2 = ((entityplayer.posY + (double)entityplayer.getEyeHeight()) - posY) / d;
-            double d3 = (entityplayer.posZ - posZ) / d;
+            if (field_80001_f == null || field_80001_f.getDistanceSqToEntity(this) > d * d)
+            {
+                field_80001_f = worldObj.getClosestPlayerToEntity(this, d);
+            }
+
+            field_80002_g = xpColor;
+        }
+
+        if (field_80001_f != null)
+        {
+            double d1 = (field_80001_f.posX - posX) / d;
+            double d2 = ((field_80001_f.posY + (double)field_80001_f.getEyeHeight()) - posY) / d;
+            double d3 = (field_80001_f.posZ - posZ) / d;
             double d4 = Math.sqrt(d1 * d1 + d2 * d2 + d3 * d3);
             double d5 = 1.0D - d4;
 

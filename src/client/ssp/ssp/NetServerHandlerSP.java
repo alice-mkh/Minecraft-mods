@@ -13,7 +13,7 @@ public class NetServerHandlerSP extends NetServerHandler
     {
         super(par3EntityPlayerMP);
         field_72574_e = par3EntityPlayerMP;
-        par3EntityPlayerMP.field_71135_a = this;
+        par3EntityPlayerMP.serverForThisPlayer = this;
     }
 
     public EntityPlayerMP getPlayer()
@@ -53,9 +53,9 @@ public class NetServerHandlerSP extends NetServerHandler
     {
     }
 
-    public void func_72567_b(Packet par1Packet)
+    public void sendPacketToPlayer(Packet par1Packet)
     {
-        par1Packet.processPacket(net.minecraft.client.Minecraft.getMinecraftInstance().getSendQueue());
+        par1Packet.processPacket(net.minecraft.client.Minecraft.getMinecraft().getSendQueue());
     }
 
     public void handleBlockItemSwitch(Packet16BlockItemSwitch par1Packet16BlockItemSwitch)
@@ -108,7 +108,7 @@ public class NetServerHandlerSP extends NetServerHandler
 
     public void handleCloseWindow(Packet101CloseWindow par1Packet101CloseWindow)
     {
-        field_72574_e.func_71128_l();
+        field_72574_e.closeInventory();
     }
 
     public void handleWindowClick(Packet102WindowClick par1Packet102WindowClick)

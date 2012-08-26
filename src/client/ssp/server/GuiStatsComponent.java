@@ -41,24 +41,24 @@ public class GuiStatsComponent extends JComponent
         System.gc();
         this.displayStrings[0] = "Memory use: " + var1 / 1024L / 1024L + " mb (" + Runtime.getRuntime().freeMemory() * 100L / Runtime.getRuntime().maxMemory() + "% free)";
         this.displayStrings[1] = "Threads: " + TcpConnection.field_74471_a.get() + " + " + TcpConnection.field_74469_b.get();
-        this.displayStrings[2] = "Avg tick: " + field_79020_a.format(this.func_79015_a(this.field_79017_e.field_71311_j) * 1.0E-6D) + " ms";
-        this.displayStrings[3] = "Avg sent: " + (int)this.func_79015_a(this.field_79017_e.field_71300_f) + ", Avg size: " + (int)this.func_79015_a(this.field_79017_e.field_71301_g);
-        this.displayStrings[4] = "Avg rec: " + (int)this.func_79015_a(this.field_79017_e.field_71313_h) + ", Avg size: " + (int)this.func_79015_a(this.field_79017_e.field_71314_i);
+        this.displayStrings[2] = "Avg tick: " + field_79020_a.format(this.func_79015_a(this.field_79017_e.tickTimeArray) * 1.0E-6D) + " ms";
+        this.displayStrings[3] = "Avg sent: " + (int)this.func_79015_a(this.field_79017_e.sentPacketCountArray) + ", Avg size: " + (int)this.func_79015_a(this.field_79017_e.sentPacketSizeArray);
+        this.displayStrings[4] = "Avg rec: " + (int)this.func_79015_a(this.field_79017_e.recievedPacketCountArray) + ", Avg size: " + (int)this.func_79015_a(this.field_79017_e.recievedPacketSizeArray);
 
-        if (this.field_79017_e.field_71305_c != null)
+        if (this.field_79017_e.theWorldServer != null)
         {
-            for (int var3 = 0; var3 < this.field_79017_e.field_71305_c.length; ++var3)
+            for (int var3 = 0; var3 < this.field_79017_e.theWorldServer.length; ++var3)
             {
-                this.displayStrings[5 + var3] = "Lvl " + var3 + " tick: " + field_79020_a.format(this.func_79015_a(this.field_79017_e.field_71312_k[var3]) * 1.0E-6D) + " ms";
+                this.displayStrings[5 + var3] = "Lvl " + var3 + " tick: " + field_79020_a.format(this.func_79015_a(this.field_79017_e.timeOfLastDimenstionTick[var3]) * 1.0E-6D) + " ms";
 
-                if (this.field_79017_e.field_71305_c[var3] != null && this.field_79017_e.field_71305_c[var3].field_73059_b != null)
+                if (this.field_79017_e.theWorldServer[var3] != null && this.field_79017_e.theWorldServer[var3].theChunkProviderServer != null)
                 {
-                    this.displayStrings[5 + var3] = this.displayStrings[5 + var3] + ", " + this.field_79017_e.field_71305_c[var3].field_73059_b.makeString();
+                    this.displayStrings[5 + var3] = this.displayStrings[5 + var3] + ", " + this.field_79017_e.theWorldServer[var3].theChunkProviderServer.makeString();
                 }
             }
         }
 
-        this.memoryUse[this.updateCounter++ & 255] = (int)(this.func_79015_a(this.field_79017_e.field_71301_g) * 100.0D / 12500.0D);
+        this.memoryUse[this.updateCounter++ & 255] = (int)(this.func_79015_a(this.field_79017_e.sentPacketSizeArray) * 100.0D / 12500.0D);
         this.repaint();
     }
 

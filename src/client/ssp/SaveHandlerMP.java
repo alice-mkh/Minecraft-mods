@@ -31,7 +31,10 @@ public class SaveHandlerMP implements ISaveHandler
         return null;
     }
 
-    public void func_75755_a(WorldInfo worldinfo, NBTTagCompound nbttagcompound)
+    /**
+     * Saves the given World Info with the given NBTTagCompound as the Player.
+     */
+    public void saveWorldInfoWithPlayer(WorldInfo worldinfo, NBTTagCompound nbttagcompound)
     {
     }
 
@@ -49,12 +52,18 @@ public class SaveHandlerMP implements ISaveHandler
     {
     }
 
-    public IPlayerFileData func_75756_e()
+    /**
+     * returns null if no saveHandler is relevent (eg. SMP)
+     */
+    public IPlayerFileData getSaveHandler()
     {
         return null;
     }
 
-    public void func_75759_a()
+    /**
+     * Called to flush all changes to disk, waiting for them to complete.
+     */
+    public void flush()
     {
     }
 

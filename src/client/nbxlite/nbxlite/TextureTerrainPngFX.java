@@ -21,7 +21,7 @@ public class TextureTerrainPngFX extends TextureFX
     public TextureTerrainPngFX()
     {
         super(0);
-        renderEngine = mod_OldDays.getMinecraftInstance().renderEngine;
+        renderEngine = mod_OldDays.getMinecraft().renderEngine;
         changeIndex(255, false);
     }
 
@@ -31,7 +31,7 @@ public class TextureTerrainPngFX extends TextureFX
         currentIndex = index;
         try
         {
-            TexturePackList packList = mod_OldDays.getMinecraftInstance().texturePackList;
+            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
             TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
             BufferedImage bufferedimage = ImageIO.read(texpack.getResourceAsStream("/terrain.png"));
             if (b){

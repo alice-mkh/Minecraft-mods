@@ -30,7 +30,7 @@ public class EntityAIPanic extends EntityAIBase
             return false;
         }
 
-        Vec3 vec3 = RandomPositionGenerator.func_75463_a(theEntityCreature, 5, 4);
+        Vec3 vec3 = RandomPositionGenerator.findRandomTarget(theEntityCreature, 5, 4);
 
         if (vec3 == null)
         {

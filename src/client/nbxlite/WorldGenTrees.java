@@ -6,7 +6,9 @@ public class WorldGenTrees extends WorldGenerator
 {
     /** The minimum height of a generated tree. */
     private final int minTreeHeight;
-    private final boolean field_76531_b;
+
+    /** True if this tree should grow Vines. */
+    private final boolean vinesGrow;
 
     /** The metadata value of the wood to use in tree generation. */
     private final int metaWood;
@@ -25,7 +27,7 @@ public class WorldGenTrees extends WorldGenerator
         minTreeHeight = par2;
         metaWood = par3;
         metaLeaves = par4;
-        field_76531_b = par5;
+        vinesGrow = par5;
     }
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
@@ -121,7 +123,7 @@ public class WorldGenTrees extends WorldGenerator
 
             setBlockAndMetadata(par1World, par3, par4 + l1, par5, Block.wood.blockID, metaWood);
 
-            if (!field_76531_b || l1 <= 0)
+            if (!vinesGrow || l1 <= 0)
             {
                 continue;
             }
@@ -147,7 +149,7 @@ public class WorldGenTrees extends WorldGenerator
             }
         }
 
-        if (field_76531_b)
+        if (vinesGrow)
         {
             for (int i2 = (par4 - 3) + i; i2 <= par4 + i; i2++)
             {
@@ -165,22 +167,22 @@ public class WorldGenTrees extends WorldGenerator
 
                         if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4 - 1, i2, j5) == 0)
                         {
-                            func_76529_b(par1World, l4 - 1, i2, j5, 8);
+                            growVines(par1World, l4 - 1, i2, j5, 8);
                         }
 
                         if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4 + 1, i2, j5) == 0)
                         {
-                            func_76529_b(par1World, l4 + 1, i2, j5, 2);
+                            growVines(par1World, l4 + 1, i2, j5, 2);
                         }
 
                         if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4, i2, j5 - 1) == 0)
                         {
-                            func_76529_b(par1World, l4, i2, j5 - 1, 1);
+                            growVines(par1World, l4, i2, j5 - 1, 1);
                         }
 
                         if (par2Random.nextInt(4) == 0 && par1World.getBlockId(l4, i2, j5 + 1) == 0)
                         {
-                            func_76529_b(par1World, l4, i2, j5 + 1, 4);
+                            growVines(par1World, l4, i2, j5 + 1, 4);
                         }
                     }
                 }
@@ -195,7 +197,7 @@ public class WorldGenTrees extends WorldGenerator
                         if (par2Random.nextInt(4 - j2) == 0)
                         {
                             int j4 = par2Random.nextInt(3);
-                            setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[k3]], ((par4 + i) - 5) + j2, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[k3]], Block.field_72086_bP.blockID, j4 << 2 | k3);
+                            setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[k3]], ((par4 + i) - 5) + j2, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[k3]], Block.cocoa.blockID, j4 << 2 | k3);
                         }
                     }
                 }
@@ -205,7 +207,10 @@ public class WorldGenTrees extends WorldGenerator
         return true;
     }
 
-    private void func_76529_b(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * Grows vines downward from the given block for a given length. Args: World, x, starty, z, vine-length
+     */
+    private void growVines(World par1World, int par2, int par3, int par4, int par5)
     {
         setBlockAndMetadata(par1World, par2, par3, par4, Block.vine.blockID, par5);
 

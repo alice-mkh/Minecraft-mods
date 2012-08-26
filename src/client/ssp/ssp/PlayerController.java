@@ -44,7 +44,7 @@ public class PlayerController extends PlayerControllerMP
      */
     public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4)
     {
-        World world = mc.field_71441_e;
+        World world = mc.theWorld;
         Block block = Block.blocksList[world.getBlockId(par1, par2, par3)];
 
         if (block == null)
@@ -144,7 +144,7 @@ public class PlayerController extends PlayerControllerMP
 
     public EntityClientPlayerMP func_78754_a(World par1World)
     {
-        return new EntityPlayerSP2(mc, par1World, mc.session, par1World.worldProvider.worldType);
+        return new EntityPlayerSP2(mc, par1World, mc.session, par1World.provider.worldType);
     }
 
     /**
@@ -152,7 +152,7 @@ public class PlayerController extends PlayerControllerMP
      */
     public boolean func_78768_b(EntityPlayer par1EntityPlayer, Entity par2Entity)
     {
-        return par1EntityPlayer.func_70998_m(par2Entity);
+        return par1EntityPlayer.interactWith(par2Entity);
     }
 
     public boolean func_78747_a()

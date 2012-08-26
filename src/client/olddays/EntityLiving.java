@@ -73,7 +73,7 @@ public abstract class EntityLiving extends Entity
         }
     }
 
-    public int heartsHalvesLife;
+    public int maxHurtResistantTime;
     public float field_70769_ao;
     public float field_70770_ap;
     public float renderYawOffset;
@@ -157,8 +157,8 @@ public abstract class EntityLiving extends Entity
     protected int experienceValue;
     public int field_70731_aW;
     public float field_70730_aX;
-    public float field_70722_aY;
-    public float field_70721_aZ;
+    public float prevLegYaw;
+    public float legYaw;
     public float field_70754_ba;
 
     /** The most recent player that has attacked this entity */
@@ -254,7 +254,7 @@ public abstract class EntityLiving extends Entity
     {
         super(par1World);
         persistentId = rand.nextInt(0x7fffffff);
-        heartsHalvesLife = 20;
+        maxHurtResistantTime = 20;
         renderYawOffset = 0.0F;
         prevRenderYawOffset = 0.0F;
         rotationYawHead = 0.0F;
@@ -296,8 +296,8 @@ public abstract class EntityLiving extends Entity
         numTicksToChaseTarget = 0;
         health = getMaxHealth();
         preventEntitySpawning = true;
-        tasks = new EntityAITasks(par1World != null && par1World.field_72984_F != null ? par1World.field_72984_F : null);
-        targetTasks = new EntityAITasks(par1World != null && par1World.field_72984_F != null ? par1World.field_72984_F : null);
+        tasks = new EntityAITasks(par1World != null && par1World.theProfiler != null ? par1World.theProfiler : null);
+        targetTasks = new EntityAITasks(par1World != null && par1World.theProfiler != null ? par1World.theProfiler : null);
         lookHelper = new EntityLookHelper(this);
         moveHelper = new EntityMoveHelper(this);
         jumpHelper = new EntityJumpHelper(this);
@@ -495,7 +495,7 @@ public abstract class EntityLiving extends Entity
      */
     public boolean canEntityBeSeen(Entity par1Entity)
     {
-        return worldObj.rayTraceBlocks(Vec3.func_72437_a().func_72345_a(posX, posY + (double)getEyeHeight(), posZ), Vec3.func_72437_a().func_72345_a(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
+        return worldObj.rayTraceBlocks(Vec3.getVec3Pool().getVecFromPool(posX, posY + (double)getEyeHeight(), posZ), Vec3.getVec3Pool().getVecFromPool(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
     }
 
     /**
@@ -555,7 +555,7 @@ public abstract class EntityLiving extends Entity
     {
         prevSwingProgress = swingProgress;
         super.onEntityUpdate();
-        worldObj.field_72984_F.startSection("mobBaseTick");
+        worldObj.theProfiler.startSection("mobBaseTick");
 
         if (isEntityAlive() && rand.nextInt(1000) < livingSoundTime++)
         {
@@ -611,9 +611,9 @@ public abstract class EntityLiving extends Entity
             hurtTime--;
         }
 
-        if (heartsLife > 0)
+        if (hurtResistantTime > 0)
         {
-            heartsLife--;
+            hurtResistantTime--;
         }
 
         if (health <= 0)
@@ -657,7 +657,7 @@ public abstract class EntityLiving extends Entity
         prevRotationYawHead = rotationYawHead;
         prevRotationYaw = rotationYaw;
         prevRotationPitch = rotationPitch;
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     /**
@@ -805,7 +805,7 @@ public abstract class EntityLiving extends Entity
         }
 
         field_70766_av += (f3 - field_70766_av) * 0.3F;
-        worldObj.field_72984_F.startSection("headTurn");
+        worldObj.theProfiler.startSection("headTurn");
 
         if (isAIEnabled() && newai())
         {
@@ -813,9 +813,9 @@ public abstract class EntityLiving extends Entity
         }
         else
         {
-            float f4 = MathHelper.func_76142_g(f1 - renderYawOffset);
+            float f4 = MathHelper.wrapAngleTo180_float(f1 - renderYawOffset);
             renderYawOffset += f4 * 0.3F;
-            float f5 = MathHelper.func_76142_g(rotationYaw - renderYawOffset);
+            float f5 = MathHelper.wrapAngleTo180_float(rotationYaw - renderYawOffset);
             boolean flag = f5 < -90F || f5 >= 90F;
 
             if (f5 < -75F)
@@ -841,8 +841,8 @@ public abstract class EntityLiving extends Entity
             }
         }
 
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("rangeChecks");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("rangeChecks");
 
         for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
 
@@ -860,7 +860,7 @@ public abstract class EntityLiving extends Entity
 
         for (; rotationYawHead - prevRotationYawHead >= 180F; prevRotationYawHead += 360F) { }
 
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
         field_70764_aw += f2;
     }
 
@@ -881,7 +881,7 @@ public abstract class EntityLiving extends Entity
             health = getMaxHealth();
         }
 
-        heartsLife = heartsHalvesLife / 2;
+        hurtResistantTime = maxHurtResistantTime / 2;
     }
 
     public abstract int getMaxHealth();
@@ -923,10 +923,10 @@ public abstract class EntityLiving extends Entity
             return false;
         }
 
-        field_70721_aZ = 1.5F;
+        legYaw = 1.5F;
         boolean flag = true;
 
-        if ((float)heartsLife > (float)heartsHalvesLife / 2.0F)
+        if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F)
         {
             if (par2 <= lastDamage)
             {
@@ -941,7 +941,7 @@ public abstract class EntityLiving extends Entity
         {
             lastDamage = par2;
             prevHealth = health;
-            heartsLife = heartsHalvesLife;
+            hurtResistantTime = maxHurtResistantTime;
             damageEntity(par1DamageSource, par2);
             hurtTime = maxHurtTime = 10;
         }
@@ -1258,7 +1258,7 @@ public abstract class EntityLiving extends Entity
     protected void fall(float par1)
     {
         super.fall(par1);
-        int i = MathHelper.func_76123_f(par1 - 3F);
+        int i = MathHelper.ceiling_float_int(par1 - 3F);
 
         if (i > 0)
         {
@@ -1419,7 +1419,7 @@ public abstract class EntityLiving extends Entity
             motionZ *= f;
         }
 
-        field_70722_aY = field_70721_aZ;
+        prevLegYaw = legYaw;
         double d2 = posX - prevPosX;
         double d3 = posZ - prevPosZ;
         float f4 = MathHelper.sqrt_double(d2 * d2 + d3 * d3) * 4F;
@@ -1429,8 +1429,8 @@ public abstract class EntityLiving extends Entity
             f4 = 1.0F;
         }
 
-        field_70721_aZ += (f4 - field_70721_aZ) * 0.4F;
-        field_70754_ba += field_70721_aZ;
+        legYaw += (f4 - legYaw) * 0.4F;
+        field_70754_ba += legYaw;
     }
 
     /**
@@ -1557,7 +1557,7 @@ public abstract class EntityLiving extends Entity
             double d = posX + (newPosX - posX) / (double)newPosRotationIncrements;
             double d1 = posY + (newPosY - posY) / (double)newPosRotationIncrements;
             double d2 = posZ + (newPosZ - posZ) / (double)newPosRotationIncrements;
-            double d3 = MathHelper.func_76138_g(newRotationYaw - (double)rotationYaw);
+            double d3 = MathHelper.wrapAngleTo180_double(newRotationYaw - (double)rotationYaw);
             rotationYaw += d3 / (double)newPosRotationIncrements;
             rotationPitch += (newRotationPitch - (double)rotationPitch) / (double)newPosRotationIncrements;
             newPosRotationIncrements--;
@@ -1580,7 +1580,7 @@ public abstract class EntityLiving extends Entity
             motionZ = 0.0D;
         }
 
-        worldObj.field_72984_F.startSection("ai");
+        worldObj.theProfiler.startSection("ai");
 
         if (isMovementBlocked())
         {
@@ -1593,21 +1593,21 @@ public abstract class EntityLiving extends Entity
         {
             if (isAIEnabled() && newai())
             {
-                worldObj.field_72984_F.startSection("newAi");
+                worldObj.theProfiler.startSection("newAi");
                 updateAITasks();
-                worldObj.field_72984_F.endSection();
+                worldObj.theProfiler.endSection();
             }
             else
             {
-                worldObj.field_72984_F.startSection("oldAi");
+                worldObj.theProfiler.startSection("oldAi");
                 updateEntityActionState();
-                worldObj.field_72984_F.endSection();
+                worldObj.theProfiler.endSection();
                 rotationYawHead = rotationYaw;
             }
         }
 
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("jump");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("jump");
 
         if (isJumping)
         {
@@ -1626,8 +1626,8 @@ public abstract class EntityLiving extends Entity
             jumpTicks = 0;
         }
 
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("travel");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("travel");
         moveStrafing *= 0.98F;
         moveForward *= 0.98F;
         randomYawVelocity *= 0.9F;
@@ -1635,8 +1635,8 @@ public abstract class EntityLiving extends Entity
         landMovementFactor *= getSpeedModifier();
         moveEntityWithHeading(moveStrafing, moveForward);
         landMovementFactor = f;
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("push");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("push");
 
         if (!worldObj.isRemote)
         {
@@ -1664,7 +1664,7 @@ public abstract class EntityLiving extends Entity
             }
         }
 
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     /**
@@ -1759,33 +1759,33 @@ public abstract class EntityLiving extends Entity
     protected void updateAITasks()
     {
         entityAge++;
-        worldObj.field_72984_F.startSection("checkDespawn");
+        worldObj.theProfiler.startSection("checkDespawn");
         despawnEntity();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("sensing");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("sensing");
         senses.clearSensingCache();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("targetSelector");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("targetSelector");
         targetTasks.onUpdateTasks();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("goalSelector");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("goalSelector");
         tasks.onUpdateTasks();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("navigation");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("navigation");
         navigator.onUpdateNavigation();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("mob tick");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("mob tick");
         updateAITick();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.startSection("controls");
-        worldObj.field_72984_F.startSection("move");
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("controls");
+        worldObj.theProfiler.startSection("move");
         moveHelper.onUpdateMoveHelper();
-        worldObj.field_72984_F.endStartSection("look");
+        worldObj.theProfiler.endStartSection("look");
         lookHelper.onUpdateLook();
-        worldObj.field_72984_F.endStartSection("jump");
+        worldObj.theProfiler.endStartSection("jump");
         jumpHelper.doJump();
-        worldObj.field_72984_F.endSection();
-        worldObj.field_72984_F.endSection();
+        worldObj.theProfiler.endSection();
+        worldObj.theProfiler.endSection();
     }
 
     /**
@@ -1926,7 +1926,7 @@ public abstract class EntityLiving extends Entity
      */
     private float updateRotation(float par1, float par2, float par3)
     {
-        float f = MathHelper.func_76142_g(par2 - par1);
+        float f = MathHelper.wrapAngleTo180_float(par2 - par1);
 
         if (f > par3)
         {
@@ -1946,7 +1946,7 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
-        if (!allow(EntityList.getEntityString(this), worldObj.worldProvider.worldType)){
+        if (!allow(EntityList.getEntityString(this), worldObj.provider.worldType)){
             return false;
         }
         return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
@@ -1982,14 +1982,14 @@ public abstract class EntityLiving extends Entity
     {
         if (par1 == 1.0F)
         {
-            return Vec3.func_72437_a().func_72345_a(posX, posY, posZ);
+            return Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ);
         }
         else
         {
             double d = prevPosX + (posX - prevPosX) * (double)par1;
             double d1 = prevPosY + (posY - prevPosY) * (double)par1;
             double d2 = prevPosZ + (posZ - prevPosZ) * (double)par1;
-            return Vec3.func_72437_a().func_72345_a(d, d1, d2);
+            return Vec3.getVec3Pool().getVecFromPool(d, d1, d2);
         }
     }
 
@@ -2012,7 +2012,7 @@ public abstract class EntityLiving extends Entity
             float f2 = MathHelper.sin(-rotationYaw * 0.01745329F - (float)Math.PI);
             float f4 = -MathHelper.cos(-rotationPitch * 0.01745329F);
             float f6 = MathHelper.sin(-rotationPitch * 0.01745329F);
-            return Vec3.func_72437_a().func_72345_a(f2 * f4, f6, f * f4);
+            return Vec3.getVec3Pool().getVecFromPool(f2 * f4, f6, f * f4);
         }
         else
         {
@@ -2022,7 +2022,7 @@ public abstract class EntityLiving extends Entity
             float f7 = MathHelper.sin(-f3 * 0.01745329F - (float)Math.PI);
             float f8 = -MathHelper.cos(-f1 * 0.01745329F);
             float f9 = MathHelper.sin(-f1 * 0.01745329F);
-            return Vec3.func_72437_a().func_72345_a(f7 * f8, f9, f5 * f8);
+            return Vec3.getVec3Pool().getVecFromPool(f7 * f8, f9, f5 * f8);
         }
     }
 
@@ -2065,8 +2065,8 @@ public abstract class EntityLiving extends Entity
     {
         if (par1 == 2)
         {
-            field_70721_aZ = 1.5F;
-            heartsLife = heartsHalvesLife;
+            legYaw = 1.5F;
+            hurtResistantTime = maxHurtResistantTime;
             hurtTime = maxHurtTime = 10;
             attackedAtYaw = 0.0F;
             worldObj.playSoundAtEntity(this, getHurtSound(), getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
@@ -2318,10 +2318,10 @@ public abstract class EntityLiving extends Entity
         if (toolbreakanim){
             for (int i = 0; i < 5; i++)
             {
-                Vec3 vec3 = Vec3.func_72437_a().func_72345_a(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
+                Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
                 vec3.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-                Vec3 vec3_1 = Vec3.func_72437_a().func_72345_a(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
+                Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
                 vec3_1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3_1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
                 vec3_1 = vec3_1.addVector(posX, posY + (double)getEyeHeight(), posZ);

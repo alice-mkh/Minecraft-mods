@@ -14,12 +14,12 @@ public class PlayerControllerAdventure extends PlayerControllerSP{
 
     public static void enableAbilities(EntityPlayer par0EntityPlayer)
     {
-        par0EntityPlayer.capabilities.field_75099_e = true;
+        par0EntityPlayer.capabilities.allowEdit = true;
     }
 
     public static void disableAbilities(EntityPlayer par0EntityPlayer)
     {
-        par0EntityPlayer.capabilities.field_75099_e = false;
+        par0EntityPlayer.capabilities.allowEdit = false;
     }
 
 }
