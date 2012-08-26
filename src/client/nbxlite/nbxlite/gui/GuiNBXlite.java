@@ -117,6 +117,8 @@ public class GuiNBXlite extends GuiScreen{
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
                 if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
                     newOresButton.yPosition=height / 6 + 127;
+                }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                    newOresButton.yPosition=height / 6 + 149;
                 }else{
                     newOresButton.yPosition=height / 6 + 135;
                 }
@@ -240,7 +242,7 @@ public class GuiNBXlite extends GuiScreen{
             indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
-            newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<3);
+            newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<4);
             for (int i=0; i<=GeneratorList.feat1length; i++){
                 betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
             }
@@ -252,6 +254,8 @@ public class GuiNBXlite extends GuiScreen{
                 if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
                     if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
                         newOresButton.yPosition=height / 6 + 127;
+                    }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                        newOresButton.yPosition=height / 6 + 149;
                     }else{
                         newOresButton.yPosition=height / 6 + 135;
                     }
@@ -299,6 +303,8 @@ public class GuiNBXlite extends GuiScreen{
             newOresButton.drawButton = true;
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
                 newOresButton.yPosition=height / 6 + 127;
+            }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+                newOresButton.yPosition=height / 6 + 149;
             }else{
                 newOresButton.yPosition=height / 6 + 135;
             }
