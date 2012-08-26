@@ -392,6 +392,9 @@ eyecandy.tpbobbing.name=Bobbing in 3rd person
  eyecandy.tpbobbing.desc1=View bobbing in third
  eyecandy.tpbobbing.desc2=person camera mode.
  eyecandy.tpbobbing.desc3=§aAdded in Beta 1.3.
+eyecandy.waterparticles.name=Water particles
+ eyecandy.waterparticles.desc1="Suspend" particles in water.
+ eyecandy.waterparticles.desc2=§aAdded in Beta 1.8.
 
 sounds.explode.name=Old explosion sound
  sounds.explode.desc1=§aChanged in 1.0.
