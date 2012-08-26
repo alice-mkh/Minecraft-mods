@@ -185,7 +185,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Handles a players right click
      */
-    public boolean func_78760_a(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 vec3)
+    public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 vec3)
     {
         if (field_55294_d)
         {
@@ -194,7 +194,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
         }
         else
         {
-            return super.func_78760_a(par1EntityPlayer, par2World, par3ItemStack, par4, par5, par6, par7, vec3);
+            return super.onPlayerRightClick(par1EntityPlayer, par2World, par3ItemStack, par4, par5, par6, par7, vec3);
         }
     }
 

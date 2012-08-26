@@ -8,7 +8,7 @@ public class CommandClientDefaultGameMode extends CommandDefaultGameMode
     {
     }
 
-    public void func_71515_b(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
+    public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1)
         {

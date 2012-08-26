@@ -143,6 +143,7 @@ public abstract class BiomeGenBase
         spawnableWaterCreatureList = new ArrayList();
         enableRain = true;
         worldGeneratorTrees = new WorldGenTrees(false);
+        oldWorldGeneratorTrees = new OldWorldGenTrees(false);
         worldGeneratorBigTree = new WorldGenBigTree(false);
         worldGeneratorForest = new WorldGenForest(false);
         worldGeneratorSwamp = new WorldGenSwamp();
@@ -167,7 +168,7 @@ public abstract class BiomeGenBase
      */
     protected BiomeDecorator createBiomeDecorator()
     {
-        return new BiomeDecorator(this);
+        return new BiomeDecorator2(this);
     }
 
     /**
@@ -226,7 +227,7 @@ public abstract class BiomeGenBase
      */
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
-        return new WorldGenTallGrass(Block.tallGrass.blockID, 1);
+        return new OldWorldGenTallGrass(Block.tallGrass.blockID, 1);
     }
 
     /**

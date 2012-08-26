@@ -20,7 +20,7 @@ public class PlayerController extends PlayerControllerMP
         return true;
     }
 
-    public void func_78746_a(EnumGameType par1EnumGameType)
+    public void setGameType(EnumGameType par1EnumGameType)
     {
     }
 
@@ -137,7 +137,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Handles a players right click
      */
-    public boolean func_78760_a(EntityPlayer entityplayer, World world, ItemStack itemstack, int i, int j, int k, int l, Vec3 v)
+    public boolean onPlayerRightClick(EntityPlayer entityplayer, World world, ItemStack itemstack, int i, int j, int k, int l, Vec3 v)
     {
         return false;
     }

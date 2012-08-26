@@ -13,7 +13,7 @@ public class CommandClientTime extends CommandTime
         ((WorldSSP)Minecraft.getMinecraft().theWorld).commandSetTime(par2);
     }
 
-    protected void func_71553_b(ICommandSender par1ICommandSender, int par2)
+    protected void addTime(ICommandSender par1ICommandSender, int par2)
     {
         WorldSSP world = ((WorldSSP)Minecraft.getMinecraft().theWorld);
         ((WorldSSP)world).commandSetTime(world.getWorldTime() + (long)par2);

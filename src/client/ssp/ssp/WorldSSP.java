@@ -44,7 +44,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * var1, AxisAlignedBB var2)
      */
     protected List entitiesWithinAABBExcludingEntity;
-    protected static final WeightedRandomChestContent field_73069_S[];
+    protected static final WeightedRandomChestContent bonusChestContent[];
 
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
     {
@@ -132,9 +132,12 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         calculateInitialWeather();
     }
 
-    protected void func_73047_i()
+    /**
+     * Creates the bonus chest in the world.
+     */
+    protected void createBonusChest()
     {
-        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(field_73069_S, 10);
+        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(bonusChestContent, 10);
         int i = 0;
 
         do
@@ -216,7 +219,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         if (par1WorldSettings.isBonusChestEnabled())
         {
-            func_73047_i();
+            createBonusChest();
         }
     }
 
@@ -3256,7 +3259,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
     }
 
-    public void func_72980_b(double par1, double par3, double par5, String par7Str, float par8, float par9)
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
@@ -3281,7 +3284,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
     }
 
-    public boolean func_72931_a(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
+    public boolean canPlaceEntityOnSidecanPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
     {
         int i = getBlockId(par2, par3, par4);
         Block block = Block.blocksList[i];
@@ -3347,7 +3350,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
     }
 
-    public CrashReport func_72914_a(CrashReport par1CrashReport)
+    public CrashReport addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Entities").toString(), new CallableLvl1(this));
         par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Players").toString(), new CallableLvl2(this));
@@ -3357,7 +3360,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     static
     {
-        field_73069_S = (new WeightedRandomChestContent[]
+        bonusChestContent = (new WeightedRandomChestContent[]
                 {
                     new WeightedRandomChestContent(Item.stick.shiftedIndex, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 2, 3, 3)
                 });

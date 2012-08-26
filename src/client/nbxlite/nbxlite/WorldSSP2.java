@@ -25,7 +25,10 @@ public class WorldSSP2 extends WorldSSP
         return provider.worldChunkMgr.getBiomeGenAt(par1, par2);
     }
 
-    protected void func_73047_i()
+    /**
+     * Creates the bonus chest in the world.
+     */
+    protected void createBonusChest()
     {
         if (ODNBXlite.Generator == ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV){
             int j = worldInfo.getSpawnX();
@@ -42,11 +45,11 @@ public class WorldSSP2 extends WorldSSP
             setBlockWithNotify(j, l, k, Block.chest.blockID);
             TileEntityChest tileentitychest = (TileEntityChest)getBlockTileEntity(j, l, k);
             if (tileentitychest != null && tileentitychest != null){
-                WeightedRandomChestContent.func_76293_a(rand, field_73069_S, tileentitychest, 10);
+                WeightedRandomChestContent.func_76293_a(rand, bonusChestContent, tileentitychest, 10);
             }
             return;
         }
-        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(field_73069_S, 10);
+        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(bonusChestContent, 10);
         int i = 0;
         do
         {
@@ -246,7 +249,7 @@ public class WorldSSP2 extends WorldSSP
             }
             generateSpawnPoint();
             if (par3WorldSettings.isBonusChestEnabled()){
-                func_73047_i();
+                createBonusChest();
             }
         } else
         {

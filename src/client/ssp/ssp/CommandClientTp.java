@@ -9,7 +9,7 @@ public class CommandClientTp extends CommandServerTp
     {
     }
 
-    public void func_71515_b(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
+    public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 3)
         {
@@ -36,7 +36,7 @@ public class CommandClientTp extends CommandServerTp
         }
     }
 
-    public List func_71516_a(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
+    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
         {

@@ -218,6 +218,11 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         mc.displayGuiScreen(new GuiCrafting(inventory, worldObj, par1, par2, par3));
     }
 
+    public void displayGUIWorkbench(int par1, int par2, int par3)
+    {
+        mc.displayGuiScreen(new GuiCrafting(inventory, worldObj, par1, par2, par3));
+    }
+
     public void displayGUIEnchantment(int par1, int par2, int par3)
     {
         mc.displayGuiScreen(new GuiEnchantment(inventory, worldObj, par1, par2, par3));
@@ -448,7 +453,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
     }
 
-    public boolean func_70003_b(String par1Str)
+    public boolean canCommandSenderUseCommand(String par1Str)
     {
         return worldObj.getWorldInfo().areCommandsAllowed();
     }
@@ -478,7 +483,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         health -= par2;
     }
 
-    public void func_71016_p()
+    public void sendPlayerAbilities()
     {
     }
 

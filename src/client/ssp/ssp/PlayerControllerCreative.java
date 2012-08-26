@@ -62,7 +62,7 @@ public class PlayerControllerCreative extends PlayerController
     /**
      * Handles a players right click
      */
-    public boolean func_78760_a(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3)
+    public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3)
     {
         int i = par2World.getBlockId(par4, par5, par6);
 
