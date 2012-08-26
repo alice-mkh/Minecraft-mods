@@ -3284,7 +3284,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
     }
 
-    public boolean canPlaceEntityOnSidecanPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
+    public boolean canPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
     {
         int i = getBlockId(par2, par3, par4);
         Block block = Block.blocksList[i];
