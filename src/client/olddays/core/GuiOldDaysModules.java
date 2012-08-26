@@ -26,6 +26,7 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             mc.useSP = !mc.useSP;
             guibutton.displayString = mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off");
             mod_OldDays.saveman.saveCoreProperties();
+            mc.switchSSP(mc.useSP);
             return;
         }
         if (guibutton.id <= 0 || guibutton.id >= LEFT_ID){

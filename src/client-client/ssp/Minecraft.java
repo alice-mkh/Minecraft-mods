@@ -3078,6 +3078,32 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         launchIntegratedServer(s, s1, null);
     }
 
+    public void switchSSP(boolean b){
+        WorldClient world = theWorld;
+        GuiScreen gui = currentScreen;
+        String s1 = "";
+        if (enableSP){
+            s1 = world.getWorldInfo().getWorldName();
+            changeWorld1(null);
+        }else{
+            s1 = getIntegratedServer().getWorldName();
+            theWorld.sendQuittingDisconnectingPacket();
+            loadWorld(null);
+            stopIntegratedServer();
+            theWorld = null;
+            theIntegratedServer = null;
+        }
+        enableSP = b;
+        String s = lastWorld;
+        if (enableSP){
+            setController(world.getWorldInfo().getGameType());
+            startWorldSSP(s, s1, null);
+        }else{
+            launchIntegratedServer(s, s1, null);
+        }
+        displayGuiScreen(gui);
+    }
+
     public void loadMods(){
         Class c = net.minecraft.src.Mod.class;
         String p = "";
