@@ -3265,4 +3265,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     {
         return new File(mcDataDir, par1Str);
     }
+
+    public String[] getAllUsernames()
+    {
+        return new String[]{thePlayer.username};
+    }
 }

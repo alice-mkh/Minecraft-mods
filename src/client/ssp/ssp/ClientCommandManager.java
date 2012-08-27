@@ -12,6 +12,7 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientExperience());
         registerCommand(new CommandClientTp());
         registerCommand(new CommandClientGive());
+        registerCommand(new CommandClientEmote());
         registerCommand(new CommandShowSeed());
         registerCommand(new CommandClientHelp());
         registerCommand(new CommandClientDebug());
