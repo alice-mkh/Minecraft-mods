@@ -296,6 +296,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public Class worldClass;
     public int ticksRan;
     public int mouseTicksRan;
+    private boolean startProfiling;
+    private boolean profilingEnabled;
     public static boolean oldswing = false;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
@@ -345,6 +347,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         ticksRan = 0;
         mouseTicksRan = 0;
         registerCustomPacket();
+        startProfiling = false;
+        profilingEnabled = false;
         checkCompatibility("ModLoader");
     }
 
@@ -946,7 +950,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             toggleFullscreen();
         }
 
-        if (gameSettings.showDebugInfo && gameSettings.field_74329_Q)
+        if ((gameSettings.showDebugInfo && gameSettings.field_74329_Q) || startProfiling)
         {
             if (!mcProfiler.profilingEnabled)
             {
@@ -954,9 +958,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             mcProfiler.profilingEnabled = true;
-            displayDebugInfo(l1);
+            if (!startProfiling){
+                displayDebugInfo(l1);
+            }
+            startProfiling = false;
         }
-        else
+        else if (!profilingEnabled)
         {
             mcProfiler.profilingEnabled = false;
             prevFrameTime = System.nanoTime();
@@ -2732,7 +2739,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             par1World.spawnPlayerWithLoadedChunks(thePlayer);
-            ((PlayerController)playerController).setGameMode(thePlayer);
+            playerController.func_78748_a(thePlayer);
 
             if (par1World.isNewWorld)
             {
@@ -2907,7 +2914,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
         thePlayer.entityId = i;
         ((EntityPlayerSP2)thePlayer).func_6420_o();
-        ((PlayerController)playerController).setGameMode(thePlayer);
+        playerController.func_78748_a(thePlayer);
         preloadWorld(StatCollector.translateToLocal("menu.respawning"));
 
         if (currentScreen instanceof GuiGameOver)
@@ -3069,6 +3076,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (getIntegratedServer() != null || enableSP == false){
             return;
         }
+        EnumGameType type = theWorld.getWorldInfo().getGameType();
+        boolean commands = theWorld.getWorldInfo().areCommandsAllowed();
         WorldSSP world = (WorldSSP)theWorld;
         changeWorld1(null);
         displayGuiScreen(null);
@@ -3076,6 +3085,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         String s = lastWorld;
         String s1 = world.getWorldInfo().getWorldName();
         launchIntegratedServer(s, s1, null);
+//         System.out.println(thePlayer.username);
+//         thePlayer.sendGameTypeToPlayer(type);
     }
 
     public void switchSSP(boolean b){
@@ -3236,5 +3247,22 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     public static void invokeModMethod(String mod, String method, Class[] pars, Object... args){
         getMinecraft().invokeModMethod_do(mod, method, pars, args);
+    }
+
+    public void enableProfiling()
+    {
+        startProfiling = true;
+        profilingEnabled = true;
+    }
+
+    public void disableProfiling()
+    {
+        mcProfiler.profilingEnabled = false;
+        profilingEnabled = false;
+    }
+
+    public File getFile(String par1Str)
+    {
+        return new File(mcDataDir, par1Str);
     }
 }

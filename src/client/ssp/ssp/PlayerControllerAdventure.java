@@ -7,7 +7,7 @@ public class PlayerControllerAdventure extends PlayerControllerSP{
         super(par1Minecraft);
     }
 
-    public void setGameMode(EntityPlayer par1EntityPlayer)
+    public void func_78748_a(EntityPlayer par1EntityPlayer)
     {
         mc.setGameMode(EnumGameType.ADVENTURE);
     }

@@ -129,7 +129,7 @@ public class PlayerController extends PlayerControllerMP
         return true;
     }
 
-    public void setGameMode(EntityPlayer par1EntityPlayer)
+    public void func_78748_a(EntityPlayer par1EntityPlayer)
     {
         mc.setGameMode(EnumGameType.SURVIVAL);
     }
@@ -212,11 +212,6 @@ public class PlayerController extends PlayerControllerMP
      */
     public void sendSlotPacket(ItemStack itemstack, int i)
     {
-    }
-
-    public void func_78748_a(EntityPlayer par1EntityPlayer)
-    {
-//         field_78779_k.func_77147_a(par1EntityPlayer.capabilities);
     }
 
     public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5)
