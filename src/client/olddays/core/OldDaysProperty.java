@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public abstract class OldDaysProperty{
-    public static int GUI_TYPE_BUTTON = 1;
-    public static int GUI_TYPE_DROPDOWN = 2;
-    public static int GUI_TYPE_FIELD = 3;
+    public static final int GUI_TYPE_BUTTON = 1;
+    public static final int GUI_TYPE_DROPDOWN = 2;
+    public static final int GUI_TYPE_FIELD = 3;
 
     public int id;
     public int type;

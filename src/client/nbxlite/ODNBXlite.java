@@ -1010,41 +1010,41 @@ public class ODNBXlite extends OldDaysModule{
     public static int emptyImage;
     public static int textureWidth;
 
-    public static int GEN_BIOMELESS = 0;
-    public static int GEN_OLDBIOMES = 1;
-    public static int GEN_NEWBIOMES = 2;
+    public static final int GEN_BIOMELESS = 0;
+    public static final int GEN_OLDBIOMES = 1;
+    public static final int GEN_NEWBIOMES = 2;
 
-    public static int FEATURES_ALPHA11201 = 0;
-    public static int FEATURES_INFDEV0420 = 1;
-    public static int FEATURES_INFDEV0227 = 2;
-    public static int FEATURES_INDEV = 3;
-    public static int FEATURES_CLASSIC = 4;
-    public static int FEATURES_INFDEV0608 = 5;
+    public static final int FEATURES_ALPHA11201 = 0;
+    public static final int FEATURES_INFDEV0420 = 1;
+    public static final int FEATURES_INFDEV0227 = 2;
+    public static final int FEATURES_INDEV = 3;
+    public static final int FEATURES_CLASSIC = 4;
+    public static final int FEATURES_INFDEV0608 = 5;
 
-    public static int FEATURES_ALPHA120 = 0;
-    public static int FEATURES_BETA12 = 1;
-    public static int FEATURES_BETA14 = 2;
-    public static int FEATURES_BETA15 = 3;
-    public static int FEATURES_BETA173 = 4;
-    public static int FEATURES_SKY = 5;
-    public static int FEATURES_JUNGLE = 6;
+    public static final int FEATURES_ALPHA120 = 0;
+    public static final int FEATURES_BETA12 = 1;
+    public static final int FEATURES_BETA14 = 2;
+    public static final int FEATURES_BETA15 = 3;
+    public static final int FEATURES_BETA173 = 4;
+    public static final int FEATURES_SKY = 5;
+    public static final int FEATURES_JUNGLE = 6;
 
-    public static int FEATURES_BETA181 = 0;
-    public static int FEATURES_10 = 1;
-    public static int FEATURES_11 = 2;
-    public static int FEATURES_12 = 3;
-    public static int FEATURES_13 = 4;
-    public static int FEATURES_132 = 5;
+    public static final int FEATURES_BETA181 = 0;
+    public static final int FEATURES_10 = 1;
+    public static final int FEATURES_11 = 2;
+    public static final int FEATURES_12 = 3;
+    public static final int FEATURES_13 = 4;
+    public static final int FEATURES_132 = 5;
 
-    public static int THEME_NORMAL = 0;
-    public static int THEME_HELL = 1;
-    public static int THEME_WOODS = 2;
-    public static int THEME_PARADISE = 3;
+    public static final int THEME_NORMAL = 0;
+    public static final int THEME_HELL = 1;
+    public static final int THEME_WOODS = 2;
+    public static final int THEME_PARADISE = 3;
 
-    public static int TYPE_INLAND = 0;
-    public static int TYPE_ISLAND = 1;
-    public static int TYPE_FLOATING = 2;
-    public static int TYPE_FLAT = 3;
+    public static final int TYPE_INLAND = 0;
+    public static final int TYPE_ISLAND = 1;
+    public static final int TYPE_FLOATING = 2;
+    public static final int TYPE_FLAT = 3;
 
     public static int gearRenderID;
     public static boolean rendererReplaced = false;
