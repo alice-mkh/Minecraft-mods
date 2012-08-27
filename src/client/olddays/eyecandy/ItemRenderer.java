@@ -223,6 +223,10 @@ public class ItemRenderer
         par1Tessellator.addVertexWithUV(f, 1.0D, 0.0F - f1, par4, par3);
         par1Tessellator.addVertexWithUV(f, 0.0D, 0.0F - f1, par4, par5);
         par1Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0F - f1, par2, par5);
+        par1Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0F - f1, par2, par5);
+        par1Tessellator.addVertexWithUV(f, 0.0D, 0.0F - f1, par4, par5);
+        par1Tessellator.addVertexWithUV(f, 1.0D, 0.0F - f1, par4, par3);
+        par1Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0F - f1, par2, par3);
         par1Tessellator.draw();
     }
 
