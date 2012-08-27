@@ -30,4 +30,12 @@ public class CommandClientEmote extends CommandServerEmote
     {
         return getListOfStringsMatchingLastWord(par2ArrayOfStr, Minecraft.getMinecraft().getAllUsernames());
     }
+
+    /**
+     * Returns true if the given command sender is allowed to use this command.
+     */
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    {
+        return true;
+    }
 }

@@ -2,15 +2,10 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 
-public class CommandClientToggleDownfall extends CommandToggleDownfall
+public class CommandClientKill extends CommandKill
 {
-    public CommandClientToggleDownfall()
+    public CommandClientKill()
     {
-    }
-
-    protected void func_71554_c()
-    {
-        Minecraft.getMinecraft().theWorld.getWorldInfo().setRainTime(1);
     }
 
     /**

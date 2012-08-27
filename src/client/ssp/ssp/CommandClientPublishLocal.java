@@ -22,4 +22,12 @@ public class CommandClientPublishLocal extends CommandServerPublishLocal
         System.out.println(s1);
         par1ICommandSender.sendChatToPlayer(s1);
     }
+
+    /**
+     * Returns true if the given command sender is allowed to use this command.
+     */
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    {
+        return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
+    }
 }

@@ -18,4 +18,12 @@ public class CommandClientTime extends CommandTime
         WorldSSP world = ((WorldSSP)Minecraft.getMinecraft().theWorld);
         ((WorldSSP)world).commandSetTime(world.getWorldTime() + (long)par2);
     }
+
+    /**
+     * Returns true if the given command sender is allowed to use this command.
+     */
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    {
+        return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
+    }
 }

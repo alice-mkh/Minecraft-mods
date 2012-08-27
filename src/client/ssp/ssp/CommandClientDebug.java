@@ -166,4 +166,12 @@ public class CommandClientDebug extends CommandDebug
             return "Witty comment unavailable :(";
         }
     }
+
+    /**
+     * Returns true if the given command sender is allowed to use this command.
+     */
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    {
+        return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
+    }
 }

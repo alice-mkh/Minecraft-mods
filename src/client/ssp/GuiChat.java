@@ -310,7 +310,7 @@ public class GuiChat extends GuiScreen
             return;
         }
 
-        if (mc.thePlayer instanceof EntityClientPlayerMP)
+        if (mc.thePlayer instanceof EntityClientPlayerMP && !(mc.thePlayer instanceof EntityPlayerSP2))
         {
             EntityClientPlayerMP entityclientplayermp = (EntityClientPlayerMP)mc.thePlayer;
             entityclientplayermp.sendQueue.addToSendQueue(new Packet203AutoComplete(par1Str));
@@ -320,15 +320,12 @@ public class GuiChat extends GuiScreen
         {
             par1Str = par1Str.substring(1);
             List list = mc.getCommandManager().getPossibleCommands(mc.thePlayer, par1Str);
-
             if (list != null)
             {
                 String s;
-            
                 for (Iterator iterator = list.iterator(); iterator.hasNext(); field_73904_o.add(s))
                 {
                     s = (String)iterator.next();
-                
                     if (par1Str.length() == par2Str.length() - 1)
                     {
                         s = (new StringBuilder()).append("/").append(s).toString();

@@ -38,4 +38,12 @@ public class CommandClientGameMode extends CommandGameMode
             throw new WrongUsageException("commands.gamemode.usage", new Object[0]);
         }
     }
+
+    /**
+     * Returns true if the given command sender is allowed to use this command.
+     */
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    {
+        return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
+    }
 }
