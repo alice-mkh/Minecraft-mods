@@ -16,12 +16,12 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientShowSeed());
         registerCommand(new CommandClientHelp());
         registerCommand(new CommandClientDebug());
+        registerCommand(new CommandClientPublishLocal());
         CommandBase.setAdminCommander(this);
     }
 
     public void notifyAdmins(ICommandSender par1ICommandSender, int i, String par2Str, Object par3ArrayOfObj[])
     {
         par1ICommandSender.sendChatToPlayer(par1ICommandSender.translateString(par2Str, par3ArrayOfObj));
-
     }
 }
