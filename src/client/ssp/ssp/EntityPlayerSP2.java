@@ -757,4 +757,32 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             return (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F;
         }
     }
+
+    public void onLivingUpdate(){
+        super.onLivingUpdate();
+        if (inPortal)
+        {
+            if (timeInPortal >= 1.0F)
+            {
+                if (!worldObj.isRemote && mc.enableSP)
+                {
+                    timeUntilPortal = 10;
+                    mc.sndManager.playSoundFX("portal.travel", 1.0F, rand.nextFloat() * 0.4F + 0.8F);
+                    byte byte0 = 0;
+
+                    if (dimension == -1)
+                    {
+                        byte0 = 0;
+                    }
+                    else
+                    {
+                        byte0 = -1;
+                    }
+
+                    mc.usePortal(byte0);
+                    triggerAchievement(AchievementList.portal);
+                }
+            }
+        }
+    }
 }
