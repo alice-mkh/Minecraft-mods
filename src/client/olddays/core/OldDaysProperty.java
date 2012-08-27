@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class OldDaysProperty{
+public abstract class OldDaysProperty{
     public static int GUI_TYPE_BUTTON = 1;
     public static int GUI_TYPE_DROPDOWN = 2;
     public static int GUI_TYPE_FIELD = 3;
@@ -46,8 +46,6 @@ public class OldDaysProperty{
         return mod_OldDays.lang.get(getName()+".name");
     }
 
-    public void onChange(){}
-
     public int getDisableReason(){
         if (error){
             return 1;
@@ -74,23 +72,23 @@ public class OldDaysProperty{
         disable();
     }
 
+    public abstract void incrementValue();
+
+    public abstract void updateValue();
+
+    public abstract void setSMPValue();
+
+    public abstract void setDefaultValue();
+
+    public abstract void loadFromString(String str);
+
+    public abstract String saveToString();
+
+    public abstract void onChange();
+
     protected void disable(){
         System.out.println("Error in "+module.name+" module, "+field.getName()+" property, disabling");
         error = true;
-    }
-
-    public void incrementValue(){}
-
-    public void updateValue(){}
-
-    public void setSMPValue(){}
-
-    public void setDefaultValue(){}
-
-    public void loadFromString(String str){}
-
-    public String saveToString(){
-        return "";
     }
 
     public String getName(){

@@ -61,4 +61,6 @@ public class OldDaysPropertyString extends OldDaysProperty{
     public String saveToString(){
         return value;
     }
+
+    public void incrementValue(){}
 }
