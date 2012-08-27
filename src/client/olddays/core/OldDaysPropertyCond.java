@@ -22,7 +22,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
     public boolean getBoolValue(int i){
         if (i == 1){
             try{
-                Method method = module.getClass().getMethod(field.getName(), new Class[]{});
+                Method method = module.getClass().getMethod(field.getName());
                 boolean b = ((Boolean)method.invoke(module));
                 return b;
             }catch(Exception ex){
@@ -63,8 +63,16 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
         boolValue = getBoolValue(value);
     }
 
+    public void loadFromString(String str){
+        super.loadFromString(str);
+        boolValue = getBoolValue(value);
+    }
+
     public String getButtonText(){
-        return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui."+(value==1 ? "auto" : (boolValue ? "on" : "off")));
+        if (value == 1){
+            return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui.auto");
+        }
+        return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui."+(boolValue ? "on" : "off"));
     }
 
     public String[] getTooltip(){
