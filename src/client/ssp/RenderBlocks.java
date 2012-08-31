@@ -3910,7 +3910,11 @@ public class RenderBlocks
 
         if (Minecraft.isAmbientOcclusionEnabled() && Block.lightValue[par1Block.blockID] == 0 && (par1Block.blockID != Block.leaves.blockID || smoothLeaves))
         {
-            return renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, f, f1, f2);
+            if (smoothLeaves){
+                return renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, f, f1, f2);
+            }else{
+                return renderStandardBlockWithAmbientOcclusion_old(par1Block, par2, par3, par4, f, f1, f2);
+            }
         }
         else
         {
@@ -4676,6 +4680,807 @@ public class RenderBlocks
                 if (aoGrassXYZPPC || aoGrassXYZPCP)
                 {
                     aoLightValueScratchXYZPPP = par1Block.getAmbientOcclusionLightValue(blockAccess, par2, par3 + 1, par4 + 1);
+                    aoBrightnessXYZPPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPPP = aoLightValueScratchXZPP;
+                    aoBrightnessXYZPPP = aoBrightnessXZPP;
+                }
+
+                if (par1Block.maxX >= 1.0D)
+                {
+                    par2--;
+                }
+
+                f6 = (aoLightValueScratchXYPN + aoLightValueScratchXYZPNP + aoLightValueXPos + aoLightValueScratchXZPP) / 4F;
+                f27 = (aoLightValueXPos + aoLightValueScratchXZPP + aoLightValueScratchXYPP + aoLightValueScratchXYZPPP) / 4F;
+                f20 = (aoLightValueScratchXZPN + aoLightValueXPos + aoLightValueScratchXYZPPN + aoLightValueScratchXYPP) / 4F;
+                f13 = (aoLightValueScratchXYZPNN + aoLightValueScratchXYPN + aoLightValueScratchXZPN + aoLightValueXPos) / 4F;
+                brightnessTopLeft = getAoBrightness(aoBrightnessXYPN, aoBrightnessXYZPNP, aoBrightnessXZPP, i1);
+                brightnessTopRight = getAoBrightness(aoBrightnessXZPP, aoBrightnessXYPP, aoBrightnessXYZPPP, i1);
+                brightnessBottomRight = getAoBrightness(aoBrightnessXZPN, aoBrightnessXYZPPN, aoBrightnessXYPP, i1);
+                brightnessBottomLeft = getAoBrightness(aoBrightnessXYZPNN, aoBrightnessXYPN, aoBrightnessXZPN, i1);
+            }
+            else
+            {
+                f6 = f13 = f20 = f27 = aoLightValueXPos;
+                brightnessTopLeft = brightnessBottomLeft = brightnessBottomRight = brightnessTopRight = i1;
+            }
+
+            colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = (flag6 ? par5 : 1.0F) * 0.6F;
+            colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = (flag6 ? par6 : 1.0F) * 0.6F;
+            colorBlueTopLeft = colorBlueBottomLeft = colorBlueBottomRight = colorBlueTopRight = (flag6 ? par7 : 1.0F) * 0.6F;
+            colorRedTopLeft *= f6;
+            colorGreenTopLeft *= f6;
+            colorBlueTopLeft *= f6;
+            colorRedBottomLeft *= f13;
+            colorGreenBottomLeft *= f13;
+            colorBlueBottomLeft *= f13;
+            colorRedBottomRight *= f20;
+            colorGreenBottomRight *= f20;
+            colorBlueBottomRight *= f20;
+            colorRedTopRight *= f27;
+            colorGreenTopRight *= f27;
+            colorBlueTopRight *= f27;
+            int k2 = par1Block.getBlockTexture(blockAccess, par2, par3, par4, 5);
+            renderSouthFace(par1Block, par2, par3, par4, k2);
+
+            if (fancyGrass && k2 == 3 && overrideBlockTexture < 0)
+            {
+                colorRedTopLeft *= par5;
+                colorRedBottomLeft *= par5;
+                colorRedBottomRight *= par5;
+                colorRedTopRight *= par5;
+                colorGreenTopLeft *= par6;
+                colorGreenBottomLeft *= par6;
+                colorGreenBottomRight *= par6;
+                colorGreenTopRight *= par6;
+                colorBlueTopLeft *= par7;
+                colorBlueBottomLeft *= par7;
+                colorBlueBottomRight *= par7;
+                colorBlueTopRight *= par7;
+                renderSouthFace(par1Block, par2, par3, par4, 38);
+            }
+
+            flag = true;
+        }
+
+        enableAO = false;
+        return flag;
+    }
+
+
+    public boolean renderStandardBlockWithAmbientOcclusion_old(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7)
+    {
+        enableAO = true;
+        boolean flag = false;
+        float f = lightValueOwn;
+        float f7 = lightValueOwn;
+        float f14 = lightValueOwn;
+        float f21 = lightValueOwn;
+        boolean flag1 = true;
+        boolean flag2 = true;
+        boolean flag3 = true;
+        boolean flag4 = true;
+        boolean flag5 = true;
+        boolean flag6 = true;
+        lightValueOwn = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
+        aoLightValueXNeg = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
+        aoLightValueYNeg = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
+        aoLightValueZNeg = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
+        aoLightValueXPos = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
+        aoLightValueYPos = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
+        aoLightValueZPos = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
+        int i = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4);
+        int j = i;
+        int k = i;
+        int l = i;
+        int i1 = i;
+        int j1 = i;
+        int k1 = i;
+
+        if (par1Block.minY <= 0.0D)
+        {
+            k = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
+        }
+
+        if (par1Block.maxY >= 1.0D)
+        {
+            j1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
+        }
+
+        if (par1Block.minX <= 0.0D)
+        {
+            j = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
+        }
+
+        if (par1Block.maxX >= 1.0D)
+        {
+            i1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
+        }
+
+        if (par1Block.minZ <= 0.0D)
+        {
+            l = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
+        }
+
+        if (par1Block.maxZ >= 1.0D)
+        {
+            k1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
+        }
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.setBrightness(0xf000f);
+        aoGrassXYZPPC = Block.canBlockGrass[blockAccess.getBlockId(par2 + 1, par3 + 1, par4)];
+        aoGrassXYZPNC = Block.canBlockGrass[blockAccess.getBlockId(par2 + 1, par3 - 1, par4)];
+        aoGrassXYZPCP = Block.canBlockGrass[blockAccess.getBlockId(par2 + 1, par3, par4 + 1)];
+        aoGrassXYZPCN = Block.canBlockGrass[blockAccess.getBlockId(par2 + 1, par3, par4 - 1)];
+        aoGrassXYZNPC = Block.canBlockGrass[blockAccess.getBlockId(par2 - 1, par3 + 1, par4)];
+        aoGrassXYZNNC = Block.canBlockGrass[blockAccess.getBlockId(par2 - 1, par3 - 1, par4)];
+        aoGrassXYZNCN = Block.canBlockGrass[blockAccess.getBlockId(par2 - 1, par3, par4 - 1)];
+        aoGrassXYZNCP = Block.canBlockGrass[blockAccess.getBlockId(par2 - 1, par3, par4 + 1)];
+        aoGrassXYZCPP = Block.canBlockGrass[blockAccess.getBlockId(par2, par3 + 1, par4 + 1)];
+        aoGrassXYZCPN = Block.canBlockGrass[blockAccess.getBlockId(par2, par3 + 1, par4 - 1)];
+        aoGrassXYZCNP = Block.canBlockGrass[blockAccess.getBlockId(par2, par3 - 1, par4 + 1)];
+        aoGrassXYZCNN = Block.canBlockGrass[blockAccess.getBlockId(par2, par3 - 1, par4 - 1)];
+
+        if (par1Block.blockIndexInTexture == 3)
+        {
+            flag1 = flag3 = flag4 = flag5 = flag6 = false;
+        }
+
+        if (overrideBlockTexture >= 0)
+        {
+            flag1 = flag3 = flag4 = flag5 = flag6 = false;
+        }
+
+        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 - 1, par4, 0))
+        {
+            float f1;
+            float f8;
+            float f15;
+            float f22;
+
+            if (aoType > 0)
+            {
+                if (par1Block.minY <= 0.0D)
+                {
+                    par3--;
+                }
+
+                aoBrightnessXYNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
+                aoBrightnessYZNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
+                aoBrightnessYZNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
+                aoBrightnessXYPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
+                aoLightValueScratchXYNN = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
+                aoLightValueScratchYZNN = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
+                aoLightValueScratchYZNP = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
+                aoLightValueScratchXYPN = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
+
+                if (aoGrassXYZCNN || aoGrassXYZNNC)
+                {
+                    aoLightValueScratchXYZNNN = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4 - 1);
+                    aoBrightnessXYZNNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNNN = aoLightValueScratchXYNN;
+                    aoBrightnessXYZNNN = aoBrightnessXYNN;
+                }
+
+                if (aoGrassXYZCNP || aoGrassXYZNNC)
+                {
+                    aoLightValueScratchXYZNNP = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4 + 1);
+                    aoBrightnessXYZNNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNNP = aoLightValueScratchXYNN;
+                    aoBrightnessXYZNNP = aoBrightnessXYNN;
+                }
+
+                if (aoGrassXYZCNN || aoGrassXYZPNC)
+                {
+                    aoLightValueScratchXYZPNN = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4 - 1);
+                    aoBrightnessXYZPNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPNN = aoLightValueScratchXYPN;
+                    aoBrightnessXYZPNN = aoBrightnessXYPN;
+                }
+
+                if (aoGrassXYZCNP || aoGrassXYZPNC)
+                {
+                    aoLightValueScratchXYZPNP = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4 + 1);
+                    aoBrightnessXYZPNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPNP = aoLightValueScratchXYPN;
+                    aoBrightnessXYZPNP = aoBrightnessXYPN;
+                }
+
+                if (par1Block.minY <= 0.0D)
+                {
+                    par3++;
+                }
+
+                f1 = (aoLightValueScratchXYZNNP + aoLightValueScratchXYNN + aoLightValueScratchYZNP + aoLightValueYNeg) / 4F;
+                f22 = (aoLightValueScratchYZNP + aoLightValueYNeg + aoLightValueScratchXYZPNP + aoLightValueScratchXYPN) / 4F;
+                f15 = (aoLightValueYNeg + aoLightValueScratchYZNN + aoLightValueScratchXYPN + aoLightValueScratchXYZPNN) / 4F;
+                f8 = (aoLightValueScratchXYNN + aoLightValueScratchXYZNNN + aoLightValueYNeg + aoLightValueScratchYZNN) / 4F;
+                brightnessTopLeft = getAoBrightness(aoBrightnessXYZNNP, aoBrightnessXYNN, aoBrightnessYZNP, k);
+                brightnessTopRight = getAoBrightness(aoBrightnessYZNP, aoBrightnessXYZPNP, aoBrightnessXYPN, k);
+                brightnessBottomRight = getAoBrightness(aoBrightnessYZNN, aoBrightnessXYPN, aoBrightnessXYZPNN, k);
+                brightnessBottomLeft = getAoBrightness(aoBrightnessXYNN, aoBrightnessXYZNNN, aoBrightnessYZNN, k);
+            }
+            else
+            {
+                f1 = f8 = f15 = f22 = aoLightValueYNeg;
+                brightnessTopLeft = brightnessBottomLeft = brightnessBottomRight = brightnessTopRight = aoBrightnessXYNN;
+            }
+
+            colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = (flag1 ? par5 : 1.0F) * 0.5F;
+            colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = (flag1 ? par6 : 1.0F) * 0.5F;
+            colorBlueTopLeft = colorBlueBottomLeft = colorBlueBottomRight = colorBlueTopRight = (flag1 ? par7 : 1.0F) * 0.5F;
+            colorRedTopLeft *= f1;
+            colorGreenTopLeft *= f1;
+            colorBlueTopLeft *= f1;
+            colorRedBottomLeft *= f8;
+            colorGreenBottomLeft *= f8;
+            colorBlueBottomLeft *= f8;
+            colorRedBottomRight *= f15;
+            colorGreenBottomRight *= f15;
+            colorBlueBottomRight *= f15;
+            colorRedTopRight *= f22;
+            colorGreenTopRight *= f22;
+            colorBlueTopRight *= f22;
+            renderBottomFace(par1Block, par2, par3, par4, par1Block.getBlockTexture(blockAccess, par2, par3, par4, 0));
+            flag = true;
+        }
+
+        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 + 1, par4, 1))
+        {
+            float f2;
+            float f9;
+            float f16;
+            float f23;
+
+            if (aoType > 0)
+            {
+                if (par1Block.maxY >= 1.0D)
+                {
+                    par3++;
+                }
+
+                aoBrightnessXYNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
+                aoBrightnessXYPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
+                aoBrightnessYZPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
+                aoBrightnessYZPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
+                aoLightValueScratchXYNP = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
+                aoLightValueScratchXYPP = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
+                aoLightValueScratchYZPN = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
+                aoLightValueScratchYZPP = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
+
+                if (aoGrassXYZCPN || aoGrassXYZNPC)
+                {
+                    aoLightValueScratchXYZNPN = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4 - 1);
+                    aoBrightnessXYZNPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNPN = aoLightValueScratchXYNP;
+                    aoBrightnessXYZNPN = aoBrightnessXYNP;
+                }
+
+                if (aoGrassXYZCPN || aoGrassXYZPPC)
+                {
+                    aoLightValueScratchXYZPPN = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4 - 1);
+                    aoBrightnessXYZPPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPPN = aoLightValueScratchXYPP;
+                    aoBrightnessXYZPPN = aoBrightnessXYPP;
+                }
+
+                if (aoGrassXYZCPP || aoGrassXYZNPC)
+                {
+                    aoLightValueScratchXYZNPP = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4 + 1);
+                    aoBrightnessXYZNPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNPP = aoLightValueScratchXYNP;
+                    aoBrightnessXYZNPP = aoBrightnessXYNP;
+                }
+
+                if (aoGrassXYZCPP || aoGrassXYZPPC)
+                {
+                    aoLightValueScratchXYZPPP = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4 + 1);
+                    aoBrightnessXYZPPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPPP = aoLightValueScratchXYPP;
+                    aoBrightnessXYZPPP = aoBrightnessXYPP;
+                }
+
+                if (par1Block.maxY >= 1.0D)
+                {
+                    par3--;
+                }
+
+                f23 = (aoLightValueScratchXYZNPP + aoLightValueScratchXYNP + aoLightValueScratchYZPP + aoLightValueYPos) / 4F;
+                f2 = (aoLightValueScratchYZPP + aoLightValueYPos + aoLightValueScratchXYZPPP + aoLightValueScratchXYPP) / 4F;
+                f9 = (aoLightValueYPos + aoLightValueScratchYZPN + aoLightValueScratchXYPP + aoLightValueScratchXYZPPN) / 4F;
+                f16 = (aoLightValueScratchXYNP + aoLightValueScratchXYZNPN + aoLightValueYPos + aoLightValueScratchYZPN) / 4F;
+                brightnessTopRight = getAoBrightness(aoBrightnessXYZNPP, aoBrightnessXYNP, aoBrightnessYZPP, j1);
+                brightnessTopLeft = getAoBrightness(aoBrightnessYZPP, aoBrightnessXYZPPP, aoBrightnessXYPP, j1);
+                brightnessBottomLeft = getAoBrightness(aoBrightnessYZPN, aoBrightnessXYPP, aoBrightnessXYZPPN, j1);
+                brightnessBottomRight = getAoBrightness(aoBrightnessXYNP, aoBrightnessXYZNPN, aoBrightnessYZPN, j1);
+            }
+            else
+            {
+                f2 = f9 = f16 = f23 = aoLightValueYPos;
+                brightnessTopLeft = brightnessBottomLeft = brightnessBottomRight = brightnessTopRight = j1;
+            }
+
+            colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = flag2 ? par5 : 1.0F;
+            colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = flag2 ? par6 : 1.0F;
+            colorBlueTopLeft = colorBlueBottomLeft = colorBlueBottomRight = colorBlueTopRight = flag2 ? par7 : 1.0F;
+            colorRedTopLeft *= f2;
+            colorGreenTopLeft *= f2;
+            colorBlueTopLeft *= f2;
+            colorRedBottomLeft *= f9;
+            colorGreenBottomLeft *= f9;
+            colorBlueBottomLeft *= f9;
+            colorRedBottomRight *= f16;
+            colorGreenBottomRight *= f16;
+            colorBlueBottomRight *= f16;
+            colorRedTopRight *= f23;
+            colorGreenTopRight *= f23;
+            colorBlueTopRight *= f23;
+            renderTopFace(par1Block, par2, par3, par4, par1Block.getBlockTexture(blockAccess, par2, par3, par4, 1));
+            flag = true;
+        }
+
+        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 - 1, 2))
+        {
+            float f3;
+            float f10;
+            float f17;
+            float f24;
+
+            if (aoType > 0)
+            {
+                if (par1Block.minZ <= 0.0D)
+                {
+                    par4--;
+                }
+
+                aoLightValueScratchXZNN = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
+                aoLightValueScratchYZNN = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
+                aoLightValueScratchYZPN = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
+                aoLightValueScratchXZPN = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
+                aoBrightnessXZNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
+                aoBrightnessYZNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
+                aoBrightnessYZPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
+                aoBrightnessXZPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
+
+                if (aoGrassXYZNCN || aoGrassXYZCNN)
+                {
+                    aoLightValueScratchXYZNNN = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3 - 1, par4);
+                    aoBrightnessXYZNNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3 - 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNNN = aoLightValueScratchXZNN;
+                    aoBrightnessXYZNNN = aoBrightnessXZNN;
+                }
+
+                if (aoGrassXYZNCN || aoGrassXYZCPN)
+                {
+                    aoLightValueScratchXYZNPN = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3 + 1, par4);
+                    aoBrightnessXYZNPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3 + 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNPN = aoLightValueScratchXZNN;
+                    aoBrightnessXYZNPN = aoBrightnessXZNN;
+                }
+
+                if (aoGrassXYZPCN || aoGrassXYZCNN)
+                {
+                    aoLightValueScratchXYZPNN = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3 - 1, par4);
+                    aoBrightnessXYZPNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3 - 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPNN = aoLightValueScratchXZPN;
+                    aoBrightnessXYZPNN = aoBrightnessXZPN;
+                }
+
+                if (aoGrassXYZPCN || aoGrassXYZCPN)
+                {
+                    aoLightValueScratchXYZPPN = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3 + 1, par4);
+                    aoBrightnessXYZPPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3 + 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPPN = aoLightValueScratchXZPN;
+                    aoBrightnessXYZPPN = aoBrightnessXZPN;
+                }
+
+                if (par1Block.minZ <= 0.0D)
+                {
+                    par4++;
+                }
+
+                f3 = (aoLightValueScratchXZNN + aoLightValueScratchXYZNPN + aoLightValueZNeg + aoLightValueScratchYZPN) / 4F;
+                f10 = (aoLightValueZNeg + aoLightValueScratchYZPN + aoLightValueScratchXZPN + aoLightValueScratchXYZPPN) / 4F;
+                f17 = (aoLightValueScratchYZNN + aoLightValueZNeg + aoLightValueScratchXYZPNN + aoLightValueScratchXZPN) / 4F;
+                f24 = (aoLightValueScratchXYZNNN + aoLightValueScratchXZNN + aoLightValueScratchYZNN + aoLightValueZNeg) / 4F;
+                brightnessTopLeft = getAoBrightness(aoBrightnessXZNN, aoBrightnessXYZNPN, aoBrightnessYZPN, l);
+                brightnessBottomLeft = getAoBrightness(aoBrightnessYZPN, aoBrightnessXZPN, aoBrightnessXYZPPN, l);
+                brightnessBottomRight = getAoBrightness(aoBrightnessYZNN, aoBrightnessXYZPNN, aoBrightnessXZPN, l);
+                brightnessTopRight = getAoBrightness(aoBrightnessXYZNNN, aoBrightnessXZNN, aoBrightnessYZNN, l);
+            }
+            else
+            {
+                f3 = f10 = f17 = f24 = aoLightValueZNeg;
+                brightnessTopLeft = brightnessBottomLeft = brightnessBottomRight = brightnessTopRight = l;
+            }
+
+            colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = (flag3 ? par5 : 1.0F) * 0.8F;
+            colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = (flag3 ? par6 : 1.0F) * 0.8F;
+            colorBlueTopLeft = colorBlueBottomLeft = colorBlueBottomRight = colorBlueTopRight = (flag3 ? par7 : 1.0F) * 0.8F;
+            colorRedTopLeft *= f3;
+            colorGreenTopLeft *= f3;
+            colorBlueTopLeft *= f3;
+            colorRedBottomLeft *= f10;
+            colorGreenBottomLeft *= f10;
+            colorBlueBottomLeft *= f10;
+            colorRedBottomRight *= f17;
+            colorGreenBottomRight *= f17;
+            colorBlueBottomRight *= f17;
+            colorRedTopRight *= f24;
+            colorGreenTopRight *= f24;
+            colorBlueTopRight *= f24;
+            int l1 = par1Block.getBlockTexture(blockAccess, par2, par3, par4, 2);
+            renderEastFace(par1Block, par2, par3, par4, l1);
+
+            if (fancyGrass && l1 == 3 && overrideBlockTexture < 0)
+            {
+                colorRedTopLeft *= par5;
+                colorRedBottomLeft *= par5;
+                colorRedBottomRight *= par5;
+                colorRedTopRight *= par5;
+                colorGreenTopLeft *= par6;
+                colorGreenBottomLeft *= par6;
+                colorGreenBottomRight *= par6;
+                colorGreenTopRight *= par6;
+                colorBlueTopLeft *= par7;
+                colorBlueBottomLeft *= par7;
+                colorBlueBottomRight *= par7;
+                colorBlueTopRight *= par7;
+                renderEastFace(par1Block, par2, par3, par4, 38);
+            }
+
+            flag = true;
+        }
+
+        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 + 1, 3))
+        {
+            float f4;
+            float f11;
+            float f18;
+            float f25;
+
+            if (aoType > 0)
+            {
+                if (par1Block.maxZ >= 1.0D)
+                {
+                    par4++;
+                }
+
+                aoLightValueScratchXZNP = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
+                aoLightValueScratchXZPP = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
+                aoLightValueScratchYZNP = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
+                aoLightValueScratchYZPP = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
+                aoBrightnessXZNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
+                aoBrightnessXZPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
+                aoBrightnessYZNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
+                aoBrightnessYZPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
+
+                if (aoGrassXYZNCP || aoGrassXYZCNP)
+                {
+                    aoLightValueScratchXYZNNP = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3 - 1, par4);
+                    aoBrightnessXYZNNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3 - 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNNP = aoLightValueScratchXZNP;
+                    aoBrightnessXYZNNP = aoBrightnessXZNP;
+                }
+
+                if (aoGrassXYZNCP || aoGrassXYZCPP)
+                {
+                    aoLightValueScratchXYZNPP = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3 + 1, par4);
+                    aoBrightnessXYZNPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3 + 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNPP = aoLightValueScratchXZNP;
+                    aoBrightnessXYZNPP = aoBrightnessXZNP;
+                }
+
+                if (aoGrassXYZPCP || aoGrassXYZCNP)
+                {
+                    aoLightValueScratchXYZPNP = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3 - 1, par4);
+                    aoBrightnessXYZPNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3 - 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPNP = aoLightValueScratchXZPP;
+                    aoBrightnessXYZPNP = aoBrightnessXZPP;
+                }
+
+                if (aoGrassXYZPCP || aoGrassXYZCPP)
+                {
+                    aoLightValueScratchXYZPPP = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3 + 1, par4);
+                    aoBrightnessXYZPPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3 + 1, par4);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPPP = aoLightValueScratchXZPP;
+                    aoBrightnessXYZPPP = aoBrightnessXZPP;
+                }
+
+                if (par1Block.maxZ >= 1.0D)
+                {
+                    par4--;
+                }
+
+                f4 = (aoLightValueScratchXZNP + aoLightValueScratchXYZNPP + aoLightValueZPos + aoLightValueScratchYZPP) / 4F;
+                f25 = (aoLightValueZPos + aoLightValueScratchYZPP + aoLightValueScratchXZPP + aoLightValueScratchXYZPPP) / 4F;
+                f18 = (aoLightValueScratchYZNP + aoLightValueZPos + aoLightValueScratchXYZPNP + aoLightValueScratchXZPP) / 4F;
+                f11 = (aoLightValueScratchXYZNNP + aoLightValueScratchXZNP + aoLightValueScratchYZNP + aoLightValueZPos) / 4F;
+                brightnessTopLeft = getAoBrightness(aoBrightnessXZNP, aoBrightnessXYZNPP, aoBrightnessYZPP, k1);
+                brightnessTopRight = getAoBrightness(aoBrightnessYZPP, aoBrightnessXZPP, aoBrightnessXYZPPP, k1);
+                brightnessBottomRight = getAoBrightness(aoBrightnessYZNP, aoBrightnessXYZPNP, aoBrightnessXZPP, k1);
+                brightnessBottomLeft = getAoBrightness(aoBrightnessXYZNNP, aoBrightnessXZNP, aoBrightnessYZNP, k1);
+            }
+            else
+            {
+                f4 = f11 = f18 = f25 = aoLightValueZPos;
+                brightnessTopLeft = brightnessBottomLeft = brightnessBottomRight = brightnessTopRight = k1;
+            }
+
+            colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = (flag4 ? par5 : 1.0F) * 0.8F;
+            colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = (flag4 ? par6 : 1.0F) * 0.8F;
+            colorBlueTopLeft = colorBlueBottomLeft = colorBlueBottomRight = colorBlueTopRight = (flag4 ? par7 : 1.0F) * 0.8F;
+            colorRedTopLeft *= f4;
+            colorGreenTopLeft *= f4;
+            colorBlueTopLeft *= f4;
+            colorRedBottomLeft *= f11;
+            colorGreenBottomLeft *= f11;
+            colorBlueBottomLeft *= f11;
+            colorRedBottomRight *= f18;
+            colorGreenBottomRight *= f18;
+            colorBlueBottomRight *= f18;
+            colorRedTopRight *= f25;
+            colorGreenTopRight *= f25;
+            colorBlueTopRight *= f25;
+            int i2 = par1Block.getBlockTexture(blockAccess, par2, par3, par4, 3);
+            renderWestFace(par1Block, par2, par3, par4, par1Block.getBlockTexture(blockAccess, par2, par3, par4, 3));
+
+            if (fancyGrass && i2 == 3 && overrideBlockTexture < 0)
+            {
+                colorRedTopLeft *= par5;
+                colorRedBottomLeft *= par5;
+                colorRedBottomRight *= par5;
+                colorRedTopRight *= par5;
+                colorGreenTopLeft *= par6;
+                colorGreenBottomLeft *= par6;
+                colorGreenBottomRight *= par6;
+                colorGreenTopRight *= par6;
+                colorBlueTopLeft *= par7;
+                colorBlueBottomLeft *= par7;
+                colorBlueBottomRight *= par7;
+                colorBlueTopRight *= par7;
+                renderWestFace(par1Block, par2, par3, par4, 38);
+            }
+
+            flag = true;
+        }
+
+        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 - 1, par3, par4, 4))
+        {
+            float f5;
+            float f12;
+            float f19;
+            float f26;
+
+            if (aoType > 0)
+            {
+                if (par1Block.minX <= 0.0D)
+                {
+                    par2--;
+                }
+
+                aoLightValueScratchXYNN = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
+                aoLightValueScratchXZNN = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
+                aoLightValueScratchXZNP = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
+                aoLightValueScratchXYNP = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
+                aoBrightnessXYNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
+                aoBrightnessXZNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
+                aoBrightnessXZNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
+                aoBrightnessXYNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
+
+                if (aoGrassXYZNCN || aoGrassXYZNNC)
+                {
+                    aoLightValueScratchXYZNNN = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4 - 1);
+                    aoBrightnessXYZNNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNNN = aoLightValueScratchXZNN;
+                    aoBrightnessXYZNNN = aoBrightnessXZNN;
+                }
+
+                if (aoGrassXYZNCP || aoGrassXYZNNC)
+                {
+                    aoLightValueScratchXYZNNP = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4 + 1);
+                    aoBrightnessXYZNNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNNP = aoLightValueScratchXZNP;
+                    aoBrightnessXYZNNP = aoBrightnessXZNP;
+                }
+
+                if (aoGrassXYZNCN || aoGrassXYZNPC)
+                {
+                    aoLightValueScratchXYZNPN = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4 - 1);
+                    aoBrightnessXYZNPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNPN = aoLightValueScratchXZNN;
+                    aoBrightnessXYZNPN = aoBrightnessXZNN;
+                }
+
+                if (aoGrassXYZNCP || aoGrassXYZNPC)
+                {
+                    aoLightValueScratchXYZNPP = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4 + 1);
+                    aoBrightnessXYZNPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZNPP = aoLightValueScratchXZNP;
+                    aoBrightnessXYZNPP = aoBrightnessXZNP;
+                }
+
+                if (par1Block.minX <= 0.0D)
+                {
+                    par2++;
+                }
+
+                f26 = (aoLightValueScratchXYNN + aoLightValueScratchXYZNNP + aoLightValueXNeg + aoLightValueScratchXZNP) / 4F;
+                f5 = (aoLightValueXNeg + aoLightValueScratchXZNP + aoLightValueScratchXYNP + aoLightValueScratchXYZNPP) / 4F;
+                f12 = (aoLightValueScratchXZNN + aoLightValueXNeg + aoLightValueScratchXYZNPN + aoLightValueScratchXYNP) / 4F;
+                f19 = (aoLightValueScratchXYZNNN + aoLightValueScratchXYNN + aoLightValueScratchXZNN + aoLightValueXNeg) / 4F;
+                brightnessTopRight = getAoBrightness(aoBrightnessXYNN, aoBrightnessXYZNNP, aoBrightnessXZNP, j);
+                brightnessTopLeft = getAoBrightness(aoBrightnessXZNP, aoBrightnessXYNP, aoBrightnessXYZNPP, j);
+                brightnessBottomLeft = getAoBrightness(aoBrightnessXZNN, aoBrightnessXYZNPN, aoBrightnessXYNP, j);
+                brightnessBottomRight = getAoBrightness(aoBrightnessXYZNNN, aoBrightnessXYNN, aoBrightnessXZNN, j);
+            }
+            else
+            {
+                f5 = f12 = f19 = f26 = aoLightValueXNeg;
+                brightnessTopLeft = brightnessBottomLeft = brightnessBottomRight = brightnessTopRight = j;
+            }
+
+            colorRedTopLeft = colorRedBottomLeft = colorRedBottomRight = colorRedTopRight = (flag5 ? par5 : 1.0F) * 0.6F;
+            colorGreenTopLeft = colorGreenBottomLeft = colorGreenBottomRight = colorGreenTopRight = (flag5 ? par6 : 1.0F) * 0.6F;
+            colorBlueTopLeft = colorBlueBottomLeft = colorBlueBottomRight = colorBlueTopRight = (flag5 ? par7 : 1.0F) * 0.6F;
+            colorRedTopLeft *= f5;
+            colorGreenTopLeft *= f5;
+            colorBlueTopLeft *= f5;
+            colorRedBottomLeft *= f12;
+            colorGreenBottomLeft *= f12;
+            colorBlueBottomLeft *= f12;
+            colorRedBottomRight *= f19;
+            colorGreenBottomRight *= f19;
+            colorBlueBottomRight *= f19;
+            colorRedTopRight *= f26;
+            colorGreenTopRight *= f26;
+            colorBlueTopRight *= f26;
+            int j2 = par1Block.getBlockTexture(blockAccess, par2, par3, par4, 4);
+            renderNorthFace(par1Block, par2, par3, par4, j2);
+
+            if (fancyGrass && j2 == 3 && overrideBlockTexture < 0)
+            {
+                colorRedTopLeft *= par5;
+                colorRedBottomLeft *= par5;
+                colorRedBottomRight *= par5;
+                colorRedTopRight *= par5;
+                colorGreenTopLeft *= par6;
+                colorGreenBottomLeft *= par6;
+                colorGreenBottomRight *= par6;
+                colorGreenTopRight *= par6;
+                colorBlueTopLeft *= par7;
+                colorBlueBottomLeft *= par7;
+                colorBlueBottomRight *= par7;
+                colorBlueTopRight *= par7;
+                renderNorthFace(par1Block, par2, par3, par4, 38);
+            }
+
+            flag = true;
+        }
+
+        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 + 1, par3, par4, 5))
+        {
+            float f6;
+            float f13;
+            float f20;
+            float f27;
+
+            if (aoType > 0)
+            {
+                if (par1Block.maxX >= 1.0D)
+                {
+                    par2++;
+                }
+
+                aoLightValueScratchXYPN = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
+                aoLightValueScratchXZPN = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
+                aoLightValueScratchXZPP = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
+                aoLightValueScratchXYPP = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
+                aoBrightnessXYPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
+                aoBrightnessXZPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
+                aoBrightnessXZPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
+                aoBrightnessXYPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
+
+                if (aoGrassXYZPNC || aoGrassXYZPCN)
+                {
+                    aoLightValueScratchXYZPNN = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4 - 1);
+                    aoBrightnessXYZPNN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPNN = aoLightValueScratchXZPN;
+                    aoBrightnessXYZPNN = aoBrightnessXZPN;
+                }
+
+                if (aoGrassXYZPNC || aoGrassXYZPCP)
+                {
+                    aoLightValueScratchXYZPNP = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4 + 1);
+                    aoBrightnessXYZPNP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4 + 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPNP = aoLightValueScratchXZPP;
+                    aoBrightnessXYZPNP = aoBrightnessXZPP;
+                }
+
+                if (aoGrassXYZPPC || aoGrassXYZPCN)
+                {
+                    aoLightValueScratchXYZPPN = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4 - 1);
+                    aoBrightnessXYZPPN = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4 - 1);
+                }
+                else
+                {
+                    aoLightValueScratchXYZPPN = aoLightValueScratchXZPN;
+                    aoBrightnessXYZPPN = aoBrightnessXZPN;
+                }
+
+                if (aoGrassXYZPPC || aoGrassXYZPCP)
+                {
+                    aoLightValueScratchXYZPPP = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4 + 1);
                     aoBrightnessXYZPPP = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4 + 1);
                 }
                 else
