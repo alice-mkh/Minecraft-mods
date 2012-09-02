@@ -44,4 +44,28 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
         }
         return super.getButtonText();
     }
+
+    public String[] getTooltip(){
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(mod_OldDays.lang.get(getName()+".name"));
+        list.add("");
+        int num = mod_OldDays.getDescriptionNumber(getName()+".desc");
+        for (int i = 0; i < num; i++){
+            list.add("§7"+mod_OldDays.lang.get(getName()+".desc"+(i+1)));
+        }
+        if (useNames){
+            for (int i = 0; i <= max; i++){
+                list.add("<- • §a"+mod_OldDays.lang.get(getName()+(i+1))+"§7: "+mod_OldDays.lang.get(getName()+(i+1)+".desc"));
+            }
+        }else{
+            list.add("§7"+mod_OldDays.lang.get("gui.possible")+": §r"+0+"-"+max);
+        }
+        if (isDisabled()){
+            if (num > 0 || useNames){
+                list.add("");
+            }
+            list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
+        }
+        return list.toArray(new String[list.size()]);
+    }
 }
