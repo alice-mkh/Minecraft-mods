@@ -4,23 +4,18 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class OldDaysPropertyCond extends OldDaysPropertyInt{
-    public boolean boolValue;
-    public boolean smpBoolValue;
-
     public OldDaysPropertyCond(OldDaysModule m, int i, int v, String f){
         super(m, i, v, f, 2);
         useNames = true;
-        boolValue = getBoolValue(v);
     }
 
-    public OldDaysPropertyCond(OldDaysModule m, int i, int v, boolean smp, String f){
+    public OldDaysPropertyCond(OldDaysModule m, int i, int v, int smp, String f){
         this(m, i, v, f);
-        smpBoolValue = smp;
         allowedInSMP = false;
     }
 
-    public boolean getBoolValue(int i){
-        if (i == 1){
+    public boolean getBoolValue(){
+        if (value == 1){
             try{
                 Method method = module.getClass().getMethod(field.getName());
                 boolean b = ((Boolean)method.invoke(module));
@@ -30,12 +25,12 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
                 return false;
             }
         }
-        return i > 0;
+        return value > 0;
     }
 
     public void onChange(){
         try{
-            field.set(module, boolValue);
+            field.set(module, getBoolValue());
             module.callback(id);
         }catch(Exception ex){
             System.out.println(ex);
@@ -43,36 +38,11 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
         }
     }
 
-    public void setSMPValue(){
-        super.setSMPValue();
-        boolValue = smpBoolValue;
-    }
-
-    protected void disable(){
-        super.disable();
-        boolValue = smpBoolValue;
-    }
-
-    public void incrementValue(){
-        super.incrementValue();
-        boolValue = getBoolValue(value);
-    }
-
-    public void updateValue(){
-        super.updateValue();
-        boolValue = getBoolValue(value);
-    }
-
-    public void loadFromString(String str){
-        super.loadFromString(str);
-        boolValue = getBoolValue(value);
-    }
-
     public String getButtonText(){
         if (value == 1){
             return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui.auto");
         }
-        return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui."+(boolValue ? "on" : "off"));
+        return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui."+(getBoolValue() ? "on" : "off"));
     }
 
     public String[] getTooltip(){

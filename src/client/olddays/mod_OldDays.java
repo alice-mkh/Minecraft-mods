@@ -188,10 +188,8 @@ public class mod_OldDays extends Mod{
             OldDaysModule module = modules.get(i);
             for (int j = 0; j < module.properties.size(); j++){
                 OldDaysProperty prop = module.properties.get(j);
-                if (prop instanceof OldDaysPropertyCond){
-                    OldDaysPropertyCond prop2 = ((OldDaysPropertyCond)prop);
-                    prop2.boolValue = prop2.getBoolValue(1);
-                    prop2.onChange();
+                if (prop instanceof OldDaysPropertyCond || prop instanceof OldDaysPropertyCond2){
+                    prop.onChange();
                 }
             }
         }
