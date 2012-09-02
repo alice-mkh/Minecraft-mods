@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 public class GuiOldDaysBase extends GuiScreen{
     public static final int LEFT_ID = 998;
     public static final int RIGHT_ID = 999;
+    public static final int TOOLTIP_OFFSET = 500;
 
     protected GuiScreen parent;
     protected int max;
@@ -59,16 +60,21 @@ public class GuiOldDaysBase extends GuiScreen{
     }
 
     protected void addButton(int i, boolean b, int j, OldDaysProperty p){
+        int offset = 3;
         int x = width / 2 - 155;
+        int x2 = x - offset - 20;
         int i2 = i % max;
         if (i2 % 2 != 0){
            x+=160;
+           x2+=330 + (offset * 2);
         }
         int margin = 30;
         int top = b ? 15 : -15;
         int y = height / 6 - top + ((i2/2) * margin);
-        GuiButtonProp button = new GuiButtonProp(j+1, x, y, p);
+        GuiButtonProp button = new GuiButtonProp(j+1, x, y, p, false);
         controlList.add(button);
+        GuiButton tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
+        controlList.add(tooltipButton);
     }
 
     protected void postInitGui(int count){
@@ -76,7 +82,7 @@ public class GuiOldDaysBase extends GuiScreen{
         controlList.add(right = new GuiButtonPage(RIGHT_ID, 30, height, width, true, this));
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
         Keyboard.enableRepeatEvents(hasFields);
-        maxpage = (count-1) / max;
+        maxpage = (count-1) / max*2;
         setPage(0);
     }
 
@@ -112,15 +118,15 @@ public class GuiOldDaysBase extends GuiScreen{
         if (to>maxpage || to<0){
             return;
         }
-        for (int i = 0; i < max; i++){
-            int i2 = i+(page*max)+1;
+        for (int i = 0; i < max*2; i++){
+            int i2 = i+(page*max*2)+1;
             if (i2<=controlList.size()-2){
                 ((GuiButton)controlList.get(i2)).drawButton = false;
             }
         }
         page = to;
-        for (int i = 0; i < max; i++){
-            int i2 = i+(page*max)+1;
+        for (int i = 0; i < max*2; i++){
+            int i2 = i+(page*max*2)+1;
             if (i2<=controlList.size()-2){
                 ((GuiButton)controlList.get(i2)).drawButton = true;
             }

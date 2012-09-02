@@ -37,6 +37,10 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
 
     protected void actionPerformed(GuiButtonProp guibutton)
     {
+        if (guibutton.help){
+            showTooltip = showTooltip == null ? guibutton : null;
+            return;
+        }
         displayField = false;
         OldDaysProperty prop = guibutton.prop;
         int m = prop.module.id;
@@ -96,10 +100,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
         if (guibuttonprop == null){
             showTooltip = null;
-            return;
-        }
-        if (par3 == 1){
-            showTooltip = showTooltip == null ? guibuttonprop : null;
             return;
         }
         if (displayField){
