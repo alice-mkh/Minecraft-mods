@@ -46,6 +46,10 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     protected List entitiesWithinAABBExcludingEntity;
     protected static final WeightedRandomChestContent bonusChestContent[];
 
+    public double field_35467_J;
+    public double field_35468_K;
+    public double field_35465_L;
+
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
     {
         super(par3WorldProvider, par1ISaveHandler, par4WorldSettings, par2Str, p);
@@ -1586,6 +1590,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
+        if (Minecraft.timecontrol){
+            return provider.calculateCelestialAngle(worldInfo.getWorldTime(), par1) + (float)(field_35467_J + (field_35468_K - field_35467_J) * (double)par1);
+        }
         return provider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
     }
 
@@ -2174,6 +2181,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void tick()
     {
+        field_35467_J = field_35468_K;
+        field_35468_K += field_35465_L;
+        field_35465_L *= 0.97999999999999998D;
         if (getWorldInfo().isHardcoreModeEnabled() && difficultySetting < 3)
         {
             difficultySetting = 3;

@@ -299,6 +299,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private boolean startProfiling;
     private boolean profilingEnabled;
     public static boolean oldswing = false;
+    public static boolean timecontrol = false;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
@@ -1826,6 +1827,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (theWorld != null)
         {
+            if (timecontrol && enableSP){
+                if(Keyboard.isKeyDown(64)){
+                    ((WorldSSP)theWorld).field_35465_L -= 0.001D;
+                }
+                if(Keyboard.isKeyDown(65)){
+                    ((WorldSSP)theWorld).field_35465_L += 0.001D;
+                }
+            }
             if (thePlayer != null)
             {
                 joinPlayerCounter++;

@@ -1893,7 +1893,7 @@ public class WorldSSP2 extends WorldSSP
         if(ODNBXlite.SkyBrightness == 16 || (ODNBXlite.SkyBrightness == -1 && ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme) == 16)){
             return 1.0F;
         }
-        return provider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
+        return super.getCelestialAngle(par1);
     }
 
     public int getMoonPhase(float par1)
@@ -2548,6 +2548,9 @@ public class WorldSSP2 extends WorldSSP
      */
     public void tick()
     {
+        field_35467_J = field_35468_K;
+        field_35468_K += field_35465_L;
+        field_35465_L *= 0.97999999999999998D;
         if (getWorldInfo().isHardcoreModeEnabled() && difficultySetting < 3)
         {
             difficultySetting = 3;

@@ -18,6 +18,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 11,false, false, "FogKey");
         new OldDaysPropertyBool(this, 12,false, false, "LogRotation");
         new OldDaysPropertyBool(this, 13,false, true,  "OldCrops");
+        new OldDaysPropertyBool(this, 14,false, false, "TimeControl");
         replaceBlocks();
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
@@ -39,6 +40,7 @@ public class ODActions extends OldDaysModule{
             case 10:set(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
             case 12:set(net.minecraft.src.BlockLog2.class, "rotate", LogRotation); break;
             case 13:set(net.minecraft.src.BlockFarmlandOld.class, "oldbreaking", OldCrops); break;
+            case 14:set(net.minecraft.client.Minecraft.class, "timecontrol", TimeControl); break;
         }
     }
 
@@ -62,6 +64,7 @@ public class ODActions extends OldDaysModule{
     public static boolean FogKey;
     public static boolean LogRotation;
     public static boolean OldCrops = true;
+    public static boolean TimeControl;
     public KeyBinding keyFog;
 
     private void setSolidTNT(boolean b){
