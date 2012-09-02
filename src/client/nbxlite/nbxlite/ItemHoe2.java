@@ -5,6 +5,8 @@ import net.minecraft.src.*;
 
 public class ItemHoe2 extends ItemHoe
 {
+    public static boolean oldhoes = false;
+
     public ItemHoe2(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
         super(par1, par2EnumToolMaterial);
@@ -37,7 +39,7 @@ public class ItemHoe2 extends ItemHoe
             {
                 par3World.setBlockWithNotify(par4, par5, par6, block.blockID);
                 par1ItemStack.damageItem(1, par2EntityPlayer);
-                if (!ODNBXlite.allowOldHoe()){
+                if (!oldhoes){
                     return true;
                 }
                 if(par3World.rand.nextInt(8) == 0 && i == Block.grass.blockID){

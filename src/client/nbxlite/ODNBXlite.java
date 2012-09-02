@@ -29,13 +29,15 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyFloat(this, 14,128,      "CloudHeight", -999.0F, 999.0F);
         new OldDaysPropertyCond(this,  15,1,        "LeavesDecay");
         new OldDaysPropertyBool(this,  16,false,    "OldSpawning");
-        new OldDaysPropertyBool(this,  17,false,    "TexturedClouds");
-        new OldDaysPropertyCond(this,  18,1,        "OpaqueFlatClouds");
-        new OldDaysPropertyCond(this,  19,1,        "ClassicLight");
-        new OldDaysPropertyCond(this,  20,1,        "BedrockFog");
-        new OldDaysPropertyCond(this,  21,1,        "SunriseAtNorth");
-        new OldDaysPropertyCond(this,  22,1,        "OldStars");
-        new OldDaysPropertyBool(this,  23,true,     "ShowGUI");
+        new OldDaysPropertyCond(this,  17,1,        "OldHoes");
+        new OldDaysPropertyBool(this,  18,false,    "TexturedClouds");
+        new OldDaysPropertyCond(this,  19,1,        "OpaqueFlatClouds");
+        new OldDaysPropertyCond(this,  20,1,        "ClassicLight");
+        new OldDaysPropertyCond(this,  21,1,        "BedrockFog");
+        new OldDaysPropertyCond2(this, 22,-1,       "Sunset", 2);
+        new OldDaysPropertyCond(this,  23,1,        "SunriseAtNorth");
+        new OldDaysPropertyCond(this,  24,1,        "OldStars");
+        new OldDaysPropertyBool(this,  25,true,     "ShowGUI");
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -116,14 +118,17 @@ public class ODNBXlite extends OldDaysModule{
             case 15:((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
             case 16:set(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
                     set(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
-            case 17:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "texClouds", TexturedClouds); break;
-            case 18:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
-            case 19:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
+            case 17:set(net.minecraft.src.nbxlite.ItemHoe2.class, "oldhoes", OldHoes); break;
+            case 18:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "texClouds", TexturedClouds); break;
+            case 19:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 20:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
                     set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight); break;
-            case 20:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
-            case 21:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
+            case 21:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
+            case 22:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseColors", Sunset >= 1);
+                    set(net.minecraft.src.EntityRenderer.class, "sunriseFog", Sunset >= 2);
+            case 23:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
                     set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
-            case 22:if (Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
+            case 24:if (Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
                         ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(OldStars);
                     }break;
         }
@@ -143,16 +148,22 @@ public class ODNBXlite extends OldDaysModule{
     public static float CloudHeight;
     public static boolean LeavesDecay;
     public static boolean OldSpawning;
+    public static boolean OldHoes;
     public static boolean TexturedClouds;
     public static boolean OpaqueFlatClouds;
     public static boolean ClassicLight;
     public static boolean BedrockFog;
+    public static int Sunset = -1;
     public static boolean SunriseAtNorth;
     public static boolean OldStars;
     public static boolean ShowGUI = true;
 
     public static boolean LeavesDecay(){
         return Generator>GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
+    }
+
+    public static boolean OldHoes(){
+        return Generator==GEN_BIOMELESS || (Generator==GEN_OLDBIOMES && MapFeatures<=FEATURES_BETA15);
     }
 
     public static boolean OpaqueFlatClouds(){
@@ -165,6 +176,16 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean BedrockFog(){
         return Generator>=GEN_NEWBIOMES;
+    }
+
+    public static int Sunset(){
+        if (Generator >= GEN_NEWBIOMES){
+            return 2;
+        }
+        if (Generator <= GEN_BIOMELESS || MapFeatures == FEATURES_SKY){
+            return 0;
+        }
+        return 1;
     }
 
     public static boolean SunriseAtNorth(){
@@ -695,10 +716,6 @@ public class ODNBXlite extends OldDaysModule{
         return 0xffffff;
     }
 
-    public static boolean allowOldHoe(){
-        return Generator==GEN_BIOMELESS || (Generator==GEN_OLDBIOMES && MapFeatures<=FEATURES_BETA15);
-    }
-
     public static boolean mineshaftFloor(){
         return Generator!=GEN_NEWBIOMES || MapFeatures>=FEATURES_12;
     }
@@ -769,8 +786,6 @@ public class ODNBXlite extends OldDaysModule{
         }else if (Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201){
             VoidFog = 4;
         }
-        net.minecraft.src.nbxlite.RenderGlobal2.sunriseColors = gen>GEN_BIOMELESS && !(gen==GEN_OLDBIOMES && features==FEATURES_SKY);
-        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "sunriseFog", gen>=GEN_NEWBIOMES);
         mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "oldFog", isFinite());
         mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "snow", SnowCovered);
         mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "bounds", isFinite());
