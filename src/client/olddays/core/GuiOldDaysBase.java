@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.lwjgl.input.Keyboard;
+import net.minecraft.client.Minecraft;
 
 public class GuiOldDaysBase extends GuiScreen{
     public static final int LEFT_ID = 998;
@@ -195,6 +196,6 @@ public class GuiOldDaysBase extends GuiScreen{
     }
 
     public boolean doesGuiPauseGame(){
-        return false;
+        return Minecraft.getMinecraft().enableSP;
     }
 }
