@@ -58,7 +58,7 @@ public class mod_OldDays extends Mod{
             KeyBinding key = keyBindings.get(i);
             if (key.isPressed()){
                 if (key == keySettings && getMinecraft().currentScreen == null){
-                    getMinecraft().displayGuiScreen(new GuiOldDaysModules(null));
+                    getMinecraft().displayGuiScreen(new GuiOldDaysModules(null, this));
                     continue;
                 }
                 for (int j = 0; j < modules.size(); j++){
@@ -69,13 +69,28 @@ public class mod_OldDays extends Mod{
     }
 
     public void handlePacketFromClient(Packet300Custom packet){
-        super.handlePacketFromClient(packet);
-        if (packet.getId() != SMPManager.PACKET_C2S_REQUEST){
+        if (packet.getId() == SMPManager.PACKET_C2S_PROP){
+            String[] data = packet.getData();
+            OldDaysProperty prop = getModuleById(Integer.parseInt(data[0])).getPropertyById(Integer.parseInt(data[1]));
+            prop.loadFromString(data[2]);
+            sendCallback(prop.module.id, prop.id);
+            sendPacketToAll(SMPManager.PACKET_S2C_PROP, ""+prop.module.id, ""+prop.id, prop.saveToString());
+            System.out.println("Sent "+prop.getName()+" prop to all.");
             return;
         }
-        System.out.println("WTF");
-        sendPacketToAll(0, "Client, it's server, sending an answer.",
-                           "Do you see it?");
+        super.handlePacketFromClient(packet);
+    }
+
+    public void handlePacketFromServer(Packet300Custom packet){
+        if (packet.getId() == SMPManager.PACKET_S2C_PROP){
+            String[] data = packet.getData();
+            OldDaysProperty prop = getModuleById(Integer.parseInt(data[0])).getPropertyById(Integer.parseInt(data[1]));
+            prop.loadFromString(data[2]);
+            sendCallback(prop.module.id, prop.id);
+            System.out.println("Received "+prop.getName()+" prop.");
+            return;
+        }
+        super.handlePacketFromServer(packet);
     }
 
     public void onGUITick(GuiScreen gui){

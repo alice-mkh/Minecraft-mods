@@ -8,8 +8,8 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     protected ArrayList props;
     protected GuiTextFieldSearch searchField;
 
-    public GuiOldDaysSearch(GuiScreen guiscreen){
-        super(guiscreen, -1);
+    public GuiOldDaysSearch(GuiScreen guiscreen, mod_OldDays core){
+        super(guiscreen, core, -1);
         props = new ArrayList();
         max = 10;
         hasFields = true;

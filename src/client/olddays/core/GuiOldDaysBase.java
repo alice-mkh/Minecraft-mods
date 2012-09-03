@@ -19,8 +19,9 @@ public class GuiOldDaysBase extends GuiScreen{
     protected int fieldId;
     protected String current;
     protected boolean hasFields;
+    protected mod_OldDays core;
 
-    public GuiOldDaysBase(GuiScreen guiscreen){
+    public GuiOldDaysBase(GuiScreen guiscreen, mod_OldDays c){
         parent = guiscreen;
         max = 12;
         maxpage = 1;
@@ -29,6 +30,7 @@ public class GuiOldDaysBase extends GuiScreen{
         fieldId = 0;
         tooltipTimer = 0;
         hasFields = false;
+        core = c;
     }
 
     public void updateScreen(){
@@ -155,7 +157,7 @@ public class GuiOldDaysBase extends GuiScreen{
             if (par2 == 1 || par1 == '\0'){
                 return;
             }
-            GuiOldDaysSearch search = new GuiOldDaysSearch(this);
+            GuiOldDaysSearch search = new GuiOldDaysSearch(this, core);
             mc.displayGuiScreen(search);
             search.keyTyped(par1, par2);
             return;
@@ -190,5 +192,9 @@ public class GuiOldDaysBase extends GuiScreen{
                 drawString(fontRenderer, str, x - fontRenderer.getStringWidth(str.replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", "")) / 2, y2, 0xffffff);
             }
         }
+    }
+
+    public boolean doesGuiPauseGame(){
+        return false;
     }
 }

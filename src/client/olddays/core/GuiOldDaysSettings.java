@@ -7,8 +7,8 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     private int id;
     private GuiButtonProp showTooltip;
 
-    public GuiOldDaysSettings(GuiScreen guiscreen, int i){
-        super(guiscreen);
+    public GuiOldDaysSettings(GuiScreen guiscreen, mod_OldDays core, int i){
+        super(guiscreen, core);
         id = i;
         showTooltip = null;
     }
@@ -47,6 +47,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         int p = prop.id;
         if (prop.guitype == OldDaysProperty.GUI_TYPE_BUTTON){
             prop.incrementValue();
+            send(prop);
         }else if (prop.guitype == OldDaysProperty.GUI_TYPE_FIELD){
             /*int offset = fontRenderer.getStringWidth(prop.name+":")-2;
             offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(prop)))/2;
@@ -75,6 +76,13 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
     }
 
+    protected void send(OldDaysProperty prop){
+        if (Minecraft.getMinecraft().enableSP){
+            return;
+        }
+        core.sendPacketToServer(SMPManager.PACKET_C2S_PROP, ""+prop.module.id, ""+prop.id, prop.saveToString());
+    }
+
     protected void showField(boolean b, GuiButton button){
         super.showField(b, button);
         if (!(button instanceof GuiButtonProp)){
@@ -84,6 +92,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             GuiButtonProp propButton = (GuiButtonProp)button;
             mod_OldDays.saveModuleProperties(propButton.prop.module.id);
             mod_OldDays.sendCallbackAndSave(propButton.prop.module.id, propButton.prop.id);
+            send(propButton.prop);
         }
     }
 

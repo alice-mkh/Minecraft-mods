@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
 public class GuiOldDaysModules extends GuiOldDaysBase{
-    public GuiOldDaysModules(GuiScreen guiscreen){
-        super(guiscreen);
+    public GuiOldDaysModules(GuiScreen guiscreen, mod_OldDays core){
+        super(guiscreen, core);
     }
 
     public void initGui(){
@@ -35,6 +35,6 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
         if (!guibutton.enabled){
             return;
         }
-        mc.displayGuiScreen(new GuiOldDaysSettings(this, guibutton.id-1));
+        mc.displayGuiScreen(new GuiOldDaysSettings(this, core, guibutton.id-1));
     }
 }

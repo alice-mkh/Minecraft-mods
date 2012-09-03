@@ -54,7 +54,7 @@ public abstract class OldDaysProperty{
             return 2;
         }
         if (!allowedInSMP && mod_OldDays.getMinecraft().theWorld!=null){
-            if (mod_OldDays.getMinecraft().theWorld.isRemote){
+            if (mod_OldDays.getMinecraft().theWorld.isRemote && false){
                 return 3;
             }
         }
