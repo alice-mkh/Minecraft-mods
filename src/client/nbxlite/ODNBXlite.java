@@ -768,7 +768,7 @@ public class ODNBXlite extends OldDaysModule{
             BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
         }
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
-        if (Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)){
+        if ((Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)) || Generator == GEN_NEWBIOMES){
             world.provider.registerWorld(world);
         }
         SnowCovered = snow;
