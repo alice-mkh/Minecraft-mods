@@ -1153,7 +1153,7 @@ public class RenderGlobal implements IWorldAccess
 
         float f5 = 0.0004882813F;
         double d = (float)cloudOffsetX + par1;
-        if (mc.timecontrol){
+        if (mc.timecontrol && mc.enableSP){
             d += (((WorldSSP)theWorld).field_35467_J + (((WorldSSP)theWorld).field_35468_K - ((WorldSSP)theWorld).field_35467_J) * (double)par1) * 24000D;
         }
         double d1 = mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.029999999329447746D;
@@ -1201,7 +1201,7 @@ public class RenderGlobal implements IWorldAccess
         float f1 = 12F;
         float f2 = 4F;
         double d = (float)cloudOffsetX + par1;
-        if (mc.timecontrol){
+        if (mc.timecontrol && mc.enableSP){
             d += (((WorldSSP)theWorld).field_35467_J + (((WorldSSP)theWorld).field_35468_K - ((WorldSSP)theWorld).field_35467_J) * (double)par1) * 24000D;
         }
         double d1 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)par1 + d * 0.029999999329447746D) / (double)f1;
