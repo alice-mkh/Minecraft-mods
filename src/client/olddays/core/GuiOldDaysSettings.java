@@ -63,7 +63,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
                 current = prop.saveToString();
                 field.setText(prop.saveToString());
             }
-            fieldId = guibutton.id;
+            fieldId = guibutton.id * 2 - 1;
             guibutton.enabled = false;
         }
         mod_OldDays.saveModuleProperties(m);
