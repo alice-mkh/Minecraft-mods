@@ -90,7 +90,19 @@ public class mod_OldDays extends Mod{
             System.out.println("Received "+prop.getName()+" prop.");
             return;
         }
+        if (packet.getId() == SMPManager.PACKET_S2C_SEED){
+            long seed = Long.parseLong(packet.getData()[0]);
+            World world = Minecraft.getMinecraft().theWorld;
+            world.getWorldInfo().setSeed(seed);
+            world.provider.registerWorld(world);
+            System.out.println("Received "+seed+" world seed.");
+            return;
+        }
         super.handlePacketFromServer(packet);
+    }
+
+    public void onLoginServer(EntityPlayerMP player){
+        sendPacketToPlayer(player, SMPManager.PACKET_S2C_SEED, ""+player.worldObj.getSeed());
     }
 
     public void onGUITick(GuiScreen gui){
