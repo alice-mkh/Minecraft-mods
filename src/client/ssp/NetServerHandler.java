@@ -616,6 +616,10 @@ public class NetServerHandler extends NetHandler
         }
 
         theNetworkManager.addToSendQueue(par1Packet);
+
+        if (par1Packet instanceof Packet1Login){
+           net.minecraft.client.Minecraft.getMinecraft().onLoginServer(playerEntity);
+        }
     }
 
     public void handleBlockItemSwitch(Packet16BlockItemSwitch par1Packet16BlockItemSwitch)

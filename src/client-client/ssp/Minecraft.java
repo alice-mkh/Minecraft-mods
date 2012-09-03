@@ -3279,4 +3279,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     {
         return new String[]{thePlayer.username};
     }
+
+    public void onLoginClient(){
+        for (int i = 0; i < mods.size(); i++){
+            Mod mod = mods.get(i);
+            mod.onLoginClient();
+        }
+    }
+
+    public void onLoginServer(EntityPlayerMP player){
+        for (int i = 0; i < mods.size(); i++){
+            Mod mod = mods.get(i);
+            mod.onLoginServer(player);
+        }
+    }
 }

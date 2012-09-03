@@ -172,6 +172,7 @@ public class NetClientHandler extends NetHandler
         mc.playerController.setGameType(par1Packet1Login.gameType);
         addToSendQueue(new Packet204ClientInfo(mc.gameSettings.language, mc.gameSettings.renderDistance, mc.gameSettings.chatVisibility, mc.gameSettings.chatColours, mc.gameSettings.difficulty));
         Minecraft.invokeModMethod("ModLoader", "clientConnect", new Class[]{NetClientHandler.class, Packet1Login.class}, this, par1Packet1Login);
+        Minecraft.getMinecraft().onLoginClient();
     }
 
     public void handlePickupSpawn(Packet21PickupSpawn par1Packet21PickupSpawn)

@@ -96,6 +96,10 @@ public abstract class Mod{
         sendPacket(true, id, null, null, data);
     }
 
+    public void onLoginClient(){}
+
+    public void onLoginServer(EntityPlayerMP player){}
+
     protected void setUseTick(boolean game, boolean gui){
         usesTick = game;
         usesGUITick = gui;
