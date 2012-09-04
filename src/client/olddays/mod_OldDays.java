@@ -68,26 +68,43 @@ public class mod_OldDays extends Mod{
         }
     }
 
-    public void handlePacketFromClient(Packet300Custom packet){
+    public void handlePacketFromClient(Packet300Custom packet, EntityPlayerMP player){
         if (packet.getId() == SMPManager.PACKET_C2S_PROP){
-            String[] data = packet.getData();
-            OldDaysProperty prop = getModuleById(Integer.parseInt(data[0])).getPropertyById(Integer.parseInt(data[1]));
-            prop.loadFromString(data[2]);
-            sendCallback(prop.module.id, prop.id);
-            sendPacketToAll(SMPManager.PACKET_S2C_PROP, ""+prop.module.id, ""+prop.id, prop.saveToString());
+            OldDaysProperty prop = readProperty(packet.getData()[0]);
+            sendPacketToAll(SMPManager.PACKET_S2C_PROP, prop.module.id+" "+prop.id+" "+prop.saveToString());
             System.out.println("Sent "+prop.getName()+" prop to all.");
             return;
         }
-        super.handlePacketFromClient(packet);
+        if (packet.getId() == SMPManager.PACKET_C2S_REQUEST){
+            int module = Integer.parseInt(packet.getData()[0]);
+            if (module >= 0){
+                String[] data = writeModule(getModuleById(module));
+                sendPacketToPlayer(player, SMPManager.PACKET_S2C_MODULE, data);
+            }else{
+                for (int i = 0; i < modules.size(); i++){
+                    String[] data = writeModule(modules.get(i));
+                    sendPacketToPlayer(player, SMPManager.PACKET_S2C_MODULE, data);
+                    System.out.println("Sending module "+i+".");
+                }
+            }
+            return;
+        }
+        super.handlePacketFromClient(packet, player);
     }
 
     public void handlePacketFromServer(Packet300Custom packet){
         if (packet.getId() == SMPManager.PACKET_S2C_PROP){
+            OldDaysProperty prop = readProperty(packet.getData()[0]);
+            System.out.println("Received "+prop.getName()+" prop: "+prop.saveToString()+".");
+            return;
+        }
+        if (packet.getId() == SMPManager.PACKET_S2C_MODULE){
             String[] data = packet.getData();
-            OldDaysProperty prop = getModuleById(Integer.parseInt(data[0])).getPropertyById(Integer.parseInt(data[1]));
-            prop.loadFromString(data[2]);
-            sendCallback(prop.module.id, prop.id);
-            System.out.println("Received "+prop.getName()+" prop.");
+            int id = Integer.parseInt(data[0]);
+            for (int i = 1; i < data.length; i++){
+                readProperty(packet.getData()[i]);
+            }
+            System.out.println("Received "+getModuleById(id).name+" module.");
             return;
         }
         if (packet.getId() == SMPManager.PACKET_S2C_SEED){
@@ -101,8 +118,33 @@ public class mod_OldDays extends Mod{
         super.handlePacketFromServer(packet);
     }
 
+    private String[] writeModule(OldDaysModule module){
+        String[] data = new String[1 + module.properties.size()];
+        data[0] = ""+module.id;
+        for (int i = 0; i < module.properties.size(); i++){
+            OldDaysProperty prop = module.properties.get(i);
+            data[1 + i] = prop.module.id+" "+prop.id+" "+prop.saveToString();
+        }
+        return data;
+    }
+
+    private OldDaysProperty readProperty(String str){
+        String[] data = str.split(" ", 3);
+        int module = Integer.parseInt(data[0]);
+        int id = Integer.parseInt(data[1]);
+        String value = data[2];
+        OldDaysProperty prop = getModuleById(module).getPropertyById(id);
+        prop.loadFromString(value);
+        sendCallback(prop.module.id, prop.id);
+        return prop;
+    }
+
     public void onLoginServer(EntityPlayerMP player){
         sendPacketToPlayer(player, SMPManager.PACKET_S2C_SEED, ""+player.worldObj.getSeed());
+    }
+
+    public void onLoginClient(){
+        sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);
     }
 
     public void onGUITick(GuiScreen gui){

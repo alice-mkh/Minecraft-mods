@@ -27,10 +27,11 @@ public abstract class Mod{
         return false;
     }
 
-    public void handlePacketFromClient(Packet300Custom packet){
+    public void handlePacketFromClient(Packet300Custom packet, EntityPlayerMP player){
         System.out.println("Packet received:");
         System.out.println(" Mod: "+getModName());
         System.out.println(" Direction: Client -> Server");
+        System.out.println(" Player: "+player.username);
         System.out.println(" ID: "+packet.getId());
         String[] data = packet.getData();
         System.out.println(" Data: "+data.length+" strings");
@@ -57,7 +58,7 @@ public abstract class Mod{
             if (dir){
                 handlePacketFromServer(packet);
             }else{
-                handlePacketFromClient(packet);
+                handlePacketFromClient(packet, player);
             }
             return;
         }

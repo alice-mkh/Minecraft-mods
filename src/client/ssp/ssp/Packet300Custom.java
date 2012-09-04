@@ -71,7 +71,7 @@ public class Packet300Custom extends Packet{
             if (toClient){
                 m.handlePacketFromServer(this);
             }else{
-                m.handlePacketFromClient(this);
+                m.handlePacketFromClient(this, ((NetServerHandler)par1NetHandler).getPlayer());
             }
             return;
         }

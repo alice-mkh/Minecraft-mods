@@ -2212,4 +2212,17 @@ public class RenderGlobal implements IWorldAccess
             destroyblockprogress.func_73107_a(par5);
         }
     }
+
+    public void updateAllRenderers()
+    {
+        for(int i = 0; i < worldRenderers.length; i++)
+        {
+            if(!worldRenderers[i].needsUpdate)
+            {
+                worldRenderersToUpdate.add(worldRenderers[i]);
+                worldRenderers[i].markDirty();
+            }
+        }
+
+    }
 }

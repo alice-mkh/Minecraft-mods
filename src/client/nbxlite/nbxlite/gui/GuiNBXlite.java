@@ -159,7 +159,7 @@ public class GuiNBXlite extends GuiScreen{
                 ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
             }
-            mod_OldDays.getMinecraft().renderGlobal.loadRenderers();
+            OldDaysModule.reload();
         }else{
             ODNBXlite.Generator=GeneratorList.genfeatures[GeneratorList.gencurrent];
             if(GeneratorList.genfeatures[GeneratorList.gencurrent]==0){

@@ -22,7 +22,7 @@ public class OldSpawnerAnimals
 
     public void func_1150_a(World world)
     {
-        int i = ((WorldSSP2)world).countEntities2(spawnBaseClass);
+        int i = world.countEntities2(spawnBaseClass);
         if(i < maxSpawns)
         {
             for(int j = 0; j < 3; j++)

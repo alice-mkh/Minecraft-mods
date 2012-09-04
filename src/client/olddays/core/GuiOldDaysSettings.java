@@ -80,7 +80,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (Minecraft.getMinecraft().enableSP){
             return;
         }
-        core.sendPacketToServer(SMPManager.PACKET_C2S_PROP, ""+prop.module.id, ""+prop.id, prop.saveToString());
+        core.sendPacketToServer(SMPManager.PACKET_C2S_PROP, prop.module.id+" "+prop.id+" "+prop.saveToString());
     }
 
     protected void showField(boolean b, GuiButton button){
