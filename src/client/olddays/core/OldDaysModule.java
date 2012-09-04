@@ -78,8 +78,12 @@ public class OldDaysModule{
 
     public static void reload(){
         try{
-            mod_OldDays.getMinecraft().renderGlobal.loadRenderers();
-        }catch(Exception ex){}
+            mod_OldDays.getMinecraft().renderGlobal.updateAllRenderers();
+        }catch(Exception e){
+            try{
+                mod_OldDays.getMinecraft().renderGlobal.loadRenderers();
+            }catch(Exception ex){}
+        }
     }
 
     public static void addTextureHook(String origname, int origi, String newname, int newi){
