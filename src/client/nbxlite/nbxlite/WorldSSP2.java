@@ -288,7 +288,7 @@ public class WorldSSP2 extends WorldSSP
             provider.registerWorld(this);
         }
         ODNBXlite.refreshProperties();
-        ODNBXlite.setTextureFX();
+        ODNBXlite.setTextureFX2();
         turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();

@@ -798,6 +798,11 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void setTextureFX(){
+        setTextureFX2();
+        OldDaysModule.reload();
+    }
+
+    public static void setTextureFX2(){
         org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraft().renderEngine.getTexture("/terrain.png"));
         textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
         int id = SurrGroundType;
