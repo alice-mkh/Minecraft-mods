@@ -35,13 +35,15 @@ public final class ClassicGenerator
 
     public final byte[] generateLevel(String s, int j, int k, int l)
     {
-        progressupdate.displayProgressMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        if (mod_OldDays.getMinecraft().enableSP){
+            progressupdate.displayProgressMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        }
         b = j;
         c = k;
         d = l;
         g = d - 32;
         f = new byte[j * k << 6];
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.raising"));
+        setMessage(mod_OldDays.lang.get("indev.raising"));
         java.lang.Object obj = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         IndevNoiseGenerator2 c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         java.lang.Object obj1 = new IndevNoiseGeneratorOctaves(rand, 6);
@@ -65,7 +67,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.eroding"));
+        setMessage(mod_OldDays.lang.get("indev.eroding"));
         int arrayf1[] = ai;
         c1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
         obj1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(rand, 8), new IndevNoiseGeneratorOctaves(rand, 8));
@@ -86,7 +88,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.soiling"));
+        setMessage(mod_OldDays.lang.get("indev.soiling"));
         arrayf1 = ai;
         int intf2 = b;
         int k1 = this.c;
@@ -122,7 +124,7 @@ public final class ClassicGenerator
 
         }
 
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.carving"));
+        setMessage(mod_OldDays.lang.get("indev.carving"));
         float f2 = 4;
         float f1 = 0;
         int k5 = (this.b * this.c * this.d) / 256 / 64 << 1;
@@ -191,7 +193,7 @@ label0:
             a(Block.oreRedstone.blockID, 40, 5, 4);
             a(Block.oreDiamond.blockID, 30, 6, 4);
         }
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.watering"));
+        setMessage(mod_OldDays.lang.get("indev.watering"));
         i2 = Block.waterStill.blockID;
         if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
             {
@@ -223,7 +225,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.melting"));
+        setMessage(mod_OldDays.lang.get("indev.melting"));
         int intf22 = (this.b * this.c * this.d) / 20000;
         for(int intk1 = 0; intk1 < intf22; intk1++)
         {
@@ -239,7 +241,7 @@ label0:
         }
 
         this.a(100);
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.growing"));
+        setMessage(mod_OldDays.lang.get("indev.growing"));
         arrayf1 = ai;
         IndevNoiseGeneratorOctaves j2 = new IndevNoiseGeneratorOctaves(rand, 8);
         IndevNoiseGeneratorOctaves b2 = new IndevNoiseGeneratorOctaves(rand, 8);
@@ -275,7 +277,7 @@ label0:
 
         }
 
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.planting"));
+        setMessage(mod_OldDays.lang.get("indev.planting"));
         arrayf1 = ai;
         if (this.b==64 || this.c==64){
             k1 = (this.b * this.c) / 2000;
@@ -564,6 +566,9 @@ label0:
 
     private void a(int j)
     {
+        if (!mod_OldDays.getMinecraft().enableSP){
+            return;
+        }
         progressupdate.setLoadingProgress(j);
     }
 
@@ -713,5 +718,13 @@ label0:
         spawnX = i1;
         spawnY = k1;
         spawnZ = j1;
+    }
+
+    private void setMessage(String str){
+        if (mod_OldDays.getMinecraft().enableSP){
+            progressupdate.resetProgresAndWorkingMessage(str);
+        }else{
+            net.minecraft.server.MinecraftServer.getServer().setUserMessage2(str);
+        }
     }
 }

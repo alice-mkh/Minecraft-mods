@@ -62,7 +62,9 @@ public final class IndevGenerator
             l1 = (k1 - 64) / 48 + 1;
         }
         n = 13 + l1 * 4;
-        progressupdate.displayProgressMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        if (mod_OldDays.getMinecraft().enableSP){
+            progressupdate.displayProgressMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        }
         IndevLevel world = new IndevLevel();
         world.waterLevel = k;
         world.t = l;
@@ -90,7 +92,7 @@ public final class IndevGenerator
                 nextPhase();
             } else
             {
-                progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.raising"));
+                setMessage(mod_OldDays.lang.get("indev.raising"));
                 nextPhase();
                 IndevGenerator a1 = this;
                 IndevNoiseGenerator2 d1 = new IndevNoiseGenerator2(new IndevNoiseGeneratorOctaves(a1.rand, 8), new IndevNoiseGeneratorOctaves(a1.rand, 8));
@@ -141,7 +143,7 @@ public final class IndevGenerator
                 }
 
                 ai = ai3;
-                progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.eroding"));
+                setMessage(mod_OldDays.lang.get("indev.eroding"));
                 nextPhase();
                 int ai1[] = ai;
                 a1 = this;
@@ -165,7 +167,7 @@ public final class IndevGenerator
                 }
 
             }
-            progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.soiling"));
+            setMessage(mod_OldDays.lang.get("indev.soiling"));
             nextPhase();
             int ai2[] = ai;
             IndevGenerator a2 = this;
@@ -227,7 +229,7 @@ public final class IndevGenerator
 
             }
 
-            progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.growing"));
+            setMessage(mod_OldDays.lang.get("indev.growing"));
             nextPhase();
             ai2 = ai;
             a2 = this;
@@ -289,7 +291,7 @@ public final class IndevGenerator
 
         }
 
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.carving"));
+        setMessage(mod_OldDays.lang.get("indev.carving"));
         nextPhase();
         IndevGenerator a3 = this;
         int k4 = a3.width;
@@ -372,7 +374,7 @@ label0:
         }else{
             System.out.println("Coal: "+j2+", Iron: "+j3+", Gold: "+l3+", Diamond: "+l1);
         }
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.melting"));
+        setMessage(mod_OldDays.lang.get("indev.melting"));
         nextPhase();
         c();
         world.u = k1 + 2;
@@ -390,7 +392,7 @@ label0:
         {
             l = k - 9;
         }
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.watering"));
+        setMessage(mod_OldDays.lang.get("indev.watering"));
         nextPhase();
         a();
         if(!floating)
@@ -450,16 +452,16 @@ label0:
         }
         world.waterLevel = k;
         world.t = l;
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.assembling"));
+        setMessage(mod_OldDays.lang.get("indev.assembling"));
         nextPhase();
         a(0.0F);
         /*world.*/setData(world, i1, k1, j1, blocks, null);
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.building"));
+        setMessage(mod_OldDays.lang.get("indev.building"));
         nextPhase();
         a(0.0F);
         world.a();
         spawnHouse(world);
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.planting"));
+        setMessage(mod_OldDays.lang.get("indev.planting"));
         nextPhase();
         if(theme != ODNBXlite.THEME_HELL)
         {
@@ -488,7 +490,7 @@ label0:
         generateFlowers(world, Block.mushroomBrown, 50);
         nextPhase();
         generateFlowers(world, Block.mushroomRed, 50);
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.lighting"));
+        setMessage(mod_OldDays.lang.get("indev.lighting"));
         nextPhase();
         for(int i3 = 0; i3 < 10000; i3++)
         {
@@ -496,7 +498,7 @@ label0:
             world.d();
         }
 
-        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("indev.spawning"));
+        setMessage(mod_OldDays.lang.get("indev.spawning"));
         nextPhase();
 /*
         net.minecraft.a.a.b b1 = new net.minecraft.a.a.b(world);
@@ -767,6 +769,9 @@ label0:
 
     private void a(float f1)
     {
+        if (!mod_OldDays.getMinecraft().enableSP){
+            return;
+        }
         if(f1 < 0.0F)
         {
             throw new IllegalStateException("Failed to set next phase!");
@@ -1228,5 +1233,13 @@ label0:
         int k1;
         for(k1 = world.c; (getBlockId(i1, k1 - 1, j1) == 0 || Block.blocksList[getBlockId(i1, k1 - 1, j1)].blockMaterial == Material.air || !isOpaque(getBlockId(i1, k1 - 1, j1))) && k1 > 1; k1--) { }
         return k1;
+    }
+
+    private void setMessage(String str){
+        if (mod_OldDays.getMinecraft().enableSP){
+            progressupdate.resetProgresAndWorkingMessage(str);
+        }else{
+            net.minecraft.server.MinecraftServer.getServer().setUserMessage2(str);
+        }
     }
 }

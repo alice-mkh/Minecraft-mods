@@ -69,6 +69,9 @@ public class mod_OldDays extends Mod{
     }
 
     public void handlePacketFromClient(Packet300Custom packet, EntityPlayerMP player){
+        if (getMinecraft().isSingleplayer()){
+            return;
+        }
         if (packet.getId() == SMPManager.PACKET_C2S_PROP){
             OldDaysProperty prop = readProperty(packet.getData()[0]);
             sendPacketToAll(SMPManager.PACKET_S2C_PROP, prop.module.id+" "+prop.id+" "+prop.saveToString());

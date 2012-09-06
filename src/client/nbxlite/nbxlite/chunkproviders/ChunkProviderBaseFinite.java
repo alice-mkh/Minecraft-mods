@@ -14,7 +14,7 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
         seed = l;
     }
 
-    protected int IndexFinite(int x, int y, int z){
+    public static int IndexFinite(int x, int y, int z){
         return x+(y*ODNBXlite.IndevWidthZ+z)*ODNBXlite.IndevWidthX;
     }
 

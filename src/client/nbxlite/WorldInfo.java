@@ -235,6 +235,27 @@ public class WorldInfo
         terrainType = par1WorldSettings.getTerrainType();
         allowCommands = par1WorldSettings.areCommandsAllowed();
         initialized = false;
+        if (useNBXlite){
+            snowCovered = ODNBXlite.SnowCovered;
+            mapTheme = ODNBXlite.MapTheme;
+            mapGen = ODNBXlite.Generator;
+            mapGenExtra = ODNBXlite.MapFeatures;
+            mapType = ODNBXlite.IndevMapType;
+            indevX = ODNBXlite.IndevWidthX;
+            indevY = ODNBXlite.IndevHeight;
+            indevZ = ODNBXlite.IndevWidthZ;
+            newOres = ODNBXlite.GenerateNewOres;
+            surrgroundheight = ODNBXlite.SurrGroundHeight;
+            surrgroundtype = ODNBXlite.SurrGroundType;
+            surrwaterheight = ODNBXlite.SurrWaterHeight;
+            surrwatertype = ODNBXlite.SurrWaterType;
+            cloudheight = ODNBXlite.CloudHeight;
+            skybrightness = ODNBXlite.SkyBrightness;
+            skycolor = ODNBXlite.SkyColor;
+            fogcolor = ODNBXlite.FogColor;
+            cloudcolor = ODNBXlite.CloudColor;
+            nbxlite = true;
+         }
     }
 
     public WorldInfo(WorldInfo par1WorldInfo)
@@ -444,6 +465,7 @@ public class WorldInfo
     public void setSpawnX(int par1)
     {
         spawnX = par1;
+        System.out.println("SpawnX = "+par1);
     }
 
     /**
@@ -452,6 +474,7 @@ public class WorldInfo
     public void setSpawnY(int par1)
     {
         spawnY = par1;
+        System.out.println("SpawnY = "+par1);
     }
 
     /**
@@ -460,6 +483,7 @@ public class WorldInfo
     public void setSpawnZ(int par1)
     {
         spawnZ = par1;
+        System.out.println("SpawnZ = "+par1);
     }
 
     /**
@@ -486,6 +510,7 @@ public class WorldInfo
         spawnX = par1;
         spawnY = par2;
         spawnZ = par3;
+        System.out.println("Spawn = "+par1+" "+par2+" "+par3);
     }
 
     /**

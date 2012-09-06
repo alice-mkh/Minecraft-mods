@@ -205,8 +205,10 @@ public class ODNBXlite extends OldDaysModule{
     private void convertMapFormatOld(String s, String s1)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.loadingScreen.resetProgressAndMessage("Converting World to Scaevolus' McRegion");
-        mc.loadingScreen.resetProgresAndWorkingMessage("This may take a while :)");
+        if (mod_OldDays.getMinecraft().enableSP){
+            mc.loadingScreen.resetProgressAndMessage("Converting World to Scaevolus' McRegion");
+            mc.loadingScreen.resetProgresAndWorkingMessage("This may take a while :)");
+        }
         saveLoader.convertMapFormat(s, mc.loadingScreen);
 //         mc.startWorldSSP(s, s1, new WorldSettings(0L, EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT));
     }
@@ -973,7 +975,9 @@ public class ODNBXlite extends OldDaysModule{
             gen2.flat=true;
         }
         gen2.theme=ODNBXlite.MapTheme;
-        mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        if (mod_OldDays.getMinecraft().enableSP){
+            mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        }
         ODNBXlite.IndevWorld = gen2.generateLevel("Created with NBXlite!", ODNBXlite.IndevWidthX, ODNBXlite.IndevWidthZ, ODNBXlite.IndevHeight);
         ODNBXlite.IndevSpawnX = gen2.spawnX;
         ODNBXlite.IndevSpawnY = gen2.spawnY;
@@ -983,7 +987,9 @@ public class ODNBXlite extends OldDaysModule{
     public static void generateClassicLevel(long seed){
         ClassicGenerator gen2 = new ClassicGenerator(mod_OldDays.getMinecraft().loadingScreen, seed);
         ODNBXlite.IndevHeight = 64;
-        mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        if (mod_OldDays.getMinecraft().enableSP){
+            mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage(StatCollector.translateToLocal("menu.generatingLevel"));
+        }
         ODNBXlite.IndevWorld = gen2.generateLevel("Created with NBXlite!", ODNBXlite.IndevWidthX, ODNBXlite.IndevWidthZ, ODNBXlite.IndevHeight);
         ODNBXlite.IndevSpawnX = gen2.spawnX;
         ODNBXlite.IndevSpawnY = gen2.spawnY;

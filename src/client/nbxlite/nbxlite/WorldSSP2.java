@@ -9,10 +9,6 @@ import net.minecraft.src.nbxlite.chunkproviders.*;
 
 public class WorldSSP2 extends WorldSSP
 {
-    public boolean snowCovered;
-    public int mapGen;
-    public int mapGenExtra;
-    public int mapTypeIndev;
     protected OldSpawnerAnimals animalSpawner;
     protected OldSpawnerMonsters monsterSpawner;
     protected OldSpawnerAnimals waterMobSpawner;
@@ -66,16 +62,6 @@ public class WorldSSP2 extends WorldSSP
     {
         super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p);
         par3WorldProvider.registerWorld(this);
-        ODNBXlite.SetGenerator(this, ODNBXlite.GEN_NEWBIOMES, ODNBXlite.FEATURES_12, ODNBXlite.THEME_NORMAL, ODNBXlite.TYPE_INLAND, false, false);
-        ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
-        ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-        ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
-        ODNBXlite.refreshProperties();
-//         ODNBXlite NBX = new ODNBXlite();
-//         NBX.RequestGeneratorInfo();
         turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();
@@ -84,10 +70,7 @@ public class WorldSSP2 extends WorldSSP
     public WorldSSP2(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p)
     {
         super(par1World, par2WorldProvider, p);
-        mapGen = worldInfo.mapGen;
-        mapGenExtra = worldInfo.mapGenExtra;
-        snowCovered = worldInfo.snowCovered;
-        ODNBXlite.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, snowCovered, worldInfo.newOres);
+        ODNBXlite.SetGenerator(this, worldInfo.mapGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
         ODNBXlite.refreshProperties();
         turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
@@ -122,173 +105,12 @@ public class WorldSSP2 extends WorldSSP
         chunkProvider = createChunkProvider();
 
         if (flag)
-         {
-            worldInfo.nbxlite = true;
-            worldInfo.mapGen = ODNBXlite.Generator;
-            worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
-            worldInfo.mapTheme = ODNBXlite.MapTheme;
-            worldInfo.newOres = ODNBXlite.GenerateNewOres;
-            mapGen=ODNBXlite.Generator;
-            mapGenExtra=ODNBXlite.MapFeatures;
-            if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201)
-            {
-                if (!ODNBXlite.Import){
-                    if(rand.nextInt(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS ? 2 : 4) == 0)
-                    {
-                        worldInfo.snowCovered = true;
-                        snowCovered = true;
-                        ODNBXlite.SnowCovered = true;
-                    }else{
-                        ODNBXlite.SnowCovered=false;
-                    }
-                }else{
-                    snowCovered = worldInfo.snowCovered;
-                    ODNBXlite.SnowCovered=worldInfo.snowCovered;
-                }
-            }else{
-                ODNBXlite.SnowCovered=false;
-            }
-            ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
-            if (!(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && ODNBXlite.Import)){
-                worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-                worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-                worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-                worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-                worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
-            }
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
-                if (!ODNBXlite.Import){
-                    ODNBXlite.generateIndevLevel(getSeed());
-                    for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
-                        for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
-                            chunkProvider.provideChunk(x,z);
-                        }
-                    }
-                    ODNBXlite.IndevWorld = null;
-                    ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
-                }else{
-                    mod_OldDays.getMinecraft().loadingScreen.resetProgressAndMessage("Importing Indev level");
-                    mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Loading blocks..");
-                    for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
-                        mod_OldDays.getMinecraft().loadingScreen.setLoadingProgress((x / ((ODNBXlite.IndevWidthX/16)+2)) * 100);
-                        for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
-                            chunkProvider.provideChunk(x,z);
-                        }
-                    }
-                    worldInfo.setWorldTime(ODNBXlite.mclevelimporter.timeofday);
-                    List tentlist = ODNBXlite.mclevelimporter.tileentities;
-                    mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Fixing blocks..");
-                    for (int x = 0; x < ODNBXlite.IndevWidthX; x++){
-                        mod_OldDays.getMinecraft().loadingScreen.setLoadingProgress((int)(((float)x / (float)ODNBXlite.IndevWidthX) * 100F));
-                        for (int y = 0; y < ODNBXlite.IndevHeight; y++){
-                            for (int z = 0; z < ODNBXlite.IndevWidthZ; z++){
-                                int id = getBlockId(x, y, z);
-                                int meta = ODNBXlite.mclevelimporter.data[IndexFinite(x, y, z)] >> 4;
-                                if (ODNBXlite.mclevelimporter.needsFixing(id)){
-                                    setBlockAndMetadata(x, y, z, ODNBXlite.mclevelimporter.getRightId(id), ODNBXlite.mclevelimporter.getRightMetadata(id));
-                                }else if (id != 0 && meta != 0){
-                                    setBlockMetadata(x, y, z, meta);
-                                }
-                                if (Block.lightValue[id]>0){
-                                    updateAllLightTypes(x, y, z);
-                                }
-                                if (id > 0 && Block.blocksList[id].hasTileEntity()){
-                                    for (int i=0; i < tentlist.size(); i++){
-                                        TileEntity tent = ((TileEntity)tentlist.get(i));
-                                        if (tent.xCoord == x && tent.yCoord == y && tent.zCoord == z){
-                                            setBlockTileEntity(x, y, z, tent);
-                                            tentlist.remove(i);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Loading entities..");
-                    List entlist = ODNBXlite.mclevelimporter.entities;
-                    for (int i = 0; i < entlist.size(); i++){
-                        Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
-                        spawnEntityInWorld(entity);
-                    }
-                    worldInfo.cloudheight = ODNBXlite.CloudHeight;
-                    worldInfo.skybrightness = ODNBXlite.SkyBrightness;
-                    worldInfo.skycolor = ODNBXlite.SkyColor;
-                    worldInfo.fogcolor = ODNBXlite.FogColor;
-                    worldInfo.cloudcolor = ODNBXlite.CloudColor;
-                }
-                mapTypeIndev=ODNBXlite.IndevMapType;
-                worldInfo.mapType = ODNBXlite.IndevMapType;
-                worldInfo.indevX = ODNBXlite.IndevWidthX;
-                worldInfo.indevZ = ODNBXlite.IndevWidthZ;
-                worldInfo.indevY = ODNBXlite.IndevHeight;
-            }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
-                ODNBXlite.generateClassicLevel(getSeed());
-                for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
-                    for (int z=-2; z<(ODNBXlite.IndevWidthZ/16)+2; z++){
-                        chunkProvider.provideChunk(x,z);
-                    }
-                }
-                ODNBXlite.IndevWorld = null;
-                mapTypeIndev=0;
-                worldInfo.mapType = 0;
-                worldInfo.indevX = ODNBXlite.IndevWidthX;
-                worldInfo.indevZ = ODNBXlite.IndevWidthZ;
-                worldInfo.indevY = ODNBXlite.IndevHeight;
-                ODNBXlite.setIndevBounds(5, ODNBXlite.MapTheme);
-            }else{
-                mapTypeIndev=0;
-                worldInfo.mapType = 0;
-            }
+        {
             generateSpawnPoint();
             if (par3WorldSettings.isBonusChestEnabled()){
                 createBonusChest();
             }
-        } else
-        {
-            if (worldInfo.nbxlite){
-                mapGen = worldInfo.mapGen;
-                mapGenExtra = worldInfo.mapGenExtra;
-                snowCovered = worldInfo.snowCovered;
-                mapTypeIndev = worldInfo.mapType;
-                ODNBXlite.IndevWidthX = worldInfo.indevX;
-                ODNBXlite.IndevWidthZ = worldInfo.indevZ;
-                ODNBXlite.IndevHeight = worldInfo.indevY;
-                ODNBXlite.SurrWaterType = worldInfo.surrwatertype;
-                ODNBXlite.SurrWaterHeight = worldInfo.surrwaterheight;
-                ODNBXlite.SurrGroundType = worldInfo.surrgroundtype;
-                ODNBXlite.SurrGroundHeight = worldInfo.surrgroundheight;
-                ODNBXlite.CloudHeight = worldInfo.cloudheight;
-                ODNBXlite.SkyBrightness = worldInfo.skybrightness;
-                ODNBXlite.SkyColor = worldInfo.skycolor;
-                ODNBXlite.FogColor = worldInfo.fogcolor;
-                ODNBXlite.CloudColor = worldInfo.cloudcolor;
-                ODNBXlite.SetGenerator(this, mapGen, mapGenExtra, worldInfo.mapTheme, mapTypeIndev, snowCovered, worldInfo.newOres);
-            }else{
-                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
-                worldInfo.nbxlite = true;
-                worldInfo.mapGen = ODNBXlite.Generator;
-                worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
-                worldInfo.mapTheme = ODNBXlite.MapTheme;
-                worldInfo.newOres = ODNBXlite.GenerateNewOres;
-                worldInfo.mapType = ODNBXlite.IndevMapType;
-                worldInfo.indevX = ODNBXlite.IndevWidthX;
-                worldInfo.indevZ = ODNBXlite.IndevWidthZ;
-                worldInfo.indevY = ODNBXlite.IndevHeight;
-                ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
-                worldInfo.surrwatertype = ODNBXlite.SurrWaterType;
-                worldInfo.surrwaterheight = ODNBXlite.SurrWaterHeight;
-                worldInfo.surrgroundtype = ODNBXlite.SurrGroundType;
-                worldInfo.surrgroundheight = ODNBXlite.SurrGroundHeight;
-                worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-                worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-                worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-                worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-                worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
-            }
-            provider.registerWorld(this);
         }
-        ODNBXlite.refreshProperties();
-        ODNBXlite.setTextureFX2();
         turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();
@@ -611,7 +433,7 @@ public class WorldSSP2 extends WorldSSP
             }
 
             theProfiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && snowCovered && ODNBXlite.SnowCovered && provider.worldType==0)
+            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.worldType==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
@@ -716,9 +538,5 @@ public class WorldSSP2 extends WorldSSP
                 thunderingStrength = 1.0F;
             }
         }
-    }
-
-    private int IndexFinite(int x, int y, int z){
-        return x+(y*ODNBXlite.IndevWidthZ+z)*ODNBXlite.IndevWidthX;
     }
 }

@@ -1379,4 +1379,8 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             logger.log(Level.SEVERE, "Failed to start the minecraft server", exception);
         }
     }
+
+    public void setUserMessage2(String str){
+        setUserMessage(str);
+    }
 }
