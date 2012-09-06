@@ -154,6 +154,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             if (!(controlList.get(i) instanceof GuiButtonProp)){
                 continue;
             }
+            if (((GuiButtonProp)controlList.get(i)).help){
+                continue;
+            }
             GuiButtonProp button = ((GuiButtonProp)controlList.get(i));
             button.enabled = !button.prop.isDisabled();
             button.displayString = mod_OldDays.getPropertyButtonText(button.prop);
