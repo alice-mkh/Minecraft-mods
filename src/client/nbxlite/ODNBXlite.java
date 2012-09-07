@@ -128,7 +128,8 @@ public class ODNBXlite extends OldDaysModule{
                     set(net.minecraft.src.EntityRenderer.class, "sunriseFog", Sunset >= 2);
             case 23:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
                     set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
-            case 24:if (Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
+            case 24:if (Minecraft.getMinecraft().renderGlobal != null &&
+                        Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
                         ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(OldStars);
                     }break;
         }
