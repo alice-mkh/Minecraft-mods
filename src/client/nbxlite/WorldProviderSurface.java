@@ -65,6 +65,15 @@ public class WorldProviderSurface extends WorldProvider
     }
 
     /**
+     * returns true if this dimension is supposed to display void particles and pull in the far plane based on the
+     * user's Y offset.
+     */
+    public boolean getWorldHasVoidParticles()
+    {
+        return super.getWorldHasVoidParticles() && ODNBXlite.VoidFog==0;
+    }
+
+    /**
      * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
      */
     public float calculateCelestialAngle(long par1, float par3)
