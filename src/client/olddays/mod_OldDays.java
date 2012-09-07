@@ -147,6 +147,16 @@ public class mod_OldDays extends Mod{
     }
 
     public void onLoginClient(){
+        for (int id = 0; id < modules.size(); id++){
+            OldDaysModule module = modules.get(id);
+                for (int i = 1; i <= module.properties.size(); i++){
+                OldDaysProperty prop = module.getPropertyById(i);
+                if (!prop.allowedInSMP){
+                    prop.setSMPValue();
+                    sendCallback(id, i);
+                }
+            }
+        }
         sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);
     }
 
