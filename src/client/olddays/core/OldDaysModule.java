@@ -115,7 +115,9 @@ public class OldDaysModule{
         try{
             c.getDeclaredField(name).set(null, value);
         }catch(Exception ex){
-            getPropertyById(last).disable();
+            if (getPropertyById(last) != null){
+                getPropertyById(last).disable();
+            }
         }
     }
 
