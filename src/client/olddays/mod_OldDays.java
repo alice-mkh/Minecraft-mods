@@ -149,11 +149,11 @@ public class mod_OldDays extends Mod{
     public void onLoginClient(){
         for (int id = 0; id < modules.size(); id++){
             OldDaysModule module = modules.get(id);
-                for (int i = 1; i <= module.properties.size(); i++){
+                for (int i = 0; i < module.properties.size(); i++){
                 OldDaysProperty prop = module.getPropertyById(i);
                 if (!prop.allowedInSMP){
                     prop.setSMPValue();
-                    sendCallback(id, i);
+                    sendCallback2(id, i);
                 }
             }
         }
@@ -243,6 +243,12 @@ public class mod_OldDays extends Mod{
     public static void sendCallback(int id, int id2){
         getModuleById(id).last = id2;
         getModuleById(id).getPropertyById(id2).onChange();
+        texman.onTick();
+    }
+
+    public static void sendCallback2(int id, int id2){
+        modules.get(id).last = id2;
+        modules.get(id).getPropertyById(id2).onChange();
         texman.onTick();
     }
 
