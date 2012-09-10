@@ -945,6 +945,9 @@ public abstract class World implements IBlockAccess
      */
     public int getBlockLightValue(int par1, int par2, int par3)
     {
+        if (isBounds(par1, par2, par3)){
+            return ODNBXlite.getLightInBounds2(par2);
+        }
         return getBlockLightValue_do(par1, par2, par3, true);
     }
 

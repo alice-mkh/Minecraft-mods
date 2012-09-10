@@ -63,7 +63,7 @@ public class RenderBounds{
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
         tessellator.setTranslation(-d, -d1, -d2);
-        tessellator.setColorOpaque_F(ff * ff1, ff * ff2, ff * ff3);
+        GL11.glColor3f(ff * ff1, ff * ff2, ff * ff3);
         for (int i3 = -i1 * i2; i3 < ODNBXlite.IndevWidthX + i1 * i2; i3 += i1){
             for (int i5 = -i1 * i2; i5 < ODNBXlite.IndevWidthZ + i1 * i2; i5 += i1){
                 if ((f1 < 0.0F) || (i3 < 0) || (i5 < 0) || (i3 >= ODNBXlite.IndevWidthX) || (i5 >= ODNBXlite.IndevWidthZ)){
@@ -299,7 +299,7 @@ public class RenderBounds{
         GL11.glPopMatrix();
     }
 
-    private static void renderLiquidBounds(float f, float ff )
+    private static void renderLiquidBounds(float f, float ff)
     {
         float f1 = (float)ODNBXlite.SurrWaterHeight;
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -338,7 +338,7 @@ public class RenderBounds{
             ff2 = ff5;
             ff3 = ff6;
         }
-        tessellator.setColorOpaque_F(ff * ff1, ff * ff2, ff * ff3);
+        GL11.glColor3f(ff * ff1, ff * ff2, ff * ff3);
         int i2 = 2048 / i1;
         tessellator.startDrawingQuads();
         float f2 = (float)Block.waterStill.minX;

@@ -335,13 +335,36 @@ public class ODNBXlite extends OldDaysModule{
         return block;
     }
 
+    public static int getSkyLightInBounds2(int par2){
+        int sky = 15 - Minecraft.getMinecraft().theWorld.skylightSubtracted;
+        if (par2<SurrWaterHeight){
+            if (Block.blocksList[SurrWaterType].blockMaterial!=Material.lava){
+                sky-=3*(SurrWaterHeight-par2);
+            }else{
+                sky = 0;
+            }
+        }
+        if (par2<SurrGroundHeight){
+            sky = 0;
+        }
+        if (sky<0){
+            sky = 0;
+        }
+        return sky;
+    }
+
     public static int getLightInBounds(int par2){
         return getSkyLightInBounds(par2) << 20 | getBlockLightInBounds(par2) << 4;
     }
 
+    public static int getLightInBounds2(int par2){
+        return Math.max(getSkyLightInBounds2(par2), getBlockLightInBounds(par2));
+    }
+
     public static float getLightFloat(int par2){
         Minecraft mc = Minecraft.getMinecraft();
-        return mc.theWorld.getLightBrightness(0, par2, 0);
+        System.out.println(par2+" "+getSkyLightInBounds2(par2)+" "+getBlockLightInBounds(par2)+" "+mc.theWorld.provider.lightBrightnessTable[Math.max(getSkyLightInBounds2(par2), getBlockLightInBounds(par2))]);
+        return mc.theWorld.provider.lightBrightnessTable[getLightInBounds2(par2)];
     }
 
     public static int getBlockIdInBounds(int par2){

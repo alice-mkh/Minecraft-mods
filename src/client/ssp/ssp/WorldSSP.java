@@ -864,15 +864,6 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     }
 
     /**
-     * Returns how bright the block is shown as which is the block's light value looked up in a lookup table (light
-     * values aren't linear for brightness). Args: x, y, z
-     */
-    public float getLightBrightness(int par1, int par2, int par3)
-    {
-        return provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
-    }
-
-    /**
      * Checks whether its daytime by seeing if the light subtracted from the skylight is less than 4
      */
     public boolean isDaytime()
