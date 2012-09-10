@@ -1403,7 +1403,9 @@ public class EntityRenderer
         {
             return;
         }
-        enableLightmap(f);
+        if (!Minecraft.oldlighting){
+            enableLightmap(f);
+        }
         if(rainXCoords == null)
         {
             rainXCoords = new float[1024 /*GL_FRONT_LEFT*/];
@@ -1497,8 +1499,10 @@ public class EntityRenderer
                 double d3 = (double)((float)i2 + 0.5F) - entityliving.posX;
                 double d4 = (double)((float)l1 + 0.5F) - entityliving.posZ;
                 float f11 = MathHelper.sqrt_double(d3 * d3 + d4 * d4) / (float)k1;
-                float f12 = 1.0F;
-                tessellator.setBrightness((world.getLightBrightnessForSkyBlocks(i2, j3, l1, 0) * 3 + 0xf000f0) / 4);
+                float f12 = Minecraft.oldlighting ? world.getLightBrightness(i2, j3, l1) : 1.0F;
+                if (!Minecraft.oldlighting){
+                    tessellator.setBrightness((world.getLightBrightnessForSkyBlocks(i2, j3, l1, 0) * 3 + 0xf000f0) / 4);
+                }
                 tessellator.setColorRGBA_F(f12, f12, f12, ((1.0F - f11 * f11) * 0.3F + 0.5F) * 0.7F);
                 tessellator.setTranslation(-d * 1.0D, -d1 * 1.0D, -d2 * 1.0D);
                 tessellator.addVertexWithUV((double)((float)i2 - f5) + 0.5D, l2, (double)((float)l1 - f6) + 0.5D, 0.0F * f7 + f9, ((float)l2 * f7) / 4F + f8 * f7 + f10);
@@ -1517,7 +1521,9 @@ public class EntityRenderer
         GL11.glEnable(2884 /*GL_CULL_FACE*/);
         GL11.glDisable(3042 /*GL_BLEND*/);
         GL11.glAlphaFunc(516, 0.1F);
-        disableLightmap(f);
+        if (Minecraft.oldlighting){
+            disableLightmap(f);
+        }
     }
 
     /**
@@ -1532,7 +1538,9 @@ public class EntityRenderer
             return;
         }
 
-        enableLightmap(par1);
+        if (!Minecraft.oldlighting){
+            enableLightmap(par1);
+        }
 
         if (rainXCoords == null)
         {
@@ -1649,8 +1657,10 @@ public class EntityRenderer
                     double d3 = (double)((float)i2 + 0.5F) - entityliving.posX;
                     double d4 = (double)((float)l1 + 0.5F) - entityliving.posZ;
                     float f13 = MathHelper.sqrt_double(d3 * d3 + d4 * d4) / (float)k1;
-                    float f14 = 1.0F;
-                    tessellator.setBrightness(worldclient.getLightBrightnessForSkyBlocks(i2, j3, l1, 0));
+                    float f14 = Minecraft.oldlighting ? worldclient.getLightBrightness(i2, j3, l1) : 1.0F;
+                    if (!Minecraft.oldlighting){
+                        tessellator.setBrightness(worldclient.getLightBrightnessForSkyBlocks(i2, j3, l1, 0));
+                    }
                     tessellator.setColorRGBA_F(f14, f14, f14, ((1.0F - f13 * f13) * 0.5F + 0.5F) * f);
                     tessellator.setTranslation(-d * 1.0D, -d1 * 1.0D, -d2 * 1.0D);
                     tessellator.addVertexWithUV((double)((float)i2 - f5) + 0.5D, l2, (double)((float)l1 - f6) + 0.5D, 0.0F * f7, ((float)l2 * f7) / 4F + f9 * f7);
@@ -1679,8 +1689,10 @@ public class EntityRenderer
                 double d5 = (double)((float)i2 + 0.5F) - entityliving.posX;
                 double d6 = (double)((float)l1 + 0.5F) - entityliving.posZ;
                 float f15 = MathHelper.sqrt_double(d5 * d5 + d6 * d6) / (float)k1;
-                float f16 = 1.0F;
-                tessellator.setBrightness((worldclient.getLightBrightnessForSkyBlocks(i2, j3, l1, 0) * 3 + 0xf000f0) / 4);
+                float f16 = Minecraft.oldlighting ? worldclient.getLightBrightness(i2, j3, l1) : 1.0F;
+                if (!Minecraft.oldlighting){
+                    tessellator.setBrightness((worldclient.getLightBrightnessForSkyBlocks(i2, j3, l1, 0) * 3 + 0xf000f0) / 4);
+                }
                 tessellator.setColorRGBA_F(f16, f16, f16, ((1.0F - f15 * f15) * 0.3F + 0.5F) * f);
                 tessellator.setTranslation(-d * 1.0D, -d1 * 1.0D, -d2 * 1.0D);
                 tessellator.addVertexWithUV((double)((float)i2 - f5) + 0.5D, l2, (double)((float)l1 - f6) + 0.5D, 0.0F * f7 + f11, ((float)l2 * f7) / 4F + f10 * f7 + f12);
@@ -1699,7 +1711,9 @@ public class EntityRenderer
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-        disableLightmap(par1);
+        if (!Minecraft.oldlighting){
+            disableLightmap(par1);
+        }
     }
 
     /**
