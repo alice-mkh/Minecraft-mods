@@ -15,7 +15,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 8, false, true,  "SolidTNT");
         new OldDaysPropertyBool(this, 9, false, true,  "BigFences");
         new OldDaysPropertyBool(this, 10,false, false, "LessLavaFlow");
-        new OldDaysPropertyBool(this, 11,false, false, "FogKey");
+        new OldDaysPropertyBool(this, 11,false, true,  "FogKey");
         new OldDaysPropertyBool(this, 12,false, false, "LogRotation");
         new OldDaysPropertyBool(this, 13,false, true,  "OldCrops");
         new OldDaysPropertyBool(this, 14,false, false, "TimeControl");

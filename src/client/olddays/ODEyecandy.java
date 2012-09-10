@@ -8,7 +8,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   1, true,  "OldWalking");
         new OldDaysPropertyBool(this,   2, false, "Bobbing");
         new OldDaysPropertyBool(this,   3, true,  "OldEndermen");
-        new OldDaysPropertyBool(this,   4, true,  "ItemSway");
+        new OldDaysPropertyBool(this,   4, false, "ItemSway");
         new OldDaysPropertyBool(this,   5, false, "Items2D");
         new OldDaysPropertyBool(this,   6, true,  "OldChest");
         new OldDaysPropertyBool(this,   7, true,  "MobLabels");
@@ -28,7 +28,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   21,true,  "SmoothLoading");
         new OldDaysPropertyBool(this,   22,false, "OldCreativeInv");
         new OldDaysPropertyBool(this,   23,true,  "OldSwing");
-        new OldDaysPropertyBool(this,   24,true,  "TPBobbing");
+        new OldDaysPropertyBool(this,   24,false, "TPBobbing");
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
         replaceBlocks();
         redstoneRenderID = 32;
