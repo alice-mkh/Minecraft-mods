@@ -13,7 +13,7 @@ public class RenderBounds{
     private static Minecraft mc;
     private static World worldObj;
 
-    private static void renderGroundBounds(float f){
+    private static void renderGroundBounds(float f, float ff){
         Tessellator tessellator = Tessellator.instance;
         float f1 = ODNBXlite.SurrGroundHeight;
         int i1 = 128;
@@ -63,7 +63,7 @@ public class RenderBounds{
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
         tessellator.setTranslation(-d, -d1, -d2);
-        tessellator.setColorOpaque_F(ff1, ff2, ff3);
+        tessellator.setColorOpaque_F(ff * ff1, ff * ff2, ff * ff3);
         for (int i3 = -i1 * i2; i3 < ODNBXlite.IndevWidthX + i1 * i2; i3 += i1){
             for (int i5 = -i1 * i2; i5 < ODNBXlite.IndevWidthZ + i1 * i2; i5 += i1){
                 if ((f1 < 0.0F) || (i3 < 0) || (i5 < 0) || (i3 >= ODNBXlite.IndevWidthX) || (i5 >= ODNBXlite.IndevWidthZ)){
@@ -89,7 +89,7 @@ public class RenderBounds{
         }
 //         Block block = Block.bedrock;
 //         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-//         if (globalRenderBlocks.overrideBlockTexture >= 0){
+// //         if (globalRenderBlocks.overrideBlockTexture >= 0){
 //             j = globalRenderBlocks.overrideBlockTexture;
 //         }
 //         int k = (j & 0xf) << 4;
@@ -210,11 +210,19 @@ public class RenderBounds{
             id = Block.bedrock.blockID;
         }
         GL11.glPushMatrix();
-        mc.entityRenderer.enableLightmap(f);
-        int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrGroundHeight);
-        int i1 = l % 0x10000;
-        int j1 = l / 0x10000;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
+        float ff = 1.0F;
+        int l = 0;
+        int i1 = 0;
+        int j1 = 0;
+        if (!Minecraft.oldlighting){
+            mc.entityRenderer.enableLightmap(f);
+            l = ODNBXlite.getLightInBounds(ODNBXlite.SurrGroundHeight);
+            i1 = l % 0x10000;
+            j1 = l / 0x10000;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
+        }else{
+            ff = ODNBXlite.getLightFloat(ODNBXlite.SurrGroundHeight);
+        }
         boolean anim = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
@@ -228,7 +236,7 @@ public class RenderBounds{
             GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        renderGroundBounds(f);
+        renderGroundBounds(f, ff);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, ODNBXlite.emptyImage);
         if (ODNBXlite.SurrGroundHeight>=0 || ODNBXlite.SurrWaterHeight>=0){
             imageData.clear();
@@ -238,10 +246,14 @@ public class RenderBounds{
             renderSideBounds(f);
             renderBottomBounds(f);
         }
-        l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight);
-        i1 = l % 0x10000;
-        j1 = l / 0x10000;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
+        if (!Minecraft.oldlighting){
+            l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight);
+            i1 = l % 0x10000;
+            j1 = l / 0x10000;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
+        }else{
+            ff = ODNBXlite.getLightFloat(ODNBXlite.SurrWaterHeight);
+        }
         String name = Block.blocksList[ODNBXlite.SurrWaterType].getBlockName().replace("tile.", "").replace("Still", "").replace("Moving", "");
         if (anim){
             TextureFX texturefx = null;
@@ -277,15 +289,17 @@ public class RenderBounds{
 //             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/"+name+".png"));
         }
         GL11.glEnable(GL11.GL_BLEND);
-        renderLiquidBounds(f);
+        renderLiquidBounds(f, ff);
         GL11.glRotatef(-90F, 0F, 0F, 1F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glDisable(GL11.GL_BLEND);
-        mc.entityRenderer.disableLightmap(f);
+        if (!Minecraft.oldlighting){
+            mc.entityRenderer.disableLightmap(f);
+        }
         GL11.glPopMatrix();
     }
 
-    private static void renderLiquidBounds(float f)
+    private static void renderLiquidBounds(float f, float ff )
     {
         float f1 = (float)ODNBXlite.SurrWaterHeight;
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -324,7 +338,7 @@ public class RenderBounds{
             ff2 = ff5;
             ff3 = ff6;
         }
-        tessellator.setColorOpaque_F(ff1, ff2, ff3);
+        tessellator.setColorOpaque_F(ff * ff1, ff * ff2, ff * ff3);
         int i2 = 2048 / i1;
         tessellator.startDrawingQuads();
         float f2 = (float)Block.waterStill.minX;

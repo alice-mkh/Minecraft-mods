@@ -339,6 +339,11 @@ public class ODNBXlite extends OldDaysModule{
         return getSkyLightInBounds(par2) << 20 | getBlockLightInBounds(par2) << 4;
     }
 
+    public static float getLightFloat(int par2){
+        Minecraft mc = Minecraft.getMinecraft();
+        return mc.theWorld.getLightBrightness(0, par2, 0);
+    }
+
     public static int getBlockIdInBounds(int par2){
         if (par2<SurrGroundHeight-1){
             return Block.bedrock.blockID;
