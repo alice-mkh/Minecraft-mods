@@ -78,7 +78,7 @@ public class OldDaysModule{
 
     public static void reload(){
         try{
-            mod_OldDays.getMinecraft().renderGlobal.updateAllRenderers();
+            mod_OldDays.getMinecraft().renderGlobal.updateAllRenderers(true);
         }catch(Throwable t){
             try{
                 mod_OldDays.getMinecraft().renderGlobal.loadRenderers();

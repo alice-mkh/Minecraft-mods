@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import net.minecraft.client.Minecraft;
 
 public class RenderEnderman2 extends RenderLiving
 {
@@ -55,14 +56,20 @@ public class RenderEnderman2 extends RenderLiving
             GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(f, -f, f);
-            int i = par1EntityEnderman.getBrightnessForRender(par2);
-            int j = i % 0x10000;
-            int k = i / 0x10000;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            if (Minecraft.oldlighting){
+                float ff = par1EntityEnderman.getBrightness(par2);
+                GL11.glColor3f(ff, ff, ff);
+                GL11.glColor3f(ff, ff, ff);
+            }else{
+                int i = par1EntityEnderman.getBrightnessForRender(par2);
+                int j = i % 0x10000;
+                int k = i / 0x10000;
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            }
             loadTexture("/terrain.png");
-            renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), 1.0F);
+            renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), Minecraft.oldlighting ? par1EntityEnderman.getBrightness(par2) : 1.0F);
             GL11.glPopMatrix();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         }
@@ -89,10 +96,12 @@ public class RenderEnderman2 extends RenderLiving
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
             GL11.glDisable(GL11.GL_LIGHTING);
-            int i = 61680;
-            int j = i % 0x10000;
-            int k = i / 0x10000;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+            if (!Minecraft.oldlighting){
+                int i = 61680;
+                int j = i % 0x10000;
+                int k = i / 0x10000;
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+            }
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, f);

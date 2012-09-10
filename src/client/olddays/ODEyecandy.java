@@ -27,10 +27,9 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   20,false, "Labels");
         new OldDaysPropertyBool(this,   21,true,  "SmoothLoading");
         new OldDaysPropertyBool(this,   22,false, "OldCreativeInv");
-        new OldDaysPropertyBool(this,   23,false, "OldLeaves");
-        new OldDaysPropertyBool(this,   24,true,  "OldSwing");
-        new OldDaysPropertyBool(this,   25,true,  "TPBobbing");
-        new OldDaysPropertyBool(this,   26,false, "WaterParticles");
+        new OldDaysPropertyBool(this,   23,true,  "OldSwing");
+        new OldDaysPropertyBool(this,   24,true,  "TPBobbing");
+        new OldDaysPropertyBool(this,   25,false, "WaterParticles");
         replaceBlocks();
         redstoneRenderID = 32;
     }
@@ -71,12 +70,10 @@ public class ODEyecandy extends OldDaysModule{
             case 20:set(net.minecraft.src.RenderLiving.class, "labels", Labels); break;
             case 21:set(net.minecraft.src.LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
             case 22:set(net.minecraft.src.GuiInventory.class, "oldcreative", OldCreativeInv); break;
-            case 23:set(net.minecraft.src.RenderBlocks.class, "smoothLeaves", !OldLeaves);
-                    reload(); break;
-            case 24:set(net.minecraft.src.EntityPlayer.class, "oldswing", OldSwing);
+            case 23:set(net.minecraft.src.EntityPlayer.class, "oldswing", OldSwing);
                     set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
-            case 25:set(net.minecraft.src.EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
-            case 26:set(net.minecraft.src.EntitySuspendFX.class, "allow", WaterParticles); break;
+            case 24:set(net.minecraft.src.EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
+            case 25:set(net.minecraft.src.EntitySuspendFX.class, "allow", WaterParticles); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -108,7 +105,6 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean Labels;
     public static boolean SmoothLoading = true;
     public static boolean OldCreativeInv;
-    public static boolean OldLeaves;
     public static boolean OldSwing = true;
     public static boolean TPBobbing = true;
     public static boolean WaterParticles;

@@ -289,7 +289,9 @@ public class WorldServer extends World
             int l = chunkcoordintpair.chunkZPos * 16;
             theProfiler.startSection("getChunk");
             Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
-            moodSoundAndLightCheck(k, l, chunk);
+            if (!ODNBXlite.oldLightEngine){
+                moodSoundAndLightCheck(k, l, chunk);
+            }
             theProfiler.endStartSection("tickChunk");
             chunk.updateSkylight();
             theProfiler.endStartSection("thunder");

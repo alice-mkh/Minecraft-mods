@@ -376,6 +376,12 @@ public class WorldSSP2 extends WorldSSP
         if (i != skylightSubtracted)
         {
             skylightSubtracted = i;
+            if (ODNBXlite.oldLightEngine){
+                for(int j = 0; j < worldAccesses.size(); j++)
+                {
+                    ((RenderGlobal)worldAccesses.get(j)).updateAllRenderers(false);
+                }
+            }
         }
 
         long l1 = worldInfo.getWorldTime() + 1L;
@@ -414,7 +420,9 @@ public class WorldSSP2 extends WorldSSP
             int l = chunkcoordintpair.chunkZPos * 16;
             theProfiler.startSection("getChunk");
             Chunk chunk = getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
-            func_48458_a(k, l, chunk);
+            if (!ODNBXlite.oldLightEngine){
+                func_48458_a(k, l, chunk);
+            }
             theProfiler.endStartSection("thunder");
 
             if (rand.nextInt(0x186a0) == 0 && isRaining() && isThundering())

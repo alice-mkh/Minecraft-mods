@@ -67,7 +67,12 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        if (net.minecraft.client.Minecraft.oldlighting && par1TileEntityChest.worldObj != null){
+            float f1 = par1TileEntityChest.worldObj.getLightBrightness(par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+            GL11.glColor4f(f1, f1, f1, 1.0F);
+        }else{
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
         GL11.glTranslatef((float)par2, (float)par4 + 1.0F, (float)par6 + 1.0F);
         GL11.glScalef(1.0F, -1F, -1F);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);

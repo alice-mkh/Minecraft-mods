@@ -1,40 +1,30 @@
 package net.minecraft.src;
 
-public class EntityDiggingFX extends EntityFX
+public class EntityBreakingFX extends EntityFX
 {
-    public static boolean oldparticles = false;
-
-    private Block blockInstance;
-
-    public EntityDiggingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Block par14Block, int par15, int par16)
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item)
     {
-        super(par1World, par2, par4, par6, par8, par10, par12);
-        blockInstance = par14Block;
-        setParticleTextureIndex(par14Block.getBlockTextureFromSideAndMetadata(oldparticles ? 2 : 0, par16));
-        particleGravity = par14Block.blockParticleGravity;
-        particleRed = particleGreen = particleBlue = 0.6F;
+        super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+        setParticleTextureIndex(par8Item.getIconFromDamage(0));
+        particleRed = particleGreen = particleBlue = 1.0F;
+        particleGravity = Block.blockSnow.blockParticleGravity;
         particleScale /= 2.0F;
     }
 
-    public EntityDiggingFX func_70596_a(int par1, int par2, int par3)
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Item par14Item)
     {
-        if (blockInstance == Block.grass)
-        {
-            return this;
-        }
-        else
-        {
-            int i = blockInstance.colorMultiplier(worldObj, par1, par2, par3);
-            particleRed *= (float)(i >> 16 & 0xff) / 255F;
-            particleGreen *= (float)(i >> 8 & 0xff) / 255F;
-            particleBlue *= (float)(i & 0xff) / 255F;
-            return this;
-        }
+        this(par1World, par2, par4, par6, par14Item);
+        motionX *= 0.10000000149011612D;
+        motionY *= 0.10000000149011612D;
+        motionZ *= 0.10000000149011612D;
+        motionX += par8;
+        motionY += par10;
+        motionZ += par12;
     }
 
     public int getFXLayer()
     {
-        return 1;
+        return 2;
     }
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)

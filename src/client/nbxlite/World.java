@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.*;
+import net.minecraft.src.nbxlite.MetadataChunkBlock;
 import net.minecraft.src.nbxlite.chunkproviders.ChunkProviderBaseFinite;
 import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
 
@@ -115,6 +116,10 @@ public abstract class World implements IBlockAccess
      */
     public boolean isRemote;
 
+    private int lightingUpdatesCounter;
+    static int lightingUpdatesScheduled = 0;
+    private List lightingToUpdate;
+
     /**
      * Gets the biome for a given set of x/z coordinates
      */
@@ -173,6 +178,8 @@ public abstract class World implements IBlockAccess
         mapStorage = new MapStorage(par1ISaveHandler);
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
+        lightingToUpdate = new ArrayList();
+        lightingUpdatesCounter = 0;
         ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
         ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
         ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
@@ -252,6 +259,9 @@ public abstract class World implements IBlockAccess
             worldInfo.setServerInitialized(true);
             flag = true;
         }
+
+        lightingToUpdate = new ArrayList();
+        lightingUpdatesCounter = 0;
 
         if (flag)
         {
@@ -632,9 +642,11 @@ public abstract class World implements IBlockAccess
 
         Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
         boolean flag = chunk.setBlockIDWithMetadata(par1 & 0xf, par2, par3 & 0xf, par4, par5);
-        theProfiler.startSection("checkLight");
-        updateAllLightTypes(par1, par2, par3);
-        theProfiler.endSection();
+        if (!ODNBXlite.oldLightEngine){
+            theProfiler.startSection("checkLight");
+            updateAllLightTypes(par1, par2, par3);
+            theProfiler.endSection();
+        }
 
         if (par6 && flag && (isRemote || chunk.deferRender))
         {
@@ -838,7 +850,7 @@ public abstract class World implements IBlockAccess
             par3 = i;
         }
 
-        if (!provider.hasNoSky)
+        if (!provider.hasNoSky && !ODNBXlite.oldLightEngine)
         {
             for (int j = par3; j <= par4; j++)
             {
@@ -3004,6 +3016,12 @@ public abstract class World implements IBlockAccess
         if (i != skylightSubtracted)
         {
             skylightSubtracted = i;
+            if (ODNBXlite.oldLightEngine){
+                 for(int jj = 0; jj < worldAccesses.size(); jj++)
+                 {
+                     ((RenderGlobal)worldAccesses.get(jj)).updateAllRenderers(false);
+                 }
+            }
         }
     }
 
@@ -4385,14 +4403,6 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Updates lighting. Returns true if there are more lighting updates to update
-     */
-    public boolean updatingLighting()
-    {
-        return false;
-    }
-
-    /**
      * Returns the location of the closest structure of the specified type. If not found returns null.
      */
     public ChunkPosition findClosestStructure(String par1Str, int par2, int par3, int par4)
@@ -4498,5 +4508,150 @@ public abstract class World implements IBlockAccess
             }
         }
         return i;
+    }
+
+    public boolean updatingLighting()
+    {
+        if(lightingUpdatesCounter >= 50)
+        {
+            return false;
+        }
+        lightingUpdatesCounter++;
+        try
+        {
+            int i = 500;
+            for(; lightingToUpdate.size() > 0; ((MetadataChunkBlock)lightingToUpdate.remove(lightingToUpdate.size() - 1)).updateChunkLighting(this))
+            {
+                if(--i <= 0)
+                {
+                    boolean flag = true;
+                    return flag;
+                }
+            }
+
+            boolean flag1 = false;
+            return flag1;
+        }
+        finally
+        {
+            lightingUpdatesCounter--;
+        }
+    }
+
+    public void scheduleLightingUpdate(EnumSkyBlock enumskyblock, int i, int j, int k, int l, int i1, int j1)
+    {
+        scheduleLightingUpdate_do(enumskyblock, i, j, k, l, i1, j1, true);
+    }
+
+    public void scheduleLightingUpdate_do(EnumSkyBlock enumskyblock, int i, int j, int k, int l, int i1, int j1, boolean flag)
+    {
+        if(provider.hasNoSky && enumskyblock == EnumSkyBlock.Sky)
+        {
+            return;
+        }
+        lightingUpdatesScheduled++;
+        try
+        {
+            if(lightingUpdatesScheduled == 50)
+            {
+                return;
+            }
+            int k1 = (l + i) / 2;
+            int l1 = (j1 + k) / 2;
+            if(!blockExists(k1, 64, l1))
+            {
+                return;
+            }
+            if(getChunkFromBlockCoords(k1, l1).isEmpty())
+            {
+                return;
+            }
+            int i2 = lightingToUpdate.size();
+            if(flag)
+            {
+                int j2 = 5;
+                if(j2 > i2)
+                {
+                    j2 = i2;
+                }
+                for(int l2 = 0; l2 < j2; l2++)
+                {
+                    MetadataChunkBlock metadatachunkblock = (MetadataChunkBlock)lightingToUpdate.get(lightingToUpdate.size() - l2 - 1);
+                    if(metadatachunkblock.blockEnum == enumskyblock && metadatachunkblock.func_866_a(i, j, k, l, i1, j1))
+                    {
+                        return;
+                    }
+                }
+
+            }
+            lightingToUpdate.add(new MetadataChunkBlock(enumskyblock, i, j, k, l, i1, j1));
+            int k2 = 0xf4240;
+            if(lightingToUpdate.size() > 0xf4240)
+            {
+                System.out.println((new StringBuilder()).append("More than ").append(k2).append(" updates, aborting lighting updates").toString());
+                lightingToUpdate.clear();
+            }
+        }
+        finally
+        {
+            lightingUpdatesScheduled--;
+        }
+    }
+
+    public boolean canExistingBlockSeeTheSky(int i, int j, int k)
+    {
+        if (i < 0xfe363c80 || k < 0xfe363c80 || i >= 0x1c9c380 || k >= 0x1c9c380)
+        {
+            return false;
+        }
+        if(j < 0)
+        {
+            return false;
+        }
+        if(j >= 256)
+        {
+            return true;
+        }
+        if(!chunkExists(i >> 4, k >> 4))
+        {
+            return false;
+        } else
+        {
+            Chunk chunk = getChunkFromChunkCoords(i >> 4, k >> 4);
+            i &= 0xf;
+            k &= 0xf;
+            return chunk.canBlockSeeTheSky(i, j, k);
+        }
+    }
+
+    public void neighborLightPropagationChanged(EnumSkyBlock enumskyblock, int i, int j, int k, int l)
+    {
+        if(provider.hasNoSky && enumskyblock == EnumSkyBlock.Sky)
+        {
+            return;
+        }
+        if(!blockExists(i, j, k))
+        {
+            return;
+        }
+        if(enumskyblock == EnumSkyBlock.Sky)
+        {
+            if(canExistingBlockSeeTheSky(i, j, k))
+            {
+                l = 15;
+            }
+        } else
+        if(enumskyblock == EnumSkyBlock.Block)
+        {
+            int i1 = getBlockId(i, j, k);
+            if(Block.lightValue[i1] > l)
+            {
+                l = Block.lightValue[i1];
+            }
+        }
+        if(getSavedLightValue(enumskyblock, i, j, k) != l)
+        {
+            scheduleLightingUpdate(enumskyblock, i, j, k, i, j, k);
+        }
     }
 }

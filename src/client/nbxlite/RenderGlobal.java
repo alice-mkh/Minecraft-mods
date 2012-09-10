@@ -2213,11 +2213,11 @@ public class RenderGlobal implements IWorldAccess
         }
     }
 
-    public void updateAllRenderers()
+    public void updateAllRenderers(boolean force)
     {
         for(int i = 0; i < worldRenderers.length; i++)
         {
-            if(!worldRenderers[i].needsUpdate)
+            if((worldRenderers[i].isChunkLit || force || true) && !worldRenderers[i].needsUpdate)
             {
                 worldRenderersToUpdate.add(worldRenderers[i]);
                 worldRenderers[i].markDirty();

@@ -300,6 +300,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private boolean profilingEnabled;
     public static boolean oldswing = false;
     public static boolean timecontrol = false;
+    public static boolean oldlighting = false;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {

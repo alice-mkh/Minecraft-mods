@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.*;
+import net.minecraft.client.Minecraft;
 
 public class BlockRedstoneWireOld extends BlockRedstoneWire
 {
@@ -26,8 +27,13 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
         if (override >= 0){
             j = override;
         }
-        tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
+        }
         float f = 1.0F;
+        if (Minecraft.oldlighting){
+            f = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
+        }
         float f1 = (float)i / 15F;
         float f2 = f1 * 0.6F + 0.4F;
         if (i == 0){
@@ -41,7 +47,7 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
         if (f4 < 0.0F){
             f4 = 0.0F;
         }
-        tessellator.setColorOpaque_F(f2, f3, f4);
+        tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
         int k = (j & 0xf) << 4;
         int l = j & 0xf0;
         double d = (float)k / 256F;

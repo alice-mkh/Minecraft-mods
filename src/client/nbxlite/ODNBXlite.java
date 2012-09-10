@@ -32,7 +32,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond(this,  17,1,        "OldHoes");
         new OldDaysPropertyBool(this,  18,false,    "TexturedClouds");
         new OldDaysPropertyCond(this,  19,1,        "OpaqueFlatClouds");
-        new OldDaysPropertyCond(this,  20,1,        "ClassicLight");
+        new OldDaysPropertyCond2(this, 20,1,        "ClassicLight", 2);
         new OldDaysPropertyCond(this,  21,1,        "BedrockFog");
         new OldDaysPropertyCond2(this, 22,-1,       "Sunset", 2);
         new OldDaysPropertyCond(this,  23,1,        "SunriseAtNorth");
@@ -121,8 +121,13 @@ public class ODNBXlite extends OldDaysModule{
             case 17:set(net.minecraft.src.nbxlite.ItemHoe2.class, "oldhoes", OldHoes); break;
             case 18:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "texClouds", TexturedClouds); break;
             case 19:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
-            case 20:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight);
-                    set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight); break;
+            case 20:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight > 0);
+                    set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight > 0);
+                    Minecraft.oldlighting = ClassicLight > 1;
+                    oldLightEngine = ClassicLight > 1;
+                    if (ClassicLight > 1 || ClassicLight == 0){
+                        reload();
+                    }break;
             case 21:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
             case 22:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseColors", Sunset >= 1);
                     set(net.minecraft.src.EntityRenderer.class, "sunriseFog", Sunset >= 2);
@@ -135,6 +140,11 @@ public class ODNBXlite extends OldDaysModule{
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
+            addRenderer(net.minecraft.src.EntitySheep.class, new RenderSheep2(new ModelSheep2(), new ModelSheep1(), 0.7F));
+            addRenderer(net.minecraft.src.EntityPainting.class, new RenderPainting2());
+            addRenderer(net.minecraft.src.EntityMooshroom.class, new RenderMooshroom2(new ModelCow(), 0.7F));
+            addRenderer(net.minecraft.src.EntityItem.class, new RenderItem2());
+            addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
         }
     }
 
@@ -152,7 +162,7 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean OldHoes;
     public static boolean TexturedClouds;
     public static boolean OpaqueFlatClouds;
-    public static boolean ClassicLight;
+    public static int ClassicLight = 0;
     public static boolean BedrockFog;
     public static int Sunset = -1;
     public static boolean SunriseAtNorth;
@@ -171,8 +181,8 @@ public class ODNBXlite extends OldDaysModule{
         return Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201;
     }
 
-    public static boolean ClassicLight(){
-        return Generator<GEN_NEWBIOMES;
+    public static int ClassicLight(){
+        return Generator<GEN_NEWBIOMES ? 1 : 0;
     }
 
     public static boolean BedrockFog(){
@@ -1075,6 +1085,8 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int gearRenderID;
     public static boolean rendererReplaced = false;
+
+    public static boolean oldLightEngine = false;
 
     public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().getMinecraftDir(), "saves"));
 }

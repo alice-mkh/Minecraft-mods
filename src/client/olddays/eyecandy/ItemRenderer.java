@@ -54,7 +54,7 @@ public class ItemRenderer
         if (block != null && RenderBlocks.renderItemIn3d(block.getRenderType()))
         {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));
-            renderBlocksInstance.renderBlockAsItem(block, par2ItemStack.getItemDamage(), 1.0F);
+            renderBlocksInstance.renderBlockAsItem(block, par2ItemStack.getItemDamage(), Minecraft.oldlighting ? par1EntityLiving.getBrightness(1.0F) : 1.0F);
         }
         else
         {
@@ -257,12 +257,14 @@ public class ItemRenderer
 
         ItemStack itemstack = itemToRender;
         float f3 = mc.theWorld.getLightBrightness(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ));
-        f3 = 1.0F;
-        int i = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ), 0);
-        int k = i % 0x10000;
-        int l = i / 0x10000;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)l / 1.0F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        if (!Minecraft.oldlighting){
+            f3 = 1.0F;
+            int i = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ), 0);
+            int k = i % 0x10000;
+            int l = i / 0x10000;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)l / 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
 
         if (itemstack != null)
         {

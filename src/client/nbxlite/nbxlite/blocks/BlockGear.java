@@ -1,6 +1,7 @@
 package net.minecraft.src.nbxlite.blocks;
 
 import java.util.Random;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -106,8 +107,10 @@ public class BlockGear extends Block
         {
             tex = override;
         }
-        tessellator.setBrightness(b.getMixedBrightnessForBlock(blockAccess, i, j, k));
-        float f5 = /*b.getBlockBrightness(blockAccess, i, j, k)*/1.0F;
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(b.getMixedBrightnessForBlock(blockAccess, i, j, k));
+        }
+        float f5 = Minecraft.oldlighting ? b.getBlockBrightness(blockAccess, i, j, k) : 1.0F;
         tessellator.setColorOpaque_F(f5, f5, f5);
         float f10 = ((tex & 0xf) << 4) + 16;
         float f11 = (tex & 0xf) << 4;
