@@ -767,7 +767,6 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
-        System.out.println(gen+" "+features);
         Generator=gen;
         MapFeatures=features;
         if (gen==GEN_NEWBIOMES){

@@ -145,6 +145,8 @@ public abstract class World implements IBlockAccess
 
     public World(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler)
     {
+        lightingToUpdate = new ArrayList();
+        lightingUpdatesCounter = 0;
         scheduledUpdatesAreImmediate = false;
         loadedEntityList = new ArrayList();
         unloadedEntityList = new ArrayList();
@@ -178,8 +180,6 @@ public abstract class World implements IBlockAccess
         mapStorage = new MapStorage(par1ISaveHandler);
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
-        lightingToUpdate = new ArrayList();
-        lightingUpdatesCounter = 0;
         ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
         ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
         ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
@@ -194,6 +194,8 @@ public abstract class World implements IBlockAccess
 
     public World(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler par5Profiler)
     {
+        lightingToUpdate = new ArrayList();
+        lightingUpdatesCounter = 0;
         scheduledUpdatesAreImmediate = false;
         loadedEntityList = new ArrayList();
         unloadedEntityList = new ArrayList();
@@ -257,11 +259,10 @@ public abstract class World implements IBlockAccess
         {
             initialize(par3WorldSettings);
             worldInfo.setServerInitialized(true);
-            flag = true;
+            if (!net.minecraft.client.Minecraft.getMinecraft().enableSP){
+                flag = true;
+            }
         }
-
-        lightingToUpdate = new ArrayList();
-        lightingUpdatesCounter = 0;
 
         if (flag)
         {
