@@ -363,7 +363,6 @@ public class ODNBXlite extends OldDaysModule{
 
     public static float getLightFloat(int par2){
         Minecraft mc = Minecraft.getMinecraft();
-        System.out.println(par2+" "+getSkyLightInBounds2(par2)+" "+getBlockLightInBounds(par2)+" "+mc.theWorld.provider.lightBrightnessTable[Math.max(getSkyLightInBounds2(par2), getBlockLightInBounds(par2))]);
         return mc.theWorld.provider.lightBrightnessTable[getLightInBounds2(par2)];
     }
 

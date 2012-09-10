@@ -1020,6 +1020,9 @@ public abstract class World implements IBlockAccess
      */
     public int getHeightValue(int par1, int par2)
     {
+        if (isBounds(par1, 0, par2)){
+            return Math.max(ODNBXlite.SurrWaterHeight, ODNBXlite.SurrGroundHeight);
+        }
         if (par1 < 0xfe363c80 || par2 < 0xfe363c80 || par1 >= 0x1c9c380 || par2 >= 0x1c9c380)
         {
             return 0;
@@ -1209,6 +1212,9 @@ public abstract class World implements IBlockAccess
 
     public float getBrightness(int par1, int par2, int par3, int par4)
     {
+        if (isBounds(par1, par2, par3)){
+            return provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
+        }
         int i = getBlockLightValue(par1, par2, par3);
 
         if (i < par4)
@@ -1225,6 +1231,9 @@ public abstract class World implements IBlockAccess
      */
     public float getLightBrightness(int par1, int par2, int par3)
     {
+        if (isBounds(par1, par2, par3)){
+            return provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
+        }
         return provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
     }
 
