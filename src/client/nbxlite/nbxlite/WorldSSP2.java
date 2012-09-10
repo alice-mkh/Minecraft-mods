@@ -65,17 +65,19 @@ public class WorldSSP2 extends WorldSSP
         turnOnOldSpawners();
         calculateInitialSkylight();
         calculateInitialWeather();
+        ODNBXlite.IndevWorld = null;
     }
 
     public WorldSSP2(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p)
     {
         super(par1World, par2WorldProvider, p);
-        ODNBXlite.SetGenerator(this, worldInfo.mapGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
+//         ODNBXlite.SetGenerator(this, worldInfo.mapsGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
         ODNBXlite.refreshProperties();
         turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
         calculateInitialSkylight();
         calculateInitialWeather();
+        ODNBXlite.IndevWorld = null;
     }
 
     public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, Profiler p)

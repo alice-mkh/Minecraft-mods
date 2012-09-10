@@ -303,7 +303,6 @@ public abstract class World implements IBlockAccess
                                 chunkProvider.provideChunk(x,z);
                             }
                         }
-                        ODNBXlite.IndevWorld = null;
                         ODNBXlite.setIndevBounds(ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
                     }else{
                         if (mod_OldDays.getMinecraft().enableSP){
@@ -376,7 +375,6 @@ public abstract class World implements IBlockAccess
                             chunkProvider.provideChunk(x,z);
                         }
                     }
-                    ODNBXlite.IndevWorld = null;
                     worldInfo.mapType = 0;
                     worldInfo.indevX = ODNBXlite.IndevWidthX;
                     worldInfo.indevZ = ODNBXlite.IndevWidthZ;

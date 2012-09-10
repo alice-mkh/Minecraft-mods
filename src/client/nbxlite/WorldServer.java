@@ -72,6 +72,7 @@ public class WorldServer extends World
             pendingTickListEntries = new TreeSet();
         }
         turnOnOldSpawners();
+        ODNBXlite.IndevWorld = null;
     }
 
     /**
