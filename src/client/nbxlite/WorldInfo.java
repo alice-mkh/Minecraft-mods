@@ -510,7 +510,6 @@ public class WorldInfo
         spawnX = par1;
         spawnY = par2;
         spawnZ = par3;
-        System.out.println("Spawn = "+par1+" "+par2+" "+par3);
     }
 
     /**
