@@ -316,10 +316,9 @@ public class ItemRenderer
                 GL11.glRotatef(59F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(-65 * f20, 0.0F, 1.0F, 0.0F);
                 Render render = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
-                RenderPlayer renderplayer = (RenderPlayer)render;
                 float f30 = 1.0F;
                 GL11.glScalef(f30, f30, f30);
-                drawFirstPersonHand(renderplayer, 2);
+                drawFirstPersonHand(render, 2);
                 GL11.glPopMatrix();
             }
 
@@ -496,7 +495,6 @@ public class ItemRenderer
             GL11.glScalef(1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(5.6F, 0.0F, 0.0F);
             Render render1 = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
-            RenderPlayer renderplayer1 = (RenderPlayer)render1;
             float f34 = 1.0F;
             GL11.glScalef(f34, f34, f34);
             if (hand==0){
@@ -505,7 +503,7 @@ public class ItemRenderer
                 GL11.glRotatef(20F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(0.08F, 0.21F, 0.12F);
             }
-            drawFirstPersonHand(renderplayer1, hand);
+            drawFirstPersonHand(render1, hand);
             GL11.glPopMatrix();
         }
 
@@ -727,14 +725,22 @@ public class ItemRenderer
         equippedProgress = 0.0F;
     }
 
-    public void drawFirstPersonHand(RenderPlayer r, int h)
+    public void drawFirstPersonHand(Render r, int h)
     {
+        ModelBiped modelBipedMain = null;
+        try{
+            RenderPlayer r1 = (RenderPlayer)r;
+            modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 0));
+        }catch(ClassCastException e){
+            net.minecraft.src.nbxlite.RenderPlayer2 r1 = (net.minecraft.src.nbxlite.RenderPlayer2)r;
+            modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 0));
+        }
         if (h >= 2){
-            r.drawFirstPersonHand();
+            modelBipedMain.onGround = 0.0F;
+            modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            modelBipedMain.bipedRightArm.render(0.0625F);
             return;
         }
-        ModelBiped modelBipedMain = null;
-        modelBipedMain = ((ModelBiped)mod_OldDays.getField(net.minecraft.src.RenderPlayer.class, r, 0));
         if (h!=1){
             modelBipedMain.onGround = 0.0F;
             modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
