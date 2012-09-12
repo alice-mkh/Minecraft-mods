@@ -846,6 +846,13 @@ public class EntityRenderer
 
     private void updateLightmap()
     {
+        if (Minecraft.oldlighting){
+            for (int i = 0; i < 256; i++){
+                lightmapColors[i] = 0xffffffff;
+            }
+            mc.renderEngine.createTextureFromBytes(lightmapColors, 16, 16, lightmapTexture);
+            return;
+        }
         WorldClient worldclient = mc.theWorld;
 
         if (worldclient == null)
