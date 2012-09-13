@@ -16,6 +16,7 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             addButton(module.id, true, module.id, mod_OldDays.lang.get("module."+module.name.toLowerCase()), true);
         }
         postInitGui(count);
+        maxpage /= 2;
         controlList.add(new GuiButton(100, width / 2 - 75 - 80, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off")));
     }
 

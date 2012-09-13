@@ -85,7 +85,7 @@ public class GuiOldDaysBase extends GuiScreen{
         controlList.add(right = new GuiButtonPage(RIGHT_ID, 30, height, width, true, this));
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
         Keyboard.enableRepeatEvents(hasFields);
-        maxpage = (count-1) / max*2;
+        maxpage = (count-1) / max;
         setPage(0);
     }
 
