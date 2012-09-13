@@ -51,7 +51,7 @@ public class TextureManager{
             renderEngine.setupTexture(image, renderEngine.getTexture(origname));
         }catch(Exception ex){
             ex.printStackTrace();
-            fallbacktex = true;
+            setFallback(true);
         }
     }
  
@@ -60,18 +60,23 @@ public class TextureManager{
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraft().renderEngine.getTexture("/terrain.png"));
             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
-            fallbacktex = !hasEntry("olddays");
-            for (int i = 0; i < mod_OldDays.modules.size(); i++){
-                OldDaysModule module = mod_OldDays.modules.get(i);
-                for (int j = 1; j <= module.properties.size(); j++){
-                    if (!module.getPropertyById(j).allowedInFallback){
-                        mod_OldDays.sendCallback(module.id, j);
-                    }
+            setFallback(!hasEntry("olddays"));
+        }
+    }
+
+    private void setFallback(boolean b){
+        fallbacktex = b;
+        for (int i = 0; i < mod_OldDays.modules.size(); i++){
+            OldDaysModule module = mod_OldDays.modules.get(i);
+            for (int j = 1; j <= module.properties.size(); j++){
+                if (!module.getPropertyById(j).allowedInFallback){
+                    mod_OldDays.sendCallback(module.id, j);
                 }
             }
-            for (int i = 0; i < textureHooks.size(); i++){
-                textureHooks.get(i).refresh(false);
-            }
+            module.onFallbackChange(b);
+        }
+        for (int i = 0; i < textureHooks.size(); i++){
+            textureHooks.get(i).refresh(false);
         }
     }
 

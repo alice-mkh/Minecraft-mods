@@ -51,7 +51,7 @@ public class ODGameplay extends OldDaysModule{
         }
     }
 
-    protected void onFallbackChange(boolean fallback){
+    public void onFallbackChange(boolean fallback){
         set(net.minecraft.src.GuiIngame.class, "fallbacktex", fallback);
     }
 
