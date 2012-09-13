@@ -1815,7 +1815,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             if (gameSettings.keyBindAttack.pressed && oldswing && (float)(ticksRan - mouseTicksRan) >= 10F){
-                thePlayer.swingItem();
+                clickMouse(0);
                 mouseTicksRan = ticksRan;
             }
             if (gameSettings.keyBindUseItem.pressed && rightClickDelayTimer == 0 && !thePlayer.isUsingItem())
