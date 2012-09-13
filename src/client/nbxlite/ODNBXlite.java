@@ -28,7 +28,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   13,-1,       "SkyBrightness", -1, 16).setField();
         new OldDaysPropertyFloat(this, 14,128,      "CloudHeight", -999.0F, 999.0F);
         new OldDaysPropertyCond(this,  15,1,        "LeavesDecay");
-        new OldDaysPropertyBool(this,  16,false,    "OldSpawning");
+        new OldDaysPropertyBool(this,  16,true,     "OldSpawning");
         new OldDaysPropertyCond(this,  17,1,        "OldHoes");
         new OldDaysPropertyBool(this,  18,false,    "TexturedClouds");
         new OldDaysPropertyCond(this,  19,1,        "OpaqueFlatClouds");
