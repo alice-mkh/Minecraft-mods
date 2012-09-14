@@ -7,6 +7,9 @@ public class SMPManager{
     public static final int PACKET_S2C_MODULE = 1;
     public static final int PACKET_S2C_SEED = 2;
 
+    public boolean canUsePackets;
+
     public SMPManager(mod_OldDays c){
+        canUsePackets = c.canUsePackets;
     }
 }

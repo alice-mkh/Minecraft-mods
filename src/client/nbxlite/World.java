@@ -125,7 +125,7 @@ public abstract class World implements IBlockAccess
      */
     public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
-        if (blockExists(par1, 0, par2) && false)
+        if (blockExists(par1, 0, par2) && mod_OldDays.isVanillaSMP())
         {
             Chunk chunk = getChunkFromBlockCoords(par1, par2);
 
