@@ -7,12 +7,12 @@ public class ODEyecandy extends OldDaysModule{
         super(c, 4, "Eyecandy");
         new OldDaysPropertyBool(this,   1, true,  "OldWalking");
         new OldDaysPropertyBool(this,   2, false, "Bobbing");
-        new OldDaysPropertyBool(this,   3, true,  "OldEndermen");
+        new OldDaysPropertyBool(this,   3, true,  "OldEndermen").setRefreshOnFallback();
         new OldDaysPropertyBool(this,   4, false, "ItemSway");
         new OldDaysPropertyBool(this,   5, false, "Items2D");
         new OldDaysPropertyBool(this,   6, true,  "OldChest");
         new OldDaysPropertyBool(this,   7, true,  "MobLabels");
-        new OldDaysPropertyBool(this,   8, false, "MobArmor");
+        new OldDaysPropertyBool(this,   8, false, "MobArmor").setRefreshOnFallback();
         new OldDaysPropertyInt(this,    9, 0,     "MainMenu", 2).setUseNames();
         new OldDaysPropertyBool(this,   10,true,  "OldDigging");
         new OldDaysPropertyBool(this,   11,true,  "OldWires");

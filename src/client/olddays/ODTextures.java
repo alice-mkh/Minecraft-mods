@@ -72,7 +72,7 @@ public class ODTextures extends OldDaysModule{
             case 21:setTextureHook("/gui/items.png", 6, "/olddays/textures.png", 53, Flint && !getFallback()); break;
             case 22:setTextureHook("/gui/items.png", 5, "/olddays/textures.png", 54, FlintSteel && !getFallback()); break;
             case 23:setTextureHook("/gui/items.png", 24, "/olddays/textures.png", 55, Feather && !getFallback()); break;
-            case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs || getFallback()); break;
+            case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs && !getFallback()); break;
             case 25:setTextureHook("/mob/slime.png", "/olddays/slime.png", Slimes && !getFallback()); break;
             case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve && !getFallback()); break;
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;

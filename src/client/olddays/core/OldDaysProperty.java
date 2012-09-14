@@ -19,6 +19,7 @@ public abstract class OldDaysProperty{
     public boolean noSounds;
     public int disabled;
     public boolean guiRefresh;
+    public boolean refreshFallback;
 
     public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
@@ -27,6 +28,7 @@ public abstract class OldDaysProperty{
         error = false;
         allowedInSMP = true;
         allowedInFallback = true;
+        refreshFallback = false;
         noSounds = false;
         disabled = 0;
         guiRefresh = false;
@@ -114,5 +116,14 @@ public abstract class OldDaysProperty{
 
     public void setGUIRefresh(){
         guiRefresh = true;
+    }
+
+    public boolean shouldRefreshOnFallback(){
+        return allowedInFallback || refreshFallback;
+    }
+
+    public OldDaysProperty setRefreshOnFallback(){
+        refreshFallback = true;
+        return this;
     }
 }

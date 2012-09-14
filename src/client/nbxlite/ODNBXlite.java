@@ -125,7 +125,7 @@ public class ODNBXlite extends OldDaysModule{
                     set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight > 0);
                     Minecraft.oldlighting = ClassicLight > 1;
                     oldLightEngine = ClassicLight > 1;
-                    if (ClassicLight > 1 || ClassicLight == 0){
+                    if (ClassicLight > 1 || ClassicLight <= 0){
                         reload();
                     }break;
             case 21:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;

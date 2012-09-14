@@ -4,7 +4,7 @@ public class ODGameplay extends OldDaysModule{
     public ODGameplay(mod_OldDays c){
         super(c, 2, "Gameplay");
         new OldDaysPropertyBool(this, 1, true,  false, "EnableXP");
-        new OldDaysPropertyBool(this, 2, true,  false, "EnableHunger");
+        new OldDaysPropertyBool(this, 2, true,  false, "EnableHunger").setRefreshOnFallback();
         new OldDaysPropertyBool(this, 3, false, true,  "InstantFood");
         new OldDaysPropertyBool(this, 4, true,  false, "FoodStacking");
         new OldDaysPropertyBool(this, 5, false, true,  "OldDrops");
@@ -28,7 +28,8 @@ public class ODGameplay extends OldDaysModule{
             case 2: set(net.minecraft.src.FoodStats.class, "disabled", !EnableHunger);
                     set(net.minecraft.src.ItemFood.class, "heal", !EnableHunger);
                     set(net.minecraft.src.BlockCake.class, "heal", !EnableHunger);
-                    set(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger); break;
+                    set(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger);
+                    set(net.minecraft.src.GuiIngame.class, "fallbacktex", getFallback()); break;
             case 3: set(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
             case 4: set(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
             case 5: set(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
@@ -49,10 +50,6 @@ public class ODGameplay extends OldDaysModule{
             case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
             case 16:Item.bucketEmpty.maxStackSize = BucketStacking ? 16 : 1; break;
         }
-    }
-
-    public void onFallbackChange(boolean fallback){
-        set(net.minecraft.src.GuiIngame.class, "fallbacktex", fallback);
     }
 
     public static boolean EnableXP;
