@@ -10,13 +10,11 @@ import java.util.zip.*;
 public class TextureManager{
     private RenderEngine renderEngine;
     protected ArrayList<TextureSpriteFX> textureHooks;
-    public boolean fallbacktex;
     private String currentpack;
 
     public TextureManager(){
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
         textureHooks = new ArrayList<TextureSpriteFX>();
-        fallbacktex = true;
     }
 
     public void setTextureHook(String name, int i2, String name2, int index, boolean b){
@@ -65,7 +63,6 @@ public class TextureManager{
     }
 
     private void setFallback(boolean b){
-        fallbacktex = b;
         for (int i = 0; i < mod_OldDays.modules.size(); i++){
             OldDaysModule module = mod_OldDays.modules.get(i);
             for (int j = 1; j <= module.properties.size(); j++){
@@ -96,7 +93,7 @@ public class TextureManager{
                     }
                 }else{
                     ZipFile file = ((ZipFile)mod_OldDays.getField(net.minecraft.src.TexturePackCustom.class, texpack, 0));
-                    if (file.getEntry(str[i])==null){
+                    if (file.getEntry(str[i]) == null){
                         return false;
                     }
                 }

@@ -4,7 +4,7 @@ public class ODGameplay extends OldDaysModule{
     public ODGameplay(mod_OldDays c){
         super(c, 2, "Gameplay");
         new OldDaysPropertyBool(this, 1, true,  false, "EnableXP");
-        new OldDaysPropertyBool(this, 2, true,  false, "EnableHunger").setRefreshOnFallback();
+        new OldDaysPropertyBool(this, 2, true,  false, "EnableHunger").setFallback("olddays/icons.png").setRefreshOnFallback();
         new OldDaysPropertyBool(this, 3, false, true,  "InstantFood");
         new OldDaysPropertyBool(this, 4, true,  false, "FoodStacking");
         new OldDaysPropertyBool(this, 5, false, true,  "OldDrops");
@@ -29,7 +29,7 @@ public class ODGameplay extends OldDaysModule{
                     set(net.minecraft.src.ItemFood.class, "heal", !EnableHunger);
                     set(net.minecraft.src.BlockCake.class, "heal", !EnableHunger);
                     set(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger);
-                    set(net.minecraft.src.GuiIngame.class, "fallbacktex", getFallback()); break;
+                    set(net.minecraft.src.GuiIngame.class, "fallbacktex", !hasTextures("olddays/icons.png")); break;
             case 3: set(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
             case 4: set(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
             case 5: set(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;

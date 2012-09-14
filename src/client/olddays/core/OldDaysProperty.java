@@ -20,6 +20,7 @@ public abstract class OldDaysProperty{
     public int disabled;
     public boolean guiRefresh;
     public boolean refreshFallback;
+    public String[] fallback;
 
     public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
@@ -32,6 +33,7 @@ public abstract class OldDaysProperty{
         noSounds = false;
         disabled = 0;
         guiRefresh = false;
+        fallback = new String[0];
         try{
             field = module.getClass().getDeclaredField(f);
         }catch(Exception ex){
@@ -52,7 +54,7 @@ public abstract class OldDaysProperty{
         if (error){
             return 1;
         }
-        if (!allowedInFallback && mod_OldDays.texman.fallbacktex){
+        if (!mod_OldDays.texman.hasEntry(fallback)){
             return 2;
         }
         if (!allowedInSMP && mod_OldDays.getMinecraft().theWorld!=null){
@@ -119,11 +121,17 @@ public abstract class OldDaysProperty{
     }
 
     public boolean shouldRefreshOnFallback(){
-        return allowedInFallback || refreshFallback;
+        return !allowedInFallback || refreshFallback;
     }
 
     public OldDaysProperty setRefreshOnFallback(){
         refreshFallback = true;
+        return this;
+    }
+
+    public OldDaysProperty setFallback(String... str){
+        fallback = str;
+        allowedInFallback = false;
         return this;
     }
 }

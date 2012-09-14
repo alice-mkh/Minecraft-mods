@@ -102,8 +102,8 @@ public class OldDaysModule{
         mod_OldDays.texman.setTextureHook(name, i2, name2, index, b);
     }
 
-    public static boolean getFallback(){
-        return mod_OldDays.texman.fallbacktex;
+    public static boolean hasTextures(String... str){
+        return mod_OldDays.texman.hasEntry(str);
     }
 
     public void callback(int i){}

@@ -61,7 +61,7 @@ public class BlockLeaves extends BlockLeavesBase
         else
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-                if (!mod_OldDays.texman.fallbacktex){
+                if (mod_OldDays.texman.hasEntry("olddays/leavesfast.png", "olddays/leavesfancy.png")){
                     return 0xffffff;
                 }
                 return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -358,7 +358,7 @@ public class BlockLeaves extends BlockLeavesBase
         }
         else
         {
-            if (ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || (par2 & 3) == 2 || mod_OldDays.texman.fallbacktex){
+            if (ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || (par2 & 3) == 2 || !mod_OldDays.texman.hasEntry("olddays/leavesfast.png", "olddays/leavesfancy.png")){
                 return blockIndexInTexture;
             }
             if (graphicsLevel){

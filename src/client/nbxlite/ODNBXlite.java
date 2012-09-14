@@ -653,7 +653,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if (Generator==GEN_BIOMELESS){
-            if (tex && !getFallback()){
+            if (tex && hasTextures("olddays/leavesfast.png", "olddays/leavesfancy.png")){
                 return 0xffffff;
             }
             return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -695,7 +695,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int GetGrassColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if(Generator==GEN_BIOMELESS){
-            if (tex && !getFallback()){
+            if (tex && hasTextures("olddays/grasstop.png", "olddays/grassside.png")){
                 return 0xffffff;
             }
             return ColorizerGrass.getGrassColor(1.0F, 1.0F);
