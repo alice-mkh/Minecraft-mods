@@ -4435,9 +4435,6 @@ public abstract class World implements IBlockAccess
      */
     public ChunkPosition findClosestStructure(String par1Str, int par2, int par3, int par4)
     {
-        if (ODNBXlite.isFinite()){
-            return null;
-        }
         return getChunkProvider().findClosestStructure(this, par1Str, par2, par3, par4);
     }
 

@@ -439,4 +439,12 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(i + 16, j + 16);
         SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, i + 8, j + 8, 16, 16, rand);
     }
+
+    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
+        if("Stronghold".equals(s) && strongholdGenerator != null){
+            return strongholdGenerator.getNearestInstance(world, i, j, k);
+        }else{
+            return null;
+        }
+    }
 }

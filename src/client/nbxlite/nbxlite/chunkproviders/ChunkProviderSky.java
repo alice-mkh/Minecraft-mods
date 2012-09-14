@@ -573,4 +573,12 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
 
         BlockSand.fallInstantly = false;
     }
+
+    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
+        if("Stronghold".equals(s) && strongholdGen != null){
+            return strongholdGen.getNearestInstance(world, i, j, k);
+        }else{
+            return null;
+        }
+    }
 }

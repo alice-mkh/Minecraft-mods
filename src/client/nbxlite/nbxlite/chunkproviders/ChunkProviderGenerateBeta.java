@@ -800,4 +800,12 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         BlockSand.fallInstantly = false;
         spawnAnimals(x1, z1);
     }
+
+    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
+        if("Stronghold".equals(s) && strongholdGenerator != null){
+            return strongholdGenerator.getNearestInstance(world, i, j, k);
+        }else{
+            return null;
+        }
+    }
 }
