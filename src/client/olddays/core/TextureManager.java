@@ -80,25 +80,31 @@ public class TextureManager{
         }
     }
 
-    public boolean hasEntry(String str){
+    public boolean hasEntry(String... str){
         try{
             TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
             TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
             if (texpack instanceof TexturePackDefault){
                 return true;
             }
-            if (texpack instanceof TexturePackFolder){
-                File orig = ((File)mod_OldDays.getField(net.minecraft.src.TexturePackFolder.class, texpack, 2));
-                File file = new File(orig, str);
-                return file.exists();
-            }else{
-                ZipFile file = ((ZipFile)mod_OldDays.getField(net.minecraft.src.TexturePackCustom.class, texpack, 0));
-                return file.getEntry(str)!=null;
+            for (int i = 0; i < str.length; i++){
+                if (texpack instanceof TexturePackFolder){
+                    File orig = ((File)mod_OldDays.getField(net.minecraft.src.TexturePackFolder.class, texpack, 2));
+                    File file = new File(orig, str[i]);
+                    if (!file.exists()){
+                        return false;
+                    }
+                }else{
+                    ZipFile file = ((ZipFile)mod_OldDays.getField(net.minecraft.src.TexturePackCustom.class, texpack, 0));
+                    if (file.getEntry(str[i])==null){
+                        return false;
+                    }
+                }
             }
         }catch(Exception ex){
             ex.printStackTrace();
-            return true;
         }
+        return true;
     }
 
     public void addTextureHook(String origname, int origi, String newname, int newi){
