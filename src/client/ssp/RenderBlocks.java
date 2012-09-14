@@ -926,7 +926,7 @@ public class RenderBlocks
     {
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         Tessellator tessellator = Tessellator.instance;
-        if (Minecraft.oldlighting){
+        if (!Minecraft.oldlighting){
             tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
             tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
         }else{
