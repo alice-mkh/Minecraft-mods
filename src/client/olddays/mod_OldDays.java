@@ -144,6 +144,9 @@ public class mod_OldDays extends Mod{
     }
 
     public void onLoginClient(){
+        if (!isVanillaSMP()){
+            return;
+        }
         for (int id = 0; id < modules.size(); id++){
             OldDaysModule module = modules.get(id);
             for (int i = 1; i <= module.properties.size(); i++){
@@ -157,7 +160,7 @@ public class mod_OldDays extends Mod{
     }
 
     public void onInitClient(){
-        sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);        
+        sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);
     }
 
     public void onGUITick(GuiScreen gui){
@@ -358,6 +361,7 @@ public class mod_OldDays extends Mod{
             OldDaysModule module = modules.get(i);
             module.onLoadingSP(par1Str, par2Str);
         }
+        saveman.loadAll();
     }
 
     public static boolean isVanillaSMP(){
