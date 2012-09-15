@@ -13,20 +13,20 @@ import java.util.zip.*;
 public class ODNBXlite extends OldDaysModule{
     public ODNBXlite(mod_OldDays c){
         super(c, 8, "NBXlite");
-        new OldDaysPropertyInt(this,   1, 0,     5,     "Gen", 5).setUseNames().setGUIRefresh();
-        new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames();
-        new OldDaysPropertyInt(this,   3, 0,     4,     "BetaFeatures", 6).setUseNames();
-        new OldDaysPropertyInt(this,   4, 0,     4,     "ReleaseFeatures", 4).setUseNames();
-        new OldDaysPropertyBool(this,  5, false, false, "GenerateNewOres");
-        new OldDaysPropertyInt(this,   6, 32,    0,     "SurrGroundHeight", -999, 256).setField();
-        new OldDaysPropertyInt(this,   7, 1,     0,     "SurrGroundType", 1, 256).setField();
-        new OldDaysPropertyInt(this,   8, 31,    0,     "SurrWaterHeight", -999, 256).setField();
-        new OldDaysPropertyInt(this,   9, 9,     0,     "SurrWaterType", 8, 11);
-        new OldDaysPropertyRGB(this,   10,0,     0,     "SkyColor");
-        new OldDaysPropertyRGB(this,   11,0,     0,     "FogColor");
-        new OldDaysPropertyRGB(this,   12,0,     0,     "CloudColor");
-        new OldDaysPropertyInt(this,   13,-1,    -1,    "SkyBrightness", -1, 16).setField();
-        new OldDaysPropertyFloat(this, 14,128F,  128F,  "CloudHeight", -999.0F, 999.0F);
+        new OldDaysPropertyInt(this,   1, 0,     5,     "Gen", 5).setUseNames().setGUIRefresh().disableLoading();
+        new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   3, 0,     4,     "BetaFeatures", 6).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   4, 0,     4,     "ReleaseFeatures", 4).setUseNames().disableLoading();
+        new OldDaysPropertyBool(this,  5, false, false, "GenerateNewOres").disableLoading();
+        new OldDaysPropertyInt(this,   6, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
+        new OldDaysPropertyInt(this,   7, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
+        new OldDaysPropertyInt(this,   8, 31,    0,     "SurrWaterHeight", -999, 256).setField().disableLoading();
+        new OldDaysPropertyInt(this,   9, 9,     0,     "SurrWaterType", 8, 11).disableLoading();
+        new OldDaysPropertyRGB(this,   10,0,     0,     "SkyColor").disableLoading();
+        new OldDaysPropertyRGB(this,   11,0,     0,     "FogColor").disableLoading();
+        new OldDaysPropertyRGB(this,   12,0,     0,     "CloudColor").disableLoading();
+        new OldDaysPropertyInt(this,   13,-1,    -1,    "SkyBrightness", -1, 16).setField().disableLoading();
+        new OldDaysPropertyFloat(this, 14,128F,  128F,  "CloudHeight", -999.0F, 999.0F).disableLoading();
         new OldDaysPropertyCond(this,  15,1,     2,     "LeavesDecay");
         new OldDaysPropertyBool(this,  16,true,  false, "OldSpawning");
         new OldDaysPropertyCond(this,  17,1,     0,     "OldHoes");
@@ -44,52 +44,10 @@ public class ODNBXlite extends OldDaysModule{
         bedrockfx = new TextureTerrainPngFX();
         waterfx = new TextureTerrainPngFX();
         lavafx = new TextureTerrainPngFX();
-        try{
-            GuiSelectWorld.nbxlite = true;
-        }catch(Exception ex){}
-        try{
-            WorldInfo.useNBXlite = true;
-        }catch(Exception ex){}
+        GuiSelectWorld.nbxlite = true;
+        WorldInfo.useNBXlite = true;
         set(net.minecraft.src.RenderGlobal.class, "nbxlite", true);
-        try{
-            Minecraft.getMinecraft().worldClass = net.minecraft.src.WorldSSP2.class;
-        }catch(Exception ex){}
-/*        Properties properties = new Properties();
-        try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/NBXlite.properties").toString());
-            boolean flag = file.createNewFile();
-            if(flag){
-                FileOutputStream fileoutputstream = new FileOutputStream(file);
-                properties.setProperty("BetaGreenGrassSides",Boolean.toString(true));
-                properties.setProperty("DefaultGenerator",Integer.toString(6));
-                properties.setProperty("DefaultFeaturesBeta",Integer.toString(4));
-                properties.setProperty("DefaultFeaturesRelease",Integer.toString(3));
-                properties.setProperty("DefaultTheme",Integer.toString(0));
-                properties.setProperty("DefaultIndevType",Integer.toString(1));
-                properties.setProperty("DefaultFiniteWidth",Integer.toString(2));
-                properties.setProperty("DefaultFiniteLength",Integer.toString(2));
-                properties.setProperty("DefaultFiniteDepth",Integer.toString(32));
-                properties.setProperty("DefaultNewOres",Boolean.toString(false));
-                properties.setProperty("GearsId",Integer.toString(200));
-                properties.store(fileoutputstream,"NBXlite properties");
-                fileoutputstream.close();
-            }
-            properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/NBXlite.properties").toString()));
-            NoGreenGrassSides = !Boolean.parseBoolean(properties.getProperty("BetaGreenGrassSides"));
-            DefaultGenerator = properties.getProperty("DefaultGenerator") == null ? 6 : Integer.parseInt(properties.getProperty("DefaultGenerator"));
-            DefaultFeaturesBeta = properties.getProperty("DefaultFeaturesBeta") == null ? 4 : Integer.parseInt(properties.getProperty("DefaultFeaturesBeta"));
-            DefaultFeaturesRelease =properties.getProperty("DefaultFeaturesRelease") == null ? 3 : Integer.parseInt(properties.getProperty("DefaultFeaturesRelease"));
-            DefaultTheme = properties.getProperty("DefaultTheme") == null ? 0 : Integer.parseInt(properties.getProperty("DefaultTheme"));
-            DefaultIndevType = properties.getProperty("DefaultIndevType") == null ? 1 : Integer.parseInt(properties.getProperty("DefaultIndevType"));
-            DefaultFiniteWidth = properties.getProperty("DefaultFiniteWidth") == null ? 2 : Integer.parseInt(properties.getProperty("DefaultFiniteWidth"));
-            DefaultFiniteLength = properties.getProperty("DefaultFiniteLength") == null ? 2 : Integer.parseInt(properties.getProperty("DefaultFiniteLength"));
-            DefaultFiniteDepth = properties.getProperty("DefaultFiniteDepth") == null ? 32 : Integer.parseInt(properties.getProperty("DefaultFiniteDepth"));
-            DefaultNewOres = Boolean.parseBoolean(properties.getProperty("DefaultNewOres"));
-            gearId = properties.getProperty("GearsId") == null ? 200 : Integer.parseInt(properties.getProperty("GearsId"));
-        }
-        catch(IOException exception){
-            System.out.println(exception);
-        }*/
+        Minecraft.getMinecraft().worldClass = net.minecraft.src.WorldSSP2.class;
     }
 
     public void callback (int i){

@@ -21,6 +21,7 @@ public abstract class OldDaysProperty{
     public boolean guiRefresh;
     public boolean refreshFallback;
     public String[] fallback;
+    public boolean canBeLoaded;
 
     public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
@@ -39,6 +40,7 @@ public abstract class OldDaysProperty{
         }catch(Exception ex){
             disable();
         }
+        canBeLoaded = true;
         module.properties.add(this);
     }
 
@@ -114,8 +116,9 @@ public abstract class OldDaysProperty{
         return list.toArray(new String[list.size()]);
     }
 
-    public void setGUIRefresh(){
+    public OldDaysProperty setGUIRefresh(){
         guiRefresh = true;
+        return this;
     }
 
     public boolean shouldRefreshOnFallback(){
@@ -130,6 +133,11 @@ public abstract class OldDaysProperty{
     public OldDaysProperty setFallback(String... str){
         fallback = str;
         allowedInFallback = false;
+        return this;
+    }
+
+    public OldDaysProperty disableLoading(){
+        canBeLoaded = false;
         return this;
     }
 }

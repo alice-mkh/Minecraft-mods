@@ -68,6 +68,9 @@ public class SavingManager{
             properties.load(new FileInputStream(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/"+module.name+".properties"));
             for (int i = 1; i <= module.properties.size(); i++){
                 OldDaysProperty prop = module.getPropertyById(i);
+                if (!prop.canBeLoaded){
+                    continue;
+                }
                 try{
                     String value = properties.getProperty(prop.field.getName()).trim();
                     if (value==null){

@@ -125,7 +125,8 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         return this;
     }
 
-    public void setField(){
+    public OldDaysPropertyInt setField(){
         guitype = GUI_TYPE_FIELD;
+        return this;
     }
 }
