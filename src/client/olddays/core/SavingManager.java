@@ -19,7 +19,7 @@ public class SavingManager{
             dir.mkdirs();
             File file = new File(dir, "Core.properties");
             if(file.createNewFile()){
-                mc.useSP = false;
+                mc.useSP = true;
                 saveCoreProperties();
                 return;
             }

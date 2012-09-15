@@ -853,6 +853,9 @@ public class ODNBXlite extends OldDaysModule{
         if (MapFeatures==FEATURES_CLASSIC){
             id = Block.bedrock.blockID;
         }
+        if (Block.blocksList[id] == null){
+            return;
+        }
         int tid = Block.blocksList[id].getBlockTextureFromSideAndMetadata(1, 0);
         terrfx.changeIndex(tid, false);
         bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
