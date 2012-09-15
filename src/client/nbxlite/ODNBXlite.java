@@ -79,13 +79,7 @@ public class ODNBXlite extends OldDaysModule{
             case 17:set(net.minecraft.src.nbxlite.ItemHoe2.class, "oldhoes", OldHoes); break;
             case 18:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "texClouds", TexturedClouds); break;
             case 19:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
-            case 20:set(net.minecraft.src.EntityRenderer.class, "classicLight", ClassicLight > 0);
-                    set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", ClassicLight > 0);
-                    Minecraft.oldlighting = ClassicLight > 1;
-                    oldLightEngine = ClassicLight > 1;
-                    if (ClassicLight > 1 || ((OldDaysPropertyCond2)getPropertyById(i)).value < 0){
-                        reload();
-                    }break;
+            case 20:setLighting(ClassicLight, i); break;
             case 21:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
             case 22:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseColors", Sunset >= 1);
                     set(net.minecraft.src.EntityRenderer.class, "sunriseFog", Sunset >= 2);
@@ -164,6 +158,19 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean OldStars(){
         return Generator<GEN_NEWBIOMES || MapFeatures<FEATURES_13;
+    }
+
+    public void setLighting(int i, int i2){
+        if (i >= 2 && !Minecraft.getMinecraft().enableSP){
+            i = 1;
+        }
+        set(net.minecraft.src.EntityRenderer.class, "classicLight", i > 0);
+        set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", i > 0);
+        Minecraft.oldlighting = i > 1;
+        oldLightEngine = i > 1;
+        if (i > 1 || ((OldDaysPropertyCond2)getPropertyById(i2)).value < 0){
+            reload();
+        }
     }
 
     public void onLoadingSP(String par1Str, String par2Str){
@@ -295,7 +302,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static int getSkyLightInBounds2(int par2){
-        int sky = 15 - Minecraft.getMinecraft().theWorld.skylightSubtracted;
+        int sky = 15 - (Minecraft.getMinecraft().theWorld == null ? 0 : Minecraft.getMinecraft().theWorld.skylightSubtracted);
         if (par2<SurrWaterHeight){
             if (Block.blocksList[SurrWaterType].blockMaterial!=Material.lava){
                 sky-=3*(SurrWaterHeight-par2);
