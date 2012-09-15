@@ -3,22 +3,22 @@ package net.minecraft.src;
 public class ODGameplay extends OldDaysModule{
     public ODGameplay(mod_OldDays c){
         super(c, 2, "Gameplay");
-        new OldDaysPropertyBool(this, 1, true,  false, "EnableXP");
-        new OldDaysPropertyBool(this, 2, true,  false, "EnableHunger").setFallback("olddays/icons.png").setRefreshOnFallback();
-        new OldDaysPropertyBool(this, 3, false, true,  "InstantFood");
-        new OldDaysPropertyBool(this, 4, true,  false, "FoodStacking");
-        new OldDaysPropertyBool(this, 5, false, true,  "OldDrops");
-        new OldDaysPropertyBool(this, 6, true,  false, "RareLoot");
-        new OldDaysPropertyBool(this, 7, false, true,  "InstantBow");
-        new OldDaysPropertyBool(this, 8, true,  false, "FiniteBow");
-        new OldDaysPropertyInt(this,  9, 2,     1,     "CombatSystem", 3).setUseNames();
-        new OldDaysPropertyInt(this,  10,3,     0,     "Armor", 3).setUseNames();
+        new OldDaysPropertyBool(this, 1, false, true,  "EnableXP");
+        new OldDaysPropertyBool(this, 2, false, true,  "EnableHunger").setFallback("olddays/icons.png").setRefreshOnFallback();
+        new OldDaysPropertyBool(this, 3, true,  false, "InstantFood");
+        new OldDaysPropertyBool(this, 4, false, true,  "FoodStacking");
+        new OldDaysPropertyBool(this, 5, true,  false, "OldDrops");
+        new OldDaysPropertyBool(this, 6, false, true,  "RareLoot");
+        new OldDaysPropertyBool(this, 7, true,  false, "InstantBow");
+        new OldDaysPropertyBool(this, 8, false, true,  "FiniteBow");
+        new OldDaysPropertyInt(this,  9, 1,     2,     "CombatSystem", 3).setUseNames();
+        new OldDaysPropertyInt(this,  10,0,     3,     "Armor", 3).setUseNames();
         new OldDaysPropertyBool(this, 11,true,  true,  "AllowDebug");
         new OldDaysPropertyBool(this, 12,true,  true,  "AllowSprint");
-        new OldDaysPropertyBool(this, 13,true,  false, "JumpDelay");
+        new OldDaysPropertyBool(this, 13,false, true,  "JumpDelay");
         new OldDaysPropertyInt(this,  14,0,     0,     "StartItems", 3).setUseNames();
-        new OldDaysPropertyBool(this, 15,false, false, "SignStacking");
-        new OldDaysPropertyBool(this, 16,false, false, "BucketStacking");
+        new OldDaysPropertyBool(this, 15,false, true,  "SignStacking");
+        new OldDaysPropertyBool(this, 16,false, true,  "BucketStacking");
     }
 
     public void callback (int i){

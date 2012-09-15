@@ -5,19 +5,19 @@ import java.util.*;
 public class ODActions extends OldDaysModule{
     public ODActions(mod_OldDays c){
         super(c, 0, "Actions");
-        new OldDaysPropertyBool(this, 1, false, true,  "PunchTNT");
+        new OldDaysPropertyBool(this, 1, true,  false, "PunchTNT");
         new OldDaysPropertyBool(this, 2, false, false, "ExtinguishTNT");
         new OldDaysPropertyBool(this, 3, false, false, "SmeltOnFire");
-        new OldDaysPropertyInt(this,  4, 2,     1,     "Fire", 2).setUseNames();
-        new OldDaysPropertyBool(this, 5, false, true,  "PunchSheep");
+        new OldDaysPropertyInt(this,  4, 1,     2,     "Fire", 2).setUseNames();
+        new OldDaysPropertyBool(this, 5, true,  false, "PunchSheep");
         new OldDaysPropertyBool(this, 6, false, false, "OldTools");
         new OldDaysPropertyBool(this, 7, true,  true,  "ShroomSpreading");
-        new OldDaysPropertyBool(this, 8, false, true,  "SolidTNT");
-        new OldDaysPropertyBool(this, 9, false, true,  "BigFences");
+        new OldDaysPropertyBool(this, 8, true,  false, "SolidTNT");
+        new OldDaysPropertyBool(this, 9, true,  false, "BigFences");
         new OldDaysPropertyBool(this, 10,false, false, "LessLavaFlow");
-        new OldDaysPropertyBool(this, 11,false, true,  "FogKey");
-        new OldDaysPropertyBool(this, 12,false, false, "LogRotation");
-        new OldDaysPropertyBool(this, 13,false, true,  "OldCrops");
+        new OldDaysPropertyBool(this, 11,true,  false, "FogKey");
+        new OldDaysPropertyBool(this, 12,false, true,  "LogRotation");
+        new OldDaysPropertyBool(this, 13,true,  false, "OldCrops");
         new OldDaysPropertyBool(this, 14,false, false, "TimeControl");
         replaceBlocks();
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));

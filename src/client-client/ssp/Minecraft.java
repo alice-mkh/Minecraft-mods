@@ -2026,6 +2026,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             theIntegratedServer = null;
+            for (int i = 0; i < mods.size(); i++){
+                Mod mod = mods.get(i);
+                mod.canUsePackets = false;
+            }
         }
 
         renderViewEntity = null;
@@ -3289,9 +3293,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public void onLoginServer(EntityPlayerMP player){
+        player.serverForThisPlayer.sendPacketToPlayer(new net.minecraft.src.Packet300Custom(null, true, 0, ""));
         for (int i = 0; i < mods.size(); i++){
             Mod mod = mods.get(i);
             mod.onLoginServer(player);
+        }
+    }
+
+    public void onInitClient(){
+        for (int i = 0; i < mods.size(); i++){
+            Mod mod = mods.get(i);
+            mod.canUsePackets = true;
+            mod.onInitClient();
         }
     }
 }

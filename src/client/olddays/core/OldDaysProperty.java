@@ -57,10 +57,8 @@ public abstract class OldDaysProperty{
         if (!mod_OldDays.texman.hasEntry(fallback)){
             return 2;
         }
-        if (!allowedInSMP && mod_OldDays.getMinecraft().theWorld!=null){
-            if (mod_OldDays.getMinecraft().theWorld.isRemote && false){
-                return 3;
-            }
+        if (!allowedInSMP && mod_OldDays.isVanillaSMP()){
+            return 3;
         }
         if (noSounds){
             return 4;

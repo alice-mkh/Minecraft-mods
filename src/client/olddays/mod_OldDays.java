@@ -69,9 +69,6 @@ public class mod_OldDays extends Mod{
     }
 
     public void handlePacketFromClient(Packet300Custom packet, EntityPlayerMP player){
-        if (getMinecraft().isSingleplayer()){
-            return;
-        }
         if (packet.getId() == SMPManager.PACKET_C2S_PROP){
             OldDaysProperty prop = readProperty(packet.getData()[0]);
             sendPacketToAll(SMPManager.PACKET_S2C_PROP, prop.module.id+" "+prop.id+" "+prop.saveToString());
@@ -119,7 +116,6 @@ public class mod_OldDays extends Mod{
             return;
         }
         super.handlePacketFromServer(packet);
-        smpman.canUsePackets = canUsePackets;
     }
 
     private String[] writeModule(OldDaysModule module){
@@ -158,7 +154,10 @@ public class mod_OldDays extends Mod{
                 }
             }
         }
-        sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);
+    }
+
+    public void onInitClient(){
+        sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);        
     }
 
     public void onGUITick(GuiScreen gui){
@@ -362,7 +361,10 @@ public class mod_OldDays extends Mod{
     }
 
     public static boolean isVanillaSMP(){
-        return !Minecraft.getMinecraft().enableSP && !smpman.canUsePackets;
+        if (Minecraft.getMinecraft().enableSP){
+            return false;
+        }
+        return !Minecraft.getMinecraft().isIntegratedServerRunning() && !smpman.core.canUsePackets;
     }
 
     public KeyBinding keySettings;

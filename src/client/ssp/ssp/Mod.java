@@ -6,7 +6,7 @@ import net.minecraft.server.MinecraftServer;
 public abstract class Mod{
     public boolean usesTick;
     public boolean usesGUITick;
-    protected boolean canUsePackets;
+    public boolean canUsePackets;
 
     public abstract String getModVersion();
 
@@ -41,11 +41,6 @@ public abstract class Mod{
         }
     }
 
-    public final void handlePacketFromServer2(Packet300Custom packet){
-        canUsePackets = true;
-        handlePacketFromServer(packet);
-    }
-
     public void handlePacketFromServer(Packet300Custom packet){
         System.out.println("Packet received:");
         System.out.println(" Mod: "+getModName());
@@ -62,7 +57,7 @@ public abstract class Mod{
         Packet300Custom packet = new Packet300Custom(this, dir, id, data);
         if (Minecraft.getMinecraft().enableSP){
             if (dir){
-                handlePacketFromServer2(packet);
+                handlePacketFromServer(packet);
             }else{
                 handlePacketFromClient(packet, player);
             }
@@ -109,6 +104,8 @@ public abstract class Mod{
     public void onLoginClient(){}
 
     public void onLoginServer(EntityPlayerMP player){}
+
+    public void onInitClient(){}
 
     protected void setUseTick(boolean game, boolean gui){
         usesTick = game;

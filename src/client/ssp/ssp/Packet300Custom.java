@@ -11,13 +11,19 @@ public class Packet300Custom extends Packet{
     private String modVersion;
     private String mcVersion;
 
-    public Packet300Custom(Mod mod, boolean toClient, int id, String[] data){
+    public Packet300Custom(Mod mod, boolean toClient, int id, String... data){
         this.toClient = toClient;
         this.id = id;
         this.data = data;
-        modName = mod.getModName();
-        modVersion = mod.getModVersion();
-        mcVersion = mod.getMcVersion();
+        if (mod == null){
+            modName = "SSP";
+            modVersion = "";
+            mcVersion = Minecraft.getMinecraft().getVersion();
+        }else{
+            modName = mod.getModName();
+            modVersion = mod.getModVersion();
+            mcVersion = mod.getMcVersion();
+        }
     }
 
     public Packet300Custom(){}
@@ -51,6 +57,10 @@ public class Packet300Custom extends Packet{
         }
         toClient = !par1NetHandler.isServerHandler();
         Minecraft mc = Minecraft.getMinecraft();
+        if (modName.equals("SSP")){
+            Minecraft.getMinecraft().onInitClient();
+            return;
+        }
         for (int i = 0; i < mc.mods.size(); i++){
             Mod m = ((Mod)mc.mods.get(i));
             if (!m.getModName().equals(modName)){
@@ -69,7 +79,7 @@ public class Packet300Custom extends Packet{
                 return;
             }
             if (toClient){
-                m.handlePacketFromServer2(this);
+                m.handlePacketFromServer(this);
             }else{
                 m.handlePacketFromClient(this, ((NetServerHandler)par1NetHandler).getPlayer());
             }
