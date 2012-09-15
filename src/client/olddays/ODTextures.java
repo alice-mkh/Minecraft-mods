@@ -34,8 +34,8 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 27,true,  "Explosion");
         new OldDaysPropertyBool(this, 28,false, "Moon");
         new OldDaysPropertyBool(this, 29,true,  "ArmorShape");
-        new OldDaysPropertyBool(this, 30,false, "Cocoa");
-        new OldDaysPropertyBool(this, 31,false, "Netherrack");
+        new OldDaysPropertyBool(this, 30,true,  "Cocoa");
+        new OldDaysPropertyBool(this, 31,true,  "Netherrack");
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && i != 27 && i != 29){
                 getPropertyById(i).setFallback("olddays/textures.png");
