@@ -23,7 +23,7 @@ public class MetadataChunkBlock
         int j = (maxY - minY) + 1;
         int k = (maxZ - minZ) + 1;
         int l = i * j * k;
-        if(l > 32768)
+        if(l > 16 * 16 * 256)
         {
             System.out.println("Light too large, skipping!");
             return;
@@ -65,9 +65,9 @@ public class MetadataChunkBlock
                 {
                     minY = 0;
                 }
-                if(maxY >= 128)
+                if(maxY >= 256)
                 {
-                    maxY = 127;
+                    maxY = 255;
                 }
                 for(int k2 = minY; k2 <= maxY; k2++)
                 {
@@ -102,6 +102,26 @@ public class MetadataChunkBlock
                         int i5 = world.getSavedLightValue(blockEnum, k1, k2 + 1, l1);
                         int j5 = world.getSavedLightValue(blockEnum, k1, k2, l1 - 1);
                         int k5 = world.getSavedLightValue(blockEnum, k1, k2, l1 + 1);
+                        if ((ODNBXlite.SurrWaterType==Block.waterStill.blockID||ODNBXlite.SurrWaterType==Block.waterMoving.blockID) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                            if (isBounds(world, k1-1, k2, l1)){
+                                i4 = ODNBXlite.getLightInBounds(blockEnum, k2);
+                            }
+                            if (isBounds(world, k1+1, k2, l1)){
+                                k4 = ODNBXlite.getLightInBounds(blockEnum, k2);
+                            }
+                            if (isBounds(world, k1, k2-1, l1)){
+                                l4 = ODNBXlite.getLightInBounds(blockEnum, k2-1);
+                            }
+                            if (isBounds(world, k1, k2+1, l1)){
+                                i5 = ODNBXlite.getLightInBounds(blockEnum, k2+1);
+                            }
+                            if (isBounds(world, k1, k2, l1-1)){
+                                j5 = ODNBXlite.getLightInBounds(blockEnum, k2);
+                            }
+                            if (isBounds(world, k1, k2, l1+1)){
+                                k5 = ODNBXlite.getLightInBounds(blockEnum, k2);
+                            }
+                        }
                         i3 = i4;
                         if(k4 > i3)
                         {
@@ -216,6 +236,22 @@ public class MetadataChunkBlock
                 maxY = i1;
                 maxZ = j1;
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBounds(World w, int x, int y, int z){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (w.provider==null || w.provider.worldType==0)){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
+                    return true;
+                }
+            }
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ || y<0){
+                    return true;
+                }
             }
         }
         return false;

@@ -117,6 +117,9 @@ public class ChunkCache implements IBlockAccess
 
     public float getBrightness(int par1, int par2, int par3, int par4)
     {
+        if (isBounds(par1, par2, par3)){
+            return worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
+        }
         int i = getLightValue(par1, par2, par3);
 
         if (i < par4)
@@ -152,6 +155,9 @@ public class ChunkCache implements IBlockAccess
      */
     public float getLightBrightness(int par1, int par2, int par3)
     {
+        if (isBounds(par1, par2, par3)){
+            return worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
+        }
         return worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)];
     }
 

@@ -327,6 +327,10 @@ public class ODNBXlite extends OldDaysModule{
         return Math.max(getSkyLightInBounds2(par2), getBlockLightInBounds(par2));
     }
 
+    public static int getLightInBounds(EnumSkyBlock block, int par2){
+        return block == EnumSkyBlock.Sky ? getSkyLightInBounds2(par2) : getBlockLightInBounds(par2);
+    }
+
     public static float getLightFloat(int par2){
         Minecraft mc = Minecraft.getMinecraft();
         return mc.theWorld.provider.lightBrightnessTable[getLightInBounds2(par2)];
