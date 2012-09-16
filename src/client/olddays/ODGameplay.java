@@ -39,7 +39,7 @@ public class ODGameplay extends OldDaysModule{
             case 8: set(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
             case 9: set(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem);
                     set(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=3);
-                    setSwordDamage(CombatSystem<2); break;
+                    setSwordDamage(CombatSystem<3); break;
             case 10:set(net.minecraft.src.EntityPlayer.class, "armor", Armor);
                     set(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=0);
                     setArmorDamage(Armor<2); break;
