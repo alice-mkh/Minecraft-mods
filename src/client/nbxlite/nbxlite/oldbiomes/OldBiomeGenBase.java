@@ -25,7 +25,7 @@ public class OldBiomeGenBase
     public static final OldBiomeGenBase tundra = (new OldBiomeGenBase()).setColor(0x57ebf9).setBiomeName("Tundra").setEnableSnow().func_4124_a(0xc4d339);
     public static final OldBiomeGenBase hell = (new OldBiomeGenHell()).setColor(0xff0000).setBiomeName("Hell").setDisableRain();
     public static final OldBiomeGenBase sky = (new OldBiomeGenSky()).setColor(0x8080ff).setBiomeName("Sky").setDisableRain();
-    public static final OldBiomeGenBase notABiome = (new OldBiomeGenNotBiome()).setColor(0xffffff).setBiomeName("Not actually a biome!").setDisableRain();
+    public static final OldBiomeGenBase notABiome = (new OldBiomeGenNotBiome()).setColor(0xffffff).setBiomeName("Not actually a biome!");
     public String biomeName;
     public int color;
     public byte topBlock;

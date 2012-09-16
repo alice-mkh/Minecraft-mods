@@ -8,9 +8,9 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 1, true,  false, "PunchTNT");
         new OldDaysPropertyBool(this, 2, false, false, "ExtinguishTNT");
         new OldDaysPropertyBool(this, 3, false, false, "SmeltOnFire");
-        new OldDaysPropertyInt(this,  4, 1,     2,     "Fire", 2).setUseNames();
+        new OldDaysPropertyInt(this,  4, 0,     2,     "Fire", 2).setUseNames();
         new OldDaysPropertyBool(this, 5, true,  false, "PunchSheep");
-        new OldDaysPropertyBool(this, 6, false, false, "OldTools");
+        new OldDaysPropertyInt(this,  6, 2,     2,     "Durability", 2).setUseNames();
         new OldDaysPropertyBool(this, 7, true,  true,  "ShroomSpreading");
         new OldDaysPropertyBool(this, 8, true,  false, "SolidTNT");
         new OldDaysPropertyBool(this, 9, true,  false, "BigFences");
@@ -23,8 +23,6 @@ public class ODActions extends OldDaysModule{
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
 
-    public static int FogKeyd = 0;
-
     public void callback (int i){
         switch(i){
             case 1: set(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
@@ -33,7 +31,7 @@ public class ODActions extends OldDaysModule{
             case 4: set(net.minecraft.src.BlockFire.class, "oldFire", Fire<2);
                     set(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<1); break;
             case 5: set(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
-            case 6: setToolDurability(OldTools); break;
+            case 6: setToolDurability(Durability); break;
             case 7: set(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
             case 9: set(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
@@ -54,9 +52,9 @@ public class ODActions extends OldDaysModule{
     public static boolean SmeltOnFire;
     public static boolean PunchTNT = true;
     public static boolean ExtinguishTNT;
-    public static int Fire = 1;
+    public static int Fire = 0;
     public static boolean PunchSheep = true;
-    public static boolean OldTools;
+    public static int Durability = 0;
     public static boolean ShroomSpreading = true;
     public static boolean SolidTNT = true;
     public static boolean BigFences = true;
@@ -105,18 +103,18 @@ public class ODActions extends OldDaysModule{
         }
     }
 
-    private void setToolDurability(boolean b){
+    private void setToolDurability(int i){
         int wood = 59;
         int stone = 131;
         int iron = 250;
         int gold = 32;
         int diamond = 1561;
-        if (b){
-            wood = 31;
-            stone = 63;
-            iron = 127;
-            gold = 15;
-            diamond = 255;
+        if (i < 2){
+            wood = 32 << 0;
+            stone = 32 << 1;
+            iron = 32 << 2;
+            gold = 32 << 0;
+            diamond = (32 << 3) * (i < 1 ? 4 : 1);
         }
         mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeWood, 149, wood);
         mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeWood, 149, wood);

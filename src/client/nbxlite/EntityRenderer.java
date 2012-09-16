@@ -1280,9 +1280,8 @@ public class EntityRenderer
             mc.mcProfiler.endStartSection("weather");
             if (snow){
                 renderSnow(par1);
-            }else{
-                renderRainSnow(par1);
             }
+            renderRainSnow(par1);
             GL11.glDisable(GL11.GL_FOG);
 
             if (mc.gameSettings.shouldRenderClouds())

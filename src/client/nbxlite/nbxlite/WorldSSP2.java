@@ -336,7 +336,7 @@ public class WorldSSP2 extends WorldSSP
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
             ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE)) || true){
             updateWeather();
         }
 
