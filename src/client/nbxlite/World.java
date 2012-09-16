@@ -266,7 +266,6 @@ public abstract class World implements IBlockAccess
 
         if (flag)
         {
-            worldInfo.nbxlite = true;
             worldInfo.mapGen = ODNBXlite.Generator;
             worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
             worldInfo.mapTheme = ODNBXlite.MapTheme;
@@ -364,6 +363,7 @@ public abstract class World implements IBlockAccess
                         worldInfo.skycolor = ODNBXlite.SkyColor;
                         worldInfo.fogcolor = ODNBXlite.FogColor;
                         worldInfo.cloudcolor = ODNBXlite.CloudColor;
+                        worldInfo.setCommandsAllowed();
                     }
                     worldInfo.mapType = ODNBXlite.IndevMapType;
                     worldInfo.indevX = ODNBXlite.IndevWidthX;
@@ -402,8 +402,8 @@ public abstract class World implements IBlockAccess
                 ODNBXlite.CloudColor = worldInfo.cloudcolor;
                 ODNBXlite.SetGenerator(this, worldInfo.mapGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
             }else{
-                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
                 worldInfo.nbxlite = true;
+                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
                 worldInfo.mapGen = ODNBXlite.Generator;
                 worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
                 worldInfo.mapTheme = ODNBXlite.MapTheme;
@@ -422,6 +422,7 @@ public abstract class World implements IBlockAccess
                 worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
                 worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
                 worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+                par1ISaveHandler.saveWorldInfo(worldInfo);
             }
             provider.registerWorld(this);
         }
@@ -3054,7 +3055,7 @@ public abstract class World implements IBlockAccess
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
             ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE)) || true){
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
             updateWeather();
         }
     }

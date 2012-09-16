@@ -82,7 +82,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
             }
             long l = 0L;
             if (format==0){
-                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.getGameType(), flag, worldinfo.isHardcoreModeEnabled(), true));
+                arraylist.add(new SaveFormatComparator(s, s1, worldinfo.getLastTimePlayed(), l, worldinfo.getGameType(), flag, worldinfo.isHardcoreModeEnabled(), worldinfo.areCommandsAllowed()));
             }else{
                 arraylist.add(new SaveFormatComparator(s, s1, 0L, l, EnumGameType.SURVIVAL, true, true, true));
             }
@@ -135,6 +135,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
         func_22181_a(file2, arraylist4, arraylist.size() + arraylist2.size(), i, iprogressupdate);
         WorldInfo worldinfo = getWorldInfo(s);
         worldinfo.setSaveVersion(19132);
+        worldinfo.setCommandsAllowed();
         ISaveHandler isavehandler = getSaveLoader(s, false);
         isavehandler.saveWorldInfo(worldinfo);
         func_22182_a(arraylist1, arraylist.size() + arraylist2.size(), i, iprogressupdate);

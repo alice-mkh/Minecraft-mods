@@ -688,4 +688,12 @@ public class WorldInfo
     {
         sizeOnDisk = l;
     }
+
+    /**
+     * Returns true if commands are allowed on this World.
+     */
+    public void setCommandsAllowed()
+    {
+        allowCommands = true;
+    }
 }
