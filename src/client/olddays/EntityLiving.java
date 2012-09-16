@@ -1195,6 +1195,8 @@ public abstract class EntityLiving extends Entity
                         dropFewItemsOld(recentlyHit > 0, i, Item.leather.shiftedIndex);
                     }else if (this instanceof EntitySpider){
                         dropFewItemsOld(recentlyHit > 0, i, Item.silk.shiftedIndex);
+                    }else if (this instanceof EntityPig){
+                        dropFewItemsOld(recentlyHit > 0, i, getDropItemId());
                     }else{
                         dropFewItems(recentlyHit > 0, i);
                     }
