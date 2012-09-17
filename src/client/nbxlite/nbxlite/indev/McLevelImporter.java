@@ -237,6 +237,10 @@ public class McLevelImporter{
 
     private void loadEnvironment(NBTTagCompound tag){
         skybrightness = tag.getByte("SkyBrightness");
+        if (skybrightness > 16){
+            float f = skybrightness / 100;
+            skybrightness = (byte)(f * 16);
+        }
         surrgroundtype = tag.getByte("SurroundingGroundType");
         surrwatertype = tag.getByte("SurroundingWaterType");
         cloudheight = tag.getShort("CloudHeight");

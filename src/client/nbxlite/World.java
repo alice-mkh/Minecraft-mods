@@ -360,6 +360,10 @@ public abstract class World implements IBlockAccess
                         }
                         worldInfo.cloudheight = ODNBXlite.CloudHeight;
                         worldInfo.skybrightness = ODNBXlite.SkyBrightness;
+                        worldInfo.surrgroundtype = ODNBXlite.SurrGroundType;
+                        worldInfo.surrgroundheight = ODNBXlite.SurrGroundHeight;
+                        worldInfo.surrwatertype = ODNBXlite.SurrWaterType;
+                        worldInfo.surrwaterheight = ODNBXlite.SurrWaterHeight;
                         worldInfo.skycolor = ODNBXlite.SkyColor;
                         worldInfo.fogcolor = ODNBXlite.FogColor;
                         worldInfo.cloudcolor = ODNBXlite.CloudColor;
