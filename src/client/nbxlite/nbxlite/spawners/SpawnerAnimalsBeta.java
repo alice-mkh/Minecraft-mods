@@ -17,7 +17,7 @@ public final class SpawnerAnimalsBeta
     protected static ChunkPosition getRandomSpawningPointInChunk(World world, int i, int j)
     {
         int k = i + world.rand.nextInt(16);
-        int l = world.rand.nextInt(128);
+        int l = world.rand.nextInt(world.getActualHeight());
         int i1 = j + world.rand.nextInt(16);
         return new ChunkPosition(k, l, i1);
     }
@@ -217,15 +217,15 @@ public final class SpawnerAnimalsBeta
                     {
                         l = 1;
                     } else
-                    if(l > 128)
+                    if(l > 256)
                     {
-                        l = 128;
+                        l = 256;
                     }
                     int i1 = world.rand.nextInt(aclass.length);
                     int j1;
                     for(j1 = l; j1 > 2 && !world.isBlockNormalCube(j, j1 - 1, k); j1--) { }
-                    for(; !canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, world, j, j1, k) && j1 < l + 16 && j1 < 128; j1++) { }
-                    if(j1 >= l + 16 || j1 >= 128)
+                    for(; !canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, world, j, j1, k) && j1 < l + 16 && j1 < 256; j1++) { }
+                    if(j1 >= l + 16 || j1 >= 256)
                     {
                         j1 = l;
                     } else

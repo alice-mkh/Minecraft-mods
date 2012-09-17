@@ -4405,7 +4405,7 @@ public abstract class World implements IBlockAccess
      */
     public int getActualHeight()
     {
-        return provider.hasNoSky ? 128 : 256;
+        return ODNBXlite.isFinite() ? ODNBXlite.IndevHeight : (provider.hasNoSky ? 128 : 256);
     }
 
     /**
@@ -4537,13 +4537,11 @@ public abstract class World implements IBlockAccess
             {
                 if(--i <= 0)
                 {
-                    boolean flag = true;
-                    return flag;
+                    return true;
                 }
             }
 
-            boolean flag1 = false;
-            return flag1;
+            return false;
         }
         finally
         {
