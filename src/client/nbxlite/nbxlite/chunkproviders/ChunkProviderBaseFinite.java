@@ -65,7 +65,7 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
         boolean bounds = i>=0 && i<ODNBXlite.IndevWidthX/16 && j>=0 && j<ODNBXlite.IndevWidthZ/16;
         Chunk chunk;
         if (bounds){
-            if (ODNBXlite.IndevWorld==null && ODNBXlite.Import){
+            if (ODNBXlite.IndevWorld==null && !ODNBXlite.Import){
                 generateFiniteLevel();
             }
             chunk = new Chunk(worldObj, getChunkArray(i, j), i, j);
