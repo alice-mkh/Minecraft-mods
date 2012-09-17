@@ -80,7 +80,7 @@ public class MetadataChunkBlock
                         k3 = 1;
                     }
                     int l3 = 0;
-                    if(blockEnum == EnumSkyBlock.Sky)
+                    if(blockEnum == EnumSkyBlock.Sky && !world.provider.hasNoSky)
                     {
                         if(world.canExistingBlockSeeTheSky(k1, k2, l1))
                         {

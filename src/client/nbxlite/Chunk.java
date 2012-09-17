@@ -272,7 +272,7 @@ public class Chunk
      */
     private void propagateSkylightOcclusion(int par1, int par2)
     {
-        if (ODNBXlite.oldLightEngine){
+        if (ODNBXlite.oldLightEngine && !worldObj.provider.hasNoSky){
             int k = getHeightValue(par1, par2);
             int l = xPosition * 16 + par1;
             int i1 = zPosition * 16 + par2;
@@ -361,7 +361,7 @@ public class Chunk
 
     private void updateSkylightNeighborHeight(int par1, int par2, int par3, int par4)
     {
-        if (ODNBXlite.oldLightEngine){
+        if (ODNBXlite.oldLightEngine && !worldObj.provider.hasNoSky){
             worldObj.scheduleLightingUpdate(EnumSkyBlock.Sky, par1, par3, par2, par1, par4, par2);
             isModified = true;
         }
@@ -1438,6 +1438,9 @@ public class Chunk
      */
     public void resetRelightChecks()
     {
+        if (ODNBXlite.oldLightEngine){
+            return;
+        }
         queuedLightChecks = 0;
     }
 
@@ -1449,6 +1452,9 @@ public class Chunk
      */
     public void enqueueRelightChecks()
     {
+        if (ODNBXlite.oldLightEngine){
+            return;
+        }
         for (int i = 0; i < 8; i++)
         {
             if (queuedLightChecks >= 4096)
