@@ -119,34 +119,34 @@ public class SaveConverterMcRegion extends SaveFormatOld
         File file1 = new File(file, "DIM-1");
         File file2 = new File(file, "DIM1");
         System.out.println("Scanning folders...");
-        func_22183_a(file, arraylist, arraylist1);
+        addFilesToCollection(file, arraylist, arraylist1);
         if (file1.exists())
         {
-            func_22183_a(file1, arraylist2, arraylist3);
+            addFilesToCollection(file1, arraylist2, arraylist3);
         }
         if (file2.exists())
         {
-            func_22183_a(file2, arraylist4, arraylist5);
+            addFilesToCollection(file2, arraylist4, arraylist5);
         }
         int i = arraylist.size() + arraylist2.size() + arraylist4.size() + arraylist1.size() + arraylist3.size() + arraylist5.size();
         System.out.println((new StringBuilder()).append("Total conversion count is ").append(i).toString());
-        func_22181_a(file, arraylist, 0, i, iprogressupdate);
-        func_22181_a(file1, arraylist2, arraylist.size(), i, iprogressupdate);
-        func_22181_a(file2, arraylist4, arraylist.size() + arraylist2.size(), i, iprogressupdate);
+        convertFile(file, arraylist, 0, i, iprogressupdate);
+        convertFile(file1, arraylist2, arraylist.size(), i, iprogressupdate);
+        convertFile(file2, arraylist4, arraylist.size() + arraylist2.size(), i, iprogressupdate);
         WorldInfo worldinfo = getWorldInfo(s);
         worldinfo.setSaveVersion(19132);
         worldinfo.setCommandsAllowed();
         ISaveHandler isavehandler = getSaveLoader(s, false);
         isavehandler.saveWorldInfo(worldinfo);
-        func_22182_a(arraylist1, arraylist.size() + arraylist2.size(), i, iprogressupdate);
+        cleanFiles(arraylist1, arraylist.size() + arraylist2.size(), i, iprogressupdate);
         if (file1.exists())
         {
-            func_22182_a(arraylist3, arraylist.size() + arraylist2.size() + arraylist1.size(), i, iprogressupdate);
+            cleanFiles(arraylist3, arraylist.size() + arraylist2.size() + arraylist1.size(), i, iprogressupdate);
         }
         return true;
     }
 
-    private void func_22183_a(File file, ArrayList arraylist, ArrayList arraylist1)
+    private void addFilesToCollection(File file, ArrayList arraylist, ArrayList arraylist1)
     {
         ChunkFolderPattern chunkfolderpattern = new ChunkFolderPattern(null);
         ChunkFilePattern chunkfilepattern = new ChunkFilePattern(null);
@@ -175,7 +175,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
         }
     }
 
-    private void func_22181_a(File file, ArrayList arraylist, int i, int j, IProgressUpdate iprogressupdate)
+    private void convertFile(File file, ArrayList arraylist, int i, int j, IProgressUpdate iprogressupdate)
     {
         Collections.sort(arraylist);
         byte abyte0[] = new byte[4096];
@@ -212,7 +212,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
         RegionFileCache2.clearRegionFileReferences();
     }
 
-    private void func_22182_a(ArrayList arraylist, int i, int j, IProgressUpdate iprogressupdate)
+    private void cleanFiles(ArrayList arraylist, int i, int j, IProgressUpdate iprogressupdate)
     {
         int k;
         for (Iterator iterator = arraylist.iterator(); iterator.hasNext(); iprogressupdate.setLoadingProgress(k))

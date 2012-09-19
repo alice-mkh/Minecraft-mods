@@ -238,7 +238,7 @@ public class OldChunkLoader
         {
             chunk.heightMap = new byte[256];
             chunk.skylightMap = new NibbleArray(chunk.blocks.length, 7);
-            chunk.generateSkylightMap();
+//             chunk.generateSkylightMap();
         }
         if (chunk.blocklightMap.data == null)
         {
@@ -267,7 +267,7 @@ public class OldChunkLoader
                 TileEntity tileentity = TileEntity.createAndLoadEntity(nbttagcompound2);
                 if (tileentity != null)
                 {
-                    chunk.addTileEntity(tileentity);
+//                     chunk.addTileEntity(tileentity);
                 }
             }
         }
