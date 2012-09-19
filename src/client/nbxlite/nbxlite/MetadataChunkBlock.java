@@ -244,12 +244,12 @@ public class MetadataChunkBlock
     private boolean isBounds(World w, int x, int y, int z){
         if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (w.provider==null || w.provider.worldType==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
-                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
+                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1){
                     return true;
                 }
             }
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
-                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ || y<0){
+                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ){
                     return true;
                 }
             }

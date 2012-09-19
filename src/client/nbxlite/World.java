@@ -2019,7 +2019,7 @@ public abstract class World implements IBlockAccess
     public Vec3 getFogColor(float par1)
     {
         int fog = 0;
-        if (ODNBXlite.FogColor == 0 && provider.worldType == 0){
+        if (ODNBXlite.FogColor == 0){
             fog = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
         }else{
             fog = ODNBXlite.FogColor;
@@ -3406,22 +3406,22 @@ public abstract class World implements IBlockAccess
             int j1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 - 1) - par6;
             int k1 = getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 + 1) - par6;
             if ((ODNBXlite.SurrWaterType==Block.waterStill.blockID||ODNBXlite.SurrWaterType==Block.waterMoving.blockID) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
-                if (isBounds(par2-1, par3, par4)){
+                if (isBounds3(par2-1, par3, par4)){
                     j = ODNBXlite.getSkyLightInBounds2(par3);
                 }
-                if (isBounds(par2+1, par3, par4)){
+                if (isBounds3(par2+1, par3, par4)){
                     k = ODNBXlite.getSkyLightInBounds2(par3);
                 }
-                if (isBounds(par2, par3-1, par4)){
+                if (isBounds3(par2, par3-1, par4)){
                     l = ODNBXlite.getSkyLightInBounds2(par3-1);
                 }
-                if (isBounds(par2, par3+1, par4)){
+                if (isBounds3(par2, par3+1, par4)){
                     i1 = ODNBXlite.getSkyLightInBounds2(par3+1);
                 }
-                if (isBounds(par2, par3, par4-1)){
+                if (isBounds3(par2, par3, par4-1)){
                     j1 = ODNBXlite.getSkyLightInBounds2(par3);
                 }
-                if (isBounds(par2, par3, par4+1)){
+                if (isBounds3(par2, par3, par4+1)){
                     k1 = ODNBXlite.getSkyLightInBounds2(par3);
                 }
             }
@@ -4496,6 +4496,22 @@ public abstract class World implements IBlockAccess
                     if(y<ODNBXlite.SurrWaterHeight && y>=ODNBXlite.SurrGroundHeight){
                         return true;
                     }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isBounds3(int x, int y, int z){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.worldType==0)){
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+                if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1){
+                    return true;
+                }
+            }
+            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+                if(x<0 || x>=ODNBXlite.IndevWidthX || z<0 || z>=ODNBXlite.IndevWidthZ){
+                    return true;
                 }
             }
         }
