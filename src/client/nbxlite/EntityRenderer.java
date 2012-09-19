@@ -22,6 +22,7 @@ public class EntityRenderer
     public static boolean oldFog = false;
     public static boolean snow = false;
     public static boolean bounds = false;
+    public static boolean oldNetherFog = false;
 
     private float[] lightTable;
 
@@ -2039,7 +2040,10 @@ public class EntityRenderer
 
             setFog();
 
-            if (mc.theWorld.provider.doesXZShowFog((int)entityliving.posX, (int)entityliving.posZ))
+            if (oldNetherFog && mc.theWorld.provider.isHellWorld)
+            {
+                GL11.glFogf(GL11.GL_FOG_START, 0.0F);
+            }else if (mc.theWorld.provider.doesXZShowFog((int)entityliving.posX, (int)entityliving.posZ))
             {
                 GL11.glFogf(GL11.GL_FOG_START, f4 * 0.05F);
                 GL11.glFogf(GL11.GL_FOG_END, Math.min(f4, 192F) * 0.5F);
