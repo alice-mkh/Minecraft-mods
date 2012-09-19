@@ -37,7 +37,8 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond2(this, 22,-1,    0,     "Sunset", 2);
         new OldDaysPropertyCond(this,  23,1,     0,     "SunriseAtNorth");
         new OldDaysPropertyCond(this,  24,1,     0,     "OldStars");
-        new OldDaysPropertyBool(this,  25,true,  true,  "ShowGUI");
+        new OldDaysPropertyBool(this,  25,true,  false, "OldNetherFog");
+        new OldDaysPropertyBool(this,  26,true,  true,  "ShowGUI");
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -89,6 +90,7 @@ public class ODNBXlite extends OldDaysModule{
                         Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
                         ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(OldStars);
                     }break;
+            case 25:set(net.minecraft.src.EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
@@ -120,6 +122,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int Sunset = -1;
     public static boolean SunriseAtNorth;
     public static boolean OldStars;
+    public static boolean OldNetherFog = true;
     public static boolean ShowGUI = true;
 
     public static boolean LeavesDecay(){
