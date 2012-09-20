@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL12;
 
 public class ItemRenderer
 {
+    public static boolean olddays = false;
     public static boolean sway = true;
     public static boolean items2d = false;
     public static int hand = 2;
@@ -727,6 +728,10 @@ public class ItemRenderer
 
     public void drawFirstPersonHand(Render r, int h)
     {
+        if (!olddays){
+            ((RenderPlayer)r).drawFirstPersonHand();
+            return;
+        }
         ModelBiped modelBipedMain = null;
         try{
             RenderPlayer r1 = (RenderPlayer)r;

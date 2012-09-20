@@ -32,6 +32,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
         replaceBlocks();
         redstoneRenderID = 32;
+        set(net.minecraft.src.ItemRenderer.class, "olddays", true);
     }
 
     public void callback (int i){
