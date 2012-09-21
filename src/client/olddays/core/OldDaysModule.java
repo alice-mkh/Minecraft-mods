@@ -54,22 +54,40 @@ public class OldDaysModule{
         }
     }
 
-    public void addRecipe(ItemStack stack, Object[] obj){
+    public void addRecipe(ItemStack stack, Object... obj){
         CraftingManager.getInstance().addRecipe(stack, obj);
     }
 
-    public void addShapelessRecipe(ItemStack stack, Object[] obj){
+    public void addShapelessRecipe(ItemStack stack, Object... obj){
         CraftingManager.getInstance().addShapelessRecipe(stack, obj);
     }
 
-    public void removeRecipe(String str1){
+    public void dumpRecipes(){
         try{
             List list = CraftingManager.getInstance().getRecipeList();
             for (int i = 0; i < list.size(); i++){
                 String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+                System.out.println("OldDays: Found recipe: "+match);
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    public void removeRecipe(String str1){
+        try{
+            int count = 0;
+            List list = CraftingManager.getInstance().getRecipeList();
+            for (int i = 0; i < list.size(); i++){
+                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+//                 System.out.println(match);
                 if (match.equals(str1)){
                     list.remove(i);
+                    count++;
                 }
+            }
+            if (count <= 0){
+                System.out.println("OldDays: Invalid recipe identifier: "+str1);
             }
         }catch(Exception ex){
             System.out.println(ex);
