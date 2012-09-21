@@ -11,7 +11,7 @@ public class ODCrafting extends OldDaysModule{
         new OldDaysPropertyInt(this,  4, 2,     2,     "Ladders", 1, 3);
         new OldDaysPropertyBool(this, 5, false, false, "Cloth");
         new OldDaysPropertyBool(this, 6, false, false, "Glowstone");
-        new OldDaysPropertyBool(this, 7, false, false, "Apple");
+        new OldDaysPropertyInt(this,  7, 2,     2,     "Apple", 2).setUseNames();
         new OldDaysPropertyBool(this, 8, false, false, "Stew");
         new OldDaysPropertyBool(this, 9, false, false, "OreBlocks");
         new OldDaysPropertyBool(this, 10,true,  true,  "Books");
@@ -40,7 +40,7 @@ public class ODCrafting extends OldDaysModule{
     public static int Ladders = 2;
     public static boolean Cloth;
     public static boolean Glowstone;
-    public static boolean Apple;
+    public static int Apple = 2;
     public static boolean Stew;
     public static boolean OreBlocks;
     public static boolean Books;
@@ -179,12 +179,16 @@ public class ODCrafting extends OldDaysModule{
         }
     }
 
-    private void setApple(boolean b){
+    private void setApple(int b){
         removeRecipe("1xitem.appleGold@0");
-        if (b){
-            addRecipe(new ItemStack(Item.appleGold, 1), "###", "#X#", "###", '#', Block.blockGold, 'X', Item.appleRed);
+        removeRecipe("1xitem.appleGold@1");
+        if (b == 0){
+            addRecipe(new ItemStack(Item.appleGold, 1, 0), "###", "#X#", "###", '#', Block.blockGold, 'X', Item.appleRed);
+        }else if (b == 1){
+            addRecipe(new ItemStack(Item.appleGold, 1, 0), "###", "#X#", "###", '#', Item.goldNugget, 'X', Item.appleRed);
         }else{
-            addRecipe(new ItemStack(Item.appleGold, 1), "###", "#X#", "###", '#', Item.goldNugget, 'X', Item.appleRed);
+            addRecipe(new ItemStack(Item.appleGold, 1, 0), "###", "#X#", "###", '#', Item.goldNugget, 'X', Item.appleRed);
+            addRecipe(new ItemStack(Item.appleGold, 1, 1), "###", "#X#", "###", '#', Block.blockGold, 'X', Item.appleRed);
         }
     }
 
