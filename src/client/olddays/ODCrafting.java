@@ -145,7 +145,7 @@ public class ODCrafting extends OldDaysModule{
     }
 
     private void setLadders(int b){
-        if (b<0){
+        if (b < 0){
             b = 0;
         }
         String str = "xtile.ladder@0";
@@ -153,7 +153,7 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1"+str);
         removeRecipe("2"+str);
         removeRecipe("3"+str);
-        addRecipe(new ItemStack(ladder, b + 1), "# #", "###", "# #", '#', Item.stick);
+        addRecipe(new ItemStack(ladder, b), "# #", "###", "# #", '#', Item.stick);
     }
 
     private void setGlowstone(boolean b){
