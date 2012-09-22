@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.io.PrintStream;
 import java.util.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.spawners.*;
 import net.minecraft.src.nbxlite.indev.*;
@@ -548,5 +549,22 @@ public class WorldSSP2 extends WorldSSP
                 thunderingStrength = 1.0F;
             }
         }
+    }
+
+    /**
+     * calls calculateCelestialAngle
+     */
+    public float getCelestialAngle(float par1)
+    {
+        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.worldType==0){
+            return 0.0F;
+        }
+        if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
+            return 1.0F;
+        }
+        if(ODNBXlite.SkyBrightness == 16 || (ODNBXlite.SkyBrightness == -1 && ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme) == 16)){
+            return 1.0F;
+        }
+        return super.getCelestialAngle(par1);
     }
 }
