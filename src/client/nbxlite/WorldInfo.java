@@ -465,7 +465,6 @@ public class WorldInfo
     public void setSpawnX(int par1)
     {
         spawnX = par1;
-        System.out.println("SpawnX = "+par1);
     }
 
     /**
@@ -474,7 +473,6 @@ public class WorldInfo
     public void setSpawnY(int par1)
     {
         spawnY = par1;
-        System.out.println("SpawnY = "+par1);
     }
 
     /**
@@ -483,7 +481,6 @@ public class WorldInfo
     public void setSpawnZ(int par1)
     {
         spawnZ = par1;
-        System.out.println("SpawnZ = "+par1);
     }
 
     /**
