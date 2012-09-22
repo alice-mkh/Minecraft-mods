@@ -56,7 +56,7 @@ public class OldSpawnerAnimals
     protected ChunkPosition func_1151_a(World world, int i, int j)
     {
         int k = i + world.rand.nextInt(16);
-        int l = world.rand.nextInt(world.getActualHeight());
+        int l = world.rand.nextInt(getWorldHeight(world, i, j));
         int i1 = j + world.rand.nextInt(16);
         return new ChunkPosition(k, l, i1);
     }
@@ -289,5 +289,10 @@ public class OldSpawnerAnimals
             }
         } while(true);
         return k;
+    }
+
+    public static int getWorldHeight(World w, int i, int j){
+        Chunk c = w.getChunkFromBlockCoords(i, j);
+        return Math.max(c.getTopFilledSegment() - 16, 128);
     }
 }

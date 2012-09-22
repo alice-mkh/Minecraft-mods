@@ -17,7 +17,7 @@ public final class SpawnerAnimalsBeta
     protected static ChunkPosition getRandomSpawningPointInChunk(World world, int i, int j)
     {
         int k = i + world.rand.nextInt(16);
-        int l = world.rand.nextInt(world.getActualHeight());
+        int l = world.rand.nextInt(OldSpawnerAnimals.getWorldHeight(world, i, j));
         int i1 = j + world.rand.nextInt(16);
         return new ChunkPosition(k, l, i1);
     }
@@ -193,6 +193,7 @@ public final class SpawnerAnimalsBeta
 /*
     public static boolean performSleepSpawning(World world, List list)
     {
+        int height = 256;
         boolean flag = false;
         PathFinder pathfinder = new PathFinder(world);
         Iterator iterator = list.iterator();
@@ -217,15 +218,15 @@ public final class SpawnerAnimalsBeta
                     {
                         l = 1;
                     } else
-                    if(l > 256)
+                    if(l > height)
                     {
-                        l = 256;
+                        l = height;
                     }
                     int i1 = world.rand.nextInt(aclass.length);
                     int j1;
                     for(j1 = l; j1 > 2 && !world.isBlockNormalCube(j, j1 - 1, k); j1--) { }
-                    for(; !canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, world, j, j1, k) && j1 < l + 16 && j1 < 256; j1++) { }
-                    if(j1 >= l + 16 || j1 >= 256)
+                    for(; !canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, world, j, j1, k) && j1 < l + 16 && j1 < height; j1++) { }
+                    if(j1 >= l + 16 || j1 >= height)
                     {
                         j1 = l;
                     } else
@@ -279,6 +280,7 @@ public final class SpawnerAnimalsBeta
         return flag;
     }
 */
+
     static 
     {
         nightSpawnEntities = (new Class[] {
