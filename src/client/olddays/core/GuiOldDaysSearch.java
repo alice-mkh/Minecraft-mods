@@ -5,12 +5,10 @@ import java.util.regex.*;
 import org.lwjgl.input.Keyboard;
 
 public class GuiOldDaysSearch extends GuiOldDaysSettings{
-    protected ArrayList props;
     protected GuiTextFieldSearch searchField;
 
     public GuiOldDaysSearch(GuiScreen guiscreen, mod_OldDays core){
         super(guiscreen, core, -1);
-        props = new ArrayList();
         max = 10;
         hasFields = true;
     }
@@ -65,24 +63,20 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     }
 
     protected void updateList(String str){
-        props.clear();
-        for (int i = 0; i < mod_OldDays.modules.size(); i++){
-            OldDaysModule module = mod_OldDays.modules.get(i);
-            for (int j = 0; j < module.properties.size(); j++){
-                OldDaysProperty prop = module.properties.get(j);
-                if (matches(prop, str)){
-                    props.add(prop);
-                }
-            }
-        }
         controlList.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
-        for (int i = 0; i < props.size(); i++){
-            OldDaysProperty prop = ((OldDaysProperty)props.get(i));
-            addButton(i, false, i, prop);
+        int count = 0;
+        for (int i = 0; i < mod_OldDays.modules.size(); i++){
+            OldDaysModule module = mod_OldDays.modules.get(i);
+            for (int j = 0; j < module.properties.size(); j++){
+                OldDaysProperty prop = module.getPropertyById(j + 1);
+                if (matches(prop, str)){
+                    addButton(count, false, count++, prop);
+                }
+            }
         }
-        postInitGui(props.size());
+        postInitGui(count);
         setPage(0);
     }
 
