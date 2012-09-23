@@ -1092,6 +1092,21 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
     {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.enableSP){
+            float f = 16F;
+
+            if (par3 > 1.0F)
+            {
+                f *= par3;
+            }
+
+            if (mc.renderViewEntity.getDistanceSq(par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ) < (double)(f * f))
+            {
+                mc.sndManager.playSound(par2Str, (float)par1Entity.posX, (float)(par1Entity.posY - (double)par1Entity.yOffset), (float)par1Entity.posZ, par3, par4);
+            }
+            return;
+        }
         for (int i = 0; i < worldAccesses.size(); i++)
         {
             ((IWorldAccess)worldAccesses.get(i)).playSound(par2Str, par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ, par3, par4);
@@ -1105,6 +1120,21 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9)
     {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.enableSP){
+            float f = 16F;
+
+            if (par8 > 1.0F)
+            {
+                f *= par8;
+            }
+
+            if (mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
+            {
+                mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            }
+            return;
+        }
         for (int i = 0; i < worldAccesses.size(); i++)
         {
             ((IWorldAccess)worldAccesses.get(i)).playSound(par7Str, par1, par3, par5, par8, par9);
@@ -2613,6 +2643,21 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9)
     {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.enableSP){
+            float f = 16F;
+
+            if (par8 > 1.0F)
+            {
+                f *= par8;
+            }
+
+            if (mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
+            {
+                mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            }
+            return;
+        }
         for (int i = 0; i < worldAccesses.size(); i++)
         {
             ((IWorldAccess)worldAccesses.get(i)).playSound(par7Str, par1, par3, par5, par8, par9);

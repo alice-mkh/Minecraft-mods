@@ -1770,20 +1770,6 @@ public class RenderGlobal implements IWorldAccess
      */
     public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9)
     {
-        if (!mc.enableSP){
-            return;
-        }
-        float f = 16F;
-
-        if (par8 > 1.0F)
-        {
-            f *= par8;
-        }
-
-        if (mc.renderViewEntity.getDistanceSq(par2, par4, par6) < (double)(f * f))
-        {
-            mc.sndManager.playSound(par1Str, (float)par2, (float)par4, (float)par6, par8, par9);
-        }
     }
 
     /**
