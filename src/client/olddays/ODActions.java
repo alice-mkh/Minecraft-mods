@@ -114,7 +114,7 @@ public class ODActions extends OldDaysModule{
             stone = 32 << 1;
             iron = 32 << 2;
             gold = 32 << 0;
-            diamond = (32 << 3) * (i < 1 ? 4 : 1);
+            diamond = (32 << 3) * (i < 1 ? 1 : 4);
         }
         mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeWood, 149, wood);
         mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeWood, 149, wood);
