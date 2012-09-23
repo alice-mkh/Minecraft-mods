@@ -26,7 +26,7 @@ sh reobfuscate.sh
 
 cd $ORIG_DIR
 MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-days-eyecandy old-days-sounds old-days-crafting
-           old-days-textures old-days-nbxlite old-days-core old-days-allin1
+           old-days-textures old-days-nbxlite old-days old-days-allin1
            spawn-human ssp"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ODActions"
