@@ -1101,6 +1101,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                 f *= par3;
             }
 
+            if (mc.renderViewEntity == null){
+                return;
+            }
             if (mc.renderViewEntity.getDistanceSq(par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ) < (double)(f * f))
             {
                 mc.sndManager.playSound(par2Str, (float)par1Entity.posX, (float)(par1Entity.posY - (double)par1Entity.yOffset), (float)par1Entity.posZ, par3, par4);
@@ -1129,6 +1132,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                 f *= par8;
             }
 
+            if (mc.renderViewEntity == null){
+                return;
+            }
             if (mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
             {
                 mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
@@ -2652,6 +2658,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                 f *= par8;
             }
 
+            if (mc.renderViewEntity == null){
+                return;
+            }
             if (mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
             {
                 mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
