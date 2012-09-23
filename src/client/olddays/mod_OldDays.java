@@ -164,6 +164,7 @@ public class mod_OldDays extends Mod{
     }
 
     public void onGUITick(GuiScreen gui){
+        texman.onTick();
         for (int i = 0; i < modules.size(); i++){
             modules.get(i).onGUITick(gui);
         }
@@ -246,13 +247,11 @@ public class mod_OldDays extends Mod{
     public static void sendCallback(int id, int id2){
         getModuleById(id).last = id2;
         getModuleById(id).getPropertyById(id2).onChange();
-        texman.onTick();
     }
 
     public static void sendCallback2(int id, int id2){
         modules.get(id).last = id2;
         modules.get(id).getPropertyById(id2).onChange();
-        texman.onTick();
     }
 
     public static void sendCallbackAndSave(int id, int id2){

@@ -38,7 +38,11 @@ public class TextureManager{
         }
         fx2.sprite = name2;
         fx2.changeIndex(index, b, false);
-        renderEngine.updateDynamicTextures();
+        try{
+            renderEngine.updateDynamicTextures();
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
