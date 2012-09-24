@@ -4,7 +4,7 @@ public class ODGameplay extends OldDaysModule{
     public ODGameplay(mod_OldDays c){
         super(c, 2, "Gameplay");
         new OldDaysPropertyBool(this, 1, false, true,  "EnableXP");
-        new OldDaysPropertyBool(this, 2, false, true,  "EnableHunger").setFallback("olddays/icons.png").setRefreshOnFallback();
+        new OldDaysPropertyBool(this, 2, false, true,  "EnableHunger").setRefreshOnFallback();
         new OldDaysPropertyBool(this, 3, true,  false, "InstantFood");
         new OldDaysPropertyBool(this, 4, false, true,  "FoodStacking");
         new OldDaysPropertyBool(this, 5, true,  false, "OldDrops");
