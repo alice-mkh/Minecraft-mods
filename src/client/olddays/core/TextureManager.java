@@ -90,7 +90,7 @@ public class TextureManager{
             }
             for (int i = 0; i < str.length; i++){
                 if (texpack instanceof TexturePackFolder){
-                    File orig = ((File)mod_OldDays.getField(net.minecraft.src.TexturePackFolder.class, texpack, 2));
+                    File orig = ((File)mod_OldDays.getField(net.minecraft.src.TexturePackImplementation.class, texpack, 2));
                     File file = new File(orig, str[i]);
                     if (!file.exists()){
                         return false;
