@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiGameOver extends GuiScreen
 {
+    public static boolean oldScore = false;
+
     /**
      * The cooldown timer for the buttons, increases every tick and enables all buttons when reaching 20.
      */
@@ -141,7 +143,7 @@ public class GuiGameOver extends GuiScreen
             drawCenteredString(fontRenderer, StatCollector.translateToLocal("deathScreen.hardcoreInfo"), width / 2, 144, 0xffffff);
         }
 
-        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(": \247e").append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
+        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(oldScore ? ": &e" : ": \247e").append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
         super.drawScreen(par1, par2, par3);
     }
 

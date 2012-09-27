@@ -14,6 +14,7 @@ public abstract class EntityLiving extends Entity
     public static boolean armorblocksall = false;
     public static int nonewmobs = 10;
     public static boolean toolbreakanim = true;
+    public static boolean score = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -71,6 +72,55 @@ public abstract class EntityLiving extends Entity
         for (int l = 0; l < k; l++){
             dropItem(item, 1);
         }
+    }
+
+    protected int getDefaultScoreValue(){
+        if (!score){
+            return 0;
+        }
+        if (this instanceof EntitySkeleton){
+            return 120;
+        }
+        if (this instanceof EntityZombie){
+            return 80;
+        }
+        if (this instanceof EntitySpider){
+            return 105;
+        }
+        if (this instanceof EntityCreeper){
+            return 200;
+        }
+        if (this instanceof EntityChicken){
+            return 5;
+        }
+        if (this instanceof EntityAgeable || this instanceof EntityWaterMob){
+            return 10;
+        }
+        if (this instanceof EntitySilverfish){
+            return 20;
+        }
+        if (this instanceof EntityGiantZombie){
+            return 500;
+        }
+        if (this instanceof EntityGhast || this instanceof EntityEnderman){
+            return 400;
+        }
+        if (this instanceof EntityBlaze){
+            return 500;
+        }
+        if (this instanceof EntityDragon){
+            return 10000;
+        }
+        if (this instanceof EntitySlime){
+            int size = ((EntitySlime)this).getSlimeSize() - 1;  //1; 2; 4 -> 0; 1; 3
+            size *= 70; //0; 70; 210
+            size += 10; //10; 80; 220
+            if (this instanceof EntityMagmaCube){
+                size *= 1.5; //15; 120; 330
+            }
+            return size;
+        }
+        return 0;
     }
 
     public int maxHurtResistantTime;
@@ -265,7 +315,7 @@ public abstract class EntityLiving extends Entity
         field_70741_aB = 0.0F;
         entityType = null;
         field_70743_aD = 1.0F;
-        scoreValue = 0;
+        scoreValue = getDefaultScoreValue();
         field_70745_aF = 0.0F;
         landMovementFactor = 0.1F;
         jumpMovementFactor = 0.02F;

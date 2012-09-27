@@ -12,6 +12,7 @@ public class GuiIngame extends Gui
     public static boolean hidehunger = false;
     public static boolean nodebug = false;
     public static boolean fallbacktex = false;
+    public static boolean score = false;
     public static String version = "OFF";
 
     private static final RenderItem itemRenderer = new RenderItem();
@@ -450,7 +451,12 @@ public class GuiIngame extends Gui
             mc.mcProfiler.endSection();
         }else{
             if (!version.equals("OFF")){
-                fontrenderer.drawStringWithShadow(version, 2, 2, 0xffffff);   
+                fontrenderer.drawStringWithShadow(version, 2, 2, 0xffffff);
+            }
+            if (score){
+                String s1 = StatCollector.translateToLocal("deathScreen.score")+": "+mc.thePlayer.getScore();
+                String s2 = StatCollector.translateToLocal("deathScreen.score")+": §e"+mc.thePlayer.getScore();
+                fontrenderer.drawStringWithShadow(s2, i - fontrenderer.getStringWidth(s1) - 2, 2, 0xffffff);
             }
         }
 

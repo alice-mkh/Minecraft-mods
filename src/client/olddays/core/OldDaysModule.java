@@ -128,11 +128,14 @@ public class OldDaysModule{
 
     public void set(Class c, String name, Object value){
         if (c == net.minecraft.src.EntityPlayer.class){
-            set(net.minecraft.src.EntityPlayerSP2.class, name, value);
+            try{
+                (net.minecraft.src.EntityPlayerSP2.class).getDeclaredField(name).set(null, value);
+            }catch(Exception e){}
         }
         try{
             c.getDeclaredField(name).set(null, value);
         }catch(Exception ex){
+            System.out.println("No \""+name+"\" field at the "+c.getName()+" class");
             if (getPropertyById(last) != null){
                 getPropertyById(last).disable();
             }

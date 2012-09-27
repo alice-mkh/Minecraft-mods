@@ -9,6 +9,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public static boolean sprint = true;
     public static int startitems = 0;
     public static boolean oldswing = false;
+    public static boolean oldscore = false;
 
     /** Inventory of the player */
     public InventoryPlayer inventory;
@@ -1955,7 +1956,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public void addExperience(int par1)
     {
-        score += par1;
+        if (!oldscore){
+            score += par1;
+        }
         int i = 0x7fffffff - experienceTotal;
 
         if (par1 > i)
