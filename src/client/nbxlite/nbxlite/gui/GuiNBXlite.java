@@ -98,7 +98,7 @@ public class GuiNBXlite extends GuiScreen{
             if (GeneratorList.feat1desc[i]!=""){
                 name += " ("+mod_OldDays.lang.get(GeneratorList.feat1desc[i])+")";
             }
-            controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, name));
+            controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, name));
             betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
         }
         betaFeaturesButton[GeneratorList.feat1current].enabled=false;
@@ -115,7 +115,7 @@ public class GuiNBXlite extends GuiScreen{
         newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<4);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
-                if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
+                if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==5){
                     newOresButton.yPosition=height / 6 + 127;
                 }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
                     newOresButton.yPosition=height / 6 + 149;
@@ -132,7 +132,7 @@ public class GuiNBXlite extends GuiScreen{
             }
         }
         controlList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, (mod_OldDays.lang.get("betaJungle") + ": " + (jungle?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
-        jungleButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4);
+        jungleButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==5);
     }
 
     public void selectNBXliteSettings(){
@@ -252,7 +252,7 @@ public class GuiNBXlite extends GuiScreen{
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
                 newOresButton.displayString=mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off"));
                 if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
-                    if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
+                    if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==5){
                         newOresButton.yPosition=height / 6 + 127;
                     }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
                         newOresButton.yPosition=height / 6 + 149;
@@ -268,7 +268,7 @@ public class GuiNBXlite extends GuiScreen{
                     newOresButton.xPosition=width / 2 - 75 + leftmargin;
                 }
             }
-            jungleButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4);
+            jungleButton.drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==5);
         }else
 //Indev
         if (guibutton.id == 39){
@@ -301,14 +301,14 @@ public class GuiNBXlite extends GuiScreen{
             GeneratorList.feat1current = guibutton.id-70;
             guibutton.enabled = false;
             newOresButton.drawButton = true;
-            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==4){
+            if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==5){
                 newOresButton.yPosition=height / 6 + 127;
             }else if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
                 newOresButton.yPosition=height / 6 + 149;
             }else{
                 newOresButton.yPosition=height / 6 + 135;
             }
-            jungleButton.drawButton = GeneratorList.feat1current==4;
+            jungleButton.drawButton = GeneratorList.feat1current==5;
         }
 //Release
         if (guibutton.id>=80){

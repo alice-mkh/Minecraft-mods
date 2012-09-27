@@ -17,11 +17,11 @@ public class GeneratorList{
 
     public static int feat1default = ODNBXlite.DefaultFeaturesBeta;
     public static int feat1current;
-    public static int feat1length = 5;
-    public static String[] feat1id = {"120", "beta12", "14", "15", "173", "sky"};
-    public static String[] feat1name = {"nbxlite.betafeatures1", "nbxlite.betafeatures2", "nbxlite.betafeatures3", "nbxlite.betafeatures4", "nbxlite.betafeatures5", "nbxlite.betafeatures6"};
-    public static String[] feat1desc = {"nbxlite.betafeatures1.desc", "nbxlite.betafeatures2.desc", "nbxlite.betafeatures3.desc", "nbxlite.betafeatures4.desc", "nbxlite.betafeatures5.desc", ""};
-    public static boolean[] feat1worldtype = {false, false, false, false, false, false};
+    public static int feat1length = 6;
+    public static String[] feat1id = {"120", "beta10", "beta12", "14", "15", "173", "sky"};
+    public static String[] feat1name = {"nbxlite.betafeatures1", "nbxlite.betafeatures2", "nbxlite.betafeatures3", "nbxlite.betafeatures4", "nbxlite.betafeatures5", "nbxlite.betafeatures6", "nbxlite.betafeatures7"};
+    public static String[] feat1desc = {"nbxlite.betafeatures1.desc", "nbxlite.betafeatures2.desc", "nbxlite.betafeatures3.desc", "nbxlite.betafeatures4.desc", "nbxlite.betafeatures5.desc", "nbxlite.betafeatures6.desc", ""};
+    public static boolean[] feat1worldtype = {false, false, false, false, false, false, false};
 
     public static int feat2default = ODNBXlite.DefaultFeaturesRelease;
     public static int feat2current;

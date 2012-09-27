@@ -79,6 +79,8 @@ public class WorldInfo
     public int cloudcolor;
     public boolean newOres;
 
+    public static final int NBXLITE_INFO_VERSION = 1;
+
     protected WorldInfo()
     {
         terrainType = WorldType.DEFAULT;
@@ -166,6 +168,9 @@ public class WorldInfo
                 mapGen = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 0);
                 mapGenExtra = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 1);
                 snowCovered = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 2)>0;
+                if (!nbxliteTag.hasKey("Version") && mapGen == ODNBXlite.GEN_OLDBIOMES && mapGenExtra > ODNBXlite.FEATURES_ALPHA120){
+                    mapGenExtra++;
+                }
                 newOres = nbxliteTag.getBoolean("NewOres");
                 if (!nbxliteTag.hasKey("Theme")){
                     mapTheme = ODNBXlite.THEME_NORMAL;
@@ -371,6 +376,7 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("initialized", initialized);
         if (nbxlite && useNBXlite){
             NBTTagCompound nbxliteTag = new NBTTagCompound();
+            nbxliteTag.setInteger("Version", NBXLITE_INFO_VERSION);
             nbxliteTag.setString("Generator", ODNBXlite.getGenName(mapGen, mapGenExtra, snowCovered));
             nbxliteTag.setBoolean("NewOres", newOres);
             NBTTagCompound themeTag = new NBTTagCompound();

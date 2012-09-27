@@ -1034,7 +1034,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int SurrGroundType;
     public static boolean Import = false;
     public static int DefaultGenerator = 6;
-    public static int DefaultFeaturesBeta = 4;
+    public static int DefaultFeaturesBeta = 5;
     public static int DefaultFeaturesRelease = 5;
     public static int DefaultTheme = 0;
     public static int DefaultIndevType = 1;
@@ -1063,12 +1063,13 @@ public class ODNBXlite extends OldDaysModule{
     public static final int FEATURES_INFDEV0608 = 5;
 
     public static final int FEATURES_ALPHA120 = 0;
-    public static final int FEATURES_BETA12 = 1;
-    public static final int FEATURES_BETA14 = 2;
-    public static final int FEATURES_BETA15 = 3;
-    public static final int FEATURES_BETA173 = 4;
-    public static final int FEATURES_SKY = 5;
-    public static final int FEATURES_JUNGLE = 6;
+    public static final int FEATURES_BETA10 = 1;
+    public static final int FEATURES_BETA12 = 2;
+    public static final int FEATURES_BETA14 = 3;
+    public static final int FEATURES_BETA15 = 4;
+    public static final int FEATURES_BETA173 = 5;
+    public static final int FEATURES_SKY = 6;
+    public static final int FEATURES_JUNGLE = 7;
 
     public static final int FEATURES_BETA181 = 0;
     public static final int FEATURES_10 = 1;
