@@ -124,5 +124,8 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     {
         super.drawScreen(i, j, f);
         searchField.drawTextBox();
+        if (showTooltip != null){
+            drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
+        }
     }
 }

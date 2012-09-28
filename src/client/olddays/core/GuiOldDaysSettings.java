@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 
 public class GuiOldDaysSettings extends GuiOldDaysBase{
     private int id;
-    private GuiButtonProp showTooltip;
+    protected GuiButtonProp showTooltip;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, mod_OldDays core, int i){
         super(guiscreen, core);
@@ -180,7 +180,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (!show){
             showTooltip = null;
         }
-        if (showTooltip != null){
+        if (showTooltip != null && !(this instanceof GuiOldDaysSearch)){
             drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
         }
     }
