@@ -20,7 +20,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   13,true,  "OldFences");
         new OldDaysPropertyBool(this,   14,true,  "Arrows");
         new OldDaysPropertyString(this, 15, "Minecraft "+core.getMcVersion(), "Version");
-        new OldDaysPropertyBool(this,   16,true,  "Shadow");
+        new OldDaysPropertyInt(this,    16,2,     "InvBlocks", 3).setUseNames();
         new OldDaysPropertyBool(this,   17,false, "Drops");
         new OldDaysPropertyInt(this,    18,2,     "Hand", 2).setUseNames();
         new OldDaysPropertyBool(this,   19,false, "ToolBreaking");
@@ -30,7 +30,6 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   23,true,  "OldSwing");
         new OldDaysPropertyBool(this,   24,false, "TPBobbing");
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
-        new OldDaysPropertyBool(this,   26,true,  "OldRotation");
         replaceBlocks();
         redstoneRenderID = 32;
         set(net.minecraft.src.ItemRenderer.class, "olddays", true);
@@ -65,7 +64,13 @@ public class ODEyecandy extends OldDaysModule{
             case 14:set(net.minecraft.src.RenderLiving.class, "stick", Arrows); break;
             case 15:set(net.minecraft.src.GuiIngame.class, "version", Version);
                     set(net.minecraft.src.GuiMainMenu.class, "version", Version); break;
-            case 16:set(net.minecraft.src.RenderHelper.class, "shadows", Shadow); break;
+            case 16:set(net.minecraft.src.RenderHelper.class, "shadows", InvBlocks > 1);
+                    set(net.minecraft.src.RenderHelper.class, "oldrotation", InvBlocks < 1);
+                    set(net.minecraft.src.RenderPlayer2.class, "oldrotation", InvBlocks < 3);
+                    set(net.minecraft.src.RenderMinecart2.class, "oldrotation", InvBlocks < 3);
+                    set(net.minecraft.src.RenderBlocks.class, "oldrotation", InvBlocks < 3);
+                    set(net.minecraft.src.RenderSnowMan2.class, "oldrotation", InvBlocks < 3); 
+                    set(net.minecraft.src.RenderItem.class, "oldrotation", InvBlocks < 1); break;
             case 17:set(net.minecraft.src.EntityDropParticleFX.class, "allow", Drops); break;
             case 18:set(net.minecraft.src.ItemRenderer.class, "hand", Hand); break;
             case 19:set(net.minecraft.src.EntityLiving.class, "toolbreakanim", ToolBreaking); break;
@@ -76,10 +81,6 @@ public class ODEyecandy extends OldDaysModule{
                     set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
             case 24:set(net.minecraft.src.EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
             case 25:set(net.minecraft.src.EntitySuspendFX.class, "allow", WaterParticles); break;
-            case 26:set(net.minecraft.src.RenderPlayer2.class, "oldrotation", OldRotation);
-                    set(net.minecraft.src.RenderMinecart2.class, "oldrotation", OldRotation);
-                    set(net.minecraft.src.RenderBlocks.class, "oldrotation", OldRotation);
-                    set(net.minecraft.src.RenderSnowMan2.class, "oldrotation", OldRotation); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
@@ -106,7 +107,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean OldFences = true;
     public static boolean Arrows = true;
     public static String Version = "OFF";
-    public static boolean Shadow = true;
+    public static int InvBlocks = 2;
     public static boolean Drops;
     public static int Hand = 2;
     public static boolean ToolBreaking;
@@ -116,7 +117,6 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean OldSwing = true;
     public static boolean TPBobbing = true;
     public static boolean WaterParticles;
-    public static boolean OldRotation = true;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){

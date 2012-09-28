@@ -41,7 +41,7 @@ CP[4]="`find EntityLiving` `find EntityCreeper` `find EntitySkeleton` `find Enti
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer`
        `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityPlayer`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityLiving` `find EntityZombie` `find EntitySkeleton`
-       `find EntitySuspendFX`
+       `find EntitySuspendFX` `find RenderItem`
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
        RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png olddays/chest.png olddays/allitems.png"
@@ -71,7 +71,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
         `find EntitySquid` `find EntitySlime` ODMobs
-        `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX`
+        `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem`
         `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderSnowMan2 ODEyecandy

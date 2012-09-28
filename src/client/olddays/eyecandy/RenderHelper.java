@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderHelper
 {
     public static boolean shadows = true;
+    public static boolean oldrotation = false;
 
     /** Float buffer used to set OpenGL material colors */
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
@@ -77,7 +78,7 @@ public class RenderHelper
             GL11.glRotatef(-30F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(165F, 1.0F, 0.0F, 0.0F);
         }else{
-            GL11.glRotatef(120F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(oldrotation ? 180F : 120F, 1.0F, 0.0F, 0.0F);
         }
         enableStandardItemLighting();
         GL11.glPopMatrix();
