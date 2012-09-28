@@ -147,6 +147,9 @@ public class OldDaysModule{
         try{
             r.setRenderManager(renderMan);
             HashMap map = ((HashMap)mod_OldDays.getField(net.minecraft.src.RenderManager.class, renderMan, 0));
+            if (map.get(c).getClass() == r.getClass()){
+                return;
+            }
             map.put(c, r);
             renderersAdded = true;
             System.out.println("OldDays: Added "+r.getClass().getName()+" renderer");
