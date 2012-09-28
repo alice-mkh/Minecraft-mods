@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderBlocks
 {
+    public static boolean oldrotation = false;
+
     /** The IBlockAccess used by this instance of RenderBlocks */
     public IBlockAccess blockAccess;
 
@@ -7349,7 +7351,9 @@ public class RenderBlocks
             }
 
             par1Block.setBlockBoundsForItemRender();
-            GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+            if (!oldrotation){
+                GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+            }
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
@@ -7456,7 +7460,9 @@ public class RenderBlocks
         }
         else if (j == 22)
         {
-            GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+            if (!oldrotation){
+                GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+            }
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             ChestItemRenderHelper.instance.renderChest(par1Block, par2, par3);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);

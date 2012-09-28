@@ -737,8 +737,8 @@ public class ItemRenderer
             RenderPlayer r1 = (RenderPlayer)r;
             modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 0));
         }catch(ClassCastException e){
-            net.minecraft.src.nbxlite.RenderPlayer2 r1 = (net.minecraft.src.nbxlite.RenderPlayer2)r;
-            modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 0));
+            net.minecraft.src.RenderPlayer2 r1 = (net.minecraft.src.RenderPlayer2)r;
+            modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 1));
         }
         if (h >= 2){
             modelBipedMain.onGround = 0.0F;

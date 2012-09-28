@@ -1,4 +1,4 @@
-package net.minecraft.src.nbxlite;
+package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
@@ -6,6 +6,8 @@ import net.minecraft.src.*;
 
 public class RenderPlayer2 extends RenderLiving
 {
+    public static boolean oldrotation = false;
+
     private ModelBiped modelBipedMain;
     private ModelBiped modelArmorChestplate;
     private ModelBiped modelArmor;
@@ -163,7 +165,7 @@ public class RenderPlayer2 extends RenderLiving
             {
                 float f = 0.625F;
                 GL11.glTranslatef(0.0F, -0.25F, 0.0F);
-                GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(oldrotation ? 180F : 90F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(f, -f, f);
             }
 

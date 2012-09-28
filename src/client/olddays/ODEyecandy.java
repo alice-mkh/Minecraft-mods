@@ -30,6 +30,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   23,true,  "OldSwing");
         new OldDaysPropertyBool(this,   24,false, "TPBobbing");
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
+        new OldDaysPropertyBool(this,   26,true,  "OldRotation");
         replaceBlocks();
         redstoneRenderID = 32;
         set(net.minecraft.src.ItemRenderer.class, "olddays", true);
@@ -75,12 +76,18 @@ public class ODEyecandy extends OldDaysModule{
                     set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
             case 24:set(net.minecraft.src.EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
             case 25:set(net.minecraft.src.EntitySuspendFX.class, "allow", WaterParticles); break;
+            case 26:set(net.minecraft.src.RenderPlayer2.class, "oldrotation", OldRotation);
+                    set(net.minecraft.src.RenderMinecart2.class, "oldrotation", OldRotation);
+                    set(net.minecraft.src.RenderBlocks.class, "oldrotation", OldRotation);
+                    set(net.minecraft.src.RenderSnowMan2.class, "oldrotation", OldRotation); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
             addRenderer(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
             addRenderer(net.minecraft.src.EntityZombie.class, new RenderZombie(new ModelZombie()));
             addRenderer(net.minecraft.src.EntitySkeleton.class, new RenderSkeleton(new ModelSkeleton()));
+            addRenderer(net.minecraft.src.EntityPlayer.class, new RenderPlayer2());
+            addRenderer(net.minecraft.src.EntitySnowman.class, new RenderSnowMan2());
         }
     }
 
@@ -109,6 +116,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean OldSwing = true;
     public static boolean TPBobbing = true;
     public static boolean WaterParticles;
+    public static boolean OldRotation = true;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){

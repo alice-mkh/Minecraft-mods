@@ -43,7 +43,7 @@ CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEnt
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityLiving` `find EntityZombie` `find EntitySkeleton`
        `find EntitySuspendFX`
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
-       RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton ODEyecandy"
+       RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png olddays/chest.png olddays/allitems.png"
 CP[6]="`find SoundManager` ODSounds"
 CP[7]="ODCrafting"
@@ -56,7 +56,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
-       `find EntityDiggingFX` `find TileEntityChestRenderer` `find RenderEnderman2` up"
+       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 up"
 ADD[9]="olddays/grasstop.png olddays/grassside.png olddays/leavesfast.png olddays/leavesfancy.png olddays/fluff.png
         olddays/gear.png olddays/gearmiddle.png"
 CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
@@ -74,12 +74,12 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX`
         `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer
-        ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton ODEyecandy
+        ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderSnowMan2 ODEyecandy
         `find SoundManager` ODSounds ODCrafting BlockOreStorageOld ODTextures
         `find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree`
         `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
         `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find StructureStrongholdPieces`
-        ComponentStrongholdStairsOld ComponentStrongholdCrossingOld `find WorldServer` up
+        ComponentStrongholdStairsOld ComponentStrongholdCrossingOld `find WorldServer` RenderPlayer2 up
         `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/
         `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
         GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
