@@ -168,9 +168,6 @@ public class WorldInfo
                 mapGen = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 0);
                 mapGenExtra = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 1);
                 snowCovered = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 2)>0;
-                if (!nbxliteTag.hasKey("Version") && mapGen == ODNBXlite.GEN_OLDBIOMES && mapGenExtra > ODNBXlite.FEATURES_ALPHA120){
-                    mapGenExtra++;
-                }
                 newOres = nbxliteTag.getBoolean("NewOres");
                 if (!nbxliteTag.hasKey("Theme")){
                     mapTheme = ODNBXlite.THEME_NORMAL;
