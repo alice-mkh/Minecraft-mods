@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
+import net.minecraft.client.Minecraft;
 
 public class RenderMinecart2 extends RenderMinecart
 {
@@ -80,6 +81,7 @@ public class RenderMinecart2 extends RenderMinecart
 
             if (par1EntityMinecart.minecartType == 1)
             {
+                float ff = Minecraft.oldlighting ? par1EntityMinecart.getBrightness(par9) : 1.0F;
                 if (shiftChest){
                     GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
                     if (oldrotation){
@@ -88,7 +90,7 @@ public class RenderMinecart2 extends RenderMinecart
                     (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
                     GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    GL11.glColor4f(ff, ff, ff, ff);
                 }else{
                     GL11.glTranslatef(0.0F, 0.5F, 0.0F);
                     if (oldrotation){
@@ -97,11 +99,12 @@ public class RenderMinecart2 extends RenderMinecart
                     (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
                     GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.5F, 0.0F, -0.5F);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    GL11.glColor4f(ff, ff, ff, ff);
                 }
             }
             else if (par1EntityMinecart.minecartType == 2)
             {
+                float ff = Minecraft.oldlighting ? par1EntityMinecart.getBrightness(par9) : 1.0F;
                 GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
                 if (oldrotation){
                     GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
@@ -109,7 +112,7 @@ public class RenderMinecart2 extends RenderMinecart
                 (new RenderBlocks()).renderBlockAsItem(Block.stoneOvenIdle, 0, par1EntityMinecart.getBrightness(par9));
                 GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glColor4f(ff, ff, ff, ff);
             }
 
             GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
