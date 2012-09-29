@@ -92,6 +92,10 @@ actions.oldcrops.name=Old crops
 actions.timecontrol.name=Time control
  actions.timecontrol.desc1=Allows controlling time with F6 and F7 keys.
  actions.timecontrol.desc2=§aAdded in Beta 1.8pre1, removed in 1.8pre2.
+actions.oldstairs.name=Old stairs
+ actions.oldstairs.desc1=Direction is based on surrounding blocks,
+ actions.oldstairs.desc2=Turn to solid blocks if placed under one.
+ actions.oldstairs.desc3=§aChanged in Alpha 1.2.0.
 
 bugs.boosters.name=Boosters
  bugs.boosters.desc1=Allows boosting minecarts by

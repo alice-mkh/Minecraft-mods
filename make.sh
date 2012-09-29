@@ -28,7 +28,7 @@ cd $ORIG_DIR
 MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-days-eyecandy old-days-sounds old-days-crafting
            old-days-textures old-days-nbxlite old-days old-days-allin1
            spawn-human ssp"
-CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep`
+CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ODActions"
 CP[2]="`find EntityMinecart` `find EntityBoat` `find Entity` `find EntityLiving` `find BlockPistonBase` `find ContainerPlayer`
        ODBugs"
@@ -63,7 +63,7 @@ CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_O
         OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat TextureManager SavingManager
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2"
 ADD[10]="olddays/lang"
-MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep`
+MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ODActions
         `find EntityMinecart` `find EntityBoat` `find Entity` `find EntityLiving` `find BlockPistonBase` `find ContainerPlayer` ODBugs
         `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake`
