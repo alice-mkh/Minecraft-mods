@@ -232,7 +232,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                         }
                         continue;
                     }
-                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14 && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_BETA10){
+                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
                         if(j1 > 0)
                         {
                             j1--;
@@ -522,7 +522,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                 int x2 = x1 + rand.nextInt(16);
                 int y2 = rand.nextInt(16) + rand.nextInt(16);
                 int z2 = z1 + rand.nextInt(16);
-                if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
+                if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
                    (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
                 }else{
                     (new SuperOldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
