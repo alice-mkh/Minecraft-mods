@@ -23,9 +23,6 @@ public abstract class EntityLiving extends Entity
         if (this instanceof EntityIronGolem){
             return true;
         }
-        if (this instanceof EntityWolf){
-            return true;
-        }
         return newai;
     }
 
@@ -2380,5 +2377,15 @@ public abstract class EntityLiving extends Entity
                 worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3_1.xCoord, vec3_1.yCoord, vec3_1.zCoord, vec3.xCoord, vec3.yCoord + 0.050000000000000003D, vec3.zCoord);
             }
         }
+    }
+
+    public boolean hasCurrentTarget()
+    {
+        return currentTarget != null;
+    }
+
+    public Entity getCurrentTarget()
+    {
+        return currentTarget;
     }
 }

@@ -22,6 +22,7 @@ public class ODMobs extends OldDaysModule{
                     set(net.minecraft.src.EntitySkeleton.class, "fixai", AI<3);
                     set(net.minecraft.src.EntitySnowman.class, "fixai", AI<3);
                     set(net.minecraft.src.EntitySheep.class, "fixai", AI<3);
+                    set(net.minecraft.src.EntityWolf.class, "fixai", AI<3);
                     set(net.minecraft.src.EntityCreature.class, "jump", AI<2);
                     set(net.minecraft.src.EntityLiving.class, "infdevai", AI<1); break;
             case 2: set(net.minecraft.src.EntityAIPanic.class, "disablePanic", !AnimalsFlee);

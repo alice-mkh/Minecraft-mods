@@ -298,11 +298,14 @@ public abstract class EntityCreature extends EntityLiving
     {
         if (isAIEnabled() && !newai)
         {
-            if (this instanceof EntityZombie){
+            if (this instanceof EntityZombie && !(this instanceof EntityPigZombie)){
                 if (fastzombies){
                     return 4.34782608696F;
                 }
                 return 2.17391304348F;
+            }
+            if (this instanceof EntityWolf){
+                return 3.6F;
             }
             if (this instanceof EntitySkeleton){
                 return 2.8F;
@@ -310,7 +313,7 @@ public abstract class EntityCreature extends EntityLiving
         }
         if (isAIEnabled() && newai())
         {
-            if (this instanceof EntityZombie && fastzombies){
+            if (this instanceof EntityZombie && !(this instanceof EntityPigZombie) && fastzombies){
                 return 2.0F;
             }
             return 1.0F;

@@ -37,7 +37,7 @@ CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `fin
 ADD[3]="olddays/icons.png"
 CP[4]="`find EntityLiving` `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
-       `find EntitySquid` `find EntitySlime` EntityAIEatGrass2 ODMobs"
+       `find EntitySquid` `find EntitySlime` `find EntityWolf` EntityAIEatGrass2 ODMobs"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer`
        `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityPlayer`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityLiving` `find EntityZombie` `find EntitySkeleton`

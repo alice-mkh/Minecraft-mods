@@ -1,10 +1,13 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class EntityWolf extends EntityTameable
 {
     public static boolean despawn = false;
+    public static boolean fixai = false;
 
     private float field_70926_e;
     private float field_70924_f;
@@ -203,6 +206,10 @@ public class EntityWolf extends EntityTameable
      */
     public void onLivingUpdate()
     {
+        if (fixai){
+            onLivingUpdate_old();
+            return;
+        }
         super.onLivingUpdate();
 
         if (!worldObj.isRemote && isShaking && !field_70928_h && !hasPath() && onGround)
@@ -336,6 +343,9 @@ public class EntityWolf extends EntityTameable
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
+        if (fixai){
+            return attackEntityFrom_old(par1DamageSource, par2);
+        }
         Entity entity = par1DamageSource.getEntity();
         aiSit.setSitting(false);
 
@@ -349,6 +359,9 @@ public class EntityWolf extends EntityTameable
 
     public boolean attackEntityAsMob(Entity par1Entity)
     {
+        if (fixai){
+            return super.attackEntityAsMob(par1Entity);
+        }
         byte byte0 = ((byte)(isTamed() ? 4 : 2));
         return par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), byte0);
     }
@@ -386,7 +399,11 @@ public class EntityWolf extends EntityTameable
 
             if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isWheat(itemstack))
             {
-                aiSit.setSitting(!isSitting());
+                if (fixai){
+                    setSitting(!isSitting());
+                }else{
+                    aiSit.setSitting(!isSitting());
+                }
                 isJumping = false;
                 setPathToEntity(null);
             }
@@ -410,7 +427,11 @@ public class EntityWolf extends EntityTameable
                     setTamed(true);
                     setPathToEntity(null);
                     setAttackTarget(null);
-                    aiSit.setSitting(true);
+                    if (fixai){
+                        setSitting(true);
+                    }else{
+                        aiSit.setSitting(true);
+                    }
                     setEntityHealth(20);
                     setOwner(par1EntityPlayer.username);
                     playTameEffect(true);
@@ -578,5 +599,218 @@ public class EntityWolf extends EntityTameable
     public boolean func_70922_bv()
     {
         return dataWatcher.getWatchableObjectByte(19) == 1;
+    }
+
+    protected void updateEntityActionState()
+    {
+        super.updateEntityActionState();
+        if (!fixai){
+            return;
+        }
+        if (!hasAttacked && !hasPath() && isTamed() && ridingEntity == null)
+        {
+            EntityPlayer entityplayer = worldObj.getPlayerEntityByName(getOwnerName());
+            if (entityplayer != null)
+            {
+                float f = entityplayer.getDistanceToEntity(this);
+                if (f > 5F)
+                {
+                    getPathOrWalkableBlock(entityplayer, f);
+                }
+            }
+            else if (!isInWater())
+            {
+                setSitting(true);
+            }
+        }
+        else if (entityToAttack == null && !hasPath() && !isTamed() && worldObj.rand.nextInt(100) == 0)
+        {
+            List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntitySheep.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
+            if (!list.isEmpty())
+            {
+                setTarget((Entity)list.get(worldObj.rand.nextInt(list.size())));
+            }
+        }
+        if (isInWater())
+        {
+            setSitting(false);
+        }
+        if (!worldObj.isRemote)
+        {
+            dataWatcher.updateObject(18, Integer.valueOf(getHealth()));
+        }
+    }
+
+    private void getPathOrWalkableBlock(Entity entity, float f)
+    {
+        PathEntity pathentity = worldObj.getPathEntityToEntity(this, entity, 16F, true, false, false, true);
+        if (pathentity == null && f > 12F)
+        {
+            int i = MathHelper.floor_double(entity.posX) - 2;
+            int j = MathHelper.floor_double(entity.posZ) - 2;
+            int k = MathHelper.floor_double(entity.boundingBox.minY);
+            for (int l = 0; l <= 4; l++)
+            {
+                for (int i1 = 0; i1 <= 4; i1++)
+                {
+                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && worldObj.isBlockNormalCube(i + l, k - 1, j + i1) && !worldObj.isBlockNormalCube(i + l, k, j + i1) && !worldObj.isBlockNormalCube(i + l, k + 1, j + i1))
+                    {
+                        setLocationAndAngles((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, rotationYaw, rotationPitch);
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            setPathToEntity(pathentity);
+        }
+    }
+    
+    protected void attackEntity(Entity entity, float f){
+        if (!fixai){
+            super.attackEntity(entity, f);
+            return;
+        }
+        if (f > 2.0F && f < 6F && rand.nextInt(10) == 0)
+        {
+            if (onGround)
+            {
+                double d = entity.posX - posX;
+                double d1 = entity.posZ - posZ;
+                float f1 = MathHelper.sqrt_double(d * d + d1 * d1);
+                motionX = (d / (double)f1) * 0.5D * 0.80000001192092896D + motionX * 0.20000000298023224D;
+                motionZ = (d1 / (double)f1) * 0.5D * 0.80000001192092896D + motionZ * 0.20000000298023224D;
+                motionY = 0.40000000596046448D;
+            }
+        }
+        else if ((double)f < 1.5D && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
+        {
+            attackTime = 20;
+            byte byte0 = 2;
+            if (isTamed())
+            {
+                byte0 = 4;
+            }
+            entity.attackEntityFrom(DamageSource.causeMobDamage(this), byte0);
+        }
+    }
+
+    protected Entity findPlayerToAttack()
+    {
+        if (!fixai){
+            return super.findPlayerToAttack();
+        }
+        if (isAngry())
+        {
+            return worldObj.getClosestPlayerToEntity(this, 16D);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    public boolean attackEntityFrom_old(DamageSource damagesource, int i)
+    {
+        Entity entity = damagesource.getEntity();
+        setSitting(false);
+        if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
+        {
+            i = (i + 1) / 2;
+        }
+        if (super.attackEntityFrom(damagesource, i))
+        {
+            if (!isTamed() && !isAngry())
+            {
+                if (entity instanceof EntityPlayer)
+                {
+                    setAngry(true);
+                    entityToAttack = entity;
+                }
+                if ((entity instanceof EntityArrow) && ((EntityArrow)entity).shootingEntity != null)
+                {
+                    entity = ((EntityArrow)entity).shootingEntity;
+                }
+                if (entity instanceof EntityLiving)
+                {
+                    List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityWolf.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
+                    Iterator iterator = list.iterator();
+                    do
+                    {
+                        if (!iterator.hasNext())
+                        {
+                            break;
+                        }
+                        Entity entity1 = (Entity)iterator.next();
+                        EntityWolf entitywolf = (EntityWolf)entity1;
+                        if (!entitywolf.isTamed() && entitywolf.entityToAttack == null)
+                        {
+                            entitywolf.entityToAttack = entity;
+                            if (entity instanceof EntityPlayer)
+                            {
+                                entitywolf.setAngry(true);
+                            }
+                        }
+                    }
+                    while (true);
+                }
+            }
+            else if (entity != this && entity != null)
+            {
+                if (isTamed() && (entity instanceof EntityPlayer) && ((EntityPlayer)entity).username.equalsIgnoreCase(getOwnerName()))
+                {
+                    return true;
+                }
+                entityToAttack = entity;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected boolean isMovementCeased()
+    {
+        if (!fixai){
+            return super.isMovementCeased();
+        }
+        return isSitting() || field_70928_h;
+    }
+
+    public void onLivingUpdate_old()
+    {
+        super.onLivingUpdate();
+        func_70918_i(false);
+        if (hasCurrentTarget() && !hasPath() && !isAngry())
+        {
+            Entity entity = getCurrentTarget();
+            if (entity instanceof EntityPlayer)
+            {
+                EntityPlayer entityplayer = (EntityPlayer)entity;
+                ItemStack itemstack = entityplayer.inventory.getCurrentItem();
+                if (itemstack != null)
+                {
+                    if (!isTamed() && itemstack.itemID == Item.bone.shiftedIndex)
+                    {
+                        func_70918_i(true);
+                    }
+                    else if (isTamed() && (Item.itemsList[itemstack.itemID] instanceof ItemFood))
+                    {
+                        func_70918_i(((ItemFood)Item.itemsList[itemstack.itemID]).isWolfsFavoriteMeat());
+                    }
+                }
+            }
+        }
+        if (!worldObj.isRemote && isShaking && !field_70928_h && !hasPath() && onGround)
+        {
+            field_70928_h = true;
+            timeWolfIsShaking = 0.0F;
+            prevTimeWolfIsShaking = 0.0F;
+            worldObj.setEntityState(this, (byte)8);
+        }
     }
 }
