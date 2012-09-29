@@ -152,7 +152,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         byte byte0 = 64;
         double d = 0.03125D;
         sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
-        if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14 && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_BETA10){
+        if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
             gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
         }else{
             gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
@@ -162,7 +162,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         {
             for(int l = 0; l < 16; l++)
             {
-                OldBiomeGenBase oldbiomegenbase = aoldbiomegenbase[k + l * 16];
+                OldBiomeGenBase oldbiomegenbase = aoldbiomegenbase[ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120 ? k + l * 16 : k * 16 + l];
                 boolean flag = sandNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D > 0.0D;
                 boolean flag1 = gravelNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D > 3D;
                 int i1 = (int)(stoneNoise[k + l * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
@@ -172,10 +172,10 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                 for(int k1 = 127; k1 >= 0; k1--)
                 {
                     int l1 = (l * 16 + k) * 128 + k1;
-                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14 && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_BETA10){
+                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
                         l1 = (k * 16 + l) * 128 + k1;
                     }
-                    if(k1 <= 0 + rand.nextInt(5))
+                    if(k1 <= (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_ALPHA120 ? 0 + rand.nextInt(6) - 1 : 0 + rand.nextInt(5)))
                     {
                         abyte0[l1] = (byte)Block.bedrock.blockID;
                         continue;
