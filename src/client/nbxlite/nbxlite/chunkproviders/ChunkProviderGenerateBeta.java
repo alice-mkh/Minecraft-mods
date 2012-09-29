@@ -435,7 +435,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
@@ -447,7 +447,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, x2, y2, z2);
@@ -459,7 +459,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, x2, y2, z2);
@@ -471,7 +471,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(64);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
@@ -483,7 +483,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(32);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, x2, y2, z2);
@@ -495,7 +495,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
@@ -507,7 +507,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                 (new OldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
             }else{
                 (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
@@ -515,14 +515,14 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             
         }
 
-        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120 || ODNBXlite.GenerateNewOres)
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10 || ODNBXlite.GenerateNewOres)
         {
             for(int i = 0; i < 1; i++)
             {
                 int x2 = x1 + rand.nextInt(16);
                 int y2 = rand.nextInt(16) + rand.nextInt(16);
                 int z2 = z1 + rand.nextInt(16);
-                if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+                if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
                    (new OldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
                 }else{
                     (new SuperOldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
@@ -596,7 +596,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         {
             trees -= 20;
         }
-        if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){
+        if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10){
             for(int i = 0; i < trees; i++)
             {
                 int x2 = x1 + rand.nextInt(16) + 8;
