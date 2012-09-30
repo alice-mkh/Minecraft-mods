@@ -413,7 +413,7 @@ public class BlockStairs extends Block
         return movingobjectposition;
     }
 
-    private boolean isSolidBlock(World world, int i, int j, int k)
+    private boolean isStair(World world, int i, int j, int k)
     {
         int id = world.getBlockId(i, j, k);
         return id == 0 ? false : Block.blocksList[id].getRenderType() == 10;
@@ -424,28 +424,28 @@ public class BlockStairs extends Block
         return world.getBlockMaterial(i, j, k).isSolid();
     }
 
-    private byte getOldMetadata(World world, int i, int j, int k)
+    private void setOldMetadata(World world, int i, int j, int k)
     {
-        if (isSolidBlock(world, i, j, k))
+        if (isStair(world, i, j, k))
         {
             byte data = -1;
 
-            if (isSolidBlock(world, i + 1, j + 1, k))
+            if (isStair(world, i + 1, j + 1, k))
             {
                 data = 0;
             }
 
-            if (isSolidBlock(world, i - 1, j + 1, k))
+            if (isStair(world, i - 1, j + 1, k))
             {
                 data = 1;
             }
 
-            if (isSolidBlock(world, i, j + 1, k + 1))
+            if (isStair(world, i, j + 1, k + 1))
             {
                 data = 2;
             }
 
-            if (isSolidBlock(world, i, j + 1, k - 1))
+            if (isStair(world, i, j + 1, k - 1))
             {
                 data = 3;
             }
@@ -475,22 +475,22 @@ public class BlockStairs extends Block
 
             if (data < 0)
             {
-                if (isSolidBlock(world, i - 1, j - 1, k))
+                if (isStair(world, i - 1, j - 1, k))
                 {
                     data = 0;
                 }
 
-                if (isSolidBlock(world, i + 1, j - 1, k))
+                if (isStair(world, i + 1, j - 1, k))
                 {
                     data = 1;
                 }
 
-                if (isSolidBlock(world, i, j - 1, k - 1))
+                if (isStair(world, i, j - 1, k - 1))
                 {
                     data = 2;
                 }
 
-                if (isSolidBlock(world, i, j - 1, k + 1))
+                if (isStair(world, i, j - 1, k + 1))
                 {
                     data = 3;
                 }
@@ -498,14 +498,8 @@ public class BlockStairs extends Block
             if (data < 0){
                 data = 0;
             }
-
-            return data;
+            world.setBlockMetadataWithNotify(i, j, k, data | 0);
         }
-        return 0;
-    }
-
-    private void setOldMetadata(World par1World, int par2, int par3, int par4){
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, getOldMetadata(par1World, par2, par3, par4) | 0);
     }
 
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
