@@ -41,7 +41,7 @@ public class TextureManager{
         try{
             renderEngine.updateDynamicTextures();
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 

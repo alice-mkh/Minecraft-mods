@@ -43,7 +43,7 @@ public class TextureTerrainPngFX extends TextureFX
         }
         catch (Exception ex)
         {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
