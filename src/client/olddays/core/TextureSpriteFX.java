@@ -83,8 +83,11 @@ public class TextureSpriteFX extends TextureFX
     {
         int www = enabled ? ww : w;
         int n = w / www;
-        if (imageData.length <= (((www - 1) * n) + n - 1) * (w + 1)){
+        if (imageData.length <= ((((www - 1) * n) + n - 1) * (w + 1) + 1) ||
+            spriteData.length <= ((((www - 1) * n) + n - 1) * (w + 1) / 4 + 5)){
             refresh(false);
+            www = enabled ? ww : w;
+            n = w / www;
         }
         for (int x = 0; x < www; x++){
             for (int y = 0; y < www; y++){
