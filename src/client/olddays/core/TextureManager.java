@@ -53,7 +53,7 @@ public class TextureManager{
             renderEngine.setupTexture(image, renderEngine.getTexture(origname));
         }catch(Exception ex){
             ex.printStackTrace();
-            setFallback(true);
+//             setFallback(true);
         }
     }
  
