@@ -1206,7 +1206,7 @@ public class EntityRenderer
                     GL11.glEnable(GL11.GL_ALPHA_TEST);
                 }
             }
-            if (bounds){
+            if (bounds && mc.theWorld.provider.worldType == 0){
                 net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, par1);
             }
 
