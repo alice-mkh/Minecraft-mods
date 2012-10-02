@@ -8,12 +8,12 @@ public class CommandClientGameMode extends CommandGameMode
     {
     }
 
-    protected EntityPlayer func_55243_a(String par1Str)
+    protected EntityPlayer func_71540_a(String par1Str)
     {
         return Minecraft.getMinecraft().thePlayer;
     }
 
-    protected String[] func_55242_c()
+    protected String[] func_71538_c()
     {
         return (new String[]
                 {

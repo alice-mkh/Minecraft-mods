@@ -13,7 +13,7 @@ public class CommandClientGive extends CommandGive
         return Minecraft.getMinecraft().thePlayer;
     }
 
-    protected String[] func_55240_c()
+    protected String[] getPlayers()
     {
         return (new String[]
                 {
