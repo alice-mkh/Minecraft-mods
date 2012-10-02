@@ -370,6 +370,10 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             nextticklistentry.scheduledTime += l;
         }
 
+        field_35467_J = 0D;
+        field_35468_K = 0D;
+        field_35465_L = 0D;
+
         setWorldTime(par1);
     }
 
