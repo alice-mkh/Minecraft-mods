@@ -317,7 +317,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int getBlockLightInBounds(int par2){
         int block = 0;
-        if (par2>=SurrGroundHeight && SurrWaterHeight>SurrGroundHeight){
+        if (par2>=SurrGroundHeight && SurrWaterHeight>=SurrGroundHeight){
             if (par2<SurrWaterHeight){
                 block = Block.lightValue[SurrWaterType];
             }else{

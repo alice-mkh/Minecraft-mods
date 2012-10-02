@@ -15,7 +15,7 @@ public class RenderBounds{
 
     private static void renderGroundBounds(float f, float ff){
         Tessellator tessellator = Tessellator.instance;
-        float f1 = ODNBXlite.SurrGroundHeight;
+        float f1 = ODNBXlite.SurrGroundHeight - 1;
         int i1 = 128;
         if (i1 > ODNBXlite.IndevWidthX){
             i1 = ODNBXlite.IndevWidthX;
@@ -30,6 +30,7 @@ public class RenderBounds{
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
             block = Block.bedrock;
         }
+        f1 += (float)block.maxY;
 //         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
 //         if (globalRenderBlocks.overrideBlockTexture >= 0){
 //             j = globalRenderBlocks.overrideBlockTexture;
@@ -79,7 +80,14 @@ public class RenderBounds{
 
     private static void renderSideBounds(float f){
         Tessellator tessellator = Tessellator.instance;
-        float f1 = ODNBXlite.SurrGroundHeight;
+        Block block = Block.blocksList[ODNBXlite.SurrGroundType];
+        if (block==Block.grass && (ODNBXlite.SurrGroundHeight <= ODNBXlite.SurrWaterHeight || ODNBXlite.SurrWaterType==Block.lavaStill.blockID)){
+            block = Block.dirt;
+        }
+        if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+            block = Block.bedrock;
+        }
+        float f1 = (float)block.maxY;
         int i1 = 128;
         if (i1 > ODNBXlite.IndevWidthX){
             i1 = ODNBXlite.IndevWidthX;
@@ -106,7 +114,7 @@ public class RenderBounds{
         double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
-        int i = ODNBXlite.SurrGroundHeight-i1;
+        float i = ODNBXlite.SurrGroundHeight - i1 + f1 - 1;
         tessellator.setTranslation(-d, -d1, -d2);
         for (int i3 = 0; i3 < ODNBXlite.IndevWidthZ; i3 += i1){
             tessellator.addVertexWithUV(0, ODNBXlite.SurrGroundHeight, i3, dd1, dd2);
