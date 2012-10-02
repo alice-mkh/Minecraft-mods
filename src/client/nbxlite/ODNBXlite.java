@@ -178,6 +178,30 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
+    public String[] getAdditionalPackageData(){
+        return new String[]{getGenName(Generator, MapFeatures, SnowCovered),
+                            ""+IndevSpawnX,
+                            ""+IndevSpawnY,
+                            ""+IndevSpawnZ,
+                            ""+IndevWidthX,
+                            ""+IndevHeight,
+                            ""+IndevWidthZ};
+    }
+
+    public void readAdditionalPackageData(String[] data){
+        Generator = getGen(data[0], 0);
+        MapFeatures = getGen(data[0], 1);
+        SnowCovered = getGen(data[0], 2) > 0;
+        int i = 1;
+        IndevSpawnX = Integer.parseInt(data[i++]);
+        IndevSpawnY = Integer.parseInt(data[i++]);
+        IndevSpawnZ = Integer.parseInt(data[i++]);
+        IndevWidthX = Integer.parseInt(data[i++]);
+        IndevHeight = Integer.parseInt(data[i++]);
+        IndevWidthZ = Integer.parseInt(data[i++]);
+        SetGenerator();
+    }
+
     public void onLoadingSP(String par1Str, String par2Str){
         if (saveLoader.isOldMapFormat(par1Str) && saveLoader.getWorldInfo(par1Str).getSaveVersion() != 19132){
             convertMapFormatOld(par1Str, par2Str);
@@ -761,6 +785,10 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean oldStrongholds(){
         return Generator==GEN_NEWBIOMES && MapFeatures<=FEATURES_BETA181;
+    }
+
+    public static void SetGenerator(){
+        SetGenerator(Minecraft.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
     }
 
     public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
