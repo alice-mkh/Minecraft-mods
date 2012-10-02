@@ -360,7 +360,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         return chunkProvider.saveChunks(false, null);
     }
 
-    public void commandSetTime(long par1)
+    public void commandSetTime(long par1, boolean reset)
     {
         long l = par1 - worldInfo.getWorldTime();
 
@@ -370,9 +370,10 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             nextticklistentry.scheduledTime += l;
         }
 
-        field_35467_J = 0D;
-        field_35468_K = 0D;
-        field_35465_L = 0D;
+        if (reset){
+            field_35467_J = 0D;
+            field_35468_K = 0D;
+        }
 
         setWorldTime(par1);
     }
