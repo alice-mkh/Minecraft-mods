@@ -80,6 +80,7 @@ public class mod_OldDays extends Mod{
             if (module >= 0){
                 String[] data = writeModule(getModuleById(module));
                 sendPacketToPlayer(player, SMPManager.PACKET_S2C_MODULE, data);
+                System.out.println("Sending module "+module+".");
             }else{
                 for (int i = 0; i < modules.size(); i++){
                     String[] data = writeModule(modules.get(i));
@@ -101,8 +102,16 @@ public class mod_OldDays extends Mod{
         if (packet.getId() == SMPManager.PACKET_S2C_MODULE){
             String[] data = packet.getData();
             int id = Integer.parseInt(data[0]);
-            for (int i = 1; i < data.length; i++){
+            int size = getModuleById(id).properties.size();
+            for (int i = 1; i <= size; i++){
                 readProperty(packet.getData()[i]);
+            }
+            if (data.length - size > 1){
+                String[] data2 = new String[data.length - size - 1];
+                for (int i = 0; i < data2.length; i++){
+                    data2[i] = data[size + 1 + i];
+                }
+                getModuleById(id).readAdditionalPackageData(data2);
             }
             System.out.println("Received "+getModuleById(id).name+" module.");
             return;
@@ -119,11 +128,21 @@ public class mod_OldDays extends Mod{
     }
 
     private String[] writeModule(OldDaysModule module){
-        String[] data = new String[1 + module.properties.size()];
+        int length = 1 + module.properties.size();
+        String[] data2 = module.getAdditionalPackageData();
+        if (data2 != null){
+            length += data2.length;
+        }
+        String[] data = new String[length];
         data[0] = ""+module.id;
         for (int i = 0; i < module.properties.size(); i++){
             OldDaysProperty prop = module.properties.get(i);
             data[1 + i] = prop.module.id+" "+prop.id+" "+prop.saveToString();
+        }
+        if (data2 != null){
+            for (int i = 0; i < data2.length; i++){
+                data[module.properties.size() + 1 + i] = data2[i];
+            }
         }
         return data;
     }

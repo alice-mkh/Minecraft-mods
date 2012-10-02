@@ -192,4 +192,10 @@ public class OldDaysModule{
     public void onLoadingSP(String par1Str, String par2Str){}
 
     public void onFallbackChange(boolean fallback){}
+
+    public String[] getAdditionalPackageData(){
+        return null;
+    }
+
+    public void readAdditionalPackageData(String[] data){}
 }
