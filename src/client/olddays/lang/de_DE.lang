@@ -498,7 +498,7 @@ crafting.oldsigns.name=Alte Schilder
  crafting.oldsigns.desc2=§aChanged in 1.3er 1.3 geändert.
 
 textures.cobblestone.name=Pflasterstein.
- textures.cobblestone1=0.013a_03
+ textures.cobblestone1=0.0.13a_03
  textures.cobblestone1.desc=Weichere Textur
  textures.cobblestone2=Alpha
  textures.cobblestone2.desc=Mehr Kontrast
@@ -535,7 +535,7 @@ textures.grass.name=Altes Gras
  textures.grass.desc2=§4Dies ist KEIN Alpha-Gras!
  textures.grass.desc3=§aIn der 1.0 geändert.
 textures.planks.name=Planken
- textures.planks1=0.013a_03
+ textures.planks1=0.0.13a_03
  textures.planks1.desc=Seltsame graue Textur
  textures.planks2=Beta
  textures.planks2.desc=Fast gleich wie 1.0
