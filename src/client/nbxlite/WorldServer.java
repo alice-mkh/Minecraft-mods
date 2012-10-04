@@ -294,7 +294,9 @@ public class WorldServer extends World
                 moodSoundAndLightCheck(k, l, chunk);
             }
             theProfiler.endStartSection("tickChunk");
-            chunk.updateSkylight();
+            if (!ODNBXlite.oldLightEngine){
+                chunk.updateSkylight();
+            }
             theProfiler.endStartSection("thunder");
 
             if (rand.nextInt(0x186a0) == 0 && isRaining() && isThundering())
