@@ -251,8 +251,10 @@ public class RenderBounds{
             imageData.put(ODNBXlite.bedrockfx.imageData);
             imageData.position(0).limit(ODNBXlite.bedrockfx.imageData.length);
             GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-            renderSideBounds(f);
-            renderBottomBounds(f);
+            if (ODNBXlite.MapFeatures == ODNBXlite.FEATURES_CLASSIC){
+                renderSideBounds(f);
+                renderBottomBounds(f);
+            }
         }
         if (!Minecraft.oldlighting){
             l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight);
