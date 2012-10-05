@@ -5,6 +5,7 @@ import java.util.*;
 public class EntityBoat extends Entity
 {
     public static boolean waterlift = false;
+    public static boolean oldbreaking = false;
 
     private boolean field_70279_a;
     private double field_70276_b;
@@ -116,7 +117,19 @@ public class EntityBoat extends Entity
                 riddenByEntity.mountEntity(this);
             }
 
-            dropItemWithOffset(Item.boat.shiftedIndex, 1, 0.0F);
+            if (oldbreaking){
+                for (int i = 0; i < 3; i++)
+                {
+                    dropItemWithOffset(Block.planks.blockID, 1, 0.0F);
+                }
+
+                for (int j = 0; j < 2; j++)
+                {
+                    dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
+                }
+            }else{
+                dropItemWithOffset(Item.boat.shiftedIndex, 1, 0.0F);
+            }
             setDead();
         }
 

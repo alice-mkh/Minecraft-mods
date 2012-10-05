@@ -28,12 +28,12 @@ cd $ORIG_DIR
 MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-days-eyecandy old-days-sounds old-days-crafting
            old-days-textures old-days-nbxlite old-days old-days-allin1
            spawn-human ssp"
-CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
+CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` `find EntityBoat`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ODActions"
 CP[2]="`find EntityMinecart` `find EntityBoat` `find Entity` `find EntityLiving` `find BlockPistonBase` `find ContainerPlayer`
        ODBugs"
 CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find EntityLiving`
-       `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay"
+       `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` `find Explosion` ODGameplay"
 ADD[3]="olddays/icons.png"
 CP[4]="`find EntityLiving` `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
@@ -66,7 +66,7 @@ ADD[10]="olddays/lang"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ODActions
         `find EntityMinecart` `find EntityBoat` `find Entity` `find EntityLiving` `find BlockPistonBase` `find ContainerPlayer` ODBugs
-        `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake`
+        `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find Explosion`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`

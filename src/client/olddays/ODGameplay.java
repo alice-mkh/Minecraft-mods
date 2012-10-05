@@ -20,6 +20,7 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyBool(this, 15,false, true,  "SignStacking");
         new OldDaysPropertyBool(this, 16,false, true,  "BucketStacking");
         new OldDaysPropertyInt(this,  17,2,     2,     "Score", 2).setUseNames();
+        new OldDaysPropertyBool(this, 18,true,  false, "OldExplosion");
     }
 
     public void callback (int i){
@@ -53,7 +54,8 @@ public class ODGameplay extends OldDaysModule{
             case 17:set(net.minecraft.src.EntityPlayer.class, "oldscore", Score < 2);
                     set(net.minecraft.src.EntityLiving.class, "score", Score == 1);
                     set(net.minecraft.src.GuiIngame.class, "score", Score == 1);
-                    set(net.minecraft.src.GuiGameOver.class, "oldScore", Score == 0); break; 
+                    set(net.minecraft.src.GuiGameOver.class, "oldScore", Score == 0); break;
+            case 18:set(net.minecraft.src.Explosion.class, "oldexplosion", OldExplosion); break;
         }
     }
 
@@ -74,6 +76,7 @@ public class ODGameplay extends OldDaysModule{
     public static boolean SignStacking;
     public static boolean BucketStacking;
     public static int Score = 2;
+    public static boolean OldExplosion = true;
 
     private void setSwordDamage(boolean b){
         mod_OldDays.setField(net.minecraft.src.ItemSword.class, Item.swordDiamond, 0, b ? 10 : 7);

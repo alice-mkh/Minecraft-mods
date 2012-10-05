@@ -96,6 +96,9 @@ actions.oldstairs.name=Old stairs
  actions.oldstairs.desc1=Direction is based on surrounding blocks,
  actions.oldstairs.desc2=Turn to solid blocks if placed under one.
  actions.oldstairs.desc3=§aChanged in Alpha 1.2.0.
+actions.oldboatbreaking.name=Old boat breaking
+ actions.oldboatbreaking.desc1=Drops sticks and planks.
+ actions.oldboatbreaking.desc2=§aChanged in 1.3.
 
 bugs.boosters.name=Boosters
  bugs.boosters.desc1=Allows boosting minecarts by
@@ -240,6 +243,10 @@ gameplay.score.name=Score
  gameplay.score2.desc13=Enderdragon: §r10000
  gameplay.score3=1.0
  gameplay.score3.desc=Default score
+gameplay.oldexplosion.name=Old explosions
+ gameplay.oldexplosion.desc1=Makes explosions always
+ gameplay.oldexplosion.desc2=deal the same damage.
+ gameplay.oldexplosion.desc3=§aChanged in 1.3.
 
 mobs.ai.name=Mob AI
  mobs.ai.desc1=Sets general mob behavior.

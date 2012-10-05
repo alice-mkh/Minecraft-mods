@@ -97,6 +97,10 @@ actions.oldstairs.name=Старые ступени
  actions.oldstairs.desc2=Превращаются в полный блок при расположении
  actions.oldstairs.desc3=сплошных блоков над ними.
  actions.oldstairs.desc4=§aИзменены в Альфе 1.2.0.
+//FIXME
+actions.oldboatbreaking.name=Old boat breaking
+ actions.oldboatbreaking.desc1=Drops sticks and planks.
+ actions.oldboatbreaking.desc2=§aChanged in 1.3.
 
 bugs.boosters.name=Бустеры
  bugs.boosters.desc1=Позволяет ускорять вагонетки
@@ -241,6 +245,11 @@ gameplay.score.name=Счет
  gameplay.score2.desc13=Дракон: §r10000
  gameplay.score3=1.0
  gameplay.score3.desc=Стандартный счет
+//FIXME
+gameplay.oldexplosion.name=Old explosions
+ gameplay.oldexplosion.desc1=Makes explosions always
+ gameplay.oldexplosion.desc2=deal the same damage.
+ gameplay.oldexplosion.desc3=§aChanged in 1.3.
 
 mobs.ai.name=ИИ мобов
  mobs.ai.desc1=Определяет основное поведение мобов.
