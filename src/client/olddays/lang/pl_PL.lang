@@ -241,7 +241,7 @@ gameplay.score.name=Punkty
  gameplay.score2.desc12=Blaze'y: §r500
  gameplay.score2.desc13=Smok Kresu: §r10000
  gameplay.score3=1.0
- gameplay.score3.desc=Domyślny system.
+ gameplay.score3.desc=Domyślny system
 
 mobs.ai.name=Inteligencja mobów
  mobs.ai.desc1=Ustawia ich ogólne zachowanie.
@@ -397,7 +397,7 @@ eyecandy.version.name=Wersja
 eyecandy.invblocks.name=Bloki w ekwipunku
  eyecandy.invblocks.desc1=Ustawia wygląd bloków w ekwipunku.
  eyecandy.invblocks1=Alpha
- eyecandy.invblocks1.desc=Obrócone schody, bloki zwrócone w lewo
+ eyecandy.invblocks1.desc=Obrócone schody, bloki zwrócone w prawo
  eyecandy.invblocks2=Beta 1.8
  eyecandy.invblocks2.desc=Zbyt jasne bloki
  eyecandy.invblocks3=1.0

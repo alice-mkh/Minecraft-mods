@@ -243,7 +243,7 @@ gameplay.score.name=Score
  gameplay.score2.desc12=Blazes: §r500
  gameplay.score2.desc13=Enderdragon: §r10000
  gameplay.score3=1.0
- gameplay.score3.desc=Default score.
+ gameplay.score3.desc=Default score
 
 mobs.ai.name=Mob AI
  mobs.ai.desc1=Schaltet das generelle Mob-Verhalen.
@@ -401,7 +401,7 @@ eyecandy.version.name=Version
 eyecandy.invblocks.name=Inventory blocks
  eyecandy.invblocks.desc1=Sets look of blocks in the inventory.
  eyecandy.invblocks1=Alpha
- eyecandy.invblocks1.desc=Rotated stairs, blocks look to the left
+ eyecandy.invblocks1.desc=Rotated stairs, blocks look to the right
  eyecandy.invblocks2=Beta 1.8
  eyecandy.invblocks2.desc=Too bright blocks
  eyecandy.invblocks3=1.0
