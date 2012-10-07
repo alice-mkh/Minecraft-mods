@@ -378,6 +378,7 @@ public abstract class World implements IBlockAccess
                             scheduleLightingUpdate(EnumSkyBlock.Sky, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
                         }
                         scheduleLightingUpdate(EnumSkyBlock.Block, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
+                        while (updatingLighting()){};
                     }
                 }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
                     ODNBXlite.generateClassicLevel(getSeed());
@@ -396,6 +397,7 @@ public abstract class World implements IBlockAccess
                             scheduleLightingUpdate(EnumSkyBlock.Sky, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
                         }
                         scheduleLightingUpdate(EnumSkyBlock.Block, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
+                        while (updatingLighting()){};
                     }
                 }else{
                     worldInfo.mapType = 0;
@@ -4553,6 +4555,9 @@ public abstract class World implements IBlockAccess
 
     public boolean updatingLighting()
     {
+        if (!ODNBXlite.oldLightEngine){
+            return false;
+        }
         if(lightingUpdatesCounter >= 50)
         {
             return false;
