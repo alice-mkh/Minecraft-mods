@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.io.File;
+import net.minecraft.client.Minecraft;
 
 public class ODSounds extends OldDaysModule{
     public ODSounds(mod_OldDays c){
@@ -20,6 +20,7 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyInt(this,  13,1,     "Enderman", 2).setUseNames();
         new OldDaysPropertyBool(this, 14,true,  "Calm4");
         new OldDaysPropertyBool(this, 15,false, "Creeper");
+        Minecraft.getMinecraft().setSoundClass(net.minecraft.src.SoundManager2.class);
         addSound(5, "door_open");
         addSound(5, "door_close");
         addSound(6, "door_open");
@@ -34,21 +35,21 @@ public class ODSounds extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: set(net.minecraft.src.SoundManager.class, "explode", Explode); break;
-            case 2: set(net.minecraft.src.SoundManager.class, "xporb", XPOrb); break;
-            case 3: set(net.minecraft.src.SoundManager.class, "hurt", Ooh); break;
-            case 4: set(net.minecraft.src.SoundManager.class, "nofall", !Fall); break;
-            case 5: set(net.minecraft.src.SoundManager.class, "door", Door); break;
-            case 6: set(net.minecraft.src.SoundManager.class, "chest", Chest); break;
-            case 7: set(net.minecraft.src.SoundManager.class, "bow", Bow); break;
-            case 8: set(net.minecraft.src.SoundManager.class, "drr", Drr); break;
-            case 9: set(net.minecraft.src.SoundManager.class, "eat", !Eat); break;
-            case 10:set(net.minecraft.src.SoundManager.class, "drink", !Drink); break;
-            case 11:set(net.minecraft.src.SoundManager.class, "breaking", !Break); break;
-            case 12:set(net.minecraft.src.SoundManager.class, "lava", !Lava); break;
-            case 13:set(net.minecraft.src.SoundManager.class, "enderman", Enderman); break;
-            case 14:set(net.minecraft.src.SoundManager.class, "calm4", Calm4); break;
-            case 15:set(net.minecraft.src.SoundManager.class, "creeper", Creeper); break;
+            case 1: set(net.minecraft.src.SoundManager2.class, "explode", Explode); break;
+            case 2: set(net.minecraft.src.SoundManager2.class, "xporb", XPOrb); break;
+            case 3: set(net.minecraft.src.SoundManager2.class, "hurt", Ooh); break;
+            case 4: set(net.minecraft.src.SoundManager2.class, "nofall", !Fall); break;
+            case 5: set(net.minecraft.src.SoundManager2.class, "door", Door); break;
+            case 6: set(net.minecraft.src.SoundManager2.class, "chest", Chest); break;
+            case 7: set(net.minecraft.src.SoundManager2.class, "bow", Bow); break;
+            case 8: set(net.minecraft.src.SoundManager2.class, "drr", Drr); break;
+            case 9: set(net.minecraft.src.SoundManager2.class, "eat", !Eat); break;
+            case 10:set(net.minecraft.src.SoundManager2.class, "drink", !Drink); break;
+            case 11:set(net.minecraft.src.SoundManager2.class, "breaking", !Break); break;
+            case 12:set(net.minecraft.src.SoundManager2.class, "lava", !Lava); break;
+            case 13:set(net.minecraft.src.SoundManager2.class, "enderman", Enderman); break;
+            case 14:set(net.minecraft.src.SoundManager2.class, "calm4", Calm4); break;
+            case 15:set(net.minecraft.src.SoundManager2.class, "creeper", Creeper); break;
         }
     }
 

@@ -45,7 +45,7 @@ CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEnt
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
        RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png olddays/chest.png olddays/allitems.png"
-CP[6]="`find SoundManager` ODSounds"
+CP[6]="SoundManager2 ODSounds"
 CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld ODTextures"
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png olddays/slime.png
@@ -75,7 +75,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderSnowMan2 ODEyecandy
-        `find SoundManager` ODSounds ODCrafting BlockOreStorageOld ODTextures
+        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures
         `find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree`
         `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
         `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find StructureStrongholdPieces` RenderMinecart2

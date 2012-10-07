@@ -294,6 +294,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public ArrayList<Mod> mods;
     private HashMap<String, Integer> compat; //0 - disabled; 1 - normal; 2 - mcp
     public Class worldClass;
+    public Class soundClass;
     public int ticksRan;
     public int mouseTicksRan;
     private boolean startProfiling;
@@ -316,7 +317,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         guiAchievement = new GuiAchievement(this);
         skipRenderWorld = false;
         objectMouseOver = null;
-        sndManager = new SoundManager();
+        soundClass = net.minecraft.src.SoundManager.class;
+        try{
+            Object o = soundClass.getDeclaredConstructor().newInstance();
+            sndManager = (SoundManager)o;
+//             sndManager = new SoundManager();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         rightClickDelayTimer = 0;
         textureWaterFX = new TextureWaterFX();
         textureLavaFX = new TextureLavaFX();
@@ -1925,7 +1933,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private void forceReload()
     {
         System.out.println("FORCING RELOAD!");
-        sndManager = new SoundManager();
+        try{
+            Object o = soundClass.getDeclaredConstructor().newInstance();
+            sndManager = (SoundManager)o;
+//             sndManager = new SoundManager();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         sndManager.loadSoundSettings(gameSettings);
         downloadResourcesThread.reloadResources();
     }
@@ -3306,5 +3320,21 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             mod.canUsePackets = true;
             mod.onInitClient();
         }
+    }
+
+    /**
+     * Forces a reload of the sound manager and all the resources. Called in game by holding 'F3' and pressing 'S'.
+     */
+    public void setSoundClass(Class c)
+    {
+        soundClass = c;
+        try{
+            Object o = soundClass.getDeclaredConstructor().newInstance();
+            sndManager = (SoundManager)o;
+//             sndManager = new SoundManager();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        sndManager.loadSoundSettings(gameSettings);
     }
 }
