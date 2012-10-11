@@ -2648,6 +2648,11 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
         }
         lastWorld = par1Str;
+        if (par3WorldSettings == null){
+            ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
+            par3WorldSettings = new WorldSettings(isavehandler.loadWorldInfo());
+        }
+        theIntegratedServer = new FakeServer(this, par1Str, par2Str, par3WorldSettings);
     }
 
     /**
@@ -2656,6 +2661,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public void exitToMainMenu(String par1Str)
     {
         theWorld = null;
+        theIntegratedServer = null;
         changeWorld2(null, par1Str);
     }
 
@@ -3130,8 +3136,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             loadWorld(null);
             stopIntegratedServer();
             theWorld = null;
-            theIntegratedServer = null;
         }
+        theIntegratedServer = null;
         enableSP = b;
         String s = lastWorld;
         if (enableSP){
