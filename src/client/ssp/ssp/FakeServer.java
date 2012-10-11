@@ -12,6 +12,7 @@ public class FakeServer extends IntegratedServer
     private final WorldSettings field_71350_m;
     private boolean field_71348_o;
     private ThreadLanServerPing field_71345_q;
+    private ICommandManager commandManager2;
 
     public FakeServer(Minecraft par1Minecraft, String par2Str, String par3Str, WorldSettings par4WorldSettings)
     {
@@ -26,6 +27,7 @@ public class FakeServer extends IntegratedServer
         setConfigurationManager(new IntegratedPlayerList(this));
         mc = par1Minecraft;
         field_71350_m = par4WorldSettings;
+        commandManager2 = new ClientCommandManager();
     }
 
     protected void loadAllDimensions(String par1Str, String par2Str, long par3, WorldType par5WorldType)
@@ -158,14 +160,6 @@ public class FakeServer extends IntegratedServer
         return false;
     }
 
-    /**
-     * sets the game type for all dimensions
-     */
-    public void setGameType(EnumGameType par1EnumGameType)
-    {
-        getConfigurationManager().setGameType(par1EnumGameType);
-    }
-
     public NetworkListenThread getNetworkThread()
     {
         return func_71343_a();
@@ -176,5 +170,36 @@ public class FakeServer extends IntegratedServer
 
     public void startServerThread()
     {
+    }
+
+    public int getPlayerListSize()
+    {
+        return 1;
+    }
+
+    public int getMaxPlayers()
+    {
+        return 1;
+    }
+
+    public String[] getAllUsernames()
+    {
+        return new String[]{mc.session.username};
+    }
+
+    public boolean isSinglePlayer()
+    {
+        return true;
+    }
+
+    public void setGameType(EnumGameType par1EnumGameType)
+    {
+        getConfigurationManager().setGameType(par1EnumGameType);
+        mc.theWorld.getWorldInfo().setGameType(par1EnumGameType);
+    }
+
+    public ICommandManager getCommandManager()
+    {
+        return commandManager2;
     }
 }

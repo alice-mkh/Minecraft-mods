@@ -287,7 +287,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName;
 
-    private ICommandManager commandManager;
     public boolean enableSP;
     public boolean useSP;
     private String lastWorld;
@@ -2596,11 +2595,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         return fullscreen;
     }
 
-    public ICommandManager getCommandManager()
-    {
-        return commandManager;
-    }
-
     /**
      * creates a new world or loads an existing one
      */
@@ -2714,8 +2708,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (par1World != null)
         {
-            commandManager = new ClientCommandManager();
-
             if (!isMultiplayerWorld())
             {
                 if (par3EntityPlayer == null)

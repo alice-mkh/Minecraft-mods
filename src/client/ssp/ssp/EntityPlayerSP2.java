@@ -45,7 +45,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     {
         if (par1Str.startsWith("/"))
         {
-            mc.getCommandManager().executeCommand(this, par1Str.substring(1));
+            mc.getIntegratedServer().getCommandManager().executeCommand(this, par1Str.substring(1));
         }
         else
         {

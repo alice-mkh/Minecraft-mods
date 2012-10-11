@@ -319,7 +319,7 @@ public class GuiChat extends GuiScreen
         else if (par1Str.startsWith("/"))
         {
             par1Str = par1Str.substring(1);
-            List list = mc.getCommandManager().getPossibleCommands(mc.thePlayer, par1Str);
+            List list = mc.getIntegratedServer().getCommandManager().getPossibleCommands(mc.thePlayer, par1Str);
             if (list != null)
             {
                 String s;
