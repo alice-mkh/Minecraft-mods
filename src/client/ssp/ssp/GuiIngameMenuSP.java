@@ -38,7 +38,7 @@ public class GuiIngameMenuSP extends GuiScreen
         controlList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
         GuiButton guibutton;
         controlList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));
-        guibutton.enabled = !mc.isMultiplayerWorld() && mc.getIntegratedServer() == null;
+        guibutton.enabled = !mc.isMultiplayerWorld();
     }
 
     /**

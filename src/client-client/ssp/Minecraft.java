@@ -3107,7 +3107,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public void quitAndStartServer(){
-        if (getIntegratedServer() != null || enableSP == false){
+        if ((getIntegratedServer() != null && !(getIntegratedServer() instanceof FakeServer)) || enableSP == false){
             return;
         }
         EnumGameType type = theWorld.getWorldInfo().getGameType();
