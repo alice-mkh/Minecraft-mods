@@ -118,7 +118,7 @@ public abstract class BiomeGenBase
     public static final BiomeGenBase betaForest = (new BiomeGenForest(33)).setColor(0x56621).setBiomeName("Beta Forest").setTemperatureRainfall(0.7F, 0.75F).func_76733_a(0x4eba31);
     public static final BiomeGenBase betaSavanna = (new BiomeGenPlains(34)).setColor(0xd9e023).setBiomeName("Beta Savanna").setTemperatureRainfall(0.8F, 0.1F);
     public static final BiomeGenBase betaShrubland = (new BiomeGenPlains(35)).setColor(0xa1ad20).setBiomeName("Beta Shrubland").setTemperatureRainfall(0.7F, 0.1F);
-    public static final BiomeGenBase betaTaiga = (new BiomeGenDesert(36)).setColor(0x2eb153).setBiomeName("Beta Taiga").setTemperatureRainfall(0.2F, 0.5F).func_76733_a(0x7bb731).setEnableSnow();
+    public static final BiomeGenBase betaTaiga = (new BiomeGenDesert(36)).setColor(0x2eb153).setBiomeName("Beta Taiga").setTemperatureRainfall(0.1F, 0.5F).func_76733_a(0x7bb731).setEnableSnow();
     public static final BiomeGenBase betaDesert = (new BiomeGenDesert(37)).setColor(0xfa9418).setBiomeName("Beta Desert").setTemperatureRainfall(1F, 0.1F).setDisableRain();
     public static final BiomeGenBase betaPlains = (new BiomeGenPlains(38)).setColor(0xffd910).setBiomeName("Beta Plains").setTemperatureRainfall(0.5F, 0.25F);
     public static final BiomeGenBase betaIceDesert = (new BiomeGenDesert(39)).setColor(0xffed93).setBiomeName("Beta Ice Desert").setTemperatureRainfall(0.2F, 0.1F).func_76733_a(0xc4d339).setEnableSnow().setDisableRain();
