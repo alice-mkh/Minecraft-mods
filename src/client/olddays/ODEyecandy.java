@@ -74,7 +74,7 @@ public class ODEyecandy extends OldDaysModule{
             case 17:set(net.minecraft.src.EntityDropParticleFX.class, "allow", Drops); break;
             case 18:set(net.minecraft.src.ItemRenderer.class, "hand", Hand); break;
             case 19:set(net.minecraft.src.EntityLiving.class, "toolbreakanim", ToolBreaking); break;
-            case 20:set(net.minecraft.src.RenderLiving.class, "labels", Labels); break;
+            case 20:set(net.minecraft.src.RenderLiving.class, "oldlabels", Labels); break;
             case 21:set(net.minecraft.src.LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
             case 22:set(net.minecraft.src.GuiInventory.class, "oldcreative", OldCreativeInv); break;
             case 23:set(net.minecraft.src.EntityPlayer.class, "oldswing", OldSwing);

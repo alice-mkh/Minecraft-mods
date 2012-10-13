@@ -394,7 +394,7 @@ public class RenderLiving extends Render
         float f = 1.6F;
         float f1 = 0.01666667F * f;
         if (oldlabels){
-            f1 = (float)((double)f1 * (Math.sqrt(d) / 2D));
+            f1 = (float)((double)f1 * (Math.sqrt(Math.sqrt(d)) / 2D));
         }
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
