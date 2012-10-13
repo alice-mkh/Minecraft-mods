@@ -24,7 +24,7 @@ public class FakeServer extends IntegratedServer
         setDemo(par1Minecraft.isDemo());
         canCreateBonusChest(par4WorldSettings.isBonusChestEnabled());
         setBuildLimit(256);
-        setConfigurationManager(new IntegratedPlayerList(this));
+        setConfigurationManager(new FakeServerPlayerList(this));
         mc = par1Minecraft;
         field_71350_m = par4WorldSettings;
         commandManager2 = new ClientCommandManager();
