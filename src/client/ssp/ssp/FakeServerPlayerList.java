@@ -9,7 +9,7 @@ public class FakeServerPlayerList extends IntegratedPlayerList
 
     public FakeServerPlayerList(FakeServer s){
         super((IntegratedServer)s);
-        fakePlayer = null;
+        fakePlayer = new EntityPlayerFakeMP(s, Minecraft.getMinecraft().thePlayer.username);
     }
 
     public EntityPlayerMP getPlayerForUsername(String par1Str)
