@@ -24,6 +24,9 @@ public class EntityTNTPrimed2 extends EntityTNTPrimed
         }
         worldObj.playSoundAtEntity(this, "step.grass", 1.0F, 1.0F);
         setDead();
+        if (((EntityPlayer)entity).capabilities.isCreativeMode){
+            return true;
+        }
         dropItem(Block.tnt.blockID, 1);
         return true;
     }
