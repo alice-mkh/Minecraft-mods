@@ -32,4 +32,12 @@ public class BlockTNT2 extends BlockTNT
             par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
         }
     }
+
+    /**
+     * Returns the quantity of items to drop on block destruction.
+     */
+    public int quantityDropped(Random par1Random)
+    {
+        return punchToActivate ? 0 : super.quantityDropped(par1Random);
+    }
 }
