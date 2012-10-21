@@ -46,6 +46,7 @@ CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEnt
        RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png olddays/chest.png olddays/allitems.png"
 CP[6]="SoundManager2 ODSounds"
+ADD[6]="olddays/sounds"
 CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld ODTextures"
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png olddays/slime.png
@@ -178,7 +179,6 @@ for F in *; do
     zip $RESULT_DIR_2/client/$F.zip * -r > /dev/null
     cd ..
 done
-cp $ADDITIONAL_DIR/sounds.zip $RESULT_DIR_2/client
 echo "Packaging source code..."
 cd $DIR/../src-mods/src
 zip $RESULT_DIR_2/client/src.zip * -r > /dev/null
