@@ -391,20 +391,21 @@ public class mod_OldDays extends Mod{
         return !Minecraft.getMinecraft().isIntegratedServerRunning() && !smpman.core.canUsePackets;
     }
 
-    public boolean unpackSound(String origName, String name){
+    public boolean unpackSound(String dir, String name){
         try{
-            File file = new File(Minecraft.getMinecraftDir(),"resources/"+name);
+            File file = new File(Minecraft.getMinecraftDir(),"resources/"+dir+"/"+name);
             if (file.exists()){
                 return true;
             }
-            DataInputStream stream = new DataInputStream(getClass().getResource("/olddays/sounds/"+origName).openStream());
+            DataInputStream stream = new DataInputStream(getClass().getResource("/olddays/sounds/"+name).openStream());
             byte[] bytes = new byte[stream.available()];
             stream.readFully(bytes);
             stream.close();
+            (new File(Minecraft.getMinecraftDir(),"resources/"+dir)).mkdirs();
             FileOutputStream stream2 = new FileOutputStream(file);
             stream2.write(bytes);
             stream2.close();
-            System.out.println("OldDays: Unpacked "+origName+" sound");
+            System.out.println("OldDays: Unpacked "+name+" sound");
             return true;
         }catch(Exception ex){
             ex.printStackTrace();

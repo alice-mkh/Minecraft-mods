@@ -38,7 +38,7 @@ public class OldDaysModule{
 
     public void addSound(int id, String name){
         File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
-        core.unpackSound(name+".ogg", "newsound/olddays/"+name+".ogg");
+        core.unpackSound("newsound/olddays", name+".ogg");
         if (sound.exists()){
             mod_OldDays.getMinecraft().installResource("newsound/olddays/"+sound.getName(), sound);
         }else{
@@ -48,7 +48,7 @@ public class OldDaysModule{
 
     public void addMusic(int id, String name){
         File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/music/"+name+".ogg");
-        core.unpackSound(name+".ogg", "music/"+name+".ogg");
+        core.unpackSound("music", name+".ogg");
         if (sound.exists()){
             mod_OldDays.getMinecraft().installResource("music/"+sound.getName(), sound);
         }else{
