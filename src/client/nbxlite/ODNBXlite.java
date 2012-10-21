@@ -47,9 +47,9 @@ public class ODNBXlite extends OldDaysModule{
         lavafx = new TextureTerrainPngFX();
         GuiSelectWorld.nbxlite = true;
         WorldInfo.useNBXlite = true;
-        set(net.minecraft.src.RenderGlobal.class, "nbxlite", true);
-        Minecraft.getMinecraft().worldClass = net.minecraft.src.WorldSSP2.class;
-        set(net.minecraft.src.ItemRenderer.class, "olddays", true);
+        set(RenderGlobal.class, "nbxlite", true);
+        Minecraft.getMinecraft().worldClass = WorldSSP2.class;
+        set(ItemRenderer.class, "olddays", true);
     }
 
     public void callback (int i){
@@ -76,32 +76,32 @@ public class ODNBXlite extends OldDaysModule{
             case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
             case 14:setInWorldInfo("cloudheight", CloudHeight); break;
             case 15:((BlockLeaves)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
-            case 16:set(net.minecraft.src.EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
-                    set(net.minecraft.src.EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
-            case 17:set(net.minecraft.src.nbxlite.ItemHoe2.class, "oldhoes", OldHoes); break;
-            case 18:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "texClouds", TexturedClouds); break;
-            case 19:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 16:set(EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
+                    set(EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
+            case 17:set(ItemHoe2.class, "oldhoes", OldHoes); break;
+            case 18:set(RenderGlobal2.class, "texClouds", TexturedClouds); break;
+            case 19:set(RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
             case 20:setLighting(ClassicLight, i); break;
-            case 21:set(net.minecraft.src.EntityRenderer.class, "voidFog", BedrockFog); break;
-            case 22:set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseColors", Sunset >= 1);
-                    set(net.minecraft.src.EntityRenderer.class, "sunriseFog", Sunset >= 2);
-            case 23:set(net.minecraft.src.EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
-                    set(net.minecraft.src.nbxlite.RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
+            case 21:set(EntityRenderer.class, "voidFog", BedrockFog); break;
+            case 22:set(RenderGlobal2.class, "sunriseColors", Sunset >= 1);
+                    set(EntityRenderer.class, "sunriseFog", Sunset >= 2);
+            case 23:set(EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
+                    set(RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
             case 24:if (Minecraft.getMinecraft().renderGlobal != null &&
                         Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
                         ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(OldStars);
                     }break;
-            case 25:set(net.minecraft.src.EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
+            case 25:set(EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
-            addRenderer(net.minecraft.src.EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
-            addRenderer(net.minecraft.src.EntitySheep.class, new RenderSheep2(new ModelSheep2(), new ModelSheep1(), 0.7F));
-            addRenderer(net.minecraft.src.EntityPainting.class, new RenderPainting2());
-            addRenderer(net.minecraft.src.EntityMooshroom.class, new RenderMooshroom2(new ModelCow(), 0.7F));
-            addRenderer(net.minecraft.src.EntityItem.class, new RenderItem2());
-            addRenderer(net.minecraft.src.EntityEnderman.class, new RenderEnderman2());
-            addRenderer(net.minecraft.src.EntityPlayer.class, new RenderPlayer2());
-            addRenderer(net.minecraft.src.EntityMinecart.class, new RenderMinecart2());
+            addRenderer(EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
+            addRenderer(EntitySheep.class, new RenderSheep2(new ModelSheep2(), new ModelSheep1(), 0.7F));
+            addRenderer(EntityPainting.class, new RenderPainting2());
+            addRenderer(EntityMooshroom.class, new RenderMooshroom2(new ModelCow(), 0.7F));
+            addRenderer(EntityItem.class, new RenderItem2());
+            addRenderer(EntityEnderman.class, new RenderEnderman2());
+            addRenderer(EntityPlayer.class, new RenderPlayer2());
+            addRenderer(EntityMinecart.class, new RenderMinecart2());
         }
     }
 
@@ -169,8 +169,8 @@ public class ODNBXlite extends OldDaysModule{
         if (i >= 2 && !Minecraft.getMinecraft().enableSP){
             i = 1;
         }
-        set(net.minecraft.src.EntityRenderer.class, "classicLight", i > 0);
-        set(net.minecraft.src.nbxlite.RenderGhast2.class, "bright", i > 0);
+        set(EntityRenderer.class, "classicLight", i > 0);
+        set(RenderGhast2.class, "bright", i > 0);
         Minecraft.oldlighting = i > 1;
         oldLightEngine = i > 1;
         if (i > 1 || ((OldDaysPropertyCond2)getPropertyById(i2)).value < 0){
@@ -560,7 +560,7 @@ public class ODNBXlite extends OldDaysModule{
         Minecraft minecraft = mod_OldDays.getMinecraft();
         if (!rendererReplaced){
 //             minecraft.entityRenderer = new EntityRenderer2(minecraft);
-            minecraft.renderGlobal = new net.minecraft.src.nbxlite.RenderGlobal2(minecraft, minecraft.renderEngine);
+            minecraft.renderGlobal = new RenderGlobal2(minecraft, minecraft.renderEngine);
             rendererReplaced = true;
         }
         return true;
@@ -829,9 +829,9 @@ public class ODNBXlite extends OldDaysModule{
         }else if (Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201){
             VoidFog = 4;
         }
-        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "oldFog", isFinite());
-        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "snow", SnowCovered);
-        mod_OldDays.getModuleById(8).set(net.minecraft.src.EntityRenderer.class, "bounds", isFinite());
+        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "oldFog", isFinite());
+        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "snow", SnowCovered);
+        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "bounds", isFinite());
         GenerateNewOres=ores;
         try{
             EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;

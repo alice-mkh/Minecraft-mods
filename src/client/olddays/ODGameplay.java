@@ -25,37 +25,37 @@ public class ODGameplay extends OldDaysModule{
 
     public void callback (int i){
         switch (i){
-            case 1: set(net.minecraft.src.EntityXPOrb.class, "noxp", !EnableXP);
-                    set(net.minecraft.src.GuiIngame.class, "hidexp", !EnableXP); break;
-            case 2: set(net.minecraft.src.FoodStats.class, "disabled", !EnableHunger);
-                    set(net.minecraft.src.ItemFood.class, "heal", !EnableHunger);
-                    set(net.minecraft.src.BlockCake.class, "heal", !EnableHunger);
-                    set(net.minecraft.src.GuiIngame.class, "hidehunger", !EnableHunger);
-                    set(net.minecraft.src.GuiIngame.class, "fallbacktex", !hasTextures("olddays/icons.png")); break;
-            case 3: set(net.minecraft.src.ItemFood.class, "instant", InstantFood); break;
-            case 4: set(net.minecraft.src.ItemFood.class, "stacks", FoodStacking); break;
-            case 5: set(net.minecraft.src.EntityLiving.class, "oldloot", OldDrops); break;
-            case 6: set(net.minecraft.src.EntityLiving.class, "rareloot", RareLoot); break;
-            case 7: set(net.minecraft.src.EntityArrow.class, "olddamage", InstantBow);
-                    set(net.minecraft.src.ItemBow.class, "nocharging", InstantBow); break;
-            case 8: set(net.minecraft.src.ItemBow.class, "nodurability", !FiniteBow); break;
-            case 9: set(net.minecraft.src.EntityPlayer.class, "combat", CombatSystem);
-                    set(net.minecraft.src.EntityZombie.class, "defense", CombatSystem>=3);
+            case 1: set(EntityXPOrb.class, "noxp", !EnableXP);
+                    set(GuiIngame.class, "hidexp", !EnableXP); break;
+            case 2: set(FoodStats.class, "disabled", !EnableHunger);
+                    set(ItemFood.class, "heal", !EnableHunger);
+                    set(BlockCake.class, "heal", !EnableHunger);
+                    set(GuiIngame.class, "hidehunger", !EnableHunger);
+                    set(GuiIngame.class, "fallbacktex", !hasTextures("olddays/icons.png")); break;
+            case 3: set(ItemFood.class, "instant", InstantFood); break;
+            case 4: set(ItemFood.class, "stacks", FoodStacking); break;
+            case 5: set(EntityLiving.class, "oldloot", OldDrops); break;
+            case 6: set(EntityLiving.class, "rareloot", RareLoot); break;
+            case 7: set(EntityArrow.class, "olddamage", InstantBow);
+                    set(ItemBow.class, "nocharging", InstantBow); break;
+            case 8: set(ItemBow.class, "nodurability", !FiniteBow); break;
+            case 9: set(EntityPlayer.class, "combat", CombatSystem);
+                    set(EntityZombie.class, "defense", CombatSystem>=3);
                     setSwordDamage(CombatSystem<3); break;
-            case 10:set(net.minecraft.src.EntityPlayer.class, "armor", Armor);
-                    set(net.minecraft.src.EntityLiving.class, "armorblocksall", Armor<=0);
+            case 10:set(EntityPlayer.class, "armor", Armor);
+                    set(EntityLiving.class, "armorblocksall", Armor<=0);
                     setArmorDamage(Armor<2); break;
-            case 11:set(net.minecraft.src.GuiIngame.class, "nodebug", !AllowDebug); break;
-            case 12:set(net.minecraft.src.EntityPlayer.class, "sprint", AllowSprint); break;
-            case 13:set(net.minecraft.src.EntityLiving.class, "jumpdelay", JumpDelay); break;
-            case 14:set(net.minecraft.src.EntityPlayer.class, "startitems", StartItems); break;
+            case 11:set(GuiIngame.class, "nodebug", !AllowDebug); break;
+            case 12:set(EntityPlayer.class, "sprint", AllowSprint); break;
+            case 13:set(EntityLiving.class, "jumpdelay", JumpDelay); break;
+            case 14:set(EntityPlayer.class, "startitems", StartItems); break;
             case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
             case 16:Item.bucketEmpty.maxStackSize = BucketStacking ? 16 : 1; break;
-            case 17:set(net.minecraft.src.EntityPlayer.class, "oldscore", Score < 2);
-                    set(net.minecraft.src.EntityLiving.class, "score", Score == 1);
-                    set(net.minecraft.src.GuiIngame.class, "score", Score == 1);
-                    set(net.minecraft.src.GuiGameOver.class, "oldScore", Score == 0); break;
-            case 18:set(net.minecraft.src.Explosion.class, "oldexplosion", OldExplosion); break;
+            case 17:set(EntityPlayer.class, "oldscore", Score < 2);
+                    set(EntityLiving.class, "score", Score == 1);
+                    set(GuiIngame.class, "score", Score == 1);
+                    set(GuiGameOver.class, "oldScore", Score == 0); break;
+            case 18:set(Explosion.class, "oldexplosion", OldExplosion); break;
         }
     }
 
@@ -79,54 +79,54 @@ public class ODGameplay extends OldDaysModule{
     public static boolean OldExplosion = true;
 
     private void setSwordDamage(boolean b){
-        mod_OldDays.setField(net.minecraft.src.ItemSword.class, Item.swordDiamond, 0, b ? 10 : 7);
-        mod_OldDays.setField(net.minecraft.src.ItemSword.class, Item.swordSteel, 0, b ? 8 : 6);
-        mod_OldDays.setField(net.minecraft.src.ItemSword.class, Item.swordStone, 0, b ? 6 : 5);
-        mod_OldDays.setField(net.minecraft.src.ItemSword.class, Item.swordWood, 0, 4);
-        mod_OldDays.setField(net.minecraft.src.ItemSword.class, Item.swordGold, 0, 4);
+        mod_OldDays.setField(ItemSword.class, Item.swordDiamond, 0, b ? 10 : 7);
+        mod_OldDays.setField(ItemSword.class, Item.swordSteel, 0, b ? 8 : 6);
+        mod_OldDays.setField(ItemSword.class, Item.swordStone, 0, b ? 6 : 5);
+        mod_OldDays.setField(ItemSword.class, Item.swordWood, 0, 4);
+        mod_OldDays.setField(ItemSword.class, Item.swordGold, 0, 4);
     }
 
     private void setArmorDamage(boolean b){
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.helmetLeather, 2, b ? 3 : 1);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.helmetChain, 2, b ? 3 : 2);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.helmetSteel, 2, b ? 3 : 2);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.helmetGold, 2, b ? 3 : 2);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.plateLeather, 2, b ? 8 : 3);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.plateChain, 2, b ? 8 : 5);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.plateSteel, 2, b ? 8 : 6);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.plateGold, 2, b ? 8 : 5);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.legsLeather, 2, b ? 6 : 2);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.legsChain, 2, b ? 6 : 4);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.legsSteel, 2, b ? 6 : 5);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.legsGold, 2, b ? 6 : 3);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.bootsLeather, 2, b ? 3 : 1);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.bootsChain, 2, b ? 3 : 1);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.bootsSteel, 2, b ? 3 : 2);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.bootsGold, 2, b ? 3 : 1);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.helmetLeather, 149, b ? 33 << 0 : 55);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.helmetChain, 149, b ? 33 << 1 : 165);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.helmetSteel, 149, b ? 33 << 2 : 165);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.helmetGold, 149, b ? 33 << 4 : 77);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.helmetDiamond, 149, b ? 33 << 3 : 363);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.plateLeather, 149, b ? 48 << 0 : 80);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.plateChain, 149, b ? 48 << 1 : 240);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.plateSteel, 149, b ? 48 << 2 : 240);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.plateGold, 149, b ? 48 << 4 : 112);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.plateDiamond, 149, b ? 48 << 3 : 528);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.legsLeather, 149, b ? 45 << 0 : 75);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.legsChain, 149, b ? 45 << 1 : 225);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.legsSteel, 149, b ? 45 << 2 : 225);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.legsGold, 149, b ? 45 << 4 : 105);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.legsDiamond, 149, b ? 45 << 3 : 495);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.bootsLeather, 149, b ? 39 << 0 : 65);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.bootsChain, 149, b ? 39 << 1 : 195);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.bootsSteel, 149, b ? 39 << 2 : 195);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.bootsGold, 149, b ? 39 << 4 : 91);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.bootsDiamond, 149, b ? 39 << 3 : 429);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.helmetDiamond, 2, 3);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.plateDiamond, 2, 8);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.legsDiamond, 2, 6);
-        mod_OldDays.setField(net.minecraft.src.ItemArmor.class, Item.bootsDiamond, 2, 3);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetLeather, 2, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetChain, 2, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetSteel, 2, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetGold, 2, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.plateLeather, 2, b ? 8 : 3);
+        mod_OldDays.setField(ItemArmor.class, Item.plateChain, 2, b ? 8 : 5);
+        mod_OldDays.setField(ItemArmor.class, Item.plateSteel, 2, b ? 8 : 6);
+        mod_OldDays.setField(ItemArmor.class, Item.plateGold, 2, b ? 8 : 5);
+        mod_OldDays.setField(ItemArmor.class, Item.legsLeather, 2, b ? 6 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.legsChain, 2, b ? 6 : 4);
+        mod_OldDays.setField(ItemArmor.class, Item.legsSteel, 2, b ? 6 : 5);
+        mod_OldDays.setField(ItemArmor.class, Item.legsGold, 2, b ? 6 : 3);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsLeather, 2, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsChain, 2, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsSteel, 2, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsGold, 2, b ? 3 : 1);
+        mod_OldDays.setField(Item.class, Item.helmetLeather, 149, b ? 33 << 0 : 55);
+        mod_OldDays.setField(Item.class, Item.helmetChain, 149, b ? 33 << 1 : 165);
+        mod_OldDays.setField(Item.class, Item.helmetSteel, 149, b ? 33 << 2 : 165);
+        mod_OldDays.setField(Item.class, Item.helmetGold, 149, b ? 33 << 4 : 77);
+        mod_OldDays.setField(Item.class, Item.helmetDiamond, 149, b ? 33 << 3 : 363);
+        mod_OldDays.setField(Item.class, Item.plateLeather, 149, b ? 48 << 0 : 80);
+        mod_OldDays.setField(Item.class, Item.plateChain, 149, b ? 48 << 1 : 240);
+        mod_OldDays.setField(Item.class, Item.plateSteel, 149, b ? 48 << 2 : 240);
+        mod_OldDays.setField(Item.class, Item.plateGold, 149, b ? 48 << 4 : 112);
+        mod_OldDays.setField(Item.class, Item.plateDiamond, 149, b ? 48 << 3 : 528);
+        mod_OldDays.setField(Item.class, Item.legsLeather, 149, b ? 45 << 0 : 75);
+        mod_OldDays.setField(Item.class, Item.legsChain, 149, b ? 45 << 1 : 225);
+        mod_OldDays.setField(Item.class, Item.legsSteel, 149, b ? 45 << 2 : 225);
+        mod_OldDays.setField(Item.class, Item.legsGold, 149, b ? 45 << 4 : 105);
+        mod_OldDays.setField(Item.class, Item.legsDiamond, 149, b ? 45 << 3 : 495);
+        mod_OldDays.setField(Item.class, Item.bootsLeather, 149, b ? 39 << 0 : 65);
+        mod_OldDays.setField(Item.class, Item.bootsChain, 149, b ? 39 << 1 : 195);
+        mod_OldDays.setField(Item.class, Item.bootsSteel, 149, b ? 39 << 2 : 195);
+        mod_OldDays.setField(Item.class, Item.bootsGold, 149, b ? 39 << 4 : 91);
+        mod_OldDays.setField(Item.class, Item.bootsDiamond, 149, b ? 39 << 3 : 429);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetDiamond, 2, 3);
+        mod_OldDays.setField(ItemArmor.class, Item.plateDiamond, 2, 8);
+        mod_OldDays.setField(ItemArmor.class, Item.legsDiamond, 2, 6);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsDiamond, 2, 3);
     }
 
     public boolean onTick(){

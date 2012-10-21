@@ -167,7 +167,7 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void setOreBlocks(){
-        set(net.minecraft.src.BlockOreStorageOld.class, "oldtextures", OreBlocks<1 && hasTextures("olddays/textures.png"));
+        set(BlockOreStorageOld.class, "oldtextures", OreBlocks<1 && hasTextures("olddays/textures.png"));
         setTextureHook("/terrain.png", 22, "/olddays/textures.png", 49, OreBlocks<2 && hasTextures("olddays/textures.png"));
         setTextureHook("/terrain.png", 23, "/olddays/textures.png", 50, OreBlocks<2 && hasTextures("olddays/textures.png"));
         setTextureHook("/terrain.png", 24, "/olddays/textures.png", 51, OreBlocks<2 && hasTextures("olddays/textures.png"));

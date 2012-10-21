@@ -27,22 +27,22 @@ public class ODActions extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: set(net.minecraft.src.BlockTNT2.class, "punchToActivate", PunchTNT); break;
-            case 2: set(net.minecraft.src.EntityTNTPrimed2.class, "extinguish", ExtinguishTNT); break;
-            case 3: set(net.minecraft.src.EntityItem.class, "smeltOnFire", SmeltOnFire); break;
-            case 4: set(net.minecraft.src.BlockFire.class, "oldFire", Fire<2);
-                    set(net.minecraft.src.BlockFire.class, "infiniteBurn", Fire<1); break;
-            case 5: set(net.minecraft.src.EntitySheep.class, "punchToShear", PunchSheep); break;
+            case 1: set(BlockTNT2.class, "punchToActivate", PunchTNT); break;
+            case 2: set(EntityTNTPrimed2.class, "extinguish", ExtinguishTNT); break;
+            case 3: set(EntityItem.class, "smeltOnFire", SmeltOnFire); break;
+            case 4: set(BlockFire.class, "oldFire", Fire<2);
+                    set(BlockFire.class, "infiniteBurn", Fire<1); break;
+            case 5: set(EntitySheep.class, "punchToShear", PunchSheep); break;
             case 6: setToolDurability(Durability); break;
-            case 7: set(net.minecraft.src.BlockMushroom.class, "spreading", ShroomSpreading); break;
+            case 7: set(BlockMushroom.class, "spreading", ShroomSpreading); break;
             case 8: setSolidTNT(SolidTNT); break;
-            case 9: set(net.minecraft.src.BlockFence2.class, "bigfences", BigFences); break;
-            case 10:set(net.minecraft.src.BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
-            case 12:set(net.minecraft.src.BlockLog2.class, "rotate", LogRotation); break;
-            case 13:set(net.minecraft.src.BlockFarmlandOld.class, "oldbreaking", OldCrops); break;
+            case 9: set(BlockFence2.class, "bigfences", BigFences); break;
+            case 10:set(BlockFlowing.class, "lessNetherLavaFlow", LessLavaFlow); break;
+            case 12:set(BlockLog2.class, "rotate", LogRotation); break;
+            case 13:set(BlockFarmlandOld.class, "oldbreaking", OldCrops); break;
             case 14:set(net.minecraft.client.Minecraft.class, "timecontrol", TimeControl); break;
-            case 15:set(net.minecraft.src.BlockStairs.class, "oldstairs", OldStairs); break;
-            case 16:set(net.minecraft.src.EntityBoat.class, "oldbreaking", OldBoatBreaking); break;
+            case 15:set(BlockStairs.class, "oldstairs", OldStairs); break;
+            case 16:set(EntityBoat.class, "oldbreaking", OldBoatBreaking); break;
         }
     }
 
@@ -72,7 +72,7 @@ public class ODActions extends OldDaysModule{
     public KeyBinding keyFog;
 
     private void setSolidTNT(boolean b){
-        mod_OldDays.setField(net.minecraft.src.Material.class, Material.tnt, 33, !b);
+        mod_OldDays.setField(Material.class, Material.tnt, 33, !b);
     }
 
     private void replaceBlocks(){
@@ -122,30 +122,30 @@ public class ODActions extends OldDaysModule{
             gold = 32 << 0;
             diamond = (32 << 3) * (i < 1 ? 1 : 4);
         }
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeWood, 149, wood);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeWood, 149, wood);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelWood, 149, wood);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordWood, 149, wood);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeWood, 149, wood);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeStone, 149, stone);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeStone, 149, stone);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelStone, 149, stone);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordStone, 149, stone);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeStone, 149, stone);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeSteel, 149, iron);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeSteel, 149, iron);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelSteel, 149, iron);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordSteel, 149, iron);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeSteel, 149, iron);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeGold, 149, gold);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeGold, 149, gold);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelGold, 149, gold);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordGold, 149, gold);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeGold, 149, gold);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.pickaxeDiamond, 149, diamond);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.axeDiamond, 149, diamond);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.shovelDiamond, 149, diamond);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.swordDiamond, 149, diamond);
-        mod_OldDays.setField(net.minecraft.src.Item.class, Item.hoeDiamond, 149, diamond);
+        mod_OldDays.setField(Item.class, Item.pickaxeWood, 149, wood);
+        mod_OldDays.setField(Item.class, Item.axeWood, 149, wood);
+        mod_OldDays.setField(Item.class, Item.shovelWood, 149, wood);
+        mod_OldDays.setField(Item.class, Item.swordWood, 149, wood);
+        mod_OldDays.setField(Item.class, Item.hoeWood, 149, wood);
+        mod_OldDays.setField(Item.class, Item.pickaxeStone, 149, stone);
+        mod_OldDays.setField(Item.class, Item.axeStone, 149, stone);
+        mod_OldDays.setField(Item.class, Item.shovelStone, 149, stone);
+        mod_OldDays.setField(Item.class, Item.swordStone, 149, stone);
+        mod_OldDays.setField(Item.class, Item.hoeStone, 149, stone);
+        mod_OldDays.setField(Item.class, Item.pickaxeSteel, 149, iron);
+        mod_OldDays.setField(Item.class, Item.axeSteel, 149, iron);
+        mod_OldDays.setField(Item.class, Item.shovelSteel, 149, iron);
+        mod_OldDays.setField(Item.class, Item.swordSteel, 149, iron);
+        mod_OldDays.setField(Item.class, Item.hoeSteel, 149, iron);
+        mod_OldDays.setField(Item.class, Item.pickaxeGold, 149, gold);
+        mod_OldDays.setField(Item.class, Item.axeGold, 149, gold);
+        mod_OldDays.setField(Item.class, Item.shovelGold, 149, gold);
+        mod_OldDays.setField(Item.class, Item.swordGold, 149, gold);
+        mod_OldDays.setField(Item.class, Item.hoeGold, 149, gold);
+        mod_OldDays.setField(Item.class, Item.pickaxeDiamond, 149, diamond);
+        mod_OldDays.setField(Item.class, Item.axeDiamond, 149, diamond);
+        mod_OldDays.setField(Item.class, Item.shovelDiamond, 149, diamond);
+        mod_OldDays.setField(Item.class, Item.swordDiamond, 149, diamond);
+        mod_OldDays.setField(Item.class, Item.hoeDiamond, 149, diamond);
     }
 }

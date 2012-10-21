@@ -17,33 +17,33 @@ public class ODMobs extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: set(net.minecraft.src.EntityLiving.class, "newai", AI>2);
-                    set(net.minecraft.src.EntityCreeper.class, "fixai", AI<3);
-                    set(net.minecraft.src.EntitySkeleton.class, "fixai", AI<3);
-                    set(net.minecraft.src.EntitySnowman.class, "fixai", AI<3);
-                    set(net.minecraft.src.EntitySheep.class, "fixai", AI<3);
-                    set(net.minecraft.src.EntityWolf.class, "fixai", AI<3);
-                    set(net.minecraft.src.EntityCreature.class, "jump", AI<2);
-                    set(net.minecraft.src.EntityLiving.class, "infdevai", AI<1); break;
-            case 2: set(net.minecraft.src.EntityAIPanic.class, "disablePanic", !AnimalsFlee);
-                    set(net.minecraft.src.EntityCreature.class, "nopanic", !AnimalsFlee); break;
-            case 3: set(net.minecraft.src.EntitySheep.class, "caneatgrass", SheepEatGrass); break;
-            case 4: set(net.minecraft.src.EntitySpider.class, "canclimb", SpidersCanClimb); break;
-            case 5: set(net.minecraft.src.EntityCreeper.class, "survivaltest", SurvivalTestMobs);
-                    set(net.minecraft.src.EntityCreeper.class, "dark", SurvivalTestMobs);
-                    set(net.minecraft.src.EntityCreature.class, "fastzombies", SurvivalTestMobs);
-                    set(net.minecraft.src.EntityZombie.class, "burns", !SurvivalTestMobs);
-                    set(net.minecraft.src.EntitySkeleton.class, "survivaltest", SurvivalTestMobs);
-                    set(net.minecraft.src.EntitySpider.class, "survivaltest", SurvivalTestMobs);
-                    set(net.minecraft.src.EntitySheep.class, "survivaltest", SurvivalTestMobs);
-                    set(net.minecraft.src.EntitySheep.class, "hungry", SurvivalTestMobs);
-                    set(net.minecraft.src.EntityPig.class, "survivaltest", SurvivalTestMobs);
-                    set(net.minecraft.src.EntityLiving.class, "survivaltest", SurvivalTestMobs); break;
-            case 6: set(net.minecraft.src.EntitySkeleton.class, "fast", FastSkeletons); break;
-            case 7: set(net.minecraft.src.EntitySheep.class, "oldhealth", OldHealth);
-                    set(net.minecraft.src.EntitySpider.class, "oldhealth", OldHealth);
-                    set(net.minecraft.src.EntityEnderman.class, "oldhealth", OldHealth); break;
-            case 8: set(net.minecraft.src.EntityLiving.class, "nonewmobs", Mobs);
+            case 1: set(EntityLiving.class, "newai", AI>2);
+                    set(EntityCreeper.class, "fixai", AI<3);
+                    set(EntitySkeleton.class, "fixai", AI<3);
+                    set(EntitySnowman.class, "fixai", AI<3);
+                    set(EntitySheep.class, "fixai", AI<3);
+                    set(EntityWolf.class, "fixai", AI<3);
+                    set(EntityCreature.class, "jump", AI<2);
+                    set(EntityLiving.class, "infdevai", AI<1); break;
+            case 2: set(EntityAIPanic.class, "disablePanic", !AnimalsFlee);
+                    set(EntityCreature.class, "nopanic", !AnimalsFlee); break;
+            case 3: set(EntitySheep.class, "caneatgrass", SheepEatGrass); break;
+            case 4: set(EntitySpider.class, "canclimb", SpidersCanClimb); break;
+            case 5: set(EntityCreeper.class, "survivaltest", SurvivalTestMobs);
+                    set(EntityCreeper.class, "dark", SurvivalTestMobs);
+                    set(EntityCreature.class, "fastzombies", SurvivalTestMobs);
+                    set(EntityZombie.class, "burns", !SurvivalTestMobs);
+                    set(EntitySkeleton.class, "survivaltest", SurvivalTestMobs);
+                    set(EntitySpider.class, "survivaltest", SurvivalTestMobs);
+                    set(EntitySheep.class, "survivaltest", SurvivalTestMobs);
+                    set(EntitySheep.class, "hungry", SurvivalTestMobs);
+                    set(EntityPig.class, "survivaltest", SurvivalTestMobs);
+                    set(EntityLiving.class, "survivaltest", SurvivalTestMobs); break;
+            case 6: set(EntitySkeleton.class, "fast", FastSkeletons); break;
+            case 7: set(EntitySheep.class, "oldhealth", OldHealth);
+                    set(EntitySpider.class, "oldhealth", OldHealth);
+                    set(EntityEnderman.class, "oldhealth", OldHealth); break;
+            case 8: set(EntityLiving.class, "nonewmobs", Mobs);
                     int color = 0;
                     if (Mobs>5){
                         color = 1;
@@ -51,12 +51,12 @@ public class ODMobs extends OldDaysModule{
                     if (Mobs>6){
                         color = 2;
                     }
-                    set(net.minecraft.src.EntitySheep.class, "color", color);
-                    set(net.minecraft.src.EntityOcelot.class, "allow", Mobs>=10);
-                    set(net.minecraft.src.EntitySquid.class, "allow", Mobs>=6);
-                    set(net.minecraft.src.EntitySlime.class, "allow", Mobs>=3); break;
-            case 9: set(net.minecraft.src.EntitySlime.class, "slimeSpawn", Slimes); break;
-            case 10:set(net.minecraft.src.EntityEnderman.class, "oldPicking", Endermen); break;
+                    set(EntitySheep.class, "color", color);
+                    set(EntityOcelot.class, "allow", Mobs>=10);
+                    set(EntitySquid.class, "allow", Mobs>=6);
+                    set(EntitySlime.class, "allow", Mobs>=3); break;
+            case 9: set(EntitySlime.class, "slimeSpawn", Slimes); break;
+            case 10:set(EntityEnderman.class, "oldPicking", Endermen); break;
         }
     }
 

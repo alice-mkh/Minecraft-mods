@@ -20,7 +20,7 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyInt(this,  13,1,     "Enderman", 2).setUseNames();
         new OldDaysPropertyBool(this, 14,true,  "Calm4");
         new OldDaysPropertyBool(this, 15,false, "Creeper");
-        Minecraft.getMinecraft().setSoundClass(net.minecraft.src.SoundManager2.class);
+        Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
         addSound(5, "door_open");
         addSound(5, "door_close");
         addSound(6, "door_open");
@@ -35,21 +35,21 @@ public class ODSounds extends OldDaysModule{
 
     public void callback (int i){
         switch(i){
-            case 1: set(net.minecraft.src.SoundManager2.class, "explode", Explode); break;
-            case 2: set(net.minecraft.src.SoundManager2.class, "xporb", XPOrb); break;
-            case 3: set(net.minecraft.src.SoundManager2.class, "hurt", Ooh); break;
-            case 4: set(net.minecraft.src.SoundManager2.class, "nofall", !Fall); break;
-            case 5: set(net.minecraft.src.SoundManager2.class, "door", Door); break;
-            case 6: set(net.minecraft.src.SoundManager2.class, "chest", Chest); break;
-            case 7: set(net.minecraft.src.SoundManager2.class, "bow", Bow); break;
-            case 8: set(net.minecraft.src.SoundManager2.class, "drr", Drr); break;
-            case 9: set(net.minecraft.src.SoundManager2.class, "eat", !Eat); break;
-            case 10:set(net.minecraft.src.SoundManager2.class, "drink", !Drink); break;
-            case 11:set(net.minecraft.src.SoundManager2.class, "breaking", !Break); break;
-            case 12:set(net.minecraft.src.SoundManager2.class, "lava", !Lava); break;
-            case 13:set(net.minecraft.src.SoundManager2.class, "enderman", Enderman); break;
-            case 14:set(net.minecraft.src.SoundManager2.class, "calm4", Calm4); break;
-            case 15:set(net.minecraft.src.SoundManager2.class, "creeper", Creeper); break;
+            case 1: set(SoundManager2.class, "explode", Explode); break;
+            case 2: set(SoundManager2.class, "xporb", XPOrb); break;
+            case 3: set(SoundManager2.class, "hurt", Ooh); break;
+            case 4: set(SoundManager2.class, "nofall", !Fall); break;
+            case 5: set(SoundManager2.class, "door", Door); break;
+            case 6: set(SoundManager2.class, "chest", Chest); break;
+            case 7: set(SoundManager2.class, "bow", Bow); break;
+            case 8: set(SoundManager2.class, "drr", Drr); break;
+            case 9: set(SoundManager2.class, "eat", !Eat); break;
+            case 10:set(SoundManager2.class, "drink", !Drink); break;
+            case 11:set(SoundManager2.class, "breaking", !Break); break;
+            case 12:set(SoundManager2.class, "lava", !Lava); break;
+            case 13:set(SoundManager2.class, "enderman", Enderman); break;
+            case 14:set(SoundManager2.class, "calm4", Calm4); break;
+            case 15:set(SoundManager2.class, "creeper", Creeper); break;
         }
     }
 
