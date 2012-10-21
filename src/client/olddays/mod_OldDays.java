@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import java.io.File;
+import java.io.DataInputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -387,6 +389,27 @@ public class mod_OldDays extends Mod{
             return false;
         }
         return !Minecraft.getMinecraft().isIntegratedServerRunning() && !smpman.core.canUsePackets;
+    }
+
+    public boolean unpackSound(String origName, String name){
+        try{
+            File file = new File(Minecraft.getMinecraftDir(),"resources/"+name);
+            if (file.exists()){
+                return true;
+            }
+            DataInputStream stream = new DataInputStream(getClass().getResource("/olddays/sounds/"+origName).openStream());
+            byte[] bytes = new byte[stream.available()];
+            stream.readFully(bytes);
+            stream.close();
+            FileOutputStream stream2 = new FileOutputStream(file);
+            stream2.write(bytes);
+            stream2.close();
+            System.out.println("OldDays: Unpacked "+origName+" sound");
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     public KeyBinding keySettings;
