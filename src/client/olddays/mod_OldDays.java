@@ -307,15 +307,15 @@ public class mod_OldDays extends Mod{
     }
 
     public static Object getField(Class c, Object o, String str){
-        System.out.println("FIXME: Use number instead of \""+str+"\"!");
-        try{
-            Field f = c.getDeclaredField(str);
-            f.setAccessible(true);
-            return f.get(o);
-        }catch(Exception ex){
-            System.out.println(ex);
-            return null;
+        Field[] fields = c.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++){
+            if (fields[i].getName().equals(str)){
+                System.out.println("FIXME: Use \""+i+"\" instead of \""+str+"\"!");
+                return getField(c, o, i);
+            }
         }
+        System.out.println("FIXME: No such field: \""+str+"\"!");
+        return null;
     }
 
     public static Object getField(Class c, Object o, int num){
@@ -330,14 +330,15 @@ public class mod_OldDays extends Mod{
     }
 
     public static void setField(Class c, Object o, String str, Object val){
-        System.out.println("FIXME: Use number instead of \""+str+"\"!");
-        try{
-            Field f = c.getDeclaredField(str);
-            f.setAccessible(true);
-            f.set(o, val);
-        }catch(Exception ex){
-            System.out.println(ex);
+        Field[] fields = c.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++){
+            if (fields[i].getName().equals(str)){
+                System.out.println("FIXME: Use \""+i+"\" instead of \""+str+"\"!");
+                setField(c, o, i,val);
+                return;
+            }
         }
+        System.out.println("FIXME: No such field: \""+str+"\"!");
     }
 
     public static void setField(Class c, Object o, int num, Object val){
