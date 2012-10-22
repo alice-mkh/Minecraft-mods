@@ -134,7 +134,7 @@ public class GuiSelectWorld extends GuiScreen
         buttonSelect2.enabled = false;
         buttonRename.enabled = false;
         buttonDelete.enabled = false;
-        buttonSelect2.drawButton = mc.useSP;
+        buttonSelect2.drawButton = mc.useSP && mc.sspoptions.getSMPButton();
     }
 
     /**

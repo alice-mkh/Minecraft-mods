@@ -443,7 +443,7 @@ public class GuiIngame extends Gui
                         Float.valueOf(mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(mc.thePlayer.onGround)
                     }), 2, 104, 0xe0e0e0);
 
-            if (!mc.theWorld.isRemote && mc.enableSP)
+            if (!mc.theWorld.isRemote && mc.enableSP && mc.sspoptions.getDebugSeed())
             {
                 drawString(fontrenderer, (new StringBuilder()).append("Seed: ").append(mc.theWorld.getSeed()).toString(), 2, 120, 0xe0e0e0);
             }

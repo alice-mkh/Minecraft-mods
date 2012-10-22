@@ -33,12 +33,16 @@ public class GuiIngameMenuSP extends GuiScreen
         }
 
         controlList.add(new GuiButton(4, width / 2 - 100, height / 4 + 24 + byte0, StatCollector.translateToLocal("menu.returnToGame")));
-        controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.options")));
         controlList.add(new GuiButton(5, width / 2 - 100, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.achievements")));
         controlList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
-        GuiButton guibutton;
-        controlList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));
-        guibutton.enabled = !mc.isMultiplayerWorld();
+        if (mc.sspoptions.getShareButton()){
+            controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.options")));
+            GuiButton guibutton;
+            controlList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));
+            guibutton.enabled = !mc.isMultiplayerWorld();
+        }else{
+            controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, StatCollector.translateToLocal("menu.options")));
+        }
     }
 
     /**
