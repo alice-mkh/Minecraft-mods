@@ -36,11 +36,18 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 29,true,  "ArmorShape");
         new OldDaysPropertyBool(this, 30,true,  "Cocoa");
         new OldDaysPropertyBool(this, 31,true,  "Netherrack");
+        new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
         for (int i = 1; i <= properties.size(); i++){
-            if (i != 15 && i != 27 && i != 29){
+            if (i != 15 && (i < 24 || i == 30 || i == 31)){
                 getPropertyById(i).setFallback("olddays/textures.png");
             }
         }
+        getPropertyById(24).setFallback("olddays/pig.png");
+        getPropertyById(25).setFallback("olddays/slime.png");
+        getPropertyById(26).setFallback("olddays/char.png");
+        getPropertyById(27).setFallback("olddays/explosion.png");
+        getPropertyById(28).setFallback("olddays/moon_phases.png");
+        getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
         replaceBlocks();
     }
 
@@ -86,6 +93,7 @@ public class ODTextures extends OldDaysModule{
                     setTextureHook("/gui/items.png", 63, "/gui/items.png", 239, !ArmorShape); break;
             case 30:setTextureHook("/gui/items.png", 126, "/olddays/textures.png", 63, Cocoa && !fallback); break;
             case 31:setTextureHook("/terrain.png", 103, "/olddays/textures.png", 65, Netherrack && !fallback); break;
+            case 32:setArmor(LeatherArmor && !fallback); break;
         }
     }
 
@@ -120,6 +128,7 @@ public class ODTextures extends OldDaysModule{
     public static boolean ArmorShape = true;
     public static boolean Cocoa = true;
     public static boolean Netherrack = true;
+    public static boolean LeatherArmor = true;
 
     private void replaceBlocks(){
         try{
@@ -183,5 +192,20 @@ public class ODTextures extends OldDaysModule{
         for (int i = 0; i < 16; i++){
             setTextureHook("/terrain.png", orig[i], "/olddays/textures.png", Wool<1 ? classic[i] : beta[i], Wool<2 && hasTextures("olddays/textures.png"));
         }
+    }
+
+    private void setArmor(boolean b){
+        setTextureHook("/gui/items.png", 144, "/olddays/textures.png", 66, b);
+        setTextureHook("/gui/items.png", 160, "/olddays/textures.png", 67, b);
+        setTextureHook("/gui/items.png", 176, "/olddays/textures.png", 68, b);
+        setTextureHook("/gui/items.png", 192, "/olddays/textures.png", 69, b);
+        setTextureHook("/gui/items.png", 0, "/gui/items.png", 239, b);
+        setTextureHook("/gui/items.png", 16, "/gui/items.png", 239, b);
+        setTextureHook("/gui/items.png", 32, "/gui/items.png", 239, b);
+        setTextureHook("/gui/items.png", 48, "/gui/items.png", 239, b);
+        setTextureHook("/armor/cloth_1_b.png", "/olddays/cloth_1.png", b);
+        setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
+        setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
+        setTextureHook("/armor/cloth_2.png", "/olddays/cloth_empty.png", b);
     }
 }
