@@ -42,7 +42,7 @@ public class GuiContainerCreativeOld extends GuiContainer
         }
     }
 
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
+    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         if (par1Slot != null)
         {
@@ -56,7 +56,7 @@ public class GuiContainerCreativeOld extends GuiContainer
                 {
                     if (par3 == 0)
                     {
-                        if (par4)
+                        if (par4 == 3)
                         {
                             itemstack1.stackSize = itemstack1.getMaxStackSize();
                         }
@@ -87,7 +87,7 @@ public class GuiContainerCreativeOld extends GuiContainer
                     inventoryplayer.setItemStack(ItemStack.copyItemStack(itemstack4));
                     ItemStack itemstack2 = inventoryplayer.getItemStack();
 
-                    if (par4)
+                    if (par4 == 3)
                     {
                         itemstack2.stackSize = itemstack2.getMaxStackSize();
                     }
@@ -95,9 +95,9 @@ public class GuiContainerCreativeOld extends GuiContainer
             }
             else
             {
-                ItemStack itemstack = par1Slot.getStack().copy();
-                itemstack.stackSize = itemstack.getMaxStackSize();
-                mc.thePlayer.inventory.setItemStack(itemstack);
+                inventorySlots.slotClick(par1Slot.slotNumber, par3, par4, mc.thePlayer);
+                ItemStack itemstack = inventorySlots.getSlot(par1Slot.slotNumber).getStack();
+                mc.playerController.sendSlotPacket(itemstack, (par1Slot.slotNumber - inventorySlots.inventorySlots.size()) + 9 + 36);
             }
         }
         else
