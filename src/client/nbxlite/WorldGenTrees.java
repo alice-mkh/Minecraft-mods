@@ -197,7 +197,7 @@ public class WorldGenTrees extends WorldGenerator
                         if (par2Random.nextInt(4 - j2) == 0)
                         {
                             int j4 = par2Random.nextInt(3);
-                            setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[k3]], ((par4 + i) - 5) + j2, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[k3]], Block.cocoa.blockID, j4 << 2 | k3);
+                            setBlockAndMetadata(par1World, par3 + Direction.offsetX[Direction.footInvisibleFaceRemap[k3]], ((par4 + i) - 5) + j2, par5 + Direction.offsetZ[Direction.footInvisibleFaceRemap[k3]], Block.cocoaPlant.blockID, j4 << 2 | k3);
                         }
                     }
                 }

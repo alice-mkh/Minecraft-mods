@@ -15,6 +15,8 @@ public class EntityMinecart extends Entity implements IInventory
     public int minecartType;
     public double pushX;
     public double pushZ;
+    private final IUpdatePlayerListBox field_82344_g;
+    private boolean field_82345_h;
     private static final int field_70500_g[][][] =
     {
         {
@@ -97,9 +99,11 @@ public class EntityMinecart extends Entity implements IInventory
         cargoItems = new ItemStack[36];
         fuel = 0;
         field_70499_f = false;
+        field_82345_h = true;
         preventEntitySpawning = true;
         setSize(0.98F, 0.7F);
         yOffset = height / 2.0F;
+        field_82344_g = par1World == null ? null : par1World.func_82735_a(this);
     }
 
     /**
@@ -272,53 +276,67 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public void setDead()
     {
-        label0:
-
-        for (int i = 0; i < getSizeInventory(); i++)
+        if (field_82345_h)
         {
-            ItemStack itemstack = getStackInSlot(i);
+            label0:
 
-            if (itemstack == null)
+            for (int i = 0; i < getSizeInventory(); i++)
             {
-                continue;
+                ItemStack itemstack = getStackInSlot(i);
+
+                if (itemstack == null)
+                {
+                    continue;
+                }
+
+                float f = rand.nextFloat() * 0.8F + 0.1F;
+                float f1 = rand.nextFloat() * 0.8F + 0.1F;
+                float f2 = rand.nextFloat() * 0.8F + 0.1F;
+
+                do
+                {
+                    if (itemstack.stackSize <= 0)
+                    {
+                        continue label0;
+                    }
+
+                    int j = rand.nextInt(21) + 10;
+
+                    if (j > itemstack.stackSize)
+                    {
+                        j = itemstack.stackSize;
+                    }
+
+                    itemstack.stackSize -= j;
+                    EntityItem entityitem = new EntityItem(worldObj, posX + (double)f, posY + (double)f1, posZ + (double)f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
+
+                    if (itemstack.hasTagCompound())
+                    {
+                        entityitem.item.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                    }
+
+                    float f3 = 0.05F;
+                    entityitem.motionX = (float)rand.nextGaussian() * f3;
+                    entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
+                    entityitem.motionZ = (float)rand.nextGaussian() * f3;
+                    worldObj.spawnEntityInWorld(entityitem);
+                }
+                while (true);
             }
-
-            float f = rand.nextFloat() * 0.8F + 0.1F;
-            float f1 = rand.nextFloat() * 0.8F + 0.1F;
-            float f2 = rand.nextFloat() * 0.8F + 0.1F;
-
-            do
-            {
-                if (itemstack.stackSize <= 0)
-                {
-                    continue label0;
-                }
-
-                int j = rand.nextInt(21) + 10;
-
-                if (j > itemstack.stackSize)
-                {
-                    j = itemstack.stackSize;
-                }
-
-                itemstack.stackSize -= j;
-                EntityItem entityitem = new EntityItem(worldObj, posX + (double)f, posY + (double)f1, posZ + (double)f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
-
-                if (itemstack.hasTagCompound())
-                {
-                    entityitem.item.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
-                }
-
-                float f3 = 0.05F;
-                entityitem.motionX = (float)rand.nextGaussian() * f3;
-                entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
-                entityitem.motionZ = (float)rand.nextGaussian() * f3;
-                worldObj.spawnEntityInWorld(entityitem);
-            }
-            while (true);
         }
 
         super.setDead();
+
+        if (field_82344_g != null)
+        {
+            field_82344_g.update();
+        }
+    }
+
+    public void travelToTheEnd(int par1)
+    {
+        field_82345_h = false;
+        super.travelToTheEnd(par1);
     }
 
     /**
@@ -326,6 +344,11 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public void onUpdate()
     {
+        if (field_82344_g != null)
+        {
+            field_82344_g.update();
+        }
+
         if (func_70496_j() > 0)
         {
             func_70497_h(func_70496_j() - 1);
@@ -669,8 +692,6 @@ public class EntityMinecart extends Entity implements IInventory
                     }
                 }
             }
-
-            doBlockCollisions();
         }
         else
         {
@@ -711,6 +732,7 @@ public class EntityMinecart extends Entity implements IInventory
             }
         }
 
+        doBlockCollisions();
         rotationPitch = 0.0F;
         double d6 = prevPosX - posX;
         double d7 = prevPosZ - posZ;
@@ -898,7 +920,7 @@ public class EntityMinecart extends Entity implements IInventory
                 par3 += 0.5D;
             }
 
-            return Vec3.getVec3Pool().getVecFromPool(par1, par3, par5);
+            return worldObj.func_82732_R().getVecFromPool(par1, par3, par5);
         }
         else
         {
@@ -1029,8 +1051,8 @@ public class EntityMinecart extends Entity implements IInventory
                 }else{
                     double d4 = par1Entity.posX - posX;
                     double d5 = par1Entity.posZ - posZ;
-                    Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(d4, 0.0D, d5).normalize();
-                    Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
+                    Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(d4, 0.0D, d5).normalize();
+                    Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
                     double d6 = Math.abs(vec3.dotProduct(vec3_1));
 
                     if (d6 < 0.80000001192092896D)

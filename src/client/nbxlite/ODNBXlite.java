@@ -294,7 +294,7 @@ public class ODNBXlite extends OldDaysModule{
         Block.blocksList[gearId].initializeBlock();
         mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(0));
         mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(1));
-        gearRenderID = 33;
+        gearRenderID = 36;
     }
 
     public static int getSkyLightInBounds(int par2){
@@ -545,7 +545,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean isFinite(){
         World world = mod_OldDays.getMinecraft().theWorld;
-        return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && (world==null || world.provider.worldType==0);
+        return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && (world==null || world.provider.dimensionId==0);
     }
 
     public boolean onTick(){
@@ -609,13 +609,13 @@ public class ODNBXlite extends OldDaysModule{
 
     private static void replaceBlocks(){
         try{
-            Block.grass.toptex = 26;
+            Block.grass.toptex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", Block.grass.toptex, "/olddays/grasstop.png", 0, 1, 1);
-            Block.grass.sidetex = 27;
+            Block.grass.sidetex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", Block.grass.sidetex, "/olddays/grassside.png", 0, 1, 1);
-            Block.leaves.fasttex = 41;
+            Block.leaves.fasttex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", Block.leaves.fasttex, "/olddays/leavesfast.png", 0, 1, 1);
-            Block.leaves.fancytex = 42;
+            Block.leaves.fancytex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", Block.leaves.fancytex, "/olddays/leavesfancy.png", 0, 1, 1);
             Block.blocksList[Block.tallGrass.blockID] = null;
             BlockTallGrass2 tallgrass2 = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID, 39)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("tallgrass");

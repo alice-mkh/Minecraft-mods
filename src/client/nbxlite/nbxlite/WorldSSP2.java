@@ -34,7 +34,7 @@ public class WorldSSP2 extends WorldSSP
             setBlockWithNotify(j, l, k, Block.chest.blockID);
             TileEntityChest tileentitychest = (TileEntityChest)getBlockTileEntity(j, l, k);
             if (tileentitychest != null && tileentitychest != null){
-                WeightedRandomChestContent.func_76293_a(rand, bonusChestContent, tileentitychest, 10);
+                WeightedRandomChestContent.generateChestContents(rand, bonusChestContent, tileentitychest, 10);
             }
             return;
         }
@@ -359,10 +359,10 @@ public class WorldSSP2 extends WorldSSP
         }
 
         theProfiler.startSection("mobSpawner");
-        if (provider.worldType!=1){
+        if (provider.dimensionId!=1){
             if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
                 SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.worldType!=0){
+            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                 SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
             } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
                 animalSpawner.func_1150_a(this);
@@ -444,7 +444,7 @@ public class WorldSSP2 extends WorldSSP
             }
 
             theProfiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.worldType==0)
+            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.dimensionId==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
@@ -556,7 +556,7 @@ public class WorldSSP2 extends WorldSSP
      */
     public float getCelestialAngle(float par1)
     {
-        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.worldType==0){
+        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.dimensionId==0){
             return 0.0F;
         }
         if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){

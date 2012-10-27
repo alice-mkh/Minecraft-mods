@@ -57,7 +57,7 @@ public class TextureSpriteFX extends TextureFX
         {
             String spr = enabled ? sprite : sprite2;
             TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
+            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
             BufferedImage bufferedimage = ImageIO.read(texpack.getResourceAsStream(spr));
             if (b){
                 bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource(spr));

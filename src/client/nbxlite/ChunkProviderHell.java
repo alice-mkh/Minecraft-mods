@@ -532,7 +532,7 @@ public class ChunkProviderHell implements IChunkProvider
      */
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
-        if (par1EnumCreatureType == EnumCreatureType.monster && genNetherBridge.func_75048_a(par2, par3, par4))
+        if (par1EnumCreatureType == EnumCreatureType.monster && genNetherBridge.hasStructureAt(par2, par3, par4))
         {
             return genNetherBridge.getSpawnList();
         }
@@ -560,5 +560,10 @@ public class ChunkProviderHell implements IChunkProvider
     public int getLoadedChunkCount()
     {
         return 0;
+    }
+
+    public void func_82695_e(int par1, int par2)
+    {
+        genNetherBridge.generate(this, worldObj, par1, par2, null);
     }
 }

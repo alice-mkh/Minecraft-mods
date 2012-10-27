@@ -256,12 +256,12 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
 
             if (par2Random.nextInt(100) == 0)
             {
-                func_74879_a(par1World, par3StructureBoundingBox, par2Random, 2, 0, i1 - 1, StructureMineshaftPieces.func_78816_a(), 3 + par2Random.nextInt(4));
+                generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 2, 0, i1 - 1, StructureMineshaftPieces.func_78816_a(), 3 + par2Random.nextInt(4));
             }
 
             if (par2Random.nextInt(100) == 0)
             {
-                func_74879_a(par1World, par3StructureBoundingBox, par2Random, 0, 0, i1 + 1, StructureMineshaftPieces.func_78816_a(), 3 + par2Random.nextInt(4));
+                generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 0, 0, i1 + 1, StructureMineshaftPieces.func_78816_a(), 3 + par2Random.nextInt(4));
             }
 
             if (!hasSpiders || spawnerPlaced)

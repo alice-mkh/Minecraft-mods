@@ -24,6 +24,7 @@ public class EntityFX extends Entity
      * The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
      */
     protected float particleBlue;
+    protected float field_82339_as;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;
@@ -33,6 +34,7 @@ public class EntityFX extends Entity
         super(par1World);
         particleAge = 0;
         particleMaxAge = 0;
+        field_82339_as = 1.0F;
         setSize(0.2F, 0.2F);
         yOffset = height / 2.0F;
         setPosition(par2, par4, par6);
@@ -72,6 +74,11 @@ public class EntityFX extends Entity
         particleRed = par1;
         particleGreen = par2;
         particleBlue = par3;
+    }
+
+    public void func_82338_g(float par1)
+    {
+        field_82339_as = par1;
     }
 
     public float getRedColorF()
@@ -140,7 +147,7 @@ public class EntityFX extends Entity
         float f6 = (float)((prevPosY + (posY - prevPosY) * (double)par2) - interpPosY);
         float f7 = (float)((prevPosZ + (posZ - prevPosZ) * (double)par2) - interpPosZ);
         float f8 = net.minecraft.client.Minecraft.oldlighting ? getBrightness(par2) : 1.0F;
-        par1Tessellator.setColorOpaque_F(particleRed * f8, particleGreen * f8, particleBlue * f8);
+        par1Tessellator.setColorRGBA_F(particleRed * f8, particleGreen * f8, particleBlue * f8, field_82339_as);
         par1Tessellator.addVertexWithUV(f5 - par3 * f4 - par6 * f4, f6 - par4 * f4, f7 - par5 * f4 - par7 * f4, f1, f3);
         par1Tessellator.addVertexWithUV((f5 - par3 * f4) + par6 * f4, f6 + par4 * f4, (f7 - par5 * f4) + par7 * f4, f1, f2);
         par1Tessellator.addVertexWithUV(f5 + par3 * f4 + par6 * f4, f6 + par4 * f4, f7 + par5 * f4 + par7 * f4, f, f2);

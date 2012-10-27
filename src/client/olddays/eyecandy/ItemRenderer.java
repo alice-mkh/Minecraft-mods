@@ -23,7 +23,7 @@ public class ItemRenderer
 
     /** Instance of RenderBlocks. */
     private RenderBlocks renderBlocksInstance;
-    private MapItemRenderer mapItemRenderer;
+    public final MapItemRenderer mapItemRenderer;
 
     /** The index of the currently held item (0-8, or -1 if not yet updated) */
     private int equippedItemSlot;
@@ -269,7 +269,7 @@ public class ItemRenderer
 
         if (itemstack != null)
         {
-            int j = Item.itemsList[itemstack.itemID].getColorFromDamage(itemstack.getItemDamage(), 0);
+            int j = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 0);
             float f8 = (float)(j >> 16 & 0xff) / 255F;
             float f13 = (float)(j >> 8 & 0xff) / 255F;
             float f19 = (float)(j & 0xff) / 255F;
@@ -347,7 +347,12 @@ public class ItemRenderer
             tessellator.addVertexWithUV(0 - byte0, 0 - byte0, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
             MapData mapdata = Item.map.getMapData(itemstack, mc.theWorld);
-            mapItemRenderer.renderMap(mc.thePlayer, mc.renderEngine, mapdata);
+
+            if (mapdata != null)
+            {
+                mapItemRenderer.renderMap(mc.thePlayer, mc.renderEngine, mapdata);
+            }
+
             GL11.glPopMatrix();
         }
         else if (itemstack != null)
@@ -458,7 +463,7 @@ public class ItemRenderer
             if (itemstack.getItem().requiresMultipleRenderPasses())
             {
                 renderItem(entityclientplayermp, itemstack, 0);
-                int i1 = Item.itemsList[itemstack.itemID].getColorFromDamage(itemstack.getItemDamage(), 1);
+                int i1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 1);
                 float f33 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f36 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f38 = (float)(i1 & 0xff) / 255F;
@@ -472,7 +477,7 @@ public class ItemRenderer
 
             GL11.glPopMatrix();
         }
-        else
+        else if (!entityclientplayermp.func_82150_aj())
         {
             GL11.glPushMatrix();
             float f7 = 0.8F;
@@ -729,7 +734,7 @@ public class ItemRenderer
     public void drawFirstPersonHand(Render r, int h)
     {
         if (!olddays){
-            ((RenderPlayer)r).drawFirstPersonHand();
+            ((RenderPlayer)r).func_82441_a(mc.thePlayer);
             return;
         }
         ModelBiped modelBipedMain = null;
@@ -742,13 +747,13 @@ public class ItemRenderer
         }
         if (h >= 2){
             modelBipedMain.onGround = 0.0F;
-            modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, mc.thePlayer);
             modelBipedMain.bipedRightArm.render(0.0625F);
             return;
         }
         if (h!=1){
             modelBipedMain.onGround = 0.0F;
-            modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, mc.thePlayer);
         }
         modelBipedMain.bipedRightArm.render(0.0625F);
     }

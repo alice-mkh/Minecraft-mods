@@ -125,7 +125,7 @@ public class EntityItem extends Entity
 
         age++;
 
-        if (age >= 6000)
+        if (!worldObj.isRemote && age >= 6000)
         {
             setDead();
         }
@@ -144,6 +144,11 @@ public class EntityItem extends Entity
         }
 
         if (par1EntityItem.item.getItem() != item.getItem())
+        {
+            return false;
+        }
+
+        if (par1EntityItem.item.hasTagCompound() || item.hasTagCompound())
         {
             return false;
         }
@@ -303,7 +308,7 @@ public class EntityItem extends Entity
      */
     public String getEntityName()
     {
-        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(item.func_77977_a()).toString());
+        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(item.getItemName()).toString());
     }
 
     /**

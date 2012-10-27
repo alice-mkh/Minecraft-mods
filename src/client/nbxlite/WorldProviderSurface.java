@@ -15,7 +15,7 @@ public class WorldProviderSurface extends WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        if (worldType==0 && ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
+        if (dimensionId==0 && ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
             worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.betaSky, 0.5F, 0.0F, OldBiomeGenBase.sky);
         }else{
             super.registerWorldChunkManager();
@@ -29,7 +29,7 @@ public class WorldProviderSurface extends WorldProvider
     {
         if (terrainType == WorldType.FLAT)
         {
-            return new ChunkProviderFlat(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
+            return new ChunkProviderFlat(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled(), field_82913_c);
         }
         else
         {
@@ -131,7 +131,10 @@ public class WorldProviderSurface extends WorldProvider
         return 1.0D;
     }
 
-    public String func_80007_l()
+    /**
+     * Returns the dimension's name, e.g. "The End", "Nether", or "Overworld".
+     */
+    public String getDimensionName()
     {
         return "Overworld";
     }

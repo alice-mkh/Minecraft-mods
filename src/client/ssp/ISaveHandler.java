@@ -50,7 +50,7 @@ public interface ISaveHandler
     public abstract File getMapFileFromName(String s);
 
     /**
-     * Returns the name of the directory where world information is saved
+     * Returns the name of the directory where world information is saved.
      */
     public abstract String getSaveDirectoryName();
 }

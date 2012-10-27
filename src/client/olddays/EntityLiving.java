@@ -15,12 +15,22 @@ public abstract class EntityLiving extends Entity
     public static int nonewmobs = 10;
     public static boolean toolbreakanim = true;
     public static boolean score = false;
+    public static boolean oldswing = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
             return true;
         }
         if (this instanceof EntityIronGolem){
+            return true;
+        }
+        if (this instanceof EntityWitch){
+            return true;
+        }
+        if (this instanceof EntityBat){
+            return true;
+        }
+        if (this instanceof EntityWither){
             return true;
         }
         return newai;
@@ -120,6 +130,22 @@ public abstract class EntityLiving extends Entity
         return 0;
     }
 
+    private static final float field_82177_b[] =
+    {
+        0.0F, 0.0F, 0.005F, 0.01F
+    };
+    private static final float field_82178_c[] =
+    {
+        0.0F, 0.0F, 0.05F, 0.1F
+    };
+    private static final float field_82176_d[] =
+    {
+        0.0F, 0.0F, 0.005F, 0.02F
+    };
+    public static final float field_82181_as[] =
+    {
+        0.0F, 0.01F, 0.07F, 0.2F
+    };
     public int maxHurtResistantTime;
     public float field_70769_ao;
     public float field_70770_ap;
@@ -174,7 +200,7 @@ public abstract class EntityLiving extends Entity
     protected int carryoverDamage;
 
     /** Number of ticks since this EntityLiving last produced its sound */
-    private int livingSoundTime;
+    public int livingSoundTime;
 
     /**
      * The amount of time remaining this entity should act 'hurt'. (Visual appearance of red tint)
@@ -206,7 +232,12 @@ public abstract class EntityLiving extends Entity
     public float field_70730_aX;
     public float prevLegYaw;
     public float legYaw;
-    public float field_70754_ba;
+
+    /**
+     * Only relevant when legYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently
+     * are.
+     */
+    public float legSwing;
 
     /** The most recent player that has attacked this entity */
     protected EntityPlayer attackingPlayer;
@@ -251,6 +282,14 @@ public abstract class EntityLiving extends Entity
 
     /** If -1 there is no maximum distance */
     private float maximumHomeDistance;
+    private ItemStack field_82182_bS[];
+    protected float field_82174_bp[];
+    private ItemStack field_82180_bT[];
+    public boolean field_82175_bq;
+    public int field_82173_br;
+    protected boolean field_82172_bs;
+    private boolean field_82179_bU;
+    protected boolean field_83001_bt;
 
     /**
      * The number of updates over which the new position and rotation are to be applied to the entity.
@@ -333,6 +372,14 @@ public abstract class EntityLiving extends Entity
         potionsNeedUpdate = true;
         homePosition = new ChunkCoordinates(0, 0, 0);
         maximumHomeDistance = -1F;
+        field_82182_bS = new ItemStack[5];
+        field_82174_bp = new float[5];
+        field_82180_bT = new ItemStack[5];
+        field_82175_bq = false;
+        field_82173_br = 0;
+        field_82172_bs = false;
+        field_82179_bU = false;
+        field_83001_bt = false;
         field_70706_bo = 0.0F;
         lastDamage = 0;
         entityAge = 0;
@@ -356,6 +403,12 @@ public abstract class EntityLiving extends Entity
         field_70769_ao = (float)Math.random() * 12398F;
         rotationYaw = (float)(Math.random() * Math.PI * 2D);
         rotationYawHead = rotationYaw;
+
+        for (int i = 0; i < field_82174_bp.length; i++)
+        {
+            field_82174_bp[i] = 0.05F;
+        }
+
         stepHeight = 0.5F;
     }
 
@@ -481,6 +534,33 @@ public abstract class EntityLiving extends Entity
     }
 
     /**
+     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
+     * and deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
+     */
+    protected void updateFallState(double par1, boolean par3)
+    {
+        if (par3 && fallDistance > 0.0F)
+        {
+            int i = MathHelper.floor_double(posX);
+            int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
+            int k = MathHelper.floor_double(posZ);
+            int l = worldObj.getBlockId(i, j, k);
+
+            if (l == 0 && worldObj.getBlockId(i, j - 1, k) == Block.fence.blockID)
+            {
+                l = worldObj.getBlockId(i, j - 1, k);
+            }
+
+            if (l > 0)
+            {
+                Block.blocksList[l].onFallenUpon(worldObj, i, j, k, this, fallDistance);
+            }
+        }
+
+        super.updateFallState(par1, par3);
+    }
+
+    /**
      * Returns true if entity is within home distance from current position
      */
     public boolean isWithinHomeDistanceCurrentPosition()
@@ -535,6 +615,7 @@ public abstract class EntityLiving extends Entity
     protected void entityInit()
     {
         dataWatcher.addObject(8, Integer.valueOf(field_70748_f));
+        dataWatcher.addObject(9, Byte.valueOf((byte)0));
     }
 
     /**
@@ -542,7 +623,7 @@ public abstract class EntityLiving extends Entity
      */
     public boolean canEntityBeSeen(Entity par1Entity)
     {
-        return worldObj.rayTraceBlocks(Vec3.getVec3Pool().getVecFromPool(posX, posY + (double)getEyeHeight(), posZ), Vec3.getVec3Pool().getVecFromPool(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
+        return worldObj.rayTraceBlocks(worldObj.func_82732_R().getVecFromPool(posX, posY + (double)getEyeHeight(), posZ), worldObj.func_82732_R().getVecFromPool(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
     }
 
     /**
@@ -743,7 +824,16 @@ public abstract class EntityLiving extends Entity
      */
     protected int decreaseAirSupply(int par1)
     {
-        return par1 - 1;
+        int i = EnchantmentHelper.getRespiration(this);
+
+        if (i > 0 && rand.nextInt(i + 1) > 0)
+        {
+            return par1;
+        }
+        else
+        {
+            return par1 - 1;
+        }
     }
 
     /**
@@ -809,6 +899,20 @@ public abstract class EntityLiving extends Entity
     public void onUpdate()
     {
         super.onUpdate();
+
+        if (!worldObj.isRemote)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                ItemStack itemstack = getCurrentItemOrArmor(i);
+
+                if (!ItemStack.areItemStacksEqual(itemstack, field_82180_bT[i]) && worldObj instanceof WorldServer)
+                {
+                    ((WorldServer)worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet5PlayerInventory(entityId, i, itemstack));
+                    field_82180_bT[i] = itemstack != null ? itemstack.copy() : null;
+                }
+            }
+        }
 
         if (arrowHitTempCounter > 0)
         {
@@ -970,6 +1074,11 @@ public abstract class EntityLiving extends Entity
             return false;
         }
 
+        if ((par1DamageSource == DamageSource.field_82728_o || par1DamageSource == DamageSource.field_82729_p) && getCurrentItemOrArmor(4) != null)
+        {
+            par2 = (int)((float)par2 * 0.55F);
+        }
+
         legYaw = 1.5F;
         boolean flag = true;
 
@@ -1094,7 +1203,22 @@ public abstract class EntityLiving extends Entity
      */
     public int getTotalArmorValue()
     {
-        return 0;
+        int i = 0;
+        ItemStack aitemstack[] = getLastActiveItems();
+        int j = aitemstack.length;
+
+        for (int k = 0; k < j; k++)
+        {
+            ItemStack itemstack = aitemstack[k];
+
+            if (itemstack != null && (itemstack.getItem() instanceof ItemArmor))
+            {
+                int l = ((ItemArmor)itemstack.getItem()).damageReduceAmount;
+                i += l;
+            }
+        }
+
+        return i;
     }
 
     protected void damageArmor(int i)
@@ -1141,9 +1265,17 @@ public abstract class EntityLiving extends Entity
      */
     protected void damageEntity(DamageSource par1DamageSource, int par2)
     {
-        par2 = applyArmorCalculations(par1DamageSource, par2);
-        par2 = applyPotionDamageCalculations(par1DamageSource, par2);
-        health -= par2;
+        if (field_83001_bt)
+        {
+            return;
+        }
+        else
+        {
+            par2 = applyArmorCalculations(par1DamageSource, par2);
+            par2 = applyPotionDamageCalculations(par1DamageSource, par2);
+            health -= par2;
+            return;
+        }
     }
 
     /**
@@ -1167,7 +1299,7 @@ public abstract class EntityLiving extends Entity
      */
     protected String getHurtSound()
     {
-        return "damage.hurtflesh";
+        return "damage.hit";
     }
 
     /**
@@ -1175,7 +1307,7 @@ public abstract class EntityLiving extends Entity
      */
     protected String getDeathSound()
     {
-        return "damage.hurtflesh";
+        return "damage.hit";
     }
 
     /**
@@ -1224,10 +1356,10 @@ public abstract class EntityLiving extends Entity
 
             if (entity instanceof EntityPlayer)
             {
-                i = EnchantmentHelper.getLootingModifier(((EntityPlayer)entity).inventory);
+                i = EnchantmentHelper.getLootingModifier((EntityLiving)entity);
             }
 
-            if (!isChild())
+            if (!isChild() && worldObj.func_82736_K().func_82766_b("doMobLoot"))
             {
                 if (survivaltest){
                     if (this instanceof EntitySheep || this instanceof EntityPig){
@@ -1250,6 +1382,7 @@ public abstract class EntityLiving extends Entity
                 }else{
                     dropFewItems(recentlyHit > 0, i);
                 }
+                func_82160_b(recentlyHit > 0, i);
 
                 if (recentlyHit > 0 && rareloot)
                 {
@@ -1479,7 +1612,7 @@ public abstract class EntityLiving extends Entity
         }
 
         legYaw += (f4 - legYaw) * 0.4F;
-        field_70754_ba += legYaw;
+        legSwing += legYaw;
     }
 
     /**
@@ -1507,24 +1640,47 @@ public abstract class EntityLiving extends Entity
         par1NBTTagCompound.setShort("HurtTime", (short)hurtTime);
         par1NBTTagCompound.setShort("DeathTime", (short)deathTime);
         par1NBTTagCompound.setShort("AttackTime", (short)attackTime);
+        par1NBTTagCompound.setBoolean("CanPickUpLoot", field_82172_bs);
+        par1NBTTagCompound.setBoolean("PersistenceRequired", field_82179_bU);
+        par1NBTTagCompound.setBoolean("Invulnerable", field_83001_bt);
+        NBTTagList nbttaglist = new NBTTagList();
+
+        for (int i = 0; i < field_82182_bS.length; i++)
+        {
+            NBTTagCompound nbttagcompound = new NBTTagCompound();
+
+            if (field_82182_bS[i] != null)
+            {
+                field_82182_bS[i].writeToNBT(nbttagcompound);
+            }
+
+            nbttaglist.appendTag(nbttagcompound);
+        }
+
+        par1NBTTagCompound.setTag("Equipment", nbttaglist);
 
         if (!activePotionsMap.isEmpty())
         {
-            NBTTagList nbttaglist = new NBTTagList();
-            NBTTagCompound nbttagcompound;
+            NBTTagList nbttaglist1 = new NBTTagList();
+            PotionEffect potioneffect;
 
-            for (Iterator iterator = activePotionsMap.values().iterator(); iterator.hasNext(); nbttaglist.appendTag(nbttagcompound))
+            for (Iterator iterator = activePotionsMap.values().iterator(); iterator.hasNext(); nbttaglist1.appendTag(potioneffect.func_82719_a(new NBTTagCompound())))
             {
-                PotionEffect potioneffect = (PotionEffect)iterator.next();
-                nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Id", (byte)potioneffect.getPotionID());
-                nbttagcompound.setByte("Amplifier", (byte)potioneffect.getAmplifier());
-                nbttagcompound.setInteger("Duration", potioneffect.getDuration());
+                potioneffect = (PotionEffect)iterator.next();
             }
 
-            par1NBTTagCompound.setTag("ActiveEffects", nbttaglist);
-            par1NBTTagCompound.setInteger("PersistentId", persistentId);
+            par1NBTTagCompound.setTag("ActiveEffects", nbttaglist1);
         }
+
+        NBTTagList nbttaglist2 = new NBTTagList();
+
+        for (int j = 0; j < field_82174_bp.length; j++)
+        {
+            nbttaglist2.appendTag(new NBTTagFloat((new StringBuilder()).append(j).append("").toString(), field_82174_bp[j]));
+        }
+
+        par1NBTTagCompound.setTag("DropChances", nbttaglist2);
+        par1NBTTagCompound.setInteger("PersistentId", persistentId);
     }
 
     /**
@@ -1547,18 +1703,39 @@ public abstract class EntityLiving extends Entity
         hurtTime = par1NBTTagCompound.getShort("HurtTime");
         deathTime = par1NBTTagCompound.getShort("DeathTime");
         attackTime = par1NBTTagCompound.getShort("AttackTime");
+        field_82172_bs = par1NBTTagCompound.getBoolean("CanPickUpLoot");
+        field_82179_bU = par1NBTTagCompound.getBoolean("PersistenceRequired");
+        field_83001_bt = par1NBTTagCompound.getBoolean("Invulnerable");
+
+        if (par1NBTTagCompound.hasKey("Equipment"))
+        {
+            NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Equipment");
+
+            for (int i = 0; i < field_82182_bS.length; i++)
+            {
+                field_82182_bS[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound)nbttaglist.tagAt(i));
+            }
+        }
 
         if (par1NBTTagCompound.hasKey("ActiveEffects"))
         {
-            NBTTagList nbttaglist = par1NBTTagCompound.getTagList("ActiveEffects");
+            NBTTagList nbttaglist1 = par1NBTTagCompound.getTagList("ActiveEffects");
 
-            for (int i = 0; i < nbttaglist.tagCount(); i++)
+            for (int j = 0; j < nbttaglist1.tagCount(); j++)
             {
-                NBTTagCompound nbttagcompound = (NBTTagCompound)nbttaglist.tagAt(i);
-                byte byte0 = nbttagcompound.getByte("Id");
-                byte byte1 = nbttagcompound.getByte("Amplifier");
-                int j = nbttagcompound.getInteger("Duration");
-                activePotionsMap.put(Integer.valueOf(byte0), new PotionEffect(byte0, j, byte1));
+                NBTTagCompound nbttagcompound = (NBTTagCompound)nbttaglist1.tagAt(j);
+                PotionEffect potioneffect = PotionEffect.func_82722_b(nbttagcompound);
+                activePotionsMap.put(Integer.valueOf(potioneffect.getPotionID()), potioneffect);
+            }
+        }
+
+        if (par1NBTTagCompound.hasKey("DropChances"))
+        {
+            NBTTagList nbttaglist2 = par1NBTTagCompound.getTagList("DropChances");
+
+            for (int k = 0; k < nbttaglist2.tagCount(); k++)
+            {
+                field_82174_bp[k] = ((NBTTagFloat)nbttaglist2.tagAt(k)).data;
             }
         }
         persistentId = par1NBTTagCompound.getInteger("PersistentId");
@@ -1706,7 +1883,7 @@ public abstract class EntityLiving extends Entity
 
                     if (entity.canBePushed())
                     {
-                        entity.applyEntityCollision(this);
+                        func_82167_n(entity);
                     }
                 }
                 while (true);
@@ -1714,6 +1891,108 @@ public abstract class EntityLiving extends Entity
         }
 
         worldObj.theProfiler.endSection();
+        worldObj.theProfiler.startSection("looting");
+
+        if (!worldObj.isRemote && field_82172_bs && worldObj.func_82736_K().func_82766_b("mobGriefing"))
+        {
+            List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, boundingBox.expand(1.0D, 0.0D, 1.0D));
+            Iterator iterator1 = list1.iterator();
+
+            do
+            {
+                if (!iterator1.hasNext())
+                {
+                    break;
+                }
+
+                EntityItem entityitem = (EntityItem)iterator1.next();
+
+                if (!entityitem.isDead && entityitem.item != null)
+                {
+                    ItemStack itemstack = entityitem.item;
+                    int i = func_82159_b(itemstack);
+
+                    if (i > -1)
+                    {
+                        boolean flag = true;
+                        ItemStack itemstack1 = getCurrentItemOrArmor(i);
+
+                        if (itemstack1 != null)
+                        {
+                            if (i == 0)
+                            {
+                                if ((itemstack.getItem() instanceof ItemSword) && !(itemstack1.getItem() instanceof ItemSword))
+                                {
+                                    flag = true;
+                                }
+                                else if ((itemstack.getItem() instanceof ItemSword) && (itemstack1.getItem() instanceof ItemSword))
+                                {
+                                    ItemSword itemsword = (ItemSword)itemstack.getItem();
+                                    ItemSword itemsword1 = (ItemSword)itemstack1.getItem();
+
+                                    if (itemsword.func_82803_g() == itemsword1.func_82803_g())
+                                    {
+                                        flag = itemstack.getItemDamage() > itemstack1.getItemDamage() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
+                                    }
+                                    else
+                                    {
+                                        flag = itemsword.func_82803_g() > itemsword1.func_82803_g();
+                                    }
+                                }
+                                else
+                                {
+                                    flag = false;
+                                }
+                            }
+                            else if ((itemstack.getItem() instanceof ItemArmor) && !(itemstack1.getItem() instanceof ItemArmor))
+                            {
+                                flag = true;
+                            }
+                            else if ((itemstack.getItem() instanceof ItemArmor) && (itemstack1.getItem() instanceof ItemArmor))
+                            {
+                                ItemArmor itemarmor = (ItemArmor)itemstack.getItem();
+                                ItemArmor itemarmor1 = (ItemArmor)itemstack1.getItem();
+
+                                if (itemarmor.damageReduceAmount == itemarmor1.damageReduceAmount)
+                                {
+                                    flag = itemstack.getItemDamage() > itemstack1.getItemDamage() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
+                                }
+                                else
+                                {
+                                    flag = itemarmor.damageReduceAmount > itemarmor1.damageReduceAmount;
+                                }
+                            }
+                            else
+                            {
+                                flag = false;
+                            }
+                        }
+
+                        if (flag)
+                        {
+                            if (itemstack1 != null && rand.nextFloat() - 0.1F < field_82174_bp[i])
+                            {
+                                entityDropItem(itemstack1, 0.0F);
+                            }
+
+                            func_70062_b(i, itemstack);
+                            field_82174_bp[i] = 2.0F;
+                            field_82179_bU = true;
+                            onItemPickup(entityitem, 1);
+                            entityitem.setDead();
+                        }
+                    }
+                }
+            }
+            while (true);
+        }
+
+        worldObj.theProfiler.endSection();
+    }
+
+    protected void func_82167_n(Entity par1Entity)
+    {
+        par1Entity.applyEntityCollision(this);
     }
 
     /**
@@ -1780,6 +2059,11 @@ public abstract class EntityLiving extends Entity
      */
     protected void despawnEntity()
     {
+        if (field_82179_bU)
+        {
+            return;
+        }
+
         EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, -1D);
 
         if (entityplayer != null)
@@ -1935,6 +2219,28 @@ public abstract class EntityLiving extends Entity
         }
     }
 
+    protected void func_82168_bl()
+    {
+        int i = func_82166_i();
+
+        if (field_82175_bq)
+        {
+            field_82173_br++;
+
+            if (field_82173_br >= i)
+            {
+                field_82173_br = 0;
+                field_82175_bq = false;
+            }
+        }
+        else
+        {
+            field_82173_br = 0;
+        }
+
+        swingProgress = (float)field_82173_br / (float)i;
+    }
+
     /**
      * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
      * use in wolves.
@@ -1995,7 +2301,7 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
-        if (!allow(EntityList.getEntityString(this), worldObj.provider.worldType)){
+        if (!allow(EntityList.getEntityString(this), worldObj.provider.dimensionId)){
             return false;
         }
         return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
@@ -2031,14 +2337,14 @@ public abstract class EntityLiving extends Entity
     {
         if (par1 == 1.0F)
         {
-            return Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ);
+            return worldObj.func_82732_R().getVecFromPool(posX, posY, posZ);
         }
         else
         {
             double d = prevPosX + (posX - prevPosX) * (double)par1;
             double d1 = prevPosY + (posY - prevPosY) * (double)par1;
             double d2 = prevPosZ + (posZ - prevPosZ) * (double)par1;
-            return Vec3.getVec3Pool().getVecFromPool(d, d1, d2);
+            return worldObj.func_82732_R().getVecFromPool(d, d1, d2);
         }
     }
 
@@ -2061,7 +2367,7 @@ public abstract class EntityLiving extends Entity
             float f2 = MathHelper.sin(-rotationYaw * 0.01745329F - (float)Math.PI);
             float f4 = -MathHelper.cos(-rotationPitch * 0.01745329F);
             float f6 = MathHelper.sin(-rotationPitch * 0.01745329F);
-            return Vec3.getVec3Pool().getVecFromPool(f2 * f4, f6, f * f4);
+            return worldObj.func_82732_R().getVecFromPool(f2 * f4, f6, f * f4);
         }
         else
         {
@@ -2071,7 +2377,7 @@ public abstract class EntityLiving extends Entity
             float f7 = MathHelper.sin(-f3 * 0.01745329F - (float)Math.PI);
             float f8 = -MathHelper.cos(-f1 * 0.01745329F);
             float f9 = MathHelper.sin(-f1 * 0.01745329F);
-            return Vec3.getVec3Pool().getVecFromPool(f7 * f8, f9, f5 * f8);
+            return worldObj.func_82732_R().getVecFromPool(f7 * f8, f9, f5 * f8);
         }
     }
 
@@ -2100,14 +2406,6 @@ public abstract class EntityLiving extends Entity
     public int getMaxSpawnedInChunk()
     {
         return 4;
-    }
-
-    /**
-     * Returns the item that this EntityLiving is holding, if any.
-     */
-    public ItemStack getHeldItem()
-    {
-        return null;
     }
 
     public void handleHealthUpdate(byte par1)
@@ -2177,28 +2475,49 @@ public abstract class EntityLiving extends Entity
             {
                 if (activePotionsMap.isEmpty())
                 {
+                    dataWatcher.updateObject(9, Byte.valueOf((byte)0));
                     dataWatcher.updateObject(8, Integer.valueOf(0));
+                    func_82142_c(false);
                 }
                 else
                 {
                     int i = PotionHelper.calcPotionLiquidColor(activePotionsMap.values());
+                    dataWatcher.updateObject(9, Byte.valueOf(((byte)(PotionHelper.func_82817_b(activePotionsMap.values()) ? 1 : 0))));
                     dataWatcher.updateObject(8, Integer.valueOf(i));
+                    func_82142_c(func_82165_m(Potion.invisibility.id));
                 }
             }
 
             potionsNeedUpdate = false;
         }
 
-        if (rand.nextBoolean())
-        {
-            int j = dataWatcher.getWatchableObjectInt(8);
+        int j = dataWatcher.getWatchableObjectInt(8);
+        boolean flag = dataWatcher.getWatchableObjectByte(9) > 0;
 
-            if (j > 0)
+        if (j > 0)
+        {
+            boolean flag1 = false;
+
+            if (!func_82150_aj())
+            {
+                flag1 = rand.nextBoolean();
+            }
+            else
+            {
+                flag1 = rand.nextInt(15) == 0;
+            }
+
+            if (flag)
+            {
+                flag1 &= rand.nextInt(5) == 0;
+            }
+
+            if (flag1 && j > 0)
             {
                 double d = (double)(j >> 16 & 0xff) / 255D;
                 double d1 = (double)(j >> 8 & 0xff) / 255D;
                 double d2 = (double)(j >> 0 & 0xff) / 255D;
-                worldObj.spawnParticle("mobSpell", posX + (rand.nextDouble() - 0.5D) * (double)width, (posY + rand.nextDouble() * (double)height) - (double)yOffset, posZ + (rand.nextDouble() - 0.5D) * (double)width, d, d1, d2);
+                worldObj.spawnParticle(flag ? "mobSpellAmbient" : "mobSpell", posX + (rand.nextDouble() - 0.5D) * (double)width, (posY + rand.nextDouble() * (double)height) - (double)yOffset, posZ + (rand.nextDouble() - 0.5D) * (double)width, d, d1, d2);
             }
         }
     }
@@ -2229,6 +2548,11 @@ public abstract class EntityLiving extends Entity
     public Collection getActivePotionEffects()
     {
         return activePotionsMap.values();
+    }
+
+    public boolean func_82165_m(int par1)
+    {
+        return activePotionsMap.containsKey(Integer.valueOf(par1));
     }
 
     public boolean isPotionActive(Potion par1Potion)
@@ -2297,6 +2621,16 @@ public abstract class EntityLiving extends Entity
         activePotionsMap.remove(Integer.valueOf(par1));
     }
 
+    public void func_82170_o(int par1)
+    {
+        PotionEffect potioneffect = (PotionEffect)activePotionsMap.remove(Integer.valueOf(par1));
+
+        if (potioneffect != null)
+        {
+            onFinishedPotionEffect(potioneffect);
+        }
+    }
+
     protected void onNewPotionEffect(PotionEffect par1PotionEffect)
     {
         potionsNeedUpdate = true;
@@ -2316,7 +2650,7 @@ public abstract class EntityLiving extends Entity
      * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
      * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
      */
-    protected float getSpeedModifier()
+    public float getSpeedModifier()
     {
         float f = 1.0F;
 
@@ -2367,10 +2701,10 @@ public abstract class EntityLiving extends Entity
         if (toolbreakanim){
             for (int i = 0; i < 5; i++)
             {
-                Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
+                Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
                 vec3.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-                Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
+                Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
                 vec3_1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3_1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
                 vec3_1 = vec3_1.addVector(posX, posY + (double)getEyeHeight(), posZ);
@@ -2387,5 +2721,363 @@ public abstract class EntityLiving extends Entity
     public Entity getCurrentTarget()
     {
         return currentTarget;
+    }
+
+    public int func_82143_as()
+    {
+        if (getAttackTarget() == null)
+        {
+            return 3;
+        }
+
+        int i = (int)((float)health - (float)getMaxHealth() * 0.33F);
+        i -= (3 - worldObj.difficultySetting) * 4;
+
+        if (i < 0)
+        {
+            i = 0;
+        }
+
+        return i + 3;
+    }
+
+    /**
+     * Returns the item that this EntityLiving is holding, if any.
+     */
+    public ItemStack getHeldItem()
+    {
+        return field_82182_bS[0];
+    }
+
+    /**
+     * 0 = item, 1-n is armor
+     */
+    public ItemStack getCurrentItemOrArmor(int par1)
+    {
+        return field_82182_bS[par1];
+    }
+
+    public ItemStack func_82169_q(int par1)
+    {
+        return field_82182_bS[par1 + 1];
+    }
+
+    public void func_70062_b(int par1, ItemStack par2ItemStack)
+    {
+        field_82182_bS[par1] = par2ItemStack;
+    }
+
+    public ItemStack[] getLastActiveItems()
+    {
+        return field_82182_bS;
+    }
+
+    protected void func_82160_b(boolean par1, int par2)
+    {
+        for (int i = 0; i < getLastActiveItems().length; i++)
+        {
+            ItemStack itemstack = getCurrentItemOrArmor(i);
+            boolean flag = field_82174_bp[i] > 1.0F;
+
+            if (itemstack == null || !par1 && !flag || rand.nextFloat() - (float)par2 * 0.01F >= field_82174_bp[i])
+            {
+                continue;
+            }
+
+            if (!flag && itemstack.isItemStackDamageable())
+            {
+                int j = Math.max(itemstack.getMaxDamage() - 25, 1);
+                int k = itemstack.getMaxDamage() - rand.nextInt(rand.nextInt(j) + 1);
+
+                if (k > j)
+                {
+                    k = j;
+                }
+
+                if (k < 1)
+                {
+                    k = 1;
+                }
+
+                itemstack.setItemDamage(k);
+            }
+
+            entityDropItem(itemstack, 0.0F);
+        }
+    }
+
+    protected void func_82164_bB()
+    {
+        if (rand.nextFloat() < field_82176_d[worldObj.difficultySetting])
+        {
+            int i = rand.nextInt(2);
+            float f = worldObj.difficultySetting != 3 ? 0.25F : 0.1F;
+
+            if (rand.nextFloat() < 0.07F)
+            {
+                i++;
+            }
+
+            if (rand.nextFloat() < 0.07F)
+            {
+                i++;
+            }
+
+            if (rand.nextFloat() < 0.07F)
+            {
+                i++;
+            }
+
+            for (int j = 3; j >= 0; j--)
+            {
+                ItemStack itemstack = func_82169_q(j);
+
+                if (j < 3 && rand.nextFloat() < f)
+                {
+                    break;
+                }
+
+                if (itemstack != null)
+                {
+                    continue;
+                }
+
+                Item item = func_82161_a(j + 1, i);
+
+                if (item != null)
+                {
+                    func_70062_b(j + 1, new ItemStack(item));
+                }
+            }
+        }
+    }
+
+    /**
+     * Called whenever an item is picked up from walking over it. Args: pickedUpEntity, stackSize
+     */
+    public void onItemPickup(Entity par1Entity, int par2)
+    {
+        if (!par1Entity.isDead && !worldObj.isRemote)
+        {
+            EntityTracker entitytracker = ((WorldServer)worldObj).getEntityTracker();
+
+            if (par1Entity instanceof EntityItem)
+            {
+                entitytracker.sendPacketToAllPlayersTrackingEntity(par1Entity, new Packet22Collect(par1Entity.entityId, entityId));
+            }
+
+            if (par1Entity instanceof EntityArrow)
+            {
+                entitytracker.sendPacketToAllPlayersTrackingEntity(par1Entity, new Packet22Collect(par1Entity.entityId, entityId));
+            }
+
+            if (par1Entity instanceof EntityXPOrb)
+            {
+                entitytracker.sendPacketToAllPlayersTrackingEntity(par1Entity, new Packet22Collect(par1Entity.entityId, entityId));
+            }
+        }
+    }
+
+    public static int func_82159_b(ItemStack par0ItemStack)
+    {
+        if (par0ItemStack.itemID == Block.pumpkin.blockID || par0ItemStack.itemID == Item.field_82799_bQ.shiftedIndex)
+        {
+            return 4;
+        }
+
+        if (par0ItemStack.getItem() instanceof ItemArmor)
+        {
+            switch (((ItemArmor)par0ItemStack.getItem()).armorType)
+            {
+                case 3:
+                    return 1;
+                case 2:
+                    return 2;
+                case 1:
+                    return 3;
+                case 0:
+                    return 4;
+            }
+        }
+
+        return 0;
+    }
+
+    public static Item func_82161_a(int par0, int par1)
+    {
+        switch (par0)
+        {
+            case 4:
+
+                if (par1 == 0)
+                {
+                    return Item.helmetLeather;
+                }
+
+                if (par1 == 1)
+                {
+                    return Item.helmetGold;
+                }
+
+                if (par1 == 2)
+                {
+                    return Item.helmetChain;
+                }
+
+                if (par1 == 3)
+                {
+                    return Item.helmetSteel;
+                }
+
+                if (par1 == 4)
+                {
+                    return Item.helmetDiamond;
+                }
+
+            case 3:
+
+                if (par1 == 0)
+                {
+                    return Item.plateLeather;
+                }
+
+                if (par1 == 1)
+                {
+                    return Item.plateGold;
+                }
+
+                if (par1 == 2)
+                {
+                    return Item.plateChain;
+                }
+
+                if (par1 == 3)
+                {
+                    return Item.plateSteel;
+                }
+
+                if (par1 == 4)
+                {
+                    return Item.plateDiamond;
+                }
+
+            case 2:
+
+                if (par1 == 0)
+                {
+                    return Item.legsLeather;
+                }
+
+                if (par1 == 1)
+                {
+                    return Item.legsGold;
+                }
+
+                if (par1 == 2)
+                {
+                    return Item.legsChain;
+                }
+
+                if (par1 == 3)
+                {
+                    return Item.legsSteel;
+                }
+
+                if (par1 == 4)
+                {
+                    return Item.legsDiamond;
+                }
+
+            case 1:
+
+                if (par1 == 0)
+                {
+                    return Item.bootsLeather;
+                }
+
+                if (par1 == 1)
+                {
+                    return Item.bootsGold;
+                }
+
+                if (par1 == 2)
+                {
+                    return Item.bootsChain;
+                }
+
+                if (par1 == 3)
+                {
+                    return Item.bootsSteel;
+                }
+
+                if (par1 == 4)
+                {
+                    return Item.bootsDiamond;
+                }
+
+            default:
+                return null;
+        }
+    }
+
+    protected void func_82162_bC()
+    {
+        if (getHeldItem() != null && rand.nextFloat() < field_82177_b[worldObj.difficultySetting])
+        {
+            EnchantmentHelper.addRandomEnchantment(rand, getHeldItem(), 5);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            ItemStack itemstack = func_82169_q(i);
+
+            if (itemstack != null && rand.nextFloat() < field_82178_c[worldObj.difficultySetting])
+            {
+                EnchantmentHelper.addRandomEnchantment(rand, itemstack, 5);
+            }
+        }
+    }
+
+    public void func_82163_bD()
+    {
+    }
+
+    private int func_82166_i()
+    {
+        if (isPotionActive(Potion.digSpeed))
+        {
+            return (oldswing ? 8 : 6) - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
+        }
+
+        if (isPotionActive(Potion.digSlowdown))
+        {
+            return (oldswing ? 8 : 6) + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
+        }
+        else
+        {
+            return (oldswing ? 8 : 6);
+        }
+    }
+
+    /**
+     * Swings the item the player is holding.
+     */
+    public void swingItem()
+    {
+        if (!field_82175_bq || field_82173_br >= func_82166_i() / 2 || field_82173_br < 0)
+        {
+            field_82173_br = -1;
+            field_82175_bq = true;
+
+            if (worldObj instanceof WorldServer)
+            {
+                ((WorldServer)worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet18Animation(this, 1));
+            }
+        }
+    }
+
+    public boolean func_82171_bF()
+    {
+        return false;
     }
 }

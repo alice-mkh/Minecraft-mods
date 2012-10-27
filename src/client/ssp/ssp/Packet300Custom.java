@@ -53,7 +53,7 @@ public class Packet300Custom extends Packet{
 
     public void processPacket(NetHandler par1NetHandler){
         if (par1NetHandler.getClass() == net.minecraft.src.NetHandler.class){
-            par1NetHandler.registerPacket(this);
+            par1NetHandler.unexpectedPacket(this);
         }
         toClient = !par1NetHandler.isServerHandler();
         Minecraft mc = Minecraft.getMinecraft();

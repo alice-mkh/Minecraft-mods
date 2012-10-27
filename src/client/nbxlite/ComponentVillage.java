@@ -7,12 +7,14 @@ abstract class ComponentVillage extends StructureComponent
 {
     /** The number of villagers that have been spawned in this component. */
     private int villagersSpawned;
-    protected ComponentVillageStartPiece field_74897_k;
+
+    /** The starting piece of the village. */
+    protected ComponentVillageStartPiece startPiece;
 
     protected ComponentVillage(ComponentVillageStartPiece par1ComponentVillageStartPiece, int par2)
     {
         super(par2);
-        field_74897_k = par1ComponentVillageStartPiece;
+        startPiece = par1ComponentVillageStartPiece;
     }
 
     /**
@@ -24,13 +26,10 @@ abstract class ComponentVillage extends StructureComponent
         {
             case 2:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.minX - 1, boundingBox.minY + par4, boundingBox.minZ + par5, 1, getComponentType());
-
             case 0:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.minX - 1, boundingBox.minY + par4, boundingBox.minZ + par5, 1, getComponentType());
-
             case 1:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.minX + par5, boundingBox.minY + par4, boundingBox.minZ - 1, 2, getComponentType());
-
             case 3:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.minX + par5, boundingBox.minY + par4, boundingBox.minZ - 1, 2, getComponentType());
         }
@@ -47,13 +46,10 @@ abstract class ComponentVillage extends StructureComponent
         {
             case 2:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.maxX + 1, boundingBox.minY + par4, boundingBox.minZ + par5, 3, getComponentType());
-
             case 0:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.maxX + 1, boundingBox.minY + par4, boundingBox.minZ + par5, 3, getComponentType());
-
             case 1:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.minX + par5, boundingBox.minY + par4, boundingBox.maxZ + 1, 0, getComponentType());
-
             case 3:
                 return StructureVillagePieces.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, boundingBox.minX + par5, boundingBox.minY + par4, boundingBox.maxZ + 1, 0, getComponentType());
         }
@@ -146,9 +142,12 @@ abstract class ComponentVillage extends StructureComponent
         return 0;
     }
 
-    protected int func_74890_d(int par1, int par2)
+    /**
+     * Gets the replacement block for the current biome
+     */
+    protected int getBiomeSpecificBlock(int par1, int par2)
     {
-        if (field_74897_k.field_74927_b && ODNBXlite.desertVillages())
+        if (startPiece.inDesert && ODNBXlite.desertVillages())
         {
             if (par1 == Block.wood.blockID)
             {
@@ -184,9 +183,12 @@ abstract class ComponentVillage extends StructureComponent
         return par1;
     }
 
-    protected int func_74892_e(int par1, int par2)
+    /**
+     * Gets the replacement block metadata for the current biome
+     */
+    protected int getBiomeSpecificBlockMetadata(int par1, int par2)
     {
-        if (field_74897_k.field_74927_b && ODNBXlite.desertVillages())
+        if (startPiece.inDesert && ODNBXlite.desertVillages())
         {
             if (par1 == Block.wood.blockID)
             {
@@ -212,8 +214,8 @@ abstract class ComponentVillage extends StructureComponent
      */
     protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
-        int i = func_74890_d(par2, par3);
-        int j = func_74892_e(par2, par3);
+        int i = getBiomeSpecificBlock(par2, par3);
+        int j = getBiomeSpecificBlockMetadata(par2, par3);
         super.placeBlockAtCurrentPosition(par1World, i, j, par4, par5, par6, par7StructureBoundingBox);
     }
 
@@ -223,11 +225,11 @@ abstract class ComponentVillage extends StructureComponent
      */
     protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
     {
-        int i = func_74890_d(par9, 0);
-        int j = func_74892_e(par9, 0);
-        int k = func_74890_d(par10, 0);
-        int l = func_74892_e(par10, 0);
-        super.func_74872_a(par1World, par2StructureBoundingBox, par3, par4, par5, par6, par7, par8, i, j, k, l, par11);
+        int i = getBiomeSpecificBlock(par9, 0);
+        int j = getBiomeSpecificBlockMetadata(par9, 0);
+        int k = getBiomeSpecificBlock(par10, 0);
+        int l = getBiomeSpecificBlockMetadata(par10, 0);
+        super.fillWithMetadataBlocks(par1World, par2StructureBoundingBox, par3, par4, par5, par6, par7, par8, i, j, k, l, par11);
     }
 
     /**
@@ -235,15 +237,15 @@ abstract class ComponentVillage extends StructureComponent
      */
     protected void fillCurrentPositionBlocksDownwards(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
-        int i = func_74890_d(par2, par3);
-        int j = func_74892_e(par2, par3);
+        int i = getBiomeSpecificBlock(par2, par3);
+        int j = getBiomeSpecificBlockMetadata(par2, par3);
         super.fillCurrentPositionBlocksDownwards(par1World, i, j, par4, par5, par6, par7StructureBoundingBox);
     }
 
-    protected boolean func_74879_a(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, int par4, int par5, int par6, WeightedRandomChestContent par7ArrayOfWeightedRandomChestContent[], int par8){
+    protected boolean generateStructureChestContents(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, int par4, int par5, int par6, WeightedRandomChestContent par7ArrayOfWeightedRandomChestContent[], int par8){
         if (!ODNBXlite.villageChests()){
             return true;
         }
-        return super.func_74879_a(par1World, par2StructureBoundingBox, par3Random, par4, par5, par6, par7ArrayOfWeightedRandomChestContent, par8);
+        return super.generateStructureChestContents(par1World, par2StructureBoundingBox, par3Random, par4, par5, par6, par7ArrayOfWeightedRandomChestContent, par8);
     }
 }

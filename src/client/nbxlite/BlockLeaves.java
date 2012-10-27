@@ -16,7 +16,7 @@ public class BlockLeaves extends BlockLeavesBase
      * switch the displayed version between fancy and fast graphics (fast is this index + 1).
      */
     private int baseIndexInPNG;
-    public static final String field_72136_a[] =
+    public static final String LEAF_TYPES[] =
     {
         "oak", "spruce", "birch", "jungle"
     };
@@ -27,7 +27,7 @@ public class BlockLeaves extends BlockLeavesBase
         super(par1, par2, Material.leaves, false);
         baseIndexInPNG = par2;
         setTickRandomly(true);
-        setCreativeTab(CreativeTabs.tabDeco);
+        setCreativeTab(CreativeTabs.tabDecorations);
     }
 
     public int getBlockColor()
@@ -328,7 +328,7 @@ public class BlockLeaves extends BlockLeavesBase
     /**
      * Determines the damage on the item the block drops. Used in cloth and wood.
      */
-    protected int damageDropped(int par1)
+    public int damageDropped(int par1)
     {
         return par1 & 3;
     }

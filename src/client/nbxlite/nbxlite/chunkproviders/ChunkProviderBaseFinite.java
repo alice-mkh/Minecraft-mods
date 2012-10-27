@@ -123,4 +123,8 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
     {
         return 0;
     }
+
+    public void func_82695_e(int par1, int par2)
+    {
+    }
 }

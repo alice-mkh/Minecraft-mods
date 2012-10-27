@@ -9,7 +9,6 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     public static int combat = 3;
     public static boolean sprint = true;
     public static int startitems = 0;
-    public static boolean oldswing = false;
 
     private MouseFilter field_71162_ch;
     private MouseFilter field_71160_ci;
@@ -318,7 +317,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      */
     public void addChatMessage(String par1Str)
     {
-        mc.ingameGUI.getChatGUI().func_73757_a(par1Str, new Object[0]);
+        mc.ingameGUI.getChatGUI().addTranslatedMessage(par1Str, new Object[0]);
     }
 
     /**
@@ -713,7 +712,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
     /**
      * Swings the item the player is holding.
-     */
+     *//*
     public void swingItem()
     {
         if (!isSwinging || swingProgressInt >= getSwingSpeedModifier() / 2 || swingProgressInt < 0)
@@ -722,10 +721,10 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             isSwinging = true;
         }
     }
-
+*/
     /**
      * Returns the swing speed modifier
-     */
+     *//*
     private int getSwingSpeedModifier()
     {
         if (isPotionActive(Potion.digSpeed))
@@ -742,7 +741,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             return (oldswing ? 8 : 6);
         }
     }
-
+*/
     /**
      * Gets the pitch of living sounds in living entities.
      */

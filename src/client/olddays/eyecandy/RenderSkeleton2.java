@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderSkeleton extends RenderLiving
+public class RenderSkeleton2 extends RenderLiving
 {
     public static boolean mobArmor = false;
     public static boolean fallback = false;
@@ -10,7 +10,7 @@ public class RenderSkeleton extends RenderLiving
     private ModelMobArmor armor;
     private ModelSkeleton modelBipedMain;
 
-    public RenderSkeleton(ModelSkeleton model)
+    public RenderSkeleton2(ModelSkeleton model)
     {
         super(model, 0.5F);
         modelBipedMain = model;

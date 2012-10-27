@@ -33,7 +33,7 @@ public class OldBiomeGenBase
     public int field_6502_q;
     protected List spawnableMonsterList;
     protected List spawnableCreatureList;
-    protected List spawnableWaterCreatureList;
+    protected List field_82914_M;
     private boolean enableSnow;
     private boolean enableRain;
     private static OldBiomeGenBase biomeLookupTable[] = new OldBiomeGenBase[4096];
@@ -45,7 +45,7 @@ public class OldBiomeGenBase
         field_6502_q = 0x4ee031;
         spawnableMonsterList = new ArrayList();
         spawnableCreatureList = new ArrayList();
-        spawnableWaterCreatureList = new ArrayList();
+        field_82914_M = new ArrayList();
         enableRain = true;
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySheep.class, 12));
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityPig.class, 10));
@@ -57,7 +57,7 @@ public class OldBiomeGenBase
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityCreeper.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySlime.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityEnderman.class, 1));
-        spawnableWaterCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySquid.class, 10));
+        field_82914_M.add(new SpawnListEntryBeta(net.minecraft.src.EntitySquid.class, 10));
     }
 
     private OldBiomeGenBase setDisableRain()
@@ -201,7 +201,7 @@ public class OldBiomeGenBase
         }
         if(enumcreaturetype == EnumCreatureType.waterCreature)
         {
-            return spawnableWaterCreatureList;
+            return field_82914_M;
         } else
         {
             return null;

@@ -22,7 +22,7 @@ public class EntityTNTPrimed2 extends EntityTNTPrimed
         if(worldObj.isRemote || isDead || !(entity instanceof EntityPlayer)){
             return true;
         }
-        worldObj.playSoundAtEntity(this, "step.grass", 1.0F, 1.0F);
+        worldObj.playSoundAtEntity(this, "dig.grass", 1.0F, 1.0F);
         setDead();
         if (((EntityPlayer)entity).capabilities.isCreativeMode){
             return true;

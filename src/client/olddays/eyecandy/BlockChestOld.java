@@ -5,13 +5,13 @@ import java.util.*;
 public class BlockChestOld extends BlockChest
 {
     public static boolean normalblock = false;
-    public static int sidetex = 184;
-    public static int fronttex = 185;//sidetex + 1;
-    public static int toptex = 186;//sidetex - 1;
-    public static int texfrontleft = 187;//sidetex + 31;
-    public static int texfrontright = 188;//sidetex + 32;
-    public static int texbackleft = 189;//sidetex + 15;
-    public static int texbackright = 190;//sidetex + 16;
+    public static int sidetex = mod_OldDays.getFreeTextureIndex();
+    public static int fronttex = mod_OldDays.getFreeTextureIndex();//sidetex + 1;
+    public static int toptex = mod_OldDays.getFreeTextureIndex();//sidetex - 1;
+    public static int texfrontleft = mod_OldDays.getFreeTextureIndex();//sidetex + 31;
+    public static int texfrontright = mod_OldDays.getFreeTextureIndex();//sidetex + 32;
+    public static int texbackleft = mod_OldDays.getFreeTextureIndex();//sidetex + 15;
+    public static int texbackright = mod_OldDays.getFreeTextureIndex();//sidetex + 16;
 
     protected BlockChestOld(int par1)
     {

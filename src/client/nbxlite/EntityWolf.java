@@ -84,15 +84,15 @@ public class EntityWolf extends EntityTameable
         super.entityInit();
         dataWatcher.addObject(18, new Integer(getHealth()));
         dataWatcher.addObject(19, new Byte((byte)0));
+        dataWatcher.addObject(20, new Byte((byte)BlockCloth.getBlockFromDye(1)));
     }
 
     /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
+     * Plays step sound at given x, y, z for the entity
      */
-    protected boolean canTriggerWalking()
+    protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        return false;
+        worldObj.playSoundAtEntity(this, "mob.wolf.step", 0.15F, 1.0F);
     }
 
     /**
@@ -122,6 +122,7 @@ public class EntityWolf extends EntityTameable
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("Angry", isAngry());
+        par1NBTTagCompound.setByte("CollarColor", (byte)func_82186_bH());
     }
 
     /**
@@ -131,6 +132,11 @@ public class EntityWolf extends EntityTameable
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         setAngry(par1NBTTagCompound.getBoolean("Angry"));
+
+        if (par1NBTTagCompound.hasKey("CollarColor"))
+        {
+            func_82185_r(par1NBTTagCompound.getByte("CollarColor"));
+        }
     }
 
     /**
@@ -375,25 +381,44 @@ public class EntityWolf extends EntityTameable
 
         if (isTamed())
         {
-            if (itemstack != null && (Item.itemsList[itemstack.itemID] instanceof ItemFood))
+            if (itemstack != null)
             {
-                ItemFood itemfood = (ItemFood)Item.itemsList[itemstack.itemID];
-
-                if (itemfood.isWolfsFavoriteMeat() && dataWatcher.getWatchableObjectInt(18) < 20)
+                if (Item.itemsList[itemstack.itemID] instanceof ItemFood)
                 {
-                    if (!par1EntityPlayer.capabilities.isCreativeMode)
+                    ItemFood itemfood = (ItemFood)Item.itemsList[itemstack.itemID];
+
+                    if (itemfood.isWolfsFavoriteMeat() && dataWatcher.getWatchableObjectInt(18) < 20)
                     {
-                        itemstack.stackSize--;
+                        if (!par1EntityPlayer.capabilities.isCreativeMode)
+                        {
+                            itemstack.stackSize--;
+                        }
+
+                        heal(itemfood.getHealAmount());
+
+                        if (itemstack.stackSize <= 0)
+                        {
+                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+                        }
+
+                        return true;
                     }
+                }
+                else if (itemstack.itemID == Item.dyePowder.shiftedIndex)
+                {
+                    int i = BlockCloth.getBlockFromDye(itemstack.getItemDamage());
 
-                    heal(itemfood.getHealAmount());
-
-                    if (itemstack.stackSize <= 0)
+                    if (i != func_82186_bH())
                     {
-                        par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
-                    }
+                        func_82185_r(i);
 
-                    return true;
+                        if (!par1EntityPlayer.capabilities.isCreativeMode && itemstack.stackSize-- <= 0)
+                        {
+                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+                        }
+
+                        return true;
+                    }
                 }
             }
 
@@ -532,6 +557,16 @@ public class EntityWolf extends EntityTameable
         {
             dataWatcher.updateObject(16, Byte.valueOf((byte)(byte0 & -3)));
         }
+    }
+
+    public int func_82186_bH()
+    {
+        return dataWatcher.getWatchableObjectByte(20) & 0xf;
+    }
+
+    public void func_82185_r(int par1)
+    {
+        dataWatcher.updateObject(20, Byte.valueOf((byte)(par1 & 0xf)));
     }
 
     /**

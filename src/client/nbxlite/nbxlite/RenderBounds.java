@@ -30,7 +30,7 @@ public class RenderBounds{
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
             block = Block.bedrock;
         }
-        f1 += (float)block.maxY;
+        f1 += (float)block.func_83010_y();
 //         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
 //         if (globalRenderBlocks.overrideBlockTexture >= 0){
 //             j = globalRenderBlocks.overrideBlockTexture;
@@ -87,7 +87,7 @@ public class RenderBounds{
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
             block = Block.bedrock;
         }
-        float f1 = (float)block.maxY;
+        float f1 = (float)block.func_83010_y();
         int i1 = 128;
         if (i1 > ODNBXlite.IndevWidthX){
             i1 = ODNBXlite.IndevWidthX;
@@ -351,15 +351,15 @@ public class RenderBounds{
         GL11.glColor3f(ff * ff1, ff * ff2, ff * ff3);
         int i2 = 2048 / i1;
         tessellator.startDrawingQuads();
-        float f2 = (float)Block.waterStill.minX;
-        float f3 = (float)Block.waterStill.minZ;
+        float f2 = (float)Block.waterStill.func_83009_v();
+        float f3 = (float)Block.waterStill.func_83005_z();
         double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
         double d2 = mc.renderViewEntity.lastTickPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * (double)f;
         tessellator.setTranslation(-d, -d1, -d2);
         for (int i3 = -i1 * i2; i3 < ODNBXlite.IndevWidthX + i1 * i2; i3 += i1){
             for (int i5 = -i1 * i2; i5 < ODNBXlite.IndevWidthZ + i1 * i2; i5 += i1){
-                float f4 = f1 + (float)Block.waterStill.maxY - 1.1121F;
+                float f4 = f1 + (float)Block.waterStill.func_83010_y() - 1.1121F;
                 if ((f1 < 0.0F) || (i3 < 0) || (i5 < 0) || (i3 >= ODNBXlite.IndevWidthX) || (i5 >= ODNBXlite.IndevWidthZ)){
                     tessellator.addVertexWithUV(i3 + f2, f4, i5 + i1 + f3, dd1, dd3);
                     tessellator.addVertexWithUV(i3 + i1 + f2, f4, i5 + i1 + f3, dd1, dd2);

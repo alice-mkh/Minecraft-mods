@@ -88,6 +88,8 @@ public abstract class World implements IBlockAccess
     public final VillageCollection villageCollectionObj;
     protected final VillageSiege villageSiegeObj;
     public final Profiler theProfiler;
+    private final Vec3Pool field_82741_K;
+    private final Calendar field_83016_L;
     private ArrayList collidingBoundingBoxes;
     private boolean scanningTileEntities;
 
@@ -163,8 +165,9 @@ public abstract class World implements IBlockAccess
         editingBlocks = false;
         rand = new Random();
         worldAccesses = new ArrayList();
-        villageCollectionObj = new VillageCollection(this);
         villageSiegeObj = new VillageSiege(this);
+        field_82741_K = new Vec3Pool(300, 2000);
+        field_83016_L = Calendar.getInstance();
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -178,6 +181,19 @@ public abstract class World implements IBlockAccess
         worldInfo = new WorldInfo(par4WorldSettings, par2Str);
         provider = par3WorldProvider;
         mapStorage = new MapStorage(par1ISaveHandler);
+        VillageCollection villagecollection = (VillageCollection)mapStorage.loadData(net.minecraft.src.VillageCollection.class, "villages");
+
+        if (villagecollection == null)
+        {
+            villageCollectionObj = new VillageCollection(this);
+            mapStorage.setData("villages", villageCollectionObj);
+        }
+        else
+        {
+            villageCollectionObj = villagecollection;
+            villageCollectionObj.func_82566_a(this);
+        }
+
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
@@ -212,8 +228,9 @@ public abstract class World implements IBlockAccess
         editingBlocks = false;
         rand = new Random();
         worldAccesses = new ArrayList();
-        villageCollectionObj = new VillageCollection(this);
         villageSiegeObj = new VillageSiege(this);
+        field_82741_K = new Vec3Pool(300, 2000);
+        field_83016_L = Calendar.getInstance();
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -270,7 +287,7 @@ public abstract class World implements IBlockAccess
             worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
             worldInfo.mapTheme = ODNBXlite.MapTheme;
             worldInfo.newOres = ODNBXlite.GenerateNewOres;
-            if (provider.worldType == 0){
+            if (provider.dimensionId == 0){
                 if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201)
                 {
                     if (!ODNBXlite.Import){
@@ -448,6 +465,19 @@ public abstract class World implements IBlockAccess
         if (this instanceof WorldClient){
             ODNBXlite.setTextureFX2();
         }
+        VillageCollection villagecollection = (VillageCollection)mapStorage.loadData(net.minecraft.src.VillageCollection.class, "villages");
+
+        if (villagecollection == null)
+        {
+            villageCollectionObj = new VillageCollection(this);
+            mapStorage.setData("villages", villageCollectionObj);
+        }
+        else
+        {
+            villageCollectionObj = villagecollection;
+            villageCollectionObj.func_82566_a(this);
+        }
+
         calculateInitialSkylight();
         calculateInitialWeather();
     }
@@ -1058,6 +1088,24 @@ public abstract class World implements IBlockAccess
         }
     }
 
+    public int func_82734_g(int par1, int par2)
+    {
+        if (par1 < 0xfe363c80 || par2 < 0xfe363c80 || par1 >= 0x1c9c380 || par2 >= 0x1c9c380)
+        {
+            return 0;
+        }
+
+        if (!chunkExists(par1 >> 4, par2 >> 4))
+        {
+            return 0;
+        }
+        else
+        {
+            Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par2 >> 4);
+            return chunk.field_82912_p;
+        }
+    }
+
     /**
      * Brightness for SkyBlock.Sky is clear white and (through color computing it is assumed) DEPENDENT ON DAYTIME.
      * Brightness for SkyBlock.Block is yellowish and independent.
@@ -1200,7 +1248,10 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public void func_72902_n(int par1, int par2, int par3)
+    /**
+     * all WorldAcceses mark this block as dirty
+     */
+    public void markBlockNeedsUpdateForAll(int par1, int par2, int par3)
     {
         IWorldAccess iworldaccess;
 
@@ -1437,7 +1488,7 @@ public abstract class World implements IBlockAccess
                 par1Vec3.zCoord = d2;
             }
 
-            Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(par1Vec3.xCoord, par1Vec3.yCoord, par1Vec3.zCoord);
+            Vec3 vec3 = func_82732_R().getVecFromPool(par1Vec3.xCoord, par1Vec3.yCoord, par1Vec3.zCoord);
             l = (int)(vec3.xCoord = MathHelper.floor_double(par1Vec3.xCoord));
 
             if (byte0 == 5)
@@ -1646,6 +1697,9 @@ public abstract class World implements IBlockAccess
         }
     }
 
+    /**
+     * remove dat player from dem servers
+     */
     public void removeEntity(Entity par1Entity)
     {
         par1Entity.setDead();
@@ -1870,9 +1924,9 @@ public abstract class World implements IBlockAccess
             float f7;
             int k;
             if (ODNBXlite.SkyColor==0){
-                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES || provider.worldType != 0){
+                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES || provider.dimensionId != 0){
                     BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                    if (provider.worldType==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
+                    if (provider.dimensionId==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                         f7 = 0.2146759F;
                     }else{
                         f7 = biomegenbase.getFloatTemperature();
@@ -1923,7 +1977,7 @@ public abstract class World implements IBlockAccess
                 f10 = f10 * (1.0F - f17) + 0.8F * f17;
                 f11 = f11 * (1.0F - f17) + 1.0F * f17;
             }
-            return Vec3.getVec3Pool().getVecFromPool(f9, f10, f11);
+            return func_82732_R().getVecFromPool(f9, f10, f11);
         }
         float f2 = getCelestialAngle(f);
         float f4 = MathHelper.cos(f2 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -1941,7 +1995,7 @@ public abstract class World implements IBlockAccess
         f5 *= f4;
         f6 *= f4;
         f8 *= f4;
-        return Vec3.getVec3Pool().getVecFromPool(f5, f6, f8);
+        return func_82732_R().getVecFromPool(f5, f6, f8);
     }
 
     /**
@@ -1949,7 +2003,7 @@ public abstract class World implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
-        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.worldType==0){
+        if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.dimensionId==0){
             return 0.0F;
         }
         if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
@@ -2024,7 +2078,7 @@ public abstract class World implements IBlockAccess
             f4 = f4 * f10 + f9 * (1.0F - f10);
         }
 
-        return Vec3.getVec3Pool().getVecFromPool(f2, f3, f4);
+        return func_82732_R().getVecFromPool(f2, f3, f4);
     }
 
     /**
@@ -2038,7 +2092,7 @@ public abstract class World implements IBlockAccess
         }else{
             fog = ODNBXlite.FogColor;
         }
-        if(fog != 0L && provider.worldType == 0){
+        if(fog != 0L && provider.dimensionId == 0){
             float f1 = getCelestialAngle(par1);
             float f2 = MathHelper.cos(f1 * 3.141593F * 2.0F) * 2.0F + 0.5F;
             if(f2 < 0.0F)
@@ -2055,7 +2109,7 @@ public abstract class World implements IBlockAccess
             f3 *= f2 * 0.94F + 0.06F;
             f4 *= f2 * 0.94F + 0.06F;
             f5 *= f2 * 0.91F + 0.09F;
-            return Vec3.getVec3Pool().getVecFromPool(f3, f4, f5);
+            return func_82732_R().getVecFromPool(f3, f4, f5);
         }
         float f = getCelestialAngle(par1);
         return provider.getFogColor(f, par1);
@@ -2121,6 +2175,10 @@ public abstract class World implements IBlockAccess
      * Schedules a tick to a block with a delay (Most commonly the tick rate)
      */
     public void scheduleBlockUpdate(int i, int j, int k, int l, int i1)
+    {
+    }
+
+    public void func_82740_a(int i, int j, int k, int l, int i1, int j1)
     {
     }
 
@@ -2601,7 +2659,7 @@ public abstract class World implements IBlockAccess
         }
 
         boolean flag = false;
-        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
+        Vec3 vec3 = func_82732_R().getVecFromPool(0.0D, 0.0D, 0.0D);
 
         for (int k1 = i; k1 < j; k1++)
         {
@@ -2717,18 +2775,19 @@ public abstract class World implements IBlockAccess
     /**
      * Creates an explosion. Args: entity, x, y, z, strength
      */
-    public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8)
+    public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
     {
-        return newExplosion(par1Entity, par2, par4, par6, par8, false);
+        return newExplosion(par1Entity, par2, par4, par6, par8, false, par9);
     }
 
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
+    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
         explosion.isFlaming = par9;
+        explosion.field_82755_b = par10;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
         return explosion;
@@ -2755,7 +2814,7 @@ public abstract class World implements IBlockAccess
                     double d4 = par2AxisAlignedBB.minY + (par2AxisAlignedBB.maxY - par2AxisAlignedBB.minY) * (double)f1;
                     double d5 = par2AxisAlignedBB.minZ + (par2AxisAlignedBB.maxZ - par2AxisAlignedBB.minZ) * (double)f2;
 
-                    if (rayTraceBlocks(Vec3.getVec3Pool().getVecFromPool(d3, d4, d5), par1Vec3) == null)
+                    if (rayTraceBlocks(func_82732_R().getVecFromPool(d3, d4, d5), par1Vec3) == null)
                     {
                         i++;
                     }
@@ -3252,7 +3311,7 @@ public abstract class World implements IBlockAccess
     {
         theProfiler.endStartSection("moodSound");
 
-        if (ambientTickCountdown == 0)
+        if (ambientTickCountdown == 0 && !isRemote)
         {
             updateLCG = updateLCG * 3 + 0x3c6ef35f;
             int i = updateLCG >> 2;
@@ -3556,7 +3615,10 @@ public abstract class World implements IBlockAccess
         }
         else if (l < k)
         {
-            if (par1EnumSkyBlock == EnumSkyBlock.Block);
+            if (par1EnumSkyBlock == EnumSkyBlock.Block)
+            {
+                ;
+            }
 
             lightUpdateBlockList[j++] = 0x20820 + (k << 18);
 
@@ -3634,7 +3696,7 @@ public abstract class World implements IBlockAccess
         }
 
         theProfiler.endSection();
-        theProfiler.startSection("tcp < tcc");
+        theProfiler.startSection("checkedPosition < toCheckCount");
 
         do
         {
@@ -3775,6 +3837,11 @@ public abstract class World implements IBlockAccess
      */
     public List getEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB)
     {
+        return func_82733_a(par1Class, par2AxisAlignedBB, null);
+    }
+
+    public List func_82733_a(Class par1Class, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
+    {
         int i = MathHelper.floor_double((par2AxisAlignedBB.minX - 2D) / 16D);
         int j = MathHelper.floor_double((par2AxisAlignedBB.maxX + 2D) / 16D);
         int k = MathHelper.floor_double((par2AxisAlignedBB.minZ - 2D) / 16D);
@@ -3787,7 +3854,7 @@ public abstract class World implements IBlockAccess
             {
                 if (chunkExists(i1, j1))
                 {
-                    getChunkFromChunkCoords(i1, j1).getEntitiesOfTypeWithinAAAB(par1Class, par2AxisAlignedBB, arraylist);
+                    getChunkFromChunkCoords(i1, j1).getEntitiesOfTypeWithinAAAB(par1Class, par2AxisAlignedBB, arraylist, par3IEntitySelector);
                 }
             }
         }
@@ -3826,6 +3893,11 @@ public abstract class World implements IBlockAccess
 
         return entity;
     }
+
+    /**
+     * Returns the Entity with the given ID, or null if it doesn't exist in this World.
+     */
+    public abstract Entity getEntityByID(int i);
 
     /**
      * Accessor for world Loaded Entity List
@@ -3910,6 +3982,11 @@ public abstract class World implements IBlockAccess
         if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isGroundCover()))
         {
             block = null;
+        }
+
+        if (block != null && block.blockMaterial == Material.circuits && block1 == Block.field_82510_ck)
+        {
+            return true;
         }
 
         return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
@@ -4119,8 +4196,26 @@ public abstract class World implements IBlockAccess
             }
 
             double d1 = entityplayer1.getDistanceSq(par1, par3, par5);
+            double d2 = par7;
 
-            if ((par7 < 0.0D || d1 < par7 * par7) && (d == -1D || d1 < d))
+            if (entityplayer1.isSneaking())
+            {
+                d2 *= 0.80000001192092896D;
+            }
+
+            if (entityplayer1.func_82150_aj())
+            {
+                float f = entityplayer1.func_82243_bO();
+
+                if (f < 0.1F)
+                {
+                    f = 0.1F;
+                }
+
+                d2 *= 0.7F * f;
+            }
+
+            if ((par7 < 0.0D || d1 < d2 * d2) && (d == -1D || d1 < d))
             {
                 d = d1;
                 entityplayer = entityplayer1;
@@ -4161,12 +4256,9 @@ public abstract class World implements IBlockAccess
         saveHandler.checkSessionLock();
     }
 
-    /**
-     * Sets the world time.
-     */
-    public void setWorldTime(long par1)
+    public void func_82738_a(long par1)
     {
-        worldInfo.setWorldTime(par1);
+        worldInfo.func_82572_b(par1);
     }
 
     /**
@@ -4177,9 +4269,22 @@ public abstract class World implements IBlockAccess
         return worldInfo.getSeed();
     }
 
+    public long func_82737_E()
+    {
+        return worldInfo.func_82573_f();
+    }
+
     public long getWorldTime()
     {
         return worldInfo.getWorldTime();
+    }
+
+    /**
+     * Sets the world time.
+     */
+    public void setWorldTime(long par1)
+    {
+        worldInfo.setWorldTime(par1);
     }
 
     /**
@@ -4267,6 +4372,11 @@ public abstract class World implements IBlockAccess
     public WorldInfo getWorldInfo()
     {
         return worldInfo;
+    }
+
+    public GameRules func_82736_K()
+    {
+        return worldInfo.func_82574_x();
     }
 
     /**
@@ -4387,6 +4497,14 @@ public abstract class World implements IBlockAccess
         return mapStorage.getUniqueDataId(par1Str);
     }
 
+    public void func_82739_e(int par1, int par2, int par3, int par4, int par5)
+    {
+        for (int i = 0; i < worldAccesses.size(); i++)
+        {
+            ((IWorldAccess)worldAccesses.get(i)).func_82746_a(par1, par2, par3, par4, par5);
+        }
+    }
+
     /**
      * See description for playAuxSFX.
      */
@@ -4420,6 +4538,11 @@ public abstract class World implements IBlockAccess
     public int getActualHeight()
     {
         return ODNBXlite.isFinite() ? ODNBXlite.IndevHeight : (provider.hasNoSky ? 128 : 256);
+    }
+
+    public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart)
+    {
+        return null;
     }
 
     /**
@@ -4487,8 +4610,19 @@ public abstract class World implements IBlockAccess
         }
     }
 
+    public Vec3Pool func_82732_R()
+    {
+        return field_82741_K;
+    }
+
+    public Calendar func_83015_S()
+    {
+        field_83016_L.setTimeInMillis(System.currentTimeMillis());
+        return field_83016_L;
+    }
+
     private boolean isBounds(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.dimensionId==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
                     return true;
@@ -4504,7 +4638,7 @@ public abstract class World implements IBlockAccess
     }
 
     private boolean isBounds2(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.dimensionId==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
                 if(x==0 || x==ODNBXlite.IndevWidthX-1 || z==0 || z==ODNBXlite.IndevWidthZ-1){
                     if(y<ODNBXlite.SurrWaterHeight && y>=ODNBXlite.SurrGroundHeight){
@@ -4517,7 +4651,7 @@ public abstract class World implements IBlockAccess
     }
 
     private boolean isBounds3(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (provider==null || provider.dimensionId==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1){
                     return true;

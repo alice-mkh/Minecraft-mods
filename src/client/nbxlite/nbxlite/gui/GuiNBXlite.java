@@ -197,7 +197,7 @@ public class GuiNBXlite extends GuiScreen{
             s = (new StringBuilder()).append("World").append(selectedWorld).toString();
         }
         if (mc.enableSP){
-            mc.setController(((SaveFormatComparator)saveList.get(number)).func_75790_f());
+            mc.setController(((SaveFormatComparator)saveList.get(number)).getEnumGameType());
             mc.startWorldSSP(s, selectedWorld, null);
 //             MinecraftHook.startWorldHook(s, selectedWorld, null);
             mc.displayGuiScreen(null);

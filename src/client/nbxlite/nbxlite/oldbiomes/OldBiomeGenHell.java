@@ -9,7 +9,7 @@ public class OldBiomeGenHell extends OldBiomeGenBase
     {
         spawnableMonsterList.clear();
         spawnableCreatureList.clear();
-        spawnableWaterCreatureList.clear();
+        field_82914_M.clear();
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityGhast.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityPigZombie.class, 10));
     }

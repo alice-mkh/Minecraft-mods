@@ -1343,7 +1343,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public float getCelestialAngle(float par1)
     {
-        if (Minecraft.timecontrol && provider.worldType == 0){
+        if (Minecraft.timecontrol && provider.dimensionId == 0){
             return super.getCelestialAngle(par1) + (float)(field_35467_J + (field_35468_K - field_35467_J) * (double)par1);
         }
         return super.getCelestialAngle(par1);

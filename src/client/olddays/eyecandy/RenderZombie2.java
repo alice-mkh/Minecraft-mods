@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderZombie extends RenderLiving
+public class RenderZombie2 extends RenderLiving
 {
     public static boolean mobArmor = false;
     public static boolean fallback = false;
@@ -10,7 +10,7 @@ public class RenderZombie extends RenderLiving
     private ModelMobArmor armor;
     private ModelZombie modelBipedMain;
 
-    public RenderZombie(ModelZombie model)
+    public RenderZombie2(ModelZombie model)
     {
         super(model, 0.5F);
         modelBipedMain = model;

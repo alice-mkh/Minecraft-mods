@@ -25,7 +25,6 @@ public class EntityEnderman extends EntityMob
         field_70826_g = 0;
         texture = "/mob/enderman.png";
         moveSpeed = 0.2F;
-        attackStrength = 7;
         setSize(0.6F, 2.9F);
         stepHeight = 1.0F;
     }
@@ -75,6 +74,11 @@ public class EntityEnderman extends EntityMob
         {
             if (shouldAttackPlayer(entityplayer))
             {
+                if (field_70826_g == 0)
+                {
+                    worldObj.playSoundAtEntity(entityplayer, "mob.endermen.stare", 1.0F, 1.0F);
+                }
+
                 if (field_70826_g++ == 5)
                 {
                     field_70826_g = 0;
@@ -104,7 +108,7 @@ public class EntityEnderman extends EntityMob
         }
 
         Vec3 vec3 = par1EntityPlayer.getLook(1.0F).normalize();
-        Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
+        Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
         double d = vec3_1.lengthVector();
         vec3_1 = vec3_1.normalize();
         double d1 = vec3.dotProduct(vec3_1);
@@ -132,7 +136,7 @@ public class EntityEnderman extends EntityMob
 
         moveSpeed = entityToAttack == null ? 0.3F : 6.5F;
 
-        if (!worldObj.isRemote)
+        if (!worldObj.isRemote && worldObj.func_82736_K().func_82766_b("mobGriefing"))
         {
             if (getCarried() == 0)
             {
@@ -249,7 +253,7 @@ public class EntityEnderman extends EntityMob
      */
     protected boolean teleportToEntity(Entity par1Entity)
     {
-        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
+        Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
         vec3 = vec3.normalize();
         double d = 16D;
         double d1 = (posX + (rand.nextDouble() - 0.5D) * 8D) - vec3.xCoord * d;
@@ -340,7 +344,7 @@ public class EntityEnderman extends EntityMob
      */
     protected String getLivingSound()
     {
-        return "mob.endermen.idle";
+        return func_70823_r() ? "mob.endermen.scream" : "mob.endermen.idle";
     }
 
     /**
@@ -451,6 +455,11 @@ public class EntityEnderman extends EntityMob
     public void func_70819_e(boolean par1)
     {
         dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
+    }
+
+    public int func_82193_c(Entity par1Entity)
+    {
+        return 7;
     }
 
     static

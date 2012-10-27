@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+
 public class ModelBiped extends ModelBase
 {
     public static boolean oldwalking = false;
@@ -35,15 +37,17 @@ public class ModelBiped extends ModelBase
 
     public ModelBiped(float par1)
     {
-        this(par1, 0.0F);
+        this(par1, 0.0F, 64, 32);
     }
 
-    public ModelBiped(float par1, float par2)
+    public ModelBiped(float par1, float par2, int par3, int par4)
     {
         heldItemLeft = 0;
         heldItemRight = 0;
         isSneak = false;
         aimedBow = false;
+        textureWidth = par3;
+        textureHeight = par4;
         bipedCloak = new ModelRenderer(this, 0, 0);
         bipedCloak.addBox(-5F, 0.0F, -1F, 10, 16, 1, par1);
         bipedEars = new ModelRenderer(this, 24, 0);
@@ -66,11 +70,11 @@ public class ModelBiped extends ModelBase
         bipedLeftArm.setRotationPoint(5F, 2.0F + par2, 0.0F);
         bipedRightLeg = new ModelRenderer(this, 0, 16);
         bipedRightLeg.addBox(-2F, 0.0F, -2F, 4, 12, 4, par1);
-        bipedRightLeg.setRotationPoint(-2F, 12F + par2, 0.0F);
+        bipedRightLeg.setRotationPoint(-1.9F, 12F + par2, 0.0F);
         bipedLeftLeg = new ModelRenderer(this, 0, 16);
         bipedLeftLeg.mirror = true;
         bipedLeftLeg.addBox(-2F, 0.0F, -2F, 4, 12, 4, par1);
-        bipedLeftLeg.setRotationPoint(2.0F, 12F + par2, 0.0F);
+        bipedLeftLeg.setRotationPoint(1.9F, 12F + par2, 0.0F);
     }
 
     /**
@@ -78,20 +82,45 @@ public class ModelBiped extends ModelBase
      */
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        setRotationAngles(par2, par3, par4, par5, par6, par7);
-        bipedHead.render(par7);
-        bipedBody.render(par7);
-        bipedRightArm.render(par7);
-        bipedLeftArm.render(par7);
-        bipedRightLeg.render(par7);
-        bipedLeftLeg.render(par7);
-        bipedHeadwear.render(par7);
+        setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+
+        if (isChild)
+        {
+            float f = 2.0F;
+            GL11.glPushMatrix();
+            GL11.glScalef(1.5F / f, 1.5F / f, 1.5F / f);
+            GL11.glTranslatef(0.0F, 16F * par7, 0.0F);
+            bipedHead.render(par7);
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            GL11.glScalef(1.0F / f, 1.0F / f, 1.0F / f);
+            GL11.glTranslatef(0.0F, 24F * par7, 0.0F);
+            bipedBody.render(par7);
+            bipedRightArm.render(par7);
+            bipedLeftArm.render(par7);
+            bipedRightLeg.render(par7);
+            bipedLeftLeg.render(par7);
+            bipedHeadwear.render(par7);
+            GL11.glPopMatrix();
+        }
+        else
+        {
+            bipedHead.render(par7);
+            bipedBody.render(par7);
+            bipedRightArm.render(par7);
+            bipedLeftArm.render(par7);
+            bipedRightLeg.render(par7);
+            bipedLeftLeg.render(par7);
+            bipedHeadwear.render(par7);
+        }
     }
 
     /**
-     * Sets the models various rotation angles.
+     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
+     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+     * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
         bipedHead.rotateAngleY = par4 / (180F / (float)Math.PI);
         bipedHead.rotateAngleX = par5 / (180F / (float)Math.PI);
@@ -168,15 +197,17 @@ public class ModelBiped extends ModelBase
             bipedRightLeg.rotationPointY = 9F;
             bipedLeftLeg.rotationPointY = 9F;
             bipedHead.rotationPointY = 1.0F;
+            bipedHeadwear.rotationPointY = 1.0F;
         }
         else
         {
             bipedBody.rotateAngleX = 0.0F;
-            bipedRightLeg.rotationPointZ = 0.0F;
-            bipedLeftLeg.rotationPointZ = 0.0F;
+            bipedRightLeg.rotationPointZ = 0.1F;
+            bipedLeftLeg.rotationPointZ = 0.1F;
             bipedRightLeg.rotationPointY = 12F;
             bipedLeftLeg.rotationPointY = 12F;
             bipedHead.rotationPointY = 0.0F;
+            bipedHeadwear.rotationPointY = 0.0F;
         }
 
         bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;

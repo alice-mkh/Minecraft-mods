@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.*;
 
-public class EntityArrow extends Entity
+public class EntityArrow extends Entity implements IProjectile
 {
     public static boolean olddamage = false;
 
@@ -101,7 +101,7 @@ public class EntityArrow extends Entity
             setLocationAndAngles(par2EntityLiving.posX + d4, posY, par2EntityLiving.posZ + d5, f, f1);
             yOffset = 0.0F;
             float f2 = (float)d3 * 0.2F;
-            setArrowHeading(d, d1 + (double)f2, d2, par4, par5);
+            setThrowableHeading(d, d1 + (double)f2, d2, par4, par5);
             return;
         }
     }
@@ -136,7 +136,7 @@ public class EntityArrow extends Entity
         motionX = -MathHelper.sin((rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((rotationPitch / 180F) * (float)Math.PI);
         motionZ = MathHelper.cos((rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((rotationPitch / 180F) * (float)Math.PI);
         motionY = -MathHelper.sin((rotationPitch / 180F) * (float)Math.PI);
-        setArrowHeading(motionX, motionY, motionZ, par3 * 1.5F, 1.0F);
+        setThrowableHeading(motionX, motionY, motionZ, par3 * 1.5F, 1.0F);
     }
 
     protected void entityInit()
@@ -145,10 +145,9 @@ public class EntityArrow extends Entity
     }
 
     /**
-     * Uses the provided coordinates as a heading and determines the velocity from it with the set force and random
-     * variance. Args: x, y, z, force, forceVariation
+     * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
      */
-    public void setArrowHeading(double par1, double par3, double par5, float par7, float par8)
+    public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8)
     {
         float f = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
         par1 /= f;
@@ -221,7 +220,7 @@ public class EntityArrow extends Entity
             Block.blocksList[i].setBlockBoundsBasedOnState(worldObj, xTile, yTile, zTile);
             AxisAlignedBB axisalignedbb = Block.blocksList[i].getCollisionBoundingBoxFromPool(worldObj, xTile, yTile, zTile);
 
-            if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ)))
+            if (axisalignedbb != null && axisalignedbb.isVecInside(worldObj.func_82732_R().getVecFromPool(posX, posY, posZ)))
             {
                 inGround = true;
             }
@@ -259,15 +258,15 @@ public class EntityArrow extends Entity
         }
 
         ticksInAir++;
-        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ);
-        Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+        Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(posX, posY, posZ);
+        Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
         MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks_do_do(vec3, vec3_1, false, true);
-        vec3 = Vec3.getVec3Pool().getVecFromPool(posX, posY, posZ);
-        vec3_1 = Vec3.getVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+        vec3 = worldObj.func_82732_R().getVecFromPool(posX, posY, posZ);
+        vec3_1 = worldObj.func_82732_R().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
 
         if (movingobjectposition != null)
         {
-            vec3_1 = Vec3.getVec3Pool().getVecFromPool(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3_1 = worldObj.func_82732_R().getVecFromPool(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
         }
 
         Entity entity = null;
@@ -316,7 +315,7 @@ public class EntityArrow extends Entity
                 float f1 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
                 int i1 = MathHelper.ceiling_double_int((double)f1 * damage);
 
-                if (func_70241_g())
+                if (getIsCritical())
                 {
                     i1 += rand.nextInt(i1 / 2 + 2);
                 }
@@ -387,11 +386,11 @@ public class EntityArrow extends Entity
                 worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                 inGround = true;
                 arrowShake = 7;
-                func_70243_d(false);
+                setIsCritical(false);
             }
         }
 
-        if (func_70241_g())
+        if (getIsCritical())
         {
             for (int l = 0; l < 4; l++)
             {
@@ -506,6 +505,15 @@ public class EntityArrow extends Entity
         }
     }
 
+    /**
+     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+     * prevent them from trampling crops
+     */
+    protected boolean canTriggerWalking()
+    {
+        return false;
+    }
+
     public float getShadowSize()
     {
         return 0.0F;
@@ -537,7 +545,10 @@ public class EntityArrow extends Entity
         return false;
     }
 
-    public void func_70243_d(boolean par1)
+    /**
+     * Whether the arrow has a stream of critical hit particles flying behind it.
+     */
+    public void setIsCritical(boolean par1)
     {
         byte byte0 = dataWatcher.getWatchableObjectByte(16);
 
@@ -551,7 +562,10 @@ public class EntityArrow extends Entity
         }
     }
 
-    public boolean func_70241_g()
+    /**
+     * Whether the arrow has a stream of critical hit particles flying behind it.
+     */
+    public boolean getIsCritical()
     {
         byte byte0 = dataWatcher.getWatchableObjectByte(16);
         return (byte0 & 1) != 0;

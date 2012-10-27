@@ -63,7 +63,7 @@ public class GuiChat extends GuiScreen
     public void initGui()
     {
         Keyboard.enableRepeatEvents(true);
-        sentHistoryCursor = mc.ingameGUI.getChatGUI().func_73756_b().size();
+        sentHistoryCursor = mc.ingameGUI.getChatGUI().getSentMessages().size();
         inputField = new GuiTextField(fontRenderer, 4, height - 12, width - 4, 12);
         inputField.setMaxStringLength(100);
         inputField.setEnableBackgroundDrawing(false);
@@ -78,7 +78,7 @@ public class GuiChat extends GuiScreen
     public void onGuiClosed()
     {
         Keyboard.enableRepeatEvents(false);
-        mc.ingameGUI.getChatGUI().func_73764_c();
+        mc.ingameGUI.getChatGUI().resetScroll();
     }
 
     /**
@@ -115,7 +115,7 @@ public class GuiChat extends GuiScreen
 
             if (s.length() > 0)
             {
-                mc.ingameGUI.getChatGUI().func_73767_b(s);
+                mc.ingameGUI.getChatGUI().addToSentMessages(s);
 
                 if (!mc.handleClientCommand(s))
                 {
@@ -135,11 +135,11 @@ public class GuiChat extends GuiScreen
         }
         else if (par2 == 201)
         {
-            mc.ingameGUI.getChatGUI().func_73758_b(19);
+            mc.ingameGUI.getChatGUI().scroll(19);
         }
         else if (par2 == 209)
         {
-            mc.ingameGUI.getChatGUI().func_73758_b(-19);
+            mc.ingameGUI.getChatGUI().scroll(-19);
         }
         else
         {
@@ -172,7 +172,7 @@ public class GuiChat extends GuiScreen
                 i *= 7;
             }
 
-            mc.ingameGUI.getChatGUI().func_73758_b(i);
+            mc.ingameGUI.getChatGUI().scroll(i);
         }
     }
 
@@ -194,7 +194,7 @@ public class GuiChat extends GuiScreen
                     if (mc.gameSettings.chatLinksPrompt)
                     {
                         clickedURI = uri;
-                        mc.displayGuiScreen(new GuiChatConfirmLink(this, this, chatclickdata.func_78309_f(), 0, chatclickdata));
+                        mc.displayGuiScreen(new GuiChatConfirmLink(this, this, chatclickdata.getClickedUrl(), 0, chatclickdata));
                     }
                     else
                     {
@@ -342,7 +342,7 @@ public class GuiChat extends GuiScreen
     public void getSentHistory(int par1)
     {
         int i = sentHistoryCursor + par1;
-        int j = mc.ingameGUI.getChatGUI().func_73756_b().size();
+        int j = mc.ingameGUI.getChatGUI().getSentMessages().size();
 
         if (i < 0)
         {
@@ -371,7 +371,7 @@ public class GuiChat extends GuiScreen
             field_73898_b = inputField.getText();
         }
 
-        inputField.setText((String)mc.ingameGUI.getChatGUI().func_73756_b().get(i));
+        inputField.setText((String)mc.ingameGUI.getChatGUI().getSentMessages().get(i));
         sentHistoryCursor = i;
     }
 

@@ -95,9 +95,9 @@ public class GuiContainerCreativeOld extends GuiContainer
             }
             else
             {
-                inventorySlots.slotClick(par1Slot.slotNumber, par3, par4, mc.thePlayer);
-                ItemStack itemstack = inventorySlots.getSlot(par1Slot.slotNumber).getStack();
-                mc.playerController.sendSlotPacket(itemstack, (par1Slot.slotNumber - inventorySlots.inventorySlots.size()) + 9 + 36);
+                ItemStack itemstack = par1Slot.getStack().copy();
+                itemstack.stackSize = itemstack.getMaxStackSize();
+                mc.thePlayer.inventory.setItemStack(itemstack);
             }
         }
         else

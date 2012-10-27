@@ -27,6 +27,14 @@ public class BlockStairs extends Block
             4, 5
         }
     };
+    private static final int field_82545_b[] =
+    {
+        1, -1, 0, 0
+    };
+    private static final int field_82546_c[] =
+    {
+        0, 0, 1, -1
+    };
 
     /** The block that is used as model for the stair. */
     private final Block modelBlock;
@@ -88,47 +96,277 @@ public class BlockStairs extends Block
         return 10;
     }
 
+    public void func_82541_d(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        int i = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+
+        if ((i & 4) != 0)
+        {
+            setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+        }
+        else
+        {
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+        }
+    }
+
+    public static boolean func_82543_e(int par0)
+    {
+        return par0 > 0 && (Block.blocksList[par0] instanceof BlockStairs);
+    }
+
+    private boolean func_82540_f(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        int i = par1IBlockAccess.getBlockId(par2, par3, par4);
+        return func_82543_e(i) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == par5;
+    }
+
+    public boolean func_82542_g(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        int i = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        int j = i & 3;
+        float f = 0.5F;
+        float f1 = 1.0F;
+
+        if ((i & 4) != 0)
+        {
+            f = 0.0F;
+            f1 = 0.5F;
+        }
+
+        float f2 = 0.0F;
+        float f3 = 1.0F;
+        float f4 = 0.0F;
+        float f5 = 0.5F;
+        boolean flag = true;
+
+        if (j == 0)
+        {
+            f2 = 0.5F;
+            f5 = 1.0F;
+            int k = par1IBlockAccess.getBlockId(par2 + 1, par3, par4);
+            int k1 = par1IBlockAccess.getBlockMetadata(par2 + 1, par3, par4);
+
+            if (func_82543_e(k) && (i & 4) == (k1 & 4))
+            {
+                int k2 = k1 & 3;
+
+                if (k2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                {
+                    f5 = 0.5F;
+                    flag = false;
+                }
+                else if (k2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                {
+                    f4 = 0.5F;
+                    flag = false;
+                }
+            }
+        }
+        else if (j == 1)
+        {
+            f3 = 0.5F;
+            f5 = 1.0F;
+            int l = par1IBlockAccess.getBlockId(par2 - 1, par3, par4);
+            int l1 = par1IBlockAccess.getBlockMetadata(par2 - 1, par3, par4);
+
+            if (func_82543_e(l) && (i & 4) == (l1 & 4))
+            {
+                int l2 = l1 & 3;
+
+                if (l2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                {
+                    f5 = 0.5F;
+                    flag = false;
+                }
+                else if (l2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                {
+                    f4 = 0.5F;
+                    flag = false;
+                }
+            }
+        }
+        else if (j == 2)
+        {
+            f4 = 0.5F;
+            f5 = 1.0F;
+            int i1 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1);
+            int i2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 + 1);
+
+            if (func_82543_e(i1) && (i & 4) == (i2 & 4))
+            {
+                int i3 = i2 & 3;
+
+                if (i3 == 1 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                {
+                    f3 = 0.5F;
+                    flag = false;
+                }
+                else if (i3 == 0 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                {
+                    f2 = 0.5F;
+                    flag = false;
+                }
+            }
+        }
+        else if (j == 3)
+        {
+            int j1 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
+            int j2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 - 1);
+
+            if (func_82543_e(j1) && (i & 4) == (j2 & 4))
+            {
+                int j3 = j2 & 3;
+
+                if (j3 == 1 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                {
+                    f3 = 0.5F;
+                    flag = false;
+                }
+                else if (j3 == 0 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                {
+                    f2 = 0.5F;
+                    flag = false;
+                }
+            }
+        }
+
+        setBlockBounds(f2, f, f4, f3, f1, f5);
+        return flag;
+    }
+
+    public boolean func_82544_h(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        int i = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        int j = i & 3;
+        float f = 0.5F;
+        float f1 = 1.0F;
+
+        if ((i & 4) != 0)
+        {
+            f = 0.0F;
+            f1 = 0.5F;
+        }
+
+        float f2 = 0.0F;
+        float f3 = 0.5F;
+        float f4 = 0.5F;
+        float f5 = 1.0F;
+        boolean flag = false;
+
+        if (j == 0)
+        {
+            int k = par1IBlockAccess.getBlockId(par2 - 1, par3, par4);
+            int k1 = par1IBlockAccess.getBlockMetadata(par2 - 1, par3, par4);
+
+            if (func_82543_e(k) && (i & 4) == (k1 & 4))
+            {
+                int k2 = k1 & 3;
+
+                if (k2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                {
+                    f4 = 0.0F;
+                    f5 = 0.5F;
+                    flag = true;
+                }
+                else if (k2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                {
+                    f4 = 0.5F;
+                    f5 = 1.0F;
+                    flag = true;
+                }
+            }
+        }
+        else if (j == 1)
+        {
+            int l = par1IBlockAccess.getBlockId(par2 + 1, par3, par4);
+            int l1 = par1IBlockAccess.getBlockMetadata(par2 + 1, par3, par4);
+
+            if (func_82543_e(l) && (i & 4) == (l1 & 4))
+            {
+                f2 = 0.5F;
+                f3 = 1.0F;
+                int l2 = l1 & 3;
+
+                if (l2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                {
+                    f4 = 0.0F;
+                    f5 = 0.5F;
+                    flag = true;
+                }
+                else if (l2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                {
+                    f4 = 0.5F;
+                    f5 = 1.0F;
+                    flag = true;
+                }
+            }
+        }
+        else if (j == 2)
+        {
+            int i1 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
+            int i2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 - 1);
+
+            if (func_82543_e(i1) && (i & 4) == (i2 & 4))
+            {
+                f4 = 0.0F;
+                f5 = 0.5F;
+                int i3 = i2 & 3;
+
+                if (i3 == 1 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                {
+                    flag = true;
+                }
+                else if (i3 == 0 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                {
+                    f2 = 0.5F;
+                    f3 = 1.0F;
+                    flag = true;
+                }
+            }
+        }
+        else if (j == 3)
+        {
+            int j1 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1);
+            int j2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 + 1);
+
+            if (func_82543_e(j1) && (i & 4) == (j2 & 4))
+            {
+                int j3 = j2 & 3;
+
+                if (j3 == 1 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                {
+                    flag = true;
+                }
+                else if (j3 == 0 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                {
+                    f2 = 0.5F;
+                    f3 = 1.0F;
+                    flag = true;
+                }
+            }
+        }
+
+        if (flag)
+        {
+            setBlockBounds(f2, f, f4, f3, f1, f5);
+        }
+
+        return flag;
+    }
+
     /**
      * if the specified block is in the given AABB, add its collision bounding box to the given list
      */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
-        int i = par1World.getBlockMetadata(par2, par3, par4);
-        int j = i & 3;
-        float f = 0.0F;
-        float f1 = 0.5F;
-        float f2 = 0.5F;
-        float f3 = 1.0F;
-
-        if ((i & 4) != 0)
-        {
-            f = 0.5F;
-            f1 = 1.0F;
-            f2 = 0.0F;
-            f3 = 0.5F;
-        }
-
-        setBlockBounds(0.0F, f, 0.0F, 1.0F, f1, 1.0F);
+        func_82541_d(par1World, par2, par3, par4);
+        super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        boolean flag = func_82542_g(par1World, par2, par3, par4);
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 
-        if (j == 0)
+        if (flag && func_82544_h(par1World, par2, par3, par4))
         {
-            setBlockBounds(0.5F, f2, 0.0F, 1.0F, f3, 1.0F);
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        }
-        else if (j == 1)
-        {
-            setBlockBounds(0.0F, f2, 0.0F, 0.5F, f3, 1.0F);
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        }
-        else if (j == 2)
-        {
-            setBlockBounds(0.0F, f2, 0.5F, 1.0F, f3, 1.0F);
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        }
-        else if (j == 3)
-        {
-            setBlockBounds(0.0F, f2, 0.0F, 1.0F, f3, 0.5F);
             super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         }
 
@@ -372,7 +610,10 @@ public class BlockStairs extends Block
             {
                 int l1 = ai2[j1];
 
-                if (l1 != k);
+                if (l1 != k)
+                {
+                    ;
+                }
             }
 
             amovingobjectposition[k] = super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);

@@ -6,6 +6,8 @@ public class EntityPig extends EntityAnimal
 {
     public static boolean survivaltest = false;
 
+    private final EntityAIControlledByPlayer field_82184_d;
+
     public EntityPig(World par1World)
     {
         super(par1World);
@@ -15,12 +17,14 @@ public class EntityPig extends EntityAnimal
         float f = 0.25F;
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-        tasks.addTask(2, new EntityAIMate(this, f));
-        tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
-        tasks.addTask(4, new EntityAIFollowParent(this, 0.28F));
-        tasks.addTask(5, new EntityAIWander(this, f));
-        tasks.addTask(6, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
-        tasks.addTask(7, new EntityAILookIdle(this));
+        tasks.addTask(2, field_82184_d = new EntityAIControlledByPlayer(this, 0.34F));
+        tasks.addTask(3, new EntityAIMate(this, f));
+        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.field_82793_bR.shiftedIndex, false));
+        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.field_82797_bK.shiftedIndex, false));
+        tasks.addTask(5, new EntityAIFollowParent(this, 0.28F));
+        tasks.addTask(6, new EntityAIWander(this, f));
+        tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
+        tasks.addTask(8, new EntityAILookIdle(this));
     }
 
     /**
@@ -39,6 +43,17 @@ public class EntityPig extends EntityAnimal
     public int getMaxHealth()
     {
         return survivaltest ? 6 : 10;
+    }
+
+    protected void updateAITasks()
+    {
+        super.updateAITasks();
+    }
+
+    public boolean func_82171_bF()
+    {
+        ItemStack itemstack = ((EntityPlayer)riddenByEntity).getHeldItem();
+        return itemstack != null && itemstack.itemID == Item.field_82793_bR.shiftedIndex;
     }
 
     protected void entityInit()
@@ -70,7 +85,7 @@ public class EntityPig extends EntityAnimal
      */
     protected String getLivingSound()
     {
-        return "mob.pig";
+        return "mob.pig.say";
     }
 
     /**
@@ -78,7 +93,7 @@ public class EntityPig extends EntityAnimal
      */
     protected String getHurtSound()
     {
-        return "mob.pig";
+        return "mob.pig.say";
     }
 
     /**
@@ -86,7 +101,15 @@ public class EntityPig extends EntityAnimal
      */
     protected String getDeathSound()
     {
-        return "mob.pigdeath";
+        return "mob.pig.death";
+    }
+
+    /**
+     * Plays step sound at given x, y, z for the entity
+     */
+    protected void playStepSound(int par1, int par2, int par3, int par4)
+    {
+        worldObj.playSoundAtEntity(this, "mob.pig.step", 0.15F, 1.0F);
     }
 
     /**
@@ -144,6 +167,11 @@ public class EntityPig extends EntityAnimal
             {
                 dropItem(Item.porkRaw.shiftedIndex, 1);
             }
+        }
+
+        if (getSaddled())
+        {
+            dropItem(Item.saddle.shiftedIndex, 1);
         }
     }
 
@@ -208,5 +236,18 @@ public class EntityPig extends EntityAnimal
     public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
     {
         return new EntityPig(worldObj);
+    }
+
+    /**
+     * Checks if the parameter is an wheat item.
+     */
+    public boolean isWheat(ItemStack par1ItemStack)
+    {
+        return par1ItemStack != null && par1ItemStack.itemID == Item.field_82797_bK.shiftedIndex;
+    }
+
+    public EntityAIControlledByPlayer func_82183_n()
+    {
+        return field_82184_d;
     }
 }

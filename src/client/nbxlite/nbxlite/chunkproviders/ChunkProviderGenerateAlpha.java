@@ -48,7 +48,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
         {
 			ravineGenerator = new MapGenRavine();
             strongholdGenerator = new MapGenStronghold2();
-            villageGenerator = new MapGenVillage(0);
+            villageGenerator = new MapGenVillage();
 			mineshaftGenerator = new MapGenMineshaft();
         }
         terrainAlt1Generator = new AlphaNoiseGeneratorOctaves(rand, 16);

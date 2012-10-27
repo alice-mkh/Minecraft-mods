@@ -75,7 +75,6 @@ public class GuiGameOver extends GuiScreen
                 mc.thePlayer.respawnPlayer();
                 mc.displayGuiScreen(null);
                 break;
-
             case 2:
                 mc.theWorld.sendQuittingDisconnectingPacket();
                 mc.loadWorld(null);

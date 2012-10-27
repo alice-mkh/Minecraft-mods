@@ -12,7 +12,7 @@ public class ItemBow extends Item
         super(par1);
         maxStackSize = 1;
         setMaxDamage(384);
-        setTabToDisplayOn(CreativeTabs.tabCombat);
+        setCreativeTab(CreativeTabs.tabCombat);
     }
 
     /**
@@ -42,7 +42,7 @@ public class ItemBow extends Item
 
             if (f == 1.0F)
             {
-                entityarrow.func_70243_d(true);
+                entityarrow.setIsCritical(true);
             }
 
             int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);

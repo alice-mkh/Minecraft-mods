@@ -33,6 +33,7 @@ class GuiWorldSlot extends GuiSlot
         GuiSelectWorld.getSMPSelectButton(parentWorldGui).enabled = flag;
         GuiSelectWorld.getRenameButton(parentWorldGui).enabled = flag;
         GuiSelectWorld.getDeleteButton(parentWorldGui).enabled = flag;
+        GuiSelectWorld.func_82312_f(parentWorldGui).enabled = flag;
 
         if (par2 && flag)
         {
@@ -68,28 +69,28 @@ class GuiWorldSlot extends GuiSlot
 
         if (s == null || MathHelper.stringNullOrLengthZero(s))
         {
-            s = (new StringBuilder()).append(GuiSelectWorld.getLocalizedWorldName(parentWorldGui)).append(" ").append(par1 + 1).toString();
+            s = (new StringBuilder()).append(GuiSelectWorld.func_82313_g(parentWorldGui)).append(" ").append(par1 + 1).toString();
         }
 
         String s1 = saveformatcomparator.getFileName();
-        s1 = (new StringBuilder()).append(s1).append(" (").append(GuiSelectWorld.getDateFormatter(parentWorldGui).format(new Date(saveformatcomparator.getLastTimePlayed()))).toString();
+        s1 = (new StringBuilder()).append(s1).append(" (").append(GuiSelectWorld.func_82315_h(parentWorldGui).format(new Date(saveformatcomparator.getLastTimePlayed()))).toString();
         s1 = (new StringBuilder()).append(s1).append(")").toString();
         String s2 = "";
 
         if (saveformatcomparator.requiresConversion())
         {
-            s2 = (new StringBuilder()).append(GuiSelectWorld.getLocalizedMustConvert(parentWorldGui)).append(" ").append(s2).toString();
+            s2 = (new StringBuilder()).append(GuiSelectWorld.func_82311_i(parentWorldGui)).append(" ").append(s2).toString();
         }
         else
         {
-            s2 = GuiSelectWorld.getLocalizedGameMode(parentWorldGui)[saveformatcomparator.func_75790_f().getID()];
+            s2 = GuiSelectWorld.func_82314_j(parentWorldGui)[saveformatcomparator.getEnumGameType().getID()];
 
             if (saveformatcomparator.isHardcoreModeEnabled())
             {
                 s2 = (new StringBuilder()).append("\2474").append(StatCollector.translateToLocal("gameMode.hardcore")).append("\247r").toString();
             }
 
-            if (saveformatcomparator.func_75783_h())
+            if (saveformatcomparator.getCheatsEnabled())
             {
                 s2 = (new StringBuilder()).append(s2).append(", ").append(StatCollector.translateToLocal("selectWorld.cheats")).toString();
             }

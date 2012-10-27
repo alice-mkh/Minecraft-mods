@@ -4,13 +4,17 @@ public class ChestItemRenderHelper
 {
     /** The static instance of ChestItemRenderHelper. */
     public static ChestItemRenderHelper instance = new ChestItemRenderHelper();
-    private TileEntityChest field_78543_b;
-    private TileEntityEnderChest field_78544_c;
+
+    /** Instance of Chest's Tile Entity. */
+    private TileEntityChest theChest;
+
+    /** Instance of Ender Chest's Tile Entity. */
+    private TileEntityEnderChest theEnderChest;
 
     public ChestItemRenderHelper()
     {
-        field_78543_b = new TileEntityChest();
-        field_78544_c = new TileEntityEnderChest();
+        theChest = new TileEntityChest();
+        theEnderChest = new TileEntityEnderChest();
     }
 
     /**
@@ -20,11 +24,11 @@ public class ChestItemRenderHelper
     {
         if (par1Block.blockID == Block.enderChest.blockID)
         {
-            TileEntityRenderer.instance.renderTileEntityAt(field_78544_c, 0.0D, 0.0D, 0.0D, net.minecraft.client.Minecraft.oldlighting ? par3 : 0.0F);
+            TileEntityRenderer.instance.renderTileEntityAt(theEnderChest, 0.0D, 0.0D, 0.0D, net.minecraft.client.Minecraft.oldlighting ? par3 : 0.0F);
         }
         else
         {
-            TileEntityRenderer.instance.renderTileEntityAt(field_78543_b, 0.0D, 0.0D, 0.0D, net.minecraft.client.Minecraft.oldlighting ? par3 : 0.0F);
+            TileEntityRenderer.instance.renderTileEntityAt(theChest, 0.0D, 0.0D, 0.0D, net.minecraft.client.Minecraft.oldlighting ? par3 : 0.0F);
         }
     }
 }

@@ -48,10 +48,10 @@ public class ODEyecandy extends OldDaysModule{
                     set(RenderMinecart2.class, "shiftChest", OldChest);
                     reload(); break;
             case 7: set(RenderLiving.class, "labels", MobLabels); break;
-            case 8: set(RenderZombie.class, "mobArmor", MobArmor);
-                    set(RenderSkeleton.class, "mobArmor", MobArmor);
-                    set(RenderZombie.class, "fallback", !hasTextures("olddays/plate.png"));
-                    set(RenderSkeleton.class, "fallback", !hasTextures("olddays/plate.png")); break;
+            case 8: set(RenderZombie2.class, "mobArmor", MobArmor);
+                    set(RenderSkeleton2.class, "mobArmor", MobArmor);
+                    set(RenderZombie2.class, "fallback", !hasTextures("olddays/plate.png"));
+                    set(RenderSkeleton2.class, "fallback", !hasTextures("olddays/plate.png")); break;
             case 9: set(GuiMainMenu.class, "panorama", MainMenu>1);
                     set(GuiMainMenu.class, "oldlogo", MainMenu<1); break;
             case 10:set(EntityDiggingFX.class, "oldparticles", OldDigging); break;
@@ -77,7 +77,7 @@ public class ODEyecandy extends OldDaysModule{
             case 20:set(RenderLiving.class, "oldlabels", Labels); break;
             case 21:set(LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
             case 22:set(GuiInventory.class, "oldcreative", OldCreativeInv); break;
-            case 23:set(EntityPlayer.class, "oldswing", OldSwing);
+            case 23:set(EntityLiving.class, "oldswing", OldSwing);
                     set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
             case 24:set(EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
             case 25:set(EntitySuspendFX.class, "allow", WaterParticles); break;
@@ -85,8 +85,8 @@ public class ODEyecandy extends OldDaysModule{
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(EntityEnderman.class, new RenderEnderman2());
             addRenderer(EntityMinecart.class, new RenderMinecart2());
-            addRenderer(EntityZombie.class, new RenderZombie(new ModelZombie()));
-            addRenderer(EntitySkeleton.class, new RenderSkeleton(new ModelSkeleton()));
+            addRenderer(EntityZombie.class, new RenderZombie2(new ModelZombie()));
+            addRenderer(EntitySkeleton.class, new RenderSkeleton2(new ModelSkeleton()));
             addRenderer(EntityPlayer.class, new RenderPlayer2());
             addRenderer(EntitySnowman.class, new RenderSnowMan2());
         }

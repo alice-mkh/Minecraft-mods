@@ -42,7 +42,7 @@ public class GuiCreateWorld2 extends GuiScreen
     /**
      * the GUIButton in the more world options screen. It's currently greyed out and unused in minecraft 1.0.0
      */
-    private GuiButton worldTypeButton;
+    private GuiButton dimensionIdButton;
     private GuiButton field_73936_z;
 
     /** The first line of text describing the currently selected game mode. */
@@ -105,13 +105,13 @@ public class GuiCreateWorld2 extends GuiScreen
         generateStructuresButton.drawButton = false;
         controlList.add(field_73938_x = new GuiButton(7, width / 2 + 5, 136, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
         field_73938_x.drawButton = false;
-        controlList.add(worldTypeButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
-        worldTypeButton.drawButton = false;
+        controlList.add(dimensionIdButton = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
+        dimensionIdButton.drawButton = false;
         controlList.add(field_73936_z = new GuiButton(6, width / 2 - 155, 136, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
         field_73936_z.drawButton = false;
         if (!(GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2worldtype[GeneratorList.feat2current]) &&
             !(GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1worldtype[GeneratorList.feat1current])){
-            worldTypeButton.enabled = false;
+            dimensionIdButton.enabled = false;
             field_73916_E = 0;
         }
         field_73925_n = GeneratorList.genstructures[GeneratorList.gencurrent];
@@ -194,7 +194,7 @@ public class GuiCreateWorld2 extends GuiScreen
     private void makeUseableName()
     {
         folderName = textboxWorldName.getText().trim();
-        char ac[] = ChatAllowedCharacters.invalidFilenameCharacters;
+        char ac[] = ChatAllowedCharacters.allowedCharactersArray;
         int i = ac.length;
 
         for (int j = 0; j < i; j++)
@@ -239,7 +239,7 @@ public class GuiCreateWorld2 extends GuiScreen
             this.field_73938_x.displayString = this.field_73938_x.displayString + var1.translateKey("options.off");
         }
 
-        this.worldTypeButton.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey(WorldType.worldTypes[this.field_73916_E].getTranslateName());
+        this.dimensionIdButton.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey(WorldType.worldTypes[this.field_73916_E].getTranslateName());
         this.field_73936_z.displayString = var1.translateKey("selectWorld.allowCommands") + " ";
 
         if (this.field_73926_o && !this.field_73933_r)
@@ -358,7 +358,7 @@ public class GuiCreateWorld2 extends GuiScreen
             gameModeButton.drawButton = !moreOptions;
             generateStructuresButton.drawButton = moreOptions;
             field_73938_x.drawButton = moreOptions;
-            worldTypeButton.drawButton = moreOptions;
+            dimensionIdButton.drawButton = moreOptions;
             field_73936_z.drawButton = moreOptions;
             nbxliteButton.drawButton = moreOptions && ODNBXlite.ShowGUI;
 

@@ -72,7 +72,7 @@ public class NetClientHandlerSP extends NetClientHandler
         return false;
     }
 
-    public NetworkManager func_72548_f()
+    public INetworkManager func_72548_f()
     {
         return null;
     }
@@ -83,5 +83,9 @@ public class NetClientHandlerSP extends NetClientHandler
     public void addToSendQueue(Packet par1Packet)
     {
         par1Packet.processPacket(this/*serverHandler*/);
+    }
+
+    public void handleAnimation(Packet18Animation par1Packet18Animation)
+    {
     }
 }

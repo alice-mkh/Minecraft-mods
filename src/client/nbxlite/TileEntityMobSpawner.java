@@ -20,6 +20,9 @@ public class TileEntityMobSpawner extends TileEntity
     private int maxSpawnDelay;
     private int spawnCount;
     private Entity spawnedMob;
+    private int field_82350_j;
+    private int field_82349_r;
+    private int field_82348_s;
 
     public TileEntityMobSpawner()
     {
@@ -29,6 +32,9 @@ public class TileEntityMobSpawner extends TileEntity
         minSpawnDelay = 200;
         maxSpawnDelay = 800;
         spawnCount = 4;
+        field_82350_j = 6;
+        field_82349_r = 16;
+        field_82348_s = 4;
         mobID = "Pig";
         delay = 20;
     }
@@ -48,7 +54,7 @@ public class TileEntityMobSpawner extends TileEntity
      */
     public boolean anyPlayerInRange()
     {
-        return worldObj.getClosestPlayer((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, 16D) != null;
+        return worldObj.getClosestPlayer((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D, field_82349_r) != null;
     }
 
     /**
@@ -72,8 +78,14 @@ public class TileEntityMobSpawner extends TileEntity
             double d3 = (float)zCoord + worldObj.rand.nextFloat();
             worldObj.spawnParticle("smoke", d, d1, d3, 0.0D, 0.0D, 0.0D);
             worldObj.spawnParticle("flame", d, d1, d3, 0.0D, 0.0D, 0.0D);
-            yaw2 = yaw % 360D;
-            yaw += 4.5454545021057129D;
+
+            if (delay > 0)
+            {
+                delay--;
+            }
+
+            yaw2 = yaw;
+            yaw = (yaw + (double)(1000F / ((float)delay + 200F))) % 360D;
         }else{
             double d = (float)xCoord + worldObj.rand.nextFloat();
             double d1 = (float)yCoord + worldObj.rand.nextFloat();
@@ -109,9 +121,9 @@ public class TileEntityMobSpawner extends TileEntity
                     return;
                 }
 
-                int j = worldObj.getEntitiesWithinAABB(entity.getClass(), AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(8D, 4D, 8D)).size();
+                int j = worldObj.getEntitiesWithinAABB(entity.getClass(), AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(field_82348_s * 2, 4D, field_82348_s * 2)).size();
 
-                if (j >= 6)
+                if (j >= field_82350_j)
                 {
                     updateDelay();
                     return;
@@ -122,9 +134,9 @@ public class TileEntityMobSpawner extends TileEntity
                     continue;
                 }
 
-                double d2 = (double)xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * 4D;
+                double d2 = (double)xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * (double)field_82348_s;
                 double d4 = (yCoord + worldObj.rand.nextInt(3)) - 1;
-                double d5 = (double)zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * 4D;
+                double d5 = (double)zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * (double)field_82348_s;
                 EntityLiving entityliving = (entity instanceof EntityLiving) ? (EntityLiving)entity : null;
                 entity.setLocationAndAngles(d2, d4, d5, worldObj.rand.nextFloat() * 360F, 0.0F);
 
@@ -164,6 +176,10 @@ public class TileEntityMobSpawner extends TileEntity
 
             par1Entity.readFromNBT(nbttagcompound);
         }
+        else if ((par1Entity instanceof EntityLiving) && par1Entity.worldObj != null)
+        {
+            ((EntityLiving)par1Entity).func_82163_bD();
+        }
     }
 
     /**
@@ -172,6 +188,7 @@ public class TileEntityMobSpawner extends TileEntity
     private void updateDelay()
     {
         delay = minSpawnDelay + worldObj.rand.nextInt(maxSpawnDelay - minSpawnDelay);
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, 0);
     }
 
     /**
@@ -198,6 +215,17 @@ public class TileEntityMobSpawner extends TileEntity
             maxSpawnDelay = par1NBTTagCompound.getShort("MaxSpawnDelay");
             spawnCount = par1NBTTagCompound.getShort("SpawnCount");
         }
+
+        if (par1NBTTagCompound.hasKey("MaxNearbyEntities"))
+        {
+            field_82350_j = par1NBTTagCompound.getShort("MaxNearbyEntities");
+            field_82349_r = par1NBTTagCompound.getShort("RequiredPlayerRange");
+        }
+
+        if (par1NBTTagCompound.hasKey("SpawnRange"))
+        {
+            field_82348_s = par1NBTTagCompound.getShort("SpawnRange");
+        }
     }
 
     /**
@@ -211,6 +239,9 @@ public class TileEntityMobSpawner extends TileEntity
         par1NBTTagCompound.setShort("MinSpawnDelay", (short)minSpawnDelay);
         par1NBTTagCompound.setShort("MaxSpawnDelay", (short)maxSpawnDelay);
         par1NBTTagCompound.setShort("SpawnCount", (short)spawnCount);
+        par1NBTTagCompound.setShort("MaxNearbyEntities", (short)field_82350_j);
+        par1NBTTagCompound.setShort("RequiredPlayerRange", (short)field_82349_r);
+        par1NBTTagCompound.setShort("SpawnRange", (short)field_82348_s);
 
         if (spawnerTags != null)
         {
@@ -234,12 +265,23 @@ public class TileEntityMobSpawner extends TileEntity
     }
 
     /**
-     * signs and mobSpawners use this to send text and meta-data
+     * Overriden in a sign to provide the text.
      */
-    public Packet getAuxillaryInfoPacket()
+    public Packet getDescriptionPacket()
     {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         writeToNBT(nbttagcompound);
         return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbttagcompound);
+    }
+
+    /**
+     * Called when a client event is received with the event number and argument, see World.sendClientEvent
+     */
+    public void receiveClientEvent(int par1, int par2)
+    {
+        if (par1 == 1 && worldObj.isRemote)
+        {
+            delay = minSpawnDelay;
+        }
     }
 }

@@ -17,7 +17,7 @@ public class BlockGear extends Block
     public BlockGear(int par1, int par2)
     {
         super(par1, par2, Material.circuits);
-        setCreativeTab(CreativeTabs.tabDeco);
+        setCreativeTab(CreativeTabs.tabDecorations);
     }
 
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int i){

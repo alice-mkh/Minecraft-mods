@@ -5,18 +5,27 @@ import net.minecraft.client.Minecraft;
 
 public class GuiShareToLan extends GuiScreen
 {
-    private final GuiScreen field_74092_a;
-    private GuiButton field_74090_b;
-    private GuiButton field_74091_c;
-    private String field_74089_d;
-    private boolean field_74093_m;
+    /**
+     * A reference to the screen object that created this. Used for navigating between screens.
+     */
+    private final GuiScreen parentScreen;
+    private GuiButton buttonAllowCommandsToggle;
+    private GuiButton buttonGameMode;
+
+    /**
+     * The currently selected game mode. One of 'survival', 'creative', or 'adventure'
+     */
+    private String gameMode;
+
+    /** True if 'Allow Cheats' is currently enabled */
+    private boolean allowCommands;
     private boolean singleplayer;
 
     public GuiShareToLan(GuiScreen par1GuiScreen)
     {
-        field_74089_d = "survival";
-        field_74093_m = false;
-        field_74092_a = par1GuiScreen;
+        gameMode = "survival";
+        allowCommands = false;
+        parentScreen = par1GuiScreen;
         singleplayer = false;
     }
 
@@ -33,8 +42,8 @@ public class GuiShareToLan extends GuiScreen
         controlList.clear();
         controlList.add(new GuiButton(101, width / 2 - 155, height - 28, 150, 20, StatCollector.translateToLocal("lanServer.start")));
         controlList.add(new GuiButton(102, width / 2 + 5, height - 28, 150, 20, StatCollector.translateToLocal("gui.cancel")));
-        controlList.add(field_74091_c = new GuiButton(104, width / 2 - 155, 100, 150, 20, StatCollector.translateToLocal("selectWorld.gameMode")));
-        controlList.add(field_74090_b = new GuiButton(103, width / 2 + 5, 100, 150, 20, StatCollector.translateToLocal("selectWorld.allowCommands")));
+        controlList.add(buttonGameMode = new GuiButton(104, width / 2 - 155, 100, 150, 20, StatCollector.translateToLocal("selectWorld.gameMode")));
+        controlList.add(buttonAllowCommandsToggle = new GuiButton(103, width / 2 + 5, 100, 150, 20, StatCollector.translateToLocal("selectWorld.allowCommands")));
         func_74088_g();
     }
 
@@ -42,16 +51,16 @@ public class GuiShareToLan extends GuiScreen
     {
         StringTranslate stringtranslate;
         stringtranslate = StringTranslate.getInstance();
-        field_74091_c.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.gameMode")).append(" ").append(stringtranslate.translateKey((new StringBuilder()).append("selectWorld.gameMode.").append(field_74089_d).toString())).toString();
-        field_74090_b.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.allowCommands")).append(" ").toString();
+        buttonGameMode.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.gameMode")).append(" ").append(stringtranslate.translateKey((new StringBuilder()).append("selectWorld.gameMode.").append(gameMode).toString())).toString();
+        buttonAllowCommandsToggle.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.allowCommands")).append(" ").toString();
 
-        if (!(!field_74093_m))
+        if (!(!allowCommands))
         {
-            field_74090_b.displayString += stringtranslate.translateKey("options.on");
+            buttonAllowCommandsToggle.displayString += stringtranslate.translateKey("options.on");
         }
         else
         {
-            field_74090_b.displayString += stringtranslate.translateKey("options.off");
+            buttonAllowCommandsToggle.displayString += stringtranslate.translateKey("options.off");
         }
     }
 
@@ -62,28 +71,28 @@ public class GuiShareToLan extends GuiScreen
     {
         if (par1GuiButton.id == 102)
         {
-            mc.displayGuiScreen(field_74092_a);
+            mc.displayGuiScreen(parentScreen);
         }
         else if (par1GuiButton.id == 104)
         {
-            if (field_74089_d.equals("survival"))
+            if (gameMode.equals("survival"))
             {
-                field_74089_d = "creative";
+                gameMode = "creative";
             }
-            else if (field_74089_d.equals("creative"))
+            else if (gameMode.equals("creative"))
             {
-                field_74089_d = "adventure";
+                gameMode = "adventure";
             }
             else
             {
-                field_74089_d = "survival";
+                gameMode = "survival";
             }
 
             func_74088_g();
         }
         else if (par1GuiButton.id == 103)
         {
-            field_74093_m = !field_74093_m;
+            allowCommands = !allowCommands;
             func_74088_g();
         }
         else if (par1GuiButton.id == 101)
@@ -92,7 +101,7 @@ public class GuiShareToLan extends GuiScreen
             if (singleplayer){
                 mc.quitAndStartServer();
             }
-            String s = mc.getIntegratedServer().shareToLAN(EnumGameType.getByName(field_74089_d), field_74093_m);
+            String s = mc.getIntegratedServer().shareToLAN(EnumGameType.getByName(gameMode), allowCommands);
             String s1 = "";
 
             if (!singleplayer){

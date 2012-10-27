@@ -48,7 +48,7 @@ public class TextureManager{
     public void setTextureHook(String origname, String newname, boolean b){
         try{
             TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
+            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
             BufferedImage image = ImageIO.read(texpack.getResourceAsStream(b ? newname : origname));
             renderEngine.setupTexture(image, renderEngine.getTexture(origname));
         }catch(Exception ex){
@@ -84,7 +84,7 @@ public class TextureManager{
     public boolean hasEntry(String... str){
         try{
             TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            TexturePackBase texpack = ((TexturePackBase)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
+            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(net.minecraft.src.TexturePackList.class, packList, 6));
             if (texpack instanceof TexturePackDefault){
                 return true;
             }

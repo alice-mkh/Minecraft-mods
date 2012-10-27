@@ -87,13 +87,10 @@ public class EntityOcelot extends EntityTameable
         {
             case 0:
                 return "/mob/ozelot.png";
-
             case 1:
                 return "/mob/cat_black.png";
-
             case 2:
                 return "/mob/cat_red.png";
-
             case 3:
                 return "/mob/cat_siamese.png";
         }
@@ -383,6 +380,20 @@ public class EntityOcelot extends EntityTameable
         else
         {
             return super.getEntityName();
+        }
+    }
+
+    public void func_82163_bD()
+    {
+        if (worldObj.rand.nextInt(7) == 0)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                EntityOcelot entityocelot = new EntityOcelot(worldObj);
+                entityocelot.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
+                entityocelot.setGrowingAge(-24000);
+                worldObj.spawnEntityInWorld(entityocelot);
+            }
         }
     }
 }

@@ -32,7 +32,12 @@ public class RenderLiving extends Render
         renderPassModel = par1ModelBase;
     }
 
-    private float func_77034_a(float par1, float par2, float par3)
+    /**
+     * Returns a rotation angle that is inbetween two other rotation angles. par1 and par2 are the angles between which
+     * to interpolate, par3 is probably a float between 0.0 and 1.0 that tells us where "between" the two angles we are.
+     * Example: par1 = 30, par2 = 50, par3 = 0.5, then return = 40
+     */
+    private float interpolateRotation(float par1, float par2, float par3)
     {
         float f;
 
@@ -70,8 +75,8 @@ public class RenderLiving extends Render
 
         try
         {
-            float f = func_77034_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-            float f1 = func_77034_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
+            float f = interpolateRotation(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
+            float f1 = interpolateRotation(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
             float f2 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
             renderLivingAt(par1EntityLiving, par2, par4, par6);
             float f3 = handleRotationFloat(par1EntityLiving, par9);
@@ -105,7 +110,7 @@ public class RenderLiving extends Render
                 float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 * bobStrength - 23F;
                 GL11.glTranslatef(0.0F, bob * f4 - 0.0078125F, 0.0F);
             }else{
-                f6 = par1EntityLiving.field_70754_ba - par1EntityLiving.legYaw * (1.0F - par9);
+                f6 = par1EntityLiving.legSwing - par1EntityLiving.legYaw * (1.0F - par9);
                 if (par1EntityLiving.isChild()){
                     f6 *= 3F;
                 }
@@ -132,7 +137,13 @@ public class RenderLiving extends Render
                 renderPassModel.setLivingAnimations(par1EntityLiving, f6, f5, par9);
                 renderPassModel.render(par1EntityLiving, f6, f5, f3, f1 - f, f2, f4);
 
-                if (j == 15)
+                if ((j & 0xf0) == 16)
+                {
+                    func_82408_c(par1EntityLiving, i, par9);
+                    renderPassModel.render(par1EntityLiving, f6, f5, f3, f1 - f, f2, f4);
+                }
+
+                if ((j & 0xf) == 15)
                 {
                     float f8 = (float)par1EntityLiving.ticksExisted + par9;
                     loadTexture("%blur%/misc/glint.png");
@@ -173,6 +184,7 @@ public class RenderLiving extends Render
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
             }
 
+            GL11.glDepthMask(true);
             renderEquippedItems(par1EntityLiving, par9);
             float f7 = par1EntityLiving.getBrightness(par9);
             int k = getColorMultiplier(par1EntityLiving, f7, par9);
@@ -248,8 +260,11 @@ public class RenderLiving extends Render
      */
     protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
-        mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+        if (!par1EntityLiving.func_82150_aj())
+        {
+            loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
+            mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+        }
     }
 
     /**
@@ -341,6 +356,10 @@ public class RenderLiving extends Render
     protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
         return -1;
+    }
+
+    protected void func_82408_c(EntityLiving entityliving, int i, float f)
+    {
     }
 
     protected float getDeathMaxRotation(EntityLiving par1EntityLiving)

@@ -13,7 +13,7 @@ public class CommandClientEmote extends CommandServerEmote
     {
         if (par2ArrayOfStr.length > 0)
         {
-            String s = joinString(par2ArrayOfStr, 0);
+            String s = func_82360_a(par1ICommandSender, par2ArrayOfStr, 0);
             Minecraft.getMinecraft().thePlayer.sendChatToPlayer("* "+par1ICommandSender.getCommandSenderName()+" "+s);
             return;
         }

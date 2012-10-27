@@ -48,6 +48,7 @@ public class Chunk
     /** The time according to World.worldTime when this chunk was last saved */
     public long lastSaveTime;
     public boolean deferRender;
+    public int field_82912_p;
 
     /**
      * Contains the current round-robin relight check index, and is implied as the relight check location as well.
@@ -68,6 +69,7 @@ public class Chunk
         hasEntities = false;
         lastSaveTime = 0L;
         deferRender = false;
+        field_82912_p = 0;
         queuedLightChecks = 4096;
         field_76653_p = false;
         entityLists = new List[16];
@@ -202,6 +204,7 @@ public class Chunk
     public void generateSkylightMap()
     {
         int i = getTopFilledSegment();
+        field_82912_p = 0x7fffffff;
 
         for (int j = 0; j < 16; j++)
         {
@@ -220,6 +223,12 @@ public class Chunk
                     if (getBlockLightOpacity(j, j1 - 1, l) != 0)
                     {
                         heightMap[l << 4 | j] = j1;
+
+                        if (j1 < field_82912_p)
+                        {
+                            field_82912_p = j1;
+                        }
+
                         break;
                     }
 
@@ -247,7 +256,7 @@ public class Chunk
                         {
                             extendedblockstorage.setExtSkylightValue(j, k1 & 0xf, l, j1);
                             if (!ODNBXlite.oldLightEngine){
-                                worldObj.func_72902_n((xPosition << 4) + j, k1, (zPosition << 4) + l);
+                                worldObj.markBlockNeedsUpdateForAll((xPosition << 4) + j, k1, (zPosition << 4) + l);
                             }
                         }
                     }
@@ -308,10 +317,10 @@ public class Chunk
                     int k = getHeightValue(i, j);
                     int l = xPosition * 16 + i;
                     int i1 = zPosition * 16 + j;
-                    int j1 = worldObj.getHeightValue(l - 1, i1);
-                    int k1 = worldObj.getHeightValue(l + 1, i1);
-                    int l1 = worldObj.getHeightValue(l, i1 - 1);
-                    int i2 = worldObj.getHeightValue(l, i1 + 1);
+                    int j1 = worldObj.func_82734_g(l - 1, i1);
+                    int k1 = worldObj.func_82734_g(l + 1, i1);
+                    int l1 = worldObj.func_82734_g(l, i1 - 1);
+                    int i2 = worldObj.func_82734_g(l, i1 + 1);
 
                     if (k1 < j1)
                     {
@@ -412,7 +421,7 @@ public class Chunk
                     if (extendedblockstorage != null)
                     {
                         extendedblockstorage.setExtSkylightValue(par1, i1 & 0xf, par3, 15);
-                        worldObj.func_72902_n((xPosition << 4) + par1, i1, (zPosition << 4) + par3);
+                        worldObj.markBlockNeedsUpdateForAll((xPosition << 4) + par1, i1, (zPosition << 4) + par3);
                     }
                 }
             }
@@ -428,7 +437,7 @@ public class Chunk
                     if (extendedblockstorage1 != null)
                     {
                         extendedblockstorage1.setExtSkylightValue(par1, j1 & 0xf, par3, 0);
-                        worldObj.func_72902_n((xPosition << 4) + par1, j1, (zPosition << 4) + par3);
+                        worldObj.markBlockNeedsUpdateForAll((xPosition << 4) + par1, j1, (zPosition << 4) + par3);
                     }
                 }
             }
@@ -485,6 +494,11 @@ public class Chunk
             int l2 = j2;
             j2 = k2;
             k2 = l2;
+        }
+
+        if (l1 < field_82912_p)
+        {
+            field_82912_p = l1;
         }
 
         if (!worldObj.provider.hasNoSky)
@@ -948,7 +962,7 @@ public class Chunk
     public void setChunkBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity)
     {
         ChunkPosition chunkposition = new ChunkPosition(par1, par2, par3);
-        par4TileEntity.func_70308_a(worldObj);
+        par4TileEntity.setWorldObj(worldObj);
         par4TileEntity.xCoord = xPosition * 16 + par1;
         par4TileEntity.yCoord = par2;
         par4TileEntity.zCoord = zPosition * 16 + par3;
@@ -1096,7 +1110,7 @@ public class Chunk
     /**
      * Gets all entities that can be assigned to the specified class. Args: entityClass, aabb, listToFill
      */
-    public void getEntitiesOfTypeWithinAAAB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, List par3List)
+    public void getEntitiesOfTypeWithinAAAB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, List par3List, IEntitySelector par4IEntitySelector)
     {
         int i = MathHelper.floor_double((par2AxisAlignedBB.minY - 2D) / 16D);
         int j = MathHelper.floor_double((par2AxisAlignedBB.maxY + 2D) / 16D);
@@ -1135,7 +1149,7 @@ public class Chunk
 
                 Entity entity = (Entity)iterator.next();
 
-                if (par1Class.isAssignableFrom(entity.getClass()) && entity.boundingBox.intersectsWith(par2AxisAlignedBB))
+                if (par1Class.isAssignableFrom(entity.getClass()) && entity.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.func_82704_a(entity)))
                 {
                     par3List.add(entity);
                 }
@@ -1151,12 +1165,12 @@ public class Chunk
     {
         if (par1)
         {
-            if (hasEntities && worldObj.getWorldTime() != lastSaveTime)
+            if (hasEntities && worldObj.func_82737_E() != lastSaveTime)
             {
                 return true;
             }
         }
-        else if (hasEntities && worldObj.getWorldTime() >= lastSaveTime + 600L)
+        else if (hasEntities && worldObj.func_82737_E() >= lastSaveTime + 600L)
         {
             return true;
         }
@@ -1365,7 +1379,7 @@ public class Chunk
 
             if (par4 && storageArrays[j1] != null && storageArrays[j1].getBlockMSBArray() != null)
             {
-                storageArrays[j1].func_76676_h();
+                storageArrays[j1].clearMSBArray();
             }
         }
 

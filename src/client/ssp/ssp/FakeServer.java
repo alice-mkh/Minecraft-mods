@@ -112,7 +112,7 @@ public class FakeServer extends IntegratedServer
     public void addServerStatsToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)
     {
         super.addServerStatsToSnooper(par1PlayerUsageSnooper);
-        par1PlayerUsageSnooper.addData("snooper_partner", mc.getPlayerUsageSnooper().func_80006_f());
+        par1PlayerUsageSnooper.addData("snooper_partner", mc.getPlayerUsageSnooper().getUniqueID());
     }
 
     /**
@@ -155,7 +155,7 @@ public class FakeServer extends IntegratedServer
         }
     }
 
-    public boolean func_71344_c()
+    public boolean getPublic()
     {
         return false;
     }

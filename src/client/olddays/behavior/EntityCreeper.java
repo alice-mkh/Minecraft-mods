@@ -9,21 +9,24 @@ public class EntityCreeper extends EntityMob
     public static boolean dark = false;
 
     /**
-     * The amount of time since the creeper was close enough to the player to ignite
-     */
-    int timeSinceIgnited;
-
-    /**
      * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
      * weird)
      */
-    int lastActiveTime;
+    private int lastActiveTime;
+
+    /**
+     * The amount of time since the creeper was close enough to the player to ignite
+     */
+    private int timeSinceIgnited;
+    private int field_82225_f;
+    private int field_82226_g;
 
     public EntityCreeper(World par1World)
     {
         super(par1World);
+        field_82225_f = 30;
+        field_82226_g = 3;
         texture = "/mob/creeper.png";
-        attackStrength = 2;
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAICreeperSwell(this));
         tasks.addTask(3, new EntityAIAvoidEntity(this, net.minecraft.src.EntityOcelot.class, 6F, 0.25F, 0.3F));
@@ -102,15 +105,16 @@ public class EntityCreeper extends EntityMob
             }
             setCreeperState(1);
             timeSinceIgnited++;
-            if (timeSinceIgnited >= 30)
+            if (timeSinceIgnited >= field_82225_f)
             {
+                boolean flag = worldObj.func_82736_K().func_82766_b("mobGriefing");
                 if (getPowered())
                 {
-                    worldObj.createExplosion(this, posX, posY, posZ, 6F);
+                    worldObj.createExplosion(this, posX, posY, posZ, field_82226_g * 2, flag);
                 }
                 else
                 {
-                    worldObj.createExplosion(this, posX, posY, posZ, 3F);
+                    worldObj.createExplosion(this, posX, posY, posZ, field_82226_g, flag);
                 }
                 setDead();
             }
@@ -133,6 +137,32 @@ public class EntityCreeper extends EntityMob
     public boolean isAIEnabled()
     {
         return !survivaltest;
+    }
+
+    public int func_82143_as()
+    {
+        if (getAttackTarget() == null)
+        {
+            return 3;
+        }
+        else
+        {
+            return 3 + (health - 1);
+        }
+    }
+
+    /**
+     * Called when the mob is falling. Calculates and applies fall damage.
+     */
+    protected void fall(float par1)
+    {
+        super.fall(par1);
+        timeSinceIgnited += par1 * 1.5F;
+
+        if (timeSinceIgnited > field_82225_f - 5)
+        {
+            timeSinceIgnited = field_82225_f - 5;
+        }
     }
 
     public int getMaxHealth()
@@ -158,6 +188,9 @@ public class EntityCreeper extends EntityMob
         {
             par1NBTTagCompound.setBoolean("powered", true);
         }
+
+        par1NBTTagCompound.setShort("Fuse", (short)field_82225_f);
+        par1NBTTagCompound.setByte("ExplosionRadius", (byte)field_82226_g);
     }
 
     /**
@@ -167,6 +200,16 @@ public class EntityCreeper extends EntityMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
+
+        if (par1NBTTagCompound.hasKey("Fuse"))
+        {
+            field_82225_f = par1NBTTagCompound.getShort("Fuse");
+        }
+
+        if (par1NBTTagCompound.hasKey("ExplosionRadius"))
+        {
+            field_82226_g = par1NBTTagCompound.getByte("ExplosionRadius");
+        }
     }
 
     public void onUpdate_old()
@@ -184,9 +227,9 @@ public class EntityCreeper extends EntityMob
             {
                 timeSinceIgnited = 0;
             }
-            if (timeSinceIgnited >= 30)
+            if (timeSinceIgnited >= field_82225_f)
             {
-                timeSinceIgnited = 30;
+                timeSinceIgnited = field_82225_f;
             }
         }
         super.onUpdate();
@@ -227,19 +270,21 @@ public class EntityCreeper extends EntityMob
                 timeSinceIgnited = 0;
             }
 
-            if (timeSinceIgnited >= 30)
+            if (timeSinceIgnited >= field_82225_f)
             {
-                timeSinceIgnited = 30;
+                timeSinceIgnited = field_82225_f;
 
                 if (!worldObj.isRemote)
                 {
+                    boolean flag = worldObj.func_82736_K().func_82766_b("mobGriefing");
+
                     if (getPowered())
                     {
-                        worldObj.createExplosion(this, posX, posY, posZ, 6F);
+                        worldObj.createExplosion(this, posX, posY, posZ, field_82226_g * 2, flag);
                     }
                     else
                     {
-                        worldObj.createExplosion(this, posX, posY, posZ, 3F);
+                        worldObj.createExplosion(this, posX, posY, posZ, field_82226_g, flag);
                     }
 
                     setDead();
@@ -255,7 +300,7 @@ public class EntityCreeper extends EntityMob
      */
     protected String getHurtSound()
     {
-        return "mob.creeper";
+        return "mob.creeper.say";
     }
 
     /**
@@ -263,7 +308,7 @@ public class EntityCreeper extends EntityMob
      */
     protected String getDeathSound()
     {
-        return "mob.creeperdeath";
+        return "mob.creeper.death";
     }
 
     /**
@@ -282,7 +327,7 @@ public class EntityCreeper extends EntityMob
 
     protected void onDeathUpdate(){
         if (survivaltest && deathTime >= 15){
-            worldObj.createExplosion(this, posX, posY, posZ, 4F);
+            worldObj.createExplosion(this, posX, posY, posZ, 4F, worldObj.func_82736_K().func_82766_b("mobGriefing"));
             setDead();
         }else{
             super.onDeathUpdate();
@@ -307,7 +352,7 @@ public class EntityCreeper extends EntityMob
      */
     public float setCreeperFlashTime(float par1)
     {
-        return ((float)lastActiveTime + (float)(timeSinceIgnited - lastActiveTime) * par1) / 28F;
+        return ((float)lastActiveTime + (float)(timeSinceIgnited - lastActiveTime) * par1) / (float)(field_82225_f - 2);
     }
 
     /**
@@ -341,5 +386,10 @@ public class EntityCreeper extends EntityMob
     {
         super.onStruckByLightning(par1EntityLightningBolt);
         dataWatcher.updateObject(17, Byte.valueOf((byte)1));
+    }
+
+    public int func_82193_c(Entity par1Entity)
+    {
+        return 2;
     }
 }

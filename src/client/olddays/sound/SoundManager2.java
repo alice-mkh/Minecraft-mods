@@ -20,6 +20,11 @@ public class SoundManager2 extends SoundManager{
     public static int enderman = 2;
     public static boolean calm4 = false;
     public static boolean creeper = false;
+    public static boolean steps = false;
+    public static boolean cow = false;
+    public static boolean slime = false;
+    public static boolean skeleton = false;
+    public static boolean levelup = false;
 
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
         par1Str = oldSounds(par1Str);
@@ -36,22 +41,25 @@ public class SoundManager2 extends SoundManager{
         }
         String str = par1Str;
         if (par1Str.startsWith("random.explode") && explode){
-            str = "random.old_explode";
+            str = "olddays.explode";
         }
         if (par1Str.startsWith("damage.hurt") && hurt){
-            str = "random.hurt";
+            str = "random.classic_hurt";
         }
         if (par1Str.startsWith("damage.fall") && nofall){
             return "nothing";
         }
         if (par1Str.startsWith("random.bowhit") && drr){
-            str = "random.drr";
+            str = "olddays.drr";
         }
         if (par1Str.equals("random.bow") && bow){
             str = "olddays.bow";
         }
         if (par1Str.startsWith("random.orb") && xporb){
             str = "random.pop";
+        }
+        if (par1Str.startsWith("random.levelup") && levelup){
+            return "nothing";
         }
         if ((par1Str.startsWith("random.burp") || par1Str.startsWith("random.eat")) && eat){
             return "nothing";
@@ -103,6 +111,24 @@ public class SoundManager2 extends SoundManager{
             }
             str = "olddays.door_close";
         }
+        if (par1Str.startsWith("step.") && steps){
+            if (par1Str.endsWith(".ladder")){
+                return "nothing";
+            }
+            str = "dig."+par1Str.substring(5);
+        }
+        if (par1Str.startsWith("mob.cow.say") && cow){
+            str = "olddays.cow";
+        }
+        if (par1Str.startsWith("mob.cow.hurt") && cow){
+            str = "olddays.cowhurt";
+        }
+        if (par1Str.startsWith("mob.slime") && slime){
+            str = "mob.slime.small";
+        }
+        if ((par1Str.startsWith("mob.skeleton.hurt") || par1Str.startsWith("mob.skeleton.death")) && slime){
+            str = "olddays.skeletonhurt";
+        }
         return str;
     }
 
@@ -113,13 +139,13 @@ public class SoundManager2 extends SoundManager{
     {
         GameSettings options = (GameSettings)getField(5);
 
-        if (!(Boolean)getField(6) || options.musicVolume == 0.0F)
+        if (!(Boolean)getField(7) || options.musicVolume == 0.0F)
         {
             return;
         }
 
         SoundSystem sndSystem = (SoundSystem)getField(0);
-        int ticksBeforeMusic = (Integer)getField(8);
+        int ticksBeforeMusic = (Integer)getField(9);
         if (!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming"))
         {
             if (ticksBeforeMusic > 0)
@@ -135,7 +161,7 @@ public class SoundManager2 extends SoundManager{
 
             if (soundpoolentry != null)
             {
-                ticksBeforeMusic = ((Random)getField(7)).nextInt(12000) + 12000;
+                ticksBeforeMusic = ((Random)getField(8)).nextInt(12000) + 12000;
                 sndSystem.backgroundMusic("BgMusic", soundpoolentry.soundUrl, soundpoolentry.soundName, false);
                 sndSystem.setVolume("BgMusic", options.musicVolume);
                 sndSystem.play("BgMusic");
@@ -149,6 +175,7 @@ public class SoundManager2 extends SoundManager{
             f.setAccessible(true);
             return f.get(this);
         }catch(Exception ex){
+            System.out.println("Exception in SoundManager2!");
             System.out.println(ex);
             return null;
         }

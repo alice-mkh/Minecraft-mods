@@ -37,7 +37,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         if(flag)
         {
             strongholdGenerator = new MapGenStronghold2();
-            villageGenerator = new MapGenVillage(0);
+            villageGenerator = new MapGenVillage();
             mineshaftGenerator = new MapGenMineshaft();
         }
         field_4180_q = new double[425];

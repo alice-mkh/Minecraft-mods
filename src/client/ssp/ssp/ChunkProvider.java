@@ -327,4 +327,9 @@ public class ChunkProvider implements IChunkProvider
     {
         return chunkList.size();
     }
+
+    public void func_82695_e(int par1, int par2)
+    {
+    }
+
 }

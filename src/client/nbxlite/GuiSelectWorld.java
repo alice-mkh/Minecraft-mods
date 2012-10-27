@@ -53,6 +53,7 @@ public class GuiSelectWorld extends GuiScreen
 
     /** the delete button in the world selection gui */
     private GuiButton buttonDelete;
+    private GuiButton field_82316_w;
 
     public GuiSelectWorld(GuiScreen par1GuiScreen)
     {
@@ -126,14 +127,16 @@ public class GuiSelectWorld extends GuiScreen
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.select")));
         controlList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, stringtranslate.translateKey("Play SMP")));
-        controlList.add(buttonDelete = new GuiButton(6, width / 2 - 154, height - 28, 70, 20, stringtranslate.translateKey("selectWorld.rename")));
-        controlList.add(buttonRename = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, stringtranslate.translateKey("selectWorld.delete")));
         controlList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.create")));
-        controlList.add(new GuiButton(0, width / 2 + 4, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
+        controlList.add(buttonDelete = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.rename")));
+        controlList.add(buttonRename = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.delete")));
+        controlList.add(field_82316_w = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.recreate")));
+        controlList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, stringtranslate.translateKey("gui.cancel")));
         buttonSelect.enabled = false;
         buttonSelect2.enabled = false;
         buttonRename.enabled = false;
         buttonDelete.enabled = false;
+        field_82316_w.enabled = false;
         buttonSelect2.drawButton = mc.useSP && mc.sspoptions.getSMPButton();
     }
 
@@ -154,7 +157,7 @@ public class GuiSelectWorld extends GuiScreen
             if (s != null)
             {
                 deleting = true;
-                GuiYesNo guiyesno = func_74061_a(this, s, selectedWorld);
+                GuiYesNo guiyesno = getDeleteWorldScreen(this, s, selectedWorld);
                 mc.displayGuiScreen(guiyesno);
             }
         }
@@ -189,6 +192,15 @@ public class GuiSelectWorld extends GuiScreen
         else if (par1GuiButton.id == 0)
         {
             mc.displayGuiScreen(parentScreen);
+        }
+        else if (par1GuiButton.id == 7)
+        {
+            GuiCreateWorld guicreateworld = new GuiCreateWorld(this);
+            ISaveHandler isavehandler = mc.getSaveLoader().getSaveLoader(getSaveFileName(selectedWorld), false);
+            WorldInfo worldinfo = isavehandler.loadWorldInfo();
+            isavehandler.flush();
+            guicreateworld.func_82286_a(worldinfo);
+            mc.displayGuiScreen(guicreateworld);
         }
         else
         {
@@ -267,7 +279,7 @@ public class GuiSelectWorld extends GuiScreen
             ODNBXlite.Import = false;
         }
         if (mc.enableSP){
-            mc.setController(((SaveFormatComparator)saveList.get(par1)).func_75790_f());
+            mc.setController(((SaveFormatComparator)saveList.get(par1)).getEnumGameType());
             mc.startWorldSSP(s, getSaveName(par1), null);
 //             MinecraftHook.startWorldHook(s, getSaveName(par1), null);
             mc.displayGuiScreen(null);
@@ -308,7 +320,10 @@ public class GuiSelectWorld extends GuiScreen
         super.drawScreen(par1, par2, par3);
     }
 
-    public static GuiYesNo func_74061_a(GuiScreen par0GuiScreen, String par1Str, int par2)
+    /**
+     * Gets a GuiYesNo screen with the warning, buttons, etc.
+     */
+    public static GuiYesNo getDeleteWorldScreen(GuiScreen par0GuiScreen, String par1Str, int par2)
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         String s = stringtranslate.translateKey("selectWorld.deleteQuestion");
@@ -369,34 +384,27 @@ public class GuiSelectWorld extends GuiScreen
         return par0GuiSelectWorld.buttonDelete;
     }
 
-    /**
-     * Gets the localized world name
-     */
-    static String getLocalizedWorldName(GuiSelectWorld par0GuiSelectWorld)
+    static GuiButton func_82312_f(GuiSelectWorld par0GuiSelectWorld)
+    {
+        return par0GuiSelectWorld.field_82316_w;
+    }
+
+    static String func_82313_g(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.localizedWorldText;
     }
 
-    /**
-     * returns the date formatter for this gui
-     */
-    static DateFormat getDateFormatter(GuiSelectWorld par0GuiSelectWorld)
+    static DateFormat func_82315_h(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.dateFormatter;
     }
 
-    /**
-     * Gets the localized must convert text
-     */
-    static String getLocalizedMustConvert(GuiSelectWorld par0GuiSelectWorld)
+    static String func_82311_i(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.localizedMustConvertText;
     }
 
-    /**
-     * Gets the localized GameMode
-     */
-    static String[] getLocalizedGameMode(GuiSelectWorld par0GuiSelectWorld)
+    static String[] func_82314_j(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.localizedGameModeText;
     }

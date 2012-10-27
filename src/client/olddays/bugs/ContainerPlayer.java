@@ -12,18 +12,15 @@ public class ContainerPlayer extends Container
 
     /** Determines if inventory manipulation should be handled. */
     public boolean isLocalWorld;
+    private final EntityPlayer field_82862_h;
 
-    public ContainerPlayer(InventoryPlayer par1InventoryPlayer)
-    {
-        this(par1InventoryPlayer, true);
-    }
-
-    public ContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2)
+    public ContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer)
     {
         craftMatrix = new InventoryCrafting(this, 2, 2);
         craftResult = new InventoryCraftResult();
         isLocalWorld = false;
         isLocalWorld = par2;
+        field_82862_h = par3EntityPlayer;
         addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, craftMatrix, craftResult, 0, 144, 36));
 
         for (int i = 0; i < 2; i++)
@@ -61,7 +58,7 @@ public class ContainerPlayer extends Container
      */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
-        craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix));
+        craftResult.setInventorySlotContents(0, CraftingManager.getInstance().func_82787_a(craftMatrix, field_82862_h.worldObj));
     }
 
     /**
@@ -91,20 +88,17 @@ public class ContainerPlayer extends Container
         return true;
     }
 
-    /**
-     * Called to transfer a stack from one inventory to the other eg. when shift clicking.
-     */
-    public ItemStack transferStackInSlot(int par1)
+    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack itemstack = null;
-        Slot slot = (Slot)inventorySlots.get(par1);
+        Slot slot = (Slot)inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack())
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (par1 == 0)
+            if (par2 == 0)
             {
                 if (!mergeItemStack(itemstack1, 9, 45, true))
                 {
@@ -113,14 +107,14 @@ public class ContainerPlayer extends Container
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
-            else if (par1 >= 1 && par1 < 5)
+            else if (par2 >= 1 && par2 < 5)
             {
                 if (!mergeItemStack(itemstack1, 9, 45, false))
                 {
                     return null;
                 }
             }
-            else if (par1 >= 5 && par1 < 9)
+            else if (par2 >= 5 && par2 < 9)
             {
                 if (!mergeItemStack(itemstack1, 9, 45, false))
                 {
@@ -136,14 +130,14 @@ public class ContainerPlayer extends Container
                     return null;
                 }
             }
-            else if (par1 >= 9 && par1 < 36)
+            else if (par2 >= 9 && par2 < 36)
             {
                 if (!mergeItemStack(itemstack1, 36, 45, false))
                 {
                     return null;
                 }
             }
-            else if (par1 >= 36 && par1 < 45)
+            else if (par2 >= 36 && par2 < 45)
             {
                 if (!mergeItemStack(itemstack1, 9, 36, false))
                 {
@@ -169,7 +163,7 @@ public class ContainerPlayer extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(itemstack1);
+            slot.func_82870_a(par1EntityPlayer, itemstack1);
         }
 
         return itemstack;

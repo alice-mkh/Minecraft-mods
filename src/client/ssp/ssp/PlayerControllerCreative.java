@@ -34,7 +34,7 @@ public class PlayerControllerCreative extends PlayerController
         par0EntityPlayer.capabilities.disableDamage = false;
     }
 
-    public void func_78748_a(EntityPlayer par1EntityPlayer)
+    public void setPlayerCapabilities(EntityPlayer par1EntityPlayer)
     {
         mc.setGameMode(EnumGameType.CREATIVE);
 

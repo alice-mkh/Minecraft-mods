@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-public class EntitySnowman extends EntityGolem
+public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 {
     public static boolean fixai = false;
 
@@ -13,11 +13,11 @@ public class EntitySnowman extends EntityGolem
         texture = "/mob/snowman.png";
         setSize(0.4F, 1.8F);
         getNavigator().setAvoidsWater(true);
-        tasks.addTask(1, new EntityAIArrowAttack(this, 0.25F, 2, 20));
+        tasks.addTask(1, new EntityAIArrowAttack(this, 0.25F, 20, 10F));
         tasks.addTask(2, new EntityAIWander(this, 0.2F));
         tasks.addTask(3, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(4, new EntityAILookIdle(this));
-        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityMob.class, 16F, 0, true));
+        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityLiving.class, 16F, 0, true, false, IMob.field_82192_a));
     }
 
     protected void attackEntity(Entity entity, float f)
@@ -118,5 +118,17 @@ public class EntitySnowman extends EntityGolem
         {
             dropItem(Item.snowball.shiftedIndex, 1);
         }
+    }
+
+    public void func_82196_d(EntityLiving par1EntityLiving)
+    {
+        EntitySnowball entitysnowball = new EntitySnowball(worldObj, this);
+        double d = par1EntityLiving.posX - posX;
+        double d1 = (par1EntityLiving.posY + (double)par1EntityLiving.getEyeHeight()) - 1.1000000238418579D - entitysnowball.posY;
+        double d2 = par1EntityLiving.posZ - posZ;
+        float f = MathHelper.sqrt_double(d * d + d2 * d2) * 0.2F;
+        entitysnowball.setThrowableHeading(d, d1 + (double)f, d2, 1.6F, 12F);
+        worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+        worldObj.spawnEntityInWorld(entitysnowball);
     }
 }

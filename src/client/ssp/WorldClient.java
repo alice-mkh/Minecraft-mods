@@ -52,6 +52,7 @@ public class WorldClient extends World
     public void tick()
     {
         super.tick();
+        func_82738_a(func_82737_E() + 1L);
         setWorldTime(getWorldTime() + 1L);
         theProfiler.startSection("reEntryProcessing");
 
@@ -230,11 +231,18 @@ public class WorldClient extends World
     }
 
     /**
-     * Lookup and return an Entity based on its ID
+     * Returns the Entity with the given ID, or null if it doesn't exist in this World.
      */
     public Entity getEntityByID(int par1)
     {
-        return (Entity)entityHashSet.lookup(par1);
+        if (par1 == mc.thePlayer.entityId)
+        {
+            return mc.thePlayer;
+        }
+        else
+        {
+            return (Entity)entityHashSet.lookup(par1);
+        }
     }
 
     public Entity removeEntityFromWorld(int par1)
@@ -262,6 +270,11 @@ public class WorldClient extends World
     public void sendQuittingDisconnectingPacket()
     {
         sendQueue.quitWithPacket(new Packet255KickDisconnect("Quitting"));
+    }
+
+    public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart)
+    {
+        return new SoundUpdaterMinecart(mc.sndManager, par1EntityMinecart, mc.thePlayer);
     }
 
     /**

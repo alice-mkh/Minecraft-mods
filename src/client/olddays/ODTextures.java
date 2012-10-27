@@ -129,8 +129,8 @@ public class ODTextures extends OldDaysModule{
             customsteel.setResistance(10F);
             customsteel.setStepSound(Block.soundMetalFootstep);
             customsteel.setBlockName("blockIron");
-            customsteel.sidetex = 200;
-            customsteel.bottomtex = 201;
+            customsteel.sidetex = mod_OldDays.getFreeTextureIndex();
+            customsteel.bottomtex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", customsteel.sidetex, "/olddays/oreblocks/ironside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customsteel.bottomtex, "/olddays/oreblocks/ironbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockSteel.blockID] = customsteel;
@@ -140,8 +140,8 @@ public class ODTextures extends OldDaysModule{
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
             customgold.setBlockName("blockGold");
-            customgold.sidetex = 202;
-            customgold.bottomtex = 203;
+            customgold.sidetex = mod_OldDays.getFreeTextureIndex();
+            customgold.bottomtex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", customgold.sidetex, "/olddays/oreblocks/goldside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customgold.bottomtex, "/olddays/oreblocks/goldbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockGold.blockID] = customgold;
@@ -151,8 +151,8 @@ public class ODTextures extends OldDaysModule{
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
             customdiamond.setBlockName("blockDiamond");
-            customdiamond.sidetex = 204;
-            customdiamond.bottomtex = 215;
+            customdiamond.sidetex = mod_OldDays.getFreeTextureIndex();
+            customdiamond.bottomtex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", customdiamond.sidetex, "/olddays/oreblocks/diamondside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customdiamond.bottomtex, "/olddays/oreblocks/diamondbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;

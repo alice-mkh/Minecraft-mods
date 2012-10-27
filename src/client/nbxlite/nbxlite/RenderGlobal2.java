@@ -74,7 +74,7 @@ public class RenderGlobal2 extends RenderGlobal{
      */
     public void renderSky(float par1)
     {
-        if (mc.theWorld.provider.worldType == 1)
+        if (mc.theWorld.provider.dimensionId == 1)
         {
             GL11.glDisable(GL11.GL_FOG);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

@@ -129,7 +129,7 @@ public class PlayerController extends PlayerControllerMP
         return true;
     }
 
-    public void func_78748_a(EntityPlayer par1EntityPlayer)
+    public void setPlayerCapabilities(EntityPlayer par1EntityPlayer)
     {
         mc.setGameMode(EnumGameType.SURVIVAL);
     }
@@ -144,7 +144,7 @@ public class PlayerController extends PlayerControllerMP
 
     public EntityClientPlayerMP func_78754_a(World par1World)
     {
-        return new EntityPlayerSP2(mc, par1World, mc.session, par1World.provider.worldType);
+        return new EntityPlayerSP2(mc, par1World, mc.session, par1World.provider.dimensionId);
     }
 
     /**
@@ -168,7 +168,7 @@ public class PlayerController extends PlayerControllerMP
         par1EntityPlayer.attackTargetEntityWithCurrentItem(par2Entity);
     }
 
-    public ItemStack windowClick(int par1, int par2, int par3, boolean par4, EntityPlayer par5EntityPlayer)
+    public ItemStack windowClick(int par1, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         return par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);
     }

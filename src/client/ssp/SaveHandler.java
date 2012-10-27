@@ -8,10 +8,10 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     /** Reference to the logger. */
     private static final Logger logger = Logger.getLogger("Minecraft");
 
-    /** The path to the current savegame directory */
-    private final File saveDirectory;
+    /** The directory in which to save world data. */
+    private final File worldDirectory;
 
-    /** The directory in which to save player information */
+    /** The directory in which to save player data. */
     private final File playersDirectory;
     private final File mapDataDir;
 
@@ -25,10 +25,10 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
 
     public SaveHandler(File par1File, String par2Str, boolean par3)
     {
-        saveDirectory = new File(par1File, par2Str);
-        saveDirectory.mkdirs();
-        playersDirectory = new File(saveDirectory, "players");
-        mapDataDir = new File(saveDirectory, "data");
+        worldDirectory = new File(par1File, par2Str);
+        worldDirectory.mkdirs();
+        playersDirectory = new File(worldDirectory, "players");
+        mapDataDir = new File(worldDirectory, "data");
         mapDataDir.mkdirs();
         saveDirectoryName = par2Str;
 
@@ -47,7 +47,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     {
         try
         {
-            File file = new File(saveDirectory, "session.lock");
+            File file = new File(worldDirectory, "session.lock");
             DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file));
 
             try
@@ -71,7 +71,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
      */
     protected File getSaveDirectory()
     {
-        return saveDirectory;
+        return worldDirectory;
     }
 
     /**
@@ -81,7 +81,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     {/*
         try
         {
-            File file = new File(saveDirectory, "session.lock");
+            File file = new File(worldDirectory, "session.lock");
             DataInputStream datainputstream = new DataInputStream(new FileInputStream(file));
 
             try
@@ -115,7 +115,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
      */
     public WorldInfo loadWorldInfo()
     {
-        File file = new File(saveDirectory, "level.dat");
+        File file = new File(worldDirectory, "level.dat");
 
         if (file.exists())
         {
@@ -131,7 +131,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
             }
         }
 
-        file = new File(saveDirectory, "level.dat_old");
+        file = new File(worldDirectory, "level.dat_old");
 
         if (file.exists())
         {
@@ -161,9 +161,9 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
 
         try
         {
-            File file = new File(saveDirectory, "level.dat_new");
-            File file1 = new File(saveDirectory, "level.dat_old");
-            File file2 = new File(saveDirectory, "level.dat");
+            File file = new File(worldDirectory, "level.dat_new");
+            File file1 = new File(worldDirectory, "level.dat_old");
+            File file2 = new File(worldDirectory, "level.dat");
             CompressedStreamTools.writeCompressed(nbttagcompound1, new FileOutputStream(file));
 
             if (file1.exists())
@@ -202,9 +202,9 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
 
         try
         {
-            File file = new File(saveDirectory, "level.dat_new");
-            File file1 = new File(saveDirectory, "level.dat_old");
-            File file2 = new File(saveDirectory, "level.dat");
+            File file = new File(worldDirectory, "level.dat_new");
+            File file1 = new File(worldDirectory, "level.dat_old");
+            File file2 = new File(worldDirectory, "level.dat");
             CompressedStreamTools.writeCompressed(nbttagcompound1, new FileOutputStream(file));
 
             if (file1.exists())
@@ -243,9 +243,9 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
 
         try
         {
-            File file = new File(saveDirectory, "level.dat_new");
-            File file1 = new File(saveDirectory, "level.dat_old");
-            File file2 = new File(saveDirectory, "level.dat");
+            File file = new File(worldDirectory, "level.dat_new");
+            File file1 = new File(worldDirectory, "level.dat_old");
+            File file2 = new File(worldDirectory, "level.dat");
             CompressedStreamTools.writeCompressed(nbttagcompound1, new FileOutputStream(file));
 
             if (file1.exists())
@@ -343,7 +343,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     }
 
     /**
-     * Gets an array of Usernames there are available player.dat files for.
+     * Returns an array of usernames for which player.dat exists for.
      */
     public String[] getAvailablePlayerDat()
     {
@@ -376,7 +376,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     }
 
     /**
-     * Returns the name of the directory where world information is saved
+     * Returns the name of the directory where world information is saved.
      */
     public String getSaveDirectoryName()
     {

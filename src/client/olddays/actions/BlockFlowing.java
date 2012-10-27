@@ -432,4 +432,9 @@ public class BlockFlowing extends BlockFluid
             par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate());
         }
     }
+
+    public boolean func_82506_l()
+    {
+        return false;
+    }
 }

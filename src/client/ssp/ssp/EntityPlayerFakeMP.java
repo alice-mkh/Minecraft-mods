@@ -57,9 +57,9 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     /**
      * Decrease the player level, used to pay levels for enchantments on items at enchanted table.
      */
-    public void removeExperience(int par1)
+    public void func_82242_a(int par1)
     {
-        realPlayer.removeExperience(par1);
+        realPlayer.func_82242_a(par1);
     }
 
     public ItemStack[] getLastActiveItems()
@@ -270,7 +270,7 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     {
         StringTranslate var2 = StringTranslate.getInstance();
         String var3 = var2.translateKey(par1Str);
-        this.serverForThisPlayer.sendPacketToPlayer(new Packet3Chat(var3));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(var3));
     }
 
     /**
@@ -314,12 +314,12 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
 
     public void sendChatToPlayer(String par1Str)
     {
-        this.serverForThisPlayer.sendPacketToPlayer(new Packet3Chat(par1Str));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(par1Str));
     }
 
     public String func_71114_r()
     {
-        String var1 = this.serverForThisPlayer.theNetworkManager.getSocketAddress().toString();
+        String var1 = this.playerNetServerHandler.netManager.getSocketAddress().toString();
         var1 = var1.substring(var1.indexOf("/") + 1);
         var1 = var1.substring(0, var1.indexOf(":"));
         return var1;

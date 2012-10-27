@@ -64,7 +64,12 @@ public class RenderGlobal implements IWorldAccess
 
     /** Maximum block Z */
     private int maxBlockZ;
-    private Map field_72738_E;
+
+    /**
+     * Stores blocks currently being broken. Key is entity ID of the thing doing the breaking. Value is a
+     * DestroyBlockProgress
+     */
+    private Map damagedBlocks;
     private int renderDistance;
 
     /** Render entities startup counter (init value=2) */
@@ -142,7 +147,7 @@ public class RenderGlobal implements IWorldAccess
         worldRenderersToUpdate = new ArrayList();
         occlusionEnabled = false;
         cloudOffsetX = 0;
-        field_72738_E = new HashMap();
+        damagedBlocks = new HashMap();
         renderDistance = -1;
         renderEntitiesStartupCounter = 2;
         dummyBuf50k = new int[50000];
@@ -873,6 +878,28 @@ public class RenderGlobal implements IWorldAccess
     public void updateClouds()
     {
         cloudOffsetX++;
+
+        if (cloudOffsetX % 20 == 0)
+        {
+            Iterator iterator = damagedBlocks.values().iterator();
+
+            do
+            {
+                if (!iterator.hasNext())
+                {
+                    break;
+                }
+
+                DestroyBlockProgress destroyblockprogress = (DestroyBlockProgress)iterator.next();
+                int i = destroyblockprogress.func_82743_f();
+
+                if (cloudOffsetX - i > 400)
+                {
+                    iterator.remove();
+                }
+            }
+            while (true);
+        }
     }
 
     /**
@@ -880,7 +907,7 @@ public class RenderGlobal implements IWorldAccess
      */
     public void renderSky(float par1)
     {
-        if (mc.theWorld.provider.worldType == 1)
+        if (mc.theWorld.provider.dimensionId == 1)
         {
             GL11.glDisable(GL11.GL_FOG);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -1543,7 +1570,7 @@ public class RenderGlobal implements IWorldAccess
         double d1 = par2EntityPlayer.lastTickPosY + (par2EntityPlayer.posY - par2EntityPlayer.lastTickPosY) * (double)par3;
         double d2 = par2EntityPlayer.lastTickPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.lastTickPosZ) * (double)par3;
 
-        if (!field_72738_E.isEmpty())
+        if (!damagedBlocks.isEmpty())
         {
             GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
             int i = renderEngine.getTexture("/terrain.png");
@@ -1558,12 +1585,12 @@ public class RenderGlobal implements IWorldAccess
             par1Tessellator.setTranslation(-d, -d1, -d2);
             par1Tessellator.disableColor();
 
-            for (Iterator iterator = field_72738_E.values().iterator(); iterator.hasNext();)
+            for (Iterator iterator = damagedBlocks.values().iterator(); iterator.hasNext();)
             {
                 DestroyBlockProgress destroyblockprogress = (DestroyBlockProgress)iterator.next();
-                double d3 = (double)destroyblockprogress.func_73110_b() - d;
-                double d4 = (double)destroyblockprogress.func_73109_c() - d1;
-                double d5 = (double)destroyblockprogress.func_73108_d() - d2;
+                double d3 = (double)destroyblockprogress.getPartialBlockX() - d;
+                double d4 = (double)destroyblockprogress.getPartialBlockY() - d1;
+                double d5 = (double)destroyblockprogress.getPartialBlockZ() - d2;
 
                 if (d3 * d3 + d4 * d4 + d5 * d5 > 1024D)
                 {
@@ -1571,7 +1598,7 @@ public class RenderGlobal implements IWorldAccess
                 }
                 else
                 {
-                    int j = theWorld.getBlockId(destroyblockprogress.func_73110_b(), destroyblockprogress.func_73109_c(), destroyblockprogress.func_73108_d());
+                    int j = theWorld.getBlockId(destroyblockprogress.getPartialBlockX(), destroyblockprogress.getPartialBlockY(), destroyblockprogress.getPartialBlockZ());
                     Block block = j <= 0 ? null : Block.blocksList[j];
 
                     if (block == null)
@@ -1579,7 +1606,7 @@ public class RenderGlobal implements IWorldAccess
                         block = Block.stone;
                     }
 
-                    globalRenderBlocks.renderBlockUsingTexture(block, destroyblockprogress.func_73110_b(), destroyblockprogress.func_73109_c(), destroyblockprogress.func_73108_d(), 240 + destroyblockprogress.func_73106_e());
+                    globalRenderBlocks.renderBlockUsingTexture(block, destroyblockprogress.getPartialBlockX(), destroyblockprogress.getPartialBlockY(), destroyblockprogress.getPartialBlockZ(), 240 + destroyblockprogress.getPartialBlockDamage());
                 }
             }
 
@@ -1762,7 +1789,7 @@ public class RenderGlobal implements IWorldAccess
             mc.ingameGUI.setRecordPlayingMessage((new StringBuilder()).append("C418 - ").append(par1Str).toString());
         }
 
-        mc.sndManager.playStreaming(par1Str, par2, par3, par4, 1.0F, 1.0F);
+        mc.sndManager.playStreaming(par1Str, par2, par3, par4);
     }
 
     /**
@@ -1860,6 +1887,12 @@ public class RenderGlobal implements IWorldAccess
             obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
             ((EntityFX)(obj)).setRBGColorF((float)par8, (float)par10, (float)par12);
         }
+        else if (par1Str.equals("mobSpellAmbient"))
+        {
+            obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+            ((EntityFX)(obj)).func_82338_g(0.15F);
+            ((EntityFX)(obj)).setRBGColorF((float)par8, (float)par10, (float)par12);
+        }
         else if (par1Str.equals("spell"))
         {
             obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, par8, par10, par12);
@@ -1868,6 +1901,13 @@ public class RenderGlobal implements IWorldAccess
         {
             obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, par8, par10, par12);
             ((EntitySpellParticleFX)obj).func_70589_b(144);
+        }
+        else if (par1Str.equals("witchMagic"))
+        {
+            obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, par8, par10, par12);
+            ((EntitySpellParticleFX)obj).func_70589_b(144);
+            float f = theWorld.rand.nextFloat() * 0.5F + 0.35F;
+            ((EntityFX)(obj)).setRBGColorF(1.0F * f, 0.0F * f, 1.0F * f);
         }
         else if (par1Str.equals("note"))
         {
@@ -1937,6 +1977,18 @@ public class RenderGlobal implements IWorldAccess
         {
             obj = new EntityHeartFX(theWorld, par2, par4, par6, par8, par10, par12);
         }
+        else if (par1Str.equals("angryVillager"))
+        {
+            obj = new EntityHeartFX(theWorld, par2, par4 + 0.5D, par6, par8, par10, par12);
+            ((EntityFX)(obj)).setParticleTextureIndex(81);
+            ((EntityFX)(obj)).setRBGColorF(1.0F, 1.0F, 1.0F);
+        }
+        else if (par1Str.equals("happyVillager"))
+        {
+            obj = new EntityAuraFX(theWorld, par2, par4, par6, par8, par10, par12);
+            ((EntityFX)(obj)).setParticleTextureIndex(82);
+            ((EntityFX)(obj)).setRBGColorF(1.0F, 1.0F, 1.0F);
+        }
         else if (par1Str.startsWith("iconcrack_"))
         {
             int j = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
@@ -1995,6 +2047,48 @@ public class RenderGlobal implements IWorldAccess
         GLAllocation.deleteDisplayLists(glRenderListBase);
     }
 
+    public void func_82746_a(int par1, int par2, int par3, int par4, int par5)
+    {
+        Random random = theWorld.rand;
+
+        switch (par1)
+        {
+            default:
+                break;
+            case 1013:
+            case 1018:
+
+                if (mc.renderViewEntity != null)
+                {
+                    double d = (double)par2 - mc.renderViewEntity.posX;
+                    double d1 = (double)par3 - mc.renderViewEntity.posY;
+                    double d2 = (double)par4 - mc.renderViewEntity.posZ;
+                    double d3 = Math.sqrt(d * d + d1 * d1 + d2 * d2);
+                    double d4 = mc.renderViewEntity.posX;
+                    double d5 = mc.renderViewEntity.posY;
+                    double d6 = mc.renderViewEntity.posZ;
+
+                    if (d3 > 0.0D)
+                    {
+                        d4 += (d / d3) * 2D;
+                        d5 += (d1 / d3) * 2D;
+                        d6 += (d2 / d3) * 2D;
+                    }
+
+                    if (par1 == 1013)
+                    {
+                        theWorld.playSound(d4, d5, d6, "mob.wither.spawn", 1.0F, 1.0F);
+                    }
+                    else if (par1 == 1018)
+                    {
+                        theWorld.playSound(d4, d5, d6, "mob.enderdragon.end", 5F, 1.0F);
+                    }
+                }
+
+                break;
+        }
+    }
+
     /**
      * Plays a pre-canned sound effect along with potentially auxiliary data-driven one-shot behaviour (particles, etc).
      */
@@ -2006,19 +2100,15 @@ public class RenderGlobal implements IWorldAccess
         {
             default:
                 break;
-
             case 1001:
                 theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.2F);
                 break;
-
             case 1000:
                 theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.0F);
                 break;
-
             case 1002:
                 theWorld.playSound(par3, par4, par5, "random.bow", 1.0F, 1.2F);
                 break;
-
             case 2000:
                 int i = par6 % 3 - 1;
                 int j = (par6 / 3) % 3 - 1;
@@ -2039,7 +2129,6 @@ public class RenderGlobal implements IWorldAccess
                 }
 
                 break;
-
             case 2003:
                 double d = (double)par3 + 0.5D;
                 double d3 = par4;
@@ -2058,7 +2147,6 @@ public class RenderGlobal implements IWorldAccess
                 }
 
                 break;
-
             case 2002:
                 double d1 = par3;
                 double d4 = par4;
@@ -2070,7 +2158,7 @@ public class RenderGlobal implements IWorldAccess
                     spawnParticle(s1, d1, d4, d7, random.nextGaussian() * 0.14999999999999999D, random.nextDouble() * 0.20000000000000001D, random.nextGaussian() * 0.14999999999999999D);
                 }
 
-                int i1 = Item.potion.getColorFromDamage(par6, 0);
+                int i1 = Item.potion.getColorFromDamage(par6);
                 float f = (float)(i1 >> 16 & 0xff) / 255F;
                 float f1 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f2 = (float)(i1 >> 0 & 0xff) / 255F;
@@ -2100,7 +2188,6 @@ public class RenderGlobal implements IWorldAccess
 
                 theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
                 break;
-
             case 2001:
                 int l1 = par6 & 0xfff;
 
@@ -2112,8 +2199,8 @@ public class RenderGlobal implements IWorldAccess
 
                 mc.effectRenderer.addBlockDestroyEffects(par3, par4, par5, par6 & 0xfff, par6 >> 12 & 0xff);
                 break;
-
             case 2004:
+
                 for (int i2 = 0; i2 < 20; i2++)
                 {
                     double d14 = (double)par3 + 0.5D + ((double)theWorld.rand.nextFloat() - 0.5D) * 2D;
@@ -2124,8 +2211,8 @@ public class RenderGlobal implements IWorldAccess
                 }
 
                 break;
-
             case 1003:
+
                 if (Math.random() < 0.5D)
                 {
                     theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
@@ -2136,12 +2223,20 @@ public class RenderGlobal implements IWorldAccess
                 }
 
                 break;
-
             case 1004:
                 theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.fizz", 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
                 break;
-
+            case 1020:
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_break", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                break;
+            case 1021:
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_use", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                break;
+            case 1022:
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_land", 0.3F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                break;
             case 1005:
+
                 if (Item.itemsList[par6] instanceof ItemRecord)
                 {
                     theWorld.playRecord(((ItemRecord)Item.itemsList[par6]).recordName, par3, par4, par5);
@@ -2152,25 +2247,35 @@ public class RenderGlobal implements IWorldAccess
                 }
 
                 break;
-
             case 1007:
                 theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
-
             case 1008:
                 theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
-
             case 1010:
                 theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
-
             case 1012:
                 theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
-
             case 1011:
                 theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1009:
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1014:
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.wither.shoot", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1016:
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.infect", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1017:
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.unfect", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1015:
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.bat.takeoff", 0.05F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 break;
         }
     }
@@ -2183,19 +2288,20 @@ public class RenderGlobal implements IWorldAccess
     {
         if (par5 < 0 || par5 >= 10)
         {
-            field_72738_E.remove(Integer.valueOf(par1));
+            damagedBlocks.remove(Integer.valueOf(par1));
         }
         else
         {
-            DestroyBlockProgress destroyblockprogress = (DestroyBlockProgress)field_72738_E.get(Integer.valueOf(par1));
+            DestroyBlockProgress destroyblockprogress = (DestroyBlockProgress)damagedBlocks.get(Integer.valueOf(par1));
 
-            if (destroyblockprogress == null || destroyblockprogress.func_73110_b() != par2 || destroyblockprogress.func_73109_c() != par3 || destroyblockprogress.func_73108_d() != par4)
+            if (destroyblockprogress == null || destroyblockprogress.getPartialBlockX() != par2 || destroyblockprogress.getPartialBlockY() != par3 || destroyblockprogress.getPartialBlockZ() != par4)
             {
                 destroyblockprogress = new DestroyBlockProgress(par1, par2, par3, par4);
-                field_72738_E.put(Integer.valueOf(par1), destroyblockprogress);
+                damagedBlocks.put(Integer.valueOf(par1), destroyblockprogress);
             }
 
-            destroyblockprogress.func_73107_a(par5);
+            destroyblockprogress.setPartialBlockDamage(par5);
+            destroyblockprogress.func_82744_b(cloudOffsetX);
         }
     }
 

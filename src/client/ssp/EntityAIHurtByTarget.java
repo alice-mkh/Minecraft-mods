@@ -7,7 +7,9 @@ import net.minecraft.client.Minecraft;
 public class EntityAIHurtByTarget extends EntityAITarget
 {
     boolean field_75312_a;
-    EntityLiving field_75311_b;
+
+    /** The PathNavigate of our entity. */
+    EntityLiving entityPathNavigate;
 
     public EntityAIHurtByTarget(EntityLiving par1EntityLiving, boolean par2)
     {
@@ -32,7 +34,7 @@ public class EntityAIHurtByTarget extends EntityAITarget
         if (Minecraft.getMinecraft().enableSP){
             return super.continueExecuting();
         }
-        return taskOwner.getAITarget() != null && taskOwner.getAITarget() != field_75311_b;
+        return taskOwner.getAITarget() != null && taskOwner.getAITarget() != entityPathNavigate;
     }
 
     /**
@@ -41,7 +43,7 @@ public class EntityAIHurtByTarget extends EntityAITarget
     public void startExecuting()
     {
         taskOwner.setAttackTarget(taskOwner.getAITarget());
-        field_75311_b = taskOwner.getAITarget();
+        entityPathNavigate = taskOwner.getAITarget();
 
         if (field_75312_a)
         {

@@ -53,6 +53,8 @@ public class TileEntityRenderer
         specialRendererMap.put(net.minecraft.src.TileEntityEnderChest.class, new TileEntityEnderChestRenderer());
         specialRendererMap.put(net.minecraft.src.TileEntityEnchantmentTable.class, new RenderEnchantmentTable());
         specialRendererMap.put(net.minecraft.src.TileEntityEndPortal.class, new RenderEndPortal());
+        specialRendererMap.put(net.minecraft.src.TileEntityBeacon.class, new TileEntityBeaconRenderer());
+        specialRendererMap.put(net.minecraft.src.TileEntitySkull.class, new TileEntitySkullRenderer());
         TileEntitySpecialRenderer tileentityspecialrenderer;
 
         for (Iterator iterator = specialRendererMap.values().iterator(); iterator.hasNext(); tileentityspecialrenderer.setTileEntityRenderer(this))
@@ -128,7 +130,7 @@ public class TileEntityRenderer
      */
     public void renderTileEntity(TileEntity par1TileEntity, float par2)
     {
-        if (par1TileEntity.getDistanceFrom(playerX, playerY, playerZ) < 4096D)
+        if (par1TileEntity.getDistanceFrom(playerX, playerY, playerZ) < par1TileEntity.func_82115_m())
         {
             if (net.minecraft.client.Minecraft.oldlighting){
                 float f1 = worldObj.getLightBrightness(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord);

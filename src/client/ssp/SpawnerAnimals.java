@@ -25,7 +25,7 @@ public final class SpawnerAnimals
      * adds all chunks within the spawn radius of the players to eligibleChunksForSpawning. pars: the world,
      * hostileCreatures, passiveCreatures. returns number of eligible chunks.
      */
-    public static final int findChunksForSpawning(WorldServer par0WorldServer, boolean par1, boolean par2)
+    public static final int findChunksForSpawning(WorldServer par0WorldServer, boolean par1, boolean par2, boolean par3)
     {
         if (!par1 && !par2)
         {
@@ -375,27 +375,7 @@ public final class SpawnerAnimals
      */
     private static void creatureSpecificInit(EntityLiving par0EntityLiving, World par1World, float par2, float par3, float par4)
     {
-        if ((par0EntityLiving instanceof EntitySpider) && par1World.rand.nextInt(100) == 0)
-        {
-            EntitySkeleton entityskeleton = new EntitySkeleton(par1World);
-            entityskeleton.setLocationAndAngles(par2, par3, par4, par0EntityLiving.rotationYaw, 0.0F);
-            par1World.spawnEntityInWorld(entityskeleton);
-            entityskeleton.mountEntity(par0EntityLiving);
-        }
-        else if (par0EntityLiving instanceof EntitySheep)
-        {
-            ((EntitySheep)par0EntityLiving).setFleeceColor(EntitySheep.getRandomFleeceColor(par1World.rand));
-        }
-        else if ((par0EntityLiving instanceof EntityOcelot) && par1World.rand.nextInt(7) == 0)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                EntityOcelot entityocelot = new EntityOcelot(par1World);
-                entityocelot.setLocationAndAngles(par2, par3, par4, par0EntityLiving.rotationYaw, 0.0F);
-                entityocelot.setGrowingAge(-24000);
-                par1World.spawnEntityInWorld(entityocelot);
-            }
-        }
+        par0EntityLiving.func_82163_bD();
     }
 
     /**

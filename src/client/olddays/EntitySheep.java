@@ -304,6 +304,7 @@ public class EntitySheep extends EntityAnimal
             }
 
             itemstack.damageItem(1, par1EntityPlayer);
+            worldObj.playSoundAtEntity(this, "mob.sheep.shear", 1.0F, 1.0F);
         }
 
         return super.interact(par1EntityPlayer);
@@ -334,7 +335,7 @@ public class EntitySheep extends EntityAnimal
      */
     protected String getLivingSound()
     {
-        return "mob.sheep";
+        return "mob.sheep.say";
     }
 
     /**
@@ -342,7 +343,7 @@ public class EntitySheep extends EntityAnimal
      */
     protected String getHurtSound()
     {
-        return "mob.sheep";
+        return "mob.sheep.say";
     }
 
     /**
@@ -350,7 +351,15 @@ public class EntitySheep extends EntityAnimal
      */
     protected String getDeathSound()
     {
-        return "mob.sheep";
+        return "mob.sheep.say";
+    }
+
+    /**
+     * Plays step sound at given x, y, z for the entity
+     */
+    protected void playStepSound(int par1, int par2, int par3, int par4)
+    {
+        worldObj.playSoundAtEntity(this, "mob.sheep.step", 0.15F, 1.0F);
     }
 
     public int getFleeceColor()
@@ -407,7 +416,7 @@ public class EntitySheep extends EntityAnimal
             {
                 return 7;
             }
-            return i >= 15 ? 0 : 8;   
+            return i >= 15 ? 0 : 8;
         }
 
         if (i < 5)
@@ -472,5 +481,10 @@ public class EntitySheep extends EntityAnimal
 
             setGrowingAge(i);
         }
+    }
+
+    public void func_82163_bD()
+    {
+        setFleeceColor(getRandomFleeceColor(worldObj.rand));
     }
 }

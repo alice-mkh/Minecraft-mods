@@ -69,10 +69,10 @@ public abstract class Mod{
                 String[] players = man.getAllUsernames();
                 for (int i = 0; i < players.length; i++){
                     player = man.getPlayerForUsername(players[i]);
-                    player.serverForThisPlayer.sendPacketToPlayer(packet);
+                    player.playerNetServerHandler.sendPacketToPlayer(packet);
                 }
             }else{
-                player.serverForThisPlayer.sendPacketToPlayer(packet);
+                player.playerNetServerHandler.sendPacketToPlayer(packet);
             }
             return;
         }

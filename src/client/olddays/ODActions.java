@@ -48,7 +48,7 @@ public class ODActions extends OldDaysModule{
             case 17:set(ItemAxe2.class, "oldhardness", OldHardness);
                     set(ItemPickaxe2.class, "oldhardness", OldHardness);
                     mod_OldDays.setField(ItemSpade.class, null, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
-                    mod_OldDays.setField(Block.class, Block.obsidian, 155, OldHardness ? 10F : 50F); break;
+                    mod_OldDays.setField(Block.class, Block.obsidian, 167, OldHardness ? 10F : 50F); break;
         }
     }
 
@@ -176,30 +176,31 @@ public class ODActions extends OldDaysModule{
             gold = 32 << 0;
             diamond = (32 << 3) * (i < 1 ? 1 : 4);
         }
-        mod_OldDays.setField(Item.class, Item.pickaxeWood, 149, wood);
-        mod_OldDays.setField(Item.class, Item.axeWood, 149, wood);
-        mod_OldDays.setField(Item.class, Item.shovelWood, 149, wood);
-        mod_OldDays.setField(Item.class, Item.swordWood, 149, wood);
-        mod_OldDays.setField(Item.class, Item.hoeWood, 149, wood);
-        mod_OldDays.setField(Item.class, Item.pickaxeStone, 149, stone);
-        mod_OldDays.setField(Item.class, Item.axeStone, 149, stone);
-        mod_OldDays.setField(Item.class, Item.shovelStone, 149, stone);
-        mod_OldDays.setField(Item.class, Item.swordStone, 149, stone);
-        mod_OldDays.setField(Item.class, Item.hoeStone, 149, stone);
-        mod_OldDays.setField(Item.class, Item.pickaxeSteel, 149, iron);
-        mod_OldDays.setField(Item.class, Item.axeSteel, 149, iron);
-        mod_OldDays.setField(Item.class, Item.shovelSteel, 149, iron);
-        mod_OldDays.setField(Item.class, Item.swordSteel, 149, iron);
-        mod_OldDays.setField(Item.class, Item.hoeSteel, 149, iron);
-        mod_OldDays.setField(Item.class, Item.pickaxeGold, 149, gold);
-        mod_OldDays.setField(Item.class, Item.axeGold, 149, gold);
-        mod_OldDays.setField(Item.class, Item.shovelGold, 149, gold);
-        mod_OldDays.setField(Item.class, Item.swordGold, 149, gold);
-        mod_OldDays.setField(Item.class, Item.hoeGold, 149, gold);
-        mod_OldDays.setField(Item.class, Item.pickaxeDiamond, 149, diamond);
-        mod_OldDays.setField(Item.class, Item.axeDiamond, 149, diamond);
-        mod_OldDays.setField(Item.class, Item.shovelDiamond, 149, diamond);
-        mod_OldDays.setField(Item.class, Item.swordDiamond, 149, diamond);
-        mod_OldDays.setField(Item.class, Item.hoeDiamond, 149, diamond);
+        int maxDamage = 161;
+        mod_OldDays.setField(Item.class, Item.pickaxeWood, maxDamage, wood);
+        mod_OldDays.setField(Item.class, Item.axeWood, maxDamage, wood);
+        mod_OldDays.setField(Item.class, Item.shovelWood, maxDamage, wood);
+        mod_OldDays.setField(Item.class, Item.swordWood, maxDamage, wood);
+        mod_OldDays.setField(Item.class, Item.hoeWood, maxDamage, wood);
+        mod_OldDays.setField(Item.class, Item.pickaxeStone, maxDamage, stone);
+        mod_OldDays.setField(Item.class, Item.axeStone, maxDamage, stone);
+        mod_OldDays.setField(Item.class, Item.shovelStone, maxDamage, stone);
+        mod_OldDays.setField(Item.class, Item.swordStone, maxDamage, stone);
+        mod_OldDays.setField(Item.class, Item.hoeStone, maxDamage, stone);
+        mod_OldDays.setField(Item.class, Item.pickaxeSteel, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.axeSteel, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.shovelSteel, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.swordSteel, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.hoeSteel, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.pickaxeGold, maxDamage, gold);
+        mod_OldDays.setField(Item.class, Item.axeGold, maxDamage, gold);
+        mod_OldDays.setField(Item.class, Item.shovelGold, maxDamage, gold);
+        mod_OldDays.setField(Item.class, Item.swordGold, maxDamage, gold);
+        mod_OldDays.setField(Item.class, Item.hoeGold, maxDamage, gold);
+        mod_OldDays.setField(Item.class, Item.pickaxeDiamond, maxDamage, diamond);
+        mod_OldDays.setField(Item.class, Item.axeDiamond, maxDamage, diamond);
+        mod_OldDays.setField(Item.class, Item.shovelDiamond, maxDamage, diamond);
+        mod_OldDays.setField(Item.class, Item.swordDiamond, maxDamage, diamond);
+        mod_OldDays.setField(Item.class, Item.hoeDiamond, maxDamage, diamond);
     }
 }

@@ -159,6 +159,11 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
             if (chunk != null)
             {
                 chunk.lastSaveTime = worldObj.getWorldTime();
+
+                if (chunkProvider != null)
+                {
+                    chunkProvider.func_82695_e(par1, par2);
+                }
             }
 
             return chunk;
@@ -347,5 +352,9 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     public int getLoadedChunkCount()
     {
         return 0;
+    }
+
+    public void func_82695_e(int par1, int par2)
+    {
     }
 }

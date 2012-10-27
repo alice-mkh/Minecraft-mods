@@ -52,7 +52,7 @@ public class ChunkCache implements IBlockAccess
     }
 
     private boolean isBounds(int x, int y, int z){
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldObj.provider==null || worldObj.provider.worldType==0)){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (worldObj.provider==null || worldObj.provider.dimensionId==0)){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if(x<=0 || x>=ODNBXlite.IndevWidthX-1 || z<=0 || z>=ODNBXlite.IndevWidthZ-1 || y<0){
                     return true;
@@ -352,6 +352,11 @@ public class ChunkCache implements IBlockAccess
         }
     }
 
+    public Vec3Pool func_82732_R()
+    {
+        return worldObj.func_82732_R();
+    }
+
     /**
      * Returns true if the block at the specified coordinates is empty
      */
@@ -453,5 +458,22 @@ public class ChunkCache implements IBlockAccess
     public int getHeight()
     {
         return 256;
+    }
+
+    /**
+     * Is this block powering in the specified direction Args: x, y, z, direction
+     */
+    public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4)
+    {
+        int i = getBlockId(par1, par2, par3);
+
+        if (i == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return Block.blocksList[i].isIndirectlyPoweringTo(this, par1, par2, par3, par4);
+        }
     }
 }

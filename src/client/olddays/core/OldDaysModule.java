@@ -37,10 +37,10 @@ public class OldDaysModule{
     }
 
     public void addSound(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/newsound/olddays/"+name+".ogg");
-        core.unpackSound("newsound/olddays", name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/sound3/olddays/"+name+".ogg");
+        core.unpackSound("sound3/olddays", name+".ogg");
         if (sound.exists()){
-            mod_OldDays.getMinecraft().installResource("newsound/olddays/"+sound.getName(), sound);
+            mod_OldDays.getMinecraft().installResource("sound3/olddays/"+sound.getName(), sound);
         }else{
             getPropertyById(id).noSounds = true;
         }
@@ -81,7 +81,11 @@ public class OldDaysModule{
             int count = 0;
             List list = CraftingManager.getInstance().getRecipeList();
             for (int i = 0; i < list.size(); i++){
-                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+                ItemStack stack = ((IRecipe)list.get(i)).getRecipeOutput();
+                if (stack == null){
+                    continue;
+                }
+                String match = stack.toString();
 //                 System.out.println(match);
                 if (match.equals(str1)){
                     list.remove(i);
@@ -92,7 +96,7 @@ public class OldDaysModule{
 //                 System.out.println("OldDays: Invalid recipe identifier: "+str1);
             }
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 

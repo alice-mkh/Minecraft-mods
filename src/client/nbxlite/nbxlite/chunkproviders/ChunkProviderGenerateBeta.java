@@ -56,7 +56,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         {
             ravineGenerator = new MapGenRavine();
             strongholdGenerator = new MapGenStronghold2();
-            villageGenerator = new MapGenVillage(0);
+            villageGenerator = new MapGenVillage();
             mineshaftGenerator = new MapGenMineshaft();
             templeGenerator = new MapGenScatteredFeature2();
         }

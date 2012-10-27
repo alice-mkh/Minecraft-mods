@@ -93,6 +93,7 @@ public abstract class BiomeGenBase
      * Holds the classes of any aquatic creature that can be spawned in the water of the biome.
      */
     protected List spawnableWaterCreatureList;
+    protected List field_82914_M;
 
     /** Set to true if snow is enabled for this biome. */
     private boolean enableSnow;
@@ -104,12 +105,18 @@ public abstract class BiomeGenBase
 
     /** The id number to this biome, and its index in the biomeList array. */
     public final int biomeID;
+
+    /** The tree generator. */
     protected WorldGenTrees worldGeneratorTrees;
     public OldWorldGenTrees oldWorldGeneratorTrees;
 
     /** The big tree generator. */
     protected WorldGenBigTree worldGeneratorBigTree;
+
+    /** The forest generator. */
     protected WorldGenForest worldGeneratorForest;
+
+    /** The swamp tree generator. */
     protected WorldGenSwamp worldGeneratorSwamp;
 
     public static final BiomeGenBase betaRainforest = (new BiomeGenJungle(30)).setColor(0x8fa36).setBiomeName("Beta Rainforest").setTemperatureRainfall(1F, 1F).func_76733_a(0x1ff458);
@@ -141,6 +148,7 @@ public abstract class BiomeGenBase
         spawnableMonsterList = new ArrayList();
         spawnableCreatureList = new ArrayList();
         spawnableWaterCreatureList = new ArrayList();
+        field_82914_M = new ArrayList();
         enableRain = true;
         worldGeneratorTrees = new WorldGenTrees(false);
         oldWorldGeneratorTrees = new OldWorldGenTrees(false);
@@ -161,6 +169,7 @@ public abstract class BiomeGenBase
         spawnableMonsterList.add(new SpawnListEntry(net.minecraft.src.EntitySlime.class, 10, 4, 4));
         spawnableMonsterList.add(new SpawnListEntry(net.minecraft.src.EntityEnderman.class, 1, 1, 4));
         spawnableWaterCreatureList.add(new SpawnListEntry(net.minecraft.src.EntitySquid.class, 10, 4, 4));
+        field_82914_M.add(new SpawnListEntry(net.minecraft.src.EntityBat.class, 10, 8, 8));
     }
 
     /**
@@ -295,6 +304,11 @@ public abstract class BiomeGenBase
         if (par1EnumCreatureType == EnumCreatureType.waterCreature)
         {
             return spawnableWaterCreatureList;
+        }
+
+        if (par1EnumCreatureType == EnumCreatureType.ambient)
+        {
+            return field_82914_M;
         }
         else
         {

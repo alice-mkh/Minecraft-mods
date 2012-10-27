@@ -43,7 +43,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
         {
             if (l1 <= 6L)
             {
-                mc.ingameGUI.getChatGUI().func_73757_a((new StringBuilder()).append("demo.day.").append(l1).toString(), null);
+                mc.ingameGUI.getChatGUI().addTranslatedMessage((new StringBuilder()).append("demo.day.").append(l1).toString(), null);
             }
         }
         else if (l1 == 1L)
@@ -79,12 +79,12 @@ public class PlayerControllerDemo extends PlayerControllerSP
 
             if (s != null)
             {
-                mc.ingameGUI.getChatGUI().func_73757_a(s, null);
+                mc.ingameGUI.getChatGUI().addTranslatedMessage(s, null);
             }
         }
         else if (l1 == 5L && l % 24000L == 22000L)
         {
-            mc.ingameGUI.getChatGUI().func_73757_a("demo.day.warning", null);
+            mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.day.warning", null);
         }
     }
 
@@ -113,7 +113,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     {
         if (field_55295_e > 100)
         {
-            mc.ingameGUI.getChatGUI().func_73757_a("demo.reminder", null);
+            mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.reminder", null);
             field_55295_e = 0;
         }
     }

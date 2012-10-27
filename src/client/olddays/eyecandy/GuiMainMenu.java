@@ -36,7 +36,7 @@ public class GuiMainMenu extends GuiScreen
 
     /** The splash message. */
     private String splashText;
-    private GuiButton field_73973_d;
+    private GuiButton buttonResetDemo;
 
     /** Timer used to rotate the panorama, increases every tick. */
     private int panoramaTimer;
@@ -45,7 +45,7 @@ public class GuiMainMenu extends GuiScreen
      * Texture allocated for the current viewport of the main menu's panorama background.
      */
     private int viewportTexture;
-    private static final String field_73978_o[] =
+    private static final String titlePanoramaPaths[] =
     {
         "/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"
     };
@@ -165,17 +165,21 @@ public class GuiMainMenu extends GuiScreen
         {
             splashText = "Happy new year!";
         }
+        else if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31)
+        {
+            splashText = "OOoooOOOoooo! Spooky!";
+        }
 
         StringTranslate stringtranslate = StringTranslate.getInstance();
         int i = height / 4 + 48;
 
         if (mc.isDemo())
         {
-            func_73972_b(i, 24, stringtranslate);
+            addDemoButtons(i, 24, stringtranslate);
         }
         else
         {
-            func_73969_a(i, 24, stringtranslate);
+            addSingleplayerMultiplayerButtons(i, 24, stringtranslate);
         }
 
         controlList.add(new GuiButton(3, width / 2 - 100, i + 48, stringtranslate.translateKey("menu.mods")));
@@ -193,22 +197,28 @@ public class GuiMainMenu extends GuiScreen
         controlList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
     }
 
-    private void func_73969_a(int par1, int par2, StringTranslate par3StringTranslate)
+    /**
+     * Adds Singleplayer and Multiplayer buttons on Main Menu for players who have bought the game.
+     */
+    private void addSingleplayerMultiplayerButtons(int par1, int par2, StringTranslate par3StringTranslate)
     {
         controlList.add(new GuiButton(1, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.singleplayer")));
         controlList.add(new GuiButton(2, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
     }
 
-    private void func_73972_b(int par1, int par2, StringTranslate par3StringTranslate)
+    /**
+     * Adds Demo buttons on Main Menu for players who are playing Demo.
+     */
+    private void addDemoButtons(int par1, int par2, StringTranslate par3StringTranslate)
     {
         controlList.add(new GuiButton(11, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.playdemo")));
-        controlList.add(field_73973_d = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
+        controlList.add(buttonResetDemo = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
         ISaveFormat isaveformat = mc.getSaveLoader();
         WorldInfo worldinfo = isaveformat.getWorldInfo("Demo_World");
 
         if (worldinfo == null)
         {
-            field_73973_d.enabled = false;
+            buttonResetDemo.enabled = false;
         }
     }
 
@@ -266,7 +276,7 @@ public class GuiMainMenu extends GuiScreen
 
             if (worldinfo != null)
             {
-                GuiYesNo guiyesno = GuiSelectWorld.func_74061_a(this, worldinfo.getWorldName(), 12);
+                GuiYesNo guiyesno = GuiSelectWorld.getDeleteWorldScreen(this, worldinfo.getWorldName(), 12);
                 mc.displayGuiScreen(guiyesno);
             }
         }
@@ -344,7 +354,7 @@ public class GuiMainMenu extends GuiScreen
                     GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(field_73978_o[k]));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(titlePanoramaPaths[k]));
                 tessellator.startDrawingQuads();
                 tessellator.setColorRGBA_I(0xffffff, 255 / (j + 1));
                 float f3 = 0.0F;
@@ -486,7 +496,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glScalef(f, f, f);
         drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
         GL11.glPopMatrix();
-        String s = version.equals("OFF") ? "Minecraft 1.3.2" : version;
+        String s = version.equals("OFF") ? "Minecraft 1.4.2" : version;
         if (mc.isDemo())
         {
             s = (new StringBuilder()).append(s).append(" Demo").toString();
@@ -614,6 +624,7 @@ public class GuiMainMenu extends GuiScreen
     private void renderMenuBlock(Block block, float f, RenderBlocks renderblocks)
     {
         int i = block.getRenderType();
+        renderblocks.func_83018_a(block);
         Tessellator tessellator = Tessellator.instance;
         if(i == 0)
         {

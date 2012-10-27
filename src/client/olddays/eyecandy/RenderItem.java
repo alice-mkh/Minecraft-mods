@@ -17,6 +17,7 @@ public class RenderItem extends Render
 
     /** Defines the zLevel of rendering of item on GUI. */
     public float zLevel;
+    public static boolean field_82407_g = false;
 
     public RenderItem()
     {
@@ -62,6 +63,14 @@ public class RenderItem extends Render
         if (block != null && RenderBlocks.renderItemIn3d(block.getRenderType()))
         {
             GL11.glRotatef(f1, 0.0F, 1.0F, 0.0F);
+
+            if (field_82407_g)
+            {
+                GL11.glScalef(1.25F, 1.25F, 1.25F);
+                GL11.glTranslatef(0.0F, 0.05F, 0.0F);
+                GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
+            }
+
             loadTexture("/terrain.png");
             float f2 = 0.25F;
             int k = block.getRenderType();
@@ -92,7 +101,17 @@ public class RenderItem extends Render
         }
         else if (itemstack.getItem().requiresMultipleRenderPasses())
         {
-            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            if (field_82407_g)
+            {
+                GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
+                GL11.glTranslatef(0.0F, -0.05F, 0.0F);
+                GL11.glDisable(GL11.GL_LIGHTING);
+            }
+            else
+            {
+                GL11.glScalef(0.5F, 0.5F, 0.5F);
+            }
+
             loadTexture("/gui/items.png");
 
             for (int i = 0; i <= 1; i++)
@@ -102,7 +121,7 @@ public class RenderItem extends Render
 
                 if (field_77024_a)
                 {
-                    int k1 = Item.itemsList[itemstack.itemID].getColorFromDamage(itemstack.getItemDamage(), i);
+                    int k1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, i);
                     float f9 = (float)(k1 >> 16 & 0xff) / 255F;
                     float f12 = (float)(k1 >> 8 & 0xff) / 255F;
                     float f14 = (float)(k1 & 0xff) / 255F;
@@ -114,7 +133,17 @@ public class RenderItem extends Render
         }
         else
         {
-            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            if (field_82407_g)
+            {
+                GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
+                GL11.glTranslatef(0.0F, -0.05F, 0.0F);
+                GL11.glDisable(GL11.GL_LIGHTING);
+            }
+            else
+            {
+                GL11.glScalef(0.5F, 0.5F, 0.5F);
+            }
+
             int j = itemstack.getIconIndex();
 
             if (block != null)
@@ -128,7 +157,7 @@ public class RenderItem extends Render
 
             if (field_77024_a)
             {
-                int i1 = Item.itemsList[itemstack.itemID].getColorFromDamage(itemstack.getItemDamage(), 0);
+                int i1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 0);
                 float f4 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f7 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f10 = (float)(i1 & 0xff) / 255F;
@@ -178,14 +207,21 @@ public class RenderItem extends Render
         }
     }
 
-    public void drawItemIntoGui(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, int par3, int par4, int par5, int par6, int par7)
+    /**
+     * Renders the item's icon or block into the UI at the specified position.
+     */
+    public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
     {
-        if (par3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[par3].getRenderType()))
+        int i = par3ItemStack.itemID;
+        int j = par3ItemStack.getItemDamage();
+        int k = par3ItemStack.getIconIndex();
+
+        if (i < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[i].getRenderType()))
         {
             par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
-            Block block = Block.blocksList[par3];
+            Block block = Block.blocksList[i];
             GL11.glPushMatrix();
-            GL11.glTranslatef(par6 - 2, par7 + 3, -3F + zLevel);
+            GL11.glTranslatef(par4 - 2, par5 + 3, -3F + zLevel);
             GL11.glScalef(10F, 10F, 10F);
             GL11.glTranslatef(1.0F, 0.5F, 1.0F);
             if (!oldrotation){
@@ -193,10 +229,10 @@ public class RenderItem extends Render
             }
             GL11.glRotatef(210F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-            int k = Item.itemsList[par3].getColorFromDamage(par4, 0);
-            float f1 = (float)(k >> 16 & 0xff) / 255F;
-            float f3 = (float)(k >> 8 & 0xff) / 255F;
-            float f6 = (float)(k & 0xff) / 255F;
+            int j1 = Item.itemsList[i].func_82790_a(par3ItemStack, 0);
+            float f1 = (float)(j1 >> 16 & 0xff) / 255F;
+            float f3 = (float)(j1 >> 8 & 0xff) / 255F;
+            float f6 = (float)(j1 & 0xff) / 255F;
 
             if (field_77024_a)
             {
@@ -209,38 +245,38 @@ public class RenderItem extends Render
                 GL11.glScalef(1.0F, 1.0F, 1.0F);
             }
             renderBlocks.useInventoryTint = field_77024_a;
-            renderBlocks.renderBlockAsItem(block, par4, 1.0F);
+            renderBlocks.renderBlockAsItem(block, j, 1.0F);
             renderBlocks.useInventoryTint = true;
             GL11.glPopMatrix();
         }
-        else if (Item.itemsList[par3].requiresMultipleRenderPasses())
+        else if (Item.itemsList[i].requiresMultipleRenderPasses())
         {
             GL11.glDisable(GL11.GL_LIGHTING);
             par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
 
-            for (int i = 0; i <= 1; i++)
+            for (int l = 0; l <= 1; l++)
             {
-                int l = Item.itemsList[par3].getIconFromDamageForRenderPass(par4, i);
-                int i1 = Item.itemsList[par3].getColorFromDamage(par4, i);
-                float f4 = (float)(i1 >> 16 & 0xff) / 255F;
-                float f7 = (float)(i1 >> 8 & 0xff) / 255F;
-                float f8 = (float)(i1 & 0xff) / 255F;
+                int k1 = Item.itemsList[i].getIconFromDamageForRenderPass(j, l);
+                int l1 = Item.itemsList[i].func_82790_a(par3ItemStack, l);
+                float f4 = (float)(l1 >> 16 & 0xff) / 255F;
+                float f7 = (float)(l1 >> 8 & 0xff) / 255F;
+                float f8 = (float)(l1 & 0xff) / 255F;
 
                 if (field_77024_a)
                 {
                     GL11.glColor4f(f4, f7, f8, 1.0F);
                 }
 
-                renderTexturedQuad(par6, par7, (l % 16) * 16, (l / 16) * 16, 16, 16);
+                renderTexturedQuad(par4, par5, (k1 % 16) * 16, (k1 / 16) * 16, 16, 16);
             }
 
             GL11.glEnable(GL11.GL_LIGHTING);
         }
-        else if (par5 >= 0)
+        else if (k >= 0)
         {
             GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (par3 < 256)
+            if (i < 256)
             {
                 par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
             }
@@ -249,34 +285,31 @@ public class RenderItem extends Render
                 par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
             }
 
-            int j = Item.itemsList[par3].getColorFromDamage(par4, 0);
-            float f = (float)(j >> 16 & 0xff) / 255F;
-            float f2 = (float)(j >> 8 & 0xff) / 255F;
-            float f5 = (float)(j & 0xff) / 255F;
+            int i1 = Item.itemsList[i].func_82790_a(par3ItemStack, 0);
+            float f = (float)(i1 >> 16 & 0xff) / 255F;
+            float f2 = (float)(i1 >> 8 & 0xff) / 255F;
+            float f5 = (float)(i1 & 0xff) / 255F;
 
             if (field_77024_a)
             {
                 GL11.glColor4f(f, f2, f5, 1.0F);
             }
 
-            renderTexturedQuad(par6, par7, (par5 % 16) * 16, (par5 / 16) * 16, 16, 16);
+            renderTexturedQuad(par4, par5, (k % 16) * 16, (k / 16) * 16, 16, 16);
             GL11.glEnable(GL11.GL_LIGHTING);
         }
 
         GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
-    /**
-     * Renders the item's icon or block into the UI at the specified position.
-     */
-    public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
+    public void func_82406_b(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
     {
         if (par3ItemStack == null)
         {
             return;
         }
 
-        drawItemIntoGui(par1FontRenderer, par2RenderEngine, par3ItemStack.itemID, par3ItemStack.getItemDamage(), par3ItemStack.getIconIndex(), par4, par5);
+        renderItemIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5);
 
         if (par3ItemStack != null && par3ItemStack.hasEffect())
         {

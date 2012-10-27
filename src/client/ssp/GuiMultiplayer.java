@@ -23,7 +23,7 @@ public class GuiMultiplayer extends GuiScreen
 
     /** Slot container for the server list */
     private GuiSlotServer serverSlotContainer;
-    private ServerList field_74030_m;
+    private ServerList internetServerList;
 
     /** Index of the currently selected server */
     private int selectedServer;
@@ -51,9 +51,11 @@ public class GuiMultiplayer extends GuiScreen
 
     /** This GUI's lag tooltip text or null if no lag icon is being hovered. */
     private String lagTooltip;
-    private ServerData field_74031_w;
-    private LanServerList field_74041_x;
-    private ThreadLanServerFind field_74040_y;
+
+    /** Instance of ServerData. */
+    private ServerData theServerData;
+    private LanServerList localNetworkServerList;
+    private ThreadLanServerFind localServerFindThread;
     private int field_74039_z;
     private boolean field_74024_A;
     private List field_74026_B;
@@ -66,7 +68,7 @@ public class GuiMultiplayer extends GuiScreen
         editClicked = false;
         directClicked = false;
         lagTooltip = null;
-        field_74031_w = null;
+        theServerData = null;
         field_74026_B = Collections.emptyList();
         parentScreen = par1GuiScreen;
     }
@@ -82,14 +84,14 @@ public class GuiMultiplayer extends GuiScreen
         if (!field_74024_A)
         {
             field_74024_A = true;
-            field_74030_m = new ServerList(mc);
-            field_74030_m.loadServerList();
-            field_74041_x = new LanServerList();
+            internetServerList = new ServerList(mc);
+            internetServerList.loadServerList();
+            localNetworkServerList = new LanServerList();
 
             try
             {
-                field_74040_y = new ThreadLanServerFind(field_74041_x);
-                field_74040_y.start();
+                localServerFindThread = new ThreadLanServerFind(localNetworkServerList);
+                localServerFindThread.start();
             }
             catch (Exception exception)
             {
@@ -133,10 +135,10 @@ public class GuiMultiplayer extends GuiScreen
         super.updateScreen();
         field_74039_z++;
 
-        if (field_74041_x.func_77553_a())
+        if (localNetworkServerList.func_77553_a())
         {
-            field_74026_B = field_74041_x.func_77554_c();
-            field_74041_x.func_77552_b();
+            field_74026_B = localNetworkServerList.func_77554_c();
+            localNetworkServerList.func_77552_b();
         }
     }
 
@@ -147,10 +149,10 @@ public class GuiMultiplayer extends GuiScreen
     {
         Keyboard.enableRepeatEvents(false);
 
-        if (field_74040_y != null)
+        if (localServerFindThread != null)
         {
-            field_74040_y.interrupt();
-            field_74040_y = null;
+            localServerFindThread.interrupt();
+            localServerFindThread = null;
         }
     }
 
@@ -166,7 +168,7 @@ public class GuiMultiplayer extends GuiScreen
 
         if (par1GuiButton.id == 2)
         {
-            String s = field_74030_m.getServerData(selectedServer).serverName;
+            String s = internetServerList.getServerData(selectedServer).serverName;
 
             if (s != null)
             {
@@ -187,18 +189,20 @@ public class GuiMultiplayer extends GuiScreen
         else if (par1GuiButton.id == 4)
         {
             directClicked = true;
-            mc.displayGuiScreen(new GuiScreenServerList(this, field_74031_w = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
+            mc.displayGuiScreen(new GuiScreenServerList(this, theServerData = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
         }
         else if (par1GuiButton.id == 3)
         {
             addClicked = true;
-            mc.displayGuiScreen(new GuiScreenAddServer(this, field_74031_w = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
+            mc.displayGuiScreen(new GuiScreenAddServer(this, theServerData = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
         }
         else if (par1GuiButton.id == 7)
         {
             editClicked = true;
-            ServerData serverdata = field_74030_m.getServerData(selectedServer);
-            mc.displayGuiScreen(new GuiScreenAddServer(this, field_74031_w = new ServerData(serverdata.serverName, serverdata.serverIP)));
+            ServerData serverdata = internetServerList.getServerData(selectedServer);
+            theServerData = new ServerData(serverdata.serverName, serverdata.serverIP);
+            theServerData.func_82819_b(serverdata.func_82820_d());
+            mc.displayGuiScreen(new GuiScreenAddServer(this, theServerData));
         }
         else if (par1GuiButton.id == 0)
         {
@@ -222,8 +226,8 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                field_74030_m.removeServerData(par2);
-                field_74030_m.saveServerList();
+                internetServerList.removeServerData(par2);
+                internetServerList.saveServerList();
                 selectedServer = -1;
             }
 
@@ -235,7 +239,7 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                func_74002_a(field_74031_w);
+                func_74002_a(theServerData);
             }
             else
             {
@@ -248,8 +252,8 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                field_74030_m.addServerData(field_74031_w);
-                field_74030_m.saveServerList();
+                internetServerList.addServerData(theServerData);
+                internetServerList.saveServerList();
                 selectedServer = -1;
             }
 
@@ -261,10 +265,11 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                ServerData serverdata = field_74030_m.getServerData(selectedServer);
-                serverdata.serverName = field_74031_w.serverName;
-                serverdata.serverIP = field_74031_w.serverIP;
-                field_74030_m.saveServerList();
+                ServerData serverdata = internetServerList.getServerData(selectedServer);
+                serverdata.serverName = theServerData.serverName;
+                serverdata.serverIP = theServerData.serverIP;
+                serverdata.func_82819_b(theServerData.func_82820_d());
+                internetServerList.saveServerList();
             }
 
             mc.displayGuiScreen(this);
@@ -280,19 +285,19 @@ public class GuiMultiplayer extends GuiScreen
 
         if (par2 == 59)
         {
-            mc.gameSettings.field_80005_w = !mc.gameSettings.field_80005_w;
+            mc.gameSettings.hideServerAddress = !mc.gameSettings.hideServerAddress;
             mc.gameSettings.saveOptions();
             return;
         }
 
         if (isShiftKeyDown() && par2 == 200)
         {
-            if (i > 0 && i < field_74030_m.countServers())
+            if (i > 0 && i < internetServerList.countServers())
             {
-                field_74030_m.swapServers(i, i - 1);
+                internetServerList.swapServers(i, i - 1);
                 selectedServer--;
 
-                if (i < field_74030_m.countServers() - 1)
+                if (i < internetServerList.countServers() - 1)
                 {
                     serverSlotContainer.func_77208_b(-serverSlotContainer.slotHeight);
                 }
@@ -300,9 +305,9 @@ public class GuiMultiplayer extends GuiScreen
         }
         else if (isShiftKeyDown() && par2 == 208)
         {
-            if (i < field_74030_m.countServers() - 1)
+            if (i < internetServerList.countServers() - 1)
             {
-                field_74030_m.swapServers(i, i + 1);
+                internetServerList.swapServers(i, i + 1);
                 selectedServer++;
 
                 if (i > 0)
@@ -341,13 +346,13 @@ public class GuiMultiplayer extends GuiScreen
     private void joinServer(int par1)
     {
         mc.enableSP = false;
-        if (par1 < field_74030_m.countServers())
+        if (par1 < internetServerList.countServers())
         {
-            func_74002_a(field_74030_m.getServerData(par1));
+            func_74002_a(internetServerList.getServerData(par1));
             return;
         }
 
-        par1 -= field_74030_m.countServers();
+        par1 -= internetServerList.countServers();
 
         if (par1 < field_74026_B.size())
         {
@@ -361,7 +366,7 @@ public class GuiMultiplayer extends GuiScreen
         mc.displayGuiScreen(new GuiConnecting(mc, par1ServerData));
     }
 
-    private void func_74017_b(ServerData par1ServerData) throws IOException
+    private static void func_74017_b(ServerData par1ServerData) throws IOException
     {
         ServerAddress serveraddress = ServerAddress.func_78860_a(par1ServerData.serverIP);
         Socket socket = null;
@@ -378,6 +383,7 @@ public class GuiMultiplayer extends GuiScreen
             datainputstream = new DataInputStream(socket.getInputStream());
             dataoutputstream = new DataOutputStream(socket.getOutputStream());
             dataoutputstream.write(254);
+            dataoutputstream.write(1);
 
             if (datainputstream.read() != 255)
             {
@@ -389,34 +395,70 @@ public class GuiMultiplayer extends GuiScreen
 
             for (int i = 0; i < ac.length; i++)
             {
-                if (ac[i] != '\247' && ChatAllowedCharacters.allowedCharacters.indexOf(ac[i]) < 0)
+                if (ac[i] != '\247' && ac[i] != 0 && ChatAllowedCharacters.allowedCharacters.indexOf(ac[i]) < 0)
                 {
                     ac[i] = '?';
                 }
             }
 
             s = new String(ac);
-            String as[] = s.split("\247");
-            s = as[0];
-            int j = -1;
-            int k = -1;
 
-            try
+            if (s.startsWith("\247") && s.length() > 1)
             {
-                j = Integer.parseInt(as[1]);
-                k = Integer.parseInt(as[2]);
-            }
-            catch (Exception exception) { }
+                String as[] = s.substring(1).split("\0");
 
-            par1ServerData.serverMOTD = (new StringBuilder()).append("\2477").append(s).toString();
+                if (MathHelper.func_82715_a(as[0], 0) == 1)
+                {
+                    par1ServerData.serverMOTD = as[3];
+                    par1ServerData.field_82821_f = MathHelper.func_82715_a(as[1], par1ServerData.field_82821_f);
+                    par1ServerData.field_82822_g = as[2];
+                    int j = MathHelper.func_82715_a(as[4], 0);
+                    int l = MathHelper.func_82715_a(as[5], 0);
 
-            if (j >= 0 && k > 0)
-            {
-                par1ServerData.field_78846_c = (new StringBuilder()).append("\2477").append(j).append("\2478/\2477").append(k).toString();
+                    if (j >= 0 && l >= 0)
+                    {
+                        par1ServerData.populationInfo = (new StringBuilder()).append("\2477").append(j).append("\2478/\2477").append(l).toString();
+                    }
+                    else
+                    {
+                        par1ServerData.populationInfo = "\2478???";
+                    }
+                }
+                else
+                {
+                    par1ServerData.field_82822_g = "???";
+                    par1ServerData.serverMOTD = "\2478???";
+                    par1ServerData.field_82821_f = 48;
+                    par1ServerData.populationInfo = "\2478???";
+                }
             }
             else
             {
-                par1ServerData.field_78846_c = "\2478???";
+                String as1[] = s.split("\247");
+                s = as1[0];
+                int k = -1;
+                int i1 = -1;
+
+                try
+                {
+                    k = Integer.parseInt(as1[1]);
+                    i1 = Integer.parseInt(as1[2]);
+                }
+                catch (Exception exception) { }
+
+                par1ServerData.serverMOTD = (new StringBuilder()).append("\2477").append(s).toString();
+
+                if (k >= 0 && i1 > 0)
+                {
+                    par1ServerData.populationInfo = (new StringBuilder()).append("\2477").append(k).append("\2478/\2477").append(i1).toString();
+                }
+                else
+                {
+                    par1ServerData.populationInfo = "\2478???";
+                }
+
+                par1ServerData.field_82822_g = "1.3";
+                par1ServerData.field_82821_f = 46;
             }
         }
         finally
@@ -469,7 +511,7 @@ public class GuiMultiplayer extends GuiScreen
 
     static ServerList func_74006_a(GuiMultiplayer par0GuiMultiplayer)
     {
-        return par0GuiMultiplayer.field_74030_m;
+        return par0GuiMultiplayer.internetServerList;
     }
 
     static List func_74003_b(GuiMultiplayer par0GuiMultiplayer)
@@ -488,22 +530,25 @@ public class GuiMultiplayer extends GuiScreen
     }
 
     /**
+     * Return buttonSelect GuiButton
+     */
+    static GuiButton getButtonSelect(GuiMultiplayer par0GuiMultiplayer)
+    {
+        return par0GuiMultiplayer.buttonSelect;
+    }
+
+    /**
      * Return buttonEdit GuiButton
      */
     static GuiButton getButtonEdit(GuiMultiplayer par0GuiMultiplayer)
     {
-        return par0GuiMultiplayer.buttonSelect;
+        return par0GuiMultiplayer.buttonEdit;
     }
 
     /**
      * Return buttonDelete GuiButton
      */
     static GuiButton getButtonDelete(GuiMultiplayer par0GuiMultiplayer)
-    {
-        return par0GuiMultiplayer.buttonEdit;
-    }
-
-    static GuiButton func_74019_f(GuiMultiplayer par0GuiMultiplayer)
     {
         return par0GuiMultiplayer.buttonDelete;
     }
@@ -533,9 +578,9 @@ public class GuiMultiplayer extends GuiScreen
         return threadsPending++;
     }
 
-    static void func_74013_a(GuiMultiplayer par0GuiMultiplayer, ServerData par1ServerData) throws IOException
+    static void func_82291_a(ServerData par0ServerData) throws IOException
     {
-        par0GuiMultiplayer.func_74017_b(par1ServerData);
+        func_74017_b(par0ServerData);
     }
 
     static int func_74018_k()

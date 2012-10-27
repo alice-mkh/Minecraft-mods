@@ -9,7 +9,7 @@ public class OldBiomeGenSky extends OldBiomeGenBase
     {
         spawnableMonsterList.clear();
         spawnableCreatureList.clear();
-        spawnableWaterCreatureList.clear();
+        field_82914_M.clear();
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityChicken.class, 10));
     }
 

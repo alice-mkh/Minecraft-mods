@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 
 public class mod_SpawnHuman extends Mod{
     public String getMcVersion(){
-        return "1.3.2";
+        return "1.4.2";
     }
 
     public String getModVersion(){

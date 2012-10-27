@@ -8,6 +8,7 @@ public class Explosion
 
     /** whether or not the explosion sets fire to blocks around it */
     public boolean isFlaming;
+    public boolean field_82755_b;
     private int field_77289_h;
     private Random explosionRNG;
     private World worldObj;
@@ -22,6 +23,7 @@ public class Explosion
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
         isFlaming = false;
+        field_82755_b = true;
         field_77289_h = 16;
         explosionRNG = new Random();
         field_77281_g = new ArrayList();
@@ -82,7 +84,9 @@ public class Explosion
 
                         if (j3 > 0)
                         {
-                            f1 -= (Block.blocksList[j3].getExplosionResistance(exploder) + 0.3F) * f2;
+                            Block block = Block.blocksList[j3];
+                            float f3 = exploder == null ? block.getExplosionResistance(exploder) : exploder.func_82146_a(this, block, k2, l2, i3);
+                            f1 -= (f3 + 0.3F) * f2;
                         }
 
                         if (f1 > 0.0F)
@@ -109,7 +113,7 @@ public class Explosion
         int l1 = MathHelper.floor_double(explosionZ - (double)explosionSize - 1.0D);
         int i2 = MathHelper.floor_double(explosionZ + (double)explosionSize + 1.0D);
         List list = worldObj.getEntitiesWithinAABBExcludingEntity(exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(j, j1, l1, l, k1, i2));
-        Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(explosionX, explosionY, explosionZ);
+        Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(explosionX, explosionY, explosionZ);
 
         for (int j2 = 0; j2 < list.size(); j2++)
         {
@@ -146,7 +150,7 @@ public class Explosion
 
             if (entity instanceof EntityPlayer)
             {
-                field_77288_k.put((EntityPlayer)entity, Vec3.getVec3Pool().getVecFromPool(d6 * d13, d8 * d13, d10 * d13));
+                field_77288_k.put((EntityPlayer)entity, worldObj.func_82732_R().getVecFromPool(d6 * d13, d8 * d13, d10 * d13));
             }
         }
 
@@ -159,56 +163,68 @@ public class Explosion
     public void doExplosionB(boolean par1)
     {
         worldObj.playSoundEffect(explosionX, explosionY, explosionZ, "random.explode", 4F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-        worldObj.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 0.0D, 0.0D, 0.0D);
-        Iterator iterator = field_77281_g.iterator();
 
-        do
+        if (explosionSize < 2.0F || !field_82755_b)
         {
-            if (!iterator.hasNext())
+            worldObj.spawnParticle("largeexplode", explosionX, explosionY, explosionZ, 1.0D, 0.0D, 0.0D);
+        }
+        else
+        {
+            worldObj.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0D, 0.0D, 0.0D);
+        }
+
+        if (field_82755_b)
+        {
+            Iterator iterator = field_77281_g.iterator();
+
+            do
             {
-                break;
-            }
-
-            ChunkPosition chunkposition = (ChunkPosition)iterator.next();
-            int i = chunkposition.x;
-            int k = chunkposition.y;
-            int i1 = chunkposition.z;
-            int k1 = worldObj.getBlockId(i, k, i1);
-
-            if (par1)
-            {
-                double d = (float)i + worldObj.rand.nextFloat();
-                double d1 = (float)k + worldObj.rand.nextFloat();
-                double d2 = (float)i1 + worldObj.rand.nextFloat();
-                double d3 = d - explosionX;
-                double d4 = d1 - explosionY;
-                double d5 = d2 - explosionZ;
-                double d6 = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-                d3 /= d6;
-                d4 /= d6;
-                d5 /= d6;
-                double d7 = 0.5D / (d6 / (double)explosionSize + 0.10000000000000001D);
-                d7 *= worldObj.rand.nextFloat() * worldObj.rand.nextFloat() + 0.3F;
-                d3 *= d7;
-                d4 *= d7;
-                d5 *= d7;
-                worldObj.spawnParticle("explode", (d + explosionX * 1.0D) / 2D, (d1 + explosionY * 1.0D) / 2D, (d2 + explosionZ * 1.0D) / 2D, d3, d4, d5);
-                worldObj.spawnParticle("smoke", d, d1, d2, d3, d4, d5);
-            }
-
-            if (k1 > 0)
-            {
-                Block.blocksList[k1].dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
-
-                if (worldObj.setBlockAndMetadataWithUpdate(i, k, i1, 0, 0, worldObj.isRemote))
+                if (!iterator.hasNext())
                 {
-                    worldObj.notifyBlocksOfNeighborChange(i, k, i1, 0);
+                    break;
                 }
 
-                Block.blocksList[k1].onBlockDestroyedByExplosion(worldObj, i, k, i1);
+                ChunkPosition chunkposition = (ChunkPosition)iterator.next();
+                int i = chunkposition.x;
+                int k = chunkposition.y;
+                int i1 = chunkposition.z;
+                int k1 = worldObj.getBlockId(i, k, i1);
+
+                if (par1)
+                {
+                    double d = (float)i + worldObj.rand.nextFloat();
+                    double d1 = (float)k + worldObj.rand.nextFloat();
+                    double d2 = (float)i1 + worldObj.rand.nextFloat();
+                    double d3 = d - explosionX;
+                    double d4 = d1 - explosionY;
+                    double d5 = d2 - explosionZ;
+                    double d6 = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
+                    d3 /= d6;
+                    d4 /= d6;
+                    d5 /= d6;
+                    double d7 = 0.5D / (d6 / (double)explosionSize + 0.10000000000000001D);
+                    d7 *= worldObj.rand.nextFloat() * worldObj.rand.nextFloat() + 0.3F;
+                    d3 *= d7;
+                    d4 *= d7;
+                    d5 *= d7;
+                    worldObj.spawnParticle("explode", (d + explosionX * 1.0D) / 2D, (d1 + explosionY * 1.0D) / 2D, (d2 + explosionZ * 1.0D) / 2D, d3, d4, d5);
+                    worldObj.spawnParticle("smoke", d, d1, d2, d3, d4, d5);
+                }
+
+                if (k1 > 0)
+                {
+                    Block.blocksList[k1].dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
+
+                    if (worldObj.setBlockAndMetadataWithUpdate(i, k, i1, 0, 0, worldObj.isRemote))
+                    {
+                        worldObj.notifyBlocksOfNeighborChange(i, k, i1, 0);
+                    }
+
+                    Block.blocksList[k1].onBlockDestroyedByExplosion(worldObj, i, k, i1);
+                }
             }
+            while (true);
         }
-        while (true);
 
         if (isFlaming)
         {

@@ -13,7 +13,7 @@ public class NetServerHandlerSP extends NetServerHandler
     {
         super(par3EntityPlayerMP);
         field_72574_e = par3EntityPlayerMP;
-        par3EntityPlayerMP.serverForThisPlayer = this;
+        par3EntityPlayerMP.playerNetServerHandler = this;
     }
 
     public EntityPlayerMP getPlayer()
@@ -49,7 +49,7 @@ public class NetServerHandlerSP extends NetServerHandler
     {
     }
 
-    public void registerPacket(Packet par1Packet)
+    public void unexpectedPacket(Packet par1Packet)
     {
     }
 

@@ -34,7 +34,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         stoneNoise = new double[256];
         caveGenerator = new MapGenCaves();
         strongholdGenerator = new MapGenStronghold2();
-        villageGenerator = new MapGenVillage(0);
+        villageGenerator = new MapGenVillage();
         mineshaftGenerator = new MapGenMineshaft();
         templeGenerator = new MapGenScatteredFeature();
         ravineGenerator = new MapGenRavine();

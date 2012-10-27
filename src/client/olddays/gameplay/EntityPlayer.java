@@ -8,7 +8,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public static int combat = 3;
     public static boolean sprint = true;
     public static int startitems = 0;
-    public static boolean oldswing = false;
     public static boolean oldscore = false;
 
     /** Inventory of the player */
@@ -33,14 +32,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public int score;
     public float prevCameraYaw;
     public float cameraYaw;
-
-    /** Whether the player is swinging the current item in their hand. */
-    public boolean isSwinging;
-    public int swingProgressInt;
     public String username;
-
-    /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
-    public int dimension;
     public String playerCloakUrl;
 
     /**
@@ -70,19 +62,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * Holds the last coordinate to spawn based on last bed that the player sleep.
      */
     private ChunkCoordinates spawnChunk;
+    private boolean field_82248_d;
 
     /** Holds the coordinate of the player when enter a minecraft to ride. */
     private ChunkCoordinates startMinecartRidingCoordinate;
-    public int timeUntilPortal;
-
-    /** Whether the entity is inside a Portal */
-    protected boolean inPortal;
-
-    /** The amount of time an entity has been in a Portal */
-    public float timeInPortal;
-
-    /** The amount of time an entity has been in a Portal the previous tick */
-    public float prevTimeInPortal;
 
     /** The player's capabilities. (See class PlayerCapabilities) */
     public PlayerCapabilities capabilities;
@@ -112,6 +95,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     private int itemInUseCount;
     protected float speedOnGround;
     protected float speedInAir;
+    private int field_82249_h;
 
     /**
      * An instance of a fishing rod's hook. If this isn't null, the icon image of the fishing rod is slightly different
@@ -127,16 +111,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         flyToggleTimer = 0;
         field_71098_bD = 0;
         score = 0;
-        isSwinging = false;
-        swingProgressInt = 0;
         xpCooldown = 0;
-        timeUntilPortal = 20;
-        inPortal = false;
         capabilities = new PlayerCapabilities();
         speedOnGround = 0.1F;
         speedInAir = 0.02F;
+        field_82249_h = 0;
         fishEntity = null;
-        inventorySlots = new ContainerPlayer(inventory, !par1World.isRemote);
+        inventorySlots = new ContainerPlayer(inventory, !par1World.isRemote, this);
         craftingInventory = inventorySlots;
         yOffset = 1.62F;
         ChunkCoordinates chunkcoordinates = par1World.getSpawnPoint();
@@ -219,7 +200,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                     alertWolves((EntityLiving)par1Entity, true);
                 }
                 addStat(StatList.damageDealtStat, i);
-                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
+                int l = EnchantmentHelper.getFireAspectModifier(this, (EntityLiving)par1Entity);
                 if (l > 0)
                 {
                     par1Entity.setFire(l * 4);
@@ -436,6 +417,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         }
     }
 
+    public int func_82145_z()
+    {
+        return capabilities.disableDamage ? 0 : 80;
+    }
+
+    public int func_82147_ab()
+    {
+        return 10;
+    }
+
     /**
      * Plays sounds and makes particles for item in use state
      */
@@ -450,10 +441,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             for (int i = 0; i < par2; i++)
             {
-                Vec3 vec3 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
+                Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.10000000000000001D, Math.random() * 0.10000000000000001D + 0.10000000000000001D, 0.0D);
                 vec3.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
-                Vec3 vec3_1 = Vec3.getVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
+                Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.29999999999999999D, (double)(-rand.nextFloat()) * 0.59999999999999998D - 0.29999999999999999D, 0.59999999999999998D);
                 vec3_1.rotateAroundX((-rotationPitch * (float)Math.PI) / 180F);
                 vec3_1.rotateAroundY((-rotationYaw * (float)Math.PI) / 180F);
                 vec3_1 = vec3_1.addVector(posX, posY + (double)getEyeHeight(), posZ);
@@ -525,10 +516,19 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         double d = posX;
         double d1 = posY;
         double d2 = posZ;
+        float f = rotationYaw;
+        float f1 = rotationPitch;
         super.updateRidden();
         prevCameraYaw = cameraYaw;
         cameraYaw = 0.0F;
         addMountedMovementStat(posX - d, posY - d1, posZ - d2);
+
+        if (ridingEntity instanceof EntityPig)
+        {
+            rotationPitch = f1;
+            rotationYaw = f;
+            renderYawOffset = ((EntityPig)ridingEntity).renderYawOffset;
+        }
     }
 
     /**
@@ -544,46 +544,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         deathTime = 0;
     }
 
-    /**
-     * Returns the swing speed modifier
-     */
-    private int getSwingSpeedModifier()
-    {
-        if (isPotionActive(Potion.digSpeed))
-        {
-            return (oldswing ? 8 : 6) - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
-        }
-
-        if (isPotionActive(Potion.digSlowdown))
-        {
-            return (oldswing ? 8 : 6) + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
-        }
-        else
-        {
-            return (oldswing ? 8 : 6);
-        }
-    }
-
     protected void updateEntityActionState()
     {
-        int i = getSwingSpeedModifier();
-
-        if (isSwinging)
-        {
-            swingProgressInt++;
-
-            if (swingProgressInt >= i)
-            {
-                swingProgressInt = 0;
-                isSwinging = false;
-            }
-        }
-        else
-        {
-            swingProgressInt = 0;
-        }
-
-        swingProgress = (float)swingProgressInt / (float)i;
+        func_82168_bl();
     }
 
     /**
@@ -687,7 +650,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             dropPlayerItemWithRandomChoice(new ItemStack(Item.appleRed, 1), true);
         }
 
-        inventory.dropAllItems();
+        if (!worldObj.func_82736_K().func_82766_b("keepInventory"))
+        {
+            inventory.dropAllItems();
+        }
 
         if (par1DamageSource != null)
         {
@@ -718,23 +684,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         else
         {
             addStat(StatList.mobKillsStat, 1);
-        }
-    }
-
-    /**
-     * Decrements the entity's air supply when underwater
-     */
-    protected int decreaseAirSupply(int par1)
-    {
-        int i = EnchantmentHelper.getRespiration(inventory);
-
-        if (i > 0 && rand.nextInt(i + 1) > 0)
-        {
-            return par1;
-        }
-        else
-        {
-            return super.decreaseAirSupply(par1);
         }
     }
 
@@ -810,7 +759,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public float getCurrentPlayerStrVsBlock(Block par1Block)
     {
         float f = inventory.getStrVsBlock(par1Block);
-        int i = EnchantmentHelper.getEfficiencyModifier(inventory);
+        int i = EnchantmentHelper.getEfficiencyModifier(this);
 
         if (i > 0 && inventory.canHarvestBlock(par1Block))
         {
@@ -827,7 +776,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             f *= 1.0F - (float)(getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
         }
 
-        if (isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(inventory))
+        if (isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this))
         {
             f /= 5F;
         }
@@ -856,7 +805,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         super.readEntityFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Inventory");
         inventory.readFromNBT(nbttaglist);
-        dimension = par1NBTTagCompound.getInteger("Dimension");
         sleeping = par1NBTTagCompound.getBoolean("Sleeping");
         sleepTimer = par1NBTTagCompound.getShort("SleepTimer");
         experience = par1NBTTagCompound.getFloat("XpP");
@@ -872,6 +820,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         if (par1NBTTagCompound.hasKey("SpawnX") && par1NBTTagCompound.hasKey("SpawnY") && par1NBTTagCompound.hasKey("SpawnZ"))
         {
             spawnChunk = new ChunkCoordinates(par1NBTTagCompound.getInteger("SpawnX"), par1NBTTagCompound.getInteger("SpawnY"), par1NBTTagCompound.getInteger("SpawnZ"));
+            field_82248_d = par1NBTTagCompound.getBoolean("SpawnForced");
         }
 
         foodStats.readNBT(par1NBTTagCompound);
@@ -891,7 +840,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setTag("Inventory", inventory.writeToNBT(new NBTTagList()));
-        par1NBTTagCompound.setInteger("Dimension", dimension);
         par1NBTTagCompound.setBoolean("Sleeping", sleeping);
         par1NBTTagCompound.setShort("SleepTimer", (short)sleepTimer);
         par1NBTTagCompound.setFloat("XpP", experience);
@@ -903,6 +851,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             par1NBTTagCompound.setInteger("SpawnX", spawnChunk.posX);
             par1NBTTagCompound.setInteger("SpawnY", spawnChunk.posY);
             par1NBTTagCompound.setInteger("SpawnZ", spawnChunk.posZ);
+            par1NBTTagCompound.setBoolean("SpawnForced", field_82248_d);
         }
 
         foodStats.writeNBT(par1NBTTagCompound);
@@ -921,17 +870,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
     }
 
-    /**
-     * Displays the crafting GUI for a workbench.
-     */
-    public void displayGUIWorkbench(int i, int j, int k)
+    public void func_82244_d(int i, int j, int k)
     {
     }
 
     /**
-     * Called whenever an item is picked up from walking over it. Args: pickedUpEntity, stackSize
+     * Displays the crafting GUI for a workbench.
      */
-    public void onItemPickup(Entity entity, int i)
+    public void displayGUIWorkbench(int i, int j, int k)
     {
     }
 
@@ -970,8 +916,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             wakeUpPlayer(true, true, false);
         }
 
-        Entity entity = par1DamageSource.getEntity();
-
         if (par1DamageSource.func_76350_n())
         {
             if (worldObj.difficultySetting == 0)
@@ -995,16 +939,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             return false;
         }
 
-        Entity entity1 = par1DamageSource.getEntity();
+        Entity entity = par1DamageSource.getEntity();
 
-        if ((entity1 instanceof EntityArrow) && ((EntityArrow)entity1).shootingEntity != null)
+        if ((entity instanceof EntityArrow) && ((EntityArrow)entity).shootingEntity != null)
         {
-            entity1 = ((EntityArrow)entity1).shootingEntity;
+            entity = ((EntityArrow)entity).shootingEntity;
         }
 
-        if (entity1 instanceof EntityLiving)
+        if (entity instanceof EntityLiving)
         {
-            alertWolves((EntityLiving)entity1, false);
+            alertWolves((EntityLiving)entity, false);
         }
 
         addStat(StatList.damageTakenStat, par2);
@@ -1023,7 +967,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             return 0;
         }
 
-        int j = EnchantmentHelper.getEnchantmentModifierDamage(inventory, par1DamageSource);
+        int j = EnchantmentHelper.getEnchantmentModifierDamage(inventory.armorInventory, par1DamageSource);
 
         if (j > 20)
         {
@@ -1150,12 +1094,36 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         }
     }
 
+    public float func_82243_bO()
+    {
+        int i = 0;
+        ItemStack aitemstack[] = inventory.armorInventory;
+        int j = aitemstack.length;
+
+        for (int k = 0; k < j; k++)
+        {
+            ItemStack itemstack = aitemstack[k];
+
+            if (itemstack != null)
+            {
+                i++;
+            }
+        }
+
+        return (float)i / (float)inventory.armorInventory.length;
+    }
+
     /**
      * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health
      * second with the reduced value. Args: damageAmount
      */
     protected void damageEntity(DamageSource par1DamageSource, int par2)
     {
+        if (field_83001_bt)
+        {
+            return;
+        }
+
         if (!par1DamageSource.isUnblockable() && isBlocking())
         {
             par2 = 1 + par2 >> 1;
@@ -1192,7 +1160,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     /**
      * Displays the GUI for editing a sign. Args: tileEntitySign
      */
-    public void displayGUIEditSign(TileEntitySign tileentitysign)
+    public void displayGUIEditSign(TileEntity tileentity)
     {
     }
 
@@ -1200,6 +1168,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * Displays the GUI for interacting with a brewing stand.
      */
     public void displayGUIBrewingStand(TileEntityBrewingStand tileentitybrewingstand)
+    {
+    }
+
+    public void func_82240_a(TileEntityBeacon tileentitybeacon)
     {
     }
 
@@ -1269,18 +1241,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     }
 
     /**
-     * Swings the item the player is holding.
-     */
-    public void swingItem()
-    {
-        if (!isSwinging || swingProgressInt >= getSwingSpeedModifier() / 2 || swingProgressInt < 0)
-        {
-            swingProgressInt = -1;
-            isSwinging = true;
-        }
-    }
-
-    /**
      * Attacks for the player the targeted entity with the currently equipped item.  The equipped item has hitEntity
      * called on it. Args: targetEntity
      */
@@ -1308,8 +1268,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (par1Entity instanceof EntityLiving)
         {
-            k = EnchantmentHelper.getEnchantmentModifierLiving(inventory, (EntityLiving)par1Entity);
-            j += EnchantmentHelper.getKnockbackModifier(inventory, (EntityLiving)par1Entity);
+            k = EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLiving)par1Entity);
+            j += EnchantmentHelper.getKnockbackModifier(this, (EntityLiving)par1Entity);
         }
 
         if (isSprinting())
@@ -1380,9 +1340,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 }
 
                 addStat(StatList.damageDealtStat, i);
-                int l = EnchantmentHelper.getFireAspectModifier(inventory, (EntityLiving)par1Entity);
+                int l = EnchantmentHelper.getFireAspectModifier(this, (EntityLiving)par1Entity);
 
-                if (l > 0)
+                if (l > 0 && flag1)
                 {
                     par1Entity.setFire(l * 4);
                 }
@@ -1486,15 +1446,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 case 0:
                     f1 = 0.9F;
                     break;
-
                 case 2:
                     f1 = 0.1F;
                     break;
-
                 case 1:
                     f = 0.1F;
                     break;
-
                 case 3:
                     f = 0.9F;
                     break;
@@ -1531,15 +1488,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             case 0:
                 field_71089_bV = -1.8F;
                 break;
-
             case 2:
                 field_71089_bV = 1.8F;
                 break;
-
             case 1:
                 field_71079_bU = 1.8F;
                 break;
-
             case 3:
                 field_71079_bU = -1.8F;
                 break;
@@ -1587,7 +1541,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (par3)
         {
-            setSpawnChunk(playerLocation);
+            setSpawnChunk(playerLocation, false);
         }
     }
 
@@ -1603,7 +1557,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * Ensure that a block enabling respawning exists at the specified coordinates and find an empty space nearby to
      * spawn.
      */
-    public static ChunkCoordinates verifyRespawnCoordinates(World par0World, ChunkCoordinates par1ChunkCoordinates)
+    public static ChunkCoordinates verifyRespawnCoordinates(World par0World, ChunkCoordinates par1ChunkCoordinates, boolean par2)
     {
         IChunkProvider ichunkprovider = par0World.getChunkProvider();
         ichunkprovider.loadChunk(par1ChunkCoordinates.posX - 3 >> 4, par1ChunkCoordinates.posZ - 3 >> 4);
@@ -1613,7 +1567,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (par0World.getBlockId(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ) != Block.bed.blockID)
         {
-            return null;
+            if (par2 && par0World.isAirBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ) && par0World.isAirBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY + 1, par1ChunkCoordinates.posZ))
+            {
+                return par1ChunkCoordinates;
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {
@@ -1636,13 +1597,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             {
                 case 0:
                     return 90F;
-
                 case 1:
                     return 0.0F;
-
                 case 2:
                     return 270F;
-
                 case 3:
                     return 180F;
             }
@@ -1672,6 +1630,25 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return sleepTimer;
     }
 
+    protected boolean func_82241_s(int par1)
+    {
+        return (dataWatcher.getWatchableObjectByte(16) & 1 << par1) != 0;
+    }
+
+    protected void func_82239_b(int par1, boolean par2)
+    {
+        byte byte0 = dataWatcher.getWatchableObjectByte(16);
+
+        if (par2)
+        {
+            dataWatcher.updateObject(16, Byte.valueOf((byte)(byte0 | 1 << par1)));
+        }
+        else
+        {
+            dataWatcher.updateObject(16, Byte.valueOf((byte)(byte0 & ~(1 << par1))));
+        }
+    }
+
     /**
      * Add a chat message to the player
      */
@@ -1687,18 +1664,25 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return spawnChunk;
     }
 
+    public boolean func_82245_bX()
+    {
+        return field_82248_d;
+    }
+
     /**
      * Defines a spawn coordinate to player spawn. Used by bed after the player sleep on it.
      */
-    public void setSpawnChunk(ChunkCoordinates par1ChunkCoordinates)
+    public void setSpawnChunk(ChunkCoordinates par1ChunkCoordinates, boolean par2)
     {
         if (par1ChunkCoordinates != null)
         {
             spawnChunk = new ChunkCoordinates(par1ChunkCoordinates);
+            field_82248_d = par2;
         }
         else
         {
             spawnChunk = null;
+            field_82248_d = false;
         }
     }
 
@@ -1886,7 +1870,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public void onKillEntity(EntityLiving par1EntityLiving)
     {
-        if (par1EntityLiving instanceof EntityMob)
+        if (par1EntityLiving instanceof IMob)
         {
             triggerAchievement(AchievementList.killEnemy);
         }
@@ -1934,21 +1918,17 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return i;
     }
 
-    /**
-     * Called by portal blocks when an entity is within it.
-     */
-    public void setInPortal()
+    public ItemStack func_82169_q(int par1)
     {
-        if (timeUntilPortal > 0)
-        {
-            timeUntilPortal = 10;
-            return;
-        }
-        else
-        {
-            inPortal = true;
-            return;
-        }
+        return inventory.armorItemInSlot(par1);
+    }
+
+    protected void func_82164_bB()
+    {
+    }
+
+    protected void func_82162_bC()
+    {
     }
 
     /**
@@ -1972,20 +1952,24 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         for (; experience >= 1.0F; experience /= xpBarCap())
         {
             experience = (experience - 1.0F) * (float)xpBarCap();
-            increaseLevel();
+            func_82242_a(1);
         }
     }
 
-    /**
-     * Decrease the player level, used to pay levels for enchantments on items at enchanted table.
-     */
-    public void removeExperience(int par1)
+    public void func_82242_a(int par1)
     {
-        experienceLevel -= par1;
+        experienceLevel += par1;
 
         if (experienceLevel < 0)
         {
             experienceLevel = 0;
+        }
+
+        if (par1 > 0 && experienceLevel % 5 == 0 && (float)field_82249_h < (float)ticksExisted - 100F)
+        {
+            float f = experienceLevel <= 30 ? (float)experienceLevel / 30F : 1.0F;
+            worldObj.playSoundAtEntity(this, "random.levelup", f * 0.75F, 1.0F);
+            field_82249_h = ticksExisted;
         }
     }
 
@@ -2008,14 +1992,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             return 17;
         }
-    }
-
-    /**
-     * This method increases the player's experience level by one.
-     */
-    private void increaseLevel()
-    {
-        experienceLevel++;
     }
 
     /**
@@ -2074,9 +2050,44 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         }
     }
 
-    public boolean canPlayerEdit(int par1, int par2, int par3)
+    public boolean func_82246_f(int par1, int par2, int par3)
     {
-        return capabilities.allowEdit;
+        if (capabilities.allowEdit)
+        {
+            return true;
+        }
+
+        int i = worldObj.getBlockId(par1, par2, par3);
+
+        if (i > 0 && getCurrentEquippedItem() != null)
+        {
+            Block block = Block.blocksList[i];
+            ItemStack itemstack = getCurrentEquippedItem();
+
+            if (itemstack.canHarvestBlock(block) || itemstack.getStrVsBlock(block) > 1.0F)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean func_82247_a(int par1, int par2, int par3, int par4, ItemStack par5ItemStack)
+    {
+        if (capabilities.allowEdit)
+        {
+            return true;
+        }
+
+        if (par5ItemStack != null)
+        {
+            return par5ItemStack.func_82835_x();
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -2084,6 +2095,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     protected int getExperiencePoints(EntityPlayer par1EntityPlayer)
     {
+        if (worldObj.func_82736_K().func_82766_b("keepInventory"))
+        {
+            return 0;
+        }
+
         int i = experienceLevel * 7;
 
         if (i > 100)
@@ -2112,10 +2128,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return username;
     }
 
-    public void travelToTheEnd(int i)
-    {
-    }
-
     /**
      * Copies the values from the given player into this player if boolean par2 is true. Always clones Ender Chest
      * Inventory.
@@ -2127,6 +2139,15 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             inventory.copyInventory(par1EntityPlayer.inventory);
             health = par1EntityPlayer.health;
             foodStats = par1EntityPlayer.foodStats;
+            experienceLevel = par1EntityPlayer.experienceLevel;
+            experienceTotal = par1EntityPlayer.experienceTotal;
+            experience = par1EntityPlayer.experience;
+            score = par1EntityPlayer.score;
+            field_82152_aq = par1EntityPlayer.field_82152_aq;
+        }
+        else if (worldObj.func_82736_K().func_82766_b("keepInventory"))
+        {
+            inventory.copyInventory(par1EntityPlayer.inventory);
             experienceLevel = par1EntityPlayer.experienceLevel;
             experienceTotal = par1EntityPlayer.experienceTotal;
             experience = par1EntityPlayer.experience;
@@ -2183,6 +2204,44 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public InventoryEnderChest getInventoryEnderChest()
     {
         return theInventoryEnderChest;
+    }
+
+    /**
+     * 0 = item, 1-n is armor
+     */
+    public ItemStack getCurrentItemOrArmor(int par1)
+    {
+        if (par1 == 0)
+        {
+            return inventory.getCurrentItem();
+        }
+        else
+        {
+            return inventory.armorInventory[par1 - 1];
+        }
+    }
+
+    /**
+     * Returns the item that this EntityLiving is holding, if any.
+     */
+    public ItemStack getHeldItem()
+    {
+        return inventory.getCurrentItem();
+    }
+
+    public void func_70062_b(int par1, ItemStack par2ItemStack)
+    {
+        inventory.armorInventory[par1] = par2ItemStack;
+    }
+
+    public ItemStack[] getLastActiveItems()
+    {
+        return inventory.armorInventory;
+    }
+
+    public boolean func_82238_cc()
+    {
+        return func_82241_s(1);
     }
 
     /**

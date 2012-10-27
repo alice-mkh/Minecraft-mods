@@ -20,17 +20,29 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyInt(this,  13,1,     "Enderman", 2).setUseNames();
         new OldDaysPropertyBool(this, 14,true,  "Calm4");
         new OldDaysPropertyBool(this, 15,false, "Creeper");
+        new OldDaysPropertyBool(this, 16,true,  "Steps");
+        new OldDaysPropertyBool(this, 17,true,  "MobSteps");
+        new OldDaysPropertyBool(this, 18,true,  "Cow");
+        new OldDaysPropertyBool(this, 19,true,  "Slime");
+        new OldDaysPropertyBool(this, 20,true,  "Skeleton");
+        new OldDaysPropertyBool(this, 21,true,  "Levelup");
         Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
+        addSound(1, "explode");
         addSound(5, "door_open");
         addSound(5, "door_close");
         addSound(6, "door_open");
         addSound(6, "door_close");
         addSound(7, "bow");
+        addSound(8, "drr");
         addMusic(14,"calm4");
-        addSound(15,"creeper1");
-        addSound(15,"creeper2");
-        addSound(15,"creeper3");
-        addSound(15,"creeper4");
+        addSound(18,"cowhurt1");
+        addSound(18,"cowhurt2");
+        addSound(18,"cowhurt3");
+        for (int i = 1; i <= 4; i++){
+            addSound(15,"creeper"+i);
+            addSound(17,"cow"+i);
+            addSound(20,"skeletonhurt"+i);
+        }
     }
 
     public void callback (int i){
@@ -50,6 +62,13 @@ public class ODSounds extends OldDaysModule{
             case 13:set(SoundManager2.class, "enderman", Enderman); break;
             case 14:set(SoundManager2.class, "calm4", Calm4); break;
             case 15:set(SoundManager2.class, "creeper", Creeper); break;
+            //1.4
+            case 16:set(SoundManager2.class, "steps", Steps); break;
+            case 17:set(Entity.class, "oldstepsound", MobSteps); break;
+            case 18:set(SoundManager2.class, "cow", Cow); break;
+            case 19:set(SoundManager2.class, "slime", Slime); break;
+            case 20:set(SoundManager2.class, "skeleton", Skeleton); break;
+            case 21:set(SoundManager2.class, "levelup", Levelup); break;
         }
     }
 
@@ -68,4 +87,10 @@ public class ODSounds extends OldDaysModule{
     public static boolean Calm4;
     public static boolean Creeper;
     public static int Enderman = 1;
+    public static boolean Steps = true;
+    public static boolean MobSteps = true;
+    public static boolean Cow = true;
+    public static boolean Slime = true;
+    public static boolean Skeleton = true;
+    public static boolean Levelup = true;
 }

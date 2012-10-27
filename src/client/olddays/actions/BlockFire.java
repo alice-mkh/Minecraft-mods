@@ -184,6 +184,11 @@ public class BlockFire extends Block
             updateTickOld(par1World, par2, par3, par4, par5Random);
             return;
         }
+        if (!par1World.func_82736_K().func_82766_b("doFireTick"))
+        {
+            return;
+        }
+
         boolean flag = par1World.getBlockId(par2, par3 - 1, par4) == Block.netherrack.blockID;
 
         if ((par1World.provider instanceof WorldProviderEnd) && par1World.getBlockId(par2, par3 - 1, par4) == Block.bedrock.blockID)
@@ -267,7 +272,7 @@ public class BlockFire extends Block
                         continue;
                     }
 
-                    int k1 = (j1 + 40) / (i + 30);
+                    int k1 = (j1 + 40 + par1World.difficultySetting * 7) / (i + 30);
 
                     if (flag1)
                     {
@@ -290,6 +295,11 @@ public class BlockFire extends Block
                 }
             }
         }
+    }
+
+    public boolean func_82506_l()
+    {
+        return false;
     }
 
     private void tryToCatchBlockOnFire_old(World world, int i, int j, int k, int l, Random random)
@@ -463,7 +473,7 @@ public class BlockFire extends Block
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.provider.worldType <= 0 && par1World.getBlockId(par2, par3 - 1, par4) == Block.obsidian.blockID && Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
+        if (par1World.provider.dimensionId <= 0 && par1World.getBlockId(par2, par3 - 1, par4) == Block.obsidian.blockID && Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
         {
             return;
         }

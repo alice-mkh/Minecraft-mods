@@ -33,6 +33,7 @@ public abstract class GuiContainer extends GuiScreen
      * Starting Y position for the Gui. Inconsistent use for Gui backgrounds.
      */
     protected int guiTop;
+    private Slot field_82320_o;
 
     public GuiContainer(Container par1Container)
     {
@@ -71,7 +72,7 @@ public abstract class GuiContainer extends GuiScreen
         GL11.glTranslatef(i, j, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        Slot slot = null;
+        field_82320_o = null;
         int k = 240;
         int i1 = 240;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)i1 / 1.0F);
@@ -79,23 +80,23 @@ public abstract class GuiContainer extends GuiScreen
 
         for (int l = 0; l < inventorySlots.inventorySlots.size(); l++)
         {
-            Slot slot1 = (Slot)inventorySlots.inventorySlots.get(l);
-            drawSlotInventory(slot1);
+            Slot slot = (Slot)inventorySlots.inventorySlots.get(l);
+            drawSlotInventory(slot);
 
-            if (isMouseOverSlot(slot1, par1, par2))
+            if (isMouseOverSlot(slot, par1, par2))
             {
-                slot = slot1;
+                field_82320_o = slot;
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                int j1 = slot1.xDisplayPosition;
-                int k1 = slot1.yDisplayPosition;
+                int j1 = slot.xDisplayPosition;
+                int k1 = slot.yDisplayPosition;
                 drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0x80ffffff, 0x80ffffff);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
         }
 
-        drawGuiContainerForegroundLayer();
+        drawGuiContainerForegroundLayer(par1, par2);
         InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
 
         if (inventoryplayer.getItemStack() != null)
@@ -103,15 +104,15 @@ public abstract class GuiContainer extends GuiScreen
             GL11.glTranslatef(0.0F, 0.0F, 32F);
             zLevel = 200F;
             itemRenderer.zLevel = 200F;
-            itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
+            itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
             itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
             zLevel = 0.0F;
             itemRenderer.zLevel = 0.0F;
         }
 
-        if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack() && tooltips)
+        if (inventoryplayer.getItemStack() == null && field_82320_o != null && field_82320_o.getHasStack() && tooltips)
         {
-            ItemStack itemstack = slot.getStack();
+            ItemStack itemstack = field_82320_o.getStack();
             func_74184_a(itemstack, par1 - i, par2 - j);
         }
 
@@ -127,7 +128,7 @@ public abstract class GuiContainer extends GuiScreen
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        List list = par1ItemStack.getItemNameandInformation();
+        List list = par1ItemStack.func_82840_a(mc.thePlayer, mc.gameSettings.field_82882_x);
 
         if (!list.isEmpty())
         {
@@ -208,7 +209,11 @@ public abstract class GuiContainer extends GuiScreen
         }
     }
 
-    protected void func_74190_a(String par1Str, int par2, int par3)
+    /**
+     * Draws the text when mouse is over creative inventory tab. Params: current creative tab to be checked, current
+     * mouse x position, current mouse y position.
+     */
+    protected void drawCreativeTabHoveringText(String par1Str, int par2, int par3)
     {
         if (!tooltips){
             return;
@@ -248,7 +253,7 @@ public abstract class GuiContainer extends GuiScreen
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer()
+    protected void drawGuiContainerForegroundLayer(int i, int j)
     {
     }
 
@@ -286,7 +291,7 @@ public abstract class GuiContainer extends GuiScreen
         if (!flag)
         {
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
+            itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, itemstack, i, j);
             itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
         }
 
@@ -318,13 +323,14 @@ public abstract class GuiContainer extends GuiScreen
     protected void mouseClicked(int par1, int par2, int par3)
     {
         super.mouseClicked(par1, par2, par3);
+        boolean flag = par3 == mc.gameSettings.keyBindPickBlock.keyCode + 100;
 
-        if (par3 == 0 || par3 == 1)
+        if (par3 == 0 || par3 == 1 || flag)
         {
             Slot slot = getSlotAtPosition(par1, par2);
             int i = guiLeft;
             int j = guiTop;
-            boolean flag = par1 < i || par2 < j || par1 >= i + xSize || par2 >= j + ySize;
+            boolean flag1 = par1 < i || par2 < j || par1 >= i + xSize || par2 >= j + ySize;
             int k = -1;
 
             if (slot != null)
@@ -332,15 +338,22 @@ public abstract class GuiContainer extends GuiScreen
                 k = slot.slotNumber;
             }
 
-            if (flag)
+            if (flag1)
             {
                 k = -999;
             }
 
             if (k != -1)
             {
-                boolean flag1 = k != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
-                handleMouseClick(slot, k, par3, flag1);
+                if (flag)
+                {
+                    handleMouseClick(slot, k, par3, 3);
+                }
+                else
+                {
+                    boolean flag2 = k != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
+                    handleMouseClick(slot, k, par3, flag2 ? 1 : 0);
+                }
             }
         }
     }
@@ -362,7 +375,7 @@ public abstract class GuiContainer extends GuiScreen
         return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
     }
 
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
+    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         if (par1Slot != null)
         {
@@ -381,6 +394,30 @@ public abstract class GuiContainer extends GuiScreen
         {
             mc.thePlayer.closeScreen();
         }
+
+        func_82319_a(par2);
+
+        if (par2 == mc.gameSettings.keyBindPickBlock.keyCode && field_82320_o != null && field_82320_o.getHasStack())
+        {
+            handleMouseClick(field_82320_o, field_82320_o.slotNumber, ySize, 3);
+        }
+    }
+
+    protected boolean func_82319_a(int par1)
+    {
+        if (mc.thePlayer.inventory.getItemStack() == null && field_82320_o != null)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                if (par1 == 2 + i)
+                {
+                    handleMouseClick(field_82320_o, field_82320_o.slotNumber, i, 2);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

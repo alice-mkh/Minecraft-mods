@@ -16,18 +16,12 @@ public class WorldServer extends World
     private TreeSet pendingTickListEntries;
     public ChunkProviderServer theChunkProviderServer;
 
-    /**
-     * this is set related to Manager.areCommandsAllowed, but is never used is is also set back to false at the end of
-     * both functions which set it.
-     */
-    public boolean actionsAllowed;
-
     /** set by CommandServerSave{all,Off,On} */
     public boolean canNotSave;
 
     /** is false if there are no players */
     private boolean allPlayersSleeping;
-    private int field_80004_Q;
+    private int updateEntityTick;
     private ServerBlockEventList blockEventCache[] =
     {
         new ServerBlockEventList(null), new ServerBlockEventList(null)
@@ -50,8 +44,7 @@ public class WorldServer extends World
     public WorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler)
     {
         super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler);
-        actionsAllowed = false;
-        field_80004_Q = 0;
+        updateEntityTick = 0;
         blockEventCacheIndex = 0;
         mcServer = par1MinecraftServer;
         theEntityTracker = new EntityTracker(this);
@@ -95,7 +88,10 @@ public class WorldServer extends World
 
             if (spawnHostileMobs)
             {
-                if (difficultySetting < 1);
+                if (difficultySetting < 1)
+                {
+                    ;
+                }
             }
 
             if (!flag)
@@ -107,19 +103,24 @@ public class WorldServer extends World
         }
 
         theProfiler.startSection("mobSpawner");
-        if (provider.worldType!=1){
-            if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.worldType!=0){
-                SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
-            } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-                animalSpawner.func_1150_a(this);
-                monsterSpawner.func_1150_a(this);
-                waterMobSpawner.func_1150_a(this);
+
+        if (func_82736_K().func_82766_b("doMobSpawning"))
+        {
+            if (provider.dimensionId!=1){
+                    if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
+                    SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.func_82573_f() % 400L == 0L);
+                } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
+                    SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
+                } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+                    animalSpawner.func_1150_a(this);
+                    monsterSpawner.func_1150_a(this);
+                    waterMobSpawner.func_1150_a(this);
+                }
+            }else{
+                SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, true);
             }
-        }else{
-            SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
         }
+
         theProfiler.endStartSection("chunkSource");
         chunkProvider.unload100OldestChunks();
         int i = calculateSkylightSubtracted(1.0F);
@@ -130,13 +131,14 @@ public class WorldServer extends World
         }
 
         sendAndApplyBlockEvents();
+        worldInfo.func_82572_b(worldInfo.func_82573_f() + 1L);
         worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");
         tickBlocksAndAmbiance();
         theProfiler.endStartSection("chunkMap");
-        thePlayerManager.func_72693_b();
+        thePlayerManager.updatePlayerInstances();
         theProfiler.endStartSection("village");
         villageCollectionObj.tick();
         villageSiegeObj.tick();
@@ -315,7 +317,7 @@ public class WorldServer extends World
             }
 
             theProfiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.worldType==0)
+            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.dimensionId==0)
             {
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
@@ -442,29 +444,40 @@ public class WorldServer extends World
      */
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
     {
+        func_82740_a(par1, par2, par3, par4, par5, 0);
+    }
+
+    public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
         byte byte0 = 8;
 
-        if (scheduledUpdatesAreImmediate)
+        if (scheduledUpdatesAreImmediate && par4 > 0)
         {
-            if (checkChunksExist(nextticklistentry.xCoord - byte0, nextticklistentry.yCoord - byte0, nextticklistentry.zCoord - byte0, nextticklistentry.xCoord + byte0, nextticklistentry.yCoord + byte0, nextticklistentry.zCoord + byte0))
+            if (Block.blocksList[par4].func_82506_l())
             {
-                int i = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
-
-                if (i == nextticklistentry.blockID && i > 0)
+                if (checkChunksExist(nextticklistentry.xCoord - byte0, nextticklistentry.yCoord - byte0, nextticklistentry.zCoord - byte0, nextticklistentry.xCoord + byte0, nextticklistentry.yCoord + byte0, nextticklistentry.zCoord + byte0))
                 {
-                    Block.blocksList[i].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
+                    int i = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
+
+                    if (i == nextticklistentry.blockID && i > 0)
+                    {
+                        Block.blocksList[i].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
+                    }
                 }
+
+                return;
             }
 
-            return;
+            par5 = 1;
         }
 
         if (checkChunksExist(par1 - byte0, par2 - byte0, par3 - byte0, par1 + byte0, par2 + byte0, par3 + byte0))
         {
             if (par4 > 0)
             {
-                nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
+                nextticklistentry.setScheduledTime((long)par5 + worldInfo.func_82573_f());
+                nextticklistentry.func_82753_a(par6);
             }
 
             if (!field_73064_N.contains(nextticklistentry))
@@ -484,7 +497,7 @@ public class WorldServer extends World
 
         if (par4 > 0)
         {
-            nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
+            nextticklistentry.setScheduledTime((long)par5 + worldInfo.func_82573_f());
         }
 
         if (!field_73064_N.contains(nextticklistentry))
@@ -501,17 +514,22 @@ public class WorldServer extends World
     {
         if (playerEntities.isEmpty())
         {
-            if (field_80004_Q++ >= 60)
+            if (updateEntityTick++ >= 1200)
             {
                 return;
             }
         }
         else
         {
-            field_80004_Q = 0;
+            func_82742_i();
         }
 
         super.updateEntities();
+    }
+
+    public void func_82742_i()
+    {
+        updateEntityTick = 0;
     }
 
     /**
@@ -535,7 +553,7 @@ public class WorldServer extends World
         {
             NextTickListEntry nextticklistentry = (NextTickListEntry)pendingTickListEntries.first();
 
-            if (!par1 && nextticklistentry.scheduledTime > worldInfo.getWorldTime())
+            if (!par1 && nextticklistentry.scheduledTime > worldInfo.func_82573_f())
             {
                 break;
             }
@@ -611,7 +629,7 @@ public class WorldServer extends World
             par1Entity.setDead();
         }
 
-        if (!mcServer.getCanNPCsSpawn() && (par1Entity instanceof INpc))
+        if (!mcServer.getCanSpawnNPCs() && (par1Entity instanceof INpc))
         {
             par1Entity.setDead();
         }
@@ -777,7 +795,7 @@ public class WorldServer extends World
             setBlockWithNotify(j, l, k, Block.chest.blockID);
             TileEntityChest tileentitychest = (TileEntityChest)getBlockTileEntity(j, l, k);
             if (tileentitychest != null && tileentitychest != null){
-                WeightedRandomChestContent.func_76293_a(rand, bonusChestContent, tileentitychest, 10);
+                WeightedRandomChestContent.generateChestContents(rand, bonusChestContent, tileentitychest, 10);
             }
             return;
         }
@@ -805,6 +823,9 @@ public class WorldServer extends World
         while (true);
     }
 
+    /**
+     * Gets the hard-coded portal location to use when entering this dimension.
+     */
     public ChunkCoordinates getEntrancePortalLocation()
     {
         return provider.getEntrancePortalLocation();
@@ -904,7 +925,7 @@ public class WorldServer extends World
     {
         if (super.addWeatherEffect(par1Entity))
         {
-            mcServer.getConfigurationManager().sendToAllNear(par1Entity.posX, par1Entity.posY, par1Entity.posZ, 512D, provider.worldType, new Packet71Weather(par1Entity));
+            mcServer.getConfigurationManager().sendToAllNear(par1Entity.posX, par1Entity.posY, par1Entity.posZ, 512D, provider.dimensionId, new Packet71Weather(par1Entity));
             return true;
         }
         else
@@ -925,12 +946,19 @@ public class WorldServer extends World
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
+    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
         explosion.isFlaming = par9;
+        explosion.field_82755_b = par10;
         explosion.doExplosionA();
         explosion.doExplosionB(false);
+
+        if (!par10)
+        {
+            explosion.field_77281_g.clear();
+        }
+
         Iterator iterator = playerEntities.iterator();
 
         do
@@ -944,7 +972,7 @@ public class WorldServer extends World
 
             if (entityplayer.getDistanceSq(par2, par4, par6) < 4096D)
             {
-                ((EntityPlayerMP)entityplayer).serverForThisPlayer.sendPacketToPlayer(new Packet60Explosion(par2, par4, par6, par8, explosion.field_77281_g, (Vec3)explosion.func_77277_b().get(entityplayer)));
+                ((EntityPlayerMP)entityplayer).playerNetServerHandler.sendPacketToPlayer(new Packet60Explosion(par2, par4, par6, par8, explosion.field_77281_g, (Vec3)explosion.func_77277_b().get(entityplayer)));
             }
         }
         while (true);
@@ -998,7 +1026,7 @@ public class WorldServer extends World
 
                 if (onBlockEventReceived(blockeventdata))
                 {
-                    mcServer.getConfigurationManager().sendToAllNear(blockeventdata.getX(), blockeventdata.getY(), blockeventdata.getZ(), 64D, provider.worldType, new Packet54PlayNoteBlock(blockeventdata.getX(), blockeventdata.getY(), blockeventdata.getZ(), blockeventdata.getBlockID(), blockeventdata.getEventID(), blockeventdata.getEventParameter()));
+                    mcServer.getConfigurationManager().sendToAllNear(blockeventdata.getX(), blockeventdata.getY(), blockeventdata.getZ(), 64D, provider.dimensionId, new Packet54PlayNoteBlock(blockeventdata.getX(), blockeventdata.getY(), blockeventdata.getZ(), blockeventdata.getBlockID(), blockeventdata.getEventID(), blockeventdata.getEventParameter()));
                 }
             }
             while (true);
@@ -1066,35 +1094,6 @@ public class WorldServer extends World
     public EntityTracker getEntityTracker()
     {
         return theEntityTracker;
-    }
-
-    /**
-     * Sets the time on the given WorldServer
-     */
-    public void setTime(long par1)
-    {
-        long l = par1 - worldInfo.getWorldTime();
-
-        for (Iterator iterator = field_73064_N.iterator(); iterator.hasNext();)
-        {
-            NextTickListEntry nextticklistentry = (NextTickListEntry)iterator.next();
-            nextticklistentry.scheduledTime += l;
-        }
-
-        Block ablock[] = Block.blocksList;
-        int i = ablock.length;
-
-        for (int j = 0; j < i; j++)
-        {
-            Block block = ablock[j];
-
-            if (block != null)
-            {
-                block.onTimeChanged(this, l, par1);
-            }
-        }
-
-        setWorldTime(par1);
     }
 
     public PlayerManager getPlayerManager()

@@ -43,7 +43,7 @@ public class ItemFood extends Item
         healAmount = par2;
         isWolfsFavoriteMeat = par4;
         saturationModifier = par3;
-        setTabToDisplayOn(CreativeTabs.tabFood);
+        setCreativeTab(CreativeTabs.tabFood);
     }
 
     public ItemFood(int par1, int par2, boolean par3)

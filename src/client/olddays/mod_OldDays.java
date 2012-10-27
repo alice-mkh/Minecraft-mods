@@ -28,7 +28,7 @@ public class mod_OldDays extends Mod{
     }
 
     public String getMcVersion(){
-        return "1.3.2";
+        return "1.4.2";
     }
 
     public String getModName(){
@@ -414,6 +414,18 @@ public class mod_OldDays extends Mod{
         return false;
     }
 
+    public static int getFreeTextureIndex(){
+        for (int i = 0; i < freeTextures.length; i++){
+            if (freeTextures[i] >= 0){
+                int j = freeTextures[i];
+                freeTextures[i] = -1;
+                return j;
+            }
+        }
+        System.out.println("OldDays: Free textures are over!");
+        return -1;
+    }
+
     public KeyBinding keySettings;
     public static TextureManager texman;
     public static SavingManager saveman;
@@ -421,4 +433,5 @@ public class mod_OldDays extends Mod{
     public static ArrayList<OldDaysModule> modules;
     public static OldDaysEasyLocalization lang;
     public static ArrayList<KeyBinding> keyBindings;
+    private static int[] freeTextures = new int[]{26, 27, 42, 57, 58, 187, 188, 189, 190, 191, 217, 218, 219, 220, 221, 233, 234, 235, 236};
 }

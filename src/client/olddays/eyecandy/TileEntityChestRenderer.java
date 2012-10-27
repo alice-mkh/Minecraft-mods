@@ -40,7 +40,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
             if (block != null && i == 0)
             {
-                ((BlockChest)block).unifyAdjacentChests(par1TileEntityChest.func_70314_l(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                ((BlockChest)block).unifyAdjacentChests(par1TileEntityChest.getWorldObj(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 i = par1TileEntityChest.getBlockMetadata();
             }
 
