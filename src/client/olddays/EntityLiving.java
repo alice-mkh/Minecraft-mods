@@ -2857,7 +2857,7 @@ public abstract class EntityLiving extends Entity
      */
     public void onItemPickup(Entity par1Entity, int par2)
     {
-        if (!par1Entity.isDead && !worldObj.isRemote)
+        if (!par1Entity.isDead && !worldObj.isRemote && worldObj instanceof WorldServer)
         {
             EntityTracker entitytracker = ((WorldServer)worldObj).getEntityTracker();
 
