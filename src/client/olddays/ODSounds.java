@@ -16,7 +16,7 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 9, false, "Eat");
         new OldDaysPropertyBool(this, 10,true,  "Drink");
         new OldDaysPropertyBool(this, 11,false, "Break");
-        new OldDaysPropertyBool(this, 12,false, "Lava");
+        new OldDaysPropertyInt(this,  12,0,     "Lava", 2).setUseNames();
         new OldDaysPropertyInt(this,  13,1,     "Enderman", 2).setUseNames();
         new OldDaysPropertyBool(this, 14,true,  "Calm4");
         new OldDaysPropertyBool(this, 15,false, "Creeper");
@@ -38,6 +38,7 @@ public class ODSounds extends OldDaysModule{
         addSound(6, "door_close");
         addSound(7, "bow");
         addSound(8, "drr");
+        addSound(12,"lava");
         addMusic(14,"calm4");
         addSound(18,"cowhurt1");
         addSound(18,"cowhurt2");
@@ -63,7 +64,7 @@ public class ODSounds extends OldDaysModule{
             case 9: set(SoundManager2.class, "eat", !Eat); break;
             case 10:set(SoundManager2.class, "drink", !Drink); break;
             case 11:set(SoundManager2.class, "breaking", !Break); break;
-            case 12:set(SoundManager2.class, "lava", !Lava); break;
+            case 12:set(SoundManager2.class, "lava", Lava); break;
             case 13:set(SoundManager2.class, "enderman", Enderman); break;
             case 14:set(SoundManager2.class, "calm4", Calm4); break;
             case 15:set(SoundManager2.class, "creeper", Creeper); break;
@@ -92,7 +93,7 @@ public class ODSounds extends OldDaysModule{
     public static boolean Eat;
     public static boolean Drink = true;
     public static boolean Break;
-    public static boolean Lava;
+    public static int Lava = 0;
     public static boolean Calm4;
     public static boolean Creeper;
     public static int Enderman = 1;

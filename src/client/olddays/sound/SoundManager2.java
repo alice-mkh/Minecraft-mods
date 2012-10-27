@@ -16,7 +16,7 @@ public class SoundManager2 extends SoundManager{
     public static boolean eat = false;
     public static boolean drink = false;
     public static boolean breaking = false;
-    public static boolean lava = false;
+    public static int lava = 2;
     public static int enderman = 2;
     public static boolean calm4 = false;
     public static boolean creeper = false;
@@ -47,7 +47,7 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("random.explode") && explode){
             str = "olddays.explode";
         }
-        if (par1Str.startsWith("damage.hurt") && hurt){
+        if (par1Str.startsWith("damage.hit") && hurt){
             str = "random.classic_hurt";
         }
         if (par1Str.startsWith("damage.fall") && nofall){
@@ -74,8 +74,15 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("random.break") && breaking){
             return "nothing";
         }
-        if (par1Str.startsWith("liquid.lava") && lava){
-            return "nothing";
+        if (par1Str.startsWith("liquid.lava")){
+            if (lava == 0){
+                return "nothing";
+            }
+            if (!par1Str.endsWith("lava")){
+                str = par1Str;
+            }else{
+                str = (lava == 1) ? "olddays.lava" : "liquid.lava";
+            }
         }
         if (par1Str.startsWith("mob.endermen.") && enderman<2){
             if (enderman<1){
