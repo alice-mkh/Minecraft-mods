@@ -27,6 +27,9 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 20,true,  "Skeleton");
         new OldDaysPropertyBool(this, 21,true,  "Levelup");
         new OldDaysPropertyBool(this, 22,true,  "Ignite");
+        new OldDaysPropertyBool(this, 23,true,  "Shear");
+        new OldDaysPropertyBool(this, 24,true,  "Splash");
+        new OldDaysPropertyBool(this, 25,true,  "Swimming");
         Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
         addSound(1, "explode");
         addSound(5, "door_open");
@@ -72,6 +75,9 @@ public class ODSounds extends OldDaysModule{
             case 20:set(SoundManager2.class, "skeleton", Skeleton); break;
             case 21:set(SoundManager2.class, "levelup", Levelup); break;
             case 22:set(SoundManager2.class, "ignite", Ignite); break;
+            case 23:set(SoundManager2.class, "shear", Shear); break;
+            case 24:set(SoundManager2.class, "splash", Splash); break;
+            case 25:set(SoundManager2.class, "swimming", Swimming); break;
         }
     }
 
@@ -97,4 +103,7 @@ public class ODSounds extends OldDaysModule{
     public static boolean Skeleton = true;
     public static boolean Levelup = true;
     public static boolean Ignite = true;
+    public static boolean Shear = true;
+    public static boolean Splash = true;
+    public static boolean Swimming = true;
 }

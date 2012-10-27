@@ -26,6 +26,9 @@ public class SoundManager2 extends SoundManager{
     public static boolean skeleton = false;
     public static boolean levelup = false;
     public static boolean ignite = false;
+    public static boolean shear = false;
+    public static boolean splash = false;
+    public static boolean swimming = false;
 
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
         par1Str = oldSounds(par1Str);
@@ -116,6 +119,9 @@ public class SoundManager2 extends SoundManager{
             if (par1Str.endsWith(".ladder")){
                 return "nothing";
             }
+            if (par1Str.endsWith(".snow")){
+                return "step.cloth";
+            }
             str = "dig."+par1Str.substring(5);
         }
         if (par1Str.startsWith("mob.cow.say") && cow){
@@ -132,6 +138,15 @@ public class SoundManager2 extends SoundManager{
         }
         if (par1Str.startsWith("fire.ignite") && ignite){
             str = "olddays.ignite";
+        }
+        if (par1Str.startsWith("mob.sheep.shear") && shear){
+            return "nothing";
+        }
+        if (par1Str.startsWith("liquid.splash") && splash){
+            str = "random.splash";
+        }
+        if (par1Str.startsWith("liquid.swim") && swimming){
+            return "nothing";
         }
         return str;
     }
