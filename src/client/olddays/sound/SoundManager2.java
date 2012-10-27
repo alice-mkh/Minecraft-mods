@@ -29,6 +29,7 @@ public class SoundManager2 extends SoundManager{
     public static boolean shear = false;
     public static boolean splash = false;
     public static boolean swimming = false;
+    public static boolean minecart = false;
 
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
         par1Str = oldSounds(par1Str);
@@ -37,6 +38,17 @@ public class SoundManager2 extends SoundManager{
             return;
         }
         super.playSound(par1Str, par2, par3, par4, par5, par6);
+    }
+
+
+    public void func_82467_a(String par1Str, Entity par2Entity, float par3, float par4, boolean par5){
+        par1Str = oldSounds(par1Str);
+        if (par1Str == "nothing")
+        {
+            return;
+        }
+        super.func_82467_a(par1Str, par2Entity, par3, par4, par5);
+    
     }
 
     private String oldSounds(String par1Str){
@@ -126,10 +138,10 @@ public class SoundManager2 extends SoundManager{
             if (par1Str.endsWith(".ladder")){
                 return "nothing";
             }
-            if (par1Str.endsWith(".snow")){
-                return "step.cloth";
-            }
             str = "dig."+par1Str.substring(5);
+        }
+        if ((par1Str.startsWith("step.snow") || par1Str.startsWith("dig.snow")) && steps){
+            return "step.cloth";
         }
         if (par1Str.startsWith("mob.cow.say") && cow){
             str = "olddays.cow";
@@ -153,6 +165,9 @@ public class SoundManager2 extends SoundManager{
             str = "random.splash";
         }
         if (par1Str.startsWith("liquid.swim") && swimming){
+            return "nothing";
+        }
+        if (par1Str.startsWith("minecart") && minecart){
             return "nothing";
         }
         return str;

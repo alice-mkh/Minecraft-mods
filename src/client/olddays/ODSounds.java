@@ -30,6 +30,7 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 23,true,  "Shear");
         new OldDaysPropertyBool(this, 24,true,  "Splash");
         new OldDaysPropertyBool(this, 25,true,  "Swimming");
+        new OldDaysPropertyBool(this, 26,true,  "Minecart");
         Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
         addSound(1, "explode");
         addSound(5, "door_open");
@@ -79,6 +80,7 @@ public class ODSounds extends OldDaysModule{
             case 23:set(SoundManager2.class, "shear", Shear); break;
             case 24:set(SoundManager2.class, "splash", Splash); break;
             case 25:set(SoundManager2.class, "swimming", Swimming); break;
+            case 26:set(SoundManager2.class, "minecart", Minecart); break;
         }
     }
 
@@ -107,4 +109,5 @@ public class ODSounds extends OldDaysModule{
     public static boolean Shear = true;
     public static boolean Splash = true;
     public static boolean Swimming = true;
+    public static boolean Minecart = true;
 }
