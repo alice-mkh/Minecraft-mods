@@ -37,8 +37,9 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 30,true,  "Cocoa");
         new OldDaysPropertyBool(this, 31,true,  "Netherrack");
         new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
+        new OldDaysPropertyBool(this, 33,true,  "Food");
         for (int i = 1; i <= properties.size(); i++){
-            if (i != 15 && (i < 24 || i == 30 || i == 31)){
+            if (i != 15 && (i < 24 || i == 30 || i == 31 || i >= 33)){
                 getPropertyById(i).setFallback("olddays/textures.png");
             }
         }
@@ -72,7 +73,7 @@ public class ODTextures extends OldDaysModule{
             case 15:setTextureHook("/terrain.png", 62, Stone && !fallback ? "/olddays/textures.png" : "/terrain.png", Stone && !fallback ? 3 : 1, Furnace); break;
             case 16:setTextureHook("/terrain.png", 46, "/olddays/textures.png", 48, Dispenser && !fallback); break;
             case 17:setTextureHook("/terrain.png", 11, "/olddays/textures.png", 8, Web && !fallback); break;
-            case 18:setTextureHook("/gui/items.png", 88, "/olddays/textures.png", 62, Porkchop && !fallback); break;
+            case 18:setFood(fallback); break;
             case 19:setTextureHook("/gui/items.png", 112, "/olddays/textures.png", 56, Axes && !fallback);
                     setTextureHook("/gui/items.png", 113, "/olddays/textures.png", 57, Axes && !fallback);
                     setTextureHook("/gui/items.png", 114, "/olddays/textures.png", 58, Axes && !fallback);
@@ -94,6 +95,7 @@ public class ODTextures extends OldDaysModule{
             case 30:setTextureHook("/gui/items.png", 126, "/olddays/textures.png", 63, Cocoa && !fallback); break;
             case 31:setTextureHook("/terrain.png", 103, "/olddays/textures.png", 65, Netherrack && !fallback); break;
             case 32:setArmor(LeatherArmor && !fallback); break;
+            case 33:setFood(fallback); break;
         }
     }
 
@@ -129,6 +131,7 @@ public class ODTextures extends OldDaysModule{
     public static boolean Cocoa = true;
     public static boolean Netherrack = true;
     public static boolean LeatherArmor = true;
+    public static boolean Food = true;
 
     private void replaceBlocks(){
         try{
@@ -207,5 +210,20 @@ public class ODTextures extends OldDaysModule{
         setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
         setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
         setTextureHook("/armor/cloth_2.png", "/olddays/cloth_empty.png", b);
+    }
+
+    private void setFood(boolean fallback){
+        for (int i = 0; i < 2; i++){
+            setTextureHook("/gui/items.png", 105 + i, "/olddays/textures.png", 72 + i, Food && !fallback);//Beef
+            setTextureHook("/gui/items.png", 121 + i, "/olddays/textures.png", 74 + i, Food && !fallback);//Chicken
+        }
+        setTextureHook("/gui/items.png", 87, "/olddays/textures.png", 70, Food && !fallback);
+        setTextureHook("/gui/items.png", 10, "/olddays/textures.png", 76, Food && !fallback);//Apple
+        setTextureHook("/gui/items.png", 41, "/olddays/textures.png", 77, Food && !fallback);//Bread
+        if (Porkchop){
+            setTextureHook("/gui/items.png", 88, "/olddays/textures.png", Food ? 62 : 78, !fallback);
+        }else{
+            setTextureHook("/gui/items.png", 88, "/olddays/textures.png", 71, Food && !fallback);
+        }
     }
 }
