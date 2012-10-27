@@ -26,6 +26,7 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 19,true,  "Slime");
         new OldDaysPropertyBool(this, 20,true,  "Skeleton");
         new OldDaysPropertyBool(this, 21,true,  "Levelup");
+        new OldDaysPropertyBool(this, 22,true,  "Ignite");
         Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
         addSound(1, "explode");
         addSound(5, "door_open");
@@ -43,6 +44,7 @@ public class ODSounds extends OldDaysModule{
             addSound(17,"cow"+i);
             addSound(20,"skeletonhurt"+i);
         }
+        addSound(22,"ignite");
     }
 
     public void callback (int i){
@@ -69,6 +71,7 @@ public class ODSounds extends OldDaysModule{
             case 19:set(SoundManager2.class, "slime", Slime); break;
             case 20:set(SoundManager2.class, "skeleton", Skeleton); break;
             case 21:set(SoundManager2.class, "levelup", Levelup); break;
+            case 22:set(SoundManager2.class, "ignite", Ignite); break;
         }
     }
 
@@ -93,4 +96,5 @@ public class ODSounds extends OldDaysModule{
     public static boolean Slime = true;
     public static boolean Skeleton = true;
     public static boolean Levelup = true;
+    public static boolean Ignite = true;
 }

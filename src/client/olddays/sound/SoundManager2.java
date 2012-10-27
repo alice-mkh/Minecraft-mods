@@ -25,6 +25,7 @@ public class SoundManager2 extends SoundManager{
     public static boolean slime = false;
     public static boolean skeleton = false;
     public static boolean levelup = false;
+    public static boolean ignite = false;
 
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
         par1Str = oldSounds(par1Str);
@@ -128,6 +129,9 @@ public class SoundManager2 extends SoundManager{
         }
         if ((par1Str.startsWith("mob.skeleton.hurt") || par1Str.startsWith("mob.skeleton.death")) && slime){
             str = "olddays.skeletonhurt";
+        }
+        if (par1Str.startsWith("fire.ignite") && ignite){
+            str = "olddays.ignite";
         }
         return str;
     }
