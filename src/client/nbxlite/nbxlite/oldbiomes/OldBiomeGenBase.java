@@ -33,7 +33,8 @@ public class OldBiomeGenBase
     public int field_6502_q;
     protected List spawnableMonsterList;
     protected List spawnableCreatureList;
-    protected List field_82914_M;
+    protected List spawnableWaterCreatureList;
+    protected List spawnableAmbientCreatureList;
     private boolean enableSnow;
     private boolean enableRain;
     private static OldBiomeGenBase biomeLookupTable[] = new OldBiomeGenBase[4096];
@@ -45,7 +46,8 @@ public class OldBiomeGenBase
         field_6502_q = 0x4ee031;
         spawnableMonsterList = new ArrayList();
         spawnableCreatureList = new ArrayList();
-        field_82914_M = new ArrayList();
+        spawnableWaterCreatureList = new ArrayList();
+        spawnableAmbientCreatureList = new ArrayList();
         enableRain = true;
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySheep.class, 12));
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityPig.class, 10));
@@ -57,7 +59,8 @@ public class OldBiomeGenBase
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityCreeper.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySlime.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityEnderman.class, 1));
-        field_82914_M.add(new SpawnListEntryBeta(net.minecraft.src.EntitySquid.class, 10));
+        spawnableWaterCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySquid.class, 10));
+        spawnableAmbientCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityBat.class, 10));
     }
 
     private OldBiomeGenBase setDisableRain()
@@ -201,7 +204,11 @@ public class OldBiomeGenBase
         }
         if(enumcreaturetype == EnumCreatureType.waterCreature)
         {
-            return field_82914_M;
+            return spawnableWaterCreatureList;
+        }
+        if (enumcreaturetype == EnumCreatureType.ambient)
+        {
+            return spawnableAmbientCreatureList;
         } else
         {
             return null;

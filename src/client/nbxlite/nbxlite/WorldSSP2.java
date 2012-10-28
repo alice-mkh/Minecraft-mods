@@ -13,6 +13,7 @@ public class WorldSSP2 extends WorldSSP
     protected OldSpawnerAnimals animalSpawner;
     protected OldSpawnerMonsters monsterSpawner;
     protected OldSpawnerAnimals waterMobSpawner;
+    protected OldSpawnerAnimals ambientMobSpawner;
 
     /**
      * Creates the bonus chest in the world.
@@ -131,6 +132,9 @@ public class WorldSSP2 extends WorldSSP
         });
         waterMobSpawner = new OldSpawnerAnimals(5, net.minecraft.src.EntityWaterMob.class, new Class[] {
             net.minecraft.src.EntitySquid.class
+        });
+        ambientMobSpawner = new OldSpawnerAnimals(15, net.minecraft.src.EntityAmbientCreature.class, new Class[] {
+            net.minecraft.src.EntityBat.class
         });
     }
 
@@ -368,6 +372,7 @@ public class WorldSSP2 extends WorldSSP
                 animalSpawner.func_1150_a(this);
                 monsterSpawner.func_1150_a(this);
                 waterMobSpawner.func_1150_a(this);
+                ambientMobSpawner.func_1150_a(this);
             }
         }else{
             SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);

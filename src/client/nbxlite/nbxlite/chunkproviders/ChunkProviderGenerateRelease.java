@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
+import net.minecraft.src.nbxlite.mapgens.MapGenScatteredFeature3;
 
 public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private NoiseGeneratorOctaves noiseGen1;
@@ -20,7 +21,8 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
-    private MapGenScatteredFeature templeGenerator;
+    private MapGenScatteredFeature3 templeGenerator;
+    private MapGenScatteredFeature scatteredFeatureGenerator;
     double noise3[];
     double noise1[];
     double noise2[];
@@ -36,7 +38,8 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         strongholdGenerator = new MapGenStronghold2();
         villageGenerator = new MapGenVillage();
         mineshaftGenerator = new MapGenMineshaft();
-        templeGenerator = new MapGenScatteredFeature();
+        templeGenerator = new MapGenScatteredFeature3();
+        scatteredFeatureGenerator = new MapGenScatteredFeature();
         ravineGenerator = new MapGenRavine();
         unusedIntArray32x32 = new int[32][32];
         noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
@@ -230,9 +233,11 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
             strongholdGenerator.generate(this, worldObj, i, j, abyte0);
-//             if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
+            if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_14){
+                scatteredFeatureGenerator.generate(this, worldObj, i, j, abyte0);
+            }else if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_13){
                 templeGenerator.generate(this, worldObj, i, j, abyte0);
-//             }
+            }
         }
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
@@ -383,9 +388,11 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
-//             if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
+            if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14){
+                scatteredFeatureGenerator.generateStructuresInChunk(worldObj, rand, i, j);
+            }else if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
                 templeGenerator.generateStructuresInChunk(worldObj, rand, i, j);
-//             }
+            }
         }
         if (!flag && rand.nextInt(4) == 0)
         {
@@ -445,6 +452,27 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             return strongholdGenerator.getNearestInstance(world, i, j, k);
         }else{
             return null;
+        }
+    }
+
+    public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k){
+        WorldChunkManager worldchunkmanager = worldObj.getWorldChunkManager();
+        if (worldchunkmanager == null)
+        {
+            return null;
+        }
+        BiomeGenBase biomegenbase = worldchunkmanager.getBiomeGenAtChunkCoord(new ChunkCoordIntPair(i >> 4, k >> 4));
+        if (biomegenbase == null)
+        {
+            return null;
+        }
+        if (biomegenbase == BiomeGenBase.swampland && enumcreaturetype == EnumCreatureType.monster && scatteredFeatureGenerator.hasStructureAt(i, j, k))
+        {
+            return scatteredFeatureGenerator.func_82667_a();
+        }
+        else
+        {
+            return biomegenbase.getSpawnableList(enumcreaturetype);
         }
     }
 }

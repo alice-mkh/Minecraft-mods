@@ -108,12 +108,12 @@ public class GuiNBXlite extends GuiScreen{
         for (int i=0; i<=GeneratorList.feat2length; i++){
             name = mod_OldDays.lang.get("nbxlite.releasefeatures"+(i+1));
             name += " ("+mod_OldDays.lang.get("nbxlite.releasefeatures"+(i+1)+".desc")+")";
-            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + ((i + 1) * 21), 210, 20, name));
+            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, name));
             releaseFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==2);
         }
         releaseFeaturesButton[GeneratorList.feat2current].enabled=false;
         controlList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, (mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + (newores?stringtranslate.translateKey("options.on"):stringtranslate.translateKey("options.off")))));
-        newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<4);
+        newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<6);
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0 || GeneratorList.genores[GeneratorList.gencurrent]){
             if (GeneratorList.genfeatures[GeneratorList.gencurrent]!=0){
                 if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1 && GeneratorList.feat1current==5){
@@ -251,7 +251,7 @@ public class GuiNBXlite extends GuiScreen{
             indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
-            newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<4);
+            newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<6);
             for (int i=0; i<=GeneratorList.feat1length; i++){
                 betaFeaturesButton[i].drawButton = (GeneratorList.genfeatures[GeneratorList.gencurrent]==1);
             }
@@ -324,7 +324,7 @@ public class GuiNBXlite extends GuiScreen{
             releaseFeaturesButton[GeneratorList.feat2current].enabled = true;
             GeneratorList.feat2current = guibutton.id-80;
             guibutton.enabled = false;
-            newOresButton.drawButton = GeneratorList.feat2current<4;
+            newOresButton.drawButton = GeneratorList.feat2current<6;
         }
     }
 

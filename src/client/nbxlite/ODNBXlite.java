@@ -16,7 +16,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   1, 0,     5,     "Gen", 5).setUseNames().setGUIRefresh().disableLoading();
         new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   3, 0,     4,     "BetaFeatures", FEATURES_JUNGLE).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   4, 0,     4,     "ReleaseFeatures", FEATURES_132).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   4, 0,     5,     "ReleaseFeatures", FEATURES_14).setUseNames().disableLoading();
         new OldDaysPropertyBool(this,  5, false, false, "GenerateNewOres").disableLoading();
         new OldDaysPropertyInt(this,   6, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
         new OldDaysPropertyInt(this,   7, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
@@ -442,6 +442,8 @@ public class ODNBXlite extends OldDaysModule{
                 result.append("13");
             }else if (feats==FEATURES_132){
                 result.append("132");
+            }else if (feats==FEATURES_14){
+                result.append("14");
             }
         }
         return result.toString();
@@ -521,11 +523,14 @@ public class ODNBXlite extends OldDaysModule{
                 if (gen.contains("12")){
                     return FEATURES_12;
                 }
+                if (gen.contains("13")){
+                    return FEATURES_13;
+                }
                 if (gen.contains("132")){
                     return FEATURES_132;
                 }
-                if (gen.contains("13")){
-                    return FEATURES_13;
+                if (gen.contains("14")){
+                    return FEATURES_14;
                 }
                 return 0;
             }
@@ -1065,7 +1070,7 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean Import = false;
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 5;
-    public static int DefaultFeaturesRelease = 5;
+    public static int DefaultFeaturesRelease = 6;
     public static int DefaultTheme = 0;
     public static int DefaultIndevType = 1;
     public static int DefaultFiniteWidth = 2;
@@ -1107,6 +1112,7 @@ public class ODNBXlite extends OldDaysModule{
     public static final int FEATURES_12 = 3;
     public static final int FEATURES_13 = 4;
     public static final int FEATURES_132 = 5;
+    public static final int FEATURES_14 = 6;
 
     public static final int THEME_NORMAL = 0;
     public static final int THEME_HELL = 1;
