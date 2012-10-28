@@ -3025,10 +3025,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         renderViewEntity = null;
         thePlayer = playerController.func_78754_a(theWorld);
 
-        if (par3)
-        {
-            thePlayer.clonePlayer(entityplayersp, true);
-        }
+        thePlayer.clonePlayer(entityplayersp, par3);
 
         thePlayer.dimension = par2;
         renderViewEntity = thePlayer;

@@ -1914,7 +1914,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
 
         theProfiler.startSection("mobSpawner");
-        SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
+        if (func_82736_K().func_82766_b("doMobSpawning")){
+            SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
+        }
         theProfiler.endStartSection("chunkSource");
         chunkProvider.unload100OldestChunks();
         int i = calculateSkylightSubtracted(1.0F);

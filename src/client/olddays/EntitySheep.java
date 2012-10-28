@@ -22,12 +22,14 @@ public class EntitySheep extends EntityAnimal
         {
             setSheared(true);
             int j = 1 + rand.nextInt(3);
-            for(int k = 0; k < j; k++)
-            {
-                EntityItem entityitem = entityDropItem(new ItemStack(Block.cloth.blockID, 1, getFleeceColor()), 1.0F);
-                entityitem.motionY += rand.nextFloat() * 0.05F;
-                entityitem.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                entityitem.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+            if (worldObj.func_82736_K().func_82766_b("doMobLoot")){
+                for(int k = 0; k < j; k++)
+                {
+                    EntityItem entityitem = entityDropItem(new ItemStack(Block.cloth.blockID, 1, getFleeceColor()), 1.0F);
+                    entityitem.motionY += rand.nextFloat() * 0.05F;
+                    entityitem.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    entityitem.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                }
             }
 
         }

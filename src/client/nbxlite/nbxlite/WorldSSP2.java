@@ -363,19 +363,21 @@ public class WorldSSP2 extends WorldSSP
         }
 
         theProfiler.startSection("mobSpawner");
-        if (provider.dimensionId!=1){
-            if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
-            } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
-                SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
-            } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-                animalSpawner.func_1150_a(this);
-                monsterSpawner.func_1150_a(this);
-                waterMobSpawner.func_1150_a(this);
-                ambientMobSpawner.func_1150_a(this);
+        if (func_82736_K().func_82766_b("doMobSpawning")){
+            if (provider.dimensionId!=1){
+                if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
+                    SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
+                } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
+                    SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
+                } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
+                    animalSpawner.func_1150_a(this);
+                    monsterSpawner.func_1150_a(this);
+                    waterMobSpawner.func_1150_a(this);
+                    ambientMobSpawner.func_1150_a(this);
+                }
+            }else{
+                SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
             }
-        }else{
-            SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
         }
         theProfiler.endStartSection("chunkSource");
         chunkProvider.unload100OldestChunks();

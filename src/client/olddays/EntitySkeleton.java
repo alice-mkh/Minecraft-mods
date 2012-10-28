@@ -88,17 +88,19 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         if (survivaltest && deathTime >= 19){
             int i = (int)((Math.random() + Math.random()) * 3D + 4D);
             worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-            for(int j = 0; j < i; j++){
-                EntityArrow arrow = new EntityArrow(worldObj, this, 0.4F);
-                arrow.canBePickedUp = 1;
-                arrow.posY = posY + 0.2F;
-                arrow.rotationYaw = (float)Math.random() * 360F;
-                arrow.rotationPitch = -(float)Math.random() * 60F;
-                arrow.motionX = -MathHelper.sin((arrow.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((arrow.rotationPitch / 180F) * (float)Math.PI);
-                arrow.motionZ = MathHelper.cos((arrow.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((arrow.rotationPitch / 180F) * (float)Math.PI);
-                arrow.motionY = -MathHelper.sin((arrow.rotationPitch / 180F) * (float)Math.PI);
-                arrow.setThrowableHeading(arrow.motionX, arrow.motionY, arrow.motionZ, 0.4F, 1.0F);
-                worldObj.spawnEntityInWorld(arrow);
+            if (worldObj.func_82736_K().func_82766_b("doMobLoot")){
+                for(int j = 0; j < i; j++){
+                    EntityArrow arrow = new EntityArrow(worldObj, this, 0.4F);
+                    arrow.canBePickedUp = 1;
+                    arrow.posY = posY + 0.2F;
+                    arrow.rotationYaw = (float)Math.random() * 360F;
+                    arrow.rotationPitch = -(float)Math.random() * 60F;
+                    arrow.motionX = -MathHelper.sin((arrow.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((arrow.rotationPitch / 180F) * (float)Math.PI);
+                    arrow.motionZ = MathHelper.cos((arrow.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((arrow.rotationPitch / 180F) * (float)Math.PI);
+                    arrow.motionY = -MathHelper.sin((arrow.rotationPitch / 180F) * (float)Math.PI);
+                    arrow.setThrowableHeading(arrow.motionX, arrow.motionY, arrow.motionZ, 0.4F, 1.0F);
+                    worldObj.spawnEntityInWorld(arrow);
+                }
             }
             for (int j = 0; j < 20; j++)
             {
