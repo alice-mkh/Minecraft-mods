@@ -315,6 +315,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public static boolean oldswing = false;
     public static boolean timecontrol = false;
     public static boolean oldlighting = false;
+    public int forcedDifficulty;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
@@ -371,6 +372,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         worldClass = net.minecraft.src.WorldSSP.class;
         ticksRan = 0;
         mouseTicksRan = 0;
+        forcedDifficulty = -1;
         registerCustomPacket();
         startProfiling = false;
         profilingEnabled = false;
@@ -1918,7 +1920,11 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 }
                 else
                 {
-                    theWorld.difficultySetting = gameSettings.difficulty;
+                    if (forcedDifficulty < 0){
+                        theWorld.difficultySetting = gameSettings.difficulty;
+                    }else{
+                        theWorld.difficultySetting = forcedDifficulty;
+                    }
                 }
 
                 if (theWorld.isRemote)
@@ -2876,6 +2882,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             saveLoader.flushCache();
             thePlayer = null;
+            forcedDifficulty = -1;
         }
 
         System.gc();
