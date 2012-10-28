@@ -10,6 +10,7 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientDefaultGameMode());
         registerCommand(new CommandClientKill());
         registerCommand(new CommandClientToggleDownfall());
+        registerCommand(new CommandClientWeather());
         registerCommand(new CommandClientExperience());
         registerCommand(new CommandClientTp());
         registerCommand(new CommandClientGive());
@@ -18,7 +19,6 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientHelp());
         registerCommand(new CommandClientDebug());
         registerCommand(new CommandClientPublishLocal());
-//         registerCommand(new CommandServerMessage());
         registerCommand(new CommandClientSay());
 //         registerCommand(new CommandSetSpawnpoint());
         registerCommand(new CommandClientGameRule());
