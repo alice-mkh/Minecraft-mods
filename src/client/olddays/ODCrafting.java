@@ -14,8 +14,8 @@ public class ODCrafting extends OldDaysModule{
         new OldDaysPropertyInt(this,  7, 2,     2,     "Apple", 2).setUseNames();
         new OldDaysPropertyBool(this, 8, false, false, "Stew");
         new OldDaysPropertyBool(this, 9, false, false, "OreBlocks");
-        new OldDaysPropertyBool(this, 10,true,  true,  "Books");
-        new OldDaysPropertyBool(this, 11,true,  true,  "OldSigns");
+        new OldDaysPropertyBool(this, 10,false, false, "Books");
+        new OldDaysPropertyBool(this, 11,false, false, "OldSigns");
     }
 
     public void callback (int i){
