@@ -31,7 +31,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   24,false, "TPBobbing");
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
         replaceBlocks();
-        redstoneRenderID = 32;
+        redstoneRenderID = 37;
         set(ItemRenderer.class, "olddays", true);
     }
 
