@@ -8,7 +8,7 @@ public class CommandClientTime extends CommandTime
     {
     }
 
-    protected void func_71552_a(ICommandSender par1ICommandSender, int par2)
+    protected void setTime(ICommandSender par1ICommandSender, int par2)
     {
         ((WorldSSP)Minecraft.getMinecraft().theWorld).commandSetTime(par2, true);
     }
