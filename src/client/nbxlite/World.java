@@ -288,29 +288,14 @@ public abstract class World implements IBlockAccess
             worldInfo.mapTheme = ODNBXlite.MapTheme;
             worldInfo.newOres = ODNBXlite.GenerateNewOres;
             if (provider.dimensionId == 0){
-                if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201)
-                {
-                    if (!ODNBXlite.Import){
-                        if(rand.nextInt(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS ? 2 : 4) == 0)
-                        {
-                            worldInfo.snowCovered = true;
-                            ODNBXlite.SnowCovered = true;
-                        }else{
-                            ODNBXlite.SnowCovered=false;
-                        }
-                    }else{
-                        ODNBXlite.SnowCovered=worldInfo.snowCovered;
-                    }
-                }else{
-                    ODNBXlite.SnowCovered=false;
-                }
+                worldInfo.snowCovered = ODNBXlite.SnowCovered;
                 ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
                 if (!(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && ODNBXlite.Import)){
-                    worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-                    worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-                    worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-                    worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-                    worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+                    worldInfo.cloudheight = ODNBXlite.CloudHeight;
+                    worldInfo.skybrightness = ODNBXlite.SkyBrightness;
+                    worldInfo.skycolor = ODNBXlite.SkyColor;
+                    worldInfo.fogcolor = ODNBXlite.FogColor;
+                    worldInfo.cloudcolor = ODNBXlite.CloudColor;
                 }
                 if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                     if (!ODNBXlite.Import){

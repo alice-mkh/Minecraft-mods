@@ -1,6 +1,7 @@
 package net.minecraft.src.nbxlite.gui;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Collections;
 import net.minecraft.src.*;
 
@@ -181,6 +182,14 @@ public class GuiNBXlite extends GuiScreen{
                 ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
             }
             ODNBXlite.GenerateNewOres=newores;
+        }
+        ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
+        ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
+        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
+        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
+        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+        if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201){
+            ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
     }
 

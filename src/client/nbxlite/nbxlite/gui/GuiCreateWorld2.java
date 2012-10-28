@@ -192,6 +192,11 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
             str.append(mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
+            if (GeneratorList.gencurrent == 4 && ODNBXlite.SnowCovered){
+                str.append(" (");
+                str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
+                str.append(")");
+            }
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
             str.append(mod_OldDays.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
