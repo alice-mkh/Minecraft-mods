@@ -1403,6 +1403,11 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
     {
+        func_82740_a(par1, par2, par3, par4, par5, 0);
+    }
+
+    public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
+    {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
         byte byte0 = 8;
 
@@ -1426,6 +1431,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             if (par4 > 0)
             {
                 nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
+                nextticklistentry.func_82753_a(par6);
             }
 
             if (!scheduledTickSet.contains(nextticklistentry))
