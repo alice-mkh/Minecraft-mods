@@ -465,7 +465,7 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         else if (par1GuiButton.id == 8)
         {
-//             mc.displayGuiScreen(new GuiCreateFlatWorld(this, field_82290_a));
+             mc.displayGuiScreen(new GuiCreateFlatWorld2(this, field_82290_a));
         }
         else if (par1GuiButton.id == 9 || par1GuiButton.id == 10)
         {
