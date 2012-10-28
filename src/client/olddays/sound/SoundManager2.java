@@ -24,12 +24,12 @@ public class SoundManager2 extends SoundManager{
     public static boolean cow = false;
     public static boolean slime = false;
     public static boolean skeleton = false;
-    public static boolean levelup = false;
+    public static boolean levelup = true;
     public static boolean ignite = false;
-    public static boolean shear = false;
+    public static boolean shear = true;
     public static boolean splash = false;
-    public static boolean swimming = false;
-    public static boolean minecart = false;
+    public static boolean swimming = true;
+    public static boolean minecart = true;
 
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
         par1Str = oldSounds(par1Str);
@@ -74,7 +74,7 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("random.orb") && xporb){
             str = "random.pop";
         }
-        if (par1Str.startsWith("random.levelup") && levelup){
+        if (par1Str.startsWith("random.levelup") && !levelup){
             return "nothing";
         }
         if ((par1Str.startsWith("random.burp") || par1Str.startsWith("random.eat")) && eat){
@@ -158,16 +158,16 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("fire.ignite") && ignite){
             str = "olddays.ignite";
         }
-        if (par1Str.startsWith("mob.sheep.shear") && shear){
+        if (par1Str.startsWith("mob.sheep.shear") && !shear){
             return "nothing";
         }
         if (par1Str.startsWith("liquid.splash") && splash){
             str = "random.splash";
         }
-        if (par1Str.startsWith("liquid.swim") && swimming){
+        if (par1Str.startsWith("liquid.swim") && !!swimming){
             return "nothing";
         }
-        if (par1Str.startsWith("minecart") && minecart){
+        if (par1Str.startsWith("minecart") && !minecart){
             return "nothing";
         }
         return str;
