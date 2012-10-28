@@ -195,12 +195,26 @@ public class GuiSelectWorld extends GuiScreen
         }
         else if (par1GuiButton.id == 7)
         {
-            GuiCreateWorld guicreateworld = new GuiCreateWorld(this);
-            ISaveHandler isavehandler = mc.getSaveLoader().getSaveLoader(getSaveFileName(selectedWorld), false);
-            WorldInfo worldinfo = isavehandler.loadWorldInfo();
-            isavehandler.flush();
-            guicreateworld.func_82286_a(worldinfo);
-            mc.displayGuiScreen(guicreateworld);
+            if (nbxlite){
+                try{
+                    Class c = net.minecraft.src.nbxlite.gui.GuiCreateWorld2.class;
+                    Object o = c.getDeclaredConstructor(GuiScreen.class).newInstance(this);
+                    ISaveHandler isavehandler = ((SaveConverterMcRegion)ODNBXlite.saveLoader).getSaveLoader(getSaveFileName(selectedWorld), false);
+                    WorldInfo worldinfo = isavehandler.loadWorldInfo();
+                    isavehandler.flush();
+                    ((GuiCreateWorld2)o).func_82286_a(worldinfo);
+                    mc.displayGuiScreen((GuiScreen)o);
+                }catch(Throwable t){
+                    nbxlite = false;
+                }
+            }else{
+                GuiCreateWorld guicreateworld = new GuiCreateWorld(this);
+                ISaveHandler isavehandler = mc.getSaveLoader().getSaveLoader(getSaveFileName(selectedWorld), false);
+                WorldInfo worldinfo = isavehandler.loadWorldInfo();
+                isavehandler.flush();
+                guicreateworld.func_82286_a(worldinfo);
+                mc.displayGuiScreen(guicreateworld);
+            }
         }
         else
         {

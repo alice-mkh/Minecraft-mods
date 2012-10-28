@@ -164,6 +164,7 @@ public class GuiCreateWorld2 extends GuiScreen
         ODNBXlite.IndevHeight = ODNBXlite.DefaultFiniteDepth+32;
         ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
     }
+
     public static String genNBXliteButtonName(){
         StringBuilder str = new StringBuilder();
         str.append(mod_OldDays.lang.get("settings"));
@@ -176,9 +177,9 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2){
             str.append(" (");
-            str.append(GeneratorList.sizes[GeneratorList.xcurrent]);
+            str.append(ODNBXlite.IndevWidthX);
             str.append("x");
-            str.append(GeneratorList.sizes[GeneratorList.zcurrent]);
+            str.append(ODNBXlite.IndevWidthZ);
             if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
                 str.append("x");
                 str.append(ODNBXlite.IndevHeight-32);
@@ -592,6 +593,44 @@ public class GuiCreateWorld2 extends GuiScreen
         else if (par1WorldInfo.getGameType().isCreative())
         {
             gameMode = "creative";
+        }
+        if (par1WorldInfo.nbxlite){
+            ODNBXlite.IndevWidthX = par1WorldInfo.indevX;
+            ODNBXlite.IndevWidthZ = par1WorldInfo.indevZ;
+            ODNBXlite.IndevHeight = par1WorldInfo.indevY;
+            ODNBXlite.SurrWaterType = par1WorldInfo.surrwatertype;
+            ODNBXlite.SurrWaterHeight = par1WorldInfo.surrwaterheight;
+            ODNBXlite.SurrGroundType = par1WorldInfo.surrgroundtype;
+            ODNBXlite.SurrGroundHeight = par1WorldInfo.surrgroundheight;
+            ODNBXlite.CloudHeight = par1WorldInfo.cloudheight;
+            ODNBXlite.SkyBrightness = par1WorldInfo.skybrightness;
+            ODNBXlite.SkyColor = par1WorldInfo.skycolor;
+            ODNBXlite.FogColor = par1WorldInfo.fogcolor;
+            ODNBXlite.CloudColor = par1WorldInfo.cloudcolor;
+            ODNBXlite.Generator = par1WorldInfo.mapGen;
+            ODNBXlite.MapFeatures = par1WorldInfo.mapGenExtra;
+            ODNBXlite.MapTheme = par1WorldInfo.mapTheme;
+            ODNBXlite.IndevMapType = par1WorldInfo.mapType;
+            ODNBXlite.SnowCovered = par1WorldInfo.snowCovered;
+            ODNBXlite.GenerateNewOres = par1WorldInfo.newOres;
+            if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES){
+                GeneratorList.gencurrent = 5;
+                GeneratorList.feat1current = ODNBXlite.MapFeatures;
+            }else if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES){
+                GeneratorList.gencurrent = 6;
+                GeneratorList.feat2current = ODNBXlite.MapFeatures;
+            }else{
+                switch (ODNBXlite.MapFeatures){
+                    case ODNBXlite.FEATURES_ALPHA11201: GeneratorList.gencurrent = 4; break;
+                    case ODNBXlite.FEATURES_INFDEV0420: GeneratorList.gencurrent = 3; break;
+                    case ODNBXlite.FEATURES_INFDEV0608: GeneratorList.gencurrent = 3; break;
+                    case ODNBXlite.FEATURES_INFDEV0227: GeneratorList.gencurrent = 2; break;
+                    case ODNBXlite.FEATURES_INDEV: GeneratorList.gencurrent = 1; break;
+                    case ODNBXlite.FEATURES_CLASSIC: GeneratorList.gencurrent = 0; break;
+                }
+                GeneratorList.typecurrent = ODNBXlite.IndevMapType;
+                GeneratorList.themecurrent = ODNBXlite.MapTheme;
+            }
         }
     }
 }
