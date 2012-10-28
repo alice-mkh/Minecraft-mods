@@ -42,6 +42,9 @@ actions.fire.name=Огонь
  actions.fire2.desc=Более быстрый огонь
  actions.fire3=Бета 1.6
  actions.fire3.desc=Стандартный огонь
+//FIXME
+ actions.fire4=1.4
+ actions.fire4.desc=Depends on difficulty
 actions.punchsheep.name=Выбивание шерсти из овец
  actions.punchsheep.desc1=Позволяет получать из них шерсть ударом.
  actions.punchsheep.desc2=§aУдалено в Бете 1.7.

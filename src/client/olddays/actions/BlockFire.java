@@ -6,6 +6,7 @@ public class BlockFire extends Block
 {
     public static boolean oldFire = false;
     public static boolean infiniteBurn = false;
+    public static boolean fixedDamage = false;
 
     private int chanceToEncourageFire[];
     private int abilityToCatchFire[];
@@ -180,12 +181,12 @@ public class BlockFire extends Block
      */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (oldFire){
-            updateTickOld(par1World, par2, par3, par4, par5Random);
-            return;
-        }
         if (!par1World.func_82736_K().func_82766_b("doFireTick"))
         {
+            return;
+        }
+        if (oldFire){
+            updateTickOld(par1World, par2, par3, par4, par5Random);
             return;
         }
 
@@ -272,7 +273,7 @@ public class BlockFire extends Block
                         continue;
                     }
 
-                    int k1 = (j1 + 40 + par1World.difficultySetting * 7) / (i + 30);
+                    int k1 = (j1 + 40 + (fixedDamage ? 0 : par1World.difficultySetting * 7)) / (i + 30);
 
                     if (flag1)
                     {

@@ -42,6 +42,9 @@ actions.fire.name=Ogień
  actions.fire2.desc=Szybszy i nieograniczony ogień
  actions.fire3=Beta 1.6
  actions.fire3.desc=Domyślny ogień
+//FIXME
+ actions.fire4=1.4
+ actions.fire4.desc=Depends on difficulty
 actions.punchsheep.name=Uderz owcę
  actions.punchsheep.desc1=Pozwala na zdobycie wełny poprzez uderzenie owiec.
  actions.punchsheep.desc2=§aUsunięte w Becie 1.7.

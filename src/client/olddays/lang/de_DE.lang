@@ -42,6 +42,9 @@ actions.fire.name=Feuer
  actions.fire2.desc=Schneller und unendliches Feuer
  actions.fire3=Beta 1.6
  actions.fire3.desc=Normales Feuer
+//FIXME
+ actions.fire4=1.4
+ actions.fire4.desc=Depends on difficulty
 actions.punchsheep.name=Schaf-Schlag
  actions.punchsheep.desc1=Ermöglicht es, die Wolle von Schafen
  actions.punchsheep.desc2=durch Schlagen zu erhalten.

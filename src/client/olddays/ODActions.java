@@ -8,7 +8,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 1, true,  false, "PunchTNT");
         new OldDaysPropertyBool(this, 2, false, false, "ExtinguishTNT");
         new OldDaysPropertyBool(this, 3, false, false, "SmeltOnFire");
-        new OldDaysPropertyInt(this,  4, 0,     2,     "Fire", 2).setUseNames();
+        new OldDaysPropertyInt(this,  4, 0,     3,     "Fire", 3).setUseNames();
         new OldDaysPropertyBool(this, 5, true,  false, "PunchSheep");
         new OldDaysPropertyInt(this,  6, 2,     2,     "Durability", 2).setUseNames();
         new OldDaysPropertyBool(this, 7, true,  true,  "ShroomSpreading");
@@ -32,7 +32,8 @@ public class ODActions extends OldDaysModule{
             case 1: set(BlockTNT2.class, "punchToActivate", PunchTNT); break;
             case 2: set(EntityTNTPrimed2.class, "extinguish", ExtinguishTNT); break;
             case 3: set(EntityItem.class, "smeltOnFire", SmeltOnFire); break;
-            case 4: set(BlockFire.class, "oldFire", Fire<2);
+            case 4: set(BlockFire.class, "fixedDamage", Fire<3);
+                    set(BlockFire.class, "oldFire", Fire<2);
                     set(BlockFire.class, "infiniteBurn", Fire<1); break;
             case 5: set(EntitySheep.class, "punchToShear", PunchSheep); break;
             case 6: setToolDurability(Durability); break;

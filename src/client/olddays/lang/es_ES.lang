@@ -42,6 +42,9 @@ actions.fire.name=Fuego
  actions.fire2.desc=Rápido e infinito
  actions.fire3=Beta 1.6
  actions.fire3.desc=Fuego normal
+//FIXME
+ actions.fire4=1.4
+ actions.fire4.desc=Depends on difficulty
 actions.punchsheep.name=Golpear oveja
  actions.punchsheep.desc1=Permite obtener lana golpeando
  actions.punchsheep.desc2=a las ovejas.
