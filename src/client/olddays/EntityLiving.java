@@ -43,6 +43,9 @@ public abstract class EntityLiving extends Entity
         if (dim!=0){
             return true;
         }
+        if (nonewmobs<11 && id=="Bat"){
+            return false;
+        }
         if (nonewmobs<10 && id=="Ozelot"){
             return false;
         }

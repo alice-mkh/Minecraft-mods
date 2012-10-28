@@ -7,6 +7,7 @@ public class EntityZombie extends EntityMob
 {
     public static boolean burns = true;
     public static boolean defense = true;
+    public static boolean custom = true;
 
     public boolean helmet;
     public boolean armor;
@@ -352,6 +353,9 @@ public class EntityZombie extends EntityMob
 
     public void func_82163_bD()
     {
+        if (!custom){
+            return;
+        }
         field_82172_bs = rand.nextFloat() < field_82181_as[worldObj.difficultySetting];
 
         if (worldObj.rand.nextFloat() < 0.05F)

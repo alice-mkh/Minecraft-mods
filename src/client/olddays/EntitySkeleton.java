@@ -8,6 +8,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     public static boolean fixai = false;
     public static boolean survivaltest = false;
     public static boolean fast = false;
+    public static boolean custom = true;
 
     public boolean helmet;
     public boolean armor;
@@ -337,6 +338,9 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
     public void func_82163_bD()
     {
+        if (!custom){
+            return;
+        }
         if ((worldObj.provider instanceof WorldProviderHell) && getRNG().nextInt(5) > 0)
         {
             tasks.addTask(4, new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, moveSpeed, false));

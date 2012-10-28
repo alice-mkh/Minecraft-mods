@@ -7,6 +7,7 @@ public class EntitySpider extends EntityMob
     public static boolean survivaltest = false;
     public static boolean canclimb = true;
     public static boolean oldhealth = false;
+    public static boolean jockeys = true;
 
     public EntitySpider(World par1World)
     {
@@ -240,7 +241,7 @@ public class EntitySpider extends EntityMob
 
     public void func_82163_bD()
     {
-        if (worldObj.rand.nextInt(100) == 0)
+        if (worldObj.rand.nextInt(100) == 0 && jockeys)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(worldObj);
             entityskeleton.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);

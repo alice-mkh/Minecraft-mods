@@ -10,7 +10,7 @@ public class ODMobs extends OldDaysModule{
         new OldDaysPropertyBool(this, 5, false, false, "SurvivalTestMobs");
         new OldDaysPropertyBool(this, 6, true,  false, "FastSkeletons");
         new OldDaysPropertyBool(this, 7, true,  false, "OldHealth");
-        new OldDaysPropertyInt(this,  8, 10,    10,    "Mobs", 10).setUseNames();
+        new OldDaysPropertyInt(this,  8, 11,    11,    "Mobs", 11).setUseNames();
         new OldDaysPropertyInt(this,  9, 5,     5,     "Slimes", 5).setUseNames();
         new OldDaysPropertyBool(this, 10,false, false, "Endermen");
     }
@@ -54,6 +54,9 @@ public class ODMobs extends OldDaysModule{
                     set(EntitySheep.class, "color", color);
                     set(EntityOcelot.class, "allow", Mobs>=10);
                     set(EntitySquid.class, "allow", Mobs>=6);
+                    set(EntitySpider.class, "jockeys", Mobs>=5);
+                    set(EntityZombie.class, "custom", Mobs>=11);
+                    set(EntitySkeleton.class, "custom", Mobs>=11);
                     set(EntitySlime.class, "allow", Mobs>=3); break;
             case 9: set(EntitySlime.class, "slimeSpawn", Slimes); break;
             case 10:set(EntityEnderman.class, "oldPicking", Endermen); break;
