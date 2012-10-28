@@ -98,15 +98,20 @@ class ContainerCreativeOld extends Container
             Block.stairsSandStone,
             Block.stairsBrick,
             Block.stairsStoneBrickSmooth,
+            Block.field_82515_ce,
             Block.lever,
             Block.pressurePlateStone,
             Block.pressurePlatePlanks,
             Block.torchRedstoneActive,
+            Block.field_82511_ci,
             Block.button,
             Block.tripWireSource,
             Block.trapdoor,
             Block.enchantmentTable,
-            Block.redstoneLampIdle
+            Block.redstoneLampIdle,
+            Block.field_82510_ck,
+            Block.field_82518_cd,
+            Block.field_82517_cc
         };
 
         for (int j2 = 0; j2 < ablock.length; j2++)

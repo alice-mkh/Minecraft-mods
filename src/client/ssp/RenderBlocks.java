@@ -999,7 +999,7 @@ public class RenderBlocks
         renderStandardBlock(par1BlockFlowerPot, par2, par3, par4);
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(par1BlockFlowerPot.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
-        float f = 1.0F;
+        float f = Minecraft.oldlighting ? par1BlockFlowerPot.getBlockBrightness(blockAccess, par2, par3, par4) : 1.0F;
         int i = par1BlockFlowerPot.colorMultiplier(blockAccess, par2, par3, par4);
         int k = par1BlockFlowerPot.getBlockTextureFromSide(0);
         float f1 = (float)(i >> 16 & 0xff) / 255F;

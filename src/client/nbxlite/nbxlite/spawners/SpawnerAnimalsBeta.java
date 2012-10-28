@@ -178,17 +178,7 @@ public final class SpawnerAnimalsBeta
 
     private static void creatureSpecificInit(EntityLiving entityliving, World world, float f, float f1, float f2)
     {
-        if((entityliving instanceof EntitySpider) && world.rand.nextInt(100) == 0)
-        {
-            EntitySkeleton entityskeleton = new EntitySkeleton(world);
-            entityskeleton.setLocationAndAngles(f, f1, f2, entityliving.rotationYaw, 0.0F);
-            world.spawnEntityInWorld(entityskeleton);
-            entityskeleton.mountEntity(entityliving);
-        } else
-        if(entityliving instanceof EntitySheep)
-        {
-            ((EntitySheep)entityliving).setFleeceColor(EntitySheep.getRandomFleeceColor(world.rand));
-        }
+        entityliving.func_82163_bD();
     }
 /*
     public static boolean performSleepSpawning(World world, List list)

@@ -70,7 +70,8 @@ public class ODEyecandy extends OldDaysModule{
                     set(RenderMinecart2.class, "oldrotation", InvBlocks < 3);
                     set(RenderBlocks.class, "oldrotation", InvBlocks < 3);
                     set(RenderSnowMan2.class, "oldrotation", InvBlocks < 3); 
-                    set(RenderItem.class, "oldrotation", InvBlocks < 1); break;
+                    set(RenderItem.class, "oldrotation", InvBlocks < 1);
+                    set(RenderItemFrame2.class, "oldrotation", InvBlocks < 3); break;
             case 17:set(EntityDropParticleFX.class, "allow", Drops); break;
             case 18:set(ItemRenderer.class, "hand", Hand); break;
             case 19:set(EntityLiving.class, "toolbreakanim", ToolBreaking); break;
@@ -89,6 +90,7 @@ public class ODEyecandy extends OldDaysModule{
             addRenderer(EntitySkeleton.class, new RenderSkeleton2(new ModelSkeleton()));
             addRenderer(EntityPlayer.class, new RenderPlayer2());
             addRenderer(EntitySnowman.class, new RenderSnowMan2());
+            addRenderer(EntityItemFrame.class, new RenderItemFrame2());
         }
     }
 

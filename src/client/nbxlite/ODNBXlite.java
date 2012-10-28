@@ -102,6 +102,7 @@ public class ODNBXlite extends OldDaysModule{
             addRenderer(EntityEnderman.class, new RenderEnderman2());
             addRenderer(EntityPlayer.class, new RenderPlayer2());
             addRenderer(EntityMinecart.class, new RenderMinecart2());
+            addRenderer(EntityItemFrame.class, new RenderItemFrame2());
         }
     }
 
