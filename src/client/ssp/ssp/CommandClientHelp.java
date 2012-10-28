@@ -6,16 +6,12 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientHelp extends CommandHelp
 {
-    public CommandClientHelp()
-    {
-    }
-
-    protected List func_71534_d(ICommandSender par1ICommandSender)
+    protected List getSortedPossibleCommands(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().getIntegratedServer().getCommandManager().getPossibleCommands(par1ICommandSender);
     }
 
-    protected Map func_71535_c()
+    protected Map getCommands()
     {
         return Minecraft.getMinecraft().getIntegratedServer().getCommandManager().getCommands();
     }

@@ -4,16 +4,12 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientGameMode extends CommandGameMode
 {
-    public CommandClientGameMode()
-    {
-    }
-
     protected EntityPlayer func_71540_a(String par1Str)
     {
         return Minecraft.getMinecraft().thePlayer;
     }
 
-    protected String[] func_71538_c()
+    protected String[] getListOfPlayerUsernames()
     {
         return (new String[]
                 {

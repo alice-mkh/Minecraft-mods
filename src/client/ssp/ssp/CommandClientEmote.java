@@ -5,10 +5,6 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientEmote extends CommandServerEmote
 {
-    public CommandClientEmote()
-    {
-    }
-
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length > 0)

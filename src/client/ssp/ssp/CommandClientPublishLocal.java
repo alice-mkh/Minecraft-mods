@@ -5,10 +5,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandClientPublishLocal extends CommandServerPublishLocal
 {
-    public CommandClientPublishLocal()
-    {
-    }
-
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         Minecraft.getMinecraft().quitAndStartServer();

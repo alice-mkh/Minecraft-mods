@@ -359,6 +359,9 @@ public abstract class World implements IBlockAccess
                         for (int i = 0; i < entlist.size(); i++){
                             Entity entity = EntityList.createEntityFromNBT(((NBTTagCompound)entlist.get(i)), this);
                             spawnEntityInWorld(entity);
+                            if (entity instanceof EntityItem){
+                                ((EntityItem)entity).delayBeforeCanPickup = 0;
+                            }
                         }
                         worldInfo.cloudheight = ODNBXlite.CloudHeight;
                         worldInfo.skybrightness = ODNBXlite.SkyBrightness;
