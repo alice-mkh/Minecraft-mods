@@ -169,9 +169,12 @@ public class NetServerHandlerSP extends NetServerHandler
 
     public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload)
     {
-        if (!("MC|TPack".equals(par1Packet250CustomPayload.channel)) &&
-            !("MC|TrList".equals(par1Packet250CustomPayload.channel)) && 
-            !("MC|BSign".equals(par1Packet250CustomPayload.channel))){
+        if (!("MC|BEdit".equals(par1Packet250CustomPayload.channel)) &&
+            !("MC|BSign".equals(par1Packet250CustomPayload.channel)) &&
+            !("MC|TrSel".equals(par1Packet250CustomPayload.channel)) &&
+            !("MC|AdvCdm".equals(par1Packet250CustomPayload.channel)) &&
+            !("MC|Beacon".equals(par1Packet250CustomPayload.channel)) &&
+            !("MC|ItemName".equals(par1Packet250CustomPayload.channel))){
             net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "serverCustomPayload", new Class[]{NetServerHandler.class, Packet250CustomPayload.class}, this, par1Packet250CustomPayload);
         }
     }

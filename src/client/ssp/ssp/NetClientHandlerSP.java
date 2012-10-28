@@ -57,9 +57,39 @@ public class NetClientHandlerSP extends NetClientHandler
 
     public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload)
     {
+        if ("MC|AdvCdm".equals(par1Packet250CustomPayload.channel)){
+            Minecraft mc = Minecraft.getMinecraft();
+            if (Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed() && mc.thePlayer.capabilities.isCreativeMode)
+            {
+                try
+                {
+                    DataInputStream datainputstream3 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
+                    int j = datainputstream3.readInt();
+                    int l = datainputstream3.readInt();
+                    int j1 = datainputstream3.readInt();
+                    String s1 = Packet.readString(datainputstream3, 256);
+                    TileEntity tileentity = mc.theWorld.getBlockTileEntity(j, l, j1);
+
+                    if (tileentity != null && (tileentity instanceof TileEntityCommandBlock))
+                    {
+                        ((TileEntityCommandBlock)tileentity).func_82352_b(s1);
+                        mc.theWorld.markBlockNeedsUpdate(j, l, j1);
+                        mc.thePlayer.sendChatToPlayer((new StringBuilder()).append("Command set: ").append(s1).toString());
+                    }
+                }
+                catch (Exception exception3)
+                {
+                    exception3.printStackTrace();
+                }
+            }
+            else
+            {
+                mc.thePlayer.sendChatToPlayer(mc.thePlayer.translateString("advMode.notAllowed", new Object[0]));
+            }
+            return;
+        }
         if (!("MC|TPack".equals(par1Packet250CustomPayload.channel)) &&
-            !("MC|TrList".equals(par1Packet250CustomPayload.channel)) && 
-            !("MC|BSign".equals(par1Packet250CustomPayload.channel))){
+            !("MC|TrList".equals(par1Packet250CustomPayload.channel))){
             Minecraft.invokeModMethod("ModLoader", "clientCustomPayload", new Class[]{Packet250CustomPayload.class}, par1Packet250CustomPayload);
         }
     }
