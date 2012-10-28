@@ -5,7 +5,7 @@ import java.util.Random;
 public class EntitySlime extends EntityLiving implements IMob
 {
     public static boolean allow = true;
-    public static int slimeSpawn = 3;
+    public static int slimeSpawn = 5;
 
     public float field_70813_a;
     public float field_70811_b;
@@ -294,12 +294,21 @@ public class EntitySlime extends EntityLiving implements IMob
         }
         Chunk chunk = worldObj.getChunkFromBlockCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-        if (slimeSpawn==4 && worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
+        if (slimeSpawn > 3 && worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
         {
             return false;
         }
 
-        if (getSlimeSize() == 1 || worldObj.difficultySetting > 0)
+        if (slimeSpawn==3 || slimeSpawn==4)
+        {
+            if ((getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 40D)
+            {
+                return super.getCanSpawnHere();
+            }
+            return false;
+        }
+
+        if (slimeSpawn > 4 && (getSlimeSize() == 1 || worldObj.difficultySetting > 0))
         {
             if (worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ)) == BiomeGenBase.swampland && posY > 50D && posY < 70D && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
             {
@@ -311,7 +320,6 @@ public class EntitySlime extends EntityLiving implements IMob
                 return super.getCanSpawnHere();
             }
         }
-
         return false;
     }
 
