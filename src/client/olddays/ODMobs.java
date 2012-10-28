@@ -23,6 +23,7 @@ public class ODMobs extends OldDaysModule{
                     set(EntitySnowman.class, "fixai", AI<3);
                     set(EntitySheep.class, "fixai", AI<3);
                     set(EntityWolf.class, "fixai", AI<3);
+                    set(EntityPig.class, "fixai", AI<3);
                     set(EntityCreature.class, "jump", AI<2);
                     set(EntityLiving.class, "infdevai", AI<1); break;
             case 2: set(EntityAIPanic.class, "disablePanic", !AnimalsFlee);

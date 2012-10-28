@@ -5,6 +5,7 @@ import java.util.Random;
 public class EntityPig extends EntityAnimal
 {
     public static boolean survivaltest = false;
+    public static boolean fixai = false;
 
     private final EntityAIControlledByPlayer field_82184_d;
 
@@ -249,5 +250,13 @@ public class EntityPig extends EntityAnimal
     public EntityAIControlledByPlayer func_82183_n()
     {
         return field_82184_d;
+    }
+
+    protected void updateEntityActionState(){
+        if (fixai && field_82184_d.shouldExecute()){
+            field_82184_d.updateTask();
+        }else{
+            super.updateEntityActionState();
+        }
     }
 }
