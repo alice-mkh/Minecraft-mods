@@ -16,6 +16,7 @@ public class ODCrafting extends OldDaysModule{
         new OldDaysPropertyBool(this, 9, false, false, "OreBlocks");
         new OldDaysPropertyBool(this, 10,false, false, "Books");
         new OldDaysPropertyBool(this, 11,false, false, "OldSigns");
+        new OldDaysPropertyBool(this, 12,false, false, "OldMaps");
     }
 
     public void callback (int i){
@@ -31,6 +32,7 @@ public class ODCrafting extends OldDaysModule{
             case 9: setOreBlocks(OreBlocks); break;
             case 10:setBook(Books); break;
             case 11:setSign(OldSigns); break;
+            case 12:setMap(OldMaps); break;
         }
     }
 
@@ -45,6 +47,7 @@ public class ODCrafting extends OldDaysModule{
     public static boolean OreBlocks;
     public static boolean Books;
     public static boolean OldSigns;
+    public static boolean OldMaps;
 
     private void setPlanks(boolean b){
         String str = "4xtile.wood@";
@@ -239,5 +242,15 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1"+str);
         removeRecipe("3"+str);
         addRecipe(new ItemStack(Item.sign, count), "###", "###", " X ", '#', Block.planks, 'X', Item.stick);
+    }
+
+    private void setMap(boolean b){
+        removeRecipe("1xitem.emptyMap@0");
+        removeRecipe("1xitem.map@0");
+        if (b){
+            addRecipe(new ItemStack(Item.map, 1), "###", "#X#", "###", '#', Item.paper, 'X', Item.compass);
+        }else{
+            addRecipe(new ItemStack(Item.field_82801_bO, 1), "###", "#X#", "###", '#', Item.paper, 'X', Item.compass);
+        }
     }
 }

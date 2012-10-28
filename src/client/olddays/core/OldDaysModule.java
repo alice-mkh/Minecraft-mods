@@ -68,11 +68,33 @@ public class OldDaysModule{
         try{
             List list = CraftingManager.getInstance().getRecipeList();
             for (int i = 0; i < list.size(); i++){
-                String match = ((IRecipe)list.get(i)).getRecipeOutput().toString();
+                ItemStack stack = ((IRecipe)list.get(i)).getRecipeOutput();
+                if (stack == null){
+                    continue;
+                }
+                String match = stack.toString();
                 System.out.println("OldDays: Found recipe: "+match);
             }
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public void dumpRecipes(String str){
+        try{
+            List list = CraftingManager.getInstance().getRecipeList();
+            for (int i = 0; i < list.size(); i++){
+                ItemStack stack = ((IRecipe)list.get(i)).getRecipeOutput();
+                if (stack == null){
+                    continue;
+                }
+                String match = stack.toString();
+                if (match.contains(str)){
+                    System.out.println("OldDays: Found recipe: "+match);
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 

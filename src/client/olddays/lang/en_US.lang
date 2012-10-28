@@ -582,6 +582,9 @@ crafting.books.name=Old books
 crafting.oldsigns.name=Old sign
  crafting.oldsigns.desc1=Gives §r1§7 sign instead of §r3§7.
  crafting.oldsigns.desc2=§aChanged in 1.3.
+crafting.oldmaps.name=Old maps
+ crafting.oldmaps.desc1=Gives normal map instead of empty one.
+ crafting.oldmaps.desc2=§aChanged in 1.4.
 
 textures.cobblestone.name=Cobblestone
  textures.cobblestone1=0.0.13a_03
