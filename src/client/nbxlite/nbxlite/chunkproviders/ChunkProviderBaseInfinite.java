@@ -64,7 +64,6 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
             generateTerrain(i, j, abyte0);
             replaceBlocks(i, j, abyte0);
         }
-        generateStructures(i, j, abyte0);
         Chunk chunk = new Chunk(worldObj, abyte0, i, j);
         if (fixLight){
             ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
@@ -137,5 +136,6 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
 
     public void func_82695_e(int par1, int par2)
     {
+        generateStructures(par1, par2, null);
     }
 }
