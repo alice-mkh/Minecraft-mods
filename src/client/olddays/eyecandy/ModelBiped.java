@@ -126,7 +126,7 @@ public class ModelBiped extends ModelBase
         bipedHead.rotateAngleX = par5 / (180F / (float)Math.PI);
         bipedHeadwear.rotateAngleY = bipedHead.rotateAngleY;
         bipedHeadwear.rotateAngleX = bipedHead.rotateAngleX;
-        if(!isSneak && !isRiding && oldwalking){
+        if(!isSneak && !isRiding && oldwalking && !(this instanceof ModelEnderman)){
             bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 2.0F * par2;
             bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2;
             bipedLeftArm.rotateAngleZ = (MathHelper.cos(par1 * 0.2812F) - 1.0F) * 1.0F * par2;
@@ -152,12 +152,12 @@ public class ModelBiped extends ModelBase
             bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
 
-        if (heldItemLeft != 0 && !oldwalking)
+        if (heldItemLeft != 0 && (!oldwalking || this instanceof ModelEnderman))
         {
             bipedLeftArm.rotateAngleX = bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)heldItemLeft;
         }
 
-        if (heldItemRight != 0 && !oldwalking)
+        if (heldItemRight != 0 && (!oldwalking || this instanceof ModelEnderman))
         {
             bipedRightArm.rotateAngleX = bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)heldItemRight;
         }
@@ -165,7 +165,7 @@ public class ModelBiped extends ModelBase
         bipedRightArm.rotateAngleY = 0.0F;
         bipedLeftArm.rotateAngleY = 0.0F;
 
-        if (onGround > -9990F && !oldwalking)
+        if (onGround > -9990F && (!oldwalking || this instanceof ModelEnderman))
         {
             float f = onGround;
             bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(f) * (float)Math.PI * 2.0F) * 0.2F;
