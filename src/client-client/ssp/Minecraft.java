@@ -942,7 +942,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         sndManager.setListener(thePlayer, timer.renderPartialTicks);
         mcProfiler.endStartSection("updatelights");
 
-        if (theWorld != null)
+        if (theWorld != null && worldClass != WorldSSP.class)
         {
             theWorld.updatingLighting();
         }
@@ -2952,7 +2952,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                     continue;
                 }
 
-                while (theWorld.updatingLighting()) ;
+                if (worldClass != WorldSSP.class){
+                    while (((WorldSSP)theWorld).updatingLighting()) ;
+                }
             }
         }
 
