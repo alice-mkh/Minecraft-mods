@@ -283,7 +283,9 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     private void registerGears(){
-        Block gear = new BlockGear(gearId, 57);
+        int index = mod_OldDays.getFreeTextureIndex();
+        int index2 = mod_OldDays.getFreeTextureIndex();
+        Block gear = new BlockGear(gearId, index, index2);
         gear.setHardness(0.5F);
         gear.setBlockName("gear");
         
@@ -293,8 +295,8 @@ public class ODNBXlite extends OldDaysModule{
         new ItemBlock(gearId - 256);
         Item.itemsList[gearId].setItemName("gear");
         Block.blocksList[gearId].initializeBlock();
-        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(0));
-        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(1));
+        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(index, 0));
+        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(index2, 1));
         gearRenderID = 36;
     }
 

@@ -14,9 +14,12 @@ import net.minecraft.src.Tessellator;
 
 public class BlockGear extends Block
 {
-    public BlockGear(int par1, int par2)
+    private static int textureIndex2;
+
+    public BlockGear(int par1, int par2, int par3)
     {
         super(par1, par2, Material.circuits);
+        textureIndex2 = par3;
         setCreativeTab(CreativeTabs.tabDecorations);
     }
 
@@ -103,6 +106,9 @@ public class BlockGear extends Block
     public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k, int override){
         Tessellator tessellator = Tessellator.instance;
         int tex = b.getBlockTextureFromSide(0);
+        if((i + j + k & 1) == 1){
+            tex = textureIndex2;
+        }
         if(override >= 0)
         {
             tex = override;
@@ -115,11 +121,6 @@ public class BlockGear extends Block
         float f10 = ((tex & 0xf) << 4) + 16;
         float f11 = (tex & 0xf) << 4;
         int i2 = tex & 0xf0;
-        if((i + j + k & 1) == 1)
-        {
-            f10 = (tex & 0xf) << 4;
-            f11 = ((tex & 0xf) << 4) + 16;
-        }
         double d11 = (float)f10 / 256F;
         double d15 = ((float)f10 + 15.99F) / 256F;
         double d18 = (float)i2 / 256F;

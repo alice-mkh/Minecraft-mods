@@ -15,10 +15,10 @@ public class TextureGearFX extends TextureFX
   private int[] gearmiddle = new int[1024];
   private int h;
 
-    public TextureGearFX(int paramInt)
+    public TextureGearFX(int paramInt, int par2)
     {
-        super(Block.blocksList[ODNBXlite.gearId].blockIndexInTexture + paramInt);
-        this.h = ((paramInt << 1) - 1);
+        super(paramInt);
+        this.h = ((par2 << 1) - 1);
         tickCounter = 2;
         try{
             ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
