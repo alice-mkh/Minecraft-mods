@@ -2988,7 +2988,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (chunkcoordinates != null)
             {
-                chunkcoordinates1 = EntityPlayer.verifyRespawnCoordinates(theWorld, chunkcoordinates, false);
+                chunkcoordinates1 = EntityPlayer.verifyRespawnCoordinates(theWorld, chunkcoordinates, thePlayer.func_82245_bX());
 
                 if (chunkcoordinates1 == null)
                 {
