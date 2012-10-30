@@ -61,7 +61,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
-       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2"
+       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped`"
 ADD[9]="olddays/grasstop.png olddays/grassside.png olddays/leavesfast.png olddays/leavesfancy.png olddays/fluff.png
         olddays/gear.png olddays/gearmiddle.png"
 CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
@@ -80,7 +80,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
-        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World`
+        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
         `find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree`
         `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
         `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find StructureStrongholdPieces`
