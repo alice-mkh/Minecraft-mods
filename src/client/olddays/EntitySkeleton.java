@@ -353,10 +353,10 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         else
         {
             tasks.addTask(4, new EntityAIArrowAttack(this, moveSpeed, 60, 10F));
+            func_82164_bB();
             if (!custom){
                 return;
             }
-            func_82164_bB();
             func_82162_bC();
         }
 
