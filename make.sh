@@ -8,6 +8,10 @@ RESULT_DIR=$DIR/result
 RESULT_DIR_2=$DIR/result2
 
 function find() {
+    if [[ $1 == "World" ]]; then
+        echo "xe"
+        exit 0
+    fi
     for F in *.class; do
         if [ -n "`strings $F | grep $1.java`" ]; then
             echo ${F/%.class/}
@@ -30,34 +34,34 @@ MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-da
            spawn-human ssp"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` `find EntityBoat`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
-CP[2]="`find EntityMinecart` `find EntityBoat` `find Entity` `find EntityLiving` `find BlockPistonBase` `find ContainerPlayer`
+CP[2]="`find EntityMinecart` `find EntityBoat` `find Entity` `find BlockPistonBase` `find ContainerPlayer`
        ODBugs"
-CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find EntityLiving`
+CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake`
        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` `find Explosion` ODGameplay"
 ADD[3]="olddays/icons.png"
-CP[4]="`find EntityLiving` `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic`
+CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
        `find EntitySquid` `find EntitySlime` `find EntityWolf` EntityAIEatGrass2 ODMobs"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer`
-       `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityPlayer`
-       `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityLiving` `find EntityZombie` `find EntitySkeleton`
-       `find EntitySuspendFX` `find RenderItem`
+       `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer`
+       `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
+       `find EntitySuspendFX` `find RenderItem` RenderItemFrame2
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
-       RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderPlayer2 RenderSnowMan2 ODEyecandy"
+       RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png olddays/chest.png olddays/allitems.png"
-CP[6]="SoundManager2 ODSounds"
+CP[6]="SoundManager2 ODSounds `find Entity`"
 ADD[6]="olddays/sounds"
 CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld ODTextures"
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png olddays/slime.png
-        olddays/oreblocks"
-CP[9]="`find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves` `find ChunkCache` `find ComponentVillage`
+        olddays/cloth_1.png olddays/cloth_2.png olddays/cloth_empty.png olddays/oreblocks"
+CP[9]="`find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves` `find ChunkCache` `find ComponentVillage` `find World`
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
-       `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld
+       `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
-       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 up `find EntityPickupFX`"
+       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2"
 ADD[9]="olddays/grasstop.png olddays/grassside.png olddays/leavesfast.png olddays/leavesfancy.png olddays/fluff.png
         olddays/gear.png olddays/gearmiddle.png"
 CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
@@ -66,21 +70,21 @@ CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_O
 ADD[10]="olddays/lang"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
-        `find EntityMinecart` `find EntityBoat` `find Entity` `find EntityLiving` `find BlockPistonBase` `find ContainerPlayer` ODBugs
+        `find EntityMinecart` `find EntityBoat` `find Entity` `find BlockPistonBase` `find ContainerPlayer` ODBugs
         `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find Explosion`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
         `find EntitySquid` `find EntitySlime` ODMobs
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem`
-        `find EntityDiggingFX` `find RenderHelper` `find ModelEnderman` `find EntityDropParticleFX` `find LoadingScreenRenderer`
+        `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer
-        ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie RenderSkeleton RenderSnowMan2 ODEyecandy
-        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures
+        ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
+        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World`
         `find BiomeGenBase` `find BlockFluid` `find BlockGrass` `find BlockLeaves` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree`
         `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
         `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find StructureStrongholdPieces` RenderMinecart2
-        ComponentStrongholdStairsOld ComponentStrongholdCrossingOld `find WorldServer` RenderPlayer2 up `find ChestItemRenderHelper`
+        ComponentStrongholdStairsOld ComponentStrongholdCrossingOld `find WorldServer` RenderPlayer2 `find ChestItemRenderHelper`
         `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ `find EntityPickupFX`
         `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
         GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
@@ -89,8 +93,8 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
 ADD[11]="${ADD[1]} ${ADD[2]} ${ADD[3]} ${ADD[4]} ${ADD[5]} ${ADD[6]} ${ADD[7]} ${ADD[8]} ${ADD[9]} ${ADD[10]}"
 MV[12]="EntityHuman ModelHuman RenderHuman mod_SpawnHuman"
 ADD[12]="./char.png"
-MV[13]="`find WorldInfo` `find GuiIngame` `find GuiContainer` apq `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
-        `find RenderBlocks` `find RenderGlobal` aoo `find GuiMainMenu` net/ other"
+MV[13]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
+        `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` net/ other"
 
 cd $ORIG_DIR_SERVER
 
