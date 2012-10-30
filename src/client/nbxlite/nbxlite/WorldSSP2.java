@@ -358,6 +358,7 @@ public class WorldSSP2 extends WorldSSP
             {
                 long l = worldInfo.getWorldTime() + 24000L;
                 worldInfo.setWorldTime(l - l % 24000L);
+                func_82738_a(l - l % 24000L);
                 wakeUpAllPlayers();
             }
         }
@@ -403,6 +404,7 @@ public class WorldSSP2 extends WorldSSP
         }
 
         worldInfo.setWorldTime(l1);
+        func_82738_a(func_82737_E() + 1L);
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");
