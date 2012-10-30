@@ -22,7 +22,7 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientSay());
 //         registerCommand(new CommandSetSpawnpoint());
         registerCommand(new CommandClientGameRule());
-//         registerCommand(new CommandClearInventory());
+        registerCommand(new CommandClientClear());
         CommandBase.setAdminCommander(this);
     }
 
