@@ -258,6 +258,13 @@ public class EntityZombie extends EntityMob
     protected void func_82164_bB()
     {
         super.func_82164_bB();
+        if (getCurrentItemOrArmor(1) != null || getCurrentItemOrArmor(2) != null || getCurrentItemOrArmor(3) != null || getCurrentItemOrArmor(4) != null){
+            helmet = false;
+            armor = false;
+        }
+        if (!custom){
+            return;
+        }
 
         if (rand.nextFloat() < (worldObj.difficultySetting != 3 ? 0.01F : 0.05F))
         {

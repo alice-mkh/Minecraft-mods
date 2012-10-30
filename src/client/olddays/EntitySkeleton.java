@@ -320,6 +320,10 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     protected void func_82164_bB()
     {
         super.func_82164_bB();
+        if (getCurrentItemOrArmor(1) != null || getCurrentItemOrArmor(2) != null || getCurrentItemOrArmor(3) != null || getCurrentItemOrArmor(4) != null){
+            helmet = false;
+            armor = false;
+        }
         func_70062_b(0, new ItemStack(Item.bow));
     }
 
@@ -340,9 +344,6 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
     public void func_82163_bD()
     {
-        if (!custom){
-            return;
-        }
         if ((worldObj.provider instanceof WorldProviderHell) && getRNG().nextInt(5) > 0)
         {
             tasks.addTask(4, new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, moveSpeed, false));
@@ -352,6 +353,9 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         else
         {
             tasks.addTask(4, new EntityAIArrowAttack(this, moveSpeed, 60, 10F));
+            if (!custom){
+                return;
+            }
             func_82164_bB();
             func_82162_bC();
         }

@@ -86,7 +86,7 @@ public class ODEyecandy extends OldDaysModule{
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(EntityEnderman.class, new RenderEnderman2());
             addRenderer(EntityMinecart.class, new RenderMinecart2());
-            addRenderer(EntityZombie.class, new RenderZombie2(new ModelZombie()));
+            addRenderer(EntityZombie.class, new RenderZombie2());
             addRenderer(EntitySkeleton.class, new RenderSkeleton2(new ModelSkeleton()));
             addRenderer(EntityPlayer.class, new RenderPlayer2());
             addRenderer(EntitySnowman.class, new RenderSnowMan2());

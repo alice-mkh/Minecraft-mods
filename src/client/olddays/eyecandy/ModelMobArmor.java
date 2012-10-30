@@ -2,8 +2,11 @@ package net.minecraft.src;
 
 public class ModelMobArmor extends ModelBiped
 {
+    public boolean villager;
+
     public ModelMobArmor()
     {
+        villager = false;
     }
 
     public ModelMobArmor(float par1)
@@ -41,5 +44,9 @@ public class ModelMobArmor extends ModelBiped
         bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
         bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+        if (villager){
+            bipedHead.rotationPointY -= 1.1F;
+            bipedHeadwear.rotationPointY -= 1.1F;
+        }
     }
 }
