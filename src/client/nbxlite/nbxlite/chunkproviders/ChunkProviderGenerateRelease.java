@@ -18,6 +18,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     private double stoneNoise[];
     private MapGenBase caveGenerator;
     public MapGenStronghold2 strongholdGenerator;
+    public MapGenStronghold newStrongholdGenerator;
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
@@ -36,6 +37,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         stoneNoise = new double[256];
         caveGenerator = new MapGenCaves();
         strongholdGenerator = new MapGenStronghold2();
+        newStrongholdGenerator = new MapGenStronghold();
         villageGenerator = new MapGenVillage();
         mineshaftGenerator = new MapGenMineshaft();
         templeGenerator = new MapGenScatteredFeature3();
@@ -232,7 +234,6 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         {
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
-            strongholdGenerator.generate(this, worldObj, i, j, abyte0);
             if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_14){
                 scatteredFeatureGenerator.generate(this, worldObj, i, j, abyte0);
             }else if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_13){
@@ -385,7 +386,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             }
             mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             flag = villageGenerator.generateStructuresInChunk(worldObj, rand, i, j);
-            if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
+            if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14){
+                newStrongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
+            }else if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
                 strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
             }
             if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14){
@@ -448,7 +451,9 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
     }
 
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
-        if("Stronghold".equals(s) && strongholdGenerator != null){
+        if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_14 && "Stronghold".equals(s) && newStrongholdGenerator != null){
+            return newStrongholdGenerator.getNearestInstance(world, i, j, k);
+        }else if("Stronghold".equals(s) && strongholdGenerator != null){
             return strongholdGenerator.getNearestInstance(world, i, j, k);
         }else{
             return null;
