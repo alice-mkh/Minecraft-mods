@@ -56,7 +56,7 @@ public class GuiContainerCreativeOld extends GuiContainer
                 {
                     if (par3 == 0)
                     {
-                        if (par4 == 3)
+                        if (par4 == 3 || par4 == 1)
                         {
                             itemstack1.stackSize = itemstack1.getMaxStackSize();
                         }
@@ -87,7 +87,7 @@ public class GuiContainerCreativeOld extends GuiContainer
                     inventoryplayer.setItemStack(ItemStack.copyItemStack(itemstack4));
                     ItemStack itemstack2 = inventoryplayer.getItemStack();
 
-                    if (par4 == 3)
+                    if (par4 == 3 || par4 == 1)
                     {
                         itemstack2.stackSize = itemstack2.getMaxStackSize();
                     }
