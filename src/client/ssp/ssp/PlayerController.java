@@ -212,6 +212,35 @@ public class PlayerController extends PlayerControllerMP
      */
     public void sendSlotPacket(ItemStack itemstack, int i)
     {
+        EntityPlayer playerEntity = Minecraft.getMinecraft().thePlayer;
+        if (Minecraft.getMinecraft().playerController.isInCreativeMode())
+        {
+            boolean flag = itemstack == null || itemstack.itemID < Item.itemsList.length && itemstack.itemID >= 0 && Item.itemsList[itemstack.itemID] != null;
+            boolean flag1 = itemstack == null || itemstack.getItemDamage() >= 0 && itemstack.getItemDamage() >= 0 && itemstack.stackSize <= 64 && itemstack.stackSize > 0;
+
+            if (i >= 1 && i < 36 + InventoryPlayer.func_70451_h() && flag && flag1)
+            {
+                if (itemstack == null)
+                {
+                    playerEntity.inventorySlots.putStackInSlot(i, null);
+                }
+                else
+                {
+                    playerEntity.inventorySlots.putStackInSlot(i, itemstack);
+                }
+
+                playerEntity.inventorySlots.setPlayerIsPresent(playerEntity, true);
+            }
+            else if (i < 0 && flag && flag1)
+            {
+                EntityItem entityitem = playerEntity.dropPlayerItem(itemstack);
+
+                if (entityitem != null)
+                {
+                    entityitem.func_70288_d();
+                }
+            }
+        }
     }
 
     public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5)

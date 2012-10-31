@@ -198,14 +198,10 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void setArmor(boolean b){
-        setTextureHook("/gui/items.png", 144, "/olddays/textures.png", 66, b);
-        setTextureHook("/gui/items.png", 160, "/olddays/textures.png", 67, b);
-        setTextureHook("/gui/items.png", 176, "/olddays/textures.png", 68, b);
-        setTextureHook("/gui/items.png", 192, "/olddays/textures.png", 69, b);
-        setTextureHook("/gui/items.png", 0, "/gui/items.png", 239, b);
-        setTextureHook("/gui/items.png", 16, "/gui/items.png", 239, b);
-        setTextureHook("/gui/items.png", 32, "/gui/items.png", 239, b);
-        setTextureHook("/gui/items.png", 48, "/gui/items.png", 239, b);
+        for (int i = 0; i < 4; i++){
+            setTextureHook("/gui/items.png", (i + 9) * 16, "/olddays/textures.png", 66 + i, b);
+            setTextureHook("/gui/items.png", i * 16, "/gui/items.png", 239, b);
+        }
         setTextureHook("/armor/cloth_1_b.png", "/olddays/cloth_1.png", b);
         setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
         setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
