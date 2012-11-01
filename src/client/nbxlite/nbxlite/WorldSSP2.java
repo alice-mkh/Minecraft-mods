@@ -576,4 +576,24 @@ public class WorldSSP2 extends WorldSSP
         }
         return super.getCelestialAngle(par1);
     }
+
+    /**
+     * Returns how bright the block is shown as which is the block's light value looked up in a lookup table (light
+     * values aren't linear for brightness). Args: x, y, z
+     */
+    public float getLightBrightness(int par1, int par2, int par3)
+    {
+        if (provider.dimensionId == 1){
+            return 0.22F + super.getLightBrightness(par1, par2, par3) * 0.75F;
+        }
+        return super.getLightBrightness(par1, par2, par3);
+    }
+
+    public float getBrightness(int par1, int par2, int par3, int par4)
+    {
+        if (provider.dimensionId == 1){
+            return 0.22F + super.getBrightness(par1, par2, par3, par4) * 0.75F;
+        }
+        return super.getBrightness(par1, par2, par3, par4);
+    }
 }

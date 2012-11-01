@@ -2281,7 +2281,7 @@ public abstract class Entity
 
     public void travelToTheEnd(int par1)
     {
-        if (worldObj.isRemote || isDead)
+        if (worldObj.isRemote || isDead || !(worldObj instanceof WorldServer))
         {
             return;
         }

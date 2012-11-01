@@ -34,7 +34,7 @@ MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-da
            spawn-human ssp"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` `find EntityBoat`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
-CP[2]="`find EntityMinecart` `find EntityBoat` `find Entity` `find BlockPistonBase` `find ContainerPlayer`
+CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer`
        ODBugs"
 CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake`
        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` `find Explosion` ODGameplay"
@@ -49,7 +49,7 @@ CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEnt
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
        RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png olddays/chest.png olddays/allitems.png"
-CP[6]="SoundManager2 ODSounds `find Entity`"
+CP[6]="SoundManager2 ODSounds"
 ADD[6]="olddays/sounds"
 CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld ODTextures"
@@ -70,7 +70,7 @@ CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_O
 ADD[10]="olddays/lang"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
-        `find EntityMinecart` `find EntityBoat` `find Entity` `find BlockPistonBase` `find ContainerPlayer` ODBugs
+        `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs
         `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find Explosion`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic`

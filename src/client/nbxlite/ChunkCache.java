@@ -118,6 +118,9 @@ public class ChunkCache implements IBlockAccess
     public float getBrightness(int par1, int par2, int par3, int par4)
     {
         if (isBounds(par1, par2, par3)){
+            if (worldObj.provider.dimensionId == 1){
+                return 0.22F + worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)] * 0.75F;
+            }
             return worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
         }
         int i = getLightValue(par1, par2, par3);
@@ -127,6 +130,9 @@ public class ChunkCache implements IBlockAccess
             i = par4;
         }
 
+        if (worldObj.provider.dimensionId == 1){
+            return 0.22F + worldObj.provider.lightBrightnessTable[i] * 0.75F;
+        }
         return worldObj.provider.lightBrightnessTable[i];
     }
 
@@ -156,7 +162,13 @@ public class ChunkCache implements IBlockAccess
     public float getLightBrightness(int par1, int par2, int par3)
     {
         if (isBounds(par1, par2, par3)){
+            if (worldObj.provider.dimensionId == 1){
+                return 0.22F + worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)] * 0.75F;
+            }
             return worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
+        }
+        if (worldObj.provider.dimensionId == 1){
+            return 0.22F + worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)] * 0.75F;
         }
         return worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)];
     }
