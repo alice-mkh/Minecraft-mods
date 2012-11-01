@@ -8,6 +8,7 @@ public abstract class Entity
     public static boolean waterladder = false;
     public static boolean toaster = false;
     public static boolean oldstepsound = false;
+    public static boolean oldrange = false;
 
     private static int nextEntityID = 0;
     public int entityId;
@@ -2314,7 +2315,7 @@ public abstract class Entity
 
     public int func_82143_as()
     {
-        return 3;
+        return oldrange ? 4 : 3;
     }
 
     public int func_82148_at()

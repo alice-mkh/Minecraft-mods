@@ -3,7 +3,7 @@ package net.minecraft.src;
 public class ODMobs extends OldDaysModule{
     public ODMobs(mod_OldDays c){
         super(c, 3, "Mobs");
-        new OldDaysPropertyInt(this,  1, 1,     3,     "AI", 3).setUseNames();
+        new OldDaysPropertyInt(this,  1, 1,     4,     "AI", 4).setUseNames();
         new OldDaysPropertyBool(this, 2, false, true,  "AnimalsFlee");
         new OldDaysPropertyBool(this, 3, true,  true,  "SheepEatGrass");
         new OldDaysPropertyBool(this, 4, true,  true,  "SpidersCanClimb");
@@ -25,7 +25,11 @@ public class ODMobs extends OldDaysModule{
                     set(EntityWolf.class, "fixai", AI<3);
                     set(EntityPig.class, "fixai", AI<3);
                     set(EntityCreature.class, "jump", AI<2);
-                    set(EntityLiving.class, "infdevai", AI<1); break;
+                    set(EntityLiving.class, "infdevai", AI<1);
+                    set(Entity.class, "oldrange", AI<4);
+                    set(EntityLiving.class, "oldrange", AI<4);
+                    set(EntityCreeper.class, "oldrange", AI<4);
+                    set(EntityAITarget.class, "oldai", AI<4); break;
             case 2: set(EntityAIPanic.class, "disablePanic", !AnimalsFlee);
                     set(EntityCreature.class, "nopanic", !AnimalsFlee); break;
             case 3: set(EntitySheep.class, "caneatgrass", SheepEatGrass); break;

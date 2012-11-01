@@ -39,7 +39,7 @@ CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find Cont
 CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake`
        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` `find Explosion` ODGameplay"
 ADD[3]="olddays/icons.png"
-CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic`
+CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
        `find EntitySquid` `find EntitySlime` `find EntityWolf` EntityAIEatGrass2 ODMobs"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer`
@@ -73,7 +73,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs
         `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find Explosion`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
-        `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic`
+        `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
         `find EntitySquid` `find EntitySlime` ODMobs
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem`

@@ -16,6 +16,7 @@ public abstract class EntityLiving extends Entity
     public static boolean toolbreakanim = true;
     public static boolean score = false;
     public static boolean oldswing = false;
+    public static boolean oldrange = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -2728,6 +2729,9 @@ public abstract class EntityLiving extends Entity
 
     public int func_82143_as()
     {
+        if (oldrange){
+            return 4;
+        }
         if (getAttackTarget() == null)
         {
             return 3;

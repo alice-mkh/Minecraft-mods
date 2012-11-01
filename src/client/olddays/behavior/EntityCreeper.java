@@ -7,6 +7,7 @@ public class EntityCreeper extends EntityMob
     public static boolean fixai = false;
     public static boolean survivaltest = false;
     public static boolean dark = false;
+    public static boolean oldrange = false;
 
     /**
      * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
@@ -141,6 +142,9 @@ public class EntityCreeper extends EntityMob
 
     public int func_82143_as()
     {
+        if (oldrange){
+            return 4;
+        }
         if (getAttackTarget() == null)
         {
             return 3;
