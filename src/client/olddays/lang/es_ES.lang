@@ -272,6 +272,9 @@ mobs.ai.name=IA de Mobs
  mobs.ai3.desc=No saltan si están obstaculizados
  mobs.ai4=1.2
  mobs.ai4.desc=IA super avanzada
+//FIXME
+ mobs.ai5=1.4
+ mobs.ai5.desc=Different visibility range
 mobs.animalsflee.name=Pánico de animales
  mobs.animalsflee.desc1=Si se activa, los mobs
  mobs.animalsflee.desc2=correrán al dañarse.

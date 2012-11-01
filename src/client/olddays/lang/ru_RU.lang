@@ -267,6 +267,9 @@ mobs.ai.name=ИИ мобов
  mobs.ai3.desc=Не прыгают, когда натыкаются на блоки
  mobs.ai4=1.2
  mobs.ai4.desc=Гораздо более продвинутый ИИ
+//
+ mobs.ai5=1.4
+ mobs.ai5.desc=Different visibility range
 mobs.animalsflee.name=Паника животных
  mobs.animalsflee.desc1=Когда включено, они будут
  mobs.animalsflee.desc2=убегать после атаки.

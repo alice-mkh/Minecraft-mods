@@ -268,6 +268,9 @@ mobs.ai.name=Mob AI
  mobs.ai3.desc=Mobs springen nicht wenn sie ein Hindernis treffen
  mobs.ai4=1.2
  mobs.ai4.desc=Viel mehr künstliche Intelligenz 
+//FIXME
+ mobs.ai5=1.4
+ mobs.ai5.desc=Different visibility range
 mobs.animalsflee.name=Tier-Panik
  mobs.animalsflee.desc1=Wenn aktiviert rennen Tiere davon
  mobs.animalsflee.desc2=wenn sie Schaden nehmen.

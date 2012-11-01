@@ -265,6 +265,9 @@ mobs.ai.name=Inteligencja mobów
  mobs.ai3.desc=Moby nie skaczą jak napotykają przeszkodę
  mobs.ai4=1.2
  mobs.ai4.desc=O wiele bardziej zaawansowana inteligencja
+//FIXME
+ mobs.ai5=1.4
+ mobs.ai5.desc=Different visibility range
 mobs.animalsflee.name=Panika zwierząt
  mobs.animalsflee.desc1=Jeśli włączone, moby będą
  mobs.animalsflee.desc2=uciekać po dostaniu obrażeń.
