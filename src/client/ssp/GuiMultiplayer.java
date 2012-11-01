@@ -345,7 +345,6 @@ public class GuiMultiplayer extends GuiScreen
      */
     private void joinServer(int par1)
     {
-        mc.enableSP = false;
         if (par1 < internetServerList.countServers())
         {
             func_74002_a(internetServerList.getServerData(par1));
@@ -363,6 +362,7 @@ public class GuiMultiplayer extends GuiScreen
 
     private void func_74002_a(ServerData par1ServerData)
     {
+        mc.enableSP = false;
         mc.displayGuiScreen(new GuiConnecting(mc, par1ServerData));
     }
 
