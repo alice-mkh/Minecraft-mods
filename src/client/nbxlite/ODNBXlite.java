@@ -623,7 +623,7 @@ public class ODNBXlite extends OldDaysModule{
             customgrass.setStepSound(Block.soundGrassFootstep);
             customgrass.setBlockName("grass");
             Block.blocksList[Block.grass.blockID] = customgrass;
-            mod_OldDays.setField(Block.class, null, "grass", customgrass);
+            mod_OldDays.setField(Block.class, null, 21, customgrass);//Block: grass
             customgrass.toptex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", customgrass.toptex, "/olddays/grasstop.png", 0, 1, 1);
             customgrass.sidetex = mod_OldDays.getFreeTextureIndex();
@@ -636,7 +636,7 @@ public class ODNBXlite extends OldDaysModule{
             customleaves.setBlockName("leaves");
             customleaves.setRequiresSelfNotify();
             Block.blocksList[Block.leaves.blockID] = customleaves;
-            mod_OldDays.setField(Block.class, null, "leaves", customleaves);
+            mod_OldDays.setField(Block.class, null, 37, customleaves);//Block: leaves
             customleaves.fasttex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", customleaves.fasttex, "/olddays/leavesfast.png", 0, 1, 1);
             customleaves.fancytex = mod_OldDays.getFreeTextureIndex();
@@ -647,7 +647,7 @@ public class ODNBXlite extends OldDaysModule{
             customtallgrass.setStepSound(Block.soundGrassFootstep);
             customtallgrass.setBlockName("tallgrass");
             Block.blocksList[Block.tallGrass.blockID] = customtallgrass;
-            mod_OldDays.setField(Block.class, null, "tallGrass", customtallgrass);
+            mod_OldDays.setField(Block.class, null, 50, customtallgrass);//Block: tallGrass
             Block.blocksList[Block.vine.blockID] = null;
             BlockVine2 customvine = (BlockVine2)(new BlockVine2(Block.vine.blockID));
             customvine.setHardness(0.2F);
@@ -655,7 +655,7 @@ public class ODNBXlite extends OldDaysModule{
             customvine.setBlockName("vine");
             customvine.setRequiresSelfNotify();
             Block.blocksList[Block.vine.blockID] = customvine;
-            mod_OldDays.setField(Block.class, null, "vine", customvine);
+            mod_OldDays.setField(Block.class, null, 125, customvine);//Block: vine
 
             Item.itemsList[256 + 34] = null;
             ItemHoe2 hoeWood = new ItemHoe2(34, EnumToolMaterial.WOOD);

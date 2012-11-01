@@ -146,7 +146,7 @@ public class ODTextures extends OldDaysModule{
             addTextureHook("/terrain.png", customsteel.sidetex, "/olddays/oreblocks/ironside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customsteel.bottomtex, "/olddays/oreblocks/ironbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockSteel.blockID] = customsteel;
-            mod_OldDays.setField(Block.class, null, "blockSteel", customsteel);
+            mod_OldDays.setField(Block.class, null, 61, customsteel);//Block: blockSteel
             Block.blocksList[Block.blockGold.blockID] = null;
             BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, 23));
             customgold.setHardness(3F);
@@ -158,7 +158,7 @@ public class ODTextures extends OldDaysModule{
             addTextureHook("/terrain.png", customgold.sidetex, "/olddays/oreblocks/goldside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customgold.bottomtex, "/olddays/oreblocks/goldbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockGold.blockID] = customgold;
-            mod_OldDays.setField(Block.class, null, "blockGold", customgold);
+            mod_OldDays.setField(Block.class, null, 60, customgold);//Block: blockGold
             Block.blocksList[Block.blockDiamond .blockID] = null;
             BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID, 24));
             customdiamond.setHardness(5F);
@@ -170,7 +170,7 @@ public class ODTextures extends OldDaysModule{
             addTextureHook("/terrain.png", customdiamond.sidetex, "/olddays/oreblocks/diamondside.png", 0, 1, 1);
             addTextureHook("/terrain.png", customdiamond.bottomtex, "/olddays/oreblocks/diamondbottom.png", 0, 1, 1);
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
-            mod_OldDays.setField(Block.class, null, "blockDiamond", customdiamond);
+            mod_OldDays.setField(Block.class, null, 76, customdiamond);//Block: blockDiamond
         }catch (Exception ex){
             System.out.println(ex);
         }

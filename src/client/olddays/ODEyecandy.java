@@ -130,7 +130,7 @@ public class ODEyecandy extends OldDaysModule{
             customchest.setBlockName("chest");
             customchest.setRequiresSelfNotify();
             Block.blocksList[Block.chest.blockID] = customchest;
-            mod_OldDays.setField(Block.class, null, "chest", customchest);
+            mod_OldDays.setField(Block.class, null, 73, customchest);//Block: chest
             addTextureHook("/terrain.png", BlockChestOld.toptex, "/olddays/chest.png", 0, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.sidetex, "/olddays/chest.png", 1, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.fronttex, "/olddays/chest.png", 2, 3, 3);
@@ -146,7 +146,7 @@ public class ODEyecandy extends OldDaysModule{
             customwire.disableStats();
             customwire.setRequiresSelfNotify();
             Block.blocksList[Block.redstoneWire.blockID] = customwire;
-            mod_OldDays.setField(Block.class, null, "redstoneWire", customwire);
+            mod_OldDays.setField(Block.class, null, 74, customwire);//Block: redstoneWire
             Block.blocksList[Block.fence.blockID] = null;
             BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, 4));
             customfence.setHardness(2.0F);
@@ -154,7 +154,7 @@ public class ODEyecandy extends OldDaysModule{
             customfence.setStepSound(Block.soundWoodFootstep);
             customfence.setBlockName("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
-            mod_OldDays.setField(Block.class, null, "fence", customfence);
+            mod_OldDays.setField(Block.class, null, 104, customfence);//Block: fence
         }catch (Exception ex){
             System.out.println(ex);
         }

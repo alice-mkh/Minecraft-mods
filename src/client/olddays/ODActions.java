@@ -94,7 +94,7 @@ public class ODActions extends OldDaysModule{
             customtnt.setStepSound(Block.soundGrassFootstep);
             customtnt.setBlockName("tnt");
             Block.blocksList[Block.tnt.blockID] = customtnt;
-            mod_OldDays.setField(Block.class, null, "tnt", customtnt);
+            mod_OldDays.setField(Block.class, null, 65, customtnt);//Block: tnt
             Block.blocksList[Block.fence.blockID] = null;
             BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, 4));
             customfence.setHardness(2.0F);
@@ -102,7 +102,7 @@ public class ODActions extends OldDaysModule{
             customfence.setStepSound(Block.soundWoodFootstep);
             customfence.setBlockName("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
-            mod_OldDays.setField(Block.class, null, "fence", customfence);
+            mod_OldDays.setField(Block.class, null, 104, customfence);//Block: fence
             Block.blocksList[Block.tilledField.blockID] = null;
             BlockFarmlandOld customTilledField = (BlockFarmlandOld)(new BlockFarmlandOld(60));
             customTilledField.setHardness(0.6F);
@@ -110,7 +110,7 @@ public class ODActions extends OldDaysModule{
             customTilledField.setBlockName("farmland");
             customTilledField.setRequiresSelfNotify();
             Block.blocksList[Block.tilledField.blockID] = customTilledField;
-            mod_OldDays.setField(Block.class, null, "tilledField", customTilledField);
+            mod_OldDays.setField(Block.class, null, 79, customTilledField);//Block: tilledField
             Block.blocksList[Block.wood.blockID] = null;
             BlockLog2 customWood = (BlockLog2)(new BlockLog2(17));
             customWood.setHardness(2.0F);
@@ -118,7 +118,7 @@ public class ODActions extends OldDaysModule{
             customWood.setBlockName("log");
             customWood.setRequiresSelfNotify();
             Block.blocksList[Block.wood.blockID] = customWood;
-            mod_OldDays.setField(Block.class, null, "wood", customWood);
+            mod_OldDays.setField(Block.class, null, 36, customWood);//Block: wood
         }catch (Exception exception){
             System.out.println(exception);
         }
