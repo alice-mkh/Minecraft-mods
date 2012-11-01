@@ -36,7 +36,7 @@ CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIte
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
 CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer`
        ODBugs"
-CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake`
+CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` find BlockCake2
        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` `find Explosion` ODGameplay"
 ADD[3]="olddays/icons.png"
 CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget`
@@ -71,7 +71,7 @@ ADD[10]="olddays/lang"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs
-        `find EntityXPOrb` `find FoodStats` `find ItemFood` `find BlockCake` `find Explosion`
+        `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find Explosion`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`

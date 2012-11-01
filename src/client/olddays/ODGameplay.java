@@ -21,6 +21,7 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyBool(this, 16,false, true,  "BucketStacking");
         new OldDaysPropertyInt(this,  17,2,     2,     "Score", 2).setUseNames();
         new OldDaysPropertyBool(this, 18,true,  false, "OldExplosion");
+        replaceBlocks();
     }
 
     public void callback (int i){
@@ -29,7 +30,7 @@ public class ODGameplay extends OldDaysModule{
                     set(GuiIngame.class, "hidexp", !EnableXP); break;
             case 2: set(FoodStats.class, "disabled", !EnableHunger);
                     set(ItemFood.class, "heal", !EnableHunger);
-                    set(BlockCake.class, "heal", !EnableHunger);
+                    set(BlockCake2.class, "heal", !EnableHunger);
                     set(GuiIngame.class, "hidehunger", !EnableHunger);
                     set(GuiIngame.class, "fallbacktex", !hasTextures("olddays/icons.png")); break;
             case 3: set(ItemFood.class, "instant", InstantFood); break;
@@ -77,6 +78,22 @@ public class ODGameplay extends OldDaysModule{
     public static boolean BucketStacking;
     public static int Score = 2;
     public static boolean OldExplosion = true;
+
+    private void replaceBlocks(){
+        try{
+            Block.blocksList[Block.cake.blockID] = null;
+            BlockCake2 customcake = (BlockCake2)(new BlockCake2(92, 121));
+            customcake.setHardness(0.5F);
+            customcake.setStepSound(Block.soundClothFootstep);
+            customcake.setBlockName("cake");
+            customcake.disableStats();
+            customcake.setRequiresSelfNotify(); 
+            Block.blocksList[Block.cake.blockID] = customcake;
+            mod_OldDays.setField(Block.class, null, "cake", customcake);
+        }catch (Exception exception){
+            System.out.println(exception);
+        }
+    }
 
     private void setSwordDamage(boolean b){
         mod_OldDays.setField(ItemSword.class, Item.swordDiamond, 0, b ? 10 : 7);
