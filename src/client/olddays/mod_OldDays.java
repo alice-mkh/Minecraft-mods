@@ -11,6 +11,7 @@ import java.util.zip.ZipEntry;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 public class mod_OldDays extends Mod{
 
@@ -345,6 +346,9 @@ public class mod_OldDays extends Mod{
         try{
             Field f = c.getDeclaredFields()[num];
             f.setAccessible(true);
+            Field modifiers = f.getClass().getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(f, f.getModifiers() & ~Modifier.FINAL);
             f.set(o, val);
         }catch(Exception ex){
             System.out.println(ex);
