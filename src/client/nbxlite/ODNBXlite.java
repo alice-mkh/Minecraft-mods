@@ -617,20 +617,36 @@ public class ODNBXlite extends OldDaysModule{
 
     private static void replaceBlocks(){
         try{
-            Block.grass.toptex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", Block.grass.toptex, "/olddays/grasstop.png", 0, 1, 1);
-            Block.grass.sidetex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", Block.grass.sidetex, "/olddays/grassside.png", 0, 1, 1);
+            Block.blocksList[Block.grass.blockID] = null;
+            BlockGrass2 customgrass = (BlockGrass2)(new BlockGrass2(Block.grass.blockID));
+            customgrass.setHardness(0.6F);
+            customgrass.setStepSound(Block.soundGrassFootstep);
+            customgrass.setBlockName("grass");
+            Block.blocksList[Block.grass.blockID] = customgrass;
+            mod_OldDays.setField(Block.class, null, "grass", customgrass);
+            customgrass.toptex = mod_OldDays.getFreeTextureIndex();
+            addTextureHook("/terrain.png", customgrass.toptex, "/olddays/grasstop.png", 0, 1, 1);
+            customgrass.sidetex = mod_OldDays.getFreeTextureIndex();
+            addTextureHook("/terrain.png", customgrass.sidetex, "/olddays/grassside.png", 0, 1, 1);
             Block.leaves.fasttex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", Block.leaves.fasttex, "/olddays/leavesfast.png", 0, 1, 1);
             Block.leaves.fancytex = mod_OldDays.getFreeTextureIndex();
             addTextureHook("/terrain.png", Block.leaves.fancytex, "/olddays/leavesfancy.png", 0, 1, 1);
             Block.blocksList[Block.tallGrass.blockID] = null;
-            BlockTallGrass2 tallgrass2 = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID, 39)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setBlockName("tallgrass");
-            Block.blocksList[Block.tallGrass.blockID] = tallgrass2;
+            BlockTallGrass2 customtallgrass = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID, 39));
+            customtallgrass.setHardness(0.0F)
+            customtallgrass.setStepSound(Block.soundGrassFootstep);
+            customtallgrass.setBlockName("tallgrass");
+            Block.blocksList[Block.tallGrass.blockID] = customtallgrass;
+            mod_OldDays.setField(Block.class, null, "tallgrass", customtallgrass);
             Block.blocksList[Block.vine.blockID] = null;
-            BlockVine2 vine2 = (BlockVine2)(new BlockVine2(Block.vine.blockID)).setHardness(0.2F).setStepSound(Block.soundGrassFootstep).setBlockName("vine").setRequiresSelfNotify();
-            Block.blocksList[Block.vine.blockID] = vine2;
+            BlockVine2 customvine = (BlockVine2)(new BlockVine2(Block.vine.blockID));
+            customvine.setHardness(0.2F);
+            customvine.setStepSound(Block.soundGrassFootstep);
+            customvine.setBlockName("vine");
+            customvine.setRequiresSelfNotify();
+            Block.blocksList[Block.vine.blockID] = customvine;
+            mod_OldDays.setField(Block.class, null, "vine", customvine);
 
             Item.itemsList[256 + 34] = null;
             ItemHoe2 hoeWood = new ItemHoe2(34, EnumToolMaterial.WOOD);
