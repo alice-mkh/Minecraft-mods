@@ -19,4 +19,12 @@ public class FakeServerPlayerList extends IntegratedPlayerList
         }
         return null;
     }
+
+    /**
+     * Returns an array of usernames for which player.dat exists for.
+     */
+    public String[] getAvailablePlayerDat()
+    {
+        return new String[]{Minecraft.getMinecraft().thePlayer.username};
+    }
 }

@@ -111,8 +111,40 @@ public class FakeServer extends IntegratedServer
 
     public void addServerStatsToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)
     {
-        super.addServerStatsToSnooper(par1PlayerUsageSnooper);
+        par1PlayerUsageSnooper.addData("whitelist_enabled", Boolean.valueOf(false));
+        par1PlayerUsageSnooper.addData("whitelist_count", Integer.valueOf(0));
+        par1PlayerUsageSnooper.addData("players_current", Integer.valueOf(getCurrentPlayerCount()));
+        par1PlayerUsageSnooper.addData("players_max", Integer.valueOf(getMaxPlayers()));
+        par1PlayerUsageSnooper.addData("players_seen", Integer.valueOf(getConfigurationManager().getAvailablePlayerDat().length));
+        par1PlayerUsageSnooper.addData("uses_auth", Boolean.valueOf(isServerInOnlineMode()));
+        par1PlayerUsageSnooper.addData("gui_state", getGuiEnabled() ? "enabled" : "disabled");
+        par1PlayerUsageSnooper.addData("avg_tick_ms", Integer.valueOf((int)(MathHelper.average(tickTimeArray) * 9.9999999999999995E-007D)));
+        par1PlayerUsageSnooper.addData("avg_sent_packet_count", Integer.valueOf((int)MathHelper.average(sentPacketCountArray)));
+        par1PlayerUsageSnooper.addData("avg_sent_packet_size", Integer.valueOf((int)MathHelper.average(sentPacketSizeArray)));
+        par1PlayerUsageSnooper.addData("avg_rec_packet_count", Integer.valueOf((int)MathHelper.average(receivedPacketCountArray)));
+        par1PlayerUsageSnooper.addData("avg_rec_packet_size", Integer.valueOf((int)MathHelper.average(receivedPacketSizeArray)));
+
+        World world = Minecraft.getMinecraft().theWorld;
+        if (world != null)
+        {
+            WorldInfo worldinfo = world.getWorldInfo();
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[dimension]").toString(), Integer.valueOf(world.provider.dimensionId));
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[mode]").toString(), worldinfo.getGameType());
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[difficulty]").toString(), Integer.valueOf(world.difficultySetting));
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[hardcore]").toString(), Boolean.valueOf(worldinfo.isHardcoreModeEnabled()));
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[generator_name]").toString(), worldinfo.getTerrainType().getWorldTypeName());
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[generator_version]").toString(), Integer.valueOf(worldinfo.getTerrainType().getGeneratorVersion()));
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[height]").toString(), Integer.valueOf(getBuildLimit()));
+            par1PlayerUsageSnooper.addData((new StringBuilder()).append("world[chunks_loaded]").toString(), Integer.valueOf(world.getChunkProvider().getLoadedChunkCount()));
+        }
+
+        par1PlayerUsageSnooper.addData("worlds", Integer.valueOf(1));
         par1PlayerUsageSnooper.addData("snooper_partner", mc.getPlayerUsageSnooper().getUniqueID());
+    }
+
+    public boolean isServerInOnlineMode()
+    {
+        return false;
     }
 
     /**
