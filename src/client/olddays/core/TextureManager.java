@@ -40,9 +40,7 @@ public class TextureManager{
         fx2.changeIndex(index, b, false);
         try{
             renderEngine.updateDynamicTextures();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
+        }catch(Exception ex){}
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
