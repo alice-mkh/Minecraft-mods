@@ -2309,7 +2309,7 @@ public class RenderGlobal implements IWorldAccess
     {
         for(int i = 0; i < worldRenderers.length; i++)
         {
-            if((worldRenderers[i].isChunkLit || force || true) && !worldRenderers[i].needsUpdate)
+            if((worldRenderers[i].isChunkLit || force) && !worldRenderers[i].needsUpdate)
             {
                 worldRenderersToUpdate.add(worldRenderers[i]);
                 worldRenderers[i].markDirty();
