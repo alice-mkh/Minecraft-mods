@@ -55,7 +55,7 @@ CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld ODTextures"
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png olddays/slime.png
         olddays/cloth_1.png olddays/cloth_2.png olddays/cloth_empty.png olddays/oreblocks"
-CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World`
+CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2`
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper`
@@ -75,7 +75,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
-        `find EntitySquid` `find EntitySlime` ODMobs
+        `find EntitySquid` `find EntitySlime` ODMobs `find ComponentVillageField` `find ComponentVillageField2`
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem`
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer

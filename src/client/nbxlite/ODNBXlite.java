@@ -825,6 +825,10 @@ public class ODNBXlite extends OldDaysModule{
         return Generator==GEN_NEWBIOMES && MapFeatures<=FEATURES_BETA181;
     }
 
+    public static boolean noNewCrops(){
+        return Generator==GEN_NEWBIOMES && MapFeatures<FEATURES_14;
+    }
+
     public static void SetGenerator(){
         SetGenerator(Minecraft.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
     }
