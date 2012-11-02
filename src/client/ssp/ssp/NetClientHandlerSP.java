@@ -118,4 +118,14 @@ public class NetClientHandlerSP extends NetClientHandler
     public void handleAnimation(Packet18Animation par1Packet18Animation)
     {
     }
+
+    public void handleClientCommand(Packet205ClientCommand packet205clientcommand)
+    {
+        if (packet205clientcommand.forceRespawn == 1)
+        {
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.displayGuiScreen(null);
+            mc.respawn(mc.theWorld.isRemote, 0, true);
+        }
+    }
 }

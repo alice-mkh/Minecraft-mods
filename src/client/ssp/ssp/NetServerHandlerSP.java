@@ -90,7 +90,7 @@ public class NetServerHandlerSP extends NetServerHandler
     {
     }
 
-    public void func_72458_a(Packet205ClientCommand par1Packet205ClientCommand)
+    public void handleClientCommand(Packet205ClientCommand par1Packet205ClientCommand)
     {
     }
 
