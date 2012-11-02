@@ -26,7 +26,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
             field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
         }
     }
@@ -35,7 +35,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
         try{
             value = ((String)field.get(module));
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
             return;
         }

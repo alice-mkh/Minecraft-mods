@@ -31,7 +31,7 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
             field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
         }
     }
@@ -48,7 +48,7 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
         try{
             value = ((Float)field.get(module));
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
             return;
         }

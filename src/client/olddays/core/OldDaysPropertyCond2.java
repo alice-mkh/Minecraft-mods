@@ -21,7 +21,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
                 int i = ((Integer)method.invoke(module));
                 return i;
             }catch(Exception ex){
-                System.out.println(ex);
+                ex.printStackTrace();
                 return 0;
             }
         }
@@ -33,7 +33,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
             field.set(module, getValue());
             module.callback(id);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
         }
     }

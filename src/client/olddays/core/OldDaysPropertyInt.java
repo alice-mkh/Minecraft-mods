@@ -42,7 +42,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
             field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
         }
     }
@@ -59,7 +59,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         try{
             value = ((Integer)field.get(module));
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
             return;
         }

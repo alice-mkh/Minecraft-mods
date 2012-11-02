@@ -26,7 +26,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
             field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
         }
     }
@@ -39,7 +39,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         try{
             value = ((Boolean)field.get(module));
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
             return;
         }

@@ -21,7 +21,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
                 boolean b = ((Boolean)method.invoke(module));
                 return b;
             }catch(Exception ex){
-                System.out.println(ex);
+                ex.printStackTrace();
                 return false;
             }
         }
@@ -33,7 +33,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
             field.set(module, getBoolValue());
             module.callback(id);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
             disable();
         }
     }

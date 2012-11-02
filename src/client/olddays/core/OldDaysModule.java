@@ -195,7 +195,7 @@ public class OldDaysModule{
         try{
             info.getClass().getDeclaredField(var).set(info, b);
         }catch(Exception ex){
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
