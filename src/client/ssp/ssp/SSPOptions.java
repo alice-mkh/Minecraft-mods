@@ -12,4 +12,8 @@ public class SSPOptions{
     public boolean getSMPButton(){
         return true;
     }
+
+    public boolean getFakeServer(){
+        return true;
+    }
 }

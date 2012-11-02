@@ -78,7 +78,10 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
      * Checks the session lock to prevent save collisions
      */
     public void checkSessionLock() throws MinecraftException
-    {/*
+    {
+        if (net.minecraft.client.Minecraft.getMinecraft().sspoptions.getFakeServer()){
+            return;
+        }
         try
         {
             File file = new File(worldDirectory, "session.lock");
@@ -99,7 +102,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         catch (IOException ioexception)
         {
             throw new MinecraftException("Failed to check session lock, aborting");
-        }*/
+        }
     }
 
     /**
