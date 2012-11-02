@@ -52,7 +52,7 @@ public class ODNBXlite extends OldDaysModule{
         set(ItemRenderer.class, "olddays", true);
     }
 
-    public void callback (int i){
+    public void callback(int i){
         switch(i){
             case 1: setGen(0);
                     setInWorldInfo("mapGen", Generator);
@@ -87,10 +87,7 @@ public class ODNBXlite extends OldDaysModule{
                     set(EntityRenderer.class, "sunriseFog", Sunset >= 2);
             case 23:set(EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
                     set(RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
-            case 24:if (Minecraft.getMinecraft().renderGlobal != null &&
-                        Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
-                        ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(OldStars);
-                    }break;
+            case 24:setOldStars(OldStars); break;
             case 25:set(EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
@@ -164,6 +161,14 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean OldStars(){
         return Generator<GEN_NEWBIOMES || MapFeatures<FEATURES_13;
+    }
+
+    public void setOldStars(boolean b){
+        if (Minecraft.getMinecraft().renderGlobal != null){
+            if (Minecraft.getMinecraft().renderGlobal instanceof RenderGlobal2){
+                ((RenderGlobal2)Minecraft.getMinecraft().renderGlobal).setStars(b);
+            }
+        }
     }
 
     public void setLighting(int i, int i2){

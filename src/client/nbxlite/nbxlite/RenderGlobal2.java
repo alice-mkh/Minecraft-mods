@@ -48,7 +48,11 @@ public class RenderGlobal2 extends RenderGlobal{
 
     public void setStars(boolean b){
         oldstars = b;
-        GL11.glPushMatrix();
+        try{
+            GL11.glPushMatrix();
+        }catch(NullPointerException e){
+            return;
+        }
         GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
         renderStars();
         GL11.glEndList();
