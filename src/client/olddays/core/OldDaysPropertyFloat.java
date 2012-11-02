@@ -20,6 +20,8 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
     public OldDaysPropertyFloat(OldDaysModule m, int i, float v, float smp, String f, float m1, float m2){
         this(m, i, v, f, m1, m2);
         smpValue = smp;
+        allowedInSMP = false;
+        m.isLocal = false;
     }
 
     public String getButtonText(){

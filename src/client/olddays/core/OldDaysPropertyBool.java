@@ -15,6 +15,7 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         this(m, i, b, f);
         smpValue = smp;
         allowedInSMP = false;
+        m.isLocal = false;
     }
 
     public String getButtonText(){

@@ -67,7 +67,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             fieldId = guibutton.id * 2 - 1;
             guibutton.enabled = false;
         }
-        mod_OldDays.saveModuleProperties(m);
         mod_OldDays.sendCallbackAndSave(m, p);
         guibutton.enabled = !prop.isDisabled();
         guibutton.displayString = mod_OldDays.getPropertyButtonText(prop);
@@ -90,7 +89,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
         if(!b){
             GuiButtonProp propButton = (GuiButtonProp)button;
-            mod_OldDays.saveModuleProperties(propButton.prop.module.id);
             mod_OldDays.sendCallbackAndSave(propButton.prop.module.id, propButton.prop.id);
             send(propButton.prop);
         }
@@ -141,7 +139,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
         if (par2 == 1){
             button.prop.loadFromString(current);
-            mod_OldDays.saveModuleProperties(button.prop.module.id);
             mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
         }else{
             button.prop.loadFromString(str);

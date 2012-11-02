@@ -23,6 +23,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         this(m, i, v, f, m1, m2);
         smpValue = smp;
         allowedInSMP = false;
+        m.isLocal = false;
     }
 
     public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int m2){

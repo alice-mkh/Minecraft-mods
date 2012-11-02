@@ -248,8 +248,6 @@ public class mod_OldDays extends Mod{
         }
     }
 
-    public static void loadModuleProperties(){}
-
     public static String getPropertyButtonText(OldDaysProperty prop){
         return prop.isDisabled() ? prop.getDisabledButtonText() : prop.getButtonText();
     }
@@ -264,8 +262,6 @@ public class mod_OldDays extends Mod{
         return null;
     }
 
-    public static void saveModuleProperties(int id){}
-
     public static void sendCallback(int id, int id2){
         getModuleById(id).last = id2;
         getModuleById(id).getPropertyById(id2).onChange();
@@ -278,7 +274,7 @@ public class mod_OldDays extends Mod{
 
     public static void sendCallbackAndSave(int id, int id2){
         sendCallback(id, id2);
-        saveman.saveAll();
+        saveman.saveModuleProperties(id);
     }
 
     public static Minecraft getMinecraft(){
@@ -390,10 +386,7 @@ public class mod_OldDays extends Mod{
     }
 
     public static boolean isVanillaSMP(){
-        if (Minecraft.getMinecraft().enableSP){
-            return false;
-        }
-        return !Minecraft.getMinecraft().isIntegratedServerRunning() && !smpman.core.canUsePackets;
+        return getMinecraft().isMultiplayerWorld() && !getMinecraft().isSingleplayer();
     }
 
     public boolean unpackSound(String dir, String name){

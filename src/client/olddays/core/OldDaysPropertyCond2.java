@@ -12,6 +12,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
     public OldDaysPropertyCond2(OldDaysModule m, int i, int v, int smp, String f, int m2){
         this(m, i, v, f, m2);
         allowedInSMP = false;
+        m.isLocal = false;
     }
 
     public int getValue(){

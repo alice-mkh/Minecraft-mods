@@ -97,13 +97,11 @@ public class SavingManager{
     }
 
     public void saveModuleProperties(int id){
-        if (mod_OldDays.getMinecraft().theWorld != null){
-            if (mod_OldDays.getMinecraft().theWorld.isRemote){
-                return;
-            }
+        OldDaysModule module = core.getModuleById(id);
+        if (mod_OldDays.isVanillaSMP() && !module.isLocal){
+            return;
         }
         Properties properties = new Properties();
-        OldDaysModule module = core.getModuleById(id);
         try{
             File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
             dir.mkdirs();

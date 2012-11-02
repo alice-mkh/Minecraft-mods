@@ -15,6 +15,7 @@ public class OldDaysModule{
     protected Minecraft minecraft;
     public int last;
     public boolean renderersAdded;
+    public boolean isLocal;
 
     public OldDaysModule(mod_OldDays c, int i, String s){
         core = c;
@@ -24,6 +25,7 @@ public class OldDaysModule{
         minecraft = mod_OldDays.getMinecraft();
         last = 0;
         renderersAdded = false;
+        isLocal = true;
     }
 
     public OldDaysProperty getPropertyById(int id){
