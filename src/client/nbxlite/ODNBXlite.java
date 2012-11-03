@@ -622,17 +622,17 @@ public class ODNBXlite extends OldDaysModule{
 
     private static void replaceBlocks(){
         try{
-            Block.blocksList[Block.grass.blockID] = null;
+            /*Block.blocksList[Block.grass.blockID] = null;
             BlockGrass2 customgrass = (BlockGrass2)(new BlockGrass2(Block.grass.blockID));
             customgrass.setHardness(0.6F);
             customgrass.setStepSound(Block.soundGrassFootstep);
             customgrass.setBlockName("grass");
             Block.blocksList[Block.grass.blockID] = customgrass;
-            mod_OldDays.setField(Block.class, null, 21, customgrass);//Block: grass
-            customgrass.toptex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customgrass.toptex, "/olddays/grasstop.png", 0, 1, 1);
-            customgrass.sidetex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customgrass.sidetex, "/olddays/grassside.png", 0, 1, 1);
+            mod_OldDays.setField(Block.class, null, 21, customgrass);//Block: grass*/
+            Block.grass.toptex = mod_OldDays.getFreeTextureIndex();
+            addTextureHook("/terrain.png", Block.grass.toptex, "/olddays/grasstop.png", 0, 1, 1);
+            Block.grass.sidetex = mod_OldDays.getFreeTextureIndex();
+            addTextureHook("/terrain.png", Block.grass.sidetex, "/olddays/grassside.png", 0, 1, 1);
             Block.blocksList[Block.leaves.blockID] = null;
             BlockLeaves2 customleaves = (BlockLeaves2)(new BlockLeaves2(Block.leaves.blockID, 52));
             customleaves.setHardness(0.2F);

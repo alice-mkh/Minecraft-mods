@@ -48,7 +48,11 @@ public class ODActions extends OldDaysModule{
             case 16:set(EntityBoat.class, "oldbreaking", OldBoatBreaking); break;
             case 17:set(ItemAxe2.class, "oldhardness", OldHardness);
                     set(ItemPickaxe2.class, "oldhardness", OldHardness);
-                    mod_OldDays.setField(ItemSpade.class, null, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
+                    mod_OldDays.setField(ItemTool.class, Item.shovelWood, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
+                    mod_OldDays.setField(ItemTool.class, Item.shovelStone, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
+                    mod_OldDays.setField(ItemTool.class, Item.shovelSteel, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
+                    mod_OldDays.setField(ItemTool.class, Item.shovelGold, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
+                    mod_OldDays.setField(ItemTool.class, Item.shovelDiamond, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(Block.class, Block.obsidian, 167, OldHardness ? 10F : 50F); break;
         }
     }
