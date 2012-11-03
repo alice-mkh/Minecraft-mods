@@ -232,8 +232,16 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         }
         if (mapFeaturesEnabled)
         {
+            if(ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
+                strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            }
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
             villageGenerator.generate(this, worldObj, i, j, abyte0);
+            if(ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14){
+                newStrongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            }else if(ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
+                strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            }
             if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_14){
                 scatteredFeatureGenerator.generate(this, worldObj, i, j, abyte0);
             }else if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_13){
