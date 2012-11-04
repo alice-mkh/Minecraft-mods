@@ -147,7 +147,7 @@ public class GuiContainerCreativeOld extends GuiContainer
     /**
      * Draw the foreground layer for the GuiContainer (everythin in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer()
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         fontRenderer.drawString(StatCollector.translateToLocal("container.creative"), 8, 6, 0x404040);
     }
