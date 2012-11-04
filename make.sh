@@ -60,7 +60,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVi
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 `find BlockGrass`
-       `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
+       `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX`
        `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped`"
 ADD[9]="olddays/grasstop.png olddays/grassside.png olddays/leavesfast.png olddays/leavesfancy.png olddays/fluff.png
         olddays/gear.png olddays/gearmiddle.png"
@@ -86,7 +86,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find StructureStrongholdPieces`
         ComponentStrongholdStairsOld ComponentStrongholdCrossingOld `find WorldServer` RenderPlayer2 `find ChestItemRenderHelper`
         `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ `find EntityPickupFX`
-        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityMobSpawner`
+        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX`
         GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
         OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat TextureManager SavingManager
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2"
