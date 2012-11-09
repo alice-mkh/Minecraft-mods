@@ -34,16 +34,16 @@ MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-da
            spawn-human ssp"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` `find EntityBoat`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
-CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer`
+CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` `find EntityLiving`
        ODBugs"
-CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` find BlockCake2
+CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find EntityLiving` BlockCake2
        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` `find Explosion` ODGameplay"
 ADD[3]="olddays/icons.png"
 CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
-       `find EntitySquid` `find EntitySlime` `find EntityWolf` EntityAIEatGrass2 ODMobs"
+       `find EntitySquid` `find EntitySlime` `find EntityWolf` `find EntityLiving` EntityAIEatGrass2 ODMobs"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer`
-       `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer`
+       `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLiving`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
        `find EntitySuspendFX` `find RenderItem` RenderItemFrame2
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
@@ -90,6 +90,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
         OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat TextureManager SavingManager
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2"
+CP[11]="`find EntityLiving`"
 ADD[11]="${ADD[1]} ${ADD[2]} ${ADD[3]} ${ADD[4]} ${ADD[5]} ${ADD[6]} ${ADD[7]} ${ADD[8]} ${ADD[9]} ${ADD[10]}"
 MV[12]="EntityHuman ModelHuman RenderHuman mod_SpawnHuman"
 ADD[12]="./char.png"
