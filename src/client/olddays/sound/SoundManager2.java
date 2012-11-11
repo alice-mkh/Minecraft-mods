@@ -113,7 +113,7 @@ public class SoundManager2 extends SoundManager{
                 return "nothing";
             }
         }
-        if (par1Str.equals("mob.creeper") && creeper){
+        if (par1Str.startsWith("mob.creeper.say") && creeper){
             str = "olddays.creeper";
         }
         if (par1Str.startsWith("random.door_open") && door){
@@ -164,7 +164,7 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("liquid.splash") && splash){
             str = "random.splash";
         }
-        if (par1Str.startsWith("liquid.swim") && !!swimming){
+        if (par1Str.startsWith("liquid.swim") && !swimming){
             return "nothing";
         }
         if (par1Str.startsWith("minecart") && !minecart){
