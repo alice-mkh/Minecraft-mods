@@ -3254,7 +3254,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             p = c.getPackage().getName()+".";
         }catch(Exception ex){}
         String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
-        File file = new File(path.replace("%20", " ")+p.replace(".", "/"));        List classes = new ArrayList();
+        File file = new File(path.replace("%20", " ").replace("%23", "#")+p.replace(".", "/"));        List classes = new ArrayList();
         if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")){
             try{
                 ZipFile jar = new ZipFile(file);
