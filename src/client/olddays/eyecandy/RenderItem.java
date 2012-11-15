@@ -36,6 +36,12 @@ public class RenderItem extends Render
     {
         random.setSeed(187L);
         ItemStack itemstack = par1EntityItem.item;
+
+        if (itemstack.getItem() == null)
+        {
+            return;
+        }
+
         GL11.glPushMatrix();
         float f = MathHelper.sin(((float)par1EntityItem.age + par9) / 10F + par1EntityItem.hoverStart) * 0.1F + 0.1F;
         float f1 = (((float)par1EntityItem.age + par9) / 20F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
@@ -121,7 +127,7 @@ public class RenderItem extends Render
 
                 if (field_77024_a)
                 {
-                    int k1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, i);
+                    int k1 = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, i);
                     float f9 = (float)(k1 >> 16 & 0xff) / 255F;
                     float f12 = (float)(k1 >> 8 & 0xff) / 255F;
                     float f14 = (float)(k1 & 0xff) / 255F;
@@ -157,7 +163,7 @@ public class RenderItem extends Render
 
             if (field_77024_a)
             {
-                int i1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 0);
+                int i1 = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 0);
                 float f4 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f7 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f10 = (float)(i1 & 0xff) / 255F;
@@ -229,7 +235,7 @@ public class RenderItem extends Render
             }
             GL11.glRotatef(210F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-            int j1 = Item.itemsList[i].func_82790_a(par3ItemStack, 0);
+            int j1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, 0);
             float f1 = (float)(j1 >> 16 & 0xff) / 255F;
             float f3 = (float)(j1 >> 8 & 0xff) / 255F;
             float f6 = (float)(j1 & 0xff) / 255F;
@@ -257,7 +263,7 @@ public class RenderItem extends Render
             for (int l = 0; l <= 1; l++)
             {
                 int k1 = Item.itemsList[i].getIconFromDamageForRenderPass(j, l);
-                int l1 = Item.itemsList[i].func_82790_a(par3ItemStack, l);
+                int l1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, l);
                 float f4 = (float)(l1 >> 16 & 0xff) / 255F;
                 float f7 = (float)(l1 >> 8 & 0xff) / 255F;
                 float f8 = (float)(l1 & 0xff) / 255F;
@@ -285,7 +291,7 @@ public class RenderItem extends Render
                 par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
             }
 
-            int i1 = Item.itemsList[i].func_82790_a(par3ItemStack, 0);
+            int i1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, 0);
             float f = (float)(i1 >> 16 & 0xff) / 255F;
             float f2 = (float)(i1 >> 8 & 0xff) / 255F;
             float f5 = (float)(i1 & 0xff) / 255F;
@@ -302,7 +308,10 @@ public class RenderItem extends Render
         GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
-    public void func_82406_b(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
+    /**
+     * Render the item's icon or block into the GUI, including the glint effect.
+     */
+    public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
     {
         if (par3ItemStack == null)
         {

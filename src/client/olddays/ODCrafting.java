@@ -250,7 +250,7 @@ public class ODCrafting extends OldDaysModule{
         if (b){
             addRecipe(new ItemStack(Item.map, 1), "###", "#X#", "###", '#', Item.paper, 'X', Item.compass);
         }else{
-            addRecipe(new ItemStack(Item.field_82801_bO, 1), "###", "#X#", "###", '#', Item.paper, 'X', Item.compass);
+            addRecipe(new ItemStack(Item.emptyMap, 1), "###", "#X#", "###", '#', Item.paper, 'X', Item.compass);
         }
     }
 }

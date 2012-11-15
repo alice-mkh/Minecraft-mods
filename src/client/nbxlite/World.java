@@ -88,8 +88,10 @@ public abstract class World implements IBlockAccess
     public final VillageCollection villageCollectionObj;
     protected final VillageSiege villageSiegeObj;
     public final Profiler theProfiler;
-    private final Vec3Pool field_82741_K;
-    private final Calendar field_83016_L;
+
+    /** The world-local pool of vectors */
+    private final Vec3Pool vecPool;
+    private final Calendar theCalendar;
     private ArrayList collidingBoundingBoxes;
     private boolean scanningTileEntities;
 
@@ -166,8 +168,8 @@ public abstract class World implements IBlockAccess
         rand = new Random();
         worldAccesses = new ArrayList();
         villageSiegeObj = new VillageSiege(this);
-        field_82741_K = new Vec3Pool(300, 2000);
-        field_83016_L = Calendar.getInstance();
+        vecPool = new Vec3Pool(300, 2000);
+        theCalendar = Calendar.getInstance();
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -229,8 +231,8 @@ public abstract class World implements IBlockAccess
         rand = new Random();
         worldAccesses = new ArrayList();
         villageSiegeObj = new VillageSiege(this);
-        field_82741_K = new Vec3Pool(300, 2000);
-        field_83016_L = Calendar.getInstance();
+        vecPool = new Vec3Pool(300, 2000);
+        theCalendar = Calendar.getInstance();
         collidingBoundingBoxes = new ArrayList();
         spawnHostileMobs = true;
         spawnPeacefulMobs = true;
@@ -274,7 +276,23 @@ public abstract class World implements IBlockAccess
 
         if (!worldInfo.isInitialized())
         {
-            initialize(par3WorldSettings);
+            try
+            {
+                initialize(par3WorldSettings);
+            }
+            catch (Throwable throwable)
+            {
+                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception initializing level");
+
+                try
+                {
+                    addWorldInfoToCrashReport(crashreport);
+                }
+                catch (Throwable throwable1) { }
+
+                throw new ReportedException(crashreport);
+            }
+
             worldInfo.setServerInitialized(true);
             if (!net.minecraft.client.Minecraft.getMinecraft().enableSP){
                 flag = true;
@@ -523,9 +541,21 @@ public abstract class World implements IBlockAccess
         {
             return 0;
         }
-        else
+
+        Chunk chunk = null;
+
+        try
         {
-            return getChunkFromChunkCoords(par1 >> 4, par3 >> 4).getBlockID(par1 & 0xf, par2, par3 & 0xf);
+            chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
+            return chunk.getBlockID(par1 & 0xf, par2, par3 & 0xf);
+        }
+        catch (Throwable throwable)
+        {
+            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception getting block type in world");
+            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Requested block coordinates");
+            crashreportcategory.addCrashSection("Found chunk", Boolean.valueOf(chunk == null));
+            crashreportcategory.addCrashSection("Location", CrashReportCategory.func_85071_a(par1, par2, par3));
+            throw new ReportedException(crashreport);
         }
     }
 
@@ -566,6 +596,20 @@ public abstract class World implements IBlockAccess
     {
         int i = getBlockId(par1, par2, par3);
         return Block.blocksList[i] != null && Block.blocksList[i].hasTileEntity();
+    }
+
+    public int func_85175_e(int par1, int par2, int par3)
+    {
+        int i = getBlockId(par1, par2, par3);
+
+        if (Block.blocksList[i] != null)
+        {
+            return Block.blocksList[i].getRenderType();
+        }
+        else
+        {
+            return -1;
+        }
     }
 
     /**
@@ -858,11 +902,9 @@ public abstract class World implements IBlockAccess
      */
     public void markBlockNeedsUpdate(int par1, int par2, int par3)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.markBlockNeedsUpdate(par1, par2, par3))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate(par1, par2, par3);
         }
     }
 
@@ -902,21 +944,17 @@ public abstract class World implements IBlockAccess
      */
     public void markBlockAsNeedsUpdate(int par1, int par2, int par3)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
         }
     }
 
     public void markBlocksDirty(int par1, int par2, int par3, int par4, int par5, int par6)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
         }
     }
 
@@ -943,11 +981,34 @@ public abstract class World implements IBlockAccess
             return;
         }
 
-        Block block = Block.blocksList[getBlockId(par1, par2, par3)];
+        int i = getBlockId(par1, par2, par3);
+        Block block = Block.blocksList[i];
 
         if (block != null)
         {
-            block.onNeighborBlockChange(this, par1, par2, par3, par4);
+            try
+            {
+                block.onNeighborBlockChange(this, par1, par2, par3, par4);
+            }
+            catch (Throwable throwable)
+            {
+                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception while updating neighbours");
+                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Block being updated");
+                int j;
+
+                try
+                {
+                    j = getBlockMetadata(par1, par2, par3);
+                }
+                catch (Throwable throwable1)
+                {
+                    j = -1;
+                }
+
+                crashreportcategory.addCrashSectionCallable("Source block type", new CallableLvl1(this, par4));
+                CrashReportCategory.func_85068_a(crashreportcategory, par1, par2, par3, i, j);
+                throw new ReportedException(crashreport);
+            }
         }
     }
 
@@ -1228,11 +1289,10 @@ public abstract class World implements IBlockAccess
 
         Chunk chunk = getChunkFromChunkCoords(par2 >> 4, par4 >> 4);
         chunk.setLightValue(par1EnumSkyBlock, par2 & 0xf, par3, par4 & 0xf, par5);
-        IWorldAccess iworldaccess;
 
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.markBlockNeedsUpdate2(par2, par3, par4))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par2, par3, par4);
         }
     }
 
@@ -1241,11 +1301,9 @@ public abstract class World implements IBlockAccess
      */
     public void markBlockNeedsUpdateForAll(int par1, int par2, int par3)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.markBlockNeedsUpdate2(par1, par2, par3))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par1, par2, par3);
         }
     }
 
@@ -1476,7 +1534,7 @@ public abstract class World implements IBlockAccess
                 par1Vec3.zCoord = d2;
             }
 
-            Vec3 vec3 = func_82732_R().getVecFromPool(par1Vec3.xCoord, par1Vec3.yCoord, par1Vec3.zCoord);
+            Vec3 vec3 = getWorldVec3Pool().getVecFromPool(par1Vec3.xCoord, par1Vec3.yCoord, par1Vec3.zCoord);
             l = (int)(vec3.xCoord = MathHelper.floor_double(par1Vec3.xCoord));
 
             if (byte0 == 5)
@@ -1530,11 +1588,22 @@ public abstract class World implements IBlockAccess
             return;
         }
 
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.playSound(par2Str, par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ, par3, par4))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).playSound(par2Str, par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ, par3, par4);
+        }
+    }
+
+    public void func_85173_a(EntityPlayer par1EntityPlayer, String par2Str, float par3, float par4)
+    {
+        if (par1EntityPlayer == null || par2Str == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < worldAccesses.size(); i++)
+        {
+            ((IWorldAccess)worldAccesses.get(i)).func_85102_a(par1EntityPlayer, par2Str, par1EntityPlayer.posX, par1EntityPlayer.posY - (double)par1EntityPlayer.yOffset, par1EntityPlayer.posZ, par3, par4);
         }
     }
 
@@ -1550,11 +1619,9 @@ public abstract class World implements IBlockAccess
             return;
         }
 
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.playSound(par7Str, par1, par3, par5, par8, par9))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).playSound(par7Str, par1, par3, par5, par8, par9);
         }
     }
 
@@ -1570,11 +1637,9 @@ public abstract class World implements IBlockAccess
      */
     public void playRecord(String par1Str, int par2, int par3, int par4)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.playRecord(par1Str, par2, par3, par4))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).playRecord(par1Str, par2, par3, par4);
         }
     }
 
@@ -1583,11 +1648,9 @@ public abstract class World implements IBlockAccess
      */
     public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.spawnParticle(par1Str, par2, par4, par6, par8, par10, par12))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
         }
     }
 
@@ -1639,11 +1702,9 @@ public abstract class World implements IBlockAccess
      */
     protected void obtainEntitySkin(Entity par1Entity)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.obtainEntitySkin(par1Entity))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).obtainEntitySkin(par1Entity);
         }
     }
 
@@ -1652,11 +1713,9 @@ public abstract class World implements IBlockAccess
      */
     protected void releaseEntitySkin(Entity par1Entity)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.releaseEntitySkin(par1Entity))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            ((IWorldAccess)worldAccesses.get(i)).releaseEntitySkin(par1Entity);
         }
     }
 
@@ -1763,31 +1822,23 @@ public abstract class World implements IBlockAccess
 
         double d = 0.25D;
         List list = getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB.expand(d, d, d));
-        Iterator iterator = list.iterator();
 
-        do
+        for (int j2 = 0; j2 < list.size(); j2++)
         {
-            if (!iterator.hasNext())
-            {
-                break;
-            }
-
-            Entity entity = (Entity)iterator.next();
-            AxisAlignedBB axisalignedbb = entity.getBoundingBox();
+            AxisAlignedBB axisalignedbb = ((Entity)list.get(j2)).getBoundingBox();
 
             if (axisalignedbb != null && axisalignedbb.intersectsWith(par2AxisAlignedBB))
             {
                 collidingBoundingBoxes.add(axisalignedbb);
             }
 
-            axisalignedbb = par1Entity.getCollisionBox(entity);
+            axisalignedbb = par1Entity.getCollisionBox((Entity)list.get(j2));
 
             if (axisalignedbb != null && axisalignedbb.intersectsWith(par2AxisAlignedBB))
             {
                 collidingBoundingBoxes.add(axisalignedbb);
             }
         }
-        while (true);
 
         return collidingBoundingBoxes;
     }
@@ -1965,7 +2016,7 @@ public abstract class World implements IBlockAccess
                 f10 = f10 * (1.0F - f17) + 0.8F * f17;
                 f11 = f11 * (1.0F - f17) + 1.0F * f17;
             }
-            return func_82732_R().getVecFromPool(f9, f10, f11);
+            return getWorldVec3Pool().getVecFromPool(f9, f10, f11);
         }
         float f2 = getCelestialAngle(f);
         float f4 = MathHelper.cos(f2 * 3.141593F * 2.0F) * 2.0F + 0.5F;
@@ -1983,7 +2034,7 @@ public abstract class World implements IBlockAccess
         f5 *= f4;
         f6 *= f4;
         f8 *= f4;
-        return func_82732_R().getVecFromPool(f5, f6, f8);
+        return getWorldVec3Pool().getVecFromPool(f5, f6, f8);
     }
 
     /**
@@ -2066,7 +2117,7 @@ public abstract class World implements IBlockAccess
             f4 = f4 * f10 + f9 * (1.0F - f10);
         }
 
-        return func_82732_R().getVecFromPool(f2, f3, f4);
+        return getWorldVec3Pool().getVecFromPool(f2, f3, f4);
     }
 
     /**
@@ -2097,7 +2148,7 @@ public abstract class World implements IBlockAccess
             f3 *= f2 * 0.94F + 0.06F;
             f4 *= f2 * 0.94F + 0.06F;
             f5 *= f2 * 0.91F + 0.09F;
-            return func_82732_R().getVecFromPool(f3, f4, f5);
+            return getWorldVec3Pool().getVecFromPool(f3, f4, f5);
         }
         float f = getCelestialAngle(par1);
         return provider.getFogColor(f, par1);
@@ -2188,7 +2239,27 @@ public abstract class World implements IBlockAccess
         for (int i = 0; i < weatherEffects.size(); i++)
         {
             Entity entity = (Entity)weatherEffects.get(i);
-            entity.onUpdate();
+
+            try
+            {
+                entity.onUpdate();
+            }
+            catch (Throwable throwable)
+            {
+                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Ticking entity");
+                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being ticked");
+
+                if (entity == null)
+                {
+                    crashreportcategory.addCrashSection("Entity", "~~NULL~~");
+                }
+                else
+                {
+                    entity.func_85029_a(crashreportcategory);
+                }
+
+                throw new ReportedException(crashreport);
+            }
 
             if (entity.isDead)
             {
@@ -2198,7 +2269,91 @@ public abstract class World implements IBlockAccess
 
         theProfiler.endStartSection("remove");
         loadedEntityList.removeAll(unloadedEntityList);
-        Iterator iterator = unloadedEntityList.iterator();
+
+        for (int j = 0; j < unloadedEntityList.size(); j++)
+        {
+            Entity entity1 = (Entity)unloadedEntityList.get(j);
+            int j1 = entity1.chunkCoordX;
+            int l1 = entity1.chunkCoordZ;
+
+            if (entity1.addedToChunk && chunkExists(j1, l1))
+            {
+                getChunkFromChunkCoords(j1, l1).removeEntity(entity1);
+            }
+        }
+
+        for (int k = 0; k < unloadedEntityList.size(); k++)
+        {
+            releaseEntitySkin((Entity)unloadedEntityList.get(k));
+        }
+
+        unloadedEntityList.clear();
+        theProfiler.endStartSection("regular");
+
+        for (int l = 0; l < loadedEntityList.size(); l++)
+        {
+            Entity entity2 = (Entity)loadedEntityList.get(l);
+
+            if (entity2.ridingEntity != null)
+            {
+                if (!entity2.ridingEntity.isDead && entity2.ridingEntity.riddenByEntity == entity2)
+                {
+                    continue;
+                }
+
+                entity2.ridingEntity.riddenByEntity = null;
+                entity2.ridingEntity = null;
+            }
+
+            theProfiler.startSection("tick");
+
+            if (!entity2.isDead)
+            {
+                try
+                {
+                    updateEntity(entity2);
+                }
+                catch (Throwable throwable1)
+                {
+                    CrashReport crashreport1 = CrashReport.func_85055_a(throwable1, "Ticking entity");
+                    CrashReportCategory crashreportcategory1 = crashreport1.func_85058_a("Entity being ticked");
+
+                    if (entity2 == null)
+                    {
+                        crashreportcategory1.addCrashSection("Entity", "~~NULL~~");
+                    }
+                    else
+                    {
+                        entity2.func_85029_a(crashreportcategory1);
+                    }
+
+                    throw new ReportedException(crashreport1);
+                }
+            }
+
+            theProfiler.endSection();
+            theProfiler.startSection("remove");
+
+            if (entity2.isDead)
+            {
+                int k1 = entity2.chunkCoordX;
+                int i2 = entity2.chunkCoordZ;
+
+                if (entity2.addedToChunk && chunkExists(k1, i2))
+                {
+                    getChunkFromChunkCoords(k1, i2).removeEntity(entity2);
+                }
+
+                loadedEntityList.remove(l--);
+                releaseEntitySkin(entity2);
+            }
+
+            theProfiler.endSection();
+        }
+
+        theProfiler.endStartSection("tileEntities");
+        scanningTileEntities = true;
+        Iterator iterator = loadedTileEntityList.iterator();
 
         do
         {
@@ -2207,90 +2362,35 @@ public abstract class World implements IBlockAccess
                 break;
             }
 
-            Entity entity1 = (Entity)iterator.next();
-            int k = entity1.chunkCoordX;
-            int i1 = entity1.chunkCoordZ;
-
-            if (entity1.addedToChunk && chunkExists(k, i1))
-            {
-                getChunkFromChunkCoords(k, i1).removeEntity(entity1);
-            }
-        }
-        while (true);
-
-        Entity entity2;
-
-        for (iterator = unloadedEntityList.iterator(); iterator.hasNext(); releaseEntitySkin(entity2))
-        {
-            entity2 = (Entity)iterator.next();
-        }
-
-        unloadedEntityList.clear();
-        theProfiler.endStartSection("regular");
-
-        for (int j = 0; j < loadedEntityList.size(); j++)
-        {
-            Entity entity3 = (Entity)loadedEntityList.get(j);
-
-            if (entity3.ridingEntity != null)
-            {
-                if (!entity3.ridingEntity.isDead && entity3.ridingEntity.riddenByEntity == entity3)
-                {
-                    continue;
-                }
-
-                entity3.ridingEntity.riddenByEntity = null;
-                entity3.ridingEntity = null;
-            }
-
-            theProfiler.startSection("tick");
-
-            if (!entity3.isDead)
-            {
-                updateEntity(entity3);
-            }
-
-            theProfiler.endSection();
-            theProfiler.startSection("remove");
-
-            if (entity3.isDead)
-            {
-                int l = entity3.chunkCoordX;
-                int j1 = entity3.chunkCoordZ;
-
-                if (entity3.addedToChunk && chunkExists(l, j1))
-                {
-                    getChunkFromChunkCoords(l, j1).removeEntity(entity3);
-                }
-
-                loadedEntityList.remove(j--);
-                releaseEntitySkin(entity3);
-            }
-
-            theProfiler.endSection();
-        }
-
-        theProfiler.endStartSection("tileEntities");
-        scanningTileEntities = true;
-        Iterator j = loadedTileEntityList.iterator();
-
-        do
-        {
-            if (!j.hasNext())
-            {
-                break;
-            }
-
-            TileEntity tileentity = (TileEntity)j.next();
+            TileEntity tileentity = (TileEntity)iterator.next();
 
             if (!tileentity.isInvalid() && tileentity.func_70309_m() && blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
             {
-                tileentity.updateEntity();
+                try
+                {
+                    tileentity.updateEntity();
+                }
+                catch (Throwable throwable2)
+                {
+                    CrashReport crashreport2 = CrashReport.func_85055_a(throwable2, "Ticking tile entity");
+                    CrashReportCategory crashreportcategory2 = crashreport2.func_85058_a("Tile entity being ticked");
+
+                    if (tileentity == null)
+                    {
+                        crashreportcategory2.addCrashSection("Tile entity", "~~NULL~~");
+                    }
+                    else
+                    {
+                        tileentity.func_85027_a(crashreportcategory2);
+                    }
+
+                    throw new ReportedException(crashreport2);
+                }
             }
 
             if (tileentity.isInvalid())
             {
-                j.remove();
+                iterator.remove();
 
                 if (chunkExists(tileentity.xCoord >> 4, tileentity.zCoord >> 4))
                 {
@@ -2317,38 +2417,32 @@ public abstract class World implements IBlockAccess
 
         if (!addedTileEntityList.isEmpty())
         {
-            Iterator iterator1 = addedTileEntityList.iterator();
-
-            do
+            for (int i1 = 0; i1 < addedTileEntityList.size(); i1++)
             {
-                if (!iterator1.hasNext())
+                TileEntity tileentity1 = (TileEntity)addedTileEntityList.get(i1);
+
+                if (tileentity1.isInvalid())
                 {
-                    break;
+                    continue;
                 }
 
-                TileEntity tileentity1 = (TileEntity)iterator1.next();
-
-                if (!tileentity1.isInvalid())
+                if (!loadedTileEntityList.contains(tileentity1))
                 {
-                    if (!loadedTileEntityList.contains(tileentity1))
-                    {
-                        loadedTileEntityList.add(tileentity1);
-                    }
-
-                    if (chunkExists(tileentity1.xCoord >> 4, tileentity1.zCoord >> 4))
-                    {
-                        Chunk chunk1 = getChunkFromChunkCoords(tileentity1.xCoord >> 4, tileentity1.zCoord >> 4);
-
-                        if (chunk1 != null)
-                        {
-                            chunk1.setChunkBlockTileEntity(tileentity1.xCoord & 0xf, tileentity1.yCoord, tileentity1.zCoord & 0xf, tileentity1);
-                        }
-                    }
-
-                    markBlockNeedsUpdate(tileentity1.xCoord, tileentity1.yCoord, tileentity1.zCoord);
+                    loadedTileEntityList.add(tileentity1);
                 }
+
+                if (chunkExists(tileentity1.xCoord >> 4, tileentity1.zCoord >> 4))
+                {
+                    Chunk chunk1 = getChunkFromChunkCoords(tileentity1.xCoord >> 4, tileentity1.zCoord >> 4);
+
+                    if (chunk1 != null)
+                    {
+                        chunk1.setChunkBlockTileEntity(tileentity1.xCoord & 0xf, tileentity1.yCoord, tileentity1.zCoord & 0xf, tileentity1);
+                    }
+                }
+
+                markBlockNeedsUpdate(tileentity1.xCoord, tileentity1.yCoord, tileentity1.zCoord);
             }
-            while (true);
 
             addedTileEntityList.clear();
         }
@@ -2490,9 +2584,9 @@ public abstract class World implements IBlockAccess
     {
         List list = getEntitiesWithinAABBExcludingEntity(null, par1AxisAlignedBB);
 
-        for (Iterator iterator = list.iterator(); iterator.hasNext();)
+        for (int i = 0; i < list.size(); i++)
         {
-            Entity entity = (Entity)iterator.next();
+            Entity entity = (Entity)list.get(i);
 
             if (!entity.isDead && entity.preventEntitySpawning && entity != par2Entity)
             {
@@ -2647,7 +2741,7 @@ public abstract class World implements IBlockAccess
         }
 
         boolean flag = false;
-        Vec3 vec3 = func_82732_R().getVecFromPool(0.0D, 0.0D, 0.0D);
+        Vec3 vec3 = getWorldVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
 
         for (int k1 = i; k1 < j; k1++)
         {
@@ -2775,7 +2869,7 @@ public abstract class World implements IBlockAccess
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
         explosion.isFlaming = par9;
-        explosion.field_82755_b = par10;
+        explosion.isSmoking = par10;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
         return explosion;
@@ -2802,7 +2896,7 @@ public abstract class World implements IBlockAccess
                     double d4 = par2AxisAlignedBB.minY + (par2AxisAlignedBB.maxY - par2AxisAlignedBB.minY) * (double)f1;
                     double d5 = par2AxisAlignedBB.minZ + (par2AxisAlignedBB.maxZ - par2AxisAlignedBB.minZ) * (double)f2;
 
-                    if (rayTraceBlocks(func_82732_R().getVecFromPool(d3, d4, d5), par1Vec3) == null)
+                    if (rayTraceBlocks(getWorldVec3Pool().getVecFromPool(d3, d4, d5), par1Vec3) == null)
                     {
                         i++;
                     }
@@ -2884,49 +2978,47 @@ public abstract class World implements IBlockAccess
      */
     public TileEntity getBlockTileEntity(int par1, int par2, int par3)
     {
-        label0:
+        if (par2 >= 256)
         {
-            TileEntity tileentity;
-            label1:
+            return null;
+        }
+
+        Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
+
+        if (chunk != null)
+        {
+            TileEntity tileentity = chunk.getChunkBlockTileEntity(par1 & 0xf, par2, par3 & 0xf);
+
+            if (tileentity == null)
             {
-                if (par2 >= 256)
-                {
-                    return null;
-                }
-
-                Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
-
-                if (chunk == null)
-                {
-                    break label0;
-                }
-
-                tileentity = chunk.getChunkBlockTileEntity(par1 & 0xf, par2, par3 & 0xf);
-
-                if (tileentity != null)
-                {
-                    break label1;
-                }
-
-                Iterator iterator = addedTileEntityList.iterator();
-                TileEntity tileentity1;
+                int i = 0;
 
                 do
                 {
-                    if (!iterator.hasNext())
+                    if (i >= addedTileEntityList.size())
                     {
-                        break label1;
+                        break;
                     }
 
-                    tileentity1 = (TileEntity)iterator.next();
-                }
-                while (tileentity1.isInvalid() || tileentity1.xCoord != par1 || tileentity1.yCoord != par2 || tileentity1.zCoord != par3);
+                    TileEntity tileentity1 = (TileEntity)addedTileEntityList.get(i);
 
-                tileentity = tileentity1;
+                    if (!tileentity1.isInvalid() && tileentity1.xCoord == par1 && tileentity1.yCoord == par2 && tileentity1.zCoord == par3)
+                    {
+                        tileentity = tileentity1;
+                        break;
+                    }
+
+                    i++;
+                }
+                while (true);
             }
+
             return tileentity;
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -3019,6 +3111,21 @@ public abstract class World implements IBlockAccess
     public boolean isBlockNormalCube(int par1, int par2, int par3)
     {
         return Block.isNormalCube(getBlockId(par1, par2, par3));
+    }
+
+    public boolean func_85174_u(int par1, int par2, int par3)
+    {
+        int i = getBlockId(par1, par2, par3);
+
+        if (i == 0 || Block.blocksList[i] == null)
+        {
+            return false;
+        }
+        else
+        {
+            AxisAlignedBB axisalignedbb = Block.blocksList[i].getCollisionBoundingBoxFromPool(this, par1, par2, par3);
+            return axisalignedbb != null && axisalignedbb.getAverageEdgeLength() >= 1.0D;
+        }
     }
 
     /**
@@ -3855,29 +3962,24 @@ public abstract class World implements IBlockAccess
         List list = getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
         Entity entity = null;
         double d = Double.MAX_VALUE;
-        Iterator iterator = list.iterator();
 
-        do
+        for (int i = 0; i < list.size(); i++)
         {
-            if (!iterator.hasNext())
+            Entity entity1 = (Entity)list.get(i);
+
+            if (entity1 == par3Entity)
             {
-                break;
+                continue;
             }
 
-            Entity entity1 = (Entity)iterator.next();
+            double d1 = par3Entity.getDistanceSqToEntity(entity1);
 
-            if (entity1 != par3Entity)
+            if (d1 <= d)
             {
-                double d1 = par3Entity.getDistanceSqToEntity(entity1);
-
-                if (d1 <= d)
-                {
-                    entity = entity1;
-                    d = d1;
-                }
+                entity = entity1;
+                d = d1;
             }
         }
-        while (true);
 
         return entity;
     }
@@ -3972,7 +4074,7 @@ public abstract class World implements IBlockAccess
             block = null;
         }
 
-        if (block != null && block.blockMaterial == Material.circuits && block1 == Block.field_82510_ck)
+        if (block != null && block.blockMaterial == Material.circuits && block1 == Block.anvil)
         {
             return true;
         }
@@ -4257,9 +4359,9 @@ public abstract class World implements IBlockAccess
         return worldInfo.getSeed();
     }
 
-    public long func_82737_E()
+    public long getTotalWorldTime()
     {
-        return worldInfo.func_82573_f();
+        return worldInfo.getWorldTotalTime();
     }
 
     public long getWorldTime()
@@ -4362,9 +4464,12 @@ public abstract class World implements IBlockAccess
         return worldInfo;
     }
 
-    public GameRules func_82736_K()
+    /**
+     * Gets the GameRules instance
+     */
+    public GameRules getGameRules()
     {
-        return worldInfo.func_82574_x();
+        return worldInfo.getGameRulesInstance();
     }
 
     /**
@@ -4576,12 +4681,23 @@ public abstract class World implements IBlockAccess
     /**
      * Adds some basic stats of the world to the given crash report.
      */
-    public CrashReport addWorldInfoToCrashReport(CrashReport par1CrashReport)
+    public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Entities").toString(), new CallableLvl1(this));
-        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Players").toString(), new CallableLvl2(this));
-        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Chunk Stats").toString(), new CallableLvl3(this));
-        return par1CrashReport;
+        CrashReportCategory crashreportcategory = par1CrashReport.func_85057_a("Affected level", 1);
+        crashreportcategory.addCrashSection("Level name", worldInfo != null ? ((Object)(worldInfo.getWorldName())) : "????");
+        crashreportcategory.addCrashSectionCallable("All players", new CallableLvl2(this));
+        crashreportcategory.addCrashSectionCallable("Chunk stats", new CallableLvl3(this));
+
+        try
+        {
+            worldInfo.func_85118_a(crashreportcategory);
+        }
+        catch (Throwable throwable)
+        {
+            crashreportcategory.addCrashSectionThrowable("Level Data Unobtainable", throwable);
+        }
+
+        return crashreportcategory;
     }
 
     /**
@@ -4590,23 +4706,32 @@ public abstract class World implements IBlockAccess
      */
     public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5)
     {
-        IWorldAccess iworldaccess;
-
-        for (Iterator iterator = worldAccesses.iterator(); iterator.hasNext(); iworldaccess.destroyBlockPartially(par1, par2, par3, par4, par5))
+        for (int i = 0; i < worldAccesses.size(); i++)
         {
-            iworldaccess = (IWorldAccess)iterator.next();
+            IWorldAccess iworldaccess = (IWorldAccess)worldAccesses.get(i);
+            iworldaccess.destroyBlockPartially(par1, par2, par3, par4, par5);
         }
     }
 
-    public Vec3Pool func_82732_R()
+    /**
+     * Return the Vec3Pool object for this world.
+     */
+    public Vec3Pool getWorldVec3Pool()
     {
-        return field_82741_K;
+        return vecPool;
     }
 
-    public Calendar func_83015_S()
+    /**
+     * returns a calendar object containing the current date
+     */
+    public Calendar getCurrentDate()
     {
-        field_83016_L.setTimeInMillis(System.currentTimeMillis());
-        return field_83016_L;
+        if (getTotalWorldTime() % 600L == 0L)
+        {
+            theCalendar.setTimeInMillis(System.currentTimeMillis());
+        }
+
+        return theCalendar;
     }
 
     private boolean isBounds(int x, int y, int z){

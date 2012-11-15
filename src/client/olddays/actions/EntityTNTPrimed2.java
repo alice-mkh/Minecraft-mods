@@ -22,9 +22,9 @@ public class EntityTNTPrimed2 extends EntityTNTPrimed
         if(worldObj.isRemote || isDead || !(entity instanceof EntityPlayer)){
             return true;
         }
-        worldObj.playSoundAtEntity(this, "dig.grass", 1.0F, 1.0F);
+        func_85030_a("dig.grass", 1.0F, 1.0F);
         setDead();
-        if (((EntityPlayer)entity).capabilities.isCreativeMode || !worldObj.func_82736_K().func_82766_b("doTileDrops")){
+        if (((EntityPlayer)entity).capabilities.isCreativeMode || !worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops")){
             return true;
         }
         dropItem(Block.tnt.blockID, 1);

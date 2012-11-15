@@ -13,7 +13,7 @@ public class CommandClientGameRule extends CommandGameRule
             String s2 = par2ArrayOfStr[1];
             GameRules gamerules2 = func_82366_d();
 
-            if (gamerules2.func_82765_e(s))
+            if (gamerules2.hasRule(s))
             {
                 gamerules2.func_82764_b(s, s2);
                 notifyAdmins(par1ICommandSender, "commands.gamerule.success", new Object[0]);
@@ -34,9 +34,9 @@ public class CommandClientGameRule extends CommandGameRule
             String s1 = par2ArrayOfStr[0];
             GameRules gamerules1 = func_82366_d();
 
-            if (gamerules1.func_82765_e(s1))
+            if (gamerules1.hasRule(s1))
             {
-                String s3 = gamerules1.func_82767_a(s1);
+                String s3 = gamerules1.getGameRuleStringValue(s1);
                 par1ICommandSender.sendChatToPlayer((new StringBuilder()).append(s1).append(" = ").append(s3).toString());
             }
             else
@@ -53,7 +53,7 @@ public class CommandClientGameRule extends CommandGameRule
         if (par2ArrayOfStr.length == 0)
         {
             GameRules gamerules = func_82366_d();
-            par1ICommandSender.sendChatToPlayer(joinNiceString(gamerules.func_82763_b()));
+            par1ICommandSender.sendChatToPlayer(joinNiceString(gamerules.getRules()));
             return;
         }
         else
@@ -64,7 +64,7 @@ public class CommandClientGameRule extends CommandGameRule
 
     private GameRules func_82366_d()
     {
-        return Minecraft.getMinecraft().theWorld.func_82736_K();
+        return Minecraft.getMinecraft().theWorld.getGameRules();
     }
 
     /**
@@ -74,7 +74,7 @@ public class CommandClientGameRule extends CommandGameRule
     {
         if (par2ArrayOfStr.length == 1)
         {
-            return getListOfStringsMatchingLastWord(par2ArrayOfStr, func_82366_d().func_82763_b());
+            return getListOfStringsMatchingLastWord(par2ArrayOfStr, func_82366_d().getRules());
         }
 
         if (par2ArrayOfStr.length == 2)

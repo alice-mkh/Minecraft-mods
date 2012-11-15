@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class ComponentStrongholdStairs2 extends ComponentStrongholdStairs
 {
-    public StructureStrongholdPieceWeight field_75027_a;
-    public ComponentStrongholdPortalRoom portalRoom;
+    public StructureStrongholdPieceWeight strongholdPieceWeight;
+    public ComponentStrongholdPortalRoom strongholdPortalRoom;
     public ArrayList field_75026_c;
 
     public ComponentStrongholdStairs2(int par1, Random par2Random, int par3, int par4)
@@ -29,9 +29,9 @@ public class ComponentStrongholdStairs2 extends ComponentStrongholdStairs
 
     public ChunkPosition getCenter()
     {
-        if (portalRoom != null && !ODNBXlite.oldStrongholds())
+        if (strongholdPortalRoom != null && !ODNBXlite.oldStrongholds())
         {
-            return portalRoom.getCenter();
+            return strongholdPortalRoom.getCenter();
         }
         else
         {

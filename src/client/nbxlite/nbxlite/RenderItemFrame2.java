@@ -85,9 +85,9 @@ public class RenderItemFrame2 extends Render
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.field_82332_a], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.field_82332_a]);
         GL11.glRotatef(180F + par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-90 * par1EntityItemFrame.func_82333_j(), 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-90 * par1EntityItemFrame.getRotation(), 0.0F, 0.0F, 1.0F);
 
-        switch (par1EntityItemFrame.func_82333_j())
+        switch (par1EntityItemFrame.getRotation())
         {
             case 1:
                 GL11.glTranslatef(-0.16F, -0.16F, 0.0F);

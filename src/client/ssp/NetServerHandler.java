@@ -20,7 +20,7 @@ public class NetServerHandler extends NetHandler
     private MinecraftServer mcServer;
 
     /** Reference to the EntityPlayerMP object. */
-    private EntityPlayerMP playerEntity;
+    public EntityPlayerMP playerEntity;
 
     /** incremented each tick */
     private int currentTicks;
@@ -110,17 +110,6 @@ public class NetServerHandler extends NetHandler
         }
 
         mcServer.theProfiler.endStartSection("playerTick");
-
-        if (!field_72584_h && !playerEntity.playerConqueredTheEnd)
-        {
-            playerEntity.onUpdateEntity();
-
-            if (playerEntity.ridingEntity == null)
-            {
-                playerEntity.setLocationAndAngles(lastPosX, lastPosY, lastPosZ, playerEntity.rotationYaw, playerEntity.rotationPitch);
-            }
-        }
-
         mcServer.theProfiler.endSection();
     }
 
@@ -434,7 +423,7 @@ public class NetServerHandler extends NetHandler
 
         if (par1Packet14BlockDig.status == 0)
         {
-            if (i1 > mcServer.func_82357_ak() || flag)
+            if (i1 > mcServer.getSpawnProtectionSize() || flag)
             {
                 playerEntity.theItemInWorldManager.onBlockClicked(i, j, k, par1Packet14BlockDig.face);
             }
@@ -506,7 +495,7 @@ public class NetServerHandler extends NetHandler
                 j1 = i1;
             }
 
-            if (hasMoved && playerEntity.getDistanceSq((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D) < 64D && (j1 > mcServer.func_82357_ak() || flag1))
+            if (hasMoved && playerEntity.getDistanceSq((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D) < 64D && (j1 > mcServer.getSpawnProtectionSize() || flag1))
             {
                 playerEntity.theItemInWorldManager.activateBlockOrUseItem(playerEntity, worldserver, itemstack, i, j, k, l, par1Packet15Place.getXOffset(), par1Packet15Place.getYOffset(), par1Packet15Place.getZOffset());
             }
@@ -1057,7 +1046,7 @@ public class NetServerHandler extends NetHandler
 
                 if (itemstack != null && itemstack.itemID == Item.writableBook.shiftedIndex && itemstack.itemID == itemstack2.itemID)
                 {
-                    itemstack2.setTagCompound(itemstack.getTagCompound());
+                    itemstack2.func_77983_a("pages", itemstack.getTagCompound().getTagList("pages"));
                 }
             }
             catch (Exception exception)
@@ -1081,7 +1070,9 @@ public class NetServerHandler extends NetHandler
 
                 if (itemstack1 != null && itemstack1.itemID == Item.writtenBook.shiftedIndex && itemstack3.itemID == Item.writableBook.shiftedIndex)
                 {
-                    itemstack3.setTagCompound(itemstack1.getTagCompound());
+                    itemstack3.func_77983_a("author", new NBTTagString("author", playerEntity.username));
+                    itemstack3.func_77983_a("title", new NBTTagString("title", itemstack1.getTagCompound().getString("title")));
+                    itemstack3.func_77983_a("pages", itemstack1.getTagCompound().getTagList("pages"));
                     itemstack3.itemID = Item.writtenBook.shiftedIndex;
                 }
             }
@@ -1110,7 +1101,7 @@ public class NetServerHandler extends NetHandler
         }
         else if ("MC|AdvCdm".equals(par1Packet250CustomPayload.channel))
         {
-            if (!mcServer.func_82356_Z())
+            if (!mcServer.isCommandBlockEnabled())
             {
                 playerEntity.sendChatToPlayer(playerEntity.translateString("advMode.notEnabled", new Object[0]));
             }

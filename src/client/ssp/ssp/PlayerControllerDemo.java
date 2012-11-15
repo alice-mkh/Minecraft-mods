@@ -23,7 +23,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     {
         super.updateController();
         field_55293_f++;
-        long l = mc.theWorld.getWorldTime();
+        long l = mc.theWorld.getTotalWorldTime();
         long l1 = l / 24000L + 1L;
 
         if (!field_55296_c && field_55293_f > 20)
@@ -101,7 +101,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
         {
             s = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[]
                     {
-                        StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.getWorldTime()))
+                        StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.getTotalWorldTime()))
                     });
         }
 

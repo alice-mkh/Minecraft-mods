@@ -114,7 +114,7 @@ public class EntityXPOrb extends Entity
             motionY = 0.20000000298023224D;
             motionX = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
             motionZ = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
-            worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
+            func_85030_a("random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
         }
 
         pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2D, posZ);
@@ -201,6 +201,11 @@ public class EntityXPOrb extends Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
+        if (func_85032_ar())
+        {
+            return false;
+        }
+
         setBeenAttacked();
         xpOrbHealth -= par2;
 
@@ -245,7 +250,7 @@ public class EntityXPOrb extends Entity
         if (field_70532_c == 0 && par1EntityPlayer.xpCooldown == 0)
         {
             par1EntityPlayer.xpCooldown = 2;
-            worldObj.playSoundAtEntity(this, "random.orb", 0.1F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
+            func_85030_a("random.orb", 0.1F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
             par1EntityPlayer.onItemPickup(this, 1);
             par1EntityPlayer.addExperience(xpValue);
             setDead();

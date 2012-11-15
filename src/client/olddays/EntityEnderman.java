@@ -108,7 +108,7 @@ public class EntityEnderman extends EntityMob
         }
 
         Vec3 vec3 = par1EntityPlayer.getLook(1.0F).normalize();
-        Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
+        Vec3 vec3_1 = worldObj.getWorldVec3Pool().getVecFromPool(posX - par1EntityPlayer.posX, (boundingBox.minY + (double)(height / 2.0F)) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), posZ - par1EntityPlayer.posZ);
         double d = vec3_1.lengthVector();
         vec3_1 = vec3_1.normalize();
         double d1 = vec3.dotProduct(vec3_1);
@@ -136,7 +136,7 @@ public class EntityEnderman extends EntityMob
 
         moveSpeed = entityToAttack == null ? 0.3F : 6.5F;
 
-        if (!worldObj.isRemote && worldObj.func_82736_K().func_82766_b("mobGriefing"))
+        if (!worldObj.isRemote && worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
         {
             if (getCarried() == 0)
             {
@@ -253,7 +253,7 @@ public class EntityEnderman extends EntityMob
      */
     protected boolean teleportToEntity(Entity par1Entity)
     {
-        Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
+        Vec3 vec3 = worldObj.getWorldVec3Pool().getVecFromPool(posX - par1Entity.posX, ((boundingBox.minY + (double)(height / 2.0F)) - par1Entity.posY) + (double)par1Entity.getEyeHeight(), posZ - par1Entity.posZ);
         vec3 = vec3.normalize();
         double d = 16D;
         double d1 = (posX + (rand.nextDouble() - 0.5D) * 8D) - vec3.xCoord * d;
@@ -329,7 +329,7 @@ public class EntityEnderman extends EntityMob
             }
 
             worldObj.playSoundEffect(d, d1, d2, "mob.endermen.portal", 1.0F, 1.0F);
-            worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
+            func_85030_a("mob.endermen.portal", 1.0F, 1.0F);
             return true;
         }
         else
@@ -426,6 +426,11 @@ public class EntityEnderman extends EntityMob
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
+        if (func_85032_ar())
+        {
+            return false;
+        }
+
         if (par1DamageSource instanceof EntityDamageSourceIndirect)
         {
             for (int i = 0; i < 64; i++)
@@ -457,7 +462,10 @@ public class EntityEnderman extends EntityMob
         dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
-    public int func_82193_c(Entity par1Entity)
+    /**
+     * Returns the amount of damage a mob should deal.
+     */
+    public int getAttackStrength(Entity par1Entity)
     {
         return 7;
     }

@@ -385,7 +385,10 @@ public class RenderBlocks
         overrideBlockTexture = -1;
     }
 
-    public void func_83020_a(double par1, double par3, double par5, double par7, double par9, double par11)
+    /**
+     * Sets the size and offset of the block to be rendered, ie: half size and rendered center block: 0.25D, 0.75D
+     */
+    public void setRenderMinMax(double par1, double par3, double par5, double par7, double par9, double par11)
     {
         if (!field_83023_m)
         {
@@ -402,12 +405,12 @@ public class RenderBlocks
     {
         if (!field_83023_m)
         {
-            field_83021_g = par1Block.func_83009_v();
-            field_83026_h = par1Block.func_83007_w();
-            field_83027_i = par1Block.func_83008_x();
-            field_83024_j = par1Block.func_83010_y();
-            field_83025_k = par1Block.func_83005_z();
-            field_83022_l = par1Block.func_83006_A();
+            field_83021_g = par1Block.getBlockBoundsMinX();
+            field_83026_h = par1Block.getBlockBoundsMaxX();
+            field_83027_i = par1Block.getBlockBoundsMinY();
+            field_83024_j = par1Block.getBlockBoundsMaxY();
+            field_83025_k = par1Block.getBlockBoundsMinZ();
+            field_83022_l = par1Block.getBlockBoundsMaxZ();
         }
     }
 
@@ -659,18 +662,20 @@ public class RenderBlocks
 
         if (!BlockEndPortalFrame.isEnderEyeInserted(i))
         {
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
             renderStandardBlock(par1Block, par2, par3, par4);
             uvRotateTop = 0;
             return true;
         }
         else
         {
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
+            renderAllFaces = true;
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
             renderStandardBlock(par1Block, par2, par3, par4);
             overrideBlockTexture = 174;
-            func_83020_a(0.25D, 0.8125D, 0.25D, 0.75D, 1.0D, 0.75D);
+            setRenderMinMax(0.25D, 0.8125D, 0.25D, 0.75D, 1.0D, 0.75D);
             renderStandardBlock(par1Block, par2, par3, par4);
+            renderAllFaces = false;
             clearOverrideBlockTexture();
             uvRotateTop = 0;
             return true;
@@ -867,14 +872,14 @@ public class RenderBlocks
      */
     private boolean renderBlockBrewingStand(BlockBrewingStand par1BlockBrewingStand, int par2, int par3, int par4)
     {
-        func_83020_a(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
+        setRenderMinMax(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
         overrideBlockTexture = 156;
-        func_83020_a(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
+        setRenderMinMax(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
-        func_83020_a(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
+        setRenderMinMax(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
-        func_83020_a(0.125D, 0.0D, 0.5625D, 0.5D, 0.125D, 0.9375D);
+        setRenderMinMax(0.125D, 0.0D, 0.5625D, 0.5D, 0.125D, 0.9375D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
         clearOverrideBlockTexture();
         Tessellator tessellator = Tessellator.instance;
@@ -1056,14 +1061,16 @@ public class RenderBlocks
             }
             else if (l == 9)
             {
+                renderAllFaces = true;
                 float f14 = 0.125F;
-                func_83020_a(0.5F - f14, 0.0D, 0.5F - f14, 0.5F + f14, 0.25D, 0.5F + f14);
+                setRenderMinMax(0.5F - f14, 0.0D, 0.5F - f14, 0.5F + f14, 0.25D, 0.5F + f14);
                 renderStandardBlock(Block.cactus, par2, par3, par4);
-                func_83020_a(0.5F - f14, 0.25D, 0.5F - f14, 0.5F + f14, 0.5D, 0.5F + f14);
+                setRenderMinMax(0.5F - f14, 0.25D, 0.5F - f14, 0.5F + f14, 0.5D, 0.5F + f14);
                 renderStandardBlock(Block.cactus, par2, par3, par4);
-                func_83020_a(0.5F - f14, 0.5D, 0.5F - f14, 0.5F + f14, 0.75D, 0.5F + f14);
+                setRenderMinMax(0.5F - f14, 0.5D, 0.5F - f14, 0.5F + f14, 0.75D, 0.5F + f14);
                 renderStandardBlock(Block.cactus, par2, par3, par4);
-                func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+                renderAllFaces = false;
+                setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
             }
             else if (l == 3)
             {
@@ -1103,6 +1110,11 @@ public class RenderBlocks
 
     private boolean func_82775_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4)
     {
+        return func_85096_a(par1BlockAnvil, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4));
+    }
+
+    public boolean func_85096_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5)
+    {
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(par1BlockAnvil.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
         float f = 1.0F;
@@ -1122,7 +1134,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
-        return func_82776_a(par1BlockAnvil, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4), false);
+        return func_82776_a(par1BlockAnvil, par2, par3, par4, par5, false);
     }
 
     private boolean func_82776_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, boolean par6)
@@ -1163,7 +1175,7 @@ public class RenderBlocks
         f = func_82777_a(par1BlockAnvil, par2, par3, par4, 1, f, 0.5F, 0.0625F, 0.625F, flag, par6, par5);
         f = func_82777_a(par1BlockAnvil, par2, par3, par4, 2, f, 0.25F, 0.3125F, 0.5F, flag, par6, par5);
         f = func_82777_a(par1BlockAnvil, par2, par3, par4, 3, f, 0.625F, 0.375F, 1.0F, flag, par6, par5);
-        func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         uvRotateEast = 0;
         uvRotateWest = 0;
         uvRotateSouth = 0;
@@ -1185,11 +1197,15 @@ public class RenderBlocks
         par7 /= 2.0F;
         par9 /= 2.0F;
         par1BlockAnvil.field_82521_b = par5;
-        func_83020_a(0.5F - par7, par6, 0.5F - par9, 0.5F + par7, par6 + par8, 0.5F + par9);
+        setRenderMinMax(0.5F - par7, par6, 0.5F - par9, 0.5F + par7, par6 + par8, 0.5F + par9);
 
         if (par11)
         {
             Tessellator tessellator = Tessellator.instance;
+            tessellator.startDrawingQuads();
+            tessellator.setNormal(0.0F, -1F, 0.0F);
+            renderBottomFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, par1BlockAnvil.getBlockTextureFromSideAndMetadata(0, par12));
+            tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
             renderTopFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, par1BlockAnvil.getBlockTextureFromSideAndMetadata(1, par12));
@@ -1338,13 +1354,13 @@ public class RenderBlocks
                 case 0:
                 case 2:
                 default:
-                    func_83020_a(f / 16F + (float)d1, 0.125D, f2 / 16F + (float)d2, f1 / 16F + (float)d1, 0.25D, f3 / 16F + (float)d2);
+                    setRenderMinMax(f / 16F + (float)d1, 0.125D, f2 / 16F + (float)d2, f1 / 16F + (float)d1, 0.25D, f3 / 16F + (float)d2);
                     tessellator.addVertexWithUV((double)((float)par2 + f / 16F) + d1, (float)par3 + 0.25F, (double)((float)par4 + f2 / 16F) + d2, ((float)l + f) / 256F, ((float)j1 + f2) / 256F);
                     tessellator.addVertexWithUV((double)((float)par2 + f / 16F) + d1, (float)par3 + 0.25F, (double)((float)par4 + f3 / 16F) + d2, ((float)l + f) / 256F, ((float)j1 + f3) / 256F);
                     tessellator.addVertexWithUV((double)((float)par2 + f1 / 16F) + d1, (float)par3 + 0.25F, (double)((float)par4 + f3 / 16F) + d2, ((float)l + f1) / 256F, ((float)j1 + f3) / 256F);
                     tessellator.addVertexWithUV((double)((float)par2 + f1 / 16F) + d1, (float)par3 + 0.25F, (double)((float)par4 + f2 / 16F) + d2, ((float)l + f1) / 256F, ((float)j1 + f2) / 256F);
                     renderStandardBlock(par1Block, par2, par3, par4);
-                    func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+                    setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
                     clearOverrideBlockTexture();
                     break;
             }
@@ -1428,36 +1444,36 @@ public class RenderBlocks
                     uvRotateWest = 3;
                     uvRotateSouth = 3;
                     uvRotateNorth = 3;
-                    func_83020_a(0.0D, 0.25D, 0.0D, 1.0D, 1.0D, 1.0D);
+                    setRenderMinMax(0.0D, 0.25D, 0.0D, 1.0D, 1.0D, 1.0D);
                     break;
                 case 1:
-                    func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
+                    setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
                     break;
                 case 2:
                     uvRotateSouth = 1;
                     uvRotateNorth = 2;
-                    func_83020_a(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D);
+                    setRenderMinMax(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D);
                     break;
                 case 3:
                     uvRotateSouth = 2;
                     uvRotateNorth = 1;
                     uvRotateTop = 3;
                     uvRotateBottom = 3;
-                    func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D);
+                    setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D);
                     break;
                 case 4:
                     uvRotateEast = 1;
                     uvRotateWest = 2;
                     uvRotateTop = 2;
                     uvRotateBottom = 1;
-                    func_83020_a(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+                    setRenderMinMax(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
                     break;
                 case 5:
                     uvRotateEast = 2;
                     uvRotateWest = 1;
                     uvRotateTop = 1;
                     uvRotateBottom = 2;
-                    func_83020_a(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D);
+                    setRenderMinMax(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D);
                     break;
             }
 
@@ -1468,7 +1484,7 @@ public class RenderBlocks
             uvRotateNorth = 0;
             uvRotateTop = 0;
             uvRotateBottom = 0;
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         }
         else
         {
@@ -1622,7 +1638,7 @@ public class RenderBlocks
                 uvRotateWest = 3;
                 uvRotateSouth = 3;
                 uvRotateNorth = 3;
-                func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
+                setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
                 renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.625F, (float)par4 + 0.625F, f * 0.8F, d);
                 renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.375F, (float)par4 + 0.375F, f * 0.8F, d);
@@ -1630,7 +1646,7 @@ public class RenderBlocks
                 renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.6F, d);
                 break;
             case 1:
-                func_83020_a(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
+                setRenderMinMax(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
                 renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.625F, (((float)par3 - 0.25F) + 1.0F) - f1, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.625F, (float)par4 + 0.625F, f * 0.8F, d);
                 renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.375F, (((float)par3 - 0.25F) + 1.0F) - f1, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.375F, (float)par4 + 0.375F, f * 0.8F, d);
@@ -1640,7 +1656,7 @@ public class RenderBlocks
             case 2:
                 uvRotateSouth = 1;
                 uvRotateNorth = 2;
-                func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.25D);
+                setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.25D);
                 renderStandardBlock(par1Block, par2, par3, par4);
                 renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.25F, (float)par4 + 0.25F + f1, f * 0.6F, d);
                 renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.25F, (float)par4 + 0.25F + f1, f * 0.6F, d);
@@ -1652,7 +1668,7 @@ public class RenderBlocks
                 uvRotateNorth = 1;
                 uvRotateTop = 3;
                 uvRotateBottom = 3;
-                func_83020_a(0.0D, 0.0D, 0.75D, 1.0D, 1.0D, 1.0D);
+                setRenderMinMax(0.0D, 0.0D, 0.75D, 1.0D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
                 renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.375F, (((float)par4 - 0.25F) + 1.0F) - f1, ((float)par4 - 0.25F) + 1.0F, f * 0.6F, d);
                 renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.625F, (((float)par4 - 0.25F) + 1.0F) - f1, ((float)par4 - 0.25F) + 1.0F, f * 0.6F, d);
@@ -1664,7 +1680,7 @@ public class RenderBlocks
                 uvRotateWest = 2;
                 uvRotateTop = 2;
                 uvRotateBottom = 1;
-                func_83020_a(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
+                setRenderMinMax(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
                 renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f1, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.5F, d);
                 renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f1, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.625F, f, d);
@@ -1676,7 +1692,7 @@ public class RenderBlocks
                 uvRotateWest = 1;
                 uvRotateTop = 1;
                 uvRotateBottom = 2;
-                func_83020_a(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+                setRenderMinMax(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
                 renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f1, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.5F, d);
                 renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f1, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.625F, f, d);
@@ -1691,7 +1707,7 @@ public class RenderBlocks
         uvRotateNorth = 0;
         uvRotateTop = 0;
         uvRotateBottom = 0;
-        func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         return true;
     }
 
@@ -1717,35 +1733,35 @@ public class RenderBlocks
 
         if (j == 5)
         {
-            func_83020_a(0.5F - f1, 0.0D, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+            setRenderMinMax(0.5F - f1, 0.0D, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
         }
         else if (j == 6)
         {
-            func_83020_a(0.5F - f, 0.0D, 0.5F - f1, 0.5F + f, f2, 0.5F + f1);
+            setRenderMinMax(0.5F - f, 0.0D, 0.5F - f1, 0.5F + f, f2, 0.5F + f1);
         }
         else if (j == 4)
         {
-            func_83020_a(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0D);
+            setRenderMinMax(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0D);
         }
         else if (j == 3)
         {
-            func_83020_a(0.5F - f1, 0.5F - f, 0.0D, 0.5F + f1, 0.5F + f, f2);
+            setRenderMinMax(0.5F - f1, 0.5F - f, 0.0D, 0.5F + f1, 0.5F + f, f2);
         }
         else if (j == 2)
         {
-            func_83020_a(1.0F - f2, 0.5F - f, 0.5F - f1, 1.0D, 0.5F + f, 0.5F + f1);
+            setRenderMinMax(1.0F - f2, 0.5F - f, 0.5F - f1, 1.0D, 0.5F + f, 0.5F + f1);
         }
         else if (j == 1)
         {
-            func_83020_a(0.0D, 0.5F - f, 0.5F - f1, f2, 0.5F + f, 0.5F + f1);
+            setRenderMinMax(0.0D, 0.5F - f, 0.5F - f1, f2, 0.5F + f, 0.5F + f1);
         }
         else if (j == 0)
         {
-            func_83020_a(0.5F - f, 1.0F - f2, 0.5F - f1, 0.5F + f, 1.0D, 0.5F + f1);
+            setRenderMinMax(0.5F - f, 1.0F - f2, 0.5F - f1, 0.5F + f, 1.0D, 0.5F + f1);
         }
         else if (j == 7)
         {
-            func_83020_a(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0D, 0.5F + f);
+            setRenderMinMax(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0D, 0.5F + f);
         }
 
         renderStandardBlock(par1Block, par2, par3, par4);
@@ -1783,14 +1799,14 @@ public class RenderBlocks
         float f8 = 0.0625F;
         float f9 = 0.0625F;
         float f10 = 0.625F;
-        avec3[0] = blockAccess.func_82732_R().getVecFromPool(-f8, 0.0D, -f9);
-        avec3[1] = blockAccess.func_82732_R().getVecFromPool(f8, 0.0D, -f9);
-        avec3[2] = blockAccess.func_82732_R().getVecFromPool(f8, 0.0D, f9);
-        avec3[3] = blockAccess.func_82732_R().getVecFromPool(-f8, 0.0D, f9);
-        avec3[4] = blockAccess.func_82732_R().getVecFromPool(-f8, f10, -f9);
-        avec3[5] = blockAccess.func_82732_R().getVecFromPool(f8, f10, -f9);
-        avec3[6] = blockAccess.func_82732_R().getVecFromPool(f8, f10, f9);
-        avec3[7] = blockAccess.func_82732_R().getVecFromPool(-f8, f10, f9);
+        avec3[0] = blockAccess.getWorldVec3Pool().getVecFromPool(-f8, 0.0D, -f9);
+        avec3[1] = blockAccess.getWorldVec3Pool().getVecFromPool(f8, 0.0D, -f9);
+        avec3[2] = blockAccess.getWorldVec3Pool().getVecFromPool(f8, 0.0D, f9);
+        avec3[3] = blockAccess.getWorldVec3Pool().getVecFromPool(-f8, 0.0D, f9);
+        avec3[4] = blockAccess.getWorldVec3Pool().getVecFromPool(-f8, f10, -f9);
+        avec3[5] = blockAccess.getWorldVec3Pool().getVecFromPool(f8, f10, -f9);
+        avec3[6] = blockAccess.getWorldVec3Pool().getVecFromPool(f8, f10, f9);
+        avec3[7] = blockAccess.getWorldVec3Pool().getVecFromPool(-f8, f10, f9);
 
         for (int j1 = 0; j1 < 8; j1++)
         {
@@ -1960,19 +1976,19 @@ public class RenderBlocks
 
         if (j == 2)
         {
-            func_83020_a(0.5F - f1, f3, 1.0F - f2, 0.5F + f1, f4, 1.0D);
+            setRenderMinMax(0.5F - f1, f3, 1.0F - f2, 0.5F + f1, f4, 1.0D);
         }
         else if (j == 0)
         {
-            func_83020_a(0.5F - f1, f3, 0.0D, 0.5F + f1, f4, f2);
+            setRenderMinMax(0.5F - f1, f3, 0.0D, 0.5F + f1, f4, f2);
         }
         else if (j == 1)
         {
-            func_83020_a(1.0F - f2, f3, 0.5F - f1, 1.0D, f4, 0.5F + f1);
+            setRenderMinMax(1.0F - f2, f3, 0.5F - f1, 1.0D, f4, 0.5F + f1);
         }
         else if (j == 3)
         {
-            func_83020_a(0.0D, f3, 0.5F - f1, f2, f4, 0.5F + f1);
+            setRenderMinMax(0.0D, f3, 0.5F - f1, f2, f4, 0.5F + f1);
         }
 
         renderStandardBlock(par1Block, par2, par3, par4);
@@ -2010,14 +2026,14 @@ public class RenderBlocks
         float f11 = 0.046875F;
         float f12 = 0.046875F;
         float f13 = 0.3125F;
-        avec3[0] = blockAccess.func_82732_R().getVecFromPool(-f11, 0.0D, -f12);
-        avec3[1] = blockAccess.func_82732_R().getVecFromPool(f11, 0.0D, -f12);
-        avec3[2] = blockAccess.func_82732_R().getVecFromPool(f11, 0.0D, f12);
-        avec3[3] = blockAccess.func_82732_R().getVecFromPool(-f11, 0.0D, f12);
-        avec3[4] = blockAccess.func_82732_R().getVecFromPool(-f11, f13, -f12);
-        avec3[5] = blockAccess.func_82732_R().getVecFromPool(f11, f13, -f12);
-        avec3[6] = blockAccess.func_82732_R().getVecFromPool(f11, f13, f12);
-        avec3[7] = blockAccess.func_82732_R().getVecFromPool(-f11, f13, f12);
+        avec3[0] = blockAccess.getWorldVec3Pool().getVecFromPool(-f11, 0.0D, -f12);
+        avec3[1] = blockAccess.getWorldVec3Pool().getVecFromPool(f11, 0.0D, -f12);
+        avec3[2] = blockAccess.getWorldVec3Pool().getVecFromPool(f11, 0.0D, f12);
+        avec3[3] = blockAccess.getWorldVec3Pool().getVecFromPool(-f11, 0.0D, f12);
+        avec3[4] = blockAccess.getWorldVec3Pool().getVecFromPool(-f11, f13, -f12);
+        avec3[5] = blockAccess.getWorldVec3Pool().getVecFromPool(f11, f13, -f12);
+        avec3[6] = blockAccess.getWorldVec3Pool().getVecFromPool(f11, f13, f12);
+        avec3[7] = blockAccess.getWorldVec3Pool().getVecFromPool(-f11, f13, f12);
 
         for (int j1 = 0; j1 < 8; j1++)
         {
@@ -2137,14 +2153,14 @@ public class RenderBlocks
         float f14 = 0.09375F;
         float f15 = 0.09375F;
         float f16 = 0.03125F;
-        avec3[0] = blockAccess.func_82732_R().getVecFromPool(-f14, 0.0D, -f15);
-        avec3[1] = blockAccess.func_82732_R().getVecFromPool(f14, 0.0D, -f15);
-        avec3[2] = blockAccess.func_82732_R().getVecFromPool(f14, 0.0D, f15);
-        avec3[3] = blockAccess.func_82732_R().getVecFromPool(-f14, 0.0D, f15);
-        avec3[4] = blockAccess.func_82732_R().getVecFromPool(-f14, f16, -f15);
-        avec3[5] = blockAccess.func_82732_R().getVecFromPool(f14, f16, -f15);
-        avec3[6] = blockAccess.func_82732_R().getVecFromPool(f14, f16, f15);
-        avec3[7] = blockAccess.func_82732_R().getVecFromPool(-f14, f16, f15);
+        avec3[0] = blockAccess.getWorldVec3Pool().getVecFromPool(-f14, 0.0D, -f15);
+        avec3[1] = blockAccess.getWorldVec3Pool().getVecFromPool(f14, 0.0D, -f15);
+        avec3[2] = blockAccess.getWorldVec3Pool().getVecFromPool(f14, 0.0D, f15);
+        avec3[3] = blockAccess.getWorldVec3Pool().getVecFromPool(-f14, 0.0D, f15);
+        avec3[4] = blockAccess.getWorldVec3Pool().getVecFromPool(-f14, f16, -f15);
+        avec3[5] = blockAccess.getWorldVec3Pool().getVecFromPool(f14, f16, -f15);
+        avec3[6] = blockAccess.getWorldVec3Pool().getVecFromPool(f14, f16, f15);
+        avec3[7] = blockAccess.getWorldVec3Pool().getVecFromPool(-f14, f16, f15);
 
         for (int l1 = 0; l1 < 8; l1++)
         {
@@ -3721,34 +3737,42 @@ public class RenderBlocks
         double d1 = (double)f2 + 0.0234375D;
         double d2 = (double)f + 0.03515625D;
         double d3 = (double)f2 + 0.03125D;
+        double d4 = (double)f + 0.02734375D;
+        double d5 = (double)f2 + 0.05078125D;
+        double d6 = (double)f + 0.03515625D;
+        double d7 = (double)f2 + 0.05859375D;
         par2 += 0.5D;
         par6 += 0.5D;
-        double d4 = par2 - 0.5D;
-        double d5 = par2 + 0.5D;
-        double d6 = par6 - 0.5D;
-        double d7 = par6 + 0.5D;
-        double d8 = 0.0625D;
-        double d9 = 0.625D;
-        tessellator.addVertexWithUV((par2 + par8 * (1.0D - d9)) - d8, par4 + d9, (par6 + par10 * (1.0D - d9)) - d8, d, d1);
-        tessellator.addVertexWithUV((par2 + par8 * (1.0D - d9)) - d8, par4 + d9, par6 + par10 * (1.0D - d9) + d8, d, d3);
-        tessellator.addVertexWithUV(par2 + par8 * (1.0D - d9) + d8, par4 + d9, par6 + par10 * (1.0D - d9) + d8, d2, d3);
-        tessellator.addVertexWithUV(par2 + par8 * (1.0D - d9) + d8, par4 + d9, (par6 + par10 * (1.0D - d9)) - d8, d2, d1);
-        tessellator.addVertexWithUV(par2 - d8, par4 + 1.0D, d6, f, f2);
-        tessellator.addVertexWithUV((par2 - d8) + par8, par4 + 0.0D, d6 + par10, f, f3);
-        tessellator.addVertexWithUV((par2 - d8) + par8, par4 + 0.0D, d7 + par10, f1, f3);
-        tessellator.addVertexWithUV(par2 - d8, par4 + 1.0D, d7, f1, f2);
-        tessellator.addVertexWithUV(par2 + d8, par4 + 1.0D, d7, f, f2);
-        tessellator.addVertexWithUV(par2 + par8 + d8, par4 + 0.0D, d7 + par10, f, f3);
-        tessellator.addVertexWithUV(par2 + par8 + d8, par4 + 0.0D, d6 + par10, f1, f3);
-        tessellator.addVertexWithUV(par2 + d8, par4 + 1.0D, d6, f1, f2);
-        tessellator.addVertexWithUV(d4, par4 + 1.0D, par6 + d8, f, f2);
-        tessellator.addVertexWithUV(d4 + par8, par4 + 0.0D, par6 + d8 + par10, f, f3);
-        tessellator.addVertexWithUV(d5 + par8, par4 + 0.0D, par6 + d8 + par10, f1, f3);
-        tessellator.addVertexWithUV(d5, par4 + 1.0D, par6 + d8, f1, f2);
-        tessellator.addVertexWithUV(d5, par4 + 1.0D, par6 - d8, f, f2);
-        tessellator.addVertexWithUV(d5 + par8, par4 + 0.0D, (par6 - d8) + par10, f, f3);
-        tessellator.addVertexWithUV(d4 + par8, par4 + 0.0D, (par6 - d8) + par10, f1, f3);
-        tessellator.addVertexWithUV(d4, par4 + 1.0D, par6 - d8, f1, f2);
+        double d8 = par2 - 0.5D;
+        double d9 = par2 + 0.5D;
+        double d10 = par6 - 0.5D;
+        double d11 = par6 + 0.5D;
+        double d12 = 0.0625D;
+        double d13 = 0.625D;
+        tessellator.addVertexWithUV((par2 + par8 * (1.0D - d13)) - d12, par4 + d13, (par6 + par10 * (1.0D - d13)) - d12, d, d1);
+        tessellator.addVertexWithUV((par2 + par8 * (1.0D - d13)) - d12, par4 + d13, par6 + par10 * (1.0D - d13) + d12, d, d3);
+        tessellator.addVertexWithUV(par2 + par8 * (1.0D - d13) + d12, par4 + d13, par6 + par10 * (1.0D - d13) + d12, d2, d3);
+        tessellator.addVertexWithUV(par2 + par8 * (1.0D - d13) + d12, par4 + d13, (par6 + par10 * (1.0D - d13)) - d12, d2, d1);
+        tessellator.addVertexWithUV(par2 + d12 + par8, par4, (par6 - d12) + par10, d6, d5);
+        tessellator.addVertexWithUV(par2 + d12 + par8, par4, par6 + d12 + par10, d6, d7);
+        tessellator.addVertexWithUV((par2 - d12) + par8, par4, par6 + d12 + par10, d4, d7);
+        tessellator.addVertexWithUV((par2 - d12) + par8, par4, (par6 - d12) + par10, d4, d5);
+        tessellator.addVertexWithUV(par2 - d12, par4 + 1.0D, d10, f, f2);
+        tessellator.addVertexWithUV((par2 - d12) + par8, par4 + 0.0D, d10 + par10, f, f3);
+        tessellator.addVertexWithUV((par2 - d12) + par8, par4 + 0.0D, d11 + par10, f1, f3);
+        tessellator.addVertexWithUV(par2 - d12, par4 + 1.0D, d11, f1, f2);
+        tessellator.addVertexWithUV(par2 + d12, par4 + 1.0D, d11, f, f2);
+        tessellator.addVertexWithUV(par2 + par8 + d12, par4 + 0.0D, d11 + par10, f, f3);
+        tessellator.addVertexWithUV(par2 + par8 + d12, par4 + 0.0D, d10 + par10, f1, f3);
+        tessellator.addVertexWithUV(par2 + d12, par4 + 1.0D, d10, f1, f2);
+        tessellator.addVertexWithUV(d8, par4 + 1.0D, par6 + d12, f, f2);
+        tessellator.addVertexWithUV(d8 + par8, par4 + 0.0D, par6 + d12 + par10, f, f3);
+        tessellator.addVertexWithUV(d9 + par8, par4 + 0.0D, par6 + d12 + par10, f1, f3);
+        tessellator.addVertexWithUV(d9, par4 + 1.0D, par6 + d12, f1, f2);
+        tessellator.addVertexWithUV(d9, par4 + 1.0D, par6 - d12, f, f2);
+        tessellator.addVertexWithUV(d9 + par8, par4 + 0.0D, (par6 - d12) + par10, f, f3);
+        tessellator.addVertexWithUV(d8 + par8, par4 + 0.0D, (par6 - d12) + par10, f1, f3);
+        tessellator.addVertexWithUV(d8, par4 + 1.0D, par6 - d12, f1, f2);
     }
 
     /**
@@ -6336,13 +6360,13 @@ public class RenderBlocks
     {
         float f = 0.1875F;
         func_82774_a(Block.obsidian.blockIndexInTexture);
-        func_83020_a(0.125D, 0.0D, 0.125D, 0.875D, f, 0.875D);
+        setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, f, 0.875D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         func_82774_a(Block.glass.blockIndexInTexture);
-        func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         func_82774_a(41);
-        func_83020_a(0.1875D, f, 0.1875D, 0.8125D, 0.875D, 0.8125D);
+        setRenderMinMax(0.1875D, f, 0.1875D, 0.8125D, 0.875D, 0.8125D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         clearOverrideBlockTexture();
         return true;
@@ -6491,7 +6515,7 @@ public class RenderBlocks
         boolean flag = false;
         float f = 0.375F;
         float f1 = 0.625F;
-        func_83020_a(f, 0.0D, f, f1, 1.0D, f1);
+        setRenderMinMax(f, 0.0D, f, f1, 1.0D, f1);
         renderStandardBlock(par1BlockFence, par2, par3, par4);
         flag = true;
         boolean flag1 = false;
@@ -6528,14 +6552,14 @@ public class RenderBlocks
 
         if (flag1)
         {
-            func_83020_a(f4, f2, f, f5, f3, f1);
+            setRenderMinMax(f4, f2, f, f5, f3, f1);
             renderStandardBlock(par1BlockFence, par2, par3, par4);
             flag = true;
         }
 
         if (flag2)
         {
-            func_83020_a(f, f2, f6, f1, f3, f7);
+            setRenderMinMax(f, f2, f6, f1, f3, f7);
             renderStandardBlock(par1BlockFence, par2, par3, par4);
             flag = true;
         }
@@ -6545,14 +6569,14 @@ public class RenderBlocks
 
         if (flag1)
         {
-            func_83020_a(f4, f2, f, f5, f3, f1);
+            setRenderMinMax(f4, f2, f, f5, f3, f1);
             renderStandardBlock(par1BlockFence, par2, par3, par4);
             flag = true;
         }
 
         if (flag2)
         {
-            func_83020_a(f, f2, f6, f1, f3, f7);
+            setRenderMinMax(f, f2, f6, f1, f3, f7);
             renderStandardBlock(par1BlockFence, par2, par3, par4);
             flag = true;
         }
@@ -6563,51 +6587,51 @@ public class RenderBlocks
 
     public boolean func_82779_a(BlockWall par1BlockWall, int par2, int par3, int par4)
     {
-        boolean flag = par1BlockWall.func_82538_d(blockAccess, par2 - 1, par3, par4);
-        boolean flag1 = par1BlockWall.func_82538_d(blockAccess, par2 + 1, par3, par4);
-        boolean flag2 = par1BlockWall.func_82538_d(blockAccess, par2, par3, par4 - 1);
-        boolean flag3 = par1BlockWall.func_82538_d(blockAccess, par2, par3, par4 + 1);
+        boolean flag = par1BlockWall.canConnectWallTo(blockAccess, par2 - 1, par3, par4);
+        boolean flag1 = par1BlockWall.canConnectWallTo(blockAccess, par2 + 1, par3, par4);
+        boolean flag2 = par1BlockWall.canConnectWallTo(blockAccess, par2, par3, par4 - 1);
+        boolean flag3 = par1BlockWall.canConnectWallTo(blockAccess, par2, par3, par4 + 1);
         boolean flag4 = flag2 && flag3 && !flag && !flag1;
         boolean flag5 = !flag2 && !flag3 && flag && flag1;
         boolean flag6 = blockAccess.isAirBlock(par2, par3 + 1, par4);
 
         if (!flag4 && !flag5 || !flag6)
         {
-            func_83020_a(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
+            setRenderMinMax(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
             renderStandardBlock(par1BlockWall, par2, par3, par4);
 
             if (flag)
             {
-                func_83020_a(0.0D, 0.0D, 0.3125D, 0.25D, 0.8125D, 0.6875D);
+                setRenderMinMax(0.0D, 0.0D, 0.3125D, 0.25D, 0.8125D, 0.6875D);
                 renderStandardBlock(par1BlockWall, par2, par3, par4);
             }
 
             if (flag1)
             {
-                func_83020_a(0.75D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
+                setRenderMinMax(0.75D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
                 renderStandardBlock(par1BlockWall, par2, par3, par4);
             }
 
             if (flag2)
             {
-                func_83020_a(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 0.25D);
+                setRenderMinMax(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 0.25D);
                 renderStandardBlock(par1BlockWall, par2, par3, par4);
             }
 
             if (flag3)
             {
-                func_83020_a(0.3125D, 0.0D, 0.75D, 0.6875D, 0.8125D, 1.0D);
+                setRenderMinMax(0.3125D, 0.0D, 0.75D, 0.6875D, 0.8125D, 1.0D);
                 renderStandardBlock(par1BlockWall, par2, par3, par4);
             }
         }
         else if (flag4)
         {
-            func_83020_a(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 1.0D);
+            setRenderMinMax(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 1.0D);
             renderStandardBlock(par1BlockWall, par2, par3, par4);
         }
         else
         {
-            func_83020_a(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
+            setRenderMinMax(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
             renderStandardBlock(par1BlockWall, par2, par3, par4);
         }
 
@@ -6673,12 +6697,12 @@ public class RenderBlocks
             float f1 = 1.0F - (float)i / 16F;
             float f2 = 1.0F - (float)(i + byte0) / 16F;
             i += byte0;
-            func_83020_a(0.5F - f, f2, 0.5F - f, 0.5F + f, f1, 0.5F + f);
+            setRenderMinMax(0.5F - f, f2, 0.5F - f, 0.5F + f, f1, 0.5F + f);
             renderStandardBlock(par1BlockDragonEgg, par2, par3, par4);
         }
 
         flag = true;
-        func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         return flag;
     }
 
@@ -6698,7 +6722,7 @@ public class RenderBlocks
         float f4 = 0.3125F;
         float f5 = 1.0F;
 
-        if ((j == 2 || j == 0) && blockAccess.getBlockId(par2 - 1, par3, par4) == Block.field_82515_ce.blockID && blockAccess.getBlockId(par2 + 1, par3, par4) == Block.field_82515_ce.blockID || (j == 3 || j == 1) && blockAccess.getBlockId(par2, par3, par4 - 1) == Block.field_82515_ce.blockID && blockAccess.getBlockId(par2, par3, par4 + 1) == Block.field_82515_ce.blockID)
+        if ((j == 2 || j == 0) && blockAccess.getBlockId(par2 - 1, par3, par4) == Block.cobblestoneWall.blockID && blockAccess.getBlockId(par2 + 1, par3, par4) == Block.cobblestoneWall.blockID || (j == 3 || j == 1) && blockAccess.getBlockId(par2, par3, par4 - 1) == Block.cobblestoneWall.blockID && blockAccess.getBlockId(par2, par3, par4 + 1) == Block.cobblestoneWall.blockID)
         {
             f -= 0.1875F;
             f1 -= 0.1875F;
@@ -6708,18 +6732,22 @@ public class RenderBlocks
             f5 -= 0.1875F;
         }
 
+        renderAllFaces = true;
+
         if (j == 3 || j == 1)
         {
+            uvRotateTop = 1;
             float f6 = 0.4375F;
             float f10 = 0.5625F;
             float f14 = 0.0F;
             float f18 = 0.125F;
-            func_83020_a(f6, f4, f14, f10, f5, f18);
+            setRenderMinMax(f6, f4, f14, f10, f5, f18);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f14 = 0.875F;
             f18 = 1.0F;
-            func_83020_a(f6, f4, f14, f10, f5, f18);
+            setRenderMinMax(f6, f4, f14, f10, f5, f18);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
+            uvRotateTop = 0;
         }
         else
         {
@@ -6727,100 +6755,106 @@ public class RenderBlocks
             float f11 = 0.125F;
             float f15 = 0.4375F;
             float f19 = 0.5625F;
-            func_83020_a(f7, f4, f15, f11, f5, f19);
+            setRenderMinMax(f7, f4, f15, f11, f5, f19);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f7 = 0.875F;
             f11 = 1.0F;
-            func_83020_a(f7, f4, f15, f11, f5, f19);
+            setRenderMinMax(f7, f4, f15, f11, f5, f19);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
         }
 
         if (flag1)
         {
+            if (j == 2 || j == 0)
+            {
+                uvRotateTop = 1;
+            }
+
             if (j == 3)
             {
-                func_83020_a(0.8125D, f, 0.0D, 0.9375D, f3, 0.125D);
+                setRenderMinMax(0.8125D, f, 0.0D, 0.9375D, f3, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.8125D, f, 0.875D, 0.9375D, f3, 1.0D);
+                setRenderMinMax(0.8125D, f, 0.875D, 0.9375D, f3, 1.0D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.5625D, f, 0.0D, 0.8125D, f1, 0.125D);
+                setRenderMinMax(0.5625D, f, 0.0D, 0.8125D, f1, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.5625D, f, 0.875D, 0.8125D, f1, 1.0D);
+                setRenderMinMax(0.5625D, f, 0.875D, 0.8125D, f1, 1.0D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.5625D, f2, 0.0D, 0.8125D, f3, 0.125D);
+                setRenderMinMax(0.5625D, f2, 0.0D, 0.8125D, f3, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.5625D, f2, 0.875D, 0.8125D, f3, 1.0D);
+                setRenderMinMax(0.5625D, f2, 0.875D, 0.8125D, f3, 1.0D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             }
             else if (j == 1)
             {
-                func_83020_a(0.0625D, f, 0.0D, 0.1875D, f3, 0.125D);
+                setRenderMinMax(0.0625D, f, 0.0D, 0.1875D, f3, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.0625D, f, 0.875D, 0.1875D, f3, 1.0D);
+                setRenderMinMax(0.0625D, f, 0.875D, 0.1875D, f3, 1.0D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.1875D, f, 0.0D, 0.4375D, f1, 0.125D);
+                setRenderMinMax(0.1875D, f, 0.0D, 0.4375D, f1, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.1875D, f, 0.875D, 0.4375D, f1, 1.0D);
+                setRenderMinMax(0.1875D, f, 0.875D, 0.4375D, f1, 1.0D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.1875D, f2, 0.0D, 0.4375D, f3, 0.125D);
+                setRenderMinMax(0.1875D, f2, 0.0D, 0.4375D, f3, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.1875D, f2, 0.875D, 0.4375D, f3, 1.0D);
+                setRenderMinMax(0.1875D, f2, 0.875D, 0.4375D, f3, 1.0D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             }
             else if (j == 0)
             {
-                func_83020_a(0.0D, f, 0.8125D, 0.125D, f3, 0.9375D);
+                setRenderMinMax(0.0D, f, 0.8125D, 0.125D, f3, 0.9375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.875D, f, 0.8125D, 1.0D, f3, 0.9375D);
+                setRenderMinMax(0.875D, f, 0.8125D, 1.0D, f3, 0.9375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.0D, f, 0.5625D, 0.125D, f1, 0.8125D);
+                setRenderMinMax(0.0D, f, 0.5625D, 0.125D, f1, 0.8125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.875D, f, 0.5625D, 1.0D, f1, 0.8125D);
+                setRenderMinMax(0.875D, f, 0.5625D, 1.0D, f1, 0.8125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.0D, f2, 0.5625D, 0.125D, f3, 0.8125D);
+                setRenderMinMax(0.0D, f2, 0.5625D, 0.125D, f3, 0.8125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.875D, f2, 0.5625D, 1.0D, f3, 0.8125D);
+                setRenderMinMax(0.875D, f2, 0.5625D, 1.0D, f3, 0.8125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             }
             else if (j == 2)
             {
-                func_83020_a(0.0D, f, 0.0625D, 0.125D, f3, 0.1875D);
+                setRenderMinMax(0.0D, f, 0.0625D, 0.125D, f3, 0.1875D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.875D, f, 0.0625D, 1.0D, f3, 0.1875D);
+                setRenderMinMax(0.875D, f, 0.0625D, 1.0D, f3, 0.1875D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.0D, f, 0.1875D, 0.125D, f1, 0.4375D);
+                setRenderMinMax(0.0D, f, 0.1875D, 0.125D, f1, 0.4375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.875D, f, 0.1875D, 1.0D, f1, 0.4375D);
+                setRenderMinMax(0.875D, f, 0.1875D, 1.0D, f1, 0.4375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.0D, f2, 0.1875D, 0.125D, f3, 0.4375D);
+                setRenderMinMax(0.0D, f2, 0.1875D, 0.125D, f3, 0.4375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-                func_83020_a(0.875D, f2, 0.1875D, 1.0D, f3, 0.4375D);
+                setRenderMinMax(0.875D, f2, 0.1875D, 1.0D, f3, 0.4375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             }
         }
         else if (j == 3 || j == 1)
         {
+            uvRotateTop = 1;
             float f8 = 0.4375F;
             float f12 = 0.5625F;
             float f16 = 0.375F;
             float f20 = 0.5F;
-            func_83020_a(f8, f, f16, f12, f3, f20);
+            setRenderMinMax(f8, f, f16, f12, f3, f20);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f16 = 0.5F;
             f20 = 0.625F;
-            func_83020_a(f8, f, f16, f12, f3, f20);
+            setRenderMinMax(f8, f, f16, f12, f3, f20);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f16 = 0.625F;
             f20 = 0.875F;
-            func_83020_a(f8, f, f16, f12, f1, f20);
+            setRenderMinMax(f8, f, f16, f12, f1, f20);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            func_83020_a(f8, f2, f16, f12, f3, f20);
+            setRenderMinMax(f8, f2, f16, f12, f3, f20);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f16 = 0.125F;
             f20 = 0.375F;
-            func_83020_a(f8, f, f16, f12, f1, f20);
+            setRenderMinMax(f8, f, f16, f12, f1, f20);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            func_83020_a(f8, f2, f16, f12, f3, f20);
+            setRenderMinMax(f8, f2, f16, f12, f3, f20);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
         }
         else
@@ -6829,27 +6863,29 @@ public class RenderBlocks
             float f13 = 0.5F;
             float f17 = 0.4375F;
             float f21 = 0.5625F;
-            func_83020_a(f9, f, f17, f13, f3, f21);
+            setRenderMinMax(f9, f, f17, f13, f3, f21);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f9 = 0.5F;
             f13 = 0.625F;
-            func_83020_a(f9, f, f17, f13, f3, f21);
+            setRenderMinMax(f9, f, f17, f13, f3, f21);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f9 = 0.625F;
             f13 = 0.875F;
-            func_83020_a(f9, f, f17, f13, f1, f21);
+            setRenderMinMax(f9, f, f17, f13, f1, f21);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            func_83020_a(f9, f2, f17, f13, f3, f21);
+            setRenderMinMax(f9, f2, f17, f13, f3, f21);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f9 = 0.125F;
             f13 = 0.375F;
-            func_83020_a(f9, f, f17, f13, f1, f21);
+            setRenderMinMax(f9, f, f17, f13, f1, f21);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            func_83020_a(f9, f2, f17, f13, f3, f21);
+            setRenderMinMax(f9, f2, f17, f13, f3, f21);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
         }
 
-        func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        renderAllFaces = false;
+        uvRotateTop = 0;
+        setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         return flag;
     }
 
@@ -7871,12 +7907,12 @@ public class RenderBlocks
             {
                 if (l == 0)
                 {
-                    func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
+                    setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
                 }
 
                 if (l == 1)
                 {
-                    func_83020_a(0.0D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D);
+                    setRenderMinMax(0.0D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D);
                 }
 
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -7966,7 +8002,7 @@ public class RenderBlocks
                 float f10 = 1.0F - (float)i1 / 16F;
                 float f11 = 1.0F - (float)(i1 + byte0) / 16F;
                 i1 += byte0;
-                func_83020_a(0.5F - f9, f11, 0.5F - f9, 0.5F + f9, f10, 0.5F + f9);
+                setRenderMinMax(0.5F - f9, f11, 0.5F - f9, 0.5F + f9, f10, 0.5F + f9);
                 tessellator.setNormal(0.0F, -1F, 0.0F);
                 renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSide(0));
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
@@ -7983,7 +8019,7 @@ public class RenderBlocks
 
             tessellator.draw();
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         }
         else if (j == 11)
         {
@@ -7993,24 +8029,24 @@ public class RenderBlocks
 
                 if (j1 == 0)
                 {
-                    func_83020_a(0.5F - f4, 0.0D, 0.0D, 0.5F + f4, 1.0D, f4 * 2.0F);
+                    setRenderMinMax(0.5F - f4, 0.0D, 0.0D, 0.5F + f4, 1.0D, f4 * 2.0F);
                 }
 
                 if (j1 == 1)
                 {
-                    func_83020_a(0.5F - f4, 0.0D, 1.0F - f4 * 2.0F, 0.5F + f4, 1.0D, 1.0D);
+                    setRenderMinMax(0.5F - f4, 0.0D, 1.0F - f4 * 2.0F, 0.5F + f4, 1.0D, 1.0D);
                 }
 
                 f4 = 0.0625F;
 
                 if (j1 == 2)
                 {
-                    func_83020_a(0.5F - f4, 1.0F - f4 * 3F, -f4 * 2.0F, 0.5F + f4, 1.0F - f4, 1.0F + f4 * 2.0F);
+                    setRenderMinMax(0.5F - f4, 1.0F - f4 * 3F, -f4 * 2.0F, 0.5F + f4, 1.0F - f4, 1.0F + f4 * 2.0F);
                 }
 
                 if (j1 == 3)
                 {
-                    func_83020_a(0.5F - f4, 0.5F - f4 * 3F, -f4 * 2.0F, 0.5F + f4, 0.5F - f4, 1.0F + f4 * 2.0F);
+                    setRenderMinMax(0.5F - f4, 0.5F - f4 * 3F, -f4 * 2.0F, 0.5F + f4, 0.5F - f4, 1.0F + f4 * 2.0F);
                 }
 
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -8041,7 +8077,7 @@ public class RenderBlocks
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
 
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         }
         else if (j == 21)
         {
@@ -8051,19 +8087,19 @@ public class RenderBlocks
 
                 if (k1 == 0)
                 {
-                    func_83020_a(0.5F - f5, 0.30000001192092896D, 0.0D, 0.5F + f5, 1.0D, f5 * 2.0F);
+                    setRenderMinMax(0.5F - f5, 0.30000001192092896D, 0.0D, 0.5F + f5, 1.0D, f5 * 2.0F);
                 }
 
                 if (k1 == 1)
                 {
-                    func_83020_a(0.5F - f5, 0.30000001192092896D, 1.0F - f5 * 2.0F, 0.5F + f5, 1.0D, 1.0D);
+                    setRenderMinMax(0.5F - f5, 0.30000001192092896D, 1.0F - f5 * 2.0F, 0.5F + f5, 1.0D, 1.0D);
                 }
 
                 f5 = 0.0625F;
 
                 if (k1 == 2)
                 {
-                    func_83020_a(0.5F - f5, 0.5D, 0.0D, 0.5F + f5, 1.0F - f5, 1.0D);
+                    setRenderMinMax(0.5F - f5, 0.5D, 0.0D, 0.5F + f5, 1.0F - f5, 1.0D);
                 }
 
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -8100,12 +8136,12 @@ public class RenderBlocks
             {
                 if (l1 == 0)
                 {
-                    func_83020_a(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
+                    setRenderMinMax(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
                 }
 
                 if (l1 == 1)
                 {
-                    func_83020_a(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
+                    setRenderMinMax(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
                 }
 
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -8136,7 +8172,7 @@ public class RenderBlocks
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
 
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         }
         else if (j == 35)
         {
@@ -8150,17 +8186,17 @@ public class RenderBlocks
             {
                 if (i2 == 0)
                 {
-                    func_83020_a(0.125D, 0.0D, 0.125D, 0.875D, 0.1875D, 0.875D);
+                    setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, 0.1875D, 0.875D);
                     func_82774_a(Block.obsidian.blockIndexInTexture);
                 }
                 else if (i2 == 1)
                 {
-                    func_83020_a(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
+                    setRenderMinMax(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
                     func_82774_a(41);
                 }
                 else if (i2 == 2)
                 {
-                    func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+                    setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
                     func_82774_a(Block.glass.blockIndexInTexture);
                 }
 
@@ -8192,7 +8228,7 @@ public class RenderBlocks
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
 
-            func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
             clearOverrideBlockTexture();
         }
         else

@@ -1004,13 +1004,10 @@ public class Chunk
     {
         isChunkLoaded = true;
         worldObj.addTileEntity(chunkTileEntityMap.values());
-        List alist[] = entityLists;
-        int i = alist.length;
 
-        for (int j = 0; j < i; j++)
+        for (int i = 0; i < entityLists.length; i++)
         {
-            List list = alist[j];
-            worldObj.addLoadedEntities(list);
+            worldObj.addLoadedEntities(entityLists[i]);
         }
     }
 
@@ -1027,13 +1024,9 @@ public class Chunk
             tileentity = (TileEntity)iterator.next();
         }
 
-        List alist[] = entityLists;
-        int i = alist.length;
-
-        for (int j = 0; j < i; j++)
+        for (int i = 0; i < entityLists.length; i++)
         {
-            List list = alist[j];
-            worldObj.unloadEntities(list);
+            worldObj.unloadEntities(entityLists[i]);
         }
     }
 
@@ -1064,46 +1057,37 @@ public class Chunk
             j = entityLists.length - 1;
         }
 
-        label0:
-
         for (int k = i; k <= j; k++)
         {
             List list = entityLists[k];
-            Iterator iterator = list.iterator();
 
-            do
+            for (int l = 0; l < list.size(); l++)
             {
-                if (!iterator.hasNext())
+                Entity entity = (Entity)list.get(l);
+
+                if (entity == par1Entity || !entity.boundingBox.intersectsWith(par2AxisAlignedBB))
                 {
-                    continue label0;
+                    continue;
                 }
 
-                Entity entity = (Entity)iterator.next();
+                par3List.add(entity);
+                Entity aentity[] = entity.getParts();
 
-                if (entity != par1Entity && entity.boundingBox.intersectsWith(par2AxisAlignedBB))
+                if (aentity == null)
                 {
-                    par3List.add(entity);
-                    Entity aentity[] = entity.getParts();
+                    continue;
+                }
 
-                    if (aentity != null)
+                for (int i1 = 0; i1 < aentity.length; i1++)
+                {
+                    Entity entity1 = aentity[i1];
+
+                    if (entity1 != par1Entity && entity1.boundingBox.intersectsWith(par2AxisAlignedBB))
                     {
-                        int l = 0;
-
-                        while (l < aentity.length)
-                        {
-                            Entity entity1 = aentity[l];
-
-                            if (entity1 != par1Entity && entity1.boundingBox.intersectsWith(par2AxisAlignedBB))
-                            {
-                                par3List.add(entity1);
-                            }
-
-                            l++;
-                        }
+                        par3List.add(entity1);
                     }
                 }
             }
-            while (true);
         }
     }
 
@@ -1133,28 +1117,19 @@ public class Chunk
             j = 0;
         }
 
-        label0:
-
         for (int k = i; k <= j; k++)
         {
             List list = entityLists[k];
-            Iterator iterator = list.iterator();
 
-            do
+            for (int l = 0; l < list.size(); l++)
             {
-                if (!iterator.hasNext())
-                {
-                    continue label0;
-                }
+                Entity entity = (Entity)list.get(l);
 
-                Entity entity = (Entity)iterator.next();
-
-                if (par1Class.isAssignableFrom(entity.getClass()) && entity.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.func_82704_a(entity)))
+                if (par1Class.isAssignableFrom(entity.getClass()) && entity.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.isEntityApplicable(entity)))
                 {
                     par3List.add(entity);
                 }
             }
-            while (true);
         }
     }
 
@@ -1165,12 +1140,12 @@ public class Chunk
     {
         if (par1)
         {
-            if (hasEntities && worldObj.func_82737_E() != lastSaveTime)
+            if (hasEntities && worldObj.getTotalWorldTime() != lastSaveTime)
             {
                 return true;
             }
         }
-        else if (hasEntities && worldObj.func_82737_E() >= lastSaveTime + 600L)
+        else if (hasEntities && worldObj.getTotalWorldTime() >= lastSaveTime + 600L)
         {
             return true;
         }

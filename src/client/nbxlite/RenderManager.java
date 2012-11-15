@@ -32,6 +32,7 @@ public class RenderManager
     public double viewerPosX;
     public double viewerPosY;
     public double viewerPosZ;
+    public static boolean field_85095_o = false;
 
     private RenderManager()
     {
@@ -188,13 +189,102 @@ public class RenderManager
      */
     public void renderEntityWithPosYaw(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        Render render = getEntityRenderObject(par1Entity);
+        Render render = null;
 
-        if (render != null && renderEngine != null)
+        try
         {
-            render.doRender(par1Entity, par2, par4, par6, par8, par9);
-            render.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
+            render = getEntityRenderObject(par1Entity);
+
+            if (render != null && renderEngine != null)
+            {
+                if (field_85095_o)
+                {
+                    try
+                    {
+                        func_85094_b(par1Entity, par2, par4, par6, par8, par9);
+                    }
+                    catch (Throwable throwable)
+                    {
+                        throw new ReportedException(CrashReport.func_85055_a(throwable, "Rendering entity hitbox in world"));
+                    }
+                }
+
+                try
+                {
+                    render.doRender(par1Entity, par2, par4, par6, par8, par9);
+                }
+                catch (Throwable throwable1)
+                {
+                    throw new ReportedException(CrashReport.func_85055_a(throwable1, "Rendering entity in world"));
+                }
+
+                try
+                {
+                    render.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
+                }
+                catch (Throwable throwable2)
+                {
+                    throw new ReportedException(CrashReport.func_85055_a(throwable2, "Post-rendering entity in world"));
+                }
+            }
         }
+        catch (Throwable throwable3)
+        {
+            CrashReport crashreport = CrashReport.func_85055_a(throwable3, "Rendering entity in world");
+            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being rendered");
+            par1Entity.func_85029_a(crashreportcategory);
+            CrashReportCategory crashreportcategory1 = crashreport.func_85058_a("Renderer details");
+            crashreportcategory1.addCrashSection("Assigned renderer", render);
+            crashreportcategory1.addCrashSection("Location", CrashReportCategory.func_85074_a(par2, par4, par6));
+            crashreportcategory1.addCrashSection("Rotation", Float.valueOf(par8));
+            crashreportcategory1.addCrashSection("Delta", Float.valueOf(par9));
+            throw new ReportedException(crashreport);
+        }
+    }
+
+    private void func_85094_b(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        GL11.glDepthMask(false);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPushMatrix();
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA(255, 255, 255, 32);
+        double d = -par1Entity.width / 2.0F;
+        double d1 = -par1Entity.width / 2.0F;
+        double d2 = par1Entity.width / 2.0F;
+        double d3 = -par1Entity.width / 2.0F;
+        double d4 = -par1Entity.width / 2.0F;
+        double d5 = par1Entity.width / 2.0F;
+        double d6 = par1Entity.width / 2.0F;
+        double d7 = par1Entity.width / 2.0F;
+        double d8 = par1Entity.height;
+        tessellator.addVertex(par2 + d, par4 + d8, par6 + d1);
+        tessellator.addVertex(par2 + d, par4, par6 + d1);
+        tessellator.addVertex(par2 + d2, par4, par6 + d3);
+        tessellator.addVertex(par2 + d2, par4 + d8, par6 + d3);
+        tessellator.addVertex(par2 + d6, par4 + d8, par6 + d7);
+        tessellator.addVertex(par2 + d6, par4, par6 + d7);
+        tessellator.addVertex(par2 + d4, par4, par6 + d5);
+        tessellator.addVertex(par2 + d4, par4 + d8, par6 + d5);
+        tessellator.addVertex(par2 + d2, par4 + d8, par6 + d3);
+        tessellator.addVertex(par2 + d2, par4, par6 + d3);
+        tessellator.addVertex(par2 + d6, par4, par6 + d7);
+        tessellator.addVertex(par2 + d6, par4 + d8, par6 + d7);
+        tessellator.addVertex(par2 + d4, par4 + d8, par6 + d5);
+        tessellator.addVertex(par2 + d4, par4, par6 + d5);
+        tessellator.addVertex(par2 + d, par4, par6 + d1);
+        tessellator.addVertex(par2 + d, par4 + d8, par6 + d1);
+        tessellator.draw();
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
     }
 
     /**

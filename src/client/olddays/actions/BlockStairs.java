@@ -575,15 +575,15 @@ public class BlockStairs extends Block
         }
     }
 
-    /**
-     * called before onBlockPlacedBy by ItemBlock and ItemReed
-     */
-    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
         if (par5 == 0 || par5 != 1 && (double)par7 > 0.5D)
         {
-            int i = par1World.getBlockMetadata(par2, par3, par4);
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, i | 4);
+            return par9 | 4;
+        }
+        else
+        {
+            return par9;
         }
     }
 

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 public class EntityBoat extends Entity
 {
@@ -95,6 +96,11 @@ public class EntityBoat extends Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
+        if (func_85032_ar())
+        {
+            return false;
+        }
+
         if (worldObj.isRemote || isDead)
         {
             return true;
@@ -421,46 +427,38 @@ public class EntityBoat extends Entity
 
         if (list != null && !list.isEmpty())
         {
-            Iterator iterator = list.iterator();
-
-            do
+            for (int j1 = 0; j1 < list.size(); j1++)
             {
-                if (!iterator.hasNext())
-                {
-                    break;
-                }
-
-                Entity entity = (Entity)iterator.next();
+                Entity entity = (Entity)list.get(j1);
 
                 if (entity != riddenByEntity && entity.canBePushed() && (entity instanceof EntityBoat))
                 {
                     entity.applyEntityCollision(this);
                 }
             }
-            while (true);
         }
 
-        for (int j1 = 0; j1 < 4; j1++)
+        for (int k1 = 0; k1 < 4; k1++)
         {
-            int k1 = MathHelper.floor_double(posX + ((double)(j1 % 2) - 0.5D) * 0.80000000000000004D);
-            int l1 = MathHelper.floor_double(posZ + ((double)(j1 / 2) - 0.5D) * 0.80000000000000004D);
+            int l1 = MathHelper.floor_double(posX + ((double)(k1 % 2) - 0.5D) * 0.80000000000000004D);
+            int i2 = MathHelper.floor_double(posZ + ((double)(k1 / 2) - 0.5D) * 0.80000000000000004D);
 
-            for (int i2 = 0; i2 < 2; i2++)
+            for (int j2 = 0; j2 < 2; j2++)
             {
-                int j2 = MathHelper.floor_double(posY) + i2;
-                int k2 = worldObj.getBlockId(k1, j2, l1);
-                int l2 = worldObj.getBlockMetadata(k1, j2, l1);
+                int k2 = MathHelper.floor_double(posY) + j2;
+                int l2 = worldObj.getBlockId(l1, k2, i2);
+                int i3 = worldObj.getBlockMetadata(l1, k2, i2);
 
-                if (k2 == Block.snow.blockID)
+                if (l2 == Block.snow.blockID)
                 {
-                    worldObj.setBlockWithNotify(k1, j2, l1, 0);
+                    worldObj.setBlockWithNotify(l1, k2, i2, 0);
                     continue;
                 }
 
-                if (k2 == Block.waterlily.blockID)
+                if (l2 == Block.waterlily.blockID)
                 {
-                    Block.waterlily.dropBlockAsItemWithChance(worldObj, k1, j2, l1, l2, 0.3F, 0);
-                    worldObj.setBlockWithNotify(k1, j2, l1, 0);
+                    Block.waterlily.dropBlockAsItemWithChance(worldObj, l1, k2, i2, i3, 0.3F, 0);
+                    worldObj.setBlockWithNotify(l1, k2, i2, 0);
                 }
             }
         }

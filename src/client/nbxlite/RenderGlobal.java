@@ -36,7 +36,11 @@ public class RenderGlobal implements IWorldAccess
 
     /** Is occlusion testing enabled */
     private boolean occlusionEnabled;
-    private int cloudOffsetX;
+
+    /**
+     * counts the cloud render updates. Used with mod to stagger some updates
+     */
+    private int cloudTickCounter;
 
     /** The star GL Call list */
     private int starGLCallList;
@@ -146,7 +150,7 @@ public class RenderGlobal implements IWorldAccess
         tileEntities = new ArrayList();
         worldRenderersToUpdate = new ArrayList();
         occlusionEnabled = false;
-        cloudOffsetX = 0;
+        cloudTickCounter = 0;
         damagedBlocks = new HashMap();
         renderDistance = -1;
         renderEntitiesStartupCounter = 2;
@@ -317,30 +321,26 @@ public class RenderGlobal implements IWorldAccess
 
         if (worldRenderers != null)
         {
-            WorldRenderer aworldrenderer[] = worldRenderers;
-            int j = aworldrenderer.length;
-
-            for (int l = 0; l < j; l++)
+            for (int i = 0; i < worldRenderers.length; i++)
             {
-                WorldRenderer worldrenderer = aworldrenderer[l];
-                worldrenderer.stopRendering();
+                worldRenderers[i].stopRendering();
             }
         }
 
-        int i = 64 << 3 - renderDistance;
+        int j = 64 << 3 - renderDistance;
 
-        if (i > 400)
+        if (j > 400)
         {
-            i = 400;
+            j = 400;
         }
 
-        renderChunksWide = i / 16 + 1;
+        renderChunksWide = j / 16 + 1;
         renderChunksTall = 16;
-        renderChunksDeep = i / 16 + 1;
+        renderChunksDeep = j / 16 + 1;
         worldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         sortedWorldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         int k = 0;
-        int i1 = 0;
+        int l = 0;
         minBlockX = 0;
         minBlockY = 0;
         minBlockZ = 0;
@@ -348,10 +348,9 @@ public class RenderGlobal implements IWorldAccess
         maxBlockY = renderChunksTall;
         maxBlockZ = renderChunksDeep;
 
-        for (Iterator iterator = worldRenderersToUpdate.iterator(); iterator.hasNext();)
+        for (int i1 = 0; i1 < worldRenderersToUpdate.size(); i1++)
         {
-            WorldRenderer worldrenderer1 = (WorldRenderer)iterator.next();
-            worldrenderer1.needsUpdate = false;
+            ((WorldRenderer)worldRenderersToUpdate.get(i1)).needsUpdate = false;
         }
 
         worldRenderersToUpdate.clear();
@@ -367,13 +366,13 @@ public class RenderGlobal implements IWorldAccess
 
                     if (occlusionEnabled)
                     {
-                        worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].glOcclusionQuery = glOcclusionQueryBase.get(i1);
+                        worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].glOcclusionQuery = glOcclusionQueryBase.get(l);
                     }
 
                     worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].isWaitingOnOcclusionQuery = false;
                     worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].isVisible = true;
                     worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].isInFrustum = true;
-                    worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].chunkIndex = i1++;
+                    worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].chunkIndex = l++;
                     worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1].markDirty();
                     sortedWorldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1] = worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1];
                     worldRenderersToUpdate.add(worldRenderers[(l1 * renderChunksTall + k1) * renderChunksWide + j1]);
@@ -442,7 +441,7 @@ public class RenderGlobal implements IWorldAccess
         {
             Entity entity1 = (Entity)list.get(j);
 
-            if (entity1.isInRangeToRenderVec3D(par1Vec3) && (entity1.ignoreFrustumCheck || par2ICamera.isBoundingBoxInFrustum(entity1.boundingBox)) && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && theWorld.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
+            if (entity1.isInRangeToRenderVec3D(par1Vec3) && (entity1.ignoreFrustumCheck || par2ICamera.isBoundingBoxInFrustum(entity1.boundingBox) || entity1.riddenByEntity == mc.thePlayer) && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && theWorld.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
             {
                 countEntitiesRendered++;
                 RenderManager.instance.renderEntity(entity1, par3);
@@ -451,11 +450,10 @@ public class RenderGlobal implements IWorldAccess
 
         theWorld.theProfiler.endStartSection("tileentities");
         RenderHelper.enableStandardItemLighting();
-        TileEntity tileentity;
 
-        for (Iterator iterator = tileEntities.iterator(); iterator.hasNext(); TileEntityRenderer.instance.renderTileEntity(tileentity, par3))
+        for (int k = 0; k < tileEntities.size(); k++)
         {
-            tileentity = (TileEntity)iterator.next();
+            TileEntityRenderer.instance.renderTileEntity((TileEntity)tileEntities.get(k), par3);
         }
 
         mc.entityRenderer.disableLightmap(par3);
@@ -681,7 +679,7 @@ public class RenderGlobal implements IWorldAccess
                     float f3 = MathHelper.sqrt_float(sortedWorldRenderers[j1].distanceToEntitySquared(par1EntityLiving));
                     int k1 = (int)(1.0F + f3 / 128F);
 
-                    if (cloudOffsetX % k1 != j1 % k1)
+                    if (cloudTickCounter % k1 != j1 % k1)
                     {
                         continue;
                     }
@@ -821,22 +819,16 @@ public class RenderGlobal implements IWorldAccess
         double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * par4;
         double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * par4;
         int l = 0;
-        RenderList arenderlist[] = allRenderLists;
-        int i1 = arenderlist.length;
 
-        for (int j1 = 0; j1 < i1; j1++)
+        for (int i1 = 0; i1 < allRenderLists.length; i1++)
         {
-            RenderList renderlist = arenderlist[j1];
-            renderlist.func_78421_b();
+            allRenderLists[i1].func_78421_b();
         }
 
-        WorldRenderer worldrenderer;
-        int k1 = 0;
-
-        for (Iterator iterator = glRenderLists.iterator(); iterator.hasNext(); allRenderLists[k1].func_78420_a(worldrenderer.getGLCallListForPass(par3)))
+        for (int j1 = 0; j1 < glRenderLists.size(); j1++)
         {
-            worldrenderer = (WorldRenderer)iterator.next();
-            k1 = -1;
+            WorldRenderer worldrenderer = (WorldRenderer)glRenderLists.get(j1);
+            int k1 = -1;
 
             for (int l1 = 0; l1 < l; l1++)
             {
@@ -851,6 +843,8 @@ public class RenderGlobal implements IWorldAccess
                 k1 = l++;
                 allRenderLists[k1].func_78422_a(worldrenderer.posXMinus, worldrenderer.posYMinus, worldrenderer.posZMinus, d, d1, d2);
             }
+
+            allRenderLists[k1].func_78420_a(worldrenderer.getGLCallListForPass(par3));
         }
 
         renderAllRenderLists(par3, par4);
@@ -863,13 +857,10 @@ public class RenderGlobal implements IWorldAccess
     public void renderAllRenderLists(int par1, double par2)
     {
         mc.entityRenderer.enableLightmap(par2);
-        RenderList arenderlist[] = allRenderLists;
-        int i = arenderlist.length;
 
-        for (int j = 0; j < i; j++)
+        for (int i = 0; i < allRenderLists.length; i++)
         {
-            RenderList renderlist = arenderlist[j];
-            renderlist.func_78419_a();
+            allRenderLists[i].func_78419_a();
         }
 
         mc.entityRenderer.disableLightmap(par2);
@@ -877,9 +868,9 @@ public class RenderGlobal implements IWorldAccess
 
     public void updateClouds()
     {
-        cloudOffsetX++;
+        cloudTickCounter++;
 
-        if (cloudOffsetX % 20 == 0)
+        if (cloudTickCounter % 20 == 0)
         {
             Iterator iterator = damagedBlocks.values().iterator();
 
@@ -891,9 +882,9 @@ public class RenderGlobal implements IWorldAccess
                 }
 
                 DestroyBlockProgress destroyblockprogress = (DestroyBlockProgress)iterator.next();
-                int i = destroyblockprogress.func_82743_f();
+                int i = destroyblockprogress.getCreationCloudUpdateTick();
 
-                if (cloudOffsetX - i > 400)
+                if (cloudTickCounter - i > 400)
                 {
                     iterator.remove();
                 }
@@ -1179,7 +1170,7 @@ public class RenderGlobal implements IWorldAccess
         }
 
         float f5 = 0.0004882813F;
-        double d = (float)cloudOffsetX + par1;
+        double d = (float)cloudTickCounter + par1;
         if (mc.timecontrol && mc.enableSP){
             d += (((WorldSSP)theWorld).field_35467_J + (((WorldSSP)theWorld).field_35468_K - ((WorldSSP)theWorld).field_35467_J) * (double)par1) * 24000D;
         }
@@ -1227,7 +1218,7 @@ public class RenderGlobal implements IWorldAccess
         Tessellator tessellator = Tessellator.instance;
         float f1 = 12F;
         float f2 = 4F;
-        double d = (float)cloudOffsetX + par1;
+        double d = (float)cloudTickCounter + par1;
         if (mc.timecontrol && mc.enableSP){
             d += (((WorldSSP)theWorld).field_35467_J + (((WorldSSP)theWorld).field_35468_K - ((WorldSSP)theWorld).field_35467_J) * (double)par1) * 24000D;
         }
@@ -1784,9 +1775,11 @@ public class RenderGlobal implements IWorldAccess
      */
     public void playRecord(String par1Str, int par2, int par3, int par4)
     {
-        if (par1Str != null)
+        ItemRecord itemrecord = ItemRecord.func_90042_d(par1Str);
+
+        if (par1Str != null && itemrecord != null)
         {
-            mc.ingameGUI.setRecordPlayingMessage((new StringBuilder()).append("C418 - ").append(par1Str).toString());
+            mc.ingameGUI.setRecordPlayingMessage(itemrecord.func_90043_g());
         }
 
         mc.sndManager.playStreaming(par1Str, par2, par3, par4);
@@ -1799,12 +1792,27 @@ public class RenderGlobal implements IWorldAccess
     {
     }
 
+    public void func_85102_a(EntityPlayer entityplayer, String s, double d, double d1, double d2, float f, float f1)
+    {
+    }
+
     /**
      * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
      */
     public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
     {
-        func_72726_b(par1Str, par2, par4, par6, par8, par10, par12);
+        try
+        {
+            func_72726_b(par1Str, par2, par4, par6, par8, par10, par12);
+        }
+        catch (Throwable throwable)
+        {
+            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception while adding particle");
+            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Particle being added");
+            crashreportcategory.addCrashSection("Name", par1Str);
+            crashreportcategory.addCrashSectionCallable("Position", new CallableParticlePositionInfo(this, par2, par4, par6));
+            throw new ReportedException(crashreport);
+        }
     }
 
     public EntityFX func_72726_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
@@ -1996,8 +2004,10 @@ public class RenderGlobal implements IWorldAccess
         }
         else if (par1Str.startsWith("tilecrack_"))
         {
-            int k = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
-            obj = new EntityDiggingFX(theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[k], 0, 0);
+            String as[] = par1Str.split("_", 3);
+            int k = Integer.parseInt(as[1]);
+            int l = Integer.parseInt(as[2]);
+            obj = (new EntityDiggingFX(theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[k], 0, l)).func_90019_g(l);
         }
 
         if (obj != null)
@@ -2301,7 +2311,7 @@ public class RenderGlobal implements IWorldAccess
             }
 
             destroyblockprogress.setPartialBlockDamage(par5);
-            destroyblockprogress.func_82744_b(cloudOffsetX);
+            destroyblockprogress.setCloudUpdateTick(cloudTickCounter);
         }
     }
 

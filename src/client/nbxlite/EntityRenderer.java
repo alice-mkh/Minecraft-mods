@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
-import java.util.Iterator;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
@@ -315,44 +314,44 @@ public class EntityRenderer
         float f = 1.0F;
         java.util.List list = mc.theWorld.getEntitiesWithinAABBExcludingEntity(mc.renderViewEntity, mc.renderViewEntity.boundingBox.addCoord(vec3_1.xCoord * d, vec3_1.yCoord * d, vec3_1.zCoord * d).expand(f, f, f));
         double d2 = d1;
-        Iterator iterator = list.iterator();
 
-        do
+        for (int i = 0; i < list.size(); i++)
         {
-            if (!iterator.hasNext())
+            Entity entity = (Entity)list.get(i);
+
+            if (!entity.canBeCollidedWith())
             {
-                break;
+                continue;
             }
 
-            Entity entity = (Entity)iterator.next();
+            float f1 = entity.getCollisionBorderSize();
+            AxisAlignedBB axisalignedbb = entity.boundingBox.expand(f1, f1, f1);
+            MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(vec3, vec3_2);
 
-            if (entity.canBeCollidedWith())
+            if (axisalignedbb.isVecInside(vec3))
             {
-                float f1 = entity.getCollisionBorderSize();
-                AxisAlignedBB axisalignedbb = entity.boundingBox.expand(f1, f1, f1);
-                MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(vec3, vec3_2);
-
-                if (axisalignedbb.isVecInside(vec3))
+                if (0.0D < d2 || d2 == 0.0D)
                 {
-                    if (0.0D < d2 || d2 == 0.0D)
-                    {
-                        pointedEntity = entity;
-                        d2 = 0.0D;
-                    }
+                    pointedEntity = entity;
+                    d2 = 0.0D;
                 }
-                else if (movingobjectposition != null)
-                {
-                    double d3 = vec3.distanceTo(movingobjectposition.hitVec);
 
-                    if (d3 < d2 || d2 == 0.0D)
-                    {
-                        pointedEntity = entity;
-                        d2 = d3;
-                    }
-                }
+                continue;
+            }
+
+            if (movingobjectposition == null)
+            {
+                continue;
+            }
+
+            double d3 = vec3.distanceTo(movingobjectposition.hitVec);
+
+            if (d3 < d2 || d2 == 0.0D)
+            {
+                pointedEntity = entity;
+                d2 = d3;
             }
         }
-        while (true);
 
         if (pointedEntity != null && (d2 < d1 || mc.objectMouseOver == null))
         {
@@ -523,14 +522,14 @@ public class EntityRenderer
                     f5 *= 0.1F;
                     f6 *= 0.1F;
                     f7 *= 0.1F;
-                    MovingObjectPosition movingobjectposition = mc.theWorld.rayTraceBlocks(mc.theWorld.func_82732_R().getVecFromPool(d + (double)f5, d1 + (double)f6, d2 + (double)f7), mc.theWorld.func_82732_R().getVecFromPool((d - d4) + (double)f5 + (double)f7, (d1 - d6) + (double)f6, (d2 - d5) + (double)f7));
+                    MovingObjectPosition movingobjectposition = mc.theWorld.rayTraceBlocks(mc.theWorld.getWorldVec3Pool().getVecFromPool(d + (double)f5, d1 + (double)f6, d2 + (double)f7), mc.theWorld.getWorldVec3Pool().getVecFromPool((d - d4) + (double)f5 + (double)f7, (d1 - d6) + (double)f6, (d2 - d5) + (double)f7));
 
                     if (movingobjectposition == null)
                     {
                         continue;
                     }
 
-                    double d7 = movingobjectposition.hitVec.distanceTo(mc.theWorld.func_82732_R().getVecFromPool(d, d1, d2));
+                    double d7 = movingobjectposition.hitVec.distanceTo(mc.theWorld.getWorldVec3Pool().getVecFromPool(d, d1, d2));
 
                     if (d7 < d3)
                     {
@@ -1042,7 +1041,7 @@ public class EntityRenderer
         mc.mcProfiler.endSection();
         boolean flag = Display.isActive();
 
-        if (flag || !mc.gameSettings.field_82881_y)
+        if (flag || !mc.gameSettings.pauseOnLostFocus || mc.gameSettings.field_85185_A && Mouse.isButtonDown(1))
         {
             prevFrameTime = Minecraft.getSystemTime();
         }
@@ -1135,7 +1134,20 @@ public class EntityRenderer
         if (mc.currentScreen != null)
         {
             GL11.glClear(256);
-            mc.currentScreen.drawScreen(k, i1, par1);
+
+            try
+            {
+                mc.currentScreen.drawScreen(k, i1, par1);
+            }
+            catch (Throwable throwable)
+            {
+                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Rendering screen");
+                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Screen render details");
+                crashreportcategory.addCrashSectionCallable("Screen name", new CallableScreenName(this));
+                crashreportcategory.addCrashSectionCallable("Mouse location", new CallableMouseLocation(this, k, i1));
+                crashreportcategory.addCrashSectionCallable("Screen size", new CallableScreenSize(this, scaledresolution));
+                throw new ReportedException(crashreport);
+            }
 
             if (mc.currentScreen != null && mc.currentScreen.guiParticles != null)
             {
@@ -1454,18 +1466,18 @@ public class EntityRenderer
 
             if (Block.blocksList[j2].blockMaterial == Material.lava)
             {
-                mc.effectRenderer.addEffect(new EntitySmokeFX(worldclient, (float)k1 + f1, (double)((float)i2 + 0.1F) - Block.blocksList[j2].func_83008_x(), (float)l1 + f2, 0.0D, 0.0D, 0.0D));
+                mc.effectRenderer.addEffect(new EntitySmokeFX(worldclient, (float)k1 + f1, (double)((float)i2 + 0.1F) - Block.blocksList[j2].getBlockBoundsMinY(), (float)l1 + f2, 0.0D, 0.0D, 0.0D));
                 continue;
             }
 
             if (random.nextInt(++l) == 0)
             {
                 d = (float)k1 + f1;
-                d1 = (double)((float)i2 + 0.1F) - Block.blocksList[j2].func_83008_x();
+                d1 = (double)((float)i2 + 0.1F) - Block.blocksList[j2].getBlockBoundsMinY();
                 d2 = (float)l1 + f2;
             }
 
-            mc.effectRenderer.addEffect(new EntityRainFX(worldclient, (float)k1 + f1, (double)((float)i2 + 0.1F) - Block.blocksList[j2].func_83008_x(), (float)l1 + f2));
+            mc.effectRenderer.addEffect(new EntityRainFX(worldclient, (float)k1 + f1, (double)((float)i2 + 0.1F) - Block.blocksList[j2].getBlockBoundsMinY(), (float)l1 + f2));
         }
 
         if (l > 0 && random.nextInt(3) < rainSoundCounter++)
@@ -1607,13 +1619,16 @@ public class EntityRenderer
         GL11.glEnable(2884 /*GL_CULL_FACE*/);
         GL11.glDisable(3042 /*GL_BLEND*/);
         GL11.glAlphaFunc(516, 0.1F);
-        if (Minecraft.oldlighting){
+        if (!Minecraft.oldlighting){
             disableLightmap(f);
         }
     }
 
     private void renderSnowOld(float par1)
     {
+        if (!Minecraft.oldlighting){
+            enableLightmap(par1);
+        }
         EntityLiving entityliving = mc.renderViewEntity;
         World world = mc.theWorld;
         int var4 = MathHelper.floor_double(entityliving.posX);
@@ -1671,7 +1686,7 @@ public class EntityRenderer
                     double var27 = (double)((float)var16 + 0.5F) - entityliving.posZ;
                     float var29 = MathHelper.sqrt_double(var25 * var25 + var27 * var27) / (float)var14;
                     tessellator.startDrawingQuads();
-                    float var30 = world.getLightBrightness(var15, 256, var16);
+                    float var30 = Minecraft.oldlighting ? world.getLightBrightness(var15, 256, var16) : 1.0F;
                     tessellator.setColorRGBA_F(var30, var30, var30, (1.0F - var29 * var29) * 0.7F);
                     tessellator.setTranslation(-var8 * 1.0D, -var10 * 1.0D, -var12 * 1.0D);
                     tessellator.addVertexWithUV((double)(var15 + 0), (double)var18, (double)(var16 + 0), (double)(0.0F * var20 + var23), (double)((float)var18 * var20 / 8.0F + var22 * var20 + var24));
@@ -1690,6 +1705,9 @@ public class EntityRenderer
 
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
+        if (!Minecraft.oldlighting){
+            disableLightmap(par1);
+        }
     }
 
     /**
@@ -1917,9 +1935,9 @@ public class EntityRenderer
 
         if (mc.gameSettings.renderDistance < 2 && sunriseFog)
         {
-            Vec3 vec3_2 = MathHelper.sin(worldclient.getCelestialAngleRadians(par1)) <= 0.0F ? worldclient.func_82732_R().getVecFromPool(1.0D, 0.0D, 0.0D) : worldclient.func_82732_R().getVecFromPool(-1D, 0.0D, 0.0D);
+            Vec3 vec3_2 = MathHelper.sin(worldclient.getCelestialAngleRadians(par1)) <= 0.0F ? worldclient.getWorldVec3Pool().getVecFromPool(1.0D, 0.0D, 0.0D) : worldclient.getWorldVec3Pool().getVecFromPool(-1D, 0.0D, 0.0D);
             if (sunriseAtNorth){
-                vec3_2 = MathHelper.sin(worldclient.getCelestialAngleRadians(par1)) <= 0.0F ? worldclient.func_82732_R().getVecFromPool(0.0D, 0.0D, -1D) : worldclient.func_82732_R().getVecFromPool(0.0D, 0.0D, 1.0D);
+                vec3_2 = MathHelper.sin(worldclient.getCelestialAngleRadians(par1)) <= 0.0F ? worldclient.getWorldVec3Pool().getVecFromPool(0.0D, 0.0D, -1D) : worldclient.getWorldVec3Pool().getVecFromPool(0.0D, 0.0D, 1.0D);
             }
             float f5 = (float)entityliving.getLook(par1).dotProduct(vec3_2);
 
@@ -2267,5 +2285,10 @@ public class EntityRenderer
         }
 
         return c;
+    }
+
+    static Minecraft func_90030_a(EntityRenderer par0EntityRenderer)
+    {
+        return par0EntityRenderer.mc;
     }
 }

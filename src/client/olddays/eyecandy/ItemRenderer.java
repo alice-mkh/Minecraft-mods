@@ -269,7 +269,7 @@ public class ItemRenderer
 
         if (itemstack != null)
         {
-            int j = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 0);
+            int j = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 0);
             float f8 = (float)(j >> 16 & 0xff) / 255F;
             float f13 = (float)(j >> 8 & 0xff) / 255F;
             float f19 = (float)(j & 0xff) / 255F;
@@ -463,7 +463,7 @@ public class ItemRenderer
             if (itemstack.getItem().requiresMultipleRenderPasses())
             {
                 renderItem(entityclientplayermp, itemstack, 0);
-                int i1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 1);
+                int i1 = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 1);
                 float f33 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f36 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f38 = (float)(i1 & 0xff) / 255F;

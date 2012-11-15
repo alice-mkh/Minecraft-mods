@@ -47,7 +47,9 @@ public class GuiCreateWorld extends GuiScreen
     /** The GuiButton in the more world options screen. */
     private GuiButton buttonWorldType;
     private GuiButton buttonAllowCommands;
-    private GuiButton field_82289_B;
+
+    /** GuiButton in the more world options screen. */
+    private GuiButton buttonCustomize;
 
     /** The first line of text describing the currently selected game mode. */
     private String gameModeDescriptionLine1;
@@ -113,8 +115,8 @@ public class GuiCreateWorld extends GuiScreen
         buttonWorldType.drawButton = false;
         controlList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
         buttonAllowCommands.drawButton = false;
-        controlList.add(field_82289_B = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
-        field_82289_B.drawButton = false;
+        controlList.add(buttonCustomize = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
+        buttonCustomize.drawButton = false;
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxWorldName.setFocused(true);
         textboxWorldName.setText(localizedNewWorldText);
@@ -400,7 +402,7 @@ public class GuiCreateWorld extends GuiScreen
         buttonBonusItems.drawButton = moreOptions;
         buttonWorldType.drawButton = moreOptions;
         buttonAllowCommands.drawButton = moreOptions;
-        field_82289_B.drawButton = moreOptions && WorldType.worldTypes[worldTypeId] == WorldType.FLAT;
+        buttonCustomize.drawButton = moreOptions && WorldType.worldTypes[worldTypeId] == WorldType.FLAT;
 
         if (moreOptions)
         {

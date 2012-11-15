@@ -31,7 +31,7 @@ public class EntitySlime extends EntityLiving implements IMob
         dataWatcher.addObject(16, new Byte((byte)1));
     }
 
-    public void setSlimeSize(int par1)
+    protected void setSlimeSize(int par1)
     {
         dataWatcher.updateObject(16, new Byte((byte)par1));
         setSize(0.6F * (float)par1, 0.6F * (float)par1);
@@ -107,7 +107,7 @@ public class EntitySlime extends EntityLiving implements IMob
         {
             int i = getSlimeSize();
 
-            for (int j = 0; j < i * 8; j++)
+            for (int k = 0; k < i * 8; k++)
             {
                 float f = rand.nextFloat() * (float)Math.PI * 2.0F;
                 float f1 = rand.nextFloat() * 0.5F + 0.5F;
@@ -118,7 +118,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (makesSoundOnLand())
             {
-                worldObj.playSoundAtEntity(this, getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+                func_85030_a(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             }
 
             field_70813_a = -0.5F;
@@ -129,6 +129,12 @@ public class EntitySlime extends EntityLiving implements IMob
         }
 
         func_70808_l();
+
+        if (worldObj.isRemote)
+        {
+            int j = getSlimeSize();
+            setSize(0.6F * (float)j, 0.6F * (float)j);
+        }
     }
 
     protected void updateEntityActionState()
@@ -154,7 +160,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (makesSoundOnJump())
             {
-                worldObj.playSoundAtEntity(this, getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+                func_85030_a(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
             }
 
             moveStrafing = 1.0F - rand.nextFloat() * 2.0F;
@@ -225,7 +231,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (canEntityBeSeen(par1EntityPlayer) && getDistanceSqToEntity(par1EntityPlayer) < 0.59999999999999998D * (double)i * (0.59999999999999998D * (double)i) && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength()))
             {
-                worldObj.playSoundAtEntity(this, "mob.attack", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                func_85030_a("mob.attack", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
             }
         }
     }

@@ -17,7 +17,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         tasks.addTask(2, new EntityAIWander(this, 0.2F));
         tasks.addTask(3, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(4, new EntityAILookIdle(this));
-        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityLiving.class, 16F, 0, true, false, IMob.field_82192_a));
+        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityLiving.class, 16F, 0, true, false, IMob.mobSelector));
     }
 
     protected void attackEntity(Entity entity, float f)
@@ -34,7 +34,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
                 EntitySnowball entitysnowball = new EntitySnowball(worldObj, this);
                 double d2 = (entity.posY + (double)entity.getEyeHeight()) - 1.1000000238418579D - entitysnowball.posY;
                 float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-                worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+                func_85030_a("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
                 worldObj.spawnEntityInWorld(entitysnowball);
                 entitysnowball.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12F);
                 attackTime = 10;
@@ -120,7 +120,10 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         }
     }
 
-    public void func_82196_d(EntityLiving par1EntityLiving)
+    /**
+     * Attack the specified entity using a ranged attack.
+     */
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving)
     {
         EntitySnowball entitysnowball = new EntitySnowball(worldObj, this);
         double d = par1EntityLiving.posX - posX;
@@ -128,7 +131,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         double d2 = par1EntityLiving.posZ - posZ;
         float f = MathHelper.sqrt_double(d * d + d2 * d2) * 0.2F;
         entitysnowball.setThrowableHeading(d, d1 + (double)f, d2, 1.6F, 12F);
-        worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+        func_85030_a("random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
         worldObj.spawnEntityInWorld(entitysnowball);
     }
 }

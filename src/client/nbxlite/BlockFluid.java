@@ -219,7 +219,7 @@ public abstract class BlockFluid extends Block
      */
     private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        Vec3 vec3 = par1IBlockAccess.func_82732_R().getVecFromPool(0.0D, 0.0D, 0.0D);
+        Vec3 vec3 = par1IBlockAccess.getWorldVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
         int i = getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
         for (int j = 0; j < 4; j++)

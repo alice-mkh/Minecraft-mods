@@ -93,7 +93,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (!par2World.provider.hasNoSky && par2World.getWorldInfo().getGameType() != EnumGameType.ADVENTURE)
         {
-            int l = Math.max(5, par1MinecraftServer.func_82357_ak() - 6);
+            int l = Math.max(5, par1MinecraftServer.getSpawnProtectionSize() - 6);
             i += rand.nextInt(l * 2) - l;
             j += rand.nextInt(l * 2) - l;
             k = par2World.getTopSolidOrLiquidBlock(i, j);
@@ -135,9 +135,12 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         par1NBTTagCompound.setInteger("playerGameType", theItemInWorldManager.getGameType().getID());
     }
 
-    public void func_82242_a(int par1)
+    /**
+     * Add experience levels to this player.
+     */
+    public void addExperienceLevel(int par1)
     {
-        super.func_82242_a(par1);
+        super.addExperienceLevel(par1);
         lastExperience = -1;
     }
 
@@ -167,6 +170,19 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         theItemInWorldManager.updateBlockRemoving();
         initialInvulnerability--;
         craftingInventory.updateCraftingResults();
+        int ai[];
+
+        for (; !destroyedItemsNetCache.isEmpty(); playerNetServerHandler.sendPacketToPlayer(new Packet29DestroyEntity(ai)))
+        {
+            int i = Math.min(destroyedItemsNetCache.size(), 127);
+            ai = new int[i];
+            Iterator iterator1 = destroyedItemsNetCache.iterator();
+
+            for (int j = 0; iterator1.hasNext() && j < i; iterator1.remove())
+            {
+                ai[j++] = ((Integer)iterator1.next()).intValue();
+            }
+        }
 
         if (!loadedChunks.isEmpty())
         {
@@ -201,21 +217,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                 {
                     tileentity = (TileEntity)iterator2.next();
                 }
+
+                Chunk chunk;
+
+                for (Iterator iterator3 = arraylist.iterator(); iterator3.hasNext(); getServerForPlayer().getEntityTracker().func_85172_a(this, chunk))
+                {
+                    chunk = (Chunk)iterator3.next();
+                }
             }
-        }
-
-        if (!destroyedItemsNetCache.isEmpty())
-        {
-            int i = Math.min(destroyedItemsNetCache.size(), 127);
-            int ai[] = new int[i];
-            Iterator iterator1 = destroyedItemsNetCache.iterator();
-
-            for (int j = 0; iterator1.hasNext() && j < i; iterator1.remove())
-            {
-                ai[j++] = ((Integer)iterator1.next()).intValue();
-            }
-
-            playerNetServerHandler.sendPacketToPlayer(new Packet29DestroyEntity(ai));
         }
     }
 
@@ -262,7 +271,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     {
         mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(par1DamageSource.getDeathMessage(this)));
 
-        if (!worldObj.func_82736_K().func_82766_b("keepInventory"))
+        if (!worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {
             inventory.dropAllItems();
         }
@@ -273,7 +282,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (initialInvulnerability > 0)
+        if (func_85032_ar())
+        {
+            return false;
+        }
+
+        boolean flag = mcServer.isDedicatedServer() && mcServer.isPVPEnabled() && "fall".equals(par1DamageSource.damageType);
+
+        if (!flag && initialInvulnerability > 0)
         {
             return false;
         }
@@ -309,7 +325,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         return mcServer.isPVPEnabled();
     }
 
-    public void travelToTheEnd(int par1)
+    /**
+     * Teleports the entity to another dimension. Params: Dimension number to teleport to
+     */
+    public void travelToDimension(int par1)
     {
         if (dimension == 1 && par1 == 1)
         {
@@ -457,7 +476,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         craftingInventory.addCraftingToCrafters(this);
     }
 
-    public void func_82244_d(int par1, int par2, int par3)
+    /**
+     * Displays the GUI for interacting with an anvil.
+     */
+    public void displayGUIAnvil(int par1, int par2, int par3)
     {
         incrementWindowID();
         playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(currentWindowId, 8, "Repairing", 9));
@@ -519,7 +541,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         craftingInventory.addCraftingToCrafters(this);
     }
 
-    public void func_82240_a(TileEntityBeacon par1TileEntityBeacon)
+    /**
+     * Displays the GUI for interacting with a beacon.
+     */
+    public void displayGUIBeacon(TileEntityBeacon par1TileEntityBeacon)
     {
         incrementWindowID();
         playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(currentWindowId, 7, par1TileEntityBeacon.getInvName(), par1TileEntityBeacon.getSizeInventory()));
@@ -859,7 +884,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         playerNetServerHandler.sendPacketToPlayer(new Packet250CustomPayload("MC|TPack", s.getBytes()));
     }
 
-    public ChunkCoordinates func_82114_b()
+    /**
+     * Return the coordinates for this player as ChunkCoordinates.
+     */
+    public ChunkCoordinates getPlayerCoordinates()
     {
         return new ChunkCoordinates(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 0.5D), MathHelper.floor_double(posZ));
     }

@@ -104,8 +104,8 @@ public class FakeServer extends IntegratedServer
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
-        par1CrashReport.addCrashSectionCallable("Type", new CallableTypeFake(this));
-        par1CrashReport.addCrashSectionCallable("Is Modded", new CallableIsModded(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableTypeFake(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableIsModded(this));
         return par1CrashReport;
     }
 

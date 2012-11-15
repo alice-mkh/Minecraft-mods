@@ -167,7 +167,7 @@ public class OldSpawnerAnimals
                         }
                         k++;
                         world.spawnEntityInWorld(entityliving);
-                        entityliving.func_82163_bD();
+                        entityliving.initCreature();
                     }
 
                     l2++;

@@ -32,6 +32,22 @@ public class EntityDiggingFX extends EntityFX
         }
     }
 
+    public EntityDiggingFX func_90019_g(int par1)
+    {
+        if (blockInstance == Block.grass)
+        {
+            return this;
+        }
+        else
+        {
+            int i = blockInstance.getRenderColor(par1);
+            particleRed *= (float)(i >> 16 & 0xff) / 255F;
+            particleGreen *= (float)(i >> 8 & 0xff) / 255F;
+            particleBlue *= (float)(i & 0xff) / 255F;
+            return this;
+        }
+    }
+
     public int getFXLayer()
     {
         return 1;

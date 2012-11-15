@@ -14,7 +14,7 @@ public class CommandClientDifficulty extends CommandDifficulty
     {
         if (par2ArrayOfStr.length > 0)
         {
-            int i = func_82364_d(par1ICommandSender, par2ArrayOfStr[0]);
+            int i = getDifficultyForName(par1ICommandSender, par2ArrayOfStr[0]);
             Minecraft.getMinecraft().forcedDifficulty = i;
             String s = StatCollector.translateToLocal(field_82365_a[i]);
             notifyAdmins(par1ICommandSender, 1, "commands.difficulty.success", new Object[]

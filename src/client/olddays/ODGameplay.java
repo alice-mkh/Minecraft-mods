@@ -53,7 +53,7 @@ public class ODGameplay extends OldDaysModule{
             case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
             case 16:Item.bucketEmpty.maxStackSize = BucketStacking ? 16 : 1; break;
             case 17:set(EntityPlayer.class, "oldscore", Score < 2);
-                    set(EntityLiving.class, "score", Score == 1);
+                    set(EntityLiving.class, "enablescore", Score == 1);
                     set(GuiIngame.class, "score", Score == 1);
                     set(GuiGameOver.class, "oldScore", Score == 0); break;
             case 18:set(Explosion.class, "oldexplosion", OldExplosion); break;

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 public class EntityArrow extends Entity implements IProjectile
 {
@@ -220,7 +221,7 @@ public class EntityArrow extends Entity implements IProjectile
             Block.blocksList[i].setBlockBoundsBasedOnState(worldObj, xTile, yTile, zTile);
             AxisAlignedBB axisalignedbb = Block.blocksList[i].getCollisionBoundingBoxFromPool(worldObj, xTile, yTile, zTile);
 
-            if (axisalignedbb != null && axisalignedbb.isVecInside(worldObj.func_82732_R().getVecFromPool(posX, posY, posZ)))
+            if (axisalignedbb != null && axisalignedbb.isVecInside(worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ)))
             {
                 inGround = true;
             }
@@ -258,50 +259,47 @@ public class EntityArrow extends Entity implements IProjectile
         }
 
         ticksInAir++;
-        Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(posX, posY, posZ);
-        Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+        Vec3 vec3 = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
+        Vec3 vec3_1 = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
         MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks_do_do(vec3, vec3_1, false, true);
-        vec3 = worldObj.func_82732_R().getVecFromPool(posX, posY, posZ);
-        vec3_1 = worldObj.func_82732_R().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+        vec3 = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
+        vec3_1 = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
 
         if (movingobjectposition != null)
         {
-            vec3_1 = worldObj.func_82732_R().getVecFromPool(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3_1 = worldObj.getWorldVec3Pool().getVecFromPool(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
         }
 
         Entity entity = null;
         List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
         double d = 0.0D;
-        Iterator iterator = list.iterator();
 
-        do
+        for (int l = 0; l < list.size(); l++)
         {
-            if (!iterator.hasNext())
+            Entity entity1 = (Entity)list.get(l);
+
+            if (!entity1.canBeCollidedWith() || entity1 == shootingEntity && ticksInAir < 5)
             {
-                break;
+                continue;
             }
 
-            Entity entity1 = (Entity)iterator.next();
+            float f5 = 0.3F;
+            AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(f5, f5, f5);
+            MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec3_1);
 
-            if (entity1.canBeCollidedWith() && (entity1 != shootingEntity || ticksInAir >= 5))
+            if (movingobjectposition1 == null)
             {
-                float f5 = 0.3F;
-                AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(f5, f5, f5);
-                MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec3_1);
+                continue;
+            }
 
-                if (movingobjectposition1 != null)
-                {
-                    double d1 = vec3.distanceTo(movingobjectposition1.hitVec);
+            double d1 = vec3.distanceTo(movingobjectposition1.hitVec);
 
-                    if (d1 < d || d == 0.0D)
-                    {
-                        entity = entity1;
-                        d = d1;
-                    }
-                }
+            if (d1 < d || d == 0.0D)
+            {
+                entity = entity1;
+                d = d1;
             }
         }
-        while (true);
 
         if (entity != null)
         {
@@ -313,14 +311,14 @@ public class EntityArrow extends Entity implements IProjectile
             if (movingobjectposition.entityHit != null)
             {
                 float f1 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-                int i1 = MathHelper.ceiling_double_int((double)f1 * damage);
+                int j1 = MathHelper.ceiling_double_int((double)f1 * damage);
 
                 if (getIsCritical())
                 {
-                    i1 += rand.nextInt(i1 / 2 + 2);
+                    j1 += rand.nextInt(j1 / 2 + 2);
                 }
                 if (olddamage){
-                    i1 = 4;
+                    j1 = 4;
                 }
 
                 DamageSource damagesource = null;
@@ -339,11 +337,15 @@ public class EntityArrow extends Entity implements IProjectile
                     movingobjectposition.entityHit.setFire(5);
                 }
 
-                if (movingobjectposition.entityHit.attackEntityFrom(damagesource, i1))
+                if (movingobjectposition.entityHit.attackEntityFrom(damagesource, j1))
                 {
                     if (movingobjectposition.entityHit instanceof EntityLiving)
                     {
-                        ((EntityLiving)movingobjectposition.entityHit).arrowHitTempCounter++;
+                        if (!worldObj.isRemote)
+                        {
+                            EntityLiving entityliving = (EntityLiving)movingobjectposition.entityHit;
+                            entityliving.func_85034_r(entityliving.func_85035_bI() + 1);
+                        }
 
                         if (knockbackStrength > 0)
                         {
@@ -356,7 +358,7 @@ public class EntityArrow extends Entity implements IProjectile
                         }
                     }
 
-                    worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                    func_85030_a("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                     setDead();
                 }
                 else
@@ -383,18 +385,23 @@ public class EntityArrow extends Entity implements IProjectile
                 posX -= (motionX / (double)f2) * 0.05000000074505806D;
                 posY -= (motionY / (double)f2) * 0.05000000074505806D;
                 posZ -= (motionZ / (double)f2) * 0.05000000074505806D;
-                worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                func_85030_a("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                 inGround = true;
                 arrowShake = 7;
                 setIsCritical(false);
+
+                if (inTile != 0)
+                {
+                    Block.blocksList[inTile].onEntityCollidedWithBlock(worldObj, xTile, yTile, zTile, this);
+                }
             }
         }
 
         if (getIsCritical())
         {
-            for (int l = 0; l < 4; l++)
+            for (int i1 = 0; i1 < 4; i1++)
             {
-                worldObj.spawnParticle("crit", posX + (motionX * (double)l) / 4D, posY + (motionY * (double)l) / 4D, posZ + (motionZ * (double)l) / 4D, -motionX, -motionY + 0.20000000000000001D, -motionZ);
+                worldObj.spawnParticle("crit", posX + (motionX * (double)i1) / 4D, posY + (motionY * (double)i1) / 4D, posZ + (motionZ * (double)i1) / 4D, -motionX, -motionY + 0.20000000000000001D, -motionZ);
             }
         }
 
@@ -419,7 +426,7 @@ public class EntityArrow extends Entity implements IProjectile
 
         if (isInWater())
         {
-            for (int j1 = 0; j1 < 4; j1++)
+            for (int k1 = 0; k1 < 4; k1++)
             {
                 float f8 = 0.25F;
                 worldObj.spawnParticle("bubble", posX - motionX * (double)f8, posY - motionY * (double)f8, posZ - motionZ * (double)f8, motionX, motionY, motionZ);
@@ -499,7 +506,7 @@ public class EntityArrow extends Entity implements IProjectile
 
         if (flag)
         {
-            worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            func_85030_a("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, 1);
             setDead();
         }

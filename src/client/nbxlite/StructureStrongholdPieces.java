@@ -147,7 +147,7 @@ public class StructureStrongholdPieces
 
                     if (var9 < 0)
                     {
-                        if (!var11.canSpawnMoreStructuresOfType(par7) || var11 == par0ComponentStrongholdStairs2.field_75027_a)
+                        if (!var11.canSpawnMoreStructuresOfType(par7) || var11 == par0ComponentStrongholdStairs2.strongholdPieceWeight)
                         {
                             break;
                         }
@@ -162,7 +162,7 @@ public class StructureStrongholdPieces
                         if (var12 != null)
                         {
                             ++var11.instancesSpawned;
-                            par0ComponentStrongholdStairs2.field_75027_a = var11;
+                            par0ComponentStrongholdStairs2.strongholdPieceWeight = var11;
 
                             if (!var11.canSpawnMoreStructures())
                             {

@@ -62,7 +62,7 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
      */
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        int i = field_82279_c.func_82650_c().size() - field_82284_o.field_82454_a - 1;
+        int i = field_82279_c.getFlatLayers().size() - field_82284_o.field_82454_a - 1;
 
         if (par1GuiButton.id == 1)
         {
@@ -79,8 +79,8 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
         }
         else if (par1GuiButton.id == 4 && func_82272_i())
         {
-            field_82279_c.func_82650_c().remove(i);
-            field_82284_o.field_82454_a = Math.min(field_82284_o.field_82454_a, field_82279_c.func_82650_c().size() - 1);
+            field_82279_c.getFlatLayers().remove(i);
+            field_82284_o.field_82454_a = Math.min(field_82284_o.field_82454_a, field_82279_c.getFlatLayers().size() - 1);
         }
 
         field_82279_c.func_82645_d();
@@ -98,7 +98,7 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
 
     private boolean func_82272_i()
     {
-        return field_82284_o.field_82454_a > -1 && field_82284_o.field_82454_a < field_82279_c.func_82650_c().size();
+        return field_82284_o.field_82454_a > -1 && field_82284_o.field_82454_a < field_82279_c.getFlatLayers().size();
     }
 
     /**

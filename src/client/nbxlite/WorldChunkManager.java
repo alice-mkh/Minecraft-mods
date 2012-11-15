@@ -522,7 +522,7 @@ public class WorldChunkManager
         ChunkPosition chunkposition = null;
         int k1 = 0;
 
-        for (int l1 = 0; l1 < ai.length; l1++)
+        for (int l1 = 0; l1 < i1 * j1; l1++)
         {
             int i2 = i + l1 % i1 << 2;
             int j2 = j + l1 / i1 << 2;

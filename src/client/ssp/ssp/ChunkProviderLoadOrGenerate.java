@@ -158,7 +158,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
 
             if (chunk != null)
             {
-                chunk.lastSaveTime = worldObj.getWorldTime();
+                chunk.lastSaveTime = worldObj.getTotalWorldTime();
 
                 if (chunkProvider != null)
                 {
@@ -209,7 +209,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
 
         try
         {
-            par1Chunk.lastSaveTime = worldObj.getWorldTime();
+            par1Chunk.lastSaveTime = worldObj.getTotalWorldTime();
             chunkLoader.saveChunk(worldObj, par1Chunk);
         }
         catch (Exception ioexception)

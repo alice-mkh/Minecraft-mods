@@ -320,6 +320,10 @@ public class GuiMultiplayer extends GuiScreen
         {
             actionPerformed((GuiButton)controlList.get(2));
         }
+        else
+        {
+            super.keyTyped(par1, par2);
+        }
     }
 
     /**
@@ -411,7 +415,7 @@ public class GuiMultiplayer extends GuiScreen
                 {
                     par1ServerData.serverMOTD = as[3];
                     par1ServerData.field_82821_f = MathHelper.func_82715_a(as[1], par1ServerData.field_82821_f);
-                    par1ServerData.field_82822_g = as[2];
+                    par1ServerData.gameVersion = as[2];
                     int j = MathHelper.func_82715_a(as[4], 0);
                     int l = MathHelper.func_82715_a(as[5], 0);
 
@@ -426,9 +430,9 @@ public class GuiMultiplayer extends GuiScreen
                 }
                 else
                 {
-                    par1ServerData.field_82822_g = "???";
+                    par1ServerData.gameVersion = "???";
                     par1ServerData.serverMOTD = "\2478???";
-                    par1ServerData.field_82821_f = 48;
+                    par1ServerData.field_82821_f = 50;
                     par1ServerData.populationInfo = "\2478???";
                 }
             }
@@ -457,8 +461,8 @@ public class GuiMultiplayer extends GuiScreen
                     par1ServerData.populationInfo = "\2478???";
                 }
 
-                par1ServerData.field_82822_g = "1.3";
-                par1ServerData.field_82821_f = 46;
+                par1ServerData.gameVersion = "1.3";
+                par1ServerData.field_82821_f = 48;
             }
         }
         finally

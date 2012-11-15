@@ -205,8 +205,15 @@ public class EntityOcelot extends EntityTameable
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        aiSit.setSitting(false);
-        return super.attackEntityFrom(par1DamageSource, par2);
+        if (func_85032_ar())
+        {
+            return false;
+        }
+        else
+        {
+            aiSit.setSitting(false);
+            return super.attackEntityFrom(par1DamageSource, par2);
+        }
     }
 
     /**
@@ -225,7 +232,7 @@ public class EntityOcelot extends EntityTameable
 
         if (isTamed())
         {
-            if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isWheat(itemstack))
+            if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isBreedingItem(itemstack))
             {
                 aiSit.setSitting(!isSitting());
             }
@@ -269,7 +276,7 @@ public class EntityOcelot extends EntityTameable
     /**
      * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
      */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntityOcelot spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
         EntityOcelot entityocelot = new EntityOcelot(worldObj);
 
@@ -284,9 +291,10 @@ public class EntityOcelot extends EntityTameable
     }
 
     /**
-     * Checks if the parameter is an wheat item.
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
      */
-    public boolean isWheat(ItemStack par1ItemStack)
+    public boolean isBreedingItem(ItemStack par1ItemStack)
     {
         return par1ItemStack != null && par1ItemStack.itemID == Item.fishRaw.shiftedIndex;
     }
@@ -383,7 +391,10 @@ public class EntityOcelot extends EntityTameable
         }
     }
 
-    public void func_82163_bD()
+    /**
+     * Initialize this creature.
+     */
+    public void initCreature()
     {
         if (worldObj.rand.nextInt(7) == 0)
         {
@@ -395,5 +406,10 @@ public class EntityOcelot extends EntityTameable
                 worldObj.spawnEntityInWorld(entityocelot);
             }
         }
+    }
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return spawnBabyAnimal(par1EntityAgeable);
     }
 }

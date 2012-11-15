@@ -17,7 +17,9 @@ public class WorldInfo
 
     /** The spawn zone position Z coordinate. */
     private int spawnZ;
-    private long field_82575_g;
+
+    /** Total time for this world. */
+    private long dayTime;
 
     /** The current world time in ticks, ranging from 0 to 23999. */
     private long worldTime;
@@ -60,7 +62,7 @@ public class WorldInfo
     private boolean hardcore;
     private boolean allowCommands;
     private boolean initialized;
-    private GameRules field_82577_x;
+    private GameRules theGameRules;
 
     public boolean nbxlite;
     public boolean snowCovered;
@@ -88,14 +90,14 @@ public class WorldInfo
     {
         terrainType = WorldType.DEFAULT;
         field_82576_c = "";
-        field_82577_x = new GameRules();
+        theGameRules = new GameRules();
     }
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
         terrainType = WorldType.DEFAULT;
         field_82576_c = "";
-        field_82577_x = new GameRules();
+        theGameRules = new GameRules();
         randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 
         if (par1NBTTagCompound.hasKey("generatorName"))
@@ -143,7 +145,7 @@ public class WorldInfo
         spawnX = par1NBTTagCompound.getInteger("SpawnX");
         spawnY = par1NBTTagCompound.getInteger("SpawnY");
         spawnZ = par1NBTTagCompound.getInteger("SpawnZ");
-        field_82575_g = par1NBTTagCompound.getLong("Time");
+        dayTime = par1NBTTagCompound.getLong("Time");
 
         if (par1NBTTagCompound.hasKey("DayTime"))
         {
@@ -151,7 +153,7 @@ public class WorldInfo
         }
         else
         {
-            worldTime = field_82575_g;
+            worldTime = dayTime;
         }
 
         lastTimePlayed = par1NBTTagCompound.getLong("LastPlayed");
@@ -249,7 +251,7 @@ public class WorldInfo
 
         if (par1NBTTagCompound.hasKey("GameRules"))
         {
-            field_82577_x.func_82768_a(par1NBTTagCompound.getCompoundTag("GameRules"));
+            theGameRules.readGameRulesFromNBT(par1NBTTagCompound.getCompoundTag("GameRules"));
         }
     }
 
@@ -257,7 +259,7 @@ public class WorldInfo
     {
         terrainType = WorldType.DEFAULT;
         field_82576_c = "";
-        field_82577_x = new GameRules();
+        theGameRules = new GameRules();
         randomSeed = par1WorldSettings.getSeed();
         theGameType = par1WorldSettings.getGameType();
         mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
@@ -294,7 +296,7 @@ public class WorldInfo
     {
         terrainType = WorldType.DEFAULT;
         field_82576_c = "";
-        field_82577_x = new GameRules();
+        theGameRules = new GameRules();
         randomSeed = par1WorldInfo.randomSeed;
         terrainType = par1WorldInfo.terrainType;
         field_82576_c = par1WorldInfo.field_82576_c;
@@ -303,7 +305,7 @@ public class WorldInfo
         spawnX = par1WorldInfo.spawnX;
         spawnY = par1WorldInfo.spawnY;
         spawnZ = par1WorldInfo.spawnZ;
-        field_82575_g = par1WorldInfo.field_82575_g;
+        dayTime = par1WorldInfo.dayTime;
         worldTime = par1WorldInfo.worldTime;
         lastTimePlayed = par1WorldInfo.lastTimePlayed;
         sizeOnDisk = par1WorldInfo.sizeOnDisk;
@@ -318,7 +320,7 @@ public class WorldInfo
         hardcore = par1WorldInfo.hardcore;
         allowCommands = par1WorldInfo.allowCommands;
         initialized = par1WorldInfo.initialized;
-        field_82577_x = par1WorldInfo.field_82577_x;
+        theGameRules = par1WorldInfo.theGameRules;
         snowCovered = par1WorldInfo.snowCovered;
         mapTheme = par1WorldInfo.mapTheme;
         mapGen = par1WorldInfo.mapGen;
@@ -395,7 +397,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("SpawnX", spawnX);
         par1NBTTagCompound.setInteger("SpawnY", spawnY);
         par1NBTTagCompound.setInteger("SpawnZ", spawnZ);
-        par1NBTTagCompound.setLong("Time", field_82575_g);
+        par1NBTTagCompound.setLong("Time", dayTime);
         par1NBTTagCompound.setLong("DayTime", worldTime);
         par1NBTTagCompound.setLong("SizeOnDisk", sizeOnDisk);
         par1NBTTagCompound.setLong("LastPlayed", System.currentTimeMillis());
@@ -408,7 +410,7 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("hardcore", hardcore);
         par1NBTTagCompound.setBoolean("allowCommands", allowCommands);
         par1NBTTagCompound.setBoolean("initialized", initialized);
-        par1NBTTagCompound.setCompoundTag("GameRules", field_82577_x.func_82770_a());
+        par1NBTTagCompound.setCompoundTag("GameRules", theGameRules.writeGameRulesToNBT());
         if (nbxlite && useNBXlite){
             NBTTagCompound nbxliteTag = new NBTTagCompound();
             nbxliteTag.setInteger("Version", NBXLITE_INFO_VERSION);
@@ -474,9 +476,9 @@ public class WorldInfo
         return spawnZ;
     }
 
-    public long func_82573_f()
+    public long getWorldTotalTime()
     {
-        return field_82575_g;
+        return dayTime;
     }
 
     /**
@@ -531,7 +533,7 @@ public class WorldInfo
 
     public void func_82572_b(long par1)
     {
-        field_82575_g = par1;
+        dayTime = par1;
     }
 
     /**
@@ -732,9 +734,110 @@ public class WorldInfo
         initialized = par1;
     }
 
-    public GameRules func_82574_x()
+    /**
+     * Gets the GameRules class Instance.
+     */
+    public GameRules getGameRulesInstance()
     {
-        return field_82577_x;
+        return theGameRules;
+    }
+
+    public void func_85118_a(CrashReportCategory par1CrashReportCategory)
+    {
+        par1CrashReportCategory.addCrashSectionCallable("Level seed", new CallableLevelSeed(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level generator", new CallableLevelGenerator(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level generator options", new CallableLevelGeneratorOptions(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level spawn location", new CallableLevelSpawnLocation(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level time", new CallableLevelTime(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level dimension", new CallableLevelDimension(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level storage version", new CallableLevelStorageVersion(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level weather", new CallableLevelWeather(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level game mode", new CallableLevelGamemode(this));
+    }
+
+    static WorldType func_85132_a(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.terrainType;
+    }
+
+    static boolean func_85128_b(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.mapFeaturesEnabled;
+    }
+
+    static String func_85130_c(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.field_82576_c;
+    }
+
+    static int func_85125_d(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.spawnX;
+    }
+
+    static int func_85124_e(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.spawnY;
+    }
+
+    static int func_85123_f(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.spawnZ;
+    }
+
+    static long func_85126_g(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.dayTime;
+    }
+
+    static long func_85129_h(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.worldTime;
+    }
+
+    static int func_85122_i(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.dimension;
+    }
+
+    static int func_85121_j(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.saveVersion;
+    }
+
+    static int func_85119_k(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.rainTime;
+    }
+
+    static boolean func_85127_l(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.raining;
+    }
+
+    static int func_85133_m(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.thunderTime;
+    }
+
+    static boolean func_85116_n(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.thundering;
+    }
+
+    static EnumGameType func_85120_o(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.theGameType;
+    }
+
+    static boolean func_85117_p(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.hardcore;
+    }
+
+    static boolean func_85131_q(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.allowCommands;
     }
 
     public void setSeed(long l)

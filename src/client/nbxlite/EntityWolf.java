@@ -92,7 +92,7 @@ public class EntityWolf extends EntityTameable
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        worldObj.playSoundAtEntity(this, "mob.wolf.step", 0.15F, 1.0F);
+        func_85030_a("mob.wolf.step", 0.15F, 1.0F);
     }
 
     /**
@@ -122,7 +122,7 @@ public class EntityWolf extends EntityTameable
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("Angry", isAngry());
-        par1NBTTagCompound.setByte("CollarColor", (byte)func_82186_bH());
+        par1NBTTagCompound.setByte("CollarColor", (byte)getCollarColor());
     }
 
     /**
@@ -135,7 +135,7 @@ public class EntityWolf extends EntityTameable
 
         if (par1NBTTagCompound.hasKey("CollarColor"))
         {
-            func_82185_r(par1NBTTagCompound.getByte("CollarColor"));
+            setCollarColor(par1NBTTagCompound.getByte("CollarColor"));
         }
     }
 
@@ -260,7 +260,7 @@ public class EntityWolf extends EntityTameable
         {
             if (timeWolfIsShaking == 0.0F)
             {
-                worldObj.playSoundAtEntity(this, "mob.wolf.shake", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                func_85030_a("mob.wolf.shake", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
             }
 
             prevTimeWolfIsShaking = timeWolfIsShaking;
@@ -349,9 +349,14 @@ public class EntityWolf extends EntityTameable
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
+        if (func_85032_ar())
+        {
+            return false;
+        }
         if (fixai){
             return attackEntityFrom_old(par1DamageSource, par2);
         }
+
         Entity entity = par1DamageSource.getEntity();
         aiSit.setSitting(false);
 
@@ -408,11 +413,11 @@ public class EntityWolf extends EntityTameable
                 {
                     int i = BlockCloth.getBlockFromDye(itemstack.getItemDamage());
 
-                    if (i != func_82186_bH())
+                    if (i != getCollarColor())
                     {
-                        func_82185_r(i);
+                        setCollarColor(i);
 
-                        if (!par1EntityPlayer.capabilities.isCreativeMode && itemstack.stackSize-- <= 0)
+                        if (!par1EntityPlayer.capabilities.isCreativeMode && --itemstack.stackSize <= 0)
                         {
                             par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
                         }
@@ -422,7 +427,7 @@ public class EntityWolf extends EntityTameable
                 }
             }
 
-            if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isWheat(itemstack))
+            if (par1EntityPlayer.username.equalsIgnoreCase(getOwnerName()) && !worldObj.isRemote && !isBreedingItem(itemstack))
             {
                 if (fixai){
                     setSitting(!isSitting());
@@ -507,9 +512,10 @@ public class EntityWolf extends EntityTameable
     }
 
     /**
-     * Checks if the parameter is an wheat item.
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
      */
-    public boolean isWheat(ItemStack par1ItemStack)
+    public boolean isBreedingItem(ItemStack par1ItemStack)
     {
         if (par1ItemStack == null)
         {
@@ -559,12 +565,18 @@ public class EntityWolf extends EntityTameable
         }
     }
 
-    public int func_82186_bH()
+    /**
+     * Return this wolf's collar color.
+     */
+    public int getCollarColor()
     {
         return dataWatcher.getWatchableObjectByte(20) & 0xf;
     }
 
-    public void func_82185_r(int par1)
+    /**
+     * Set this wolf's collar color.
+     */
+    public void setCollarColor(int par1)
     {
         dataWatcher.updateObject(20, Byte.valueOf((byte)(par1 & 0xf)));
     }
@@ -572,7 +584,7 @@ public class EntityWolf extends EntityTameable
     /**
      * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
      */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntityWolf spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
         EntityWolf entitywolf = new EntityWolf(worldObj);
         entitywolf.setOwner(getOwnerName());
@@ -634,6 +646,11 @@ public class EntityWolf extends EntityTameable
     public boolean func_70922_bv()
     {
         return dataWatcher.getWatchableObjectByte(19) == 1;
+    }
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return spawnBabyAnimal(par1EntityAgeable);
     }
 
     protected void updateEntityActionState()

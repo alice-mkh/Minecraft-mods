@@ -7,7 +7,8 @@ public class EntityPig extends EntityAnimal
     public static boolean survivaltest = false;
     public static boolean fixai = false;
 
-    private final EntityAIControlledByPlayer field_82184_d;
+    /** AI task for player control. */
+    private final EntityAIControlledByPlayer aiControlledByPlayer;
 
     public EntityPig(World par1World)
     {
@@ -18,10 +19,10 @@ public class EntityPig extends EntityAnimal
         float f = 0.25F;
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-        tasks.addTask(2, field_82184_d = new EntityAIControlledByPlayer(this, 0.34F));
+        tasks.addTask(2, aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
         tasks.addTask(3, new EntityAIMate(this, f));
-        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.field_82793_bR.shiftedIndex, false));
-        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.field_82797_bK.shiftedIndex, false));
+        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.shiftedIndex, false));
+        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrot.shiftedIndex, false));
         tasks.addTask(5, new EntityAIFollowParent(this, 0.28F));
         tasks.addTask(6, new EntityAIWander(this, f));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
@@ -51,10 +52,14 @@ public class EntityPig extends EntityAnimal
         super.updateAITasks();
     }
 
-    public boolean func_82171_bF()
+    /**
+     * returns true if all the conditions for steering the entity are met. For pigs, this is true if it is being ridden
+     * by a player and the player is holding a carrot-on-a-stick
+     */
+    public boolean canBeSteered()
     {
         ItemStack itemstack = ((EntityPlayer)riddenByEntity).getHeldItem();
-        return itemstack != null && itemstack.itemID == Item.field_82793_bR.shiftedIndex;
+        return itemstack != null && itemstack.itemID == Item.carrotOnAStick.shiftedIndex;
     }
 
     protected void entityInit()
@@ -110,7 +115,7 @@ public class EntityPig extends EntityAnimal
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        worldObj.playSoundAtEntity(this, "mob.pig.step", 0.15F, 1.0F);
+        func_85030_a("mob.pig.step", 0.15F, 1.0F);
     }
 
     /**
@@ -234,27 +239,36 @@ public class EntityPig extends EntityAnimal
     /**
      * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
      */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntityPig spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
         return new EntityPig(worldObj);
     }
 
     /**
-     * Checks if the parameter is an wheat item.
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
      */
-    public boolean isWheat(ItemStack par1ItemStack)
+    public boolean isBreedingItem(ItemStack par1ItemStack)
     {
-        return par1ItemStack != null && par1ItemStack.itemID == Item.field_82797_bK.shiftedIndex;
+        return par1ItemStack != null && par1ItemStack.itemID == Item.carrot.shiftedIndex;
     }
 
-    public EntityAIControlledByPlayer func_82183_n()
+    /**
+     * Return the AI task for player control.
+     */
+    public EntityAIControlledByPlayer getAIControlledByPlayer()
     {
-        return field_82184_d;
+        return aiControlledByPlayer;
+    }
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return spawnBabyAnimal(par1EntityAgeable);
     }
 
     protected void updateEntityActionState(){
-        if (fixai && field_82184_d.shouldExecute()){
-            field_82184_d.updateTask();
+        if (fixai && aiControlledByPlayer.shouldExecute()){
+            aiControlledByPlayer.updateTask();
         }else{
             super.updateEntityActionState();
         }

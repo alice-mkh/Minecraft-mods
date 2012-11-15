@@ -100,9 +100,9 @@ public class EntityAIMate extends EntityAIBase
      */
     private void spawnBaby()
     {
-        EntityAnimal entityanimal = theAnimal.spawnBabyAnimal(targetMate);
+        EntityAgeable entityageable = theAnimal.func_90011_a(targetMate);
 
-        if (entityanimal == null)
+        if (entityageable == null)
         {
             return;
         }
@@ -111,12 +111,14 @@ public class EntityAIMate extends EntityAIBase
         targetMate.setGrowingAge(6000);
         theAnimal.resetInLove();
         targetMate.resetInLove();
-        entityanimal.setGrowingAge(-24000);
-        entityanimal.setLocationAndAngles(theAnimal.posX, theAnimal.posY, theAnimal.posZ, 0.0F, 0.0F);
-        theWorld.spawnEntityInWorld(entityanimal);
+        entityageable.setGrowingAge(-24000);
+        entityageable.setLocationAndAngles(theAnimal.posX, theAnimal.posY, theAnimal.posZ, 0.0F, 0.0F);
+        theWorld.spawnEntityInWorld(entityageable);
         theAnimal.breeded = true;
         targetMate.breeded = true;
-        entityanimal.breeded = true;
+        if (entityageable instanceof EntityAnimal){
+            ((EntityAnimal)entityageable).breeded = true;
+        }
         Random random = theAnimal.getRNG();
 
         for (int i = 0; i < 7; i++)

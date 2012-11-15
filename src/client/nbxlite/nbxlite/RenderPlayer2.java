@@ -65,9 +65,9 @@ public class RenderPlayer2 extends RenderLiving
 
                 float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par2) : 1.0F;
 
-                if (itemarmor.func_82812_d() == EnumArmorMaterial.CLOTH)
+                if (itemarmor.getArmorMaterial() == EnumArmorMaterial.CLOTH)
                 {
-                    int i = itemarmor.func_82814_b(itemstack);
+                    int i = itemarmor.getColor(itemstack);
                     float f1 = (float)(i >> 16 & 0xff) / 255F;
                     float f2 = (float)(i >> 8 & 0xff) / 255F;
                     float f3 = (float)(i & 0xff) / 255F;
@@ -231,7 +231,7 @@ public class RenderPlayer2 extends RenderLiving
 
                 renderManager.itemRenderer.renderItem(par1EntityPlayer, itemstack, 0);
             }
-            else if (itemstack.getItem().shiftedIndex == Item.field_82799_bQ.shiftedIndex)
+            else if (itemstack.getItem().shiftedIndex == Item.skull.shiftedIndex)
             {
                 float f2 = 1.0625F;
                 GL11.glScalef(f2, -f2, -f2);
@@ -242,7 +242,7 @@ public class RenderPlayer2 extends RenderLiving
                     s = itemstack.getTagCompound().getString("SkullOwner");
                 }
 
-                TileEntitySkullRenderer.field_82397_a.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180F, itemstack.getItemDamage(), s);
+                TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180F, itemstack.getItemDamage(), s);
             }
 
             GL11.glPopMatrix();
@@ -389,7 +389,7 @@ public class RenderPlayer2 extends RenderLiving
             {
                 for (int j = 0; j <= 1; j++)
                 {
-                    int k = itemstack1.getItem().func_82790_a(itemstack1, j);
+                    int k = itemstack1.getItem().getColorFromItemStack(itemstack1, j);
                     float f10 = (float)(k >> 16 & 0xff) / 255F;
                     float f11 = (float)(k >> 8 & 0xff) / 255F;
                     float f13 = (float)(k & 0xff) / 255F;

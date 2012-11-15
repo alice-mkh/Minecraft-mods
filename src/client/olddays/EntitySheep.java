@@ -22,7 +22,7 @@ public class EntitySheep extends EntityAnimal
         {
             setSheared(true);
             int j = 1 + rand.nextInt(3);
-            if (worldObj.func_82736_K().func_82766_b("doMobLoot")){
+            if (worldObj.getGameRules().getGameRuleBooleanValue("doMobLoot")){
                 for(int k = 0; k < j; k++)
                 {
                     EntityItem entityitem = entityDropItem(new ItemStack(Block.cloth.blockID, 1, getFleeceColor()), 1.0F);
@@ -96,38 +96,39 @@ public class EntitySheep extends EntityAnimal
         }
     }
 
+    private final InventoryCrafting field_90016_e = new InventoryCrafting(new ContainerSheep(this), 2, 1);
     public static final float fleeceColorTable[][] =
     {
         {
             1.0F, 1.0F, 1.0F
         }, {
-            0.95F, 0.7F, 0.2F
+            0.85F, 0.5F, 0.2F
         }, {
-            0.9F, 0.5F, 0.85F
+            0.7F, 0.3F, 0.85F
         }, {
-            0.6F, 0.7F, 0.95F
+            0.4F, 0.6F, 0.85F
         }, {
             0.9F, 0.9F, 0.2F
         }, {
             0.5F, 0.8F, 0.1F
         }, {
-            0.95F, 0.7F, 0.8F
+            0.95F, 0.5F, 0.65F
         }, {
             0.3F, 0.3F, 0.3F
         }, {
             0.6F, 0.6F, 0.6F
         }, {
-            0.3F, 0.6F, 0.7F
+            0.3F, 0.5F, 0.6F
         }, {
-            0.7F, 0.4F, 0.9F
+            0.5F, 0.25F, 0.7F
         }, {
-            0.2F, 0.4F, 0.8F
+            0.2F, 0.3F, 0.7F
         }, {
-            0.5F, 0.4F, 0.3F
+            0.4F, 0.3F, 0.2F
         }, {
             0.4F, 0.5F, 0.2F
         }, {
-            0.8F, 0.3F, 0.3F
+            0.6F, 0.2F, 0.2F
         }, {
             0.1F, 0.1F, 0.1F
         }
@@ -159,6 +160,8 @@ public class EntitySheep extends EntityAnimal
         tasks.addTask(6, new EntityAIWander(this, f));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(8, new EntityAILookIdle(this));
+        field_90016_e.setInventorySlotContents(0, new ItemStack(Item.dyePowder, 1, 0));
+        field_90016_e.setInventorySlotContents(1, new ItemStack(Item.dyePowder, 1, 0));
     }
 
     /**
@@ -306,7 +309,7 @@ public class EntitySheep extends EntityAnimal
             }
 
             itemstack.damageItem(1, par1EntityPlayer);
-            worldObj.playSoundAtEntity(this, "mob.sheep.shear", 1.0F, 1.0F);
+            func_85030_a("mob.sheep.shear", 1.0F, 1.0F);
         }
 
         return super.interact(par1EntityPlayer);
@@ -361,7 +364,7 @@ public class EntitySheep extends EntityAnimal
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        worldObj.playSoundAtEntity(this, "mob.sheep.step", 0.15F, 1.0F);
+        func_85030_a("mob.sheep.step", 0.15F, 1.0F);
     }
 
     public int getFleeceColor()
@@ -444,23 +447,12 @@ public class EntitySheep extends EntityAnimal
         return par0Random.nextInt(500) != 0 ? 0 : 6;
     }
 
-    /**
-     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-     */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntitySheep func_90015_b(EntityAgeable par1EntityAgeable)
     {
-        EntitySheep entitysheep = (EntitySheep)par1EntityAnimal;
+        EntitySheep entitysheep = (EntitySheep)par1EntityAgeable;
         EntitySheep entitysheep1 = new EntitySheep(worldObj);
-
-        if (rand.nextBoolean())
-        {
-            entitysheep1.setFleeceColor(getFleeceColor());
-        }
-        else
-        {
-            entitysheep1.setFleeceColor(entitysheep.getFleeceColor());
-        }
-
+        int i = func_90014_a(this, entitysheep);
+        entitysheep1.setFleeceColor(15 - i);
         return entitysheep1;
     }
 
@@ -485,8 +477,42 @@ public class EntitySheep extends EntityAnimal
         }
     }
 
-    public void func_82163_bD()
+    /**
+     * Initialize this creature.
+     */
+    public void initCreature()
     {
         setFleeceColor(getRandomFleeceColor(worldObj.rand));
+    }
+
+    private int func_90014_a(EntityAnimal par1EntityAnimal, EntityAnimal par2EntityAnimal)
+    {
+        int i = func_90013_b(par1EntityAnimal);
+        int j = func_90013_b(par2EntityAnimal);
+        field_90016_e.getStackInSlot(0).setItemDamage(i);
+        field_90016_e.getStackInSlot(1).setItemDamage(j);
+        ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(field_90016_e, ((EntitySheep)par1EntityAnimal).worldObj);
+        int k;
+
+        if (itemstack != null && itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex)
+        {
+            k = itemstack.getItemDamage();
+        }
+        else
+        {
+            k = worldObj.rand.nextBoolean() ? i : j;
+        }
+
+        return k;
+    }
+
+    private int func_90013_b(EntityAnimal par1EntityAnimal)
+    {
+        return 15 - ((EntitySheep)par1EntityAnimal).getFleeceColor();
+    }
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return func_90015_b(par1EntityAgeable);
     }
 }

@@ -362,7 +362,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     public void commandSetTime(long par1, boolean reset)
     {
-        long l = par1 - worldInfo.getWorldTime();
+        long l = par1 - worldInfo.getWorldTotalTime();
 
         for (Iterator iterator = scheduledTickSet.iterator(); iterator.hasNext();)
         {
@@ -1351,7 +1351,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     public int getMoonPhase(float par1)
     {
-        return provider.getMoonPhase(worldInfo.getWorldTime(), par1);
+        return provider.getMoonPhase(worldInfo.getWorldTotalTime(), par1);
     }
 
     /**
@@ -1430,7 +1430,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         {
             if (par4 > 0)
             {
-                nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
+                nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
                 nextticklistentry.func_82753_a(par6);
             }
 
@@ -1451,7 +1451,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         if (par4 > 0)
         {
-            nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTime());
+            nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
         }
 
         if (!scheduledTickSet.contains(nextticklistentry))
@@ -1907,7 +1907,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
             if (!flag)
             {
-                long l = worldInfo.getWorldTime() + 24000L;
+                long l = worldInfo.getWorldTotalTime() + 24000L;
                 worldInfo.setWorldTime(l - l % 24000L);
                 func_82738_a(l - l % 24000L);
                 wakeUpAllPlayers();
@@ -1915,8 +1915,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
 
         theProfiler.startSection("mobSpawner");
-        if (func_82736_K().func_82766_b("doMobSpawning")){
-            SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
+        if (getGameRules().getGameRuleBooleanValue("doMobSpawning")){
+            SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
         }
         theProfiler.endStartSection("chunkSource");
         chunkProvider.unload100OldestChunks();
@@ -1927,7 +1927,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             skylightSubtracted = i;
         }
 
-        long l1 = worldInfo.getWorldTime() + 1L;
+        long l1 = worldInfo.getWorldTotalTime() + 1L;
 
         if (l1 % (long)autosavePeriod == 0L)
         {
@@ -1936,7 +1936,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
 
         worldInfo.setWorldTime(l1);
-        func_82738_a(func_82737_E() + 1L);
+        func_82738_a(getTotalWorldTime() + 1L);
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");
@@ -2377,7 +2377,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         {
             NextTickListEntry nextticklistentry = (NextTickListEntry)scheduledTickTreeSet.first();
 
-            if (!par1 && nextticklistentry.scheduledTime > worldInfo.getWorldTime())
+            if (!par1 && nextticklistentry.scheduledTime > worldInfo.getWorldTotalTime())
             {
                 break;
             }
@@ -2771,12 +2771,23 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
     }
 
-    public CrashReport addWorldInfoToCrashReport(CrashReport par1CrashReport)
+    public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Entities").toString(), new CallableLvl1(this));
-        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Players").toString(), new CallableLvl2(this));
-        par1CrashReport.addCrashSectionCallable((new StringBuilder()).append("World ").append(worldInfo.getWorldName()).append(" Chunk Stats").toString(), new CallableLvl3(this));
-        return par1CrashReport;
+        CrashReportCategory crashreportcategory = par1CrashReport.func_85057_a("Affected level", 1);
+        crashreportcategory.addCrashSection("Level name", worldInfo != null ? ((Object)(worldInfo.getWorldName())) : "????");
+        crashreportcategory.addCrashSectionCallable("All players", new CallableLvl2(this));
+        crashreportcategory.addCrashSectionCallable("Chunk stats", new CallableLvl3(this));
+
+        try
+        {
+            worldInfo.func_85118_a(crashreportcategory);
+        }
+        catch (Throwable throwable)
+        {
+            crashreportcategory.addCrashSectionThrowable("Level Data Unobtainable", throwable);
+        }
+
+        return crashreportcategory;
     }
 
     static

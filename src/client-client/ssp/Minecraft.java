@@ -26,13 +26,17 @@ import net.minecraft.src.CallableClientProfiler;
 import net.minecraft.src.CallableGLInfo;
 import net.minecraft.src.CallableLWJGLVersion;
 import net.minecraft.src.CallableModded;
+import net.minecraft.src.CallableParticleScreenName;
 import net.minecraft.src.CallableTexturePack;
+import net.minecraft.src.CallableTickingScreenName;
 import net.minecraft.src.CallableType2;
+import net.minecraft.src.CallableUpdatingScreenName;
 import net.minecraft.src.ColorizerFoliage;
 import net.minecraft.src.ColorizerGrass;
 import net.minecraft.src.ColorizerWater;
 import net.minecraft.src.Container;
 import net.minecraft.src.CrashReport;
+import net.minecraft.src.CrashReportCategory;
 import net.minecraft.src.EffectRenderer;
 import net.minecraft.src.EntityBoat;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -448,7 +452,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft 1.4.2");
+        Display.setTitle("Minecraft Minecraft 1.4.4");
         System.out.println((new StringBuilder()).append("LWJGL Version: ").append(Sys.getVersion()).toString());
 
         try
@@ -495,7 +499,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         loadMods();
         loadScreen();
         Mouse.create();
-        mouseHelper = new MouseHelper(mcCanvas);
+        mouseHelper = new MouseHelper(mcCanvas, gameSettings);
         checkGLError("Pre startup");
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -626,7 +630,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         String s = System.getProperty("user.home", ".");
         File file;
 
-        switch (EnumOSHelper.enumOSMappingHelperArray[getOs().ordinal()])
+        switch (EnumOSHelper.field_90049_a[getOs().ordinal()])
         {
             case 1:
             case 2:
@@ -904,7 +908,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (theWorld != null)
         {
-            theWorld.func_82732_R().clear();
+            theWorld.getWorldVec3Pool().clear();
         }
 
         mcProfiler.startSection("root");
@@ -1078,10 +1082,21 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
         mcProfiler.endSection();
 
-        if (gameSettings.limitFramerate > 0)
+        if (func_90020_K() > 0)
         {
-            EntityRenderer _tmp = entityRenderer;
-            Display.sync(EntityRenderer.func_78465_a(gameSettings.limitFramerate));
+            Display.sync(EntityRenderer.func_78465_a(func_90020_K()));
+        }
+    }
+
+    private int func_90020_K()
+    {
+        if (currentScreen != null && (currentScreen instanceof GuiMainMenu))
+        {
+            return 2;
+        }
+        else
+        {
+            return gameSettings.limitFramerate;
         }
     }
 
@@ -1098,7 +1113,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             System.gc();
             AxisAlignedBB.getAABBPool().clearPool();
-            theWorld.func_82732_R().clearAndFreeCache();
+            theWorld.getWorldVec3Pool().clearAndFreeCache();
         }
         catch (Throwable throwable1) { }
 
@@ -1351,7 +1366,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (isSingleplayer() && !theIntegratedServer.getPublic())
         {
-            sndManager.func_82466_e();
+            sndManager.pauseAllSounds();
         }
     }
 
@@ -1374,7 +1389,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             int k = objectMouseOver.blockZ;
             playerController.onPlayerDamageBlock(i, j, k, objectMouseOver.sideHit);
 
-            if (thePlayer.func_82246_f(i, j, k))
+            if (thePlayer.canCurrentToolHarvestBlock(i, j, k))
             {
                 effectRenderer.addBlockHitEffects(i, j, k, objectMouseOver.sideHit);
                 thePlayer.swingItem();
@@ -1619,12 +1634,43 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (currentScreen != null)
         {
-            currentScreen.handleInput();
+            try
+            {
+                currentScreen.handleInput();
+            }
+            catch (Throwable throwable)
+            {
+                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Updating screen events");
+                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Affected screen");
+                crashreportcategory.addCrashSectionCallable("Screen name", new CallableUpdatingScreenName(this));
+                throw new ReportedException(crashreport);
+            }
 
             if (currentScreen != null)
             {
-                currentScreen.guiParticles.update();
-                currentScreen.updateScreen();
+                try
+                {
+                    currentScreen.guiParticles.update();
+                }
+                catch (Throwable throwable1)
+                {
+                    CrashReport crashreport1 = CrashReport.func_85055_a(throwable1, "Ticking screen particles");
+                    CrashReportCategory crashreportcategory1 = crashreport1.func_85058_a("Affected screen");
+                    crashreportcategory1.addCrashSectionCallable("Screen name", new CallableParticleScreenName(this));
+                    throw new ReportedException(crashreport1);
+                }
+
+                try
+                {
+                    currentScreen.updateScreen();
+                }
+                catch (Throwable throwable2)
+                {
+                    CrashReport crashreport2 = CrashReport.func_85055_a(throwable2, "Ticking screen");
+                    CrashReportCategory crashreportcategory2 = crashreport2.func_85058_a("Affected screen");
+                    crashreportcategory2.addCrashSectionCallable("Screen name", new CallableTickingScreenName(this));
+                    throw new ReportedException(crashreport2);
+                }
             }
         }
 
@@ -1767,13 +1813,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
                             if (Keyboard.getEventKey() == 35 && Keyboard.isKeyDown(61))
                             {
-                                gameSettings.field_82882_x = !gameSettings.field_82882_x;
+                                gameSettings.advancedItemTooltips = !gameSettings.advancedItemTooltips;
                                 gameSettings.saveOptions();
+                            }
+
+                            if (Keyboard.getEventKey() == 48 && Keyboard.isKeyDown(61))
+                            {
+                                RenderManager.field_85095_o = !RenderManager.field_85095_o;
                             }
 
                             if (Keyboard.getEventKey() == 25 && Keyboard.isKeyDown(61))
                             {
-                                gameSettings.field_82881_y = !gameSettings.field_82881_y;
+                                gameSettings.pauseOnLostFocus = !gameSettings.pauseOnLostFocus;
                                 gameSettings.saveOptions();
                             }
 
@@ -1962,7 +2013,27 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             if (!isGamePaused)
             {
                 theWorld.setAllowedSpawnTypes(theWorld.difficultySetting > 0, true);
-                theWorld.tick();
+
+                try
+                {
+                    theWorld.tick();
+                }
+                catch (Throwable throwable3)
+                {
+                    CrashReport crashreport3 = CrashReport.func_85055_a(throwable3, "Exception in world tick");
+
+                    if (theWorld == null)
+                    {
+                        CrashReportCategory crashreportcategory3 = crashreport3.func_85058_a("Affected level");
+                        crashreportcategory3.addCrashSection("Problem", "Level is null!");
+                    }
+                    else
+                    {
+                        theWorld.addWorldInfoToCrashReport(crashreport3);
+                    }
+
+                    throw new ReportedException(crashreport3);
+                }
             }
 
             mcProfiler.endStartSection("animateTick");
@@ -1998,7 +2069,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (sndManager != null)
         {
-            sndManager.func_82464_d();
+            sndManager.stopAllSounds();
         }
 
         try{
@@ -2135,7 +2206,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
 
         sndManager.playStreaming(null, 0.0F, 0.0F, 0.0F);
-        sndManager.func_82464_d();
+        sndManager.stopAllSounds();
         theWorld = par1WorldClient;
 
         if (par1WorldClient != null)
@@ -2460,7 +2531,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
                 if (entityitemframe.func_82335_i() == null)
                 {
-                    i = Item.field_82802_bI.shiftedIndex;
+                    i = Item.itemFrame.shiftedIndex;
                 }
                 else
                 {
@@ -2521,13 +2592,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      */
     public CrashReport addGraphicsAndWorldToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.addCrashSectionCallable("LWJGL", new CallableLWJGLVersion(this));
-        par1CrashReport.addCrashSectionCallable("OpenGL", new CallableGLInfo(this));
-        par1CrashReport.addCrashSectionCallable("Is Modded", new CallableModded(this));
-        par1CrashReport.addCrashSectionCallable("Type", new CallableType2(this));
-        par1CrashReport.addCrashSectionCallable("Texture Pack", new CallableTexturePack(this));
-        par1CrashReport.addCrashSectionCallable("Profiler Position", new CallableClientProfiler(this));
-        par1CrashReport.addCrashSectionCallable("Vec3 Pool Size", new CallableClientMemoryStats(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("LWJGL", new CallableLWJGLVersion(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("OpenGL", new CallableGLInfo(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableModded(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableType2(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Texture Pack", new CallableTexturePack(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Profiler Position", new CallableClientProfiler(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Vec3 Pool Size", new CallableClientMemoryStats(this));
 
         if (theWorld != null)
         {
@@ -3159,7 +3230,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             thePlayer.setLocationAndAngles(d, thePlayer.posY, d1, thePlayer.rotationYaw, thePlayer.rotationPitch);
             theWorld.updateEntityWithOptionalForce(thePlayer, false);
-            (new Teleporter()).placeInPortal(theWorld, thePlayer, d, thePlayer.posY, d1, thePlayer.rotationYaw);
+            (new TeleporterSP()).placeInPortal(theWorld, thePlayer, d, thePlayer.posY, d1, thePlayer.rotationYaw);
         }
     }
 
@@ -3320,7 +3391,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public String getVersion(){
-        return "1.4.2";
+        return "1.4.4";
     }
 
     private void registerCustomPacket(){

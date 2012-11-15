@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.server.MinecraftServer;
 
 public abstract class Entity
@@ -192,6 +193,7 @@ public abstract class Entity
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
     protected int field_82152_aq;
+    private boolean field_83001_bt;
     public EnumEntitySize myEntitySize;
 
     public Entity(World par1World)
@@ -227,6 +229,7 @@ public abstract class Entity
         dataWatcher = new DataWatcher();
         addedToChunk = false;
         field_82152_aq = 0;
+        field_83001_bt = false;
         myEntitySize = EnumEntitySize.SIZE_2;
         worldObj = par1World;
         setPosition(0.0D, 0.0D, 0.0D);
@@ -418,8 +421,9 @@ public abstract class Entity
 
         if (!worldObj.isRemote && (worldObj instanceof WorldServer))
         {
+            worldObj.theProfiler.startSection("portal");
             MinecraftServer minecraftserver = ((WorldServer)worldObj).getMinecraftServer();
-            int j = func_82145_z();
+            int j = getMaxInPortalTime();
 
             if (inPortal)
             {
@@ -428,7 +432,7 @@ public abstract class Entity
                     if (ridingEntity == null && field_82153_h++ >= j)
                     {
                         field_82153_h = j;
-                        timeUntilPortal = func_82147_ab();
+                        timeUntilPortal = getPortalCooldown();
                         byte byte0;
 
                         if (worldObj.provider.dimensionId == -1)
@@ -440,7 +444,7 @@ public abstract class Entity
                             byte0 = -1;
                         }
 
-                        travelToTheEnd(byte0);
+                        travelToDimension(byte0);
                     }
 
                     inPortal = false;
@@ -463,6 +467,8 @@ public abstract class Entity
             {
                 timeUntilPortal--;
             }
+
+            worldObj.theProfiler.endSection();
         }
 
         if (isSprinting() && !isInWater())
@@ -470,51 +476,15 @@ public abstract class Entity
             int i = MathHelper.floor_double(posX);
             int k = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
             int l = MathHelper.floor_double(posZ);
-            int k1 = worldObj.getBlockId(i, k, l);
+            int i1 = worldObj.getBlockId(i, k, l);
 
-            if (k1 > 0)
+            if (i1 > 0)
             {
-                worldObj.spawnParticle((new StringBuilder()).append("tilecrack_").append(k1).toString(), posX + ((double)rand.nextFloat() - 0.5D) * (double)width, boundingBox.minY + 0.10000000000000001D, posZ + ((double)rand.nextFloat() - 0.5D) * (double)width, -motionX * 4D, 1.5D, -motionZ * 4D);
+                worldObj.spawnParticle((new StringBuilder()).append("tilecrack_").append(i1).append("_").append(worldObj.getBlockMetadata(i, k, l)).toString(), posX + ((double)rand.nextFloat() - 0.5D) * (double)width, boundingBox.minY + 0.10000000000000001D, posZ + ((double)rand.nextFloat() - 0.5D) * (double)width, -motionX * 4D, 1.5D, -motionZ * 4D);
             }
         }
 
-        if (handleWaterMovement())
-        {
-            if (!inWater && !firstUpdate)
-            {
-                float f = MathHelper.sqrt_double(motionX * motionX * 0.20000000298023224D + motionY * motionY + motionZ * motionZ * 0.20000000298023224D) * 0.2F;
-
-                if (f > 1.0F)
-                {
-                    f = 1.0F;
-                }
-
-                worldObj.playSoundAtEntity(this, "liquid.splash", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
-                float f1 = MathHelper.floor_double(boundingBox.minY);
-
-                for (int i1 = 0; (float)i1 < 1.0F + width * 20F; i1++)
-                {
-                    float f2 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-                    float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-                    worldObj.spawnParticle("bubble", posX + (double)f2, f1 + 1.0F, posZ + (double)f4, motionX, motionY - (double)(rand.nextFloat() * 0.2F), motionZ);
-                }
-
-                for (int j1 = 0; (float)j1 < 1.0F + width * 20F; j1++)
-                {
-                    float f3 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-                    float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-                    worldObj.spawnParticle("splash", posX + (double)f3, f1 + 1.0F, posZ + (double)f5, motionX, motionY, motionZ);
-                }
-            }
-
-            fallDistance = 0.0F;
-            inWater = true;
-            fire = 0;
-        }
-        else
-        {
-            inWater = false;
-        }
+        handleWaterMovement();
 
         if (worldObj.isRemote)
         {
@@ -563,7 +533,10 @@ public abstract class Entity
         worldObj.theProfiler.endSection();
     }
 
-    public int func_82145_z()
+    /**
+     * Return the amount of time this entity should stay in a portal before being transported.
+     */
+    public int getMaxInPortalTime()
     {
         return 0;
     }
@@ -737,10 +710,9 @@ public abstract class Entity
 
         List list = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(par1, par3, par5));
 
-        for (Iterator iterator = list.iterator(); iterator.hasNext();)
+        for (int i = 0; i < list.size(); i++)
         {
-            AxisAlignedBB axisalignedbb1 = (AxisAlignedBB)iterator.next();
-            par3 = axisalignedbb1.calculateYOffset(boundingBox, par3);
+            par3 = ((AxisAlignedBB)list.get(i)).calculateYOffset(boundingBox, par3);
         }
 
         boundingBox.offset(0.0D, par3, 0.0D);
@@ -752,10 +724,9 @@ public abstract class Entity
 
         boolean flag1 = onGround || d4 != par3 && d4 < 0.0D;
 
-        for (Iterator iterator1 = list.iterator(); iterator1.hasNext();)
+        for (int j = 0; j < list.size(); j++)
         {
-            AxisAlignedBB axisalignedbb2 = (AxisAlignedBB)iterator1.next();
-            par1 = axisalignedbb2.calculateXOffset(boundingBox, par1);
+            par1 = ((AxisAlignedBB)list.get(j)).calculateXOffset(boundingBox, par1);
         }
 
         boundingBox.offset(par1, 0.0D, 0.0D);
@@ -765,10 +736,9 @@ public abstract class Entity
             par1 = par3 = par5 = 0.0D;
         }
 
-        for (Iterator iterator2 = list.iterator(); iterator2.hasNext();)
+        for (int k = 0; k < list.size(); k++)
         {
-            AxisAlignedBB axisalignedbb3 = (AxisAlignedBB)iterator2.next();
-            par5 = axisalignedbb3.calculateZOffset(boundingBox, par5);
+            par5 = ((AxisAlignedBB)list.get(k)).calculateZOffset(boundingBox, par5);
         }
 
         boundingBox.offset(0.0D, 0.0D, par5);
@@ -786,14 +756,13 @@ public abstract class Entity
             par1 = d3;
             par3 = stepHeight;
             par5 = d5;
-            AxisAlignedBB axisalignedbb4 = boundingBox.copy();
+            AxisAlignedBB axisalignedbb1 = boundingBox.copy();
             boundingBox.setBB(axisalignedbb);
             List list1 = worldObj.getCollidingBoundingBoxes(this, boundingBox.addCoord(par1, par3, par5));
 
-            for (Iterator iterator3 = list1.iterator(); iterator3.hasNext();)
+            for (int i1 = 0; i1 < list1.size(); i1++)
             {
-                AxisAlignedBB axisalignedbb5 = (AxisAlignedBB)iterator3.next();
-                par3 = axisalignedbb5.calculateYOffset(boundingBox, par3);
+                par3 = ((AxisAlignedBB)list1.get(i1)).calculateYOffset(boundingBox, par3);
             }
 
             boundingBox.offset(0.0D, par3, 0.0D);
@@ -803,10 +772,9 @@ public abstract class Entity
                 par1 = par3 = par5 = 0.0D;
             }
 
-            for (Iterator iterator4 = list1.iterator(); iterator4.hasNext();)
+            for (int j1 = 0; j1 < list1.size(); j1++)
             {
-                AxisAlignedBB axisalignedbb6 = (AxisAlignedBB)iterator4.next();
-                par1 = axisalignedbb6.calculateXOffset(boundingBox, par1);
+                par1 = ((AxisAlignedBB)list1.get(j1)).calculateXOffset(boundingBox, par1);
             }
 
             boundingBox.offset(par1, 0.0D, 0.0D);
@@ -816,10 +784,9 @@ public abstract class Entity
                 par1 = par3 = par5 = 0.0D;
             }
 
-            for (Iterator iterator5 = list1.iterator(); iterator5.hasNext();)
+            for (int k1 = 0; k1 < list1.size(); k1++)
             {
-                AxisAlignedBB axisalignedbb7 = (AxisAlignedBB)iterator5.next();
-                par5 = axisalignedbb7.calculateZOffset(boundingBox, par5);
+                par5 = ((AxisAlignedBB)list1.get(k1)).calculateZOffset(boundingBox, par5);
             }
 
             boundingBox.offset(0.0D, 0.0D, par5);
@@ -837,10 +804,9 @@ public abstract class Entity
             {
                 par3 = -stepHeight;
 
-                for (Iterator iterator6 = list1.iterator(); iterator6.hasNext();)
+                for (int l1 = 0; l1 < list1.size(); l1++)
                 {
-                    AxisAlignedBB axisalignedbb8 = (AxisAlignedBB)iterator6.next();
-                    par3 = axisalignedbb8.calculateYOffset(boundingBox, par3);
+                    par3 = ((AxisAlignedBB)list1.get(l1)).calculateYOffset(boundingBox, par3);
                 }
 
                 boundingBox.offset(0.0D, par3, 0.0D);
@@ -851,7 +817,7 @@ public abstract class Entity
                 par1 = d7;
                 par3 = d9;
                 par5 = d11;
-                boundingBox.setBB(axisalignedbb4);
+                boundingBox.setBB(axisalignedbb1);
             }
             else
             {
@@ -896,17 +862,22 @@ public abstract class Entity
 
         if (canTriggerWalking() && !flag && ridingEntity == null)
         {
-            int i = MathHelper.floor_double(posX);
-            int j = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
-            int k = MathHelper.floor_double(posZ);
-            int l = worldObj.getBlockId(i, j, k);
+            int l = MathHelper.floor_double(posX);
+            int i2 = MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset);
+            int j2 = MathHelper.floor_double(posZ);
+            int k2 = worldObj.getBlockId(l, i2, j2);
 
-            if (l == 0 && worldObj.getBlockId(i, j - 1, k) == Block.fence.blockID)
+            if (k2 == 0)
             {
-                l = worldObj.getBlockId(i, j - 1, k);
+                int l2 = worldObj.func_85175_e(l, i2 - 1, j2);
+
+                if (l2 == 11 || l2 == 32 || l2 == 21)
+                {
+                    k2 = worldObj.getBlockId(l, i2 - 1, j2);
+                }
             }
 
-            if (l != Block.ladder.blockID)
+            if (k2 != Block.ladder.blockID)
             {
                 d10 = 0.0D;
             }
@@ -914,7 +885,7 @@ public abstract class Entity
             distanceWalkedModified += (double)MathHelper.sqrt_double(d8 * d8 + d12 * d12) * 0.59999999999999998D;
             field_82151_R += (double)MathHelper.sqrt_double(d8 * d8 + d10 * d10 + d12 * d12) * 0.59999999999999998D;
 
-            if (field_82151_R > (float)nextStepDistance && l > 0)
+            if (field_82151_R > (float)nextStepDistance && k2 > 0)
             {
                 nextStepDistance = (int)field_82151_R + 1;
 
@@ -927,15 +898,15 @@ public abstract class Entity
                         f = 1.0F;
                     }
 
-                    worldObj.playSoundAtEntity(this, "liquid.swim", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+                    func_85030_a("liquid.swim", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
                 }
 
                 if (oldstepsound){
-                    playStepSoundOld(i, j, k, l);
+                    playStepSoundOld(l, i2, j2, k2);
                 }else{
-                    playStepSound(i, j, k, l);
+                    playStepSound(l, i2, j2, k2);
                 }
-                Block.blocksList[l].onEntityWalking(worldObj, i, j, k, this);
+                Block.blocksList[k2].onEntityWalking(worldObj, l, i2, j2, this);
             }
         }
 
@@ -963,7 +934,7 @@ public abstract class Entity
 
         if (flag2 && fire > 0)
         {
-            worldObj.playSoundAtEntity(this, "random.fizz", 0.7F, 1.6F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+            func_85030_a("random.fizz", 0.7F, 1.6F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
             fire = -fireResistance;
         }
 
@@ -1012,12 +983,17 @@ public abstract class Entity
         if (worldObj.getBlockId(par1, par2 + 1, par3) == Block.snow.blockID)
         {
             stepsound = Block.snow.stepSound;
-            worldObj.playSoundAtEntity(this, stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
         else if (!Block.blocksList[par4].blockMaterial.isLiquid())
         {
-            worldObj.playSoundAtEntity(this, stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
+    }
+
+    protected void func_85030_a(String par1Str, float par2, float par3)
+    {
+        worldObj.playSoundAtEntity(this, par1Str, par2, par3);
     }
 
     /**
@@ -1029,11 +1005,11 @@ public abstract class Entity
             return;
         }
         if (this instanceof EntitySilverfish){
-            worldObj.playSoundAtEntity(this, "mob.silverfish.step", 1.0F, 1.0F);
+            func_85030_a("mob.silverfish.step", 1.0F, 1.0F);
             return;
         }
         if (this instanceof EntityIronGolem){
-            worldObj.playSoundAtEntity(this, "mob.irongolem.walk", 1.0F, 1.0F);
+            func_85030_a("mob.irongolem.walk", 1.0F, 1.0F);
             return;
         }
         StepSound stepsound = Block.blocksList[par4].stepSound;
@@ -1041,11 +1017,11 @@ public abstract class Entity
         if (worldObj.getBlockId(par1, par2 + 1, par3) == Block.snow.blockID)
         {
             stepsound = Block.snow.stepSound;
-            worldObj.playSoundAtEntity(this, stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
         else if (!Block.blocksList[par4].blockMaterial.isLiquid())
         {
-            worldObj.playSoundAtEntity(this, stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
     }
 
@@ -1119,7 +1095,7 @@ public abstract class Entity
      */
     public boolean isWet()
     {
-        return inWater || worldObj.canLightningStrikeAt(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
+        return inWater || worldObj.canLightningStrikeAt(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) || worldObj.canLightningStrikeAt(MathHelper.floor_double(posX), MathHelper.floor_double(posY + (double)height), MathHelper.floor_double(posZ));
     }
 
     /**
@@ -1136,10 +1112,46 @@ public abstract class Entity
      */
     public boolean handleWaterMovement()
     {
-        if (waterladder){
-            return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.water, this);
+        if ((waterladder && worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D), Material.water, this))
+        || (!waterladder && worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this)))
+        {
+            if (!inWater && !firstUpdate)
+            {
+                float f = MathHelper.sqrt_double(motionX * motionX * 0.20000000298023224D + motionY * motionY + motionZ * motionZ * 0.20000000298023224D) * 0.2F;
+
+                if (f > 1.0F)
+                {
+                    f = 1.0F;
+                }
+
+                func_85030_a("liquid.splash", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+                float f1 = MathHelper.floor_double(boundingBox.minY);
+
+                for (int i = 0; (float)i < 1.0F + width * 20F; i++)
+                {
+                    float f2 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+                    float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+                    worldObj.spawnParticle("bubble", posX + (double)f2, f1 + 1.0F, posZ + (double)f4, motionX, motionY - (double)(rand.nextFloat() * 0.2F), motionZ);
+                }
+
+                for (int j = 0; (float)j < 1.0F + width * 20F; j++)
+                {
+                    float f3 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+                    float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+                    worldObj.spawnParticle("splash", posX + (double)f3, f1 + 1.0F, posZ + (double)f5, motionX, motionY, motionZ);
+                }
+            }
+
+            fallDistance = 0.0F;
+            inWater = true;
+            fire = 0;
         }
-        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
+        else
+        {
+            inWater = false;
+        }
+
+        return inWater;
     }
 
     /**
@@ -1406,8 +1418,15 @@ public abstract class Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        setBeenAttacked();
-        return false;
+        if (func_85032_ar())
+        {
+            return false;
+        }
+        else
+        {
+            setBeenAttacked();
+            return false;
+        }
     }
 
     /**
@@ -1489,24 +1508,36 @@ public abstract class Entity
      */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setTag("Pos", newDoubleNBTList(new double[]
-                {
-                    posX, posY + (double)ySize, posZ
-                }));
-        par1NBTTagCompound.setTag("Motion", newDoubleNBTList(new double[]
-                {
-                    motionX, motionY, motionZ
-                }));
-        par1NBTTagCompound.setTag("Rotation", newFloatNBTList(new float[]
-                {
-                    rotationYaw, rotationPitch
-                }));
-        par1NBTTagCompound.setFloat("FallDistance", fallDistance);
-        par1NBTTagCompound.setShort("Fire", (short)fire);
-        par1NBTTagCompound.setShort("Air", (short)getAir());
-        par1NBTTagCompound.setBoolean("OnGround", onGround);
-        par1NBTTagCompound.setInteger("Dimension", dimension);
-        writeEntityToNBT(par1NBTTagCompound);
+        try
+        {
+            par1NBTTagCompound.setTag("Pos", newDoubleNBTList(new double[]
+                    {
+                        posX, posY + (double)ySize, posZ
+                    }));
+            par1NBTTagCompound.setTag("Motion", newDoubleNBTList(new double[]
+                    {
+                        motionX, motionY, motionZ
+                    }));
+            par1NBTTagCompound.setTag("Rotation", newFloatNBTList(new float[]
+                    {
+                        rotationYaw, rotationPitch
+                    }));
+            par1NBTTagCompound.setFloat("FallDistance", fallDistance);
+            par1NBTTagCompound.setShort("Fire", (short)fire);
+            par1NBTTagCompound.setShort("Air", (short)getAir());
+            par1NBTTagCompound.setBoolean("OnGround", onGround);
+            par1NBTTagCompound.setInteger("Dimension", dimension);
+            par1NBTTagCompound.setBoolean("Invulnerable", field_83001_bt);
+            par1NBTTagCompound.setInteger("PortalCooldown", timeUntilPortal);
+            writeEntityToNBT(par1NBTTagCompound);
+        }
+        catch (Throwable throwable)
+        {
+            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Saving entity NBT");
+            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being saved");
+            func_85029_a(crashreportcategory);
+            throw new ReportedException(crashreport);
+        }
     }
 
     /**
@@ -1514,41 +1545,53 @@ public abstract class Entity
      */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Pos");
-        NBTTagList nbttaglist1 = par1NBTTagCompound.getTagList("Motion");
-        NBTTagList nbttaglist2 = par1NBTTagCompound.getTagList("Rotation");
-        motionX = ((NBTTagDouble)nbttaglist1.tagAt(0)).data;
-        motionY = ((NBTTagDouble)nbttaglist1.tagAt(1)).data;
-        motionZ = ((NBTTagDouble)nbttaglist1.tagAt(2)).data;
-
-        if (Math.abs(motionX) > 10D)
+        try
         {
-            motionX = 0.0D;
-        }
+            NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Pos");
+            NBTTagList nbttaglist1 = par1NBTTagCompound.getTagList("Motion");
+            NBTTagList nbttaglist2 = par1NBTTagCompound.getTagList("Rotation");
+            motionX = ((NBTTagDouble)nbttaglist1.tagAt(0)).data;
+            motionY = ((NBTTagDouble)nbttaglist1.tagAt(1)).data;
+            motionZ = ((NBTTagDouble)nbttaglist1.tagAt(2)).data;
 
-        if (Math.abs(motionY) > 10D)
+            if (Math.abs(motionX) > 10D)
+            {
+                motionX = 0.0D;
+            }
+
+            if (Math.abs(motionY) > 10D)
+            {
+                motionY = 0.0D;
+            }
+
+            if (Math.abs(motionZ) > 10D)
+            {
+                motionZ = 0.0D;
+            }
+
+            prevPosX = lastTickPosX = posX = ((NBTTagDouble)nbttaglist.tagAt(0)).data;
+            prevPosY = lastTickPosY = posY = ((NBTTagDouble)nbttaglist.tagAt(1)).data;
+            prevPosZ = lastTickPosZ = posZ = ((NBTTagDouble)nbttaglist.tagAt(2)).data;
+            prevRotationYaw = rotationYaw = ((NBTTagFloat)nbttaglist2.tagAt(0)).data;
+            prevRotationPitch = rotationPitch = ((NBTTagFloat)nbttaglist2.tagAt(1)).data;
+            fallDistance = par1NBTTagCompound.getFloat("FallDistance");
+            fire = par1NBTTagCompound.getShort("Fire");
+            setAir(par1NBTTagCompound.getShort("Air"));
+            onGround = par1NBTTagCompound.getBoolean("OnGround");
+            dimension = par1NBTTagCompound.getInteger("Dimension");
+            field_83001_bt = par1NBTTagCompound.getBoolean("Invulnerable");
+            timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
+            setPosition(posX, posY, posZ);
+            setRotation(rotationYaw, rotationPitch);
+            readEntityFromNBT(par1NBTTagCompound);
+        }
+        catch (Throwable throwable)
         {
-            motionY = 0.0D;
+            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Loading entity NBT");
+            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being loaded");
+            func_85029_a(crashreportcategory);
+            throw new ReportedException(crashreport);
         }
-
-        if (Math.abs(motionZ) > 10D)
-        {
-            motionZ = 0.0D;
-        }
-
-        prevPosX = lastTickPosX = posX = ((NBTTagDouble)nbttaglist.tagAt(0)).data;
-        prevPosY = lastTickPosY = posY = ((NBTTagDouble)nbttaglist.tagAt(1)).data;
-        prevPosZ = lastTickPosZ = posZ = ((NBTTagDouble)nbttaglist.tagAt(2)).data;
-        prevRotationYaw = rotationYaw = ((NBTTagFloat)nbttaglist2.tagAt(0)).data;
-        prevRotationPitch = rotationPitch = ((NBTTagFloat)nbttaglist2.tagAt(1)).data;
-        fallDistance = par1NBTTagCompound.getFloat("FallDistance");
-        fire = par1NBTTagCompound.getShort("Fire");
-        setAir(par1NBTTagCompound.getShort("Air"));
-        onGround = par1NBTTagCompound.getBoolean("OnGround");
-        dimension = par1NBTTagCompound.getInteger("Dimension");
-        setPosition(posX, posY, posZ);
-        setRotation(rotationYaw, rotationPitch);
-        readEntityFromNBT(par1NBTTagCompound);
     }
 
     /**
@@ -1876,23 +1919,16 @@ public abstract class Entity
         if (!list.isEmpty())
         {
             double d = 0.0D;
-            Iterator iterator = list.iterator();
 
-            do
+            for (int i = 0; i < list.size(); i++)
             {
-                if (!iterator.hasNext())
-                {
-                    break;
-                }
-
-                AxisAlignedBB axisalignedbb = (AxisAlignedBB)iterator.next();
+                AxisAlignedBB axisalignedbb = (AxisAlignedBB)list.get(i);
 
                 if (axisalignedbb.maxY > d)
                 {
                     d = axisalignedbb.maxY;
                 }
             }
-            while (true);
 
             par3 += d - boundingBox.minY;
             setPosition(par1, par3, par5);
@@ -1919,7 +1955,7 @@ public abstract class Entity
     {
         if (timeUntilPortal > 0)
         {
-            timeUntilPortal = func_82147_ab();
+            timeUntilPortal = getPortalCooldown();
             return;
         }
 
@@ -1934,9 +1970,12 @@ public abstract class Entity
         inPortal = true;
     }
 
-    public int func_82147_ab()
+    /**
+     * Return the amount of cooldown before this entity can use a portal again.
+     */
+    public int getPortalCooldown()
     {
-        return 500;
+        return 900;
     }
 
     /**
@@ -1969,7 +2008,10 @@ public abstract class Entity
         return null;
     }
 
-    public void func_70062_b(int i, ItemStack itemstack)
+    /**
+     * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
+     */
+    public void setCurrentItemOrArmor(int i, ItemStack itemstack)
     {
     }
 
@@ -2110,16 +2152,17 @@ public abstract class Entity
         double d = par1 - (double)i;
         double d1 = par3 - (double)j;
         double d2 = par5 - (double)k;
+        List list = worldObj.getAllCollidingBoundingBoxes(boundingBox);
 
-        if (worldObj.isBlockNormalCube(i, j, k))
+        if (!list.isEmpty() || worldObj.func_85174_u(i, j, k))
         {
-            boolean flag = !worldObj.isBlockNormalCube(i - 1, j, k);
-            boolean flag1 = !worldObj.isBlockNormalCube(i + 1, j, k);
-            boolean flag2 = !worldObj.isBlockNormalCube(i, j - 1, k);
-            boolean flag3 = !worldObj.isBlockNormalCube(i, j + 1, k);
-            boolean flag4 = !worldObj.isBlockNormalCube(i, j, k - 1);
-            boolean flag5 = !worldObj.isBlockNormalCube(i, j, k + 1);
-            byte byte0 = -1;
+            boolean flag = !worldObj.func_85174_u(i - 1, j, k);
+            boolean flag1 = !worldObj.func_85174_u(i + 1, j, k);
+            boolean flag2 = !worldObj.func_85174_u(i, j - 1, k);
+            boolean flag3 = !worldObj.func_85174_u(i, j + 1, k);
+            boolean flag4 = !worldObj.func_85174_u(i, j, k - 1);
+            boolean flag5 = !worldObj.func_85174_u(i, j, k + 1);
+            byte byte0 = 3;
             double d3 = 9999D;
 
             if (flag && d < d3)
@@ -2132,12 +2175,6 @@ public abstract class Entity
             {
                 d3 = 1.0D - d;
                 byte0 = 1;
-            }
-
-            if (flag2 && d1 < d3)
-            {
-                d3 = d1;
-                byte0 = 2;
             }
 
             if (flag3 && 1.0D - d1 < d3)
@@ -2258,6 +2295,11 @@ public abstract class Entity
         return true;
     }
 
+    public boolean func_85031_j(Entity par1Entity)
+    {
+        return false;
+    }
+
     public String toString()
     {
         return String.format("%s['%s'/%d, l='%s', x=%.2f, y=%.2f, z=%.2f]", new Object[]
@@ -2266,12 +2308,22 @@ public abstract class Entity
                 });
     }
 
+    public boolean func_85032_ar()
+    {
+        return field_83001_bt;
+    }
+
     public void func_82149_j(Entity par1Entity)
     {
         setLocationAndAngles(par1Entity.posX, par1Entity.posY, par1Entity.posZ, par1Entity.rotationYaw, par1Entity.rotationPitch);
     }
 
-    public void func_82141_a(Entity par1Entity, boolean par2)
+    /**
+     * Copies important data from another entity to this entity. Used when teleporting entities between worlds, as this
+     * actually deletes the teleporting entity and re-creates it on the other side. Params: Entity to copy from, unused
+     * (always true)
+     */
+    public void copyDataFrom(Entity par1Entity, boolean par2)
     {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         par1Entity.writeToNBT(nbttagcompound);
@@ -2280,13 +2332,17 @@ public abstract class Entity
         field_82152_aq = par1Entity.field_82152_aq;
     }
 
-    public void travelToTheEnd(int par1)
+    /**
+     * Teleports the entity to another dimension. Params: Dimension number to teleport to
+     */
+    public void travelToDimension(int par1)
     {
         if (worldObj.isRemote || isDead || !(worldObj instanceof WorldServer))
         {
             return;
         }
 
+        worldObj.theProfiler.startSection("changeDimension");
         MinecraftServer minecraftserver = MinecraftServer.getServer();
         int i = dimension;
         WorldServer worldserver = minecraftserver.worldServerForDimension(i);
@@ -2294,18 +2350,22 @@ public abstract class Entity
         dimension = par1;
         worldObj.setEntityDead(this);
         isDead = false;
-        minecraftserver.getConfigurationManager().func_82448_a(this, i, worldserver, worldserver1);
+        worldObj.theProfiler.startSection("reposition");
+        minecraftserver.getConfigurationManager().transferEntityToWorld(this, i, worldserver, worldserver1);
+        worldObj.theProfiler.endStartSection("reloading");
         Entity entity = EntityList.createEntityByName(EntityList.getEntityString(this), worldserver1);
 
         if (entity != null)
         {
-            entity.func_82141_a(this, true);
+            entity.copyDataFrom(this, true);
             worldserver1.spawnEntityInWorld(entity);
         }
 
         isDead = true;
+        worldObj.theProfiler.endSection();
         worldserver.func_82742_i();
         worldserver1.func_82742_i();
+        worldObj.theProfiler.endSection();
     }
 
     public float func_82146_a(Explosion par1Explosion, Block par2Block, int par3, int par4, int par5)
@@ -2323,8 +2383,32 @@ public abstract class Entity
         return field_82152_aq;
     }
 
-    public boolean func_82144_au()
+    /**
+     * Return whether this entity should NOT trigger a pressure plate or a tripwire.
+     */
+    public boolean doesEntityNotTriggerPressurePlate()
     {
         return false;
+    }
+
+    public void func_85029_a(CrashReportCategory par1CrashReportCategory)
+    {
+        par1CrashReportCategory.addCrashSectionCallable("Entity Type", new CallableEntityType(this));
+        par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(entityId));
+        par1CrashReportCategory.addCrashSection("Name", getEntityName());
+        par1CrashReportCategory.addCrashSection("Exact location", String.format("%.2f, %.2f, %.2f", new Object[]
+                {
+                    Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
+                }));
+        par1CrashReportCategory.addCrashSection("Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)));
+        par1CrashReportCategory.addCrashSection("Momentum", String.format("%.2f, %.2f, %.2f", new Object[]
+                {
+                    Double.valueOf(motionX), Double.valueOf(motionY), Double.valueOf(motionZ)
+                }));
+    }
+
+    public boolean func_90999_ad()
+    {
+        return isBurning();
     }
 }

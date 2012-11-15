@@ -178,7 +178,7 @@ public class TileEntityMobSpawner extends TileEntity
         }
         else if ((par1Entity instanceof EntityLiving) && par1Entity.worldObj != null)
         {
-            ((EntityLiving)par1Entity).func_82163_bD();
+            ((EntityLiving)par1Entity).initCreature();
         }
     }
 
@@ -187,7 +187,15 @@ public class TileEntityMobSpawner extends TileEntity
      */
     private void updateDelay()
     {
-        delay = minSpawnDelay + worldObj.rand.nextInt(maxSpawnDelay - minSpawnDelay);
+        if (maxSpawnDelay <= minSpawnDelay)
+        {
+            delay = minSpawnDelay;
+        }
+        else
+        {
+            delay = minSpawnDelay + worldObj.rand.nextInt(maxSpawnDelay - minSpawnDelay);
+        }
+
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, 0);
     }
 

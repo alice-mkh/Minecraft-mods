@@ -9,7 +9,7 @@ public class RenderBiped extends RenderLiving
     protected float field_77070_b;
     protected ModelBiped field_82423_g;
     protected ModelBiped field_82425_h;
-    private static final String field_82424_k[] =
+    private static final String bipedArmorFilenamePrefix[] =
     {
         "cloth", "chain", "iron", "diamond", "gold"
     };
@@ -38,7 +38,7 @@ public class RenderBiped extends RenderLiving
      */
     protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        ItemStack itemstack = par1EntityLiving.func_82169_q(3 - par2);
+        ItemStack itemstack = par1EntityLiving.getCurrentArmor(3 - par2);
 
         if (itemstack != null)
         {
@@ -47,7 +47,7 @@ public class RenderBiped extends RenderLiving
             if (item instanceof ItemArmor)
             {
                 ItemArmor itemarmor = (ItemArmor)item;
-                loadTexture((new StringBuilder()).append("/armor/").append(field_82424_k[itemarmor.renderIndex]).append("_").append(par2 != 2 ? 1 : 2).append(".png").toString());
+                loadTexture((new StringBuilder()).append("/armor/").append(bipedArmorFilenamePrefix[itemarmor.renderIndex]).append("_").append(par2 != 2 ? 1 : 2).append(".png").toString());
                 ModelBiped modelbiped = par2 != 2 ? field_82423_g : field_82425_h;
                 modelbiped.bipedHead.showModel = par2 == 0;
                 modelbiped.bipedHeadwear.showModel = par2 == 0;
@@ -75,9 +75,9 @@ public class RenderBiped extends RenderLiving
 
                 float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(0) : 1.0F;
 
-                if (itemarmor.func_82812_d() == EnumArmorMaterial.CLOTH)
+                if (itemarmor.getArmorMaterial() == EnumArmorMaterial.CLOTH)
                 {
-                    int i = itemarmor.func_82814_b(itemstack);
+                    int i = itemarmor.getColor(itemstack);
                     float f1 = (float)(i >> 16 & 0xff) / 255F;
                     float f2 = (float)(i >> 8 & 0xff) / 255F;
                     float f3 = (float)(i & 0xff) / 255F;
@@ -95,7 +95,7 @@ public class RenderBiped extends RenderLiving
 
     protected void func_82408_c(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        ItemStack itemstack = par1EntityLiving.func_82169_q(3 - par2);
+        ItemStack itemstack = par1EntityLiving.getCurrentArmor(3 - par2);
 
         if (itemstack != null)
         {
@@ -104,7 +104,7 @@ public class RenderBiped extends RenderLiving
             if (item instanceof ItemArmor)
             {
                 ItemArmor itemarmor = (ItemArmor)item;
-                loadTexture((new StringBuilder()).append("/armor/").append(field_82424_k[itemarmor.renderIndex]).append("_").append(par2 != 2 ? 1 : 2).append("_b.png").toString());
+                loadTexture((new StringBuilder()).append("/armor/").append(bipedArmorFilenamePrefix[itemarmor.renderIndex]).append("_").append(par2 != 2 ? 1 : 2).append("_b.png").toString());
                 float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(0) : 1.0F;
                 GL11.glColor3f(f, f, f);
             }
@@ -142,7 +142,7 @@ public class RenderBiped extends RenderLiving
         GL11.glColor3f(f, f, f);
         super.renderEquippedItems(par1EntityLiving, par2);
         ItemStack itemstack = par1EntityLiving.getHeldItem();
-        ItemStack itemstack1 = par1EntityLiving.func_82169_q(3);
+        ItemStack itemstack1 = par1EntityLiving.getCurrentArmor(3);
 
         if (itemstack1 != null)
         {
@@ -161,7 +161,7 @@ public class RenderBiped extends RenderLiving
 
                 renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack1, 0);
             }
-            else if (itemstack1.getItem().shiftedIndex == Item.field_82799_bQ.shiftedIndex)
+            else if (itemstack1.getItem().shiftedIndex == Item.skull.shiftedIndex)
             {
                 float f2 = 1.0625F;
                 GL11.glScalef(f2, -f2, -f2);
@@ -172,7 +172,7 @@ public class RenderBiped extends RenderLiving
                     s = itemstack1.getTagCompound().getString("SkullOwner");
                 }
 
-                TileEntitySkullRenderer.field_82397_a.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180F, itemstack1.getItemDamage(), s);
+                TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180F, itemstack1.getItemDamage(), s);
             }
 
             GL11.glPopMatrix();
@@ -200,7 +200,7 @@ public class RenderBiped extends RenderLiving
                 f4 *= 0.75F;
                 GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(f4, -f4, f4);
+                GL11.glScalef(-f4, -f4, f4);
             }
             else if (itemstack.itemID == Item.bow.shiftedIndex)
             {

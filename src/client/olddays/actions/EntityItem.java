@@ -76,7 +76,7 @@ public class EntityItem extends Entity
         prevPosY = posY;
         prevPosZ = posZ;
         motionY -= 0.039999999105930328D;
-        pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2D, posZ);
+        noClip = pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2D, posZ);
         moveEntity(motionX, motionY, motionZ);
         boolean flag = (int)prevPosX != (int)posX || (int)prevPosY != (int)posY || (int)prevPosZ != (int)posZ;
 
@@ -87,17 +87,12 @@ public class EntityItem extends Entity
                 motionY = 0.20000000298023224D;
                 motionX = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
                 motionZ = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
-                worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
+                func_85030_a("random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
             }
 
             if (!worldObj.isRemote)
             {
-                EntityItem entityitem;
-
-                for (Iterator iterator = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator(); iterator.hasNext(); func_70289_a(entityitem))
-                {
-                    entityitem = (EntityItem)iterator.next();
-                }
+                func_85054_d();
             }
         }
 
@@ -131,6 +126,16 @@ public class EntityItem extends Entity
         }
     }
 
+    private void func_85054_d()
+    {
+        EntityItem entityitem;
+
+        for (Iterator iterator = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator(); iterator.hasNext(); func_70289_a(entityitem))
+        {
+            entityitem = (EntityItem)iterator.next();
+        }
+    }
+
     public boolean func_70289_a(EntityItem par1EntityItem)
     {
         if (par1EntityItem == this)
@@ -148,7 +153,12 @@ public class EntityItem extends Entity
             return false;
         }
 
-        if (par1EntityItem.item.hasTagCompound() || item.hasTagCompound())
+        if (par1EntityItem.item.hasTagCompound() ^ item.hasTagCompound())
+        {
+            return false;
+        }
+
+        if (par1EntityItem.item.hasTagCompound() && !par1EntityItem.item.getTagCompound().equals(item.getTagCompound()))
         {
             return false;
         }
@@ -204,6 +214,11 @@ public class EntityItem extends Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
+        if (func_85032_ar())
+        {
+            return false;
+        }
+
         setBeenAttacked();
         if ((par1DamageSource == DamageSource.inFire || par1DamageSource == DamageSource.onFire || par1DamageSource == DamageSource.lava) && smeltOnFire){
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
@@ -293,7 +308,7 @@ public class EntityItem extends Entity
             net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "onItemPickup",
                                                            new Class[]{EntityPlayer.class, ItemStack.class}, 
                                                            par1EntityPlayer, item);
-            worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            func_85030_a("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, i);
 
             if (item.stackSize <= 0)
@@ -317,5 +332,18 @@ public class EntityItem extends Entity
     public boolean canAttackWithItem()
     {
         return false;
+    }
+
+    /**
+     * Teleports the entity to another dimension. Params: Dimension number to teleport to
+     */
+    public void travelToDimension(int par1)
+    {
+        super.travelToDimension(par1);
+
+        if (!worldObj.isRemote)
+        {
+            func_85054_d();
+        }
     }
 }

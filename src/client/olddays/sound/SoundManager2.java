@@ -41,13 +41,13 @@ public class SoundManager2 extends SoundManager{
     }
 
 
-    public void func_82467_a(String par1Str, Entity par2Entity, float par3, float par4, boolean par5){
+    public void playEntitySound(String par1Str, Entity par2Entity, float par3, float par4, boolean par5){
         par1Str = oldSounds(par1Str);
         if (par1Str == "nothing")
         {
             return;
         }
-        super.func_82467_a(par1Str, par2Entity, par3, par4, par5);
+        super.playEntitySound(par1Str, par2Entity, par3, par4, par5);
     
     }
 

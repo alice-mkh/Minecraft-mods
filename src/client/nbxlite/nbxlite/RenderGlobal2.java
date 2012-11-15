@@ -17,7 +17,7 @@ public class RenderGlobal2 extends RenderGlobal{
     protected Minecraft mc;
     protected RenderEngine renderEngine;
     protected World worldObj;
-    protected int cloudOffsetX;
+    protected int cloudTickCounter;
 
     /** The star GL Call list */
     protected int starGLCallList;
@@ -43,7 +43,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glPopMatrix();
         glSkyList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 17));
         glSkyList2 = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 18));
-        cloudOffsetX = 0;
+        cloudTickCounter = 0;
     }
 
     public void setStars(boolean b){
@@ -61,7 +61,7 @@ public class RenderGlobal2 extends RenderGlobal{
 
     public void updateClouds()
     {
-        cloudOffsetX++;
+        cloudTickCounter++;
     }
 
     /**
@@ -385,7 +385,7 @@ public class RenderGlobal2 extends RenderGlobal{
         }
 
         float f5 = 0.0004882813F;
-        double d = (float)cloudOffsetX + par1;
+        double d = (float)cloudTickCounter + par1;
         if (mc.timecontrol && mc.enableSP){
             d += (((WorldSSP)worldObj).field_35467_J + (((WorldSSP)worldObj).field_35468_K - ((WorldSSP)worldObj).field_35467_J) * (double)par1) * 24000D;
         }
@@ -436,7 +436,7 @@ public class RenderGlobal2 extends RenderGlobal{
         Tessellator tessellator = Tessellator.instance;
         float f1 = 12F;
         float f2 = 4F;
-        double d = (float)cloudOffsetX + par1;
+        double d = (float)cloudTickCounter + par1;
         if (mc.timecontrol && mc.enableSP){
             d += (((WorldSSP)worldObj).field_35467_J + (((WorldSSP)worldObj).field_35468_K - ((WorldSSP)worldObj).field_35467_J) * (double)par1) * 24000D;
         }

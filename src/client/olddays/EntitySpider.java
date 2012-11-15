@@ -105,7 +105,7 @@ public class EntitySpider extends EntityMob
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
+        func_85030_a("mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
@@ -239,13 +239,16 @@ public class EntitySpider extends EntityMob
         dataWatcher.updateObject(16, Byte.valueOf(byte0));
     }
 
-    public void func_82163_bD()
+    /**
+     * Initialize this creature.
+     */
+    public void initCreature()
     {
         if (worldObj.rand.nextInt(100) == 0 && jockeys)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(worldObj);
             entityskeleton.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
-            entityskeleton.func_82163_bD();
+            entityskeleton.initCreature();
             worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }

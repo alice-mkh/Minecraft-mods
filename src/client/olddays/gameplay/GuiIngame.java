@@ -184,7 +184,7 @@ public class GuiIngame extends Gui
                     {
                         l11 += 36;
                     }
-                    else if (mc.thePlayer.isPotionActive(Potion.field_82731_v))
+                    else if (mc.thePlayer.isPotionActive(Potion.wither))
                     {
                         l11 += 72;
                     }
@@ -386,7 +386,7 @@ public class GuiIngame extends Gui
             mc.mcProfiler.startSection("demo");
             String s = "";
 
-            if (mc.theWorld.func_82737_E() >= 0x1d6b4L)
+            if (mc.theWorld.getTotalWorldTime() >= 0x1d6b4L)
             {
                 s = StatCollector.translateToLocal("demo.demoExpired");
             }
@@ -394,7 +394,7 @@ public class GuiIngame extends Gui
             {
                 s = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[]
                         {
-                            StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.func_82737_E()))
+                            StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.getTotalWorldTime()))
                         });
             }
 
@@ -407,7 +407,7 @@ public class GuiIngame extends Gui
         {
             mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            fontrenderer.drawStringWithShadow((new StringBuilder()).append(version.equals("OFF") ? "Minecraft 1.4.2" : version).append(" (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
+            fontrenderer.drawStringWithShadow((new StringBuilder()).append(version.equals("OFF") ? "Minecraft 1.4.4" : version).append(" (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoRenders(), 2, 12, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.getEntityDebug(), 2, 22, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoEntities(), 2, 32, 0xffffff);
@@ -436,7 +436,7 @@ public class GuiIngame extends Gui
                         Double.valueOf(mc.thePlayer.posZ), Integer.valueOf(l9), Integer.valueOf(l9 >> 4), Integer.valueOf(l9 & 0xf)
                     }), 2, 80, 0xe0e0e0);
             int k10 = MathHelper.floor_double((double)((mc.thePlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-            drawString(fontrenderer, (new StringBuilder()).append("f: ").append(k10).append(" (").append(Direction.field_82373_c[k10]).append(") / ").append(MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw)).toString(), 2, 88, 0xe0e0e0);
+            drawString(fontrenderer, (new StringBuilder()).append("f: ").append(k10).append(" (").append(Direction.directions[k10]).append(") / ").append(MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw)).toString(), 2, 88, 0xe0e0e0);
 
             if (mc.theWorld != null && mc.theWorld.blockExists(i8, i9, l9))
             {
@@ -599,7 +599,7 @@ public class GuiIngame extends Gui
      */
     private void renderBossHealth()
     {
-        if (BossStatus.field_82827_c == null || BossStatus.field_82826_b <= 0)
+        if (BossStatus.bossName == null || BossStatus.field_82826_b <= 0)
         {
             return;
         }
@@ -610,7 +610,7 @@ public class GuiIngame extends Gui
         int i = scaledresolution.getScaledWidth();
         char c = '\266';
         int j = i / 2 - c / 2;
-        int k = (int)(BossStatus.field_82828_a * (float)(c + 1));
+        int k = (int)(BossStatus.healthScale * (float)(c + 1));
         byte byte0 = 12;
         drawTexturedModalRect(j, byte0, 0, 74, c, 5);
         drawTexturedModalRect(j, byte0, 0, 74, c, 5);
@@ -620,7 +620,7 @@ public class GuiIngame extends Gui
             drawTexturedModalRect(j, byte0, 0, 79, k, 5);
         }
 
-        String s = BossStatus.field_82827_c;
+        String s = BossStatus.bossName;
         fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, byte0 - 10, 0xffffff);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
@@ -741,7 +741,7 @@ public class GuiIngame extends Gui
             GL11.glTranslatef(-(par2 + 8), -(par3 + 12), 0.0F);
         }
 
-        itemRenderer.func_82406_b(mc.fontRenderer, mc.renderEngine, itemstack, par2, par3);
+        itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, par2, par3);
 
         if (f > 0.0F)
         {

@@ -134,6 +134,11 @@ public class EntityHuman extends EntityAnimal
     {
         return new EntityHuman(worldObj);
     }
+
+    public EntityAgeable func_90011_a(EntityAgeable entityageable)
+    {
+        return new EntityHuman(worldObj);
+    }
     
     //NO BREEDING
     protected void attackEntity(Entity entity, float f){}

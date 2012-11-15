@@ -20,13 +20,15 @@ public class EntityCreeper extends EntityMob
      */
     private int timeSinceIgnited;
     private int field_82225_f;
-    private int field_82226_g;
+
+    /** Explosion radius for this creeper. */
+    private int explosionRadius;
 
     public EntityCreeper(World par1World)
     {
         super(par1World);
         field_82225_f = 30;
-        field_82226_g = 3;
+        explosionRadius = 3;
         texture = "/mob/creeper.png";
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAICreeperSwell(this));
@@ -102,20 +104,20 @@ public class EntityCreeper extends EntityMob
         {
             if (timeSinceIgnited == 0)
             {
-                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+                func_85030_a("random.fuse", 1.0F, 0.5F);
             }
             setCreeperState(1);
             timeSinceIgnited++;
             if (timeSinceIgnited >= field_82225_f)
             {
-                boolean flag = worldObj.func_82736_K().func_82766_b("mobGriefing");
+                boolean flag = worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
                 if (getPowered())
                 {
-                    worldObj.createExplosion(this, posX, posY, posZ, field_82226_g * 2, flag);
+                    worldObj.createExplosion(this, posX, posY, posZ, explosionRadius * 2, flag);
                 }
                 else
                 {
-                    worldObj.createExplosion(this, posX, posY, posZ, field_82226_g, flag);
+                    worldObj.createExplosion(this, posX, posY, posZ, explosionRadius, flag);
                 }
                 setDead();
             }
@@ -194,7 +196,7 @@ public class EntityCreeper extends EntityMob
         }
 
         par1NBTTagCompound.setShort("Fuse", (short)field_82225_f);
-        par1NBTTagCompound.setByte("ExplosionRadius", (byte)field_82226_g);
+        par1NBTTagCompound.setByte("ExplosionRadius", (byte)explosionRadius);
     }
 
     /**
@@ -212,7 +214,7 @@ public class EntityCreeper extends EntityMob
 
         if (par1NBTTagCompound.hasKey("ExplosionRadius"))
         {
-            field_82226_g = par1NBTTagCompound.getByte("ExplosionRadius");
+            explosionRadius = par1NBTTagCompound.getByte("ExplosionRadius");
         }
     }
 
@@ -224,7 +226,7 @@ public class EntityCreeper extends EntityMob
             int i = getCreeperState();
             if (i > 0 && timeSinceIgnited == 0)
             {
-                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+                func_85030_a("random.fuse", 1.0F, 0.5F);
             }
             timeSinceIgnited += i;
             if (timeSinceIgnited < 0)
@@ -264,7 +266,7 @@ public class EntityCreeper extends EntityMob
 
             if (i > 0 && timeSinceIgnited == 0)
             {
-                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+                func_85030_a("random.fuse", 1.0F, 0.5F);
             }
 
             timeSinceIgnited += i;
@@ -280,15 +282,15 @@ public class EntityCreeper extends EntityMob
 
                 if (!worldObj.isRemote)
                 {
-                    boolean flag = worldObj.func_82736_K().func_82766_b("mobGriefing");
+                    boolean flag = worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
 
                     if (getPowered())
                     {
-                        worldObj.createExplosion(this, posX, posY, posZ, field_82226_g * 2, flag);
+                        worldObj.createExplosion(this, posX, posY, posZ, explosionRadius * 2, flag);
                     }
                     else
                     {
-                        worldObj.createExplosion(this, posX, posY, posZ, field_82226_g, flag);
+                        worldObj.createExplosion(this, posX, posY, posZ, explosionRadius, flag);
                     }
 
                     setDead();
@@ -324,14 +326,15 @@ public class EntityCreeper extends EntityMob
         if (!survivaltest){
             if (par1DamageSource.getEntity() instanceof EntitySkeleton)
             {
-                dropItem(Item.record13.shiftedIndex + rand.nextInt(10), 1);
+                int i = Item.record13.shiftedIndex + rand.nextInt((Item.field_85180_cf.shiftedIndex - Item.record13.shiftedIndex) + 1);
+                dropItem(i, 1);
             }
         }
     }
 
     protected void onDeathUpdate(){
         if (survivaltest && deathTime >= 15){
-            worldObj.createExplosion(this, posX, posY, posZ, 4F, worldObj.func_82736_K().func_82766_b("mobGriefing"));
+            worldObj.createExplosion(this, posX, posY, posZ, 4F, worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
             setDead();
         }else{
             super.onDeathUpdate();

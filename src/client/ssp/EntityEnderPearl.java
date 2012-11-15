@@ -26,7 +26,7 @@ public class EntityEnderPearl extends EntityThrowable
     {
         if (par1MovingObjectPosition.entityHit != null)
         {
-            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, thrower), 0);
+            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, func_85052_h()), 0);
         }
 
         for (int i = 0; i < 32; i++)
@@ -36,21 +36,21 @@ public class EntityEnderPearl extends EntityThrowable
 
         if (!worldObj.isRemote)
         {
-            if (thrower != null && net.minecraft.client.Minecraft.getMinecraft().enableSP)
+            if (func_85052_h() != null && net.minecraft.client.Minecraft.getMinecraft().enableSP)
             {
-                thrower.setPositionAndUpdate(posX, posY, posZ);
-                thrower.fallDistance = 0.0F;
-                thrower.attackEntityFrom(DamageSource.fall, 5);
+                func_85052_h().setPositionAndUpdate(posX, posY, posZ);
+                func_85052_h().fallDistance = 0.0F;
+                func_85052_h().attackEntityFrom(DamageSource.fall, 5);
             }else
-            if (thrower != null && (thrower instanceof EntityPlayerMP))
+            if (func_85052_h() != null && (func_85052_h() instanceof EntityPlayerMP))
             {
-                EntityPlayerMP entityplayermp = (EntityPlayerMP)thrower;
+                EntityPlayerMP entityplayermp = (EntityPlayerMP)func_85052_h();
 
                 if (!entityplayermp.playerNetServerHandler.connectionClosed && entityplayermp.worldObj == worldObj)
                 {
-                    thrower.setPositionAndUpdate(posX, posY, posZ);
-                    thrower.fallDistance = 0.0F;
-                    thrower.attackEntityFrom(DamageSource.fall, 5);
+                    func_85052_h().setPositionAndUpdate(posX, posY, posZ);
+                    func_85052_h().fallDistance = 0.0F;
+                    func_85052_h().attackEntityFrom(DamageSource.fall, 5);
                 }
             }
 

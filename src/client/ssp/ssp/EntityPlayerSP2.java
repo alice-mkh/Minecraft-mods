@@ -143,28 +143,10 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         return f;
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("Score", score);
-    }
-
     public void updateCloak()
     {
         playerCloakUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftCloaks/").append(StringUtils.stripControlCodes(username)).append(".png").toString();
         cloakUrl = playerCloakUrl;
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        score = par1NBTTagCompound.getInteger("Score");
     }
 
     /**
@@ -563,7 +545,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             return false;
         }
 
-        if (par1DamageSource.fireDamage() && isPotionActive(Potion.fireResistance))
+        if (par1DamageSource.isFireDamage() && isPotionActive(Potion.fireResistance))
         {
             return false;
         }
@@ -649,14 +631,14 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         {
             if (flag)
             {
-                worldObj.playSoundAtEntity(this, getDeathSound(), getSoundVolume(), getSoundPitch());
+                func_85030_a(getDeathSound(), getSoundVolume(), getSoundPitch());
             }
 
             onDeath(par1DamageSource);
         }
         else if (flag)
         {
-            worldObj.playSoundAtEntity(this, getHurtSound(), getSoundVolume(), getSoundPitch());
+            func_85030_a(getHurtSound(), getSoundVolume(), getSoundPitch());
         }
 
         return true;
@@ -745,7 +727,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Gets the pitch of living sounds in living entities.
      */
-    private float getSoundPitch()
+    protected float getSoundPitch()
     {
         if (isChild())
         {

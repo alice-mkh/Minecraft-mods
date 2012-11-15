@@ -181,7 +181,7 @@ public class BlockFire extends Block
      */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (!par1World.func_82736_K().func_82766_b("doFireTick"))
+        if (!par1World.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
             return;
         }

@@ -157,7 +157,7 @@ public class OldChunkLoader
         }
         nbttagcompound.setInteger("xPos", chunk2.xPosition);
         nbttagcompound.setInteger("zPos", chunk2.zPosition);
-        nbttagcompound.setLong("LastUpdate", world.getWorldTime());
+        nbttagcompound.setLong("LastUpdate", world.getTotalWorldTime());
         nbttagcompound.setByteArray("Blocks", chunk2.blocks);
         nbttagcompound.setByteArray("Data", chunk2.data.data);
         nbttagcompound.setByteArray("SkyLight", chunk2.skylightMap.data);
@@ -201,7 +201,7 @@ public class OldChunkLoader
         List list = world.getPendingBlockUpdates(chunk2, false);
         if (list != null)
         {
-            long l = world.getWorldTime();
+            long l = world.getTotalWorldTime();
             NBTTagList nbttaglist2 = new NBTTagList();
             NBTTagCompound nbttagcompound3;
             for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); nbttaglist2.appendTag(nbttagcompound3))

@@ -8,7 +8,9 @@ public class Explosion
 
     /** whether or not the explosion sets fire to blocks around it */
     public boolean isFlaming;
-    public boolean field_82755_b;
+
+    /** whether or not this explosion spawns smoke particles */
+    public boolean isSmoking;
     private int field_77289_h;
     private Random explosionRNG;
     private World worldObj;
@@ -17,16 +19,18 @@ public class Explosion
     public double explosionZ;
     public Entity exploder;
     public float explosionSize;
-    public List field_77281_g;
+
+    /** A list of ChunkPositions of blocks affected by this explosion */
+    public List affectedBlockPositions;
     private Map field_77288_k;
 
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
         isFlaming = false;
-        field_82755_b = true;
+        isSmoking = true;
         field_77289_h = 16;
         explosionRNG = new Random();
-        field_77281_g = new ArrayList();
+        affectedBlockPositions = new ArrayList();
         field_77288_k = new HashMap();
         worldObj = par1World;
         exploder = par2Entity;
@@ -104,7 +108,7 @@ public class Explosion
             }
         }
 
-        field_77281_g.addAll(hashset);
+        affectedBlockPositions.addAll(hashset);
         explosionSize *= 2.0F;
         int j = MathHelper.floor_double(explosionX - (double)explosionSize - 1.0D);
         int l = MathHelper.floor_double(explosionX + (double)explosionSize + 1.0D);
@@ -113,7 +117,7 @@ public class Explosion
         int l1 = MathHelper.floor_double(explosionZ - (double)explosionSize - 1.0D);
         int i2 = MathHelper.floor_double(explosionZ + (double)explosionSize + 1.0D);
         List list = worldObj.getEntitiesWithinAABBExcludingEntity(exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(j, j1, l1, l, k1, i2));
-        Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(explosionX, explosionY, explosionZ);
+        Vec3 vec3 = worldObj.getWorldVec3Pool().getVecFromPool(explosionX, explosionY, explosionZ);
 
         for (int j2 = 0; j2 < list.size(); j2++)
         {
@@ -150,7 +154,7 @@ public class Explosion
 
             if (entity instanceof EntityPlayer)
             {
-                field_77288_k.put((EntityPlayer)entity, worldObj.func_82732_R().getVecFromPool(d6 * d13, d8 * d13, d10 * d13));
+                field_77288_k.put((EntityPlayer)entity, worldObj.getWorldVec3Pool().getVecFromPool(d6 * d13, d8 * d13, d10 * d13));
             }
         }
 
@@ -164,7 +168,7 @@ public class Explosion
     {
         worldObj.playSoundEffect(explosionX, explosionY, explosionZ, "random.explode", 4F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 
-        if (explosionSize < 2.0F || !field_82755_b)
+        if (explosionSize < 2.0F || !isSmoking)
         {
             worldObj.spawnParticle("largeexplode", explosionX, explosionY, explosionZ, 1.0D, 0.0D, 0.0D);
         }
@@ -173,9 +177,9 @@ public class Explosion
             worldObj.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0D, 0.0D, 0.0D);
         }
 
-        if (field_82755_b)
+        if (isSmoking)
         {
-            Iterator iterator = field_77281_g.iterator();
+            Iterator iterator = affectedBlockPositions.iterator();
 
             do
             {
@@ -213,14 +217,19 @@ public class Explosion
 
                 if (k1 > 0)
                 {
-                    Block.blocksList[k1].dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
+                    Block block = Block.blocksList[k1];
+
+                    if (block.func_85103_a(this))
+                    {
+                        block.dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
+                    }
 
                     if (worldObj.setBlockAndMetadataWithUpdate(i, k, i1, 0, 0, worldObj.isRemote))
                     {
                         worldObj.notifyBlocksOfNeighborChange(i, k, i1, 0);
                     }
 
-                    Block.blocksList[k1].onBlockDestroyedByExplosion(worldObj, i, k, i1);
+                    block.onBlockDestroyedByExplosion(worldObj, i, k, i1);
                 }
             }
             while (true);
@@ -228,7 +237,7 @@ public class Explosion
 
         if (isFlaming)
         {
-            Iterator iterator1 = field_77281_g.iterator();
+            Iterator iterator1 = affectedBlockPositions.iterator();
 
             do
             {

@@ -364,9 +364,12 @@ public class ChunkCache implements IBlockAccess
         }
     }
 
-    public Vec3Pool func_82732_R()
+    /**
+     * Return the Vec3Pool object for this world.
+     */
+    public Vec3Pool getWorldVec3Pool()
     {
-        return worldObj.func_82732_R();
+        return worldObj.getWorldVec3Pool();
     }
 
     /**

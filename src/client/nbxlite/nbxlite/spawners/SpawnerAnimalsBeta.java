@@ -178,7 +178,7 @@ public final class SpawnerAnimalsBeta
 
     private static void creatureSpecificInit(EntityLiving entityliving, World world, float f, float f1, float f2)
     {
-        entityliving.func_82163_bD();
+        entityliving.initCreature();
     }
 /*
     public static boolean performSleepSpawning(World world, List list)

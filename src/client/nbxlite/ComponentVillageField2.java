@@ -15,11 +15,14 @@ public class ComponentVillageField2 extends ComponentVillage
         averageGroundLevel = -1;
         coordBaseMode = par5;
         boundingBox = par4StructureBoundingBox;
-        field_82675_b = func_82674_a(par3Random);
-        field_82676_c = func_82674_a(par3Random);
+        field_82675_b = pickRandomCrop(par3Random);
+        field_82676_c = pickRandomCrop(par3Random);
     }
 
-    private int func_82674_a(Random par1Random)
+    /**
+     * Returns a crop type to be planted on this field.
+     */
+    private int pickRandomCrop(Random par1Random)
     {
         if (ODNBXlite.noNewCrops()){
             return Block.crops.blockID;
@@ -29,9 +32,9 @@ public class ComponentVillageField2 extends ComponentVillage
             default:
                 return Block.crops.blockID;
             case 0:
-                return Block.field_82513_cg.blockID;
+                return Block.carrot.blockID;
             case 1:
-                return Block.field_82514_ch.blockID;
+                return Block.potatoe.blockID;
         }
     }
 

@@ -356,7 +356,7 @@ public class WorldSSP2 extends WorldSSP
 
             if (!flag)
             {
-                long l = worldInfo.getWorldTime() + 24000L;
+                long l = worldInfo.getWorldTotalTime() + 24000L;
                 worldInfo.setWorldTime(l - l % 24000L);
                 func_82738_a(l - l % 24000L);
                 wakeUpAllPlayers();
@@ -364,10 +364,10 @@ public class WorldSSP2 extends WorldSSP
         }
 
         theProfiler.startSection("mobSpawner");
-        if (func_82736_K().func_82766_b("doMobSpawning")){
+        if (getGameRules().getGameRuleBooleanValue("doMobSpawning")){
             if (provider.dimensionId!=1){
                 if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                    SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTime() % 400L == 0L);
+                    SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
@@ -395,7 +395,7 @@ public class WorldSSP2 extends WorldSSP
             }
         }
 
-        long l1 = worldInfo.getWorldTime() + 1L;
+        long l1 = worldInfo.getWorldTotalTime() + 1L;
 
         if (l1 % (long)autosavePeriod == 0L)
         {
@@ -404,7 +404,7 @@ public class WorldSSP2 extends WorldSSP
         }
 
         worldInfo.setWorldTime(l1);
-        func_82738_a(func_82737_E() + 1L);
+        func_82738_a(getTotalWorldTime() + 1L);
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");

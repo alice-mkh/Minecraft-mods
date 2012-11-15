@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 public abstract class EntityAnimal extends EntityAgeable implements IAnimals
 {
@@ -83,7 +84,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
 
             EntityPlayer entityplayer = (EntityPlayer)par1Entity;
 
-            if (entityplayer.getCurrentEquippedItem() == null || !isWheat(entityplayer.getCurrentEquippedItem()))
+            if (entityplayer.getCurrentEquippedItem() == null || !isBreedingItem(entityplayer.getCurrentEquippedItem()))
             {
                 entityToAttack = null;
             }
@@ -141,9 +142,9 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     private void procreate(EntityAnimal par1EntityAnimal)
     {
-        EntityAnimal entityanimal = spawnBabyAnimal(par1EntityAnimal);
+        EntityAgeable entityageable = func_90011_a(par1EntityAnimal);
 
-        if (entityanimal != null)
+        if (entityageable != null)
         {
             setGrowingAge(6000);
             par1EntityAnimal.setGrowingAge(6000);
@@ -154,10 +155,12 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
             par1EntityAnimal.breeding = 0;
             par1EntityAnimal.inLove = 0;
             breeded = true;
-            entityanimal.breeded = true;
+            if (entityageable instanceof EntityAnimal){
+                ((EntityAnimal)entityageable).breeded = true;
+            }
             par1EntityAnimal.breeded = true;
-            entityanimal.setGrowingAge(-24000);
-            entityanimal.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
+            entityageable.setGrowingAge(-24000);
+            entityageable.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
 
             for (int i = 0; i < 7; i++)
             {
@@ -167,24 +170,26 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
                 worldObj.spawnParticle("heart", (posX + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, posY + 0.5D + (double)(rand.nextFloat() * height), (posZ + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, d, d1, d2);
             }
 
-            worldObj.spawnEntityInWorld(entityanimal);
+            worldObj.spawnEntityInWorld(entityageable);
         }
     }
-
-    /**
-     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-     */
-    public abstract EntityAnimal spawnBabyAnimal(EntityAnimal entityanimal);
 
     /**
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        fleeingTick = 60;
-        entityToAttack = null;
-        inLove = 0;
-        return super.attackEntityFrom(par1DamageSource, par2);
+        if (func_85032_ar())
+        {
+            return false;
+        }
+        else
+        {
+            fleeingTick = 60;
+            entityToAttack = null;
+            inLove = 0;
+            return super.attackEntityFrom(par1DamageSource, par2);
+        }
     }
 
     /**
@@ -229,77 +234,56 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     protected Entity findPlayerToAttack()
     {
-        label0:
+        if (fleeingTick > 0)
         {
-            if (fleeingTick > 0)
-            {
-                return null;
-            }
-
-            float f = 8F;
-
-            if (inLove > 0)
-            {
-                List list = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
-                Iterator iterator = list.iterator();
-                EntityAnimal entityanimal;
-
-                do
-                {
-                    if (!iterator.hasNext())
-                    {
-                        break label0;
-                    }
-
-                    entityanimal = (EntityAnimal)iterator.next();
-                }
-                while (entityanimal == this || entityanimal.inLove <= 0);
-
-                return entityanimal;
-            }
-
-            if (getGrowingAge() == 0)
-            {
-                List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityPlayer.class, boundingBox.expand(f, f, f));
-                Iterator iterator1 = list1.iterator();
-                EntityPlayer entityplayer;
-
-                do
-                {
-                    if (!iterator1.hasNext())
-                    {
-                        break label0;
-                    }
-
-                    entityplayer = (EntityPlayer)iterator1.next();
-                }
-                while (entityplayer.getCurrentEquippedItem() == null || !isWheat(entityplayer.getCurrentEquippedItem()));
-
-                return entityplayer;
-            }
-
-            if (getGrowingAge() <= 0)
-            {
-                break label0;
-            }
-
-            List list2 = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
-            Iterator iterator2 = list2.iterator();
-            EntityAnimal entityanimal1;
-
-            do
-            {
-                if (!iterator2.hasNext())
-                {
-                    break label0;
-                }
-
-                entityanimal1 = (EntityAnimal)iterator2.next();
-            }
-            while (entityanimal1 == this || entityanimal1.getGrowingAge() >= 0);
-
-            return entityanimal1;
+            return null;
         }
+
+        float f = 8F;
+
+        if (inLove > 0)
+        {
+            List list = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
+
+            for (int i = 0; i < list.size(); i++)
+            {
+                EntityAnimal entityanimal = (EntityAnimal)list.get(i);
+
+                if (entityanimal != this && entityanimal.inLove > 0)
+                {
+                    return entityanimal;
+                }
+            }
+        }
+        else if (getGrowingAge() == 0)
+        {
+            List list1 = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityPlayer.class, boundingBox.expand(f, f, f));
+
+            for (int j = 0; j < list1.size(); j++)
+            {
+                EntityPlayer entityplayer = (EntityPlayer)list1.get(j);
+
+                if (entityplayer.getCurrentEquippedItem() != null && isBreedingItem(entityplayer.getCurrentEquippedItem()))
+                {
+                    return entityplayer;
+                }
+            }
+        }
+        else if (getGrowingAge() > 0)
+        {
+            List list2 = worldObj.getEntitiesWithinAABB(getClass(), boundingBox.expand(f, f, f));
+
+            for (int k = 0; k < list2.size(); k++)
+            {
+                EntityAnimal entityanimal1 = (EntityAnimal)list2.get(k);
+
+                if (entityanimal1 != this && entityanimal1.getGrowingAge() < 0)
+                {
+                    return entityanimal1;
+                }
+            }
+        }
+
         return null;
     }
 
@@ -339,9 +323,10 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     }
 
     /**
-     * Checks if the parameter is an wheat item.
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
      */
-    public boolean isWheat(ItemStack par1ItemStack)
+    public boolean isBreedingItem(ItemStack par1ItemStack)
     {
         return par1ItemStack.itemID == Item.wheat.shiftedIndex;
     }
@@ -353,7 +338,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (itemstack != null && isWheat(itemstack) && getGrowingAge() == 0)
+        if (itemstack != null && isBreedingItem(itemstack) && getGrowingAge() == 0)
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {

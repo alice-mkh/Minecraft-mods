@@ -129,7 +129,14 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.boundingBox;
+        if (par1Entity.canBePushed())
+        {
+            return par1Entity.boundingBox;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -177,6 +184,11 @@ public class EntityMinecart extends Entity implements IInventory
         if (worldObj.isRemote || isDead)
         {
             return true;
+        }
+
+        if (func_85032_ar())
+        {
+            return false;
         }
 
         func_70494_i(-func_70493_k());
@@ -333,10 +345,13 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    public void travelToTheEnd(int par1)
+    /**
+     * Teleports the entity to another dimension. Params: Dimension number to teleport to
+     */
+    public void travelToDimension(int par1)
     {
         field_82345_h = false;
-        super.travelToTheEnd(par1);
+        super.travelToDimension(par1);
     }
 
     /**
@@ -411,6 +426,7 @@ public class EntityMinecart extends Entity implements IInventory
 
         if (BlockRail.isRailBlock(l))
         {
+            fallDistance = 0.0F;
             Vec3 vec3 = func_70489_a(posX, posY, posZ);
             int i1 = worldObj.getBlockMetadata(i, j, k);
             posY = j;
@@ -920,7 +936,7 @@ public class EntityMinecart extends Entity implements IInventory
                 par3 += 0.5D;
             }
 
-            return worldObj.func_82732_R().getVecFromPool(par1, par3, par5);
+            return worldObj.getWorldVec3Pool().getVecFromPool(par1, par3, par5);
         }
         else
         {
@@ -1051,8 +1067,8 @@ public class EntityMinecart extends Entity implements IInventory
                 }else{
                     double d4 = par1Entity.posX - posX;
                     double d5 = par1Entity.posZ - posZ;
-                    Vec3 vec3 = worldObj.func_82732_R().getVecFromPool(d4, 0.0D, d5).normalize();
-                    Vec3 vec3_1 = worldObj.func_82732_R().getVecFromPool(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
+                    Vec3 vec3 = worldObj.getWorldVec3Pool().getVecFromPool(d4, 0.0D, d5).normalize();
+                    Vec3 vec3_1 = worldObj.getWorldVec3Pool().getVecFromPool(MathHelper.cos((rotationYaw * (float)Math.PI) / 180F), 0.0D, MathHelper.sin((rotationYaw * (float)Math.PI) / 180F)).normalize();
                     double d6 = Math.abs(vec3.dotProduct(vec3_1));
 
                     if (d6 < 0.80000001192092896D)

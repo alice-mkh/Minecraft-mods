@@ -120,7 +120,7 @@ public class RenderItem2 extends Render
 
                 if (field_77024_a)
                 {
-                    int k1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, i);
+                    int k1 = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, i);
                     float f9 = (float)(k1 >> 16 & 0xff) / 255F;
                     float f12 = (float)(k1 >> 8 & 0xff) / 255F;
                     float f14 = (float)(k1 & 0xff) / 255F;
@@ -156,7 +156,7 @@ public class RenderItem2 extends Render
 
             if (field_77024_a)
             {
-                int i1 = Item.itemsList[itemstack.itemID].func_82790_a(itemstack, 0);
+                int i1 = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 0);
                 float f4 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f7 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f10 = (float)(i1 & 0xff) / 255F;
@@ -226,7 +226,7 @@ public class RenderItem2 extends Render
             GL11.glScalef(1.0F, 1.0F, -1F);
             GL11.glRotatef(210F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-            int j1 = Item.itemsList[i].func_82790_a(par3ItemStack, 0);
+            int j1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, 0);
             float f1 = (float)(j1 >> 16 & 0xff) / 255F;
             float f3 = (float)(j1 >> 8 & 0xff) / 255F;
             float f6 = (float)(j1 & 0xff) / 255F;
@@ -250,7 +250,7 @@ public class RenderItem2 extends Render
             for (int l = 0; l <= 1; l++)
             {
                 int k1 = Item.itemsList[i].getIconFromDamageForRenderPass(j, l);
-                int l1 = Item.itemsList[i].func_82790_a(par3ItemStack, l);
+                int l1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, l);
                 float f4 = (float)(l1 >> 16 & 0xff) / 255F;
                 float f7 = (float)(l1 >> 8 & 0xff) / 255F;
                 float f8 = (float)(l1 & 0xff) / 255F;
@@ -278,7 +278,7 @@ public class RenderItem2 extends Render
                 par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
             }
 
-            int i1 = Item.itemsList[i].func_82790_a(par3ItemStack, 0);
+            int i1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, 0);
             float f = (float)(i1 >> 16 & 0xff) / 255F;
             float f2 = (float)(i1 >> 8 & 0xff) / 255F;
             float f5 = (float)(i1 & 0xff) / 255F;

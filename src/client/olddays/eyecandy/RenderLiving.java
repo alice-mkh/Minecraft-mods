@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
@@ -265,6 +266,10 @@ public class RenderLiving extends Render
             loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
             mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
         }
+        else
+        {
+            mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
+        }
     }
 
     /**
@@ -308,11 +313,11 @@ public class RenderLiving extends Render
 
     protected void renderEquippedItems(EntityLiving entityliving, float f)
     {
-        if(entityliving.arrowHitTempCounter > 0 && stick)
+        if(entityliving.func_85035_bI() > 0 && stick)
         {
             EntityArrow entityarrow = new EntityArrow(entityliving.worldObj, entityliving.posX, entityliving.posY, entityliving.posZ);
             Random random = new Random(entityliving.entityId);
-            for(int i = 0; i < entityliving.arrowHitTempCounter; i++)
+            for(int i = 0; i < entityliving.func_85035_bI(); i++)
             {
                 GL11.glPushMatrix();
                 ModelRenderer modelrenderer = (ModelRenderer)mainModel.boxList.get(random.nextInt(mainModel.boxList.size()));
@@ -342,6 +347,50 @@ public class RenderLiving extends Render
                 GL11.glPopMatrix();
             }
 
+        }
+    }
+
+    protected void func_85093_e(EntityLiving par1EntityLiving, float par2)
+    {
+        int i = par1EntityLiving.func_85035_bI();
+
+        if (i > 0)
+        {
+            EntityArrow entityarrow = new EntityArrow(par1EntityLiving.worldObj, par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
+            Random random = new Random(par1EntityLiving.entityId);
+            RenderHelper.disableStandardItemLighting();
+
+            for (int j = 0; j < i; j++)
+            {
+                GL11.glPushMatrix();
+                ModelRenderer modelrenderer = mainModel.func_85181_a(random);
+                ModelBox modelbox = (ModelBox)modelrenderer.cubeList.get(random.nextInt(modelrenderer.cubeList.size()));
+                modelrenderer.postRender(0.0625F);
+                float f = random.nextFloat();
+                float f1 = random.nextFloat();
+                float f2 = random.nextFloat();
+                float f3 = (modelbox.posX1 + (modelbox.posX2 - modelbox.posX1) * f) / 16F;
+                float f4 = (modelbox.posY1 + (modelbox.posY2 - modelbox.posY1) * f1) / 16F;
+                float f5 = (modelbox.posZ1 + (modelbox.posZ2 - modelbox.posZ1) * f2) / 16F;
+                GL11.glTranslatef(f3, f4, f5);
+                f = f * 2.0F - 1.0F;
+                f1 = f1 * 2.0F - 1.0F;
+                f2 = f2 * 2.0F - 1.0F;
+                f *= -1F;
+                f1 *= -1F;
+                f2 *= -1F;
+                float f6 = MathHelper.sqrt_float(f * f + f2 * f2);
+                entityarrow.prevRotationYaw = entityarrow.rotationYaw = (float)((Math.atan2(f, f2) * 180D) / Math.PI);
+                entityarrow.prevRotationPitch = entityarrow.rotationPitch = (float)((Math.atan2(f1, f6) * 180D) / Math.PI);
+                double d = 0.0D;
+                double d1 = 0.0D;
+                double d2 = 0.0D;
+                float f7 = 0.0F;
+                renderManager.renderEntityWithPosYaw(entityarrow, d, d1, d2, f7, par2);
+                GL11.glPopMatrix();
+            }
+
+            RenderHelper.enableStandardItemLighting();
         }
     }
 

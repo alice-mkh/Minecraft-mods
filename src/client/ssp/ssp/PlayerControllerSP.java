@@ -72,7 +72,7 @@ public class PlayerControllerSP extends PlayerController
      */
     public void clickBlock(int par1, int par2, int par3, int par4)
     {
-        if (!mc.thePlayer.func_82246_f(par1, par2, par3))
+        if (!mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3))
         {
             return;
         }
@@ -116,7 +116,7 @@ public class PlayerControllerSP extends PlayerController
         {
             int i = mc.theWorld.getBlockId(par1, par2, par3);
 
-            if (!mc.thePlayer.func_82246_f(par1, par2, par3))
+            if (!mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3))
             {
                 return;
             }

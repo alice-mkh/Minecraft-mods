@@ -55,11 +55,11 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     }
 
     /**
-     * Decrease the player level, used to pay levels for enchantments on items at enchanted table.
+     * Add experience levels to this player.
      */
-    public void func_82242_a(int par1)
+    public void addExperienceLevel(int par1)
     {
-        realPlayer.func_82242_a(par1);
+        realPlayer.addExperienceLevel(par1);
     }
 
     public ItemStack[] getLastActiveItems()

@@ -27,7 +27,7 @@ public class CommandClientSetSpawnpoint extends CommandSetSpawnpoint
         }
         else if (par2ArrayOfStr.length <= 1)
         {
-            ChunkCoordinates chunkcoordinates = entityplayer.func_82114_b();
+            ChunkCoordinates chunkcoordinates = entityplayer.getPlayerCoordinates();
             entityplayer.setSpawnChunk(chunkcoordinates, true);
             notifyAdmins(par1ICommandSender, "commands.spawnpoint.success", new Object[]
                     {

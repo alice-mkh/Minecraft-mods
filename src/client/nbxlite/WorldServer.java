@@ -22,6 +22,7 @@ public class WorldServer extends World
     /** is false if there are no players */
     private boolean allPlayersSleeping;
     private int updateEntityTick;
+    private final Teleporter field_85177_Q = new Teleporter(this);
     private ServerBlockEventList blockEventCache[] =
     {
         new ServerBlockEventList(null), new ServerBlockEventList(null)
@@ -105,11 +106,11 @@ public class WorldServer extends World
 
         theProfiler.startSection("mobSpawner");
 
-        if (func_82736_K().func_82766_b("doMobSpawning"))
+        if (getGameRules().getGameRuleBooleanValue("doMobSpawning"))
         {
             if (provider.dimensionId!=1){
                     if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                    SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.func_82573_f() % 400L == 0L);
+                    SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.getWorldTotalTime() % 400L == 0L);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
@@ -133,7 +134,7 @@ public class WorldServer extends World
         }
 
         sendAndApplyBlockEvents();
-        worldInfo.func_82572_b(worldInfo.func_82573_f() + 1L);
+        worldInfo.func_82572_b(worldInfo.getWorldTotalTime() + 1L);
         worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
@@ -144,6 +145,8 @@ public class WorldServer extends World
         theProfiler.endStartSection("village");
         villageCollectionObj.tick();
         villageSiegeObj.tick();
+        theProfiler.endStartSection("portalForcer");
+        field_85177_Q.func_85189_a(getTotalWorldTime());
         theProfiler.endSection();
         sendAndApplyBlockEvents();
     }
@@ -478,7 +481,7 @@ public class WorldServer extends World
         {
             if (par4 > 0)
             {
-                nextticklistentry.setScheduledTime((long)par5 + worldInfo.func_82573_f());
+                nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
                 nextticklistentry.func_82753_a(par6);
             }
 
@@ -499,7 +502,7 @@ public class WorldServer extends World
 
         if (par4 > 0)
         {
-            nextticklistentry.setScheduledTime((long)par5 + worldInfo.func_82573_f());
+            nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
         }
 
         if (!field_73064_N.contains(nextticklistentry))
@@ -555,7 +558,7 @@ public class WorldServer extends World
         {
             NextTickListEntry nextticklistentry = (NextTickListEntry)pendingTickListEntries.first();
 
-            if (!par1 && nextticklistentry.scheduledTime > worldInfo.func_82573_f())
+            if (!par1 && nextticklistentry.scheduledTime > worldInfo.getWorldTotalTime())
             {
                 break;
             }
@@ -571,10 +574,38 @@ public class WorldServer extends World
 
             int k = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
 
-            if (k == nextticklistentry.blockID && k > 0)
+            if (k != nextticklistentry.blockID || k <= 0)
+            {
+                continue;
+            }
+
+            CrashReport crashreport;
+            CrashReportCategory crashreportcategory;
+
+            try
             {
                 Block.blocksList[k].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
+                continue;
             }
+            catch (Throwable throwable)
+            {
+                crashreport = CrashReport.func_85055_a(throwable, "Exception while ticking a block");
+                crashreportcategory = crashreport.func_85058_a("Block being ticked");
+            }
+
+            int l;
+
+            try
+            {
+                l = getBlockMetadata(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
+            }
+            catch (Throwable throwable1)
+            {
+                l = -1;
+            }
+
+            CrashReportCategory.func_85068_a(crashreportcategory, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, k, l);
+            throw new ReportedException(crashreport);
         }
 
         return !pendingTickListEntries.isEmpty();
@@ -666,23 +697,16 @@ public class WorldServer extends World
     public List getAllTileEntityInBox(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         ArrayList arraylist = new ArrayList();
-        Iterator iterator = loadedTileEntityList.iterator();
 
-        do
+        for (int i = 0; i < loadedTileEntityList.size(); i++)
         {
-            if (!iterator.hasNext())
-            {
-                break;
-            }
-
-            TileEntity tileentity = (TileEntity)iterator.next();
+            TileEntity tileentity = (TileEntity)loadedTileEntityList.get(i);
 
             if (tileentity.xCoord >= par1 && tileentity.yCoord >= par2 && tileentity.zCoord >= par3 && tileentity.xCoord < par4 && tileentity.yCoord < par5 && tileentity.zCoord < par6)
             {
                 arraylist.add(tileentity);
             }
         }
-        while (true);
 
         return arraylist;
     }
@@ -879,13 +903,9 @@ public class WorldServer extends World
 
         if (aentity != null)
         {
-            Entity aentity1[] = aentity;
-            int i = aentity1.length;
-
-            for (int j = 0; j < i; j++)
+            for (int i = 0; i < aentity.length; i++)
             {
-                Entity entity = aentity1[j];
-                entityIdMap.addKey(entity.entityId, entity);
+                entityIdMap.addKey(aentity[i].entityId, aentity[i]);
             }
         }
     }
@@ -901,13 +921,9 @@ public class WorldServer extends World
 
         if (aentity != null)
         {
-            Entity aentity1[] = aentity;
-            int i = aentity1.length;
-
-            for (int j = 0; j < i; j++)
+            for (int i = 0; i < aentity.length; i++)
             {
-                Entity entity = aentity1[j];
-                entityIdMap.removeObject(entity.entityId);
+                entityIdMap.removeObject(aentity[i].entityId);
             }
         }
     }
@@ -952,13 +968,13 @@ public class WorldServer extends World
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
         explosion.isFlaming = par9;
-        explosion.field_82755_b = par10;
+        explosion.isSmoking = par10;
         explosion.doExplosionA();
         explosion.doExplosionB(false);
 
         if (!par10)
         {
-            explosion.field_77281_g.clear();
+            explosion.affectedBlockPositions.clear();
         }
 
         Iterator iterator = playerEntities.iterator();
@@ -974,7 +990,7 @@ public class WorldServer extends World
 
             if (entityplayer.getDistanceSq(par2, par4, par6) < 4096D)
             {
-                ((EntityPlayerMP)entityplayer).playerNetServerHandler.sendPacketToPlayer(new Packet60Explosion(par2, par4, par6, par8, explosion.field_77281_g, (Vec3)explosion.func_77277_b().get(entityplayer)));
+                ((EntityPlayerMP)entityplayer).playerNetServerHandler.sendPacketToPlayer(new Packet60Explosion(par2, par4, par6, par8, explosion.affectedBlockPositions, (Vec3)explosion.func_77277_b().get(entityplayer)));
             }
         }
         while (true);
@@ -1101,6 +1117,11 @@ public class WorldServer extends World
     public PlayerManager getPlayerManager()
     {
         return thePlayerManager;
+    }
+
+    public Teleporter func_85176_s()
+    {
+        return field_85177_Q;
     }
 
     public void turnOnOldSpawners()

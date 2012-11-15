@@ -10,7 +10,7 @@ public class CommandClientClear extends CommandClearInventory
         EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
         int i = par2ArrayOfStr.length < 2 ? -1 : parseIntWithMin(par1ICommandSender, par2ArrayOfStr[1], 1);
         int j = par2ArrayOfStr.length < 3 ? -1 : parseIntWithMin(par1ICommandSender, par2ArrayOfStr[2], 0);
-        int k = entityplayer.inventory.func_82347_b(i, j);
+        int k = entityplayer.inventory.clearInventory(i, j);
         entityplayer.inventorySlots.updateCraftingResults();
         notifyAdmins(par1ICommandSender, "commands.clear.success", new Object[]
                 {

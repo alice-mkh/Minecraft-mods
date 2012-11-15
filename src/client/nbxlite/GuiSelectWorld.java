@@ -282,7 +282,6 @@ public class GuiSelectWorld extends GuiScreen
         }
 
         selected = true;
-
         String s = getSaveFileName(par1);
 
         if (s == null)
@@ -291,6 +290,9 @@ public class GuiSelectWorld extends GuiScreen
         }
         if (nbxlite){
             ODNBXlite.Import = false;
+        }
+        if (!mc.getSaveLoader().func_90033_f(s)){
+            return;
         }
         if (mc.enableSP){
             mc.setController(((SaveFormatComparator)saveList.get(par1)).getEnumGameType());

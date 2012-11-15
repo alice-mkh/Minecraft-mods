@@ -856,7 +856,7 @@ public class ODNBXlite extends OldDaysModule{
         if ((Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)) || Generator == GEN_NEWBIOMES){
             world.provider.registerWorld(world);
         }
-        SnowCovered = snow;
+        SnowCovered = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && snow;
         GreenGrassSides = gen==GEN_OLDBIOMES && features<=FEATURES_BETA14 && !NoGreenGrassSides;
         RestrictSlimes = isFinite() && IndevHeight<96;
         IndevMapType = gen==GEN_BIOMELESS && features==FEATURES_INDEV ? type : 0;

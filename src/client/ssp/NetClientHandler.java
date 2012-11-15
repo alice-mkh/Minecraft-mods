@@ -174,7 +174,7 @@ public class NetClientHandler extends NetHandler
         mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
         currentServerMaxPlayers = par1Packet1Login.maxPlayers;
         mc.playerController.setGameType(par1Packet1Login.gameType);
-        mc.gameSettings.func_82879_c();
+        mc.gameSettings.sendSettingsToServer();
         Minecraft.invokeModMethod("ModLoader", "clientConnect", new Class[]{NetClientHandler.class, Packet1Login.class}, this, par1Packet1Login);
         Minecraft.getMinecraft().onLoginClient();
     }
@@ -311,13 +311,10 @@ public class NetClientHandler extends NetHandler
             if (aentity != null)
             {
                 int i = par1Packet23VehicleSpawn.entityId - ((Entity)(obj)).entityId;
-                Entity aentity1[] = aentity;
-                int j = aentity1.length;
 
-                for (int k = 0; k < j; k++)
+                for (int j = 0; j < aentity.length; j++)
                 {
-                    Entity entity2 = aentity1[k];
-                    entity2.entityId += i;
+                    aentity[j].entityId += i;
                 }
             }
 
@@ -818,13 +815,10 @@ public class NetClientHandler extends NetHandler
         if (aentity != null)
         {
             int i = par1Packet24MobSpawn.entityId - entityliving.entityId;
-            Entity aentity1[] = aentity;
-            int j = aentity1.length;
 
-            for (int k = 0; k < j; k++)
+            for (int j = 0; j < aentity.length; j++)
             {
-                Entity entity = aentity1[k];
-                entity.entityId += i;
+                aentity[j].entityId += i;
             }
         }
 
@@ -952,7 +946,7 @@ public class NetClientHandler extends NetHandler
     public void handleExplosion(Packet60Explosion par1Packet60Explosion)
     {
         Explosion explosion = new Explosion(mc.theWorld, null, par1Packet60Explosion.explosionX, par1Packet60Explosion.explosionY, par1Packet60Explosion.explosionZ, par1Packet60Explosion.explosionSize);
-        explosion.field_77281_g = par1Packet60Explosion.chunkPositionRecords;
+        explosion.affectedBlockPositions = par1Packet60Explosion.chunkPositionRecords;
         explosion.doExplosionB(true);
         mc.thePlayer.motionX += par1Packet60Explosion.func_73607_d();
         mc.thePlayer.motionY += par1Packet60Explosion.func_73609_f();
@@ -994,11 +988,11 @@ public class NetClientHandler extends NetHandler
                 ((EntityPlayerSP)(entityclientplayermp)).craftingInventory.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 7:
-                entityclientplayermp.func_82240_a(new TileEntityBeacon());
+                entityclientplayermp.displayGUIBeacon(new TileEntityBeacon());
                 ((EntityPlayerSP)(entityclientplayermp)).craftingInventory.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 8:
-                entityclientplayermp.func_82244_d(MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posZ));
+                entityclientplayermp.displayGUIAnvil(MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posZ));
                 ((EntityPlayerSP)(entityclientplayermp)).craftingInventory.windowId = par1Packet100OpenWindow.windowId;
                 break;
 
@@ -1083,6 +1077,8 @@ public class NetClientHandler extends NetHandler
      */
     public void handleUpdateSign(Packet130UpdateSign par1Packet130UpdateSign)
     {
+        boolean flag = false;
+
         if (mc.theWorld.blockExists(par1Packet130UpdateSign.xPosition, par1Packet130UpdateSign.yPosition, par1Packet130UpdateSign.zPosition))
         {
             TileEntity tileentity = mc.theWorld.getBlockTileEntity(par1Packet130UpdateSign.xPosition, par1Packet130UpdateSign.yPosition, par1Packet130UpdateSign.zPosition);
@@ -1100,7 +1096,14 @@ public class NetClientHandler extends NetHandler
 
                     tileentitysign.onInventoryChanged();
                 }
+
+                flag = true;
             }
+        }
+
+        if (!flag && mc.thePlayer != null)
+        {
+            mc.thePlayer.sendChatToPlayer((new StringBuilder()).append("Unable to locate sign at ").append(par1Packet130UpdateSign.xPosition).append(", ").append(par1Packet130UpdateSign.yPosition).append(", ").append(par1Packet130UpdateSign.zPosition).toString());
         }
     }
 
@@ -1149,7 +1152,7 @@ public class NetClientHandler extends NetHandler
 
         if (entity != null)
         {
-            entity.func_70062_b(par1Packet5PlayerInventory.slot, par1Packet5PlayerInventory.getItemSlot());
+            entity.setCurrentItemOrArmor(par1Packet5PlayerInventory.slot, par1Packet5PlayerInventory.getItemSlot());
         }
     }
 
@@ -1334,7 +1337,7 @@ public class NetClientHandler extends NetHandler
         }
         else
         {
-            ((EntityLiving)entity).removePotionEffect(par1Packet42RemoveEntityEffect.effectId);
+            ((EntityLiving)entity).removePotionEffectClient(par1Packet42RemoveEntityEffect.effectId);
             return;
         }
     }

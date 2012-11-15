@@ -356,7 +356,7 @@ public final class SpawnerAnimals
     {
         if (par0EnumCreatureType.getCreatureMaterial() == Material.water)
         {
-            return par1World.getBlockMaterial(par2, par3, par4).isLiquid() && !par1World.isBlockNormalCube(par2, par3 + 1, par4);
+            return par1World.getBlockMaterial(par2, par3, par4).isLiquid() && par1World.getBlockMaterial(par2, par3 - 1, par4).isLiquid() && !par1World.isBlockNormalCube(par2, par3 + 1, par4);
         }
 
         if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
@@ -375,7 +375,7 @@ public final class SpawnerAnimals
      */
     private static void creatureSpecificInit(EntityLiving par0EntityLiving, World par1World, float par2, float par3, float par4)
     {
-        par0EntityLiving.func_82163_bD();
+        par0EntityLiving.initCreature();
     }
 
     /**

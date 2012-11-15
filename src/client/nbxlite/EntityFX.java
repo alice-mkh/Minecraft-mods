@@ -193,4 +193,9 @@ public class EntityFX extends Entity
     {
         return false;
     }
+
+    public String toString()
+    {
+        return (new StringBuilder()).append(getClass().getSimpleName()).append(", Pos (").append(posX).append(",").append(posY).append(",").append(posZ).append("), RGBA (").append(particleRed).append(",").append(particleGreen).append(",").append(particleBlue).append(",").append(field_82339_as).append("), Age ").append(particleAge).toString();
+    }
 }

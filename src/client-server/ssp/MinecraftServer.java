@@ -26,7 +26,6 @@ import net.minecraft.src.BehaviorPotionDispense;
 import net.minecraft.src.BehaviorSnowballDispense;
 import net.minecraft.src.BlockDispenser;
 import net.minecraft.src.CallableIsServerModded;
-import net.minecraft.src.CallablePlayers;
 import net.minecraft.src.CallableServerMemoryStats;
 import net.minecraft.src.CallableServerProfiler;
 import net.minecraft.src.ChunkCoordinates;
@@ -34,6 +33,7 @@ import net.minecraft.src.ChunkProviderServer;
 import net.minecraft.src.CommandBase;
 import net.minecraft.src.ConvertingProgressUpdate;
 import net.minecraft.src.CrashReport;
+import net.minecraft.src.CrashReportCategory;
 import net.minecraft.src.DemoWorldServer;
 import net.minecraft.src.EntityTracker;
 import net.minecraft.src.EnumGameType;
@@ -70,7 +70,7 @@ import net.minecraft.src.WorldServerMulti;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
 
-public abstract class MinecraftServer implements Runnable, IPlayerUsage, ICommandSender
+public abstract class MinecraftServer implements ICommandSender, Runnable, IPlayerUsage
 {
     /** The logging system. */
     public static Logger logger = Logger.getLogger("Minecraft");
@@ -83,8 +83,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     private final PlayerUsageSnooper usageSnooper;
     private final File anvilFile;
 
-    /** List of names of players who are online. */
-    private final List playersOnline = new ArrayList();
+    /**
+     * Collection of objects to update every tick. Type: List<IUpdatePlayerListBox>
+     */
+    private final List tickables = new ArrayList();
     private final ICommandManager commandManager;
     public final Profiler theProfiler = new Profiler();
 
@@ -181,27 +183,30 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         anvilFile = par1File;
         commandManager = new ServerCommandManager();
         anvilConverterForAnvilFile = new AnvilSaveConverter(par1File);
-        func_82355_al();
+        registerDispenseBehaviors();
     }
 
-    private void func_82355_al()
+    /**
+     * Register all dispense behaviors.
+     */
+    private void registerDispenseBehaviors()
     {
-        BlockDispenser.field_82527_a.func_82595_a(Item.arrow, new BehaviorArrowDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.egg, new BehaviorEggDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.snowball, new BehaviorSnowballDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.expBottle, new BehaviorExpBottleDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.potion, new BehaviorPotionDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.monsterPlacer, new BehaviorMobEggDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.fireballCharge, new BehaviorDispenseFireball(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.arrow, new BehaviorArrowDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.egg, new BehaviorEggDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.snowball, new BehaviorSnowballDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.expBottle, new BehaviorExpBottleDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.potion, new BehaviorPotionDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.monsterPlacer, new BehaviorMobEggDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.fireballCharge, new BehaviorDispenseFireball(this));
         BehaviorDispenseMinecart behaviordispenseminecart = new BehaviorDispenseMinecart(this);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartEmpty, behaviordispenseminecart);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartCrate, behaviordispenseminecart);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartPowered, behaviordispenseminecart);
-        BlockDispenser.field_82527_a.func_82595_a(Item.boat, new BehaviorDispenseBoat(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartEmpty, behaviordispenseminecart);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartCrate, behaviordispenseminecart);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartPowered, behaviordispenseminecart);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.boat, new BehaviorDispenseBoat(this));
         BehaviorBucketFullDispense behaviorbucketfulldispense = new BehaviorBucketFullDispense(this);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketLava, behaviorbucketfulldispense);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketWater, behaviorbucketfulldispense);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketEmpty, new BehaviorBucketEmptyDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketLava, behaviorbucketfulldispense);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketWater, behaviorbucketfulldispense);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketEmpty, new BehaviorBucketEmptyDispense(this));
     }
 
     /**
@@ -428,12 +433,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
         logger.info("Saving worlds");
         saveAllWorlds(false);
-        WorldServer aworldserver[] = worldServers;
-        int i = aworldserver.length;
 
-        for (int j = 0; j < i; j++)
+        for (int i = 0; i < worldServers.length; i++)
         {
-            WorldServer worldserver = aworldserver[j];
+            WorldServer worldserver = worldServers[i];
             worldserver.flush();
         }
 
@@ -652,19 +655,40 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
                 WorldServer worldserver = worldServers[i];
                 theProfiler.startSection(worldserver.getWorldInfo().getWorldName());
                 theProfiler.startSection("pools");
-                worldserver.func_82732_R().clear();
+                worldserver.getWorldVec3Pool().clear();
                 theProfiler.endSection();
 
                 if (tickCounter % 20 == 0)
                 {
                     theProfiler.startSection("timeSync");
-                    serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(worldserver.func_82737_E(), worldserver.getWorldTime()), worldserver.provider.dimensionId);
+                    serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(worldserver.getTotalWorldTime(), worldserver.getWorldTime()), worldserver.provider.dimensionId);
                     theProfiler.endSection();
                 }
 
                 theProfiler.startSection("tick");
-                worldserver.tick();
-                worldserver.updateEntities();
+
+                try
+                {
+                    worldserver.tick();
+                }
+                catch (Throwable throwable)
+                {
+                    CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception ticking world");
+                    worldserver.addWorldInfoToCrashReport(crashreport);
+                    throw new ReportedException(crashreport);
+                }
+
+                try
+                {
+                    worldserver.updateEntities();
+                }
+                catch (Throwable throwable1)
+                {
+                    CrashReport crashreport1 = CrashReport.func_85055_a(throwable1, "Exception ticking world entities");
+                    worldserver.addWorldInfoToCrashReport(crashreport1);
+                    throw new ReportedException(crashreport1);
+                }
+
                 theProfiler.endSection();
                 theProfiler.startSection("tracker");
                 worldserver.getEntityTracker().updateTrackedEntities();
@@ -680,11 +704,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         theProfiler.endStartSection("players");
         serverConfigManager.sendPlayerInfoToAllPlayers();
         theProfiler.endStartSection("tickables");
-        IUpdatePlayerListBox iupdateplayerlistbox;
 
-        for (Iterator iterator = playersOnline.iterator(); iterator.hasNext(); iupdateplayerlistbox.update())
+        for (int j = 0; j < tickables.size(); j++)
         {
-            iupdateplayerlistbox = (IUpdatePlayerListBox)iterator.next();
+            ((IUpdatePlayerListBox)tickables.get(j)).update();
         }
 
         theProfiler.endSection();
@@ -773,7 +796,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
      */
     public String getMinecraftVersion()
     {
-        return "1.4.2";
+        return "1.4.4";
     }
 
     /**
@@ -852,33 +875,16 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
      */
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.addCrashSectionCallable("Is Modded", new CallableIsServerModded(this));
-        par1CrashReport.addCrashSectionCallable("Profiler Position", new CallableServerProfiler(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Profiler Position", new CallableIsServerModded(this));
 
         if (worldServers != null && worldServers.length > 0 && worldServers[0] != null)
         {
-            par1CrashReport.addCrashSectionCallable("Vec3 Pool Size", new CallableServerMemoryStats(this));
+            par1CrashReport.func_85056_g().addCrashSectionCallable("Vec3 Pool Size", new CallableServerProfiler(this));
         }
 
         if (serverConfigManager != null)
         {
-            par1CrashReport.addCrashSectionCallable("Player Count", new CallablePlayers(this));
-        }
-
-        if (worldServers != null)
-        {
-            WorldServer aworldserver[] = worldServers;
-            int i = aworldserver.length;
-
-            for (int j = 0; j < i; j++)
-            {
-                WorldServer worldserver = aworldserver[j];
-
-                if (worldserver != null)
-                {
-                    worldserver.addWorldInfoToCrashReport(par1CrashReport);
-                }
-            }
+            par1CrashReport.func_85056_g().addCrashSectionCallable("Player Count", new CallableServerMemoryStats(this));
         }
 
         return par1CrashReport;
@@ -1252,7 +1258,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         allowFlight = par1;
     }
 
-    public abstract boolean func_82356_Z();
+    /**
+     * Return whether command blocks are enabled.
+     */
+    public abstract boolean isCommandBlockEnabled();
 
     public String getMOTD()
     {
@@ -1332,12 +1341,18 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return usageSnooper;
     }
 
-    public ChunkCoordinates func_82114_b()
+    /**
+     * Return the coordinates for this player as ChunkCoordinates.
+     */
+    public ChunkCoordinates getPlayerCoordinates()
     {
         return new ChunkCoordinates(0, 0, 0);
     }
 
-    public int func_82357_ak()
+    /**
+     * Return the spawn protection area's size.
+     */
+    public int getSpawnProtectionSize()
     {
         return 16;
     }
