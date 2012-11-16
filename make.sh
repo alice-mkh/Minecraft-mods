@@ -9,7 +9,7 @@ RESULT_DIR_2=$DIR/result2
 
 function find() {
     if [[ $1 == "World" ]]; then
-        echo "xe"
+        echo "xv" # A workaround for World.class, as it returns GuiCreateWorld.class instead
         exit 0
     fi
     for F in *.class; do
@@ -42,7 +42,7 @@ ADD[3]="olddays/icons.png"
 CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
        `find EntitySquid` `find EntitySlime` `find EntityWolf` `find EntityLiving` EntityAIEatGrass2 ODMobs"
-CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer`
+CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer` `find TileEntityEnderChestRenderer`
        `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLiving`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
        `find EntitySuspendFX` `find RenderItem` RenderItemFrame2
@@ -60,7 +60,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVi
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 `find BlockGrass`
-       `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX`
+       `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityEnderChestRenderer`
        `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped`"
 ADD[9]="olddays/grasstop.png olddays/grassside.png olddays/leavesfast.png olddays/leavesfancy.png olddays/fluff.png
         olddays/gear.png olddays/gearmiddle.png"
@@ -71,7 +71,7 @@ ADD[10]="olddays/lang"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs
-        `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find Explosion`
+        `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find Explosion` `find TileEntityEnderChestRenderer`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`

@@ -172,4 +172,12 @@ public class BlockChestOld extends BlockChest
             return sidetex;
         }
     }
+
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
+        if (normalblock){
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            return;
+        }
+        super.setBlockBoundsBasedOnState(par1IBlockAccess, par2, par3, par4);
+    }
 }

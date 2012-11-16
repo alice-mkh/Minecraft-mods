@@ -376,6 +376,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
 
         setWorldTime(par1);
+        func_82738_a(par1);
     }
 
     /**
