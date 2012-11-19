@@ -35,14 +35,14 @@ public class RenderGlobal2 extends RenderGlobal{
         mc = mc2;
         renderEngine = re;
         floatBuffer = BufferUtils.createFloatBuffer(16);
-        starGLCallList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 16));
+        starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 16));
         GL11.glPushMatrix();
         GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
         renderStars();
         GL11.glEndList();
         GL11.glPopMatrix();
-        glSkyList = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 17));
-        glSkyList2 = ((Integer)mod_OldDays.getField(net.minecraft.src.RenderGlobal.class, this, 18));
+        glSkyList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 17));
+        glSkyList2 = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 18));
         cloudTickCounter = 0;
     }
 

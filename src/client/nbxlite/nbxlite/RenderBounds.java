@@ -196,7 +196,7 @@ public class RenderBounds{
         worldObj = mc.theWorld;
         if (imageData == null){
             try{
-                imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 4));
+                imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(RenderEngine.class, renderEngine, 4));
             }catch(Exception ex){
                 System.out.println(ex);
             }
@@ -268,7 +268,7 @@ public class RenderBounds{
         if (anim){
             TextureFX texturefx = null;
             try{
-                List list = ((ArrayList)mod_OldDays.getField(net.minecraft.src.RenderEngine.class, renderEngine, 5));
+                List list = ((ArrayList)mod_OldDays.getField(RenderEngine.class, renderEngine, 5));
                 for (int i = 0; i < list.size(); i++){
                     if (((TextureFX)list.get(i)).iconIndex==Block.blocksList[ODNBXlite.SurrWaterType].blockIndexInTexture){
                         texturefx = ((TextureFX)list.get(i));

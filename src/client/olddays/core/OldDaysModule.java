@@ -176,7 +176,7 @@ public class OldDaysModule{
         RenderManager renderMan = RenderManager.instance;
         try{
             r.setRenderManager(renderMan);
-            HashMap map = ((HashMap)mod_OldDays.getField(net.minecraft.src.RenderManager.class, renderMan, 0));
+            HashMap map = ((HashMap)mod_OldDays.getField(RenderManager.class, renderMan, 0));
             if (map.get(c).getClass() == r.getClass()){
                 return;
             }
