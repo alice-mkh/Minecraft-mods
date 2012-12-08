@@ -22,6 +22,9 @@ gui.error7=Nur ohne Biome
 gui.error8=Nur alte Biome
 gui.error9=Nur neue Biome
 gui.ssp=SSP
+//FIXME
+gui.presets=Presets
+gui.presets.save=Save current settings
 
 actions.punchtnt.name=TNT-Schlag
  actions.punchtnt.desc1=Ermöglicht es, TNT mit einem Schlag zu aktivieren

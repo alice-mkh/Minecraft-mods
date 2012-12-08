@@ -96,6 +96,15 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
 
     protected void mouseClicked(int par1, int par2, int par3){
         super.mouseClicked(par1, par2, par3);
+        if (this instanceof GuiOldDaysPresets){
+            if (displayField){
+                field.mouseClicked(par1, par2, par3);
+                if (!field.isFocused()){
+                    showField(false, ((GuiButton)controlList.get(fieldId)));
+                }
+            }
+            return;
+        }
         GuiButtonProp guibuttonprop = null;
         for (int i = 0; i < controlList.size(); i++){
             GuiButton guibutton = (GuiButton)controlList.get(i);

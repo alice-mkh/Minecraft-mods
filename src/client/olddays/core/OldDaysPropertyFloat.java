@@ -60,6 +60,10 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
         value = smpValue;
     }
 
+    public String getDefaultValue(){
+        return ""+defaultValue;
+    }
+
     public void setDefaultValue(){
         value = defaultValue;
     }

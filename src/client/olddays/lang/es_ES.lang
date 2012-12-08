@@ -22,6 +22,9 @@ gui.error7=Sólo sin biomas
 gui.error8=Sólo antiguos biomas
 gui.error9=Sólo nuevos biomas
 gui.ssp=SSP
+//FIXME
+gui.presets=Presets
+gui.presets.save=Save current settings
 
 actions.punchtnt.name=Golpear TNT
  actions.punchtnt.desc1=Permite activar la TNT golpeándola.

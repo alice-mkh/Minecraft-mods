@@ -82,6 +82,8 @@ public abstract class OldDaysProperty{
 
     public abstract void setSMPValue();
 
+    public abstract String getDefaultValue();
+
     public abstract void setDefaultValue();
 
     public abstract void loadFromString(String str);

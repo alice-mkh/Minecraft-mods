@@ -22,6 +22,9 @@ gui.error7=Jedynie bez biomów
 gui.error8=Jedynie ze starymi biomami
 gui.error9=Jedynie z nowymi biomami
 gui.ssp=SSP
+//FIXME
+gui.presets=Presets
+gui.presets.save=Save current settings
 
 actions.punchtnt.name=Uderz TNT
  actions.punchtnt.desc1=Pozwala na odpalenie TNT poprzez uderzenie.

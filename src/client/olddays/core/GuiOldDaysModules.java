@@ -17,7 +17,8 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
         }
         postInitGui(count);
         maxpage /= 2;
-        controlList.add(new GuiButton(100, width / 2 - 75 - 80, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off")));
+        controlList.add(new GuiButton(100, width / 2 - 155, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off")));
+        controlList.add(new GuiButton(101, width / 2 + 81, height - 28, 75, 20, mod_OldDays.lang.get("gui.presets")));
     }
 
     protected void actionPerformed(GuiButton guibutton)
@@ -28,6 +29,11 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             guibutton.displayString = mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off");
             mod_OldDays.saveman.saveCoreProperties();
             mc.switchSSP(mc.useSP);
+            return;
+        }
+        if (guibutton.id == 101){
+            GuiOldDaysPresets presets = new GuiOldDaysPresets(this, core);
+            mc.displayGuiScreen(presets);
             return;
         }
         if (guibutton.id <= 0 || guibutton.id >= LEFT_ID){

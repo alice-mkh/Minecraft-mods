@@ -46,6 +46,10 @@ public class OldDaysPropertyString extends OldDaysProperty{
         value = smpValue;
     }
 
+    public String getDefaultValue(){
+        return defaultValue;
+    }
+
     public void setDefaultValue(){
         value = defaultValue;
     }

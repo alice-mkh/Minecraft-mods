@@ -131,4 +131,81 @@ public class SavingManager{
             saveModuleProperties(core.modules.get(i).id);
         }
     }
+
+    public void loadPreset(String name){
+        Properties properties = new Properties();
+        try{
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
+            dir.mkdirs();
+            properties.load(new FileInputStream(new File(dir, name+".properties")));
+            for (int i = 0; i < core.modules.size(); i++){
+                OldDaysModule module = core.modules.get(i);
+                for (int j = 1; j <= module.properties.size(); j++){
+                    OldDaysProperty prop = module.getPropertyById(j);
+                    String propname = prop.module.name+"."+prop.field.getName();
+                    if (!prop.canBeLoaded){
+                        continue;
+                    }
+                    String value = properties.getProperty(propname, prop.getDefaultValue()).trim();
+                    prop.loadFromString(value);
+                    core.sendCallback2(i, j);
+                }
+                saveModuleProperties(i);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("OldDays: Failed to load preset");
+        }
+    }
+
+    public void savePreset(String name){
+        Properties properties = new Properties();
+        try{
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
+            dir.mkdirs();
+            for (int i = 0; i < core.modules.size(); i++){
+                OldDaysModule module = core.modules.get(i);
+                for (int j = 1; j <= module.properties.size(); j++){
+                    OldDaysProperty prop = module.getPropertyById(j);
+                    String propname = prop.module.name+"."+prop.field.getName();
+                    if (!prop.canBeLoaded || prop.saveToString().equals(prop.getDefaultValue())){
+                        continue;
+                    }
+                    System.out.println("Saving "+propname);
+                    properties.setProperty(propname, prop.saveToString());
+                }
+            }
+            FileOutputStream fileoutputstream = new FileOutputStream(new File(dir, name+".properties"));
+            properties.store(fileoutputstream, "OldDays preset");
+            fileoutputstream.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("OldDays: Failed to load preset");
+        }
+    }
+
+    public void deletePreset(String name){
+        try{
+            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
+            (new File(dir, name+".properties")).delete();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("OldDays: Failed to delete preset");
+        }
+    }
+
+    public String[] getPresets(){
+        File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
+        String[] str = dir.list();
+        if (str == null){
+            str = new String[]{};
+        }
+        for (int i = 0; i < str.length; i++){
+            str[i] = str[i].replace(".properties", "");
+        }
+        return str;
+    }
 }

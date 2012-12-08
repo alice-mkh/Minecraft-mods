@@ -22,6 +22,9 @@ gui.error7=Только без биомов
 gui.error8=Только для старых биомов
 gui.error9=Только для новых биомов
 gui.ssp=SSP
+//FIXME
+gui.presets=Presets
+gui.presets.save=Save current settings
 
 actions.punchtnt.name=Поджигание TNT ударом
  actions.punchtnt.desc1=Позволяет активировать TNT ударом.
