@@ -766,4 +766,13 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             }
         }
     }
+
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        prevPosY += 1.6200000047683716D;
+        lastTickPosY += 1.6200000047683716D;
+        posY += 1.6200000047683716D;
+        setPosition(posX, posY, posZ);
+    }
 }
