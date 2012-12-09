@@ -111,7 +111,7 @@ public class SavingManager{
                 OldDaysProperty prop = module.getPropertyById(i);
                 properties.setProperty(prop.field.getName(), prop.saveToString());
             }
-            properties.store(fileoutputstream, "Old Days config");
+            properties.store(fileoutputstream, "OldDays config");
             fileoutputstream.close();
         }
         catch(Exception ex){
@@ -137,7 +137,7 @@ public class SavingManager{
         try{
             File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
             dir.mkdirs();
-            properties.load(new FileInputStream(new File(dir, name+".properties")));
+            properties.load(new FileInputStream(new File(dir, name)));
             for (int i = 0; i < core.modules.size(); i++){
                 OldDaysModule module = core.modules.get(i);
                 for (int j = 1; j <= module.properties.size(); j++){
@@ -176,7 +176,7 @@ public class SavingManager{
                     properties.setProperty(propname, prop.saveToString());
                 }
             }
-            FileOutputStream fileoutputstream = new FileOutputStream(new File(dir, name+".properties"));
+            FileOutputStream fileoutputstream = new FileOutputStream(new File(dir, name));
             properties.store(fileoutputstream, "OldDays preset");
             fileoutputstream.close();
         }
@@ -189,7 +189,7 @@ public class SavingManager{
     public void deletePreset(String name){
         try{
             File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
-            (new File(dir, name+".properties")).delete();
+            (new File(dir, name)).delete();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -202,9 +202,6 @@ public class SavingManager{
         String[] str = dir.list();
         if (str == null){
             str = new String[]{};
-        }
-        for (int i = 0; i < str.length; i++){
-            str[i] = str[i].replace(".properties", "");
         }
         return str;
     }
