@@ -21,6 +21,7 @@ public class GuiOldDaysBase extends GuiScreen{
     protected String current;
     protected boolean hasFields;
     protected mod_OldDays core;
+    protected int specialButtons;
 
     public GuiOldDaysBase(GuiScreen guiscreen, mod_OldDays c){
         parent = guiscreen;
@@ -32,6 +33,7 @@ public class GuiOldDaysBase extends GuiScreen{
         tooltipTimer = 0;
         hasFields = false;
         core = c;
+        specialButtons = 2;
     }
 
     public void updateScreen(){
@@ -123,14 +125,14 @@ public class GuiOldDaysBase extends GuiScreen{
         }
         for (int i = 0; i < max*2; i++){
             int i2 = i+(page*max*2)+1;
-            if (i2<=controlList.size()-2){
+            if (i2<=controlList.size()-specialButtons){
                 ((GuiButton)controlList.get(i2)).drawButton = false;
             }
         }
         page = to;
         for (int i = 0; i < max*2; i++){
             int i2 = i+(page*max*2)+1;
-            if (i2<=controlList.size()-2){
+            if (i2<=controlList.size()-specialButtons){
                 ((GuiButton)controlList.get(i2)).drawButton = true;
             }
         }

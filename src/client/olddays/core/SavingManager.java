@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.*;
 import net.minecraft.client.Minecraft;
 
 public class SavingManager{
@@ -132,12 +133,17 @@ public class SavingManager{
         }
     }
 
-    public void loadPreset(String name){
+    public void loadPreset(String name, boolean custom){
         Properties properties = new Properties();
         try{
-            File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
-            dir.mkdirs();
-            properties.load(new FileInputStream(new File(dir, name)));
+            if (custom){
+                File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
+                dir.mkdirs();
+                properties.load(new FileInputStream(new File(dir, name)));
+            }else{
+                InputStream stream = getClass().getClassLoader().getResourceAsStream("olddays/presets/"+name);
+                properties.load(stream);
+            }
             for (int i = 0; i < core.modules.size(); i++){
                 OldDaysModule module = core.modules.get(i);
                 for (int j = 1; j <= module.properties.size(); j++){
@@ -172,7 +178,6 @@ public class SavingManager{
                     if (!prop.canBeLoaded || prop.saveToString().equals(prop.getDefaultValue())){
                         continue;
                     }
-                    System.out.println("Saving "+propname);
                     properties.setProperty(propname, prop.saveToString());
                 }
             }
@@ -197,7 +202,30 @@ public class SavingManager{
         }
     }
 
-    public String[] getPresets(){
+    public String[] getDefaultPresets(){
+        ArrayList<String> presets = new ArrayList<String>();
+        try{
+            Enumeration<java.net.URL> e = getClass().getClassLoader().getResources("olddays/presets");
+            String str = e.nextElement().toString();
+            str = str.substring(9, str.lastIndexOf('!'));
+            ZipFile jar = new ZipFile(str);
+            Enumeration<? extends ZipEntry> entries = jar.entries();
+            while (entries.hasMoreElements()){
+                ZipEntry entry = entries.nextElement();
+                String name = entry.toString();
+                if (!name.startsWith("olddays/presets/") || name.endsWith("olddays/presets/")){
+                    continue;
+                }
+                presets.add(name.replace("olddays/presets/", ""));
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+            System.out.println("OldDays: Failed to get list of default presets");
+        }
+        return presets.toArray(new String[presets.size()]);
+    }
+
+    public String[] getCustomPresets(){
         File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
         String[] str = dir.list();
         if (str == null){

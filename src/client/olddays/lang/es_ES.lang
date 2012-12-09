@@ -26,6 +26,8 @@ gui.ssp=SSP
 gui.presets=Presets
 gui.presets.save=Save current settings
 gui.presets.new=New Preset
+gui.presets.default=Default
+gui.presets.custom=Custom
 
 actions.punchtnt.name=Golpear TNT
  actions.punchtnt.desc1=Permite activar la TNT golpeándola.

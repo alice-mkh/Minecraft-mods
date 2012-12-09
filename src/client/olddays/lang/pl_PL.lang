@@ -26,6 +26,8 @@ gui.presets=Presety
 gui.presets.save=Zapisz obecne ustawienia
 //FIXME
 gui.presets.new=New Preset
+gui.presets.default=Default
+gui.presets.custom=Custom
 
 actions.punchtnt.name=Uderz TNT
  actions.punchtnt.desc1=Pozwala na odpalenie TNT poprzez uderzenie.
