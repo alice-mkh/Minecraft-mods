@@ -50,13 +50,13 @@ public class RenderGlobal2 extends RenderGlobal{
         oldstars = b;
         try{
             GL11.glPushMatrix();
-        }catch(NullPointerException e){
+            GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
+            renderStars();
+            GL11.glEndList();
+            GL11.glPopMatrix();
+        }catch(Exception e){
             return;
         }
-        GL11.glNewList(starGLCallList, GL11.GL_COMPILE);
-        renderStars();
-        GL11.glEndList();
-        GL11.glPopMatrix();
     }
 
     public void updateClouds()
