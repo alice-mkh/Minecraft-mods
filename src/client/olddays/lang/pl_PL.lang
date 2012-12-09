@@ -13,7 +13,7 @@ gui.off=WYŁ
 gui.auto=Auto
 gui.possible=Możliwe wartości
 gui.error1=Wyłączone z powodu konfliktu modów
-gui.error2=Potrzebuje obsługi paczek tekstur
+gui.error2=Wymaga obsługi paczek tekstur
 gui.error3=Wyłączone w SMP
 gui.error4=Wymaga zainstalowanych dźwięków
 gui.error5=Jedynie nieskończone światy
@@ -24,10 +24,9 @@ gui.error9=Jedynie z nowymi biomami
 gui.ssp=SSP
 gui.presets=Presety
 gui.presets.save=Zapisz obecne ustawienia
-//FIXME
-gui.presets.new=New Preset
-gui.presets.default=Default
-gui.presets.custom=Custom
+gui.presets.new=Nowy preset
+gui.presets.default=Domyślny
+gui.presets.custom=Własny
 
 actions.punchtnt.name=Uderz TNT
  actions.punchtnt.desc1=Pozwala na odpalenie TNT poprzez uderzenie.
