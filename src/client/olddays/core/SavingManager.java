@@ -149,10 +149,10 @@ public class SavingManager{
                 for (int j = 1; j <= module.properties.size(); j++){
                     OldDaysProperty prop = module.getPropertyById(j);
                     String propname = prop.module.name+"."+prop.field.getName();
-                    String value = properties.getProperty(propname, prop.getDefaultValue()).trim();
-                    if (!prop.canBeLoaded && value.equals(prop.getDefaultValue().trim())){
+                    if (!prop.canBeLoaded){
                         continue;
                     }
+                    String value = properties.getProperty(propname, prop.getDefaultValue()).trim();
                     prop.loadFromString(value);
                     core.sendCallback2(i, j);
                 }
