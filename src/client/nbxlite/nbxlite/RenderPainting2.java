@@ -133,6 +133,9 @@ public class RenderPainting2 extends Render
             int j1 = l / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, i1, j1);
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        }else{
+            float f2 = renderManager.worldObj.getLightBrightness(i, j, k);
+            GL11.glColor3f(f2, f2, f2);
         }
     }
 
