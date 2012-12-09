@@ -407,7 +407,11 @@ public class GuiIngame extends Gui
         {
             mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            fontrenderer.drawStringWithShadow((new StringBuilder()).append(version.equals("OFF") ? "Minecraft 1.4.4" : version).append(" (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
+            String str = version.contains(":") ? version.split(":", 2)[1] : version;
+            if (str.equals("OFF")){
+                str = "Minecraft 1.4.4";
+            }
+            fontrenderer.drawStringWithShadow((new StringBuilder()).append(str).append(" (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoRenders(), 2, 12, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.getEntityDebug(), 2, 22, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoEntities(), 2, 32, 0xffffff);
@@ -456,9 +460,11 @@ public class GuiIngame extends Gui
             GL11.glPopMatrix();
             mc.mcProfiler.endSection();
         }else{
-            if (!version.equals("OFF")){
-                fontrenderer.drawStringWithShadow(version, 2, 2, 0xffffff);
+            String str = version.contains(":") ? version.split(":", 2)[0] : version;
+            if (str.equals("OFF")){
+                str = "";
             }
+            fontrenderer.drawStringWithShadow(str, 2, 2, 0xffffff);
             if (score){
                 String s1 = StatCollector.translateToLocal("deathScreen.score")+": "+mc.thePlayer.getScore();
                 String s2 = StatCollector.translateToLocal("deathScreen.score")+": §e"+mc.thePlayer.getScore();
