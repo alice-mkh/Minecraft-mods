@@ -25,6 +25,7 @@ gui.ssp=SSP
 //FIXME
 gui.presets=Presets
 gui.presets.save=Save current settings
+gui.presets.new=New Preset
 
 actions.punchtnt.name=TNT-Schlag
  actions.punchtnt.desc1=Ermöglicht es, TNT mit einem Schlag zu aktivieren

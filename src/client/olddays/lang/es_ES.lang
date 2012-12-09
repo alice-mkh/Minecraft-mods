@@ -25,6 +25,7 @@ gui.ssp=SSP
 //FIXME
 gui.presets=Presets
 gui.presets.save=Save current settings
+gui.presets.new=New Preset
 
 actions.punchtnt.name=Golpear TNT
  actions.punchtnt.desc1=Permite activar la TNT golpeándola.

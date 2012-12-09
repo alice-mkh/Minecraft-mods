@@ -88,8 +88,8 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         if (guibutton.id == presets.length + 1){
             field = new GuiTextField(fontRenderer, guibutton.xPosition+2, guibutton.yPosition+2, 146, 16);
             showField(true, guibutton);
-            current = "New Preset";
-            field.setText("New Preset");
+            current = mod_OldDays.lang.get("gui.presets.new");
+            field.setText(current);
             fieldId = presets.length * 2 + 1;
             guibutton.enabled = false;
             return;
