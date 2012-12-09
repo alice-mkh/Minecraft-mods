@@ -149,6 +149,11 @@ public class GuiCreateWorld2 extends GuiScreen
     }
 
     public static void setDefaultNBXliteSettings(){
+        GeneratorList.gendefault=ODNBXlite.DefaultGenerator;
+        GeneratorList.feat1default=ODNBXlite.DefaultFeaturesBeta;
+        GeneratorList.feat2default=ODNBXlite.DefaultFeaturesRelease;
+        GeneratorList.themedefault=ODNBXlite.DefaultTheme;
+        GeneratorList.typedefault=ODNBXlite.DefaultIndevType;
         GeneratorList.gencurrent = GeneratorList.gendefault;
         GeneratorList.themecurrent = GeneratorList.themedefault;
         GeneratorList.feat1current = GeneratorList.feat1default;

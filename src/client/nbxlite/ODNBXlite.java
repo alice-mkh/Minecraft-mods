@@ -39,6 +39,9 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond(this,  24,1,     0,     "OldStars");
         new OldDaysPropertyBool(this,  25,true,  false, "OldNetherFog");
         new OldDaysPropertyBool(this,  26,true,  true,  "ShowGUI");
+        new OldDaysPropertyInt(this,   27,6,     6,     "DefaultGenerator", 6).setUseNames();
+        new OldDaysPropertyInt(this,   28,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
+        new OldDaysPropertyInt(this,   29,6,     6,     "DefaultFeaturesRelease", 6).setUseNames();
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -124,6 +127,14 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean OldStars;
     public static boolean OldNetherFog = true;
     public static boolean ShowGUI = true;
+    public static int DefaultGenerator = 6;
+    public static int DefaultFeaturesBeta = 5;
+    public static int DefaultFeaturesRelease = 6;
+    public static int DefaultTheme = 0;
+    public static int DefaultIndevType = 1;
+    public static int DefaultFiniteWidth = 2;
+    public static int DefaultFiniteLength = 2;
+    public static int DefaultFiniteDepth = 32;
 
     public static boolean LeavesDecay(){
         return Generator>GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
@@ -1104,14 +1115,6 @@ public class ODNBXlite extends OldDaysModule{
     public static int SurrWaterType;
     public static int SurrGroundType;
     public static boolean Import = false;
-    public static int DefaultGenerator = 6;
-    public static int DefaultFeaturesBeta = 5;
-    public static int DefaultFeaturesRelease = 6;
-    public static int DefaultTheme = 0;
-    public static int DefaultIndevType = 1;
-    public static int DefaultFiniteWidth = 2;
-    public static int DefaultFiniteLength = 2;
-    public static int DefaultFiniteDepth = 32;
     public static boolean DefaultNewOres = false;
     public static McLevelImporter mclevelimporter = null;
     public static int gearId = 200;
