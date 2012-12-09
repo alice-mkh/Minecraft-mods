@@ -25,12 +25,12 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 18,true,  "Cow");
         new OldDaysPropertyBool(this, 19,true,  "Slime");
         new OldDaysPropertyBool(this, 20,true,  "Skeleton");
-        new OldDaysPropertyBool(this, 21,true,  "Levelup");
+        new OldDaysPropertyBool(this, 21,false, "Levelup");
         new OldDaysPropertyBool(this, 22,true,  "Ignite");
         new OldDaysPropertyBool(this, 23,true,  "Shear");
         new OldDaysPropertyBool(this, 24,true,  "Splash");
-        new OldDaysPropertyBool(this, 25,true,  "Swimming");
-        new OldDaysPropertyBool(this, 26,true,  "Minecart");
+        new OldDaysPropertyBool(this, 25,false, "Swimming");
+        new OldDaysPropertyBool(this, 26,false, "Minecart");
         Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
         addSound(1, "explode");
         addSound(5, "door_open");
