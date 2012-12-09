@@ -1366,8 +1366,17 @@ public class RenderBlocks
             }
         }
 
-        tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
-        tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
+            tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        }else{
+            float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
+            if(par1Block.lightValue[par1Block.blockID] > 0)
+            {
+                ff = (ff + 1.0F) * 0.5F;
+            }
+            tessellator.setColorOpaque_F(ff, ff, ff);
+        }
         renderTorchAtAngle(par1Block, (double)par2 + d3, (double)par3 + d, (double)par4 + d4, 0.0D, 0.0D);
         int i1 = par1Block.getBlockTextureFromSide(1);
         int k1 = (i1 & 0xf) << 4;
