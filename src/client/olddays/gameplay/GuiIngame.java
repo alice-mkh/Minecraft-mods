@@ -409,7 +409,7 @@ public class GuiIngame extends Gui
             GL11.glPushMatrix();
             String str = version.contains(":") ? version.split(":", 2)[1] : version;
             if (str.equals("OFF")){
-                str = "Minecraft 1.4.4";
+                str = "Minecraft "+(new CallableMinecraftVersion(null)).minecraftVersion();
             }
             fontrenderer.drawStringWithShadow((new StringBuilder()).append(str).append(" (").append(mc.debug).append(")").toString(), 2, 2, 0xffffff);
             fontrenderer.drawStringWithShadow(mc.debugInfoRenders(), 2, 12, 0xffffff);
