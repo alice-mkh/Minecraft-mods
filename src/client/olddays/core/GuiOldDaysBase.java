@@ -133,7 +133,8 @@ public class GuiOldDaysBase extends GuiScreen{
         for (int i = 0; i < max*2; i++){
             int i2 = i+(page*max*2)+1;
             if (i2<=controlList.size()-specialButtons){
-                ((GuiButton)controlList.get(i2)).drawButton = true;
+                GuiButton guibutton = ((GuiButton)controlList.get(i2));
+                guibutton.drawButton = (guibutton.id >= TOOLTIP_OFFSET) ? guibutton.enabled : true;
             }
         }
         left.drawButton = page>0;

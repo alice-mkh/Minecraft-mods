@@ -31,7 +31,9 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         searchField.mouseClicked(par1, par2, par3);
         if (searchField.isFocused()){
             if (this instanceof GuiOldDaysPresets){
-                showField(false, ((GuiButton)controlList.get(fieldId)));
+                if (field.isFocused()){
+                    showField(false, ((GuiButton)controlList.get(fieldId)));
+                }
             }else if (controlList.get(fieldId) instanceof GuiButtonProp){
                 GuiButtonProp button = ((GuiButtonProp)controlList.get(fieldId));
                 button.prop.loadFromString(current);
