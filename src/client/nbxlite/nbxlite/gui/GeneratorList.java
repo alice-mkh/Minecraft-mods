@@ -31,7 +31,7 @@ public class GeneratorList{
     public static int themedefault = ODNBXlite.DefaultTheme;
     public static int themecurrent;
     public static int themelength = 3;
-    public static String[] themeid = {"normal", "hell", "woods", "paradise"};
+    public static String[] themeid = {"normal", "hell", "paradise", "woods"};
     public static String[] themename = {"nbxlite.maptheme1", "nbxlite.maptheme2", "nbxlite.maptheme3", "nbxlite.maptheme4"};
     public static String[] themedesc = {"nbxlite.maptheme1.desc", "nbxlite.maptheme2.desc", "nbxlite.maptheme3.desc", "nbxlite.maptheme4.desc"};
 

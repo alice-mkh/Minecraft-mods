@@ -1155,8 +1155,8 @@ public class ODNBXlite extends OldDaysModule{
 
     public static final int THEME_NORMAL = 0;
     public static final int THEME_HELL = 1;
-    public static final int THEME_WOODS = 2;
-    public static final int THEME_PARADISE = 3;
+    public static final int THEME_PARADISE = 2;
+    public static final int THEME_WOODS = 3;
 
     public static final int TYPE_INLAND = 0;
     public static final int TYPE_ISLAND = 1;

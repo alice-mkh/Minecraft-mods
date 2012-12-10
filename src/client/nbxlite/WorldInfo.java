@@ -84,7 +84,7 @@ public class WorldInfo
     public int cloudcolor;
     public boolean newOres;
 
-    public static final int NBXLITE_INFO_VERSION = 1;
+    public static final int NBXLITE_INFO_VERSION = 2;
 
     protected WorldInfo()
     {
@@ -205,6 +205,13 @@ public class WorldInfo
                         NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
                         if (mapGen==ODNBXlite.GEN_BIOMELESS){
                             mapTheme = themeTag.getInteger("Generation");
+                            if (nbxliteTag.getInteger("Version") < 2){
+                                if (mapTheme == 2){
+                                    mapTheme = 3;
+                                }else if (mapTheme == 3){
+                                    mapTheme = 2;
+                                }
+                            }
                         }else{
                             mapTheme = ODNBXlite.THEME_NORMAL;
                         }
@@ -216,6 +223,13 @@ public class WorldInfo
                     }catch(Exception ex){
                         if (ex.getMessage().contains("cannot be cast")){
                             mapTheme = nbxliteTag.getInteger("Theme");
+                            if (nbxliteTag.getInteger("Version") < 2){
+                                if (mapTheme == 2){
+                                    mapTheme = 3;
+                                }else if (mapTheme == 3){
+                                    mapTheme = 2;
+                                }
+                            }
                             cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
                             skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
                             skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);

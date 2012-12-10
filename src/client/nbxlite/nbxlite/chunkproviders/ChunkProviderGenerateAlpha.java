@@ -102,7 +102,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                                 int i3 = 0;
                                 if(l1 * 8 + i2 < byte1)
                                 {
-                                    if(ODNBXlite.SnowCovered && l1 * 8 + i2 >= byte1 - 1 && ODNBXlite.MapTheme != 1)
+                                    if(ODNBXlite.SnowCovered && l1 * 8 + i2 >= byte1 - 1 && ODNBXlite.MapTheme != ODNBXlite.THEME_HELL)
                                     {
                                         i3 = Block.ice.blockID;
                                     } else
@@ -194,7 +194,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                         } else
                         if(l1 >= byte0 - 4 && l1 <= byte0 + 1)
                         {
-                            if (ODNBXlite.MapTheme!=1){
+                            if (ODNBXlite.MapTheme!=ODNBXlite.THEME_HELL){
                                 byte1 = (byte)Block.grass.blockID;
                                 byte2 = (byte)Block.dirt.blockID;
                                 if(flag1)
@@ -236,7 +236,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                         }
                         if(l1 < byte0 && byte1 == 0)
                         {
-                            if(ODNBXlite.SnowCovered && l1 >= byte0 - 1 && ODNBXlite.MapTheme != 1)
+                            if(ODNBXlite.SnowCovered && l1 >= byte0 - 1 && ODNBXlite.MapTheme != ODNBXlite.THEME_HELL)
                             {
                                 byte1 = (byte)Block.ice.blockID;
                             } else if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL)
