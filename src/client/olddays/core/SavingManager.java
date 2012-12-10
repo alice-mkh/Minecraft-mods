@@ -166,10 +166,11 @@ public class SavingManager{
     }
 
     public void savePreset(String name){
-        Properties properties = new Properties();
         try{
             File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
             dir.mkdirs();
+            FileWriter filewriter = new FileWriter(new File(dir, name));
+            BufferedWriter writer = new BufferedWriter(filewriter);
             for (int i = 0; i < core.modules.size(); i++){
                 OldDaysModule module = core.modules.get(i);
                 for (int j = 1; j <= module.properties.size(); j++){
@@ -178,12 +179,11 @@ public class SavingManager{
                     if (!prop.canBeLoaded || prop.saveToString().equals(prop.getDefaultValue())){
                         continue;
                     }
-                    properties.setProperty(propname, prop.saveToString());
+                    writer.write(propname+"="+prop.saveToString());
+                    writer.newLine();
                 }
             }
-            FileOutputStream fileoutputstream = new FileOutputStream(new File(dir, name));
-            properties.store(fileoutputstream, "OldDays preset");
-            fileoutputstream.close();
+            writer.close();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -218,7 +218,7 @@ public class SavingManager{
                 }
                 presets.add(name.replace("olddays/presets/", ""));
             }
-        }catch(IOException e){
+        }catch(Exception e){
             e.printStackTrace();
             System.out.println("OldDays: Failed to get list of default presets");
         }
