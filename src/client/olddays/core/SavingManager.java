@@ -205,9 +205,14 @@ public class SavingManager{
     public String[] getDefaultPresets(){
         ArrayList<String> presets = new ArrayList<String>();
         try{
-            Enumeration<java.net.URL> e = getClass().getClassLoader().getResources("olddays/presets");
-            String str = e.nextElement().toString();
-            str = str.substring(9, str.lastIndexOf('!'));
+            String str = "";
+            try{
+                str = getClass().getResource("/olddays/presets").toString();
+                str = str.substring(9, str.lastIndexOf('!'));
+            }catch(Exception e2){
+                str = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+                str = str.substring(5, str.length());
+            }
             ZipFile jar = new ZipFile(str);
             Enumeration<? extends ZipEntry> entries = jar.entries();
             while (entries.hasMoreElements()){
