@@ -213,6 +213,7 @@ public class SavingManager{
                 str = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
                 str = str.substring(5, str.length());
             }
+            str = str.replace("%20", " ").replace("%23", "#");
             ZipFile jar = new ZipFile(str);
             Enumeration<? extends ZipEntry> entries = jar.entries();
             while (entries.hasMoreElements()){
