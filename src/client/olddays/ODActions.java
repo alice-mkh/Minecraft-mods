@@ -87,7 +87,7 @@ public class ODActions extends OldDaysModule{
     private static Block[] spadeBlocks = ((Block[])mod_OldDays.getField(ItemSpade.class, null, 0));
 
     private void setSolidTNT(boolean b){
-        mod_OldDays.setField(Material.class, Material.tnt, 33, !b);
+        mod_OldDays.setField(Material.class, Material.tnt, 34, !b);
     }
 
     private void replaceBlocks(){
