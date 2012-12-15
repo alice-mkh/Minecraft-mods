@@ -13,7 +13,7 @@ public class RenderMinecart2 extends RenderMinecart
         super();
     }
 
-    public void func_77012_a(EntityMinecart par1EntityMinecart, double par2, double par4, double par6, float par8, float par9)
+    public void renderTheMinecart(EntityMinecart par1EntityMinecart, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         long l = (long)par1EntityMinecart.entityId * 0x1d66f537L;
@@ -84,23 +84,20 @@ public class RenderMinecart2 extends RenderMinecart
                 float ff = Minecraft.oldlighting ? par1EntityMinecart.getBrightness(par9) : 1.0F;
                 if (shiftChest){
                     GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
-                    if (oldrotation){
-                        GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
-                    }
-                    (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
-                    GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-                    GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
-                    GL11.glColor4f(ff, ff, ff, ff);
                 }else{
                     GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-                    if (oldrotation){
-                        GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
-                    }
-                    (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
-                    GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-                    GL11.glTranslatef(0.5F, 0.0F, -0.5F);
-                    GL11.glColor4f(ff, ff, ff, ff);
                 }
+                if (oldrotation){
+                    GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+                }
+                (new RenderBlocks()).renderBlockAsItem(Block.blocksList[Block.chest.blockID], 0, par1EntityMinecart.getBrightness(par9));
+                GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
+                if (shiftChest){
+                    GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
+                }else{
+                    GL11.glTranslatef(0.5F, 0.0F, -0.5F);
+                }
+                GL11.glColor4f(ff, ff, ff, ff);
             }
             else if (par1EntityMinecart.minecartType == 2)
             {
