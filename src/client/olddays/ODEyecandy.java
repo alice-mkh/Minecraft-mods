@@ -46,7 +46,9 @@ public class ODEyecandy extends OldDaysModule{
             case 6: set(BlockChestOld.class, "normalblock", OldChest);
                     set(TileEntityChestRenderer.class, "hidemodel", OldChest);
                     set(RenderMinecart2.class, "shiftChest", OldChest);
-                    reload(); break;
+                    if (OldChest){
+                        Block.blocksList[Block.chest.blockID].setBlockBoundsBasedOnState(null, 0, 0, 0);
+                    }reload(); break;
             case 7: set(RenderLiving.class, "labels", MobLabels); break;
             case 8: set(RenderZombie2.class, "mobArmor", MobArmor);
                     set(RenderSkeleton2.class, "mobArmor", MobArmor);
