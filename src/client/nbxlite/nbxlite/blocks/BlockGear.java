@@ -118,17 +118,12 @@ public class BlockGear extends Block
         }
         float f5 = Minecraft.oldlighting ? b.getBlockBrightness(blockAccess, i, j, k) : 1.0F;
         tessellator.setColorOpaque_F(f5, f5, f5);
-        float f10 = ((tex & 0xf) << 4) + 16;
-        float f11 = (tex & 0xf) << 4;
+        float f10 = (tex & 0xf) << 4;
         int i2 = tex & 0xf0;
         double d11 = (float)f10 / 256F;
         double d15 = ((float)f10 + 15.99F) / 256F;
         double d18 = (float)i2 / 256F;
         double d21 = ((float)i2 + 15.99F) / 256F;
-        double d23 = (float)f11 / 256F;
-        double d27 = ((float)f11 + 15.99F) / 256F;
-        double d30 = (float)i2 / 256F;
-        double d33 = ((float)i2 + 15.99F) / 256F;
         if(blockAccess.isBlockNormalCube(i - 1, j, k)){
             tessellator.addVertexWithUV((float)i + 0.05F, (float)(j + 1) + 0.125F, (float)(k + 1) + 0.125F, d11, d18);
             tessellator.addVertexWithUV((float)i + 0.05F, (float)j - 0.125F, (float)(k + 1) + 0.125F, d11, d21);
@@ -142,16 +137,16 @@ public class BlockGear extends Block
             tessellator.addVertexWithUV((float)(i + 1) - 0.05F, (float)j - 0.125F, (float)k - 0.125F, d11, d21);
         }
         if(blockAccess.isBlockNormalCube(i, j, k - 1)){
-            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)j - 0.125F, (float)k + 0.05F, d27, d33);
-            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)(j + 1) + 0.125F, (float)k + 0.05F, d27, d30);
-            tessellator.addVertexWithUV((float)i - 0.125F, (float)(j + 1) + 0.125F, (float)k + 0.05F, d23, d30);
-            tessellator.addVertexWithUV((float)i - 0.125F, (float)j - 0.125F, (float)k + 0.05F, d23, d33);
+            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)j - 0.125F, (float)k + 0.05F, d15, d21);
+            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)(j + 1) + 0.125F, (float)k + 0.05F, d15, d18);
+            tessellator.addVertexWithUV((float)i - 0.125F, (float)(j + 1) + 0.125F, (float)k + 0.05F, d11, d18);
+            tessellator.addVertexWithUV((float)i - 0.125F, (float)j - 0.125F, (float)k + 0.05F, d11, d21);
         }
         if(blockAccess.isBlockNormalCube(i, j, k + 1)){
-            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)(j + 1) + 0.125F, (float)(k + 1) - 0.05F, d23, d30);
-            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)j - 0.125F, (float)(k + 1) - 0.05F, d23, d33);
-            tessellator.addVertexWithUV((float)i - 0.125F, (float)j - 0.125F, (float)(k + 1) - 0.05F, d27, d33);
-            tessellator.addVertexWithUV((float)i - 0.125F, (float)(j + 1) + 0.125F, (float)(k + 1) - 0.05F, d27, d30);
+            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)(j + 1) + 0.125F, (float)(k + 1) - 0.05F, d11, d18);
+            tessellator.addVertexWithUV((float)(i + 1) + 0.125F, (float)j - 0.125F, (float)(k + 1) - 0.05F, d11, d21);
+            tessellator.addVertexWithUV((float)i - 0.125F, (float)j - 0.125F, (float)(k + 1) - 0.05F, d15, d21);
+            tessellator.addVertexWithUV((float)i - 0.125F, (float)(j + 1) + 0.125F, (float)(k + 1) - 0.05F, d15, d18);
         }
         return true;
     }
