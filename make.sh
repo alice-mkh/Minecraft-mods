@@ -9,7 +9,7 @@ RESULT_DIR_2=$DIR/result2
 
 function find() {
     if [[ $1 == "World" ]]; then
-        echo "xv" # A workaround for World.class, as it returns GuiCreateWorld.class instead
+        echo "yc" # A workaround for World.class, as it returns GuiCreateWorld.class instead
         exit 0
     fi
     for F in *.class; do
