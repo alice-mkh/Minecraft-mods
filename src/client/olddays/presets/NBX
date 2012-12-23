@@ -13,6 +13,7 @@ Eyecandy.OldCreativeInv=true
 Eyecandy.OldSwing=false
 Eyecandy.TPBobbing=true
 Eyecandy.WaterParticles=true
+Eyecandy.OldItems=true
 Mobs.AI=2
 Mobs.FastSkeletons=false
 Mobs.Mobs=5

@@ -199,7 +199,7 @@ public class RenderItem extends Render
         float f5 = 0.5F;
         float f6 = 0.25F;
 
-        if (renderManager.options.fancyGraphics || oldrendering)
+        if (renderManager.options.fancyGraphics && !oldrendering)
         {
             GL11.glPushMatrix();
 

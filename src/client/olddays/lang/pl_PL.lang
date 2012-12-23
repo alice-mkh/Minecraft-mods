@@ -462,6 +462,11 @@ eyecandy.tpbobbing.name=Kołysanie w widoku trzeciej osoby
 eyecandy.waterparticles.name=Cząsteczki wody
  eyecandy.waterparticles.desc1="Bąbelki" w wodzie.
  eyecandy.waterparticles.desc2=§aDodane w Becie 1.8.
+//FIXME
+eyecandy.olditems.name=Old dropped items
+ eyecandy.olditems.desc1=Uses 2D dropped item sprites
+ eyecandy.olditems.desc2=even on Fancy graphics.
+ eyecandy.olditems.desc3=§Changed in 1.4.6.
 
 sounds.explode.name=Stary odgłos eksplozji
  sounds.explode.desc1=§aZmieniony w 1.0.

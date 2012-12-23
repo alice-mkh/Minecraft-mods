@@ -471,6 +471,11 @@ eyecandy.tpbobbing.name=Wackeln in dritter Person
 eyecandy.waterparticles.name=Wasserpartikel
  eyecandy.waterparticles.desc1="Blubberblasen" im Wasser.
  eyecandy.waterparticles.desc2=§aIn der 1.8 hinzugefügt.
+//FIXME
+eyecandy.olditems.name=Old dropped items
+ eyecandy.olditems.desc1=Uses 2D dropped item sprites
+ eyecandy.olditems.desc2=even on Fancy graphics.
+ eyecandy.olditems.desc3=§Changed in 1.4.6.
 
 sounds.explode.name=Alte Explosion
  sounds.explode.desc1=§aVerändert in der 1.0.

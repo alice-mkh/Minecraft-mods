@@ -459,6 +459,10 @@ eyecandy.tpbobbing.name=Bobbing in 3rd person
 eyecandy.waterparticles.name=Water particles
  eyecandy.waterparticles.desc1="Suspend" particles in water.
  eyecandy.waterparticles.desc2=§aAdded in Beta 1.8.
+eyecandy.olditems.name=Old dropped items
+ eyecandy.olditems.desc1=Uses 2D dropped item sprites
+ eyecandy.olditems.desc2=even on Fancy graphics.
+ eyecandy.olditems.desc3=§Changed in 1.4.6.
 
 sounds.explode.name=Old explosion sound
  sounds.explode.desc1=§aChanged in 1.0.

@@ -7,6 +7,7 @@ Eyecandy.Version=Minecraft Alpha v1.2.0
 Eyecandy.InvBlocks=0
 Eyecandy.Labels=true
 Eyecandy.OldCreativeInv=true
+Eyecandy.OldItems=true
 Mobs.SheepEatGrass=false
 Mobs.SpidersCanClimb=false
 Mobs.Mobs=5

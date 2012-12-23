@@ -469,6 +469,11 @@ eyecandy.tpbobbing.name=Тряска от третьего лица
 eyecandy.waterparticles.name=Частицы в воде
  eyecandy.waterparticles.desc1=Частицы в воде.
  eyecandy.waterparticles.desc2=§aДобавлены в Бете 1.8.
+//FIXME
+eyecandy.olditems.name=Old dropped items
+ eyecandy.olditems.desc1=Uses 2D dropped item sprites
+ eyecandy.olditems.desc2=even on Fancy graphics.
+ eyecandy.olditems.desc3=§Changed in 1.4.6.
 
 sounds.explode.name=Старый звук взрыва
  sounds.explode.desc1=§aИзменен в 1.0.
