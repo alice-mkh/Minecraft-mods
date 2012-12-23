@@ -112,7 +112,11 @@ public class EntityFireworkRocket extends Entity
 
         if (!worldObj.isRemote && field_92056_a > field_92055_b)
         {
-            worldObj.setEntityState(this, (byte)17);
+            if (net.minecraft.client.Minecraft.getMinecraft().enableSP){
+                handleHealthUpdate((byte)17);
+            }else{
+                worldObj.setEntityState(this, (byte)17);
+            }
             setDead();
         }
     }
