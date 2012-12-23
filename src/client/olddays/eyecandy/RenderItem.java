@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL12;
 public class RenderItem extends Render
 {
     public static boolean oldrotation = false;
+    public static boolean oldrendering = false;
 
     private RenderBlocks renderBlocks;
 
@@ -105,7 +106,7 @@ public class RenderItem extends Render
                     GL11.glTranslatef(f5, f8, f11);
                 }
 
-                float f6 = 1.0F;
+                float f6 = net.minecraft.client.Minecraft.oldlighting && !field_82407_g ? par1EntityItem.getBrightness(par9) : 1.0F;
                 renderBlocks.renderBlockAsItem(block, itemstack.getItemDamage(), f6);
                 GL11.glPopMatrix();
             }
@@ -128,7 +129,7 @@ public class RenderItem extends Render
             {
                 random.setSeed(187L);
                 int l = itemstack.getItem().getIconFromDamageForRenderPass(itemstack.getItemDamage(), i);
-                float f3 = 1.0F;
+                float f3 = net.minecraft.client.Minecraft.oldlighting && !field_82407_g ? par1EntityItem.getBrightness(par9) : 1.0F;
 
                 if (field_77024_a)
                 {
@@ -174,7 +175,7 @@ public class RenderItem extends Render
                 float f4 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f7 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f10 = (float)(i1 & 0xff) / 255F;
-                float f13 = 1.0F;
+                float f13 = net.minecraft.client.Minecraft.oldlighting && !field_82407_g ? par1EntityItem.getBrightness(par9) : 1.0F;
                 func_77020_a(par1EntityItem, j, byte0, par9, f4 * f13, f7 * f13, f10 * f13);
             }
             else
@@ -198,7 +199,7 @@ public class RenderItem extends Render
         float f5 = 0.5F;
         float f6 = 0.25F;
 
-        if (renderManager.options.fancyGraphics)
+        if (renderManager.options.fancyGraphics || oldrendering)
         {
             GL11.glPushMatrix();
 
