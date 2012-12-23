@@ -140,7 +140,9 @@ class ContainerCreativeOld extends Container
             int id = Item.itemsList[k2].shiftedIndex;
             if (id == Item.monsterPlacer.shiftedIndex ||
                 id == Item.potion.shiftedIndex ||
-                id == Item.writtenBook.shiftedIndex){
+                id == Item.writtenBook.shiftedIndex ||
+                id == Item.field_92104_bU.shiftedIndex ||
+                id == Item.field_92105_bW.shiftedIndex){
                 continue;
             }else if (Item.itemsList[k2].shiftedIndex == Item.dyePowder.shiftedIndex){
                 itemList.add(new ItemStack(k2, 1, 0));
@@ -154,6 +156,16 @@ class ContainerCreativeOld extends Container
         }
         Item.itemsList[Item.monsterPlacer.shiftedIndex].getSubItems(Item.monsterPlacer.shiftedIndex, null, itemList);
         Item.itemsList[Item.potion.shiftedIndex].getSubItems(Item.potion.shiftedIndex, null, itemList);
+
+        for (int k = 0; k < Enchantment.enchantmentsList.length; k++)
+        {
+            Enchantment enchantment = Enchantment.enchantmentsList[k];
+
+            if (enchantment != null && enchantment.type != null)
+            {
+                Item.field_92105_bW.func_92113_a(enchantment, itemList);
+            }
+        }
 
         InventoryPlayer inventoryplayer = par1EntityPlayer.inventory;
 
