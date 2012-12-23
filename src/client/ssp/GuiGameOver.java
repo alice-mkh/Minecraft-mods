@@ -24,6 +24,7 @@ public class GuiGameOver extends GuiScreen
     public void initGui()
     {
         controlList.clear();
+
         if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
         {
             if (mc.isIntegratedServerRunning())

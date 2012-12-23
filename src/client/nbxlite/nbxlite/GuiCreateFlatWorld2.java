@@ -21,7 +21,7 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
     public GuiCreateFlatWorld2(GuiCreateWorld2 par1, String par2Str)
     {
         super(null, par2Str);
-        field_82279_c = FlatGeneratorInfo.func_82649_e();
+        field_82279_c = FlatGeneratorInfo.getDefaultFlatGenerator();
         field_82277_b = par1;
         func_82273_a(par2Str);
     }
@@ -33,7 +33,7 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
 
     public void func_82273_a(String par1Str)
     {
-        field_82279_c = FlatGeneratorInfo.func_82651_a(par1Str);
+        field_82279_c = FlatGeneratorInfo.createFlatGeneratorFromString(par1Str);
     }
 
     /**

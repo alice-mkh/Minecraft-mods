@@ -170,7 +170,7 @@ public class PlayerController extends PlayerControllerMP
 
     public ItemStack windowClick(int par1, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
-        return par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);
+        return par5EntityPlayer.openContainer.slotClick(par2, par3, par4, par5EntityPlayer);
     }
 
     public boolean func_35643_e()
@@ -222,14 +222,14 @@ public class PlayerController extends PlayerControllerMP
             {
                 if (itemstack == null)
                 {
-                    playerEntity.inventorySlots.putStackInSlot(i, null);
+                    playerEntity.inventoryContainer.putStackInSlot(i, null);
                 }
                 else
                 {
-                    playerEntity.inventorySlots.putStackInSlot(i, itemstack);
+                    playerEntity.inventoryContainer.putStackInSlot(i, itemstack);
                 }
 
-                playerEntity.inventorySlots.setPlayerIsPresent(playerEntity, true);
+                playerEntity.inventoryContainer.setPlayerIsPresent(playerEntity, true);
             }
             else if (i < 0 && flag && flag1)
             {

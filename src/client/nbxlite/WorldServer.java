@@ -317,7 +317,6 @@ public class WorldServer extends World
                 if (canLightningStrikeAt(k1, i3, j2))
                 {
                     addWeatherEffect(new EntityLightningBolt(this, k1, i3, j2));
-                    lastLightningBolt = 2;
                 }
             }
 
@@ -589,8 +588,8 @@ public class WorldServer extends World
             }
             catch (Throwable throwable)
             {
-                crashreport = CrashReport.func_85055_a(throwable, "Exception while ticking a block");
-                crashreportcategory = crashreport.func_85058_a("Block being ticked");
+                crashreport = CrashReport.makeCrashReport(throwable, "Exception while ticking a block");
+                crashreportcategory = crashreport.makeCategory("Block being ticked");
             }
 
             int l;
@@ -687,7 +686,7 @@ public class WorldServer extends World
     protected IChunkProvider createChunkProvider()
     {
         IChunkLoader ichunkloader = saveHandler.getChunkLoader(provider);
-        theChunkProviderServer = new ChunkProviderServer(this, ichunkloader, provider.getChunkProvider());
+        theChunkProviderServer = new ChunkProviderServer(this, ichunkloader, provider.createChunkGenerator());
         return theChunkProviderServer;
     }
 

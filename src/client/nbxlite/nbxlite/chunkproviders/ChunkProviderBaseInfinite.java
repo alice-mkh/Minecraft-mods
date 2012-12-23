@@ -69,7 +69,7 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
         if (fixLight){
             ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4];
             if (extendedblockstorage == null){
-                extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4);
+                extendedblockstorage = chunk.getBlockStorageArray()[64 >> 4] = new ExtendedBlockStorage((64 >> 4) << 4, true);
             }
         }
         chunk.generateSkylightMap();

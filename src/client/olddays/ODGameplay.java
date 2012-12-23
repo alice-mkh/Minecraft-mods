@@ -120,7 +120,7 @@ public class ODGameplay extends OldDaysModule{
         mod_OldDays.setField(ItemArmor.class, Item.bootsChain, 2, b ? 3 : 1);
         mod_OldDays.setField(ItemArmor.class, Item.bootsSteel, 2, b ? 3 : 2);
         mod_OldDays.setField(ItemArmor.class, Item.bootsGold, 2, b ? 3 : 1);
-        int maxDamage = 162;
+        int maxDamage = 165;
         mod_OldDays.setField(Item.class, Item.helmetLeather, maxDamage, b ? 33 << 0 : 55);
         mod_OldDays.setField(Item.class, Item.helmetChain, maxDamage, b ? 33 << 1 : 165);
         mod_OldDays.setField(Item.class, Item.helmetSteel, maxDamage, b ? 33 << 2 : 165);

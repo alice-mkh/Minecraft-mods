@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Calendar;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -12,11 +13,18 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
     /** The large double chest model. */
     private ModelChest largeChestModel;
+    private boolean field_92061_d;
 
     public TileEntityChestRenderer()
     {
         chestModel = new ModelChest();
         largeChestModel = new ModelLargeChest();
+        Calendar calendar = Calendar.getInstance();
+
+        if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
+        {
+            field_92061_d = true;
+        }
     }
 
     /**
@@ -57,12 +65,28 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
         if (par1TileEntityChest.adjacentChestXPos != null || par1TileEntityChest.adjacentChestZPosition != null)
         {
             modelchest = largeChestModel;
-            bindTextureByName("/item/largechest.png");
+
+            if (field_92061_d)
+            {
+                bindTextureByName("/item/largexmaschest.png");
+            }
+            else
+            {
+                bindTextureByName("/item/largechest.png");
+            }
         }
         else
         {
             modelchest = chestModel;
-            bindTextureByName("/item/chest.png");
+
+            if (field_92061_d)
+            {
+                bindTextureByName("/item/xmaschest.png");
+            }
+            else
+            {
+                bindTextureByName("/item/chest.png");
+            }
         }
 
         GL11.glPushMatrix();

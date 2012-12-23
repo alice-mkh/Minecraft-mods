@@ -25,7 +25,7 @@ public class GuiContainerCreativeOld extends GuiContainer
         super(new ContainerCreativeOld(par1EntityPlayer));
         currentScroll = 0.0F;
         isScrolling = false;
-        par1EntityPlayer.craftingInventory = inventorySlots;
+        par1EntityPlayer.openContainer = inventorySlots;
         allowUserInput = true;
         par1EntityPlayer.addStat(AchievementList.openInventory, 1);
         ySize = 208;

@@ -62,12 +62,7 @@ public class World implements IBlockAccess
      * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
      * unused.
      */
-    protected int lastLightningBolt;
-
-    /**
-     * If > 0, the sky and skylight colors are illuminated by a lightning flash
-     */
-    public int lightningFlash;
+    public int lastLightningBolt;
 
     /** true while the server is editing blocks */
     public boolean editingBlocks;
@@ -219,7 +214,6 @@ public class World implements IBlockAccess
         skylightSubtracted = 0;
         updateLCG = (new Random()).nextInt();
         lastLightningBolt = 0;
-        lightningFlash = 0;
         editingBlocks = false;
         lockTimestamp = System.currentTimeMillis();
         autosavePeriod = 40;
@@ -873,11 +867,11 @@ public class World implements IBlockAccess
     /**
      * Marks the block as needing an update with the renderer. Args: x, y, z
      */
-    public void markBlockNeedsUpdate(int par1, int par2, int par3)
+    public void markBlockForUpdate(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForUpdate(par1, par2, par3);
         }
     }
 
@@ -886,7 +880,7 @@ public class World implements IBlockAccess
      */
     public void notifyBlockChange(int par1, int par2, int par3, int par4)
     {
-        markBlockNeedsUpdate(par1, par2, par3);
+        markBlockForUpdate(par1, par2, par3);
         notifyBlocksOfNeighborChange(par1, par2, par3, par4);
     }
 
@@ -920,7 +914,7 @@ public class World implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par1, par2, par3);
         }
     }
 
@@ -928,7 +922,7 @@ public class World implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
         }
     }
 
@@ -1148,7 +1142,7 @@ public class World implements IBlockAccess
 
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par2, par3, par4);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForRenderUpdate(par2, par3, par4);
         }
     }
 
@@ -1156,7 +1150,7 @@ public class World implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForRenderUpdate(par1, par2, par3);
         }
     }
 
@@ -1909,7 +1903,7 @@ public class World implements IBlockAccess
                         }
                     }
 
-                    markBlockNeedsUpdate(tileentity1.xCoord, tileentity1.yCoord, tileentity1.zCoord);
+                    markBlockForUpdate(tileentity1.xCoord, tileentity1.yCoord, tileentity1.zCoord);
                 }
             }
             while (true);
@@ -1970,6 +1964,7 @@ public class World implements IBlockAccess
             }
             else
             {
+                par1Entity.ticksExisted++;
                 par1Entity.onUpdate();
             }
         }

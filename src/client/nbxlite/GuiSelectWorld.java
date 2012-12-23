@@ -291,7 +291,7 @@ public class GuiSelectWorld extends GuiScreen
         if (nbxlite){
             ODNBXlite.Import = false;
         }
-        if (!mc.getSaveLoader().func_90033_f(s)){
+        if (!mc.getSaveLoader().canLoadWorld(s)){
             return;
         }
         if (mc.enableSP){

@@ -107,22 +107,22 @@ public class RenderPainting2 extends Render
         int j = MathHelper.floor_double(par1EntityPainting.posY + (double)(par3 / 16F));
         int k = MathHelper.floor_double(par1EntityPainting.posZ);
 
-        if (par1EntityPainting.field_82332_a == 0)
+        if (par1EntityPainting.hangingDirection == 0)
         {
             i = MathHelper.floor_double(par1EntityPainting.posX + (double)(par2 / 16F));
         }
 
-        if (par1EntityPainting.field_82332_a == 1)
+        if (par1EntityPainting.hangingDirection == 1)
         {
             k = MathHelper.floor_double(par1EntityPainting.posZ - (double)(par2 / 16F));
         }
 
-        if (par1EntityPainting.field_82332_a == 2)
+        if (par1EntityPainting.hangingDirection == 2)
         {
             i = MathHelper.floor_double(par1EntityPainting.posX - (double)(par2 / 16F));
         }
 
-        if (par1EntityPainting.field_82332_a == 3)
+        if (par1EntityPainting.hangingDirection == 3)
         {
             k = MathHelper.floor_double(par1EntityPainting.posZ + (double)(par2 / 16F));
         }

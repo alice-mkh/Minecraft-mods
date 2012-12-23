@@ -564,7 +564,7 @@ public class EntityRenderer
         d = entityliving.prevPosX + (entityliving.posX - entityliving.prevPosX) * (double)par1;
         d1 = (entityliving.prevPosY + (entityliving.posY - entityliving.prevPosY) * (double)par1) - (double)f;
         d2 = entityliving.prevPosZ + (entityliving.posZ - entityliving.prevPosZ) * (double)par1;
-        cloudFog = mc.renderGlobal.func_72721_a(d, d1, d2, par1);
+        cloudFog = mc.renderGlobal.hasCloudFog(d, d1, d2, par1);
     }
 
     /**
@@ -890,7 +890,7 @@ public class EntityRenderer
             float f1 = ((World)(worldclient)).provider.lightBrightnessTable[i / 16] * f;
             float f2 = ((World)(worldclient)).provider.lightBrightnessTable[i % 16] * (torchFlickerX * 0.1F + 1.5F);
 
-            if (((World)(worldclient)).lightningFlash > 0)
+            if (((World)(worldclient)).lastLightningBolt > 0)
             {
                 f1 = ((World)(worldclient)).provider.lightBrightnessTable[i / 16];
             }
@@ -925,7 +925,7 @@ public class EntityRenderer
 
             if (mc.thePlayer.isPotionActive(Potion.nightVision))
             {
-                float f13 = func_82830_a(mc.thePlayer, par1);
+                float f13 = getNightVisionBrightness(mc.thePlayer, par1);
                 float f15 = 1.0F / f9;
 
                 if (f15 > 1.0F / f10)
@@ -1012,7 +1012,10 @@ public class EntityRenderer
         mc.renderEngine.createTextureFromBytes(lightmapColors, 16, 16, lightmapTexture);
     }
 
-    private float func_82830_a(EntityPlayer par1EntityPlayer, float par2)
+    /**
+     * Gets the night vision brightness
+     */
+    private float getNightVisionBrightness(EntityPlayer par1EntityPlayer, float par2)
     {
         int i = par1EntityPlayer.getActivePotionEffect(Potion.nightVision).getDuration();
 
@@ -1041,7 +1044,7 @@ public class EntityRenderer
         mc.mcProfiler.endSection();
         boolean flag = Display.isActive();
 
-        if (flag || !mc.gameSettings.pauseOnLostFocus || mc.gameSettings.field_85185_A && Mouse.isButtonDown(1))
+        if (flag || !mc.gameSettings.pauseOnLostFocus || mc.gameSettings.touchscreen && Mouse.isButtonDown(1))
         {
             prevFrameTime = Minecraft.getSystemTime();
         }
@@ -1095,7 +1098,7 @@ public class EntityRenderer
         int j = scaledresolution.getScaledHeight();
         int k = (Mouse.getX() * i) / mc.displayWidth;
         int i1 = j - (Mouse.getY() * j) / mc.displayHeight - 1;
-        int j1 = func_78465_a(mc.gameSettings.limitFramerate);
+        int j1 = performanceToFps(mc.gameSettings.limitFramerate);
 
         if (mc.theWorld != null)
         {
@@ -1141,8 +1144,8 @@ public class EntityRenderer
             }
             catch (Throwable throwable)
             {
-                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Rendering screen");
-                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Screen render details");
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering screen");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Screen render details");
                 crashreportcategory.addCrashSectionCallable("Screen name", new CallableScreenName(this));
                 crashreportcategory.addCrashSectionCallable("Mouse location", new CallableMouseLocation(this, k, i1));
                 crashreportcategory.addCrashSectionCallable("Screen size", new CallableScreenSize(this, scaledresolution));
@@ -1486,11 +1489,11 @@ public class EntityRenderer
 
             if (d1 > entityliving.posY + 1.0D && worldclient.getPrecipitationHeight(MathHelper.floor_double(entityliving.posX), MathHelper.floor_double(entityliving.posZ)) > MathHelper.floor_double(entityliving.posY))
             {
-                mc.theWorld.playSound(d, d1, d2, "ambient.weather.rain", 0.1F, 0.5F);
+                mc.theWorld.playSound(d, d1, d2, "ambient.weather.rain", 0.1F, 0.5F, false);
             }
             else
             {
-                mc.theWorld.playSound(d, d1, d2, "ambient.weather.rain", 0.2F, 1.0F);
+                mc.theWorld.playSound(d, d1, d2, "ambient.weather.rain", 0.2F, 1.0F, false);
             }
         }
     }
@@ -2049,7 +2052,7 @@ public class EntityRenderer
 
         if (entityliving.isPotionActive(Potion.nightVision))
         {
-            float f12 = func_82830_a(mc.thePlayer, par1);
+            float f12 = getNightVisionBrightness(mc.thePlayer, par1);
             float f14 = 1.0F / fogColorRed;
 
             if (f14 > 1.0F / fogColorGreen)
@@ -2270,7 +2273,10 @@ public class EntityRenderer
         return fogColorBuffer;
     }
 
-    public static int func_78465_a(int par0)
+    /**
+     * Converts performance value (0-2) to FPS (35-200)
+     */
+    public static int performanceToFps(int par0)
     {
         char c = '\310';
 
@@ -2287,7 +2293,10 @@ public class EntityRenderer
         return c;
     }
 
-    static Minecraft func_90030_a(EntityRenderer par0EntityRenderer)
+    /**
+     * Get minecraft reference from the EntityRenderer
+     */
+    static Minecraft getRendererMinecraft(EntityRenderer par0EntityRenderer)
     {
         return par0EntityRenderer.mc;
     }

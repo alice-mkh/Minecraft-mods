@@ -154,7 +154,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      */
     public void closeScreen()
     {
-        craftingInventory = inventorySlots;
+        openContainer = inventoryContainer;
         mc.displayGuiScreen(null);
     }
 

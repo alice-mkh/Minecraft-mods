@@ -261,7 +261,7 @@ public class RenderLiving extends Render
      */
     protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        if (!par1EntityLiving.func_82150_aj())
+        if (!par1EntityLiving.getHasActivePotion())
         {
             loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
             mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
@@ -313,11 +313,11 @@ public class RenderLiving extends Render
 
     protected void renderEquippedItems(EntityLiving entityliving, float f)
     {
-        if(entityliving.func_85035_bI() > 0 && stick)
+        if(entityliving.getArrowCountInEntity() > 0 && stick)
         {
             EntityArrow entityarrow = new EntityArrow(entityliving.worldObj, entityliving.posX, entityliving.posY, entityliving.posZ);
             Random random = new Random(entityliving.entityId);
-            for(int i = 0; i < entityliving.func_85035_bI(); i++)
+            for(int i = 0; i < entityliving.getArrowCountInEntity(); i++)
             {
                 GL11.glPushMatrix();
                 ModelRenderer modelrenderer = (ModelRenderer)mainModel.boxList.get(random.nextInt(mainModel.boxList.size()));
@@ -350,9 +350,12 @@ public class RenderLiving extends Render
         }
     }
 
-    protected void func_85093_e(EntityLiving par1EntityLiving, float par2)
+    /**
+     * renders arrows the Entity has been attacked with, attached to it
+     */
+    protected void renderArrowsStuckInEntity(EntityLiving par1EntityLiving, float par2)
     {
-        int i = par1EntityLiving.func_85035_bI();
+        int i = par1EntityLiving.getArrowCountInEntity();
 
         if (i > 0)
         {

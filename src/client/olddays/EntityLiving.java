@@ -136,19 +136,19 @@ public abstract class EntityLiving extends Entity
 
     private static final float enchantmentProbability[] =
     {
-        0.0F, 0.0F, 0.005F, 0.01F
-    };
-    private static final float field_82178_c[] =
-    {
         0.0F, 0.0F, 0.05F, 0.1F
     };
-    private static final float field_82176_d[] =
+    private static final float armorEnchantmentProbability[] =
     {
-        0.0F, 0.0F, 0.005F, 0.02F
+        0.0F, 0.0F, 0.05F, 0.2F
     };
-    public static final float field_82181_as[] =
+    private static final float armorProbability[] =
     {
-        0.0F, 0.01F, 0.07F, 0.2F
+        0.0F, 0.0F, 0.05F, 0.02F
+    };
+    public static final float pickUpLootProability[] =
+    {
+        0.0F, 0.1F, 0.15F, 0.45F
     };
     public int maxHurtResistantTime;
     public float field_70769_ao;
@@ -469,7 +469,7 @@ public abstract class EntityLiving extends Entity
         return entityAge;
     }
 
-    public float func_70079_am()
+    public float setRotationYawHead()
     {
         return rotationYawHead;
     }
@@ -521,7 +521,10 @@ public abstract class EntityLiving extends Entity
         attackTarget = par1EntityLiving;
     }
 
-    public boolean isExplosiveMob(Class par1Class)
+    /**
+     * Returns true if this entity can attack entities of the specified class.
+     */
+    public boolean canAttackClass(Class par1Class)
     {
         return (net.minecraft.src.EntityCreeper.class) != par1Class && (net.minecraft.src.EntityGhast.class) != par1Class;
     }
@@ -713,7 +716,9 @@ public abstract class EntityLiving extends Entity
             extinguish();
         }
 
-        if (isEntityAlive() && isInsideOfMaterial(Material.water) && !canBreatheUnderwater() && !activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id)))
+        boolean flag = (this instanceof EntityPlayer) && ((EntityPlayer)this).capabilities.disableDamage;
+
+        if (isEntityAlive() && isInsideOfMaterial(Material.water) && !canBreatheUnderwater() && !activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id)) && !flag)
         {
             setAir(decreaseAirSupply(getAir()));
 
@@ -853,7 +858,25 @@ public abstract class EntityLiving extends Entity
      */
     protected int getExperiencePoints(EntityPlayer par1EntityPlayer)
     {
-        return experienceValue;
+        if (experienceValue > 0)
+        {
+            int i = experienceValue;
+            ItemStack aitemstack[] = getLastActiveItems();
+
+            for (int j = 0; j < aitemstack.length; j++)
+            {
+                if (aitemstack[j] != null && equipmentDropChances[j] <= 1.0F)
+                {
+                    i += 1 + rand.nextInt(3);
+                }
+            }
+
+            return i;
+        }
+        else
+        {
+            return experienceValue;
+        }
     }
 
     /**
@@ -925,7 +948,7 @@ public abstract class EntityLiving extends Entity
                 }
             }
 
-            int j = func_85035_bI();
+            int j = getArrowCountInEntity();
 
             if (j > 0)
             {
@@ -938,7 +961,7 @@ public abstract class EntityLiving extends Entity
 
                 if (arrowHitTimer <= 0)
                 {
-                    func_85034_r(j - 1);
+                    setArrowCountInEntity(j - 1);
                 }
             }
         }
@@ -1095,7 +1118,8 @@ public abstract class EntityLiving extends Entity
 
         if ((par1DamageSource == DamageSource.anvil || par1DamageSource == DamageSource.fallingBlock) && getCurrentItemOrArmor(4) != null)
         {
-            par2 = (int)((float)par2 * 0.55F);
+            getCurrentItemOrArmor(4).damageItem(par2 * 4 + rand.nextInt(par2 * 2), this);
+            par2 = (int)((float)par2 * 0.75F);
         }
 
         legYaw = 1.5F;
@@ -1819,6 +1843,12 @@ public abstract class EntityLiving extends Entity
             setPosition(d, d1, d2);
             setRotation(rotationYaw, rotationPitch);
         }
+        else if (!isClientWorld())
+        {
+            motionX *= 0.97999999999999998D;
+            motionY *= 0.97999999999999998D;
+            motionZ *= 0.97999999999999998D;
+        }
 
         if (Math.abs(motionX) < 0.0050000000000000001D)
         {
@@ -1915,9 +1945,9 @@ public abstract class EntityLiving extends Entity
 
                 EntityItem entityitem = (EntityItem)iterator.next();
 
-                if (!entityitem.isDead && entityitem.item != null)
+                if (!entityitem.isDead && entityitem.func_92059_d() != null)
                 {
-                    ItemStack itemstack = entityitem.item;
+                    ItemStack itemstack = entityitem.func_92059_d();
                     int i = func_82159_b(itemstack);
 
                     if (i > -1)
@@ -2513,14 +2543,14 @@ public abstract class EntityLiving extends Entity
                 {
                     dataWatcher.updateObject(9, Byte.valueOf((byte)0));
                     dataWatcher.updateObject(8, Integer.valueOf(0));
-                    func_82142_c(false);
+                    setHasActivePotion(false);
                 }
                 else
                 {
                     int i = PotionHelper.calcPotionLiquidColor(activePotionsMap.values());
                     dataWatcher.updateObject(9, Byte.valueOf(((byte)(PotionHelper.func_82817_b(activePotionsMap.values()) ? 1 : 0))));
                     dataWatcher.updateObject(8, Integer.valueOf(i));
-                    func_82142_c(func_82165_m(Potion.invisibility.id));
+                    setHasActivePotion(isPotionActive(Potion.invisibility.id));
                 }
             }
 
@@ -2534,7 +2564,7 @@ public abstract class EntityLiving extends Entity
         {
             boolean flag1 = false;
 
-            if (!func_82150_aj())
+            if (!getHasActivePotion())
             {
                 flag1 = rand.nextBoolean();
             }
@@ -2586,7 +2616,7 @@ public abstract class EntityLiving extends Entity
         return activePotionsMap.values();
     }
 
-    public boolean func_82165_m(int par1)
+    public boolean isPotionActive(int par1)
     {
         return activePotionsMap.containsKey(Integer.valueOf(par1));
     }
@@ -2856,22 +2886,22 @@ public abstract class EntityLiving extends Entity
 
     protected void func_82164_bB()
     {
-        if (rand.nextFloat() < field_82176_d[worldObj.difficultySetting])
+        if (rand.nextFloat() < armorProbability[worldObj.difficultySetting])
         {
             int i = rand.nextInt(2);
             float f = worldObj.difficultySetting != 3 ? 0.25F : 0.1F;
 
-            if (rand.nextFloat() < 0.07F)
+            if (rand.nextFloat() < 0.1F)
             {
                 i++;
             }
 
-            if (rand.nextFloat() < 0.07F)
+            if (rand.nextFloat() < 0.1F)
             {
                 i++;
             }
 
-            if (rand.nextFloat() < 0.07F)
+            if (rand.nextFloat() < 0.1F)
             {
                 i++;
             }
@@ -2890,7 +2920,7 @@ public abstract class EntityLiving extends Entity
                     continue;
                 }
 
-                Item item = func_82161_a(j + 1, i);
+                Item item = getArmorItemForSlot(j + 1, i);
 
                 if (item != null)
                 {
@@ -2951,7 +2981,10 @@ public abstract class EntityLiving extends Entity
         return 0;
     }
 
-    public static Item func_82161_a(int par0, int par1)
+    /**
+     * Params: Armor slot, Item tier
+     */
+    public static Item getArmorItemForSlot(int par0, int par1)
     {
         switch (par0)
         {
@@ -3072,16 +3105,16 @@ public abstract class EntityLiving extends Entity
     {
         if (getHeldItem() != null && rand.nextFloat() < enchantmentProbability[worldObj.difficultySetting])
         {
-            EnchantmentHelper.addRandomEnchantment(rand, getHeldItem(), 5);
+            EnchantmentHelper.addRandomEnchantment(rand, getHeldItem(), 5 + worldObj.difficultySetting * rand.nextInt(6));
         }
 
         for (int i = 0; i < 4; i++)
         {
             ItemStack itemstack = getCurrentArmor(i);
 
-            if (itemstack != null && rand.nextFloat() < field_82178_c[worldObj.difficultySetting])
+            if (itemstack != null && rand.nextFloat() < armorEnchantmentProbability[worldObj.difficultySetting])
             {
-                EnchantmentHelper.addRandomEnchantment(rand, itemstack, 5);
+                EnchantmentHelper.addRandomEnchantment(rand, itemstack, 5 + worldObj.difficultySetting * rand.nextInt(6));
             }
         }
     }
@@ -3140,12 +3173,18 @@ public abstract class EntityLiving extends Entity
         return false;
     }
 
-    public final int func_85035_bI()
+    /**
+     * counts the amount of arrows stuck in the entity. getting hit by arrows increases this, used in rendering
+     */
+    public final int getArrowCountInEntity()
     {
         return dataWatcher.getWatchableObjectByte(10);
     }
 
-    public final void func_85034_r(int par1)
+    /**
+     * sets the amount of arrows stuck in the entity. used for rendering those
+     */
+    public final void setArrowCountInEntity(int par1)
     {
         dataWatcher.updateObject(10, Byte.valueOf((byte)par1));
     }

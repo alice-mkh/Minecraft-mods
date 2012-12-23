@@ -30,13 +30,27 @@ public class RenderBlocks
     public static boolean fancyGrass = true;
     public static boolean cfgGrassFix = true;
     public boolean useInventoryTint;
-    private double field_83021_g;
-    private double field_83026_h;
-    private double field_83027_i;
-    private double field_83024_j;
-    private double field_83025_k;
-    private double field_83022_l;
-    private boolean field_83023_m;
+
+    /** Custom minimum X for rendering */
+    private double customMinX;
+
+    /** Custom maximum X for rendering */
+    private double customMaxX;
+
+    /** Custom minimum Y for rendering */
+    private double customMinY;
+
+    /** Custom maximum Y for rendering */
+    private double customMaxY;
+
+    /** Custom minimum Z for rendering */
+    private double customMinZ;
+
+    /** Custom maximum Z for rendering */
+    private double customMaxZ;
+
+    /** Use custom block bounds for the rendering */
+    private boolean useCustomBlockBounds;
     private int uvRotateEast;
     private int uvRotateWest;
     private int uvRotateSouth;
@@ -345,7 +359,7 @@ public class RenderBlocks
         flipTexture = false;
         renderAllFaces = false;
         useInventoryTint = true;
-        field_83023_m = false;
+        useCustomBlockBounds = false;
         uvRotateEast = 0;
         uvRotateWest = 0;
         uvRotateSouth = 0;
@@ -362,7 +376,7 @@ public class RenderBlocks
         flipTexture = false;
         renderAllFaces = false;
         useInventoryTint = true;
-        field_83023_m = false;
+        useCustomBlockBounds = false;
         uvRotateEast = 0;
         uvRotateWest = 0;
         uvRotateSouth = 0;
@@ -372,7 +386,10 @@ public class RenderBlocks
         aoType = 1;
     }
 
-    public void func_82774_a(int par1)
+    /**
+     * Sets overrideBlockTexture
+     */
+    public void setOverrideBlockTexture(int par1)
     {
         overrideBlockTexture = par1;
     }
@@ -390,44 +407,53 @@ public class RenderBlocks
      */
     public void setRenderMinMax(double par1, double par3, double par5, double par7, double par9, double par11)
     {
-        if (!field_83023_m)
+        if (!useCustomBlockBounds)
         {
-            field_83021_g = par1;
-            field_83026_h = par7;
-            field_83027_i = par3;
-            field_83024_j = par9;
-            field_83025_k = par5;
-            field_83022_l = par11;
+            customMinX = par1;
+            customMaxX = par7;
+            customMinY = par3;
+            customMaxY = par9;
+            customMinZ = par5;
+            customMaxZ = par11;
         }
     }
 
-    public void func_83018_a(Block par1Block)
+    /**
+     * Updates the custom block bounds with the bounds of the given block
+     */
+    public void updateCustomBlockBounds(Block par1Block)
     {
-        if (!field_83023_m)
+        if (!useCustomBlockBounds)
         {
-            field_83021_g = par1Block.getBlockBoundsMinX();
-            field_83026_h = par1Block.getBlockBoundsMaxX();
-            field_83027_i = par1Block.getBlockBoundsMinY();
-            field_83024_j = par1Block.getBlockBoundsMaxY();
-            field_83025_k = par1Block.getBlockBoundsMinZ();
-            field_83022_l = par1Block.getBlockBoundsMaxZ();
+            customMinX = par1Block.getBlockBoundsMinX();
+            customMaxX = par1Block.getBlockBoundsMaxX();
+            customMinY = par1Block.getBlockBoundsMinY();
+            customMaxY = par1Block.getBlockBoundsMaxY();
+            customMinZ = par1Block.getBlockBoundsMinZ();
+            customMaxZ = par1Block.getBlockBoundsMaxZ();
         }
     }
 
-    public void func_83019_b(double par1, double par3, double par5, double par7, double par9, double par11)
+    /**
+     * Sets the custom block bounds for rendering
+     */
+    public void setCustomBlockBounds(double par1, double par3, double par5, double par7, double par9, double par11)
     {
-        field_83021_g = par1;
-        field_83026_h = par7;
-        field_83027_i = par3;
-        field_83024_j = par9;
-        field_83025_k = par5;
-        field_83022_l = par11;
-        field_83023_m = true;
+        customMinX = par1;
+        customMaxX = par7;
+        customMinY = par3;
+        customMaxY = par9;
+        customMinZ = par5;
+        customMaxZ = par11;
+        useCustomBlockBounds = true;
     }
 
-    public void func_83017_b()
+    /**
+     * Reset customBlockBounds
+     */
+    public void resetCustomBlockBounds()
     {
-        field_83023_m = false;
+        useCustomBlockBounds = false;
     }
 
     /**
@@ -457,7 +483,7 @@ public class RenderBlocks
     {
         int i = par1Block.getRenderType();
         par1Block.setBlockBoundsBasedOnState(blockAccess, par2, par3, par4);
-        func_83018_a(par1Block);
+        updateCustomBlockBounds(par1Block);
 
         if (i == 0)
         {
@@ -546,7 +572,7 @@ public class RenderBlocks
 
         if (i == 32)
         {
-            return func_82779_a((BlockWall)par1Block, par2, par3, par4);
+            return renderBlockWall((BlockWall)par1Block, par2, par3, par4);
         }
 
         if (i == 12)
@@ -606,12 +632,12 @@ public class RenderBlocks
 
         if (i == 33)
         {
-            return func_82780_a((BlockFlowerPot)par1Block, par2, par3, par4);
+            return renderBlockFlowerpot((BlockFlowerPot)par1Block, par2, par3, par4);
         }
 
         if (i == 35)
         {
-            return func_82775_a((BlockAnvil)par1Block, par2, par3, par4);
+            return renderBlockAnvil((BlockAnvil)par1Block, par2, par3, par4);
         }
 
         if (i == 25)
@@ -631,7 +657,7 @@ public class RenderBlocks
 
         if (i == 34)
         {
-            return func_82778_a((BlockBeacon)par1Block, par2, par3, par4);
+            return renderBlockBeacon((BlockBeacon)par1Block, par2, par3, par4);
         }
         else
         {
@@ -722,11 +748,11 @@ public class RenderBlocks
         double d1 = ((double)(i1 + 16) - 0.01D) / 256D;
         double d2 = (float)j1 / 256F;
         double d3 = ((double)(j1 + 16) - 0.01D) / 256D;
-        double d4 = (double)par2 + field_83021_g;
-        double d5 = (double)par2 + field_83026_h;
-        double d6 = (double)par3 + field_83027_i + 0.1875D;
-        double d7 = (double)par4 + field_83025_k;
-        double d8 = (double)par4 + field_83022_l;
+        double d4 = (double)par2 + customMinX;
+        double d5 = (double)par2 + customMaxX;
+        double d6 = (double)par3 + customMinY + 0.1875D;
+        double d7 = (double)par4 + customMinZ;
+        double d8 = (double)par4 + customMaxZ;
         tessellator.addVertexWithUV(d4, d6, d8, d, d3);
         tessellator.addVertexWithUV(d4, d6, d7, d, d2);
         tessellator.addVertexWithUV(d5, d6, d7, d1, d2);
@@ -780,11 +806,11 @@ public class RenderBlocks
             d11 = d2;
         }
 
-        double d12 = (double)par2 + field_83021_g;
-        double d13 = (double)par2 + field_83026_h;
-        double d14 = (double)par3 + field_83024_j;
-        double d15 = (double)par4 + field_83025_k;
-        double d16 = (double)par4 + field_83022_l;
+        double d12 = (double)par2 + customMinX;
+        double d13 = (double)par2 + customMaxX;
+        double d14 = (double)par3 + customMaxY;
+        double d15 = (double)par4 + customMinZ;
+        double d16 = (double)par4 + customMaxZ;
         tessellator.addVertexWithUV(d13, d14, d16, d8, d10);
         tessellator.addVertexWithUV(d13, d14, d15, d4, d6);
         tessellator.addVertexWithUV(d12, d14, d15, d5, d7);
@@ -817,7 +843,7 @@ public class RenderBlocks
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
                 tessellator.setColorOpaque_F(f8 * ff, f11 * ff, f14 * ff);
             }else{
-                tessellator.setBrightness(field_83025_k <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : k);
+                tessellator.setBrightness(customMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : k);
                 tessellator.setColorOpaque_F(f8, f11, f14);
             }
             flipTexture = byte0 == 2;
@@ -830,7 +856,7 @@ public class RenderBlocks
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
                 tessellator.setColorOpaque_F(f8 * ff, f11 * ff, f14 * ff);
             }else{
-                tessellator.setBrightness(field_83022_l >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : k);
+                tessellator.setBrightness(customMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : k);
                 tessellator.setColorOpaque_F(f8, f11, f14);
             }
             flipTexture = byte0 == 3;
@@ -843,7 +869,7 @@ public class RenderBlocks
                 float ff = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
                 tessellator.setColorOpaque_F(f9 * ff, f12 * ff, f15 * ff);
             }else{
-                tessellator.setBrightness(field_83025_k <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : k);
+                tessellator.setBrightness(customMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : k);
                 tessellator.setColorOpaque_F(f9, f12, f15);
             }
             flipTexture = byte0 == 4;
@@ -856,7 +882,7 @@ public class RenderBlocks
                 float ff = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
                 tessellator.setColorOpaque_F(f9 * ff, f12 * ff, f15 * ff);
             }else{
-                tessellator.setBrightness(field_83022_l >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : k);
+                tessellator.setBrightness(customMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : k);
                 tessellator.setColorOpaque_F(f9, f12, f15);
             }
             flipTexture = byte0 == 5;
@@ -999,7 +1025,10 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean func_82780_a(BlockFlowerPot par1BlockFlowerPot, int par2, int par3, int par4)
+    /**
+     * Renders flower pot
+     */
+    private boolean renderBlockFlowerpot(BlockFlowerPot par1BlockFlowerPot, int par2, int par3, int par4)
     {
         renderStandardBlock(par1BlockFlowerPot, par2, par3, par4);
         Tessellator tessellator = Tessellator.instance;
@@ -1108,12 +1137,18 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean func_82775_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4)
+    /**
+     * Renders anvil
+     */
+    private boolean renderBlockAnvil(BlockAnvil par1BlockAnvil, int par2, int par3, int par4)
     {
-        return func_85096_a(par1BlockAnvil, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4));
+        return renderBlockAnvilMetadata(par1BlockAnvil, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4));
     }
 
-    public boolean func_85096_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5)
+    /**
+     * Renders anvil block with metadata
+     */
+    public boolean renderBlockAnvilMetadata(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(par1BlockAnvil.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
@@ -1134,10 +1169,13 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
-        return func_82776_a(par1BlockAnvil, par2, par3, par4, par5, false);
+        return renderBlockAnvilOrient(par1BlockAnvil, par2, par3, par4, par5, false);
     }
 
-    private boolean func_82776_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, boolean par6)
+    /**
+     * Renders anvil block with orientation
+     */
+    private boolean renderBlockAnvilOrient(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, boolean par6)
     {
         int i = par6 ? 0 : par5 & 3;
         boolean flag = false;
@@ -1171,10 +1209,10 @@ public class RenderBlocks
                 break;
         }
 
-        f = func_82777_a(par1BlockAnvil, par2, par3, par4, 0, f, 0.75F, 0.25F, 0.75F, flag, par6, par5);
-        f = func_82777_a(par1BlockAnvil, par2, par3, par4, 1, f, 0.5F, 0.0625F, 0.625F, flag, par6, par5);
-        f = func_82777_a(par1BlockAnvil, par2, par3, par4, 2, f, 0.25F, 0.3125F, 0.5F, flag, par6, par5);
-        f = func_82777_a(par1BlockAnvil, par2, par3, par4, 3, f, 0.625F, 0.375F, 1.0F, flag, par6, par5);
+        f = renderBlockAnvilRotate(par1BlockAnvil, par2, par3, par4, 0, f, 0.75F, 0.25F, 0.75F, flag, par6, par5);
+        f = renderBlockAnvilRotate(par1BlockAnvil, par2, par3, par4, 1, f, 0.5F, 0.0625F, 0.625F, flag, par6, par5);
+        f = renderBlockAnvilRotate(par1BlockAnvil, par2, par3, par4, 2, f, 0.25F, 0.3125F, 0.5F, flag, par6, par5);
+        f = renderBlockAnvilRotate(par1BlockAnvil, par2, par3, par4, 3, f, 0.625F, 0.375F, 1.0F, flag, par6, par5);
         setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         uvRotateEast = 0;
         uvRotateWest = 0;
@@ -1185,7 +1223,10 @@ public class RenderBlocks
         return true;
     }
 
-    private float func_82777_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, float par6, float par7, float par8, float par9, boolean par10, boolean par11, int par12)
+    /**
+     * Renders anvil block with rotation
+     */
+    private float renderBlockAnvilRotate(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, float par6, float par7, float par8, float par9, boolean par10, boolean par11, int par12)
     {
         if (par10)
         {
@@ -1335,7 +1376,7 @@ public class RenderBlocks
         }
         else
         {
-            func_82774_a(17);
+            setOverrideBlockTexture(17);
             int l = 16;
             int j1 = 16;
             float f = 2.0F;
@@ -3695,12 +3736,12 @@ public class RenderBlocks
 
         if (j < 0)
         {
-            renderBlockStemSmall(blockstem, blockAccess.getBlockMetadata(par2, par3, par4), field_83024_j, par2, (float)par3 - 0.0625F, par4);
+            renderBlockStemSmall(blockstem, blockAccess.getBlockMetadata(par2, par3, par4), customMaxY, par2, (float)par3 - 0.0625F, par4);
         }
         else
         {
             renderBlockStemSmall(blockstem, blockAccess.getBlockMetadata(par2, par3, par4), 0.5D, par2, (float)par3 - 0.0625F, par4);
-            renderBlockStemBig(blockstem, blockAccess.getBlockMetadata(par2, par3, par4), j, field_83024_j, par2, (float)par3 - 0.0625F, par4);
+            renderBlockStemBig(blockstem, blockAccess.getBlockMetadata(par2, par3, par4), j, customMaxY, par2, (float)par3 - 0.0625F, par4);
         }
 
         return true;
@@ -4244,8 +4285,8 @@ public class RenderBlocks
             tessellator.addVertexWithUV(d13, par3 + 0, d14, d17, d21);
         }
 
-        field_83027_i = d;
-        field_83024_j = d1;
+        customMinY = d;
+        customMaxY = d1;
         return flag2;
     }
 
@@ -4295,7 +4336,10 @@ public class RenderBlocks
         return 1.0F - f / (float)i;
     }
 
-    public void func_78588_a(Block par1Block, World par2World, int par3, int par4, int par5, int par6)
+    /**
+     * Renders a falling sand block
+     */
+    public void renderBlockSandFalling(Block par1Block, World par2World, int par3, int par4, int par5, int par6)
     {
         float f = 0.5F;
         float f1 = 1.0F;
@@ -4457,32 +4501,32 @@ public class RenderBlocks
         int j1 = i;
         int k1 = i;
 
-        if (field_83027_i <= 0.0D)
+        if (customMinY <= 0.0D)
         {
             k = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
         }
 
-        if (field_83024_j >= 1.0D)
+        if (customMaxY >= 1.0D)
         {
             j1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
         }
 
-        if (field_83021_g <= 0.0D)
+        if (customMinX <= 0.0D)
         {
             j = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
         }
 
-        if (field_83026_h >= 1.0D)
+        if (customMaxX >= 1.0D)
         {
             i1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
         }
 
-        if (field_83025_k <= 0.0D)
+        if (customMinZ <= 0.0D)
         {
             l = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
         }
 
-        if (field_83022_l >= 1.0D)
+        if (customMaxZ >= 1.0D)
         {
             k1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
         }
@@ -4521,7 +4565,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83027_i <= 0.0D)
+                if (customMinY <= 0.0D)
                 {
                     par3--;
                 }
@@ -4579,7 +4623,7 @@ public class RenderBlocks
                     aoBrightnessXYZPNP = aoBrightnessXYPN;
                 }
 
-                if (field_83027_i <= 0.0D)
+                if (customMinY <= 0.0D)
                 {
                     par3++;
                 }
@@ -4627,7 +4671,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83024_j >= 1.0D)
+                if (customMaxY >= 1.0D)
                 {
                     par3++;
                 }
@@ -4685,7 +4729,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPP = aoBrightnessXYPP;
                 }
 
-                if (field_83024_j >= 1.0D)
+                if (customMaxY >= 1.0D)
                 {
                     par3--;
                 }
@@ -4733,7 +4777,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83025_k <= 0.0D)
+                if (customMinZ <= 0.0D)
                 {
                     par4--;
                 }
@@ -4791,7 +4835,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPN = aoBrightnessXZPN;
                 }
 
-                if (field_83025_k <= 0.0D)
+                if (customMinZ <= 0.0D)
                 {
                     par4++;
                 }
@@ -4858,7 +4902,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83022_l >= 1.0D)
+                if (customMaxZ >= 1.0D)
                 {
                     par4++;
                 }
@@ -4916,7 +4960,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPP = aoBrightnessXZPP;
                 }
 
-                if (field_83022_l >= 1.0D)
+                if (customMaxZ >= 1.0D)
                 {
                     par4--;
                 }
@@ -4983,7 +5027,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83021_g <= 0.0D)
+                if (customMinX <= 0.0D)
                 {
                     par2--;
                 }
@@ -5041,7 +5085,7 @@ public class RenderBlocks
                     aoBrightnessXYZNPP = aoBrightnessXZNP;
                 }
 
-                if (field_83021_g <= 0.0D)
+                if (customMinX <= 0.0D)
                 {
                     par2++;
                 }
@@ -5108,7 +5152,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83026_h >= 1.0D)
+                if (customMaxX >= 1.0D)
                 {
                     par2++;
                 }
@@ -5166,7 +5210,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPP = aoBrightnessXZPP;
                 }
 
-                if (field_83026_h >= 1.0D)
+                if (customMaxX >= 1.0D)
                 {
                     par2--;
                 }
@@ -5257,32 +5301,32 @@ public class RenderBlocks
         int j1 = i;
         int k1 = i;
 
-        if (field_83027_i <= 0.0D)
+        if (customMinY <= 0.0D)
         {
             k = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4);
         }
 
-        if (field_83024_j >= 1.0D)
+        if (customMaxY >= 1.0D)
         {
             j1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4);
         }
 
-        if (field_83021_g <= 0.0D)
+        if (customMinX <= 0.0D)
         {
             j = par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4);
         }
 
-        if (field_83026_h >= 1.0D)
+        if (customMaxX >= 1.0D)
         {
             i1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4);
         }
 
-        if (field_83025_k <= 0.0D)
+        if (customMinZ <= 0.0D)
         {
             l = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1);
         }
 
-        if (field_83022_l >= 1.0D)
+        if (customMaxZ >= 1.0D)
         {
             k1 = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1);
         }
@@ -5321,7 +5365,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83027_i <= 0.0D)
+                if (customMinY <= 0.0D)
                 {
                     par3--;
                 }
@@ -5379,7 +5423,7 @@ public class RenderBlocks
                     aoBrightnessXYZPNP = aoBrightnessXYPN;
                 }
 
-                if (field_83027_i <= 0.0D)
+                if (customMinY <= 0.0D)
                 {
                     par3++;
                 }
@@ -5427,7 +5471,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83024_j >= 1.0D)
+                if (customMaxY >= 1.0D)
                 {
                     par3++;
                 }
@@ -5485,7 +5529,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPP = aoBrightnessXYPP;
                 }
 
-                if (field_83024_j >= 1.0D)
+                if (customMaxY >= 1.0D)
                 {
                     par3--;
                 }
@@ -5533,7 +5577,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83025_k <= 0.0D)
+                if (customMinZ <= 0.0D)
                 {
                     par4--;
                 }
@@ -5591,7 +5635,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPN = aoBrightnessXZPN;
                 }
 
-                if (field_83025_k <= 0.0D)
+                if (customMinZ <= 0.0D)
                 {
                     par4++;
                 }
@@ -5658,7 +5702,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83022_l >= 1.0D)
+                if (customMaxZ >= 1.0D)
                 {
                     par4++;
                 }
@@ -5716,7 +5760,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPP = aoBrightnessXZPP;
                 }
 
-                if (field_83022_l >= 1.0D)
+                if (customMaxZ >= 1.0D)
                 {
                     par4--;
                 }
@@ -5783,7 +5827,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83021_g <= 0.0D)
+                if (customMinX <= 0.0D)
                 {
                     par2--;
                 }
@@ -5841,7 +5885,7 @@ public class RenderBlocks
                     aoBrightnessXYZNPP = aoBrightnessXZNP;
                 }
 
-                if (field_83021_g <= 0.0D)
+                if (customMinX <= 0.0D)
                 {
                     par2++;
                 }
@@ -5908,7 +5952,7 @@ public class RenderBlocks
 
             if (aoType > 0)
             {
-                if (field_83026_h >= 1.0D)
+                if (customMaxX >= 1.0D)
                 {
                     par2++;
                 }
@@ -5966,7 +6010,7 @@ public class RenderBlocks
                     aoBrightnessXYZPPP = aoBrightnessXZPP;
                 }
 
-                if (field_83026_h >= 1.0D)
+                if (customMaxX >= 1.0D)
                 {
                     par2--;
                 }
@@ -6094,7 +6138,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 - 1, par4, 0))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83027_i <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
+                tessellator.setBrightness(customMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
                 tessellator.setColorOpaque_F(f7, f10, f13);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
@@ -6107,7 +6151,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 + 1, par4, 1))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83024_j >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
+                tessellator.setBrightness(customMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
                 tessellator.setColorOpaque_F(f4, f5, f6);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
@@ -6120,7 +6164,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 - 1, 2))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83025_k <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
+                tessellator.setBrightness(customMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
                 tessellator.setColorOpaque_F(f8, f11, f14);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
@@ -6142,7 +6186,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 + 1, 3))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83022_l >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
+                tessellator.setBrightness(customMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
                 tessellator.setColorOpaque_F(f8, f11, f14);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
@@ -6164,7 +6208,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 - 1, par3, par4, 4))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83021_g <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
+                tessellator.setBrightness(customMinX <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
                 tessellator.setColorOpaque_F(f9, f12, f15);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
@@ -6186,7 +6230,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 + 1, par3, par4, 5))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83026_h >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
+                tessellator.setBrightness(customMaxX >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
                 tessellator.setColorOpaque_F(f9, f12, f15);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
@@ -6365,16 +6409,19 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean func_82778_a(BlockBeacon par1BlockBeacon, int par2, int par3, int par4)
+    /**
+     * Renders beacon block
+     */
+    private boolean renderBlockBeacon(BlockBeacon par1BlockBeacon, int par2, int par3, int par4)
     {
         float f = 0.1875F;
-        func_82774_a(Block.obsidian.blockIndexInTexture);
-        setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, f, 0.875D);
+        setOverrideBlockTexture(Block.obsidian.blockIndexInTexture);
+        setRenderMinMax(0.125D, 0.0062500000931322575D, 0.125D, 0.875D, f, 0.875D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
-        func_82774_a(Block.glass.blockIndexInTexture);
+        setOverrideBlockTexture(Block.glass.blockIndexInTexture);
         setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
-        func_82774_a(41);
+        setOverrideBlockTexture(41);
         setRenderMinMax(0.1875D, f, 0.1875D, 0.8125D, 0.875D, 0.8125D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         clearOverrideBlockTexture();
@@ -6433,7 +6480,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 - 1, par4, 0))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83027_i <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
+                tessellator.setBrightness(customMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
                 tessellator.setColorOpaque_F(f4, f8, f12);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
@@ -6446,7 +6493,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 + 1, par4, 1))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83024_j >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
+                tessellator.setBrightness(customMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
                 tessellator.setColorOpaque_F(f5, f9, f13);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
@@ -6459,7 +6506,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 - 1, 2))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83025_k <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
+                tessellator.setBrightness(customMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
                 tessellator.setColorOpaque_F(f6, f10, f14);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
@@ -6474,7 +6521,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 + 1, 3))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83022_l >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
+                tessellator.setBrightness(customMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
                 tessellator.setColorOpaque_F(f6, f10, f14);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
@@ -6489,7 +6536,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 - 1, par3, par4, 4))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83021_g <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
+                tessellator.setBrightness(customMinX <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
                 tessellator.setColorOpaque_F(f7, f11, f15);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
@@ -6504,7 +6551,7 @@ public class RenderBlocks
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 + 1, par3, par4, 5))
         {
             if (!Minecraft.oldlighting){
-                tessellator.setBrightness(field_83026_h >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
+                tessellator.setBrightness(customMaxX >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
                 tessellator.setColorOpaque_F(f7, f11, f15);
             }else{
                 float ff = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
@@ -6594,7 +6641,10 @@ public class RenderBlocks
         return flag;
     }
 
-    public boolean func_82779_a(BlockWall par1BlockWall, int par2, int par3, int par4)
+    /**
+     * Renders wall block
+     */
+    public boolean renderBlockWall(BlockWall par1BlockWall, int par2, int par3, int par4)
     {
         boolean flag = par1BlockWall.canConnectWallTo(blockAccess, par2 - 1, par3, par4);
         boolean flag1 = par1BlockWall.canConnectWallTo(blockAccess, par2 + 1, par3, par4);
@@ -6904,15 +6954,15 @@ public class RenderBlocks
     public boolean renderBlockStairs(BlockStairs par1BlockStairs, int par2, int par3, int par4)
     {
         par1BlockStairs.func_82541_d(blockAccess, par2, par3, par4);
-        func_83018_a(par1BlockStairs);
+        updateCustomBlockBounds(par1BlockStairs);
         renderStandardBlock(par1BlockStairs, par2, par3, par4);
         boolean flag = par1BlockStairs.func_82542_g(blockAccess, par2, par3, par4);
-        func_83018_a(par1BlockStairs);
+        updateCustomBlockBounds(par1BlockStairs);
         renderStandardBlock(par1BlockStairs, par2, par3, par4);
 
         if (flag && par1BlockStairs.func_82544_h(blockAccess, par2, par3, par4))
         {
-            func_83018_a(par1BlockStairs);
+            updateCustomBlockBounds(par1BlockStairs);
             renderStandardBlock(par1BlockStairs, par2, par3, par4);
         }
 
@@ -6934,11 +6984,11 @@ public class RenderBlocks
         float f5 = 1.0F;
         int i = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4);
         if (!Minecraft.oldlighting){
-            tessellator.setBrightness(field_83027_i <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
+            tessellator.setBrightness(customMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
         }else{
             f4 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
             f5 = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
-            if(field_83027_i > 0.0D)
+            if(customMinY > 0.0D)
             {
                 f5 = f4;
             }
@@ -6951,10 +7001,10 @@ public class RenderBlocks
         renderBottomFace(par1Block, par2, par3, par4, par1Block.getBlockTexture(blockAccess, par2, par3, par4, 0));
         flag = true;
         if (!Minecraft.oldlighting){
-            tessellator.setBrightness(field_83024_j >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
+            tessellator.setBrightness(customMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
         }else{
             f5 = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
-            if(field_83024_j < 1.0D)
+            if(customMaxY < 1.0D)
             {
                 f5 = f4;
             }
@@ -6967,10 +7017,10 @@ public class RenderBlocks
         renderTopFace(par1Block, par2, par3, par4, par1Block.getBlockTexture(blockAccess, par2, par3, par4, 1));
         flag = true;
         if (!Minecraft.oldlighting){
-            tessellator.setBrightness(field_83025_k <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
+            tessellator.setBrightness(customMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
         }else{
             f5 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
-            if(field_83025_k > 0.0D)
+            if(customMinZ > 0.0D)
             {
                 f5 = f4;
             }
@@ -6992,10 +7042,10 @@ public class RenderBlocks
         flag = true;
         flipTexture = false;
         if (!Minecraft.oldlighting){
-            tessellator.setBrightness(field_83022_l >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
+            tessellator.setBrightness(customMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
         }else{
             f5 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
-            if(field_83022_l < 1.0D)
+            if(customMaxZ < 1.0D)
             {
                 f5 = f4;
             }
@@ -7017,10 +7067,10 @@ public class RenderBlocks
         flag = true;
         flipTexture = false;
         if (!Minecraft.oldlighting){
-            tessellator.setBrightness(field_83021_g <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
+            tessellator.setBrightness(customMinX <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
         }else{
             f5 = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
-            if(field_83021_g > 0.0D)
+            if(customMinX > 0.0D)
             {
                 f5 = f4;
             }
@@ -7042,10 +7092,10 @@ public class RenderBlocks
         flag = true;
         flipTexture = false;
         if (!Minecraft.oldlighting){
-            tessellator.setBrightness(field_83026_h >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
+            tessellator.setBrightness(customMaxX >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
         }else{
             f5 = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
-            if(field_83026_h < 1.0D)
+            if(customMaxX < 1.0D)
             {
                 f5 = f4;
             }
@@ -7083,18 +7133,18 @@ public class RenderBlocks
 
         int i = (par8 & 0xf) << 4;
         int j = par8 & 0xf0;
-        double d = ((double)i + field_83021_g * 16D) / 256D;
-        double d1 = (((double)i + field_83026_h * 16D) - 0.01D) / 256D;
-        double d2 = ((double)j + field_83025_k * 16D) / 256D;
-        double d3 = (((double)j + field_83022_l * 16D) - 0.01D) / 256D;
+        double d = ((double)i + customMinX * 16D) / 256D;
+        double d1 = (((double)i + customMaxX * 16D) - 0.01D) / 256D;
+        double d2 = ((double)j + customMinZ * 16D) / 256D;
+        double d3 = (((double)j + customMaxZ * 16D) - 0.01D) / 256D;
 
-        if (field_83021_g < 0.0D || field_83026_h > 1.0D)
+        if (customMinX < 0.0D || customMaxX > 1.0D)
         {
             d = ((float)i + 0.0F) / 256F;
             d1 = ((float)i + 15.99F) / 256F;
         }
 
-        if (field_83025_k < 0.0D || field_83022_l > 1.0D)
+        if (customMinZ < 0.0D || customMaxZ > 1.0D)
         {
             d2 = ((float)j + 0.0F) / 256F;
             d3 = ((float)j + 15.99F) / 256F;
@@ -7107,10 +7157,10 @@ public class RenderBlocks
 
         if (uvRotateBottom == 2)
         {
-            d = ((double)i + field_83025_k * 16D) / 256D;
-            d2 = ((double)(j + 16) - field_83026_h * 16D) / 256D;
-            d1 = ((double)i + field_83022_l * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83021_g * 16D) / 256D;
+            d = ((double)i + customMinZ * 16D) / 256D;
+            d2 = ((double)(j + 16) - customMaxX * 16D) / 256D;
+            d1 = ((double)i + customMaxZ * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMinX * 16D) / 256D;
             d4 = d1;
             d5 = d;
             d6 = d2;
@@ -7122,10 +7172,10 @@ public class RenderBlocks
         }
         else if (uvRotateBottom == 1)
         {
-            d = ((double)(i + 16) - field_83022_l * 16D) / 256D;
-            d2 = ((double)j + field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83025_k * 16D) / 256D;
-            d3 = ((double)j + field_83026_h * 16D) / 256D;
+            d = ((double)(i + 16) - customMaxZ * 16D) / 256D;
+            d2 = ((double)j + customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMinZ * 16D) / 256D;
+            d3 = ((double)j + customMaxX * 16D) / 256D;
             d4 = d1;
             d5 = d;
             d6 = d2;
@@ -7137,21 +7187,21 @@ public class RenderBlocks
         }
         else if (uvRotateBottom == 3)
         {
-            d = ((double)(i + 16) - field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83026_h * 16D - 0.01D) / 256D;
-            d2 = ((double)(j + 16) - field_83025_k * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83022_l * 16D - 0.01D) / 256D;
+            d = ((double)(i + 16) - customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMaxX * 16D - 0.01D) / 256D;
+            d2 = ((double)(j + 16) - customMinZ * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMaxZ * 16D - 0.01D) / 256D;
             d4 = d1;
             d5 = d;
             d6 = d2;
             d7 = d3;
         }
 
-        double d8 = par2 + field_83021_g;
-        double d9 = par2 + field_83026_h;
-        double d10 = par4 + field_83027_i;
-        double d11 = par6 + field_83025_k;
-        double d12 = par6 + field_83022_l;
+        double d8 = par2 + customMinX;
+        double d9 = par2 + customMaxX;
+        double d10 = par4 + customMinY;
+        double d11 = par6 + customMinZ;
+        double d12 = par6 + customMaxZ;
 
         if (enableAO)
         {
@@ -7191,18 +7241,18 @@ public class RenderBlocks
 
         int i = (par8 & 0xf) << 4;
         int j = par8 & 0xf0;
-        double d = ((double)i + field_83021_g * 16D) / 256D;
-        double d1 = (((double)i + field_83026_h * 16D) - 0.01D) / 256D;
-        double d2 = ((double)j + field_83025_k * 16D) / 256D;
-        double d3 = (((double)j + field_83022_l * 16D) - 0.01D) / 256D;
+        double d = ((double)i + customMinX * 16D) / 256D;
+        double d1 = (((double)i + customMaxX * 16D) - 0.01D) / 256D;
+        double d2 = ((double)j + customMinZ * 16D) / 256D;
+        double d3 = (((double)j + customMaxZ * 16D) - 0.01D) / 256D;
 
-        if (field_83021_g < 0.0D || field_83026_h > 1.0D)
+        if (customMinX < 0.0D || customMaxX > 1.0D)
         {
             d = ((float)i + 0.0F) / 256F;
             d1 = ((float)i + 15.99F) / 256F;
         }
 
-        if (field_83025_k < 0.0D || field_83022_l > 1.0D)
+        if (customMinZ < 0.0D || customMaxZ > 1.0D)
         {
             d2 = ((float)j + 0.0F) / 256F;
             d3 = ((float)j + 15.99F) / 256F;
@@ -7215,10 +7265,10 @@ public class RenderBlocks
 
         if (uvRotateTop == 1)
         {
-            d = ((double)i + field_83025_k * 16D) / 256D;
-            d2 = ((double)(j + 16) - field_83026_h * 16D) / 256D;
-            d1 = ((double)i + field_83022_l * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83021_g * 16D) / 256D;
+            d = ((double)i + customMinZ * 16D) / 256D;
+            d2 = ((double)(j + 16) - customMaxX * 16D) / 256D;
+            d1 = ((double)i + customMaxZ * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMinX * 16D) / 256D;
             d4 = d1;
             d5 = d;
             d6 = d2;
@@ -7230,10 +7280,10 @@ public class RenderBlocks
         }
         else if (uvRotateTop == 2)
         {
-            d = ((double)(i + 16) - field_83022_l * 16D) / 256D;
-            d2 = ((double)j + field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83025_k * 16D) / 256D;
-            d3 = ((double)j + field_83026_h * 16D) / 256D;
+            d = ((double)(i + 16) - customMaxZ * 16D) / 256D;
+            d2 = ((double)j + customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMinZ * 16D) / 256D;
+            d3 = ((double)j + customMaxX * 16D) / 256D;
             d4 = d1;
             d5 = d;
             d6 = d2;
@@ -7245,21 +7295,21 @@ public class RenderBlocks
         }
         else if (uvRotateTop == 3)
         {
-            d = ((double)(i + 16) - field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83026_h * 16D - 0.01D) / 256D;
-            d2 = ((double)(j + 16) - field_83025_k * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83022_l * 16D - 0.01D) / 256D;
+            d = ((double)(i + 16) - customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMaxX * 16D - 0.01D) / 256D;
+            d2 = ((double)(j + 16) - customMinZ * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMaxZ * 16D - 0.01D) / 256D;
             d4 = d1;
             d5 = d;
             d6 = d2;
             d7 = d3;
         }
 
-        double d8 = par2 + field_83021_g;
-        double d9 = par2 + field_83026_h;
-        double d10 = par4 + field_83024_j;
-        double d11 = par6 + field_83025_k;
-        double d12 = par6 + field_83022_l;
+        double d8 = par2 + customMinX;
+        double d9 = par2 + customMaxX;
+        double d10 = par4 + customMaxY;
+        double d11 = par6 + customMinZ;
+        double d12 = par6 + customMaxZ;
 
         if (enableAO)
         {
@@ -7299,10 +7349,10 @@ public class RenderBlocks
 
         int i = (par8 & 0xf) << 4;
         int j = par8 & 0xf0;
-        double d = ((double)i + field_83021_g * 16D) / 256D;
-        double d1 = (((double)i + field_83026_h * 16D) - 0.01D) / 256D;
-        double d2 = ((double)(j + 16) - field_83024_j * 16D) / 256D;
-        double d3 = ((double)(j + 16) - field_83027_i * 16D - 0.01D) / 256D;
+        double d = ((double)i + customMinX * 16D) / 256D;
+        double d1 = (((double)i + customMaxX * 16D) - 0.01D) / 256D;
+        double d2 = ((double)(j + 16) - customMaxY * 16D) / 256D;
+        double d3 = ((double)(j + 16) - customMinY * 16D - 0.01D) / 256D;
 
         if (flipTexture)
         {
@@ -7311,13 +7361,13 @@ public class RenderBlocks
             d1 = d4;
         }
 
-        if (field_83021_g < 0.0D || field_83026_h > 1.0D)
+        if (customMinX < 0.0D || customMaxX > 1.0D)
         {
             d = ((float)i + 0.0F) / 256F;
             d1 = ((float)i + 15.99F) / 256F;
         }
 
-        if (field_83027_i < 0.0D || field_83024_j > 1.0D)
+        if (customMinY < 0.0D || customMaxY > 1.0D)
         {
             d2 = ((float)j + 0.0F) / 256F;
             d3 = ((float)j + 15.99F) / 256F;
@@ -7330,10 +7380,10 @@ public class RenderBlocks
 
         if (uvRotateEast == 2)
         {
-            d = ((double)i + field_83027_i * 16D) / 256D;
-            d2 = ((double)(j + 16) - field_83021_g * 16D) / 256D;
-            d1 = ((double)i + field_83024_j * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83026_h * 16D) / 256D;
+            d = ((double)i + customMinY * 16D) / 256D;
+            d2 = ((double)(j + 16) - customMinX * 16D) / 256D;
+            d1 = ((double)i + customMaxY * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMaxX * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7345,10 +7395,10 @@ public class RenderBlocks
         }
         else if (uvRotateEast == 1)
         {
-            d = ((double)(i + 16) - field_83024_j * 16D) / 256D;
-            d2 = ((double)j + field_83026_h * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83027_i * 16D) / 256D;
-            d3 = ((double)j + field_83021_g * 16D) / 256D;
+            d = ((double)(i + 16) - customMaxY * 16D) / 256D;
+            d2 = ((double)j + customMaxX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMinY * 16D) / 256D;
+            d3 = ((double)j + customMinX * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7360,21 +7410,21 @@ public class RenderBlocks
         }
         else if (uvRotateEast == 3)
         {
-            d = ((double)(i + 16) - field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83026_h * 16D - 0.01D) / 256D;
-            d2 = ((double)j + field_83024_j * 16D) / 256D;
-            d3 = (((double)j + field_83027_i * 16D) - 0.01D) / 256D;
+            d = ((double)(i + 16) - customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMaxX * 16D - 0.01D) / 256D;
+            d2 = ((double)j + customMaxY * 16D) / 256D;
+            d3 = (((double)j + customMinY * 16D) - 0.01D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
             d8 = d3;
         }
 
-        double d9 = par2 + field_83021_g;
-        double d10 = par2 + field_83026_h;
-        double d11 = par4 + field_83027_i;
-        double d12 = par4 + field_83024_j;
-        double d13 = par6 + field_83025_k;
+        double d9 = par2 + customMinX;
+        double d10 = par2 + customMaxX;
+        double d11 = par4 + customMinY;
+        double d12 = par4 + customMaxY;
+        double d13 = par6 + customMinZ;
 
         if (enableAO)
         {
@@ -7414,10 +7464,10 @@ public class RenderBlocks
 
         int i = (par8 & 0xf) << 4;
         int j = par8 & 0xf0;
-        double d = ((double)i + field_83021_g * 16D) / 256D;
-        double d1 = (((double)i + field_83026_h * 16D) - 0.01D) / 256D;
-        double d2 = ((double)(j + 16) - field_83024_j * 16D) / 256D;
-        double d3 = ((double)(j + 16) - field_83027_i * 16D - 0.01D) / 256D;
+        double d = ((double)i + customMinX * 16D) / 256D;
+        double d1 = (((double)i + customMaxX * 16D) - 0.01D) / 256D;
+        double d2 = ((double)(j + 16) - customMaxY * 16D) / 256D;
+        double d3 = ((double)(j + 16) - customMinY * 16D - 0.01D) / 256D;
 
         if (flipTexture)
         {
@@ -7426,13 +7476,13 @@ public class RenderBlocks
             d1 = d4;
         }
 
-        if (field_83021_g < 0.0D || field_83026_h > 1.0D)
+        if (customMinX < 0.0D || customMaxX > 1.0D)
         {
             d = ((float)i + 0.0F) / 256F;
             d1 = ((float)i + 15.99F) / 256F;
         }
 
-        if (field_83027_i < 0.0D || field_83024_j > 1.0D)
+        if (customMinY < 0.0D || customMaxY > 1.0D)
         {
             d2 = ((float)j + 0.0F) / 256F;
             d3 = ((float)j + 15.99F) / 256F;
@@ -7445,10 +7495,10 @@ public class RenderBlocks
 
         if (uvRotateWest == 1)
         {
-            d = ((double)i + field_83027_i * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83021_g * 16D) / 256D;
-            d1 = ((double)i + field_83024_j * 16D) / 256D;
-            d2 = ((double)(j + 16) - field_83026_h * 16D) / 256D;
+            d = ((double)i + customMinY * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMinX * 16D) / 256D;
+            d1 = ((double)i + customMaxY * 16D) / 256D;
+            d2 = ((double)(j + 16) - customMaxX * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7460,10 +7510,10 @@ public class RenderBlocks
         }
         else if (uvRotateWest == 2)
         {
-            d = ((double)(i + 16) - field_83024_j * 16D) / 256D;
-            d2 = ((double)j + field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83027_i * 16D) / 256D;
-            d3 = ((double)j + field_83026_h * 16D) / 256D;
+            d = ((double)(i + 16) - customMaxY * 16D) / 256D;
+            d2 = ((double)j + customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMinY * 16D) / 256D;
+            d3 = ((double)j + customMaxX * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7475,21 +7525,21 @@ public class RenderBlocks
         }
         else if (uvRotateWest == 3)
         {
-            d = ((double)(i + 16) - field_83021_g * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83026_h * 16D - 0.01D) / 256D;
-            d2 = ((double)j + field_83024_j * 16D) / 256D;
-            d3 = (((double)j + field_83027_i * 16D) - 0.01D) / 256D;
+            d = ((double)(i + 16) - customMinX * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMaxX * 16D - 0.01D) / 256D;
+            d2 = ((double)j + customMaxY * 16D) / 256D;
+            d3 = (((double)j + customMinY * 16D) - 0.01D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
             d8 = d3;
         }
 
-        double d9 = par2 + field_83021_g;
-        double d10 = par2 + field_83026_h;
-        double d11 = par4 + field_83027_i;
-        double d12 = par4 + field_83024_j;
-        double d13 = par6 + field_83022_l;
+        double d9 = par2 + customMinX;
+        double d10 = par2 + customMaxX;
+        double d11 = par4 + customMinY;
+        double d12 = par4 + customMaxY;
+        double d13 = par6 + customMaxZ;
 
         if (enableAO)
         {
@@ -7529,10 +7579,10 @@ public class RenderBlocks
 
         int i = (par8 & 0xf) << 4;
         int j = par8 & 0xf0;
-        double d = ((double)i + field_83025_k * 16D) / 256D;
-        double d1 = (((double)i + field_83022_l * 16D) - 0.01D) / 256D;
-        double d2 = ((double)(j + 16) - field_83024_j * 16D) / 256D;
-        double d3 = ((double)(j + 16) - field_83027_i * 16D - 0.01D) / 256D;
+        double d = ((double)i + customMinZ * 16D) / 256D;
+        double d1 = (((double)i + customMaxZ * 16D) - 0.01D) / 256D;
+        double d2 = ((double)(j + 16) - customMaxY * 16D) / 256D;
+        double d3 = ((double)(j + 16) - customMinY * 16D - 0.01D) / 256D;
 
         if (flipTexture)
         {
@@ -7541,13 +7591,13 @@ public class RenderBlocks
             d1 = d4;
         }
 
-        if (field_83025_k < 0.0D || field_83022_l > 1.0D)
+        if (customMinZ < 0.0D || customMaxZ > 1.0D)
         {
             d = ((float)i + 0.0F) / 256F;
             d1 = ((float)i + 15.99F) / 256F;
         }
 
-        if (field_83027_i < 0.0D || field_83024_j > 1.0D)
+        if (customMinY < 0.0D || customMaxY > 1.0D)
         {
             d2 = ((float)j + 0.0F) / 256F;
             d3 = ((float)j + 15.99F) / 256F;
@@ -7560,10 +7610,10 @@ public class RenderBlocks
 
         if (uvRotateNorth == 1)
         {
-            d = ((double)i + field_83027_i * 16D) / 256D;
-            d2 = ((double)(j + 16) - field_83022_l * 16D) / 256D;
-            d1 = ((double)i + field_83024_j * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83025_k * 16D) / 256D;
+            d = ((double)i + customMinY * 16D) / 256D;
+            d2 = ((double)(j + 16) - customMaxZ * 16D) / 256D;
+            d1 = ((double)i + customMaxY * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMinZ * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7575,10 +7625,10 @@ public class RenderBlocks
         }
         else if (uvRotateNorth == 2)
         {
-            d = ((double)(i + 16) - field_83024_j * 16D) / 256D;
-            d2 = ((double)j + field_83025_k * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83027_i * 16D) / 256D;
-            d3 = ((double)j + field_83022_l * 16D) / 256D;
+            d = ((double)(i + 16) - customMaxY * 16D) / 256D;
+            d2 = ((double)j + customMinZ * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMinY * 16D) / 256D;
+            d3 = ((double)j + customMaxZ * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7590,21 +7640,21 @@ public class RenderBlocks
         }
         else if (uvRotateNorth == 3)
         {
-            d = ((double)(i + 16) - field_83025_k * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83022_l * 16D - 0.01D) / 256D;
-            d2 = ((double)j + field_83024_j * 16D) / 256D;
-            d3 = (((double)j + field_83027_i * 16D) - 0.01D) / 256D;
+            d = ((double)(i + 16) - customMinZ * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMaxZ * 16D - 0.01D) / 256D;
+            d2 = ((double)j + customMaxY * 16D) / 256D;
+            d3 = (((double)j + customMinY * 16D) - 0.01D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
             d8 = d3;
         }
 
-        double d9 = par2 + field_83021_g;
-        double d10 = par4 + field_83027_i;
-        double d11 = par4 + field_83024_j;
-        double d12 = par6 + field_83025_k;
-        double d13 = par6 + field_83022_l;
+        double d9 = par2 + customMinX;
+        double d10 = par4 + customMinY;
+        double d11 = par4 + customMaxY;
+        double d12 = par6 + customMinZ;
+        double d13 = par6 + customMaxZ;
 
         if (enableAO)
         {
@@ -7644,10 +7694,10 @@ public class RenderBlocks
 
         int i = (par8 & 0xf) << 4;
         int j = par8 & 0xf0;
-        double d = ((double)i + field_83025_k * 16D) / 256D;
-        double d1 = (((double)i + field_83022_l * 16D) - 0.01D) / 256D;
-        double d2 = ((double)(j + 16) - field_83024_j * 16D) / 256D;
-        double d3 = ((double)(j + 16) - field_83027_i * 16D - 0.01D) / 256D;
+        double d = ((double)i + customMinZ * 16D) / 256D;
+        double d1 = (((double)i + customMaxZ * 16D) - 0.01D) / 256D;
+        double d2 = ((double)(j + 16) - customMaxY * 16D) / 256D;
+        double d3 = ((double)(j + 16) - customMinY * 16D - 0.01D) / 256D;
 
         if (flipTexture)
         {
@@ -7656,13 +7706,13 @@ public class RenderBlocks
             d1 = d4;
         }
 
-        if (field_83025_k < 0.0D || field_83022_l > 1.0D)
+        if (customMinZ < 0.0D || customMaxZ > 1.0D)
         {
             d = ((float)i + 0.0F) / 256F;
             d1 = ((float)i + 15.99F) / 256F;
         }
 
-        if (field_83027_i < 0.0D || field_83024_j > 1.0D)
+        if (customMinY < 0.0D || customMaxY > 1.0D)
         {
             d2 = ((float)j + 0.0F) / 256F;
             d3 = ((float)j + 15.99F) / 256F;
@@ -7675,10 +7725,10 @@ public class RenderBlocks
 
         if (uvRotateSouth == 2)
         {
-            d = ((double)i + field_83027_i * 16D) / 256D;
-            d2 = ((double)(j + 16) - field_83025_k * 16D) / 256D;
-            d1 = ((double)i + field_83024_j * 16D) / 256D;
-            d3 = ((double)(j + 16) - field_83022_l * 16D) / 256D;
+            d = ((double)i + customMinY * 16D) / 256D;
+            d2 = ((double)(j + 16) - customMinZ * 16D) / 256D;
+            d1 = ((double)i + customMaxY * 16D) / 256D;
+            d3 = ((double)(j + 16) - customMaxZ * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7690,10 +7740,10 @@ public class RenderBlocks
         }
         else if (uvRotateSouth == 1)
         {
-            d = ((double)(i + 16) - field_83024_j * 16D) / 256D;
-            d2 = ((double)j + field_83022_l * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83027_i * 16D) / 256D;
-            d3 = ((double)j + field_83025_k * 16D) / 256D;
+            d = ((double)(i + 16) - customMaxY * 16D) / 256D;
+            d2 = ((double)j + customMaxZ * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMinY * 16D) / 256D;
+            d3 = ((double)j + customMinZ * 16D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
@@ -7705,21 +7755,21 @@ public class RenderBlocks
         }
         else if (uvRotateSouth == 3)
         {
-            d = ((double)(i + 16) - field_83025_k * 16D) / 256D;
-            d1 = ((double)(i + 16) - field_83022_l * 16D - 0.01D) / 256D;
-            d2 = ((double)j + field_83024_j * 16D) / 256D;
-            d3 = (((double)j + field_83027_i * 16D) - 0.01D) / 256D;
+            d = ((double)(i + 16) - customMinZ * 16D) / 256D;
+            d1 = ((double)(i + 16) - customMaxZ * 16D - 0.01D) / 256D;
+            d2 = ((double)j + customMaxY * 16D) / 256D;
+            d3 = (((double)j + customMinY * 16D) - 0.01D) / 256D;
             d5 = d1;
             d6 = d;
             d7 = d2;
             d8 = d3;
         }
 
-        double d9 = par2 + field_83026_h;
-        double d10 = par4 + field_83027_i;
-        double d11 = par4 + field_83024_j;
-        double d12 = par6 + field_83025_k;
-        double d13 = par6 + field_83022_l;
+        double d9 = par2 + customMaxX;
+        double d10 = par4 + customMinY;
+        double d11 = par4 + customMaxY;
+        double d12 = par6 + customMinZ;
+        double d13 = par6 + customMaxZ;
 
         if (enableAO)
         {
@@ -7769,7 +7819,7 @@ public class RenderBlocks
         }
 
         int j = par1Block.getRenderType();
-        func_83018_a(par1Block);
+        updateCustomBlockBounds(par1Block);
 
         if (j == 0 || j == 31 || j == 16 || j == 26)
         {
@@ -7779,7 +7829,7 @@ public class RenderBlocks
             }
 
             par1Block.setBlockBoundsForItemRender();
-            func_83018_a(par1Block);
+            updateCustomBlockBounds(par1Block);
             if (!oldrotation){
                 GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
             }
@@ -7838,7 +7888,7 @@ public class RenderBlocks
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
             par1Block.setBlockBoundsForItemRender();
-            renderBlockStemSmall(par1Block, par2, field_83024_j, -0.5D, -0.5D, -0.5D);
+            renderBlockStemSmall(par1Block, par2, customMaxY, -0.5D, -0.5D, -0.5D);
             tessellator.draw();
         }
         else if (j == 23)
@@ -8186,7 +8236,7 @@ public class RenderBlocks
         else if (j == 35)
         {
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-            func_82776_a((BlockAnvil)par1Block, 0, 0, 0, par2, true);
+            renderBlockAnvilOrient((BlockAnvil)par1Block, 0, 0, 0, par2, true);
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         }
         else if (j == 34)
@@ -8196,17 +8246,17 @@ public class RenderBlocks
                 if (i2 == 0)
                 {
                     setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, 0.1875D, 0.875D);
-                    func_82774_a(Block.obsidian.blockIndexInTexture);
+                    setOverrideBlockTexture(Block.obsidian.blockIndexInTexture);
                 }
                 else if (i2 == 1)
                 {
                     setRenderMinMax(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
-                    func_82774_a(41);
+                    setOverrideBlockTexture(41);
                 }
                 else if (i2 == 2)
                 {
                     setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-                    func_82774_a(Block.glass.blockIndexInTexture);
+                    setOverrideBlockTexture(Block.glass.blockIndexInTexture);
                 }
 
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

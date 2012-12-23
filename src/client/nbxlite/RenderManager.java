@@ -77,6 +77,7 @@ public class RenderManager
         entityRenderMap.put(net.minecraft.src.EntityEgg.class, new RenderSnowball(Item.egg.getIconFromDamage(0)));
         entityRenderMap.put(net.minecraft.src.EntityPotion.class, new RenderSnowball(154));
         entityRenderMap.put(net.minecraft.src.EntityExpBottle.class, new RenderSnowball(Item.expBottle.getIconFromDamage(0)));
+        entityRenderMap.put(net.minecraft.src.EntityFireworkRocket.class, new RenderSnowball(Item.field_92104_bU.getIconFromDamage(0)));
         entityRenderMap.put(net.minecraft.src.EntityLargeFireball.class, new RenderFireball(2.0F));
         entityRenderMap.put(net.minecraft.src.EntitySmallFireball.class, new RenderFireball(0.5F));
         entityRenderMap.put(net.minecraft.src.EntityWitherSkull.class, new RenderWitherSkull());
@@ -160,6 +161,13 @@ public class RenderManager
      */
     public void renderEntity(Entity par1Entity, float par2)
     {
+        if (par1Entity.ticksExisted == 0)
+        {
+            par1Entity.lastTickPosX = par1Entity.posX;
+            par1Entity.lastTickPosY = par1Entity.posY;
+            par1Entity.lastTickPosZ = par1Entity.posZ;
+        }
+
         double d = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par2;
         double d1 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par2;
         double d2 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par2;
@@ -197,7 +205,7 @@ public class RenderManager
 
             if (render != null && renderEngine != null)
             {
-                if (field_85095_o)
+                if (field_85095_o && !par1Entity.getHasActivePotion())
                 {
                     try
                     {
@@ -205,7 +213,7 @@ public class RenderManager
                     }
                     catch (Throwable throwable)
                     {
-                        throw new ReportedException(CrashReport.func_85055_a(throwable, "Rendering entity hitbox in world"));
+                        throw new ReportedException(CrashReport.makeCrashReport(throwable, "Rendering entity hitbox in world"));
                     }
                 }
 
@@ -215,7 +223,7 @@ public class RenderManager
                 }
                 catch (Throwable throwable1)
                 {
-                    throw new ReportedException(CrashReport.func_85055_a(throwable1, "Rendering entity in world"));
+                    throw new ReportedException(CrashReport.makeCrashReport(throwable1, "Rendering entity in world"));
                 }
 
                 try
@@ -224,16 +232,16 @@ public class RenderManager
                 }
                 catch (Throwable throwable2)
                 {
-                    throw new ReportedException(CrashReport.func_85055_a(throwable2, "Post-rendering entity in world"));
+                    throw new ReportedException(CrashReport.makeCrashReport(throwable2, "Post-rendering entity in world"));
                 }
             }
         }
         catch (Throwable throwable3)
         {
-            CrashReport crashreport = CrashReport.func_85055_a(throwable3, "Rendering entity in world");
-            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being rendered");
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable3, "Rendering entity in world");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being rendered");
             par1Entity.func_85029_a(crashreportcategory);
-            CrashReportCategory crashreportcategory1 = crashreport.func_85058_a("Renderer details");
+            CrashReportCategory crashreportcategory1 = crashreport.makeCategory("Renderer details");
             crashreportcategory1.addCrashSection("Assigned renderer", render);
             crashreportcategory1.addCrashSection("Location", CrashReportCategory.func_85074_a(par2, par4, par6));
             crashreportcategory1.addCrashSection("Rotation", Float.valueOf(par8));

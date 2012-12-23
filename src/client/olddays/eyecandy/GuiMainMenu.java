@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,10 +47,17 @@ public class GuiMainMenu extends GuiScreen
      * Texture allocated for the current viewport of the main menu's panorama background.
      */
     private int viewportTexture;
+    private String field_92025_p;
     private static final String titlePanoramaPaths[] =
     {
         "/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"
     };
+    private int field_92024_r;
+    private int field_92023_s;
+    private int field_92022_t;
+    private int field_92021_u;
+    private int field_92020_v;
+    private int field_92019_w;
 
     public GuiMainMenu()
     {
@@ -195,6 +204,26 @@ public class GuiMainMenu extends GuiScreen
         }
 
         controlList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
+        field_92025_p = "";
+        String s = System.getProperty("os_architecture");
+        String s1 = System.getProperty("java_version");
+
+        if ("ppc".equalsIgnoreCase(s))
+        {
+            field_92025_p = "\247lNotice!\247r PowerPC compatibility will be dropped in Minecraft 1.6";
+        }
+        else if (s1 != null && s1.startsWith("1.5"))
+        {
+            field_92025_p = "\247lNotice!\247r Java 1.5 compatibility will be dropped in Minecraft 1.6";
+        }
+
+        field_92023_s = fontRenderer.getStringWidth(field_92025_p);
+        field_92024_r = fontRenderer.getStringWidth("Please click \247nhere\247r for more information.");
+        int j = Math.max(field_92023_s, field_92024_r);
+        field_92022_t = (width - j) / 2;
+        field_92021_u = ((GuiButton)controlList.get(0)).yPosition - 24;
+        field_92020_v = field_92022_t + j;
+        field_92019_w = field_92021_u + 24;
     }
 
     /**
@@ -289,6 +318,30 @@ public class GuiMainMenu extends GuiScreen
             ISaveFormat isaveformat = mc.getSaveLoader();
             isaveformat.flushCache();
             isaveformat.deleteWorldDirectory("Demo_World");
+            mc.displayGuiScreen(this);
+        }
+        else if (par2 == 13)
+        {
+            if (par1)
+            {
+                try
+                {
+                    Class class1 = Class.forName("java.awt.Desktop");
+                    Object obj = class1.getMethod("getDesktop", new Class[0]).invoke(null, new Object[0]);
+                    class1.getMethod("browse", new Class[]
+                            {
+                                java.net.URI.class
+                            }).invoke(obj, new Object[]
+                                    {
+                                        new URI("http://tinyurl.com/javappc")
+                                    });
+                }
+                catch (Throwable throwable)
+                {
+                    throwable.printStackTrace();
+                }
+            }
+
             mc.displayGuiScreen(this);
         }
     }
@@ -511,7 +564,30 @@ public class GuiMainMenu extends GuiScreen
         }
         String s1 = "Copyright Mojang AB. Do not distribute!";
         drawString(fontRenderer, s1, width - fontRenderer.getStringWidth(s1) - 2, height - 10, 0xffffff);
+
+        if (field_92025_p != null && field_92025_p.length() > 0)
+        {
+            drawRect(field_92022_t - 2, field_92021_u - 2, field_92020_v + 2, field_92019_w - 1, 0x55200000);
+            drawString(fontRenderer, field_92025_p, field_92022_t, field_92021_u, 0xffffff);
+            drawString(fontRenderer, "Please click \247nhere\247r for more information.", (width - field_92024_r) / 2, ((GuiButton)controlList.get(0)).yPosition - 12, 0xffffff);
+        }
+
         super.drawScreen(par1, par2, par3);
+    }
+
+    /**
+     * Called when the mouse is clicked.
+     */
+    protected void mouseClicked(int par1, int par2, int par3)
+    {
+        super.mouseClicked(par1, par2, par3);
+
+        if (field_92025_p.length() > 0 && par1 >= field_92022_t && par1 <= field_92020_v && par2 >= field_92021_u && par2 <= field_92019_w)
+        {
+            GuiConfirmOpenLink guiconfirmopenlink = new GuiConfirmOpenLink(this, "http://tinyurl.com/javappc", 13);
+            guiconfirmopenlink.func_92026_h();
+            mc.displayGuiScreen(guiconfirmopenlink);
+        }
     }
 
     private void drawLogo(float f)
@@ -627,7 +703,7 @@ public class GuiMainMenu extends GuiScreen
     private void renderMenuBlock(Block block, float f, RenderBlocks renderblocks)
     {
         int i = block.getRenderType();
-        renderblocks.func_83018_a(block);
+        renderblocks.updateCustomBlockBounds(block);
         Tessellator tessellator = Tessellator.instance;
         if(i == 0)
         {

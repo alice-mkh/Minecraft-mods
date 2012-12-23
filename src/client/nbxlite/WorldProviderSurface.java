@@ -25,7 +25,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * Returns the chunk provider back for the world provider
      */
-    public IChunkProvider getChunkProvider()
+    public IChunkProvider createChunkGenerator()
     {
         if (terrainType == WorldType.FLAT)
         {

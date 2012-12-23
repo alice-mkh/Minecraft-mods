@@ -23,7 +23,7 @@ public class GuiInventory extends InventoryEffectRenderer
 
     public GuiInventory(EntityPlayer par1EntityPlayer)
     {
-        super(par1EntityPlayer.inventorySlots);
+        super(par1EntityPlayer.inventoryContainer);
         allowUserInput = true;
         par1EntityPlayer.addStat(AchievementList.openInventory, 1);
     }

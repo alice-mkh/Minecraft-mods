@@ -481,7 +481,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         }
         if (biomegenbase == BiomeGenBase.swampland && enumcreaturetype == EnumCreatureType.monster && scatteredFeatureGenerator.hasStructureAt(i, j, k))
         {
-            return scatteredFeatureGenerator.func_82667_a();
+            return scatteredFeatureGenerator.getScatteredFeatureSpawnList();
         }
         else
         {

@@ -109,7 +109,7 @@ public class Chunk
 
                     if (storageArrays[i1] == null)
                     {
-                        storageArrays[i1] = new ExtendedBlockStorage(i1 << 4);
+                        storageArrays[i1] = new ExtendedBlockStorage(i1 << 4, !par1World.provider.hasNoSky);
                     }
 
                     storageArrays[i1].setExtBlockID(j, l & 0xf, k, byte0);
@@ -256,7 +256,7 @@ public class Chunk
                         {
                             extendedblockstorage.setExtSkylightValue(j, k1 & 0xf, l, j1);
                             if (!ODNBXlite.oldLightEngine){
-                                worldObj.markBlockNeedsUpdateForAll((xPosition << 4) + j, k1, (zPosition << 4) + l);
+                                worldObj.markBlockForRenderUpdate((xPosition << 4) + j, k1, (zPosition << 4) + l);
                             }
                         }
                     }
@@ -421,7 +421,7 @@ public class Chunk
                     if (extendedblockstorage != null)
                     {
                         extendedblockstorage.setExtSkylightValue(par1, i1 & 0xf, par3, 15);
-                        worldObj.markBlockNeedsUpdateForAll((xPosition << 4) + par1, i1, (zPosition << 4) + par3);
+                        worldObj.markBlockForRenderUpdate((xPosition << 4) + par1, i1, (zPosition << 4) + par3);
                     }
                 }
             }
@@ -437,7 +437,7 @@ public class Chunk
                     if (extendedblockstorage1 != null)
                     {
                         extendedblockstorage1.setExtSkylightValue(par1, j1 & 0xf, par3, 0);
-                        worldObj.markBlockNeedsUpdateForAll((xPosition << 4) + par1, j1, (zPosition << 4) + par3);
+                        worldObj.markBlockForRenderUpdate((xPosition << 4) + par1, j1, (zPosition << 4) + par3);
                     }
                 }
             }
@@ -601,7 +601,7 @@ public class Chunk
                 return false;
             }
 
-            extendedblockstorage = storageArrays[par2 >> 4] = new ExtendedBlockStorage((par2 >> 4) << 4);
+            extendedblockstorage = storageArrays[par2 >> 4] = new ExtendedBlockStorage((par2 >> 4) << 4, !worldObj.provider.hasNoSky);
             flag = par2 >= j;
         }
 
@@ -756,7 +756,14 @@ public class Chunk
 
         if (par1EnumSkyBlock == EnumSkyBlock.Sky)
         {
-            return extendedblockstorage.getExtSkylightValue(par2, par3 & 0xf, par4);
+            if (worldObj.provider.hasNoSky)
+            {
+                return 0;
+            }
+            else
+            {
+                return extendedblockstorage.getExtSkylightValue(par2, par3 & 0xf, par4);
+            }
         }
 
         if (par1EnumSkyBlock == EnumSkyBlock.Block)
@@ -779,7 +786,7 @@ public class Chunk
 
         if (extendedblockstorage == null)
         {
-            extendedblockstorage = storageArrays[par3 >> 4] = new ExtendedBlockStorage((par3 >> 4) << 4);
+            extendedblockstorage = storageArrays[par3 >> 4] = new ExtendedBlockStorage((par3 >> 4) << 4, !worldObj.provider.hasNoSky);
             generateSkylightMap();
         }
 
@@ -1278,6 +1285,7 @@ public class Chunk
     public void fillChunk(byte par1ArrayOfByte[], int par2, int par3, boolean par4)
     {
         int i = 0;
+        boolean flag = !worldObj.provider.hasNoSky;
 
         for (int j = 0; j < storageArrays.length; j++)
         {
@@ -1285,7 +1293,7 @@ public class Chunk
             {
                 if (storageArrays[j] == null)
                 {
-                    storageArrays[j] = new ExtendedBlockStorage(j << 4);
+                    storageArrays[j] = new ExtendedBlockStorage(j << 4, flag);
                 }
 
                 byte abyte0[] = storageArrays[j].getBlockLSBArray();
@@ -1320,13 +1328,16 @@ public class Chunk
             }
         }
 
-        for (int i1 = 0; i1 < storageArrays.length; i1++)
+        if (flag)
         {
-            if ((par2 & 1 << i1) != 0 && storageArrays[i1] != null)
+            for (int i1 = 0; i1 < storageArrays.length; i1++)
             {
-                NibbleArray nibblearray2 = storageArrays[i1].getSkylightArray();
-                System.arraycopy(par1ArrayOfByte, i, nibblearray2.data, 0, nibblearray2.data.length);
-                i += nibblearray2.data.length;
+                if ((par2 & 1 << i1) != 0 && storageArrays[i1] != null)
+                {
+                    NibbleArray nibblearray2 = storageArrays[i1].getSkylightArray();
+                    System.arraycopy(par1ArrayOfByte, i, nibblearray2.data, 0, nibblearray2.data.length);
+                    i += nibblearray2.data.length;
+                }
             }
         }
 

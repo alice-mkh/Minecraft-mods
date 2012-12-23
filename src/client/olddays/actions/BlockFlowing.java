@@ -29,7 +29,7 @@ public class BlockFlowing extends BlockFluid
     {
         int i = par1World.getBlockMetadata(par2, par3, par4);
         par1World.setBlockAndMetadata(par2, par3, par4, blockID + 1, i);
-        par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+        par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
     }
 
     public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)

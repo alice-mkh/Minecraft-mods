@@ -115,7 +115,7 @@ public abstract class EntityAITarget extends EntityAIBase
             return false;
         }
 
-        if (!taskOwner.isExplosiveMob(par1EntityLiving.getClass()))
+        if (!taskOwner.canAttackClass(par1EntityLiving.getClass()))
         {
             return false;
         }

@@ -125,7 +125,7 @@ public class EntityZombie extends EntityMob
     /**
      * Set whether this zombie is a villager.
      */
-    public void setVillager(boolean par1)
+    public void setIsVillager(boolean par1)
     {
         getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
@@ -265,7 +265,7 @@ public class EntityZombie extends EntityMob
                 dropItem(Item.carrot.shiftedIndex, 1);
                 break;
             case 2:
-                dropItem(Item.potatoe.shiftedIndex, 1);
+                dropItem(Item.potato.shiftedIndex, 1);
                 break;
         }
     }
@@ -332,7 +332,7 @@ public class EntityZombie extends EntityMob
 
         if (par1NBTTagCompound.getBoolean("IsVillager"))
         {
-            setVillager(true);
+            setIsVillager(true);
         }
 
         if (par1NBTTagCompound.hasKey("ConversionTime") && par1NBTTagCompound.getInteger("ConversionTime") > -1)
@@ -361,7 +361,7 @@ public class EntityZombie extends EntityMob
             entityzombie.func_82149_j(par1EntityLiving);
             worldObj.setEntityDead(par1EntityLiving);
             entityzombie.initCreature();
-            entityzombie.setVillager(true);
+            entityzombie.setIsVillager(true);
 
             if (par1EntityLiving.isChild())
             {
@@ -381,11 +381,11 @@ public class EntityZombie extends EntityMob
         if (!custom){
             return;
         }
-        canPickUpLoot = rand.nextFloat() < field_82181_as[worldObj.difficultySetting];
+        canPickUpLoot = rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting];
 
         if (worldObj.rand.nextFloat() < 0.05F)
         {
-            setVillager(true);
+            setIsVillager(true);
         }
 
         func_82164_bB();
@@ -452,7 +452,7 @@ public class EntityZombie extends EntityMob
     {
         if (par1 == 16)
         {
-            worldObj.playSound(posX + 0.5D, posY + 0.5D, posZ + 0.5D, "mob.zombie.remedy", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
+            worldObj.playSound(posX + 0.5D, posY + 0.5D, posZ + 0.5D, "mob.zombie.remedy", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
         }
         else
         {

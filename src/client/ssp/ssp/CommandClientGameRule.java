@@ -15,7 +15,7 @@ public class CommandClientGameRule extends CommandGameRule
 
             if (gamerules2.hasRule(s))
             {
-                gamerules2.func_82764_b(s, s2);
+                gamerules2.setOrCreateGameRule(s, s2);
                 notifyAdmins(par1ICommandSender, "commands.gamerule.success", new Object[0]);
             }
             else

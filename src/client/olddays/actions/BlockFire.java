@@ -498,7 +498,7 @@ public class BlockFire extends Block
     {
         if (par5Random.nextInt(24) == 0)
         {
-            par1World.playSound((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "fire.fire", 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F);
+            par1World.playSound((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "fire.fire", 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
         }
 
         if (par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || Block.fire.canBlockCatchFire(par1World, par2, par3 - 1, par4))

@@ -129,6 +129,6 @@ public class EntityAIMate extends EntityAIBase
             theWorld.spawnParticle("heart", (theAnimal.posX + (double)(random.nextFloat() * theAnimal.width * 2.0F)) - (double)theAnimal.width, theAnimal.posY + 0.5D + (double)(random.nextFloat() * theAnimal.height), (theAnimal.posZ + (double)(random.nextFloat() * theAnimal.width * 2.0F)) - (double)theAnimal.width, d, d1, d2);
         }
 
-        theWorld.spawnEntityInWorld(new EntityXPOrb(theWorld, theAnimal.posX, theAnimal.posY, theAnimal.posZ, random.nextInt(4) + 1));
+        theWorld.spawnEntityInWorld(new EntityXPOrb(theWorld, theAnimal.posX, theAnimal.posY, theAnimal.posZ, random.nextInt(7) + 1));
     }
 }

@@ -180,13 +180,13 @@ public class SoundManager2 extends SoundManager{
     {
         GameSettings options = (GameSettings)getField(5);
 
-        if (!(Boolean)getField(7) || options.musicVolume == 0.0F)
+        if (!(Boolean)getField(8) || options.musicVolume == 0.0F)
         {
             return;
         }
 
         SoundSystem sndSystem = (SoundSystem)getField(0);
-        int ticksBeforeMusic = (Integer)getField(9);
+        int ticksBeforeMusic = (Integer)getField(10);
         if (!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming"))
         {
             if (ticksBeforeMusic > 0)
@@ -202,7 +202,7 @@ public class SoundManager2 extends SoundManager{
 
             if (soundpoolentry != null)
             {
-                ticksBeforeMusic = ((Random)getField(8)).nextInt(12000) + 12000;
+                ticksBeforeMusic = ((Random)getField(9)).nextInt(12000) + 12000;
                 sndSystem.backgroundMusic("BgMusic", soundpoolentry.soundUrl, soundpoolentry.soundName, false);
                 sndSystem.setVolume("BgMusic", options.musicVolume);
                 sndSystem.play("BgMusic");

@@ -25,7 +25,7 @@ public class EntityAIPanic extends EntityAIBase
         if (disablePanic){
             return false;
         }
-        if (theEntityCreature.getAITarget() == null)
+        if (theEntityCreature.getAITarget() == null && !theEntityCreature.isBurning())
         {
             return false;
         }

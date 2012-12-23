@@ -148,9 +148,10 @@ public class Explosion
             double d12 = worldObj.getBlockDensity(vec3, entity.boundingBox);
             double d13 = (1.0D - d4) * d12;
             entity.attackEntityFrom(oldexplosion ? DamageSource.field_76375_l : DamageSource.explosion, (int)(((d13 * d13 + d13) / 2D) * 8D * (double)explosionSize + 1.0D));
-            entity.motionX += d6 * d13;
-            entity.motionY += d8 * d13;
-            entity.motionZ += d10 * d13;
+            double d14 = EnchantmentProtection.func_92092_a(entity, d13);
+            entity.motionX += d6 * d14;
+            entity.motionY += d8 * d14;
+            entity.motionZ += d10 * d14;
 
             if (entity instanceof EntityPlayer)
             {
@@ -219,7 +220,7 @@ public class Explosion
                 {
                     Block block = Block.blocksList[k1];
 
-                    if (block.func_85103_a(this))
+                    if (block.canDropFromExplosion(this))
                     {
                         block.dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
                     }

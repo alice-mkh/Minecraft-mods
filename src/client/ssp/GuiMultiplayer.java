@@ -58,7 +58,7 @@ public class GuiMultiplayer extends GuiScreen
     private ThreadLanServerFind localServerFindThread;
     private int field_74039_z;
     private boolean field_74024_A;
-    private List field_74026_B;
+    private List listofLanServers;
 
     public GuiMultiplayer(GuiScreen par1GuiScreen)
     {
@@ -69,7 +69,7 @@ public class GuiMultiplayer extends GuiScreen
         directClicked = false;
         lagTooltip = null;
         theServerData = null;
-        field_74026_B = Collections.emptyList();
+        listofLanServers = Collections.emptyList();
         parentScreen = par1GuiScreen;
     }
 
@@ -135,10 +135,10 @@ public class GuiMultiplayer extends GuiScreen
         super.updateScreen();
         field_74039_z++;
 
-        if (localNetworkServerList.func_77553_a())
+        if (localNetworkServerList.getWasUpdated())
         {
-            field_74026_B = localNetworkServerList.func_77554_c();
-            localNetworkServerList.func_77552_b();
+            listofLanServers = localNetworkServerList.getLanServers();
+            localNetworkServerList.setWasNotUpdated();
         }
     }
 
@@ -201,7 +201,7 @@ public class GuiMultiplayer extends GuiScreen
             editClicked = true;
             ServerData serverdata = internetServerList.getServerData(selectedServer);
             theServerData = new ServerData(serverdata.serverName, serverdata.serverIP);
-            theServerData.func_82819_b(serverdata.func_82820_d());
+            theServerData.setHideAddress(serverdata.isHidingAddress());
             mc.displayGuiScreen(new GuiScreenAddServer(this, theServerData));
         }
         else if (par1GuiButton.id == 0)
@@ -239,7 +239,7 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                func_74002_a(theServerData);
+                connectToServer(theServerData);
             }
             else
             {
@@ -268,7 +268,7 @@ public class GuiMultiplayer extends GuiScreen
                 ServerData serverdata = internetServerList.getServerData(selectedServer);
                 serverdata.serverName = theServerData.serverName;
                 serverdata.serverIP = theServerData.serverIP;
-                serverdata.func_82819_b(theServerData.func_82820_d());
+                serverdata.setHideAddress(theServerData.isHidingAddress());
                 internetServerList.saveServerList();
             }
 
@@ -351,20 +351,20 @@ public class GuiMultiplayer extends GuiScreen
     {
         if (par1 < internetServerList.countServers())
         {
-            func_74002_a(internetServerList.getServerData(par1));
+            connectToServer(internetServerList.getServerData(par1));
             return;
         }
 
         par1 -= internetServerList.countServers();
 
-        if (par1 < field_74026_B.size())
+        if (par1 < listofLanServers.size())
         {
-            LanServer lanserver = (LanServer)field_74026_B.get(par1);
-            func_74002_a(new ServerData(lanserver.func_77487_a(), lanserver.func_77488_b()));
+            LanServer lanserver = (LanServer)listofLanServers.get(par1);
+            connectToServer(new ServerData(lanserver.getServerMotd(), lanserver.getServerIpPort()));
         }
     }
 
-    private void func_74002_a(ServerData par1ServerData)
+    private void connectToServer(ServerData par1ServerData)
     {
         mc.enableSP = false;
         mc.displayGuiScreen(new GuiConnecting(mc, par1ServerData));
@@ -432,7 +432,7 @@ public class GuiMultiplayer extends GuiScreen
                 {
                     par1ServerData.gameVersion = "???";
                     par1ServerData.serverMOTD = "\2478???";
-                    par1ServerData.field_82821_f = 50;
+                    par1ServerData.field_82821_f = 52;
                     par1ServerData.populationInfo = "\2478???";
                 }
             }
@@ -462,7 +462,7 @@ public class GuiMultiplayer extends GuiScreen
                 }
 
                 par1ServerData.gameVersion = "1.3";
-                par1ServerData.field_82821_f = 48;
+                par1ServerData.field_82821_f = 50;
             }
         }
         finally
@@ -513,22 +513,22 @@ public class GuiMultiplayer extends GuiScreen
         }
     }
 
-    static ServerList func_74006_a(GuiMultiplayer par0GuiMultiplayer)
+    static ServerList getInternetServerList(GuiMultiplayer par0GuiMultiplayer)
     {
         return par0GuiMultiplayer.internetServerList;
     }
 
-    static List func_74003_b(GuiMultiplayer par0GuiMultiplayer)
+    static List getListOfLanServers(GuiMultiplayer par0GuiMultiplayer)
     {
-        return par0GuiMultiplayer.field_74026_B;
+        return par0GuiMultiplayer.listofLanServers;
     }
 
-    static int func_74020_c(GuiMultiplayer par0GuiMultiplayer)
+    static int getSelectedServer(GuiMultiplayer par0GuiMultiplayer)
     {
         return par0GuiMultiplayer.selectedServer;
     }
 
-    static int func_74015_a(GuiMultiplayer par0GuiMultiplayer, int par1)
+    static int getAndSetSelectedServer(GuiMultiplayer par0GuiMultiplayer, int par1)
     {
         return par0GuiMultiplayer.selectedServer = par1;
     }

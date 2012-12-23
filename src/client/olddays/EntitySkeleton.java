@@ -376,12 +376,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             func_82162_bC();
         }
 
-        if (rand.nextFloat() < field_82181_as[worldObj.difficultySetting])
-        {
-            ;
-        }
-
-        canPickUpLoot = true;
+        canPickUpLoot = rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting];
 
         if (getCurrentItemOrArmor(4) == null)
         {

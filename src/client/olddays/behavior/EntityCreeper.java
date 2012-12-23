@@ -19,7 +19,7 @@ public class EntityCreeper extends EntityMob
      * The amount of time since the creeper was close enough to the player to ignite
      */
     private int timeSinceIgnited;
-    private int field_82225_f;
+    private int fuseTime;
 
     /** Explosion radius for this creeper. */
     private int explosionRadius;
@@ -27,7 +27,7 @@ public class EntityCreeper extends EntityMob
     public EntityCreeper(World par1World)
     {
         super(par1World);
-        field_82225_f = 30;
+        fuseTime = 30;
         explosionRadius = 3;
         texture = "/mob/creeper.png";
         tasks.addTask(1, new EntityAISwimming(this));
@@ -108,7 +108,7 @@ public class EntityCreeper extends EntityMob
             }
             setCreeperState(1);
             timeSinceIgnited++;
-            if (timeSinceIgnited >= field_82225_f)
+            if (timeSinceIgnited >= fuseTime)
             {
                 boolean flag = worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
                 if (getPowered())
@@ -165,9 +165,9 @@ public class EntityCreeper extends EntityMob
         super.fall(par1);
         timeSinceIgnited += par1 * 1.5F;
 
-        if (timeSinceIgnited > field_82225_f - 5)
+        if (timeSinceIgnited > fuseTime - 5)
         {
-            timeSinceIgnited = field_82225_f - 5;
+            timeSinceIgnited = fuseTime - 5;
         }
     }
 
@@ -195,7 +195,7 @@ public class EntityCreeper extends EntityMob
             par1NBTTagCompound.setBoolean("powered", true);
         }
 
-        par1NBTTagCompound.setShort("Fuse", (short)field_82225_f);
+        par1NBTTagCompound.setShort("Fuse", (short)fuseTime);
         par1NBTTagCompound.setByte("ExplosionRadius", (byte)explosionRadius);
     }
 
@@ -209,7 +209,7 @@ public class EntityCreeper extends EntityMob
 
         if (par1NBTTagCompound.hasKey("Fuse"))
         {
-            field_82225_f = par1NBTTagCompound.getShort("Fuse");
+            fuseTime = par1NBTTagCompound.getShort("Fuse");
         }
 
         if (par1NBTTagCompound.hasKey("ExplosionRadius"))
@@ -233,9 +233,9 @@ public class EntityCreeper extends EntityMob
             {
                 timeSinceIgnited = 0;
             }
-            if (timeSinceIgnited >= field_82225_f)
+            if (timeSinceIgnited >= fuseTime)
             {
-                timeSinceIgnited = field_82225_f;
+                timeSinceIgnited = fuseTime;
             }
         }
         super.onUpdate();
@@ -276,9 +276,9 @@ public class EntityCreeper extends EntityMob
                 timeSinceIgnited = 0;
             }
 
-            if (timeSinceIgnited >= field_82225_f)
+            if (timeSinceIgnited >= fuseTime)
             {
-                timeSinceIgnited = field_82225_f;
+                timeSinceIgnited = fuseTime;
 
                 if (!worldObj.isRemote)
                 {
@@ -326,7 +326,7 @@ public class EntityCreeper extends EntityMob
         if (!survivaltest){
             if (par1DamageSource.getEntity() instanceof EntitySkeleton)
             {
-                int i = Item.record13.shiftedIndex + rand.nextInt((Item.field_85180_cf.shiftedIndex - Item.record13.shiftedIndex) + 1);
+                int i = Item.record13.shiftedIndex + rand.nextInt((Item.recordWait.shiftedIndex - Item.record13.shiftedIndex) + 1);
                 dropItem(i, 1);
             }
         }
@@ -355,11 +355,11 @@ public class EntityCreeper extends EntityMob
     }
 
     /**
-     * Connects the the creeper flashes to the creeper's color multiplier
+     * Params: (Float)Render tick. Returns the intensity of the creeper's flash when it is ignited.
      */
-    public float setCreeperFlashTime(float par1)
+    public float getCreeperFlashIntensity(float par1)
     {
-        return ((float)lastActiveTime + (float)(timeSinceIgnited - lastActiveTime) * par1) / (float)(field_82225_f - 2);
+        return ((float)lastActiveTime + (float)(timeSinceIgnited - lastActiveTime) * par1) / (float)(fuseTime - 2);
     }
 
     /**

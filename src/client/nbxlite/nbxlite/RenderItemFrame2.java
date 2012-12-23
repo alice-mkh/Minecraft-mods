@@ -7,7 +7,7 @@ public class RenderItemFrame2 extends Render
 {
     public static boolean oldrotation = false;
 
-    private final RenderBlocks field_82405_a = new RenderBlocks();
+    private final RenderBlocks resetCustomBlockBounds = new RenderBlocks();
 
     public RenderItemFrame2()
     {
@@ -19,9 +19,9 @@ public class RenderItemFrame2 extends Render
         float f = (float)(par1EntityItemFrame.posX - par2) - 0.5F;
         float f1 = (float)(par1EntityItemFrame.posY - par4) - 0.5F;
         float f2 = (float)(par1EntityItemFrame.posZ - par6) - 0.5F;
-        int i = par1EntityItemFrame.xPosition + Direction.offsetX[par1EntityItemFrame.field_82332_a];
+        int i = par1EntityItemFrame.xPosition + Direction.offsetX[par1EntityItemFrame.hangingDirection];
         int j = par1EntityItemFrame.yPosition;
-        int k = par1EntityItemFrame.zPosition + Direction.offsetZ[par1EntityItemFrame.field_82332_a];
+        int k = par1EntityItemFrame.zPosition + Direction.offsetZ[par1EntityItemFrame.hangingDirection];
         GL11.glTranslatef((float)i - f, (float)j - f1, (float)k - f2);
         func_82403_a(par1EntityItemFrame);
         func_82402_b(par1EntityItemFrame);
@@ -42,37 +42,37 @@ public class RenderItemFrame2 extends Render
         float f1 = 0.75F;
         float f2 = f1 / 2.0F;
         GL11.glPushMatrix();
-        field_82405_a.func_83019_b(0.0D, (0.5F - f2) + 0.0625F, (0.5F - f2) + 0.0625F, f * 0.5F, (0.5F + f2) - 0.0625F, (0.5F + f2) - 0.0625F);
-        field_82405_a.func_82774_a(185);
-        field_82405_a.renderBlockAsItem(block, 0, f6);
-        field_82405_a.clearOverrideBlockTexture();
-        field_82405_a.func_83017_b();
+        resetCustomBlockBounds.setCustomBlockBounds(0.0D, (0.5F - f2) + 0.0625F, (0.5F - f2) + 0.0625F, f * 0.5F, (0.5F + f2) - 0.0625F, (0.5F + f2) - 0.0625F);
+        resetCustomBlockBounds.setOverrideBlockTexture(185);
+        resetCustomBlockBounds.renderBlockAsItem(block, 0, f6);
+        resetCustomBlockBounds.clearOverrideBlockTexture();
+        resetCustomBlockBounds.resetCustomBlockBounds();
         GL11.glPopMatrix();
-        field_82405_a.func_82774_a(214);
+        resetCustomBlockBounds.setOverrideBlockTexture(214);
         GL11.glPushMatrix();
-        field_82405_a.func_83019_b(0.0D, 0.5F - f2, 0.5F - f2, f + 0.0001F, (f + 0.5F) - f2, 0.5F + f2);
-        field_82405_a.renderBlockAsItem(block, 0, f6);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
-        field_82405_a.func_83019_b(0.0D, (0.5F + f2) - f, 0.5F - f2, f + 0.0001F, 0.5F + f2, 0.5F + f2);
-        field_82405_a.renderBlockAsItem(block, 0, f6);
+        resetCustomBlockBounds.setCustomBlockBounds(0.0D, 0.5F - f2, 0.5F - f2, f + 0.0001F, (f + 0.5F) - f2, 0.5F + f2);
+        resetCustomBlockBounds.renderBlockAsItem(block, 0, f6);
         GL11.glPopMatrix();
         GL11.glPushMatrix();
-        field_82405_a.func_83019_b(0.0D, 0.5F - f2, 0.5F - f2, f, 0.5F + f2, (f + 0.5F) - f2);
-        field_82405_a.renderBlockAsItem(block, 0, f6);
+        resetCustomBlockBounds.setCustomBlockBounds(0.0D, (0.5F + f2) - f, 0.5F - f2, f + 0.0001F, 0.5F + f2, 0.5F + f2);
+        resetCustomBlockBounds.renderBlockAsItem(block, 0, f6);
         GL11.glPopMatrix();
         GL11.glPushMatrix();
-        field_82405_a.func_83019_b(0.0D, 0.5F - f2, (0.5F + f2) - f, f, 0.5F + f2, 0.5F + f2);
-        field_82405_a.renderBlockAsItem(block, 0, f6);
+        resetCustomBlockBounds.setCustomBlockBounds(0.0D, 0.5F - f2, 0.5F - f2, f, 0.5F + f2, (f + 0.5F) - f2);
+        resetCustomBlockBounds.renderBlockAsItem(block, 0, f6);
         GL11.glPopMatrix();
-        field_82405_a.func_83017_b();
-        field_82405_a.clearOverrideBlockTexture();
+        GL11.glPushMatrix();
+        resetCustomBlockBounds.setCustomBlockBounds(0.0D, 0.5F - f2, (0.5F + f2) - f, f, 0.5F + f2, 0.5F + f2);
+        resetCustomBlockBounds.renderBlockAsItem(block, 0, f6);
+        GL11.glPopMatrix();
+        resetCustomBlockBounds.resetCustomBlockBounds();
+        resetCustomBlockBounds.clearOverrideBlockTexture();
         GL11.glPopMatrix();
     }
 
     private void func_82402_b(EntityItemFrame par1EntityItemFrame)
     {
-        ItemStack itemstack = par1EntityItemFrame.func_82335_i();
+        ItemStack itemstack = par1EntityItemFrame.getDisplayedItem();
 
         if (itemstack == null)
         {
@@ -80,10 +80,10 @@ public class RenderItemFrame2 extends Render
         }
 
         EntityItem entityitem = new EntityItem(par1EntityItemFrame.worldObj, 0.0D, 0.0D, 0.0D, itemstack);
-        entityitem.item.stackSize = 1;
+        entityitem.func_92059_d().stackSize = 1;
         entityitem.hoverStart = 0.0F;
         GL11.glPushMatrix();
-        GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.field_82332_a], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.field_82332_a]);
+        GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
         GL11.glRotatef(180F + par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-90 * par1EntityItemFrame.getRotation(), 0.0F, 0.0F, 1.0F);
 
@@ -100,7 +100,7 @@ public class RenderItemFrame2 extends Render
                 break;
         }
 
-        if (entityitem.item.getItem() == Item.map)
+        if (entityitem.func_92059_d().getItem() == Item.map)
         {
             float f6 = Minecraft.oldlighting ? par1EntityItemFrame.getBrightness(0) : 1.0F;
             renderManager.renderEngine.bindTexture(renderManager.renderEngine.getTexture("/misc/mapbg.png"));
@@ -118,7 +118,7 @@ public class RenderItemFrame2 extends Render
             tessellator.addVertexWithUV(128 + byte0, 0 - byte0, 0.0D, 1.0D, 0.0D);
             tessellator.addVertexWithUV(0 - byte0, 0 - byte0, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
-            MapData mapdata = Item.map.getMapData(entityitem.item, par1EntityItemFrame.worldObj);
+            MapData mapdata = Item.map.getMapData(entityitem.func_92059_d(), par1EntityItemFrame.worldObj);
 
             if (mapdata != null)
             {
@@ -127,16 +127,16 @@ public class RenderItemFrame2 extends Render
         }
         else
         {
-            if (entityitem.item.getItem() == Item.compass)
+            if (entityitem.func_92059_d().getItem() == Item.compass)
             {
                 double d = TextureCompassFX.field_82391_c.field_76868_i;
                 double d1 = TextureCompassFX.field_82391_c.field_76866_j;
                 TextureCompassFX.field_82391_c.field_76868_i = 0.0D;
                 TextureCompassFX.field_82391_c.field_76866_j = 0.0D;
-                TextureCompassFX.func_82390_a(par1EntityItemFrame.posX, par1EntityItemFrame.posZ, MathHelper.wrapAngleTo180_float(180 + par1EntityItemFrame.field_82332_a * 90), false, true);
+                TextureCompassFX.func_82390_a(par1EntityItemFrame.posX, par1EntityItemFrame.posZ, MathHelper.wrapAngleTo180_float(180 + par1EntityItemFrame.hangingDirection * 90), false, true);
                 TextureCompassFX.field_82391_c.field_76868_i = d;
                 TextureCompassFX.field_82391_c.field_76866_j = d1;
-                renderManager.renderEngine.func_82772_a(TextureCompassFX.field_82391_c, -1);
+                renderManager.renderEngine.updateDynamicTexture(TextureCompassFX.field_82391_c, -1);
             }
 
             float f = renderManager.playerViewY;
@@ -147,10 +147,10 @@ public class RenderItemFrame2 extends Render
             renderManager.playerViewY = f;
             GL11.glEnable(GL11.GL_LIGHTING);
 
-            if (entityitem.item.getItem() == Item.compass)
+            if (entityitem.func_92059_d().getItem() == Item.compass)
             {
                 TextureCompassFX.field_82391_c.onTick();
-                renderManager.renderEngine.func_82772_a(TextureCompassFX.field_82391_c, -1);
+                renderManager.renderEngine.updateDynamicTexture(TextureCompassFX.field_82391_c, -1);
             }
         }
 

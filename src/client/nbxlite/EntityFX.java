@@ -24,21 +24,36 @@ public class EntityFX extends Entity
      * The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
      */
     protected float particleBlue;
-    protected float field_82339_as;
+
+    /** Particle alpha */
+    protected float particleAlpha;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;
 
-    public EntityFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    protected EntityFX(World par1World, double par2, double par4, double par6)
     {
         super(par1World);
         particleAge = 0;
         particleMaxAge = 0;
-        field_82339_as = 1.0F;
+        particleAlpha = 1.0F;
         setSize(0.2F, 0.2F);
         yOffset = height / 2.0F;
         setPosition(par2, par4, par6);
+        lastTickPosX = par2;
+        lastTickPosY = par4;
+        lastTickPosZ = par6;
         particleRed = particleGreen = particleBlue = 1.0F;
+        particleTextureJitterX = rand.nextFloat() * 3F;
+        particleTextureJitterY = rand.nextFloat() * 3F;
+        particleScale = (rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
+        particleMaxAge = (int)(4F / (rand.nextFloat() * 0.9F + 0.1F));
+        particleAge = 0;
+    }
+
+    public EntityFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    {
+        this(par1World, par2, par4, par6);
         motionX = par8 + (double)((float)(Math.random() * 2D - 1.0D) * 0.4F);
         motionY = par10 + (double)((float)(Math.random() * 2D - 1.0D) * 0.4F);
         motionZ = par12 + (double)((float)(Math.random() * 2D - 1.0D) * 0.4F);
@@ -47,11 +62,6 @@ public class EntityFX extends Entity
         motionX = (motionX / (double)f1) * (double)f * 0.40000000596046448D;
         motionY = (motionY / (double)f1) * (double)f * 0.40000000596046448D + 0.10000000149011612D;
         motionZ = (motionZ / (double)f1) * (double)f * 0.40000000596046448D;
-        particleTextureJitterX = rand.nextFloat() * 3F;
-        particleTextureJitterY = rand.nextFloat() * 3F;
-        particleScale = (rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
-        particleMaxAge = (int)(4F / (rand.nextFloat() * 0.9F + 0.1F));
-        particleAge = 0;
     }
 
     public EntityFX multiplyVelocity(float par1)
@@ -76,9 +86,12 @@ public class EntityFX extends Entity
         particleBlue = par3;
     }
 
-    public void func_82338_g(float par1)
+    /**
+     * Sets the particle alpha (float)
+     */
+    public void setAlphaF(float par1)
     {
-        field_82339_as = par1;
+        particleAlpha = par1;
     }
 
     public float getRedColorF()
@@ -147,7 +160,7 @@ public class EntityFX extends Entity
         float f6 = (float)((prevPosY + (posY - prevPosY) * (double)par2) - interpPosY);
         float f7 = (float)((prevPosZ + (posZ - prevPosZ) * (double)par2) - interpPosZ);
         float f8 = net.minecraft.client.Minecraft.oldlighting ? getBrightness(par2) : 1.0F;
-        par1Tessellator.setColorRGBA_F(particleRed * f8, particleGreen * f8, particleBlue * f8, field_82339_as);
+        par1Tessellator.setColorRGBA_F(particleRed * f8, particleGreen * f8, particleBlue * f8, particleAlpha);
         par1Tessellator.addVertexWithUV(f5 - par3 * f4 - par6 * f4, f6 - par4 * f4, f7 - par5 * f4 - par7 * f4, f1, f3);
         par1Tessellator.addVertexWithUV((f5 - par3 * f4) + par6 * f4, f6 + par4 * f4, (f7 - par5 * f4) + par7 * f4, f1, f2);
         par1Tessellator.addVertexWithUV(f5 + par3 * f4 + par6 * f4, f6 + par4 * f4, f7 + par5 * f4 + par7 * f4, f, f2);
@@ -196,6 +209,6 @@ public class EntityFX extends Entity
 
     public String toString()
     {
-        return (new StringBuilder()).append(getClass().getSimpleName()).append(", Pos (").append(posX).append(",").append(posY).append(",").append(posZ).append("), RGBA (").append(particleRed).append(",").append(particleGreen).append(",").append(particleBlue).append(",").append(field_82339_as).append("), Age ").append(particleAge).toString();
+        return (new StringBuilder()).append(getClass().getSimpleName()).append(", Pos (").append(posX).append(",").append(posY).append(",").append(posZ).append("), RGBA (").append(particleRed).append(",").append(particleGreen).append(",").append(particleBlue).append(",").append(particleAlpha).append("), Age ").append(particleAge).toString();
     }
 }

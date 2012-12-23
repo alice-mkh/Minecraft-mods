@@ -42,6 +42,7 @@ public class EntityArrow extends Entity implements IProjectile
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
+        renderDistanceWeight = 10D;
         setSize(0.5F, 0.5F);
     }
 
@@ -58,6 +59,7 @@ public class EntityArrow extends Entity implements IProjectile
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
+        renderDistanceWeight = 10D;
         setSize(0.5F, 0.5F);
         setPosition(par2, par4, par6);
         yOffset = 0.0F;
@@ -76,6 +78,7 @@ public class EntityArrow extends Entity implements IProjectile
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
+        renderDistanceWeight = 10D;
         shootingEntity = par2EntityLiving;
 
         if (par2EntityLiving instanceof EntityPlayer)
@@ -120,6 +123,7 @@ public class EntityArrow extends Entity implements IProjectile
         arrowShake = 0;
         ticksInAir = 0;
         damage = 2D;
+        renderDistanceWeight = 10D;
         shootingEntity = par2EntityLiving;
 
         if (par2EntityLiving instanceof EntityPlayer)
@@ -332,7 +336,7 @@ public class EntityArrow extends Entity implements IProjectile
                     damagesource = DamageSource.causeArrowDamage(this, shootingEntity);
                 }
 
-                if (isBurning())
+                if (isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
                 {
                     movingobjectposition.entityHit.setFire(5);
                 }
@@ -341,10 +345,11 @@ public class EntityArrow extends Entity implements IProjectile
                 {
                     if (movingobjectposition.entityHit instanceof EntityLiving)
                     {
+                        EntityLiving entityliving = (EntityLiving)movingobjectposition.entityHit;
+
                         if (!worldObj.isRemote)
                         {
-                            EntityLiving entityliving = (EntityLiving)movingobjectposition.entityHit;
-                            entityliving.func_85034_r(entityliving.func_85035_bI() + 1);
+                            entityliving.setArrowCountInEntity(entityliving.getArrowCountInEntity() + 1);
                         }
 
                         if (knockbackStrength > 0)
@@ -356,10 +361,21 @@ public class EntityArrow extends Entity implements IProjectile
                                 movingobjectposition.entityHit.addVelocity((motionX * (double)knockbackStrength * 0.60000002384185791D) / (double)f7, 0.10000000000000001D, (motionZ * (double)knockbackStrength * 0.60000002384185791D) / (double)f7);
                             }
                         }
+
+                        EnchantmentThorns.func_92096_a(shootingEntity, entityliving, rand);
+
+                        if (shootingEntity != null && movingobjectposition.entityHit != shootingEntity && (movingobjectposition.entityHit instanceof EntityPlayer) && (shootingEntity instanceof EntityPlayerMP))
+                        {
+                            ((EntityPlayerMP)shootingEntity).playerNetServerHandler.sendPacketToPlayer(new Packet70GameEvent(6, 0));
+                        }
                     }
 
                     func_85030_a("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
-                    setDead();
+
+                    if (!(movingobjectposition.entityHit instanceof EntityEnderman))
+                    {
+                        setDead();
+                    }
                 }
                 else
                 {

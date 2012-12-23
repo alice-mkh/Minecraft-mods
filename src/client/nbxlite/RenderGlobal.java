@@ -1203,7 +1203,10 @@ public class RenderGlobal implements IWorldAccess
         GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
-    public boolean func_72721_a(double par1, double par3, double d, float f)
+    /**
+     * Checks if the given position is to be rendered with cloud fog
+     */
+    public boolean hasCloudFog(double par1, double par3, double d, float f)
     {
         return false;
     }
@@ -1728,27 +1731,27 @@ public class RenderGlobal implements IWorldAccess
     }
 
     /**
-     * Will mark the block and neighbors that their renderers need an update (could be all the same renderer
-     * potentially) Args: x, y, z
+     * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
+     * including the tile entity description packet if applicable. Args: x, y, z
      */
-    public void markBlockNeedsUpdate(int par1, int par2, int par3)
+    public void markBlockForUpdate(int par1, int par2, int par3)
     {
         markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
     }
 
     /**
-     * As of mc 1.2.3 this method has exactly the same signature and does exactly the same as markBlockNeedsUpdate
+     * On the client, re-renders this block. On the server, does nothing. Used for lighting updates.
      */
-    public void markBlockNeedsUpdate2(int par1, int par2, int par3)
+    public void markBlockForRenderUpdate(int par1, int par2, int par3)
     {
         markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
     }
 
     /**
-     * Called across all registered IWorldAccess instances when a block range is invalidated. Args: minX, minY, minZ,
-     * maxX, maxY, maxZ
+     * On the client, re-renders all blocks in this range, inclusive. On the server, does nothing. Args: min x, min y,
+     * min z, max x, max y, max z
      */
-    public void markBlockRangeNeedsUpdate(int par1, int par2, int par3, int par4, int par5, int par6)
+    public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par4 + 1, par5 + 1, par6 + 1);
     }
@@ -1775,11 +1778,11 @@ public class RenderGlobal implements IWorldAccess
      */
     public void playRecord(String par1Str, int par2, int par3, int par4)
     {
-        ItemRecord itemrecord = ItemRecord.func_90042_d(par1Str);
+        ItemRecord itemrecord = ItemRecord.getRecord(par1Str);
 
         if (par1Str != null && itemrecord != null)
         {
-            mc.ingameGUI.setRecordPlayingMessage(itemrecord.func_90043_g());
+            mc.ingameGUI.setRecordPlayingMessage(itemrecord.getRecordTitle());
         }
 
         mc.sndManager.playStreaming(par1Str, par2, par3, par4);
@@ -1788,7 +1791,7 @@ public class RenderGlobal implements IWorldAccess
     /**
      * Plays the specified sound. Arg: soundName, x, y, z, volume, pitch
      */
-    public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9)
+    public void playSound(String s, double d, double d1, double d2, float f, float f1)
     {
     }
 
@@ -1803,19 +1806,22 @@ public class RenderGlobal implements IWorldAccess
     {
         try
         {
-            func_72726_b(par1Str, par2, par4, par6, par8, par10, par12);
+            doSpawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
         }
         catch (Throwable throwable)
         {
-            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception while adding particle");
-            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Particle being added");
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while adding particle");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being added");
             crashreportcategory.addCrashSection("Name", par1Str);
             crashreportcategory.addCrashSectionCallable("Position", new CallableParticlePositionInfo(this, par2, par4, par6));
             throw new ReportedException(crashreport);
         }
     }
 
-    public EntityFX func_72726_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
+    /**
+     * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
+     */
+    public EntityFX doSpawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
     {
         if (mc == null || mc.renderViewEntity == null || mc.effectRenderer == null)
         {
@@ -1841,6 +1847,10 @@ public class RenderGlobal implements IWorldAccess
         else if (par1Str.equals("largeexplode"))
         {
             mc.effectRenderer.addEffect(((EntityFX)(obj = new EntityLargeExplodeFX(renderEngine, theWorld, par2, par4, par6, par8, par10, par12))));
+        }
+        else if (par1Str.equals("fireworksSpark"))
+        {
+            mc.effectRenderer.addEffect(((EntityFX)(obj = new EntityFireworkSparkFX(theWorld, par2, par4, par6, par8, par10, par12, mc.effectRenderer))));
         }
 
         if (obj != null)
@@ -1898,7 +1908,7 @@ public class RenderGlobal implements IWorldAccess
         else if (par1Str.equals("mobSpellAmbient"))
         {
             obj = new EntitySpellParticleFX(theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-            ((EntityFX)(obj)).func_82338_g(0.15F);
+            ((EntityFX)(obj)).setAlphaF(0.15F);
             ((EntityFX)(obj)).setRBGColorF((float)par8, (float)par10, (float)par12);
         }
         else if (par1Str.equals("spell"))
@@ -2087,11 +2097,11 @@ public class RenderGlobal implements IWorldAccess
 
                     if (par1 == 1013)
                     {
-                        theWorld.playSound(d4, d5, d6, "mob.wither.spawn", 1.0F, 1.0F);
+                        theWorld.playSound(d4, d5, d6, "mob.wither.spawn", 1.0F, 1.0F, false);
                     }
                     else if (par1 == 1018)
                     {
-                        theWorld.playSound(d4, d5, d6, "mob.enderdragon.end", 5F, 1.0F);
+                        theWorld.playSound(d4, d5, d6, "mob.enderdragon.end", 5F, 1.0F, false);
                     }
                 }
 
@@ -2111,13 +2121,13 @@ public class RenderGlobal implements IWorldAccess
             default:
                 break;
             case 1001:
-                theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.2F);
+                theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.2F, false);
                 break;
             case 1000:
-                theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.0F);
+                theWorld.playSound(par3, par4, par5, "random.click", 1.0F, 1.0F, false);
                 break;
             case 1002:
-                theWorld.playSound(par3, par4, par5, "random.bow", 1.0F, 1.2F);
+                theWorld.playSound(par3, par4, par5, "random.bow", 1.0F, 1.2F, false);
                 break;
             case 2000:
                 int i = par6 % 3 - 1;
@@ -2186,7 +2196,7 @@ public class RenderGlobal implements IWorldAccess
                     double d19 = Math.cos(d16) * d13;
                     double d22 = 0.01D + random.nextDouble() * 0.5D;
                     double d24 = Math.sin(d16) * d13;
-                    EntityFX entityfx = func_72726_b(s2, d1 + d19 * 0.10000000000000001D, d4 + 0.29999999999999999D, d7 + d24 * 0.10000000000000001D, d19, d22, d24);
+                    EntityFX entityfx = doSpawnParticle(s2, d1 + d19 * 0.10000000000000001D, d4 + 0.29999999999999999D, d7 + d24 * 0.10000000000000001D, d19, d22, d24);
 
                     if (entityfx != null)
                     {
@@ -2196,7 +2206,7 @@ public class RenderGlobal implements IWorldAccess
                     }
                 }
 
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
                 break;
             case 2001:
                 int l1 = par6 & 0xfff;
@@ -2225,25 +2235,25 @@ public class RenderGlobal implements IWorldAccess
 
                 if (Math.random() < 0.5D)
                 {
-                    theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                    theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
                 }
                 else
                 {
-                    theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                    theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
                 }
 
                 break;
             case 1004:
-                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.fizz", 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.fizz", 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F, false);
                 break;
             case 1020:
-                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_break", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_break", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
                 break;
             case 1021:
-                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_use", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_use", 1.0F, theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
                 break;
             case 1022:
-                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_land", 0.3F, theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                theWorld.playSound((float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, "random.anvil_land", 0.3F, theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
                 break;
             case 1005:
 
@@ -2258,34 +2268,34 @@ public class RenderGlobal implements IWorldAccess
 
                 break;
             case 1007:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1008:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1010:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1012:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1011:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1009:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1014:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.wither.shoot", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.wither.shoot", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1016:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.infect", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.infect", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1017:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.unfect", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.unfect", 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
             case 1015:
-                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.bat.takeoff", 0.05F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.bat.takeoff", 0.05F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                 break;
         }
     }

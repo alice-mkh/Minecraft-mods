@@ -59,7 +59,7 @@ public class OldDaysModule{
     }
 
     public void addRecipe(ItemStack stack, Object... obj){
-        CraftingManager.getInstance().addRecipe(stack, obj);
+        CraftingManager.getInstance().func_92103_a(stack, obj);
     }
 
     public void addShapelessRecipe(ItemStack stack, Object... obj){

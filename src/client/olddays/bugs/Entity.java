@@ -188,7 +188,7 @@ public abstract class Entity
 
     /** Whether the entity is inside a Portal */
     protected boolean inPortal;
-    private int field_82153_h;
+    protected int field_82153_h;
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
@@ -411,7 +411,6 @@ public abstract class Entity
             ridingEntity = null;
         }
 
-        ticksExisted++;
         prevDistanceWalkedModified = distanceWalkedModified;
         prevPosX = posX;
         prevPosY = posY;
@@ -559,6 +558,7 @@ public abstract class Entity
     public void setFire(int par1)
     {
         int i = par1 * 20;
+        i = EnchantmentProtection.func_92093_a(this, i);
 
         if (fire < i)
         {
@@ -991,7 +991,7 @@ public abstract class Entity
         }
     }
 
-    protected void func_85030_a(String par1Str, float par2, float par3)
+    public void func_85030_a(String par1Str, float par2, float par3)
     {
         worldObj.playSoundAtEntity(this, par1Str, par2, par3);
     }
@@ -1533,8 +1533,8 @@ public abstract class Entity
         }
         catch (Throwable throwable)
         {
-            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Saving entity NBT");
-            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being saved");
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Saving entity NBT");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being saved");
             func_85029_a(crashreportcategory);
             throw new ReportedException(crashreport);
         }
@@ -1587,8 +1587,8 @@ public abstract class Entity
         }
         catch (Throwable throwable)
         {
-            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Loading entity NBT");
-            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being loaded");
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Loading entity NBT");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being loaded");
             func_85029_a(crashreportcategory);
             throw new ReportedException(crashreport);
         }
@@ -2064,12 +2064,12 @@ public abstract class Entity
         setFlag(3, par1);
     }
 
-    public boolean func_82150_aj()
+    public boolean getHasActivePotion()
     {
         return getFlag(5);
     }
 
-    public void func_82142_c(boolean par1)
+    public void setHasActivePotion(boolean par1)
     {
         setFlag(5, par1);
     }
@@ -2275,7 +2275,7 @@ public abstract class Entity
         return this == par1Entity;
     }
 
-    public float func_70079_am()
+    public float setRotationYawHead()
     {
         return 0.0F;
     }
@@ -2407,7 +2407,10 @@ public abstract class Entity
                 }));
     }
 
-    public boolean func_90999_ad()
+    /**
+     * Return whether this entity should be rendered as on fire.
+     */
+    public boolean canRenderOnFire()
     {
         return isBurning();
     }

@@ -194,7 +194,7 @@ public class GuiChat extends GuiScreen
                     if (mc.gameSettings.chatLinksPrompt)
                     {
                         clickedURI = uri;
-                        mc.displayGuiScreen(new GuiChatConfirmLink(this, this, chatclickdata.getClickedUrl(), 0, chatclickdata));
+                        mc.displayGuiScreen(new GuiConfirmOpenLink(this, chatclickdata.getClickedUrl(), 0));
                     }
                     else
                     {

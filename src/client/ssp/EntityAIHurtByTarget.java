@@ -69,4 +69,15 @@ public class EntityAIHurtByTarget extends EntityAITarget
 
         super.startExecuting();
     }
+
+    /**
+     * Resets the task
+     */
+    public void resetTask()
+    {
+        if (taskOwner.getAttackTarget() != null && (taskOwner.getAttackTarget() instanceof EntityPlayer) && ((EntityPlayer)taskOwner.getAttackTarget()).capabilities.disableDamage)
+        {
+            super.resetTask();
+        }
+    }
 }

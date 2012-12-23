@@ -7,7 +7,7 @@ public class WorldInfo
     /** Holds the seed of the currently world. */
     private long randomSeed;
     private WorldType terrainType;
-    private String field_82576_c;
+    private String generatorOptions;
 
     /** The spawn zone position X coordinate. */
     private int spawnX;
@@ -89,14 +89,14 @@ public class WorldInfo
     protected WorldInfo()
     {
         terrainType = WorldType.DEFAULT;
-        field_82576_c = "";
+        generatorOptions = "";
         theGameRules = new GameRules();
     }
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
         terrainType = WorldType.DEFAULT;
-        field_82576_c = "";
+        generatorOptions = "";
         theGameRules = new GameRules();
         randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 
@@ -123,7 +123,7 @@ public class WorldInfo
 
             if (par1NBTTagCompound.hasKey("generatorOptions"))
             {
-                field_82576_c = par1NBTTagCompound.getString("generatorOptions");
+                generatorOptions = par1NBTTagCompound.getString("generatorOptions");
             }
         }
 
@@ -272,7 +272,7 @@ public class WorldInfo
     public WorldInfo(WorldSettings par1WorldSettings, String par2Str)
     {
         terrainType = WorldType.DEFAULT;
-        field_82576_c = "";
+        generatorOptions = "";
         theGameRules = new GameRules();
         randomSeed = par1WorldSettings.getSeed();
         theGameType = par1WorldSettings.getGameType();
@@ -280,7 +280,7 @@ public class WorldInfo
         levelName = par2Str;
         hardcore = par1WorldSettings.getHardcoreEnabled();
         terrainType = par1WorldSettings.getTerrainType();
-        field_82576_c = par1WorldSettings.func_82749_j();
+        generatorOptions = par1WorldSettings.func_82749_j();
         allowCommands = par1WorldSettings.areCommandsAllowed();
         initialized = false;
         if (useNBXlite){
@@ -309,11 +309,11 @@ public class WorldInfo
     public WorldInfo(WorldInfo par1WorldInfo)
     {
         terrainType = WorldType.DEFAULT;
-        field_82576_c = "";
+        generatorOptions = "";
         theGameRules = new GameRules();
         randomSeed = par1WorldInfo.randomSeed;
         terrainType = par1WorldInfo.terrainType;
-        field_82576_c = par1WorldInfo.field_82576_c;
+        generatorOptions = par1WorldInfo.generatorOptions;
         theGameType = par1WorldInfo.theGameType;
         mapFeaturesEnabled = par1WorldInfo.mapFeaturesEnabled;
         spawnX = par1WorldInfo.spawnX;
@@ -405,7 +405,7 @@ public class WorldInfo
         par1NBTTagCompound.setLong("RandomSeed", randomSeed);
         par1NBTTagCompound.setString("generatorName", terrainType.getWorldTypeName());
         par1NBTTagCompound.setInteger("generatorVersion", terrainType.getGeneratorVersion());
-        par1NBTTagCompound.setString("generatorOptions", field_82576_c);
+        par1NBTTagCompound.setString("generatorOptions", generatorOptions);
         par1NBTTagCompound.setInteger("GameType", theGameType.getID());
         par1NBTTagCompound.setBoolean("MapFeatures", mapFeaturesEnabled);
         par1NBTTagCompound.setInteger("SpawnX", spawnX);
@@ -721,7 +721,7 @@ public class WorldInfo
 
     public String func_82571_y()
     {
-        return field_82576_c;
+        return generatorOptions;
     }
 
     /**
@@ -769,19 +769,25 @@ public class WorldInfo
         par1CrashReportCategory.addCrashSectionCallable("Level game mode", new CallableLevelGamemode(this));
     }
 
-    static WorldType func_85132_a(WorldInfo par0WorldInfo)
+    /**
+     * Return the terrain type of a world
+     */
+    static WorldType getTerrainTypeOfWorld(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.terrainType;
     }
 
-    static boolean func_85128_b(WorldInfo par0WorldInfo)
+    /**
+     * Return the map feautures enabled of a world
+     */
+    static boolean getMapFeaturesEnabled(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.mapFeaturesEnabled;
     }
 
     static String func_85130_c(WorldInfo par0WorldInfo)
     {
-        return par0WorldInfo.field_82576_c;
+        return par0WorldInfo.generatorOptions;
     }
 
     static int func_85125_d(WorldInfo par0WorldInfo)

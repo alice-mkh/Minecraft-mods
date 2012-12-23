@@ -43,7 +43,7 @@ public class BlockCake2 extends BlockCake
                 }
                 else{
                     par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
-                    par1World.markBlockAsNeedsUpdate(par2, par3, par4);
+                    par1World.markBlockForRenderUpdate2(par2, par3, par4);
                 }
             }
             return;
@@ -60,7 +60,7 @@ public class BlockCake2 extends BlockCake
             else
             {
                 par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
-                par1World.markBlockAsNeedsUpdate(par2, par3, par4);
+                par1World.markBlockForRenderUpdate2(par2, par3, par4);
             }
         }
     }

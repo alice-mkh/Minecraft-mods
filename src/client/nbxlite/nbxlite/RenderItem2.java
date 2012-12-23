@@ -34,23 +34,23 @@ public class RenderItem2 extends Render
     public void doRenderItem(EntityItem par1EntityItem, double par2, double par4, double par6, float par8, float par9)
     {
         random.setSeed(187L);
-        ItemStack itemstack = par1EntityItem.item;
+        ItemStack itemstack = par1EntityItem.func_92059_d();
         GL11.glPushMatrix();
         float f = MathHelper.sin(((float)par1EntityItem.age + par9) / 10F + par1EntityItem.hoverStart) * 0.1F + 0.1F;
         float f1 = (((float)par1EntityItem.age + par9) / 20F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
         byte byte0 = 1;
 
-        if (par1EntityItem.item.stackSize > 1)
+        if (par1EntityItem.func_92059_d().stackSize > 1)
         {
             byte0 = 2;
         }
 
-        if (par1EntityItem.item.stackSize > 5)
+        if (par1EntityItem.func_92059_d().stackSize > 5)
         {
             byte0 = 3;
         }
 
-        if (par1EntityItem.item.stackSize > 20)
+        if (par1EntityItem.func_92059_d().stackSize > 20)
         {
             byte0 = 4;
         }

@@ -367,7 +367,13 @@ public class NetServerHandler extends NetHandler
 
         if (par1Packet14BlockDig.status == 4)
         {
-            playerEntity.dropOneItem();
+            playerEntity.dropOneItem(false);
+            return;
+        }
+
+        if (par1Packet14BlockDig.status == 3)
+        {
+            playerEntity.dropOneItem(true);
             return;
         }
 
@@ -377,10 +383,16 @@ public class NetServerHandler extends NetHandler
             return;
         }
 
-        boolean flag = worldserver.provider.dimensionId != 0 || mcServer.getConfigurationManager().getOps().isEmpty() || mcServer.getConfigurationManager().areCommandsAllowed(playerEntity.username) || mcServer.isSinglePlayer();
+        int i = mcServer.getSpawnProtectionSize();
+        boolean flag = worldserver.provider.dimensionId != 0 || mcServer.getConfigurationManager().getOps().isEmpty() || mcServer.getConfigurationManager().areCommandsAllowed(playerEntity.username) || i <= 0 || mcServer.isSinglePlayer();
         boolean flag1 = false;
 
         if (par1Packet14BlockDig.status == 0)
+        {
+            flag1 = true;
+        }
+
+        if (par1Packet14BlockDig.status == 1)
         {
             flag1 = true;
         }
@@ -390,76 +402,64 @@ public class NetServerHandler extends NetHandler
             flag1 = true;
         }
 
-        int i = par1Packet14BlockDig.xPosition;
-        int j = par1Packet14BlockDig.yPosition;
-        int k = par1Packet14BlockDig.zPosition;
+        int j = par1Packet14BlockDig.xPosition;
+        int k = par1Packet14BlockDig.yPosition;
+        int l = par1Packet14BlockDig.zPosition;
 
         if (flag1)
         {
-            double d = playerEntity.posX - ((double)i + 0.5D);
-            double d1 = (playerEntity.posY - ((double)j + 0.5D)) + 1.5D;
-            double d3 = playerEntity.posZ - ((double)k + 0.5D);
-            double d5 = d * d + d1 * d1 + d3 * d3;
+            double d = playerEntity.posX - ((double)j + 0.5D);
+            double d1 = (playerEntity.posY - ((double)k + 0.5D)) + 1.5D;
+            double d2 = playerEntity.posZ - ((double)l + 0.5D);
+            double d3 = d * d + d1 * d1 + d2 * d2;
 
-            if (d5 > 36D)
+            if (d3 > 36D)
             {
                 return;
             }
 
-            if (j >= mcServer.getBuildLimit())
+            if (k >= mcServer.getBuildLimit())
             {
                 return;
             }
         }
 
         ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
-        int l = MathHelper.abs_int(i - chunkcoordinates.posX);
-        int i1 = MathHelper.abs_int(k - chunkcoordinates.posZ);
+        int i1 = MathHelper.abs_int(j - chunkcoordinates.posX);
+        int j1 = MathHelper.abs_int(l - chunkcoordinates.posZ);
 
-        if (l > i1)
+        if (i1 > j1)
         {
-            i1 = l;
+            j1 = i1;
         }
 
         if (par1Packet14BlockDig.status == 0)
         {
-            if (i1 > mcServer.getSpawnProtectionSize() || flag)
+            if (j1 > i || flag)
             {
-                playerEntity.theItemInWorldManager.onBlockClicked(i, j, k, par1Packet14BlockDig.face);
+                playerEntity.theItemInWorldManager.onBlockClicked(j, k, l, par1Packet14BlockDig.face);
             }
             else
             {
-                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(i, j, k, worldserver));
+                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(j, k, l, worldserver));
             }
         }
         else if (par1Packet14BlockDig.status == 2)
         {
-            playerEntity.theItemInWorldManager.uncheckedTryHarvestBlock(i, j, k);
+            playerEntity.theItemInWorldManager.uncheckedTryHarvestBlock(j, k, l);
 
-            if (worldserver.getBlockId(i, j, k) != 0)
+            if (worldserver.getBlockId(j, k, l) != 0)
             {
-                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(i, j, k, worldserver));
+                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(j, k, l, worldserver));
             }
         }
         else if (par1Packet14BlockDig.status == 1)
         {
-            playerEntity.theItemInWorldManager.destroyBlockInWorldPartially(i, j, k);
+            playerEntity.theItemInWorldManager.cancelDestroyingBlock(j, k, l);
 
-            if (worldserver.getBlockId(i, j, k) != 0)
+            if (worldserver.getBlockId(j, k, l) != 0)
             {
-                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(i, j, k, worldserver));
-            }
-        }
-        else if (par1Packet14BlockDig.status == 3)
-        {
-            double d2 = playerEntity.posX - ((double)i + 0.5D);
-            double d4 = playerEntity.posY - ((double)j + 0.5D);
-            double d6 = playerEntity.posZ - ((double)k + 0.5D);
-            double d7 = d2 * d2 + d4 * d4 + d6 * d6;
-
-            if (d7 < 256D)
-            {
-                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(i, j, k, worldserver));
+                playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(j, k, l, worldserver));
             }
         }
     }
@@ -473,7 +473,8 @@ public class NetServerHandler extends NetHandler
         int j = par1Packet15Place.getYPosition();
         int k = par1Packet15Place.getZPosition();
         int l = par1Packet15Place.getDirection();
-        boolean flag1 = worldserver.provider.dimensionId != 0 || mcServer.getConfigurationManager().getOps().isEmpty() || mcServer.getConfigurationManager().areCommandsAllowed(playerEntity.username) || mcServer.isSinglePlayer();
+        int i1 = mcServer.getSpawnProtectionSize();
+        boolean flag1 = worldserver.provider.dimensionId != 0 || mcServer.getConfigurationManager().getOps().isEmpty() || mcServer.getConfigurationManager().areCommandsAllowed(playerEntity.username) || i1 <= 0 || mcServer.isSinglePlayer();
 
         if (par1Packet15Place.getDirection() == 255)
         {
@@ -487,15 +488,15 @@ public class NetServerHandler extends NetHandler
         else if (par1Packet15Place.getYPosition() < mcServer.getBuildLimit() - 1 || par1Packet15Place.getDirection() != 1 && par1Packet15Place.getYPosition() < mcServer.getBuildLimit())
         {
             ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
-            int i1 = MathHelper.abs_int(i - chunkcoordinates.posX);
-            int j1 = MathHelper.abs_int(k - chunkcoordinates.posZ);
+            int j1 = MathHelper.abs_int(i - chunkcoordinates.posX);
+            int k1 = MathHelper.abs_int(k - chunkcoordinates.posZ);
 
-            if (i1 > j1)
+            if (j1 > k1)
             {
-                j1 = i1;
+                k1 = j1;
             }
 
-            if (hasMoved && playerEntity.getDistanceSq((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D) < 64D && (j1 > mcServer.getSpawnProtectionSize() || flag1))
+            if (hasMoved && playerEntity.getDistanceSq((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D) < 64D && (k1 > i1 || flag1))
             {
                 playerEntity.theItemInWorldManager.activateBlockOrUseItem(playerEntity, worldserver, itemstack, i, j, k, l, par1Packet15Place.getXOffset(), par1Packet15Place.getYOffset(), par1Packet15Place.getZOffset());
             }
@@ -557,13 +558,13 @@ public class NetServerHandler extends NetHandler
         {
             playerEntity.playerInventoryBeingManipulated = true;
             playerEntity.inventory.mainInventory[playerEntity.inventory.currentItem] = ItemStack.copyItemStack(playerEntity.inventory.mainInventory[playerEntity.inventory.currentItem]);
-            Slot slot = playerEntity.craftingInventory.getSlotFromInventory(playerEntity.inventory, playerEntity.inventory.currentItem);
-            playerEntity.craftingInventory.updateCraftingResults();
+            Slot slot = playerEntity.openContainer.getSlotFromInventory(playerEntity.inventory, playerEntity.inventory.currentItem);
+            playerEntity.openContainer.updateCraftingResults();
             playerEntity.playerInventoryBeingManipulated = false;
 
             if (!ItemStack.areItemStacksEqual(playerEntity.inventory.getCurrentItem(), par1Packet15Place.getItemStack()))
             {
-                sendPacketToPlayer(new Packet103SetSlot(playerEntity.craftingInventory.windowId, slot.slotNumber, playerEntity.inventory.getCurrentItem()));
+                sendPacketToPlayer(new Packet103SetSlot(playerEntity.openContainer.windowId, slot.slotNumber, playerEntity.inventory.getCurrentItem()));
             }
         }
     }
@@ -830,41 +831,41 @@ public class NetServerHandler extends NetHandler
 
     public void handleWindowClick(Packet102WindowClick par1Packet102WindowClick)
     {
-        if (playerEntity.craftingInventory.windowId == par1Packet102WindowClick.window_Id && playerEntity.craftingInventory.isPlayerNotUsingContainer(playerEntity))
+        if (playerEntity.openContainer.windowId == par1Packet102WindowClick.window_Id && playerEntity.openContainer.isPlayerNotUsingContainer(playerEntity))
         {
-            ItemStack itemstack = playerEntity.craftingInventory.slotClick(par1Packet102WindowClick.inventorySlot, par1Packet102WindowClick.mouseClick, par1Packet102WindowClick.holdingShift, playerEntity);
+            ItemStack itemstack = playerEntity.openContainer.slotClick(par1Packet102WindowClick.inventorySlot, par1Packet102WindowClick.mouseClick, par1Packet102WindowClick.holdingShift, playerEntity);
 
             if (ItemStack.areItemStacksEqual(par1Packet102WindowClick.itemStack, itemstack))
             {
                 playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet106Transaction(par1Packet102WindowClick.window_Id, par1Packet102WindowClick.action, true));
                 playerEntity.playerInventoryBeingManipulated = true;
-                playerEntity.craftingInventory.updateCraftingResults();
-                playerEntity.sendInventoryToPlayer();
+                playerEntity.openContainer.updateCraftingResults();
+                playerEntity.updateHeldItem();
                 playerEntity.playerInventoryBeingManipulated = false;
             }
             else
             {
-                field_72586_s.addKey(playerEntity.craftingInventory.windowId, Short.valueOf(par1Packet102WindowClick.action));
+                field_72586_s.addKey(playerEntity.openContainer.windowId, Short.valueOf(par1Packet102WindowClick.action));
                 playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet106Transaction(par1Packet102WindowClick.window_Id, par1Packet102WindowClick.action, false));
-                playerEntity.craftingInventory.setPlayerIsPresent(playerEntity, false);
+                playerEntity.openContainer.setPlayerIsPresent(playerEntity, false);
                 ArrayList arraylist = new ArrayList();
 
-                for (int i = 0; i < playerEntity.craftingInventory.inventorySlots.size(); i++)
+                for (int i = 0; i < playerEntity.openContainer.inventorySlots.size(); i++)
                 {
-                    arraylist.add(((Slot)playerEntity.craftingInventory.inventorySlots.get(i)).getStack());
+                    arraylist.add(((Slot)playerEntity.openContainer.inventorySlots.get(i)).getStack());
                 }
 
-                playerEntity.sendContainerAndContentsToPlayer(playerEntity.craftingInventory, arraylist);
+                playerEntity.sendContainerAndContentsToPlayer(playerEntity.openContainer, arraylist);
             }
         }
     }
 
     public void handleEnchantItem(Packet108EnchantItem par1Packet108EnchantItem)
     {
-        if (playerEntity.craftingInventory.windowId == par1Packet108EnchantItem.windowId && playerEntity.craftingInventory.isPlayerNotUsingContainer(playerEntity))
+        if (playerEntity.openContainer.windowId == par1Packet108EnchantItem.windowId && playerEntity.openContainer.isPlayerNotUsingContainer(playerEntity))
         {
-            playerEntity.craftingInventory.enchantItem(playerEntity, par1Packet108EnchantItem.enchantment);
-            playerEntity.craftingInventory.updateCraftingResults();
+            playerEntity.openContainer.enchantItem(playerEntity, par1Packet108EnchantItem.enchantment);
+            playerEntity.openContainer.updateCraftingResults();
         }
     }
 
@@ -885,14 +886,14 @@ public class NetServerHandler extends NetHandler
             {
                 if (itemstack == null)
                 {
-                    playerEntity.inventorySlots.putStackInSlot(par1Packet107CreativeSetSlot.slot, null);
+                    playerEntity.inventoryContainer.putStackInSlot(par1Packet107CreativeSetSlot.slot, null);
                 }
                 else
                 {
-                    playerEntity.inventorySlots.putStackInSlot(par1Packet107CreativeSetSlot.slot, itemstack);
+                    playerEntity.inventoryContainer.putStackInSlot(par1Packet107CreativeSetSlot.slot, itemstack);
                 }
 
-                playerEntity.inventorySlots.setPlayerIsPresent(playerEntity, true);
+                playerEntity.inventoryContainer.setPlayerIsPresent(playerEntity, true);
             }
             else if (flag && flag2 && flag3 && creativeItemCreationSpamThresholdTally < 200)
             {
@@ -909,11 +910,11 @@ public class NetServerHandler extends NetHandler
 
     public void handleTransaction(Packet106Transaction par1Packet106Transaction)
     {
-        Short short1 = (Short)field_72586_s.lookup(playerEntity.craftingInventory.windowId);
+        Short short1 = (Short)field_72586_s.lookup(playerEntity.openContainer.windowId);
 
-        if (short1 != null && par1Packet106Transaction.shortWindowId == short1.shortValue() && playerEntity.craftingInventory.windowId == par1Packet106Transaction.windowId && !playerEntity.craftingInventory.isPlayerNotUsingContainer(playerEntity))
+        if (short1 != null && par1Packet106Transaction.shortWindowId == short1.shortValue() && playerEntity.openContainer.windowId == par1Packet106Transaction.windowId && !playerEntity.openContainer.isPlayerNotUsingContainer(playerEntity))
         {
-            playerEntity.craftingInventory.setPlayerIsPresent(playerEntity, true);
+            playerEntity.openContainer.setPlayerIsPresent(playerEntity, true);
         }
     }
 
@@ -972,7 +973,7 @@ public class NetServerHandler extends NetHandler
                 TileEntitySign tileentitysign1 = (TileEntitySign)tileentity;
                 System.arraycopy(par1Packet130UpdateSign.signLines, 0, tileentitysign1.signText, 0, 4);
                 tileentitysign1.onInventoryChanged();
-                worldserver.markBlockNeedsUpdate(j, k, i1);
+                worldserver.markBlockForUpdate(j, k, i1);
             }
         }
     }
@@ -1046,7 +1047,7 @@ public class NetServerHandler extends NetHandler
 
                 if (itemstack != null && itemstack.itemID == Item.writableBook.shiftedIndex && itemstack.itemID == itemstack2.itemID)
                 {
-                    itemstack2.func_77983_a("pages", itemstack.getTagCompound().getTagList("pages"));
+                    itemstack2.setTagInfo("pages", itemstack.getTagCompound().getTagList("pages"));
                 }
             }
             catch (Exception exception)
@@ -1070,9 +1071,9 @@ public class NetServerHandler extends NetHandler
 
                 if (itemstack1 != null && itemstack1.itemID == Item.writtenBook.shiftedIndex && itemstack3.itemID == Item.writableBook.shiftedIndex)
                 {
-                    itemstack3.func_77983_a("author", new NBTTagString("author", playerEntity.username));
-                    itemstack3.func_77983_a("title", new NBTTagString("title", itemstack1.getTagCompound().getString("title")));
-                    itemstack3.func_77983_a("pages", itemstack1.getTagCompound().getTagList("pages"));
+                    itemstack3.setTagInfo("author", new NBTTagString("author", playerEntity.username));
+                    itemstack3.setTagInfo("title", new NBTTagString("title", itemstack1.getTagCompound().getString("title")));
+                    itemstack3.setTagInfo("pages", itemstack1.getTagCompound().getTagList("pages"));
                     itemstack3.itemID = Item.writtenBook.shiftedIndex;
                 }
             }
@@ -1087,7 +1088,7 @@ public class NetServerHandler extends NetHandler
             {
                 DataInputStream datainputstream2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
                 int i = datainputstream2.readInt();
-                Container container = playerEntity.craftingInventory;
+                Container container = playerEntity.openContainer;
 
                 if (container instanceof ContainerMerchant)
                 {
@@ -1118,8 +1119,8 @@ public class NetServerHandler extends NetHandler
 
                     if (tileentity != null && (tileentity instanceof TileEntityCommandBlock))
                     {
-                        ((TileEntityCommandBlock)tileentity).func_82352_b(s1);
-                        playerEntity.worldObj.markBlockNeedsUpdate(j, l, j1);
+                        ((TileEntityCommandBlock)tileentity).setCommand(s1);
+                        playerEntity.worldObj.markBlockForUpdate(j, l, j1);
                         playerEntity.sendChatToPlayer((new StringBuilder()).append("Command set: ").append(s1).toString());
                     }
                 }
@@ -1135,14 +1136,14 @@ public class NetServerHandler extends NetHandler
         }
         else if ("MC|Beacon".equals(par1Packet250CustomPayload.channel))
         {
-            if (playerEntity.craftingInventory instanceof ContainerBeacon)
+            if (playerEntity.openContainer instanceof ContainerBeacon)
             {
                 try
                 {
                     DataInputStream datainputstream4 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
                     int k = datainputstream4.readInt();
                     int i1 = datainputstream4.readInt();
-                    ContainerBeacon containerbeacon = (ContainerBeacon)playerEntity.craftingInventory;
+                    ContainerBeacon containerbeacon = (ContainerBeacon)playerEntity.openContainer;
                     Slot slot = containerbeacon.getSlot(0);
 
                     if (slot.getHasStack())
@@ -1160,9 +1161,9 @@ public class NetServerHandler extends NetHandler
                 }
             }
         }
-        else if ("MC|ItemName".equals(par1Packet250CustomPayload.channel) && (playerEntity.craftingInventory instanceof ContainerRepair))
+        else if ("MC|ItemName".equals(par1Packet250CustomPayload.channel) && (playerEntity.openContainer instanceof ContainerRepair))
         {
-            ContainerRepair containerrepair = (ContainerRepair)playerEntity.craftingInventory;
+            ContainerRepair containerrepair = (ContainerRepair)playerEntity.openContainer;
 
             if (par1Packet250CustomPayload.data == null || par1Packet250CustomPayload.data.length < 1)
             {

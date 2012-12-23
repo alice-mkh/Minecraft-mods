@@ -402,6 +402,11 @@ public class ChunkCache implements IBlockAccess
             return par1EnumSkyBlock.defaultLightValue;
         }
 
+        if (par1EnumSkyBlock == EnumSkyBlock.Sky && worldObj.provider.hasNoSky)
+        {
+            return 0;
+        }
+
         if (Block.useNeighborBrightness[getBlockId(par2, par3, par4)])
         {
             int i = getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3 + 1, par4);
@@ -488,7 +493,7 @@ public class ChunkCache implements IBlockAccess
         }
         else
         {
-            return Block.blocksList[i].isIndirectlyPoweringTo(this, par1, par2, par3, par4);
+            return Block.blocksList[i].isProvidingStrongPower(this, par1, par2, par3, par4);
         }
     }
 }

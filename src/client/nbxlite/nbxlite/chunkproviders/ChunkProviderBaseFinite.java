@@ -45,7 +45,7 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
                     ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
                     if (extendedblockstorage == null)
                     {
-                        extendedblockstorage = chunk.getBlockStorageArray()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4);
+                        extendedblockstorage = chunk.getBlockStorageArray()[y >> 4] = new ExtendedBlockStorage((y >> 4) << 4, true);
                     }
                     extendedblockstorage.setExtBlockID(x, y & 0xf, z, block);
                 }

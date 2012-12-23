@@ -18,6 +18,7 @@ import net.minecraft.src.BehaviorBucketEmptyDispense;
 import net.minecraft.src.BehaviorBucketFullDispense;
 import net.minecraft.src.BehaviorDispenseBoat;
 import net.minecraft.src.BehaviorDispenseFireball;
+import net.minecraft.src.BehaviorDispenseFirework;
 import net.minecraft.src.BehaviorDispenseMinecart;
 import net.minecraft.src.BehaviorEggDispense;
 import net.minecraft.src.BehaviorExpBottleDispense;
@@ -197,6 +198,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         BlockDispenser.dispenseBehaviorRegistry.putObject(Item.expBottle, new BehaviorExpBottleDispense(this));
         BlockDispenser.dispenseBehaviorRegistry.putObject(Item.potion, new BehaviorPotionDispense(this));
         BlockDispenser.dispenseBehaviorRegistry.putObject(Item.monsterPlacer, new BehaviorMobEggDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.field_92104_bU, new BehaviorDispenseFirework(this));
         BlockDispenser.dispenseBehaviorRegistry.putObject(Item.fireballCharge, new BehaviorDispenseFireball(this));
         BehaviorDispenseMinecart behaviordispenseminecart = new BehaviorDispenseMinecart(this);
         BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartEmpty, behaviordispenseminecart);
@@ -531,7 +533,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
             if (var48 instanceof ReportedException)
             {
-                var2 = this.addServerInfoToCrashReport(((ReportedException)var48).getTheReportedExceptionCrashReport());
+                var2 = this.addServerInfoToCrashReport(((ReportedException)var48).getCrashReport());
             }
             else
             {
@@ -673,7 +675,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
                 }
                 catch (Throwable throwable)
                 {
-                    CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception ticking world");
+                    CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception ticking world");
                     worldserver.addWorldInfoToCrashReport(crashreport);
                     throw new ReportedException(crashreport);
                 }
@@ -684,7 +686,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
                 }
                 catch (Throwable throwable1)
                 {
-                    CrashReport crashreport1 = CrashReport.func_85055_a(throwable1, "Exception ticking world entities");
+                    CrashReport crashreport1 = CrashReport.makeCrashReport(throwable1, "Exception ticking world entities");
                     worldserver.addWorldInfoToCrashReport(crashreport1);
                     throw new ReportedException(crashreport1);
                 }
@@ -796,7 +798,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public String getMinecraftVersion()
     {
-        return "1.4.4";
+        return "1.4.6";
     }
 
     /**

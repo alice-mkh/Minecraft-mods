@@ -46,7 +46,7 @@ public class ComponentVillageField extends ComponentVillage
             case 0:
                 return Block.carrot.blockID;
             case 1:
-                return Block.potatoe.blockID;
+                return Block.potato.blockID;
         }
     }
 

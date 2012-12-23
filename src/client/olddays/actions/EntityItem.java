@@ -1,13 +1,11 @@
 package net.minecraft.src;
 
+import java.io.PrintStream;
 import java.util.*;
 
 public class EntityItem extends Entity
 {
     public static boolean smeltOnFire = false;
-
-    /** The item stack of this EntityItem. */
-    public ItemStack item;
 
     /**
      * The age of this EntityItem (used to animate it up and down as well as expire it)
@@ -21,7 +19,7 @@ public class EntityItem extends Entity
     /** The EntityItem's random initial float height. */
     public float hoverStart;
 
-    public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
+    public EntityItem(World par1World, double par2, double par4, double par6)
     {
         super(par1World);
         age = 0;
@@ -30,11 +28,16 @@ public class EntityItem extends Entity
         setSize(0.25F, 0.25F);
         yOffset = height / 2.0F;
         setPosition(par2, par4, par6);
-        item = par8ItemStack;
         rotationYaw = (float)(Math.random() * 360D);
         motionX = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D);
         motionY = 0.20000000298023224D;
         motionZ = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D);
+    }
+
+    public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
+    {
+        this(par1World, par2, par4, par6);
+        func_92058_a(par8ItemStack);
     }
 
     /**
@@ -58,6 +61,7 @@ public class EntityItem extends Entity
 
     protected void entityInit()
     {
+        getDataWatcher().addObjectByDataType(10, 5);
     }
 
     /**
@@ -80,7 +84,7 @@ public class EntityItem extends Entity
         moveEntity(motionX, motionY, motionZ);
         boolean flag = (int)prevPosX != (int)posX || (int)prevPosY != (int)posY || (int)prevPosZ != (int)posZ;
 
-        if (flag)
+        if (flag || ticksExisted % 25 == 0)
         {
             if (worldObj.getBlockMaterial(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) == Material.lava)
             {
@@ -130,13 +134,17 @@ public class EntityItem extends Entity
     {
         EntityItem entityitem;
 
-        for (Iterator iterator = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator(); iterator.hasNext(); func_70289_a(entityitem))
+        for (Iterator iterator = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator(); iterator.hasNext(); combineItems(entityitem))
         {
             entityitem = (EntityItem)iterator.next();
         }
     }
 
-    public boolean func_70289_a(EntityItem par1EntityItem)
+    /**
+     * Tries to merge this item with the item passed as the parameter. Returns true if successful. Either this item or
+     * the other item will  be removed from the world.
+     */
+    public boolean combineItems(EntityItem par1EntityItem)
     {
         if (par1EntityItem == this)
         {
@@ -148,40 +156,44 @@ public class EntityItem extends Entity
             return false;
         }
 
-        if (par1EntityItem.item.getItem() != item.getItem())
+        ItemStack itemstack = func_92059_d();
+        ItemStack itemstack1 = par1EntityItem.func_92059_d();
+
+        if (itemstack1.getItem() != itemstack.getItem())
         {
             return false;
         }
 
-        if (par1EntityItem.item.hasTagCompound() ^ item.hasTagCompound())
+        if (itemstack1.hasTagCompound() ^ itemstack.hasTagCompound())
         {
             return false;
         }
 
-        if (par1EntityItem.item.hasTagCompound() && !par1EntityItem.item.getTagCompound().equals(item.getTagCompound()))
+        if (itemstack1.hasTagCompound() && !itemstack1.getTagCompound().equals(itemstack.getTagCompound()))
         {
             return false;
         }
 
-        if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != item.getItemDamage())
+        if (itemstack1.getItem().getHasSubtypes() && itemstack1.getItemDamage() != itemstack.getItemDamage())
         {
             return false;
         }
 
-        if (par1EntityItem.item.stackSize < item.stackSize)
+        if (itemstack1.stackSize < itemstack.stackSize)
         {
-            return par1EntityItem.func_70289_a(this);
+            return par1EntityItem.combineItems(this);
         }
 
-        if (par1EntityItem.item.stackSize + item.stackSize > par1EntityItem.item.getMaxStackSize())
+        if (itemstack1.stackSize + itemstack.stackSize > itemstack1.getMaxStackSize())
         {
             return false;
         }
         else
         {
-            par1EntityItem.item.stackSize += item.stackSize;
+            itemstack1.stackSize += itemstack.stackSize;
             par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, delayBeforeCanPickup);
             par1EntityItem.age = Math.min(par1EntityItem.age, age);
+            par1EntityItem.func_92058_a(itemstack1);
             setDead();
             return true;
         }
@@ -219,8 +231,14 @@ public class EntityItem extends Entity
             return false;
         }
 
+        if (func_92059_d() != null && func_92059_d().itemID == Item.netherStar.shiftedIndex && par1DamageSource == DamageSource.explosion)
+        {
+            return false;
+        }
+
         setBeenAttacked();
         if ((par1DamageSource == DamageSource.inFire || par1DamageSource == DamageSource.onFire || par1DamageSource == DamageSource.lava) && smeltOnFire){
+            ItemStack item = func_92059_d();
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
             if (item != itemstack && itemstack != null){
                 item.itemID = itemstack.itemID;
@@ -249,9 +267,9 @@ public class EntityItem extends Entity
         par1NBTTagCompound.setShort("Health", (byte)health);
         par1NBTTagCompound.setShort("Age", (short)age);
 
-        if (item != null)
+        if (func_92059_d() != null)
         {
-            par1NBTTagCompound.setCompoundTag("Item", item.writeToNBT(new NBTTagCompound()));
+            par1NBTTagCompound.setCompoundTag("Item", func_92059_d().writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -263,9 +281,9 @@ public class EntityItem extends Entity
         health = par1NBTTagCompound.getShort("Health") & 0xff;
         age = par1NBTTagCompound.getShort("Age");
         NBTTagCompound nbttagcompound = par1NBTTagCompound.getCompoundTag("Item");
-        item = ItemStack.loadItemStackFromNBT(nbttagcompound);
+        func_92058_a(ItemStack.loadItemStackFromNBT(nbttagcompound));
 
-        if (item == null)
+        if (func_92059_d() == null)
         {
             setDead();
         }
@@ -281,37 +299,38 @@ public class EntityItem extends Entity
             return;
         }
 
-        int i = item.stackSize;
+        ItemStack itemstack = func_92059_d();
+        int i = itemstack.stackSize;
 
-        if (delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(item))
+        if (delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(itemstack))
         {
-            if (item.itemID == Block.wood.blockID)
+            if (itemstack.itemID == Block.wood.blockID)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.mineWood);
             }
 
-            if (item.itemID == Item.leather.shiftedIndex)
+            if (itemstack.itemID == Item.leather.shiftedIndex)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.killCow);
             }
 
-            if (item.itemID == Item.diamond.shiftedIndex)
+            if (itemstack.itemID == Item.diamond.shiftedIndex)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.diamonds);
             }
 
-            if (item.itemID == Item.blazeRod.shiftedIndex)
+            if (itemstack.itemID == Item.blazeRod.shiftedIndex)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.blazeRod);
             }
 
             net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "onItemPickup",
                                                            new Class[]{EntityPlayer.class, ItemStack.class}, 
-                                                           par1EntityPlayer, item);
+                                                           par1EntityPlayer, func_92059_d());
             func_85030_a("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, i);
 
-            if (item.stackSize <= 0)
+            if (itemstack.stackSize <= 0)
             {
                 setDead();
             }
@@ -323,7 +342,7 @@ public class EntityItem extends Entity
      */
     public String getEntityName()
     {
-        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(item.getItemName()).toString());
+        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(func_92059_d().getItemName()).toString());
     }
 
     /**
@@ -345,5 +364,26 @@ public class EntityItem extends Entity
         {
             func_85054_d();
         }
+    }
+
+    public ItemStack func_92059_d()
+    {
+        ItemStack itemstack = getDataWatcher().getWatchableObjectItemStack(10);
+
+        if (itemstack == null)
+        {
+            System.out.println((new StringBuilder()).append("Item entity ").append(entityId).append(" has no item?!").toString());
+            return new ItemStack(Block.stone);
+        }
+        else
+        {
+            return itemstack;
+        }
+    }
+
+    public void func_92058_a(ItemStack par1)
+    {
+        getDataWatcher().updateObject(10, par1);
+        getDataWatcher().func_82708_h(10);
     }
 }

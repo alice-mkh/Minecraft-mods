@@ -185,7 +185,7 @@ public class ODActions extends OldDaysModule{
             gold = 32 << 0;
             diamond = (32 << 3) * (i < 1 ? 1 : 4);
         }
-        int maxDamage = 162;
+        int maxDamage = 165;
         mod_OldDays.setField(Item.class, Item.pickaxeWood, maxDamage, wood);
         mod_OldDays.setField(Item.class, Item.axeWood, maxDamage, wood);
         mod_OldDays.setField(Item.class, Item.shovelWood, maxDamage, wood);

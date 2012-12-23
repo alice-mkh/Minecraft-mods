@@ -192,7 +192,7 @@ public class EntityEnderman extends EntityMob
             }
         }
 
-        if (isWet())
+        if (isWet() || isBurning())
         {
             entityToAttack = null;
             func_70819_e(false);
@@ -431,6 +431,8 @@ public class EntityEnderman extends EntityMob
             return false;
         }
 
+        func_70819_e(true);
+
         if (par1DamageSource instanceof EntityDamageSourceIndirect)
         {
             for (int i = 0; i < 64; i++)
@@ -443,13 +445,10 @@ public class EntityEnderman extends EntityMob
 
             return false;
         }
-
-        if (par1DamageSource.getEntity() instanceof EntityPlayer)
+        else
         {
-            func_70819_e(true);
+            return super.attackEntityFrom(par1DamageSource, par2);
         }
-
-        return super.attackEntityFrom(par1DamageSource, par2);
     }
 
     public boolean func_70823_r()

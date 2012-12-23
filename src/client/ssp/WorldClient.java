@@ -144,7 +144,7 @@ public class WorldClient extends World
 
         if (!par3)
         {
-            markBlocksDirty(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
+            markBlockRangeForRenderUpdate(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
         }
     }
 
@@ -285,11 +285,6 @@ public class WorldClient extends World
         if (provider.hasNoSky)
         {
             return;
-        }
-
-        if (lastLightningBolt > 0)
-        {
-            lastLightningBolt--;
         }
 
         prevRainingStrength = rainingStrength;
@@ -433,7 +428,7 @@ public class WorldClient extends World
     /**
      * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
      */
-    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9)
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10)
     {
         float f = 16F;
 
@@ -442,10 +437,25 @@ public class WorldClient extends World
             f *= par8;
         }
 
-        if (mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(f * f))
+        double d = mc.renderViewEntity.getDistanceSq(par1, par3, par5);
+
+        if (d < (double)(f * f))
         {
-            mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            if (par10 && d > 100D)
+            {
+                double d1 = Math.sqrt(d) / 40D;
+                mc.sndManager.func_92070_a(par7Str, (float)par1, (float)par3, (float)par5, par8, par9, (int)Math.round(d1 * 20D));
+            }
+            else
+            {
+                mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            }
         }
+    }
+
+    public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound)
+    {
+        mc.effectRenderer.addEffect(new EntityFireworkStarterFX(this, par1, par3, par5, par7, par9, par11, mc.effectRenderer, par13NBTTagCompound));
     }
 
     static Set getEntityList(WorldClient par0WorldClient)

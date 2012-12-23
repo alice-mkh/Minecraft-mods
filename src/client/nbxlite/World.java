@@ -53,12 +53,7 @@ public abstract class World implements IBlockAccess
      * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
      * unused.
      */
-    protected int lastLightningBolt;
-
-    /**
-     * If > 0, the sky and skylight colors are illuminated by a lightning flash
-     */
-    public int lightningFlash;
+    public int lastLightningBolt;
 
     /** true while the world is editing blocks */
     public boolean editingBlocks;
@@ -163,7 +158,6 @@ public abstract class World implements IBlockAccess
         skylightSubtracted = 0;
         updateLCG = (new Random()).nextInt();
         lastLightningBolt = 0;
-        lightningFlash = 0;
         editingBlocks = false;
         rand = new Random();
         worldAccesses = new ArrayList();
@@ -226,7 +220,6 @@ public abstract class World implements IBlockAccess
         skylightSubtracted = 0;
         updateLCG = (new Random()).nextInt();
         lastLightningBolt = 0;
-        lightningFlash = 0;
         editingBlocks = false;
         rand = new Random();
         worldAccesses = new ArrayList();
@@ -282,7 +275,7 @@ public abstract class World implements IBlockAccess
             }
             catch (Throwable throwable)
             {
-                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception initializing level");
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception initializing level");
 
                 try
                 {
@@ -551,8 +544,8 @@ public abstract class World implements IBlockAccess
         }
         catch (Throwable throwable)
         {
-            CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception getting block type in world");
-            CrashReportCategory crashreportcategory = crashreport.func_85058_a("Requested block coordinates");
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception getting block type in world");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
             crashreportcategory.addCrashSection("Found chunk", Boolean.valueOf(chunk == null));
             crashreportcategory.addCrashSection("Location", CrashReportCategory.func_85071_a(par1, par2, par3));
             throw new ReportedException(crashreport);
@@ -730,7 +723,7 @@ public abstract class World implements IBlockAccess
 
         if (par6 && flag && (isRemote || chunk.deferRender))
         {
-            markBlockNeedsUpdate(par1, par2, par3);
+            markBlockForUpdate(par1, par2, par3);
         }
 
         return flag;
@@ -770,7 +763,7 @@ public abstract class World implements IBlockAccess
 
         if (flag && (isRemote || chunk.deferRender))
         {
-            markBlockNeedsUpdate(par1, par2, par3);
+            markBlockForUpdate(par1, par2, par3);
         }
 
         return flag;
@@ -859,7 +852,7 @@ public abstract class World implements IBlockAccess
 
         if (flag && (isRemote || chunk.deferRender && Block.requiresSelfNotify[chunk.getBlockID(i, par2, j) & 0xfff]))
         {
-            markBlockNeedsUpdate(par1, par2, par3);
+            markBlockForUpdate(par1, par2, par3);
         }
 
         return flag;
@@ -898,13 +891,14 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Marks the block as needing an update with the renderer. Args: x, y, z
+     * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
+     * including the tile entity description packet if applicable. Args: x, y, z
      */
-    public void markBlockNeedsUpdate(int par1, int par2, int par3)
+    public void markBlockForUpdate(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForUpdate(par1, par2, par3);
         }
     }
 
@@ -936,25 +930,29 @@ public abstract class World implements IBlockAccess
             }
         }
 
-        markBlocksDirty(par1, par3, par2, par1, par4, par2);
+        markBlockRangeForRenderUpdate(par1, par3, par2, par1, par4, par2);
     }
 
     /**
-     * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
+     * On the client, re-renders this block. On the server, does nothing. Appears to be redundant.
      */
-    public void markBlockAsNeedsUpdate(int par1, int par2, int par3)
+    public void markBlockForRenderUpdate2(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par1, par2, par3);
         }
     }
 
-    public void markBlocksDirty(int par1, int par2, int par3, int par4, int par5, int par6)
+    /**
+     * On the client, re-renders all blocks in this range, inclusive. On the server, does nothing. Args: min x, min y,
+     * min z, max x, max y, max z
+     */
+    public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
         }
     }
 
@@ -992,8 +990,8 @@ public abstract class World implements IBlockAccess
             }
             catch (Throwable throwable)
             {
-                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Exception while updating neighbours");
-                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Block being updated");
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while updating neighbours");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being updated");
                 int j;
 
                 try
@@ -1292,18 +1290,18 @@ public abstract class World implements IBlockAccess
 
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par2, par3, par4);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForRenderUpdate(par2, par3, par4);
         }
     }
 
     /**
-     * all WorldAcceses mark this block as dirty
+     * On the client, re-renders this block. On the server, does nothing. Used for lighting updates.
      */
-    public void markBlockNeedsUpdateForAll(int par1, int par2, int par3)
+    public void markBlockForRenderUpdate(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForRenderUpdate(par1, par2, par3);
         }
     }
 
@@ -1628,7 +1626,7 @@ public abstract class World implements IBlockAccess
     /**
      * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
      */
-    public void playSound(double d, double d1, double d2, String s, float f, float f1)
+    public void playSound(double d, double d1, double d2, String s, float f, float f1, boolean flag)
     {
     }
 
@@ -2004,9 +2002,9 @@ public abstract class World implements IBlockAccess
                 f10 = f10 * f18 + f16 * (1.0F - f18);
                 f11 = f11 * f18 + f16 * (1.0F - f18);
             }
-            if(lightningFlash > 0)
+            if(lastLightningBolt > 0)
             {
-                float f17 = (float)lightningFlash - f;
+                float f17 = (float)lastLightningBolt - f;
                 if(f17 > 1.0F)
                 {
                     f17 = 1.0F;
@@ -2242,12 +2240,13 @@ public abstract class World implements IBlockAccess
 
             try
             {
+                entity.ticksExisted++;
                 entity.onUpdate();
             }
             catch (Throwable throwable)
             {
-                CrashReport crashreport = CrashReport.func_85055_a(throwable, "Ticking entity");
-                CrashReportCategory crashreportcategory = crashreport.func_85058_a("Entity being ticked");
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking entity");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being ticked");
 
                 if (entity == null)
                 {
@@ -2315,8 +2314,8 @@ public abstract class World implements IBlockAccess
                 }
                 catch (Throwable throwable1)
                 {
-                    CrashReport crashreport1 = CrashReport.func_85055_a(throwable1, "Ticking entity");
-                    CrashReportCategory crashreportcategory1 = crashreport1.func_85058_a("Entity being ticked");
+                    CrashReport crashreport1 = CrashReport.makeCrashReport(throwable1, "Ticking entity");
+                    CrashReportCategory crashreportcategory1 = crashreport1.makeCategory("Entity being ticked");
 
                     if (entity2 == null)
                     {
@@ -2372,8 +2371,8 @@ public abstract class World implements IBlockAccess
                 }
                 catch (Throwable throwable2)
                 {
-                    CrashReport crashreport2 = CrashReport.func_85055_a(throwable2, "Ticking tile entity");
-                    CrashReportCategory crashreportcategory2 = crashreport2.func_85058_a("Tile entity being ticked");
+                    CrashReport crashreport2 = CrashReport.makeCrashReport(throwable2, "Ticking tile entity");
+                    CrashReportCategory crashreportcategory2 = crashreport2.makeCategory("Tile entity being ticked");
 
                     if (tileentity == null)
                     {
@@ -2441,7 +2440,7 @@ public abstract class World implements IBlockAccess
                     }
                 }
 
-                markBlockNeedsUpdate(tileentity1.xCoord, tileentity1.yCoord, tileentity1.zCoord);
+                markBlockForUpdate(tileentity1.xCoord, tileentity1.yCoord, tileentity1.zCoord);
             }
 
             addedTileEntityList.clear();
@@ -2500,6 +2499,7 @@ public abstract class World implements IBlockAccess
             }
             else
             {
+                par1Entity.ticksExisted++;
                 par1Entity.onUpdate();
             }
         }
@@ -3256,11 +3256,6 @@ public abstract class World implements IBlockAccess
         if (provider.hasNoSky)
         {
             return;
-        }
-
-        if (lastLightningBolt > 0)
-        {
-            lastLightningBolt--;
         }
 
         int i = worldInfo.getThunderTime();
@@ -4069,7 +4064,7 @@ public abstract class World implements IBlockAccess
             return false;
         }
 
-        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isGroundCover()))
+        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isReplaceable()))
         {
             block = null;
         }
@@ -4133,7 +4128,7 @@ public abstract class World implements IBlockAccess
         }
         else
         {
-            return Block.blocksList[i].isIndirectlyPoweringTo(this, par1, par2, par3, par4);
+            return Block.blocksList[i].isProvidingStrongPower(this, par1, par2, par3, par4);
         }
     }
 
@@ -4189,7 +4184,7 @@ public abstract class World implements IBlockAccess
         }
         else
         {
-            return Block.blocksList[i].isPoweringTo(this, par1, par2, par3, par4);
+            return Block.blocksList[i].isProvidingWeakPower(this, par1, par2, par3, par4);
         }
     }
 
@@ -4280,7 +4275,7 @@ public abstract class World implements IBlockAccess
         {
             EntityPlayer entityplayer1 = (EntityPlayer)playerEntities.get(i);
 
-            if (entityplayer1.capabilities.disableDamage)
+            if (entityplayer1.capabilities.disableDamage || !entityplayer1.isEntityAlive())
             {
                 continue;
             }
@@ -4293,7 +4288,7 @@ public abstract class World implements IBlockAccess
                 d2 *= 0.80000001192092896D;
             }
 
-            if (entityplayer1.func_82150_aj())
+            if (entityplayer1.getHasActivePotion())
             {
                 float f = entityplayer1.func_82243_bO();
 
@@ -4611,9 +4606,22 @@ public abstract class World implements IBlockAccess
      */
     public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
-        for (int i = 0; i < worldAccesses.size(); i++)
+        try
         {
-            ((IWorldAccess)worldAccesses.get(i)).playAuxSFX(par1EntityPlayer, par2, par3, par4, par5, par6);
+            for (int i = 0; i < worldAccesses.size(); i++)
+            {
+                ((IWorldAccess)worldAccesses.get(i)).playAuxSFX(par1EntityPlayer, par2, par3, par4, par5, par6);
+            }
+        }
+        catch (Throwable throwable)
+        {
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Playing level event");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Level event being played");
+            crashreportcategory.addCrashSection("Block coordinates", CrashReportCategory.func_85071_a(par3, par4, par5));
+            crashreportcategory.addCrashSection("Event source", par1EntityPlayer);
+            crashreportcategory.addCrashSection("Event type", Integer.valueOf(par2));
+            crashreportcategory.addCrashSection("Event data", Integer.valueOf(par6));
+            throw new ReportedException(crashreport);
         }
     }
 
@@ -4683,7 +4691,7 @@ public abstract class World implements IBlockAccess
      */
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
-        CrashReportCategory crashreportcategory = par1CrashReport.func_85057_a("Affected level", 1);
+        CrashReportCategory crashreportcategory = par1CrashReport.makeCategoryDepth("Affected level", 1);
         crashreportcategory.addCrashSection("Level name", worldInfo != null ? ((Object)(worldInfo.getWorldName())) : "????");
         crashreportcategory.addCrashSectionCallable("All players", new CallableLvl2(this));
         crashreportcategory.addCrashSectionCallable("Chunk stats", new CallableLvl3(this));
@@ -4732,6 +4740,10 @@ public abstract class World implements IBlockAccess
         }
 
         return theCalendar;
+    }
+
+    public void func_92088_a(double d, double d1, double d2, double d3, double d4, double d5, NBTTagCompound nbttagcompound)
+    {
     }
 
     private boolean isBounds(int x, int y, int z){

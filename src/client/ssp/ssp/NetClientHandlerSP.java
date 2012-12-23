@@ -72,8 +72,8 @@ public class NetClientHandlerSP extends NetClientHandler
 
                     if (tileentity != null && (tileentity instanceof TileEntityCommandBlock))
                     {
-                        ((TileEntityCommandBlock)tileentity).func_82352_b(s1);
-                        mc.theWorld.markBlockNeedsUpdate(j, l, j1);
+                        ((TileEntityCommandBlock)tileentity).setCommand(s1);
+                        mc.theWorld.markBlockForUpdate(j, l, j1);
                         mc.thePlayer.sendChatToPlayer((new StringBuilder()).append("Command set: ").append(s1).toString());
                     }
                 }

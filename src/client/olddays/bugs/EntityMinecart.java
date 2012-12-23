@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
+import net.minecraft.server.MinecraftServer;
 
 public class EntityMinecart extends Entity implements IInventory
 {
@@ -324,7 +325,7 @@ public class EntityMinecart extends Entity implements IInventory
 
                     if (itemstack.hasTagCompound())
                     {
-                        entityitem.item.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                        entityitem.func_92059_d().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
                     }
 
                     float f3 = 0.05F;
@@ -384,6 +385,58 @@ public class EntityMinecart extends Entity implements IInventory
             worldObj.spawnParticle("largesmoke", posX, posY + 0.80000000000000004D, posZ, 0.0D, 0.0D, 0.0D);
         }
 
+        if (!worldObj.isRemote && (worldObj instanceof WorldServer))
+        {
+            worldObj.theProfiler.startSection("portal");
+            MinecraftServer minecraftserver = ((WorldServer)worldObj).getMinecraftServer();
+            int j = getMaxInPortalTime();
+
+            if (inPortal)
+            {
+                if (minecraftserver.getAllowNether())
+                {
+                    if (ridingEntity == null && field_82153_h++ >= j)
+                    {
+                        field_82153_h = j;
+                        timeUntilPortal = getPortalCooldown();
+                        byte byte0;
+
+                        if (worldObj.provider.dimensionId == -1)
+                        {
+                            byte0 = 0;
+                        }
+                        else
+                        {
+                            byte0 = -1;
+                        }
+
+                        travelToDimension(byte0);
+                    }
+
+                    inPortal = false;
+                }
+            }
+            else
+            {
+                if (field_82153_h > 0)
+                {
+                    field_82153_h -= 4;
+                }
+
+                if (field_82153_h < 0)
+                {
+                    field_82153_h = 0;
+                }
+            }
+
+            if (timeUntilPortal > 0)
+            {
+                timeUntilPortal--;
+            }
+
+            worldObj.theProfiler.endSection();
+        }
+
         if (worldObj.isRemote)
         {
             if (turnProgress > 0)
@@ -412,64 +465,64 @@ public class EntityMinecart extends Entity implements IInventory
         prevPosZ = posZ;
         motionY -= 0.039999999105930328D;
         int i = MathHelper.floor_double(posX);
-        int j = MathHelper.floor_double(posY);
-        int k = MathHelper.floor_double(posZ);
+        int k = MathHelper.floor_double(posY);
+        int l = MathHelper.floor_double(posZ);
 
-        if (BlockRail.isRailBlockAt(worldObj, i, j - 1, k))
+        if (BlockRail.isRailBlockAt(worldObj, i, k - 1, l))
         {
-            j--;
+            k--;
         }
 
         double d2 = 0.40000000000000002D;
         double d4 = 0.0078125D;
-        int l = worldObj.getBlockId(i, j, k);
+        int i1 = worldObj.getBlockId(i, k, l);
 
-        if (BlockRail.isRailBlock(l))
+        if (BlockRail.isRailBlock(i1))
         {
             fallDistance = 0.0F;
             Vec3 vec3 = func_70489_a(posX, posY, posZ);
-            int i1 = worldObj.getBlockMetadata(i, j, k);
-            posY = j;
+            int j1 = worldObj.getBlockMetadata(i, k, l);
+            posY = k;
             boolean flag = false;
             boolean flag1 = false;
 
-            if (l == Block.railPowered.blockID)
+            if (i1 == Block.railPowered.blockID)
             {
-                flag = (i1 & 8) != 0;
+                flag = (j1 & 8) != 0;
                 flag1 = !flag;
             }
 
-            if (((BlockRail)Block.blocksList[l]).isPowered())
+            if (((BlockRail)Block.blocksList[i1]).isPowered())
             {
-                i1 &= 7;
+                j1 &= 7;
             }
 
-            if (i1 >= 2 && i1 <= 5)
+            if (j1 >= 2 && j1 <= 5)
             {
-                posY = j + 1;
+                posY = k + 1;
             }
 
-            if (i1 == 2)
+            if (j1 == 2)
             {
                 motionX -= d4;
             }
 
-            if (i1 == 3)
+            if (j1 == 3)
             {
                 motionX += d4;
             }
 
-            if (i1 == 4)
+            if (j1 == 4)
             {
                 motionZ += d4;
             }
 
-            if (i1 == 5)
+            if (j1 == 5)
             {
                 motionZ -= d4;
             }
 
-            int ai[][] = field_70500_g[i1];
+            int ai[][] = field_70500_g[j1];
             double d9 = ai[1][0] - ai[0][0];
             double d10 = ai[1][2] - ai[0][2];
             double d11 = Math.sqrt(d9 * d9 + d10 * d10);
@@ -518,20 +571,20 @@ public class EntityMinecart extends Entity implements IInventory
 
             double d18 = 0.0D;
             double d20 = (double)i + 0.5D + (double)ai[0][0] * 0.5D;
-            double d21 = (double)k + 0.5D + (double)ai[0][2] * 0.5D;
+            double d21 = (double)l + 0.5D + (double)ai[0][2] * 0.5D;
             double d22 = (double)i + 0.5D + (double)ai[1][0] * 0.5D;
-            double d23 = (double)k + 0.5D + (double)ai[1][2] * 0.5D;
+            double d23 = (double)l + 0.5D + (double)ai[1][2] * 0.5D;
             d9 = d22 - d20;
             d10 = d23 - d21;
 
             if (d9 == 0.0D)
             {
                 posX = (double)i + 0.5D;
-                d18 = posZ - (double)k;
+                d18 = posZ - (double)l;
             }
             else if (d10 == 0.0D)
             {
-                posZ = (double)k + 0.5D;
+                posZ = (double)l + 0.5D;
                 d18 = posX - (double)i;
             }
             else
@@ -575,11 +628,11 @@ public class EntityMinecart extends Entity implements IInventory
 
             moveEntity(d25, 0.0D, d27);
 
-            if (ai[0][1] != 0 && MathHelper.floor_double(posX) - i == ai[0][0] && MathHelper.floor_double(posZ) - k == ai[0][2])
+            if (ai[0][1] != 0 && MathHelper.floor_double(posX) - i == ai[0][0] && MathHelper.floor_double(posZ) - l == ai[0][2])
             {
                 setPosition(posX, posY + (double)ai[0][1], posZ);
             }
-            else if (ai[1][1] != 0 && MathHelper.floor_double(posX) - i == ai[1][0] && MathHelper.floor_double(posZ) - k == ai[1][2])
+            else if (ai[1][1] != 0 && MathHelper.floor_double(posX) - i == ai[1][0] && MathHelper.floor_double(posZ) - l == ai[1][2])
             {
                 setPosition(posX, posY + (double)ai[1][1], posZ);
             }
@@ -637,14 +690,14 @@ public class EntityMinecart extends Entity implements IInventory
                 setPosition(posX, vec3_1.yCoord, posZ);
             }
 
-            int k1 = MathHelper.floor_double(posX);
-            int l1 = MathHelper.floor_double(posZ);
+            int l1 = MathHelper.floor_double(posX);
+            int i2 = MathHelper.floor_double(posZ);
 
-            if (k1 != i || l1 != k)
+            if (l1 != i || i2 != l)
             {
                 double d15 = Math.sqrt(motionX * motionX + motionZ * motionZ);
-                motionX = d15 * (double)(k1 - i);
-                motionZ = d15 * (double)(l1 - k);
+                motionX = d15 * (double)(l1 - i);
+                motionZ = d15 * (double)(i2 - l);
             }
 
             if (minecartType == 2)
@@ -685,24 +738,24 @@ public class EntityMinecart extends Entity implements IInventory
                     motionX += (motionX / d32) * d33;
                     motionZ += (motionZ / d32) * d33;
                 }
-                else if (i1 == 1)
+                else if (j1 == 1)
                 {
-                    if (worldObj.isBlockNormalCube(i - 1, j, k))
+                    if (worldObj.isBlockNormalCube(i - 1, k, l))
                     {
                         motionX = 0.02D;
                     }
-                    else if (worldObj.isBlockNormalCube(i + 1, j, k))
+                    else if (worldObj.isBlockNormalCube(i + 1, k, l))
                     {
                         motionX = -0.02D;
                     }
                 }
-                else if (i1 == 0)
+                else if (j1 == 0)
                 {
-                    if (worldObj.isBlockNormalCube(i, j, k - 1))
+                    if (worldObj.isBlockNormalCube(i, k, l - 1))
                     {
                         motionZ = 0.02D;
                     }
-                    else if (worldObj.isBlockNormalCube(i, j, k + 1))
+                    else if (worldObj.isBlockNormalCube(i, k, l + 1))
                     {
                         motionZ = -0.02D;
                     }
@@ -776,9 +829,9 @@ public class EntityMinecart extends Entity implements IInventory
 
         if (list != null && !list.isEmpty())
         {
-            for (int j1 = 0; j1 < list.size(); j1++)
+            for (int k1 = 0; k1 < list.size(); k1++)
             {
-                Entity entity = (Entity)list.get(j1);
+                Entity entity = (Entity)list.get(k1);
 
                 if (entity != riddenByEntity && entity.canBePushed() && (entity instanceof EntityMinecart))
                 {

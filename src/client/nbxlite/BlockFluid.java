@@ -491,7 +491,7 @@ public abstract class BlockFluid extends Block
 
             if (k > 0 && k < 8)
             {
-                par1World.playSound((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+                par1World.playSound((float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F, false);
             }
         }
 
@@ -503,12 +503,12 @@ public abstract class BlockFluid extends Block
                 double d2 = (double)par3 + maxY;
                 double d4 = (float)par4 + par5Random.nextFloat();
                 par1World.spawnParticle("lava", d, d2, d4, 0.0D, 0.0D, 0.0D);
-                par1World.playSound(d, d2, d4, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.playSound(d, d2, d4, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F, false);
             }
 
             if (par5Random.nextInt(200) == 0)
             {
-                par1World.playSound(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+                par1World.playSound(par2, par3, par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F, false);
             }
         }
 

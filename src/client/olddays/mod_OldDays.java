@@ -29,7 +29,7 @@ public class mod_OldDays extends Mod{
     }
 
     public String getMcVersion(){
-        return "1.4.4";
+        return "1.4.6";
     }
 
     public String getModName(){

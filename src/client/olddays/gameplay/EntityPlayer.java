@@ -14,11 +14,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public InventoryPlayer inventory;
     private InventoryEnderChest theInventoryEnderChest;
 
-    /** the crafting inventory in you get when opening your inventory */
-    public Container inventorySlots;
+    /**
+     * The Container for the player's inventory (which opens when they press E)
+     */
+    public Container inventoryContainer;
 
-    /** the crafting inventory you are currently using */
-    public Container craftingInventory;
+    /** The Container the player has open. */
+    public Container openContainer;
 
     /** The player's food stats. (See class FoodStats) */
     protected FoodStats foodStats;
@@ -119,8 +121,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         speedInAir = 0.02F;
         field_82249_h = 0;
         fishEntity = null;
-        inventorySlots = new ContainerPlayer(inventory, !par1World.isRemote, this);
-        craftingInventory = inventorySlots;
+        inventoryContainer = new ContainerPlayer(inventory, !par1World.isRemote, this);
+        openContainer = inventoryContainer;
         yOffset = 1.62F;
         ChunkCoordinates chunkcoordinates = par1World.getSpawnPoint();
         setLocationAndAngles((double)chunkcoordinates.posX + 0.5D, chunkcoordinates.posY + 1, (double)chunkcoordinates.posZ + 0.5D, 0.0F, 0.0F);
@@ -202,7 +204,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                     alertWolves((EntityLiving)par1Entity, true);
                 }
                 addStat(StatList.damageDealtStat, i);
-                int l = EnchantmentHelper.func_90036_a(this);
+                int l = EnchantmentHelper.getFireAspectModifier(this);
                 if (l > 0)
                 {
                     par1Entity.setFire(l * 4);
@@ -355,10 +357,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         super.onUpdate();
 
-        if (!worldObj.isRemote && craftingInventory != null && !craftingInventory.canInteractWith(this))
+        if (!worldObj.isRemote && openContainer != null && !openContainer.canInteractWith(this))
         {
             closeScreen();
-            craftingInventory = inventorySlots;
+            openContainer = inventoryContainer;
         }
 
         if (isBurning() && capabilities.disableDamage)
@@ -436,7 +438,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return 10;
     }
 
-    protected void func_85030_a(String par1Str, float par2, float par3)
+    public void func_85030_a(String par1Str, float par2, float par3)
     {
         worldObj.func_85173_a(this, par1Str, par2, par3);
     }
@@ -519,7 +521,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     protected void closeScreen()
     {
-        craftingInventory = inventorySlots;
+        openContainer = inventoryContainer;
     }
 
     /**
@@ -707,9 +709,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     /**
      * Called when player presses the drop item key
      */
-    public EntityItem dropOneItem()
+    public EntityItem dropOneItem(boolean par1)
     {
-        return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, 1), false);
+        return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, !par1 || inventory.getCurrentItem() == null ? 1 : inventory.getCurrentItem().stackSize), false);
     }
 
     /**
@@ -777,10 +779,20 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
         float f = inventory.getStrVsBlock(par1Block);
         int i = EnchantmentHelper.getEfficiencyModifier(this);
+        ItemStack itemstack = inventory.getCurrentItem();
 
-        if (i > 0 && inventory.canHarvestBlock(par1Block))
+        if (i > 0 && itemstack != null)
         {
-            f += i * i + 1;
+            float f1 = i * i + 1;
+
+            if (itemstack.canHarvestBlock(par1Block) || f > 1.0F)
+            {
+                f += f1;
+            }
+            else
+            {
+                f += f1 * 0.08F;
+            }
         }
 
         if (isPotionActive(Potion.digSpeed))
@@ -822,6 +834,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         super.readEntityFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Inventory");
         inventory.readFromNBT(nbttaglist);
+        inventory.currentItem = par1NBTTagCompound.getInteger("SelectedItemSlot");
         sleeping = par1NBTTagCompound.getBoolean("Sleeping");
         sleepTimer = par1NBTTagCompound.getShort("SleepTimer");
         experience = par1NBTTagCompound.getFloat("XpP");
@@ -858,6 +871,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setTag("Inventory", inventory.writeToNBT(new NBTTagList()));
+        par1NBTTagCompound.setInteger("SelectedItemSlot", inventory.currentItem);
         par1NBTTagCompound.setBoolean("Sleeping", sleeping);
         par1NBTTagCompound.setShort("SleepTimer", (short)sleepTimer);
         par1NBTTagCompound.setFloat("XpP", experience);
@@ -1326,7 +1340,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
             i += k;
             boolean flag1 = false;
-            int l = EnchantmentHelper.func_90036_a(this);
+            int l = EnchantmentHelper.getFireAspectModifier(this);
 
             if ((par1Entity instanceof EntityLiving) && l > 0 && !par1Entity.isBurning())
             {
@@ -1362,6 +1376,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 }
 
                 setLastAttackingEntity(par1Entity);
+
+                if (par1Entity instanceof EntityLiving)
+                {
+                    EnchantmentThorns.func_92096_a(this, (EntityLiving)par1Entity, rand);
+                }
             }
 
             ItemStack itemstack = getCurrentEquippedItem();
@@ -1420,11 +1439,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public void setDead()
     {
         super.setDead();
-        inventorySlots.onCraftGuiClosed(this);
+        inventoryContainer.onCraftGuiClosed(this);
 
-        if (craftingInventory != null)
+        if (openContainer != null)
         {
-            craftingInventory.onCraftGuiClosed(this);
+            openContainer.onCraftGuiClosed(this);
         }
     }
 
@@ -1682,12 +1701,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return sleepTimer;
     }
 
-    protected boolean func_82241_s(int par1)
+    protected boolean getHideCape(int par1)
     {
         return (dataWatcher.getWatchableObjectByte(16) & 1 << par1) != 0;
     }
 
-    protected void func_82239_b(int par1, boolean par2)
+    protected void setHideCape(int par1, boolean par2)
     {
         byte byte0 = dataWatcher.getWatchableObjectByte(16);
 
@@ -1709,14 +1728,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     }
 
     /**
-     * Returns the coordinates to respawn the player based on last bed that the player sleep.
+     * Returns the location of the bed the player will respawn at, or null if the player has not slept in a bed.
      */
-    public ChunkCoordinates getSpawnChunk()
+    public ChunkCoordinates getBedLocation()
     {
         return spawnChunk;
     }
 
-    public boolean func_82245_bX()
+    public boolean isSpawnForced()
     {
         return spawnForced;
     }
@@ -2029,12 +2048,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         if (experienceLevel < 0)
         {
             experienceLevel = 0;
+            experience = 0.0F;
+            experienceTotal = 0;
         }
 
         if (par1 > 0 && experienceLevel % 5 == 0 && (float)field_82249_h < (float)ticksExisted - 100F)
         {
             float f = experienceLevel <= 30 ? (float)experienceLevel / 30F : 1.0F;
-            func_85030_a("random.levelup", f * 0.75F, 1.0F);
+            worldObj.playSoundAtEntity(this, "random.levelup", f * 0.75F, 1.0F);
             field_82249_h = ticksExisted;
         }
     }
@@ -2151,7 +2172,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return false;
     }
 
-    public boolean func_82247_a(int par1, int par2, int par3, int par4, ItemStack par5ItemStack)
+    public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack)
     {
         if (capabilities.allowEdit)
         {
@@ -2320,9 +2341,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return inventory.armorInventory;
     }
 
-    public boolean func_82238_cc()
+    public boolean getHideCape()
     {
-        return func_82241_s(1);
+        return getHideCape(1);
     }
 
     /**

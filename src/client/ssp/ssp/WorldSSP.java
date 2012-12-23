@@ -171,7 +171,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     protected IChunkProvider createChunkProvider()
     {
         IChunkLoader ichunkloader = saveHandler.getChunkLoader(provider);
-        return new ChunkProvider(this, ichunkloader, provider.getChunkProvider());
+        return new ChunkProvider(this, ichunkloader, provider.createChunkGenerator());
     }
 
     /**
@@ -483,11 +483,11 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Marks the block as needing an update with the renderer. Args: x, y, z
      */
-    public void markBlockNeedsUpdate(int par1, int par2, int par3)
+    public void markBlockForUpdate(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForUpdate(par1, par2, par3);
         }
     }
 
@@ -496,7 +496,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void notifyBlockChange(int par1, int par2, int par3, int par4)
     {
-        markBlockNeedsUpdate(par1, par2, par3);
+        markBlockForUpdate(par1, par2, par3);
         notifyBlocksOfNeighborChange(par1, par2, par3, par4);
     }
 
@@ -526,11 +526,11 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
      */
-    public void markBlockAsNeedsUpdate(int par1, int par2, int par3)
+    public void markBlockForRenderUpdate2(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par1, par2, par3);
         }
     }
 
@@ -538,7 +538,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
         }
     }
 
@@ -829,7 +829,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par2, par3, par4);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForRenderUpdate(par2, par3, par4);
         }
     }
 
@@ -837,7 +837,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockNeedsUpdate2(par1, par2, par3);
+            ((IWorldAccess)worldAccesses.get(i)).markBlockForRenderUpdate(par1, par2, par3);
         }
     }
 
@@ -2723,7 +2723,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             return false;
         }
 
-        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isGroundCover()))
+        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isReplaceable()))
         {
             block = null;
         }
@@ -2774,7 +2774,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
-        CrashReportCategory crashreportcategory = par1CrashReport.func_85057_a("Affected level", 1);
+        CrashReportCategory crashreportcategory = par1CrashReport.makeCategoryDepth("Affected level", 1);
         crashreportcategory.addCrashSection("Level name", worldInfo != null ? ((Object)(worldInfo.getWorldName())) : "????");
         crashreportcategory.addCrashSectionCallable("All players", new CallableLvl2(this));
         crashreportcategory.addCrashSectionCallable("Chunk stats", new CallableLvl3(this));
