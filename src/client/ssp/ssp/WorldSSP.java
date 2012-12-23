@@ -2525,6 +2525,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void setEntityState(Entity entity, byte byte0)
     {
+        entity.handleHealthUpdate(byte0);
     }
 
     public void updateEntityList()
