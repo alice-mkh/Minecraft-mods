@@ -679,9 +679,9 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Called when player presses the drop item key
      */
-    public EntityItem dropOneItem()
+    public EntityItem dropOneItem(boolean par1)
     {
-        return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, 1), false);
+        return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, !par1 || inventory.getCurrentItem() == null ? 1 : inventory.getCurrentItem().stackSize), false);
     }
 
     /**
