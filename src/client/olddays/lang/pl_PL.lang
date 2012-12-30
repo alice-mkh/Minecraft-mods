@@ -468,6 +468,9 @@ eyecandy.olditems.name=Stare upuszczone przedmioty
  eyecandy.olditems.desc3=nawet po ustawieniu jakości
  eyecandy.olditems.desc4=grafiki na Fancy.
  eyecandy.olditems.desc5=§Zmienione w 1.4.6.
+//FIXME
+eyecandy.oldbackground.name=Old GUI background
+ eyecandy.oldbackground.desc1=§aChanged in Alpha 1.0.9.
 
 sounds.explode.name=Stary odgłos eksplozji
  sounds.explode.desc1=§aZmieniony w 1.0.

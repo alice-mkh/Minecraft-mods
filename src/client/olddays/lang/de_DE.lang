@@ -476,6 +476,8 @@ eyecandy.olditems.name=Old dropped items
  eyecandy.olditems.desc1=Uses 2D dropped item sprites
  eyecandy.olditems.desc2=even on Fancy graphics.
  eyecandy.olditems.desc3=§Changed in 1.4.6.
+eyecandy.oldbackground.name=Old GUI background
+ eyecandy.oldbackground.desc1=§aChanged in Alpha 1.0.9.
 
 sounds.explode.name=Alte Explosion
  sounds.explode.desc1=§aVerändert in der 1.0.

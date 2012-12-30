@@ -31,6 +31,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   24,false, "TPBobbing");
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
         new OldDaysPropertyBool(this,   26,false, "OldItems");
+        new OldDaysPropertyBool(this,   27,false, "OldBackground");
         replaceBlocks();
         redstoneRenderID = 37;
         set(ItemRenderer.class, "olddays", true);
@@ -86,6 +87,7 @@ public class ODEyecandy extends OldDaysModule{
             case 24:set(EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
             case 25:set(EntitySuspendFX.class, "allow", WaterParticles); break;
             case 26:set(RenderItem.class, "oldrendering", OldItems); break;
+            case 27:set(GuiScreen.class, "oldbg", OldBackground); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(EntityEnderman.class, new RenderEnderman2());
@@ -124,6 +126,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean TPBobbing = true;
     public static boolean WaterParticles;
     public static boolean OldItems;
+    public static boolean OldBackground;
     public static int redstoneRenderID;
 
     private void replaceBlocks(){
