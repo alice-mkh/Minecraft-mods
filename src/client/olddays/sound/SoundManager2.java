@@ -186,12 +186,12 @@ public class SoundManager2 extends SoundManager{
         }
 
         SoundSystem sndSystem = (SoundSystem)getField(0);
-        int ticksBeforeMusic = (Integer)getField(10);
         if (!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming"))
         {
+            int ticksBeforeMusic = (Integer)getField(10);
             if (ticksBeforeMusic > 0)
             {
-                ticksBeforeMusic--;
+                setField(10, --ticksBeforeMusic);
                 return;
             }
 
@@ -202,7 +202,7 @@ public class SoundManager2 extends SoundManager{
 
             if (soundpoolentry != null)
             {
-                ticksBeforeMusic = ((Random)getField(9)).nextInt(12000) + 12000;
+                setField(10, ((Random)getField(9)).nextInt(12000) + 12000);
                 sndSystem.backgroundMusic("BgMusic", soundpoolentry.soundUrl, soundpoolentry.soundName, false);
                 sndSystem.setVolume("BgMusic", options.musicVolume);
                 sndSystem.play("BgMusic");
@@ -219,6 +219,17 @@ public class SoundManager2 extends SoundManager{
             System.out.println("Exception in SoundManager2!");
             System.out.println(ex);
             return null;
+        }
+    }
+
+    public void setField(int num, int newVal){
+        try{
+            Field f = (SoundManager.class).getDeclaredFields()[num];
+            f.setAccessible(true);
+            f.set(this, newVal);
+        }catch(Exception ex){
+            System.out.println("Exception in SoundManager2!");
+            System.out.println(ex);
         }
     }
 }
