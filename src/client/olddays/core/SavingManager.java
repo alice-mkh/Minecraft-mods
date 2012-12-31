@@ -31,6 +31,12 @@ public class SavingManager{
             }catch(Exception ex){
                 mc.useSP = false;
             }
+            try{
+                String value = properties.getProperty("indevShapeSize");
+                mc.indevShapeSize = value.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
+            }catch(Exception ex){
+                mc.useSP = false;
+            }
         }
         catch(Exception ex){
             System.out.println("OldDays: Failed to load properties for core: "+ex);
@@ -46,6 +52,7 @@ public class SavingManager{
             File file = new File(dir, "Core.properties");
             FileOutputStream fileoutputstream = new FileOutputStream(file);
             properties.setProperty("ssp", ""+mc.useSP);
+            properties.setProperty("indevShapeSize", ""+mc.indevShapeSize);
             properties.store(fileoutputstream, "Old Days config");
             fileoutputstream.close();
         }

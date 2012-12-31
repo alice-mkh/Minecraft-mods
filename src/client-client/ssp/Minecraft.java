@@ -319,6 +319,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public static boolean oldswing = false;
     public static boolean timecontrol = false;
     public static boolean oldlighting = false;
+    public static boolean indevShapeSize = false;
     public int forcedDifficulty;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)

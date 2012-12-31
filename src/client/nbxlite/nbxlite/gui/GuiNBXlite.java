@@ -6,7 +6,7 @@ import java.util.Collections;
 import net.minecraft.src.*;
 
 public class GuiNBXlite extends GuiScreen{
-    private static boolean origIndev = false;
+    private boolean origIndev;
 
     private String selectedWorld;
     private int number;
@@ -28,6 +28,7 @@ public class GuiNBXlite extends GuiScreen{
     private GuiButton[] releaseFeaturesButton;
     private GuiButton newOresButton;
     private GuiButton jungleButton;
+    private GuiButton toggleButton;
     private boolean newores;
     private boolean jungle;
 
@@ -36,6 +37,7 @@ public class GuiNBXlite extends GuiScreen{
         newworld = true;
         newores = ODNBXlite.DefaultNewOres;
         jungle = false;
+        origIndev = mc.indevShapeSize;
     }
 
     public GuiNBXlite(GuiScreen guiscreen, String world, int i)
@@ -70,6 +72,7 @@ public class GuiNBXlite extends GuiScreen{
         }
         controlList.add(indevShapeButton = new GuiButton(42, width / 2 - 75 + leftmargin, height / 6 - 16, 150, 20, ""));
         controlList.add(indevSizeButton = new GuiButton(43, width / 2 - 75 + leftmargin, height / 6 + 14, 150, 20, ""));
+        controlList.add(toggleButton = new GuiButton(44, width - 35, height / 6 + 14, 20, 20, "T"));
         controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
         controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, ""));
         for (int i=0; i<=GeneratorList.feat1length; i++){
@@ -219,6 +222,10 @@ public class GuiNBXlite extends GuiScreen{
             }else{
                 GeneratorList.sizecurrent=0;
             }
+        }else if (guibutton.id==44){
+            origIndev = !origIndev;
+            mc.indevShapeSize = origIndev;
+            mod_OldDays.saveman.saveCoreProperties();
         }else
 //Alpha and Infdev
 //Beta
