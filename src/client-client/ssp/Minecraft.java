@@ -3309,6 +3309,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }else{
             s1 = getIntegratedServer().getWorldName();
             theWorld.sendQuittingDisconnectingPacket();
+            for (int i = 0; i < getIntegratedServer().worldServers.length; i++){
+                WorldServer worldserver = getIntegratedServer().worldServers[i];
+                if (worldserver != null){
+                    worldserver.flush();
+                    worldserver = null;
+                }
+            }
             loadWorld(null);
             stopIntegratedServer();
             theWorld = null;
