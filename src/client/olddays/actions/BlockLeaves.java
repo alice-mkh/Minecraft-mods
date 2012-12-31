@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class BlockLeaves extends BlockLeavesBase
 {
-    public static boolean apples = false;
+    public static boolean apples = true;
 
     /**
      * The base index in terrain.png corresponding to the fancy version of the leaf texture. This is stored so we can
