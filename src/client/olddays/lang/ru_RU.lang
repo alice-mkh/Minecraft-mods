@@ -964,6 +964,17 @@ indev.building=Строим..
 indev.planting=Засеваем..
 indev.lighting=Освещаем..
 indev.spawning=Заселяем..
+//FIXME
+indev.generate=Generate new level
+indev.create=Создать
+indevShape=Форма
+indevSize=Размер
+shapeSquare=Квадратная
+shapeLong=Длинная
+shapeDeep=Глубокая
+sizeSmall=Небольшой
+sizeNormal=Нормальный
+sizeHuge=Огромный
 indevType=Тип
 genClassic=Classic
 genIndev=Indev

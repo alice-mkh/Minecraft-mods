@@ -47,5 +47,11 @@ public class GeneratorList{
     public static int zdefault = ODNBXlite.DefaultFiniteLength;
     public static int[] sizes = {64, 128, 256, 512};
 
+    public static int shapedefault = 0;
+    public static String[] shapename = {"shapeSquare", "shapeLong", "shapeDeep"};
+
+    public static int sizedefault = 1;
+    public static String[] sizename = {"sizeSmall", "sizeNormal", "sizeHuge"};
+
     public GeneratorList(){}
 }

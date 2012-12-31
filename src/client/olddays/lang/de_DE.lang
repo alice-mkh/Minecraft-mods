@@ -976,6 +976,18 @@ indev.building=Baut..
 indev.planting=Pflanzt..
 indev.lighting=Erhellt..
 indev.spawning=Spawnt..
+//FIXME
+indev.generate=Generate new level
+indev.create=Create
+indevShape=Shape
+indevSize=Size
+shapeSquare=Square
+shapeLong=Long
+shapeDeep=Deep
+sizeSmall=Small
+sizeNormal=Normal
+sizeHuge=Huge
+
 indevType=Typ
 genClassic=Classic
 genIndev=Indev

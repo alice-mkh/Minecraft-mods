@@ -955,6 +955,18 @@ indev.building=Construyendo..
 indev.planting=Plantando..
 indev.lighting=Iluminando..
 indev.spawning=Apareciendo..
+//FIXME
+indev.generate=Generate new level
+indev.create=Create
+indevShape=Shape
+indevSize=Size
+shapeSquare=Square
+shapeLong=Long
+shapeDeep=Deep
+sizeSmall=Small
+sizeNormal=Normal
+sizeHuge=Huge
+
 indevType=Tipo
 genClassic=Classic
 genIndev=Indev

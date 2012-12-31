@@ -71,6 +71,7 @@ public class GuiCreateWorld2 extends GuiScreen
     };
     private GuiButton nbxliteButton;
     private GuiButton nbxliteButtonShort;
+    private boolean skipIndev;
 
     public GuiCreateWorld2(GuiScreen par1GuiScreen)
     {
@@ -84,6 +85,7 @@ public class GuiCreateWorld2 extends GuiScreen
         field_82290_a = "";
         parentGuiScreen = par1GuiScreen;
         seed = "";
+        skipIndev = false;
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
         setDefaultNBXliteSettings();
     }
@@ -321,6 +323,12 @@ public class GuiCreateWorld2 extends GuiScreen
         Keyboard.enableRepeatEvents(false);
     }
 
+    public void forceCreate(){
+        skipIndev = true;
+        actionPerformed(((GuiButton)controlList.get(0)));
+        skipIndev = false;
+    }
+
     /**
      * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
      */
@@ -337,6 +345,10 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         else if (par1GuiButton.id == 0)
         {
+            if (!ODNBXlite.ShowGUI && GeneratorList.genplus[GeneratorList.gencurrent]==1 && !skipIndev){
+                mc.displayGuiScreen(new GuiIndev(this));
+                return;
+            }
             mc.displayGuiScreen(null);
 
             if (createClicked)
