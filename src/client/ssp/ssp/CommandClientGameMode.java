@@ -19,7 +19,7 @@ public class CommandClientGameMode extends CommandGameMode
 
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
-        if (par2ArrayOfStr.length == 1)
+        if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
         {
             EnumGameType mode = getGameModeFromCommand(par1ICommandSender, par2ArrayOfStr[0]);
             Minecraft.getMinecraft().setController(mode);
