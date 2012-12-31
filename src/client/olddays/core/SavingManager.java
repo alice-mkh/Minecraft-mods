@@ -29,13 +29,13 @@ public class SavingManager{
                 String value = properties.getProperty("ssp");
                 mc.useSP = value.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
             }catch(Exception ex){
-                mc.useSP = false;
+                mc.useSP = true;
             }
             try{
                 String value = properties.getProperty("indevShapeSize");
                 mc.indevShapeSize = value.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
             }catch(Exception ex){
-                mc.useSP = false;
+                mc.indevShapeSize = false;
             }
         }
         catch(Exception ex){

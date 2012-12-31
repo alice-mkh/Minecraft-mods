@@ -72,7 +72,7 @@ public class GuiNBXlite extends GuiScreen{
         }
         controlList.add(indevShapeButton = new GuiButton(42, width / 2 - 75 + leftmargin, height / 6 - 16, 150, 20, ""));
         controlList.add(indevSizeButton = new GuiButton(43, width / 2 - 75 + leftmargin, height / 6 + 14, 150, 20, ""));
-        controlList.add(toggleButton = new GuiButton(44, width - 35, height / 6 + 14, 20, 20, "T"));
+        controlList.add(toggleButton = new GuiButton(44, width - 35, height / 6 + 14, 20, 20, ""));
         controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
         controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, ""));
         for (int i=0; i<=GeneratorList.feat1length; i++){
@@ -299,6 +299,7 @@ public class GuiNBXlite extends GuiScreen{
             String name = mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1)) + " (" + mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1)+".desc") + ")";
             releaseFeaturesButton[i].displayString = name;
         }
+        toggleButton.displayString = origIndev ? "+" : "-";
     }
 
     private void updateButtonVisibility(){
@@ -325,6 +326,7 @@ public class GuiNBXlite extends GuiScreen{
         }
         newOresButton.drawButton = beta || GeneratorList.genores[GeneratorList.gencurrent] || (release && GeneratorList.feat2current<6);
         jungleButton.drawButton = beta && GeneratorList.feat1current==5;
+        toggleButton.drawButton = indev || classic;
     }
 
     private void updateButtonPosition(){
