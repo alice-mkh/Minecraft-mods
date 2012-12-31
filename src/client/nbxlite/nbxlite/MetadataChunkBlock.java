@@ -23,7 +23,7 @@ public class MetadataChunkBlock
         int j = (maxY - minY) + 1;
         int k = (maxZ - minZ) + 1;
         int l = i * j * k;
-        if(l > 16 * 16 * 256)
+        if(l > 17 * 17 * 257)
         {
             System.out.println("Light too large, skipping!");
             return;

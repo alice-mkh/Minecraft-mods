@@ -389,13 +389,6 @@ public abstract class World implements IBlockAccess
                     worldInfo.indevX = ODNBXlite.IndevWidthX;
                     worldInfo.indevZ = ODNBXlite.IndevWidthZ;
                     worldInfo.indevY = ODNBXlite.IndevHeight;
-                    if (ODNBXlite.oldLightEngine){
-                        if (!provider.hasNoSky){
-                            scheduleLightingUpdate(EnumSkyBlock.Sky, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
-                        }
-                        scheduleLightingUpdate(EnumSkyBlock.Block, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
-                        while (updatingLighting()){};
-                    }
                 }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
                     ODNBXlite.generateClassicLevel(getSeed());
                     for (int x=-2; x<(ODNBXlite.IndevWidthX/16)+2; x++){
@@ -408,13 +401,6 @@ public abstract class World implements IBlockAccess
                     worldInfo.indevZ = ODNBXlite.IndevWidthZ;
                     worldInfo.indevY = ODNBXlite.IndevHeight;
                     ODNBXlite.setIndevBounds(5, ODNBXlite.MapTheme);
-                    if (ODNBXlite.oldLightEngine){
-                        if (!provider.hasNoSky){
-                            scheduleLightingUpdate(EnumSkyBlock.Sky, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
-                        }
-                        scheduleLightingUpdate(EnumSkyBlock.Block, 0, 0, 0, ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ);
-                        while (updatingLighting()){};
-                    }
                 }else{
                     worldInfo.mapType = 0;
                 }

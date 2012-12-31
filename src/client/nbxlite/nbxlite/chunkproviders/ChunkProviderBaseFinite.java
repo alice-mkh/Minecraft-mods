@@ -84,11 +84,22 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
     }
 
     public void populate(IChunkProvider ichunkprovider, int i, int j){
-        for (int x = i * 16; x < (i + 1) * 16; x++){
-            for (int y = 0; y < ODNBXlite.IndevHeight; y++){
-                for (int z = j * 16; z < (j + 1) * 16; z++){
-                    if (Block.lightValue[worldObj.getBlockId(x, y, z)]>0){
-                        worldObj.updateAllLightTypes(x, y, z);
+        boolean bounds = i>=0 && i<ODNBXlite.IndevWidthX/16 && j>=0 && j<ODNBXlite.IndevWidthZ/16;
+        if (!bounds){
+            return;
+        }
+        if (ODNBXlite.oldLightEngine){
+            if (!worldObj.provider.hasNoSky){
+                worldObj.scheduleLightingUpdate(EnumSkyBlock.Sky, i * 16, 0, j * 16, (i + 1) * 16, ODNBXlite.IndevHeight, (j + 1) * 16);
+            }
+            worldObj.scheduleLightingUpdate(EnumSkyBlock.Block, i * 16, 0, j * 16, (i + 1) * 16, ODNBXlite.IndevHeight - 2, (j + 1) * 16);
+        }else{
+            for (int x = i * 16; x < (i + 1) * 16; x++){
+                for (int y = 0; y < ODNBXlite.IndevHeight; y++){
+                    for (int z = j * 16; z < (j + 1) * 16; z++){
+                        if (Block.lightValue[worldObj.getBlockId(x, y, z)]>0){
+                            worldObj.updateAllLightTypes(x, y, z);
+                        }
                     }
                 }
             }
