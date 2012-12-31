@@ -22,6 +22,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 15,false, false, "OldStairs");
         new OldDaysPropertyBool(this, 16,true,  false, "OldBoatBreaking");
         new OldDaysPropertyBool(this, 17,true,  false, "OldHardness");
+        new OldDaysPropertyBool(this, 18,false, true,  "Apples");
         replaceBlocks();
         replaceTools();
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
@@ -54,6 +55,7 @@ public class ODActions extends OldDaysModule{
                     mod_OldDays.setField(ItemTool.class, Item.shovelGold, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(ItemTool.class, Item.shovelDiamond, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(Block.class, Block.obsidian, 167, OldHardness ? 10F : 50F); break;
+            case 18:set(BlockLeaves.class, "apples", Apples); break;
         }
     }
 
@@ -81,6 +83,7 @@ public class ODActions extends OldDaysModule{
     public static boolean OldStairs;
     public static boolean OldBoatBreaking = true;
     public static boolean OldHardness = true;
+    public static boolean Apples;
     public KeyBinding keyFog;
 
     private static Block[] oldSpadeBlocks = (new Block[]{Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay, Block.tilledField});

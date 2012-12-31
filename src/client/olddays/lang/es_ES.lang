@@ -112,6 +112,10 @@ actions.oldboatbreaking.name=Antigua destrucción de botes
 actions.oldhardness.name=Antigua dureza de bloques
  actions.oldhardness.desc1=Cambia la dureza de varios bloques.
  actions.oldhardness.desc2=§aCambiado en la 1.0.
+//FIXME
+actions.apples.name=Apples from leaves
+ actions.apples.desc1=Disables apples dropping from leaves.
+ actions.apples.desc2=§aAdded in 1.1.
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros

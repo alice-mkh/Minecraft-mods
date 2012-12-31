@@ -109,6 +109,9 @@ actions.oldboatbreaking.name=Old boat breaking
 actions.oldhardness.name=Old block hardness
  actions.oldhardness.desc1=Changes hardness of many blocks.
  actions.oldhardness.desc2=§aChanged in 1.0.
+actions.apples.name=Apples from leaves
+ actions.apples.desc1=Disables apples dropping from leaves.
+ actions.apples.desc2=§aAdded in 1.1.
 
 bugs.boosters.name=Boosters
  bugs.boosters.desc1=Allows boosting minecarts by

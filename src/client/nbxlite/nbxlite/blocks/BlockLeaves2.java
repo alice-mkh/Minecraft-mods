@@ -5,7 +5,6 @@ import net.minecraft.src.*;
 
 public class BlockLeaves2 extends BlockLeaves
 {
-    public static boolean apples = true;
     public static boolean decay = true;
 
     public int fasttex;
@@ -94,33 +93,6 @@ public class BlockLeaves2 extends BlockLeaves
             return;
         }
         super.updateTick(par1World, par2, par3, par4, par5Random);
-    }
-
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
-    public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
-    {
-        if (!par1World.isRemote)
-        {
-            byte byte0 = 20;
-
-            if ((par5 & 3) == 3)
-            {
-                byte0 = 40;
-            }
-
-            if (par1World.rand.nextInt(byte0) == 0)
-            {
-                int i = idDropped(par5, par1World.rand, par7);
-                dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(i, 1, damageDropped(par5)));
-            }
-
-            if ((par5 & 3) == 0 && par1World.rand.nextInt(200) == 0 && apples)
-            {
-                dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.appleRed, 1, 0));
-            }
-        }
     }
 
     /**

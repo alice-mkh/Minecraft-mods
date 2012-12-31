@@ -111,6 +111,10 @@ actions.oldboatbreaking.name=Stare niszczenie łodzi
 actions.oldhardness.name=Stara wytrzymałość bloków
  actions.oldhardness.desc1=Zmienia czas zbierania wielu bloków.
  actions.oldhardness.desc2=§aZmienione w 1.0.
+//FIXME
+actions.apples.name=Apples from leaves
+ actions.apples.desc1=Disables apples dropping from leaves.
+ actions.apples.desc2=§aAdded in 1.1.
 
 bugs.boosters.name=Boostery
  bugs.boosters.desc1=Pozwala na przyśpieszenie wózków
