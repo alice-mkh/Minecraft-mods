@@ -6,6 +6,8 @@ import java.util.Collections;
 import net.minecraft.src.*;
 
 public class GuiNBXlite extends GuiScreen{
+    private static boolean origIndev = false;
+
     private String selectedWorld;
     private int number;
     private boolean newworld;
@@ -18,6 +20,8 @@ public class GuiNBXlite extends GuiScreen{
     private GuiButton indevThemeButton;
     private GuiButton[] indevWidthButton;
     private GuiButton[] indevLengthButton;
+    private GuiButton indevSizeButton;
+    private GuiButton indevShapeButton;
     private GuiSliderCustom indevHeightSlider;
     private GuiButton alphaThemeButton;
     private GuiButton[] betaFeaturesButton;
@@ -79,14 +83,18 @@ public class GuiNBXlite extends GuiScreen{
         for (int i=0; i<4; i++){
             controlList.add(indevWidthButton[i]=new GuiButton(30+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 - 16, 40, 20, Integer.toString(GeneratorList.sizes[i])));
             controlList.add(indevLengthButton[i]=new GuiButton(34+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 + 14, 40, 20, Integer.toString(GeneratorList.sizes[i])));
-            indevWidthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
-            indevLengthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+            indevWidthButton[i].drawButton = !origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+            indevLengthButton[i].drawButton = !origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
         }
+        controlList.add(indevShapeButton = new GuiButton(42, width / 2 - 75 + leftmargin, height / 6 - 16, 150, 20, mod_OldDays.lang.get("indevShape")+": "+mod_OldDays.lang.get(GeneratorList.shapename[GeneratorList.shapecurrent])));
+        controlList.add(indevSizeButton = new GuiButton(43, width / 2 - 75 + leftmargin, height / 6 + 14, 150, 20, mod_OldDays.lang.get("indevSize")+": "+mod_OldDays.lang.get(GeneratorList.sizename[GeneratorList.sizecurrent])));
         indevWidthButton[GeneratorList.xcurrent].enabled=false;
         indevLengthButton[GeneratorList.zcurrent].enabled=false;
         controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, mod_OldDays.lang.get("depth")+": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
         indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
         indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+        indevShapeButton.drawButton = origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+        indevSizeButton.drawButton = origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1);
         indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
 //Alpha and Infdev
         controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, mod_OldDays.lang.get("nbxlite.maptheme.name")+": "+mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent])));
@@ -155,10 +163,23 @@ public class GuiNBXlite extends GuiScreen{
             }
             ODNBXlite.SetGenerator(mod_OldDays.getMinecraft().theWorld, gen, feats, GeneratorList.themecurrent, type, ODNBXlite.SnowCovered, newores);
             mod_OldDays.refreshConditionProperties();
-            if (gen==0 && feats>=3){
+            if (gen==0 && feats>=3 && (feats > 3 || !origIndev)){
                 ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
                 ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
+            }
+            if (gen==0 && feats==3 && origIndev){
+                ODNBXlite.IndevWidthX = 128 << GeneratorList.sizecurrent;
+                ODNBXlite.IndevWidthZ = 128 << GeneratorList.sizecurrent;
+                ODNBXlite.IndevHeight = 64;
+                if (GeneratorList.shapecurrent == 1){
+                    ODNBXlite.IndevWidthX /= 2;
+                    ODNBXlite.IndevWidthZ <<= 1;
+                }else if (GeneratorList.shapecurrent == 2){
+                    ODNBXlite.IndevWidthZ /= 2;
+                    ODNBXlite.IndevWidthX /= 2;
+                    ODNBXlite.IndevHeight = 256;
+                }
             }
             OldDaysModule.reload();
         }else{
@@ -176,10 +197,23 @@ public class GuiNBXlite extends GuiScreen{
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 ODNBXlite.IndevMapType=GeneratorList.typecurrent;
             }
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC)){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ((ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && !origIndev) || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC)){
                 ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
                 ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
                 ODNBXlite.IndevHeight=indevHeightSlider.getSizeValue();
+            }
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && origIndev)){
+                ODNBXlite.IndevWidthX = 128 << GeneratorList.sizecurrent;
+                ODNBXlite.IndevWidthZ = 128 << GeneratorList.sizecurrent;
+                ODNBXlite.IndevHeight = 64;
+                if (GeneratorList.shapecurrent == 1){
+                    ODNBXlite.IndevWidthX /= 2;
+                    ODNBXlite.IndevWidthZ <<= 1;
+                }else if (GeneratorList.shapecurrent == 2){
+                    ODNBXlite.IndevWidthZ /= 2;
+                    ODNBXlite.IndevWidthX /= 2;
+                    ODNBXlite.IndevHeight = 256;
+                }
             }
             ODNBXlite.GenerateNewOres=newores;
         }
@@ -244,11 +278,13 @@ public class GuiNBXlite extends GuiScreen{
             GeneratorList.gencurrent = guibutton.id-10;
             guibutton.enabled = false;
             for (int i=0; i<4; i++){
-                indevWidthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
-                indevLengthButton[i].drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+                indevWidthButton[i].drawButton = !origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
+                indevLengthButton[i].drawButton = !origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             }
             indevHeightSlider.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevTypeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+            indevShapeButton.drawButton = origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1);
+            indevSizeButton.drawButton = origIndev && (GeneratorList.genplus[GeneratorList.gencurrent]==1);
             indevThemeButton.drawButton = (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2);
             alphaThemeButton.drawButton = GeneratorList.genplus[GeneratorList.gencurrent]==0 && GeneratorList.genfeatures[GeneratorList.gencurrent]==0;
             newOresButton.drawButton = GeneratorList.genfeatures[GeneratorList.gencurrent]==1 || GeneratorList.genores[GeneratorList.gencurrent] || (GeneratorList.genfeatures[GeneratorList.gencurrent]==2 && GeneratorList.feat2current<6);
@@ -302,6 +338,20 @@ public class GuiNBXlite extends GuiScreen{
             indevLengthButton[GeneratorList.zcurrent].enabled = true;
             GeneratorList.zcurrent = guibutton.id-34;
             guibutton.enabled = false;
+        }else if (guibutton.id==42){
+            if (GeneratorList.shapecurrent<GeneratorList.shapename.length - 1){
+                GeneratorList.shapecurrent++;
+            }else{
+                GeneratorList.shapecurrent=0;
+            }
+            indevShapeButton.displayString = mod_OldDays.lang.get("indevShape")+": "+mod_OldDays.lang.get(GeneratorList.shapename[GeneratorList.shapecurrent]);
+        }else if (guibutton.id==43){
+            if (GeneratorList.sizecurrent<GeneratorList.sizename.length - 1){
+                GeneratorList.sizecurrent++;
+            }else{
+                GeneratorList.sizecurrent=0;
+            }
+            indevSizeButton.displayString = mod_OldDays.lang.get("indevSize")+": "+mod_OldDays.lang.get(GeneratorList.sizename[GeneratorList.sizecurrent]);
         }else
 //Alpha and Infdev
 //Beta
@@ -333,8 +383,10 @@ public class GuiNBXlite extends GuiScreen{
         drawDefaultBackground();
         drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2){
-            drawString(fontRenderer, mod_OldDays.lang.get("width")+": ", width / 2 - 120 + leftmargin, height / 6 - 10, 0xa0a0a0);
-            drawString(fontRenderer, mod_OldDays.lang.get("length")+": ", width / 2 - 120 + leftmargin, height / 6 + 20, 0xa0a0a0);
+            if (!origIndev){
+                drawString(fontRenderer, mod_OldDays.lang.get("width")+": ", width / 2 - 120 + leftmargin, height / 6 - 10, 0xa0a0a0);
+                drawString(fontRenderer, mod_OldDays.lang.get("length")+": ", width / 2 - 120 + leftmargin, height / 6 + 20, 0xa0a0a0);
+            }
             drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 148, 0xa0a0a0);
         }
         if (GeneratorList.genplus[GeneratorList.gencurrent]==1){

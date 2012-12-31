@@ -161,6 +161,8 @@ public class GuiCreateWorld2 extends GuiScreen
         GeneratorList.feat1current = GeneratorList.feat1default;
         GeneratorList.feat2current = GeneratorList.feat2default;
         GeneratorList.typecurrent = GeneratorList.typedefault;
+        GeneratorList.shapecurrent = GeneratorList.shapedefault;
+        GeneratorList.sizecurrent = GeneratorList.sizedefault;
         GeneratorList.xcurrent = GeneratorList.xdefault;
         GeneratorList.zcurrent = GeneratorList.zdefault;
         ODNBXlite.Generator = GeneratorList.genfeatures[GeneratorList.gendefault];
