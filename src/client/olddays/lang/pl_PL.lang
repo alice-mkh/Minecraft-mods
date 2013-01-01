@@ -111,10 +111,9 @@ actions.oldboatbreaking.name=Stare niszczenie łodzi
 actions.oldhardness.name=Stara wytrzymałość bloków
  actions.oldhardness.desc1=Zmienia czas zbierania wielu bloków.
  actions.oldhardness.desc2=§aZmienione w 1.0.
-//FIXME
-actions.apples.name=Apples from leaves
- actions.apples.desc1=Disables apples dropping from leaves.
- actions.apples.desc2=§aAdded in 1.1.
+actions.apples.name=Jabłka z liści
+ actions.apples.desc1=Wyłącza jabłka wypadające z liści
+ actions.apples.desc2=§aDodane w 1.1.
 
 bugs.boosters.name=Boostery
  bugs.boosters.desc1=Pozwala na przyśpieszenie wózków
@@ -472,9 +471,8 @@ eyecandy.olditems.name=Stare upuszczone przedmioty
  eyecandy.olditems.desc3=nawet po ustawieniu jakości
  eyecandy.olditems.desc4=grafiki na Fancy.
  eyecandy.olditems.desc5=§aZmienione w 1.4.6.
-//FIXME
-eyecandy.oldbackground.name=Old GUI background
- eyecandy.oldbackground.desc1=§aChanged in Alpha 1.0.9.
+eyecandy.oldbackground.name=Stare tło interfejsów
+ eyecandy.oldbackground.desc1=§aZmienione w Alphie 1.0.9.
 
 sounds.explode.name=Stary odgłos eksplozji
  sounds.explode.desc1=§aZmieniony w 1.0.
@@ -957,17 +955,16 @@ indev.building=Budowanie..
 indev.planting=Sadzenie..
 indev.lighting=Oświetlenie..
 indev.spawning=Spawnowanie..
-//FIXME
-indev.generate=Generate new level
-indev.create=Create
-indevShape=Shape
-indevSize=Size
-shapeSquare=Square
-shapeLong=Long
-shapeDeep=Deep
-sizeSmall=Small
-sizeNormal=Normal
-sizeHuge=Huge
+indev.generate=Wygeneruj nowy świat
+indev.create=Stwórz
+indevShape=Kształt
+indevSize=Rozmiar
+shapeSquare=Kwadratowy
+shapeLong=Długi
+shapeDeep=Głęboki
+sizeSmall=Mały
+sizeNormal=Normalny
+sizeHuge=Duży
 
 indevType=Typ
 genClassic=Classic
