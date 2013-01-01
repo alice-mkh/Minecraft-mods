@@ -90,6 +90,11 @@ public class GuiCreateWorld2 extends GuiScreen
         setDefaultNBXliteSettings();
     }
 
+    public void fixHardcoreButtons(){
+        buttonAllowCommands.enabled = !gameMode.equals("hardcore");
+        buttonBonusItems.enabled = !gameMode.equals("hardcore");
+    }
+
     /**
      * Called from the main game loop to update the screen.
      */

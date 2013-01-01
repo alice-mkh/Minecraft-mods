@@ -170,6 +170,7 @@ public class GuiNBXlite extends GuiScreen{
         if (guibutton.id == 1){
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(parent);
+            ((GuiCreateWorld2)parent).fixHardcoreButtons();
         }else if (guibutton.id == 0){
             if (!newworld){
                 selectWorld();
@@ -177,6 +178,7 @@ public class GuiNBXlite extends GuiScreen{
             }
             selectNBXliteSettings();
             mc.displayGuiScreen(parent);
+            ((GuiCreateWorld2)parent).fixHardcoreButtons();
         }else if (guibutton.id==2){
             newores=!newores;
             updateButtonText();
