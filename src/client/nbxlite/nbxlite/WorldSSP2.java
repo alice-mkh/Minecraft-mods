@@ -20,7 +20,7 @@ public class WorldSSP2 extends WorldSSP
      */
     protected void createBonusChest()
     {
-        if (ODNBXlite.Generator == ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV){
+        if (ODNBXlite.Generator == ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV && ODNBXlite.IndevSpawnY < ODNBXlite.IndevHeight){
             int j = worldInfo.getSpawnX();
             int k = worldInfo.getSpawnZ();
             int l = worldInfo.getSpawnY() + 2;
