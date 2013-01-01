@@ -334,9 +334,9 @@ public class RenderGlobal implements IWorldAccess
             j = 400;
         }
 
-        renderChunksWide = j / 16 + 1;
+        renderChunksWide = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthX : j) / 16 + 1;
         renderChunksTall = 16;
-        renderChunksDeep = j / 16 + 1;
+        renderChunksDeep = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthZ : j) / 16 + 1;
         worldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         sortedWorldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         int k = 0;
@@ -482,6 +482,9 @@ public class RenderGlobal implements IWorldAccess
      */
     private void markRenderersForNewPosition(int par1, int par2, int par3)
     {
+        if (ODNBXlite.isFinite()){
+            return;
+        }
         par1 -= 8;
         par2 -= 8;
         par3 -= 8;
