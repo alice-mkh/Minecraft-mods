@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -375,6 +377,30 @@ public class mod_OldDays extends Mod{
         newb[s.keyBindings.length] = key;
         s.keyBindings = newb;
         keyBindings.add(key);
+        try{
+            File optionsFile = new File(Minecraft.getMinecraftDir(), "options.txt");
+            if (!optionsFile.exists()){
+                return;
+            }
+            BufferedReader bufferedreader = new BufferedReader(new FileReader(optionsFile));
+            for (String str = ""; (str = bufferedreader.readLine()) != null;){
+                try{
+                    String as[] = str.split(":");
+                    if (as[0].equals((new StringBuilder()).append("key_").append(key.keyDescription).toString())){
+                        key.keyCode = Integer.parseInt(as[1]);
+                        System.out.println(as[0]+" "+as[1]);
+                    }
+                }catch (Exception exception1){
+                    System.out.println((new StringBuilder()).append("Skipping bad option: ").append(s).toString());
+                }
+            }
+            bufferedreader.close();
+        }
+        catch (Exception exception){
+            System.out.println("Failed to load options");
+            exception.printStackTrace();
+        }
+        KeyBinding.resetKeyBindingArrayAndHash();
     }
 
     public void onLoadingSP(String par1Str, String par2Str){
