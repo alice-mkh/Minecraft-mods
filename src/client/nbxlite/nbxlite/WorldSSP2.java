@@ -213,7 +213,7 @@ public class WorldSSP2 extends WorldSSP
         }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
-            if (!ODNBXlite.Import){
+            if (!ODNBXlite.Import && ODNBXlite.IndevSpawnY < ODNBXlite.IndevHeight){
                 setBlockWithNotify(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
                 setBlockWithNotify(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
             }

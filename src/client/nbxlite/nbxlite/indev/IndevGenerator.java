@@ -1012,6 +1012,9 @@ label0:
             return;
         }
         int index = x+(y*length+z)*width;
+        if (index < 0 || index > width * length * height){
+            return;
+        }
         this.blocks[index]=(byte)id;
     }
 
@@ -1157,7 +1160,7 @@ label0:
     System.gc();
   }
 
-    public final void b(IndevLevel world){
+    /*public final void b(IndevLevel world){
         int x = 0;
         int y = 0;
         int z = 0;
@@ -1211,6 +1214,48 @@ label0:
         world.i = x;
         world.j = y;
         world.k = z;
+    }*/
+
+    public final void b(IndevLevel world){
+        int c = 0;
+        find:while(true){
+            c++;
+            int x = rand.nextInt(world.a / 2) + world.a / 4;
+            int z = rand.nextInt(world.b / 2) + world.b / 4;
+            int y = getFirstUncoveredBlock(world, x, z, true) + 1;
+            if(c == 1000000){
+                world.i = x;
+                world.j = world.c + 100;
+                world.k = z;
+                return;
+            }
+            if(y >= 4 && y > k){
+                int i;
+                int j;
+                int k;
+                for(i = x - 3; i <= x + 3; i++) {
+                    for(j = y - 1; j <= y + 2; j++) {
+                        for(k = z - 3 - 2; k <= z + 3; k++) {
+                            if(getBlockMaterial(i, j, k).isSolid()) {
+                                continue find;
+                            }
+                        }
+                    }
+                }
+                i = y - 2;
+                for(j = x - 3; j <= x + 3; j++){
+                    for(k = z - 3 - 2; k <= z + 3; k++){
+                        if(!isOpaque(getBlockId(j, i, k))){
+                            continue find;
+                        }
+                    }
+                }
+                world.i = x;
+                world.j = y;
+                world.k = z;
+                return;
+            }
+        }
     }
     
     private byte getBlockId(int i, int j, int k){
