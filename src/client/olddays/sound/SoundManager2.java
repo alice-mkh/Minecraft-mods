@@ -152,7 +152,7 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("mob.slime") && slime){
             str = "mob.slime.small";
         }
-        if ((par1Str.startsWith("mob.skeleton.hurt") || par1Str.startsWith("mob.skeleton.death")) && slime){
+        if ((par1Str.startsWith("mob.skeleton.hurt") || par1Str.startsWith("mob.skeleton.death")) && skeleton){
             str = "olddays.skeletonhurt";
         }
         if (par1Str.startsWith("fire.ignite") && ignite){
