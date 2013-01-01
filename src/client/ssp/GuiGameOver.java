@@ -27,7 +27,7 @@ public class GuiGameOver extends GuiScreen
 
         if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
         {
-            if (mc.isIntegratedServerRunning())
+            if (mc.isIntegratedServerRunning() || mc.enableSP)
             {
                 controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
             }
