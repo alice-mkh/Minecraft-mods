@@ -334,9 +334,14 @@ public class RenderGlobal implements IWorldAccess
             j = 400;
         }
 
-        renderChunksWide = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthX : j) / 16 + 1;
+        if (nbxlite){
+            renderChunksWide = (ODNBXlite.isFinite() && mc.gameSettings.renderDistance >= 2 ? ODNBXlite.IndevWidthX - 16 : j) / 16 + 1;
+            renderChunksDeep = (ODNBXlite.isFinite() && mc.gameSettings.renderDistance >= 2 ? ODNBXlite.IndevWidthZ - 16 : j) / 16 + 1;
+        }else{
+            renderChunksWide = j / 16 + 1;
+            renderChunksDeep = j / 16 + 1;
+        }
         renderChunksTall = 16;
-        renderChunksDeep = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthZ : j) / 16 + 1;
         worldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         sortedWorldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         int k = 0;
@@ -482,7 +487,7 @@ public class RenderGlobal implements IWorldAccess
      */
     private void markRenderersForNewPosition(int par1, int par2, int par3)
     {
-        if (ODNBXlite.isFinite()){
+        if (nbxlite && mc.gameSettings.renderDistance >= 2 && ODNBXlite.isFinite()){
             return;
         }
         par1 -= 8;
@@ -1399,13 +1404,6 @@ public class RenderGlobal implements IWorldAccess
         for (int k = 0; k < i; k++)
         {
             WorldRenderer worldrenderer = (WorldRenderer)worldRenderersToUpdate.get(k);
-            if (nbxlite){
-                if (ODNBXlite.isFinite()){
-                    if (worldrenderer.posX<0 || worldrenderer.posZ<0 || worldrenderer.posX>ODNBXlite.IndevWidthX-16 || worldrenderer.posZ>ODNBXlite.IndevWidthZ-16){
-                        continue;
-                    }
-                }
-            }
             if (worldrenderer == null)
             {
                 continue;
