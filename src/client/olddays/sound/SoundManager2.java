@@ -101,15 +101,15 @@ public class SoundManager2 extends SoundManager{
                 return "nothing";
             }
             if (par1Str.endsWith("death")){
-                str = "mob.zombiedeath";
+                str = "mob.zombie.death";
             }
-            if (par1Str.endsWith("hit")){
-                str = "mob.zombiehurt";
+            if (par1Str.endsWith("hit") || par1Str.endsWith("scream")){
+                str = "mob.zombie.hurt";
             }
             if (par1Str.endsWith("idle")){
-                str = "mob.zombie";
+                str = "mob.zombie.say";
             }
-            if (par1Str.endsWith("portal")){
+            if (par1Str.endsWith("portal") || par1Str.endsWith("stare")){
                 return "nothing";
             }
         }
