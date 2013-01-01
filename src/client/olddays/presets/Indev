@@ -42,5 +42,6 @@ NBXlite.SunriseAtNorth=2
 NBXlite.OldStars=0
 NBXlite.ShowGUI=false
 NBXlite.DefaultGenerator=1
+Textures.Wool=0
 Textures.Steve=true
 Bugs.InvWalking=true
