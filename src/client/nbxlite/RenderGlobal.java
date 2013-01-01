@@ -335,8 +335,8 @@ public class RenderGlobal implements IWorldAccess
         }
 
         if (nbxlite){
-            renderChunksWide = (ODNBXlite.isFinite() && mc.gameSettings.renderDistance >= 2 ? ODNBXlite.IndevWidthX - 16 : j) / 16 + 1;
-            renderChunksDeep = (ODNBXlite.isFinite() && mc.gameSettings.renderDistance >= 2 ? ODNBXlite.IndevWidthZ - 16 : j) / 16 + 1;
+            renderChunksWide = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthX - 16 : j) / 16 + 1;
+            renderChunksDeep = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthZ - 16 : j) / 16 + 1;
         }else{
             renderChunksWide = j / 16 + 1;
             renderChunksDeep = j / 16 + 1;
@@ -487,7 +487,7 @@ public class RenderGlobal implements IWorldAccess
      */
     private void markRenderersForNewPosition(int par1, int par2, int par3)
     {
-        if (nbxlite && mc.gameSettings.renderDistance >= 2 && ODNBXlite.isFinite()){
+        if (nbxlite && ODNBXlite.isFinite()){
             return;
         }
         par1 -= 8;
