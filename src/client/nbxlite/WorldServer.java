@@ -758,41 +758,96 @@ public class WorldServer extends World
             return;
         }
 
-        findingSpawnPoint = true;
-        WorldChunkManager worldchunkmanager = provider.worldChunkMgr;
-        List list = worldchunkmanager.getBiomesToSpawnIn();
-        Random random = new Random(getSeed());
-        ChunkPosition chunkposition = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
-        int i = 0;
-        int j = provider.getAverageGroundLevel();
-        int k = 0;
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
+            if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_11){
+                findingSpawnPoint = true;
+                WorldChunkManager worldchunkmanager = getWorldChunkManager();
+                List list = worldchunkmanager.getBiomesToSpawnIn();
+                Random random = new Random(getSeed());
+                ChunkPosition chunkposition = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
+                int i = 0;
+                int j = 64;
+                int k = 0;
+                if(chunkposition != null)
+                {
+                    i = chunkposition.x;
+                    k = chunkposition.z;
+                } else
+                {
+                    System.out.println("Unable to find spawn biome");
+                }
+                int l = 0;
+                do
+                {
+                    if(provider.canCoordinateBeSpawn(i, k))
+                    {
+                        break;
+                    }
+                    i += random.nextInt(64) - random.nextInt(64);
+                    k += random.nextInt(64) - random.nextInt(64);
+                } while(++l != 1000);
+                worldInfo.setSpawnPosition(i, j, k);
+                findingSpawnPoint = false;
+            }else{
+                findingSpawnPoint = true;
+                WorldChunkManager worldchunkmanager = provider.worldChunkMgr;
+                List list = worldchunkmanager.getBiomesToSpawnIn();
+                Random random = new Random(getSeed());
+                ChunkPosition chunkposition = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
+                int i = 0;
+                int j = provider.getAverageGroundLevel();
+                int k = 0;
 
-        if (chunkposition != null)
-        {
-            i = chunkposition.x;
-            k = chunkposition.z;
-        }
-        else
-        {
-            System.out.println("Unable to find spawn biome");
-        }
+                if (chunkposition != null)
+                {
+                    i = chunkposition.x;
+                    k = chunkposition.z;
+                }
+                else
+                {
+                    System.out.println("Unable to find spawn biome");
+                }
 
-        int l = 0;
+                int l = 0;
 
-        do
-        {
-            if (provider.canCoordinateBeSpawn(i, k))
-            {
-                break;
+                do
+                {
+                    if (provider.canCoordinateBeSpawn(i, k))
+                    {
+                        break;
+                    }
+
+                    i += random.nextInt(64) - random.nextInt(64);
+                    k += random.nextInt(64) - random.nextInt(64);
+                }
+                while (++l != 1000);
+
+                worldInfo.setSpawnPosition(i, j, k);
+                findingSpawnPoint = false;
             }
-
-            i += random.nextInt(64) - random.nextInt(64);
-            k += random.nextInt(64) - random.nextInt(64);
+        }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
+            findingSpawnPoint = true;
+            worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
+            if (!ODNBXlite.Import && ODNBXlite.IndevSpawnY < ODNBXlite.IndevHeight){
+                setBlockWithNotify(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+                setBlockWithNotify(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+            }
+            findingSpawnPoint = false;
+        }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
+            findingSpawnPoint = true;
+            worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
+            findingSpawnPoint = false;
+        }else{
+            findingSpawnPoint = true;
+            int i = 0;
+            byte byte0 = 64;
+            int j;
+            for(j = 0; !provider.canCoordinateBeSpawn(i, j); j += rand.nextInt(64) - rand.nextInt(64)){
+                i += rand.nextInt(64) - rand.nextInt(64);
+            }
+            worldInfo.setSpawnPosition(i, byte0, j);
+            findingSpawnPoint = false;
         }
-        while (++l != 1000);
-
-        worldInfo.setSpawnPosition(i, j, k);
-        findingSpawnPoint = false;
 
         if (par1WorldSettings.isBonusChestEnabled())
         {
