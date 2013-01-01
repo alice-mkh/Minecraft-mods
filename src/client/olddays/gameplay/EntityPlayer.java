@@ -2123,6 +2123,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public void setItemInUse(ItemStack par1ItemStack, int par2)
     {
+        if (par1ItemStack.getItemUseAction() == EnumAction.block && combat < 2){
+            return;
+        }
         if (par1ItemStack == itemInUse)
         {
             return;
