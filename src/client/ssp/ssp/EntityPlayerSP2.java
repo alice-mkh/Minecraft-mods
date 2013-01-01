@@ -775,4 +775,11 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         posY += 1.6200000047683716D;
         setPosition(posX, posY, posZ);
     }
+
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        posY -= 1.6200000047683716D;
+        super.writeToNBT(par1NBTTagCompound);
+        posY += 1.6200000047683716D;
+    }
 }
