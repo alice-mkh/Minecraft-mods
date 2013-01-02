@@ -90,25 +90,9 @@ public class WorldSSP2 extends WorldSSP
     public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p)
     {
         super(par1ISaveHandler, par2Str, par3WorldSettings, par4WorldProvider, p);
-        worldInfo = par1ISaveHandler.loadWorldInfo();
-        isNewWorld = worldInfo == null;
-
-        boolean flag = false;
-
-        if (worldInfo == null)
-        {
-            worldInfo = new WorldInfo(par3WorldSettings, par2Str);
-            flag = true;
-        }
-        else
-        {
-            worldInfo.setWorldName(par2Str);
-        }
-
         provider.registerWorld(this);
-        chunkProvider = createChunkProvider();
 
-        if (flag)
+        if (isNewWorld)
         {
             generateSpawnPoint();
             if (par3WorldSettings.isBonusChestEnabled()){

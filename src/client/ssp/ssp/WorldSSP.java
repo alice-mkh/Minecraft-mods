@@ -107,25 +107,11 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         collidingBoundingBoxes = new ArrayList();
         ambientTickCountdown = rand.nextInt(12000);
         entitiesWithinAABBExcludingEntity = new ArrayList();
-        worldInfo = par1ISaveHandler.loadWorldInfo();
-        isNewWorld = worldInfo == null;
-
-        boolean flag = false;
-
-        if (worldInfo == null)
-        {
-            worldInfo = new WorldInfo(par3WorldSettings, par2Str);
-            flag = true;
-        }
-        else
-        {
-            worldInfo.setWorldName(par2Str);
-        }
+        isNewWorld = par1ISaveHandler.loadWorldInfo() == null;
 
         provider.registerWorld(this);
-        chunkProvider = createChunkProvider();
 
-        if (flag)
+        if (isNewWorld)
         {
             if (this.getClass() == net.minecraft.src.WorldSSP.class){
                 generateSpawnPoint(par3WorldSettings);
@@ -1696,18 +1682,19 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Creates an explosion. Args: entity, x, y, z, strength
      */
-    public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8)
+    public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
     {
-        return newExplosion(par1Entity, par2, par4, par6, par8, false);
+        return newExplosion(par1Entity, par2, par4, par6, par8, false, par9);
     }
 
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
+    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
         explosion.isFlaming = par9;
+        explosion.isSmoking = par10;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
         return explosion;

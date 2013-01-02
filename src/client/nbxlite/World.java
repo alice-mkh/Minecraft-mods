@@ -351,17 +351,13 @@ public abstract class World implements IBlockAccess
                                     if (Block.lightValue[id]>0 && !ODNBXlite.oldLightEngine){
                                         updateAllLightTypes(x, y, z);
                                     }
-                                    if (id > 0 && Block.blocksList[id].hasTileEntity()){
-                                        for (int i=0; i < tentlist.size(); i++){
-                                            TileEntity tent = ((TileEntity)tentlist.get(i));
-                                            if (tent.xCoord == x && tent.yCoord == y && tent.zCoord == z){
-                                                setBlockTileEntity(x, y, z, tent);
-                                                tentlist.remove(i);
-                                            }
-                                        }
-                                    }
                                 }
                             }
+                        }
+                        for (int i = 0; i < tentlist.size(); i++){
+                            TileEntity tent = ((TileEntity)tentlist.get(i));
+                            getChunkFromBlockCoords(tent.xCoord, tent.zCoord).addTileEntity(tent);
+                            tentlist.remove(i--);
                         }
                         if (mod_OldDays.getMinecraft().enableSP){
                             mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Loading entities..");
