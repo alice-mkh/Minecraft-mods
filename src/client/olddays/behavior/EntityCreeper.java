@@ -4,11 +4,6 @@ import java.util.Random;
 
 public class EntityCreeper extends EntityMob
 {
-    public static boolean fixai = false;
-    public static boolean survivaltest = false;
-    public static boolean dark = false;
-    public static boolean oldrange = false;
-
     /**
      * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
      * weird)
@@ -23,6 +18,11 @@ public class EntityCreeper extends EntityMob
 
     /** Explosion radius for this creeper. */
     private int explosionRadius;
+
+    public static boolean fixai = false;
+    public static boolean survivaltest = false;
+    public static boolean dark = false;
+    public static boolean oldrange = false;
 
     public EntityCreeper(World par1World)
     {
