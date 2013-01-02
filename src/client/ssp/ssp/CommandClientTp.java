@@ -17,14 +17,14 @@ public class CommandClientTp extends CommandServerTp
             if (minecraft.theWorld != null)
             {
                 int i = par2ArrayOfStr.length - 3;
-                int j = 0x1c9c380;
-                int k = parseIntBounded(par1ICommandSender, par2ArrayOfStr[i++], -j, j);
-                int l = parseIntBounded(par1ICommandSender, par2ArrayOfStr[i++], 0, 256);
-                int i1 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[i++], -j, j);
-                ((EntityPlayerSP)par1ICommandSender).setPositionAndUpdate((float)k + 0.5F, l, (float)i1 + 0.5F);
-                notifyAdmins(par1ICommandSender, "commands.tp.coordinates", new Object[]
+                EntityPlayerSP entityplayersp = ((EntityPlayerSP)par1ICommandSender);
+                double d = func_82368_a(par1ICommandSender, entityplayersp.posX, par2ArrayOfStr[i++]);
+                double d1 = func_82367_a(par1ICommandSender, entityplayersp.posY, par2ArrayOfStr[i++], 0, 0);
+                double d2 = func_82368_a(par1ICommandSender, entityplayersp.posZ, par2ArrayOfStr[i++]);
+                entityplayersp.setPositionAndUpdate(d, d1, d2);
+                notifyAdmins(par1ICommandSender, "commands.tp.success.coordinates", new Object[]
                         {
-                            ((EntityPlayerSP)par1ICommandSender).username, Integer.valueOf(k), Integer.valueOf(l), Integer.valueOf(i1)
+                            entityplayersp.username, Double.valueOf(d), Double.valueOf(d1), Double.valueOf(d2)
                         });
             }
 
@@ -54,5 +54,54 @@ public class CommandClientTp extends CommandServerTp
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
+    }
+
+    private double func_82368_a(ICommandSender par1ICommandSender, double par2, String par4Str)
+    {
+        return func_82367_a(par1ICommandSender, par2, par4Str, 0xfe363c80, 0x1c9c380);
+    }
+
+    private double func_82367_a(ICommandSender par1ICommandSender, double par2, String par4Str, int par5, int par6)
+    {
+        boolean flag = par4Str.startsWith("~");
+        double d = flag ? par2 : 0.0D;
+
+        if (!flag || par4Str.length() > 1)
+        {
+            boolean flag1 = par4Str.contains(".");
+
+            if (flag)
+            {
+                par4Str = par4Str.substring(1);
+            }
+
+            d += func_82363_b(par1ICommandSender, par4Str);
+
+            if (!flag1 && !flag)
+            {
+                d += 0.5D;
+            }
+        }
+
+        if (par5 != 0 || par6 != 0)
+        {
+            if (d < (double)par5)
+            {
+                throw new NumberInvalidException("commands.generic.double.tooSmall", new Object[]
+                        {
+                            Double.valueOf(d), Integer.valueOf(par5)
+                        });
+            }
+
+            if (d > (double)par6)
+            {
+                throw new NumberInvalidException("commands.generic.double.tooBig", new Object[]
+                        {
+                            Double.valueOf(d), Integer.valueOf(par6)
+                        });
+            }
+        }
+
+        return d;
     }
 }
