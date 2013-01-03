@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
+import net.minecraft.src.nbxlite.noise.BetaNoiseGeneratorOctaves;
 
 public class ChunkProviderHell implements IChunkProvider
 {
@@ -22,6 +23,14 @@ public class ChunkProviderHell implements IChunkProvider
     private NoiseGeneratorOctaves netherrackExculsivityNoiseGen;
     public NoiseGeneratorOctaves netherNoiseGen6;
     public NoiseGeneratorOctaves netherNoiseGen7;
+
+    private BetaNoiseGeneratorOctaves field_4169_i;
+    private BetaNoiseGeneratorOctaves field_4168_j;
+    private BetaNoiseGeneratorOctaves field_4167_k;
+    private BetaNoiseGeneratorOctaves field_4166_l;
+    private BetaNoiseGeneratorOctaves field_4165_m;
+    public BetaNoiseGeneratorOctaves field_4177_a;
+    public BetaNoiseGeneratorOctaves field_4176_b;
 
     /** Is the world that the nether is getting generated. */
     private World worldObj;
@@ -54,6 +63,15 @@ public class ChunkProviderHell implements IChunkProvider
         netherrackExculsivityNoiseGen = new NoiseGeneratorOctaves(hellRNG, 4);
         netherNoiseGen6 = new NoiseGeneratorOctaves(hellRNG, 10);
         netherNoiseGen7 = new NoiseGeneratorOctaves(hellRNG, 16);
+
+        field_4169_i = new BetaNoiseGeneratorOctaves(hellRNG, 16);
+        field_4168_j = new BetaNoiseGeneratorOctaves(hellRNG, 16);
+        field_4167_k = new BetaNoiseGeneratorOctaves(hellRNG, 8);
+        field_4166_l = new BetaNoiseGeneratorOctaves(hellRNG, 4);
+        field_4165_m = new BetaNoiseGeneratorOctaves(hellRNG, 4);
+        field_4177_a = new BetaNoiseGeneratorOctaves(hellRNG, 10);
+        field_4176_b = new BetaNoiseGeneratorOctaves(hellRNG, 16);
+
         generateStructures = par1World.getWorldInfo().isMapFeaturesEnabled() || (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181);
     }
 
@@ -67,7 +85,11 @@ public class ChunkProviderHell implements IChunkProvider
         int i = byte0 + 1;
         byte byte2 = 17;
         int j = byte0 + 1;
-        noiseField = initializeNoiseField(noiseField, par1 * byte0, 0, par2 * byte0, i, byte2, j);
+        if (ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES){
+            noiseField = func_4057_a(noiseField, par1 * byte0, 0, par2 * byte0, i, byte2, j);
+        }else{
+            noiseField = initializeNoiseField(noiseField, par1 * byte0, 0, par2 * byte0, i, byte2, j);
+        }
 
         for (int k = 0; k < byte0; k++)
         {
@@ -274,6 +296,122 @@ public class ChunkProviderHell implements IChunkProvider
 
         chunk.resetRelightChecks();
         return chunk;
+    }
+
+    private double[] func_4057_a(double ad[], int i, int j, int k, int l, int i1, int j1)
+    {
+        if(ad == null)
+        {
+            ad = new double[l * i1 * j1];
+        }
+        double d = 684.41200000000003D;
+        double d1 = 2053.2359999999999D;
+        noiseData4 = field_4177_a.generateNoiseOctaves(noiseData4, i, j, k, l, 1, j1, 1.0D, 0.0D, 1.0D);
+        noiseData5 = field_4176_b.generateNoiseOctaves(noiseData5, i, j, k, l, 1, j1, 100D, 0.0D, 100D);
+        noiseData1 = field_4167_k.generateNoiseOctaves(noiseData1, i, j, k, l, i1, j1, d / 80D, d1 / 60D, d / 80D);
+        noiseData2 = field_4169_i.generateNoiseOctaves(noiseData2, i, j, k, l, i1, j1, d, d1, d);
+        noiseData3 = field_4168_j.generateNoiseOctaves(noiseData3, i, j, k, l, i1, j1, d, d1, d);
+        int k1 = 0;
+        int l1 = 0;
+        double ad1[] = new double[i1];
+        for(int i2 = 0; i2 < i1; i2++)
+        {
+            ad1[i2] = Math.cos(((double)i2 * 3.1415926535897931D * 6D) / (double)i1) * 2D;
+            double d2 = i2;
+            if(i2 > i1 / 2)
+            {
+                d2 = i1 - 1 - i2;
+            }
+            if(d2 < 4D)
+            {
+                d2 = 4D - d2;
+                ad1[i2] -= d2 * d2 * d2 * 10D;
+            }
+        }
+
+        for(int j2 = 0; j2 < l; j2++)
+        {
+            for(int k2 = 0; k2 < j1; k2++)
+            {
+                double d3 = (noiseData4[l1] + 256D) / 512D;
+                if(d3 > 1.0D)
+                {
+                    d3 = 1.0D;
+                }
+                double d4 = 0.0D;
+                double d5 = noiseData5[l1] / 8000D;
+                if(d5 < 0.0D)
+                {
+                    d5 = -d5;
+                }
+                d5 = d5 * 3D - 3D;
+                if(d5 < 0.0D)
+                {
+                    d5 /= 2D;
+                    if(d5 < -1D)
+                    {
+                        d5 = -1D;
+                    }
+                    d5 /= 1.3999999999999999D;
+                    d5 /= 2D;
+                    d3 = 0.0D;
+                } else
+                {
+                    if(d5 > 1.0D)
+                    {
+                        d5 = 1.0D;
+                    }
+                    d5 /= 6D;
+                }
+                d3 += 0.5D;
+                d5 = (d5 * (double)i1) / 16D;
+                l1++;
+                for(int l2 = 0; l2 < i1; l2++)
+                {
+                    double d6 = 0.0D;
+                    double d7 = ad1[l2];
+                    double d8 = noiseData2[k1] / 512D;
+                    double d9 = noiseData3[k1] / 512D;
+                    double d10 = (noiseData1[k1] / 10D + 1.0D) / 2D;
+                    if(d10 < 0.0D)
+                    {
+                        d6 = d8;
+                    } else
+                    if(d10 > 1.0D)
+                    {
+                        d6 = d9;
+                    } else
+                    {
+                        d6 = d8 + (d9 - d8) * d10;
+                    }
+                    d6 -= d7;
+                    if(l2 > i1 - 4)
+                    {
+                        double d11 = (float)(l2 - (i1 - 4)) / 3F;
+                        d6 = d6 * (1.0D - d11) + -10D * d11;
+                    }
+                    if((double)l2 < d4)
+                    {
+                        double d12 = (d4 - (double)l2) / 4D;
+                        if(d12 < 0.0D)
+                        {
+                            d12 = 0.0D;
+                        }
+                        if(d12 > 1.0D)
+                        {
+                            d12 = 1.0D;
+                        }
+                        d6 = d6 * (1.0D - d12) + -10D * d12;
+                    }
+                    ad[k1] = d6;
+                    k1++;
+                }
+
+            }
+
+        }
+
+        return ad;
     }
 
     /**
