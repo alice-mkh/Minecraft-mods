@@ -3528,4 +3528,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
         sndManager.loadSoundSettings(gameSettings);
     }
+
+    public void addCommandsSP(ClientCommandManager manager){
+        for (Mod mod : mods){
+            mod.addSPCommands(manager);
+        }
+    }
 }

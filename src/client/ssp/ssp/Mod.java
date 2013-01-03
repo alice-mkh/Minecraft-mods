@@ -111,4 +111,6 @@ public abstract class Mod{
         usesTick = game;
         usesGUITick = gui;
     }
+
+    public void addSPCommands(ClientCommandManager manager){}
 }

@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+
 public class ClientCommandManager extends CommandHandler implements IAdminCommand
 {
     public ClientCommandManager()
@@ -23,6 +25,7 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientSetSpawnpoint());
         registerCommand(new CommandClientGameRule());
         registerCommand(new CommandClientClear());
+        Minecraft.getMinecraft().addCommandsSP(this);
         CommandBase.setAdminCommander(this);
     }
 
