@@ -388,7 +388,6 @@ public class mod_OldDays extends Mod{
                     String as[] = str.split(":");
                     if (as[0].equals((new StringBuilder()).append("key_").append(key.keyDescription).toString())){
                         key.keyCode = Integer.parseInt(as[1]);
-                        System.out.println(as[0]+" "+as[1]);
                     }
                 }catch (Exception exception1){
                     System.out.println((new StringBuilder()).append("Skipping bad option: ").append(s).toString());
