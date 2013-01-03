@@ -144,7 +144,15 @@ public class PlayerController extends PlayerControllerMP
 
     public EntityClientPlayerMP func_78754_a(World par1World)
     {
-        return new EntityPlayerSP2(mc, par1World, mc.session, par1World.provider.dimensionId);
+        try{
+            Object o = mc.playerClass.getDeclaredConstructor(new Class[]{Minecraft.class, World.class, Session.class, Integer.TYPE}).
+                       newInstance(new Object[]{mc, par1World, mc.session, par1World.provider.dimensionId});
+            return (EntityPlayerSP2)o;
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+//         return new EntityPlayerSP2(mc, par1World, mc.session, par1World.provider.dimensionId);
     }
 
     /**

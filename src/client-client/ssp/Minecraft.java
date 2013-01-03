@@ -311,6 +311,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public ArrayList<Mod> mods;
     private HashMap<String, Integer> compat; //0 - disabled; 1 - normal; 2 - mcp
     public Class worldClass;
+    public Class playerClass;
     public Class soundClass;
     public int ticksRan;
     public int mouseTicksRan;
@@ -375,6 +376,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         mods = new ArrayList<Mod>();
         compat = new HashMap<String, Integer>();
         worldClass = net.minecraft.src.WorldSSP.class;
+        playerClass = net.minecraft.src.EntityPlayerSP.class;
         ticksRan = 0;
         mouseTicksRan = 0;
         forcedDifficulty = -1;
