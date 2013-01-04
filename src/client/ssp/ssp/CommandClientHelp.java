@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
@@ -8,7 +9,9 @@ public class CommandClientHelp extends CommandHelp
 {
     protected List getSortedPossibleCommands(ICommandSender par1ICommandSender)
     {
-        return Minecraft.getMinecraft().getIntegratedServer().getCommandManager().getPossibleCommands(par1ICommandSender);
+        List list = Minecraft.getMinecraft().getIntegratedServer().getCommandManager().getPossibleCommands(par1ICommandSender);
+        Collections.sort(list);
+        return list;
     }
 
     protected Map getCommands()
