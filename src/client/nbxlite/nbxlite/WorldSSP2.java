@@ -355,10 +355,14 @@ public class WorldSSP2 extends WorldSSP
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-                    animalSpawner.func_1150_a(this);
-                    monsterSpawner.func_1150_a(this);
-                    waterMobSpawner.func_1150_a(this);
-                    ambientMobSpawner.func_1150_a(this);
+                    if (spawnPeacefulMobs){
+                        animalSpawner.func_1150_a(this);
+                        waterMobSpawner.func_1150_a(this);
+                        ambientMobSpawner.func_1150_a(this);
+                    }
+                    if (spawnHostileMobs){
+                        monsterSpawner.func_1150_a(this);
+                    }
                 }
             }else{
                 SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
