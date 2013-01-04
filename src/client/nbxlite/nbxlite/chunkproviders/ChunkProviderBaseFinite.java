@@ -73,6 +73,7 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
                 worldObj.scheduleLightingUpdate(EnumSkyBlock.Sky, i * 16, 0, j * 16, (i + 1) * 16, ODNBXlite.IndevHeight, (j + 1) * 16);
             }
             worldObj.scheduleLightingUpdate(EnumSkyBlock.Block, i * 16, 0, j * 16, (i + 1) * 16, ODNBXlite.IndevHeight, (j + 1) * 16);
+            while (worldObj.updatingLighting()){}
         }else{
             for (int x = i * 16; x < (i + 1) * 16; x++){
                 for (int y = 0; y < ODNBXlite.IndevHeight; y++){
