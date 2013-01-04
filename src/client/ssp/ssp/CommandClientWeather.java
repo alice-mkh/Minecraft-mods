@@ -70,4 +70,9 @@ public class CommandClientWeather extends CommandWeather
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
     }
+
+    public String getCommandUsage(ICommandSender par1ICommandSender)
+    {
+        return par1ICommandSender.translateString("commands.weather.usage", new Object[0]);
+    }
 }
