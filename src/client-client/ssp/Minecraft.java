@@ -322,6 +322,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public static boolean oldlighting = false;
     public static boolean indevShapeSize = false;
     public int forcedDifficulty;
+    public boolean overrideMobSpawning;
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {
@@ -376,13 +377,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         mods = new ArrayList<Mod>();
         compat = new HashMap<String, Integer>();
         worldClass = net.minecraft.src.WorldSSP.class;
-        playerClass = net.minecraft.src.EntityPlayerSP.class;
+        playerClass = net.minecraft.src.EntityPlayerSP2.class;
         ticksRan = 0;
         mouseTicksRan = 0;
         forcedDifficulty = -1;
         registerCustomPacket();
         startProfiling = false;
         profilingEnabled = false;
+        overrideMobSpawning = false;
         checkCompatibility("ModLoader");
     }
 
@@ -2021,7 +2023,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (!isGamePaused)
             {
-                theWorld.setAllowedSpawnTypes(theWorld.difficultySetting > 0, true);
+                if (!overrideMobSpawning){
+                    theWorld.setAllowedSpawnTypes(theWorld.difficultySetting > 0, true);
+                }
 
                 try
                 {
