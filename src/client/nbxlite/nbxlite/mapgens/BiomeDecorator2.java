@@ -12,11 +12,6 @@ public class BiomeDecorator2 extends BiomeDecorator
     {
         super(par1BiomeGenBase);
         plantYellowGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
-        if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
-            plantRedGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
-        }else{
-            plantRedGen = new OldWorldGenFlowers(Block.plantRed.blockID);
-        }
         mushroomBrownGen = new OldWorldGenFlowers(Block.mushroomBrown.blockID);
         mushroomRedGen = new OldWorldGenFlowers(Block.mushroomRed.blockID);
     }
@@ -26,6 +21,11 @@ public class BiomeDecorator2 extends BiomeDecorator
      */
     protected void decorate()
     {
+        if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
+            plantRedGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
+        }else{
+            plantRedGen = new OldWorldGenFlowers(Block.plantRed.blockID);
+        }
         generateOres();
 
         for (int i = 0; i < sandPerChunk2; i++)

@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.mapgens.BiomeDecorator2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenHills2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenDesertOld;
+import net.minecraft.src.nbxlite.mapgens.BiomeGenJungleOld;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 
@@ -49,8 +50,8 @@ public abstract class BiomeGenBase
     public static final BiomeGenBase extremeHillsEdge = (new BiomeGenHills2(20)).setColor(0x72789a).setBiomeName("Extreme Hills Edge").setMinMaxHeight(0.2F, 0.8F).setTemperatureRainfall(0.2F, 0.3F);
 
     /** Jungle biome identifier */
-    public static final BiomeGenBase jungle = (new BiomeGenJungle(21)).setColor(0x537b09).setBiomeName("Jungle").func_76733_a(0x537b09).setTemperatureRainfall(1.2F, 0.9F).setMinMaxHeight(0.2F, 0.4F);
-    public static final BiomeGenBase jungleHills = (new BiomeGenJungle(22)).setColor(0x2c4205).setBiomeName("JungleHills").func_76733_a(0x537b09).setTemperatureRainfall(1.2F, 0.9F).setMinMaxHeight(1.8F, 0.5F);
+    public static final BiomeGenBase jungle = (new BiomeGenJungleOld(21)).setColor(0x537b09).setBiomeName("Jungle").func_76733_a(0x537b09).setTemperatureRainfall(1.2F, 0.9F).setMinMaxHeight(0.2F, 0.4F);
+    public static final BiomeGenBase jungleHills = (new BiomeGenJungleOld(22)).setColor(0x2c4205).setBiomeName("JungleHills").func_76733_a(0x537b09).setTemperatureRainfall(1.2F, 0.9F).setMinMaxHeight(1.8F, 0.5F);
     public String biomeName;
     public int color;
 
