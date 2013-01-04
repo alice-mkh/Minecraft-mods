@@ -351,7 +351,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int getSkyLightInBounds2(int par2){
         int sky = 15 - (Minecraft.getMinecraft().theWorld == null ? 0 : Minecraft.getMinecraft().theWorld.skylightSubtracted);
         if (par2<SurrWaterHeight){
-            if (Block.blocksList[SurrWaterType].blockMaterial!=Material.lava){
+            if (Block.blocksList[SurrWaterType] != null && Block.blocksList[SurrWaterType].blockMaterial!=Material.lava){
                 sky-=3*(SurrWaterHeight-par2);
             }else{
                 sky = 0;
