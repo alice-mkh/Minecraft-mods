@@ -31,7 +31,8 @@ sh reobfuscate.sh
 cd $ORIG_DIR
 MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-days-eyecandy old-days-sounds old-days-crafting
            old-days-textures old-days-nbxlite old-days old-days-allin1
-           spawn-human ssp"
+           spawn-human spc ssp"
+UNUSED[0]="spc_tester spc_WorldEditGUI spc_aprilfools1 spc_AprilFools2012"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` `find EntityBoat`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions `find BlockLeaves`"
 CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` `find EntityLiving`
@@ -58,7 +59,7 @@ ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon
 CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2`
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem`
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
-       `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper`
+       `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper` `find ItemEnchantedBook`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 `find BlockGrass`
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityEnderChestRenderer`
        `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped`"
@@ -72,7 +73,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves`
         `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find Explosion` `find TileEntityEnderChestRenderer`
-        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay
+        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay `find ItemEnchantedBook`
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot`
         `find EntitySquid` `find EntitySlime` ODMobs `find ComponentVillageField` `find ComponentVillageField2`
@@ -94,7 +95,11 @@ CP[11]="`find EntityLiving`"
 ADD[11]="${ADD[1]} ${ADD[2]} ${ADD[3]} ${ADD[4]} ${ADD[5]} ${ADD[6]} ${ADD[7]} ${ADD[8]} ${ADD[9]} ${ADD[10]}"
 MV[12]="EntityHuman ModelHuman RenderHuman mod_SpawnHuman"
 ADD[12]="./char.png"
-MV[13]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
+MV[13]="CommandClientSPC EntityPlayerSPSPC PlayerHelper PlayerHelper\$1 SPCCheckVersion SPCCommand SPCEntity SPCEntityCamera SPCEntityInterface
+        SPCLocalConfiguration SPCLocalPlayer SPCLocalWorld SPCObjectHit SPCPlugin SPCPluginManager SPCPoint SPCServerInterface SPCVersion
+        SPCVersionInterface SPCWorld SPCWorldInterface Settings WorldEditPlugin mod_SPC spc_WorldEdit spc_paint spc_path"
+ADD[13]="./WorldEdit.jar"
+MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
         `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` net/ other"
 
 cd $ORIG_DIR_SERVER
@@ -102,6 +107,12 @@ cd $ORIG_DIR_SERVER
 rm -rf $RESULT_DIR
 rm -rf $RESULT_DIR_2
 echo "CLIENT:"
+mkdir -p $RESULT_DIR/client/unused
+echo " UNUSED:"
+for f in $UNUSED; do
+    echo "  MV CLASS: $f1.class"
+    mv $ORIG_DIR/$f.class "$RESULT_DIR/client/unused/$f.class"
+done
 count=1;
 for f in $MODS_LIST; do
     mkdir -p $RESULT_DIR/client/$f
@@ -185,5 +196,7 @@ for F in *; do
     cd ..
 done
 echo "Packaging source code..."
+cd $DIR/../src-mods/src/client/spc
+zip $RESULT_DIR_2/client/spc-src.zip * -r > /dev/null
 cd $DIR/../src-mods/src
-zip $RESULT_DIR_2/client/src.zip * -r > /dev/null
+zip $RESULT_DIR_2/client/src.zip client/nbxlite client/olddays client/spawnhuman client/ssp client-* server -r > /dev/null
