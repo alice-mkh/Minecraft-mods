@@ -9,6 +9,7 @@ import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenClay;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenLakes;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenMinable;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
@@ -320,7 +321,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int i1 = k + rand.nextInt(16) + 8;
             int l4 = rand.nextInt(128);
             int i8 = l + rand.nextInt(16) + 8;
-            (new WorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, i1, l4, i8);
+            (new OldWorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, i1, l4, i8);
         }
         if(rand.nextInt(8) == 0)
         {
@@ -329,7 +330,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int j8 = l + rand.nextInt(16) + 8;
             if(i5 < 64 || rand.nextInt(10) == 0)
             {
-                (new WorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, j1, i5, j8);
+                (new OldWorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, j1, i5, j8);
             }
         }
         for(int k1 = 0; k1 < 8; k1++)
