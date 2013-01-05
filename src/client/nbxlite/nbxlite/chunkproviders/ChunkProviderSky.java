@@ -8,6 +8,7 @@ import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenClay;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenDungeons;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenLakes;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenMinable;
@@ -338,7 +339,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int j5 = k + rand.nextInt(16) + 8;
             int k8 = rand.nextInt(128);
             int i13 = l + rand.nextInt(16) + 8;
-            (new WorldGenDungeons()).generate(worldObj, rand, j5, k8, i13);
+            (new OldWorldGenDungeons()).generate(worldObj, rand, j5, k8, i13);
         }
 
         for(int i2 = 0; i2 < 10; i2++)

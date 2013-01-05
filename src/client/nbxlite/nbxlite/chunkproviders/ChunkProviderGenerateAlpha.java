@@ -8,6 +8,7 @@ import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenClay;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenDungeons;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenReed;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
@@ -405,7 +406,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             int i4 = k + rand.nextInt(16) + 8;
             int k6 = rand.nextInt(128);
             int l8 = l + rand.nextInt(16) + 8;
-            (new WorldGenDungeons()).generate(worldObj, rand, i4, k6, l8);
+            (new OldWorldGenDungeons()).generate(worldObj, rand, i4, k6, l8);
         }
 
         for(int j1 = 0; j1 < 10; j1++)

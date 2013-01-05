@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.MapGenScatteredFeature3;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenDungeons;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenLakes;
 
 public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
@@ -428,7 +429,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             int i3 = k + rand.nextInt(16) + 8;
             int i4 = rand.nextInt(128);
             int k4 = l + rand.nextInt(16) + 8;
-            if (!(new WorldGenDungeons()).generate(worldObj, rand, i3, i4, k4));
+            if (!(new OldWorldGenDungeons()).generate(worldObj, rand, i3, i4, k4));
         }
         biomegenbase.decorate(worldObj, rand, k, l);
         spawnAnimals(k, l);

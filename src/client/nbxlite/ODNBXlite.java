@@ -815,6 +815,10 @@ public class ODNBXlite extends OldDaysModule{
         return Generator!=GEN_NEWBIOMES || MapFeatures>FEATURES_BETA181;
     }
 
+    public static boolean disableEnchantedBooks(){
+        return Generator<GEN_NEWBIOMES || MapFeatures<FEATURES_14;
+    }
+
     public static boolean desertVillages(){
         return (Generator==GEN_NEWBIOMES && MapFeatures>=FEATURES_13) || Generator==GEN_OLDBIOMES;
     }

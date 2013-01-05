@@ -256,12 +256,18 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
 
             if (par2Random.nextInt(100) == 0)
             {
-                generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 2, 0, i1 - 1, StructureMineshaftPieces.func_78816_a(), 3 + par2Random.nextInt(4));
+                generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 2, 0, i1 - 1, WeightedRandomChestContent.func_92080_a(StructureMineshaftPieces.func_78816_a(), new WeightedRandomChestContent[]
+                        {
+                            Item.field_92105_bW.func_92114_b(par2Random)
+                        }), 3 + par2Random.nextInt(4));
             }
 
             if (par2Random.nextInt(100) == 0)
             {
-                generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 0, 0, i1 + 1, StructureMineshaftPieces.func_78816_a(), 3 + par2Random.nextInt(4));
+                generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 0, 0, i1 + 1, WeightedRandomChestContent.func_92080_a(StructureMineshaftPieces.func_78816_a(), new WeightedRandomChestContent[]
+                        {
+                            Item.field_92105_bW.func_92114_b(par2Random)
+                        }), 3 + par2Random.nextInt(4));
             }
 
             if (!hasSpiders || spawnerPlaced)
