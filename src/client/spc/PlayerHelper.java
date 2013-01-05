@@ -6617,12 +6617,20 @@ public class PlayerHelper {
     */
    public void toggleLight(boolean light) {
       WorldProvider temp = ep.worldObj.provider;
+      EntityRenderer er = mc.entityRenderer;
       if (light) {
          for (int i = 0; i < temp.lightBrightnessTable.length; i++) {
             temp.lightBrightnessTable[i] = 1.0F;
          }
+         for (int i = 0; i < er.lightTable.length; i++) {
+            er.lightTable[i] = 1.0F;
+         }
       } else {
          temp.generateLightBrightnessTable();
+         er.calculateLightTable();
+      }
+      if (mc.oldlighting){
+         mc.renderGlobal.updateAllRenderers(true);
       }
       try {
          //mc.renderGlobal.updateAllRenderers();

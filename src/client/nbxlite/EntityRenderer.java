@@ -24,7 +24,7 @@ public class EntityRenderer
     public static boolean oldNetherFog = false;
     public static boolean oldSnow = false;
 
-    private float[] lightTable;
+    public float[] lightTable;
 
     public static boolean anaglyphEnable = false;
 
@@ -786,7 +786,7 @@ public class EntityRenderer
         lightmapUpdateNeeded = true;
     }
 
-    private void calculateLightTable(){
+    public void calculateLightTable(){
         lightTable = new float[16];
         float f = 0.05F;
         for (int i = 0; i <= 15; i++)
