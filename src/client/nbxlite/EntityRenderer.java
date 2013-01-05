@@ -23,6 +23,7 @@ public class EntityRenderer
     public static boolean bounds = false;
     public static boolean oldNetherFog = false;
     public static boolean oldSnow = false;
+    public static boolean fixClouds = true;
 
     public float[] lightTable;
 
@@ -1250,7 +1251,7 @@ public class EntityRenderer
                 while (l >= 0L && l <= 0x3b9aca00L);
             }
 
-            if (entityliving.posY < 128D)
+            if (entityliving.posY < 128D && !fixClouds)
             {
                 func_82829_a(renderglobal, par1);
             }
@@ -1371,7 +1372,7 @@ public class EntityRenderer
             renderRainSnow(par1);
             GL11.glDisable(GL11.GL_FOG);
 
-            if (entityliving.posY >= 128D)
+            if (entityliving.posY >= 128D || fixClouds)
             {
                 func_82829_a(renderglobal, par1);
             }
