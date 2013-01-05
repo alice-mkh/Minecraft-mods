@@ -621,7 +621,7 @@ public class PlayerHelper {
       if (ismultiplayer) {
          return;
       }
-      toggleLight(light);
+      toggleLight(light, false);
       setItemMaxDamage();
 
       if (keepitems && INV_BEFORE_DEATH != null) {
@@ -3045,7 +3045,7 @@ public class PlayerHelper {
           */
       } else if (split[0].equalsIgnoreCase("light")) {
          light = !light;
-         toggleLight(light);
+         toggleLight(light, true);
 
          sendMessage("Light now turned " + (light ? "on" : "off") + ".");
          saveSettings();
@@ -6615,7 +6615,7 @@ public class PlayerHelper {
     * 
     * @param light Whether to turn light on or off
     */
-   public void toggleLight(boolean light) {
+   public void toggleLight(boolean light, boolean update) {
       WorldProvider temp = ep.worldObj.provider;
       EntityRenderer er = mc.entityRenderer;
       if (light) {
@@ -6629,7 +6629,7 @@ public class PlayerHelper {
          temp.generateLightBrightnessTable();
          er.calculateLightTable();
       }
-      if (mc.oldlighting){
+      if (mc.oldlighting && update){
          mc.renderGlobal.updateAllRenderers(true);
       }
       try {

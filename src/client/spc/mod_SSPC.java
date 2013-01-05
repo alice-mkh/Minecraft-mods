@@ -3,14 +3,14 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 import java.util.ArrayList;
 
-public class mod_SPC extends Mod{
+public class mod_SSPC extends Mod{
     public void load(){
         //Replacing EntityPlayerSP2 class
         Minecraft.getMinecraft().playerClass = net.minecraft.src.EntityPlayerSPSPC.class;
     }
 
     public String getModName(){
-        return "Single Player Commands";
+        return "SSPC";
     }
 
     public String getModVersion(){
