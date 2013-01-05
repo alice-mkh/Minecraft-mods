@@ -317,6 +317,9 @@ public class GuiSelectWorld extends GuiScreen
             if (par1)
             {
                 ISaveFormat isaveformat = mc.getSaveLoader();
+                if (nbxlite){
+                    isaveformat = ODNBXlite.saveLoader;
+                }
                 isaveformat.flushCache();
                 isaveformat.deleteWorldDirectory(getSaveFileName(par2));
                 loadSaves();
