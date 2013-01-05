@@ -178,7 +178,9 @@ public class GuiNBXlite extends GuiScreen{
             }
             selectNBXliteSettings();
             mc.displayGuiScreen(parent);
-            ((GuiCreateWorld2)parent).fixHardcoreButtons();
+            if (parent instanceof GuiCreateWorld2){
+                ((GuiCreateWorld2)parent).fixHardcoreButtons();
+            }
         }else if (guibutton.id==2){
             newores=!newores;
             updateButtonText();
