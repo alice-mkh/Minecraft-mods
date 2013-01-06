@@ -225,6 +225,9 @@ public class Explosion
                         block.dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
                     }
 
+                    if (net.minecraft.client.Minecraft.getMinecraft().enableSP){
+                        worldObj.setBlockWithNotify(i, k, i1, 0);
+                    }else
                     if (worldObj.setBlockAndMetadataWithUpdate(i, k, i1, 0, 0, worldObj.isRemote))
                     {
                         worldObj.notifyBlocksOfNeighborChange(i, k, i1, 0);
