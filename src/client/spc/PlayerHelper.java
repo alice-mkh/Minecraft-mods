@@ -1495,7 +1495,7 @@ public class PlayerHelper {
           * Time command - allows setting and getting of the minecraft time
           */
       } else if (split[0].equalsIgnoreCase(/*"time"*/"time2")) {
-         if ((s.trim().length() == 4) || (s.trim().length() == 8 && s.trim().startsWith("time get")))
+         if (split.length == 1 || split[1].equalsIgnoreCase("get"))
             printCurrentTime();
          if (split.length > 2) {
             int type = -1;
