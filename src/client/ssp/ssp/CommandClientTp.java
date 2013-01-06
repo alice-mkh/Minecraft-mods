@@ -40,7 +40,7 @@ public class CommandClientTp extends CommandServerTp
     {
         if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
         {
-            return getListOfStringsMatchingLastWord(par2ArrayOfStr, null);
+            return getListOfStringsMatchingLastWord(par2ArrayOfStr, Minecraft.getMinecraft().getAllUsernames());
         }
         else
         {
