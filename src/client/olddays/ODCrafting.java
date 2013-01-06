@@ -229,7 +229,7 @@ public class ODCrafting extends OldDaysModule{
         int n = b ? 9 : 4;
         removeRecipe(n+"xitem.ingotIron@0");
         removeRecipe(n+"xitem.ingotGold@0");
-        removeRecipe(n+"xitem.emerald@0");
+        removeRecipe(n+"xitem.diamond@0");
         n = b ? 4 : 9;
         addRecipe(new ItemStack(Item.ingotIron, n), "#", '#', Block.blockSteel);
         addRecipe(new ItemStack(Item.ingotGold, n), "#", '#', Block.blockGold);
