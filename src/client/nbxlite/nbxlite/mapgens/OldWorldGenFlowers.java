@@ -23,11 +23,9 @@ public class OldWorldGenFlowers extends WorldGenerator
 
             boolean old1 = ODNBXlite.MapFeatures < ODNBXlite.FEATURES_14 || ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES;
             boolean old2 = ODNBXlite.MapFeatures < ODNBXlite.FEATURES_13 || ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES;
-            if (par1World.isAirBlock(j, k, l) &&
-               (old1 || !par1World.provider.hasNoSky || k < 127) &&
-               ((Block.blocksList[plantBlockId].canBlockStay(par1World, j, k, l) && !old2) ||
-               (old2 && ((BlockFlower)Block.blocksList[plantBlockId]).canBlockStay(par1World, j, k, l))))
-            {
+            boolean oldc = ((BlockFlower)Block.blocksList[plantBlockId]).canBlockStay(par1World, j, k, l);
+            boolean newc = Block.blocksList[plantBlockId].canBlockStay(par1World, j, k, l);
+            if (par1World.isAirBlock(j, k, l) && (old1 || !par1World.provider.hasNoSky || k < 127) && ((newc && !old2) || (old2 && oldc))){
                 par1World.setBlock(j, k, l, plantBlockId);
             }
         }

@@ -26,9 +26,9 @@ public class OldWorldGenTallGrass extends WorldGenerator
             int i1 = (par5 + par2Random.nextInt(8)) - par2Random.nextInt(8);
 
             boolean old = ODNBXlite.MapFeatures < ODNBXlite.FEATURES_13 || ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES;
-            if (par1World.isAirBlock(k, l, i1) &&
-               ((((BlockFlower)Block.blocksList[tallGrassID]).canBlockStay(par1World, k, l, i1) && old) ||
-               (!old && Block.blocksList[tallGrassID].canBlockStay(par1World, k, l, i1))))
+            boolean oldc = ((BlockFlower)Block.blocksList[tallGrassID]).canBlockStay(par1World, k, l, i1);
+            boolean newc = Block.blocksList[tallGrassID].canBlockStay(par1World, k, l, i1);
+            if (par1World.isAirBlock(k, l, i1) && ((oldc && old) || (!old && newc)))
             {
                 par1World.setBlockAndMetadata(k, l, i1, tallGrassID, tallGrassMetadata);
             }

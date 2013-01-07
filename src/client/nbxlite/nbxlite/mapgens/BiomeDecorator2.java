@@ -8,10 +8,14 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 
 public class BiomeDecorator2 extends BiomeDecorator
 {
+    protected WorldGenerator oldPlantRedGen;
+
     public BiomeDecorator2(BiomeGenBase par1BiomeGenBase)
     {
         super(par1BiomeGenBase);
         plantYellowGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
+        plantRedGen = new OldWorldGenFlowers(Block.plantRed.blockID);
+        oldPlantRedGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
         mushroomBrownGen = new OldWorldGenFlowers(Block.mushroomBrown.blockID);
         mushroomRedGen = new OldWorldGenFlowers(Block.mushroomRed.blockID);
     }
@@ -21,10 +25,9 @@ public class BiomeDecorator2 extends BiomeDecorator
      */
     protected void decorate()
     {
-        if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
-            plantRedGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
-        }else{
-            plantRedGen = new OldWorldGenFlowers(Block.plantRed.blockID);
+        if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14){
+            super.decorate();
+            return;
         }
         generateOres();
 
@@ -86,10 +89,19 @@ public class BiomeDecorator2 extends BiomeDecorator
 
             if (randomGenerator.nextInt(4) == 0)
             {
+        if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
+            plantRedGen = new OldWorldGenFlowers(Block.plantYellow.blockID);
+        }else{
+            
+        }
                 int i7 = chunk_X + randomGenerator.nextInt(16) + 8;
                 int j11 = randomGenerator.nextInt(128);
                 int i15 = chunk_Z + randomGenerator.nextInt(16) + 8;
-                plantRedGen.generate(currentWorld, randomGenerator, i7, j11, i15);
+                if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181){
+                    oldPlantRedGen.generate(currentWorld, randomGenerator, i7, j11, i15);
+                }else{
+                    plantRedGen.generate(currentWorld, randomGenerator, i7, j11, i15);
+                }
             }
         }
 
@@ -194,27 +206,17 @@ public class BiomeDecorator2 extends BiomeDecorator
             cactusGen.generate(currentWorld, randomGenerator, l9, i14, i17);
         }
 
-        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
-            if (generateLakes)
+        if (generateLakes || ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_BETA181)
+        {
+            for (int i5 = 0; i5 < 50; i5++)
             {
-                for (int i5 = 0; i5 < 50; i5++)
-                {
-                    int i10 = chunk_X + randomGenerator.nextInt(16) + 8;
-                    int j14 = randomGenerator.nextInt(randomGenerator.nextInt(120) + 8);
-                    int j17 = chunk_Z + randomGenerator.nextInt(16) + 8;
-                    (new WorldGenLiquids(Block.waterMoving.blockID)).generate(currentWorld, randomGenerator, i10, j14, j17);
-                }
-
-                for (int j5 = 0; j5 < 20; j5++)
-                {
-                    int j10 = chunk_X + randomGenerator.nextInt(16) + 8;
-                    int k14 = randomGenerator.nextInt(randomGenerator.nextInt(randomGenerator.nextInt(112) + 8) + 8);
-                    int k17 = chunk_Z + randomGenerator.nextInt(16) + 8;
-                    (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(currentWorld, randomGenerator, j10, k14, k17);
-                }
+                int i10 = chunk_X + randomGenerator.nextInt(16) + 8;
+                int j14 = randomGenerator.nextInt(randomGenerator.nextInt(120) + 8);
+                int j17 = chunk_Z + randomGenerator.nextInt(16) + 8;
+                (new WorldGenLiquids(Block.waterMoving.blockID)).generate(currentWorld, randomGenerator, i10, j14, j17);
             }
-        }else{
-            for(int j5 = 0; j5 < 20; j5++)
+
+            for (int j5 = 0; j5 < 20; j5++)
             {
                 int j10 = chunk_X + randomGenerator.nextInt(16) + 8;
                 int k14 = randomGenerator.nextInt(randomGenerator.nextInt(randomGenerator.nextInt(112) + 8) + 8);
