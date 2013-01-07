@@ -35,6 +35,7 @@ public class GuiMainMenu extends GuiScreen
 
     /** Counts the number of screen updates. */
     private float updateCounter;
+    private float updateCounter2;
 
     /** The splash message. */
     private String splashText;
@@ -62,6 +63,7 @@ public class GuiMainMenu extends GuiScreen
     public GuiMainMenu()
     {
         updateCounter = 0.0F;
+        updateCounter2 = 0.0F;
         panoramaTimer = 0;
         splashText = "missingno";
         BufferedReader bufferedreader = null;
@@ -109,6 +111,7 @@ public class GuiMainMenu extends GuiScreen
         }
 
         updateCounter = rand.nextFloat();
+        updateCounter2 = updateCounter;
     }
 
     /**
@@ -658,6 +661,12 @@ public class GuiMainMenu extends GuiScreen
                 for(int j1 = 0; j1 < minecraftLogo[i1].length(); j1++)
                 {
                     char c = minecraftLogo[i1].charAt(j1);
+                    if (i1 == 2 && ((double)updateCounter2 < 0.0001D))
+                    {
+                        if (i1 == 2){
+                            c = minecraftLogo[i1].charAt(j1 == 20 ? j1 - 1 : (j1 == 16 ? j1 + 1 : j1));
+                        }
+                    }
                     if(c == ' ')
                     {
                         continue;
