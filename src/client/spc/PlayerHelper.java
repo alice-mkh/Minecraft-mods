@@ -4415,9 +4415,9 @@ public class PlayerHelper {
          if (split.length < 2) {
             mode = (mc.theWorld.worldInfo.getGameType() == EnumGameType.SURVIVAL || mc.theWorld.worldInfo.getGameType() == EnumGameType.ADVENTURE) ? EnumGameType.CREATIVE : EnumGameType.SURVIVAL;
          } else if (split[1].equalsIgnoreCase("survival") || split[1].equalsIgnoreCase("0")) {
-            mode = EnumGameType.CREATIVE;
-         } else if (split[1].equalsIgnoreCase("creative") || split[1].equalsIgnoreCase("1")) {
             mode = EnumGameType.SURVIVAL;
+         } else if (split[1].equalsIgnoreCase("creative") || split[1].equalsIgnoreCase("1")) {
+            mode = EnumGameType.CREATIVE;
          } else if (split[1].equalsIgnoreCase("adventure") || split[1].equalsIgnoreCase("2")) {
             mode = EnumGameType.ADVENTURE;
          }
