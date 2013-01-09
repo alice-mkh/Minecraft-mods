@@ -118,6 +118,8 @@ public abstract class World implements IBlockAccess
     private int lightingUpdatesCounter;
     static int lightingUpdatesScheduled = 0;
     private List lightingToUpdate;
+    
+    public PathFinderIndev pathFinderIndev = new PathFinderIndev(this);
 
     /**
      * Gets the biome for a given set of x/z coordinates
@@ -458,6 +460,12 @@ public abstract class World implements IBlockAccess
             villageCollectionObj = villagecollection;
             villageCollectionObj.func_82566_a(this);
         }
+
+        try{
+            mod_OldDays.getModuleById(8).set(PathFinderIndev.class, "width", ODNBXlite.isFinite() ? ODNBXlite.IndevWidthX : 0, false);
+            mod_OldDays.getModuleById(8).set(PathFinderIndev.class, "length", ODNBXlite.isFinite() ? ODNBXlite.IndevWidthZ : 0, false);
+            mod_OldDays.getModuleById(8).set(PathFinderIndev.class, "height", ODNBXlite.isFinite() ? ODNBXlite.IndevHeight : 0, false);
+        }catch(Throwable t){}
 
         calculateInitialSkylight();
         calculateInitialWeather();

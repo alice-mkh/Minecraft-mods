@@ -6,7 +6,7 @@ public abstract class EntityLiving extends Entity
 {
     public static boolean laddergaps = false;
     public static boolean newai = true;
-    public static boolean infdevai = false;
+    public static boolean indevai = false;
     public static boolean rareloot = true;
     public static boolean oldloot = false;
     public static boolean jumpdelay = true;
@@ -2184,7 +2184,7 @@ public abstract class EntityLiving extends Entity
     {
     }
 
-    protected void updateEntityActionStateInfdev()
+    protected void updateEntityActionStateIndev()
     {
         entityAge++;
         despawnEntity();
@@ -2199,7 +2199,7 @@ public abstract class EntityLiving extends Entity
         {
             EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, f);
 
-            if (entityplayer != null)
+            if (entityplayer != null && false)
             {
                 currentTarget = entityplayer;
                 numTicksToChaseTarget = 10 + rand.nextInt(20);
@@ -2221,8 +2221,8 @@ public abstract class EntityLiving extends Entity
 
     protected void updateEntityActionState()
     {
-        if (infdevai){
-            updateEntityActionStateInfdev();
+        if (indevai){
+            updateEntityActionStateIndev();
             return;
         }
         entityAge++;

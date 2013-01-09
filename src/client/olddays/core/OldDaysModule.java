@@ -156,7 +156,7 @@ public class OldDaysModule{
 
     public void callback(int i){}
 
-    public void set(Class c, String name, Object value){
+    public void set(Class c, String name, Object value, boolean necessary){
         if (c == net.minecraft.src.EntityPlayer.class){
             try{
                 (net.minecraft.src.EntityPlayerSP2.class).getDeclaredField(name).set(null, value);
@@ -165,11 +165,17 @@ public class OldDaysModule{
         try{
             c.getDeclaredField(name).set(null, value);
         }catch(Exception ex){
-            System.out.println("No \""+name+"\" field at the "+c.getName()+" class");
-            if (getPropertyById(last) != null){
-                getPropertyById(last).disable();
+            if (necessary){
+                System.out.println("No \""+name+"\" field at the "+c.getName()+" class");
+                if (getPropertyById(last) != null){
+                    getPropertyById(last).disable();
+                }
             }
         }
+    }
+
+    public void set(Class c, String name, Object value){
+        set(c, name, value, true);
     }
 
     public void addRenderer(Class c, Render r){

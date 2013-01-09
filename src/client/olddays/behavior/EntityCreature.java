@@ -7,8 +7,10 @@ public abstract class EntityCreature extends EntityLiving
     public static boolean nopanic = false;
     public static boolean fastzombies = false;
     public static boolean jump = false;
+    public static boolean indevai = false;
 
     private PathEntity pathToEntity;
+    private PathEntityIndev indevPathToEntity;
 
     /** The Entity this EntityCreature is set to attack. */
     protected Entity entityToAttack;
@@ -36,8 +38,107 @@ public abstract class EntityCreature extends EntityLiving
         return false;
     }
 
+    protected void updateEntityActionStateIndev(){
+        hasAttacked = isMovementCeased();
+        double var6;
+        double var7;
+        double var8;
+        PathFinderIndev pathFinder = worldObj.pathFinderIndev;
+        if(entityToAttack == null) {
+            entityToAttack = findPlayerToAttack();
+            if(entityToAttack != null) {
+                indevPathToEntity = pathFinder.a(this, entityToAttack, 16.0F);
+            }
+        } else if(!entityToAttack.isEntityAlive()) {
+            entityToAttack = null;
+        } else {
+            float var1 = entityToAttack.getDistanceToEntity(this);
+            if(worldObj.rayTraceBlocks(worldObj.getWorldVec3Pool().getVecFromPool(posX, posY + getEyeHeight(), posZ), worldObj.getWorldVec3Pool().getVecFromPool(entityToAttack.posX, entityToAttack.posY + entityToAttack.getEyeHeight(), entityToAttack.posZ)) == null) {
+                attackEntity(entityToAttack, var1);
+            }
+        }
+        if(hasAttacked) {
+            moveStrafing = 0.0F;
+            moveForward = 0.0F;
+            isJumping = false;
+        } else {
+            if(entityToAttack != null && (indevPathToEntity == null || rand.nextInt(20) == 0)) {
+                indevPathToEntity = pathFinder.a(this, entityToAttack, 16.0F);
+            } else if(indevPathToEntity == null || rand.nextInt(100) == 0) {
+                int var10 = -1;
+                int var2 = -1;
+                int var3 = -1;
+                float var4 = -99999.0F;
+                for(int var14 = 0; var14 < 200; ++var14) {
+                    int var16 = (int)(posX + (float)rand.nextInt(21) - 10.0F);
+                    int var17 = (int)(posY + (float)rand.nextInt(9) - 4.0F);
+                    int var18 = (int)(posZ + (float)rand.nextInt(21) - 10.0F);
+                    float var9;
+                    if((var9 = getBlockPathWeight(var16, var17, var18)) > var4) {
+                        var4 = var9;
+                        var10 = var16;
+                        var2 = var17;
+                        var3 = var18;
+                    }
+                }
+
+                if(var10 > 0) {
+                    indevPathToEntity = pathFinder.a(this, var10, var2, var3, 16.0F);
+                }
+            }
+            boolean var11 = isInWater();
+            boolean var12 = handleLavaMovement();
+            if(indevPathToEntity != null && rand.nextInt(100) != 0) {
+                Vec3 var13 = indevPathToEntity.a(this);
+                float var4 = width * 2.0F;
+                double var16;
+                while(var13 != null) {
+                    var8 = posZ;
+                    var7 = posY;
+                    var6 = posX;
+                    var6 -= var13.xCoord;
+                    var7 -= var13.yCoord;
+                    var16 = var8 - var13.zCoord;
+                    if(var6 * var6 + var7 * var7 + var16 * var16 >= var4 * var4 || var13.yCoord > posY) {
+                        break;
+                    }
+
+                    indevPathToEntity.a();
+                    if(indevPathToEntity.b()) {
+                        var13 = null;
+                        indevPathToEntity = null;
+                    } else {
+                        var13 = indevPathToEntity.a(this);
+                    }
+                }
+                isJumping = false;
+                if(var13 != null) {
+                    var16 = var13.xCoord - posX;
+                    var6 = var13.zCoord - posZ;
+                    var7 = var13.yCoord - posY;
+                    rotationYaw = (float)(Math.atan2((double)var6, var16) * 180.0D / Math.PI) - 90.0F;
+                    moveForward = moveSpeed;
+                    if(var7 > 0.0F) {
+                        isJumping = true;
+                    }
+                }
+                if(rand.nextFloat() < 0.8F && (var11 || var12)) {
+                    isJumping = true;
+                }
+
+            } else {
+                super.updateEntityActionStateIndev();
+                indevPathToEntity = null;
+            }
+        }
+    }
+
     protected void updateEntityActionState()
     {
+        if (indevai){
+            updateEntityActionStateIndev();
+            return;
+        }
         worldObj.theProfiler.startSection("ai");
 
         if (fleeingTick > 0)
