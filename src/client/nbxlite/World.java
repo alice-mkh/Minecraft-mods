@@ -332,7 +332,7 @@ public abstract class World implements IBlockAccess
                                 chunkProvider.provideChunk(x,z);
                             }
                         }
-                        worldInfo.setWorldTime(ODNBXlite.mclevelimporter.timeofday);
+                        func_82738_a(ODNBXlite.mclevelimporter.timeofday);
                         List tentlist = ODNBXlite.mclevelimporter.tileentities;
                         if (mod_OldDays.getMinecraft().enableSP){
                             mod_OldDays.getMinecraft().loadingScreen.resetProgresAndWorkingMessage("Fixing blocks..");
