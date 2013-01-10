@@ -1,5 +1,5 @@
 OldDays, NBXlite and SpawnHuman return old things that were removed.
 NBXlite is fork of InsanityBringer's NoBiomesX.
 
-Single Player Commands mod is fork (Unnamed as for now) of simo_415's Single Player Commands 3.2.2.
+SSPC is a fork of simo_415's Single Player Commands 3.2.2.
 Everything in src/client/spc, bin/spc-* and bin-old/spc-* is licenced under GNU LGPLv3.
