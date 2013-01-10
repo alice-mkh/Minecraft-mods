@@ -267,8 +267,7 @@ gameplay.oldexplosion.name=Stare eksplozje
 mobs.ai.name=Inteligencja mobów
  mobs.ai.desc1=Ustawia ich ogólne zachowanie.
  mobs.ai1=Indev
- //FIXME
- mobs.ai1.desc=Mobs never stop and use pathfinding
+ mobs.ai1.desc=Moby nigdy nie przestają działać i odszukują ściezki
  mobs.ai2=Alpha
  mobs.ai2.desc=Bardziej bezczynne zachowanie, mniej skakania
  mobs.ai3=Beta
