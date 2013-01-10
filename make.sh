@@ -97,7 +97,7 @@ MV[12]="EntityHuman ModelHuman RenderHuman mod_SpawnHuman"
 ADD[12]="./char.png"
 MV[13]="CommandClientSPC EntityPlayerSPSPC PlayerHelper PlayerHelper\$1 SPCCheckVersion SPCCommand SPCEntity SPCEntityCamera SPCEntityInterface
         SPCLocalConfiguration SPCLocalPlayer SPCLocalWorld SPCObjectHit SPCPlugin SPCPluginManager SPCPoint SPCServerInterface SPCVersion
-        SPCVersionInterface SPCWorld SPCWorldInterface Settings WorldEditPlugin mod_SPC spc_WorldEdit spc_paint spc_path"
+        SPCVersionInterface SPCWorld SPCWorldInterface Settings WorldEditPlugin mod_SSPC spc_WorldEdit spc_paint spc_path"
 ADD[13]="./WorldEdit.jar"
 MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
         `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` net/ other"
