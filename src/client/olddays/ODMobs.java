@@ -3,7 +3,7 @@ package net.minecraft.src;
 public class ODMobs extends OldDaysModule{
     public ODMobs(mod_OldDays c){
         super(c, 3, "Mobs");
-        new OldDaysPropertyInt(this,  1, 1,     5,     "AI", 5).setUseNames();
+        new OldDaysPropertyInt(this,  1, 1,     4,     "AI", 4).setUseNames();
         new OldDaysPropertyBool(this, 2, false, true,  "AnimalsFlee");
         new OldDaysPropertyBool(this, 3, true,  true,  "SheepEatGrass");
         new OldDaysPropertyBool(this, 4, true,  true,  "SpidersCanClimb");
