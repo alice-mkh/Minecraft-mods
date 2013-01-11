@@ -9,7 +9,7 @@ public final class MD3Renderer {
    private MD3Model model;
    private boolean b = false;
    private int displayList;
-   private boolean useAnimation = true;
+   private boolean useAnimation;
 
    public MD3Renderer(MD3Model var1, boolean anim) {
       model = var1;
@@ -21,7 +21,7 @@ public final class MD3Renderer {
       return model.animFrames;
    }
 
-   public final void renderFrame(int var1, int var2, float var3) {
+   public final void render(int var1, int var2, float var3) {
        if(displayList == 0 || useAnimation) {
             if (!useAnimation){
                displayList = GL11.glGenLists(/*model.animFrames*/1);

@@ -51,8 +51,7 @@ public class ODEyecandy extends OldDaysModule{
                     if (OldChest){
                         Block.blocksList[Block.chest.blockID].setBlockBoundsBasedOnState(null, 0, 0, 0);
                     }reload(); break;
-            case 7: set(RenderLiving.class, "labels", MobLabels);
-                    set(RenderMD3.class, "labels", MobLabels, false); break;
+            case 7: set(RenderLiving.class, "labels", MobLabels); break;
             case 8: set(RenderZombie2.class, "mobArmor", MobArmor);
                     set(RenderSkeleton2.class, "mobArmor", MobArmor);
                     set(RenderZombie2.class, "fallback", !hasTextures("olddays/plate.png"));
@@ -80,8 +79,7 @@ public class ODEyecandy extends OldDaysModule{
             case 17:set(EntityDropParticleFX.class, "allow", Drops); break;
             case 18:set(ItemRenderer.class, "hand", Hand); break;
             case 19:set(EntityLiving.class, "toolbreakanim", ToolBreaking); break;
-            case 20:set(RenderLiving.class, "oldlabels", Labels);
-                    set(RenderMD3.class, "oldlabels", Labels, false); break;
+            case 20:set(RenderLiving.class, "oldlabels", Labels); break;
             case 21:set(LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
             case 22:set(GuiInventory.class, "oldcreative", OldCreativeInv); break;
             case 23:set(EntityLiving.class, "oldswing", OldSwing);

@@ -33,7 +33,7 @@ public class MD3Loader {
       } else {
          MD3Model model = new MD3Model();
          var1.getInt();
-         System.out.println("Name: " + readString(var1, 64));
+         readString(var1, 64);
          var1.getInt();
          int frames = var1.getInt();
          System.out.println(frames + " frames");
