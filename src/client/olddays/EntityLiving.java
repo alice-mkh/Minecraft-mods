@@ -338,6 +338,7 @@ public abstract class EntityLiving extends Entity
     /** How long to keep a specific target entity */
     protected int numTicksToChaseTarget;
     public int persistentId;
+    public int entityAge2;
 
     public EntityLiving(World par1World)
     {
@@ -411,6 +412,7 @@ public abstract class EntityLiving extends Entity
         }
 
         stepHeight = 0.5F;
+        entityAge2 = 0;
     }
 
     public EntityLookHelper getLookHelper()
@@ -933,6 +935,7 @@ public abstract class EntityLiving extends Entity
      */
     public void onUpdate()
     {
+        entityAge2++;
         super.onUpdate();
 
         if (!worldObj.isRemote)
