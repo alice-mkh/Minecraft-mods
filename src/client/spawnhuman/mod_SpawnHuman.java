@@ -18,14 +18,26 @@ public class mod_SpawnHuman extends Mod{
     }
 
     public mod_SpawnHuman(){
-        /*ModLoader.registerKey(this, this.KeySpawn, false);
-        KeySpawn = new KeyBinding("Spawn Human", 34);
-        ModLoader.registerEntityID(EntityHuman.class, "human", ModLoader.getUniqueEntityId());
+        keySpawn = new KeyBinding("Spawn Human", 34);
+        registerKey(keySpawn);
+        setUseTick(true, false);
+        RenderManager renderMan = RenderManager.instance;
+        try{
+            RenderHuman r = new RenderHuman(new ModelHuman(), 0.5F);
+            r.setRenderManager(renderMan);
+            HashMap map = ((HashMap)mod_OldDays.getField(RenderManager.class, renderMan, 0));
+            map.put(EntityHuman.class, r);
+            System.out.println("Added "+r.getClass().getName()+" renderer");
+        }catch(Exception ex){
+            System.out.println("Failed to add renderer: "+ex);
+        }
+        /*ModLoader.registerEntityID(EntityHuman.class, "human", ModLoader.getUniqueEntityId());*/
         Properties properties = new Properties();
         try{
-            File file = new File((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/SpawnHuman.properties").toString());
-            boolean flag = file.createNewFile();
-            if(flag){
+            File dir = new File(Minecraft.getMinecraftDir() + "/config/");
+            dir.mkdirs();
+            File file = new File(dir, "SpawnHuman.properties");
+            if(file.createNewFile()){
                 FileOutputStream fileoutputstream = new FileOutputStream(file);
                 properties.setProperty("CustomTexture",Boolean.toString(true));
                 properties.setProperty("DeathEffect",Boolean.toString(true));
@@ -44,31 +56,61 @@ public class mod_SpawnHuman extends Mod{
         }
         catch(IOException ioexception){
             ioexception.printStackTrace();
-        }*/
+        }
     }
 
-    public void keyboardEvent(KeyBinding keybinding){
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer entityplayer = mc.thePlayer;
-        World theWorld = mc.theWorld;
-        PlayerControllerMP playerController = mc.playerController;
-        if(!theWorld.isRemote && (playerController.isInCreativeMode() || AllowInSurvival)){
-            EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("human", theWorld);
-            entityliving.setLocationAndAngles(entityplayer.posX, entityplayer.posY - 1.62D + entityplayer.getEyeHeight(), entityplayer.posZ, theWorld.rand.nextFloat() * 360F, 0.0F);
-            theWorld.spawnEntityInWorld(entityliving);
-            if (SpawnEffect){
-                entityliving.spawnExplosionParticle();
+    public void registerKey(KeyBinding key){
+        GameSettings s = Minecraft.getMinecraft().gameSettings;
+        KeyBinding[] newb = new KeyBinding[s.keyBindings.length + 1];
+        for (int i = 0; i < s.keyBindings.length; i++){
+            newb[i] = s.keyBindings[i];
+        }
+        newb[s.keyBindings.length] = key;
+        s.keyBindings = newb;
+        try{
+            File optionsFile = new File(Minecraft.getMinecraftDir(), "options.txt");
+            if (!optionsFile.exists()){
+                return;
+            }
+            BufferedReader bufferedreader = new BufferedReader(new FileReader(optionsFile));
+            for (String str = ""; (str = bufferedreader.readLine()) != null;){
+                try{
+                    String as[] = str.split(":");
+                    if (as[0].equals((new StringBuilder()).append("key_").append(key.keyDescription).toString())){
+                        key.keyCode = Integer.parseInt(as[1]);
+                    }
+                }catch (Exception exception1){
+                    System.out.println((new StringBuilder()).append("Skipping bad option: ").append(s).toString());
+                }
+            }
+            bufferedreader.close();
+        }
+        catch (Exception exception){
+            System.out.println("Failed to load options");
+            exception.printStackTrace();
+        }
+        KeyBinding.resetKeyBindingArrayAndHash();
+    }
+
+    public void onTick(){
+        if (keySpawn.isPressed()){
+            Minecraft mc = Minecraft.getMinecraft();
+            EntityPlayer entityplayer = mc.thePlayer;
+            World theWorld = mc.theWorld;
+            if(!theWorld.isRemote && (theWorld.worldInfo.areCommandsAllowed() || AllowInSurvival)){
+                EntityLiving entityliving = new EntityHuman(theWorld);
+                entityliving.setLocationAndAngles(entityplayer.posX, entityplayer.posY - entityplayer.yOffset + entityplayer.getEyeHeight(), entityplayer.posZ, theWorld.rand.nextFloat() * 360F, 0.0F);
+                theWorld.spawnEntityInWorld(entityliving);
+                if (SpawnEffect){
+                    entityliving.spawnExplosionParticle();
+                }
             }
         }
     }
 
-    public void addRenderer(Map map){
-        map.put(net.minecraft.src.EntityHuman.class, new RenderHuman(new ModelHuman(), 0.5F));
-    }
-
     public void load(){};
 
-    public KeyBinding KeySpawn;
+    private KeyBinding keySpawn;
     public static int Health;
     public static boolean AllowInSurvival;
     public static boolean SpawnEffect;
