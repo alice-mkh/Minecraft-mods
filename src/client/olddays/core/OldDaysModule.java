@@ -184,7 +184,7 @@ public class OldDaysModule{
         try{
             r.setRenderManager(renderMan);
             HashMap map = ((HashMap)mod_OldDays.getField(RenderManager.class, renderMan, 0));
-            if (map.get(c).getClass() == r.getClass()){
+            if (map.get(c) != null && map.get(c).getClass() == r.getClass()){
                 return;
             }
             map.put(c, r);
@@ -192,6 +192,7 @@ public class OldDaysModule{
             System.out.println("OldDays: Added "+r.getClass().getName()+" renderer");
         }catch(Exception ex){
             System.out.println("OldDays: Failed to add renderer: "+ex);
+            ex.printStackTrace();
         }
     }
 

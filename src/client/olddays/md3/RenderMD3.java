@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
-public final class RenderMD3 extends RenderLiving {
+public class RenderMD3 extends RenderLiving {
    private MD3Renderer renderer;
    private String[] textures;
 
@@ -27,9 +27,8 @@ public final class RenderMD3 extends RenderLiving {
         renderMD3(par1EntityLiving, (float)d, (float)d1, (float)d2, f, f1);
    }
 
-   protected String getTextureName(EntityLiving e){
-      int index = e.hashCode();
-      return textures[index % textures.length];
+   protected int getTextureIndex(EntityLiving e){
+      return e.hashCode();
    }
 
    public final void renderMD3(EntityLiving entity, float f, float f1, float f2, float f3, float f4)
@@ -40,7 +39,7 @@ public final class RenderMD3 extends RenderLiving {
         GL11.glPushMatrix();
         float f5 = entity.prevRenderYawOffset + (entity.renderYawOffset - entity.prevRenderYawOffset) * f4;
         GL11.glTranslatef(f1, f2, f3);
-        loadTexture(getTextureName(entity));
+        loadTexture(textures[getTextureIndex(entity) % textures.length]);
         GL11.glRotatef(-f5 + 180F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
         GL11.glScalef(0.02F, -0.02F, 0.02F);

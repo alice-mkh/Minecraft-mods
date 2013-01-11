@@ -198,7 +198,7 @@ public class McLevelImporter{
                     }
                 }
                 if (ent.getString("id").startsWith("Mob")){
-                    continue;
+                    ent.setString("id", "Rana");
                 }
                 entities.add(ent);
                 

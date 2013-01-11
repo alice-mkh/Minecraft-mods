@@ -67,6 +67,13 @@ public class ODMobs extends OldDaysModule{
             case 9: set(EntitySlime.class, "slimeSpawn", Slimes); break;
             case 10:set(EntityEnderman.class, "oldPicking", Endermen); break;
         }
+        if (!renderersAdded && RenderManager.instance!=null){
+            addEntity(EntitySteve.class, "Steve", 201);
+            addEntity(EntityRana.class, "Rana", 202);
+            String str = "/olddays/md3/";
+            addRenderer(EntitySteve.class, new EntitySteve.RenderMD3Steve(true, str + "mcexport01.MD3", str + "mcexport"));
+            addRenderer(EntityRana.class, new RenderMD3(false, str + "rana.MD3", str + "cube-nes.png"));
+        }
     }
 
     public static int AI = 1;

@@ -39,6 +39,16 @@ public abstract class EntityCreature extends EntityLiving
     }
 
     protected void updateEntityActionStateIndev(){
+        worldObj.theProfiler.startSection("ai");
+
+        if (fleeingTick > 0)
+        {
+            if (nopanic){
+                fleeingTick = 0;
+            }else{
+                fleeingTick--;
+            }
+        }
         hasAttacked = isMovementCeased();
         double var6;
         double var7;
