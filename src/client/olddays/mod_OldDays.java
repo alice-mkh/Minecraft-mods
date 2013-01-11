@@ -353,21 +353,6 @@ public class mod_OldDays extends Mod{
         }
     }
 
-    public static Object callMethod(Class c, Object o, String str, Class[] pars, Object[] args){
-        try{
-            Method m = c.getDeclaredMethod(str, pars);
-            m.setAccessible(true);
-            return m.invoke(o, args);
-        }catch(Exception ex){
-            System.out.println(ex);
-            return null;
-        }
-    }
-
-    public static Object callMethod(Class c, Object o, String str){
-        return callMethod(c, o, str, new Class[]{}, new Object[]{});
-    }
-
     public static void registerKey(KeyBinding key){
         GameSettings s = getMinecraft().gameSettings;
         KeyBinding[] newb = new KeyBinding[s.keyBindings.length + 1];

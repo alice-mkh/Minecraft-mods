@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -191,6 +192,37 @@ public class OldDaysModule{
             System.out.println("OldDays: Added "+r.getClass().getName()+" renderer");
         }catch(Exception ex){
             System.out.println("OldDays: Failed to add renderer: "+ex);
+        }
+    }
+
+    public void addEntity(Class par0Class, String par1Str, int par2){
+        addEntity(par0Class, par1Str, par2, -1, -1);
+    }
+
+    public void addEntity(Class par0Class, String par1Str, int par2, int par3, int par4){
+        try{
+            int id = 1;
+            Method m = null;
+            Method[] methods = (EntityList.class).getDeclaredMethods();
+            for (int i = 0; i < methods.length; i++){
+                if (par3 >= 0 && par4 >= 0 && methods[i].toGenericString().matches("^private static void (net.minecraft.src.)?([a-zA-Z]{1,10}).[a-zA-Z]{1,10}.java.lang.Class,java.lang.String,int,int,int.$")){
+                    m = methods[i];
+                    break;
+                }
+                if (methods[i].toGenericString().matches("^private static void (net.minecraft.src.)?([a-zA-Z]{1,10}).[a-zA-Z]{1,10}.java.lang.Class,java.lang.String,int.$")){
+                    m = methods[i];
+                    break;
+                }
+            }
+            m.setAccessible(true);
+            if (par3 >= 0 && par4 >= 0){
+                m.invoke(null, par0Class, par1Str, par2, par3, par4);
+            }else{
+                m.invoke(null, par0Class, par1Str, par2);
+            }
+            System.out.println("OldDays: Added "+par1Str+" entity");
+        }catch(Exception ex){
+            System.out.println("OldDays: Failed to add entity: "+ex);
         }
     }
 
