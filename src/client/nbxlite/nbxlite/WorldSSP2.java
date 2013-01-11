@@ -106,20 +106,10 @@ public class WorldSSP2 extends WorldSSP
 
     public void turnOnOldSpawners()
     {
-        animalSpawner = new OldSpawnerAnimals(15, net.minecraft.src.EntityAnimal.class, new Class[] {
-            net.minecraft.src.EntitySheep.class, net.minecraft.src.EntityPig.class, net.minecraft.src.EntityCow.class, net.minecraft.src.EntityChicken.class,
-            net.minecraft.src.EntityWolf.class, net.minecraft.src.EntityOcelot.class
-        });
-        monsterSpawner = new OldSpawnerMonsters(200, net.minecraft.src.IMob.class, new Class[] {
-            net.minecraft.src.EntityZombie.class, net.minecraft.src.EntitySkeleton.class, net.minecraft.src.EntityCreeper.class, net.minecraft.src.EntitySpider.class,
-            net.minecraft.src.EntitySlime.class, net.minecraft.src.EntityEnderman.class
-        });
-        waterMobSpawner = new OldSpawnerAnimals(5, net.minecraft.src.EntityWaterMob.class, new Class[] {
-            net.minecraft.src.EntitySquid.class
-        });
-        ambientMobSpawner = new OldSpawnerAnimals(15, net.minecraft.src.EntityAmbientCreature.class, new Class[] {
-            net.minecraft.src.EntityBat.class
-        });
+        animalSpawner = new OldSpawnerAnimals(15, EnumCreatureType.creature);
+        monsterSpawner = new OldSpawnerMonsters(200, EnumCreatureType.monster);
+        waterMobSpawner = new OldSpawnerAnimals(5, EnumCreatureType.waterCreature);
+        ambientMobSpawner = new OldSpawnerAnimals(15, EnumCreatureType.ambient);
     }
 
     /**

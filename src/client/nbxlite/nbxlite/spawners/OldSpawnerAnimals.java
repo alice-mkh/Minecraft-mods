@@ -3,21 +3,22 @@ package net.minecraft.src.nbxlite.spawners;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import net.minecraft.src.*;
+import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
 
 public class OldSpawnerAnimals
 {
 
     private int maxSpawns;
     private Class spawnBaseClass;
-    private Class spawnSubclasses[];
+    private List spawnSubclasses;
     private Set nearbyChunkSet;
 
-    public OldSpawnerAnimals(int i, Class class1, Class aclass[])
+    public OldSpawnerAnimals(int i, EnumCreatureType type)
     {
         nearbyChunkSet = new HashSet();
         maxSpawns = i;
-        spawnBaseClass = class1;
-        spawnSubclasses = aclass;
+        spawnBaseClass = type.getCreatureClass();
+        spawnSubclasses = OldBiomeGenBase.notABiome.getSpawnableList(type);
     }
 
     public void func_1150_a(World world)
@@ -92,7 +93,7 @@ public class OldSpawnerAnimals
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             if(world.rand.nextInt(10) == 0)
             {
-                int j1 = world.rand.nextInt(spawnSubclasses.length);
+                int j1 = world.rand.nextInt(spawnSubclasses.size());
                 ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
@@ -139,7 +140,7 @@ public class OldSpawnerAnimals
                         EntityLiving entityliving;
                         try
                         {
-                            entityliving = (EntityLiving)spawnSubclasses[j1].getConstructor(new Class[] {
+                            entityliving = (EntityLiving)((SpawnListEntryBeta)spawnSubclasses.get(j1)).entityClass.getConstructor(new Class[] {
                                 net.minecraft.src.World.class
                             }).newInstance(new Object[] {
                                 world
@@ -208,7 +209,7 @@ public class OldSpawnerAnimals
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             if(world.rand.nextInt(10) == 0)
             {
-                int j1 = world.rand.nextInt(spawnSubclasses.length);
+                int j1 = world.rand.nextInt(spawnSubclasses.size());
                 ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
@@ -251,7 +252,7 @@ public class OldSpawnerAnimals
                         EntityLiving entityliving;
                         try
                         {
-                            entityliving = (EntityLiving)spawnSubclasses[j1].getConstructor(new Class[] {
+                            entityliving = (EntityLiving)((SpawnListEntryBeta)spawnSubclasses.get(j1)).entityClass.getConstructor(new Class[] {
                                 net.minecraft.src.World.class
                             }).newInstance(new Object[] {
                                 world

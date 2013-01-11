@@ -3,13 +3,14 @@ package net.minecraft.src.nbxlite.spawners;
 import java.util.Random;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkPosition;
+import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.World;
 
 public class OldSpawnerMonsters extends OldSpawnerAnimals
 {
-    public OldSpawnerMonsters(int i, Class class1, Class aclass[])
+    public OldSpawnerMonsters(int i, EnumCreatureType type)
     {
-        super(i, class1, aclass);
+        super(i, type);
     }
 
     protected ChunkPosition func_1151_a(World world, int i, int j)

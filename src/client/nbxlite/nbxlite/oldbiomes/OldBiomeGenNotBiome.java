@@ -17,6 +17,7 @@ public class OldBiomeGenNotBiome extends OldBiomeGenBase
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityChicken.class, 10));
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityCow.class, 8));
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityWolf.class, 1));
+        spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityOcelot.class, 1));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySpider.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntityZombie.class, 10));
         spawnableMonsterList.add(new SpawnListEntryBeta(net.minecraft.src.EntitySkeleton.class, 10));
