@@ -8,12 +8,12 @@ RESULT_DIR=$DIR/result
 RESULT_DIR_2=$DIR/result2
 
 function find() {
-    if [[ $1 == "World" ]]; then
-        echo "yc" # A workaround for World.class, as it returns GuiCreateWorld.class instead
-        exit 0
-    fi
+#    if [[ $1 == "World" ]]; then
+#        echo "yc" # A workaround for World.class, as it returns GuiCreateWorld.class instead
+#        exit 0
+#    fi
     for F in *.class; do
-        if [ -n "`strings $F | grep $1.java`" ]; then
+        if [ -n "`strings $F | grep -E ^\!?$1.java`" ]; then
             echo ${F/%.class/}
             exit 0
         fi
