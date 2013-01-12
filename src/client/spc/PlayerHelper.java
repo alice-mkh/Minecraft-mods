@@ -6626,18 +6626,18 @@ public class PlayerHelper {
             for (int i = 0; i < er.lightTable.length; i++) {
                 er.lightTable[i] = 1.0F;
             }
-         }catch(Exception e){}
+         }catch(Throwable e){}
       } else {
          temp.generateLightBrightnessTable();
          try{
             er.calculateLightTable();
-         }catch(Exception e){}
+         }catch(Throwable e){}
       }
       try {
         if (mc.oldlighting && update){
             mc.renderGlobal.updateAllRenderers(true);
         }
-      }catch (Exception e) {}
+      }catch (Throwable e) {}
    }
 
    public void setItemMaxDamage() {
