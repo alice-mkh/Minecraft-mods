@@ -27,4 +27,9 @@ public class FakeServerPlayerList extends IntegratedPlayerList
     {
         return new String[]{Minecraft.getMinecraft().thePlayer.username};
     }
+
+    public int getEntityViewDistance()
+    {
+        return 0;
+    }
 }

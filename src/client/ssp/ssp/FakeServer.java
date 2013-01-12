@@ -28,6 +28,10 @@ public class FakeServer extends IntegratedServer
         mc = par1Minecraft;
         field_71350_m = par4WorldSettings;
         commandManager2 = new ClientCommandManager();
+        worldServers = new WorldServer[3];
+        for (int i = 0; i < worldServers.length; i++){
+            worldServers[i] = new FakeWorldServer(this, (WorldSSP)par1Minecraft.theWorld, par4WorldSettings);
+        }
     }
 
     protected void loadAllDimensions(String par1Str, String par2Str, long par3, WorldType par5WorldType)
@@ -48,6 +52,8 @@ public class FakeServer extends IntegratedServer
     public void tick()
     {
     }
+
+    public void updateTimeLightAndEntities(){}
 
     public boolean canStructuresSpawn()
     {
