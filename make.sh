@@ -42,7 +42,9 @@ CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find EntityLiving` B
 ADD[3]="olddays/icons.png"
 CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget`
        `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` `find EntityOcelot` PathFinderIndev
-       `find EntitySquid` `find EntitySlime` `find EntityWolf` `find EntityLiving` EntityAIEatGrass2 ODMobs PathIndev PathEntityIndev PathPointIndev"
+       `find EntitySquid` `find EntitySlime` `find EntityWolf` `find EntityLiving` EntityAIEatGrass2 ODMobs PathIndev PathEntityIndev PathPointIndev
+       MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve"
+ADD[4]="olddays/md3"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer` `find TileEntityEnderChestRenderer`
        `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLiving`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
@@ -77,9 +79,10 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` `find EntityOcelot` PathEntityIndev
         `find EntitySquid` `find EntitySlime` ODMobs `find ComponentVillageField` `find ComponentVillageField2` PathPointIndev
+        MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem`
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer` `find GuiScreen`
-        BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer PathPointIndev
+        BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
         SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
         `find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree` `find BlockGrass`
