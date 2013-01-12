@@ -9,7 +9,7 @@ public final class PathFinderIndev {
    public static int length = 0;
    public static int height = 0;
 
-   private World worldObj;
+   public World worldObj;
    private PathIndev b = new PathIndev();
    private Map c = new HashMap();
    private PathPointIndev[] d = new PathPointIndev[32];

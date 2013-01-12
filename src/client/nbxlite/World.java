@@ -118,8 +118,6 @@ public abstract class World implements IBlockAccess
     private int lightingUpdatesCounter;
     static int lightingUpdatesScheduled = 0;
     private List lightingToUpdate;
-    
-    public PathFinderIndev pathFinderIndev = new PathFinderIndev(this);
 
     /**
      * Gets the biome for a given set of x/z coordinates

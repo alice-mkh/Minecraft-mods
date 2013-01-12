@@ -22,12 +22,28 @@ public abstract class EntityCreature extends EntityLiving
 
     /** Used to make a creature speed up and wander away when hit. */
     protected int fleeingTick;
+    
+    public static PathFinderIndev pathFinderIndev;
 
     public EntityCreature(World par1World)
     {
         super(par1World);
         hasAttacked = false;
         fleeingTick = 0;
+        if (worldObj != null && (pathFinderIndev == null || pathFinderIndev.worldObj != par1World)){
+            pathFinderIndev = new PathFinderIndev(worldObj);
+        }
+    }
+
+    /**
+     * Sets the reference to the World object.
+     */
+    public void setWorld(World par1World)
+    {
+        worldObj = par1World;
+        if (pathFinderIndev == null || pathFinderIndev.worldObj != par1World){
+            pathFinderIndev = new PathFinderIndev(worldObj);
+        }
     }
 
     /**
@@ -51,7 +67,7 @@ public abstract class EntityCreature extends EntityLiving
         double var6;
         double var7;
         double var8;
-        PathFinderIndev pathFinder = worldObj.pathFinderIndev;
+        PathFinderIndev pathFinder = pathFinderIndev;
         if(entityToAttack == null) {
             entityToAttack = findPlayerToAttack();
             if(entityToAttack != null) {
