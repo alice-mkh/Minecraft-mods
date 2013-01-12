@@ -64,4 +64,17 @@ public final class MD3Renderer {
            GL11.glCallList(displayList/* + var1*/);
        }
    }
+
+   public void renderTag(String tagName, MD3Renderer renderer, int var1, int var2, float var3, int var4, int var5, float var6){
+       MD3Tag tag = (MD3Tag)model.tags.get(tagName);
+       if(tag == null){
+          System.out.println(tagName + ": no such tag!");
+          return;
+       }
+       double x = tag.coords[var1].xCoord + (tag.coords[var2].xCoord - tag.coords[var1].xCoord) * var3;
+       double y = tag.coords[var1].yCoord + (tag.coords[var2].yCoord - tag.coords[var1].yCoord) * var3;
+       double z = tag.coords[var1].zCoord + (tag.coords[var2].zCoord - tag.coords[var1].zCoord) * var3;
+       GL11.glTranslated(x, y, z);
+       renderer.render(var4, var5, var6);
+   }
 }
