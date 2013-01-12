@@ -6622,20 +6622,22 @@ public class PlayerHelper {
          for (int i = 0; i < temp.lightBrightnessTable.length; i++) {
             temp.lightBrightnessTable[i] = 1.0F;
          }
-         for (int i = 0; i < er.lightTable.length; i++) {
-            er.lightTable[i] = 1.0F;
-         }
+         try{
+            for (int i = 0; i < er.lightTable.length; i++) {
+                er.lightTable[i] = 1.0F;
+            }
+         }catch(Exception e){}
       } else {
          temp.generateLightBrightnessTable();
-         er.calculateLightTable();
-      }
-      if (mc.oldlighting && update){
-         mc.renderGlobal.updateAllRenderers(true);
+         try{
+            er.calculateLightTable();
+         }catch(Exception e){}
       }
       try {
-         //mc.renderGlobal.updateAllRenderers();
-      } catch (Exception e) {
-      }
+        if (mc.oldlighting && update){
+            mc.renderGlobal.updateAllRenderers(true);
+        }
+      }catch (Exception e) {}
    }
 
    public void setItemMaxDamage() {
