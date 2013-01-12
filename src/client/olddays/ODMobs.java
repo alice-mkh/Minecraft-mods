@@ -71,7 +71,7 @@ public class ODMobs extends OldDaysModule{
             addEntity(EntitySteve.class, "Steve", 201);
             addEntity(EntityRana.class, "Rana", 202);
             String str = "/olddays/md3/";
-            addRenderer(EntitySteve.class, new EntitySteve.RenderMD3Steve(true, str + "mcexport01.MD3", str + "mcexport"));
+            addRenderer(EntitySteve.class, new EntitySteve.RenderMD3Steve(false, str + "mcexport01.MD3", str + "mcexport"));
             addRenderer(EntityRana.class, new RenderMD3(false, str + "rana.MD3", str + "cube-nes.png"));
         }
     }
