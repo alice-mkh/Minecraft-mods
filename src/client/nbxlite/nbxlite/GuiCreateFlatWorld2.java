@@ -7,33 +7,33 @@ import net.minecraft.src.nbxlite.gui.GuiCreateWorld2;
 
 public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
 {
-    private static RenderItem field_82282_a = new RenderItem();
-    private final GuiCreateWorld2 field_82277_b;
-    private FlatGeneratorInfo field_82279_c;
-    private String field_82276_d;
-    private String field_82285_m;
-    private String field_82283_n;
-    private GuiCreateFlatWorldListSlot field_82284_o;
-    private GuiButton field_82281_p;
-    private GuiButton field_82280_q;
-    private GuiButton field_82278_r;
+    private static RenderItem theRenderItem = new RenderItem();
+    private final GuiCreateWorld2 createWorldGui;
+    private FlatGeneratorInfo theFlatGeneratorInfo;
+    private String customizationTitle;
+    private String layerMaterialLabel;
+    private String heightLabel;
+    private GuiCreateFlatWorldListSlot createFlatWorldListSlotGui;
+    private GuiButton buttonAddLayer;
+    private GuiButton buttonEditLayer;
+    private GuiButton buttonRemoveLayer;
 
     public GuiCreateFlatWorld2(GuiCreateWorld2 par1, String par2Str)
     {
         super(null, par2Str);
-        field_82279_c = FlatGeneratorInfo.getDefaultFlatGenerator();
-        field_82277_b = par1;
-        func_82273_a(par2Str);
+        theFlatGeneratorInfo = FlatGeneratorInfo.getDefaultFlatGenerator();
+        createWorldGui = par1;
+        setFlatGeneratorInfo(par2Str);
     }
 
-    public String func_82275_e()
+    public String getFlatGeneratorInfo()
     {
-        return field_82279_c.toString();
+        return theFlatGeneratorInfo.toString();
     }
 
-    public void func_82273_a(String par1Str)
+    public void setFlatGeneratorInfo(String par1Str)
     {
-        field_82279_c = FlatGeneratorInfo.createFlatGeneratorFromString(par1Str);
+        theFlatGeneratorInfo = FlatGeneratorInfo.createFlatGeneratorFromString(par1Str);
     }
 
     /**
@@ -42,18 +42,18 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
     public void initGui()
     {
         controlList.clear();
-        field_82276_d = StatCollector.translateToLocal("createWorld.customize.flat.title");
-        field_82285_m = StatCollector.translateToLocal("createWorld.customize.flat.tile");
-        field_82283_n = StatCollector.translateToLocal("createWorld.customize.flat.height");
-        field_82284_o = new GuiCreateFlatWorldListSlot(this);
-        controlList.add(field_82281_p = new GuiButton(2, width / 2 - 154, height - 52, 100, 20, (new StringBuilder()).append(StatCollector.translateToLocal("createWorld.customize.flat.addLayer")).append(" (NYI)").toString()));
-        controlList.add(field_82280_q = new GuiButton(3, width / 2 - 50, height - 52, 100, 20, (new StringBuilder()).append(StatCollector.translateToLocal("createWorld.customize.flat.editLayer")).append(" (NYI)").toString()));
-        controlList.add(field_82278_r = new GuiButton(4, width / 2 - 155, height - 52, 150, 20, StatCollector.translateToLocal("createWorld.customize.flat.removeLayer")));
+        customizationTitle = StatCollector.translateToLocal("createWorld.customize.flat.title");
+        layerMaterialLabel = StatCollector.translateToLocal("createWorld.customize.flat.tile");
+        heightLabel = StatCollector.translateToLocal("createWorld.customize.flat.height");
+        createFlatWorldListSlotGui = new GuiCreateFlatWorldListSlot(this);
+        controlList.add(buttonAddLayer = new GuiButton(2, width / 2 - 154, height - 52, 100, 20, (new StringBuilder()).append(StatCollector.translateToLocal("createWorld.customize.flat.addLayer")).append(" (NYI)").toString()));
+        controlList.add(buttonEditLayer = new GuiButton(3, width / 2 - 50, height - 52, 100, 20, (new StringBuilder()).append(StatCollector.translateToLocal("createWorld.customize.flat.editLayer")).append(" (NYI)").toString()));
+        controlList.add(buttonRemoveLayer = new GuiButton(4, width / 2 - 155, height - 52, 150, 20, StatCollector.translateToLocal("createWorld.customize.flat.removeLayer")));
         controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, StatCollector.translateToLocal("gui.done")));
         controlList.add(new GuiButton(5, width / 2 + 5, height - 52, 150, 20, StatCollector.translateToLocal("createWorld.customize.presets")));
         controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StatCollector.translateToLocal("gui.cancel")));
-        field_82281_p.drawButton = field_82280_q.drawButton = false;
-        field_82279_c.func_82645_d();
+        buttonAddLayer.drawButton = buttonEditLayer.drawButton = false;
+        theFlatGeneratorInfo.func_82645_d();
         func_82270_g();
     }
 
@@ -62,16 +62,16 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
      */
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        int i = field_82279_c.getFlatLayers().size() - field_82284_o.field_82454_a - 1;
+        int i = theFlatGeneratorInfo.getFlatLayers().size() - createFlatWorldListSlotGui.field_82454_a - 1;
 
         if (par1GuiButton.id == 1)
         {
-            mc.displayGuiScreen(field_82277_b);
+            mc.displayGuiScreen(createWorldGui);
         }
         else if (par1GuiButton.id == 0)
         {
-            field_82277_b.field_82290_a = func_82275_e();
-            mc.displayGuiScreen(field_82277_b);
+            createWorldGui.field_82290_a = getFlatGeneratorInfo();
+            mc.displayGuiScreen(createWorldGui);
         }
         else if (par1GuiButton.id == 5)
         {
@@ -79,26 +79,26 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
         }
         else if (par1GuiButton.id == 4 && func_82272_i())
         {
-            field_82279_c.getFlatLayers().remove(i);
-            field_82284_o.field_82454_a = Math.min(field_82284_o.field_82454_a, field_82279_c.getFlatLayers().size() - 1);
+            theFlatGeneratorInfo.getFlatLayers().remove(i);
+            createFlatWorldListSlotGui.field_82454_a = Math.min(createFlatWorldListSlotGui.field_82454_a, theFlatGeneratorInfo.getFlatLayers().size() - 1);
         }
 
-        field_82279_c.func_82645_d();
+        theFlatGeneratorInfo.func_82645_d();
         func_82270_g();
     }
 
     public void func_82270_g()
     {
         boolean flag = func_82272_i();
-        field_82278_r.enabled = flag;
-        field_82280_q.enabled = flag;
-        field_82280_q.enabled = false;
-        field_82281_p.enabled = false;
+        buttonRemoveLayer.enabled = flag;
+        buttonEditLayer.enabled = flag;
+        buttonEditLayer.enabled = false;
+        buttonAddLayer.enabled = false;
     }
 
     private boolean func_82272_i()
     {
-        return field_82284_o.field_82454_a > -1 && field_82284_o.field_82454_a < field_82279_c.getFlatLayers().size();
+        return createFlatWorldListSlotGui.field_82454_a > -1 && createFlatWorldListSlotGui.field_82454_a < theFlatGeneratorInfo.getFlatLayers().size();
     }
 
     /**
@@ -107,26 +107,25 @@ public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld
     public void drawScreen(int par1, int par2, float par3)
     {
         drawDefaultBackground();
-        field_82284_o.drawScreen(par1, par2, par3);
-        drawCenteredString(fontRenderer, field_82276_d, width / 2, 8, 0xffffff);
+        createFlatWorldListSlotGui.drawScreen(par1, par2, par3);
+        drawCenteredString(fontRenderer, customizationTitle, width / 2, 8, 0xffffff);
         int i = width / 2 - 92 - 16;
-        drawString(fontRenderer, field_82285_m, i, 32, 0xffffff);
-        drawString(fontRenderer, field_82283_n, (i + 2 + 213) - fontRenderer.getStringWidth(field_82283_n), 32, 0xffffff);
+        drawString(fontRenderer, layerMaterialLabel, i, 32, 0xffffff);
+        drawString(fontRenderer, heightLabel, (i + 2 + 213) - fontRenderer.getStringWidth(heightLabel), 32, 0xffffff);
         GuiButton guibutton;
-
-        for (Iterator iterator = controlList.iterator(); iterator.hasNext(); guibutton.drawButton(mc, par1, par2))
-        {
+         for (Iterator iterator = controlList.iterator(); iterator.hasNext(); guibutton.drawButton(mc, par1, par2))
+         {
             guibutton = (GuiButton)iterator.next();
         }
     }
 
-    static RenderItem func_82274_h()
+    static RenderItem getRenderItem()
     {
-        return field_82282_a;
+        return theRenderItem;
     }
 
     static FlatGeneratorInfo func_82271_a(GuiCreateFlatWorld2 par0GuiCreateFlatWorld)
     {
-        return par0GuiCreateFlatWorld.field_82279_c;
+        return par0GuiCreateFlatWorld.theFlatGeneratorInfo;
     }
 }
