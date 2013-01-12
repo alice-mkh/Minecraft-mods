@@ -170,7 +170,9 @@ public class GuiNBXlite extends GuiScreen{
         if (guibutton.id == 1){
             GuiCreateWorld2.setDefaultNBXliteSettings();
             mc.displayGuiScreen(parent);
-            ((GuiCreateWorld2)parent).fixHardcoreButtons();
+            if (parent instanceof GuiCreateWorld2){
+                ((GuiCreateWorld2)parent).fixHardcoreButtons();
+            }
         }else if (guibutton.id == 0){
             if (!newworld){
                 selectWorld();
