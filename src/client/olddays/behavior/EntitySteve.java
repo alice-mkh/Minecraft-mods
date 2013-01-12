@@ -28,7 +28,7 @@ public class EntitySteve extends EntityCreature implements IMob{
     }*/
 
     public int getMaxHealth(){
-        return 20;
+        return 5;
     }
 
     public boolean getCanSpawnHere(){
