@@ -73,19 +73,16 @@ public class RenderBiped extends RenderLiving
                     modelbiped.isChild = mainModel.isChild;
                 }
 
-                float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(0) : 1.0F;
-
                 if (itemarmor.getArmorMaterial() == EnumArmorMaterial.CLOTH)
                 {
                     int i = itemarmor.getColor(itemstack);
                     float f1 = (float)(i >> 16 & 0xff) / 255F;
                     float f2 = (float)(i >> 8 & 0xff) / 255F;
                     float f3 = (float)(i & 0xff) / 255F;
-                    GL11.glColor3f(f * f1, f * f2, f * f3);
+                    GL11.glColor3f(f1, f2, f3);
                     return !itemstack.isItemEnchanted() ? 16 : 31;
                 }
 
-                GL11.glColor3f(f, f, f);
                 return !itemstack.isItemEnchanted() ? 1 : 15;
             }
         }
@@ -105,16 +102,13 @@ public class RenderBiped extends RenderLiving
             {
                 ItemArmor itemarmor = (ItemArmor)item;
                 loadTexture((new StringBuilder()).append("/armor/").append(bipedArmorFilenamePrefix[itemarmor.renderIndex]).append("_").append(par2 != 2 ? 1 : 2).append("_b.png").toString());
-                float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(0) : 1.0F;
-                GL11.glColor3f(f, f, f);
             }
         }
     }
 
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(0) : 1.0F;
-        GL11.glColor3f(f, f, f);
+        float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(par9) : 1.0F;
         ItemStack itemstack = par1EntityLiving.getHeldItem();
         func_82420_a(par1EntityLiving, itemstack);
         double d = par4 - (double)par1EntityLiving.yOffset;
@@ -124,6 +118,7 @@ public class RenderBiped extends RenderLiving
             d -= 0.125D;
         }
 
+        GL11.glColor3f(f, f, f);
         super.doRenderLiving(par1EntityLiving, par2, d, par6, par8, par9);
         field_82423_g.aimedBow = field_82425_h.aimedBow = modelBipedMain.aimedBow = false;
         field_82423_g.isSneak = field_82425_h.isSneak = modelBipedMain.isSneak = false;
@@ -138,8 +133,6 @@ public class RenderBiped extends RenderLiving
 
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
-        float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(0) : 1.0F;
-        GL11.glColor3f(f, f, f);
         super.renderEquippedItems(par1EntityLiving, par2);
         ItemStack itemstack = par1EntityLiving.getHeldItem();
         ItemStack itemstack1 = par1EntityLiving.getCurrentArmor(3);
