@@ -29,9 +29,10 @@ public class FakeServer extends IntegratedServer
         field_71350_m = par4WorldSettings;
         commandManager2 = new ClientCommandManager();
         worldServers = new WorldServer[3];
-        for (int i = 0; i < worldServers.length; i++){
-            worldServers[i] = new FakeWorldServer(this, (WorldSSP)par1Minecraft.theWorld, par4WorldSettings);
-        }
+//         for (int i = 0; i < worldServers.length; i++){
+//             worldServers[i] = new FakeWorldServer(this, (WorldSSP)par1Minecraft.theWorld, par4WorldSettings);
+//             worldServers[i].addWorldAccess(par1Minecraft.renderGlobal);
+//         }
     }
 
     protected void loadAllDimensions(String par1Str, String par2Str, long par3, WorldType par5WorldType)

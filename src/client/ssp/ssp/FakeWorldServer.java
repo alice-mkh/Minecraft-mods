@@ -272,4 +272,26 @@ public class FakeWorldServer extends WorldServer
     public void turnOnOldSpawners()
     {
     }
+
+    public void addWorldAccess(IWorldAccess par1IWorldAccess)
+    {
+    }
+
+
+    /**
+     * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
+     * including the tile entity description packet if applicable. Args: x, y, z
+     */
+    public void markBlockForUpdate(int par1, int par2, int par3)
+    {
+        normalWorld.markBlockForUpdate(par1, par2, par3);
+    }
+
+    /**
+     * marks a vertical line of blocks as dirty
+     */
+    public void markBlocksDirtyVertical(int par1, int par2, int par3, int par4)
+    {
+        normalWorld.markBlocksDirtyVertical(par1, par2, par3, par4);
+    }
 }
