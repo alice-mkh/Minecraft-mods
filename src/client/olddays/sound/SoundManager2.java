@@ -134,6 +134,9 @@ public class SoundManager2 extends SoundManager{
             }
             str = "olddays.door_close";
         }
+        if (par1Str.startsWith("dig.sand") && steps){
+            return "dig.gravel";
+        }
         if (par1Str.startsWith("step.") && steps){
             if (par1Str.endsWith(".ladder")){
                 return "nothing";
