@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class EntitySlime extends EntityLiving implements IMob
 {
-    public static boolean allow = true;
     public static int slimeSpawn = 5;
 
     public float field_70813_a;
@@ -288,7 +287,7 @@ public class EntitySlime extends EntityLiving implements IMob
      */
     public boolean getCanSpawnHere()
     {
-        if (!allow || slimeSpawn==0){
+        if (slimeSpawn==0){
             return false;
         }
         if (slimeSpawn==1){

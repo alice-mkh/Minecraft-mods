@@ -4,8 +4,6 @@ import java.util.Random;
 
 public class EntitySquid extends EntityWaterMob
 {
-    public static boolean allow = true;
-
     public float field_70861_d;
     public float field_70862_e;
     public float field_70859_f;
@@ -222,6 +220,6 @@ public class EntitySquid extends EntityWaterMob
      */
     public boolean getCanSpawnHere()
     {
-        return posY > 45D && posY < 63D && super.getCanSpawnHere() && allow;
+        return posY > 45D && posY < 63D && super.getCanSpawnHere();
     }
 }

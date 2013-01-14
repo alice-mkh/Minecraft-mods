@@ -58,12 +58,9 @@ public class ODMobs extends OldDaysModule{
                         color = 2;
                     }
                     set(EntitySheep.class, "color", color);
-                    set(EntityOcelot.class, "allow", Mobs>=10);
-                    set(EntitySquid.class, "allow", Mobs>=6);
                     set(EntitySpider.class, "jockeys", Mobs>=5);
                     set(EntityZombie.class, "custom", Mobs>=11);
-                    set(EntitySkeleton.class, "custom", Mobs>=11);
-                    set(EntitySlime.class, "allow", Mobs>=3); break;
+                    set(EntitySkeleton.class, "custom", Mobs>=11); break;
             case 9: set(EntitySlime.class, "slimeSpawn", Slimes); break;
             case 10:set(EntityEnderman.class, "oldPicking", Endermen); break;
         }

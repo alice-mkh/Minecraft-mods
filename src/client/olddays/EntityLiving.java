@@ -37,7 +37,8 @@ public abstract class EntityLiving extends Entity
         return newai;
     }
 
-    private boolean allow(String id, int dim){
+    public boolean allow(int dim){
+        String id = EntityList.getEntityString(this);
         /*if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
             return false;
         }*/
@@ -2360,9 +2361,6 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
-        if (!allow(EntityList.getEntityString(this), worldObj.provider.dimensionId)){
-            return false;
-        }
         return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
     }
 

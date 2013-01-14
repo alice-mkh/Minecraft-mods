@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 public class EntityRana extends EntityCreature implements IMob{
-    public static boolean allow = false;
-
     public EntityRana(World w){
         super(w);
     }
@@ -23,7 +21,7 @@ public class EntityRana extends EntityCreature implements IMob{
         return 5;
     }
 
-    public boolean getCanSpawnHere(){
-        return allow && super.getCanSpawnHere();
+    public boolean allow(int dim){
+        return false;
     }
 }

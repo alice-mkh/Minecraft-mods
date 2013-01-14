@@ -138,6 +138,10 @@ public final class SpawnerAnimalsBeta
                                                     }
 
                                                     var43.setLocationAndAngles((double)var27, (double)var28, (double)var29, var0.rand.nextFloat() * 360.0F, 0.0F);
+                                                    if(!var43.allow(var0.provider.dimensionId))
+                                                    {
+                                                        continue;
+                                                    }
                                                     if(var43.getCanSpawnHere())
                                                     {
                                                         ++var20;

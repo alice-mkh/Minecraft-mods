@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 public class EntitySteve extends EntityCreature implements IMob{
-    public static boolean allow = false;
-
     public int type;
 
     public EntitySteve(World w){
@@ -31,9 +29,10 @@ public class EntitySteve extends EntityCreature implements IMob{
         return 5;
     }
 
-    public boolean getCanSpawnHere(){
-        return allow && super.getCanSpawnHere();
+    public boolean allow(int dim){
+        return false;
     }
+    
 
     public static class RenderMD3Steve extends RenderMD3{
         public RenderMD3Steve(boolean anim, String model, String texture){

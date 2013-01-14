@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class EntityOcelot extends EntityTameable
 {
-    public static boolean allow = true;
-
     /**
      * The tempt AI task for this mob, used to prevent taming while it is fleeing.
      */
@@ -346,9 +344,6 @@ public class EntityOcelot extends EntityTameable
      */
     public boolean getCanSpawnHere()
     {
-        if (!allow){
-            return false;
-        }
         if (worldObj.rand.nextInt(3) == 0)
         {
             return false;
