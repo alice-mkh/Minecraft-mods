@@ -403,7 +403,7 @@ public class PlayerHelper {
       CMDS.put("unbind", new String[] { "Unbinds a key which has been bound to a command", "<KEYNAME|all>", "e" });
       CMDS.put("unbindid", new String[] { "Unbinds a command from a keyboard key using the key id", "<ID>", "22" });
       CMDS.put("unbinditem", new String[] { "Unbinds the currently selected items bindings, or all bindings", "[all]", "all" });
-      CMDS.put("update", new String[] { "Configures the update warnings", "<enable|disable|check>", "enable" });
+//       CMDS.put("update", new String[] { "Configures the update warnings", "<enable|disable|check>", "enable" });
       CMDS.put("useportal", new String[] { "Instantly transfers you to the specified dimension", "<normal|nether|end|PORTAL>", "-1" });
       CMDS.put("waterdamage", new String[] { "Turns water damage on/off", "", "" });
       CMDS.put("watermovement", new String[] { "Turns water and lava slowdown and current effects off.", "", "" });
@@ -6122,14 +6122,14 @@ public class PlayerHelper {
       if (!startup.equalsIgnoreCase("")) {
          processCommand(startup);
       }
-      if (updateson) {
+      /*if (updateson) {
          try {
             Method m = PlayerHelper.class.getDeclaredMethod("updateAvailable", Vector.class);
             (new SPCCheckVersion(new SPCVersion[]{EntityPlayerSPSPC.SPCVERSION},EntityPlayerSPSPC.MCVERSION,m,this)).start();
          } catch (Throwable t) {
             PlayerHelper.printStackTrace(t);
          }
-      }
+      }*/
    }
 
    /**
