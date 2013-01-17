@@ -8,14 +8,15 @@ import net.minecraft.src.WorldGenerator;
 
 public class OldWorldGenMinable extends WorldGenerator
 {
-
+    private boolean bug;
     private int minableBlockId;
     private int numberOfBlocks;
 
-    public OldWorldGenMinable(int i, int j)
+    public OldWorldGenMinable(int i, int j, boolean b)
     {
         minableBlockId = i;
         numberOfBlocks = j;
+        bug = b;
     }
 
     public boolean generate(World world, Random random, int i, int j, int k)
@@ -35,12 +36,12 @@ public class OldWorldGenMinable extends WorldGenerator
             double d9 = (random.nextDouble() * (double)numberOfBlocks) / 16D;
             double d10 = (double)(MathHelper.sin(((float)l * 3.141593F) / (float)numberOfBlocks) + 1.0F) * d9 + 1.0D;
             double d11 = (double)(MathHelper.sin(((float)l * 3.141593F) / (float)numberOfBlocks) + 1.0F) * d9 + 1.0D;
-            int i1 = MathHelper.floor_double(d6 - d10 / 2D);
-            int j1 = MathHelper.floor_double(d7 - d11 / 2D);
-            int k1 = MathHelper.floor_double(d8 - d10 / 2D);
-            int l1 = MathHelper.floor_double(d6 + d10 / 2D);
-            int i2 = MathHelper.floor_double(d7 + d11 / 2D);
-            int j2 = MathHelper.floor_double(d8 + d10 / 2D);
+            int i1 = bug ? (int)(d6 - d10 / 2D) : MathHelper.floor_double(d6 - d10 / 2D);
+            int j1 = bug ? (int)(d7 - d11 / 2D) : MathHelper.floor_double(d7 - d11 / 2D);
+            int k1 = bug ? (int)(d8 - d10 / 2D) : MathHelper.floor_double(d8 - d10 / 2D);
+            int l1 = bug ? (int)(d6 + d10 / 2D) : MathHelper.floor_double(d6 + d10 / 2D);
+            int i2 = bug ? (int)(d7 + d11 / 2D) : MathHelper.floor_double(d7 + d11 / 2D);
+            int j2 = bug ? (int)(d8 + d10 / 2D) : MathHelper.floor_double(d8 + d10 / 2D);
             for(int k2 = i1; k2 <= l1; k2++)
             {
                 double d12 = (((double)k2 + 0.5D) - d6) / (d10 / 2D);

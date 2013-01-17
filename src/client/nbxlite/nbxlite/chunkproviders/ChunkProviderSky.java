@@ -355,7 +355,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int l5 = k + rand.nextInt(16);
             int i9 = rand.nextInt(128);
             int k13 = l + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.dirt.blockID, 32)).generate(worldObj, rand, l5, i9, k13);
+            (new OldWorldGenMinable(Block.dirt.blockID, 32, false)).generate(worldObj, rand, l5, i9, k13);
         }
 
         for(int k2 = 0; k2 < 10; k2++)
@@ -363,7 +363,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int i6 = k + rand.nextInt(16);
             int j9 = rand.nextInt(128);
             int l13 = l + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.gravel.blockID, 32)).generate(worldObj, rand, i6, j9, l13);
+            (new OldWorldGenMinable(Block.gravel.blockID, 32, false)).generate(worldObj, rand, i6, j9, l13);
         }
 
         for(int i3 = 0; i3 < 20; i3++)
@@ -371,7 +371,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int j6 = k + rand.nextInt(16);
             int k9 = rand.nextInt(128);
             int i14 = l + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreCoal.blockID, 16)).generate(worldObj, rand, j6, k9, i14);
+            (new OldWorldGenMinable(Block.oreCoal.blockID, 16, false)).generate(worldObj, rand, j6, k9, i14);
         }
 
         for(int j3 = 0; j3 < 20; j3++)
@@ -379,7 +379,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int k6 = k + rand.nextInt(16);
             int l9 = rand.nextInt(64);
             int j14 = l + rand.nextInt(16);
-            (new OldWorldGenMinable(Block.oreIron.blockID, 8)).generate(worldObj, rand, k6, l9, j14);
+            (new OldWorldGenMinable(Block.oreIron.blockID, 8, false)).generate(worldObj, rand, k6, l9, j14);
         }
 
         for(int k3 = 0; k3 < 2; k3++)
@@ -387,7 +387,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int l6 = k + rand.nextInt(16);
             int i10 = rand.nextInt(32);
             int k14 = l + rand.nextInt(16);
-            (new WorldGenMinable(Block.oreGold.blockID, 8)).generate(worldObj, rand, l6, i10, k14);
+            (new OldWorldGenMinable(Block.oreGold.blockID, 8, false)).generate(worldObj, rand, l6, i10, k14);
         }
 
         for(int l3 = 0; l3 < 8; l3++)
@@ -395,7 +395,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int i7 = k + rand.nextInt(16);
             int j10 = rand.nextInt(16);
             int l14 = l + rand.nextInt(16);
-            (new WorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, i7, j10, l14);
+            (new OldWorldGenMinable(Block.oreRedstone.blockID, 7, false)).generate(worldObj, rand, i7, j10, l14);
         }
 
         for(int i4 = 0; i4 < 1; i4++)
@@ -403,7 +403,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int j7 = k + rand.nextInt(16);
             int k10 = rand.nextInt(16);
             int i15 = l + rand.nextInt(16);
-            (new WorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, j7, k10, i15);
+            (new OldWorldGenMinable(Block.oreDiamond.blockID, 7, false)).generate(worldObj, rand, j7, k10, i15);
         }
 
         for(int j4 = 0; j4 < 1; j4++)
@@ -411,7 +411,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int k7 = k + rand.nextInt(16);
             int l10 = rand.nextInt(16) + rand.nextInt(16);
             int j15 = l + rand.nextInt(16);
-            (new WorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, k7, l10, j15);
+            (new OldWorldGenMinable(Block.oreLapis.blockID, 6, false)).generate(worldObj, rand, k7, l10, j15);
         }
         if (ODNBXlite.GenerateNewOres){
             int max = 0;
