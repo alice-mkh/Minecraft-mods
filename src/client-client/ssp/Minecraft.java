@@ -321,6 +321,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public static boolean timecontrol = false;
     public static boolean oldlighting = false;
     public static boolean indevShapeSize = false;
+    public static boolean thirdperson = false;
+    public static boolean oldthirdperson = false;
+    public static boolean oldHideGui = false;
     public int forcedDifficulty;
     public boolean overrideMobSpawning;
 
@@ -1839,7 +1842,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                                 gameSettings.saveOptions();
                             }
 
-                            if (Keyboard.getEventKey() == 59)
+                            if (Keyboard.getEventKey() == 59 && !oldHideGui)
                             {
                                 gameSettings.hideGUI = !gameSettings.hideGUI;
                             }
@@ -1850,13 +1853,17 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                                 gameSettings.showDebugProfilerChart = GuiScreen.isShiftKeyDown();
                             }
 
-                            if (Keyboard.getEventKey() == 63)
+                            if (Keyboard.getEventKey() == 63 && thirdperson)
                             {
-                                gameSettings.thirdPersonView++;
+                                if (oldthirdperson){
+                                    gameSettings.thirdPersonView = gameSettings.thirdPersonView > 0 ? 0 : 1;
+                                }else{
+                                    gameSettings.thirdPersonView++;
 
-                                if (gameSettings.thirdPersonView > 2)
-                                {
-                                    gameSettings.thirdPersonView = 0;
+                                    if (gameSettings.thirdPersonView > 2)
+                                    {
+                                        gameSettings.thirdPersonView = 0;
+                                    }
                                 }
                             }
 
@@ -1962,6 +1969,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 }
                 if(Keyboard.isKeyDown(65)){
                     ((WorldSSP)theWorld).field_35465_L += 0.001D;
+                }
+            }
+
+            if (oldHideGui)
+            {
+                gameSettings.hideGUI = Keyboard.isKeyDown(59);
+                if (gameSettings.thirdPersonView > 0){
+                    gameSettings.thirdPersonView = Keyboard.isKeyDown(59) ? 2 : 1;
                 }
             }
             if (thePlayer != null)

@@ -16,6 +16,8 @@ public class EntityRenderer
     public static boolean sunriseFog = true;
     public static boolean sunriseAtNorth = false;
     public static boolean thirdPersonBobbing = true;
+    public static boolean thirdPersonShoulder = false;
+    public static boolean oldFaceView = false;
     public static boolean classicLight = false;
     public static boolean voidFog = true;
     public static boolean oldFog = false;
@@ -503,12 +505,15 @@ public class EntityRenderer
             }
             else
             {
-                float f2 = entityliving.rotationYaw;
-                float f4 = entityliving.rotationPitch;
+                float f2 = entityliving.rotationYaw - (thirdPersonShoulder ? 10F : 0F);
+                float f4 = entityliving.rotationPitch + (thirdPersonShoulder ? 2F : 0F);
 
                 if (mc.gameSettings.thirdPersonView == 2)
                 {
                     f4 += 180F;
+                    if (oldFaceView){
+                        d3 += 2.0D;
+                    }
                 }
 
                 double d4 = (double)(-MathHelper.sin((f2 / 180F) * (float)Math.PI) * MathHelper.cos((f4 / 180F) * (float)Math.PI)) * d3;

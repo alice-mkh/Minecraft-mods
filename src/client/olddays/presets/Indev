@@ -5,6 +5,7 @@ Eyecandy.InvBlocks=0
 Eyecandy.Hand=1
 Eyecandy.Labels=true
 Eyecandy.OldCreativeInv=true
+Eyecandy.ThirdPerson=1
 Eyecandy.OldItems=true
 Eyecandy.OldBackground=true
 Mobs.AI=0

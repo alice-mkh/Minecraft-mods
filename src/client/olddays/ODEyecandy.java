@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.*;
+import net.minecraft.client.Minecraft;
 
 public class ODEyecandy extends OldDaysModule{
     public ODEyecandy(mod_OldDays c){
@@ -28,7 +29,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   21,true,  "SmoothLoading");
         new OldDaysPropertyBool(this,   22,false, "OldCreativeInv");
         new OldDaysPropertyBool(this,   23,true,  "OldSwing");
-        new OldDaysPropertyBool(this,   24,false, "TPBobbing");
+        new OldDaysPropertyInt(this,    24,3,     "ThirdPerson", 6).setUseNames();
         new OldDaysPropertyBool(this,   25,false, "WaterParticles");
         new OldDaysPropertyBool(this,   26,false, "OldItems");
         new OldDaysPropertyBool(this,   27,false, "OldBackground");
@@ -83,8 +84,17 @@ public class ODEyecandy extends OldDaysModule{
             case 21:set(LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
             case 22:set(GuiInventory.class, "oldcreative", OldCreativeInv); break;
             case 23:set(EntityLiving.class, "oldswing", OldSwing);
-                    set(net.minecraft.client.Minecraft.class, "oldswing", OldSwing); break;
-            case 24:set(EntityRenderer.class, "thirdPersonBobbing", TPBobbing); break;
+                    set(Minecraft.class, "oldswing", OldSwing); break;
+            case 24:set(Minecraft.class, "thirdperson", ThirdPerson >= 1);
+                    set(EntityRenderer.class, "thirdPersonShoulder", ThirdPerson == 2);
+                    set(Minecraft.class, "oldHideGui", ThirdPerson == 3);
+                    set(EntityRenderer.class, "oldFaceView", ThirdPerson == 3);
+                    set(EntityRenderer.class, "thirdPersonBobbing", ThirdPerson >= 4);
+                    set(Minecraft.class, "oldthirdperson", ThirdPerson <= 4);
+                    set(RenderLiving.class, "oldHeadRotation", ThirdPerson <= 5);
+                    if (ThirdPerson == 0 && Minecraft.getMinecraft().gameSettings.thirdPersonView > 0){
+                        Minecraft.getMinecraft().gameSettings.thirdPersonView = 0;
+                    }break;
             case 25:set(EntitySuspendFX.class, "allow", WaterParticles); break;
             case 26:set(RenderItem.class, "oldrendering", OldItems); break;
             case 27:set(GuiScreen.class, "oldbg", OldBackground); break;
@@ -123,7 +133,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean SmoothLoading = true;
     public static boolean OldCreativeInv;
     public static boolean OldSwing = true;
-    public static boolean TPBobbing = true;
+    public static int ThirdPerson;
     public static boolean WaterParticles;
     public static boolean OldItems;
     public static boolean OldBackground;
