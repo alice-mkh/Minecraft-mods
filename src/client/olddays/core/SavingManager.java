@@ -194,7 +194,7 @@ public class SavingManager{
         }
         catch(Exception e){
             e.printStackTrace();
-            System.out.println("OldDays: Failed to load preset");
+            System.out.println("OldDays: Failed to save preset");
         }
     }
 
