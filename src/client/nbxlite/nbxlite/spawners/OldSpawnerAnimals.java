@@ -161,7 +161,6 @@ public class OldSpawnerAnimals
                         }
                         if(!entityliving.allow(world.provider.dimensionId))
                         {
-                            l3--;
                             continue;
                         }
                         if(isBounds(i3, k3)){
