@@ -44,16 +44,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         super.mouseClicked(par1, par2, par3);
     }
 
-    protected boolean matches(OldDaysProperty prop, String str){
-        str = str.toLowerCase();
-        Pattern pat;
-        try{
-            pat = Pattern.compile(str);
-        }catch(PatternSyntaxException ex){
-            searchField.correct = false;
-            return false;
-        }
-        searchField.correct = true;
+    protected boolean matches(OldDaysProperty prop, Pattern pat){
         if (pat.matcher(prop.getButtonText().toLowerCase()).find()){
             return true;
         }
@@ -71,12 +62,21 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         int count = 0;
-        for (int i = 0; i < mod_OldDays.modules.size(); i++){
-            OldDaysModule module = mod_OldDays.modules.get(i);
-            for (int j = 0; j < module.properties.size(); j++){
-                OldDaysProperty prop = module.getPropertyById(j + 1);
-                if (matches(prop, str)){
-                    addButton(count, false, count++, prop);
+        searchField.correct = true;
+        Pattern pat = null;
+        try{
+            pat = Pattern.compile(str.toLowerCase());
+        }catch(PatternSyntaxException ex){
+            searchField.correct = false;
+        }
+        if (searchField.correct){
+            for (int i = 0; i < mod_OldDays.modules.size(); i++){
+                OldDaysModule module = mod_OldDays.modules.get(i);
+                for (int j = 0; j < module.properties.size(); j++){
+                    OldDaysProperty prop = module.getPropertyById(j + 1);
+                    if (matches(prop, pat)){
+                        addButton(count, false, count++, prop);
+                    }
                 }
             }
         }

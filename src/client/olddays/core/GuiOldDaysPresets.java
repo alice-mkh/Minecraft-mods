@@ -21,29 +21,24 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         updateList("");
     }
 
-    protected boolean matches(String str1, String str2){
-        str1 = str1.toLowerCase();
-        str2 = str2.toLowerCase();
-        Pattern pat;
-        try{
-            pat = Pattern.compile(str2);
-        }catch(PatternSyntaxException ex){
-            searchField.correct = false;
-            return false;
-        }
-        searchField.correct = true;
-        return pat.matcher(str1).find();
-    }
-
     protected void updateList(String str){
         controlList.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
         controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         presets = custom ? core.saveman.getCustomPresets() : core.saveman.getDefaultPresets();
         int count = 0;
-        for (int i = 0; i < presets.length; i++){
-            if (matches(presets[i], str)){
-                addButton(count++, false, i, presets[i], true, true);
+        searchField.correct = true;
+        Pattern pat = null;
+        try{
+            pat = Pattern.compile(str.toLowerCase());
+        }catch(PatternSyntaxException ex){
+            searchField.correct = false;
+        }
+        if (searchField.correct){
+            for (int i = 0; i < presets.length; i++){
+                if (pat.matcher(presets[i].toLowerCase()).find()){
+                    addButton(count++, false, i, presets[i], true, true);
+                }
             }
         }
         int y = height / 6 - 15 + ((11/2) * 30);
