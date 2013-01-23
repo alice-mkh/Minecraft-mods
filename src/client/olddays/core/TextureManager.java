@@ -5,16 +5,19 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.*;
 
 public class TextureManager{
     private RenderEngine renderEngine;
     protected ArrayList<TextureSpriteFX> textureHooks;
     private String currentpack;
+    private HashMap<String, Boolean> entryCache;
 
     public TextureManager(){
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
         textureHooks = new ArrayList<TextureSpriteFX>();
+        entryCache = new HashMap<String, Boolean>();
     }
 
     public void setTextureHook(String name, int i2, String name2, int index, boolean b){
@@ -60,6 +63,7 @@ public class TextureManager{
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraft().renderEngine.getTexture("/terrain.png"));
             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
+            entryCache.clear();
             setFallback(!hasEntry("olddays"));
         }
     }
@@ -87,15 +91,23 @@ public class TextureManager{
                 return true;
             }
             for (int i = 0; i < str.length; i++){
-                if (texpack instanceof TexturePackFolder){
+                if (entryCache.containsKey(str[i])){
+                    if (!entryCache.get(str[i])){
+                        return false;
+                    }
+                }else if (texpack instanceof TexturePackFolder){
                     File orig = ((File)mod_OldDays.getField(TexturePackImplementation.class, texpack, 2));
                     File file = new File(orig, str[i]);
-                    if (!file.exists()){
+                    boolean b = file.exists();
+                    entryCache.put(str[i], b);
+                    if (!b){
                         return false;
                     }
                 }else{
                     ZipFile file = ((ZipFile)mod_OldDays.getField(TexturePackCustom.class, texpack, 0));
-                    if (file.getEntry(str[i]) == null){
+                    boolean b = file.getEntry(str[i]) != null;
+                    entryCache.put(str[i], b);
+                    if (!b){
                         return false;
                     }
                 }
