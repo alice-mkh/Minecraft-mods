@@ -116,7 +116,7 @@ public class CommandClientTp extends CommandServerTp
     public static EntityPlayerSP getPlayerForUsername(ICommandSender par0ICommandSender, String par1Str)
     {
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
-        if (entityplayersp.username.equals(par1Str)){
+        if (!entityplayersp.username.equals(par1Str)){
             throw new PlayerNotFoundException();
         }
         return entityplayersp;
