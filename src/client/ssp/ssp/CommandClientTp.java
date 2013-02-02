@@ -11,13 +11,21 @@ public class CommandClientTp extends CommandServerTp
 
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
-        if (par2ArrayOfStr.length == 3)
+        if (par2ArrayOfStr.length == 3 || par2ArrayOfStr.length == 4)
         {
             Minecraft minecraft = Minecraft.getMinecraft();
             if (minecraft.theWorld != null)
             {
                 int i = par2ArrayOfStr.length - 3;
-                EntityPlayerSP entityplayersp = ((EntityPlayerSP)par1ICommandSender);
+                EntityPlayerSP entityplayersp = null;
+                if (par1ICommandSender instanceof EntityPlayerSP){
+                    entityplayersp = (EntityPlayerSP)par1ICommandSender;
+                }else if (par2ArrayOfStr.length == 4){
+                    entityplayersp = getPlayerForUsername(par1ICommandSender, par2ArrayOfStr[0]);
+                }
+                if (entityplayersp == null){
+                    throw new PlayerNotFoundException("You must specify which player you wish to perform this action on.", new Object[0]);
+                }
                 double d = func_82368_a(par1ICommandSender, entityplayersp.posX, par2ArrayOfStr[i++]);
                 double d1 = func_82367_a(par1ICommandSender, entityplayersp.posY, par2ArrayOfStr[i++], 0, 0);
                 double d2 = func_82368_a(par1ICommandSender, entityplayersp.posZ, par2ArrayOfStr[i++]);
@@ -103,5 +111,14 @@ public class CommandClientTp extends CommandServerTp
         }
 
         return d;
+    }
+
+    public static EntityPlayerSP getPlayerForUsername(ICommandSender par0ICommandSender, String par1Str)
+    {
+        EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
+        if (entityplayersp.username.equals(par1Str)){
+            throw new PlayerNotFoundException();
+        }
+        return entityplayersp;
     }
 }
