@@ -78,11 +78,4 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
             return commandSet2;
         }
     }
-
-    public void executeCommand(ICommandSender par1ICommandSender, String par2Str){
-        if (par2Str.startsWith("/")){
-            par2Str = "/" + par2Str;
-        }
-        super.executeCommand(par1ICommandSender, par2Str);
-    }
 }
