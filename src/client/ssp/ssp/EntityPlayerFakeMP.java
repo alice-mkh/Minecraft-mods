@@ -106,7 +106,7 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
         return false;
     }
 
-    public void travelToTheEnd(int par1)
+    public void travelToDimension(int par1)
     {
     }
 

@@ -61,7 +61,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     {
     }
 
-    public void travelToTheEnd(int par1)
+    public void travelToDimension(int par1)
     {
         if (worldObj.isRemote)
         {
