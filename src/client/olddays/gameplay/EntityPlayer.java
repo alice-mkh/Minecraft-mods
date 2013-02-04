@@ -154,7 +154,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     protected int applyArmorCalculations_old(DamageSource damagesource, int i)
     {
-        if (!par1DamageSource.isUnblockable() || armorblocksall)
+        if (!damagesource.isUnblockable() || armorblocksall)
         {
             int j = 25 - getTotalArmorValue();
             int k = i * j + carryoverDamage;
