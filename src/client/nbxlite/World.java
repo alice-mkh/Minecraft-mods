@@ -1946,19 +1946,23 @@ public abstract class World implements IBlockAccess
             }
             int i = MathHelper.floor_double(entity.posX);
             int j = MathHelper.floor_double(entity.posZ);
-            float f7;
             int k;
-            if (ODNBXlite.SkyColor==0){
-                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES || provider.dimensionId != 0){
+            if (provider.dimensionId != 0){
+                BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
+                float f7 = biomegenbase.getFloatTemperature();
+                k = biomegenbase.getSkyColorByTemp(f7);
+            }else if (ODNBXlite.SkyColor==0){
+                if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES){
                     BiomeGenBase biomegenbase = getBiomeGenForCoords(i, j);
-                    if (provider.dimensionId==0 && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
+                    float f7;
+                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                         f7 = 0.2146759F;
                     }else{
                         f7 = biomegenbase.getFloatTemperature();
                     }
                     k = biomegenbase.getSkyColorByTemp(f7);
                 }else if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures!=ODNBXlite.FEATURES_SKY){
-                    f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
+                    float f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
                     k = getWorldChunkManager().oldGetBiomeGenAt(i, j).getSkyColorByTemp(f7);
                 }else{
                     k = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
