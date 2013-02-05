@@ -34,7 +34,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
                 if (field.isFocused()){
                     showField(false, ((GuiButton)controlList.get(fieldId)));
                 }
-            }else if (controlList.get(fieldId) instanceof GuiButtonProp){
+            }else if (controlList.get(fieldId) != null && controlList.get(fieldId) instanceof GuiButtonProp){
                 GuiButtonProp button = ((GuiButtonProp)controlList.get(fieldId));
                 button.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
