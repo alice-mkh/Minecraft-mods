@@ -80,6 +80,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#generateBigTree(com.sk89q.worldedit.EditSession, com.sk89q.worldedit.Vector)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public boolean generateBigTree(EditSession session, Vector pos) {
       WorldGenBigTree bigtree = new WorldGenBigTree(true);
@@ -89,6 +90,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#generateTree(com.sk89q.worldedit.EditSession, com.sk89q.worldedit.Vector)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public boolean generateTree(EditSession session, Vector pos) {
       WorldGenTrees tree = new WorldGenTrees(true);
@@ -122,6 +124,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#killMobs(com.sk89q.worldedit.Vector, int)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public int killMobs(Vector pos, int radius) {
       // Getting a list of Entities within radius
@@ -325,6 +328,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#generateBirchTree(com.sk89q.worldedit.EditSession, com.sk89q.worldedit.Vector)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public boolean generateBirchTree(EditSession session, Vector pos)
    throws MaxChangedBlocksException {
@@ -335,6 +339,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#generateRedwoodTree(com.sk89q.worldedit.EditSession, com.sk89q.worldedit.Vector)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public boolean generateRedwoodTree(EditSession session, Vector pos)
    throws MaxChangedBlocksException {
@@ -345,6 +350,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#generateTallRedwoodTree(com.sk89q.worldedit.EditSession, com.sk89q.worldedit.Vector)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public boolean generateTallRedwoodTree(EditSession session, Vector pos)
    throws MaxChangedBlocksException {
@@ -357,7 +363,44 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
     */
    @Override
    public boolean regenerate(Region arg0, EditSession arg1) {
-      // TODO Auto-generated method stub
+      Vector v1 = arg0.getMinimumPoint();
+      Vector v2 = arg0.getMaximumPoint();
+      int cx1 = (int)v1.getX() >> 4;
+      int cz1 = (int)v1.getZ() >> 4;
+      int cx2 = (int)v2.getX() >> 4;
+      int cz2 = (int)v2.getZ() >> 4;
+      int miny = 0;//(int)v1.getY();
+      int maxy = 128;//(int)v2.getY();
+      IChunkProvider p = ((ChunkProvider)world.chunkProvider).getChunkProvider();
+//       System.out.println(cx1+" "+cz1+" "+cx2+" "+cz2);
+      for (int i = cx1; i <= cx2; i++){
+         for (int j = cz1; j <= cz2; j++){
+            Chunk c = p.provideChunk(i, j);
+            int cx = c.xPosition << 4;
+            int cz = c.zPosition << 4;
+//             int minx = cx > (int)v1.getX() ? 0 : (int)v1.getX() & 0xf;
+//             int maxx = cx < (int)v2.getX() ? 16 : (int)v2.getX() & 0xf;
+//             int minz = cz > (int)v1.getZ() ? 0 : (int)v1.getZ() & 0xf;
+//             int maxz = cz < (int)v2.getZ() ? 16 : (int)v2.getZ() & 0xf;
+            int minx = 0;
+            int maxx = 16;
+            int minz = 0;
+            int maxz = 16;
+//             System.out.println(cx+" "+cz+": "+minx+" "+maxx+" "+minz+" "+maxz);
+            for (int x = minx; x < maxx; x++){
+                for (int y = miny; y < maxy; y++){
+                    for (int z = minz; z < maxz; z++){
+                        world.setBlockAndMetadata(cx + x, y, cz + z, c.getBlockID(x, y, z), c.getBlockMetadata(x, y, z));
+                    }
+                }
+            }
+         }
+      }
+      for (int i = cx1; i <= cx2; i++){
+         for (int j = cz1; j <= cz2; j++){
+            p.populate(((ChunkProvider)world.chunkProvider), i, j);
+         }
+      }
       return false;
    }
 
@@ -381,6 +424,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#killMobs(com.sk89q.worldedit.Vector, int, boolean)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public int killMobs(Vector arg0, int arg1, boolean arg2) {
       // TODO Auto-generated method stub

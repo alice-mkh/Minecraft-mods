@@ -331,4 +331,7 @@ public class ChunkProvider implements IChunkProvider
     {
     }
 
+    public IChunkProvider getChunkProvider(){
+        return chunkProvider;
+    }
 }
