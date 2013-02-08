@@ -79,7 +79,7 @@ public class RenderLiving extends Render
         {
             float f = interpolateRotation(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
             float f1 = interpolateRotation(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
-            if (oldHeadRotation){
+            if (oldHeadRotation && par1EntityLiving == Minecraft.getMinecraft().thePlayer){
                 f1 = interpolateRotation(par1EntityLiving.prevRotationYaw, par1EntityLiving.rotationYaw, par9);
             }
             float f2 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
