@@ -321,7 +321,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public static boolean timecontrol = false;
     public static boolean oldlighting = false;
     public static boolean indevShapeSize = false;
-    public static boolean thirdperson = false;
+    public static boolean thirdperson = true;
     public static boolean oldthirdperson = false;
     public static boolean oldHideGui = false;
     public int forcedDifficulty;
