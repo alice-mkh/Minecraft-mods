@@ -44,6 +44,7 @@ NBXlite.BedrockFog=0
 NBXlite.Sunset=0
 NBXlite.SunriseAtNorth=2
 NBXlite.OldStars=2
+NBXlite.Saplings=0
 NBXlite.ShowGUI=false
 NBXlite.DefaultGenerator=1
 Textures.Wool=0

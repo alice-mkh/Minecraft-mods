@@ -82,6 +82,7 @@ NBXlite.Sunset=2
 NBXlite.SunriseAtNorth=0
 NBXlite.OldStars=0
 NBXlite.OldNetherFog=false
+NBXlite.Saplings=2
 NBXlite.ShowGUI=false
 Textures.Cobblestone=2
 Textures.MossStone=false

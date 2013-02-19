@@ -951,6 +951,14 @@ nbxlite.defaultfeaturesrelease.name=Default features
  nbxlite.defaultfeaturesrelease6.desc=Rotated logs for branches
  nbxlite.defaultfeaturesrelease7=1.4
  nbxlite.defaultfeaturesrelease7.desc=Swamp huts
+nbxlite.saplings.name=Oak saplings
+ nbxlite.saplings.desc1=Sets trees oak sapling can grow.
+ nbxlite.saplings1=Only normal
+ nbxlite.saplings1.desc=Only normal trees
+ nbxlite.saplings2=Only large
+ nbxlite.saplings2.desc=Only large trees
+ nbxlite.saplings3=Default
+ nbxlite.saplings3.desc=1/10 chance of large trees
 
 convert=Seleccionar opciones del mundo
 continue=Continuar

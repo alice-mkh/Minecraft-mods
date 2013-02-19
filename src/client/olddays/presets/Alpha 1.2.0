@@ -40,6 +40,7 @@ NBXlite.BedrockFog=0
 NBXlite.Sunset=1
 NBXlite.SunriseAtNorth=2
 NBXlite.OldStars=2
+NBXlite.Saplings=2
 NBXlite.ShowGUI=false
 NBXlite.DefaultGenerator=5
 NBXlite.DefaultFeaturesBeta=0

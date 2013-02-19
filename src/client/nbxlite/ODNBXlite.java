@@ -38,10 +38,11 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond(this,  23,1,     0,     "SunriseAtNorth");
         new OldDaysPropertyCond(this,  24,1,     0,     "OldStars");
         new OldDaysPropertyBool(this,  25,true,  false, "OldNetherFog");
-        new OldDaysPropertyBool(this,  26,true,  true,  "ShowGUI");
-        new OldDaysPropertyInt(this,   27,6,     6,     "DefaultGenerator", 6).setUseNames();
-        new OldDaysPropertyInt(this,   28,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
-        new OldDaysPropertyInt(this,   29,6,     6,     "DefaultFeaturesRelease", 6).setUseNames();
+        new OldDaysPropertyCond2(this, 26,-1,    2,     "Saplings", 2);
+        new OldDaysPropertyBool(this,  27,true,  true,  "ShowGUI");
+        new OldDaysPropertyInt(this,   28,6,     6,     "DefaultGenerator", 6).setUseNames();
+        new OldDaysPropertyInt(this,   29,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
+        new OldDaysPropertyInt(this,   30,6,     6,     "DefaultFeaturesRelease", 6).setUseNames();
         replaceBlocks();
         registerGears();
         terrfx = new TextureTerrainPngFX();
@@ -92,6 +93,7 @@ public class ODNBXlite extends OldDaysModule{
                     set(RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
             case 24:setOldStars(OldStars); break;
             case 25:set(EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
+            case 26:set(BlockSapling.class, "mode", Saplings); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
@@ -129,6 +131,8 @@ public class ODNBXlite extends OldDaysModule{
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 5;
     public static int DefaultFeaturesRelease = 6;
+    public static int Saplings = -1;
+
     public static int DefaultTheme = 0;
     public static int DefaultIndevType = 1;
     public static int DefaultFiniteWidth = 2;
@@ -171,6 +175,18 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean OldStars(){
         return Generator<GEN_NEWBIOMES || MapFeatures<FEATURES_13;
+    }
+
+    public static int Saplings(){
+        if (Generator == GEN_BIOMELESS){
+            if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0227 || MapFeatures == FEATURES_INFDEV0608){
+                return 0;
+            }
+            if (MapFeatures == FEATURES_INFDEV0420){
+                return 1;
+            }
+        }
+        return 2;
     }
 
     public void setOldStars(boolean b){

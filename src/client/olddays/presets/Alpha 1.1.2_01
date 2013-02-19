@@ -40,6 +40,7 @@ NBXlite.BedrockFog=0
 NBXlite.Sunset=0
 NBXlite.SunriseAtNorth=2
 NBXlite.OldStars=2
+NBXlite.Saplings=2
 NBXlite.ShowGUI=false
 NBXlite.DefaultGenerator=4
 Textures.Brick=1
