@@ -181,7 +181,7 @@ public class PlayerControllerSP extends PlayerController
         float f = (float)par8Vec3.xCoord - (float)par4;
         float f1 = (float)par8Vec3.yCoord - (float)par5;
         float f2 = (float)par8Vec3.zCoord - (float)par6;
-        
+
         if (!par1EntityPlayer.isSneaking() || par1EntityPlayer.getHeldItem() == null)
         {
             if (i > 0 && Block.blocksList[i].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, f, f1, f2))
