@@ -429,7 +429,7 @@ public class RenderLiving extends Render
     {
         double d = par1EntityLiving.getDistanceSqToEntity(renderManager.livingPlayer);
 
-        if (d > (double)(par9 * par9) && !oldlabels)
+        if (d > (double)(par9 * par9))
         {
             return;
         }
