@@ -136,43 +136,53 @@ public class ODActions extends OldDaysModule{
         ItemPickaxe2 pickaxeWood = new ItemPickaxe2(14, EnumToolMaterial.WOOD);
         pickaxeWood.setIconCoord(0, 6);
         pickaxeWood.setItemName("pickaxeWood");
+        mod_OldDays.setField(Item.class, null, 17, pickaxeWood);//Item: pickaxeWood
         Item.itemsList[256 + 18] = null;
         ItemPickaxe2 pickaxeStone = new ItemPickaxe2(18, EnumToolMaterial.STONE);
         pickaxeStone.setIconCoord(1, 6);
         pickaxeStone.setItemName("pickaxeStone");
+        mod_OldDays.setField(Item.class, null, 21, pickaxeStone);//Item: pickaxeStone
         Item.itemsList[256 + 1] = null;
         ItemPickaxe2 pickaxeSteel = new ItemPickaxe2(1, EnumToolMaterial.IRON);
         pickaxeSteel.setIconCoord(2, 6);
         pickaxeSteel.setItemName("pickaxeIron");
+        mod_OldDays.setField(Item.class, null, 4, pickaxeSteel);//Item: pickaxeSteel
         Item.itemsList[256 + 22] = null;
         ItemPickaxe2 pickaxeDiamond = new ItemPickaxe2(22, EnumToolMaterial.EMERALD);
         pickaxeDiamond.setIconCoord(3, 6);
         pickaxeDiamond.setItemName("pickaxeDiamond");
+        mod_OldDays.setField(Item.class, null, 25, pickaxeDiamond);//Item: pickaxeDiamond
         Item.itemsList[256 + 29] = null;
         ItemPickaxe2 pickaxeGold = new ItemPickaxe2(29, EnumToolMaterial.GOLD);
         pickaxeGold.setIconCoord(4, 6);
         pickaxeGold.setItemName("pickaxeGold");
+        mod_OldDays.setField(Item.class, null, 32, pickaxeGold);//Item: pickaxeGold
 
         Item.itemsList[256 + 15] = null;
         ItemAxe2 axeWood = new ItemAxe2(15, EnumToolMaterial.WOOD);
         axeWood.setIconCoord(0, 7);
         axeWood.setItemName("hatchetWood");
+        mod_OldDays.setField(Item.class, null, 18, axeWood);//Item: axeWood
         Item.itemsList[256 + 19] = null;
         ItemAxe2 axeStone = new ItemAxe2(19, EnumToolMaterial.STONE);
         axeStone.setIconCoord(1, 7);
         axeStone.setItemName("hatchetStone");
+        mod_OldDays.setField(Item.class, null, 22, axeStone);//Item: axeStone
         Item.itemsList[256 + 2] = null;
         ItemAxe2 axeSteel = new ItemAxe2(2, EnumToolMaterial.IRON);
         axeSteel.setIconCoord(2, 7);
         axeSteel.setItemName("hatchetIron");
+        mod_OldDays.setField(Item.class, null, 5, axeSteel);//Item: axeSteel
         Item.itemsList[256 + 23] = null;
         ItemAxe2 axeDiamond = new ItemAxe2(23, EnumToolMaterial.EMERALD);
         axeDiamond.setIconCoord(3, 7);
         axeDiamond.setItemName("hatchetDiamond");
+        mod_OldDays.setField(Item.class, null, 26, axeDiamond);//Item: axeDiamond
         Item.itemsList[256 + 30] = null;
         ItemAxe2 axeGold = new ItemAxe2(30, EnumToolMaterial.GOLD);
         axeGold.setIconCoord(4, 7);
         axeGold.setItemName("hatchetGold");
+        mod_OldDays.setField(Item.class, null, 33, axeGold);//Item: axeGold
     }
 
     private void setToolDurability(int i){
