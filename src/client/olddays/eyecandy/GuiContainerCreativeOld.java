@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public class GuiContainerCreativeOld extends GuiContainer
+public class GuiContainerCreativeOld extends InventoryEffectRenderer
 {
     private static InventoryBasic inventory = new InventoryBasic("tmp", 72);
 
