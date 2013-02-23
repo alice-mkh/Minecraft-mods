@@ -1336,7 +1336,7 @@ public abstract class World implements IBlockAccess
         if (isBounds(par1, par2, par3)){
             return provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
         }
-        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer != null && net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
         {
             float light = provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
             light += ((0.5F - light) * (0.7F * light)) + 0.5F;

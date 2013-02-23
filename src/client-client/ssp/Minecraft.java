@@ -1963,7 +1963,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
         if (theWorld != null)
         {
-            if (timecontrol && enableSP){
+            if (timecontrol && enableSP && currentScreen == null){
                 if(Keyboard.isKeyDown(64)){
                     ((WorldSSP)theWorld).field_35465_L -= 0.001D;
                 }
@@ -1972,7 +1972,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 }
             }
 
-            if (oldHideGui)
+            if (oldHideGui && currentScreen == null)
             {
                 gameSettings.hideGUI = Keyboard.isKeyDown(59);
                 if (gameSettings.thirdPersonView > 0){
@@ -3321,6 +3321,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public void switchSSP(boolean b){
+        if (isMultiplayerWorld() && !isSingleplayer()){
+            return;
+        }
         WorldClient world = theWorld;
         GuiScreen gui = currentScreen;
         String s1 = "";
