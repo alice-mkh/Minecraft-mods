@@ -832,6 +832,15 @@ public class EntityRenderer
                 {
                     f1 = 0.22F + f1 * 0.75F;
                 }
+                if (mc.thePlayer.isPotionActive(Potion.nightVision))
+                {
+                    float brightness = getNightVisionBrightness(mc.thePlayer, par1);
+                    float brightnessshift = brightness * 0.7F;
+                    float blockadjust = ((1.0F - f - 0.5F) * (brightnessshift * f)) + (0.5F * brightness);
+                    float skyadjust = ((1.0F - f1 - 0.5F) * (brightnessshift * f1)) + (0.5F * brightness);
+                    f += blockadjust;
+                    f1 += skyadjust;
+                }
                 int j1 = (int)(f * 255F);
                 int k1 = (int)(f1 * 255F);
                 float f2 = 1.0F - (float)lightTintRed / 255F;

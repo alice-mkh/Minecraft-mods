@@ -133,6 +133,15 @@ public class ChunkCache implements IBlockAccess
         if (worldObj.provider.dimensionId == 1){
             return 0.22F + worldObj.provider.lightBrightnessTable[i] * 0.75F;
         }
+        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        {
+            float light = worldObj.provider.lightBrightnessTable[i];
+            light += ((0.5F - light) * (0.7F * light)) + 0.5F;
+            if (worldObj.provider.dimensionId == 1){
+                return 0.22F + light * 0.75F;
+            }
+            return light;
+        }
         return worldObj.provider.lightBrightnessTable[i];
     }
 
@@ -165,10 +174,28 @@ public class ChunkCache implements IBlockAccess
             if (worldObj.provider.dimensionId == 1){
                 return 0.22F + worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)] * 0.75F;
             }
+            if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+            {
+                float light = worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
+                light += ((0.5F - light) * (0.7F * light)) + 0.5F;
+                if (worldObj.provider.dimensionId == 1){
+                    return 0.22F + light * 0.75F;
+                }
+                return light;
+            }
             return worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
         }
         if (worldObj.provider.dimensionId == 1){
             return 0.22F + worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)] * 0.75F;
+        }
+        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        {
+            float light = worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)];
+            light += ((0.5F - light) * (0.7F * light)) + 0.5F;
+            if (worldObj.provider.dimensionId == 1){
+                return 0.22F + light * 0.75F;
+            }
+            return light;
         }
         return worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)];
     }

@@ -15,6 +15,8 @@ public class WorldSSP2 extends WorldSSP
     protected OldSpawnerAnimals waterMobSpawner;
     protected OldSpawnerAnimals ambientMobSpawner;
 
+    protected boolean nightPotionPrev;
+
     /**
      * Creates the bonus chest in the world.
      */
@@ -362,7 +364,14 @@ public class WorldSSP2 extends WorldSSP
         chunkProvider.unload100OldestChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
-        if (i != skylightSubtracted)
+        boolean nightPotion = Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision);
+        boolean nightPotionChanged = false;
+        if (nightPotion != nightPotionPrev){
+            nightPotionChanged = true;
+        }
+        nightPotionPrev = nightPotion;
+
+        if (i != skylightSubtracted || nightPotionChanged)
         {
             skylightSubtracted = i;
             if (ODNBXlite.oldLightEngine){
@@ -370,6 +379,9 @@ public class WorldSSP2 extends WorldSSP
                 {
                     ((RenderGlobal)worldAccesses.get(j)).updateAllRenderers(false);
                 }
+            }
+            if (nightPotionChanged){
+                nightPotionChanged = false;
             }
         }
 

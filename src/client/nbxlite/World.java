@@ -1336,6 +1336,12 @@ public abstract class World implements IBlockAccess
         if (isBounds(par1, par2, par3)){
             return provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
         }
+        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        {
+            float light = provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
+            light += ((0.5F - light) * (0.7F * light)) + 0.5F;
+            return light;
+        }
         return provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
     }
 
@@ -3193,10 +3199,10 @@ public abstract class World implements IBlockAccess
         {
             skylightSubtracted = i;
             if (ODNBXlite.oldLightEngine){
-                 for(int jj = 0; jj < worldAccesses.size(); jj++)
-                 {
-                     ((RenderGlobal)worldAccesses.get(jj)).updateAllRenderers(false);
-                 }
+                for(int jj = 0; jj < worldAccesses.size(); jj++)
+                {
+                    ((RenderGlobal)worldAccesses.get(jj)).updateAllRenderers(false);
+                }
             }
         }
     }
