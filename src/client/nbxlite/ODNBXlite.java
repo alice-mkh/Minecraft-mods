@@ -111,11 +111,11 @@ public class ODNBXlite extends OldDaysModule{
     public static int BetaFeatures;
     public static int ReleaseFeatures;
     public static boolean GenerateNewOres=true;
-    public static int SkyColor;
-    public static int FogColor;
-    public static int CloudColor;
-    public static int SkyBrightness;
-    public static float CloudHeight;
+    public static int SkyColor = 0;
+    public static int FogColor = 0;
+    public static int CloudColor = 0;
+    public static int SkyBrightness = -1;
+    public static float CloudHeight = 128.0F;
     public static boolean LeavesDecay;
     public static boolean OldSpawning;
     public static boolean OldHoes;
