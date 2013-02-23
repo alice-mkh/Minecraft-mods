@@ -2363,8 +2363,12 @@ public class PlayerHelper {
           * Moves the player to the nether from the current location
           */
       } else if (split[0].equalsIgnoreCase("useportal")) {
-         if (split.length < 2) {
-            sendError(ERRMSG_PARAM);
+         if (split.length == 1){
+            if (mc.theWorld.provider.dimensionId == 0){
+               mc.usePortal(-1);
+            }else{
+               mc.usePortal(0);
+            }
             return;
          }
          try {
