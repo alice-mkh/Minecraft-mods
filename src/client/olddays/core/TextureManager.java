@@ -41,6 +41,7 @@ public class TextureManager{
         }
         fx2.sprite = name2;
         fx2.changeIndex(index, b, false);
+        fx2.onTick2();
         try{
             renderEngine.updateDynamicTextures();
         }catch(Exception ex){}
@@ -80,6 +81,7 @@ public class TextureManager{
         }
         for (int i = 0; i < textureHooks.size(); i++){
             textureHooks.get(i).refresh(false);
+            textureHooks.get(i).onTick2();
         }
     }
 

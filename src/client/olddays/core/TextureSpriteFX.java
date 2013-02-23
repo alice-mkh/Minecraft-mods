@@ -83,7 +83,9 @@ public class TextureSpriteFX extends TextureFX
         return x + y * w;
     }
 
-    public void onTick()
+    public void onTick(){}
+
+    public void onTick2()
     {
         int www = enabled ? ww : w;
         int n = w / www;
