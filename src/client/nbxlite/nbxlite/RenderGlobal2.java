@@ -266,8 +266,9 @@ public class RenderGlobal2 extends RenderGlobal{
                 }
                 f18 = f18 * f18 * 0.5F;
             }else{
-                f18 = (float)(worldObj.getStarBrightness(par1) * d);
+                f18 = worldObj.getStarBrightness(par1);
             }
+            f18 *= (float)d;
 
             if (f18 > 0.0F)
             {
