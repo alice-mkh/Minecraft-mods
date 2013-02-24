@@ -80,7 +80,7 @@ public class MapGenStronghold2 extends MapGenStructure
         return false;
     }
 
-    protected List func_75052_o_()
+    protected List getCoordList()
     {
         ArrayList arraylist = new ArrayList();
         ChunkCoordIntPair achunkcoordintpair[] = structureCoords;
