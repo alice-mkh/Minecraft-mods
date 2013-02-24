@@ -1812,6 +1812,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                             if (Keyboard.getEventKey() == 20 && Keyboard.isKeyDown(61))
                             {
                                 renderEngine.refreshTextures();
+                                for (int i = 0; i < mods.size(); i++){
+                                    mods.get(i).refreshTextures();
+                                }
                             }
 
                             if (Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(61))

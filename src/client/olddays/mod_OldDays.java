@@ -433,6 +433,10 @@ public class mod_OldDays extends Mod{
         return -1;
     }
 
+    public void refreshTextures(){
+        texman.refreshTextureHooks();
+    }
+
     public KeyBinding keySettings;
     public static TextureManager texman;
     public static SavingManager saveman;

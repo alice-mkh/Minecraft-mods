@@ -11,12 +11,14 @@ import java.util.zip.*;
 public class TextureManager{
     private RenderEngine renderEngine;
     protected ArrayList<TextureSpriteFX> textureHooks;
+    protected ArrayList<TextureHook> textureHooks2;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
     public TextureManager(){
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
         textureHooks = new ArrayList<TextureSpriteFX>();
+        textureHooks2 = new ArrayList<TextureHook>();
         entryCache = new HashMap<String, Boolean>();
     }
 
@@ -48,15 +50,16 @@ public class TextureManager{
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
-        try{
-            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-            BufferedImage image = ImageIO.read(texpack.getResourceAsStream(b ? newname : origname));
-            renderEngine.setupTexture(image, renderEngine.getTexture(origname));
-        }catch(Exception ex){
-            ex.printStackTrace();
-//             setFallback(true);
+        for (int i = 0; i < textureHooks2.size(); i++){
+            TextureHook hook = textureHooks2.get(i);
+            if (hook.origname.equals(origname) && hook.newname.equals(newname)){
+                hook.enabled = b;
+                refreshTextureHooks();
+                return;
+            }
         }
+        textureHooks2.add(new TextureHook(origname, newname, b));
+        refreshTextureHooks();
     }
  
     public void onTick(){
@@ -66,6 +69,19 @@ public class TextureManager{
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
             entryCache.clear();
             setFallback(!hasEntry("olddays"));
+        }
+    }
+
+    public void refreshTextureHooks(){
+        for (TextureHook hook : textureHooks2){
+            try{
+                TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
+                ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
+                BufferedImage image = ImageIO.read(texpack.getResourceAsStream(hook.enabled ? hook.newname : hook.origname));
+                renderEngine.setupTexture(image, renderEngine.getTexture(hook.origname));
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -129,5 +145,17 @@ public class TextureManager{
         TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
         renderEngine.registerTextureFX(fx);
         textureHooks.add(fx);
+    }
+
+    private class TextureHook{
+        private String origname;
+        private String newname;
+        private boolean enabled;
+
+        public TextureHook(String str1, String str2, boolean b){
+            origname = str1;
+            newname = str2;
+            enabled = b;
+        }
     }
 }

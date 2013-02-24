@@ -107,6 +107,8 @@ public abstract class Mod{
 
     public void onInitClient(){}
 
+    public void refreshTextures(){}
+
     protected void setUseTick(boolean game, boolean gui){
         usesTick = game;
         usesGUITick = gui;
