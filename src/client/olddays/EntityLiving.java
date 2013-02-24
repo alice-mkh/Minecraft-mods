@@ -1426,10 +1426,10 @@ public abstract class EntityLiving extends Entity
                 }else{
                     dropFewItems(recentlyHit > 0, i);
                 }
-                dropEquipment(recentlyHit > 0, i);
 
                 if (recentlyHit > 0 && rareloot)
                 {
+                    dropEquipment(recentlyHit > 0, i);
                     int j = rand.nextInt(200) - i;
 
                     if (j < 5)
