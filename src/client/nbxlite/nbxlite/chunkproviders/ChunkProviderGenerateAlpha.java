@@ -47,10 +47,10 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
         caveGenerator = new OldMapGenCaves();
         if(flag)
         {
-			ravineGenerator = new MapGenRavine();
+            ravineGenerator = new MapGenRavine();
             strongholdGenerator = new MapGenStronghold2();
             villageGenerator = new MapGenVillage();
-			mineshaftGenerator = new MapGenMineshaft();
+            mineshaftGenerator = new MapGenMineshaft();
         }
         terrainAlt1Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
@@ -164,9 +164,9 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                 byte byte1;
                 if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
                     byte1 = (byte)Block.dirt.blockID;
-				}else{
+                }else{
                     byte1 = (byte)Block.grass.blockID;
-				}
+                }
                 byte byte2 = (byte)Block.dirt.blockID;
                 for(int l1 = 127; l1 >= 0; l1--)
                 {
