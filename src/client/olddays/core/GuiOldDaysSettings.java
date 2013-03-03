@@ -46,7 +46,12 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         int m = prop.module.id;
         int p = prop.id;
         if (prop.guitype == OldDaysProperty.GUI_TYPE_BUTTON){
-            prop.incrementValue();
+            boolean shift = isShiftPressed();
+            if (shift){
+                prop.decrementValue();
+            }else{
+                prop.incrementValue();
+            }
             send(prop);
         }else if (prop.guitype == OldDaysProperty.GUI_TYPE_FIELD){
             /*int offset = fontRenderer.getStringWidth(prop.name+":")-2;

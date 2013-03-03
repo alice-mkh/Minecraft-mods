@@ -46,6 +46,14 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
         }
     }
 
+    public void decrementValue(){
+        if (value > min || max <= min){
+            value -= 1.0F;
+        }else{
+            value = max;
+        }
+    }
+
     public void updateValue(){
         try{
             value = ((Float)field.get(module));

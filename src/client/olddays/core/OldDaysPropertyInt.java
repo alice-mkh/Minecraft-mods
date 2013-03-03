@@ -56,6 +56,14 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    public void decrementValue(){
+        if (value > min){
+            value--;
+        }else{
+            value = max;
+        }
+    }
+
     public void updateValue(){
         try{
             value = ((Integer)field.get(module));

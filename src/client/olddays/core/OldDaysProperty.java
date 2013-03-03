@@ -78,6 +78,10 @@ public abstract class OldDaysProperty{
 
     public abstract void incrementValue();
 
+    public void decrementValue(){
+        incrementValue();
+    }
+
     public abstract void updateValue();
 
     public abstract void setSMPValue();

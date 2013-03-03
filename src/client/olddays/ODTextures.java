@@ -186,9 +186,7 @@ public class ODTextures extends OldDaysModule{
         setTextureHook("/terrain.png", 22, "/olddays/textures.png", 49, OreBlocks<2 && hasTextures("olddays/textures.png"));
         setTextureHook("/terrain.png", 23, "/olddays/textures.png", 50, OreBlocks<2 && hasTextures("olddays/textures.png"));
         setTextureHook("/terrain.png", 24, "/olddays/textures.png", 51, OreBlocks<2 && hasTextures("olddays/textures.png"));
-        if (OreBlocks<3){
-            reload();
-        }
+        reload();
     }
 
     private void setCloth(){

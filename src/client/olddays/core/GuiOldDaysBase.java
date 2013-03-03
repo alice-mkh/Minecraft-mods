@@ -201,4 +201,8 @@ public class GuiOldDaysBase extends GuiScreen{
     public boolean doesGuiPauseGame(){
         return Minecraft.getMinecraft().enableSP;
     }
+
+    protected boolean isShiftPressed(){
+        return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
+    }
 }

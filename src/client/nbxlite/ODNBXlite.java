@@ -205,9 +205,7 @@ public class ODNBXlite extends OldDaysModule{
         set(RenderGhast2.class, "bright", i > 0);
         Minecraft.oldlighting = i > 1;
         oldLightEngine = i > 1;
-        if (i > 1 || ((OldDaysPropertyCond2)getPropertyById(i2)).value < 0){
-            reload();
-        }
+        reload();
     }
 
     public String[] getAdditionalPackageData(){
@@ -277,7 +275,7 @@ public class ODNBXlite extends OldDaysModule{
         refreshProperties();
         if (mod_OldDays.getMinecraft().theWorld != null){
             SetGenerator(mod_OldDays.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
-            if ((i == 0 && (Gen == 0 || Gen > 3)) || (i == 1 && (BetaFeatures >= 5 || BetaFeatures == 3 || BetaFeatures == 0)) || i == 2){
+            if ((i == 0 && (Gen == 0 || Gen >= 3)) || (i == 1 && (BetaFeatures >= 3 || BetaFeatures == 0)) || i == 2){
                 reload();
             }
         }
@@ -883,7 +881,7 @@ public class ODNBXlite extends OldDaysModule{
             BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
         }
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
-        if ((Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY)) || Generator == GEN_NEWBIOMES){
+        if ((Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY || MapFeatures == FEATURES_BETA173)) || Generator == GEN_NEWBIOMES){
             world.provider.registerWorld(world);
         }
         SnowCovered = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && snow;
