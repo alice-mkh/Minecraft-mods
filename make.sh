@@ -46,7 +46,7 @@ CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find Ent
        MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve"
 ADD[4]="olddays/md3"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer` `find TileEntityEnderChestRenderer`
-       `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLiving`
+       `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLiving` `find ItemRenderer`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
        `find EntitySuspendFX` `find RenderItem` RenderItemFrame2 `find GuiScreen`
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
@@ -64,7 +64,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVi
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper` `find ItemEnchantedBook`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 `find BlockGrass`
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityEnderChestRenderer` `find BlockSapling`
-       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped`"
+       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped` `find ItemRenderer`"
 ADD[9]="olddays/grasstop.png olddays/grassside.png olddays/leavesfast.png olddays/leavesfancy.png olddays/fluff.png
         olddays/gear.png olddays/gearmiddle.png"
 CP[10]="GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool TextureManager\$TextureHook
@@ -94,7 +94,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         GuiButtonPage GuiOldDaysModules GuiOldDaysSettings TextureSpriteFX mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
         OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat TextureManager SavingManager
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2"
-CP[11]="`find EntityLiving`"
+CP[11]="`find EntityLiving` `find ItemRenderer`"
 ADD[11]="${ADD[1]} ${ADD[2]} ${ADD[3]} ${ADD[4]} ${ADD[5]} ${ADD[6]} ${ADD[7]} ${ADD[8]} ${ADD[9]} ${ADD[10]}"
 MV[12]="EntityHuman ModelHuman RenderHuman mod_SpawnHuman"
 ADD[12]="./char.png"
