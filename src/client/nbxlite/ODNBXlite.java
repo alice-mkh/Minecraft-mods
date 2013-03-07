@@ -899,9 +899,9 @@ public class ODNBXlite extends OldDaysModule{
         }else if (Generator==GEN_BIOMELESS && MapFeatures>FEATURES_ALPHA11201){
             VoidFog = 4;
         }
-        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "oldFog", isFinite());
-        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "snow", SnowCovered);
-        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "bounds", isFinite());
+        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "oldFog", isFinite(), false);
+        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "snow", SnowCovered, false);
+        mod_OldDays.getModuleById(8).set(EntityRenderer.class, "bounds", isFinite(), false);
         GenerateNewOres=ores;
         try{
             EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;

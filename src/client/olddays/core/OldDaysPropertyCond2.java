@@ -30,6 +30,9 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
     }
 
     public void onChange(){
+        if (isDisabled()){
+            return;
+        }
         try{
             field.set(module, getValue());
             module.callback(id);

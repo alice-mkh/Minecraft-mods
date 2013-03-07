@@ -23,6 +23,9 @@ public class OldDaysPropertyString extends OldDaysProperty{
     }
 
     public void onChange(){
+        if (isDisabled()){
+            return;
+        }
         try{
             field.set(module, value);
             module.callback(id);
