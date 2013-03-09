@@ -72,6 +72,10 @@ public abstract class OldDaysProperty{
         return getDisableReason() > 0;
     }
 
+    public boolean shouldSkipUpdates(){
+        return getDisableReason() == 1;
+    }
+
     public void setFieldValue(){
         disable();
     }

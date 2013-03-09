@@ -23,7 +23,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
     }
 
     public void onChange(){
-        if (isDisabled()){
+        if (shouldSkipUpdates()){
             return;
         }
         try{

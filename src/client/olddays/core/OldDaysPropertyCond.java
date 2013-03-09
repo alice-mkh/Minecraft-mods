@@ -30,7 +30,7 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
     }
 
     public void onChange(){
-        if (isDisabled()){
+        if (shouldSkipUpdates()){
             return;
         }
         try{
