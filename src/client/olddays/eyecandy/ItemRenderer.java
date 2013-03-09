@@ -128,6 +128,10 @@ public class ItemRenderer
         GL11.glPopMatrix();
     }
 
+    public static void renderItemIn2D(Tessellator par0Tessellator, float par1, float par2, float par3, float par4, float par5, int num){
+        renderItemIn2D(par0Tessellator, par1, par2, par3, par4, par5);
+    }
+
     /**
      * Renders an item held in hand as a 2D texture with thickness
      */
