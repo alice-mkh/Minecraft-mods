@@ -1,37 +1,39 @@
 package net.minecraft.src.nbxlite.blocks;
-/*
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 import net.minecraft.src.Block;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.TextureFX;
+import net.minecraft.src.Texture;
+import net.minecraft.src.TextureStitched;
 import net.minecraft.src.ODNBXlite;
-*/
-public class TextureGearFX{}/* extends TextureFX
-{
-  private int tickCounter = 0;
-  private int[] gear = new int[1024];
-  private int[] gearmiddle = new int[1024];
-  private int h;
 
-    public TextureGearFX(int paramInt, int par2)
+public class TextureGearFX extends TextureStitched
+{
+    private int tickCounter = 0;
+    private int[] gear = new int[1024];
+    private int[] gearmiddle = new int[1024];
+    private int h;
+    private ByteBuffer textureData;
+
+    public TextureGearFX(int par2)
     {
-        super(paramInt);
+        super("olddays_gear_" + par2);
         this.h = ((par2 << 1) - 1);
         tickCounter = 2;
         try{
-            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
-            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
+            ImageIO.read(getClass().getResource("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
+            ImageIO.read(getClass().getResource("/olddays/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
             return;
         }catch (IOException localIOException){
             localIOException.printStackTrace();
         }
     }
 
-    @Override
-    public void onTick()
-    {
+    private byte[] getImageData(){
+        byte[] imageData = new byte[1024];
         tickCounter = (tickCounter + this.h & 0x3F);
         float f1 = MathHelper.cos(tickCounter / 64.0F * 3.141593F * 2.0F);
         float f2 = MathHelper.sin(tickCounter / 64.0F * 3.141593F * 2.0F);
@@ -62,5 +64,16 @@ public class TextureGearFX{}/* extends TextureFX
                 imageData[((i2 << 2) + 3)] = (byte)n1;
             }
         }
+        return imageData;
     }
-}*/
+
+    @Override
+    public void updateAnimation(){
+        textureData = ((Texture)textureList.get(0)).getTextureData();
+        textureData.clear();
+        textureData.put(getImageData());
+        textureData.position(0).limit(1024);
+//         textureData.flip();
+        textureSheet.copyFrom(originX, originY, (Texture)textureList.get(0), rotated);
+    }
+}
