@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
 public class RenderBounds{
-    private static ByteBuffer imageData;
     private static RenderEngine renderEngine;
     private static Minecraft mc;
     private static World worldObj;
@@ -31,16 +30,6 @@ public class RenderBounds{
             block = Block.bedrock;
         }
         f1 += (float)block.getBlockBoundsMaxY();
-//         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-//         if (globalRenderBlocks.overrideBlockTexture >= 0){
-//             j = globalRenderBlocks.overrideBlockTexture;
-//         }
-//         int k = (j & 0xf) << 4;
-//         int l = j & 0xf0;
-//         double dd = (float)k / 256F;
-//         double dd1 = ((float)k + 15.999F) / 256F;
-//         double dd2 = (float)l / 256F;
-//         double dd3 = ((float)l + 15.999F) / 256F;
         double dd = 0D;
         double dd1 = (double)i1;
         double dd2 = 0D;
@@ -95,21 +84,10 @@ public class RenderBounds{
         if (i1 > ODNBXlite.IndevWidthZ){
             i1 = ODNBXlite.IndevWidthZ;
         }
-//         Block block = Block.bedrock;
-//         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-// //         if (globalRenderBlocks.overrideBlockTexture >= 0){
-//             j = globalRenderBlocks.overrideBlockTexture;
-//         }
-//         int k = (j & 0xf) << 4;
-//         int l = j & 0xf0;
         double dd = (double)i1;
         double dd1 = 0D;
         double dd2 = 0D;
         double dd3 = (double)i1;
-//         double dd = (float)k / 256F;
-//         double dd1 = ((float)k + 15.999F) / 256F;
-//         double dd2 = (float)l / 256F;
-//         double dd3 = ((float)l + 15.999F) / 256F;
         tessellator.startDrawingQuads();
         double d = mc.renderViewEntity.lastTickPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * (double)f;
         double d1 = mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)f;
@@ -155,17 +133,6 @@ public class RenderBounds{
         if (i1 > ODNBXlite.IndevWidthZ){
             i1 = ODNBXlite.IndevWidthZ;
         }
-//         Block block = Block.bedrock;
-//         int j = block.getBlockTextureFromSideAndMetadata(1, 0);
-//         if (globalRenderBlocks.overrideBlockTexture >= 0){
-//             j = globalRenderBlocks.overrideBlockTexture;
-//         }
-//         int k = (j & 0xf) << 4;
-//         int l = j & 0xf0;
-//         double dd = (float)k / 256F;
-//         double dd1 = ((float)k + 15.999F) / 256F;
-//         double dd2 = (float)l / 256F;
-//         double dd3 = ((float)l + 15.999F) / 256F;
         double dd = 0D;
         double dd1 = (double)i1;
         double dd2 = 0D;
@@ -191,25 +158,9 @@ public class RenderBounds{
         if (ODNBXlite.SurrGroundType<=0 || ODNBXlite.SurrWaterType<=0){
             return;
         }
-/*        mc = m;
+        mc = m;
         renderEngine = mc.renderEngine;
         worldObj = mc.theWorld;
-        if (imageData == null){
-            try{
-                imageData = ((java.nio.ByteBuffer)mod_OldDays.getField(RenderEngine.class, renderEngine, 4));
-            }catch(Exception ex){
-                System.out.println(ex);
-            }
-        }
-        int width = ODNBXlite.textureWidth;
-        ODNBXlite.terrfx.anaglyphEnabled = mc.gameSettings.anaglyph;
-        ODNBXlite.terrfx.onTick();
-        ODNBXlite.bedrockfx.anaglyphEnabled = mc.gameSettings.anaglyph;
-        ODNBXlite.bedrockfx.onTick();
-        ODNBXlite.waterfx.anaglyphEnabled = mc.gameSettings.anaglyph;
-        ODNBXlite.waterfx.onTick();
-        ODNBXlite.lavafx.anaglyphEnabled = mc.gameSettings.anaglyph;
-        ODNBXlite.lavafx.onTick();
         int id = ODNBXlite.SurrGroundType;
         if (ODNBXlite.SurrGroundHeight<=ODNBXlite.SurrWaterHeight || ODNBXlite.SurrWaterType==Block.lavaStill.blockID && ODNBXlite.SurrGroundType==Block.grass.blockID){
             id = Block.dirt.blockID;
@@ -219,14 +170,11 @@ public class RenderBounds{
         }
         GL11.glPushMatrix();
         float ff = 1.0F;
-        int l = 0;
-        int i1 = 0;
-        int j1 = 0;
         if (!Minecraft.oldlighting){
             mc.entityRenderer.enableLightmap(f);
-            l = ODNBXlite.getLightInBounds(ODNBXlite.SurrGroundHeight);
-            i1 = l % 0x10000;
-            j1 = l / 0x10000;
+            int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrGroundHeight);
+            int i1 = l % 0x10000;
+            int j1 = l / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         }else{
             ff = ODNBXlite.getLightFloat(ODNBXlite.SurrGroundHeight);
@@ -234,69 +182,28 @@ public class RenderBounds{
         boolean anim = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
-        if (id==Block.grass.blockID && mod_OldDays.texman.hasEntry("olddays/grasstop.png")){
-            renderEngine.bindTexture("/olddays/grasstop.png");
-        }else{
-            imageData.clear();
-            imageData.put(ODNBXlite.terrfx.imageData);
-            imageData.position(0).limit(ODNBXlite.terrfx.imageData.length);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ODNBXlite.emptyImage);
-            GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-        }
+        renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[id].getBlockTextureFromSide(1).getIconName() + ".png");
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f, ff);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, ODNBXlite.emptyImage);
-        if (ODNBXlite.SurrGroundHeight>=0 || ODNBXlite.SurrWaterHeight>=0){
-            imageData.clear();
-            imageData.put(ODNBXlite.bedrockfx.imageData);
-            imageData.position(0).limit(ODNBXlite.bedrockfx.imageData.length);
-            GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-            if (ODNBXlite.MapFeatures == ODNBXlite.FEATURES_CLASSIC){
-                renderSideBounds(f);
-                renderBottomBounds(f);
-            }
+        if (ODNBXlite.MapFeatures == ODNBXlite.FEATURES_CLASSIC && (ODNBXlite.SurrGroundHeight>=0 || ODNBXlite.SurrWaterHeight>=0)){
+            renderEngine.bindTexture("/textures/blocks/" + Block.bedrock.getBlockTextureFromSide(2).getIconName() + ".png");
+            renderSideBounds(f);
+            renderEngine.bindTexture("/textures/blocks/" + Block.bedrock.getBlockTextureFromSide(1).getIconName() + ".png");
+            renderBottomBounds(f);
         }
         if (!Minecraft.oldlighting){
-            l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight);
-            i1 = l % 0x10000;
-            j1 = l / 0x10000;
+            int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight);
+            int i1 = l % 0x10000;
+            int j1 = l / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         }else{
             ff = ODNBXlite.getLightFloat(ODNBXlite.SurrWaterHeight);
         }
-        String name = Block.blocksList[ODNBXlite.SurrWaterType].getUnlocalizedName().replace("tile.", "").replace("Still", "").replace("Moving", "");
         if (anim){
-            TextureFX texturefx = null;
-            try{
-                List list = ((ArrayList)mod_OldDays.getField(RenderEngine.class, renderEngine, 5));
-                for (int i = 0; i < list.size(); i++){
-                    if (((TextureFX)list.get(i)).iconIndex==Block.blocksList[ODNBXlite.SurrWaterType].blockIndexInTexture){
-                        texturefx = ((TextureFX)list.get(i));
-                        break;
-                    }
-                }
-                imageData.clear();
-                imageData.put(texturefx.imageData);
-                imageData.position(0).limit(texturefx.imageData.length);;
-                GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-            }catch(Exception ex){
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ODNBXlite.emptyImage);
-                TextureFX fx = name.startsWith("lava") ? ODNBXlite.lavafx : ODNBXlite.waterfx;
-                imageData.clear();
-                imageData.put(fx.imageData);
-                imageData.position(0).limit(fx.imageData.length);
-                GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-//                 renderEngine.bindTexture("/olddays/"+name+".png");
-//                 System.out.println(ex);
-            }
+            //FIXME
+            renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[ODNBXlite.SurrWaterType].getBlockTextureFromSide(1).getIconName() + ".png");
         }else{
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ODNBXlite.emptyImage);
-            TextureFX fx = name.startsWith("lava") ? ODNBXlite.lavafx : ODNBXlite.waterfx;
-            imageData.clear();
-            imageData.put(fx.imageData);
-            imageData.position(0).limit(fx.imageData.length);
-            GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
-//             renderEngine.bindTexture("/olddays/"+name+".png");
+            renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[ODNBXlite.SurrWaterType].getBlockTextureFromSide(1).getIconName() + ".png");
         }
         GL11.glEnable(GL11.GL_BLEND);
         renderLiquidBounds(f, ff);
@@ -306,7 +213,7 @@ public class RenderBounds{
         if (!Minecraft.oldlighting){
             mc.entityRenderer.disableLightmap(f);
         }
-        GL11.glPopMatrix();*/
+        GL11.glPopMatrix();
     }
 
     private static void renderLiquidBounds(float f, float ff)
@@ -321,16 +228,6 @@ public class RenderBounds{
         if (i1 > ODNBXlite.IndevWidthZ){
             i1 = ODNBXlite.IndevWidthZ;
         }
-//         int j = Block.blocksList[ODNBXlite.SurrWaterType].getBlockTextureFromSideAndMetadata(1, 0);
-//         if (globalRenderBlocks.overrideBlockTexture >= 0){
-//             j = globalRenderBlocks.overrideBlockTexture;
-//         }
-//         int k = (j & 0xf) << 4;
-//         int l = j & 0xf0;
-//         double dd = (float)k / 256F;
-//         double dd1 = ((float)k + 15.999F) / 256F;
-//         double dd2 = (float)l / 256F;
-//         double dd3 = ((float)l + 15.999F) / 256F;
         double dd = 0D;
         double dd1 = (double)i1;
         double dd2 = 0D;

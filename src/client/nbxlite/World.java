@@ -433,9 +433,6 @@ public abstract class World implements IBlockAccess
             provider.registerWorld(this);
         }
         ODNBXlite.refreshProperties();
-        if (this instanceof WorldClient){
-            ODNBXlite.setTextureFX2();
-        }
         VillageCollection villagecollection = (VillageCollection)mapStorage.loadData(net.minecraft.src.VillageCollection.class, "villages");
 
         if (villagecollection == null)

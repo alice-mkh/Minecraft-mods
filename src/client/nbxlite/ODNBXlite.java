@@ -45,10 +45,6 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   30,6,     6,     "DefaultFeaturesRelease", 6).setUseNames();
         replaceBlocks();
         registerGears();
-//        terrfx = new TextureTerrainPngFX();
-//        bedrockfx = new TextureTerrainPngFX();
-//        waterfx = new TextureTerrainPngFX();
-//        lavafx = new TextureTerrainPngFX();
         GuiSelectWorld.nbxlite = true;
         WorldInfo.useNBXlite = true;
         set(RenderGlobal.class, "nbxlite", true);
@@ -68,19 +64,19 @@ public class ODNBXlite extends OldDaysModule{
             case 4: setGen(2);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
             case 5: setInWorldInfo("newOres", GenerateNewOres); break;
-            case 6: setInWorldInfo("surrgroundheight", SurrGroundHeight); setTextureFX(); break;
+            case 6: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
             case 7: if (Block.blocksList[SurrGroundType] == null){
                         SurrGroundType = Block.bedrock.blockID;
                     }
-                    setInWorldInfo("surrgroundtype", SurrGroundType); setTextureFX(); break;
-            case 8: setInWorldInfo("surrwaterheight", SurrWaterHeight); setTextureFX(); break;
-            case 9: setInWorldInfo("surrwatertype", SurrWaterType); setTextureFX(); break;
+                    setInWorldInfo("surrgroundtype", SurrGroundType); break;
+            case 8: setInWorldInfo("surrwaterheight", SurrWaterHeight); break;
+            case 9: setInWorldInfo("surrwatertype", SurrWaterType); break;
             case 10:setInWorldInfo("skycolor", SkyColor); break;
             case 11:setInWorldInfo("fogcolor", FogColor); break;
             case 12:setInWorldInfo("cloudcolor", CloudColor); break;
             case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
             case 14:setInWorldInfo("cloudheight", CloudHeight); break;
-//             case 15:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
+            case 15:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
             case 16:set(EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
                     set(EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
             case 17:set(ItemHoe2.class, "oldhoes", OldHoes); break;
@@ -914,32 +910,6 @@ public class ODNBXlite extends OldDaysModule{
         mod_OldDays.refreshConditionProperties();
     }
 
-    public static void setTextureFX(){
-        setTextureFX2();
-        OldDaysModule.reload();
-    }
-
-    public static void setTextureFX2(){
-/*        mod_OldDays.getMinecraft().renderEngine.bindTexture("/terrain.png");
-        textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
-        int id = SurrGroundType;
-        if (SurrGroundHeight<=SurrWaterHeight || SurrWaterType==Block.lavaStill.blockID && SurrGroundType==Block.grass.blockID){
-            id = Block.dirt.blockID;
-        }
-        if (MapFeatures==FEATURES_CLASSIC){
-            id = Block.bedrock.blockID;
-        }
-        if (Block.blocksList[id] == null){
-            return;
-        }
-        int tid = Block.blocksList[id].getBlockTextureFromSideAndMetadata(1, 0);
-        terrfx.changeIndex(tid, false);
-        bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
-        waterfx.changeIndex(Block.waterStill.blockIndexInTexture, false);
-        lavafx.changeIndex(Block.lavaStill.blockIndexInTexture, false);
-        emptyImage = mod_OldDays.getMinecraft().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));*/
-    }
-
     public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
         SurrGroundType = groundtype;
         SurrGroundHeight = groundheight;
@@ -1139,12 +1109,6 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean DefaultNewOres = false;
     public static McLevelImporter mclevelimporter = null;
     public static int gearId = 200;
-//    public static TextureTerrainPngFX terrfx;
-//    public static TextureTerrainPngFX bedrockfx;
-//    public static TextureTerrainPngFX waterfx;
-//    public static TextureTerrainPngFX lavafx;
-    public static int emptyImage;
-    public static int textureWidth;
 
     public static final int GEN_BIOMELESS = 0;
     public static final int GEN_OLDBIOMES = 1;
