@@ -18,6 +18,7 @@ public class BlockLeaves2 extends BlockLeaves
     /**
      * Returns the color this block should be rendered. Used by leaves.
      */
+    @Override
     public int getRenderColor(int par1)
     {
         if ((par1 & 3) == 1)
@@ -52,6 +53,7 @@ public class BlockLeaves2 extends BlockLeaves
      * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
      * when first determining what to render.
      */
+    @Override
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int i = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -80,6 +82,7 @@ public class BlockLeaves2 extends BlockLeaves
     /**
      * Ticks the block if it's been scheduled
      */
+    @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!decay){
