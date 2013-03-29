@@ -24,7 +24,7 @@ public class BlockGrass extends Block
     {
         if (par1 == 1)
         {
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return iconGrassTopBiomeless;
             }
             return iconGrassTop;
@@ -36,7 +36,7 @@ public class BlockGrass extends Block
         }
         else
         {
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return iconGrassSideBiomeless;
             }
             return blockIcon;
@@ -50,7 +50,7 @@ public class BlockGrass extends Block
     {
         if (par5 == 1)
         {
-            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return iconGrassTopBiomeless;
             }
             return iconGrassTop;
@@ -93,7 +93,7 @@ public class BlockGrass extends Block
     public int getBlockColor()
     {
         if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-            if (mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+            if (mod_OldDays.texman.hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return 0xffffff;
             }
             ColorizerGrass.getGrassColor(1.0F, 1.0F);

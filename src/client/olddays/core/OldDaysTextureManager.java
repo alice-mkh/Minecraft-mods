@@ -136,6 +136,13 @@ public class OldDaysTextureManager{
         return true;
     }
 
+    public boolean hasIcons(boolean items, String... str){
+        for (String s : str){
+            s = "/textures/" + (items ? "items" : "terrain") + "/" + s + ".png";
+        }
+        return hasEntry(str);
+    }
+
     public void addTextureHook(String origname, int origi, String newname, int newi){
         addTextureHook(origname, origi, newname, newi, 16, 16);
     }
