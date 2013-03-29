@@ -7,6 +7,8 @@ public class BlockGrass extends Block
     private Icon iconGrassTop;
     private Icon iconSnowSide;
     private Icon iconGrassSideOverlay;
+    private Icon iconGrassTopBiomeless;
+    private Icon iconGrassSideBiomeless;
 
     protected BlockGrass(int par1)
     {
@@ -23,7 +25,7 @@ public class BlockGrass extends Block
         if (par1 == 1)
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
-//                return toptex;
+                return iconGrassTopBiomeless;
             }
             return iconGrassTop;
         }
@@ -34,6 +36,9 @@ public class BlockGrass extends Block
         }
         else
         {
+            if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+                return iconGrassSideBiomeless;
+            }
             return blockIcon;
         }
     }
@@ -46,7 +51,7 @@ public class BlockGrass extends Block
         if (par5 == 1)
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
-//                return toptex;
+                return iconGrassTopBiomeless;
             }
             return iconGrassTop;
         }
@@ -65,7 +70,7 @@ public class BlockGrass extends Block
         else
         {
             if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
-//                 return sidetex;
+                return iconGrassSideBiomeless;
             }
             return blockIcon;
         }
@@ -81,6 +86,8 @@ public class BlockGrass extends Block
         iconGrassTop = par1IconRegister.registerIcon("grass_top");
         iconSnowSide = par1IconRegister.registerIcon("snow_side");
         iconGrassSideOverlay = par1IconRegister.registerIcon("grass_side_overlay");
+        iconGrassTopBiomeless = par1IconRegister.registerIcon("olddays_grass_top");
+        iconGrassSideBiomeless = par1IconRegister.registerIcon("olddays_grass_side");
     }
 
     public int getBlockColor()
