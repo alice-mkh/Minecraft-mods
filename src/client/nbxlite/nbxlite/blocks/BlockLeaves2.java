@@ -7,6 +7,9 @@ public class BlockLeaves2 extends BlockLeaves
 {
     public static boolean decay = true;
 
+    private Icon biomelessFastIcon;
+    private Icon biomelessFancyIcon;
+
     public BlockLeaves2(int par1)
     {
         super(par1);
@@ -36,7 +39,7 @@ public class BlockLeaves2 extends BlockLeaves
         else
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-                if (mod_OldDays.texman.hasEntry("olddays/leavesfast.png", "olddays/leavesfancy.png")){
+                if (mod_OldDays.texman.hasIcons(false, "olddays_leaves_fast", "olddays_leaves_fancy")){
                     return 0xffffff;
                 }
                 return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -85,29 +88,20 @@ public class BlockLeaves2 extends BlockLeaves
         super.updateTick(par1World, par2, par3, par4, par5Random);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-/*    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    @Override
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        if ((par2 & 3) == 1)
-        {
-            return blockIndexInTexture + 80;
+        if ((par2 & 3) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasIcons(false, "olddays_leaves_fast", "olddays_leaves_fancy")){
+            return graphicsLevel ? biomelessFancyIcon : biomelessFastIcon;
         }
+        return super.getBlockTextureFromSideAndMetadata(par1, par2);
+    }
 
-        if ((par2 & 3) == 3)
-        {
-            return blockIndexInTexture + 144;
-        }
-        else
-        {
-            if (ODNBXlite.Generator!=ODNBXlite.GEN_BIOMELESS || (par2 & 3) == 2 || !mod_OldDays.texman.hasEntry("olddays/leavesfast.png", "olddays/leavesfancy.png")){
-                return blockIndexInTexture;
-            }
-            if (graphicsLevel){
-                return fancytex;
-            }
-            return fasttex;
-        }
-    }*/
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        super.registerIcons(par1IconRegister);
+        biomelessFancyIcon = par1IconRegister.registerIcon("olddays_leaves_fancy");
+        biomelessFastIcon = par1IconRegister.registerIcon("olddays_leaves_fast");
+    }
 }
