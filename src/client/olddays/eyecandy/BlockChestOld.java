@@ -5,18 +5,18 @@ import java.util.*;
 public class BlockChestOld extends BlockChest
 {
     public static boolean normalblock = false;
-/*    public static int sidetex = mod_OldDays.getFreeTextureIndex();
-    public static int fronttex = mod_OldDays.getFreeTextureIndex();//sidetex + 1;
-    public static int toptex = mod_OldDays.getFreeTextureIndex();//sidetex - 1;
-    public static int texfrontleft = mod_OldDays.getFreeTextureIndex();//sidetex + 31;
-    public static int texfrontright = mod_OldDays.getFreeTextureIndex();//sidetex + 32;
-    public static int texbackleft = mod_OldDays.getFreeTextureIndex();//sidetex + 15;
-    public static int texbackright = mod_OldDays.getFreeTextureIndex();//sidetex + 16;
-*/
+
+    public Icon sidetex;
+    public Icon fronttex;
+    public Icon toptex;
+    public Icon texfrontleft;
+    public Icon texfrontright;
+    public Icon texbackleft;
+    public Icon texbackright;
+
     protected BlockChestOld(int par1, int par2)
     {
         super(par1, par2);
-//         blockIndexInTexture = 26;
     }
 
     /**
@@ -27,12 +27,12 @@ public class BlockChestOld extends BlockChest
     {
         return normalblock ? 0 : 22;
     }
-/*
+
     @Override
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (!normalblock){
-            return 4;
+            return blockIcon;
         }
         if (par5 == 1)
         {
@@ -146,16 +146,12 @@ public class BlockChestOld extends BlockChest
 
         return par5 != byte0 ? sidetex : fronttex;
     }
-*/
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
-/*
+
     @Override
-    public int getBlockTextureFromSide(int par1)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (!normalblock){
-            return 4;
+            return blockIcon;
         }
         if (par1 == 1)
         {
@@ -176,7 +172,20 @@ public class BlockChestOld extends BlockChest
             return sidetex;
         }
     }
-*/
+
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        super.registerIcons(par1IconRegister);
+        toptex = par1IconRegister.registerIcon("olddays_chest_top");
+        fronttex = par1IconRegister.registerIcon("olddays_chest_front");
+        sidetex = par1IconRegister.registerIcon("olddays_chest_side");
+        texfrontleft = par1IconRegister.registerIcon("olddays_chest_front_left");
+        texfrontright = par1IconRegister.registerIcon("olddays_chest_front_right");
+        texbackleft = par1IconRegister.registerIcon("olddays_chest_back_left");
+        texbackright = par1IconRegister.registerIcon("olddays_chest_back_right");
+    }
+
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
         if (normalblock){
