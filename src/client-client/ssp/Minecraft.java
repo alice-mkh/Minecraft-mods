@@ -1601,6 +1601,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (!isGamePaused)
         {
             renderEngine.updateDynamicTextures();
+            for (Mod mod : mods){
+                mod.updateTextures();
+            }
         }
 
         if (currentScreen == null && thePlayer != null)

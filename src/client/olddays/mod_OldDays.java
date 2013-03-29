@@ -453,6 +453,12 @@ public class mod_OldDays extends Mod{
 //         getMinecraft().renderEngine.refreshTextureMaps();
     }
 
+    @Override
+    public void updateTextures(){
+        texman.updateTextureFXes();
+//         getMinecraft().renderEngine.refreshTextureMaps();
+    }
+
     public KeyBinding keySettings;
     public static OldDaysTextureManager texman;
     public static SavingManager saveman;

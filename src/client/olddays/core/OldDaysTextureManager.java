@@ -4,14 +4,17 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.*;
 
 public class OldDaysTextureManager{
     private RenderEngine renderEngine;
 //    protected ArrayList<TextureSpriteFX> textureHooks;
     protected ArrayList<TextureHook> textureHooks2;
+    protected ArrayList<TextureStitched> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
@@ -19,6 +22,7 @@ public class OldDaysTextureManager{
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
 //        textureHooks = new ArrayList<TextureSpriteFX>();
         textureHooks2 = new ArrayList<TextureHook>();
+        textureFXList = new ArrayList<TextureStitched>();
         entryCache = new HashMap<String, Boolean>();
     }
 
@@ -70,6 +74,12 @@ public class OldDaysTextureManager{
             entryCache.clear();
             setFallback(!hasEntry("olddays"));
         }*/
+    }
+
+    public void updateTextureFXes(){
+        for (TextureStitched fx : textureFXList){
+            fx.updateAnimation();
+        }
     }
 
     public void refreshTextureHooks(){
@@ -152,6 +162,27 @@ public class OldDaysTextureManager{
         TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
         renderEngine.registerTextureFX(fx);
         textureHooks.add(fx);*/
+    }
+
+    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon)
+    {
+        if (par1Str == null){
+            (new RuntimeException("Don't register null!")).printStackTrace();
+        }
+        if (!(map instanceof TextureMap)){
+            return icon;
+        }
+        Map textureStichedMap = (Map)(mod_OldDays.getField(TextureMap.class, (TextureMap)map, 9));
+        if (textureStichedMap == null){
+            return icon;
+        }
+        TextureStitched texturestitched = (TextureStitched)textureStichedMap.get(par1Str);
+        if (texturestitched == null || texturestitched != icon)
+        {
+            textureStichedMap.put(par1Str, icon);
+        }
+        textureFXList.add(icon);
+        return icon;
     }
 
     private class TextureHook{
