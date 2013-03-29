@@ -69,7 +69,7 @@ public class BlockGrass extends Block
         }
         else
         {
-            if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+            if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && mod_OldDays.texman.hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return iconGrassSideBiomeless;
             }
             return blockIcon;

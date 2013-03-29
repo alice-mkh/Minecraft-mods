@@ -647,22 +647,6 @@ public class ODNBXlite extends OldDaysModule{
 
     private static void replaceBlocks(){
         try{
-            /*Block.blocksList[Block.grass.blockID] = null;
-            BlockGrass2 customgrass = (BlockGrass2)(new BlockGrass2(Block.grass.blockID));
-            customgrass.setHardness(0.6F);
-            customgrass.setStepSound(Block.soundGrassFootstep);
-            customgrass.getIndirectPowerOutput("grass");
-            Block.blocksList[Block.grass.blockID] = customgrass;
-            mod_OldDays.setField(Block.class, null, 21, customgrass);//Block: grass*/
-//            Block.grass.toptex = mod_OldDays.getFreeTextureIndex();
-//            addTextureHook("/terrain.png", Block.grass.toptex, "/olddays/grasstop.png", 0, 1, 1);
-//            Block.grass.sidetex = mod_OldDays.getFreeTextureIndex();
-//            addTextureHook("/terrain.png", Block.grass.sidetex, "/olddays/grassside.png", 0, 1, 1);
-//            customleaves.fasttex = mod_OldDays.getFreeTextureIndex();
-//            addTextureHook("/terrain.png", customleaves.fasttex, "/olddays/leavesfast.png", 0, 1, 1);
-//            customleaves.fancytex = mod_OldDays.getFreeTextureIndex();
-//            addTextureHook("/terrain.png", customleaves.fancytex, "/olddays/leavesfancy.png", 0, 1, 1);*/
-
             Block.blocksList[Block.leaves.blockID] = null;
             BlockLeaves2 customleaves = (BlockLeaves2)(new BlockLeaves2(Block.leaves.blockID));
             customleaves.setHardness(0.2F);
@@ -713,7 +697,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if (Generator==GEN_BIOMELESS){
-            if (tex && hasTextures("olddays/leavesfast.png", "olddays/leavesfancy.png")){
+            if (tex && hasIcons(false, "olddays_leaves_fast", "olddays_leaves_fancy")){
                 return 0xffffff;
             }
             return ColorizerFoliage.getFoliageColor(1.0F, 1.0F);
@@ -755,7 +739,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int GetGrassColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
         if(Generator==GEN_BIOMELESS){
-            if (tex && hasTextures("olddays/grasstop.png", "olddays/grassside.png")){
+            if (tex && hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return 0xffffff;
             }
             return ColorizerGrass.getGrassColor(1.0F, 1.0F);

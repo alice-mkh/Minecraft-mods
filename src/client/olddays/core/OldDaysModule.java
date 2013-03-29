@@ -139,6 +139,10 @@ public class OldDaysModule{
         return mod_OldDays.texman.hasEntry(str);
     }
 
+    public static boolean hasIcons(boolean b, String... str){
+        return mod_OldDays.texman.hasIcons(b, str);
+    }
+
     public void callback(int i){}
 
     public void set(Class c, String name, Object value, boolean necessary){
