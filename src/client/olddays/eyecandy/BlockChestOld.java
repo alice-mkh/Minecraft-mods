@@ -6,13 +6,13 @@ public class BlockChestOld extends BlockChest
 {
     public static boolean normalblock = false;
 
-    public Icon sidetex;
-    public Icon fronttex;
-    public Icon toptex;
-    public Icon texfrontleft;
-    public Icon texfrontright;
-    public Icon texbackleft;
-    public Icon texbackright;
+    public Icon texSide;
+    public Icon texFront;
+    public Icon texTop;
+    public Icon texFrontLeft;
+    public Icon texFrontRight;
+    public Icon texBackLeft;
+    public Icon texBackRight;
 
     protected BlockChestOld(int par1, int par2)
     {
@@ -36,12 +36,12 @@ public class BlockChestOld extends BlockChest
         }
         if (par5 == 1)
         {
-            return toptex;
+            return texTop;
         }
 
         if (par5 == 0)
         {
-            return toptex;
+            return texTop;
         }
 
         int i = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
@@ -53,7 +53,7 @@ public class BlockChestOld extends BlockChest
         {
             if (par5 == 2 || par5 == 3)
             {
-                return sidetex;
+                return texSide;
             }
 
             int i1 = 0;
@@ -83,14 +83,14 @@ public class BlockChestOld extends BlockChest
                 byte1 = 4;
             }
 
-            return par5 == byte1 ? (i1 != 0 ? texfrontleft : texfrontright) : (i1 != 0 ? texbackleft : texbackright);
+            return par5 == byte1 ? (i1 != 0 ? texFrontLeft : texFrontRight) : (i1 != 0 ? texBackLeft : texBackRight);
         }
 
         if (k == blockID || l == blockID)
         {
             if (par5 == 4 || par5 == 5)
             {
-                return sidetex;
+                return texSide;
             }
 
             int j1 = 0;
@@ -119,7 +119,7 @@ public class BlockChestOld extends BlockChest
             {
                 byte2 = 2;
             }
-            return par5 == byte2 ? (j1 != 0 ? texfrontleft : texfrontright) : (j1 != 0 ? texbackleft : texbackright);
+            return par5 == byte2 ? (j1 != 0 ? texFrontLeft : texFrontRight) : (j1 != 0 ? texBackLeft : texBackRight);
         }
 
         byte byte0 = 3;
@@ -144,7 +144,7 @@ public class BlockChestOld extends BlockChest
             byte0 = 4;
         }
 
-        return par5 != byte0 ? sidetex : fronttex;
+        return par5 != byte0 ? texSide : texFront;
     }
 
     @Override
@@ -155,21 +155,21 @@ public class BlockChestOld extends BlockChest
         }
         if (par1 == 1)
         {
-            return toptex;
+            return texTop;
         }
 
         if (par1 == 0)
         {
-            return toptex;
+            return texTop;
         }
 
         if (par1 == 3)
         {
-            return fronttex;
+            return texFront;
         }
         else
         {
-            return sidetex;
+            return texSide;
         }
     }
 
@@ -177,13 +177,19 @@ public class BlockChestOld extends BlockChest
     public void registerIcons(IconRegister par1IconRegister)
     {
         super.registerIcons(par1IconRegister);
-        toptex = par1IconRegister.registerIcon("olddays_chest_top");
-        fronttex = par1IconRegister.registerIcon("olddays_chest_front");
-        sidetex = par1IconRegister.registerIcon("olddays_chest_side");
-        texfrontleft = par1IconRegister.registerIcon("olddays_chest_front_left");
-        texfrontright = par1IconRegister.registerIcon("olddays_chest_front_right");
-        texbackleft = par1IconRegister.registerIcon("olddays_chest_back_left");
-        texbackright = par1IconRegister.registerIcon("olddays_chest_back_right");
+        texTop = par1IconRegister.registerIcon("olddays_chest_top");
+        texSide = par1IconRegister.registerIcon("olddays_chest_side");
+        texBackLeft = par1IconRegister.registerIcon("olddays_chest_back_left");
+        texBackRight = par1IconRegister.registerIcon("olddays_chest_back_right");
+        if (field_94443_a == 1){
+            texFront = par1IconRegister.registerIcon("olddays_chest_front_trap");
+            texFrontLeft = par1IconRegister.registerIcon("olddays_chest_front_left_trap");
+            texFrontRight = par1IconRegister.registerIcon("olddays_chest_front_right_trap");
+        }else{
+            texFront = par1IconRegister.registerIcon("olddays_chest_front");
+            texFrontLeft = par1IconRegister.registerIcon("olddays_chest_front_left");
+            texFrontRight = par1IconRegister.registerIcon("olddays_chest_front_right");
+        }
     }
 
     @Override
