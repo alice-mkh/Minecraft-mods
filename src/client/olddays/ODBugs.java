@@ -13,6 +13,7 @@ public class ODBugs extends OldDaysModule{
         new OldDaysPropertyBool(this, 8,  false, false, "InvWalking");
     }
 
+    @Override
     public void callback (int i){
         switch(i){
             case 1: set(EntityMinecart.class, "boosters", Boosters); break;

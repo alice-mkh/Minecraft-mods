@@ -38,6 +38,7 @@ public abstract class EntityCreature extends EntityLiving
     /**
      * Sets the reference to the World object.
      */
+    @Override
     public void setWorld(World par1World)
     {
         worldObj = par1World;

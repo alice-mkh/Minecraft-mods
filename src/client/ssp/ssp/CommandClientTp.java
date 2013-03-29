@@ -5,10 +5,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientTp extends CommandServerTp
 {
-    public CommandClientTp()
-    {
-    }
-
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 3 || par2ArrayOfStr.length == 4)
@@ -44,6 +41,7 @@ public class CommandClientTp extends CommandServerTp
         }
     }
 
+    @Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
@@ -59,6 +57,7 @@ public class CommandClientTp extends CommandServerTp
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

@@ -24,7 +24,7 @@ public abstract class Mod{
 
     public void onGUITick(GuiScreen screen){}
 
-    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, Icon override){
         return false;
     }
 
@@ -80,7 +80,7 @@ public abstract class Mod{
             return;
         }
         if (handler == null){
-            handler = Minecraft.getMinecraft().getSendQueue();
+            handler = Minecraft.getMinecraft().getNetHandler();
         }
         handler.addToSendQueue(packet);
     }

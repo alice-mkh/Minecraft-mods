@@ -12,6 +12,7 @@ public class MapGenScatteredFeature2 extends MapGenScatteredFeature
     {
     }
 
+    @Override
     protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
         byte byte0 = 32;
@@ -54,6 +55,7 @@ public class MapGenScatteredFeature2 extends MapGenScatteredFeature
         return false;
     }
 
+    @Override
     protected StructureStart getStructureStart(int par1, int par2)
     {
         return new StructureScatteredFeatureStart2(worldObj, rand, par1, par2);

@@ -1,5 +1,5 @@
 package net.minecraft.src.nbxlite.blocks;
-
+/*
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -7,8 +7,8 @@ import net.minecraft.src.Block;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TextureFX;
 import net.minecraft.src.ODNBXlite;
-
-public class TextureGearFX extends TextureFX
+*/
+public class TextureGearFX{}/* extends TextureFX
 {
   private int tickCounter = 0;
   private int[] gear = new int[1024];
@@ -29,6 +29,7 @@ public class TextureGearFX extends TextureFX
         }
     }
 
+    @Override
     public void onTick()
     {
         tickCounter = (tickCounter + this.h & 0x3F);
@@ -62,4 +63,4 @@ public class TextureGearFX extends TextureFX
             }
         }
     }
-}
+}*/

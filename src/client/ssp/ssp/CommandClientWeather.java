@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientWeather extends CommandWeather
 {
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length < 1)
@@ -48,6 +49,7 @@ public class CommandClientWeather extends CommandWeather
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
+    @Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1)
@@ -66,11 +68,13 @@ public class CommandClientWeather extends CommandWeather
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
     }
 
+    @Override
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.weather.usage", new Object[0]);

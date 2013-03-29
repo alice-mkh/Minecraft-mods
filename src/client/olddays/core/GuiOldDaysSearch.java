@@ -13,6 +13,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         hasFields = true;
     }
 
+    @Override
     public void initGui(){
         searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
         searchField.setMaxStringLength(999);
@@ -27,15 +28,16 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         searchField.setCanLoseFocus(b);
     }
 
+    @Override
     protected void mouseClicked(int par1, int par2, int par3){
         searchField.mouseClicked(par1, par2, par3);
         if (searchField.isFocused()){
             if (this instanceof GuiOldDaysPresets){
                 if (field.isFocused()){
-                    showField(false, ((GuiButton)controlList.get(fieldId)));
+                    showField(false, ((GuiButton)buttonList.get(fieldId)));
                 }
-            }else if (controlList.get(fieldId) != null && controlList.get(fieldId) instanceof GuiButtonProp){
-                GuiButtonProp button = ((GuiButtonProp)controlList.get(fieldId));
+            }else if (buttonList.get(fieldId) != null && buttonList.get(fieldId) instanceof GuiButtonProp){
+                GuiButtonProp button = ((GuiButtonProp)buttonList.get(fieldId));
                 button.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
                 showField(false, button);
@@ -58,9 +60,9 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     }
 
     protected void updateList(String str){
-        controlList.clear();
+        buttonList.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         int count = 0;
         searchField.correct = true;
         Pattern pat = null;
@@ -84,6 +86,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         setPage(0);
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         if (!guibutton.enabled){
@@ -105,6 +108,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         actionPerformed(guibuttonprop);
     }
 
+    @Override
     protected void keyTyped(char par1, int par2){
         if (searchField.isFocused()){
             searchField.textboxKeyTyped(par1, par2);
@@ -119,11 +123,13 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         }
     }
 
+    @Override
     public void updateScreen(){
         super.updateScreen();
         searchField.updateCursorCounter();
     }
 
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         super.drawScreen(i, j, f);

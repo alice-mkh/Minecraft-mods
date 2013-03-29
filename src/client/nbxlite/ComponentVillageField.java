@@ -25,16 +25,16 @@ public class ComponentVillageField extends ComponentVillage
         averageGroundLevel = -1;
         coordBaseMode = par5;
         boundingBox = par4StructureBoundingBox;
-        cropTypeA = pickRandomCrop(par3Random);
-        cropTypeB = pickRandomCrop(par3Random);
-        cropTypeC = pickRandomCrop(par3Random);
-        cropTypeD = pickRandomCrop(par3Random);
+        cropTypeA = getRandomCrop(par3Random);
+        cropTypeB = getRandomCrop(par3Random);
+        cropTypeC = getRandomCrop(par3Random);
+        cropTypeD = getRandomCrop(par3Random);
     }
 
     /**
      * Returns a crop type to be planted on this field.
      */
-    private int pickRandomCrop(Random par1Random)
+    private int getRandomCrop(Random par1Random)
     {
         if (ODNBXlite.noNewCrops()){
             return Block.crops.blockID;

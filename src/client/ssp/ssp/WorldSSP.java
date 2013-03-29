@@ -50,9 +50,13 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     public double field_35468_K;
     public double field_35465_L;
 
-    public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
+    /** true while the world is editing blocks */
+    public boolean editingBlocks;
+
+    public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p, ILogAgent log)
     {
-        super(par3WorldProvider, par1ISaveHandler, par4WorldSettings, par2Str, p);
+        super(par3WorldProvider, par1ISaveHandler, par4WorldSettings, par2Str, p, log);
+        editingBlocks = false;
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
         entityRemoval = new ArrayList();
@@ -69,9 +73,10 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         calculateInitialWeather();
     }
 
-    public WorldSSP(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p)
+    public WorldSSP(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p, ILogAgent log)
     {
-        super(par2WorldProvider, par1World.saveHandler, new WorldSettings(par1World.getWorldInfo()), par1World.getWorldInfo().getWorldName(), p);
+        super(par2WorldProvider, par1World.saveHandler, new WorldSettings(par1World.getWorldInfo()), par1World.getWorldInfo().getWorldName(), p, log);
+        editingBlocks = false;
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
         entityRemoval = new ArrayList();
@@ -89,14 +94,14 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         calculateInitialWeather();
     }
 
-    public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, Profiler p)
+    public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, Profiler p, ILogAgent log)
     {
-        this(par1ISaveHandler, par2Str, par3WorldSettings, ((WorldProvider)(null)), p);
+        this(par1ISaveHandler, par2Str, par3WorldSettings, ((WorldProvider)(null)), p, log);
     }
 
-    public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p)
+    public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p, ILogAgent log)
     {
-        super(par4WorldProvider, par1ISaveHandler, par3WorldSettings, par2Str, p);
+        super(par4WorldProvider, par1ISaveHandler, par3WorldSettings, par2Str, p, log);
         scheduledTickTreeSet = new TreeSet();
         scheduledTickSet = new HashSet();
         entityRemoval = new ArrayList();
@@ -154,6 +159,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Creates the chunk provider for this world. Called in the constructor. Retrieves provider from worldProvider?
      */
+    @Override
     protected IChunkProvider createChunkProvider()
     {
         IChunkLoader ichunkloader = saveHandler.getChunkLoader(provider);
@@ -224,6 +230,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Sets a new spawn location by finding an uncovered block at a random (x,z) location in the chunk.
      */
+    @Override
     public void setSpawnLocation()
     {
         if (worldInfo.getSpawnY() <= 0)
@@ -249,10 +256,6 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         worldInfo.setSpawnX(i);
         worldInfo.setSpawnZ(j);
-    }
-
-    public void func_6464_c()
-    {
     }
 
     /**
@@ -368,6 +371,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns true if the block at the specified coordinates is empty
      */
+    @Override
     public boolean isAirBlock(int par1, int par2, int par3)
     {
         return getBlockId(par1, par2, par3) == 0;
@@ -376,6 +380,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns whether a block exists at world coordinates x, y, z
      */
+    @Override
     public boolean blockExists(int par1, int par2, int par3)
     {
         if (par2 < 0 || par2 >= 256)
@@ -391,6 +396,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Checks if any of the chunks within distance (argument 4) blocks of the given block exist
      */
+    @Override
     public boolean doChunksNearChunkExist(int par1, int par2, int par3, int par4)
     {
         return checkChunksExist(par1 - par4, par2 - par4, par3 - par4, par1 + par4, par2 + par4, par3 + par4);
@@ -399,6 +405,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Checks between a min and max all the chunks inbetween actually exist. Args: minX, minY, minZ, maxX, maxY, maxZ
      */
+    @Override
     public boolean checkChunksExist(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         if (par5 < 0 || par2 >= 256)
@@ -428,6 +435,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns whether a chunk exists at chunk coordinates x, y
      */
+    @Override
     protected boolean chunkExists(int par1, int par2)
     {
         return chunkProvider.chunkExists(par1, par2);
@@ -436,6 +444,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns a chunk looked up by block coordinates. Args: x, z
      */
+    @Override
     public Chunk getChunkFromBlockCoords(int par1, int par2)
     {
         return getChunkFromChunkCoords(par1 >> 4, par2 >> 4);
@@ -444,6 +453,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns back a chunk looked up by chunk coordinates Args: x, y
      */
+    @Override
     public Chunk getChunkFromChunkCoords(int par1, int par2)
     {
         return chunkProvider.provideChunk(par1, par2);
@@ -452,6 +462,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns the block's material.
      */
+    @Override
     public Material getBlockMaterial(int par1, int par2, int par3)
     {
         int i = getBlockId(par1, par2, par3);
@@ -469,6 +480,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Marks the block as needing an update with the renderer. Args: x, y, z
      */
+    @Override
     public void markBlockForUpdate(int par1, int par2, int par3)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -480,6 +492,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * The block type change and need to notify other systems  Args: x, y, z, blockID
      */
+    @Override
     public void notifyBlockChange(int par1, int par2, int par3, int par4)
     {
         markBlockForUpdate(par1, par2, par3);
@@ -487,27 +500,9 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     }
 
     /**
-     * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
-     */
-    public void markBlockForRenderUpdate2(int par1, int par2, int par3)
-    {
-        for (int i = 0; i < worldAccesses.size(); i++)
-        {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par1, par2, par3);
-        }
-    }
-
-    public void markBlocksDirty(int par1, int par2, int par3, int par4, int par5, int par6)
-    {
-        for (int i = 0; i < worldAccesses.size(); i++)
-        {
-            ((IWorldAccess)worldAccesses.get(i)).markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
-        }
-    }
-
-    /**
      * Notifies neighboring blocks that this specified block changed  Args: x, y, z, blockID
      */
+    @Override
     public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4)
     {
         notifyBlockOfNeighborChange(par1 - 1, par2, par3, par4);
@@ -521,7 +516,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Notifies a block that one of its neighbor change to the specified type Args: x, y, z, blockID
      */
-    private void notifyBlockOfNeighborChange(int par1, int par2, int par3, int par4)
+    @Override
+    public void notifyBlockOfNeighborChange(int par1, int par2, int par3, int par4)
     {
         if (editingBlocks || isRemote)
         {
@@ -539,6 +535,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Checks if the specified block is able to see the sky
      */
+    @Override
     public boolean canBlockSeeTheSky(int par1, int par2, int par3)
     {
         return getChunkFromChunkCoords(par1 >> 4, par3 >> 4).canBlockSeeTheSky(par1 & 0xf, par2, par3 & 0xf);
@@ -547,16 +544,19 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * ray traces all blocks, including non-collideable ones
      */
+    @Override
     public MovingObjectPosition rayTraceBlocks(Vec3 par1Vec3, Vec3 par2Vec3)
     {
         return rayTraceBlocks_do_do(par1Vec3, par2Vec3, false, false);
     }
 
+    @Override
     public MovingObjectPosition rayTraceBlocks_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
     {
         return rayTraceBlocks_do_do(par1Vec3, par2Vec3, par3, false);
     }
 
+    @Override
     public MovingObjectPosition rayTraceBlocks_do_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3, boolean par4)
     {
         if (Double.isNaN(par1Vec3.xCoord) || Double.isNaN(par1Vec3.yCoord) || Double.isNaN(par1Vec3.zCoord))
@@ -763,6 +763,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Plays a sound at the entity's position. Args: entity, sound, unknown1, volume (relative to 1.0)
      */
+    @Override
     public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
     {
         Minecraft mc = Minecraft.getMinecraft();
@@ -794,6 +795,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * (double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, 'random.door_open', 1.0F, world.rand.nextFloat() * 0.1F +
      * 0.9F with i,j,k position of the block.
      */
+    @Override
     public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9)
     {
         Minecraft mc = Minecraft.getMinecraft();
@@ -823,6 +825,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Plays a record at the specified coordinates of the specified name. Args: recordName, x, y, z
      */
+    @Override
     public void playRecord(String par1Str, int par2, int par3, int par4)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -834,6 +837,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Spawns a particle.  Args particleName, x, y, z, velX, velY, velZ
      */
+    @Override
     public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
@@ -845,6 +849,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * adds a lightning bolt to the list of lightning bolts in this world.
      */
+    @Override
     public boolean addWeatherEffect(Entity par1Entity)
     {
         weatherEffects.add(par1Entity);
@@ -854,6 +859,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Called to place all entities as part of a world
      */
+    @Override
     public boolean spawnEntityInWorld(Entity par1Entity)
     {
         int i = MathHelper.floor_double(par1Entity.posX / 16D);
@@ -888,22 +894,24 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Start the skin for this entity downloading, if necessary, and increment its reference counter
      */
+    @Override
     protected void obtainEntitySkin(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).obtainEntitySkin(par1Entity);
+            ((IWorldAccess)worldAccesses.get(i)).onEntityCreate(par1Entity);
         }
     }
 
     /**
      * Decrement the reference counter for this entity's skin image data
      */
+    @Override
     protected void releaseEntitySkin(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
-            ((IWorldAccess)worldAccesses.get(i)).releaseEntitySkin(par1Entity);
+            ((IWorldAccess)worldAccesses.get(i)).onEntityDestroy(par1Entity);
         }
     }
 
@@ -911,7 +919,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * Dismounts the entity (and anything riding the entity), sets the dead flag, and removes the player entity from the
      * player entity list. Called by the playerLoggedOut function.
      */
-    public void setEntityDead(Entity par1Entity)
+    @Override
+    public void removeEntity(Entity par1Entity)
     {
         if (par1Entity.riddenByEntity != null)
         {
@@ -935,6 +944,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Adds a IWorldAccess to the list of worldAccesses
      */
+    @Override
     public void addWorldAccess(IWorldAccess par1IWorldAccess)
     {
         worldAccesses.add(par1IWorldAccess);
@@ -943,6 +953,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Removes a worldAccess from the worldAccesses object
      */
+    @Override
     public void removeWorldAccess(IWorldAccess par1IWorldAccess)
     {
         worldAccesses.remove(par1IWorldAccess);
@@ -952,6 +963,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * Returns a list of bounding boxes that collide with aabb excluding the passed in entity's collision. Args: entity,
      * aabb
      */
+    @Override
     public List getCollidingBoundingBoxes(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
         collidingBoundingBoxes.clear();
@@ -977,7 +989,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
                     if (block != null)
                     {
-                        block.addCollidingBlockToList(this, k1, i2, l1, par2AxisAlignedBB, collidingBoundingBoxes, par1Entity);
+                        block.addCollisionBoxesToList(this, k1, i2, l1, par2AxisAlignedBB, collidingBoundingBoxes, par1Entity);
                     }
                 }
             }
@@ -1009,6 +1021,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * calls calculateCelestialAngle
      */
+    @Override
     public float getCelestialAngle(float par1)
     {
         if (Minecraft.timecontrol && provider.dimensionId == 0){
@@ -1017,14 +1030,16 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         return super.getCelestialAngle(par1);
     }
 
-    public int getMoonPhase(float par1)
+    @Override
+    public int getMoonPhase()
     {
-        return provider.getMoonPhase(worldInfo.getWorldTotalTime(), par1);
+        return provider.getMoonPhase(worldInfo.getWorldTotalTime());
     }
 
     /**
      * Return getCelestialAngle()*2*PI
      */
+    @Override
     public float getCelestialAngleRadians(float par1)
     {
         float f = getCelestialAngle(par1);
@@ -1034,6 +1049,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Gets the height to which rain/snow will fall. Calculates it if not already stored.
      */
+    @Override
     public int getPrecipitationHeight(int par1, int par2)
     {
         return getChunkFromBlockCoords(par1, par2).getPrecipitationHeight(par1 & 0xf, par2 & 0xf);
@@ -1042,6 +1058,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Finds the highest block on the x, z coordinate that is solid and returns its y coord. Args x, z
      */
+    @Override
     public int getTopSolidOrLiquidBlock(int par1, int par2)
     {
         Chunk chunk = getChunkFromBlockCoords(par1, par2);
@@ -1069,11 +1086,13 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Schedules a tick to a block with a delay (Most commonly the tick rate)
      */
+    @Override
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
     {
         func_82740_a(par1, par2, par3, par4, par5, 0);
     }
 
+    @Override
     public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
@@ -1113,7 +1132,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Schedules a block update from the saved information in a chunk. Called when the chunk is loaded.
      */
-    public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5)
+    @Override
+    public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
 
@@ -1132,6 +1152,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB
      */
+    @Override
     public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
     {
         List list = getEntitiesWithinAABBExcludingEntity(null, par1AxisAlignedBB);
@@ -1152,6 +1173,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns if any of the blocks within the aabb are liquids. Args: aabb
      */
+    @Override
     public boolean isAnyLiquid(AxisAlignedBB par1AxisAlignedBB)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -1198,6 +1220,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns whether or not the given bounding box is on fire or not
      */
+    @Override
     public boolean isBoundingBoxBurning(AxisAlignedBB par1AxisAlignedBB)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -1232,6 +1255,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * handles the acceleration of an object whilst in water. Not sure if it is used elsewhere.
      */
+    @Override
     public boolean handleMaterialAcceleration(AxisAlignedBB par1AxisAlignedBB, Material par2Material, Entity par3Entity)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -1288,6 +1312,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns true if the given bounding box contains the given material
      */
+    @Override
     public boolean isMaterialInBB(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -1319,6 +1344,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * checks if the given AABB is in the material given. Used while swimming.
      */
+    @Override
     public boolean isAABBInMaterial(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -1363,6 +1389,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Creates an explosion. Args: entity, x, y, z, strength
      */
+    @Override
     public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
     {
         return newExplosion(par1Entity, par2, par4, par6, par8, false, par9);
@@ -1371,6 +1398,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
+    @Override
     public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
@@ -1384,6 +1412,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Gets the percentage of real blocks within within a bounding box, along a specified vector.
      */
+    @Override
     public float getBlockDensity(Vec3 par1Vec3, AxisAlignedBB par2AxisAlignedBB)
     {
         double d = 1.0D / ((par2AxisAlignedBB.maxX - par2AxisAlignedBB.minX) * 2D + 1.0D);
@@ -1415,7 +1444,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         return (float)i / (float)j;
     }
 
-    public boolean func_48457_a(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5)
+    @Override
+    public boolean extinguishFire(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5)
     {
         if (par5 == 0)
         {
@@ -1450,7 +1480,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         if (getBlockId(par2, par3, par4) == Block.fire.blockID)
         {
             playAuxSFXAtEntity(par1EntityPlayer, 1004, par2, par3, par4, 0);
-            setBlockWithNotify(par2, par3, par4, 0);
+            setBlockToAir(par2, par3, par4);
             return true;
         }
         else
@@ -1467,6 +1497,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * This string is 'All: (number of loaded entities)' Viewable by press ing F3
      */
+    @Override
     public String getDebugLoadedEntities()
     {
         return (new StringBuilder()).append("All: ").append(loadedEntityList.size()).toString();
@@ -1475,6 +1506,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns the name of the current chunk provider, by calling chunkprovider.makeString()
      */
+    @Override
     public String getProviderName()
     {
         return chunkProvider.makeString();
@@ -1483,6 +1515,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * adds tile entity to despawn list (renamed from markEntityForDespawn)
      */
+    @Override
     public void markTileEntityForDespawn(TileEntity par1TileEntity)
     {
         entityRemoval.add(par1TileEntity);
@@ -1491,6 +1524,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Returns true if the block at the specified coordinates is an opaque cube. Args: x, y, z
      */
+    @Override
     public boolean isBlockOpaqueCube(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[getBlockId(par1, par2, par3)];
@@ -1508,6 +1542,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Indicate if a material is a normal solid opaque cube.
      */
+    @Override
     public boolean isBlockNormalCube(int par1, int par2, int par3)
     {
         return Block.isNormalCube(getBlockId(par1, par2, par3));
@@ -1530,6 +1565,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Set which types of mobs are allowed to spawn (peaceful vs hostile).
      */
+    @Override
     public void setAllowedSpawnTypes(boolean par1, boolean par2)
     {
         spawnHostileMobs = par1;
@@ -1539,6 +1575,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Runs a single tick for the world
      */
+    @Override
     public void tick()
     {
         field_35467_J = field_35468_K;
@@ -1575,7 +1612,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
         }
         theProfiler.endStartSection("chunkSource");
-        chunkProvider.unload100OldestChunks();
+        chunkProvider.unloadQueuedChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
         if (i != skylightSubtracted)
@@ -1622,6 +1659,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Updates all weather states.
      */
+    @Override
     protected void updateWeather()
     {
         if (provider.hasNoSky)
@@ -1816,6 +1854,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * plays random cave ambient sounds and runs updateTick on random blocks within each chunk in the vacinity of a
      * player
      */
+    @Override
     protected void tickBlocksAndAmbiance()
     {
         func_48461_r();
@@ -1859,12 +1898,12 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
                 if (isBlockFreezableNaturally(l1 + k, j3 - 1, k2 + l))
                 {
-                    setBlockWithNotify(l1 + k, j3 - 1, k2 + l, Block.ice.blockID);
+                    setBlock(l1 + k, j3 - 1, k2 + l, Block.ice.blockID);
                 }
 
                 if (isRaining() && canSnowAt(l1 + k, j3, k2 + l))
                 {
-                    setBlockWithNotify(l1 + k, j3, k2 + l, Block.snow.blockID);
+                    setBlock(l1 + k, j3, k2 + l, Block.snow.blockID);
                 }
             }
 
@@ -1905,6 +1944,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * checks to see if a given block is both water and is cold enough to freeze
      */
+    @Override
     public boolean isBlockFreezable(int par1, int par2, int par3)
     {
         return canBlockFreeze(par1, par2, par3, false);
@@ -1913,6 +1953,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * checks to see if a given block is both water and has at least one immediately adjacent non-water block
      */
+    @Override
     public boolean isBlockFreezableNaturally(int par1, int par2, int par3)
     {
         return canBlockFreeze(par1, par2, par3, true);
@@ -1922,6 +1963,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * checks to see if a given block is both water, and cold enough to freeze - if the par4 boolean is set, this will
      * only return true if there is a non-water block immediately adjacent to the specified block
      */
+    @Override
     public boolean canBlockFreeze(int par1, int par2, int par3, boolean par4)
     {
         BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
@@ -1978,6 +2020,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Tests whether or not snow can be placed at a given location
      */
+    @Override
     public boolean canSnowAt(int par1, int par2, int par3)
     {
         BiomeGenBase biomegenbase = getBiomeGenForCoords(par1, par3);
@@ -2005,6 +2048,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Runs through the list of updates to run and ticks them
      */
+    @Override
     public boolean tickUpdates(boolean par1)
     {
         int i = scheduledTickTreeSet.size();
@@ -2048,6 +2092,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         return scheduledTickTreeSet.size() != 0;
     }
 
+    @Override
     public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2)
     {
         ArrayList arraylist = null;
@@ -2092,6 +2137,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * Randomly will call the random display update on a 1000 blocks within 16 units of the specified position. Args: x,
      * y, z
      */
+    @Override
     public void func_73029_E(int par1, int par2, int par3)
     {
         byte byte0 = 16;
@@ -2122,7 +2168,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      */
     public void dropOldChunks()
     {
-        while (chunkProvider.unload100OldestChunks()) ;
+        while (chunkProvider.unloadQueuedChunks()) ;
     }
 
     public EntityPlayer func_48456_a(double par1, double par3, double par5)
@@ -2148,18 +2194,15 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * If on MP, sends a quitting packet.
      */
+    @Override
     public void sendQuittingDisconnectingPacket()
     {
-    }
-
-    public void setSpawnPoint(ChunkCoordinates par1ChunkCoordinates)
-    {
-        worldInfo.setSpawnPosition(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ);
     }
 
     /**
      * Called when checking if a certain block can be mined or not. The 'spawn safe zone' check is located here.
      */
+    @Override
     public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int i)
     {
         return true;
@@ -2168,6 +2211,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * sends a Packet 38 (Entity Status) to all tracked players of that entity
      */
+    @Override
     public void setEntityState(Entity entity, byte byte0)
     {
     }
@@ -2231,6 +2275,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Updates the flag that indicates whether or not all players in the world are sleeping.
      */
+    @Override
     public void updateAllPlayersSleepingFlag()
     {
         allPlayersSleeping = !playerEntities.isEmpty();
@@ -2308,7 +2353,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
     }
 
-    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9)
+    @Override
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean flag)
     {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.enableSP){
@@ -2351,39 +2397,16 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         }
     }
 
-    public boolean canPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
-    {
-        int i = getBlockId(par2, par3, par4);
-        Block block = Block.blocksList[i];
-        Block block1 = Block.blocksList[par1];
-        AxisAlignedBB axisalignedbb = block1.getCollisionBoundingBoxFromPool(this, par2, par3, par4);
-
-        if (par5)
-        {
-            axisalignedbb = null;
-        }
-
-        if (axisalignedbb != null && !checkIfAABBIsClear(axisalignedbb))
-        {
-            return false;
-        }
-
-        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isReplaceable()))
-        {
-            block = null;
-        }
-
-        return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
-    }
-
     /**
      * Invalidates an AABB region of blocks from the receive queue, in the event that the block has been modified
      * client-side in the intervening 80 receive ticks.
      */
+    @Override
     public void invalidateBlockReceiveRegion(int i, int j, int k, int l, int i1, int j1)
     {
     }
 
+    @Override
     public void doPreChunk(int par1, int par2, boolean par3)
     {
     }
@@ -2391,6 +2414,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Add an ID to Entity mapping to entityHashSet
      */
+    @Override
     public void addEntityToWorld(int par1, Entity par2Entity)
     {
     }
@@ -2398,25 +2422,25 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Lookup and return an Entity based on its ID
      */
+    @Override
     public Entity getEntityByID(int par1)
     {
         return null;
     }
 
+    @Override
     public Entity removeEntityFromWorld(int par1)
     {
         return null;
     }
 
+    @Override
     public boolean setBlockAndMetadataAndInvalidate(int par1, int par2, int par3, int par4, int par5)
     {
         return false;
     }
 
-    public void func_73022_a()
-    {
-    }
-
+    @Override
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
         CrashReportCategory crashreportcategory = par1CrashReport.makeCategoryDepth("Affected level", 1);
@@ -2426,7 +2450,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         try
         {
-            worldInfo.func_85118_a(crashreportcategory);
+            worldInfo.addToCrashReport(crashreportcategory);
         }
         catch (Throwable throwable)
         {
@@ -2440,7 +2464,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
         bonusChestContent = (new WeightedRandomChestContent[]
                 {
-                    new WeightedRandomChestContent(Item.stick.shiftedIndex, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 2, 3, 3)
+                    new WeightedRandomChestContent(Item.stick.itemID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.itemID, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.itemID, 0, 2, 3, 3)
                 });
     }
 }

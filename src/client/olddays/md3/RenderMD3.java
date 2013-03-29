@@ -23,6 +23,7 @@ public class RenderMD3 extends RenderLiving {
       }
    }
 
+    @Override
    public void doRenderLiving(EntityLiving par1EntityLiving, double d, double d1, double d2, float f, float f1){
         renderMD3(par1EntityLiving, (float)d, (float)d1, (float)d2, f, f1);
    }
@@ -61,6 +62,7 @@ public class RenderMD3 extends RenderLiving {
     /**
      * Passes the specialRender and renders it
      */
+    @Override
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
         par4 += 0.5D;

@@ -8,13 +8,16 @@ public class BlockPistonBase extends Block
     public static boolean dupe = false;
 
     /** This pistons is the sticky one? */
-    private boolean isSticky;
+    private final boolean isSticky;
     private boolean ignoreUpdates;
+    private Icon field_94498_b;
+    private Icon field_94499_c;
+    private Icon field_94497_cO;
 
-    public BlockPistonBase(int par1, int par2, boolean par3)
+    public BlockPistonBase(int par1, boolean par2)
     {
-        super(par1, par2, Material.piston);
-        isSticky = par3;
+        super(par1, Material.piston);
+        isSticky = par2;
         setStepSound(soundStoneFootstep);
         setHardness(0.5F);
         setCreativeTab(CreativeTabs.tabRedstone);
@@ -25,36 +28,87 @@ public class BlockPistonBase extends Block
      * called by TileEntityRendererPiston.renderPiston() because TileEntityPiston.shouldRenderHead() will always return
      * false.
      */
-    public int getPistonExtensionTexture()
+    public Icon getPistonExtensionTexture()
     {
-        return !isSticky ? 107 : 106;
+        return field_94497_cO;
+    }
+
+    public void func_96479_b(float par1, float par2, float par3, float par4, float par5, float par6)
+    {
+        setBlockBounds(par1, par2, par3, par4, par5, par6);
     }
 
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         int i = getOrientation(par2);
 
         if (i > 5)
         {
-            return blockIndexInTexture;
+            return field_94497_cO;
         }
 
         if (par1 == i)
         {
             if (isExtended(par2) || minX > 0.0D || minY > 0.0D || minZ > 0.0D || maxX < 1.0D || maxY < 1.0D || maxZ < 1.0D)
             {
-                return 110;
+                return field_94498_b;
             }
             else
             {
-                return blockIndexInTexture;
+                return field_94497_cO;
             }
         }
 
-        return par1 != Facing.faceToSide[i] ? 108 : 109;
+        if (par1 == Facing.faceToSide[i])
+        {
+            return field_94499_c;
+        }
+        else
+        {
+            return blockIcon;
+        }
+    }
+
+    public static Icon func_94496_b(String par0Str)
+    {
+        if (par0Str == "piston_side")
+        {
+            return Block.pistonBase.blockIcon;
+        }
+
+        if (par0Str == "piston_top")
+        {
+            return Block.pistonBase.field_94497_cO;
+        }
+
+        if (par0Str == "piston_top_sticky")
+        {
+            return Block.pistonStickyBase.field_94497_cO;
+        }
+
+        if (par0Str == "piston_inner_top")
+        {
+            return Block.pistonBase.field_94498_b;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        blockIcon = par1IconRegister.registerIcon("piston_side");
+        field_94497_cO = par1IconRegister.registerIcon(isSticky ? "piston_top_sticky" : "piston_top");
+        field_94498_b = par1IconRegister.registerIcon("piston_inner_top");
+        field_94499_c = par1IconRegister.registerIcon("piston_bottom");
     }
 
     /**
@@ -85,10 +139,10 @@ public class BlockPistonBase extends Block
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
-        int i = determineOrientation(par1World, par2, par3, par4, (EntityPlayer)par5EntityLiving);
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, i);
+        int i = determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
+        par1World.setBlockMetadataWithNotify(par2, par3, par4, i, 2);
 
         if (!par1World.isRemote)
         {
@@ -147,6 +201,7 @@ public class BlockPistonBase extends Block
         }
         else if (!flag && isExtended(i))
         {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, j, 2);
             par1World.addBlockEvent(par2, par3, par4, blockID, 1, j);
         }
     }
@@ -186,93 +241,100 @@ public class BlockPistonBase extends Block
      */
     private boolean isIndirectlyPowered(World par1World, int par2, int par3, int par4, int par5)
     {
-        if (par5 != 0 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 - 1, par4, 0))
+        if (par5 != 0 && par1World.getIndirectPowerOutput(par2, par3 - 1, par4, 0))
         {
             return true;
         }
 
-        if (par5 != 1 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 1, par4, 1))
+        if (par5 != 1 && par1World.getIndirectPowerOutput(par2, par3 + 1, par4, 1))
         {
             return true;
         }
 
-        if (par5 != 2 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4 - 1, 2))
+        if (par5 != 2 && par1World.getIndirectPowerOutput(par2, par3, par4 - 1, 2))
         {
             return true;
         }
 
-        if (par5 != 3 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4 + 1, 3))
+        if (par5 != 3 && par1World.getIndirectPowerOutput(par2, par3, par4 + 1, 3))
         {
             return true;
         }
 
-        if (par5 != 5 && par1World.isBlockIndirectlyProvidingPowerTo(par2 + 1, par3, par4, 5))
+        if (par5 != 5 && par1World.getIndirectPowerOutput(par2 + 1, par3, par4, 5))
         {
             return true;
         }
 
-        if (par5 != 4 && par1World.isBlockIndirectlyProvidingPowerTo(par2 - 1, par3, par4, 4))
+        if (par5 != 4 && par1World.getIndirectPowerOutput(par2 - 1, par3, par4, 4))
         {
             return true;
         }
 
-        if (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4, 0))
+        if (par1World.getIndirectPowerOutput(par2, par3, par4, 0))
         {
             return true;
         }
 
-        if (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 2, par4, 1))
+        if (par1World.getIndirectPowerOutput(par2, par3 + 2, par4, 1))
         {
             return true;
         }
 
-        if (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 1, par4 - 1, 2))
+        if (par1World.getIndirectPowerOutput(par2, par3 + 1, par4 - 1, 2))
         {
             return true;
         }
 
-        if (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 1, par4 + 1, 3))
+        if (par1World.getIndirectPowerOutput(par2, par3 + 1, par4 + 1, 3))
         {
             return true;
         }
 
-        if (par1World.isBlockIndirectlyProvidingPowerTo(par2 - 1, par3 + 1, par4, 4))
+        if (par1World.getIndirectPowerOutput(par2 - 1, par3 + 1, par4, 4))
         {
             return true;
         }
 
-        return par1World.isBlockIndirectlyProvidingPowerTo(par2 + 1, par3 + 1, par4, 5);
+        return par1World.getIndirectPowerOutput(par2 + 1, par3 + 1, par4, 5);
     }
 
     /**
      * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile
      * entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
      */
-    public void onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
+    public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         if (dupe){
             powerBlock(par1World, par2, par3, par4, par5, par6);
-            return;
+            return false;
         }
-        if (par5 == 0)
+        if (!par1World.isRemote)
         {
-            par1World.setBlockMetadata(par2, par3, par4, par6 | 8);
-        }
-        else
-        {
-            par1World.setBlockMetadata(par2, par3, par4, par6);
+            boolean flag = isIndirectlyPowered(par1World, par2, par3, par4, par6);
+
+            if (flag && par5 == 1)
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8, 2);
+                return false;
+            }
+
+            if (!flag && par5 == 0)
+            {
+                return false;
+            }
         }
 
         if (par5 == 0)
         {
             if (tryExtend(par1World, par2, par3, par4, par6))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8, 2);
                 par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.out", 0.5F, par1World.rand.nextFloat() * 0.25F + 0.6F);
             }
             else
             {
-                par1World.setBlockMetadata(par2, par3, par4, par6);
+                return false;
             }
         }
         else if (par5 == 1)
@@ -284,7 +346,7 @@ public class BlockPistonBase extends Block
                 ((TileEntityPiston)tileentity).clearPistonTileEntity();
             }
 
-            par1World.setBlockAndMetadata(par2, par3, par4, Block.pistonMoving.blockID, par6);
+            par1World.setBlock(par2, par3, par4, Block.pistonMoving.blockID, par6, 3);
             par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(blockID, par6, par6, false, true));
 
             if (isSticky)
@@ -294,7 +356,7 @@ public class BlockPistonBase extends Block
                 int k = par4 + Facing.offsetsZForSide[par6] * 2;
                 int l = par1World.getBlockId(i, j, k);
                 int i1 = par1World.getBlockMetadata(i, j, k);
-                boolean flag = false;
+                boolean flag1 = false;
 
                 if (l == Block.pistonMoving.blockID)
                 {
@@ -309,32 +371,34 @@ public class BlockPistonBase extends Block
                             tileentitypiston.clearPistonTileEntity();
                             l = tileentitypiston.getStoredBlockID();
                             i1 = tileentitypiston.getBlockMetadata();
-                            flag = true;
+                            flag1 = true;
                         }
                     }
                 }
 
-                if (!flag && l > 0 && canPushBlock(l, par1World, i, j, k, false) && (Block.blocksList[l].getMobilityFlag() == 0 || l == Block.pistonBase.blockID || l == Block.pistonStickyBase.blockID))
+                if (!flag1 && l > 0 && canPushBlock(l, par1World, i, j, k, false) && (Block.blocksList[l].getMobilityFlag() == 0 || l == Block.pistonBase.blockID || l == Block.pistonStickyBase.blockID))
                 {
                     par2 += Facing.offsetsXForSide[par6];
                     par3 += Facing.offsetsYForSide[par6];
                     par4 += Facing.offsetsZForSide[par6];
-                    par1World.setBlockAndMetadata(par2, par3, par4, Block.pistonMoving.blockID, i1);
+                    par1World.setBlock(par2, par3, par4, Block.pistonMoving.blockID, i1, 3);
                     par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(l, i1, par6, false, false));
-                    par1World.setBlockWithNotify(i, j, k, 0);
+                    par1World.setBlockToAir(i, j, k);
                 }
-                else if (!flag)
+                else if (!flag1)
                 {
-                    par1World.setBlockWithNotify(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6], 0);
+                    par1World.setBlockToAir(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
                 }
             }
             else
             {
-                par1World.setBlockWithNotify(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6], 0);
+                par1World.setBlockToAir(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
             }
 
             par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.in", 0.5F, par1World.rand.nextFloat() * 0.15F + 0.6F);
         }
+
+        return true;
     }
 
     public void powerBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
@@ -346,12 +410,12 @@ public class BlockPistonBase extends Block
         {
             if (tryExtend(par1World, par2, par3, par4, i))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, i | 8);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, i | 8, 3);
                 par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.out", 0.5F, par1World.rand.nextFloat() * 0.25F + 0.6F);
             }
             else
             {
-                par1World.setBlockMetadata(par2, par3, par4, i);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, i, 0);
             }
         }
         else if (par5 == 1)
@@ -363,7 +427,7 @@ public class BlockPistonBase extends Block
                 ((TileEntityPiston)tileentity).clearPistonTileEntity();
             }
 
-            par1World.setBlockAndMetadata(par2, par3, par4, Block.pistonMoving.blockID, i);
+            par1World.setBlock(par2, par3, par4, Block.pistonMoving.blockID, i, 0);
             par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(blockID, i, i, false, true));
 
             if (isSticky)
@@ -398,23 +462,23 @@ public class BlockPistonBase extends Block
                     par2 += Facing.offsetsXForSide[i];
                     par3 += Facing.offsetsYForSide[i];
                     par4 += Facing.offsetsZForSide[i];
-                    par1World.setBlockAndMetadata(par2, par3, par4, Block.pistonMoving.blockID, j1);
+                    par1World.setBlock(par2, par3, par4, Block.pistonMoving.blockID, j1, 0);
                     par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(i1, j1, i, false, false));
                     ignoreUpdates = false;
-                    par1World.setBlockWithNotify(j, k, l, 0);
+                    par1World.setBlockToAir(j, k, l);
                     ignoreUpdates = true;
                 }
                 else if (!flag)
                 {
                     ignoreUpdates = false;
-                    par1World.setBlockWithNotify(par2 + Facing.offsetsXForSide[i], par3 + Facing.offsetsYForSide[i], par4 + Facing.offsetsZForSide[i], 0);
+                    par1World.setBlockToAir(par2 + Facing.offsetsXForSide[i], par3 + Facing.offsetsYForSide[i], par4 + Facing.offsetsZForSide[i]);
                     ignoreUpdates = true;
                 }
             }
             else
             {
                 ignoreUpdates = false;
-                par1World.setBlockWithNotify(par2 + Facing.offsetsXForSide[i], par3 + Facing.offsetsYForSide[i], par4 + Facing.offsetsZForSide[i], 0);
+                par1World.setBlockToAir(par2 + Facing.offsetsXForSide[i], par3 + Facing.offsetsYForSide[i], par4 + Facing.offsetsZForSide[i]);
                 ignoreUpdates = true;
             }
 
@@ -470,12 +534,13 @@ public class BlockPistonBase extends Block
     }
 
     /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
+     * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
+     * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
+    public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
 
     /**
@@ -515,11 +580,11 @@ public class BlockPistonBase extends Block
     /**
      * gets the way this piston should face for that entity that placed it.
      */
-    public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
+    public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLiving par4EntityLiving)
     {
-        if (MathHelper.abs((float)par4EntityPlayer.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityPlayer.posZ - (float)par3) < 2.0F)
+        if (MathHelper.abs((float)par4EntityLiving.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLiving.posZ - (float)par3) < 2.0F)
         {
-            double d = (par4EntityPlayer.posY + 1.8200000000000001D) - (double)par4EntityPlayer.yOffset;
+            double d = (par4EntityLiving.posY + 1.8200000000000001D) - (double)par4EntityLiving.yOffset;
 
             if (d - (double)par2 > 2D)
             {
@@ -532,7 +597,7 @@ public class BlockPistonBase extends Block
             }
         }
 
-        int i = MathHelper.floor_double((double)((par4EntityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+        int i = MathHelper.floor_double((double)((par4EntityLiving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
         if (i == 0)
         {
@@ -581,13 +646,13 @@ public class BlockPistonBase extends Block
                 return false;
             }
 
-            if (!par5 && Block.blocksList[par0].getMobilityFlag() == 1)
+            if (Block.blocksList[par0].getMobilityFlag() == 1)
             {
-                return false;
+                return par5;
             }
         }
 
-        return !(Block.blocksList[par0] instanceof BlockContainer);
+        return !(Block.blocksList[par0] instanceof ITileEntityProvider);
     }
 
     /**
@@ -666,22 +731,22 @@ public class BlockPistonBase extends Block
                 return false;
             }
 
-            int j1 = par1World.getBlockId(i, j, k);
+            int i1 = par1World.getBlockId(i, j, k);
 
-            if (j1 == 0)
+            if (i1 == 0)
             {
                 break;
             }
 
-            if (!canPushBlock(j1, par1World, i, j, k, true))
+            if (!canPushBlock(i1, par1World, i, j, k, true))
             {
                 return false;
             }
 
-            if (Block.blocksList[j1].getMobilityFlag() == 1)
+            if (Block.blocksList[i1].getMobilityFlag() == 1)
             {
-                Block.blocksList[j1].dropBlockAsItem(par1World, i, j, k, par1World.getBlockMetadata(i, j, k), 0);
-                par1World.setBlockWithNotify(i, j, k, 0);
+                Block.blocksList[i1].dropBlockAsItem(par1World, i, j, k, par1World.getBlockMetadata(i, j, k), 0);
+                par1World.setBlockToAir(i, j, k);
                 break;
             }
 
@@ -697,29 +762,51 @@ public class BlockPistonBase extends Block
         }
         while (true);
 
-        int l1;
+        l = i;
+        int j1 = j;
+        int k1 = k;
+        int l1 = 0;
+        int ai[] = new int[13];
+        int i3;
 
-        for (; i != par2 || j != par3 || k != par4; k = l1)
+        for (; i != par2 || j != par3 || k != par4; k = i3)
         {
-            int i1 = i - Facing.offsetsXForSide[par5];
-            int k1 = j - Facing.offsetsYForSide[par5];
-            l1 = k - Facing.offsetsZForSide[par5];
-            int i2 = par1World.getBlockId(i1, k1, l1);
-            int j2 = par1World.getBlockMetadata(i1, k1, l1);
+            int i2 = i - Facing.offsetsXForSide[par5];
+            int k2 = j - Facing.offsetsYForSide[par5];
+            i3 = k - Facing.offsetsZForSide[par5];
+            int k3 = par1World.getBlockId(i2, k2, i3);
+            int l3 = par1World.getBlockMetadata(i2, k2, i3);
 
-            if (i2 == blockID && i1 == par2 && k1 == par3 && l1 == par4)
+            if (k3 == blockID && i2 == par2 && k2 == par3 && i3 == par4)
             {
-                par1World.setBlockAndMetadataWithUpdate(i, j, k, Block.pistonMoving.blockID, par5 | (isSticky ? 8 : 0), false);
+                par1World.setBlock(i, j, k, Block.pistonMoving.blockID, par5 | (isSticky ? 8 : 0), 4);
                 par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(Block.pistonExtension.blockID, par5 | (isSticky ? 8 : 0), par5, true, false));
             }
             else
             {
-                par1World.setBlockAndMetadataWithUpdate(i, j, k, Block.pistonMoving.blockID, j2, false);
-                par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(i2, j2, par5, true, false));
+                par1World.setBlock(i, j, k, Block.pistonMoving.blockID, l3, 4);
+                par1World.setBlockTileEntity(i, j, k, BlockPistonMoving.getTileEntity(k3, l3, par5, true, false));
             }
 
-            i = i1;
-            j = k1;
+            ai[l1++] = k3;
+            i = i2;
+            j = k2;
+        }
+
+        i = l;
+        j = j1;
+        k = k1;
+        l1 = 0;
+        int j3;
+
+        for (; i != par2 || j != par3 || k != par4; k = j3)
+        {
+            int j2 = i - Facing.offsetsXForSide[par5];
+            int l2 = j - Facing.offsetsYForSide[par5];
+            j3 = k - Facing.offsetsZForSide[par5];
+            par1World.notifyBlocksOfNeighborChange(j2, l2, j3, ai[l1++]);
+            i = j2;
+            j = l2;
         }
 
         return true;

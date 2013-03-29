@@ -279,7 +279,7 @@ public class OldChunkLoader
                 for (int i1 = 0; i1 < nbttaglist2.tagCount(); i1++)
                 {
                     NBTTagCompound nbttagcompound3 = (NBTTagCompound)nbttaglist2.tagAt(i1);
-                    world.scheduleBlockUpdateFromLoad(nbttagcompound3.getInteger("x"), nbttagcompound3.getInteger("y"), nbttagcompound3.getInteger("z"), nbttagcompound3.getInteger("i"), nbttagcompound3.getInteger("t"));
+                    world.scheduleBlockUpdateFromLoad(nbttagcompound3.getInteger("x"), nbttagcompound3.getInteger("y"), nbttagcompound3.getInteger("z"), nbttagcompound3.getInteger("i"), nbttagcompound3.getInteger("t"), 0);
                 }
             }
         }

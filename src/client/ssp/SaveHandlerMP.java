@@ -41,6 +41,7 @@ public class SaveHandlerMP implements ISaveHandler
     /**
      * Saves the passed in world info.
      */
+    @Override
     public void saveWorldInfoAndPlayer(WorldInfo par1WorldInfo, java.util.List par2List)
     {
     }

@@ -104,8 +104,19 @@ public class WorldGenTrees extends WorldGenerator
                 {
                     int l5 = k5 - par5;
 
+                    if (Math.abs(i5) == l3 && Math.abs(l5) == l3 && (par2Random.nextInt(2) == 0 || l2 == 0))
+                    {
+                        continue;
+                    }
+
                     boolean old = ODNBXlite.MapFeatures < ODNBXlite.FEATURES_14 || ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES;
-                    if ((Math.abs(i5) != l3 || Math.abs(l5) != l3 || par2Random.nextInt(2) != 0 && l2 != 0) && ((par1World.isAirBlock(k4, k1, k5) && !old) || (old && !Block.opaqueCubeLookup[par1World.getBlockId(k4, k1, k5)])))
+                    if (((!par1World.isAirBlock(k4, k1, k5) || old) && (!old || Block.opaqueCubeLookup[par1World.getBlockId(k4, k1, k5)]))){
+                        continue;
+                    }
+
+                    int i6 = par1World.getBlockId(k4, k1, k5);
+
+                    if (i6 == 0 || i6 == Block.leaves.blockID)
                     {
                         setBlockAndMetadata(par1World, k4, k1, k5, Block.leaves.blockID, metaLeaves);
                     }

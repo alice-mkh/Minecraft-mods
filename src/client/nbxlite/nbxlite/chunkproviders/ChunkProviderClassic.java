@@ -7,6 +7,7 @@ public class ChunkProviderClassic extends ChunkProviderBaseFinite{
         super(world, l);
     }
 
+    @Override
     public void generateFiniteLevel(){
         ODNBXlite.generateClassicLevel(seed);
     }

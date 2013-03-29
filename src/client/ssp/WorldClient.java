@@ -27,9 +27,9 @@ public class WorldClient extends World
     private final Minecraft mc = Minecraft.getMinecraft();
     private final Set previousActiveChunkSet = new HashSet();
 
-    public WorldClient(NetClientHandler par1NetClientHandler, WorldSettings par2WorldSettings, int par3, int par4, Profiler par5Profiler)
+    public WorldClient(NetClientHandler par1NetClientHandler, WorldSettings par2WorldSettings, int par3, int par4, Profiler par5Profiler, ILogAgent par6ILogAgent)
     {
-        super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(par3), par2WorldSettings, par5Profiler);
+        super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(par3), par2WorldSettings, par5Profiler, par6ILogAgent);
         entityHashSet = new IntHashMap();
         entityList = new HashSet();
         entitySpawnQueue = new HashSet();
@@ -39,9 +39,9 @@ public class WorldClient extends World
         mapStorage = par1NetClientHandler.mapStorage;
     }
 
-    public WorldClient(WorldProvider w, ISaveHandler i, WorldSettings s, String str, Profiler p)
+    public WorldClient(WorldProvider w, ISaveHandler i, WorldSettings s, String str, Profiler p, ILogAgent log)
     {
-        super(i, str, s, w, p);
+        super(i, str, s, w, p, log);
         sendQueue = new NetClientHandlerSP(Minecraft.getMinecraft());
         mapStorage = new MapStorage(i);
     }
@@ -70,7 +70,7 @@ public class WorldClient extends World
         theProfiler.endStartSection("connection");
         sendQueue.processReadPackets();
         theProfiler.endStartSection("chunkCache");
-        clientChunkProvider.unload100OldestChunks();
+        clientChunkProvider.unloadQueuedChunks();
         theProfiler.endStartSection("tiles");
         tickBlocksAndAmbiance();
         theProfiler.endSection();
@@ -165,12 +165,11 @@ public class WorldClient extends World
     }
 
     /**
-     * Dismounts the entity (and anything riding the entity), sets the dead flag, and removes the player entity from the
-     * player entity list. Called by the playerLoggedOut function.
+     * Schedule the entity for removal during the next tick. Marks the entity dead in anticipation.
      */
-    public void setEntityDead(Entity par1Entity)
+    public void removeEntity(Entity par1Entity)
     {
-        super.setEntityDead(par1Entity);
+        super.removeEntity(par1Entity);
         entityList.remove(par1Entity);
     }
 
@@ -216,7 +215,7 @@ public class WorldClient extends World
 
         if (entity != null)
         {
-            setEntityDead(entity);
+            removeEntity(entity);
         }
 
         entityList.add(par2Entity);
@@ -252,7 +251,7 @@ public class WorldClient extends World
         if (entity != null)
         {
             entityList.remove(entity);
-            setEntityDead(entity);
+            removeEntity(entity);
         }
 
         return entity;
@@ -261,7 +260,7 @@ public class WorldClient extends World
     public boolean setBlockAndMetadataAndInvalidate(int par1, int par2, int par3, int par4, int par5)
     {
         invalidateBlockReceiveRegion(par1, par2, par3, par1, par2, par3);
-        return super.setBlockAndMetadataWithNotify(par1, par2, par3, par4, par5);
+        return super.setBlock(par1, par2, par3, par4, par5, 3);
     }
 
     /**
@@ -456,6 +455,11 @@ public class WorldClient extends World
     public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound)
     {
         mc.effectRenderer.addEffect(new EntityFireworkStarterFX(this, par1, par3, par5, par7, par9, par11, mc.effectRenderer, par13NBTTagCompound));
+    }
+
+    public void func_96443_a(Scoreboard par1Scoreboard)
+    {
+        worldScoreboard = par1Scoreboard;
     }
 
     static Set getEntityList(WorldClient par0WorldClient)

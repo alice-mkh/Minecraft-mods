@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
-import java.io.PrintStream;
 import java.util.*;
 
 public class EntityItem extends Entity
 {
     public static boolean smeltOnFire = false;
+    public static boolean canMerge = true;
 
     /**
      * The age of this EntityItem (used to animate it up and down as well as expire it)
@@ -37,7 +37,7 @@ public class EntityItem extends Entity
     public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
     {
         this(par1World, par2, par4, par6);
-        func_92058_a(par8ItemStack);
+        setEntityItemStack(par8ItemStack);
     }
 
     /**
@@ -91,12 +91,12 @@ public class EntityItem extends Entity
                 motionY = 0.20000000298023224D;
                 motionX = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
                 motionZ = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
-                func_85030_a("random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
+                playSound("random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
             }
 
             if (!worldObj.isRemote)
             {
-                func_85054_d();
+                searchForOtherItemsNearby();
             }
         }
 
@@ -130,8 +130,14 @@ public class EntityItem extends Entity
         }
     }
 
-    private void func_85054_d()
+    /**
+     * Looks for other itemstacks nearby and tries to stack them together
+     */
+    private void searchForOtherItemsNearby()
     {
+        if (!canMerge){
+            return;
+        }
         EntityItem entityitem;
 
         for (Iterator iterator = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator(); iterator.hasNext(); combineItems(entityitem))
@@ -156,8 +162,8 @@ public class EntityItem extends Entity
             return false;
         }
 
-        ItemStack itemstack = func_92059_d();
-        ItemStack itemstack1 = par1EntityItem.func_92059_d();
+        ItemStack itemstack = getEntityItem();
+        ItemStack itemstack1 = par1EntityItem.getEntityItem();
 
         if (itemstack1.getItem() != itemstack.getItem())
         {
@@ -193,13 +199,17 @@ public class EntityItem extends Entity
             itemstack1.stackSize += itemstack.stackSize;
             par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, delayBeforeCanPickup);
             par1EntityItem.age = Math.min(par1EntityItem.age, age);
-            par1EntityItem.func_92058_a(itemstack1);
+            par1EntityItem.setEntityItemStack(itemstack1);
             setDead();
             return true;
         }
     }
 
-    public void func_70288_d()
+    /**
+     * sets the age of the item so that it'll despawn one minute after it has been dropped (instead of five). Used when
+     * items are dropped from players in creative mode
+     */
+    public void setAgeToCreativeDespawnTime()
     {
         age = 4800;
     }
@@ -226,20 +236,20 @@ public class EntityItem extends Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
 
-        if (func_92059_d() != null && func_92059_d().itemID == Item.netherStar.shiftedIndex && par1DamageSource == DamageSource.explosion)
+        if (getEntityItem() != null && getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.isExplosion())
         {
             return false;
         }
 
         setBeenAttacked();
         if ((par1DamageSource == DamageSource.inFire || par1DamageSource == DamageSource.onFire || par1DamageSource == DamageSource.lava) && smeltOnFire){
-            ItemStack item = func_92059_d();
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
+            ItemStack item = getEntityItem();
+            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item.getItem().itemID);
             if (item != itemstack && itemstack != null){
                 item.itemID = itemstack.itemID;
                 item.setItemDamage(itemstack.getItemDamage());
@@ -267,9 +277,9 @@ public class EntityItem extends Entity
         par1NBTTagCompound.setShort("Health", (byte)health);
         par1NBTTagCompound.setShort("Age", (short)age);
 
-        if (func_92059_d() != null)
+        if (getEntityItem() != null)
         {
-            par1NBTTagCompound.setCompoundTag("Item", func_92059_d().writeToNBT(new NBTTagCompound()));
+            par1NBTTagCompound.setCompoundTag("Item", getEntityItem().writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -281,9 +291,9 @@ public class EntityItem extends Entity
         health = par1NBTTagCompound.getShort("Health") & 0xff;
         age = par1NBTTagCompound.getShort("Age");
         NBTTagCompound nbttagcompound = par1NBTTagCompound.getCompoundTag("Item");
-        func_92058_a(ItemStack.loadItemStackFromNBT(nbttagcompound));
+        setEntityItemStack(ItemStack.loadItemStackFromNBT(nbttagcompound));
 
-        if (func_92059_d() == null)
+        if (getEntityItem() == null)
         {
             setDead();
         }
@@ -299,7 +309,7 @@ public class EntityItem extends Entity
             return;
         }
 
-        ItemStack itemstack = func_92059_d();
+        ItemStack itemstack = getEntityItem();
         int i = itemstack.stackSize;
 
         if (delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(itemstack))
@@ -309,25 +319,25 @@ public class EntityItem extends Entity
                 par1EntityPlayer.triggerAchievement(AchievementList.mineWood);
             }
 
-            if (itemstack.itemID == Item.leather.shiftedIndex)
+            if (itemstack.itemID == Item.leather.itemID)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.killCow);
             }
 
-            if (itemstack.itemID == Item.diamond.shiftedIndex)
+            if (itemstack.itemID == Item.diamond.itemID)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.diamonds);
             }
 
-            if (itemstack.itemID == Item.blazeRod.shiftedIndex)
+            if (itemstack.itemID == Item.blazeRod.itemID)
             {
                 par1EntityPlayer.triggerAchievement(AchievementList.blazeRod);
             }
 
             net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "onItemPickup",
                                                            new Class[]{EntityPlayer.class, ItemStack.class}, 
-                                                           par1EntityPlayer, func_92059_d());
-            func_85030_a("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                                           par1EntityPlayer, getEntityItem());
+            playSound("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, i);
 
             if (itemstack.stackSize <= 0)
@@ -342,7 +352,7 @@ public class EntityItem extends Entity
      */
     public String getEntityName()
     {
-        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(func_92059_d().getItemName()).toString());
+        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(getEntityItem().getItemName()).toString());
     }
 
     /**
@@ -362,17 +372,25 @@ public class EntityItem extends Entity
 
         if (!worldObj.isRemote)
         {
-            func_85054_d();
+            searchForOtherItemsNearby();
         }
     }
 
-    public ItemStack func_92059_d()
+    /**
+     * Returns the ItemStack corresponding to the Entity (Note: if no item exists, will log an error but still return an
+     * ItemStack containing Block.stone)
+     */
+    public ItemStack getEntityItem()
     {
         ItemStack itemstack = getDataWatcher().getWatchableObjectItemStack(10);
 
         if (itemstack == null)
         {
-            System.out.println((new StringBuilder()).append("Item entity ").append(entityId).append(" has no item?!").toString());
+            if (worldObj != null)
+            {
+                worldObj.getWorldLogAgent().func_98232_c((new StringBuilder()).append("Item entity ").append(entityId).append(" has no item?!").toString());
+            }
+
             return new ItemStack(Block.stone);
         }
         else
@@ -381,9 +399,12 @@ public class EntityItem extends Entity
         }
     }
 
-    public void func_92058_a(ItemStack par1)
+    /**
+     * Sets the ItemStack for this entity
+     */
+    public void setEntityItemStack(ItemStack par1ItemStack)
     {
-        getDataWatcher().updateObject(10, par1);
-        getDataWatcher().func_82708_h(10);
+        getDataWatcher().updateObject(10, par1ItemStack);
+        getDataWatcher().setObjectWatched(10);
     }
 }

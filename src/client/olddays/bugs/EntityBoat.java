@@ -96,7 +96,7 @@ public class EntityBoat extends Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
@@ -110,32 +110,32 @@ public class EntityBoat extends Entity
         setTimeSinceHit(10);
         setDamageTaken(getDamageTaken() + par2 * 10);
         setBeenAttacked();
+        boolean flag = (par1DamageSource.getEntity() instanceof EntityPlayer) && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
 
-        if ((par1DamageSource.getEntity() instanceof EntityPlayer) && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode)
-        {
-            setDamageTaken(100);
-        }
-
-        if (getDamageTaken() > 40)
+        if (flag || getDamageTaken() > 40)
         {
             if (riddenByEntity != null)
             {
                 riddenByEntity.mountEntity(this);
             }
 
-            if (oldbreaking){
-                for (int i = 0; i < 3; i++)
-                {
-                    dropItemWithOffset(Block.planks.blockID, 1, 0.0F);
-                }
+            if (!flag)
+            {
+                if (oldbreaking){
+                    for (int i = 0; i < 3; i++)
+                    {
+                        dropItemWithOffset(Block.planks.blockID, 1, 0.0F);
+                    }
 
-                for (int j = 0; j < 2; j++)
-                {
-                    dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
+                    for (int j = 0; j < 2; j++)
+                    {
+                        dropItemWithOffset(Item.stick.itemID, 1, 0.0F);
+                    }
+                }else{
+                    dropItemWithOffset(Item.boat.itemID, 1, 0.0F);
                 }
-            }else{
-                dropItemWithOffset(Item.boat.shiftedIndex, 1, 0.0F);
             }
+
             setDead();
         }
 
@@ -234,7 +234,7 @@ public class EntityBoat extends Entity
         {
             double d2 = (boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(j + 0)) / (double)i) - 0.125D;
             double d8 = (boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(j + 1)) / (double)i) - 0.125D;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(boundingBox.minX, d2, boundingBox.minZ, boundingBox.maxX, d8, boundingBox.maxZ);
+            AxisAlignedBB axisalignedbb = AxisAlignedBB.getAABBPool().getAABB(boundingBox.minX, d2, boundingBox.minZ, boundingBox.maxX, d8, boundingBox.maxZ);
 
             if (worldObj.isAABBInMaterial(axisalignedbb, Material.water))
             {
@@ -382,7 +382,7 @@ public class EntityBoat extends Entity
 
                 for (int l = 0; l < 2; l++)
                 {
-                    dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
+                    dropItemWithOffset(Item.stick.itemID, 1, 0.0F);
                 }
             }
         }
@@ -447,18 +447,16 @@ public class EntityBoat extends Entity
             {
                 int k2 = MathHelper.floor_double(posY) + j2;
                 int l2 = worldObj.getBlockId(l1, k2, i2);
-                int i3 = worldObj.getBlockMetadata(l1, k2, i2);
 
                 if (l2 == Block.snow.blockID)
                 {
-                    worldObj.setBlockWithNotify(l1, k2, i2, 0);
+                    worldObj.setBlockToAir(l1, k2, i2);
                     continue;
                 }
 
                 if (l2 == Block.waterlily.blockID)
                 {
-                    Block.waterlily.dropBlockAsItemWithChance(worldObj, l1, k2, i2, i3, 0.3F, 0);
-                    worldObj.setBlockWithNotify(l1, k2, i2, 0);
+                    worldObj.destroyBlock(l1, k2, i2, true);
                 }
             }
         }

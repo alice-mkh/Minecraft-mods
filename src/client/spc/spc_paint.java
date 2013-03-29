@@ -74,8 +74,8 @@ public class spc_paint extends SPCPlugin {
 
                ph.sendMessage("Now painting " + 
                      (paintID == 0 ? "air" : Block.blocksList[paintID]
-                                                              .getBlockName().substring(Block.blocksList[paintID].
-                                                                    getBlockName().indexOf('.')+1)) +
+                                                              .getUnlocalizedName().substring(Block.blocksList[paintID].
+                                                                    getUnlocalizedName().indexOf('.')+1)) +
                                                                     (paintDamage == 0 ? "." : " with damage " + paintDamage +
                                                                     ".")
                                                                     + " Left-click to replace clicked block, right click to"
@@ -141,8 +141,8 @@ public class spc_paint extends SPCPlugin {
    public void paintBlocks(int i, int j, int k)
    {
       if (ph.ep.worldObj.getBlockId(i, j, k) != Block.bedrock.blockID)
-         ph.ep.worldObj.setBlockWithNotify(i, j, k, paintID);
-      ph.ep.worldObj.setBlockAndMetadataWithNotify(i, j, k, paintID, paintDamage);
+         ph.ep.worldObj.setBlock(i, j, k, paintID);
+      ph.ep.worldObj.setBlock(i, j, k, paintID, paintDamage, 3);
    }
 }
 

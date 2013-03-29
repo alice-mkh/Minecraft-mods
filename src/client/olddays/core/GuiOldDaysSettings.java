@@ -13,6 +13,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         showTooltip = null;
     }
 
+    @Override
     public void initGui(){
         super.initGui();
         int count = mod_OldDays.getModuleById(id).properties.size();
@@ -22,6 +23,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         postInitGui(count);
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         super.actionPerformed(guibutton);
@@ -99,20 +101,21 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
     }
 
+    @Override
     protected void mouseClicked(int par1, int par2, int par3){
         super.mouseClicked(par1, par2, par3);
         if (this instanceof GuiOldDaysPresets){
             if (displayField){
                 field.mouseClicked(par1, par2, par3);
                 if (!field.isFocused()){
-                    showField(false, ((GuiButton)controlList.get(fieldId)));
+                    showField(false, ((GuiButton)buttonList.get(fieldId)));
                 }
             }
             return;
         }
         GuiButtonProp guibuttonprop = null;
-        for (int i = 0; i < controlList.size(); i++){
-            GuiButton guibutton = (GuiButton)controlList.get(i);
+        for (int i = 0; i < buttonList.size(); i++){
+            GuiButton guibutton = (GuiButton)buttonList.get(i);
             if (guibutton.mousePressed(mc, par1, par2)){
                 if (guibutton instanceof GuiButtonProp){
                     guibuttonprop = (GuiButtonProp)guibutton;
@@ -130,6 +133,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
     }
 
+    @Override
     protected void keyTyped(char par1, int par2)
     {
         super.keyTyped(par1, par2);
@@ -142,10 +146,10 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (str==null || str.equals("")){
             str = "OFF";
         }
-        if (!(controlList.get(fieldId) instanceof GuiButtonProp)){
+        if (!(buttonList.get(fieldId) instanceof GuiButtonProp)){
             return;
         }
-        GuiButtonProp button = ((GuiButtonProp)controlList.get(fieldId));
+        GuiButtonProp button = ((GuiButtonProp)buttonList.get(fieldId));
         if (par1 == '\r')
         {
             button.displayString = mod_OldDays.getPropertyButtonText(button.prop);
@@ -161,28 +165,29 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     }
 
     private void refresh(){
-        for (int i = 0; i < controlList.size(); i++){
-            if (!(controlList.get(i) instanceof GuiButtonProp)){
+        for (int i = 0; i < buttonList.size(); i++){
+            if (!(buttonList.get(i) instanceof GuiButtonProp)){
                 continue;
             }
-            if (((GuiButtonProp)controlList.get(i)).help){
+            if (((GuiButtonProp)buttonList.get(i)).help){
                 continue;
             }
-            GuiButtonProp button = ((GuiButtonProp)controlList.get(i));
+            GuiButtonProp button = ((GuiButtonProp)buttonList.get(i));
             button.enabled = !button.prop.isDisabled();
             button.displayString = mod_OldDays.getPropertyButtonText(button.prop);
         }
     }
 
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         super.drawScreen(i, j, f);
         boolean show = false;
-        for (int k = 0; k < controlList.size(); k++){
-            if (!(controlList.get(k) instanceof GuiButtonProp)){
+        for (int k = 0; k < buttonList.size(); k++){
+            if (!(buttonList.get(k) instanceof GuiButtonProp)){
                 continue;
             }
-            GuiButtonProp button = ((GuiButtonProp)controlList.get(k));
+            GuiButtonProp button = ((GuiButtonProp)buttonList.get(k));
             if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.drawButton){
                 show = true;
                 break;

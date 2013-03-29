@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientSetSpawnpoint extends CommandSetSpawnpoint
 {
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
@@ -43,6 +44,7 @@ public class CommandClientSetSpawnpoint extends CommandSetSpawnpoint
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

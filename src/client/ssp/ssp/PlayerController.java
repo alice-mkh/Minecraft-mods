@@ -15,11 +15,13 @@ public class PlayerController extends PlayerControllerMP
         mc = par1Minecraft;
     }
 
+    @Override
     public boolean func_78763_f()
     {
         return true;
     }
 
+    @Override
     public void setGameType(EnumGameType par1EnumGameType)
     {
     }
@@ -28,6 +30,7 @@ public class PlayerController extends PlayerControllerMP
      * GuiEnchantment uses this during multiplayer to tell PlayerControllerMP to send a packet indicating the
      * enchantment action the player has taken.
      */
+    @Override
     public void sendEnchantPacket(int par1, int par2)
     {
     }
@@ -35,6 +38,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
      */
+    @Override
     public void clickBlock(int i, int j, int k, int l)
     {
     }
@@ -42,6 +46,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Called when a player completes the destruction of a block
      */
+    @Override
     public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4)
     {
         World world = mc.theWorld;
@@ -54,7 +59,7 @@ public class PlayerController extends PlayerControllerMP
 
         world.playAuxSFX(2001, par1, par2, par3, block.blockID + (world.getBlockMetadata(par1, par2, par3) << 12));
         int i = world.getBlockMetadata(par1, par2, par3);
-        boolean flag = world.setBlockWithNotify(par1, par2, par3, 0);
+        boolean flag = world.setBlock(par1, par2, par3, 0, 0, 3);
 
         if (flag)
         {
@@ -67,6 +72,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Called when a player damages a block and updates damage counters
      */
+    @Override
     public void onPlayerDamageBlock(int i, int j, int k, int l)
     {
     }
@@ -74,6 +80,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Resets current block damage and isHittingBlock
      */
+    @Override
     public void resetBlockRemoving()
     {
     }
@@ -81,6 +88,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * player reach distance = 4F
      */
+    @Override
     public float getBlockReachDistance(){
         return 4F;
     }
@@ -88,6 +96,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Notifies the server of things like consuming food, etc...
      */
+    @Override
     public boolean sendUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack)
     {
         int i = par3ItemStack.stackSize;
@@ -110,6 +119,7 @@ public class PlayerController extends PlayerControllerMP
         }
     }
 
+    @Override
     public void func_78752_a(ItemStack par1ItemStack)
     {
     }
@@ -117,18 +127,22 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Flips the player around. Args: player
      */
+    @Override
     public void flipPlayer(EntityPlayer entityplayer)
     {
     }
 
+    @Override
     public void updateController()
     {
     }
 
+    @Override
     public boolean shouldDrawHUD(){
         return true;
     }
 
+    @Override
     public void setPlayerCapabilities(EntityPlayer par1EntityPlayer)
     {
         mc.setGameMode(EnumGameType.SURVIVAL);
@@ -137,11 +151,13 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Handles a players right click
      */
+    @Override
     public boolean onPlayerRightClick(EntityPlayer entityplayer, World world, ItemStack itemstack, int i, int j, int k, int l, Vec3 v)
     {
         return false;
     }
 
+    @Override
     public EntityClientPlayerMP func_78754_a(World par1World)
     {
         try{
@@ -158,24 +174,22 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Interacts with an entity
      */
+    @Override
     public boolean func_78768_b(EntityPlayer par1EntityPlayer, Entity par2Entity)
     {
         return par1EntityPlayer.interactWith(par2Entity);
     }
 
-    public boolean func_78747_a()
-    {
-        return false;
-    }
-
     /**
      * Attacks an entity
      */
+    @Override
     public void attackEntity(EntityPlayer par1EntityPlayer, Entity par2Entity)
     {
         par1EntityPlayer.attackTargetEntityWithCurrentItem(par2Entity);
     }
 
+    @Override
     public ItemStack windowClick(int par1, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         return par5EntityPlayer.openContainer.slotClick(par2, par3, par4, par5EntityPlayer);
@@ -186,6 +200,7 @@ public class PlayerController extends PlayerControllerMP
         return false;
     }
 
+    @Override
     public void onStoppedUsingItem(EntityPlayer par1EntityPlayer)
     {
         par1EntityPlayer.stopUsingItem();
@@ -194,6 +209,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Checks if the player is not creative, used for checking if it should break a block instantly
      */
+    @Override
     public boolean isNotCreative()
     {
         return true;
@@ -202,6 +218,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * returns true if player is in creative mode
      */
+    @Override
     public boolean isInCreativeMode()
     {
         return false;
@@ -210,6 +227,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * true for hitting entities far away.
      */
+    @Override
     public boolean extendedReach()
     {
         return false;
@@ -218,6 +236,7 @@ public class PlayerController extends PlayerControllerMP
     /**
      * Used in PlayerControllerMP to update the server with an ItemStack in a slot.
      */
+    @Override
     public void sendSlotPacket(ItemStack itemstack, int i)
     {
         EntityPlayer playerEntity = Minecraft.getMinecraft().thePlayer;
@@ -226,7 +245,7 @@ public class PlayerController extends PlayerControllerMP
             boolean flag = itemstack == null || itemstack.itemID < Item.itemsList.length && itemstack.itemID >= 0 && Item.itemsList[itemstack.itemID] != null;
             boolean flag1 = itemstack == null || itemstack.getItemDamage() >= 0 && itemstack.getItemDamage() >= 0 && itemstack.stackSize <= 64 && itemstack.stackSize > 0;
 
-            if (i >= 1 && i < 36 + InventoryPlayer.func_70451_h() && flag && flag1)
+            if (i >= 1 && i < 36 + InventoryPlayer.getHotbarSize() && flag && flag1)
             {
                 if (itemstack == null)
                 {
@@ -245,13 +264,13 @@ public class PlayerController extends PlayerControllerMP
 
                 if (entityitem != null)
                 {
-                    entityitem.func_70288_d();
+                    entityitem.setAgeToCreativeDespawnTime();
                 }
             }
         }
     }
 
-    public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5)
+    public static void clickBlockCreative(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5)
     {
     }
 }

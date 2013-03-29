@@ -7,6 +7,7 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Icon;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraft.src.RenderBlocks;
@@ -14,48 +15,53 @@ import net.minecraft.src.Tessellator;
 
 public class BlockGear extends Block
 {
-    private static int textureIndex2;
-
-    public BlockGear(int par1, int par2, int par3)
+    public BlockGear(int par1)
     {
-        super(par1, par2, Material.circuits);
-        textureIndex2 = par3;
+        super(par1, Material.circuits);
         setCreativeTab(CreativeTabs.tabDecorations);
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int i){
         return null;
     }
 
+    @Override
     public boolean isOpaqueCube(){
         return false;
     }
 
+    @Override
     public boolean renderAsNormalBlock(){
         return false;
     }
 
+    @Override
     public int quantityDropped(Random paramRandom){
         return 1;
     }
 
+    @Override
     public int getRenderType(){
         return ODNBXlite.gearRenderID;
     }
 
+    @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5){
         return canBlockStay(par1World, par2, par3, par4);
     }
 
+    @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
         if (!canBlockStay(par1World, par2, par3, par4)){
             dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.setBlockWithNotify(par2, par3, par4, 0);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 
+    @Override
     public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
         if (par1World.isBlockNormalCube(par2, par3, par4 + 1)){
@@ -70,7 +76,7 @@ public class BlockGear extends Block
         return par1World.isBlockNormalCube(par2 - 1, par3, par4);
     }
 
-
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         float thickness = 0.2F;
@@ -103,27 +109,27 @@ public class BlockGear extends Block
         setBlockBounds(f, f1, f2, f3, f4, f5);
     }
 
-    public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k, int override){
+    public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k, Icon override){
         Tessellator tessellator = Tessellator.instance;
-        int tex = b.getBlockTextureFromSide(0);
+
+        Icon icon = b.getBlockTextureFromSide(0);
         if((i + j + k & 1) == 1){
-            tex = textureIndex2;
+            //FIXME: ALTERNATE GEAR TEXTURE
         }
-        if(override >= 0)
+        if (r.hasOverrideBlockTexture())
         {
-            tex = override;
+            icon = override;
         }
+
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(b.getMixedBrightnessForBlock(blockAccess, i, j, k));
         }
         float f5 = Minecraft.oldlighting ? b.getBlockBrightness(blockAccess, i, j, k) : 1.0F;
         tessellator.setColorOpaque_F(f5, f5, f5);
-        float f10 = (tex & 0xf) << 4;
-        int i2 = tex & 0xf0;
-        double d11 = (float)f10 / 256F;
-        double d15 = ((float)f10 + 15.99F) / 256F;
-        double d18 = (float)i2 / 256F;
-        double d21 = ((float)i2 + 15.99F) / 256F;
+        double d11 = icon.getMinU();
+        double d15 = icon.getMaxU();
+        double d18 = icon.getMinV();
+        double d21 = icon.getMaxV();
         if(blockAccess.isBlockNormalCube(i - 1, j, k)){
             tessellator.addVertexWithUV((float)i + 0.05F, (float)(j + 1) + 0.125F, (float)(k + 1) + 0.125F, d11, d18);
             tessellator.addVertexWithUV((float)i + 0.05F, (float)j - 0.125F, (float)(k + 1) + 0.125F, d11, d21);

@@ -31,6 +31,7 @@ public class SoundManager2 extends SoundManager{
     public static boolean swimming = true;
     public static boolean minecart = true;
 
+    @Override
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
         par1Str = oldSounds(par1Str);
         if (par1Str == "nothing")
@@ -40,7 +41,7 @@ public class SoundManager2 extends SoundManager{
         super.playSound(par1Str, par2, par3, par4, par5, par6);
     }
 
-
+    @Override
     public void playEntitySound(String par1Str, Entity par2Entity, float par3, float par4, boolean par5){
         par1Str = oldSounds(par1Str);
         if (par1Str == "nothing")
@@ -179,6 +180,7 @@ public class SoundManager2 extends SoundManager{
     /**
      * If its time to play new music it starts it up.
      */
+    @Override
     public void playRandomMusicIfReady()
     {
         GameSettings options = (GameSettings)getField(5);

@@ -135,11 +135,11 @@ public class GuiChat extends GuiScreen
         }
         else if (par2 == 201)
         {
-            mc.ingameGUI.getChatGUI().scroll(19);
+            mc.ingameGUI.getChatGUI().scroll(mc.ingameGUI.getChatGUI().func_96127_i() - 1);
         }
         else if (par2 == 209)
         {
-            mc.ingameGUI.getChatGUI().scroll(-19);
+            mc.ingameGUI.getChatGUI().scroll(-mc.ingameGUI.getChatGUI().func_96127_i() + 1);
         }
         else
         {

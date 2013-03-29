@@ -8,6 +8,7 @@ public class RenderHuman extends RenderLiving{
         super(modelhuman, 0.5F);
     }
 
+    @Override
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
@@ -45,7 +46,7 @@ public class RenderHuman extends RenderLiving{
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1F, -1F, 1.0F);
             preRenderCallback(par1EntityLiving, par9);
-            float f5 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
+            float f5 = par1EntityLiving.prevLimbYaw + (par1EntityLiving.limbYaw - par1EntityLiving.prevLimbYaw) * par9;
             float f6 = par1EntityLiving.field_70763_ax + (par1EntityLiving.field_70764_aw - par1EntityLiving.field_70763_ax) * par9;
             float f32 = par1EntityLiving.field_70768_au + (par1EntityLiving.field_70766_av - par1EntityLiving.field_70768_au) * par9;
             float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 - 23F;

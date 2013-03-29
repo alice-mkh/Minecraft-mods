@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientGameRule extends CommandGameRule
 {
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 2)
@@ -70,6 +71,7 @@ public class CommandClientGameRule extends CommandGameRule
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
+    @Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1)
@@ -93,6 +95,7 @@ public class CommandClientGameRule extends CommandGameRule
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

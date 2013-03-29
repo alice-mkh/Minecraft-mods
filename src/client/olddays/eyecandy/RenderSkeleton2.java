@@ -17,7 +17,6 @@ public class RenderSkeleton2 extends RenderLiving
         armor = new ModelMobArmor(1.2F);
     }
 
-
     protected int renderArmor(EntitySkeleton par1EntitySkeleton, int par2, float par3)
     {
         if ((par1EntitySkeleton.helmet || par1EntitySkeleton.armor) && mobArmor)
@@ -50,6 +49,7 @@ public class RenderSkeleton2 extends RenderLiving
         return -1;
     }
 
+    @Override
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
         super.renderEquippedItems(par1EntityLiving, par2);
@@ -70,7 +70,7 @@ public class RenderSkeleton2 extends RenderLiving
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(f, -f, f);
             }
-            else if (itemstack.itemID == Item.bow.shiftedIndex)
+            else if (itemstack.itemID == Item.bow.itemID)
             {
                 float f1 = 0.625F;
                 GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
@@ -111,6 +111,7 @@ public class RenderSkeleton2 extends RenderLiving
     /**
      * Queries whether should render the specified pass or not.
      */
+    @Override
     protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
         return renderArmor((EntitySkeleton)par1EntityLiving, par2, par3);
@@ -133,6 +134,7 @@ public class RenderSkeleton2 extends RenderLiving
      * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
      * entityLiving, partialTickTime
      */
+    @Override
     protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
     {
         func_82438_a((EntitySkeleton)par1EntityLiving, par2);

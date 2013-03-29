@@ -55,6 +55,7 @@ public class RenderGlobal2 extends RenderGlobal{
         }
     }
 
+    @Override
     public void updateClouds()
     {
         cloudTickCounter++;
@@ -63,6 +64,7 @@ public class RenderGlobal2 extends RenderGlobal{
     /**
      * Changes the world reference in RenderGlobal
      */
+    @Override
     public void setWorldAndLoadRenderers(WorldClient par1World)
     {
         super.setWorldAndLoadRenderers(par1World);
@@ -72,6 +74,7 @@ public class RenderGlobal2 extends RenderGlobal{
     /**
      * Renders the sky with the partial tick time. Args: partialTickTime
      */
+    @Override
     public void renderSky(float par1)
     {
         if (mc.theWorld.provider.dimensionId == 1)
@@ -82,7 +85,7 @@ public class RenderGlobal2 extends RenderGlobal{
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.disableStandardItemLighting();
             GL11.glDepthMask(false);
-            renderEngine.bindTexture(renderEngine.getTexture("/misc/tunnel.png"));
+            renderEngine.bindTexture("/misc/tunnel.png");
             Tessellator tessellator = Tessellator.instance;
 
             for (int i = 0; i < 6; i++)
@@ -227,7 +230,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glRotatef(worldObj.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
         if (ODNBXlite.DayNight>0){
             float f15 = 30F;
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/sun.png"));
+            renderEngine.bindTexture("/environment/sun.png");
             tessellator1.startDrawingQuads();
             tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
             tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
@@ -235,8 +238,8 @@ public class RenderGlobal2 extends RenderGlobal{
             tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
             tessellator1.draw();
             f15 = 20F;
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/terrain/moon_phases.png"));
-            int i18 = worldObj.getMoonPhase(par1);
+            renderEngine.bindTexture("/environment/moon_phases.png");
+            int i18 = worldObj.getMoonPhase();
             int l = i18 % 4;
             int i1 = (i18 / 4) % 2;
             float f24 = (float)(l + 0) / 4F;
@@ -347,6 +350,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glDepthMask(true);
     }
 
+    @Override
     public void renderClouds(float par1)
     {
         if (!mc.theWorld.provider.isSurfaceWorld())
@@ -365,10 +369,10 @@ public class RenderGlobal2 extends RenderGlobal{
         byte byte0 = 32;
         int i = (opaqueFlatClouds ? 1024 : 256) / byte0;
         Tessellator tessellator = Tessellator.instance;
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
+        renderEngine.bindTexture("/environment/clouds.png");
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Vec3 vec3d = worldObj.drawClouds(par1);
+        Vec3 vec3d = worldObj.getCloudColour(par1);
         float f1 = (float)vec3d.xCoord;
         float f2 = (float)vec3d.yCoord;
         float f3 = (float)vec3d.zCoord;
@@ -428,6 +432,7 @@ public class RenderGlobal2 extends RenderGlobal{
     /**
      * Renders the 3d fancy clouds
      */
+    @Override
     public void renderCloudsFancy(float par1)
     {
         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -448,7 +453,7 @@ public class RenderGlobal2 extends RenderGlobal{
         d2 -= j * 2048;
         if (texClouds){
             OpenGlHelper.setActiveTexture(33985);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/olddays/fluff.png"));
+            renderEngine.bindTexture("/olddays/fluff.png");
             GL11.glTexGeni(8192, 9472, 9217);
             GL11.glTexGen(8192, 9473, a(1.0F, 0.0F, 0.0F, 0.0F));
             GL11.glTexGeni(8193, 9472, 9217);
@@ -464,10 +469,10 @@ public class RenderGlobal2 extends RenderGlobal{
             OpenGlHelper.setActiveTexture(33984);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderEngine.getTexture("/environment/clouds.png"));
+        renderEngine.bindTexture("/environment/clouds.png");
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Vec3 vec3d = worldObj.drawClouds(par1);
+        Vec3 vec3d = worldObj.getCloudColour(par1);
         float f4 = (float)vec3d.xCoord;
         float f5 = (float)vec3d.yCoord;
         float f6 = (float)vec3d.zCoord;

@@ -27,11 +27,13 @@ public class PlayerControllerSP extends PlayerController
     /**
      * Flips the player around. Args: player
      */
+    @Override
     public void flipPlayer(EntityPlayer par1EntityPlayer)
     {
         par1EntityPlayer.rotationYaw = -180F;
     }
 
+    @Override
     public boolean shouldDrawHUD()
     {
         return true;
@@ -40,6 +42,7 @@ public class PlayerControllerSP extends PlayerController
     /**
      * Called when a player completes the destruction of a block
      */
+    @Override
     public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4)
     {
         int i = mc.theWorld.getBlockId(par1, par2, par3);
@@ -70,6 +73,7 @@ public class PlayerControllerSP extends PlayerController
     /**
      * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
      */
+    @Override
     public void clickBlock(int par1, int par2, int par3, int par4)
     {
         if (!mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3))
@@ -94,6 +98,7 @@ public class PlayerControllerSP extends PlayerController
     /**
      * Resets current block damage and isHittingBlock
      */
+    @Override
     public void resetBlockRemoving()
     {
         curBlockDamage = 0.0F;
@@ -104,6 +109,7 @@ public class PlayerControllerSP extends PlayerController
     /**
      * Called when a player damages a block and updates damage counters
      */
+    @Override
     public void onPlayerDamageBlock(int par1, int par2, int par3, int par4)
     {
         if (blockHitWait > 0)
@@ -160,11 +166,13 @@ public class PlayerControllerSP extends PlayerController
     /**
      * player reach distance = 4F
      */
+    @Override
     public float getBlockReachDistance()
     {
         return 4F;
     }
 
+    @Override
     public void updateController()
     {
         prevBlockDamage = curBlockDamage;
@@ -174,6 +182,7 @@ public class PlayerControllerSP extends PlayerController
     /**
      * Handles a players right click
      */
+    @Override
     public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3)
     {
         int i = par2World.getBlockId(par4, par5, par6);

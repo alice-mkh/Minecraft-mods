@@ -21,6 +21,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         if (!EntitySheep.caneatgrass){
@@ -46,6 +47,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         eatGrassTick = 40;
@@ -56,6 +58,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         eatGrassTick = 0;
@@ -64,12 +67,13 @@ public class EntityAIEatGrass2 extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean continueExecuting()
     {
         return eatGrassTick > 0;
     }
 
-    public int func_75362_f()
+    public int getEatGrassTick()
     {
         return eatGrassTick;
     }
@@ -77,6 +81,7 @@ public class EntityAIEatGrass2 extends EntityAIBase
     /**
      * Updates the task
      */
+    @Override
     public void updateTask()
     {
         eatGrassTick = Math.max(0, eatGrassTick - 1);
@@ -92,14 +97,13 @@ public class EntityAIEatGrass2 extends EntityAIBase
 
         if (theWorld.getBlockId(i, j, k) == Block.tallGrass.blockID)
         {
-            theWorld.playAuxSFX(2001, i, j, k, Block.tallGrass.blockID + 4096);
-            theWorld.setBlockWithNotify(i, j, k, 0);
+            theWorld.destroyBlock(i, j, k, false);
             theEntity.eatGrassBonus();
         }
         else if (theWorld.getBlockId(i, j - 1, k) == Block.grass.blockID)
         {
             theWorld.playAuxSFX(2001, i, j - 1, k, Block.grass.blockID);
-            theWorld.setBlockWithNotify(i, j - 1, k, Block.dirt.blockID);
+            theWorld.setBlock(i, j - 1, k, Block.dirt.blockID, 0, 2);
             theEntity.eatGrassBonus();
         }
     }

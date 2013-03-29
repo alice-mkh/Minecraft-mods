@@ -13,6 +13,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * creates a new world chunk manager for WorldProvider
      */
+    @Override
     protected void registerWorldChunkManager()
     {
         if (dimensionId==0 && ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
@@ -25,6 +26,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * Returns the chunk provider back for the world provider
      */
+    @Override
     public IChunkProvider createChunkGenerator()
     {
         if (terrainType == WorldType.FLAT)
@@ -41,6 +43,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * Will check if the x, z position specified is alright to be set as the map spawn point
      */
+    @Override
     public boolean canCoordinateBeSpawn(int par1, int par2)
     {
         if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420){
@@ -59,6 +62,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * the y level at which clouds are rendered.
      */
+    @Override
     public float getCloudHeight()
     {
         return ODNBXlite.CloudHeight;
@@ -68,6 +72,7 @@ public class WorldProviderSurface extends WorldProvider
      * returns true if this dimension is supposed to display void particles and pull in the far plane based on the
      * user's Y offset.
      */
+    @Override
     public boolean getWorldHasVoidParticles()
     {
         return super.getWorldHasVoidParticles() && ODNBXlite.VoidFog==0;
@@ -76,6 +81,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
      */
+    @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
         if (ODNBXlite.DayNight==0){
@@ -87,6 +93,7 @@ public class WorldProviderSurface extends WorldProvider
         return super.calculateCelestialAngle(par1, par3);
     }
 
+    @Override
     public boolean isSkyColored()
     {
         if (ODNBXlite.VoidFog>2){
@@ -95,6 +102,7 @@ public class WorldProviderSurface extends WorldProvider
         return true;
     }
 
+    @Override
     public int getAverageGroundLevel()
     {
         if (ODNBXlite.isFinite()){
@@ -106,6 +114,7 @@ public class WorldProviderSurface extends WorldProvider
     /**
      * Creates the light to brightness table
      */
+    @Override
     protected void generateLightBrightnessTable()
     {
         float f = ODNBXlite.ClassicLight > 0 ? 0.05F : 0.0F;
@@ -117,23 +126,10 @@ public class WorldProviderSurface extends WorldProvider
         }
     }
 
-//FORGE COMPATIBILITY
-    public String getSaveFolder(){
-        return "FIXME";
-    }
-    public String getWelcomeMessage(){
-        return "FIXME";
-    }
-    public String getDepartMessage(){
-        return "FIXME";
-    }
-    public double getMovementFactor(){
-        return 1.0D;
-    }
-
     /**
      * Returns the dimension's name, e.g. "The End", "Nether", or "Overworld".
      */
+    @Override
     public String getDimensionName()
     {
         return "Overworld";

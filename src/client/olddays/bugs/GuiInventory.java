@@ -54,7 +54,7 @@ public class GuiInventory extends InventoryEffectRenderer
      */
     public void initGui()
     {
-        controlList.clear();
+        buttonList.clear();
 
         if (mc.playerController.isInCreativeMode())
         {
@@ -99,16 +99,15 @@ public class GuiInventory extends InventoryEffectRenderer
      */
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        int i = mc.renderEngine.getTexture("/gui/inventory.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(i);
-        int j = guiLeft;
-        int k = guiTop;
-        drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
-        func_74223_a(mc, j + 51, k + 75, 30, (float)(j + 51) - xSize_lo, (float)((k + 75) - 50) - ySize_lo);
+        mc.renderEngine.bindTexture("/gui/inventory.png");
+        int i = guiLeft;
+        int j = guiTop;
+        drawTexturedModalRect(i, j, 0, 0, xSize, ySize);
+        drawPlayerOnGui(mc, i + 51, j + 75, 30, (float)(i + 51) - xSize_lo, (float)((j + 75) - 50) - ySize_lo);
     }
 
-    public static void func_74223_a(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
+    public static void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
@@ -156,6 +155,7 @@ public class GuiInventory extends InventoryEffectRenderer
         }
     }
 
+    @Override
     public void handleKeyboardInput(){
         super.handleKeyboardInput();
         if (!walking){

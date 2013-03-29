@@ -12,6 +12,7 @@ public class GenLayerSmoothZoom11 extends GenLayer
         parent = genlayer;
     }
 
+    @Override
     public int[] getInts(int i, int j, int k, int l)
     {
         int i1 = i >> 1;

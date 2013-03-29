@@ -4,14 +4,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientExperience extends CommandXP
 {
-    protected String[] getAllUsernames()
-    {
-        return (new String[]
-                {
-                    Minecraft.getMinecraft().thePlayer.username
-                });
-    }
-
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length > 0)
@@ -50,6 +43,7 @@ public class CommandClientExperience extends CommandXP
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

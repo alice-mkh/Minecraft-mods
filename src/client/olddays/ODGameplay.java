@@ -24,6 +24,7 @@ public class ODGameplay extends OldDaysModule{
         replaceBlocks();
     }
 
+    @Override
     public void callback (int i){
         switch (i){
             case 1: set(EntityXPOrb.class, "noxp", !EnableXP);
@@ -82,14 +83,13 @@ public class ODGameplay extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.cake.blockID] = null;
-            BlockCake2 customcake = (BlockCake2)(new BlockCake2(92, 121));
+            BlockCake2 customcake = (BlockCake2)(new BlockCake2(92));
             customcake.setHardness(0.5F);
             customcake.setStepSound(Block.soundClothFootstep);
-            customcake.setBlockName("cake");
+            customcake.getIndirectPowerOutput("cake");
             customcake.disableStats();
-            customcake.setRequiresSelfNotify();
             Block.blocksList[Block.cake.blockID] = customcake;
-            mod_OldDays.setField(Block.class, null, 111, customcake);//Block: cake
+            mod_OldDays.setField(Block.class, null, 110, customcake);//Block: cake
         }catch (Exception exception){
             System.out.println(exception);
         }
@@ -104,23 +104,28 @@ public class ODGameplay extends OldDaysModule{
     }
 
     private void setArmorDamage(boolean b){
-        mod_OldDays.setField(ItemArmor.class, Item.helmetLeather, 2, b ? 3 : 1);
-        mod_OldDays.setField(ItemArmor.class, Item.helmetChain, 2, b ? 3 : 2);
-        mod_OldDays.setField(ItemArmor.class, Item.helmetSteel, 2, b ? 3 : 2);
-        mod_OldDays.setField(ItemArmor.class, Item.helmetGold, 2, b ? 3 : 2);
-        mod_OldDays.setField(ItemArmor.class, Item.plateLeather, 2, b ? 8 : 3);
-        mod_OldDays.setField(ItemArmor.class, Item.plateChain, 2, b ? 8 : 5);
-        mod_OldDays.setField(ItemArmor.class, Item.plateSteel, 2, b ? 8 : 6);
-        mod_OldDays.setField(ItemArmor.class, Item.plateGold, 2, b ? 8 : 5);
-        mod_OldDays.setField(ItemArmor.class, Item.legsLeather, 2, b ? 6 : 2);
-        mod_OldDays.setField(ItemArmor.class, Item.legsChain, 2, b ? 6 : 4);
-        mod_OldDays.setField(ItemArmor.class, Item.legsSteel, 2, b ? 6 : 5);
-        mod_OldDays.setField(ItemArmor.class, Item.legsGold, 2, b ? 6 : 3);
-        mod_OldDays.setField(ItemArmor.class, Item.bootsLeather, 2, b ? 3 : 1);
-        mod_OldDays.setField(ItemArmor.class, Item.bootsChain, 2, b ? 3 : 1);
-        mod_OldDays.setField(ItemArmor.class, Item.bootsSteel, 2, b ? 3 : 2);
-        mod_OldDays.setField(ItemArmor.class, Item.bootsGold, 2, b ? 3 : 1);
-        int maxDamage = 165;
+        int damageReduceAmount = 5;
+        mod_OldDays.setField(ItemArmor.class, Item.helmetLeather, damageReduceAmount, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetChain, damageReduceAmount, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetSteel, damageReduceAmount, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetGold, damageReduceAmount, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.helmetDiamond, damageReduceAmount, 3);
+        mod_OldDays.setField(ItemArmor.class, Item.plateLeather, damageReduceAmount, b ? 8 : 3);
+        mod_OldDays.setField(ItemArmor.class, Item.plateChain, damageReduceAmount, b ? 8 : 5);
+        mod_OldDays.setField(ItemArmor.class, Item.plateSteel, damageReduceAmount, b ? 8 : 6);
+        mod_OldDays.setField(ItemArmor.class, Item.plateGold, damageReduceAmount, b ? 8 : 5);
+        mod_OldDays.setField(ItemArmor.class, Item.plateDiamond, damageReduceAmount, 8);
+        mod_OldDays.setField(ItemArmor.class, Item.legsLeather, damageReduceAmount, b ? 6 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.legsChain, damageReduceAmount, b ? 6 : 4);
+        mod_OldDays.setField(ItemArmor.class, Item.legsSteel, damageReduceAmount, b ? 6 : 5);
+        mod_OldDays.setField(ItemArmor.class, Item.legsGold, damageReduceAmount, b ? 6 : 3);
+        mod_OldDays.setField(ItemArmor.class, Item.legsDiamond, damageReduceAmount, 6);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsLeather, damageReduceAmount, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsChain, damageReduceAmount, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsSteel, damageReduceAmount, b ? 3 : 2);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsGold, damageReduceAmount, b ? 3 : 1);
+        mod_OldDays.setField(ItemArmor.class, Item.bootsDiamond, damageReduceAmount, 3);
+        int maxDamage = 170;
         mod_OldDays.setField(Item.class, Item.helmetLeather, maxDamage, b ? 33 << 0 : 55);
         mod_OldDays.setField(Item.class, Item.helmetChain, maxDamage, b ? 33 << 1 : 165);
         mod_OldDays.setField(Item.class, Item.helmetSteel, maxDamage, b ? 33 << 2 : 165);
@@ -141,12 +146,9 @@ public class ODGameplay extends OldDaysModule{
         mod_OldDays.setField(Item.class, Item.bootsSteel, maxDamage, b ? 39 << 2 : 195);
         mod_OldDays.setField(Item.class, Item.bootsGold, maxDamage, b ? 39 << 4 : 91);
         mod_OldDays.setField(Item.class, Item.bootsDiamond, maxDamage, b ? 39 << 3 : 429);
-        mod_OldDays.setField(ItemArmor.class, Item.helmetDiamond, 2, 3);
-        mod_OldDays.setField(ItemArmor.class, Item.plateDiamond, 2, 8);
-        mod_OldDays.setField(ItemArmor.class, Item.legsDiamond, 2, 6);
-        mod_OldDays.setField(ItemArmor.class, Item.bootsDiamond, 2, 3);
     }
 
+    @Override
     public boolean onTick(){
         if (AllowDebug){
             return true;

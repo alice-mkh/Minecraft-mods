@@ -5,28 +5,30 @@ import java.util.*;
 public class BlockChestOld extends BlockChest
 {
     public static boolean normalblock = false;
-    public static int sidetex = mod_OldDays.getFreeTextureIndex();
+/*    public static int sidetex = mod_OldDays.getFreeTextureIndex();
     public static int fronttex = mod_OldDays.getFreeTextureIndex();//sidetex + 1;
     public static int toptex = mod_OldDays.getFreeTextureIndex();//sidetex - 1;
     public static int texfrontleft = mod_OldDays.getFreeTextureIndex();//sidetex + 31;
     public static int texfrontright = mod_OldDays.getFreeTextureIndex();//sidetex + 32;
     public static int texbackleft = mod_OldDays.getFreeTextureIndex();//sidetex + 15;
     public static int texbackright = mod_OldDays.getFreeTextureIndex();//sidetex + 16;
-
-    protected BlockChestOld(int par1)
+*/
+    protected BlockChestOld(int par1, int par2)
     {
-        super(par1);
-        blockIndexInTexture = 26;
+        super(par1, par2);
+//         blockIndexInTexture = 26;
     }
 
     /**
      * The type of render function that is called for this block
      */
+    @Override
     public int getRenderType()
     {
         return normalblock ? 0 : 22;
     }
-
+/*
+    @Override
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (!normalblock){
@@ -144,10 +146,12 @@ public class BlockChestOld extends BlockChest
 
         return par5 != byte0 ? sidetex : fronttex;
     }
-
+*/
     /**
      * Returns the block texture based on the side being looked at.  Args: side
      */
+/*
+    @Override
     public int getBlockTextureFromSide(int par1)
     {
         if (!normalblock){
@@ -172,7 +176,8 @@ public class BlockChestOld extends BlockChest
             return sidetex;
         }
     }
-
+*/
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
         if (normalblock){
             setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

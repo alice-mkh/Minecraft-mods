@@ -34,10 +34,12 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         this(m, i, v, smp, f, 0, m2);
     }
 
+    @Override
     public String getButtonText(){
         return mod_OldDays.lang.get(getName()+".name")+": "+(useNames ? mod_OldDays.lang.get(getName()+(value+1)) : value);
     }
 
+    @Override
     public void onChange(){
         if (shouldSkipUpdates()){
             return;
@@ -51,6 +53,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    @Override
     public void incrementValue(){
         if (value < max){
             value++;
@@ -59,6 +62,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    @Override
     public void decrementValue(){
         if (value > min){
             value--;
@@ -67,6 +71,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    @Override
     public void updateValue(){
         try{
             value = ((Integer)field.get(module));
@@ -77,23 +82,28 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
     }
 
+    @Override
     public void setSMPValue(){
         value = smpValue;
     }
 
+    @Override
     public String getDefaultValue(){
         return ""+defaultValue;
     }
 
+    @Override
     public void setDefaultValue(){
         value = defaultValue;
     }
 
+    @Override
     protected void disable(){
         super.disable();
         value = smpValue;
     }
 
+    @Override
     public void loadFromString(String str){
         int i = 0;
         try{
@@ -108,10 +118,12 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         value = i;
     }
 
+    @Override
     public String saveToString(){
         return ""+value;
     }
 
+    @Override
     public String[] getTooltip(){
         ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));

@@ -91,6 +91,7 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
     /**
      * Initiates construction of the Structure Component picked, at the current Location of StructGen
      */
+    @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int i = getComponentType();
@@ -206,6 +207,7 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
      * the end, it adds Fences...
      */
+    @Override
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))
@@ -258,7 +260,7 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
             {
                 generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 2, 0, i1 - 1, WeightedRandomChestContent.func_92080_a(StructureMineshaftPieces.func_78816_a(), new WeightedRandomChestContent[]
                         {
-                            Item.field_92105_bW.func_92114_b(par2Random)
+                            Item.enchantedBook.func_92114_b(par2Random)
                         }), 3 + par2Random.nextInt(4));
             }
 
@@ -266,7 +268,7 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
             {
                 generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 0, 0, i1 + 1, WeightedRandomChestContent.func_92080_a(StructureMineshaftPieces.func_78816_a(), new WeightedRandomChestContent[]
                         {
-                            Item.field_92105_bW.func_92114_b(par2Random)
+                            Item.enchantedBook.func_92114_b(par2Random)
                         }), 3 + par2Random.nextInt(4));
             }
 
@@ -286,12 +288,12 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
             }
 
             spawnerPlaced = true;
-            par1World.setBlockWithNotify(k2, l1, j2, Block.mobSpawner.blockID);
+            par1World.setBlock(k2, l1, j2, Block.mobSpawner.blockID, 0, 2);
             TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)par1World.getBlockTileEntity(k2, l1, j2);
 
             if (tileentitymobspawner != null)
             {
-                tileentitymobspawner.setMobID("CaveSpider");
+                tileentitymobspawner.func_98049_a().setMobID("CaveSpider");
             }
         }
 

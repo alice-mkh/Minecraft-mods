@@ -94,7 +94,7 @@ public abstract class BiomeGenBase
      * Holds the classes of any aquatic creature that can be spawned in the water of the biome.
      */
     protected List spawnableWaterCreatureList;
-    protected List field_82914_M;
+    protected List spawnableCaveCreatureList;
 
     /** Set to true if snow is enabled for this biome. */
     private boolean enableSnow;
@@ -149,7 +149,7 @@ public abstract class BiomeGenBase
         spawnableMonsterList = new ArrayList();
         spawnableCreatureList = new ArrayList();
         spawnableWaterCreatureList = new ArrayList();
-        field_82914_M = new ArrayList();
+        spawnableCaveCreatureList = new ArrayList();
         enableRain = true;
         worldGeneratorTrees = new WorldGenTrees(false);
         oldWorldGeneratorTrees = new OldWorldGenTrees(false);
@@ -170,7 +170,7 @@ public abstract class BiomeGenBase
         spawnableMonsterList.add(new SpawnListEntry(net.minecraft.src.EntitySlime.class, 10, 4, 4));
         spawnableMonsterList.add(new SpawnListEntry(net.minecraft.src.EntityEnderman.class, 1, 1, 4));
         spawnableWaterCreatureList.add(new SpawnListEntry(net.minecraft.src.EntitySquid.class, 10, 4, 4));
-        field_82914_M.add(new SpawnListEntry(net.minecraft.src.EntityBat.class, 10, 8, 8));
+        spawnableCaveCreatureList.add(new SpawnListEntry(net.minecraft.src.EntityBat.class, 10, 8, 8));
     }
 
     /**
@@ -309,7 +309,7 @@ public abstract class BiomeGenBase
 
         if (par1EnumCreatureType == EnumCreatureType.ambient)
         {
-            return field_82914_M;
+            return spawnableCaveCreatureList;
         }
         else
         {

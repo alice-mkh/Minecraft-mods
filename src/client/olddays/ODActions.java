@@ -28,6 +28,7 @@ public class ODActions extends OldDaysModule{
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
 
+    @Override
     public void callback (int i){
         switch(i){
             case 1: set(BlockTNT2.class, "punchToActivate", PunchTNT); break;
@@ -54,11 +55,12 @@ public class ODActions extends OldDaysModule{
                     mod_OldDays.setField(ItemTool.class, Item.shovelSteel, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(ItemTool.class, Item.shovelGold, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(ItemTool.class, Item.shovelDiamond, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
-                    mod_OldDays.setField(Block.class, Block.obsidian, 167, OldHardness ? 10F : 50F); break;
+                    mod_OldDays.setField(Block.class, Block.obsidian, 178, OldHardness ? 10F : 50F); break;
             case 18:set(BlockLeaves.class, "apples", Apples); break;
         }
     }
 
+    @Override
     public void catchKeyEvent(KeyBinding keybinding){
         if (keybinding==keyFog && minecraft.currentScreen==null && FogKey){
             boolean flag = org.lwjgl.input.Keyboard.isKeyDown(42) || org.lwjgl.input.Keyboard.isKeyDown(54);
@@ -96,36 +98,36 @@ public class ODActions extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.tnt.blockID] = null;
-            BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(46, 8));
+            BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(46));
             customtnt.setHardness(0.0F);
             customtnt.setStepSound(Block.soundGrassFootstep);
-            customtnt.setBlockName("tnt");
+            customtnt.getIndirectPowerOutput("tnt");
             Block.blocksList[Block.tnt.blockID] = customtnt;
-            mod_OldDays.setField(Block.class, null, 65, customtnt);//Block: tnt
+            mod_OldDays.setField(Block.class, null, 64, customtnt);//Block: tnt
             Block.blocksList[Block.fence.blockID] = null;
-            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, 4));
+            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, "wood", Material.wood));
             customfence.setHardness(2.0F);
             customfence.setResistance(5F);
             customfence.setStepSound(Block.soundWoodFootstep);
-            customfence.setBlockName("fence");
+            customfence.getIndirectPowerOutput("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
-            mod_OldDays.setField(Block.class, null, 104, customfence);//Block: fence
+            mod_OldDays.setField(Block.class, null, 103, customfence);//Block: fence
             Block.blocksList[Block.tilledField.blockID] = null;
             BlockFarmlandOld customTilledField = (BlockFarmlandOld)(new BlockFarmlandOld(60));
             customTilledField.setHardness(0.6F);
             customTilledField.setStepSound(Block.soundGravelFootstep);
-            customTilledField.setBlockName("farmland");
-            customTilledField.setRequiresSelfNotify();
+            customTilledField.getIndirectPowerOutput("farmland");
             Block.blocksList[Block.tilledField.blockID] = customTilledField;
-            mod_OldDays.setField(Block.class, null, 79, customTilledField);//Block: tilledField
+            mod_OldDays.setField(Block.class, null, 78, customTilledField);//Block: tilledField
             Block.blocksList[Block.wood.blockID] = null;
             BlockLog2 customWood = (BlockLog2)(new BlockLog2(17));
             customWood.setHardness(2.0F);
             customWood.setStepSound(Block.soundWoodFootstep);
-            customWood.setBlockName("log");
-            customWood.setRequiresSelfNotify();
+            customWood.getIndirectPowerOutput("log");
             Block.blocksList[Block.wood.blockID] = customWood;
-            mod_OldDays.setField(Block.class, null, 36, customWood);//Block: wood
+            mod_OldDays.setField(Block.class, null, 35, customWood);//Block: wood
+            Item.itemsList[Block.wood.blockID] = null;
+            Item.itemsList[Block.wood.blockID] = (new ItemMultiTextureTile(Block.wood.blockID - 256, Block.wood, BlockLog.woodType)).setUnlocalizedName("log");
         }catch (Exception exception){
             System.out.println(exception);
         }
@@ -134,54 +136,44 @@ public class ODActions extends OldDaysModule{
     private void replaceTools(){
         Item.itemsList[256 + 14] = null;
         ItemPickaxe2 pickaxeWood = new ItemPickaxe2(14, EnumToolMaterial.WOOD);
-        pickaxeWood.setIconCoord(0, 6);
-        pickaxeWood.setItemName("pickaxeWood");
+        pickaxeWood.setUnlocalizedName("pickaxeWood");
         mod_OldDays.setField(Item.class, null, 17, pickaxeWood);//Item: pickaxeWood
         Item.itemsList[256 + 18] = null;
         ItemPickaxe2 pickaxeStone = new ItemPickaxe2(18, EnumToolMaterial.STONE);
-        pickaxeStone.setIconCoord(1, 6);
-        pickaxeStone.setItemName("pickaxeStone");
+        pickaxeStone.setUnlocalizedName("pickaxeStone");
         mod_OldDays.setField(Item.class, null, 21, pickaxeStone);//Item: pickaxeStone
         Item.itemsList[256 + 1] = null;
         ItemPickaxe2 pickaxeSteel = new ItemPickaxe2(1, EnumToolMaterial.IRON);
-        pickaxeSteel.setIconCoord(2, 6);
-        pickaxeSteel.setItemName("pickaxeIron");
+        pickaxeSteel.setUnlocalizedName("pickaxeIron");
         mod_OldDays.setField(Item.class, null, 4, pickaxeSteel);//Item: pickaxeSteel
         Item.itemsList[256 + 22] = null;
         ItemPickaxe2 pickaxeDiamond = new ItemPickaxe2(22, EnumToolMaterial.EMERALD);
-        pickaxeDiamond.setIconCoord(3, 6);
-        pickaxeDiamond.setItemName("pickaxeDiamond");
+        pickaxeDiamond.setUnlocalizedName("pickaxeDiamond");
         mod_OldDays.setField(Item.class, null, 25, pickaxeDiamond);//Item: pickaxeDiamond
         Item.itemsList[256 + 29] = null;
         ItemPickaxe2 pickaxeGold = new ItemPickaxe2(29, EnumToolMaterial.GOLD);
-        pickaxeGold.setIconCoord(4, 6);
-        pickaxeGold.setItemName("pickaxeGold");
+        pickaxeGold.setUnlocalizedName("pickaxeGold");
         mod_OldDays.setField(Item.class, null, 32, pickaxeGold);//Item: pickaxeGold
 
         Item.itemsList[256 + 15] = null;
         ItemAxe2 axeWood = new ItemAxe2(15, EnumToolMaterial.WOOD);
-        axeWood.setIconCoord(0, 7);
-        axeWood.setItemName("hatchetWood");
+        axeWood.setUnlocalizedName("hatchetWood");
         mod_OldDays.setField(Item.class, null, 18, axeWood);//Item: axeWood
         Item.itemsList[256 + 19] = null;
         ItemAxe2 axeStone = new ItemAxe2(19, EnumToolMaterial.STONE);
-        axeStone.setIconCoord(1, 7);
-        axeStone.setItemName("hatchetStone");
+        axeStone.setUnlocalizedName("hatchetStone");
         mod_OldDays.setField(Item.class, null, 22, axeStone);//Item: axeStone
         Item.itemsList[256 + 2] = null;
         ItemAxe2 axeSteel = new ItemAxe2(2, EnumToolMaterial.IRON);
-        axeSteel.setIconCoord(2, 7);
-        axeSteel.setItemName("hatchetIron");
+        axeSteel.setUnlocalizedName("hatchetIron");
         mod_OldDays.setField(Item.class, null, 5, axeSteel);//Item: axeSteel
         Item.itemsList[256 + 23] = null;
         ItemAxe2 axeDiamond = new ItemAxe2(23, EnumToolMaterial.EMERALD);
-        axeDiamond.setIconCoord(3, 7);
-        axeDiamond.setItemName("hatchetDiamond");
+        axeDiamond.setUnlocalizedName("hatchetDiamond");
         mod_OldDays.setField(Item.class, null, 26, axeDiamond);//Item: axeDiamond
         Item.itemsList[256 + 30] = null;
         ItemAxe2 axeGold = new ItemAxe2(30, EnumToolMaterial.GOLD);
-        axeGold.setIconCoord(4, 7);
-        axeGold.setItemName("hatchetGold");
+        axeGold.setUnlocalizedName("hatchetGold");
         mod_OldDays.setField(Item.class, null, 33, axeGold);//Item: axeGold
     }
 
@@ -198,7 +190,7 @@ public class ODActions extends OldDaysModule{
             gold = 32 << 0;
             diamond = (32 << 3) * (i < 1 ? 1 : 4);
         }
-        int maxDamage = 165;
+        int maxDamage = 170;
         mod_OldDays.setField(Item.class, Item.pickaxeWood, maxDamage, wood);
         mod_OldDays.setField(Item.class, Item.axeWood, maxDamage, wood);
         mod_OldDays.setField(Item.class, Item.shovelWood, maxDamage, wood);

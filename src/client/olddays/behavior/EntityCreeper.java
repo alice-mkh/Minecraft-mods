@@ -41,11 +41,13 @@ public class EntityCreeper extends EntityMob
         targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
+    @Override
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || survivaltest;
     }
 
+    @Override
     public int getBrightnessForRender(float f)
     {
         if (!dark){
@@ -56,6 +58,7 @@ public class EntityCreeper extends EntityMob
         return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 450F);
     }
 
+    @Override
     protected void attackBlockedEntity(Entity entity, float f)
     {
         if (worldObj.isRemote)
@@ -81,6 +84,7 @@ public class EntityCreeper extends EntityMob
         }
     }
 
+    @Override
     protected void attackEntity(Entity entity, float f)
     {
         if (worldObj.isRemote)
@@ -104,7 +108,7 @@ public class EntityCreeper extends EntityMob
         {
             if (timeSinceIgnited == 0)
             {
-                func_85030_a("random.fuse", 1.0F, 0.5F);
+                playSound("random.fuse", 1.0F, 0.5F);
             }
             setCreeperState(1);
             timeSinceIgnited++;
@@ -226,7 +230,7 @@ public class EntityCreeper extends EntityMob
             int i = getCreeperState();
             if (i > 0 && timeSinceIgnited == 0)
             {
-                func_85030_a("random.fuse", 1.0F, 0.5F);
+                playSound("random.fuse", 1.0F, 0.5F);
             }
             timeSinceIgnited += i;
             if (timeSinceIgnited < 0)
@@ -266,7 +270,7 @@ public class EntityCreeper extends EntityMob
 
             if (i > 0 && timeSinceIgnited == 0)
             {
-                func_85030_a("random.fuse", 1.0F, 0.5F);
+                playSound("random.fuse", 1.0F, 0.5F);
             }
 
             timeSinceIgnited += i;
@@ -326,12 +330,13 @@ public class EntityCreeper extends EntityMob
         if (!survivaltest){
             if (par1DamageSource.getEntity() instanceof EntitySkeleton)
             {
-                int i = Item.record13.shiftedIndex + rand.nextInt((Item.recordWait.shiftedIndex - Item.record13.shiftedIndex) + 1);
+                int i = Item.record13.itemID + rand.nextInt((Item.recordWait.itemID - Item.record13.itemID) + 1);
                 dropItem(i, 1);
             }
         }
     }
 
+    @Override
     protected void onDeathUpdate(){
         if (survivaltest && deathTime >= 15){
             worldObj.createExplosion(this, posX, posY, posZ, 4F, worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
@@ -367,7 +372,7 @@ public class EntityCreeper extends EntityMob
      */
     protected int getDropItemId()
     {
-        return survivaltest ? 0 : Item.gunpowder.shiftedIndex;
+        return survivaltest ? 0 : Item.gunpowder.itemID;
     }
 
     /**
@@ -393,10 +398,5 @@ public class EntityCreeper extends EntityMob
     {
         super.onStruckByLightning(par1EntityLightningBolt);
         dataWatcher.updateObject(17, Byte.valueOf((byte)1));
-    }
-
-    public int func_82193_c(Entity par1Entity)
-    {
-        return 2;
     }
 }

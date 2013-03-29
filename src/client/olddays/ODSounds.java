@@ -52,6 +52,7 @@ public class ODSounds extends OldDaysModule{
         addSound(22,"ignite");
     }
 
+    @Override
     public void callback (int i){
         switch(i){
             case 1: set(SoundManager2.class, "explode", Explode); break;

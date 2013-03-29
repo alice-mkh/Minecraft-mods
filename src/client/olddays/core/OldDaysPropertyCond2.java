@@ -29,6 +29,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
         return value;
     }
 
+    @Override
     public void onChange(){
         if (shouldSkipUpdates()){
             return;
@@ -42,6 +43,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
         }
     }
 
+    @Override
     public String getButtonText(){
         if (value == -1){
             return mod_OldDays.lang.get(getName()+".name")+": "+mod_OldDays.lang.get("gui.auto");
@@ -49,6 +51,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
         return super.getButtonText();
     }
 
+    @Override
     public String[] getTooltip(){
         ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));

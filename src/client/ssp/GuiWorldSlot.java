@@ -87,7 +87,7 @@ class GuiWorldSlot extends GuiSlot
 
             if (saveformatcomparator.isHardcoreModeEnabled())
             {
-                s2 = (new StringBuilder()).append("\2474").append(StatCollector.translateToLocal("gameMode.hardcore")).append("\247r").toString();
+                s2 = (new StringBuilder()).append(EnumChatFormatting.DARK_RED).append(StatCollector.translateToLocal("gameMode.hardcore")).append(EnumChatFormatting.RESET).toString();
             }
 
             if (saveformatcomparator.getCheatsEnabled())

@@ -21,6 +21,7 @@ public class EntitySuspendFX extends EntityFX
         particleMaxAge = (int)(16D / (Math.random() * 0.80000000000000004D + 0.20000000000000001D));
     }
 
+    @Override
     protected void entityInit()
     {
         if (!allow){

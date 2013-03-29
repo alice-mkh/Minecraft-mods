@@ -142,7 +142,7 @@ public class RenderBiped extends RenderLiving
             GL11.glPushMatrix();
             modelBipedMain.bipedHead.postRender(0.0625F);
 
-            if (itemstack1.getItem().shiftedIndex < 256)
+            if (itemstack1.getItem().itemID < 256)
             {
                 if (RenderBlocks.renderItemIn3d(Block.blocksList[itemstack1.itemID].getRenderType()))
                 {
@@ -154,7 +154,7 @@ public class RenderBiped extends RenderLiving
 
                 renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack1, 0);
             }
-            else if (itemstack1.getItem().shiftedIndex == Item.skull.shiftedIndex)
+            else if (itemstack1.getItem().itemID == Item.skull.itemID)
             {
                 float f2 = 1.0625F;
                 GL11.glScalef(f2, -f2, -f2);
@@ -195,7 +195,7 @@ public class RenderBiped extends RenderLiving
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(-f4, -f4, f4);
             }
-            else if (itemstack.itemID == Item.bow.shiftedIndex)
+            else if (itemstack.itemID == Item.bow.itemID)
             {
                 float f5 = 0.625F;
                 GL11.glTranslatef(0.0F, 0.125F, 0.3125F);

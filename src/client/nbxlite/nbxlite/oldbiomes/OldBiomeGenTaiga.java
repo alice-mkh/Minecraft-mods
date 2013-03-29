@@ -15,6 +15,7 @@ public class OldBiomeGenTaiga extends OldBiomeGenBase
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityWolf.class, 2));
     }
 
+    @Override
     public WorldGenerator getRandomWorldGenForTrees(Random random)
     {
         if(random.nextInt(3) == 0)

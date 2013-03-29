@@ -701,7 +701,7 @@ public class PlayerHelper {
          if (Item.itemsList[i] == null) {
             ITEMNAMES.add(null);
          } else {
-            ITEMNAMES.add(StringTranslate.getInstance().translateNamedKey((Item.itemsList[i].getItemName())).toString().trim().toLowerCase());
+            ITEMNAMES.add(StringTranslate.getInstance().translateNamedKey((Item.itemsList[i].getUnlocalizedName())).toString().trim().toLowerCase());
          }
       }
 
@@ -1234,7 +1234,7 @@ public class PlayerHelper {
       }
 
       try {
-         if (i.getItem().getItemName().equals(j.getItem().getItemName())) {
+         if (i.getItem().getUnlocalizedName().equals(j.getItem().getUnlocalizedName())) {
             return i.isItemEqual(j);
          }
       } catch (Exception e) {}
@@ -1489,7 +1489,7 @@ public class PlayerHelper {
           * Clear command - clears the console of all messages
           */
       } else if (split[0].equalsIgnoreCase(/*"clear"*/"clearchat")) {
-         mc.ingameGUI.getChatGUI().func_73761_a();
+         mc.ingameGUI.getChatGUI().clearChatMessages();
 
          /*
           * Time command - allows setting and getting of the minecraft time
@@ -2021,7 +2021,7 @@ public class PlayerHelper {
             Entity e = tnt.get(i);
             if (e instanceof EntityTNTPrimed) {
                EntityItem entityitem = new EntityItem(mc.theWorld, e.posX, e.posY, e.posZ, new ItemStack(Item.itemsList[46], 1));
-               mc.theWorld.setEntityDead(e);
+               mc.theWorld.removeEntity(e);
                mc.theWorld.spawnEntityInWorld(entityitem);
             }
          }
@@ -2188,28 +2188,28 @@ public class PlayerHelper {
                }
                for (int k = 0; k < distance; k++) {
                   if (mc.theWorld.getBlockId(x + i, y + j, z + k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x + i, y + j, z + k, 0);
+                     mc.theWorld.setBlock(x + i, y + j, z + k, 0);
                   }
                   if (mc.theWorld.getBlockId(x - i, y + j, z + k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x - i, y + j, z + k, 0);
+                     mc.theWorld.setBlock(x - i, y + j, z + k, 0);
                   }
                   if (mc.theWorld.getBlockId(x - i, y + j, z - k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x - i, y + j, z - k, 0);
+                     mc.theWorld.setBlock(x - i, y + j, z - k, 0);
                   }
                   if (mc.theWorld.getBlockId(x + i, y + j, z - k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x + i, y + j, z - k, 0);
+                     mc.theWorld.setBlock(x + i, y + j, z - k, 0);
                   }
                   if (mc.theWorld.getBlockId(x + i, y - j, z + k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x + i, y - j, z + k, 0);
+                     mc.theWorld.setBlock(x + i, y - j, z + k, 0);
                   }
                   if (mc.theWorld.getBlockId(x - i, y - j, z + k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x - i, y - j, z + k, 0);
+                     mc.theWorld.setBlock(x - i, y - j, z + k, 0);
                   }
                   if (mc.theWorld.getBlockId(x - i, y - j, z - k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x - i, y - j, z - k, 0);
+                     mc.theWorld.setBlock(x - i, y - j, z - k, 0);
                   }
                   if (mc.theWorld.getBlockId(x + i, y - j, z - k) == Block.fire.blockID) {
-                     mc.theWorld.setBlockWithNotify(x + i, y - j, z - k, 0);
+                     mc.theWorld.setBlock(x + i, y - j, z - k, 0);
                   }
                }
             }
@@ -2415,7 +2415,7 @@ public class PlayerHelper {
           */
       } else if (split[0].equalsIgnoreCase("dropstore")) {
          mc.theWorld.setBlock((int) ep.posX + 1, (int) ep.posY - 1, (int) ep.posZ, Block.chest.blockID);
-         mc.theWorld.setBlockWithNotify((int) ep.posX + 1, (int) ep.posY - 1, (int) ep.posZ + 1, Block.chest.blockID);
+         mc.theWorld.setBlock((int) ep.posX + 1, (int) ep.posY - 1, (int) ep.posZ + 1, Block.chest.blockID);
          InventoryLargeChest inv = new InventoryLargeChest("Large chest", (TileEntityChest) mc.theWorld.getBlockTileEntity((int) ep.posX + 1, (int) ep.posY - 1, (int) ep.posZ + 1), (TileEntityChest) mc.theWorld.getBlockTileEntity((int) ep.posX + 1, (int) ep.posY - 1, (int) ep.posZ));
          int count = 0;
          for (int i = 0; i < ep.inventory.mainInventory.length; i++) {
@@ -2775,10 +2775,10 @@ public class PlayerHelper {
             // mc.changeWorld2(new World(parent,child.getName()),"Changing World to " + message);
             // public WorldSettings(long l, int i, boolean flag, boolean flag1, EnumWorldType enumworldtype)
             ISaveHandler savehandler = mc.getSaveLoader().getSaveLoader(child.getName(), false);
-            Object o = mc.worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).newInstance(
-                       new Object[]{savehandler, child.getName(), new WorldSettings(new Random().nextLong(), EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT), mc.mcProfiler});
+            Object o = mc.worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class, ILogAgent.class}).newInstance(
+                       new Object[]{savehandler, child.getName(), new WorldSettings(new Random().nextLong(), EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT), mc.mcProfiler, mc.getLogAgent()});
             mc.changeWorld2((WorldSSP)o, "Changing World to " + message);
-//             mc.changeWorld2(new WorldSSP(new SaveHandler(parent, child.getName(), false), child.getName(), new WorldSettings(new Random().nextLong(), EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT), mc.mcProfiler), "Changing World to " + message);
+//             mc.changeWorld2(new WorldSSP(new SaveHandler(parent, child.getName(), false), child.getName(), new WorldSettings(new Random().nextLong(), EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT), mc.mcProfiler, mc.getLogAgent()), "Changing World to " + message);
          } else if (split[1].equalsIgnoreCase("save") || split[1].equalsIgnoreCase("backup")) {
             LoadingScreenRenderer l = new LoadingScreenRenderer(mc);
             l.resetProgressAndMessage("Please wait... Saving level");
@@ -2817,15 +2817,15 @@ public class PlayerHelper {
             WorldSSP world = null;
             ISaveHandler savehandler = mc.getSaveLoader().getSaveLoader(child.getName(), false);
             if (sd) {
-              Object o = mc.worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).newInstance(
-                         new Object[]{savehandler, child.getName(), new WorldSettings(seed,EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler});
+              Object o = mc.worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class, ILogAgent.class}).newInstance(
+                         new Object[]{savehandler, child.getName(), new WorldSettings(seed,EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler, mc.getLogAgent()});
               world = (WorldSSP)o;
-//                world = new WorldSSP(   new SaveHandler(parent, child.getName(), false), child.getName(), new WorldSettings(seed,EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler);
+//                world = new WorldSSP(   new SaveHandler(parent, child.getName(), false), child.getName(), new WorldSettings(seed,EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler, mc.getLogAgent());
             } else {
-              Object o = mc.worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class}).newInstance(
-                         new Object[]{savehandler, child.getName(), new WorldSettings((new Random()).nextLong(),EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler});
+              Object o = mc.worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class, ILogAgent.class}).newInstance(
+                         new Object[]{savehandler, child.getName(), new WorldSettings((new Random()).nextLong(),EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler, mc.getLogAgent()});
               world = (WorldSSP)o;
-//                world = new WorldSSP(new SaveHandler(parent, child.getName(), false), child.getName(), new WorldSettings((new Random()).nextLong(),EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler);
+//                world = new WorldSSP(new SaveHandler(parent, child.getName(), false), child.getName(), new WorldSettings((new Random()).nextLong(),EnumGameType.SURVIVAL,true,false,WorldType.DEFAULT), mc.mcProfiler, mc.getLogAgent());
             }
 
             mc.changeWorld2(world, "Creating a new world at: " + child.getAbsolutePath());
@@ -3452,7 +3452,7 @@ public class PlayerHelper {
             y1 += 1;
             y2 += 1;
             mc.theWorld.setBlock(x1, y1, z1, Block.chest.blockID);
-            mc.theWorld.setBlockWithNotify(x2, y2, z2, Block.chest.blockID);
+            mc.theWorld.setBlock(x2, y2, z2, Block.chest.blockID);
          } else if (split[1].equalsIgnoreCase("fill") || split[1].equalsIgnoreCase("get") || split[1].equalsIgnoreCase("swap") || split[1].equalsIgnoreCase("clear")) {
             if (mc.theWorld.getBlockId(x1, y1, z1) == Block.chest.blockID) {
                if (mc.theWorld.getBlockId(x2, y2, z2) == Block.chest.blockID) {
@@ -3513,7 +3513,7 @@ public class PlayerHelper {
          int x = MathHelper.floor_double(ep.posX);
          int y = MathHelper.floor_double(ep.posY);
          int z = MathHelper.floor_double(ep.posZ);
-         mc.theWorld.setBlockWithNotify(x, y - 2, z, Block.glass.blockID);
+         mc.theWorld.setBlock(x, y - 2, z, Block.glass.blockID);
 
          /*
           * Gives you control over what will spawn
@@ -4900,11 +4900,11 @@ public class PlayerHelper {
             return;
          }
 
-         mc.theWorld.setBlockWithNotify(soh.blockx, soh.blocky, soh.blockz,Block.mobSpawner.blockID);
+         mc.theWorld.setBlock(soh.blockx, soh.blocky, soh.blockz,Block.mobSpawner.blockID);
 
          TileEntity te = mc.theWorld.getBlockTileEntity(soh.blockx, soh.blocky, soh.blockz);
          if (te != null && te instanceof TileEntityMobSpawner) {
-            ((TileEntityMobSpawner)te).setMobID(name);
+            ((TileEntityMobSpawner)te).func_98049_a().setMobID(name);
          }
 
          /*
@@ -5348,9 +5348,9 @@ public class PlayerHelper {
             }
             /*if(face == 1) {
                int i1 = MathHelper.floor_double((double)(((ep.rotationYaw + 180F) * 16F) / 360F) + 0.5D) & 0xf;
-               mc.theWorld.setBlockAndMetadataWithNotify(i, j, k, Block.signPost.blockID, i1);
+               mc.theWorld.setBlock(i, j, k, Block.signPost.blockID, i1, 2);
             } else {
-               mc.theWorld.setBlockAndMetadataWithNotify(i, j, k, Block.signWall.blockID, face);
+               mc.theWorld.setBlock(i, j, k, Block.signWall.blockID, face, 2);
             }
             try {
                TileEntitySign sign = (TileEntitySign)mc.theWorld.getBlockTileEntity(i,j,k);
@@ -5386,7 +5386,7 @@ public class PlayerHelper {
          }
 
          if (mc.theWorld.getBlockId(spc.blockx, spc.blocky + 1, spc.blockz) == 0) { 
-            mc.theWorld.setBlockWithNotify(spc.blockx, spc.blocky + 1, spc.blockz, Block.fire.blockID);
+            mc.theWorld.setBlock(spc.blockx, spc.blocky + 1, spc.blockz, Block.fire.blockID);
          }
 
 //       } else if (split[0].equalsIgnoreCase("test")) {
@@ -5499,9 +5499,9 @@ public class PlayerHelper {
    public boolean placeSign(String lines[], int i, int j, int k, int face) {
       if(face == 1) {
          int i1 = MathHelper.floor_double((double)(((ep.rotationYaw + 180F) * 16F) / 360F) + 0.5D) & 0xf;
-         mc.theWorld.setBlockAndMetadataWithNotify(i, j, k, Block.signPost.blockID, i1);
+         mc.theWorld.setBlock(i, j, k, Block.signPost.blockID, i1, 2);
       } else {
-         mc.theWorld.setBlockAndMetadataWithNotify(i, j, k, Block.signWall.blockID, face);
+         mc.theWorld.setBlock(i, j, k, Block.signWall.blockID, face, 2);
       }
       try {
          TileEntitySign sign = (TileEntitySign)mc.theWorld.getBlockTileEntity(i,j,k);
@@ -6296,15 +6296,15 @@ public class PlayerHelper {
             if (e instanceof EntityItem) {
                EntityItem ei = (EntityItem) e;
                if (!dropitems && ei.age >= 0) {
-                  mc.theWorld.setEntityDead(ei);
-               } else if (instantplant && (ei).func_92059_d().itemID == Block.sapling.blockID) {
+                  mc.theWorld.removeEntity(ei);
+               } else if (instantplant && (ei).getEntityItem().itemID == Block.sapling.blockID) {
                   BlockSapling tmp = (BlockSapling) Block.sapling;
                   if (tmp.canPlaceBlockAt(mc.theWorld, (int) e.posX, (int) e.posY, (int) e.posZ)) {
-                     mc.theWorld.setBlockWithNotify((int) e.posX, (int) e.posY, (int) e.posZ, Block.sapling.blockID);
+                     mc.theWorld.setBlock((int) e.posX, (int) e.posY, (int) e.posZ, Block.sapling.blockID);
                      if (instantgrow) {
                         tmp.growTree(mc.theWorld, (int) e.posX, (int) e.posY, (int) e.posZ, new Random());
                      }
-                     mc.theWorld.setEntityDead(ei);
+                     mc.theWorld.removeEntity(ei);
                   }
                }
             }
@@ -6399,7 +6399,7 @@ public class PlayerHelper {
          }*/
          return true;
       } else if ((mc.theWorld.getBlockId(i, j, k) == Block.crops.blockID) || (mc.theWorld.getBlockId(i, j, k) == Block.carrot.blockID) || (mc.theWorld.getBlockId(i, j, k) == Block.potato.blockID)) {
-         mc.theWorld.setBlockMetadataWithNotify(i, j, k, 7);
+         mc.theWorld.setBlockMetadataWithNotify(i, j, k, 7, 3);
          return true;
       } else if ((mc.theWorld.getBlockId(i, j, k) == Block.cactus.blockID) || (mc.theWorld.getBlockId(i, j, k) == Block.reed.blockID)) {
          int blockid = mc.theWorld.getBlockId(i, j, k);
@@ -6418,13 +6418,13 @@ public class PlayerHelper {
          }
          if (length < 3) {
             for (int i1 = 0; i1 <= 3 - length; i1++) {
-               mc.theWorld.setBlockWithNotify(i, j + i1, k, blockid);
+               mc.theWorld.setBlock(i, j + i1, k, blockid);
             }
             return true;
          }
       } else if (mc.theWorld.getBlockId(i, j, k) == Block.cocoaPlant.blockID) {
          int meta = mc.theWorld.getBlockMetadata(i, j, k);
-         mc.theWorld.setBlockMetadataWithNotify(i, j, k, 2 << 2 | BlockDirectional.getDirection(meta));
+         mc.theWorld.setBlockMetadataWithNotify(i, j, k, 2 << 2 | BlockDirectional.getDirection(meta), 3);
          return true;
       } 
       return false;
@@ -6692,7 +6692,7 @@ public class PlayerHelper {
 
       for (int i = 0; i < Block.blocksList.length; i++) {
          if (Block.blocksList[i] != null) {
-            String curName = Block.blocksList[i].getBlockName();
+            String curName = Block.blocksList[i].getUnlocalizedName();
             curName = curName.substring(curName.indexOf('.') + 1);
             if (block.equalsIgnoreCase(curName)) {
                return i;

@@ -12,6 +12,7 @@ public class OldWorldGenTrees extends WorldGenerator
         super(flag);
     }
 
+    @Override
     public boolean generate(World world, Random random, int i, int j, int k)
     {
         int l = random.nextInt(3) + 4;

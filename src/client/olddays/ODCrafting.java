@@ -19,6 +19,7 @@ public class ODCrafting extends OldDaysModule{
         new OldDaysPropertyBool(this, 12,false, false, "OldMaps");
     }
 
+    @Override
     public void callback (int i){
         switch(i){
             case 1: setPlanks(OldPlanks); break;

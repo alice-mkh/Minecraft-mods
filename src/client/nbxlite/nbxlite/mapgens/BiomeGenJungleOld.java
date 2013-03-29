@@ -13,6 +13,7 @@ public class BiomeGenJungleOld extends BiomeGenJungle
     /**
      * Gets a WorldGen appropriate for this biome.
      */
+    @Override
     public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
     {
         if (par1Random.nextInt(4) == 0)

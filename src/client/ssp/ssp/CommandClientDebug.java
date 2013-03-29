@@ -20,6 +20,7 @@ public class CommandClientDebug extends CommandDebug
         startTicks = 0;
     }
 
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1)
@@ -170,6 +171,7 @@ public class CommandClientDebug extends CommandDebug
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

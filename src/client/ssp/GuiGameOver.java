@@ -23,31 +23,31 @@ public class GuiGameOver extends GuiScreen
      */
     public void initGui()
     {
-        controlList.clear();
+        buttonList.clear();
 
         if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
         {
             if (mc.isIntegratedServerRunning() || mc.enableSP)
             {
-                controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
+                buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
             }
             else
             {
-                controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.leaveServer")));
+                buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.leaveServer")));
             }
         }
         else
         {
-            controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 72, StatCollector.translateToLocal("deathScreen.respawn")));
-            controlList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.titleScreen")));
+            buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 72, StatCollector.translateToLocal("deathScreen.respawn")));
+            buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.titleScreen")));
 
             if (mc.session == null)
             {
-                ((GuiButton)controlList.get(1)).enabled = false;
+                ((GuiButton)buttonList.get(1)).enabled = false;
             }
         }
 
-        for (Iterator iterator = controlList.iterator(); iterator.hasNext();)
+        for (Iterator iterator = buttonList.iterator(); iterator.hasNext();)
         {
             GuiButton guibutton = (GuiButton)iterator.next();
             guibutton.enabled = false;
@@ -143,7 +143,7 @@ public class GuiGameOver extends GuiScreen
             drawCenteredString(fontRenderer, StatCollector.translateToLocal("deathScreen.hardcoreInfo"), width / 2, 144, 0xffffff);
         }
 
-        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(oldScore ? ": &e" : ": \247e").append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
+        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(": ").append(oldScore ? ": &e" : EnumChatFormatting.YELLOW).append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
         super.drawScreen(par1, par2, par3);
     }
 
@@ -165,7 +165,7 @@ public class GuiGameOver extends GuiScreen
 
         if (cooldownTimer == 20)
         {
-            for (Iterator iterator = controlList.iterator(); iterator.hasNext();)
+            for (Iterator iterator = buttonList.iterator(); iterator.hasNext();)
             {
                 GuiButton guibutton = (GuiButton)iterator.next();
                 guibutton.enabled = true;

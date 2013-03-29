@@ -16,15 +16,16 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         specialButtons = 5;
     }
 
+    @Override
     public void initGui(){
         super.initGui();
         updateList("");
     }
 
     protected void updateList(String str){
-        controlList.clear();
+        buttonList.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
         presets = custom ? core.saveman.getCustomPresets() : core.saveman.getDefaultPresets();
         int count = 0;
         searchField.correct = true;
@@ -44,17 +45,17 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         int y = height / 6 - 15 + ((11/2) * 30);
 //         GuiButton save = new GuiButton(presets.length + 1, width / 2 - 155/*75*/, y, 150, 20, mod_OldDays.lang.get("gui.presets.save"));
 //         save.enabled = custom;
-//         controlList.add(save);
+//         buttonList.add(save);
         if (custom){
             addButton(count, false, presets.length, "+", custom, false);
-            ((GuiButton)controlList.get(controlList.size() - 1)).drawButton = custom && presets.length < max;
+            ((GuiButton)buttonList.get(buttonList.size() - 1)).drawButton = custom && presets.length < max;
         }
         GuiButton switch1 = new GuiButton(presets.length + 2, width / 2 - 75/*5*/, y, 75, 20, mod_OldDays.lang.get("gui.presets.default"));
         GuiButton switch2 = new GuiButton(presets.length + 3, width / 2 + 1/*81*/, y, 75, 20, mod_OldDays.lang.get("gui.presets.custom"));
         switch1.enabled = custom;
         switch2.enabled = !custom;
-        controlList.add(switch1);
-        controlList.add(switch2);
+        buttonList.add(switch1);
+        buttonList.add(switch2);
         postInitGui(presets.length + (custom ? 1 : 0));
         setPage(0);
     }
@@ -73,15 +74,16 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         int y = height / 6 - top + ((i2/2) * margin);
         GuiButton button = new GuiButton(j+1, x, y, 150, 20, name);
         button.enabled = e;
-        controlList.add(button);
+        buttonList.add(button);
         if (!delete){
             return;
         }
         GuiButton deleteButton = new GuiButton(j+TOOLTIP_OFFSET+1, x2, y, 20, 20, "x");
         deleteButton.enabled = custom;
-        controlList.add(deleteButton);
+        buttonList.add(deleteButton);
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         if (!guibutton.enabled){
@@ -126,6 +128,7 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         core.saveman.loadPreset(presets[guibutton.id - 1], custom);
     }
 
+    @Override
     protected void keyTyped(char par1, int par2){
         if (searchField.isFocused()){
             searchField.textboxKeyTyped(par1, par2);
@@ -137,12 +140,12 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             return;
         }else{
             if (par2 == 1){
-                showField(false, ((GuiButton)controlList.get(fieldId)));
+                showField(false, ((GuiButton)buttonList.get(fieldId)));
                 return;
             }
             if (par1 == '\r'){
                 core.saveman.savePreset(current.trim());
-                showField(false, ((GuiButton)controlList.get(fieldId)));
+                showField(false, ((GuiButton)buttonList.get(fieldId)));
                 updateList(searchField.getText().trim());
                 return;
             }

@@ -8,24 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.minecraft.src.AABBPool;
 import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.BehaviorArrowDispense;
-import net.minecraft.src.BehaviorBucketEmptyDispense;
-import net.minecraft.src.BehaviorBucketFullDispense;
-import net.minecraft.src.BehaviorDispenseBoat;
-import net.minecraft.src.BehaviorDispenseFireball;
-import net.minecraft.src.BehaviorDispenseFirework;
-import net.minecraft.src.BehaviorDispenseMinecart;
-import net.minecraft.src.BehaviorEggDispense;
-import net.minecraft.src.BehaviorExpBottleDispense;
-import net.minecraft.src.BehaviorMobEggDispense;
-import net.minecraft.src.BehaviorPotionDispense;
-import net.minecraft.src.BehaviorSnowballDispense;
-import net.minecraft.src.BlockDispenser;
 import net.minecraft.src.CallableIsServerModded;
 import net.minecraft.src.CallableServerMemoryStats;
 import net.minecraft.src.CallableServerProfiler;
@@ -36,17 +21,18 @@ import net.minecraft.src.ConvertingProgressUpdate;
 import net.minecraft.src.CrashReport;
 import net.minecraft.src.CrashReportCategory;
 import net.minecraft.src.DemoWorldServer;
+import net.minecraft.src.DispenserBehaviors;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityTracker;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.ICommandManager;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.ILogAgent;
 import net.minecraft.src.IPlayerUsage;
-import net.minecraft.src.IRegistry;
 import net.minecraft.src.ISaveFormat;
 import net.minecraft.src.ISaveHandler;
 import net.minecraft.src.IUpdatePlayerListBox;
-import net.minecraft.src.Item;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.MinecraftException;
 import net.minecraft.src.NetworkListenThread;
@@ -73,9 +59,6 @@ import net.minecraft.src.WorldType;
 
 public abstract class MinecraftServer implements ICommandSender, Runnable, IPlayerUsage
 {
-    /** The logging system. */
-    public static Logger logger = Logger.getLogger("Minecraft");
-
     /** Instance of Minecraft Server. */
     private static MinecraftServer mcServer;
     private final ISaveFormat anvilConverterForAnvilFile;
@@ -192,23 +175,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     private void registerDispenseBehaviors()
     {
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.arrow, new BehaviorArrowDispense(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.egg, new BehaviorEggDispense(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.snowball, new BehaviorSnowballDispense(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.expBottle, new BehaviorExpBottleDispense(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.potion, new BehaviorPotionDispense(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.monsterPlacer, new BehaviorMobEggDispense(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.field_92104_bU, new BehaviorDispenseFirework(this));
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.fireballCharge, new BehaviorDispenseFireball(this));
-        BehaviorDispenseMinecart behaviordispenseminecart = new BehaviorDispenseMinecart(this);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartEmpty, behaviordispenseminecart);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartCrate, behaviordispenseminecart);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartPowered, behaviordispenseminecart);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.boat, new BehaviorDispenseBoat(this));
-        BehaviorBucketFullDispense behaviorbucketfulldispense = new BehaviorBucketFullDispense(this);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketLava, behaviorbucketfulldispense);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketWater, behaviorbucketfulldispense);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketEmpty, new BehaviorBucketEmptyDispense(this));
+        DispenserBehaviors.func_96467_a();
     }
 
     /**
@@ -220,7 +187,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         if (getActiveAnvilConverter().isOldMapFormat(par1Str))
         {
-            logger.info("Converting map!");
+            getLogAgent().logInfo("Converting map!");
             setUserMessage("menu.convertingLevel");
             getActiveAnvilConverter().convertMapFormat(par1Str, new ConvertingProgressUpdate(this));
         }
@@ -282,16 +249,16 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             {
                 if (isDemo())
                 {
-                    worldServers[i] = new DemoWorldServer(this, isavehandler, par2Str, byte0, theProfiler);
+                    worldServers[i] = new DemoWorldServer(this, isavehandler, par2Str, byte0, theProfiler, getLogAgent());
                 }
                 else
                 {
-                    worldServers[i] = new WorldServer(this, isavehandler, par2Str, byte0, worldsettings, theProfiler);
+                    worldServers[i] = new WorldServer(this, isavehandler, par2Str, byte0, worldsettings, theProfiler, getLogAgent());
                 }
             }
             else
             {
-                worldServers[i] = new WorldServerMulti(this, isavehandler, par2Str, byte0, worldsettings, worldServers[0], theProfiler);
+                worldServers[i] = new WorldServerMulti(this, isavehandler, par2Str, byte0, worldsettings, worldServers[0], theProfiler, getLogAgent());
             }
 
             worldServers[i].addWorldAccess(new WorldManager(this, worldServers[i]));
@@ -313,7 +280,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         int i = 0;
         setUserMessage("menu.generatingTerrain");
         int j = 0;
-        logger.info((new StringBuilder()).append("Preparing start region for level ").append(j).toString());
+        getLogAgent().logInfo((new StringBuilder()).append("Preparing start region for level ").append(j).toString());
         WorldServer worldserver = worldServers[j];
         ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
         long l = System.currentTimeMillis();
@@ -359,7 +326,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         currentTask = par1Str;
         percentDone = par2;
-        logger.info((new StringBuilder()).append(par1Str).append(": ").append(par2).append("%").toString());
+        getLogAgent().logInfo((new StringBuilder()).append(par1Str).append(": ").append(par2).append("%").toString());
     }
 
     /**
@@ -395,7 +362,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
             if (!par1)
             {
-                logger.info((new StringBuilder()).append("Saving chunks for level '").append(worldserver.getWorldInfo().getWorldName()).append("'/").append(worldserver.provider.getDimensionName()).toString());
+                getLogAgent().logInfo((new StringBuilder()).append("Saving chunks for level '").append(worldserver.getWorldInfo().getWorldName()).append("'/").append(worldserver.provider.getDimensionName()).toString());
             }
 
             try
@@ -404,7 +371,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             }
             catch (MinecraftException minecraftexception)
             {
-                logger.warning(minecraftexception.getMessage());
+                getLogAgent().logWarning(minecraftexception.getMessage());
             }
         }
     }
@@ -419,7 +386,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             return;
         }
 
-        logger.info("Stopping server");
+        getLogAgent().logInfo("Stopping server");
 
         if (getNetworkThread() != null)
         {
@@ -428,12 +395,12 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
         if (serverConfigManager != null)
         {
-            logger.info("Saving players");
+            getLogAgent().logInfo("Saving players");
             serverConfigManager.saveAllPlayerData();
             serverConfigManager.removeAllPlayers();
         }
 
-        logger.info("Saving worlds");
+        getLogAgent().logInfo("Saving worlds");
         saveAllWorlds(false);
 
         for (int i = 0; i < worldServers.length; i++)
@@ -489,14 +456,14 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
                     if (var7 > 2000L && var1 - this.timeOfLastWarning >= 15000L)
                     {
-                        logger.warning("Can\'t keep up! Did the system time change, or is the server overloaded?");
+                        getLogAgent().logWarning("Can\'t keep up! Did the system time change, or is the server overloaded?");
                         var7 = 2000L;
                         this.timeOfLastWarning = var1;
                     }
 
                     if (var7 < 0L)
                     {
-                        logger.warning("Time ran backwards! Did the system time change?");
+                        getLogAgent().logWarning("Time ran backwards! Did the system time change?");
                         var7 = 0L;
                     }
 
@@ -528,7 +495,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         catch (Throwable var48)
         {
             var48.printStackTrace();
-            logger.log(Level.SEVERE, "Encountered an unexpected exception " + var48.getClass().getSimpleName(), var48);
+            getLogAgent().func_98234_c("Encountered an unexpected exception " + var48.getClass().getSimpleName(), var48);
             CrashReport var2 = null;
 
             if (var48 instanceof ReportedException)
@@ -542,13 +509,13 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
             File var3 = new File(new File(this.getDataDirectory(), "crash-reports"), "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-server.txt");
 
-            if (var2.saveToFile(var3))
+            if (var2.saveToFile(var3, getLogAgent()))
             {
-                logger.severe("This crash report has been saved to: " + var3.getAbsolutePath());
+                getLogAgent().func_98232_c("This crash report has been saved to: " + var3.getAbsolutePath());
             }
             else
             {
-                logger.severe("We were unable to save this crash report to disk.");
+                getLogAgent().func_98232_c("We were unable to save this crash report to disk.");
             }
 
             this.finalTick(var2);
@@ -738,7 +705,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logInfo(String par1Str)
     {
-        logger.info(par1Str);
+        getLogAgent().logInfo(par1Str);
     }
 
     /**
@@ -746,7 +713,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logWarning(String par1Str)
     {
-        logger.warning(par1Str);
+        getLogAgent().logWarning(par1Str);
     }
 
     /**
@@ -786,7 +753,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     }
 
     /**
-     * minecraftServer.getMOTD is used in 2 places instead (it is a non-virtual function which returns the same thing)
+     * Returns the server message of the day
      */
     public String getServerMOTD()
     {
@@ -798,7 +765,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public String getMinecraftVersion()
     {
-        return "1.4.6";
+        return "1.5.1";
     }
 
     /**
@@ -853,7 +820,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logSevere(String par1Str)
     {
-        logger.log(Level.SEVERE, par1Str);
+        getLogAgent().func_98232_c(par1Str);
     }
 
     /**
@@ -863,7 +830,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         if (isDebuggingEnabled())
         {
-            logger.log(Level.INFO, par1Str);
+            getLogAgent().logInfo(par1Str);
         }
     }
 
@@ -961,7 +928,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
     public void sendChatToPlayer(String par1Str)
     {
-        logger.info(StringUtils.stripControlCodes(par1Str));
+        getLogAgent().logInfo(StringUtils.stripControlCodes(par1Str));
     }
 
     /**
@@ -1344,7 +1311,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     }
 
     /**
-     * Return the coordinates for this player as ChunkCoordinates.
+     * Return the position for this command sender.
      */
     public ChunkCoordinates getPlayerCoordinates()
     {
@@ -1358,6 +1325,13 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         return 16;
     }
+
+    public boolean func_96290_a(World par1World, int par2, int par3, int i, EntityPlayer entityplayer)
+    {
+        return false;
+    }
+
+    public abstract ILogAgent getLogAgent();
 
     /**
      * Gets the current player count, maximum player count, and player entity list.

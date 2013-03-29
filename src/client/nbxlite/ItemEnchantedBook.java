@@ -137,10 +137,10 @@ public class ItemEnchantedBook extends Item
     public ItemStack func_92109_a(Random par1Random)
     {
         if (ODNBXlite.disableEnchantedBooks()){
-            return new ItemStack(shiftedIndex, 1, 0);
+            return new ItemStack(itemID, 1, 0);
         }
         Enchantment enchantment = Enchantment.field_92090_c[par1Random.nextInt(Enchantment.field_92090_c.length)];
-        ItemStack itemstack = new ItemStack(shiftedIndex, 1, 0);
+        ItemStack itemstack = new ItemStack(itemID, 1, 0);
         int i = MathHelper.getRandomIntegerInRange(par1Random, enchantment.getMinLevel(), enchantment.getMaxLevel());
         func_92115_a(itemstack, new EnchantmentData(enchantment, i));
         return itemstack;
@@ -154,10 +154,10 @@ public class ItemEnchantedBook extends Item
     public WeightedRandomChestContent func_92112_a(Random par1Random, int par2, int par3, int par4)
     {
         if (ODNBXlite.disableEnchantedBooks()){
-            return new WeightedRandomChestContent(new ItemStack(shiftedIndex, 1, 0), 0, 0, 0);
+            return new WeightedRandomChestContent(new ItemStack(itemID, 1, 0), 0, 0, 0);
         }
         Enchantment enchantment = Enchantment.field_92090_c[par1Random.nextInt(Enchantment.field_92090_c.length)];
-        ItemStack itemstack = new ItemStack(shiftedIndex, 1, 0);
+        ItemStack itemstack = new ItemStack(itemID, 1, 0);
         int i = MathHelper.getRandomIntegerInRange(par1Random, enchantment.getMinLevel(), enchantment.getMaxLevel());
         func_92115_a(itemstack, new EnchantmentData(enchantment, i));
         return new WeightedRandomChestContent(itemstack, par2, par3, par4);

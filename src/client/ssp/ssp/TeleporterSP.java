@@ -35,7 +35,7 @@ public class TeleporterSP
                         int j2 = j + l1;
                         int k2 = (k + k1 * i1) - j1 * l;
                         boolean flag = l1 < 0;
-                        par1World.setBlockWithNotify(i2, j2, k2, flag ? Block.obsidian.blockID : 0);
+                        par1World.setBlock(i2, j2, k2, flag ? Block.obsidian.blockID : 0);
                     }
                 }
             }
@@ -398,7 +398,7 @@ public class TeleporterSP
                         int l9 = i3 + j7;
                         int i11 = (l3 + (i6 - 1) * j4) - i5 * i4;
                         boolean flag = j7 < 0;
-                        par1World.setBlockWithNotify(k8, l9, i11, flag ? Block.obsidian.blockID : 0);
+                        par1World.setBlock(k8, l9, i11, flag ? Block.obsidian.blockID : 0);
                     }
                 }
             }
@@ -406,7 +406,7 @@ public class TeleporterSP
 
         for (int j5 = 0; j5 < 4; j5++)
         {
-            par1World.editingBlocks = true;
+            ((WorldSSP)par1World).editingBlocks = true;
 
             for (int j6 = 0; j6 < 4; j6++)
             {
@@ -416,11 +416,11 @@ public class TeleporterSP
                     int i10 = i3 + k7;
                     int j11 = l3 + (j6 - 1) * j4;
                     boolean flag1 = j6 == 0 || j6 == 3 || k7 == -1 || k7 == 3;
-                    par1World.setBlockWithNotify(l8, i10, j11, flag1 ? Block.obsidian.blockID : Block.portal.blockID);
+                    par1World.setBlock(l8, i10, j11, flag1 ? Block.obsidian.blockID : Block.portal.blockID);
                 }
             }
 
-            par1World.editingBlocks = false;
+            ((WorldSSP)par1World).editingBlocks = false;
 
             for (int k6 = 0; k6 < 4; k6++)
             {

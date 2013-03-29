@@ -48,41 +48,43 @@ public class GuiNBXlite extends GuiScreen{
         newworld = false;
     }
 
+    @Override
     public void updateScreen()
     {
     }
 
+    @Override
     public void initGui()
     {
-        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_OldDays.lang.get("continue")));
-        controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StringTranslate.getInstance().translateKey("gui.cancel")));
+        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_OldDays.lang.get("continue")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StringTranslate.getInstance().translateKey("gui.cancel")));
         genButtons = new GuiButton[GeneratorList.genlength+1];
         indevWidthButton = new GuiButton[4];
         indevLengthButton = new GuiButton[4];
         betaFeaturesButton = new GuiButton[GeneratorList.feat1length+1];
         releaseFeaturesButton = new GuiButton[GeneratorList.feat2length+1];
         for (int i = 0; i<=GeneratorList.genlength; i++){
-            controlList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 170, height / 6 + (i * 21), 100, 20, ""));
+            buttonList.add(genButtons[i] = new GuiButton(10+i, width / 2 - 170, height / 6 + (i * 21), 100, 20, ""));
         }
-        controlList.add(indevTypeButton = new GuiButton(39, width / 2 - 75 + leftmargin, height / 6 + 94, 150, 20,""));
-        controlList.add(indevThemeButton = new GuiButton(40, width / 2 - 75 + leftmargin, height / 6 + 126, 150, 20, ""));
+        buttonList.add(indevTypeButton = new GuiButton(39, width / 2 - 75 + leftmargin, height / 6 + 94, 150, 20,""));
+        buttonList.add(indevThemeButton = new GuiButton(40, width / 2 - 75 + leftmargin, height / 6 + 126, 150, 20, ""));
         for (int i=0; i<4; i++){
-            controlList.add(indevWidthButton[i]=new GuiButton(30+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 - 16, 40, 20, ""));
-            controlList.add(indevLengthButton[i]=new GuiButton(34+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 + 14, 40, 20, ""));
+            buttonList.add(indevWidthButton[i]=new GuiButton(30+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 - 16, 40, 20, ""));
+            buttonList.add(indevLengthButton[i]=new GuiButton(34+i, (width / 2 - 82+(41*i)) + leftmargin, height / 6 + 14, 40, 20, ""));
         }
-        controlList.add(indevShapeButton = new GuiButton(42, width / 2 - 75 + leftmargin, height / 6 - 16, 150, 20, ""));
-        controlList.add(indevSizeButton = new GuiButton(43, width / 2 - 75 + leftmargin, height / 6 + 14, 150, 20, ""));
-        controlList.add(toggleButton = new GuiButton(44, width - 35, height / 6 + 14, 20, 20, ""));
-        controlList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
-        controlList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, ""));
+        buttonList.add(indevShapeButton = new GuiButton(42, width / 2 - 75 + leftmargin, height / 6 - 16, 150, 20, ""));
+        buttonList.add(indevSizeButton = new GuiButton(43, width / 2 - 75 + leftmargin, height / 6 + 14, 150, 20, ""));
+        buttonList.add(toggleButton = new GuiButton(44, width - 35, height / 6 + 14, 20, 20, ""));
+        buttonList.add(indevHeightSlider = new GuiSliderCustom(41, (width / 2 - 75) + leftmargin, height / 6 + 44, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
+        buttonList.add(alphaThemeButton = new GuiButton(60, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, ""));
         for (int i=0; i<=GeneratorList.feat1length; i++){
-            controlList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, ""));
+            buttonList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, ""));
         }
         for (int i=0; i<=GeneratorList.feat2length; i++){
-            controlList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, ""));
+            buttonList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, ""));
         }
-        controlList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, ""));
-        controlList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, ""));
+        buttonList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, ""));
+        buttonList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, ""));
         genButtons[GeneratorList.gencurrent].enabled = false;
         indevWidthButton[GeneratorList.xcurrent].enabled=false;
         indevLengthButton[GeneratorList.zcurrent].enabled=false;
@@ -143,7 +145,13 @@ public class GuiNBXlite extends GuiScreen{
     public void selectWorld()
     {
         ISaveFormat isaveformat = ODNBXlite.saveLoader;
-        List saveList = isaveformat.getSaveList();
+        List saveList = null;
+        try{
+            saveList = isaveformat.getSaveList();
+        }catch(Exception e){
+            e.printStackTrace();
+            return;
+        }
         Collections.sort(saveList);
         mc.displayGuiScreen(null);
         selectNBXliteSettings();
@@ -162,6 +170,7 @@ public class GuiNBXlite extends GuiScreen{
         }
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         if (!guibutton.enabled){
@@ -251,6 +260,7 @@ public class GuiNBXlite extends GuiScreen{
         updateButtonText();
     }
 
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();

@@ -16,6 +16,7 @@ public class GenLayerRiverMix18 extends GenLayer
         field_35513_c = genlayer1;
     }
 
+    @Override
     public void initWorldGenSeed(long l)
     {
         field_35512_b.initWorldGenSeed(l);
@@ -23,6 +24,7 @@ public class GenLayerRiverMix18 extends GenLayer
         super.initWorldGenSeed(l);
     }
 
+    @Override
     public int[] getInts(int i, int j, int k, int l)
     {
         int ai[] = field_35512_b.getInts(i, j, k, l);

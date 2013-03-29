@@ -10,6 +10,7 @@ public class RenderSheep2 extends RenderSheep
         super(par1ModelBase, par2ModelBase, par3);
     }
 
+    @Override
     protected int setWoolColorAndRender(EntitySheep par1EntitySheep, int par2, float par3)
     {
         if (par2 == 0 && !par1EntitySheep.getSheared())

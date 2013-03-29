@@ -44,16 +44,16 @@ public class GuiSelectWorld extends GuiScreen
     /** set to true if you arein the process of deleteing a world/save */
     private boolean deleting;
 
-    /** the rename button in the world selection gui */
-    private GuiButton buttonRename;
+    /** The delete button in the world selection GUI */
+    private GuiButton buttonDelete;
 
     /** the select button in the world selection gui */
     private GuiButton buttonSelect;
     private GuiButton buttonSelect2;
 
-    /** the delete button in the world selection gui */
-    private GuiButton buttonDelete;
-    private GuiButton field_82316_w;
+    /** The rename button in the world selection GUI */
+    private GuiButton buttonRename;
+    private GuiButton buttonRecreate;
 
     public GuiSelectWorld(GuiScreen par1GuiScreen)
     {
@@ -70,21 +70,32 @@ public class GuiSelectWorld extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         screenTitle = stringtranslate.translateKey("selectWorld.title");
+
+        try
+        {
+            loadSaves();
+        }
+        catch (AnvilConverterException anvilconverterexception)
+        {
+            anvilconverterexception.printStackTrace();
+            mc.displayGuiScreen(new GuiErrorScreen("Unable to load words", anvilconverterexception.getMessage()));
+            return;
+        }
+
         localizedWorldText = stringtranslate.translateKey("selectWorld.world");
         localizedMustConvertText = stringtranslate.translateKey("selectWorld.conversion");
         localizedGameModeText[EnumGameType.SURVIVAL.getID()] = stringtranslate.translateKey("gameMode.survival");
         localizedGameModeText[EnumGameType.CREATIVE.getID()] = stringtranslate.translateKey("gameMode.creative");
         localizedGameModeText[EnumGameType.ADVENTURE.getID()] = stringtranslate.translateKey("gameMode.adventure");
-        loadSaves();
         worldSlotContainer = new GuiWorldSlot(this);
-        worldSlotContainer.registerScrollButtons(controlList, 4, 5);
+        worldSlotContainer.registerScrollButtons(buttonList, 4, 5);
         initButtons();
     }
 
     /**
      * loads the saves
      */
-    private void loadSaves()
+    private void loadSaves() throws AnvilConverterException
     {
         if (nbxlite){
             saveList = ODNBXlite.saveLoader.getSaveList();
@@ -125,18 +136,18 @@ public class GuiSelectWorld extends GuiScreen
     public void initButtons()
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        controlList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.select")));
-        controlList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, stringtranslate.translateKey("Play SMP")));
-        controlList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.create")));
-        controlList.add(buttonDelete = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.rename")));
-        controlList.add(buttonRename = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.delete")));
-        controlList.add(field_82316_w = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.recreate")));
-        controlList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, stringtranslate.translateKey("gui.cancel")));
+        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.select")));
+        buttonList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, stringtranslate.translateKey("Play SMP")));
+        buttonList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.create")));
+        buttonList.add(buttonRename = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.rename")));
+        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.delete")));
+        buttonList.add(buttonRecreate = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.recreate")));
+        buttonList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, stringtranslate.translateKey("gui.cancel")));
         buttonSelect.enabled = false;
         buttonSelect2.enabled = false;
-        buttonRename.enabled = false;
         buttonDelete.enabled = false;
-        field_82316_w.enabled = false;
+        buttonRename.enabled = false;
+        buttonRecreate.enabled = false;
         buttonSelect2.drawButton = mc.useSP && mc.sspoptions.getSMPButton();
     }
 
@@ -253,8 +264,12 @@ public class GuiSelectWorld extends GuiScreen
                 File mclevel = new File(dir, getSaveFileName(par1).replace(".mclevel","")+"/"+getSaveFileName(par1));
                 mclevel.renameTo(new File(dir, mclevel.getName()));
                 isaveformat.deleteWorldDirectory(getSaveFileName(par1).replace(".mclevel",""));
-                loadSaves();
-                System.out.println(ex);
+                try{
+                    loadSaves();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                ex.printStackTrace();
                 return;
             }
             return;
@@ -322,7 +337,15 @@ public class GuiSelectWorld extends GuiScreen
                 }
                 isaveformat.flushCache();
                 isaveformat.deleteWorldDirectory(getSaveFileName(par2));
-                loadSaves();
+
+                try
+                {
+                    loadSaves();
+                }
+                catch (AnvilConverterException anvilconverterexception)
+                {
+                    anvilconverterexception.printStackTrace();
+                }
             }
 
             mc.displayGuiScreen(this);
@@ -392,7 +415,7 @@ public class GuiSelectWorld extends GuiScreen
      */
     static GuiButton getRenameButton(GuiSelectWorld par0GuiSelectWorld)
     {
-        return par0GuiSelectWorld.buttonRename;
+        return par0GuiSelectWorld.buttonDelete;
     }
 
     /**
@@ -400,12 +423,12 @@ public class GuiSelectWorld extends GuiScreen
      */
     static GuiButton getDeleteButton(GuiSelectWorld par0GuiSelectWorld)
     {
-        return par0GuiSelectWorld.buttonDelete;
+        return par0GuiSelectWorld.buttonRename;
     }
 
     static GuiButton func_82312_f(GuiSelectWorld par0GuiSelectWorld)
     {
-        return par0GuiSelectWorld.field_82316_w;
+        return par0GuiSelectWorld.buttonRecreate;
     }
 
     static String func_82313_g(GuiSelectWorld par0GuiSelectWorld)

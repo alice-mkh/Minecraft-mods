@@ -12,6 +12,7 @@ public class EntitySheep extends EntityAnimal
     public static boolean oldhealth = false;
     public static int color = 2;
 
+    @Override
     public boolean attackEntityFrom(DamageSource damagesource, int i)
     {
         if (!punchToShear){
@@ -36,15 +37,18 @@ public class EntitySheep extends EntityAnimal
         return super.attackEntityFrom(damagesource, i);
     }
 
+    @Override
     protected boolean isMovementCeased(){
         return fixai ? sheepTimer > 0 :super.isMovementCeased();
     }
 
+    @Override
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || survivaltest;
     }
 
+    @Override
     protected void updateEntityActionState()
     {
         super.updateEntityActionState();
@@ -70,14 +74,13 @@ public class EntitySheep extends EntityAnimal
             boolean flag = false;
             if (worldObj.getBlockId(j, l, j1) == Block.tallGrass.blockID)
             {
-                worldObj.playAuxSFX(2001, j, l, j1, Block.tallGrass.blockID + 4096);
-                worldObj.setBlockWithNotify(j, l, j1, 0);
+                worldObj.destroyBlock(j, l, j1, false);
                 flag = true;
             }
             else if (worldObj.getBlockId(j, l - 1, j1) == Block.grass.blockID)
             {
                 worldObj.playAuxSFX(2001, j, l - 1, j1, Block.grass.blockID);
-                worldObj.setBlockWithNotify(j, l - 1, j1, Block.dirt.blockID);
+                worldObj.setBlock(j, l - 1, j1, Block.dirt.blockID, 0, 2);
                 flag = true;
             }
             if (flag)
@@ -154,7 +157,7 @@ public class EntitySheep extends EntityAnimal
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIPanic(this, 0.38F));
         tasks.addTask(2, new EntityAIMate(this, f));
-        tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
+        tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.itemID, false));
         tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
         tasks.addTask(5, aiEatGrass);
         tasks.addTask(6, new EntityAIWander(this, f));
@@ -174,7 +177,7 @@ public class EntitySheep extends EntityAnimal
 
     protected void updateAITasks()
     {
-        sheepTimer = aiEatGrass.func_75362_f();
+        sheepTimer = aiEatGrass.getEatGrassTick();
         super.updateAITasks();
     }
 
@@ -215,7 +218,8 @@ public class EntitySheep extends EntityAnimal
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -292,7 +296,7 @@ public class EntitySheep extends EntityAnimal
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (itemstack != null && itemstack.itemID == Item.shears.shiftedIndex && !getSheared() && !isChild())
+        if (itemstack != null && itemstack.itemID == Item.shears.itemID && !getSheared() && !isChild())
         {
             if (!worldObj.isRemote)
             {
@@ -309,7 +313,7 @@ public class EntitySheep extends EntityAnimal
             }
 
             itemstack.damageItem(1, par1EntityPlayer);
-            func_85030_a("mob.sheep.shear", 1.0F, 1.0F);
+            playSound("mob.sheep.shear", 1.0F, 1.0F);
         }
 
         return super.interact(par1EntityPlayer);
@@ -364,7 +368,7 @@ public class EntitySheep extends EntityAnimal
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        func_85030_a("mob.sheep.step", 0.15F, 1.0F);
+        playSound("mob.sheep.step", 0.15F, 1.0F);
     }
 
     public int getFleeceColor()
@@ -494,7 +498,7 @@ public class EntitySheep extends EntityAnimal
         ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(field_90016_e, ((EntitySheep)par1EntityAnimal).worldObj);
         int k;
 
-        if (itemstack != null && itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex)
+        if (itemstack != null && itemstack.getItem().itemID == Item.dyePowder.itemID)
         {
             k = itemstack.getItemDamage();
         }
@@ -511,7 +515,7 @@ public class EntitySheep extends EntityAnimal
         return 15 - ((EntitySheep)par1EntityAnimal).getFleeceColor();
     }
 
-    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
     {
         return func_90015_b(par1EntityAgeable);
     }

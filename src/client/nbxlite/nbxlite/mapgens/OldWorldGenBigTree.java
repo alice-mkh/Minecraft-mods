@@ -111,6 +111,7 @@ public final class OldWorldGenBigTree extends WorldGenerator {
         this.j = 1.0D;
     }
 
+    @Override
     public final boolean generate(World var1, Random var2, int var3, int var4, int var5) {
         worldObj = var1;
         long var6 = var2.nextLong();

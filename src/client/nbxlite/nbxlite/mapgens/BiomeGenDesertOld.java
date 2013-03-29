@@ -10,6 +10,7 @@ public class BiomeGenDesertOld extends BiomeGenDesert
         super(par1);
     }
 
+    @Override
     public void decorate(World par1World, Random par2Random, int par3, int par4)
     {
         super.decorate(par1World, par2Random, par3, par4);

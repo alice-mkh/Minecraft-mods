@@ -29,6 +29,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
         return savesDirectory;
     }
 
+    @Override
     public boolean deleteWorldDirectory(String par1Str)
     {
         File file = new File(savesDirectory, par1Str);
@@ -44,6 +45,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
         }
     }
 
+    @Override
     public List getSaveList()
     {
         ArrayList arraylist = new ArrayList();
@@ -90,22 +92,26 @@ public class SaveConverterMcRegion extends SaveFormatOld
         return arraylist;
     }
 
+    @Override
     public void flushCache()
     {
         RegionFileCache2.clearRegionFileReferences();
     }
 
+    @Override
     public ISaveHandler getSaveLoader(String s, boolean flag)
     {
         return new SaveOldDir(savesDirectory, s, flag);
     }
 
+    @Override
     public boolean isOldMapFormat(String s)
     {
         WorldInfo worldinfo = getWorldInfo(s);
         return worldinfo != null && worldinfo.getSaveVersion() == 0;
     }
 
+    @Override
     public boolean convertMapFormat(String s, IProgressUpdate iprogressupdate)
     {
         iprogressupdate.setLoadingProgress(0);

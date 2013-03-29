@@ -48,62 +48,75 @@ public class ChunkProviderGenerate2
         return releaseGen;
     }
 
+    @Override
     public Chunk loadChunk(int i, int j)
     {
         return provideChunk(i, j);
     }
 
+    @Override
     public Chunk provideChunk(int i, int j)
     {
         return getCurrentProvider().provideChunk(i, j);
     }
 
+    @Override
     public boolean chunkExists(int i, int j)
     {
         return true;
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider, int i, int j)
     {
         getCurrentProvider().populate(ichunkprovider, i, j);
     }
 
+    @Override
     public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
     {
         return true;
     }
 
-    public boolean unload100OldestChunks()
+    @Override
+    public boolean unloadQueuedChunks()
     {
         return false;
     }
 
+    @Override
     public boolean canSave()
     {
         return true;
     }
 
+    @Override
     public String makeString()
     {
         return "RandomLevelSource";
     }
 
+    @Override
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k)
     {
         return releaseGen.getPossibleCreatures(enumcreaturetype, i, j, k);
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k)
     {
         return getCurrentProvider().findClosestStructure(world, s, i, j, k);
     }
 
+    @Override
     public int getLoadedChunkCount()
     {
         return 0;
     }
 
-    public void func_82695_e(int par1, int par2)
+    @Override
+    public void recreateStructures(int par1, int par2)
     {
+        getCurrentProvider().recreateStructures(par1, par2);
     }
 }

@@ -29,6 +29,7 @@ public class MapGenStronghold2 extends MapGenStructure
         structureCoords = new ChunkCoordIntPair[3];
     }
 
+    @Override
     protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
         if (!ranBiomeCheck)
@@ -80,6 +81,7 @@ public class MapGenStronghold2 extends MapGenStructure
         return false;
     }
 
+    @Override
     protected List getCoordList()
     {
         ArrayList arraylist = new ArrayList();
@@ -99,6 +101,7 @@ public class MapGenStronghold2 extends MapGenStructure
         return arraylist;
     }
 
+    @Override
     protected StructureStart getStructureStart(int par1, int par2)
     {
         if (ODNBXlite.oldStrongholds()){

@@ -9,6 +9,7 @@ public class MapGenSkyStronghold extends MapGenStronghold2
     {
     }
 
+    @Override
     protected boolean canSpawnStructureAtCoords(int i, int j)
     {
         boolean flag = rand.nextInt(200) == 0 && rand.nextInt(120) < Math.max(Math.abs(i), Math.abs(j));

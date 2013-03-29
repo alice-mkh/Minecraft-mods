@@ -5,27 +5,24 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientClear extends CommandClearInventory
 {
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
         int i = par2ArrayOfStr.length < 2 ? -1 : parseIntWithMin(par1ICommandSender, par2ArrayOfStr[1], 1);
         int j = par2ArrayOfStr.length < 3 ? -1 : parseIntWithMin(par1ICommandSender, par2ArrayOfStr[2], 0);
         int k = entityplayer.inventory.clearInventory(i, j);
-        entityplayer.inventoryContainer.updateCraftingResults();
+        entityplayer.inventoryContainer.detectAndSendChanges();
         notifyAdmins(par1ICommandSender, "commands.clear.success", new Object[]
                 {
                     entityplayer.getEntityName(), Integer.valueOf(k)
                 });
     }
 
-    protected String[] func_82369_d()
-    {
-        return new String[]{Minecraft.getMinecraft().thePlayer.username};
-    }
-
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

@@ -17,6 +17,7 @@ public class SuperOldWorldGenMinable extends WorldGenerator
         numberOfBlocks = j;
     }
 
+    @Override
     public boolean generate(World world, Random random, int i, int j, int k)
     {
         float f = random.nextFloat() * 3.141593F;

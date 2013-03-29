@@ -34,6 +34,7 @@ public class WorldServer extends World
      */
     private int blockEventCacheIndex;
     private static final WeightedRandomChestContent bonusChestContent[];
+    private ArrayList field_94579_S;
 
     /** An IntHashMap of entity IDs (integers) to their Entity objects. */
     private IntHashMap entityIdMap;
@@ -43,11 +44,12 @@ public class WorldServer extends World
     protected OldSpawnerAnimals waterMobSpawner;
     protected OldSpawnerAnimals ambientMobSpawner;
 
-    public WorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler)
+    public WorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler, ILogAgent par7ILogAgent)
     {
-        super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler);
+        super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler, par7ILogAgent);
         updateEntityTick = 0;
         blockEventCacheIndex = 0;
+        field_94579_S = new ArrayList();
         mcServer = par1MinecraftServer;
         theEntityTracker = new EntityTracker(this);
         thePlayerManager = new PlayerManager(this, par1MinecraftServer.getConfigurationManager().getViewDistance());
@@ -66,6 +68,19 @@ public class WorldServer extends World
         {
             pendingTickListEntries = new TreeSet();
         }
+
+        worldScoreboard = new ServerScoreboard(par1MinecraftServer);
+        ScoreboardSaveData scoreboardsavedata = (ScoreboardSaveData)mapStorage.loadData(net.minecraft.src.ScoreboardSaveData.class, "scoreboard");
+
+        if (scoreboardsavedata == null)
+        {
+            scoreboardsavedata = new ScoreboardSaveData();
+            mapStorage.setData("scoreboard", scoreboardsavedata);
+        }
+
+        scoreboardsavedata.func_96499_a(worldScoreboard);
+        ((ServerScoreboard)worldScoreboard).func_96547_a(scoreboardsavedata);
+
         turnOnOldSpawners();
         ODNBXlite.IndevWorld = null;
     }
@@ -129,7 +144,7 @@ public class WorldServer extends World
         }
 
         theProfiler.endStartSection("chunkSource");
-        chunkProvider.unload100OldestChunks();
+        chunkProvider.unloadQueuedChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
         if (i != skylightSubtracted)
@@ -137,8 +152,7 @@ public class WorldServer extends World
             skylightSubtracted = i;
         }
 
-        sendAndApplyBlockEvents();
-        worldInfo.func_82572_b(worldInfo.getWorldTotalTime() + 1L);
+        worldInfo.incrementTotalWorldTime(worldInfo.getWorldTotalTime() + 1L);
         worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
@@ -338,11 +352,11 @@ public class WorldServer extends World
                     int i7 = chunk.getBlockID(l3, l5, l4);
                     if(i7 == 0 && Block.snow.canPlaceBlockAt(this, l3 + k, l5, l4 + l) && k6 != 0 && k6 != Block.ice.blockID && Block.blocksList[k6].blockMaterial.isSolid())
                     {
-                        setBlockWithNotify(l3 + k, l5, l4 + l, Block.snow.blockID);
+                        setBlock(l3 + k, l5, l4 + l, Block.snow.blockID);
                     }
                     if((k6 == Block.waterMoving.blockID || k6 == Block.waterStill.blockID) && chunk.getBlockMetadata(l3, l5 - 1, l4) == 0)
                     {
-                        setBlockWithNotify(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
+                        setBlock(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
                     }
                 }
             }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures < ODNBXlite.FEATURES_13){
@@ -353,11 +367,11 @@ public class WorldServer extends World
                 int l10 = getPrecipitationHeight(l8 + k, l9 + l);
                 if(isRaining() && isBlockFreezable(l8 + k, l10 - 1, l9 + l))
                 {
-                    setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
+                    setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                 }
                 if(isRaining() && canSnowAt(l8 + k, l10, l9 + l))
                 {
-                    setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
+                    setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
                 }
             }else if(rand.nextInt(16) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))
             {
@@ -372,11 +386,11 @@ public class WorldServer extends World
                     int k66 = chunk.getBlockID(l8, l10, l9);
                     if(isRaining() && k66 == 0 && Block.snow.canPlaceBlockAt(this, l8 + k, l10, l9 + l) && i66 != 0 && i66 != Block.ice.blockID && Block.blocksList[i66].blockMaterial.isSolid())
                     {
-                        setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
+                        setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
                     }
                     if(i66 == Block.waterStill.blockID && chunk.getBlockMetadata(l8, l10 - 1, l9) == 0)
                     {
-                        setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
+                        setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                     }
                 }
             }else if (rand.nextInt(16) == 0)
@@ -389,12 +403,12 @@ public class WorldServer extends World
 
                 if (isBlockFreezableNaturally(l1 + k, j3 - 1, k2 + l))
                 {
-                    setBlockWithNotify(l1 + k, j3 - 1, k2 + l, Block.ice.blockID);
+                    setBlock(l1 + k, j3 - 1, k2 + l, Block.ice.blockID);
                 }
 
                 if (isRaining() && canSnowAt(l1 + k, j3, k2 + l))
                 {
-                    setBlockWithNotify(l1 + k, j3, k2 + l, Block.snow.blockID);
+                    setBlock(l1 + k, j3, k2 + l, Block.snow.blockID);
                 }
 
                 if (isRaining())
@@ -448,6 +462,15 @@ public class WorldServer extends World
     }
 
     /**
+     * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+     */
+    public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4)
+    {
+        NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
+        return field_94579_S.contains(nextticklistentry);
+    }
+
+    /**
      * Schedules a tick to a block with a delay (Most commonly the tick rate)
      */
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
@@ -458,19 +481,19 @@ public class WorldServer extends World
     public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
-        byte byte0 = 8;
+        int i = 0;
 
         if (scheduledUpdatesAreImmediate && par4 > 0)
         {
             if (Block.blocksList[par4].func_82506_l())
             {
-                if (checkChunksExist(nextticklistentry.xCoord - byte0, nextticklistentry.yCoord - byte0, nextticklistentry.zCoord - byte0, nextticklistentry.xCoord + byte0, nextticklistentry.yCoord + byte0, nextticklistentry.zCoord + byte0))
+                if (checkChunksExist(nextticklistentry.xCoord - i, nextticklistentry.yCoord - i, nextticklistentry.zCoord - i, nextticklistentry.xCoord + i, nextticklistentry.yCoord + i, nextticklistentry.zCoord + i))
                 {
-                    int i = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
+                    int j = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
 
-                    if (i == nextticklistentry.blockID && i > 0)
+                    if (j == nextticklistentry.blockID && j > 0)
                     {
-                        Block.blocksList[i].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
+                        Block.blocksList[j].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
                     }
                 }
 
@@ -480,7 +503,7 @@ public class WorldServer extends World
             par5 = 1;
         }
 
-        if (checkChunksExist(par1 - byte0, par2 - byte0, par3 - byte0, par1 + byte0, par2 + byte0, par3 + byte0))
+        if (checkChunksExist(par1 - i, par2 - i, par3 - i, par1 + i, par2 + i, par3 + i))
         {
             if (par4 > 0)
             {
@@ -499,9 +522,10 @@ public class WorldServer extends World
     /**
      * Schedules a block update from the saved information in a chunk. Called when the chunk is loaded.
      */
-    public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5)
+    public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
+        nextticklistentry.func_82753_a(par6);
 
         if (par4 > 0)
         {
@@ -529,13 +553,16 @@ public class WorldServer extends World
         }
         else
         {
-            func_82742_i();
+            resetUpdateEntityTick();
         }
 
         super.updateEntities();
     }
 
-    public void func_82742_i()
+    /**
+     * Resets the updateEntityTick field to 0
+     */
+    public void resetUpdateEntityTick()
     {
         updateEntityTick = 0;
     }
@@ -557,8 +584,16 @@ public class WorldServer extends World
             i = 1000;
         }
 
-        for (int j = 0; j < i; j++)
+        theProfiler.startSection("cleaning");
+        int j = 0;
+
+        do
         {
+            if (j >= i)
+            {
+                break;
+            }
+
             NextTickListEntry nextticklistentry = (NextTickListEntry)pendingTickListEntries.first();
 
             if (!par1 && nextticklistentry.scheduledTime > worldInfo.getWorldTotalTime())
@@ -568,61 +603,14 @@ public class WorldServer extends World
 
             pendingTickListEntries.remove(nextticklistentry);
             field_73064_N.remove(nextticklistentry);
-            byte byte0 = 8;
-
-            if (!checkChunksExist(nextticklistentry.xCoord - byte0, nextticklistentry.yCoord - byte0, nextticklistentry.zCoord - byte0, nextticklistentry.xCoord + byte0, nextticklistentry.yCoord + byte0, nextticklistentry.zCoord + byte0))
-            {
-                continue;
-            }
-
-            int k = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
-
-            if (k != nextticklistentry.blockID || k <= 0)
-            {
-                continue;
-            }
-
-            CrashReport crashreport;
-            CrashReportCategory crashreportcategory;
-
-            try
-            {
-                Block.blocksList[k].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
-                continue;
-            }
-            catch (Throwable throwable)
-            {
-                crashreport = CrashReport.makeCrashReport(throwable, "Exception while ticking a block");
-                crashreportcategory = crashreport.makeCategory("Block being ticked");
-            }
-
-            int l;
-
-            try
-            {
-                l = getBlockMetadata(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
-            }
-            catch (Throwable throwable1)
-            {
-                l = -1;
-            }
-
-            CrashReportCategory.func_85068_a(crashreportcategory, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, k, l);
-            throw new ReportedException(crashreport);
+            field_94579_S.add(nextticklistentry);
+            j++;
         }
+        while (true);
 
-        return !pendingTickListEntries.isEmpty();
-    }
-
-    public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2)
-    {
-        ArrayList arraylist = null;
-        ChunkCoordIntPair chunkcoordintpair = par1Chunk.getChunkCoordIntPair();
-        int i = chunkcoordintpair.chunkXPos << 4;
-        int j = i + 16;
-        int k = chunkcoordintpair.chunkZPos << 4;
-        int l = k + 16;
-        Iterator iterator = pendingTickListEntries.iterator();
+        theProfiler.endSection();
+        theProfiler.startSection("ticking");
+        Iterator iterator = field_94579_S.iterator();
 
         do
         {
@@ -631,25 +619,107 @@ public class WorldServer extends World
                 break;
             }
 
-            NextTickListEntry nextticklistentry = (NextTickListEntry)iterator.next();
+            NextTickListEntry nextticklistentry1 = (NextTickListEntry)iterator.next();
+            iterator.remove();
+            int k = 0;
 
-            if (nextticklistentry.xCoord >= i && nextticklistentry.xCoord < j && nextticklistentry.zCoord >= k && nextticklistentry.zCoord < l)
+            if (checkChunksExist(nextticklistentry1.xCoord - k, nextticklistentry1.yCoord - k, nextticklistentry1.zCoord - k, nextticklistentry1.xCoord + k, nextticklistentry1.yCoord + k, nextticklistentry1.zCoord + k))
             {
-                if (par2)
-                {
-                    field_73064_N.remove(nextticklistentry);
-                    iterator.remove();
-                }
+                int l = getBlockId(nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord);
 
-                if (arraylist == null)
+                if (l > 0 && Block.isAssociatedBlockID(l, nextticklistentry1.blockID))
                 {
-                    arraylist = new ArrayList();
-                }
+                    try
+                    {
+                        Block.blocksList[l].updateTick(this, nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord, rand);
+                    }
+                    catch (Throwable throwable)
+                    {
+                        CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while ticking a block");
+                        CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being ticked");
+                        int i1;
 
-                arraylist.add(nextticklistentry);
+                        try
+                        {
+                            i1 = getBlockMetadata(nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord);
+                        }
+                        catch (Throwable throwable1)
+                        {
+                            i1 = -1;
+                        }
+
+                        CrashReportCategory.func_85068_a(crashreportcategory, nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord, l, i1);
+                        throw new ReportedException(crashreport);
+                    }
+                }
+            }
+            else
+            {
+                scheduleBlockUpdate(nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord, nextticklistentry1.blockID, 0);
             }
         }
         while (true);
+
+        theProfiler.endSection();
+        field_94579_S.clear();
+        return !pendingTickListEntries.isEmpty();
+    }
+
+    public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2)
+    {
+        ArrayList arraylist = null;
+        ChunkCoordIntPair chunkcoordintpair = par1Chunk.getChunkCoordIntPair();
+        int i = (chunkcoordintpair.chunkXPos << 4) - 2;
+        int j = i + 16 + 2;
+        int k = (chunkcoordintpair.chunkZPos << 4) - 2;
+        int l = k + 16 + 2;
+        label0:
+
+        for (int i1 = 0; i1 < 2; i1++)
+        {
+            Iterator iterator;
+
+            if (i1 == 0)
+            {
+                iterator = pendingTickListEntries.iterator();
+            }
+            else
+            {
+                iterator = field_94579_S.iterator();
+
+                if (!field_94579_S.isEmpty())
+                {
+                    System.out.println(field_94579_S.size());
+                }
+            }
+
+            do
+            {
+                if (!iterator.hasNext())
+                {
+                    continue label0;
+                }
+
+                NextTickListEntry nextticklistentry = (NextTickListEntry)iterator.next();
+
+                if (nextticklistentry.xCoord >= i && nextticklistentry.xCoord < j && nextticklistentry.zCoord >= k && nextticklistentry.zCoord < l)
+                {
+                    if (par2)
+                    {
+                        field_73064_N.remove(nextticklistentry);
+                        iterator.remove();
+                    }
+
+                    if (arraylist == null)
+                    {
+                        arraylist = new ArrayList();
+                    }
+
+                    arraylist.add(nextticklistentry);
+                }
+            }
+            while (true);
+        }
 
         return arraylist;
     }
@@ -719,15 +789,7 @@ public class WorldServer extends World
      */
     public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
     {
-        int i = MathHelper.abs_int(par2 - worldInfo.getSpawnX());
-        int j = MathHelper.abs_int(par4 - worldInfo.getSpawnZ());
-
-        if (i > j)
-        {
-            j = i;
-        }
-
-        return j > 16 || mcServer.getConfigurationManager().areCommandsAllowed(par1EntityPlayer.username) || mcServer.isSinglePlayer();
+        return !mcServer.func_96290_a(this, par2, par3, par4, par1EntityPlayer);
     }
 
     protected void initialize(WorldSettings par1WorldSettings)
@@ -801,7 +863,6 @@ public class WorldServer extends World
                 int i = 0;
                 int j = provider.getAverageGroundLevel();
                 int k = 0;
-
                 if (chunkposition != null)
                 {
                     i = chunkposition.x;
@@ -811,21 +872,17 @@ public class WorldServer extends World
                 {
                     System.out.println("Unable to find spawn biome");
                 }
-
                 int l = 0;
-
                 do
                 {
                     if (provider.canCoordinateBeSpawn(i, k))
                     {
                         break;
                     }
-
                     i += random.nextInt(64) - random.nextInt(64);
                     k += random.nextInt(64) - random.nextInt(64);
                 }
                 while (++l != 1000);
-
                 worldInfo.setSpawnPosition(i, j, k);
                 findingSpawnPoint = false;
             }
@@ -833,8 +890,8 @@ public class WorldServer extends World
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
             if (!ODNBXlite.Import && ODNBXlite.IndevSpawnY < ODNBXlite.IndevHeight){
-                setBlockWithNotify(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
-                setBlockWithNotify(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+                setBlock(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+                setBlock(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
             }
             findingSpawnPoint = false;
         }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
@@ -876,7 +933,7 @@ public class WorldServer extends World
             }else if (dir == 2){
                 k += 2;
             }
-            setBlockWithNotify(j, l, k, Block.chest.blockID);
+            setBlock(j, l, k, Block.chest.blockID);
             TileEntityChest tileentitychest = (TileEntityChest)getBlockTileEntity(j, l, k);
             if (tileentitychest != null && tileentitychest != null){
                 WeightedRandomChestContent.generateChestContents(rand, bonusChestContent, tileentitychest, 10);
@@ -946,7 +1003,7 @@ public class WorldServer extends World
     protected void saveLevel() throws MinecraftException
     {
         checkSessionLock();
-        saveHandler.saveWorldInfoWithPlayer(worldInfo, mcServer.getConfigurationManager().getTagsFromLastWrite());
+        saveHandler.saveWorldInfoWithPlayer(worldInfo, mcServer.getConfigurationManager().getHostPlayerData());
         mapStorage.saveAllData();
     }
 
@@ -1118,8 +1175,7 @@ public class WorldServer extends World
 
         if (i == par1BlockEventData.getBlockID())
         {
-            Block.blocksList[i].onBlockEventReceived(this, par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ(), par1BlockEventData.getEventID(), par1BlockEventData.getEventParameter());
-            return true;
+            return Block.blocksList[i].onBlockEventReceived(this, par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ(), par1BlockEventData.getEventID(), par1BlockEventData.getEventParameter());
         }
         else
         {
@@ -1177,7 +1233,7 @@ public class WorldServer extends World
         return thePlayerManager;
     }
 
-    public Teleporter func_85176_s()
+    public Teleporter getDefaultTeleporter()
     {
         return field_85177_Q;
     }
@@ -1194,7 +1250,7 @@ public class WorldServer extends World
     {
         bonusChestContent = (new WeightedRandomChestContent[]
                 {
-                    new WeightedRandomChestContent(Item.stick.shiftedIndex, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 2, 3, 3)
+                    new WeightedRandomChestContent(Item.stick.itemID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.itemID, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.itemID, 0, 2, 3, 3)
                 });
     }
 }

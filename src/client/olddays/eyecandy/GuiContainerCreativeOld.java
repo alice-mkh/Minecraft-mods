@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiContainerCreativeOld extends InventoryEffectRenderer
 {
-    private static InventoryBasic inventory = new InventoryBasic("tmp", 72);
+    private static InventoryBasic inventory = new InventoryBasic("tmp", false, 72);
 
     /** Amount scrolled in Creative mode inventory (0 = top, 1 = bottom) */
     private float currentScroll;
@@ -34,6 +34,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     /**
      * Called from the main game loop to update the screen.
      */
+    @Override
     public void updateScreen()
     {
         if (!mc.playerController.isInCreativeMode())
@@ -42,6 +43,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
         }
     }
 
+    @Override
     protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         if (par1Slot != null)
@@ -131,6 +133,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
+    @Override
     public void initGui()
     {
         if (!mc.playerController.isInCreativeMode())
@@ -140,13 +143,14 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
         else
         {
             super.initGui();
-            controlList.clear();
+            buttonList.clear();
         }
     }
 
     /**
      * Draw the foreground layer for the GuiContainer (everythin in front of the items)
      */
+    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         fontRenderer.drawString(StatCollector.translateToLocal("container.creative"), 8, 6, 0x404040);
@@ -155,6 +159,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     /**
      * Handles mouse input.
      */
+    @Override
     public void handleMouseInput()
     {
         super.handleMouseInput();
@@ -193,6 +198,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     /**
      * Draws the screen and all the components in it.
      */
+    @Override
     public void drawScreen(int par1, int par2, float par3)
     {
         boolean flag = Mouse.isButtonDown(0);
@@ -240,11 +246,11 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     /**
      * Draw the background layer for the GuiContainer (everything behind the items)
      */
+    @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int i = mc.renderEngine.getTexture("/olddays/allitems.png");
-        mc.renderEngine.bindTexture(i);
+        mc.renderEngine.bindTexture("/olddays/allitems.png");
         int j = guiLeft;
         int k = guiTop;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
@@ -257,6 +263,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     /**
      * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
      */
+    @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
         if (par1GuiButton.id == 0)

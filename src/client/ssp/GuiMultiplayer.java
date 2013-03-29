@@ -27,9 +27,7 @@ public class GuiMultiplayer extends GuiScreen
 
     /** Index of the currently selected server */
     private int selectedServer;
-
-    /** The 'Edit' button */
-    private GuiButton buttonEdit;
+    private GuiButton field_96289_p;
 
     /** The 'Join Server' button */
     private GuiButton buttonSelect;
@@ -56,7 +54,9 @@ public class GuiMultiplayer extends GuiScreen
     private ServerData theServerData;
     private LanServerList localNetworkServerList;
     private ThreadLanServerFind localServerFindThread;
-    private int field_74039_z;
+
+    /** How many ticks this Gui is already opened */
+    private int ticksOpened;
     private boolean field_74024_A;
     private List listofLanServers;
 
@@ -79,7 +79,7 @@ public class GuiMultiplayer extends GuiScreen
     public void initGui()
     {
         Keyboard.enableRepeatEvents(true);
-        controlList.clear();
+        buttonList.clear();
 
         if (!field_74024_A)
         {
@@ -95,7 +95,7 @@ public class GuiMultiplayer extends GuiScreen
             }
             catch (Exception exception)
             {
-                System.out.println((new StringBuilder()).append("Unable to start LAN server detection: ").append(exception.getMessage()).toString());
+                mc.getLogAgent().logWarning((new StringBuilder()).append("Unable to start LAN server detection: ").append(exception.getMessage()).toString());
             }
 
             serverSlotContainer = new GuiSlotServer(this);
@@ -114,16 +114,16 @@ public class GuiMultiplayer extends GuiScreen
     public void initGuiControls()
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        controlList.add(buttonEdit = new GuiButton(7, width / 2 - 154, height - 28, 70, 20, stringtranslate.translateKey("selectServer.edit")));
-        controlList.add(buttonDelete = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, stringtranslate.translateKey("selectServer.delete")));
-        controlList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 100, 20, stringtranslate.translateKey("selectServer.select")));
-        controlList.add(new GuiButton(4, width / 2 - 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.direct")));
-        controlList.add(new GuiButton(3, width / 2 + 4 + 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.add")));
-        controlList.add(new GuiButton(8, width / 2 + 4, height - 28, 70, 20, stringtranslate.translateKey("selectServer.refresh")));
-        controlList.add(new GuiButton(0, width / 2 + 4 + 76, height - 28, 75, 20, stringtranslate.translateKey("gui.cancel")));
+        buttonList.add(field_96289_p = new GuiButton(7, width / 2 - 154, height - 28, 70, 20, stringtranslate.translateKey("selectServer.edit")));
+        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, stringtranslate.translateKey("selectServer.delete")));
+        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 100, 20, stringtranslate.translateKey("selectServer.select")));
+        buttonList.add(new GuiButton(4, width / 2 - 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.direct")));
+        buttonList.add(new GuiButton(3, width / 2 + 4 + 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.add")));
+        buttonList.add(new GuiButton(8, width / 2 + 4, height - 28, 70, 20, stringtranslate.translateKey("selectServer.refresh")));
+        buttonList.add(new GuiButton(0, width / 2 + 4 + 76, height - 28, 75, 20, stringtranslate.translateKey("gui.cancel")));
         boolean flag = selectedServer >= 0 && selectedServer < serverSlotContainer.getSize();
         buttonSelect.enabled = flag;
-        buttonEdit.enabled = flag;
+        field_96289_p.enabled = flag;
         buttonDelete.enabled = flag;
     }
 
@@ -133,7 +133,7 @@ public class GuiMultiplayer extends GuiScreen
     public void updateScreen()
     {
         super.updateScreen();
-        field_74039_z++;
+        ticksOpened++;
 
         if (localNetworkServerList.getWasUpdated())
         {
@@ -318,7 +318,7 @@ public class GuiMultiplayer extends GuiScreen
         }
         else if (par1 == '\r')
         {
-            actionPerformed((GuiButton)controlList.get(2));
+            actionPerformed((GuiButton)buttonList.get(2));
         }
         else
         {
@@ -367,7 +367,7 @@ public class GuiMultiplayer extends GuiScreen
     private void connectToServer(ServerData par1ServerData)
     {
         mc.enableSP = false;
-        mc.displayGuiScreen(new GuiConnecting(mc, par1ServerData));
+        mc.displayGuiScreen(new GuiConnecting(this, mc, par1ServerData));
     }
 
     private static void func_74017_b(ServerData par1ServerData) throws IOException
@@ -411,29 +411,29 @@ public class GuiMultiplayer extends GuiScreen
             {
                 String as[] = s.substring(1).split("\0");
 
-                if (MathHelper.func_82715_a(as[0], 0) == 1)
+                if (MathHelper.parseIntWithDefault(as[0], 0) == 1)
                 {
                     par1ServerData.serverMOTD = as[3];
-                    par1ServerData.field_82821_f = MathHelper.func_82715_a(as[1], par1ServerData.field_82821_f);
+                    par1ServerData.field_82821_f = MathHelper.parseIntWithDefault(as[1], par1ServerData.field_82821_f);
                     par1ServerData.gameVersion = as[2];
-                    int j = MathHelper.func_82715_a(as[4], 0);
-                    int l = MathHelper.func_82715_a(as[5], 0);
+                    int j = MathHelper.parseIntWithDefault(as[4], 0);
+                    int l = MathHelper.parseIntWithDefault(as[5], 0);
 
                     if (j >= 0 && l >= 0)
                     {
-                        par1ServerData.populationInfo = (new StringBuilder()).append("\2477").append(j).append("\2478/\2477").append(l).toString();
+                        par1ServerData.populationInfo = (new StringBuilder()).append(EnumChatFormatting.GRAY).append("").append(j).append("").append(EnumChatFormatting.DARK_GRAY).append("/").append(EnumChatFormatting.GRAY).append(l).toString();
                     }
                     else
                     {
-                        par1ServerData.populationInfo = "\2478???";
+                        par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                     }
                 }
                 else
                 {
                     par1ServerData.gameVersion = "???";
-                    par1ServerData.serverMOTD = "\2478???";
-                    par1ServerData.field_82821_f = 52;
-                    par1ServerData.populationInfo = "\2478???";
+                    par1ServerData.serverMOTD = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
+                    par1ServerData.field_82821_f = 61;
+                    par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                 }
             }
             else
@@ -450,19 +450,19 @@ public class GuiMultiplayer extends GuiScreen
                 }
                 catch (Exception exception) { }
 
-                par1ServerData.serverMOTD = (new StringBuilder()).append("\2477").append(s).toString();
+                par1ServerData.serverMOTD = (new StringBuilder()).append(EnumChatFormatting.GRAY).append(s).toString();
 
                 if (k >= 0 && i1 > 0)
                 {
-                    par1ServerData.populationInfo = (new StringBuilder()).append("\2477").append(k).append("\2478/\2477").append(i1).toString();
+                    par1ServerData.populationInfo = (new StringBuilder()).append(EnumChatFormatting.GRAY).append("").append(k).append("").append(EnumChatFormatting.DARK_GRAY).append("/").append(EnumChatFormatting.GRAY).append(i1).toString();
                 }
                 else
                 {
-                    par1ServerData.populationInfo = "\2478???";
+                    par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                 }
 
                 par1ServerData.gameVersion = "1.3";
-                par1ServerData.field_82821_f = 50;
+                par1ServerData.field_82821_f = 59;
             }
         }
         finally
@@ -546,7 +546,7 @@ public class GuiMultiplayer extends GuiScreen
      */
     static GuiButton getButtonEdit(GuiMultiplayer par0GuiMultiplayer)
     {
-        return par0GuiMultiplayer.buttonEdit;
+        return par0GuiMultiplayer.field_96289_p;
     }
 
     /**
@@ -562,22 +562,25 @@ public class GuiMultiplayer extends GuiScreen
         par0GuiMultiplayer.joinServer(par1);
     }
 
-    static int func_74010_g(GuiMultiplayer par0GuiMultiplayer)
+    static int getTicksOpened(GuiMultiplayer par0GuiMultiplayer)
     {
-        return par0GuiMultiplayer.field_74039_z;
+        return par0GuiMultiplayer.ticksOpened;
     }
 
-    static Object func_74011_h()
+    /**
+     * Returns the lock object for use with synchronized()
+     */
+    static Object getLock()
     {
         return lock;
     }
 
-    static int func_74012_i()
+    static int getThreadsPending()
     {
         return threadsPending;
     }
 
-    static int func_74021_j()
+    static int increaseThreadsPending()
     {
         return threadsPending++;
     }
@@ -587,12 +590,12 @@ public class GuiMultiplayer extends GuiScreen
         func_74017_b(par0ServerData);
     }
 
-    static int func_74018_k()
+    static int decreaseThreadsPending()
     {
         return threadsPending--;
     }
 
-    static String func_74009_a(GuiMultiplayer par0GuiMultiplayer, String par1Str)
+    static String getAndSetLagTooltip(GuiMultiplayer par0GuiMultiplayer, String par1Str)
     {
         return par0GuiMultiplayer.lagTooltip = par1Str;
     }

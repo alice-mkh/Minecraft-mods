@@ -67,7 +67,7 @@ public class EntityAIMate extends EntityAIBase
         theAnimal.getNavigator().tryMoveToEntityLiving(targetMate, moveSpeed);
         spawnBabyDelay++;
 
-        if (spawnBabyDelay == 60)
+        if (spawnBabyDelay >= 60 && theAnimal.getDistanceSqToEntity(targetMate) < 9D)
         {
             spawnBaby();
         }
@@ -81,18 +81,28 @@ public class EntityAIMate extends EntityAIBase
     {
         float f = 8F;
         List list = theWorld.getEntitiesWithinAABB(theAnimal.getClass(), theAnimal.boundingBox.expand(f, f, f));
+        double d = Double.MAX_VALUE;
+        EntityAnimal entityanimal = null;
+        Iterator iterator = list.iterator();
 
-        for (Iterator iterator = list.iterator(); iterator.hasNext();)
+        do
         {
-            EntityAnimal entityanimal = (EntityAnimal)iterator.next();
-
-            if (theAnimal.canMateWith(entityanimal))
+            if (!iterator.hasNext())
             {
-                return entityanimal;
+                break;
+            }
+
+            EntityAnimal entityanimal1 = (EntityAnimal)iterator.next();
+
+            if (theAnimal.canMateWith(entityanimal1) && theAnimal.getDistanceSqToEntity(entityanimal1) < d)
+            {
+                entityanimal = entityanimal1;
+                d = theAnimal.getDistanceSqToEntity(entityanimal1);
             }
         }
+        while (true);
 
-        return null;
+        return entityanimal;
     }
 
     /**
@@ -100,7 +110,7 @@ public class EntityAIMate extends EntityAIBase
      */
     private void spawnBaby()
     {
-        EntityAgeable entityageable = theAnimal.func_90011_a(targetMate);
+        EntityAgeable entityageable = theAnimal.createChild(targetMate);
 
         if (entityageable == null)
         {

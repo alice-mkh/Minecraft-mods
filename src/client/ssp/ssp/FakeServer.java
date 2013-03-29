@@ -35,13 +35,15 @@ public class FakeServer extends IntegratedServer
 //         }
     }
 
-    protected void loadAllDimensions(String par1Str, String par2Str, long par3, WorldType par5WorldType)
+    @Override
+    protected void loadAllWorlds(String par1Str, String par2Str, long par3, WorldType par5WorldType, String par6Str)
     {
     }
 
     /**
      * Initialises the server and starts it.
      */
+    @Override
     protected boolean startServer() throws IOException
     {
         return true;
@@ -50,17 +52,21 @@ public class FakeServer extends IntegratedServer
     /**
      * main function called by run() every loop
      */
+    @Override
     public void tick()
     {
     }
 
+    @Override
     public void updateTimeLightAndEntities(){}
 
+    @Override
     public boolean canStructuresSpawn()
     {
         return false;
     }
 
+    @Override
     public EnumGameType getGameType()
     {
         return field_71350_m.getGameType();
@@ -69,6 +75,7 @@ public class FakeServer extends IntegratedServer
     /**
      * defaults to "1" for the dedicated server
      */
+    @Override
     public int getDifficulty()
     {
         return mc.gameSettings.difficulty;
@@ -77,22 +84,26 @@ public class FakeServer extends IntegratedServer
     /**
      * defaults to false
      */
+    @Override
     public boolean isHardcore()
     {
         return field_71350_m.getHardcoreEnabled();
     }
 
+    @Override
     protected File getDataDirectory()
     {
         return mc.mcDataDir;
     }
 
+    @Override
     public boolean isDedicatedServer()
     {
         return false;
     }
 
-    public IntegratedServerListenThread func_71343_a()
+    @Override
+    public IntegratedServerListenThread getServerListeningThread()
     {
         return null;
     }
@@ -100,6 +111,7 @@ public class FakeServer extends IntegratedServer
     /**
      * called on exit from the main run loop
      */
+    @Override
     protected void finalTick(CrashReport par1CrashReport)
     {
         mc.crashed(par1CrashReport);
@@ -108,6 +120,7 @@ public class FakeServer extends IntegratedServer
     /**
      * iterates the worldServers and adds their info also
      */
+    @Override
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
@@ -116,6 +129,7 @@ public class FakeServer extends IntegratedServer
         return par1CrashReport;
     }
 
+    @Override
     public void addServerStatsToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)
     {
         par1PlayerUsageSnooper.addData("whitelist_enabled", Boolean.valueOf(false));
@@ -149,6 +163,7 @@ public class FakeServer extends IntegratedServer
         par1PlayerUsageSnooper.addData("snooper_partner", mc.getPlayerUsageSnooper().getUniqueID());
     }
 
+    @Override
     public boolean isServerInOnlineMode()
     {
         return false;
@@ -157,6 +172,7 @@ public class FakeServer extends IntegratedServer
     /**
      * Returns whether snooping is enabled or not.
      */
+    @Override
     public boolean isSnooperEnabled()
     {
         return Minecraft.getMinecraft().isSnooperEnabled();
@@ -165,6 +181,7 @@ public class FakeServer extends IntegratedServer
     /**
      * does nothing on dedicated. on integrated, sets commandsAllowedForAll and gameType and allows external connections
      */
+    @Override
     public String shareToLAN(EnumGameType par1EnumGameType, boolean par2)
     {
         return null;
@@ -173,6 +190,7 @@ public class FakeServer extends IntegratedServer
     /**
      * Saves all necessary data as preparation for stopping the server.
      */
+    @Override
     public void stopServer()
     {
         if (field_71345_q != null)
@@ -185,7 +203,8 @@ public class FakeServer extends IntegratedServer
     /**
      * sets serverRunning to false
      */
-    public void setServerStopping()
+    @Override
+    public void initiateShutdown()
     {
         if (field_71345_q != null)
         {
@@ -194,49 +213,59 @@ public class FakeServer extends IntegratedServer
         }
     }
 
+    @Override
     public boolean getPublic()
     {
         return false;
     }
 
+    @Override
     public NetworkListenThread getNetworkThread()
     {
-        return func_71343_a();
+        return getServerListeningThread();
     }
 
-    protected void saveAllDimensions(boolean par1){
+    @Override
+    protected void saveAllWorlds(boolean par1){
     }
 
+    @Override
     public void startServerThread()
     {
     }
 
-    public int getPlayerListSize()
+    @Override
+    public int getCurrentPlayerCount()
     {
         return 1;
     }
 
+    @Override
     public int getMaxPlayers()
     {
         return 1;
     }
 
+    @Override
     public String[] getAllUsernames()
     {
         return new String[]{mc.session.username};
     }
 
+    @Override
     public boolean isSinglePlayer()
     {
         return true;
     }
 
+    @Override
     public void setGameType(EnumGameType par1EnumGameType)
     {
         getConfigurationManager().setGameType(par1EnumGameType);
         mc.theWorld.getWorldInfo().setGameType(par1EnumGameType);
     }
 
+    @Override
     public ICommandManager getCommandManager()
     {
         return commandManager2;

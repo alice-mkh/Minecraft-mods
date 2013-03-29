@@ -34,10 +34,11 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   26,false, "OldItems");
         new OldDaysPropertyBool(this,   27,false, "OldBackground");
         replaceBlocks();
-        redstoneRenderID = 37;
+        redstoneRenderID = 41;
         set(ItemRenderer.class, "olddays", true);
     }
 
+    @Override
     public void callback (int i){
         switch (i){
             case 1: set(ModelBiped.class, "oldwalking", OldWalking); break;
@@ -143,45 +144,51 @@ public class ODEyecandy extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.chest.blockID] = null;
-            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54));
+            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54, 0));
             customchest.setHardness(2.5F);
             customchest.setStepSound(Block.soundWoodFootstep);
-            customchest.setBlockName("chest");
-            customchest.setRequiresSelfNotify();
+            customchest.getIndirectPowerOutput("chest");
             Block.blocksList[Block.chest.blockID] = customchest;
-            mod_OldDays.setField(Block.class, null, 73, customchest);//Block: chest
-            addTextureHook("/terrain.png", BlockChestOld.toptex, "/olddays/chest.png", 0, 3, 3);
+            mod_OldDays.setField(Block.class, null, 72, customchest);//Block: chest
+            Block.blocksList[Block.chestTrapped.blockID] = null;
+            BlockChestOld customchest2 = (BlockChestOld)(new BlockChestOld(146, 1));
+            customchest2.setHardness(2.5F);
+            customchest2.setStepSound(Block.soundWoodFootstep);
+            customchest2.getIndirectPowerOutput("chestTrap");
+            Block.blocksList[Block.chestTrapped.blockID] = customchest2;
+            mod_OldDays.setField(Block.class, null, 164, customchest2);//Block: chestTrapped
+           /* addTextureHook("/terrain.png", BlockChestOld.toptex, "/olddays/chest.png", 0, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.sidetex, "/olddays/chest.png", 1, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.fronttex, "/olddays/chest.png", 2, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.texfrontleft, "/olddays/chest.png", 3, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.texfrontright, "/olddays/chest.png", 4, 3, 3);
             addTextureHook("/terrain.png", BlockChestOld.texbackleft, "/olddays/chest.png", 6, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.texbackright, "/olddays/chest.png", 7, 3, 3);
+            addTextureHook("/terrain.png", BlockChestOld.texbackright, "/olddays/chest.png", 7, 3, 3);*/
             Block.blocksList[Block.redstoneWire.blockID] = null;
-            BlockRedstoneWireOld customwire = (BlockRedstoneWireOld)(new BlockRedstoneWireOld(Block.redstoneWire.blockID, 164));
+            BlockRedstoneWireOld customwire = (BlockRedstoneWireOld)(new BlockRedstoneWireOld(Block.redstoneWire.blockID));
             customwire.setHardness(0F);
             customwire.setStepSound(Block.soundPowderFootstep);
-            customwire.setBlockName("redstoneDust");
+            customwire.getIndirectPowerOutput("redstoneDust");
             customwire.disableStats();
-            customwire.setRequiresSelfNotify();
             Block.blocksList[Block.redstoneWire.blockID] = customwire;
-            mod_OldDays.setField(Block.class, null, 74, customwire);//Block: redstoneWire
+            mod_OldDays.setField(Block.class, null, 73, customwire);//Block: redstoneWire
             Block.blocksList[Block.fence.blockID] = null;
-            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, 4));
+            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, "wood", Material.wood));
             customfence.setHardness(2.0F);
             customfence.setResistance(5F);
             customfence.setStepSound(Block.soundWoodFootstep);
-            customfence.setBlockName("fence");
+            customfence.getIndirectPowerOutput("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
-            mod_OldDays.setField(Block.class, null, 104, customfence);//Block: fence
+            mod_OldDays.setField(Block.class, null, 103, customfence);//Block: fence
         }catch (Exception ex){
             System.out.println(ex);
         }
     }
 
-    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
+    @Override
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, Icon override){
         if (id == redstoneRenderID){
-            return BlockRedstoneWireOld.renderBlockRedstoneWire(r, i, b, x, y, z, override);
+           return BlockRedstoneWireOld.renderBlockRedstoneWire(r, i, b, x, y, z, override);
         }
         return false;
     }

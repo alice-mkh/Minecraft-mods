@@ -5,14 +5,17 @@ import java.io.*;
 import net.minecraft.client.Minecraft;
 
 public class mod_SpawnHuman extends Mod{
+    @Override
     public String getMcVersion(){
-        return "1.4.6";
+        return "1.5.1";
     }
 
+    @Override
     public String getModVersion(){
         return "r1";
     }
 
+    @Override
     public String getModName(){
         return "SpawnHuman";
     }
@@ -59,7 +62,7 @@ public class mod_SpawnHuman extends Mod{
         }
     }
 
-    public void registerKey(KeyBinding key){
+    private void registerKey(KeyBinding key){
         GameSettings s = Minecraft.getMinecraft().gameSettings;
         KeyBinding[] newb = new KeyBinding[s.keyBindings.length + 1];
         for (int i = 0; i < s.keyBindings.length; i++){
@@ -92,6 +95,7 @@ public class mod_SpawnHuman extends Mod{
         KeyBinding.resetKeyBindingArrayAndHash();
     }
 
+    @Override
     public void onTick(){
         if (keySpawn.isPressed()){
             Minecraft mc = Minecraft.getMinecraft();
@@ -108,6 +112,7 @@ public class mod_SpawnHuman extends Mod{
         }
     }
 
+    @Override
     public void load(){};
 
     private KeyBinding keySpawn;

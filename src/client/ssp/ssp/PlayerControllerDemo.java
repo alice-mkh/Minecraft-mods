@@ -19,6 +19,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
         field_55293_f = 0;
     }
 
+    @Override
     public void updateController()
     {
         super.updateController();
@@ -88,27 +89,6 @@ public class PlayerControllerDemo extends PlayerControllerSP
         }
     }
 
-    public void func_55291_a(float par1, boolean par2, int par3, int par4, int par5, int par6)
-    {
-        FontRenderer fontrenderer = mc.fontRenderer;
-        String s = "";
-
-        if (field_55294_d)
-        {
-            s = StatCollector.translateToLocal("demo.demoExpired");
-        }
-        else
-        {
-            s = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[]
-                    {
-                        StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.getTotalWorldTime()))
-                    });
-        }
-
-        int i = fontrenderer.getStringWidth(s);
-        fontrenderer.drawStringWithShadow(s, par5 - i - 10, 5, 0xffffff);
-    }
-
     private void func_55292_j()
     {
         if (field_55295_e > 100)
@@ -121,6 +101,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
      */
+    @Override
     public void clickBlock(int par1, int par2, int par3, int par4)
     {
         if (field_55294_d)
@@ -138,6 +119,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Called when a player damages a block and updates damage counters
      */
+    @Override
     public void onPlayerDamageBlock(int par1, int par2, int par3, int par4)
     {
         if (field_55294_d)
@@ -154,6 +136,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Called when a player completes the destruction of a block
      */
+    @Override
     public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4)
     {
         if (field_55294_d)
@@ -169,6 +152,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Notifies the server of things like consuming food, etc...
      */
+    @Override
     public boolean sendUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack)
     {
         if (field_55294_d)
@@ -185,6 +169,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Handles a players right click
      */
+    @Override
     public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 vec3)
     {
         if (field_55294_d)
@@ -201,6 +186,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
     /**
      * Attacks an entity
      */
+    @Override
     public void attackEntity(EntityPlayer par1EntityPlayer, Entity par2Entity)
     {
         if (field_55294_d)

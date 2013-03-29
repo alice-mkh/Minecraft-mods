@@ -23,7 +23,9 @@ public class EntityXPOrb extends Entity
 
     /** The closest EntityPlayer to this orb. */
     private EntityPlayer closestPlayer;
-    private int field_80002_g;
+
+    /** Threshold color for tracking players */
+    private int xpTargetColor;
 
     public EntityXPOrb(World par1World, double par2, double par4, double par6, int par8)
     {
@@ -114,20 +116,20 @@ public class EntityXPOrb extends Entity
             motionY = 0.20000000298023224D;
             motionX = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
             motionZ = (rand.nextFloat() - rand.nextFloat()) * 0.2F;
-            func_85030_a("random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
+            playSound("random.fizz", 0.4F, 2.0F + rand.nextFloat() * 0.4F);
         }
 
         pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2D, posZ);
         double d = 8D;
 
-        if (field_80002_g < (xpColor - 20) + entityId % 100)
+        if (xpTargetColor < (xpColor - 20) + entityId % 100)
         {
             if (closestPlayer == null || closestPlayer.getDistanceSqToEntity(this) > d * d)
             {
                 closestPlayer = worldObj.getClosestPlayerToEntity(this, d);
             }
 
-            field_80002_g = xpColor;
+            xpTargetColor = xpColor;
         }
 
         if (closestPlayer != null)
@@ -201,7 +203,7 @@ public class EntityXPOrb extends Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
@@ -250,7 +252,7 @@ public class EntityXPOrb extends Entity
         if (field_70532_c == 0 && par1EntityPlayer.xpCooldown == 0)
         {
             par1EntityPlayer.xpCooldown = 2;
-            func_85030_a("random.orb", 0.1F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
+            playSound("random.orb", 0.1F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
             par1EntityPlayer.onItemPickup(this, 1);
             par1EntityPlayer.addExperience(xpValue);
             setDead();

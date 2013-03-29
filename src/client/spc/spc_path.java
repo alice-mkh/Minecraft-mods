@@ -119,6 +119,6 @@ public class spc_path extends SPCPlugin {
    }
    
    private void setBlock(int i, int j, int k, int type) {
-      ph.mc.theWorld.setBlockWithNotify(i,j,k,type);
+      ph.mc.theWorld.setBlock(i,j,k,type);
    }
 }

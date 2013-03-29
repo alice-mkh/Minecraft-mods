@@ -21,7 +21,7 @@ public class RenderSnowMan2 extends RenderLiving
         super.renderEquippedItems(par1EntitySnowman, par2);
         ItemStack itemstack = new ItemStack(Block.pumpkin, 1);
 
-        if (itemstack != null && itemstack.getItem().shiftedIndex < 256)
+        if (itemstack != null && itemstack.getItem().itemID < 256)
         {
             GL11.glPushMatrix();
             snowmanModel.head.postRender(0.0625F);
@@ -39,6 +39,7 @@ public class RenderSnowMan2 extends RenderLiving
         }
     }
 
+    @Override
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
         func_77093_a((EntitySnowman)par1EntityLiving, par2);

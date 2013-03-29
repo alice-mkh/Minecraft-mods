@@ -18,24 +18,26 @@ public final class GuiIndev extends GuiScreen{
         parent = gui;
     }
 
+    @Override
     public void initGui(){
-        controlList.clear();
-        controlList.add(new GuiButton(0, width / 2 - 100, height / 4, mod_OldDays.lang.get("indevType")+": "));
-        controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 24, mod_OldDays.lang.get("indevShape")+": "));
-        controlList.add(new GuiButton(2, width / 2 - 100, height / 4 + 48, mod_OldDays.lang.get("indevSize")+": "));
-        controlList.add(new GuiButton(3, width / 2 - 100, height / 4 + 72, mod_OldDays.lang.get("nbxlite.maptheme.name")+": "));
-        controlList.add(new GuiButton(4, width / 2 - 100, height / 4 + 96 + 12, mod_OldDays.lang.get("indev.create")));
-        controlList.add(new GuiButton(5, width / 2 - 100, height / 4 + 120 + 12, StatCollector.translateToLocal("gui.cancel")));
+        buttonList.clear();
+        buttonList.add(new GuiButton(0, width / 2 - 100, height / 4, mod_OldDays.lang.get("indevType")+": "));
+        buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 24, mod_OldDays.lang.get("indevShape")+": "));
+        buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 48, mod_OldDays.lang.get("indevSize")+": "));
+        buttonList.add(new GuiButton(3, width / 2 - 100, height / 4 + 72, mod_OldDays.lang.get("nbxlite.maptheme.name")+": "));
+        buttonList.add(new GuiButton(4, width / 2 - 100, height / 4 + 96 + 12, mod_OldDays.lang.get("indev.create")));
+        buttonList.add(new GuiButton(5, width / 2 - 100, height / 4 + 120 + 12, StatCollector.translateToLocal("gui.cancel")));
         refresh();
     }
 
     private void refresh(){
-        ((GuiButton)controlList.get(0)).displayString = (mod_OldDays.lang.get("indevType")+": "+mod_OldDays.lang.get(GeneratorList.typename[mapType]));
-        ((GuiButton)controlList.get(1)).displayString = (mod_OldDays.lang.get("indevShape")+": "+mod_OldDays.lang.get(GeneratorList.shapename[mapShape]));
-        ((GuiButton)controlList.get(2)).displayString = (mod_OldDays.lang.get("indevSize")+": " +mod_OldDays.lang.get(GeneratorList.sizename[mapSize]));
-        ((GuiButton)controlList.get(3)).displayString = (mod_OldDays.lang.get("nbxlite.maptheme.name")+": "+mod_OldDays.lang.get(GeneratorList.themename[mapTheme]));
+        ((GuiButton)buttonList.get(0)).displayString = (mod_OldDays.lang.get("indevType")+": "+mod_OldDays.lang.get(GeneratorList.typename[mapType]));
+        ((GuiButton)buttonList.get(1)).displayString = (mod_OldDays.lang.get("indevShape")+": "+mod_OldDays.lang.get(GeneratorList.shapename[mapShape]));
+        ((GuiButton)buttonList.get(2)).displayString = (mod_OldDays.lang.get("indevSize")+": " +mod_OldDays.lang.get(GeneratorList.sizename[mapSize]));
+        ((GuiButton)buttonList.get(3)).displayString = (mod_OldDays.lang.get("nbxlite.maptheme.name")+": "+mod_OldDays.lang.get(GeneratorList.themename[mapTheme]));
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton){
         if (guibutton.id == 5){
             mc.displayGuiScreen(parent);
@@ -75,6 +77,7 @@ public final class GuiIndev extends GuiScreen{
         refresh();
     }
 
+    @Override
     public void drawScreen(int paramInt1, int paramInt2, float paramFloat){
         drawDefaultBackground();
         drawCenteredString(fontRenderer, mod_OldDays.lang.get("indev.generate"), width / 2, 40, 0xffffff);

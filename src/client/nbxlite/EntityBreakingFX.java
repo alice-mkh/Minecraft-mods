@@ -2,18 +2,18 @@ package net.minecraft.src;
 
 public class EntityBreakingFX extends EntityFX
 {
-    public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item)
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item, RenderEngine par9RenderEngine)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        setParticleTextureIndex(par8Item.getIconFromDamage(0));
+        func_94052_a(par9RenderEngine, par8Item.getIconFromDamage(0));
         particleRed = particleGreen = particleBlue = 1.0F;
         particleGravity = Block.blockSnow.blockParticleGravity;
         particleScale /= 2.0F;
     }
 
-    public EntityBreakingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Item par14Item)
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Item par14Item, RenderEngine par15RenderEngine)
     {
-        this(par1World, par2, par4, par6, par14Item);
+        this(par1World, par2, par4, par6, par14Item, par15RenderEngine);
         motionX *= 0.10000000149011612D;
         motionY *= 0.10000000149011612D;
         motionZ *= 0.10000000149011612D;
@@ -29,11 +29,20 @@ public class EntityBreakingFX extends EntityFX
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        float f = ((float)(getParticleTextureIndex() % 16) + particleTextureJitterX / 4F) / 16F;
+        float f = ((float)particleTextureIndexX + particleTextureJitterX / 4F) / 16F;
         float f1 = f + 0.01560938F;
-        float f2 = ((float)(getParticleTextureIndex() / 16) + particleTextureJitterY / 4F) / 16F;
+        float f2 = ((float)particleTextureIndexY + particleTextureJitterY / 4F) / 16F;
         float f3 = f2 + 0.01560938F;
         float f4 = 0.1F * particleScale;
+
+        if (particleTextureIndex != null)
+        {
+            f = particleTextureIndex.getInterpolatedU((particleTextureJitterX / 4F) * 16F);
+            f1 = particleTextureIndex.getInterpolatedU(((particleTextureJitterX + 1.0F) / 4F) * 16F);
+            f2 = particleTextureIndex.getInterpolatedV((particleTextureJitterY / 4F) * 16F);
+            f3 = particleTextureIndex.getInterpolatedV(((particleTextureJitterY + 1.0F) / 4F) * 16F);
+        }
+
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);
         float f6 = (float)((prevPosY + (posY - prevPosY) * (double)par2) - interpPosY);
         float f7 = (float)((prevPosZ + (posZ - prevPosZ) * (double)par2) - interpPosZ);

@@ -4,8 +4,13 @@ import java.util.Random;
 
 public class EntityFireworkRocket extends Entity
 {
-    private int field_92056_a;
-    private int field_92055_b;
+    /** The age of the firework in ticks. */
+    private int fireworkAge;
+
+    /**
+     * The lifetime of the firework in ticks. When the age reaches the lifetime the firework explodes.
+     */
+    private int lifetime;
 
     public EntityFireworkRocket(World par1World)
     {
@@ -15,7 +20,7 @@ public class EntityFireworkRocket extends Entity
 
     protected void entityInit()
     {
-        dataWatcher.addObject(8, new ItemStack(0, 0, 0));
+        dataWatcher.addObjectByDataType(8, 5);
     }
 
     /**
@@ -30,7 +35,7 @@ public class EntityFireworkRocket extends Entity
     public EntityFireworkRocket(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
     {
         super(par1World);
-        field_92056_a = 0;
+        fireworkAge = 0;
         setSize(0.25F, 0.25F);
         setPosition(par2, par4, par6);
         yOffset = 0.0F;
@@ -51,7 +56,7 @@ public class EntityFireworkRocket extends Entity
         motionX = rand.nextGaussian() * 0.001D;
         motionZ = rand.nextGaussian() * 0.001D;
         motionY = 0.050000000000000003D;
-        field_92055_b = 10 * i + rand.nextInt(6) + rand.nextInt(7);
+        lifetime = 10 * i + rand.nextInt(6) + rand.nextInt(7);
     }
 
     /**
@@ -98,19 +103,19 @@ public class EntityFireworkRocket extends Entity
         rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
         rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
 
-        if (field_92056_a == 0)
+        if (fireworkAge == 0)
         {
             worldObj.playSoundAtEntity(this, "fireworks.launch", 3F, 1.0F);
         }
 
-        field_92056_a++;
+        fireworkAge++;
 
-        if ((worldObj.isRemote || net.minecraft.client.Minecraft.getMinecraft().enableSP) && field_92056_a % 2 < 2)
+        if ((worldObj.isRemote || net.minecraft.client.Minecraft.getMinecraft().enableSP) && fireworkAge % 2 < 2)
         {
             worldObj.spawnParticle("fireworksSpark", posX, posY - 0.29999999999999999D, posZ, rand.nextGaussian() * 0.050000000000000003D, -motionY * 0.5D, rand.nextGaussian() * 0.050000000000000003D);
         }
 
-        if (!worldObj.isRemote && field_92056_a > field_92055_b)
+        if (!worldObj.isRemote && fireworkAge > lifetime)
         {
             if (net.minecraft.client.Minecraft.getMinecraft().enableSP){
                 handleHealthUpdate((byte)17);
@@ -144,8 +149,8 @@ public class EntityFireworkRocket extends Entity
      */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setInteger("Life", field_92056_a);
-        par1NBTTagCompound.setInteger("LifeTime", field_92055_b);
+        par1NBTTagCompound.setInteger("Life", fireworkAge);
+        par1NBTTagCompound.setInteger("LifeTime", lifetime);
         ItemStack itemstack = dataWatcher.getWatchableObjectItemStack(8);
 
         if (itemstack != null)
@@ -161,8 +166,8 @@ public class EntityFireworkRocket extends Entity
      */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        field_92056_a = par1NBTTagCompound.getInteger("Life");
-        field_92055_b = par1NBTTagCompound.getInteger("LifeTime");
+        fireworkAge = par1NBTTagCompound.getInteger("Life");
+        lifetime = par1NBTTagCompound.getInteger("LifeTime");
         NBTTagCompound nbttagcompound = par1NBTTagCompound.getCompoundTag("FireworksItem");
 
         if (nbttagcompound != null)

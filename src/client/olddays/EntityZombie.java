@@ -35,9 +35,14 @@ public class EntityZombie extends EntityMob
         tasks.addTask(6, new EntityAIWander(this, moveSpeed));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 8F));
         tasks.addTask(7, new EntityAILookIdle(this));
-        targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityVillager.class, 16F, 0, false));
+    }
+
+    protected int func_96121_ay()
+    {
+        return 40;
     }
 
     /**
@@ -65,6 +70,7 @@ public class EntityZombie extends EntityMob
         return isVillager() ? "/mob/zombie_villager.png" : "/mob/zombie.png";
     }
 
+    @Override
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || !burns;
@@ -125,7 +131,7 @@ public class EntityZombie extends EntityMob
     /**
      * Set whether this zombie is a villager.
      */
-    public void setIsVillager(boolean par1)
+    public void setVillager(boolean par1)
     {
         getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
@@ -176,7 +182,7 @@ public class EntityZombie extends EntityMob
      */
     public void onUpdate()
     {
-        if (!worldObj.isRemote && func_82230_o())
+        if (!worldObj.isRemote && isConverting())
         {
             int i = getConversionTimeBoost();
             conversionTime -= i;
@@ -190,13 +196,26 @@ public class EntityZombie extends EntityMob
         super.onUpdate();
     }
 
+    public boolean attackEntityAsMob(Entity par1Entity)
+    {
+        boolean flag = super.attackEntityAsMob(par1Entity);
+
+        if (flag && getHeldItem() == null && isBurning() && rand.nextFloat() < (float)worldObj.difficultySetting * 0.3F)
+        {
+            par1Entity.setFire(2 * worldObj.difficultySetting);
+        }
+
+        return flag;
+    }
+
     /**
      * Returns the amount of damage a mob should deal.
      */
     public int getAttackStrength(Entity par1Entity)
     {
         ItemStack itemstack = getHeldItem();
-        int i = 4;
+        float f = (float)(getMaxHealth() - getHealth()) / (float)getMaxHealth();
+        int i = 3 + MathHelper.floor_float(f * 4F);
 
         if (itemstack != null)
         {
@@ -235,7 +254,7 @@ public class EntityZombie extends EntityMob
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        func_85030_a("mob.zombie.step", 0.15F, 1.0F);
+        playSound("mob.zombie.step", 0.15F, 1.0F);
     }
 
     /**
@@ -243,7 +262,7 @@ public class EntityZombie extends EntityMob
      */
     protected int getDropItemId()
     {
-        return Item.rottenFlesh.shiftedIndex;
+        return Item.rottenFlesh.itemID;
     }
 
     /**
@@ -259,20 +278,23 @@ public class EntityZombie extends EntityMob
         switch (rand.nextInt(3))
         {
             case 0:
-                dropItem(Item.ingotIron.shiftedIndex, 1);
+                dropItem(Item.ingotIron.itemID, 1);
                 break;
             case 1:
-                dropItem(Item.carrot.shiftedIndex, 1);
+                dropItem(Item.carrot.itemID, 1);
                 break;
             case 2:
-                dropItem(Item.potato.shiftedIndex, 1);
+                dropItem(Item.potato.itemID, 1);
                 break;
         }
     }
 
-    protected void func_82164_bB()
+    /**
+     * Makes entity wear random armor based on difficulty
+     */
+    protected void addRandomArmor()
     {
-        super.func_82164_bB();
+        super.addRandomArmor();
         if (getCurrentItemOrArmor(1) != null || getCurrentItemOrArmor(2) != null || getCurrentItemOrArmor(3) != null || getCurrentItemOrArmor(4) != null){
             helmet = false;
             armor = false;
@@ -313,7 +335,7 @@ public class EntityZombie extends EntityMob
             par1NBTTagCompound.setBoolean("IsVillager", true);
         }
 
-        par1NBTTagCompound.setInteger("ConversionTime", func_82230_o() ? conversionTime : -1);
+        par1NBTTagCompound.setInteger("ConversionTime", isConverting() ? conversionTime : -1);
         par1NBTTagCompound.setBoolean("Helmet", helmet);
         par1NBTTagCompound.setBoolean("Armor", armor);
     }
@@ -332,7 +354,7 @@ public class EntityZombie extends EntityMob
 
         if (par1NBTTagCompound.getBoolean("IsVillager"))
         {
-            setIsVillager(true);
+            setVillager(true);
         }
 
         if (par1NBTTagCompound.hasKey("ConversionTime") && par1NBTTagCompound.getInteger("ConversionTime") > -1)
@@ -359,9 +381,9 @@ public class EntityZombie extends EntityMob
 
             EntityZombie entityzombie = new EntityZombie(worldObj);
             entityzombie.func_82149_j(par1EntityLiving);
-            worldObj.setEntityDead(par1EntityLiving);
+            worldObj.removeEntity(par1EntityLiving);
             entityzombie.initCreature();
-            entityzombie.setIsVillager(true);
+            entityzombie.setVillager(true);
 
             if (par1EntityLiving.isChild())
             {
@@ -381,14 +403,14 @@ public class EntityZombie extends EntityMob
         if (!custom && !(this instanceof EntityPigZombie)){
             return;
         }
-        canPickUpLoot = rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting];
+        setCanPickUpLoot(rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting]);
 
         if (worldObj.rand.nextFloat() < 0.05F)
         {
-            setIsVillager(true);
+            setVillager(true);
         }
 
-        func_82164_bB();
+        addRandomArmor();
         func_82162_bC();
 
         if (getCurrentItemOrArmor(4) == null)
@@ -460,7 +482,10 @@ public class EntityZombie extends EntityMob
         }
     }
 
-    public boolean func_82230_o()
+    /**
+     * Returns whether this zombie is in the process of converting to a villager
+     */
+    public boolean isConverting()
     {
         return getDataWatcher().getWatchableObjectByte(14) == 1;
     }
@@ -480,7 +505,7 @@ public class EntityZombie extends EntityMob
             entityvillager.setGrowingAge(-24000);
         }
 
-        worldObj.setEntityDead(this);
+        worldObj.removeEntity(this);
         worldObj.spawnEntityInWorld(entityvillager);
         entityvillager.addPotionEffect(new PotionEffect(Potion.confusion.id, 200, 0));
         worldObj.playAuxSFXAtEntity(null, 1017, (int)posX, (int)posY, (int)posZ, 0);

@@ -33,6 +33,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         username = par3Session.username;
     }
 
+    @Override
     public void incrementStat(StatBase par1StatBase, int par2)
     {
     }
@@ -40,6 +41,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Sends a chat message from the player. Args: chatMessage
      */
+    @Override
     public void sendChatMessage(String par1Str)
     {
         if (par1Str.startsWith("/"))
@@ -52,15 +54,13 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         }
     }
 
+    @Override
     public void respawnPlayer()
     {
         mc.respawn(false, 0, false);
     }
 
-    public void func_6420_o()
-    {
-    }
-
+    @Override
     public void travelToDimension(int par1)
     {
         if (worldObj.isRemote)
@@ -84,11 +84,13 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Tries to moves the entity by the passed in displacement. Args: x, y, z
      */
+    @Override
     public void moveEntity(double par1, double par3, double par5)
     {
         super.moveEntity(par1, par3, par5);
     }
 
+    @Override
     public void updateEntityActionState()
     {
         super.updateEntityActionState();
@@ -104,6 +106,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Returns whether the entity is in a local (client) world
      */
+    @Override
     protected boolean isClientWorld()
     {
         return true;
@@ -112,6 +115,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Gets the player's field of view multiplier. (ex. when flying)
      */
+    @Override
     public float getFOVMultiplier()
     {
         float f = 1.0F;
@@ -123,7 +127,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         f *= ((landMovementFactor * getSpeedModifier()) / speedOnGround + 1.0F) / 2.0F;
 
-        if (isUsingItem() && getItemInUse().itemID == Item.bow.shiftedIndex)
+        if (isUsingItem() && getItemInUse().itemID == Item.bow.itemID)
         {
             int i = getItemInUseDuration();
             float f1 = (float)i / 20F;
@@ -143,15 +147,16 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         return f;
     }
 
+    @Override
     public void updateCloak()
     {
-        playerCloakUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftCloaks/").append(StringUtils.stripControlCodes(username)).append(".png").toString();
-        cloakUrl = playerCloakUrl;
+        cloakUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftCloaks/").append(StringUtils.stripControlCodes(username)).append(".png").toString();
     }
 
     /**
      * sets current screen to null (used on escape buttons of GUIs)
      */
+    @Override
     public void closeScreen()
     {
         openContainer = inventoryContainer;
@@ -161,14 +166,23 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Displays the GUI for editing a sign. Args: tileEntitySign
      */
-    public void displayGUIEditSign(TileEntitySign par1TileEntitySign)
+    @Override
+    public void displayGUIEditSign(TileEntity par1TileEntity)
     {
-        mc.displayGuiScreen(new GuiEditSign(par1TileEntitySign));
+        if (par1TileEntity instanceof TileEntitySign)
+        {
+            mc.displayGuiScreen(new GuiEditSign((TileEntitySign)par1TileEntity));
+        }
+        else if (par1TileEntity instanceof TileEntityCommandBlock)
+        {
+            mc.displayGuiScreen(new GuiCommandBlock((TileEntityCommandBlock)par1TileEntity));
+        }
     }
 
     /**
      * Displays the GUI for interacting with a book.
      */
+    @Override
     public void displayGUIBook(ItemStack par1ItemStack)
     {
         Item item = par1ItemStack.getItem();
@@ -186,6 +200,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Displays the GUI for interacting with a chest inventory. Args: chestInventory
      */
+    @Override
     public void displayGUIChest(IInventory par1IInventory)
     {
         mc.displayGuiScreen(new GuiChest(inventory, par1IInventory));
@@ -194,24 +209,22 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Displays the crafting GUI for a workbench.
      */
-    public void displayWorkbenchGUI(int par1, int par2, int par3)
-    {
-        mc.displayGuiScreen(new GuiCrafting(inventory, worldObj, par1, par2, par3));
-    }
-
+    @Override
     public void displayGUIWorkbench(int par1, int par2, int par3)
     {
         mc.displayGuiScreen(new GuiCrafting(inventory, worldObj, par1, par2, par3));
     }
 
-    public void displayGUIEnchantment(int par1, int par2, int par3)
+    @Override
+    public void displayGUIEnchantment(int par1, int par2, int par3, String par4Str)
     {
-        mc.displayGuiScreen(new GuiEnchantment(inventory, worldObj, par1, par2, par3));
+        mc.displayGuiScreen(new GuiEnchantment(inventory, worldObj, par1, par2, par3, par4Str));
     }
 
     /**
      * Displays the furnace GUI for the passed in furnace entity. Args: tileEntityFurnace
      */
+    @Override
     public void displayGUIFurnace(TileEntityFurnace par1TileEntityFurnace)
     {
         mc.displayGuiScreen(new GuiFurnace(inventory, par1TileEntityFurnace));
@@ -220,6 +233,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Displays the GUI for interacting with a brewing stand.
      */
+    @Override
     public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand)
     {
         mc.displayGuiScreen(new GuiBrewingStand(inventory, par1TileEntityBrewingStand));
@@ -228,24 +242,40 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Displays the dipsenser GUI for the passed in dispenser entity. Args: TileEntityDispenser
      */
+    @Override
     public void displayGUIDispenser(TileEntityDispenser par1TileEntityDispenser)
     {
         mc.displayGuiScreen(new GuiDispenser(inventory, par1TileEntityDispenser));
     }
 
-    public void displayGUIMerchant(IMerchant par1IMerchant)
+    @Override
+    public void displayGUIMerchant(IMerchant par1IMerchant, String par2Str)
     {
-        mc.displayGuiScreen(new GuiMerchant(inventory, par1IMerchant, worldObj));
+        mc.displayGuiScreen(new GuiMerchant(inventory, par1IMerchant, worldObj, par2Str));
+    }
+
+    @Override
+    public void func_94064_a(TileEntityHopper par1TileEntityHopper)
+    {
+        mc.displayGuiScreen(new GuiHopper(inventory, par1TileEntityHopper));
+    }
+
+    @Override
+    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
+    {
+        mc.displayGuiScreen(new GuiHopper(inventory, par1EntityMinecartHopper));
     }
 
     /**
      * Called when the player performs a critical hit on the Entity. Args: entity that was hit critically
      */
+    @Override
     public void onCriticalHit(Entity par1Entity)
     {
         mc.effectRenderer.addEffect(new EntityCrit2FX(mc.theWorld, par1Entity));
     }
 
+    @Override
     public void onEnchantmentCritical(Entity par1Entity)
     {
         EntityCrit2FX entitycrit2fx = new EntityCrit2FX(mc.theWorld, par1Entity, "magicCrit");
@@ -255,6 +285,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Called whenever an item is picked up from walking over it. Args: pickedUpEntity, stackSize
      */
+    @Override
     public void onItemPickup(Entity par1Entity, int par2)
     {
         mc.effectRenderer.addEffect(new EntityPickupFX(mc.theWorld, par1Entity, this, -0.5F));
@@ -263,6 +294,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Returns if this entity is sneaking.
      */
+    @Override
     public boolean isSneaking()
     {
         return movementInput.sneak && !sleeping;
@@ -271,6 +303,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Updates health locally.
      */
+    @Override
     public void setHealth(int par1)
     {
         int i = getHealth() - par1;
@@ -297,6 +330,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Add a chat message to the player
      */
+    @Override
     public void addChatMessage(String par1Str)
     {
         mc.ingameGUI.getChatGUI().addTranslatedMessage(par1Str, new Object[0]);
@@ -305,6 +339,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Adds a value to a statistic field.
      */
+    @Override
     public void addStat(StatBase par1StatBase, int par2)
     {
         if (par1StatBase == null)
@@ -340,6 +375,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Adds velocity to push the entity out of blocks at the specified x, y, z position Args: x, y, z
      */
+    @Override
     protected boolean pushOutOfBlocks(double par1, double par3, double par5)
     {
         int i = MathHelper.floor_double(par1);
@@ -410,6 +446,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Set sprinting switch for Entity.
      */
+    @Override
     public void setSprinting(boolean par1)
     {
         if (!sprint){
@@ -422,6 +459,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Sets the current XP, total XP, and level number.
      */
+    @Override
     public void setXPStats(float par1, int par2, int par3)
     {
         experience = par1;
@@ -429,20 +467,17 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         experienceLevel = par3;
     }
 
+    @Override
     public void sendChatToPlayer(String par1Str)
     {
         mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
-    }
-
-    public boolean canCommandSenderUseCommand(String par1Str)
-    {
-        return worldObj.getWorldInfo().areCommandsAllowed();
     }
 
     /**
      * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health
      * second with the reduced value. Args: damageAmount
      */
+    @Override
     protected void damageEntity(DamageSource par1DamageSource, int par2)
     {
         if (!par1DamageSource.isUnblockable() && isBlocking())
@@ -464,10 +499,12 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         health -= par2;
     }
 
+    @Override
     public void sendPlayerAbilities()
     {
     }
 
+    @Override
     public boolean func_71066_bF()
     {
         return false;
@@ -476,6 +513,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Called when the entity is attacked.
      */
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (capabilities.disableDamage && !par1DamageSource.canHarmInCreative())
@@ -497,7 +535,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         Entity entity = par1DamageSource.getEntity();
 
-        if (par1DamageSource.func_76350_n())
+        if (par1DamageSource.isDifficultyScaled())
         {
             if (worldObj.difficultySetting == 0)
             {
@@ -550,7 +588,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             return false;
         }
 
-        legYaw = 1.5F;
+        limbYaw = 1.5F;
         boolean flag = true;
 
         if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F)
@@ -603,7 +641,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         {
             worldObj.setEntityState(this, (byte)2);
 
-            if (par1DamageSource != DamageSource.drown && par1DamageSource != DamageSource.field_76375_l)
+            if (par1DamageSource != DamageSource.drown && !par1DamageSource.getDamageType().equals("explosionOld"))
             {
                 setBeenAttacked();
             }
@@ -631,14 +669,14 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         {
             if (flag)
             {
-                func_85030_a(getDeathSound(), getSoundVolume(), getSoundPitch());
+                playSound(getDeathSound(), getSoundVolume(), getSoundPitch());
             }
 
             onDeath(par1DamageSource);
         }
         else if (flag)
         {
-            func_85030_a(getHurtSound(), getSoundVolume(), getSoundPitch());
+            playSound(getHurtSound(), getSoundVolume(), getSoundPitch());
         }
 
         return true;
@@ -667,11 +705,13 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
     }
 
+    @Override
     public void sendMotionUpdates()
     {
     }
@@ -679,6 +719,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Called when player presses the drop item key
      */
+    @Override
     public EntityItem dropOneItem(boolean par1)
     {
         return dropPlayerItemWithRandomChoice(inventory.decrStackSize(inventory.currentItem, !par1 || inventory.getCurrentItem() == null ? 1 : inventory.getCurrentItem().stackSize), false);
@@ -687,6 +728,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Joins the passed in entity item with the world. Args: entityItem
      */
+    @Override
     protected void joinEntityItemWithWorld(EntityItem entityitem)
     {
         worldObj.spawnEntityInWorld(entityitem);
@@ -695,6 +737,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Swings the item the player is holding.
      *//*
+    @Override
     public void swingItem()
     {
         if (!isSwinging || swingProgressInt >= getSwingSpeedModifier() / 2 || swingProgressInt < 0)
@@ -727,6 +770,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     /**
      * Gets the pitch of living sounds in living entities.
      */
+    @Override
     protected float getSoundPitch()
     {
         if (isChild())
@@ -739,6 +783,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         }
     }
 
+    @Override
     public void onLivingUpdate(){
         super.onLivingUpdate();
         if (inPortal)
@@ -767,6 +812,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -776,6 +822,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         setPosition(posX, posY, posZ);
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         posY -= 1.6200000047683716D;

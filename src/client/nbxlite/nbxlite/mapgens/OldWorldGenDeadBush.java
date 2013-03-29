@@ -13,6 +13,7 @@ public class OldWorldGenDeadBush extends WorldGenerator
         deadBushID = par1;
     }
 
+    @Override
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         for (int i = 0; ((i = par1World.getBlockId(par3, par4, par5)) == 0 || i == Block.leaves.blockID) && par4 > 0; par4--) { }

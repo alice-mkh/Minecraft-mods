@@ -62,6 +62,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
         mobSpawnerNoise = new AlphaNoiseGeneratorOctaves(rand, 8);
     }
 
+    @Override
     protected void generateTerrain(int i, int j, byte abyte0[]){
         byte byte0 = 4;
         byte byte1 = 64;
@@ -142,6 +143,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
 
     }
 
+    @Override
     protected void replaceBlocks(int i, int j, byte abyte0[]){
         byte byte0 = 64;
         double d = 0.03125D;
@@ -271,6 +273,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
 
     }
 
+    @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if(mapFeaturesEnabled)
@@ -386,6 +389,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
         return ad;
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
@@ -609,13 +613,14 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                 int i21 = worldObj.getPrecipitationHeight(j13, i16);
                 if(ODNBXlite.SnowCovered && i21 > 0 && i21 < 128 && worldObj.isAirBlock(j13, i21, i16) && worldObj.getBlockMaterial(j13, i21 - 1, i16).isSolid() && worldObj.getBlockMaterial(j13, i21 - 1, i16) != Material.ice)
                 {
-                    worldObj.setBlockWithNotify(j13, i21, i16, Block.snow.blockID);
+                    worldObj.setBlock(j13, i21, i16, Block.snow.blockID, 0, 2);
                 }
             }
         }
         BlockSand.fallInstantly = false;
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         if("Stronghold".equals(s) && strongholdGenerator != null){
             return strongholdGenerator.getNearestInstance(world, i, j, k);

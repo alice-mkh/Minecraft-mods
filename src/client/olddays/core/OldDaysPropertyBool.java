@@ -18,10 +18,12 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         m.isLocal = false;
     }
 
+    @Override
     public String getButtonText(){
         return mod_OldDays.lang.get(getName()+".name")+": "+(mod_OldDays.lang.get(value ? "gui.on" : "gui.off"));
     }
 
+    @Override
     public void onChange(){
         if (shouldSkipUpdates()){
             return;
@@ -35,10 +37,12 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         }
     }
 
+    @Override
     public void incrementValue(){
         value = !value;
     }
 
+    @Override
     public void updateValue(){
         try{
             value = ((Boolean)field.get(module));
@@ -49,27 +53,33 @@ public class OldDaysPropertyBool extends OldDaysProperty{
         }
     }
 
+    @Override
     public void setSMPValue(){
         value = smpValue;
     }
 
+    @Override
     public String getDefaultValue(){
         return ""+defaultValue;
     }
 
+    @Override
     public void setDefaultValue(){
         value = defaultValue;
     }
 
+    @Override
     protected void disable(){
         super.disable();
         value = smpValue;
     }
 
+    @Override
     public void loadFromString(String str){
         value = str.matches("^*([Oo][Nn]|[Tt][Rr][Uu][Ee]?|[Yy][Ee]?[SsPpAa]?[Hh]?)*$");
     }
 
+    @Override
     public String saveToString(){
         return ""+value;
     }

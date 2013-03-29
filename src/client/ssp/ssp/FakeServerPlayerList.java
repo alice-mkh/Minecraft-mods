@@ -12,6 +12,7 @@ public class FakeServerPlayerList extends IntegratedPlayerList
         fakePlayer = new EntityPlayerFakeMP(s, Minecraft.getMinecraft().thePlayer.username);
     }
 
+    @Override
     public EntityPlayerMP getPlayerForUsername(String par1Str)
     {
         if (par1Str == Minecraft.getMinecraft().thePlayer.username){
@@ -23,11 +24,13 @@ public class FakeServerPlayerList extends IntegratedPlayerList
     /**
      * Returns an array of usernames for which player.dat exists for.
      */
+    @Override
     public String[] getAvailablePlayerDat()
     {
         return new String[]{Minecraft.getMinecraft().thePlayer.username};
     }
 
+    @Override
     public int getEntityViewDistance()
     {
         return 0;

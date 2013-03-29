@@ -7,6 +7,7 @@ public class PlayerControllerAdventure extends PlayerControllerSP{
         super(par1Minecraft);
     }
 
+    @Override
     public void setPlayerCapabilities(EntityPlayer par1EntityPlayer)
     {
         mc.setGameMode(EnumGameType.ADVENTURE);
@@ -21,5 +22,4 @@ public class PlayerControllerAdventure extends PlayerControllerSP{
     {
         par0EntityPlayer.capabilities.allowEdit = false;
     }
-
 }

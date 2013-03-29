@@ -130,7 +130,7 @@ public class TileEntityRenderer
      */
     public void renderTileEntity(TileEntity par1TileEntity, float par2)
     {
-        if (par1TileEntity.getDistanceFrom(playerX, playerY, playerZ) < par1TileEntity.func_82115_m())
+        if (par1TileEntity.getDistanceFrom(playerX, playerY, playerZ) < par1TileEntity.getMaxRenderDistanceSquared())
         {
             if (net.minecraft.client.Minecraft.oldlighting){
                 float f1 = worldObj.getLightBrightness(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord);
@@ -155,7 +155,17 @@ public class TileEntityRenderer
 
         if (tileentityspecialrenderer != null)
         {
-            tileentityspecialrenderer.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
+            try
+            {
+                tileentityspecialrenderer.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
+            }
+            catch (Throwable throwable)
+            {
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering Tile Entity");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Tile Entity Details");
+                par1TileEntity.func_85027_a(crashreportcategory);
+                throw new ReportedException(crashreport);
+            }
         }
     }
 

@@ -88,7 +88,7 @@ public class EntityArrow extends Entity implements IProjectile
 
         posY = (par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight()) - 0.10000000149011612D;
         double d = par3EntityLiving.posX - par2EntityLiving.posX;
-        double d1 = (par3EntityLiving.posY + (double)par3EntityLiving.getEyeHeight()) - 0.69999998807907104D - posY;
+        double d1 = (par3EntityLiving.boundingBox.minY + (double)(par3EntityLiving.height / 3F)) - posY;
         double d2 = par3EntityLiving.posZ - par2EntityLiving.posZ;
         double d3 = MathHelper.sqrt_double(d * d + d2 * d2);
 
@@ -158,9 +158,9 @@ public class EntityArrow extends Entity implements IProjectile
         par1 /= f;
         par3 /= f;
         par5 /= f;
-        par1 += rand.nextGaussian() * 0.0074999998323619366D * (double)par8;
-        par3 += rand.nextGaussian() * 0.0074999998323619366D * (double)par8;
-        par5 += rand.nextGaussian() * 0.0074999998323619366D * (double)par8;
+        par1 += rand.nextGaussian() * (double)(rand.nextBoolean() ? -1 : 1) * 0.0074999998323619366D * (double)par8;
+        par3 += rand.nextGaussian() * (double)(rand.nextBoolean() ? -1 : 1) * 0.0074999998323619366D * (double)par8;
+        par5 += rand.nextGaussian() * (double)(rand.nextBoolean() ? -1 : 1) * 0.0074999998323619366D * (double)par8;
         par1 *= par7;
         par3 *= par7;
         par5 *= par7;
@@ -310,6 +310,16 @@ public class EntityArrow extends Entity implements IProjectile
             movingobjectposition = new MovingObjectPosition(entity);
         }
 
+        if (movingobjectposition != null && movingobjectposition.entityHit != null && (movingobjectposition.entityHit instanceof EntityPlayer))
+        {
+            EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
+
+            if (entityplayer.capabilities.disableDamage || (shootingEntity instanceof EntityPlayer) && !((EntityPlayer)shootingEntity).func_96122_a(entityplayer))
+            {
+                movingobjectposition = null;
+            }
+        }
+
         if (movingobjectposition != null)
         {
             if (movingobjectposition.entityHit != null)
@@ -362,7 +372,10 @@ public class EntityArrow extends Entity implements IProjectile
                             }
                         }
 
-                        EnchantmentThorns.func_92096_a(shootingEntity, entityliving, rand);
+                        if (shootingEntity != null)
+                        {
+                            EnchantmentThorns.func_92096_a(shootingEntity, entityliving, rand);
+                        }
 
                         if (shootingEntity != null && movingobjectposition.entityHit != shootingEntity && (movingobjectposition.entityHit instanceof EntityPlayer) && (shootingEntity instanceof EntityPlayerMP))
                         {
@@ -370,7 +383,7 @@ public class EntityArrow extends Entity implements IProjectile
                         }
                     }
 
-                    func_85030_a("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                    playSound("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
 
                     if (!(movingobjectposition.entityHit instanceof EntityEnderman))
                     {
@@ -401,7 +414,7 @@ public class EntityArrow extends Entity implements IProjectile
                 posX -= (motionX / (double)f2) * 0.05000000074505806D;
                 posY -= (motionY / (double)f2) * 0.05000000074505806D;
                 posZ -= (motionZ / (double)f2) * 0.05000000074505806D;
-                func_85030_a("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                playSound("random.bowhit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                 inGround = true;
                 arrowShake = 7;
                 setIsCritical(false);
@@ -522,7 +535,7 @@ public class EntityArrow extends Entity implements IProjectile
 
         if (flag)
         {
-            func_85030_a("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            playSound("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, 1);
             setDead();
         }

@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.List;
+import java.util.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -36,7 +36,9 @@ public abstract class GuiContainer extends GuiScreen
 
     /** Used when touchscreen is enabled */
     private Slot clickedSlot;
-    private boolean field_90018_r;
+
+    /** Used when touchscreen is enabled */
+    private boolean isRightMouseClick;
 
     /** Used when touchscreen is enabled */
     private ItemStack draggedStack;
@@ -49,13 +51,24 @@ public abstract class GuiContainer extends GuiScreen
     private ItemStack returningStack;
     private Slot field_92033_y;
     private long field_92032_z;
+    protected final Set field_94077_p = new HashSet();
+    protected boolean field_94076_q;
+    private int field_94071_C;
+    private int field_94067_D;
+    private boolean field_94068_E;
+    private int field_94069_F;
+    private long field_94070_G;
+    private Slot field_94072_H;
+    private int field_94073_I;
+    private boolean field_94074_J;
+    private ItemStack field_94075_K;
 
     public GuiContainer(Container par1Container)
     {
         xSize = 176;
         ySize = 166;
         clickedSlot = null;
-        field_90018_r = false;
+        isRightMouseClick = false;
         draggedStack = null;
         field_85049_r = 0;
         field_85048_s = 0;
@@ -64,7 +77,15 @@ public abstract class GuiContainer extends GuiScreen
         returningStack = null;
         field_92033_y = null;
         field_92032_z = 0L;
+        field_94071_C = 0;
+        field_94067_D = 0;
+        field_94068_E = false;
+        field_94070_G = 0L;
+        field_94072_H = null;
+        field_94073_I = 0;
+        field_94075_K = null;
         inventorySlots = par1Container;
+        field_94068_E = true;
     }
 
     /**
@@ -129,14 +150,25 @@ public abstract class GuiContainer extends GuiScreen
         {
             byte byte0 = 8;
             byte byte1 = ((byte)(draggedStack != null ? 16 : 8));
+            String s = null;
 
-            if (draggedStack != null && field_90018_r)
+            if (draggedStack != null && isRightMouseClick)
             {
                 itemstack = itemstack.copy();
                 itemstack.stackSize = MathHelper.ceiling_float_int((float)itemstack.stackSize / 2.0F);
             }
+            else if (field_94076_q && field_94077_p.size() > 1)
+            {
+                itemstack = itemstack.copy();
+                itemstack.stackSize = field_94069_F;
 
-            drawItemStack(itemstack, par1 - i - byte0, par2 - j - byte1);
+                if (itemstack.stackSize == 0)
+                {
+                    s = (new StringBuilder()).append("").append(EnumChatFormatting.YELLOW).append("0").toString();
+                }
+            }
+
+            drawItemStack(itemstack, par1 - i - byte0, par2 - j - byte1, s);
         }
 
         if (returningStack != null)
@@ -153,114 +185,50 @@ public abstract class GuiContainer extends GuiScreen
             int i2 = returningStackDestSlot.yDisplayPosition - field_85048_s;
             int j2 = field_85049_r + (int)((float)l1 * f);
             int k2 = field_85048_s + (int)((float)i2 * f);
-            drawItemStack(returningStack, j2, k2);
-        }
-
-        if (inventoryplayer.getItemStack() == null && theSlot != null && theSlot.getHasStack() && tooltips)
-        {
-            ItemStack itemstack1 = theSlot.getStack();
-            drawItemStackTooltip(itemstack1, (par1 - i) + 8, (par2 - j) + 8);
+            drawItemStack(returningStack, j2, k2, null);
         }
 
         GL11.glPopMatrix();
+
+        if (inventoryplayer.getItemStack() == null && theSlot != null && theSlot.getHasStack())
+        {
+            ItemStack itemstack1 = theSlot.getStack();
+            drawItemStackTooltip(itemstack1, par1, par2);
+        }
+
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         RenderHelper.enableStandardItemLighting();
     }
 
-    private void drawItemStack(ItemStack par1ItemStack, int par2, int par3)
+    private void drawItemStack(ItemStack par1ItemStack, int par2, int par3, String par4Str)
     {
         GL11.glTranslatef(0.0F, 0.0F, 32F);
         zLevel = 200F;
         itemRenderer.zLevel = 200F;
         itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, par1ItemStack, par2, par3);
-        itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, par1ItemStack, par2, par3 - (draggedStack != null ? 8 : 0));
+        itemRenderer.renderItemStack(fontRenderer, mc.renderEngine, par1ItemStack, par2, par3 - (draggedStack != null ? 8 : 0), par4Str);
         zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
 
     protected void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3)
     {
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
         List list = par1ItemStack.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
 
-        if (!list.isEmpty())
+        for (int i = 0; i < list.size(); i++)
         {
-            int i = 0;
-
-            for (int j = 0; j < list.size(); j++)
+            if (i == 0)
             {
-                int l = fontRenderer.getStringWidth((String)list.get(j));
-
-                if (l > i)
-                {
-                    i = l;
-                }
+                list.set(i, (new StringBuilder()).append("\247").append(Integer.toHexString(par1ItemStack.getRarity().rarityColor)).append((String)list.get(i)).toString());
             }
-
-            int k = par2 + 12;
-            int i1 = par3 - 12;
-            int j1 = i;
-            int k1 = 8;
-
-            if (list.size() > 1)
+            else
             {
-                k1 += 2 + (list.size() - 1) * 10;
+                list.set(i, (new StringBuilder()).append(EnumChatFormatting.GRAY).append((String)list.get(i)).toString());
             }
-
-            if (guiTop + i1 + k1 + 6 > height)
-            {
-                i1 = height - k1 - guiTop - 6;
-            }
-
-            zLevel = 300F;
-            itemRenderer.zLevel = 300F;
-            if (oldtooltips){
-                drawGradientRect(k - 3, i1 - 3, k + j1 + 3, i1 + k1 + 3, 0xc0000000, 0xc0000000);
-            }else{
-                int l1 = 0xf0100010;
-                drawGradientRect(k - 3, i1 - 4, k + j1 + 3, i1 - 3, l1, l1);
-                drawGradientRect(k - 3, i1 + k1 + 3, k + j1 + 3, i1 + k1 + 4, l1, l1);
-                drawGradientRect(k - 3, i1 - 3, k + j1 + 3, i1 + k1 + 3, l1, l1);
-                drawGradientRect(k - 4, i1 - 3, k - 3, i1 + k1 + 3, l1, l1);
-                drawGradientRect(k + j1 + 3, i1 - 3, k + j1 + 4, i1 + k1 + 3, l1, l1);
-                int i2 = 0x505000ff;
-                int j2 = (i2 & 0xfefefe) >> 1 | i2 & 0xff000000;
-                drawGradientRect(k - 3, (i1 - 3) + 1, (k - 3) + 1, (i1 + k1 + 3) - 1, i2, j2);
-                drawGradientRect(k + j1 + 2, (i1 - 3) + 1, k + j1 + 3, (i1 + k1 + 3) - 1, i2, j2);
-                drawGradientRect(k - 3, i1 - 3, k + j1 + 3, (i1 - 3) + 1, i2, i2);
-                drawGradientRect(k - 3, i1 + k1 + 2, k + j1 + 3, i1 + k1 + 3, j2, j2);
-            }
-
-            for (int k2 = 0; k2 < list.size(); k2++)
-            {
-                String s = (String)list.get(k2);
-
-                if (k2 == 0)
-                {
-                    s = (new StringBuilder()).append("\247").append(Integer.toHexString(par1ItemStack.getRarity().rarityColor)).append(s).toString();
-                }
-                else
-                {
-                    s = (new StringBuilder()).append("\2477").append(s).toString();
-                }
-
-                fontRenderer.drawStringWithShadow(s, k, i1, -1);
-
-                if (k2 == 0)
-                {
-                    i1 += 2;
-                }
-
-                i1 += 10;
-            }
-
-            zLevel = 0.0F;
-            itemRenderer.zLevel = 0.0F;
         }
+
+        func_102021_a(list, par2, par3);
     }
 
     /**
@@ -269,37 +237,95 @@ public abstract class GuiContainer extends GuiScreen
      */
     protected void drawCreativeTabHoveringText(String par1Str, int par2, int par3)
     {
-        if (!tooltips){
+        func_102021_a(Arrays.asList(new String[]
+                {
+                    par1Str
+                }), par2, par3);
+    }
+
+    protected void func_102021_a(List par1List, int par2, int par3)
+    {
+        if (par1List.isEmpty() || !tooltips)
+        {
             return;
         }
+
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        int i = fontRenderer.getStringWidth(par1Str);
+        int i = 0;
+        Iterator iterator = par1List.iterator();
+
+        do
+        {
+            if (!iterator.hasNext())
+            {
+                break;
+            }
+
+            String s = (String)iterator.next();
+            int l = fontRenderer.getStringWidth(s);
+
+            if (l > i)
+            {
+                i = l;
+            }
+        }
+        while (true);
+
         int j = par2 + 12;
         int k = par3 - 12;
-        int l = i;
-        byte byte0 = 8;
+        int i1 = i;
+        int j1 = 8;
+
+        if (par1List.size() > 1)
+        {
+            j1 += 2 + (par1List.size() - 1) * 10;
+        }
+
+        if (j + i > width)
+        {
+            j -= 28 + i;
+        }
+
+        if (k + j1 + 6 > height)
+        {
+            k = height - j1 - 6;
+        }
+
         zLevel = 300F;
         itemRenderer.zLevel = 300F;
         if (oldtooltips){
-            drawGradientRect(j - 3, k - 3, j + l + 3, k + byte0 + 3, 0xc0000000, 0xc0000000);
+            drawGradientRect(j - 3, k - 3, j + i1 + 3, k + j1 + 3, 0xc0000000, 0xc0000000);
         }else{
-            int i1 = 0xf0100010;
-            drawGradientRect(j - 3, k - 4, j + l + 3, k - 3, i1, i1);
-            drawGradientRect(j - 3, k + byte0 + 3, j + l + 3, k + byte0 + 4, i1, i1);
-            drawGradientRect(j - 3, k - 3, j + l + 3, k + byte0 + 3, i1, i1);
-            drawGradientRect(j - 4, k - 3, j - 3, k + byte0 + 3, i1, i1);
-            drawGradientRect(j + l + 3, k - 3, j + l + 4, k + byte0 + 3, i1, i1);
-            int j1 = 0x505000ff;
-            int k1 = (j1 & 0xfefefe) >> 1 | j1 & 0xff000000;
-            drawGradientRect(j - 3, (k - 3) + 1, (j - 3) + 1, (k + byte0 + 3) - 1, j1, k1);
-            drawGradientRect(j + l + 2, (k - 3) + 1, j + l + 3, (k + byte0 + 3) - 1, j1, k1);
-            drawGradientRect(j - 3, k - 3, j + l + 3, (k - 3) + 1, j1, j1);
-            drawGradientRect(j - 3, k + byte0 + 2, j + l + 3, k + byte0 + 3, k1, k1);
+            int k1 = 0xf0100010;
+            drawGradientRect(j - 3, k - 4, j + i1 + 3, k - 3, k1, k1);
+            drawGradientRect(j - 3, k + j1 + 3, j + i1 + 3, k + j1 + 4, k1, k1);
+            drawGradientRect(j - 3, k - 3, j + i1 + 3, k + j1 + 3, k1, k1);
+            drawGradientRect(j - 4, k - 3, j - 3, k + j1 + 3, k1, k1);
+            drawGradientRect(j + i1 + 3, k - 3, j + i1 + 4, k + j1 + 3, k1, k1);
+            int l1 = 0x505000ff;
+            int i2 = (l1 & 0xfefefe) >> 1 | l1 & 0xff000000;
+            drawGradientRect(j - 3, (k - 3) + 1, (j - 3) + 1, (k + j1 + 3) - 1, l1, i2);
+            drawGradientRect(j + i1 + 2, (k - 3) + 1, j + i1 + 3, (k + j1 + 3) - 1, l1, i2);
+            drawGradientRect(j - 3, k - 3, j + i1 + 3, (k - 3) + 1, l1, l1);
+            drawGradientRect(j - 3, k + j1 + 2, j + i1 + 3, k + j1 + 3, i2, i2);
         }
-        fontRenderer.drawStringWithShadow(par1Str, j, k, -1);
+
+        for (int j2 = 0; j2 < par1List.size(); j2++)
+        {
+            String s1 = (String)par1List.get(j2);
+            fontRenderer.drawStringWithShadow(s1, j, k, -1);
+
+            if (j2 == 0)
+            {
+                k += 2;
+            }
+
+            k += 10;
+        }
+
         zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -328,12 +354,46 @@ public abstract class GuiContainer extends GuiScreen
         int i = par1Slot.xDisplayPosition;
         int j = par1Slot.yDisplayPosition;
         ItemStack itemstack = par1Slot.getStack();
-        boolean flag = par1Slot == clickedSlot && draggedStack != null && !field_90018_r;
+        boolean flag = false;
+        boolean flag1 = par1Slot == clickedSlot && draggedStack != null && !isRightMouseClick;
+        ItemStack itemstack1 = mc.thePlayer.inventory.getItemStack();
+        String s = null;
 
-        if (par1Slot == clickedSlot && draggedStack != null && field_90018_r && itemstack != null)
+        if (par1Slot == clickedSlot && draggedStack != null && isRightMouseClick && itemstack != null)
         {
             itemstack = itemstack.copy();
             itemstack.stackSize /= 2;
+        }
+        else if (field_94076_q && field_94077_p.contains(par1Slot) && itemstack1 != null)
+        {
+            if (field_94077_p.size() == 1)
+            {
+                return;
+            }
+
+            if (Container.func_94527_a(par1Slot, itemstack1, true) && inventorySlots.func_94531_b(par1Slot))
+            {
+                itemstack = itemstack1.copy();
+                flag = true;
+                Container.func_94525_a(field_94077_p, field_94071_C, itemstack, par1Slot.getStack() != null ? par1Slot.getStack().stackSize : 0);
+
+                if (itemstack.stackSize > itemstack.getMaxStackSize())
+                {
+                    s = (new StringBuilder()).append(EnumChatFormatting.YELLOW).append("").append(itemstack.getMaxStackSize()).toString();
+                    itemstack.stackSize = itemstack.getMaxStackSize();
+                }
+
+                if (itemstack.stackSize > par1Slot.getSlotStackLimit())
+                {
+                    s = (new StringBuilder()).append(EnumChatFormatting.YELLOW).append("").append(par1Slot.getSlotStackLimit()).toString();
+                    itemstack.stackSize = par1Slot.getSlotStackLimit();
+                }
+            }
+            else
+            {
+                field_94077_p.remove(par1Slot);
+                func_94066_g();
+            }
         }
 
         zLevel = 100F;
@@ -341,27 +401,64 @@ public abstract class GuiContainer extends GuiScreen
 
         if (itemstack == null)
         {
-            int k = par1Slot.getBackgroundIconIndex();
+            Icon icon = par1Slot.getBackgroundIconIndex();
 
-            if (k >= 0)
+            if (icon != null)
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/gui/items.png"));
-                drawTexturedModalRect(i, j, (k % 16) * 16, (k / 16) * 16, 16, 16);
+                mc.renderEngine.bindTexture("/gui/items.png");
+                drawTexturedModelRectFromIcon(i, j, icon, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
-                flag = true;
+                flag1 = true;
             }
         }
 
-        if (!flag)
+        if (!flag1)
         {
+            if (flag)
+            {
+                drawRect(i, j, i + 16, j + 16, 0x80ffffff);
+            }
+
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
-            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
+            itemRenderer.renderItemStack(fontRenderer, mc.renderEngine, itemstack, i, j, s);
         }
 
         itemRenderer.zLevel = 0.0F;
         zLevel = 0.0F;
+    }
+
+    private void func_94066_g()
+    {
+        ItemStack itemstack = mc.thePlayer.inventory.getItemStack();
+
+        if (itemstack == null || !field_94076_q)
+        {
+            return;
+        }
+
+        field_94069_F = itemstack.stackSize;
+
+        for (Iterator iterator = field_94077_p.iterator(); iterator.hasNext();)
+        {
+            Slot slot = (Slot)iterator.next();
+            ItemStack itemstack1 = itemstack.copy();
+            int i = slot.getStack() != null ? slot.getStack().stackSize : 0;
+            Container.func_94525_a(field_94077_p, field_94071_C, itemstack1, i);
+
+            if (itemstack1.stackSize > itemstack1.getMaxStackSize())
+            {
+                itemstack1.stackSize = itemstack1.getMaxStackSize();
+            }
+
+            if (itemstack1.stackSize > slot.getSlotStackLimit())
+            {
+                itemstack1.stackSize = slot.getSlotStackLimit();
+            }
+
+            field_94069_F -= itemstack1.stackSize - i;
+        }
     }
 
     /**
@@ -389,10 +486,13 @@ public abstract class GuiContainer extends GuiScreen
     {
         super.mouseClicked(par1, par2, par3);
         boolean flag = par3 == mc.gameSettings.keyBindPickBlock.keyCode + 100;
+        Slot slot = getSlotAtPosition(par1, par2);
+        long l = Minecraft.getSystemTime();
+        field_94074_J = field_94072_H == slot && l - field_94070_G < 250L && field_94073_I == par3;
+        field_94068_E = false;
 
         if (par3 == 0 || par3 == 1 || flag)
         {
-            Slot slot = getSlotAtPosition(par1, par2);
             int i = guiLeft;
             int j = guiTop;
             boolean flag1 = par1 < i || par2 < j || par1 >= i + xSize || par2 >= j + ySize;
@@ -422,65 +522,108 @@ public abstract class GuiContainer extends GuiScreen
                     {
                         clickedSlot = slot;
                         draggedStack = null;
-                        field_90018_r = par3 == 1;
+                        isRightMouseClick = par3 == 1;
                     }
                     else
                     {
                         clickedSlot = null;
                     }
                 }
-                else if (flag)
+                else if (!field_94076_q)
                 {
-                    handleMouseClick(slot, k, par3, 3);
-                }
-                else
-                {
-                    boolean flag2 = k != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
-                    handleMouseClick(slot, k, par3, flag2 ? 1 : 0);
+                    if (mc.thePlayer.inventory.getItemStack() == null)
+                    {
+                        if (par3 == mc.gameSettings.keyBindPickBlock.keyCode + 100)
+                        {
+                            handleMouseClick(slot, k, par3, 3);
+                        }
+                        else
+                        {
+                            boolean flag2 = k != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
+                            byte byte0 = 0;
+
+                            if (flag2)
+                            {
+                                field_94075_K = slot == null || !slot.getHasStack() ? null : slot.getStack();
+                                byte0 = 1;
+                            }
+                            else if (k == -999)
+                            {
+                                byte0 = 4;
+                            }
+
+                            handleMouseClick(slot, k, par3, byte0);
+                        }
+
+                        field_94068_E = true;
+                    }
+                    else
+                    {
+                        field_94076_q = true;
+                        field_94067_D = par3;
+                        field_94077_p.clear();
+
+                        if (par3 == 0)
+                        {
+                            field_94071_C = 0;
+                        }
+                        else if (par3 == 1)
+                        {
+                            field_94071_C = 1;
+                        }
+                    }
                 }
             }
         }
+
+        field_94072_H = slot;
+        field_94070_G = l;
+        field_94073_I = par3;
     }
 
     protected void func_85041_a(int par1, int par2, int par3, long par4)
     {
-        if (clickedSlot == null || !mc.gameSettings.touchscreen)
+        Slot slot = getSlotAtPosition(par1, par2);
+        ItemStack itemstack = mc.thePlayer.inventory.getItemStack();
+
+        if (clickedSlot != null && mc.gameSettings.touchscreen)
         {
-            return;
-        }
-
-        if (par3 == 0 || par3 == 1)
-        {
-            Slot slot = getSlotAtPosition(par1, par2);
-
-            if (draggedStack == null)
+            if (par3 == 0 || par3 == 1)
             {
-                if (slot != clickedSlot)
+                if (draggedStack == null)
                 {
-                    draggedStack = clickedSlot.getStack().copy();
-                }
-            }
-            else if (draggedStack.stackSize > 1 && slot != null && func_92031_b(slot))
-            {
-                long l = Minecraft.getSystemTime();
-
-                if (field_92033_y == slot)
-                {
-                    if (l - field_92032_z > 500L)
+                    if (slot != clickedSlot)
                     {
-                        handleMouseClick(clickedSlot, clickedSlot.slotNumber, 0, 0);
-                        handleMouseClick(slot, slot.slotNumber, 1, 0);
-                        handleMouseClick(clickedSlot, clickedSlot.slotNumber, 0, 0);
-                        field_92032_z = l + 750L;
-                        draggedStack.stackSize--;
+                        draggedStack = clickedSlot.getStack().copy();
                     }
                 }
-                else
+                else if (draggedStack.stackSize > 1 && slot != null && Container.func_94527_a(slot, draggedStack, false))
                 {
-                    field_92033_y = slot;
-                    field_92032_z = l;
+                    long l = Minecraft.getSystemTime();
+
+                    if (field_92033_y == slot)
+                    {
+                        if (l - field_92032_z > 500L)
+                        {
+                            handleMouseClick(clickedSlot, clickedSlot.slotNumber, 0, 0);
+                            handleMouseClick(slot, slot.slotNumber, 1, 0);
+                            handleMouseClick(clickedSlot, clickedSlot.slotNumber, 0, 0);
+                            field_92032_z = l + 750L;
+                            draggedStack.stackSize--;
+                        }
+                    }
+                    else
+                    {
+                        field_92033_y = slot;
+                        field_92032_z = l;
+                    }
                 }
             }
+        }
+        else if (field_94076_q && slot != null && itemstack != null && itemstack.stackSize > field_94077_p.size() && Container.func_94527_a(slot, itemstack, true) && slot.isItemValid(itemstack) && inventorySlots.func_94531_b(slot))
+        {
+            field_94077_p.add(slot);
+            func_94066_g();
         }
     }
 
@@ -490,79 +633,152 @@ public abstract class GuiContainer extends GuiScreen
      */
     protected void mouseMovedOrUp(int par1, int par2, int par3)
     {
-        if (clickedSlot == null || !mc.gameSettings.touchscreen)
+        Slot slot = getSlotAtPosition(par1, par2);
+        int i = guiLeft;
+        int j = guiTop;
+        boolean flag = par1 < i || par2 < j || par1 >= i + xSize || par2 >= j + ySize;
+        int k = -1;
+
+        if (slot != null)
         {
-            return;
+            k = slot.slotNumber;
         }
 
-        if (par3 == 0 || par3 == 1)
+        if (flag)
         {
-            Slot slot = getSlotAtPosition(par1, par2);
-            int i = guiLeft;
-            int j = guiTop;
-            boolean flag = par1 < i || par2 < j || par1 >= i + xSize || par2 >= j + ySize;
-            int k = -1;
+            k = -999;
+        }
 
-            if (slot != null)
+        if (field_94074_J && slot != null && par3 == 0 && inventorySlots.func_94530_a(null, slot))
+        {
+            if (isShiftKeyDown())
             {
-                k = slot.slotNumber;
-            }
-
-            if (flag)
-            {
-                k = -999;
-            }
-
-            if (draggedStack == null && slot != clickedSlot)
-            {
-                draggedStack = clickedSlot.getStack();
-            }
-
-            boolean flag1 = func_92031_b(slot);
-
-            if (k != -1 && draggedStack != null && flag1)
-            {
-                handleMouseClick(clickedSlot, clickedSlot.slotNumber, par3, 0);
-                handleMouseClick(slot, k, 0, 0);
-
-                if (mc.thePlayer.inventory.getItemStack() != null)
+                if (slot != null && slot.inventory != null && field_94075_K != null)
                 {
-                    handleMouseClick(clickedSlot, clickedSlot.slotNumber, par3, 0);
-                    field_85049_r = par1 - i;
-                    field_85048_s = par2 - j;
-                    returningStackDestSlot = clickedSlot;
-                    returningStack = draggedStack;
-                    returningStackTime = Minecraft.getSystemTime();
+                    Iterator iterator = inventorySlots.inventorySlots.iterator();
+
+                    do
+                    {
+                        if (!iterator.hasNext())
+                        {
+                            break;
+                        }
+
+                        Slot slot1 = (Slot)iterator.next();
+
+                        if (slot1 != null && slot1.canTakeStack(mc.thePlayer) && slot1.getHasStack() && slot1.inventory == slot.inventory && Container.func_94527_a(slot1, field_94075_K, true))
+                        {
+                            handleMouseClick(slot1, slot1.slotNumber, par3, 1);
+                        }
+                    }
+                    while (true);
+                }
+            }
+            else
+            {
+                handleMouseClick(slot, k, par3, 6);
+            }
+
+            field_94074_J = false;
+            field_94070_G = 0L;
+        }
+        else
+        {
+            if (field_94076_q && field_94067_D != par3)
+            {
+                field_94076_q = false;
+                field_94077_p.clear();
+                field_94068_E = true;
+                return;
+            }
+
+            if (field_94068_E)
+            {
+                field_94068_E = false;
+                return;
+            }
+
+            if (clickedSlot != null && mc.gameSettings.touchscreen)
+            {
+                if (par3 == 0 || par3 == 1)
+                {
+                    if (draggedStack == null && slot != clickedSlot)
+                    {
+                        draggedStack = clickedSlot.getStack();
+                    }
+
+                    boolean flag1 = Container.func_94527_a(slot, draggedStack, false);
+
+                    if (k != -1 && draggedStack != null && flag1)
+                    {
+                        handleMouseClick(clickedSlot, clickedSlot.slotNumber, par3, 0);
+                        handleMouseClick(slot, k, 0, 0);
+
+                        if (mc.thePlayer.inventory.getItemStack() != null)
+                        {
+                            handleMouseClick(clickedSlot, clickedSlot.slotNumber, par3, 0);
+                            field_85049_r = par1 - i;
+                            field_85048_s = par2 - j;
+                            returningStackDestSlot = clickedSlot;
+                            returningStack = draggedStack;
+                            returningStackTime = Minecraft.getSystemTime();
+                        }
+                        else
+                        {
+                            returningStack = null;
+                        }
+                    }
+                    else if (draggedStack != null)
+                    {
+                        field_85049_r = par1 - i;
+                        field_85048_s = par2 - j;
+                        returningStackDestSlot = clickedSlot;
+                        returningStack = draggedStack;
+                        returningStackTime = Minecraft.getSystemTime();
+                    }
+
+                    draggedStack = null;
+                    clickedSlot = null;
+                }
+            }
+            else if (field_94076_q && !field_94077_p.isEmpty())
+            {
+                handleMouseClick(null, -999, Container.func_94534_d(0, field_94071_C), 5);
+                Slot slot2;
+
+                for (Iterator iterator1 = field_94077_p.iterator(); iterator1.hasNext(); handleMouseClick(slot2, slot2.slotNumber, Container.func_94534_d(1, field_94071_C), 5))
+                {
+                    slot2 = (Slot)iterator1.next();
+                }
+
+                handleMouseClick(null, -999, Container.func_94534_d(2, field_94071_C), 5);
+            }
+            else if (mc.thePlayer.inventory.getItemStack() != null)
+            {
+                if (par3 == mc.gameSettings.keyBindPickBlock.keyCode + 100)
+                {
+                    handleMouseClick(slot, k, par3, 3);
                 }
                 else
                 {
-                    returningStack = null;
+                    boolean flag2 = k != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
+
+                    if (flag2)
+                    {
+                        field_94075_K = slot == null || !slot.getHasStack() ? null : slot.getStack();
+                    }
+
+                    handleMouseClick(slot, k, par3, flag2 ? 1 : 0);
                 }
             }
-            else if (draggedStack != null)
-            {
-                field_85049_r = par1 - i;
-                field_85048_s = par2 - j;
-                returningStackDestSlot = clickedSlot;
-                returningStack = draggedStack;
-                returningStackTime = Minecraft.getSystemTime();
-            }
-
-            draggedStack = null;
-            clickedSlot = null;
         }
-    }
 
-    private boolean func_92031_b(Slot par1Slot)
-    {
-        boolean flag = par1Slot == null || !par1Slot.getHasStack();
-
-        if (par1Slot != null && par1Slot.getHasStack() && draggedStack != null && ItemStack.areItemStackTagsEqual(par1Slot.getStack(), draggedStack))
+        if (mc.thePlayer.inventory.getItemStack() == null)
         {
-            flag |= par1Slot.getStack().stackSize + draggedStack.stackSize <= draggedStack.getMaxStackSize();
+            field_94070_G = 0L;
         }
 
-        return flag;
+        field_94076_q = false;
     }
 
     /**
@@ -570,10 +786,14 @@ public abstract class GuiContainer extends GuiScreen
      */
     private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3)
     {
-        return func_74188_c(par1Slot.xDisplayPosition, par1Slot.yDisplayPosition, 16, 16, par2, par3);
+        return isPointInRegion(par1Slot.xDisplayPosition, par1Slot.yDisplayPosition, 16, 16, par2, par3);
     }
 
-    protected boolean func_74188_c(int par1, int par2, int par3, int par4, int par5, int par6)
+    /**
+     * Args: left, top, width, height, pointX, pointY. Note: left, top are local to Gui, pointX, pointY are local to
+     * screen
+     */
+    protected boolean isPointInRegion(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         int i = guiLeft;
         int j = guiTop;
@@ -602,15 +822,25 @@ public abstract class GuiContainer extends GuiScreen
             mc.thePlayer.closeScreen();
         }
 
-        func_82319_a(par2);
+        checkHotbarKeys(par2);
 
-        if (par2 == mc.gameSettings.keyBindPickBlock.keyCode && theSlot != null && theSlot.getHasStack())
+        if (theSlot != null && theSlot.getHasStack())
         {
-            handleMouseClick(theSlot, theSlot.slotNumber, ySize, 3);
+            if (par2 == mc.gameSettings.keyBindPickBlock.keyCode)
+            {
+                handleMouseClick(theSlot, theSlot.slotNumber, 0, 3);
+            }
+            else if (par2 == mc.gameSettings.keyBindDrop.keyCode)
+            {
+                handleMouseClick(theSlot, theSlot.slotNumber, isCtrlKeyDown() ? 1 : 0, 4);
+            }
         }
     }
 
-    protected boolean func_82319_a(int par1)
+    /**
+     * This function is what controls the hotbar shortcut check when you press a number key when hovering a stack.
+     */
+    protected boolean checkHotbarKeys(int par1)
     {
         if (mc.thePlayer.inventory.getItemStack() == null && theSlot != null)
         {

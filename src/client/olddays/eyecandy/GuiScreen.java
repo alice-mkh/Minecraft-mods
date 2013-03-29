@@ -22,8 +22,8 @@ public class GuiScreen extends Gui
     /** The height of the screen object. */
     public int height;
 
-    /** A list of all the controls added to this container. */
-    protected List controlList;
+    /** A list of all the buttons in this container. */
+    protected List buttonList;
     public boolean allowUserInput;
 
     /** The FontRenderer used by GuiScreen */
@@ -32,16 +32,16 @@ public class GuiScreen extends Gui
 
     /** The button that was just pressed. */
     private GuiButton selectedButton;
-    private int field_85042_b;
+    private int eventButton;
     private long field_85043_c;
     private int field_92018_d;
 
     public GuiScreen()
     {
-        controlList = new ArrayList();
+        buttonList = new ArrayList();
         allowUserInput = false;
         selectedButton = null;
-        field_85042_b = 0;
+        eventButton = 0;
         field_85043_c = 0L;
         field_92018_d = 0;
     }
@@ -51,9 +51,9 @@ public class GuiScreen extends Gui
      */
     public void drawScreen(int par1, int par2, float par3)
     {
-        for (int i = 0; i < controlList.size(); i++)
+        for (int i = 0; i < buttonList.size(); i++)
         {
-            GuiButton guibutton = (GuiButton)controlList.get(i);
+            GuiButton guibutton = (GuiButton)buttonList.get(i);
             guibutton.drawButton(mc, par1, par2);
         }
     }
@@ -109,9 +109,9 @@ public class GuiScreen extends Gui
     {
         if (par3 == 0)
         {
-            for (int i = 0; i < controlList.size(); i++)
+            for (int i = 0; i < buttonList.size(); i++)
             {
-                GuiButton guibutton = (GuiButton)controlList.get(i);
+                GuiButton guibutton = (GuiButton)buttonList.get(i);
 
                 if (guibutton.mousePressed(mc, par1, par2))
                 {
@@ -158,7 +158,7 @@ public class GuiScreen extends Gui
         fontRenderer = par1Minecraft.fontRenderer;
         width = par2;
         height = par3;
-        controlList.clear();
+        buttonList.clear();
         initGui();
     }
 
@@ -194,9 +194,9 @@ public class GuiScreen extends Gui
                 return;
             }
 
-            field_85042_b = Mouse.getEventButton();
+            eventButton = Mouse.getEventButton();
             field_85043_c = Minecraft.getSystemTime();
-            mouseClicked(i, j, field_85042_b);
+            mouseClicked(i, j, eventButton);
         }
         else if (Mouse.getEventButton() != -1)
         {
@@ -205,13 +205,13 @@ public class GuiScreen extends Gui
                 return;
             }
 
-            field_85042_b = -1;
+            eventButton = -1;
             mouseMovedOrUp(i, j, Mouse.getEventButton());
         }
-        else if (mc.gameSettings.touchscreen && field_85042_b != -1 && field_85043_c > 0L)
+        else if (eventButton != -1 && field_85043_c > 0L)
         {
             long l = Minecraft.getSystemTime() - field_85043_c;
-            func_85041_a(i, j, field_85042_b, l);
+            func_85041_a(i, j, eventButton, l);
         }
     }
 
@@ -267,7 +267,6 @@ public class GuiScreen extends Gui
         if (mc.theWorld != null)
         {
             drawGradientRect(0, 0, width, height, oldbg ? 0x60050500 : 0xc0101010, oldbg ? 0xa0303060 : 0xd0101010);
-            
         }
         else
         {
@@ -283,7 +282,7 @@ public class GuiScreen extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/background.png"));
+        mc.renderEngine.bindTexture("/gui/background.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32F;
         tessellator.startDrawingQuads();

@@ -142,7 +142,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     private void procreate(EntityAnimal par1EntityAnimal)
     {
-        EntityAgeable entityageable = func_90011_a(par1EntityAnimal);
+        EntityAgeable entityageable = createChild(par1EntityAnimal);
 
         if (entityageable != null)
         {
@@ -179,7 +179,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
@@ -328,7 +328,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     public boolean isBreedingItem(ItemStack par1ItemStack)
     {
-        return par1ItemStack.itemID == Item.wheat.shiftedIndex;
+        return par1ItemStack.itemID == Item.wheat.itemID;
     }
 
     /**
@@ -338,7 +338,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (itemstack != null && isBreedingItem(itemstack) && getGrowingAge() == 0)
+        if (itemstack != null && isBreedingItem(itemstack) && getGrowingAge() == 0 && inLove <= 0)
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {

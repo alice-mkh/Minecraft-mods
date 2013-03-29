@@ -17,6 +17,7 @@ public class EntitySpider extends EntityMob
         moveSpeed = 0.8F;
     }
 
+    @Override
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || survivaltest;
@@ -105,7 +106,7 @@ public class EntitySpider extends EntityMob
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        func_85030_a("mob.spider.step", 0.15F, 1.0F);
+        playSound("mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
@@ -151,11 +152,12 @@ public class EntitySpider extends EntityMob
      */
     protected int getDropItemId()
     {
-        return Item.silk.shiftedIndex;
+        return Item.silk.itemID;
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -163,7 +165,7 @@ public class EntitySpider extends EntityMob
 
         if (par1 && (rand.nextInt(3) == 0 || rand.nextInt(1 + par2) > 0))
         {
-            dropItem(Item.spiderEye.shiftedIndex, 1);
+            dropItem(Item.spiderEye.itemID, 1);
         }
     }
 

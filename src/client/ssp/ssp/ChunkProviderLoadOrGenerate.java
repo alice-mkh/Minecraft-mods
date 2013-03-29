@@ -56,6 +56,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     /**
      * Checks to see if a chunk exists at x, y
      */
+    @Override
     public boolean chunkExists(int par1, int par2)
     {
         if (!canChunkExist(par1, par2))
@@ -79,6 +80,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     /**
      * loads or generates the chunk at the chunk location specified
      */
+    @Override
     public Chunk loadChunk(int par1, int par2)
     {
         return provideChunk(par1, par2);
@@ -88,6 +90,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
      * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
      * specified chunk from the map seed and chunk seed
      */
+    @Override
     public Chunk provideChunk(int par1, int par2)
     {
         if (par1 == lastQueriedChunkXPos && par2 == lastQueriedChunkZPosition && lastQueriedChunk != null)
@@ -124,12 +127,10 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
                 else
                 {
                     chunk = chunkProvider.provideChunk(par1, par2);
-//                     chunk.removeUnknownBlocks();
                 }
             }
 
             chunks[k] = chunk;
-//             chunk.func_4143_d();
 
             if (chunks[k] != null)
             {
@@ -162,7 +163,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
 
                 if (chunkProvider != null)
                 {
-                    chunkProvider.func_82695_e(par1, par2);
+                    chunkProvider.recreateStructures(par1, par2);
                 }
             }
 
@@ -221,6 +222,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     /**
      * Populates chunk with ores etc etc
      */
+    @Override
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
     {
         Chunk chunk = provideChunk(par2, par3);
@@ -241,6 +243,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
      * Two modes of operation: if passed true, save all Chunks in one go.  If passed false, save up to two chunks.
      * Return true if all chunks have been saved.
      */
+    @Override
     public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
     {
         int i = 0;
@@ -307,19 +310,21 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
      * Unloads the 100 oldest chunks from memory, due to a bug with chunkSet.add() never being called it thinks the list
      * is always empty and will not remove any chunks.
      */
-    public boolean unload100OldestChunks()
+    @Override
+    public boolean unloadQueuedChunks()
     {
         if (chunkLoader != null)
         {
             chunkLoader.chunkTick();
         }
 
-        return chunkProvider.unload100OldestChunks();
+        return chunkProvider.unloadQueuedChunks();
     }
 
     /**
      * Returns if the IChunkProvider supports saving.
      */
+    @Override
     public boolean canSave()
     {
         return true;
@@ -328,6 +333,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     /**
      * Converts the instance data to a readable string.
      */
+    @Override
     public String makeString()
     {
         return (new StringBuilder()).append("ChunkCache: ").append(chunks.length).toString();
@@ -336,6 +342,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     /**
      * Returns a list of creatures of the specified type that can spawn at the given location.
      */
+    @Override
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
         return chunkProvider.getPossibleCreatures(par1EnumCreatureType, par2, par3, par4);
@@ -344,17 +351,20 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     /**
      * Returns the location of the closest structure of the specified type. If not found returns null.
      */
+    @Override
     public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5)
     {
         return chunkProvider.findClosestStructure(par1World, par2Str, par3, par4, par5);
     }
 
+    @Override
     public int getLoadedChunkCount()
     {
         return 0;
     }
 
-    public void func_82695_e(int par1, int par2)
+    @Override
+    public void recreateStructures(int par1, int par2)
     {
     }
 }

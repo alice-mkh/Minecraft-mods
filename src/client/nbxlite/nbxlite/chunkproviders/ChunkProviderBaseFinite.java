@@ -37,12 +37,14 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
         }
     }
 
+    @Override
     public Chunk loadChunk(int i, int j){
         return provideChunk(i, j);
     }
 
     public void generateFiniteLevel(){}
 
+    @Override
     public Chunk provideChunk(int i, int j){
         boolean bounds = i>=0 && i<ODNBXlite.IndevWidthX/16 && j>=0 && j<ODNBXlite.IndevWidthZ/16;
         Chunk chunk;
@@ -59,10 +61,12 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
         return chunk;
     }
 
+    @Override
     public boolean chunkExists(int i, int j){
         return true;
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider, int i, int j){
         boolean bounds = i>=0 && i<ODNBXlite.IndevWidthX/16 && j>=0 && j<ODNBXlite.IndevWidthZ/16;
         if (!bounds){
@@ -87,36 +91,44 @@ public class ChunkProviderBaseFinite implements IChunkProvider{
         }
     }
 
+    @Override
     public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate){
         return true;
     }
 
-    public boolean unload100OldestChunks(){
+    @Override
+    public boolean unloadQueuedChunks(){
         return false;
     }
 
+    @Override
     public boolean canSave(){
         return true;
     }
 
+    @Override
     public String makeString(){
         return "RandomLevelSource";
     }
 
+    @Override
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k){
         return null;
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         return null;
     }
 
+    @Override
     public int getLoadedChunkCount()
     {
         return 0;
     }
 
-    public void func_82695_e(int par1, int par2)
+    @Override
+    public void recreateStructures(int par1, int par2)
     {
     }
 }

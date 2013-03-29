@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class BlockGrass extends Block
 {
-    public int toptex;
-    public int sidetex;
+    private Icon iconGrassTop;
+    private Icon iconSnowSide;
+    private Icon iconGrassSideOverlay;
 
     protected BlockGrass(int par1)
     {
         super(par1, Material.grass);
-        blockIndexInTexture = 3;
         setTickRandomly(true);
         setCreativeTab(CreativeTabs.tabBlock);
     }
@@ -18,42 +18,69 @@ public class BlockGrass extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (par1 == 1)
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
-                return toptex;
+//                return toptex;
             }
-            return 0;
+            return iconGrassTop;
         }
 
-        return par1 != 0 ? 3 : 2;
+        if (par1 == 0)
+        {
+            return Block.dirt.getBlockTextureFromSide(par1);
+        }
+        else
+        {
+            return blockIcon;
+        }
     }
 
     /**
      * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
      */
-    public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par5 == 1)
         {
             if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
-                return toptex;
+//                return toptex;
             }
-            return 0;
+            return iconGrassTop;
         }
 
         if (par5 == 0)
         {
-            return 2;
+            return Block.dirt.getBlockTextureFromSide(par5);
         }
 
         Material material = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-        if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
-            return material != Material.snow && material != Material.craftedSnow ? sidetex : 68;
+
+        if (material == Material.snow || material == Material.craftedSnow)
+        {
+            return iconSnowSide;
         }
-        return material != Material.snow && material != Material.craftedSnow ? 3 : 68;
+        else
+        {
+            if ((ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS || (ODNBXlite.GreenGrassSides && !ODNBXlite.NoGreenGrassSides)) && mod_OldDays.texman.hasEntry("olddays/grasstop.png", "olddays/grassside.png")){
+//                 return sidetex;
+            }
+            return blockIcon;
+        }
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        blockIcon = par1IconRegister.registerIcon("grass_side");
+        iconGrassTop = par1IconRegister.registerIcon("grass_top");
+        iconSnowSide = par1IconRegister.registerIcon("snow_side");
+        iconGrassSideOverlay = par1IconRegister.registerIcon("grass_side_overlay");
     }
 
     public int getBlockColor()
@@ -98,7 +125,7 @@ public class BlockGrass extends Block
 
         if (par1World.getBlockLightValue(par2, par3 + 1, par4) < 4 && Block.lightOpacity[par1World.getBlockId(par2, par3 + 1, par4)] > 2)
         {
-            par1World.setBlockWithNotify(par2, par3, par4, Block.dirt.blockID);
+            par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
         }
         else if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9)
         {
@@ -111,7 +138,7 @@ public class BlockGrass extends Block
 
                 if (par1World.getBlockId(j, k, l) == Block.dirt.blockID && par1World.getBlockLightValue(j, k + 1, l) >= 4 && Block.lightOpacity[i1] <= 2)
                 {
-                    par1World.setBlockWithNotify(j, k, l, Block.grass.blockID);
+                    par1World.setBlock(j, k, l, Block.grass.blockID);
                 }
             }
         }
@@ -123,5 +150,10 @@ public class BlockGrass extends Block
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Block.dirt.idDropped(0, par2Random, par3);
+    }
+
+    public static Icon getIconSideOverlay()
+    {
+        return Block.grass.iconGrassSideOverlay;
     }
 }

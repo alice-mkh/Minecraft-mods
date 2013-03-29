@@ -70,17 +70,17 @@ public class SPCWorld implements SPCWorldInterface {
 
    @Override
    public void setBlockWithNotify(SPCPoint position, int block) {
-      world.setBlockWithNotify(position.ix, position.iy, position.iz, block);
+      world.setBlock(position.ix, position.iy, position.iz, block);
    }
 
    @Override
    public void setMetadata(SPCPoint position, int data) {
-      world.setBlockMetadata(position.ix, position.iy, position.iz, data);
+      world.setBlockMetadataWithNotify(position.ix, position.iy, position.iz, data, 0);
    }
 
    @Override
    public void setMetadataWithNotify(SPCPoint position, int data) {
-      world.setBlockMetadataWithNotify(position.ix, position.iy, position.iz, data);
+      world.setBlockMetadataWithNotify(position.ix, position.iy, position.iz, data, 3);
    }
 
    @Override

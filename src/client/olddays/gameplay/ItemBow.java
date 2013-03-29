@@ -7,6 +7,12 @@ public class ItemBow extends Item
     public static boolean nocharging = false;
     public static boolean nodurability = false;
 
+    public static final String bowPullIconNameArray[] =
+    {
+        "bow_pull_0", "bow_pull_1", "bow_pull_2"
+    };
+    private Icon iconArray[];
+
     public ItemBow(int par1)
     {
         super(par1);
@@ -22,7 +28,7 @@ public class ItemBow extends Item
     {
         boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
-        if (flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex))
+        if (flag || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
         {
             int i = getMaxItemUseDuration(par1ItemStack) - par4;
             float f = (float)i / 20F;
@@ -75,7 +81,7 @@ public class ItemBow extends Item
             }
             else
             {
-                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
+                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.itemID);
             }
 
             if (!par2World.isRemote)
@@ -85,7 +91,7 @@ public class ItemBow extends Item
         }
     }
 
-    public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         return par1ItemStack;
     }
@@ -113,10 +119,10 @@ public class ItemBow extends Item
     {
         boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
         if(!nocharging){
-            if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
+            if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID)){
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
-        }else if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.shiftedIndex)){
+        }else if(flag || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID)){
             if (!nodurability){
                 par1ItemStack.damageItem(1, par3EntityPlayer);
             }
@@ -137,7 +143,7 @@ public class ItemBow extends Item
             }
             par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
             if (!flag){
-                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.shiftedIndex);
+                par3EntityPlayer.inventory.consumeInventoryItem(Item.arrow.itemID);
             }else{
                 entityarrow.canBePickedUp = 2;
             }
@@ -154,5 +160,21 @@ public class ItemBow extends Item
     public int getItemEnchantability()
     {
         return 1;
+    }
+
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        super.updateIcons(par1IconRegister);
+        iconArray = new Icon[bowPullIconNameArray.length];
+
+        for (int i = 0; i < iconArray.length; i++)
+        {
+            iconArray[i] = par1IconRegister.registerIcon(bowPullIconNameArray[i]);
+        }
+    }
+
+    public Icon func_94599_c(int par1)
+    {
+        return iconArray[par1];
     }
 }

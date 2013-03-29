@@ -27,6 +27,7 @@ public class ChunkProviderGenerateOldInfdev extends ChunkProviderBaseInfinite{
         new InfdevOldNoiseGeneratorOctaves(rand, 3);
     }
 
+    @Override
     protected void generateTerrain(int i11, int j11, byte abyte0[]){
         int i = i11 << 4;
         int g11 = j11 << 4;
@@ -126,6 +127,7 @@ public class ChunkProviderGenerateOldInfdev extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider2, int i1, int j1){
         if (ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS){
             int l3 = (int)((noiseSandGen.func_806_a((double)i1 * 8D, (double)j1 * 8D) / 8D + rand.nextDouble() * 4D + 4D) / 3D);

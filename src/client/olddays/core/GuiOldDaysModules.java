@@ -5,6 +5,7 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
         super(guiscreen, core);
     }
 
+    @Override
     public void initGui(){
         super.initGui();
         int count = mod_OldDays.modules.size();
@@ -17,12 +18,13 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
         }
         postInitGui(count);
         maxpage /= 2;
-        controlList.add(new GuiButton(100, width / 2 - 155, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off")));
+        buttonList.add(new GuiButton(100, width / 2 - 155, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off")));
         GuiButton presets = new GuiButton(101, width / 2 + 81, height - 28, 75, 20, mod_OldDays.lang.get("gui.presets"));
         presets.enabled = !core.isVanillaSMP();
-        controlList.add(presets);
+        buttonList.add(presets);
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         super.actionPerformed(guibutton);

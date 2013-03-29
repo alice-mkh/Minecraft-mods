@@ -6,9 +6,12 @@ public class BlockMushroom extends BlockFlower
 {
     public static boolean spreading = true;
 
-    protected BlockMushroom(int par1, int par2)
+    private final String field_94374_a;
+
+    protected BlockMushroom(int par1, String par2Str)
     {
-        super(par1, par2);
+        super(par1);
+        field_94374_a = par2Str;
         float f = 0.2F;
         setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
         setTickRandomly(true);
@@ -58,7 +61,7 @@ public class BlockMushroom extends BlockFlower
 
             if (par1World.isAirBlock(k, i1, k1) && canBlockStay(par1World, k, i1, k1))
             {
-                par1World.setBlockWithNotify(k, i1, k1, blockID);
+                par1World.setBlock(k, i1, k1, blockID);
             }
         }
     }
@@ -102,7 +105,7 @@ public class BlockMushroom extends BlockFlower
     public boolean fertilizeMushroom(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int i = par1World.getBlockMetadata(par2, par3, par4);
-        par1World.setBlock(par2, par3, par4, 0);
+        par1World.setBlockToAir(par2, par3, par4);
         WorldGenBigMushroom worldgenbigmushroom = null;
 
         if (blockID == Block.mushroomBrown.blockID)
@@ -116,12 +119,21 @@ public class BlockMushroom extends BlockFlower
 
         if (worldgenbigmushroom == null || !worldgenbigmushroom.generate(par1World, par5Random, par2, par3, par4))
         {
-            par1World.setBlockAndMetadata(par2, par3, par4, blockID, i);
+            par1World.setBlock(par2, par3, par4, blockID, i, 3);
             return false;
         }
         else
         {
             return true;
         }
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        blockIcon = par1IconRegister.registerIcon(field_94374_a);
     }
 }

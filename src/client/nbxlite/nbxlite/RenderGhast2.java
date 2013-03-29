@@ -12,6 +12,7 @@ public class RenderGhast2 extends RenderGhast
 {
     public static boolean bright = false;
 
+    @Override
     protected void preRenderGhast(EntityGhast entityghast, float f)
     {
         EntityGhast entityghast1 = entityghast;

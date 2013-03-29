@@ -26,7 +26,7 @@ public class EntityEnderPearl extends EntityThrowable
     {
         if (par1MovingObjectPosition.entityHit != null)
         {
-            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, func_85052_h()), 0);
+            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0);
         }
 
         for (int i = 0; i < 32; i++)
@@ -36,21 +36,21 @@ public class EntityEnderPearl extends EntityThrowable
 
         if (!worldObj.isRemote)
         {
-            if (func_85052_h() != null && net.minecraft.client.Minecraft.getMinecraft().enableSP)
+            if (getThrower() != null && net.minecraft.client.Minecraft.getMinecraft().enableSP)
             {
-                func_85052_h().setPositionAndUpdate(posX, posY, posZ);
-                func_85052_h().fallDistance = 0.0F;
-                func_85052_h().attackEntityFrom(DamageSource.fall, 5);
+                getThrower().setPositionAndUpdate(posX, posY, posZ);
+                getThrower().fallDistance = 0.0F;
+                getThrower().attackEntityFrom(DamageSource.fall, 5);
             }else
-            if (func_85052_h() != null && (func_85052_h() instanceof EntityPlayerMP))
+            if (getThrower() != null && (getThrower() instanceof EntityPlayerMP))
             {
-                EntityPlayerMP entityplayermp = (EntityPlayerMP)func_85052_h();
+                EntityPlayerMP entityplayermp = (EntityPlayerMP)getThrower();
 
                 if (!entityplayermp.playerNetServerHandler.connectionClosed && entityplayermp.worldObj == worldObj)
                 {
-                    func_85052_h().setPositionAndUpdate(posX, posY, posZ);
-                    func_85052_h().fallDistance = 0.0F;
-                    func_85052_h().attackEntityFrom(DamageSource.fall, 5);
+                    getThrower().setPositionAndUpdate(posX, posY, posZ);
+                    getThrower().fallDistance = 0.0F;
+                    getThrower().attackEntityFrom(DamageSource.fall, 5);
                 }
             }
 

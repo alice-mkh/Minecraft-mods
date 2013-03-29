@@ -4,7 +4,8 @@ import java.util.Random;
 
 public class EntityFX extends Entity
 {
-    private int particleTextureIndex;
+    protected int particleTextureIndexX;
+    protected int particleTextureIndexY;
     protected float particleTextureJitterX;
     protected float particleTextureJitterY;
     protected int particleAge;
@@ -27,6 +28,7 @@ public class EntityFX extends Entity
 
     /** Particle alpha */
     protected float particleAlpha;
+    protected Icon particleTextureIndex;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;
@@ -37,6 +39,7 @@ public class EntityFX extends Entity
         particleAge = 0;
         particleMaxAge = 0;
         particleAlpha = 1.0F;
+        particleTextureIndex = null;
         setSize(0.2F, 0.2F);
         yOffset = height / 2.0F;
         setPosition(par2, par4, par6);
@@ -151,11 +154,20 @@ public class EntityFX extends Entity
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        float f = (float)(particleTextureIndex % 16) / 16F;
+        float f = (float)particleTextureIndexX / 16F;
         float f1 = f + 0.0624375F;
-        float f2 = (float)(particleTextureIndex / 16) / 16F;
+        float f2 = (float)particleTextureIndexY / 16F;
         float f3 = f2 + 0.0624375F;
         float f4 = 0.1F * particleScale;
+
+        if (particleTextureIndex != null)
+        {
+            f = particleTextureIndex.getMinU();
+            f1 = particleTextureIndex.getMaxU();
+            f2 = particleTextureIndex.getMinV();
+            f3 = particleTextureIndex.getMaxV();
+        }
+
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);
         float f6 = (float)((prevPosY + (posY - prevPosY) * (double)par2) - interpPosY);
         float f7 = (float)((prevPosZ + (posZ - prevPosZ) * (double)par2) - interpPosZ);
@@ -186,17 +198,42 @@ public class EntityFX extends Entity
     {
     }
 
+    public void func_94052_a(RenderEngine par1RenderEngine, Icon par2Icon)
+    {
+        if (getFXLayer() == 1)
+        {
+            particleTextureIndex = par2Icon;
+        }
+        else if (getFXLayer() == 2)
+        {
+            particleTextureIndex = par2Icon;
+        }
+        else
+        {
+            throw new RuntimeException("Invalid call to Particle.setTex, use coordinate methods");
+        }
+    }
+
     /**
      * Public method to set private field particleTextureIndex.
      */
     public void setParticleTextureIndex(int par1)
     {
-        particleTextureIndex = par1;
+        if (getFXLayer() != 0)
+        {
+            throw new RuntimeException("Invalid call to Particle.setMiscTex");
+        }
+        else
+        {
+            particleTextureIndexX = par1 % 16;
+            particleTextureIndexY = par1 / 16;
+            return;
+        }
     }
 
-    public int getParticleTextureIndex()
+    public void nextTextureIndexX()
     {
-        return particleTextureIndex;
+        particleTextureIndexX++;
     }
 
     /**

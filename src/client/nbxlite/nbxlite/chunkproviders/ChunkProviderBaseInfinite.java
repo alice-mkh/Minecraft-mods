@@ -48,6 +48,7 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
 
     protected void generateStructures(int i, int j, byte abyte0[]){}
 
+    @Override
     public Chunk provideChunk(int i, int j){
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
@@ -76,6 +77,7 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
         return chunk;
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider2, int x, int z){}
 
     protected void spawnAnimals(int i, int j){
@@ -85,34 +87,42 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
         }
     }
 
+    @Override
     public Chunk loadChunk(int i, int j){
         return provideChunk(i, j);
     }
 
+    @Override
     public boolean chunkExists(int i, int j){
         return true;
     }
 
+    @Override
     public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate){
         return true;
     }
 
-    public boolean unload100OldestChunks(){
+    @Override
+    public boolean unloadQueuedChunks(){
         return false;
     }
 
+    @Override
     public boolean canSave(){
         return true;
     }
 
+    @Override
     public String makeString(){
         return "RandomLevelSource";
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         return null;
     }
 
+    @Override
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k){
         WorldChunkManager worldchunkmanager = worldObj.getWorldChunkManager();
         if (worldchunkmanager == null)
@@ -130,12 +140,14 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
         }
     }
 
+    @Override
     public int getLoadedChunkCount()
     {
         return 0;
     }
 
-    public void func_82695_e(int par1, int par2)
+    @Override
+    public void recreateStructures(int par1, int par2)
     {
         generateStructures(par1, par2, null);
     }

@@ -82,7 +82,7 @@ public class EntityEnderman extends EntityMob
                 if (field_70826_g++ == 5)
                 {
                     field_70826_g = 0;
-                    func_70819_e(true);
+                    setScreaming(true);
                     return entityplayer;
                 }
             }
@@ -151,7 +151,7 @@ public class EntityEnderman extends EntityMob
                     {
                         setCarried(worldObj.getBlockId(i, l, j1));
                         setCarryingData(worldObj.getBlockMetadata(i, l, j1));
-                        worldObj.setBlockWithNotify(i, l, j1, 0);
+                        worldObj.setBlock(i, l, j1, 0);
                     }
                 }
             }
@@ -165,7 +165,7 @@ public class EntityEnderman extends EntityMob
 
                 if (i2 == 0 && j2 > 0 && Block.blocksList[j2].renderAsNormalBlock())
                 {
-                    worldObj.setBlockAndMetadataWithNotify(j, i1, k1, getCarried(), getCarryingData());
+                    worldObj.setBlock(j, i1, k1, getCarried(), getCarryingData(), 3);
                     setCarried(0);
                 }
             }
@@ -187,7 +187,7 @@ public class EntityEnderman extends EntityMob
             if (f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
             {
                 entityToAttack = null;
-                func_70819_e(false);
+                setScreaming(false);
                 teleportRandomly();
             }
         }
@@ -195,7 +195,7 @@ public class EntityEnderman extends EntityMob
         if (isWet() || isBurning())
         {
             entityToAttack = null;
-            func_70819_e(false);
+            setScreaming(false);
             teleportRandomly();
         }
 
@@ -229,7 +229,7 @@ public class EntityEnderman extends EntityMob
             }
             else
             {
-                func_70819_e(false);
+                setScreaming(false);
                 teleportDelay = 0;
             }
         }
@@ -329,7 +329,7 @@ public class EntityEnderman extends EntityMob
             }
 
             worldObj.playSoundEffect(d, d1, d2, "mob.endermen.portal", 1.0F, 1.0F);
-            func_85030_a("mob.endermen.portal", 1.0F, 1.0F);
+            playSound("mob.endermen.portal", 1.0F, 1.0F);
             return true;
         }
         else
@@ -344,7 +344,7 @@ public class EntityEnderman extends EntityMob
      */
     protected String getLivingSound()
     {
-        return func_70823_r() ? "mob.endermen.scream" : "mob.endermen.idle";
+        return isScreaming() ? "mob.endermen.scream" : "mob.endermen.idle";
     }
 
     /**
@@ -368,11 +368,12 @@ public class EntityEnderman extends EntityMob
      */
     protected int getDropItemId()
     {
-        return Item.enderPearl.shiftedIndex;
+        return Item.enderPearl.itemID;
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -426,12 +427,12 @@ public class EntityEnderman extends EntityMob
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
 
-        func_70819_e(true);
+        setScreaming(true);
 
         if (par1DamageSource instanceof EntityDamageSourceIndirect)
         {
@@ -451,12 +452,12 @@ public class EntityEnderman extends EntityMob
         }
     }
 
-    public boolean func_70823_r()
+    public boolean isScreaming()
     {
         return dataWatcher.getWatchableObjectByte(18) > 0;
     }
 
-    public void func_70819_e(boolean par1)
+    public void setScreaming(boolean par1)
     {
         dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }

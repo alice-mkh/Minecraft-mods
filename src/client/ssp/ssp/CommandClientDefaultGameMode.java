@@ -4,10 +4,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientDefaultGameMode extends CommandDefaultGameMode
 {
-    public CommandClientDefaultGameMode()
-    {
-    }
-
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1)
@@ -29,6 +26,7 @@ public class CommandClientDefaultGameMode extends CommandDefaultGameMode
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

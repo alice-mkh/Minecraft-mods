@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientEmote extends CommandServerEmote
 {
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length > 0)
@@ -22,6 +23,7 @@ public class CommandClientEmote extends CommandServerEmote
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
+    @Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         return getListOfStringsMatchingLastWord(par2ArrayOfStr, Minecraft.getMinecraft().getAllUsernames());
@@ -30,6 +32,7 @@ public class CommandClientEmote extends CommandServerEmote
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;

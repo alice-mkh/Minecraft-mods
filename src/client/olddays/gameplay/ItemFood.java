@@ -51,9 +51,10 @@ public class ItemFood extends Item
         this(par1, par2, 0.6F, par3);
     }
 
+    @Override
     public int getItemStackLimit(){
         if (!stacks){
-            if (this.shiftedIndex==Item.cookie.shiftedIndex || this.shiftedIndex==Item.melon.shiftedIndex){
+            if (this.itemID==Item.cookie.itemID || this.itemID==Item.melon.itemID){
                 return 8;
             }else{
                 return 1;
@@ -63,29 +64,30 @@ public class ItemFood extends Item
         }
     }
 
+    @Override
     public Item setMaxStackSize(int i){
         maxStackSize = i;
         return this;
     }
 
-    public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        par1ItemStack.stackSize--;
         if(!heal){
-            par3EntityPlayer.getFoodStats().addStats(this);
+            par1ItemStack.stackSize--;
         }
+        par3EntityPlayer.getFoodStats().addStats(this);
         par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
-        func_77849_c(par1ItemStack, par2World, par3EntityPlayer);
+        onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
         return par1ItemStack;
     }
 
-    protected void func_77849_c(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    protected void onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         if (!par2World.isRemote){
             if(heal){
-                if (this.shiftedIndex==Item.appleGold.shiftedIndex){
+                if (this.itemID==Item.appleGold.itemID){
                     par3EntityPlayer.heal(20);
-                }else if (this.shiftedIndex==Item.spiderEye.shiftedIndex || this.shiftedIndex==Item.rottenFlesh.shiftedIndex){
+                }else if (this.itemID==Item.spiderEye.itemID || this.itemID==Item.rottenFlesh.itemID){
                     if (par3EntityPlayer.health>4){
                         par3EntityPlayer.heal(-4);
                     }else{
@@ -130,7 +132,7 @@ public class ItemFood extends Item
             }
         }else{
             onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
-            if (this.shiftedIndex==Item.bowlSoup.shiftedIndex){
+            if (this.itemID==Item.bowlSoup.itemID){
                 return new ItemStack(Item.bowlEmpty);
             }
         }

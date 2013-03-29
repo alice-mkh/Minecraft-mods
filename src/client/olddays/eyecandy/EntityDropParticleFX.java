@@ -37,6 +37,7 @@ public class EntityDropParticleFX extends EntityFX
         motionX = motionY = motionZ = 0.0D;
     }
 
+    @Override
     protected void entityInit()
     {
         if (!allow){

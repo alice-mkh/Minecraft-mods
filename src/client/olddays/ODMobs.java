@@ -15,6 +15,7 @@ public class ODMobs extends OldDaysModule{
         new OldDaysPropertyBool(this, 10,false, false, "Endermen");
     }
 
+    @Override
     public void callback (int i){
         switch(i){
             case 1: set(EntityLiving.class, "newai", AI>2);

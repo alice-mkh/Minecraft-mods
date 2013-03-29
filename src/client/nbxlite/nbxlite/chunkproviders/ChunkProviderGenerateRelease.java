@@ -55,6 +55,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         mobSpawnerNoise = new NoiseGeneratorOctaves(rand, 8);
     }
 
+    @Override
     protected void generateTerrainForBiome(int i, int j, byte abyte0[], BiomeGenBase biomes[]){
         byte byte0 = 4;
         int k = 16;
@@ -144,6 +145,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     protected void replaceBlocksForBiome(int i, int j, byte abyte0[], BiomeGenBase abiomegenbase[]){
         int k = 63;
         double d = 0.03125D;
@@ -227,6 +229,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
@@ -379,6 +382,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         return ad;
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider, int i, int j){
         BlockSand.fallInstantly = true;
         int k = i * 16;
@@ -443,11 +447,11 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
                     int j4 = worldObj.getPrecipitationHeight(k + i2, l + j3);
                     if (worldObj.isBlockFreezable(i2 + k, j4 - 1, j3 + l))
                     {
-                        worldObj.setBlockWithNotify(i2 + k, j4 - 1, j3 + l, Block.ice.blockID);
+                        worldObj.setBlock(i2 + k, j4 - 1, j3 + l, Block.ice.blockID, 0, 2);
                     }
                     if (worldObj.canSnowAt(i2 + k, j4, j3 + l))
                     {
-                        worldObj.setBlockWithNotify(i2 + k, j4, j3 + l, Block.snow.blockID);
+                        worldObj.setBlock(i2 + k, j4, j3 + l, Block.snow.blockID, 0, 2);
                     }
                 }
             }
@@ -455,11 +459,13 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         BlockSand.fallInstantly = false;
     }
 
+    @Override
     protected void spawnAnimals(int i, int j){
         BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(i + 16, j + 16);
         SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, i + 8, j + 8, 16, 16, rand);
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         if (ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_14 && "Stronghold".equals(s) && newStrongholdGenerator != null){
             return newStrongholdGenerator.getNearestInstance(world, i, j, k);
@@ -470,6 +476,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     public List getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k){
         WorldChunkManager worldchunkmanager = worldObj.getWorldChunkManager();
         if (worldchunkmanager == null)

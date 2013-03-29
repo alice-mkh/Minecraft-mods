@@ -9,11 +9,12 @@ public class EntityTNTPrimed2 extends EntityTNTPrimed
         super(par1World);
     }
 
-    public EntityTNTPrimed2(World par1World, double par2, double par4, double par6)
+    public EntityTNTPrimed2(World par1World, double par2, double par4, double par6, EntityLiving e)
     {
-        super(par1World, par2, par4, par6);
+        super(par1World, par2, par4, par6, e);
     }
 
+    @Override
     public boolean attackEntityFrom(DamageSource damagesource, int i){
         if (!extinguish){
             return false;
@@ -22,7 +23,7 @@ public class EntityTNTPrimed2 extends EntityTNTPrimed
         if(worldObj.isRemote || isDead || !(entity instanceof EntityPlayer)){
             return true;
         }
-        func_85030_a("dig.grass", 1.0F, 1.0F);
+        playSound("dig.grass", 1.0F, 1.0F);
         setDead();
         if (((EntityPlayer)entity).capabilities.isCreativeMode || !worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops")){
             return true;

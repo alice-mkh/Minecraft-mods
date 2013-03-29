@@ -43,6 +43,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         field_4180_q = new double[425];
     }
 
+    @Override
     protected void generateTerrain(int i, int j, byte abyte0[]){
         byte byte00 = 5;
         byte byte01 = 17;
@@ -145,6 +146,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     protected void replaceBlocks(int i, int j, byte abyte0[]){
         for(int l1 = 0; l1 < 16; l1++)
         {
@@ -257,6 +259,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
         if(mapFeaturesEnabled){
             mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
@@ -265,6 +268,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         }
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider, int x, int z){
         rand.setSeed((long)x * 0x12f88dd3L + (long)z * 0x36d41eecL);
         int x1 = x << 4;
@@ -368,6 +372,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         spawnAnimals(x * 16, z * 16);
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         if("Stronghold".equals(s) && strongholdGenerator != null){
             return strongholdGenerator.getNearestInstance(world, i, j, k);

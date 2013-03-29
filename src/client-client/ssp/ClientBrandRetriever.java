@@ -11,7 +11,7 @@ public class ClientBrandRetriever
     public static String getClientModName()
     {
         StringBuilder s = new StringBuilder();
-        s.append("SSP for 1.4.6");
+        s.append("SSP for 1.5.1");
         for (Object o : Minecraft.getMinecraft().mods){
             Mod mod = (Mod)o;
             s.append("; ");

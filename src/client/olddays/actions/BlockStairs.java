@@ -27,28 +27,20 @@ public class BlockStairs extends Block
             4, 5
         }
     };
-    private static final int field_82545_b[] =
-    {
-        1, -1, 0, 0
-    };
-    private static final int field_82546_c[] =
-    {
-        0, 0, 1, -1
-    };
 
     /** The block that is used as model for the stair. */
     private final Block modelBlock;
-    private final int field_72158_c;
+    private final int modelBlockMetadata;
     private boolean field_72156_cr;
     private int field_72160_cs;
 
     protected BlockStairs(int par1, Block par2Block, int par3)
     {
-        super(par1, par2Block.blockIndexInTexture, par2Block.blockMaterial);
+        super(par1, par2Block.blockMaterial);
         field_72156_cr = false;
         field_72160_cs = 0;
         modelBlock = par2Block;
-        field_72158_c = par3;
+        modelBlockMetadata = par3;
         setHardness(par2Block.blockHardness);
         setResistance(par2Block.blockResistance / 3F);
         setStepSound(par2Block.stepSound);
@@ -110,7 +102,10 @@ public class BlockStairs extends Block
         }
     }
 
-    public static boolean func_82543_e(int par0)
+    /**
+     * Checks if supplied ID is one of a BlockStairs
+     */
+    public static boolean isBlockStairsID(int par0)
     {
         return par0 > 0 && (Block.blocksList[par0] instanceof BlockStairs);
     }
@@ -118,7 +113,7 @@ public class BlockStairs extends Block
     private boolean func_82540_f(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         int i = par1IBlockAccess.getBlockId(par2, par3, par4);
-        return func_82543_e(i) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == par5;
+        return isBlockStairsID(i) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == par5;
     }
 
     public boolean func_82542_g(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
@@ -147,7 +142,7 @@ public class BlockStairs extends Block
             int k = par1IBlockAccess.getBlockId(par2 + 1, par3, par4);
             int k1 = par1IBlockAccess.getBlockMetadata(par2 + 1, par3, par4);
 
-            if (func_82543_e(k) && (i & 4) == (k1 & 4))
+            if (isBlockStairsID(k) && (i & 4) == (k1 & 4))
             {
                 int k2 = k1 & 3;
 
@@ -170,7 +165,7 @@ public class BlockStairs extends Block
             int l = par1IBlockAccess.getBlockId(par2 - 1, par3, par4);
             int l1 = par1IBlockAccess.getBlockMetadata(par2 - 1, par3, par4);
 
-            if (func_82543_e(l) && (i & 4) == (l1 & 4))
+            if (isBlockStairsID(l) && (i & 4) == (l1 & 4))
             {
                 int l2 = l1 & 3;
 
@@ -193,7 +188,7 @@ public class BlockStairs extends Block
             int i1 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1);
             int i2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 + 1);
 
-            if (func_82543_e(i1) && (i & 4) == (i2 & 4))
+            if (isBlockStairsID(i1) && (i & 4) == (i2 & 4))
             {
                 int i3 = i2 & 3;
 
@@ -214,7 +209,7 @@ public class BlockStairs extends Block
             int j1 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
             int j2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 - 1);
 
-            if (func_82543_e(j1) && (i & 4) == (j2 & 4))
+            if (isBlockStairsID(j1) && (i & 4) == (j2 & 4))
             {
                 int j3 = j2 & 3;
 
@@ -259,7 +254,7 @@ public class BlockStairs extends Block
             int k = par1IBlockAccess.getBlockId(par2 - 1, par3, par4);
             int k1 = par1IBlockAccess.getBlockMetadata(par2 - 1, par3, par4);
 
-            if (func_82543_e(k) && (i & 4) == (k1 & 4))
+            if (isBlockStairsID(k) && (i & 4) == (k1 & 4))
             {
                 int k2 = k1 & 3;
 
@@ -282,7 +277,7 @@ public class BlockStairs extends Block
             int l = par1IBlockAccess.getBlockId(par2 + 1, par3, par4);
             int l1 = par1IBlockAccess.getBlockMetadata(par2 + 1, par3, par4);
 
-            if (func_82543_e(l) && (i & 4) == (l1 & 4))
+            if (isBlockStairsID(l) && (i & 4) == (l1 & 4))
             {
                 f2 = 0.5F;
                 f3 = 1.0F;
@@ -307,7 +302,7 @@ public class BlockStairs extends Block
             int i1 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
             int i2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 - 1);
 
-            if (func_82543_e(i1) && (i & 4) == (i2 & 4))
+            if (isBlockStairsID(i1) && (i & 4) == (i2 & 4))
             {
                 f4 = 0.0F;
                 f5 = 0.5F;
@@ -330,7 +325,7 @@ public class BlockStairs extends Block
             int j1 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1);
             int j2 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 + 1);
 
-            if (func_82543_e(j1) && (i & 4) == (j2 & 4))
+            if (isBlockStairsID(j1) && (i & 4) == (j2 & 4))
             {
                 int j3 = j2 & 3;
 
@@ -356,18 +351,19 @@ public class BlockStairs extends Block
     }
 
     /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
+     * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
+     * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
+    public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         func_82541_d(par1World, par2, par3, par4);
-        super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         boolean flag = func_82542_g(par1World, par2, par3, par4);
-        super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 
         if (flag && func_82544_h(par1World, par2, par3, par4))
         {
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+            super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         }
 
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -432,25 +428,17 @@ public class BlockStairs extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return modelBlock.getBlockTextureFromSideAndMetadata(par1, field_72158_c);
-    }
-
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
-    public int getBlockTextureFromSide(int par1)
-    {
-        return modelBlock.getBlockTextureFromSideAndMetadata(par1, field_72158_c);
+        return modelBlock.getBlockTextureFromSideAndMetadata(par1, modelBlockMetadata);
     }
 
     /**
      * How many world ticks before ticking
      */
-    public int tickRate()
+    public int tickRate(World par1World)
     {
-        return modelBlock.tickRate();
+        return modelBlock.tickRate(par1World);
     }
 
     /**
@@ -537,15 +525,15 @@ public class BlockStairs extends Block
     /**
      * Called upon the block being destroyed by an explosion
      */
-    public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4)
+    public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion)
     {
-        modelBlock.onBlockDestroyedByExplosion(par1World, par2, par3, par4);
+        modelBlock.onBlockDestroyedByExplosion(par1World, par2, par3, par4, par5Explosion);
     }
 
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int i = MathHelper.floor_double((double)((par5EntityLiving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
         int j = par1World.getBlockMetadata(par2, par3, par4) & 4;
@@ -556,26 +544,29 @@ public class BlockStairs extends Block
 
         if (i == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | j);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | j, 2);
         }
 
         if (i == 1)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | j);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | j, 2);
         }
 
         if (i == 2)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | j);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | j, 2);
         }
 
         if (i == 3)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | j);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | j, 2);
         }
     }
 
-    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+    /**
+     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+     */
+    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
         if (par5 == 0 || par5 != 1 && (double)par7 > 0.5D)
         {
@@ -652,6 +643,14 @@ public class BlockStairs extends Block
         }
 
         return movingobjectposition;
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister iconregister)
+    {
     }
 
     private boolean isStair(World world, int i, int j, int k)
@@ -739,17 +738,18 @@ public class BlockStairs extends Block
             if (data < 0){
                 data = 0;
             }
-            world.setBlockMetadataWithNotify(i, j, k, data | 0);
+            world.setBlockMetadataWithNotify(i, j, k, data | 0, 2);
         }
     }
 
+    @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote && oldstairs)
         {
             if (par1World.getBlockMaterial(par2, par3 + 1, par4).isSolid())
             {
-                par1World.setBlockWithNotify(par2, par3, par4, modelBlock.blockID);
+                par1World.setBlock(par2, par3, par4, modelBlock.blockID, par1World.getBlockMetadata(par2, par3, par4), 2);
             }
             else
             {

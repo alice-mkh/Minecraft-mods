@@ -92,7 +92,7 @@ public class EntityWolf extends EntityTameable
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        func_85030_a("mob.wolf.step", 0.15F, 1.0F);
+        playSound("mob.wolf.step", 0.15F, 1.0F);
     }
 
     /**
@@ -260,7 +260,7 @@ public class EntityWolf extends EntityTameable
         {
             if (timeWolfIsShaking == 0.0F)
             {
-                func_85030_a("mob.wolf.shake", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                playSound("mob.wolf.shake", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
             }
 
             prevTimeWolfIsShaking = timeWolfIsShaking;
@@ -349,7 +349,7 @@ public class EntityWolf extends EntityTameable
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
@@ -409,7 +409,7 @@ public class EntityWolf extends EntityTameable
                         return true;
                     }
                 }
-                else if (itemstack.itemID == Item.dyePowder.shiftedIndex)
+                else if (itemstack.itemID == Item.dyePowder.itemID)
                 {
                     int i = BlockCloth.getBlockFromDye(itemstack.getItemDamage());
 
@@ -438,7 +438,7 @@ public class EntityWolf extends EntityTameable
                 setPathToEntity(null);
             }
         }
-        else if (itemstack != null && itemstack.itemID == Item.bone.shiftedIndex && !isAngry())
+        else if (itemstack != null && itemstack.itemID == Item.bone.itemID && !isAngry())
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
@@ -654,11 +654,12 @@ public class EntityWolf extends EntityTameable
         return dataWatcher.getWatchableObjectByte(19) == 1;
     }
 
-    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
     {
         return spawnBabyAnimal(par1EntityAgeable);
     }
 
+    @Override
     protected void updateEntityActionState()
     {
         super.updateEntityActionState();
@@ -724,7 +725,8 @@ public class EntityWolf extends EntityTameable
             setPathToEntity(pathentity);
         }
     }
-    
+
+    @Override
     protected void attackEntity(Entity entity, float f){
         if (!fixai){
             super.attackEntity(entity, f);
@@ -754,6 +756,7 @@ public class EntityWolf extends EntityTameable
         }
     }
 
+    @Override
     protected Entity findPlayerToAttack()
     {
         if (!fixai){
@@ -831,6 +834,7 @@ public class EntityWolf extends EntityTameable
         }
     }
 
+    @Override
     protected boolean isMovementCeased()
     {
         if (!fixai){
@@ -852,7 +856,7 @@ public class EntityWolf extends EntityTameable
                 ItemStack itemstack = entityplayer.inventory.getCurrentItem();
                 if (itemstack != null)
                 {
-                    if (!isTamed() && itemstack.itemID == Item.bone.shiftedIndex)
+                    if (!isTamed() && itemstack.itemID == Item.bone.itemID)
                     {
                         func_70918_i(true);
                     }

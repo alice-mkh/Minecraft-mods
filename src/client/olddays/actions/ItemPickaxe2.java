@@ -16,6 +16,7 @@ public class ItemPickaxe2 extends ItemPickaxe
      * Returns the strength of the stack against a given block. 1.0F base, (Quality+1)*2 if correct blocktype, 1.5F if
      * sword
      */
+    @Override
     public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block)
     {
         if (!oldhardness){

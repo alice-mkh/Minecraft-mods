@@ -78,7 +78,7 @@ class ContainerCreativeOld extends Container
             Block.bookShelf,
             Block.cloth,
             Block.dispenser,
-            Block.stoneOvenIdle,
+            Block.furnaceIdle,
             Block.music,
             Block.jukebox,
             Block.pistonStickyBase,
@@ -90,14 +90,14 @@ class ContainerCreativeOld extends Container
             Block.railPowered,
             Block.railDetector,
             Block.torchWood,
-            Block.stairCompactPlanks,
+            Block.stairsWoodOak,
             Block.stairsWoodSpruce,
             Block.stairsWoodBirch,
             Block.stairsWoodJungle,
-            Block.stairCompactCobblestone,
+            Block.stairsCobblestone,
             Block.stairsSandStone,
             Block.stairsBrick,
-            Block.stairsStoneBrickSmooth,
+            Block.stairsStoneBrick,
             Block.cobblestoneWall,
             Block.lever,
             Block.pressurePlateStone,
@@ -137,14 +137,14 @@ class ContainerCreativeOld extends Container
             if (Item.itemsList[k2] == null){
                 continue;
             }
-            int id = Item.itemsList[k2].shiftedIndex;
-            if (id == Item.monsterPlacer.shiftedIndex ||
-                id == Item.potion.shiftedIndex ||
-                id == Item.writtenBook.shiftedIndex ||
-                id == Item.field_92104_bU.shiftedIndex ||
-                id == Item.field_92105_bW.shiftedIndex){
+            int id = Item.itemsList[k2].itemID;
+            if (id == Item.monsterPlacer.itemID ||
+                id == Item.potion.itemID ||
+                id == Item.writtenBook.itemID ||
+                id == Item.firework.itemID ||
+                id == Item.enchantedBook.itemID){
                 continue;
-            }else if (Item.itemsList[k2].shiftedIndex == Item.dyePowder.shiftedIndex){
+            }else if (Item.itemsList[k2].itemID == Item.dyePowder.itemID){
                 itemList.add(new ItemStack(k2, 1, 0));
             }else{
                 Item.itemsList[k2].getSubItems(k2, null, itemList);
@@ -152,10 +152,10 @@ class ContainerCreativeOld extends Container
         }
         for (int l2 = 1; l2 < 16; l2++)
         {
-            itemList.add(new ItemStack(Item.dyePowder.shiftedIndex, 1, l2));
+            itemList.add(new ItemStack(Item.dyePowder.itemID, 1, l2));
         }
-        Item.itemsList[Item.monsterPlacer.shiftedIndex].getSubItems(Item.monsterPlacer.shiftedIndex, null, itemList);
-        Item.itemsList[Item.potion.shiftedIndex].getSubItems(Item.potion.shiftedIndex, null, itemList);
+        Item.itemsList[Item.monsterPlacer.itemID].getSubItems(Item.monsterPlacer.itemID, null, itemList);
+        Item.itemsList[Item.potion.itemID].getSubItems(Item.potion.itemID, null, itemList);
 
         for (int k = 0; k < Enchantment.enchantmentsList.length; k++)
         {
@@ -163,7 +163,7 @@ class ContainerCreativeOld extends Container
 
             if (enchantment != null && enchantment.type != null)
             {
-                Item.field_92105_bW.func_92113_a(enchantment, itemList);
+                Item.enchantedBook.func_92113_a(enchantment, itemList);
             }
         }
 
@@ -185,6 +185,7 @@ class ContainerCreativeOld extends Container
         scrollTo(0.0F);
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
         return true;
@@ -221,6 +222,7 @@ class ContainerCreativeOld extends Container
         }
     }
 
+    @Override
     protected void retrySlotClick(int i, int j, boolean flag, EntityPlayer entityplayer)
     {
     }

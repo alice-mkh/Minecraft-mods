@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.io.PrintStream;
 import java.util.*;
 
 public class Chunk
@@ -47,8 +46,15 @@ public class Chunk
 
     /** The time according to World.worldTime when this chunk was last saved */
     public long lastSaveTime;
-    public boolean deferRender;
-    public int field_82912_p;
+
+    /**
+     * Updates to this chunk will not be sent to clients if this is false. This field is set to true the first time the
+     * chunk is sent to a client, and never set to false.
+     */
+    public boolean sendUpdates;
+
+    /** Lowest value in the heightmap. */
+    public int heightMapMinimum;
 
     /**
      * Contains the current round-robin relight check index, and is implied as the relight check location as well.
@@ -68,8 +74,8 @@ public class Chunk
         isModified = false;
         hasEntities = false;
         lastSaveTime = 0L;
-        deferRender = false;
-        field_82912_p = 0;
+        sendUpdates = false;
+        heightMapMinimum = 0;
         queuedLightChecks = 4096;
         field_76653_p = false;
         entityLists = new List[16];
@@ -204,7 +210,7 @@ public class Chunk
     public void generateSkylightMap()
     {
         int i = getTopFilledSegment();
-        field_82912_p = 0x7fffffff;
+        heightMapMinimum = 0x7fffffff;
 
         for (int j = 0; j < 16; j++)
         {
@@ -224,9 +230,9 @@ public class Chunk
                     {
                         heightMap[l << 4 | j] = j1;
 
-                        if (j1 < field_82912_p)
+                        if (j1 < heightMapMinimum)
                         {
-                            field_82912_p = j1;
+                            heightMapMinimum = j1;
                         }
 
                         break;
@@ -317,10 +323,10 @@ public class Chunk
                     int k = getHeightValue(i, j);
                     int l = xPosition * 16 + i;
                     int i1 = zPosition * 16 + j;
-                    int j1 = worldObj.func_82734_g(l - 1, i1);
-                    int k1 = worldObj.func_82734_g(l + 1, i1);
-                    int l1 = worldObj.func_82734_g(l, i1 - 1);
-                    int i2 = worldObj.func_82734_g(l, i1 + 1);
+                    int j1 = worldObj.getChunkHeightMapMinimum(l - 1, i1);
+                    int k1 = worldObj.getChunkHeightMapMinimum(l + 1, i1);
+                    int l1 = worldObj.getChunkHeightMapMinimum(l, i1 - 1);
+                    int i2 = worldObj.getChunkHeightMapMinimum(l, i1 + 1);
 
                     if (k1 < j1)
                     {
@@ -496,9 +502,9 @@ public class Chunk
             k2 = l2;
         }
 
-        if (l1 < field_82912_p)
+        if (l1 < heightMapMinimum)
         {
-            field_82912_p = l1;
+            heightMapMinimum = l1;
         }
 
         if (!worldObj.provider.hasNoSky)
@@ -563,14 +569,6 @@ public class Chunk
     }
 
     /**
-     * Sets a blockID for a position in the chunk. Args: x, y, z, blockID
-     */
-    public boolean setBlockID(int par1, int par2, int par3, int par4)
-    {
-        return setBlockIDWithMetadata(par1, par2, par3, par4, 0);
-    }
-
-    /**
      * Sets a blockID of a position within a chunk with metadata. Args: x, y, z, blockID, metadata
      */
     public boolean setBlockIDWithMetadata(int par1, int par2, int par3, int par4, int par5)
@@ -621,7 +619,7 @@ public class Chunk
             {
                 Block.blocksList[k].breakBlock(worldObj, i1, par2, j1, k, l);
             }
-            else if ((Block.blocksList[k] instanceof BlockContainer) && k != par4)
+            else if ((Block.blocksList[k] instanceof ITileEntityProvider) && k != par4)
             {
                 worldObj.removeBlockTileEntity(i1, par2, j1);
             }
@@ -668,13 +666,13 @@ public class Chunk
                 Block.blocksList[par4].onBlockAdded(worldObj, i1, par2, j1);
             }
 
-            if (Block.blocksList[par4] instanceof BlockContainer)
+            if (Block.blocksList[par4] instanceof ITileEntityProvider)
             {
                 TileEntity tileentity = getChunkBlockTileEntity(par1, par2, par3);
 
                 if (tileentity == null)
                 {
-                    tileentity = ((BlockContainer)Block.blocksList[par4]).createNewTileEntity(worldObj);
+                    tileentity = ((ITileEntityProvider)Block.blocksList[par4]).createNewTileEntity(worldObj);
                     worldObj.setBlockTileEntity(i1, par2, j1, tileentity);
                 }
 
@@ -684,7 +682,7 @@ public class Chunk
                 }
             }
         }
-        else if (k > 0 && (Block.blocksList[k] instanceof BlockContainer))
+        else if (k > 0 && (Block.blocksList[k] instanceof ITileEntityProvider))
         {
             TileEntity tileentity1 = getChunkBlockTileEntity(par1, par2, par3);
 
@@ -721,7 +719,7 @@ public class Chunk
         extendedblockstorage.setExtBlockMetadata(par1, par2 & 0xf, par3, par4);
         int j = extendedblockstorage.getExtBlockID(par1, par2 & 0xf, par3);
 
-        if (j > 0 && (Block.blocksList[j] instanceof BlockContainer))
+        if (j > 0 && (Block.blocksList[j] instanceof ITileEntityProvider))
         {
             TileEntity tileentity = getChunkBlockTileEntity(par1, par2, par3);
 
@@ -853,7 +851,7 @@ public class Chunk
 
         if (i != xPosition || j != zPosition)
         {
-            System.out.println((new StringBuilder()).append("Wrong location! ").append(par1Entity).toString());
+            worldObj.getWorldLogAgent().func_98232_c((new StringBuilder()).append("Wrong location! ").append(par1Entity).toString());
             Thread.dumpStack();
         }
 
@@ -929,7 +927,7 @@ public class Chunk
 
             if (tileentity == null)
             {
-                tileentity = ((BlockContainer)Block.blocksList[i]).createNewTileEntity(worldObj);
+                tileentity = ((ITileEntityProvider)Block.blocksList[i]).createNewTileEntity(worldObj);
                 worldObj.setBlockTileEntity(xPosition * 16 + par1, par2, zPosition * 16 + par3, tileentity);
             }
 
@@ -974,16 +972,18 @@ public class Chunk
         par4TileEntity.yCoord = par2;
         par4TileEntity.zCoord = zPosition * 16 + par3;
 
-        if (getBlockID(par1, par2, par3) == 0 || !(Block.blocksList[getBlockID(par1, par2, par3)] instanceof BlockContainer))
+        if (getBlockID(par1, par2, par3) == 0 || !(Block.blocksList[getBlockID(par1, par2, par3)] instanceof ITileEntityProvider))
         {
             return;
         }
-        else
+
+        if (chunkTileEntityMap.containsKey(chunkposition))
         {
-            par4TileEntity.validate();
-            chunkTileEntityMap.put(chunkposition, par4TileEntity);
-            return;
+            ((TileEntity)chunkTileEntityMap.get(chunkposition)).invalidate();
         }
+
+        par4TileEntity.validate();
+        chunkTileEntityMap.put(chunkposition, par4TileEntity);
     }
 
     /**
@@ -1049,7 +1049,7 @@ public class Chunk
      * Fills the given list of all entities that intersect within the given bounding box that aren't the passed entity
      * Args: entity, aabb, listToFill
      */
-    public void getEntitiesWithinAABBForEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, List par3List)
+    public void getEntitiesWithinAABBForEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, List par3List, IEntitySelector par4IEntitySelector)
     {
         int i = MathHelper.floor_double((par2AxisAlignedBB.minY - 2D) / 16D);
         int j = MathHelper.floor_double((par2AxisAlignedBB.maxY + 2D) / 16D);
@@ -1057,11 +1057,13 @@ public class Chunk
         if (i < 0)
         {
             i = 0;
+            j = Math.max(i, j);
         }
 
         if (j >= entityLists.length)
         {
             j = entityLists.length - 1;
+            i = Math.min(i, j);
         }
 
         for (int k = i; k <= j; k++)
@@ -1072,7 +1074,7 @@ public class Chunk
             {
                 Entity entity = (Entity)list.get(l);
 
-                if (entity == par1Entity || !entity.boundingBox.intersectsWith(par2AxisAlignedBB))
+                if (entity == par1Entity || !entity.boundingBox.intersectsWith(par2AxisAlignedBB) || par4IEntitySelector != null && !par4IEntitySelector.isEntityApplicable(entity))
                 {
                     continue;
                 }
@@ -1089,7 +1091,7 @@ public class Chunk
                 {
                     Entity entity1 = aentity[i1];
 
-                    if (entity1 != par1Entity && entity1.boundingBox.intersectsWith(par2AxisAlignedBB))
+                    if (entity1 != par1Entity && entity1.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.isEntityApplicable(entity1)))
                     {
                         par3List.add(entity1);
                     }
@@ -1147,7 +1149,7 @@ public class Chunk
     {
         if (par1)
         {
-            if (hasEntities && worldObj.getTotalWorldTime() != lastSaveTime)
+            if (hasEntities && worldObj.getTotalWorldTime() != lastSaveTime || isModified)
             {
                 return true;
             }

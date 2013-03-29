@@ -28,6 +28,7 @@ public class Packet300Custom extends Packet{
 
     public Packet300Custom(){}
 
+    @Override
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException{
         modName = readString(par1DataInputStream, 999);
         modVersion = readString(par1DataInputStream, 999);
@@ -40,6 +41,7 @@ public class Packet300Custom extends Packet{
         }
     }
 
+    @Override
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException{
         writeString(modName, par1DataOutputStream);
         writeString(modVersion, par1DataOutputStream);
@@ -51,6 +53,7 @@ public class Packet300Custom extends Packet{
         }
     }
 
+    @Override
     public void processPacket(NetHandler par1NetHandler){
         if (par1NetHandler.getClass() == net.minecraft.src.NetHandler.class){
             par1NetHandler.unexpectedPacket(this);
@@ -90,6 +93,7 @@ public class Packet300Custom extends Packet{
         System.out.println(message);
     }
 
+    @Override
     public int getPacketSize(){
         int i = modName.length() + modVersion.length() + mcVersion.length() + 8;
         for (int j = 0; j < data.length; j++){

@@ -14,11 +14,13 @@ public class EntityHuman extends EntityAnimal
         moveSpeed = 1.2F;
     }
 
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
 
+    @Override
     public void onDeath(DamageSource damagesource)
     {
         if(mod_SpawnHuman.DeathEffect){
@@ -27,6 +29,7 @@ public class EntityHuman extends EntityAnimal
         }
     }
 
+    @Override
     protected void updateEntityActionState()
     {
         if(rand.nextFloat() < 0.8F && entityAge < 100)
@@ -86,6 +89,7 @@ public class EntityHuman extends EntityAnimal
         worldObj.theProfiler.endSection();
     }
 
+    @Override
     protected void updateWanderPath()
     {
         worldObj.theProfiler.startSection("stroll");
@@ -106,6 +110,7 @@ public class EntityHuman extends EntityAnimal
         worldObj.theProfiler.endSection();
     }
 
+    @Override
     public int getMaxHealth()
     {
         if (mod_SpawnHuman.Health==0){
@@ -115,39 +120,39 @@ public class EntityHuman extends EntityAnimal
         }
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeEntityToNBT(nbttagcompound);
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readEntityFromNBT(nbttagcompound);
     }
 
-    public EntityAnimal spawnBabyAnimal(EntityAnimal entityanimal)
+    @Override
+    public EntityAgeable createChild(EntityAgeable entityageable)
     {
         return new EntityHuman(worldObj);
     }
 
-    public EntityAgeable func_90011_a(EntityAgeable entityageable)
-    {
-        return new EntityHuman(worldObj);
-    }
-    
     //NO BREEDING
+    @Override
     protected void attackEntity(Entity entity, float f){}
 
-    protected int func_36001_a(EntityPlayer entityplayer)
+    @Override
+    protected int getExperiencePoints(EntityPlayer entityplayer)
     {
         return 0;
     }
 
-    private void func_40144_b(EntityAnimal entityanimal){}
     private PathEntity pathToEntity;
 }

@@ -73,6 +73,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         mobSpawnerNoise = new BetaNoiseGeneratorOctaves(rand, 8);
     }
 
+    @Override
     protected void generateTerrainForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[], double ad[]){
         byte byte0 = 4;
         byte byte1 = 64;
@@ -150,6 +151,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
 
     }
 
+    @Override
     protected void replaceBlocksForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[]){
         byte byte0 = 64;
         double d = 0.03125D;
@@ -261,6 +263,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
 
     }
 
+    @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         if(mapFeaturesEnabled)
@@ -379,6 +382,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         return ad;
     }
 
+    @Override
     public void populate(IChunkProvider ichunkprovider, int x, int z){
         BlockSand.fallInstantly = true;
         int x1 = x * 16;
@@ -516,7 +520,6 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }else{
                 (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
             }
-            
         }
 
         if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10 || ODNBXlite.GenerateNewOres)
@@ -797,7 +800,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
                 double d1 = generatedTemperatures[x2 * 16 + z2] - ((double)(y2 - 64) / 64D) * 0.29999999999999999D;
                 if(d1 < 0.5D && y2 > 0 && y2 < 128 && worldObj.isAirBlock(i, y2, j) && worldObj.getBlockMaterial(i, y2 - 1, j).isSolid() && worldObj.getBlockMaterial(i, y2 - 1, j) != Material.ice)
                 {
-                    worldObj.setBlockWithNotify(i, y2, j, Block.snow.blockID);
+                    worldObj.setBlock(i, y2, j, Block.snow.blockID, 0, 2);
                 }
             }
         }
@@ -805,6 +808,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         spawnAnimals(x1, z1);
     }
 
+    @Override
     public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
         if("Stronghold".equals(s) && strongholdGenerator != null){
             return strongholdGenerator.getNearestInstance(world, i, j, k);

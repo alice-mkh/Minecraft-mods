@@ -19,7 +19,7 @@ public class WorldInfo
     private int spawnZ;
 
     /** Total time for this world. */
-    private long dayTime;
+    private long totalTime;
 
     /** The current world time in ticks, ranging from 0 to 23999. */
     private long worldTime;
@@ -145,7 +145,7 @@ public class WorldInfo
         spawnX = par1NBTTagCompound.getInteger("SpawnX");
         spawnY = par1NBTTagCompound.getInteger("SpawnY");
         spawnZ = par1NBTTagCompound.getInteger("SpawnZ");
-        dayTime = par1NBTTagCompound.getLong("Time");
+        totalTime = par1NBTTagCompound.getLong("Time");
 
         if (par1NBTTagCompound.hasKey("DayTime"))
         {
@@ -153,7 +153,7 @@ public class WorldInfo
         }
         else
         {
-            worldTime = dayTime;
+            worldTime = totalTime;
         }
 
         lastTimePlayed = par1NBTTagCompound.getLong("LastPlayed");
@@ -319,7 +319,7 @@ public class WorldInfo
         spawnX = par1WorldInfo.spawnX;
         spawnY = par1WorldInfo.spawnY;
         spawnZ = par1WorldInfo.spawnZ;
-        dayTime = par1WorldInfo.dayTime;
+        totalTime = par1WorldInfo.totalTime;
         worldTime = par1WorldInfo.worldTime;
         lastTimePlayed = par1WorldInfo.lastTimePlayed;
         sizeOnDisk = par1WorldInfo.sizeOnDisk;
@@ -411,7 +411,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("SpawnX", spawnX);
         par1NBTTagCompound.setInteger("SpawnY", spawnY);
         par1NBTTagCompound.setInteger("SpawnZ", spawnZ);
-        par1NBTTagCompound.setLong("Time", dayTime);
+        par1NBTTagCompound.setLong("Time", totalTime);
         par1NBTTagCompound.setLong("DayTime", worldTime);
         par1NBTTagCompound.setLong("SizeOnDisk", sizeOnDisk);
         par1NBTTagCompound.setLong("LastPlayed", System.currentTimeMillis());
@@ -492,7 +492,7 @@ public class WorldInfo
 
     public long getWorldTotalTime()
     {
-        return dayTime;
+        return totalTime;
     }
 
     /**
@@ -545,9 +545,9 @@ public class WorldInfo
         spawnZ = par1;
     }
 
-    public void func_82572_b(long par1)
+    public void incrementTotalWorldTime(long par1)
     {
-        dayTime = par1;
+        totalTime = par1;
     }
 
     /**
@@ -719,7 +719,7 @@ public class WorldInfo
         terrainType = par1WorldType;
     }
 
-    public String func_82571_y()
+    public String getGeneratorOptions()
     {
         return generatorOptions;
     }
@@ -756,7 +756,10 @@ public class WorldInfo
         return theGameRules;
     }
 
-    public void func_85118_a(CrashReportCategory par1CrashReportCategory)
+    /**
+     * Adds this WorldInfo instance to the crash report.
+     */
+    public void addToCrashReport(CrashReportCategory par1CrashReportCategory)
     {
         par1CrashReportCategory.addCrashSectionCallable("Level seed", new CallableLevelSeed(this));
         par1CrashReportCategory.addCrashSectionCallable("Level generator", new CallableLevelGenerator(this));
@@ -785,32 +788,32 @@ public class WorldInfo
         return par0WorldInfo.mapFeaturesEnabled;
     }
 
-    static String func_85130_c(WorldInfo par0WorldInfo)
+    static String getWorldGeneratorOptions(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.generatorOptions;
     }
 
-    static int func_85125_d(WorldInfo par0WorldInfo)
+    static int getSpawnXCoordinate(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.spawnX;
     }
 
-    static int func_85124_e(WorldInfo par0WorldInfo)
+    static int getSpawnYCoordinate(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.spawnY;
     }
 
-    static int func_85123_f(WorldInfo par0WorldInfo)
+    static int getSpawnZCoordinate(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.spawnZ;
     }
 
     static long func_85126_g(WorldInfo par0WorldInfo)
     {
-        return par0WorldInfo.dayTime;
+        return par0WorldInfo.totalTime;
     }
 
-    static long func_85129_h(WorldInfo par0WorldInfo)
+    static long getWorldTime(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.worldTime;
     }
@@ -820,32 +823,38 @@ public class WorldInfo
         return par0WorldInfo.dimension;
     }
 
-    static int func_85121_j(WorldInfo par0WorldInfo)
+    static int getSaveVersion(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.saveVersion;
     }
 
-    static int func_85119_k(WorldInfo par0WorldInfo)
+    static int getRainTime(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.rainTime;
     }
 
-    static boolean func_85127_l(WorldInfo par0WorldInfo)
+    /**
+     * Returns wether it's raining or not.
+     */
+    static boolean getRaining(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.raining;
     }
 
-    static int func_85133_m(WorldInfo par0WorldInfo)
+    static int getThunderTime(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.thunderTime;
     }
 
-    static boolean func_85116_n(WorldInfo par0WorldInfo)
+    /**
+     * Returns wether it's thundering or not.
+     */
+    static boolean getThundering(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.thundering;
     }
 
-    static EnumGameType func_85120_o(WorldInfo par0WorldInfo)
+    static EnumGameType getGameType(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.theGameType;
     }

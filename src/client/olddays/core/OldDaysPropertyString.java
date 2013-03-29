@@ -18,10 +18,12 @@ public class OldDaysPropertyString extends OldDaysProperty{
         m.isLocal = false;
     }
 
+    @Override
     public String getButtonText(){
         return mod_OldDays.lang.get(getName()+".name")+": "+value;
     }
 
+    @Override
     public void onChange(){
         if (shouldSkipUpdates()){
             return;
@@ -35,6 +37,7 @@ public class OldDaysPropertyString extends OldDaysProperty{
         }
     }
 
+    @Override
     public void updateValue(){
         try{
             value = ((String)field.get(module));
@@ -45,30 +48,37 @@ public class OldDaysPropertyString extends OldDaysProperty{
         }
     }
 
+    @Override
     public void setSMPValue(){
         value = smpValue;
     }
 
+    @Override
     public String getDefaultValue(){
         return defaultValue;
     }
 
+    @Override
     public void setDefaultValue(){
         value = defaultValue;
     }
 
+    @Override
     protected void disable(){
         super.disable();
         value = smpValue;
     }
 
+    @Override
     public void loadFromString(String str){
         value = str;
     }
 
+    @Override
     public String saveToString(){
         return value;
     }
 
+    @Override
     public void incrementValue(){}
 }

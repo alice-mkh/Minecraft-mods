@@ -19,6 +19,7 @@ public class OldBiomeGenRainforest extends OldBiomeGenBase
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityOcelot.class, 2));
     }
 
+    @Override
     public WorldGenerator getRandomWorldGenForTrees(Random random)
     {
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){

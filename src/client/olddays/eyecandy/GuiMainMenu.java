@@ -48,11 +48,15 @@ public class GuiMainMenu extends GuiScreen
      * Texture allocated for the current viewport of the main menu's panorama background.
      */
     private int viewportTexture;
+    private boolean field_96141_q;
+    private static boolean field_96140_r = false;
+    private static boolean field_96139_s = false;
     private String field_92025_p;
     private static final String titlePanoramaPaths[] =
     {
         "/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"
     };
+    public static final String field_96138_a;
     private int field_92024_r;
     private int field_92023_s;
     private int field_92022_t;
@@ -65,6 +69,7 @@ public class GuiMainMenu extends GuiScreen
         updateCounter = 0.0F;
         updateCounter2 = 0.0F;
         panoramaTimer = 0;
+        field_96141_q = true;
         splashText = "missingno";
         BufferedReader bufferedreader = null;
 
@@ -194,39 +199,60 @@ public class GuiMainMenu extends GuiScreen
             addSingleplayerMultiplayerButtons(i, 24, stringtranslate);
         }
 
-        controlList.add(new GuiButton(3, width / 2 - 100, i + 48, stringtranslate.translateKey("menu.mods")));
+        func_96137_a(stringtranslate, i, 24);
 
         if (mc.hideQuitButton)
         {
-            controlList.add(new GuiButton(0, width / 2 - 100, i + 72, stringtranslate.translateKey("menu.options")));
+            buttonList.add(new GuiButton(0, width / 2 - 100, i + 72, stringtranslate.translateKey("menu.options")));
         }
         else
         {
-            controlList.add(new GuiButton(0, width / 2 - 100, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.options")));
-            controlList.add(new GuiButton(4, width / 2 + 2, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.quit")));
+            buttonList.add(new GuiButton(0, width / 2 - 100, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.options")));
+            buttonList.add(new GuiButton(4, width / 2 + 2, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.quit")));
         }
 
-        controlList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
+        buttonList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
         field_92025_p = "";
         String s = System.getProperty("os_architecture");
         String s1 = System.getProperty("java_version");
 
         if ("ppc".equalsIgnoreCase(s))
         {
-            field_92025_p = "\247lNotice!\247r PowerPC compatibility will be dropped in Minecraft 1.6";
+            field_92025_p = (new StringBuilder()).append("").append(EnumChatFormatting.BOLD).append("Notice!").append(EnumChatFormatting.RESET).append(" PowerPC compatibility will be dropped in Minecraft 1.6").toString();
         }
         else if (s1 != null && s1.startsWith("1.5"))
         {
-            field_92025_p = "\247lNotice!\247r Java 1.5 compatibility will be dropped in Minecraft 1.6";
+            field_92025_p = (new StringBuilder()).append("").append(EnumChatFormatting.BOLD).append("Notice!").append(EnumChatFormatting.RESET).append(" Java 1.5 compatibility will be dropped in Minecraft 1.6").toString();
         }
 
         field_92023_s = fontRenderer.getStringWidth(field_92025_p);
-        field_92024_r = fontRenderer.getStringWidth("Please click \247nhere\247r for more information.");
+        field_92024_r = fontRenderer.getStringWidth(field_96138_a);
         int j = Math.max(field_92023_s, field_92024_r);
         field_92022_t = (width - j) / 2;
-        field_92021_u = ((GuiButton)controlList.get(0)).yPosition - 24;
+        field_92021_u = ((GuiButton)buttonList.get(0)).yPosition - 24;
         field_92020_v = field_92022_t + j;
         field_92019_w = field_92021_u + 24;
+    }
+
+    private void func_96137_a(StringTranslate par1StringTranslate, int par2, int par3)
+    {
+        if (field_96141_q)
+        {
+            if (!field_96140_r)
+            {
+                field_96140_r = true;
+                (new ThreadTitleScreen(this, par1StringTranslate, par2, par3)).start();
+            }
+            else if (field_96139_s)
+            {
+                func_98060_b(par1StringTranslate, par2, par3);
+            }
+        }
+    }
+
+    private void func_98060_b(StringTranslate par1StringTranslate, int par2, int par3)
+    {
+        buttonList.add(new GuiButton(3, width / 2 - 100, par2 + par3 * 2, par1StringTranslate.translateKey("menu.online")));
     }
 
     /**
@@ -234,8 +260,8 @@ public class GuiMainMenu extends GuiScreen
      */
     private void addSingleplayerMultiplayerButtons(int par1, int par2, StringTranslate par3StringTranslate)
     {
-        controlList.add(new GuiButton(1, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.singleplayer")));
-        controlList.add(new GuiButton(2, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
+        buttonList.add(new GuiButton(1, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.singleplayer")));
+        buttonList.add(new GuiButton(2, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
     }
 
     /**
@@ -243,8 +269,8 @@ public class GuiMainMenu extends GuiScreen
      */
     private void addDemoButtons(int par1, int par2, StringTranslate par3StringTranslate)
     {
-        controlList.add(new GuiButton(11, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.playdemo")));
-        controlList.add(buttonResetDemo = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
+        buttonList.add(new GuiButton(11, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.playdemo")));
+        buttonList.add(buttonResetDemo = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
         ISaveFormat isaveformat = mc.getSaveLoader();
         WorldInfo worldinfo = isaveformat.getWorldInfo("Demo_World");
 
@@ -281,7 +307,7 @@ public class GuiMainMenu extends GuiScreen
 
         if (par1GuiButton.id == 3)
         {
-            mc.displayGuiScreen(new GuiTexturePacks(this));
+            mc.displayGuiScreen(new GuiScreenOnlineServers(this));
         }
 
         if (par1GuiButton.id == 4)
@@ -410,7 +436,7 @@ public class GuiMainMenu extends GuiScreen
                     GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
                 }
 
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(titlePanoramaPaths[k]));
+                mc.renderEngine.bindTexture(titlePanoramaPaths[k]);
                 tessellator.startDrawingQuads();
                 tessellator.setColorRGBA_I(0xffffff, 255 / (j + 1));
                 float f3 = 0.0F;
@@ -444,6 +470,7 @@ public class GuiMainMenu extends GuiScreen
     private void rotateAndBlurSkybox(float par1)
     {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, viewportTexture);
+        mc.renderEngine.resetBoundTexture();
         GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, 256, 256);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -466,6 +493,7 @@ public class GuiMainMenu extends GuiScreen
 
         tessellator.draw();
         GL11.glColorMask(true, true, true, true);
+        mc.renderEngine.resetBoundTexture();
     }
 
     /**
@@ -525,9 +553,8 @@ public class GuiMainMenu extends GuiScreen
             drawGradientRect(0, 0, width, height, 0, 0x80000000);
         }
         if (!oldlogo){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/mclogo.png"));
+            mc.renderEngine.bindTexture("/title/mclogo.png");
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
             if ((double)updateCounter < 0.0001D)
             {
                 drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
@@ -556,10 +583,12 @@ public class GuiMainMenu extends GuiScreen
         if (s.equals("OFF")){
             s = "Minecraft "+(new CallableMinecraftVersion(null)).minecraftVersion();
         }
+
         if (mc.isDemo())
         {
             s = (new StringBuilder()).append(s).append(" Demo").toString();
         }
+
         if (panorama){
             drawString(fontRenderer, s, 2, height - 10, 0xffffff);
         }else{
@@ -572,7 +601,7 @@ public class GuiMainMenu extends GuiScreen
         {
             drawRect(field_92022_t - 2, field_92021_u - 2, field_92020_v + 2, field_92019_w - 1, 0x55200000);
             drawString(fontRenderer, field_92025_p, field_92022_t, field_92021_u, 0xffffff);
-            drawString(fontRenderer, "Please click \247nhere\247r for more information.", (width - field_92024_r) / 2, ((GuiButton)controlList.get(0)).yPosition - 12, 0xffffff);
+            drawString(fontRenderer, field_96138_a, (width - field_92024_r) / 2, ((GuiButton)buttonList.get(0)).yPosition - 12, 0xffffff);
         }
 
         super.drawScreen(par1, par2, par3);
@@ -591,6 +620,26 @@ public class GuiMainMenu extends GuiScreen
             guiconfirmopenlink.func_92026_h();
             mc.displayGuiScreen(guiconfirmopenlink);
         }
+    }
+
+    static Minecraft func_98058_a(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.mc;
+    }
+
+    static void func_98061_a(GuiMainMenu par0GuiMainMenu, StringTranslate par1StringTranslate, int par2, int par3)
+    {
+        par0GuiMainMenu.func_98060_b(par1StringTranslate, par2, par3);
+    }
+
+    static boolean func_98059_a(boolean par0)
+    {
+        return field_96139_s = par0;
+    }
+
+    static
+    {
+        field_96138_a = (new StringBuilder()).append("Please click ").append(EnumChatFormatting.UNDERLINE).append("here").append(EnumChatFormatting.RESET).append(" for more information.").toString();
     }
 
     private void drawLogo(float f)
@@ -651,10 +700,10 @@ public class GuiMainMenu extends GuiScreen
             GL11.glRotatef(15F, 1.0F, 0.0F, 0.0F);
             GL11.glScalef(0.89F, 1.0F, 0.4F);
             GL11.glTranslatef((float)(-minecraftLogo[0].length()) * 0.5F, (float)(-minecraftLogo.length) * 0.5F, 0.0F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));
+            mc.renderEngine.bindTexture("/terrain.png");
             if(l == 0)
             {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/black.png"));
+                mc.renderEngine.bindTexture("/title/black.png");
             }
             for(int i1 = 0; i1 < minecraftLogo.length; i1++)
             {
@@ -712,7 +761,7 @@ public class GuiMainMenu extends GuiScreen
     private void renderMenuBlock(Block block, float f, RenderBlocks renderblocks)
     {
         int i = block.getRenderType();
-        renderblocks.updateCustomBlockBounds(block);
+        renderblocks.setRenderBoundsFromBlock(block);
         Tessellator tessellator = Tessellator.instance;
         if(i == 0)
         {

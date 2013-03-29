@@ -76,11 +76,13 @@ public class OldChunk extends Chunk
         blocklightMap = new NibbleArray(abyte0.length, 7);
     }
 
+    @Override
     public boolean isAtLocation(int i, int j)
     {
         return i == xPosition && j == zPosition;
     }
 
+    @Override
     public void addEntity(Entity entity)
     {
         hasEntities = true;
@@ -112,6 +114,7 @@ public class OldChunk extends Chunk
         ChunkBlockMap.removeUnknownBlockIDs(blocks);
     }
 
+    @Override
     public ChunkCoordIntPair getChunkCoordIntPair()
     {
         return new ChunkCoordIntPair(xPosition, zPosition);

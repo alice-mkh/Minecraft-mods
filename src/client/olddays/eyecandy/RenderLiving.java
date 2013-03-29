@@ -93,7 +93,7 @@ public class RenderLiving extends Render
             if (!bobbing || par1EntityLiving.isChild()){
                 GL11.glTranslatef(0.0F, -24F * f4 - 0.0078125F, 0.0F);
             }
-            float f5 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
+            float f5 = par1EntityLiving.prevLimbYaw + (par1EntityLiving.limbYaw - par1EntityLiving.prevLimbYaw) * par9;
             float f6;
 
             if (bobbing && !par1EntityLiving.isChild()){
@@ -115,7 +115,7 @@ public class RenderLiving extends Render
                 float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 * bobStrength - 23F;
                 GL11.glTranslatef(0.0F, bob * f4 - 0.0078125F, 0.0F);
             }else{
-                f6 = par1EntityLiving.legSwing - par1EntityLiving.legYaw * (1.0F - par9);
+                f6 = par1EntityLiving.limbSwing - par1EntityLiving.limbYaw * (1.0F - par9);
                 if (par1EntityLiving.isChild()){
                     f6 *= 3F;
                 }
@@ -265,15 +265,35 @@ public class RenderLiving extends Render
      */
     protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7)
     {
+        func_98190_a(par1EntityLiving);
+
         if (!par1EntityLiving.getHasActivePotion())
         {
-            loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
             mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+        }
+        else if (!par1EntityLiving.func_98034_c(Minecraft.getMinecraft().thePlayer))
+        {
+            GL11.glPushMatrix();
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
+            GL11.glDepthMask(false);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+            mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+            GL11.glPopMatrix();
+            GL11.glDepthMask(true);
         }
         else
         {
             mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
         }
+    }
+
+    protected void func_98190_a(EntityLiving par1EntityLiving)
+    {
+        loadTexture(par1EntityLiving.getTexture());
     }
 
     /**
@@ -339,7 +359,7 @@ public class RenderLiving extends Render
             for (int j = 0; j < i; j++)
             {
                 GL11.glPushMatrix();
-                ModelRenderer modelrenderer = mainModel.func_85181_a(random);
+                ModelRenderer modelrenderer = mainModel.getRandomModelBox(random);
                 ModelBox modelbox = (ModelBox)modelrenderer.cubeList.get(random.nextInt(modelrenderer.cubeList.size()));
                 modelrenderer.postRender(0.0625F);
                 float f = random.nextFloat();
@@ -413,12 +433,73 @@ public class RenderLiving extends Render
      */
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
-        if (Minecraft.isDebugInfoEnabled() && labels){
+        if (Minecraft.isGuiEnabled() && par1EntityLiving != renderManager.livingPlayer && !par1EntityLiving.func_98034_c(Minecraft.getMinecraft().thePlayer) && (par1EntityLiving.func_94059_bO() || par1EntityLiving.func_94056_bM() && par1EntityLiving == renderManager.field_96451_i))
+        {
+            float f = 1.6F;
+            float f1 = 0.01666667F * f;
+            double d = par1EntityLiving.getDistanceSqToEntity(renderManager.livingPlayer);
+            float f2 = par1EntityLiving.isSneaking() ? 32F : 64F;
+
+            if (d < (double)(f2 * f2))
+            {
+                String s = par1EntityLiving.func_96090_ax();
+
+                if (par1EntityLiving.isSneaking())
+                {
+                    FontRenderer fontrenderer = getFontRendererFromRenderManager();
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + par1EntityLiving.height + 0.5F, (float)par6);
+                    GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+                    GL11.glScalef(-f1, -f1, f1);
+                    GL11.glDisable(GL11.GL_LIGHTING);
+                    GL11.glTranslatef(0.0F, 0.25F / f1, 0.0F);
+                    GL11.glDepthMask(false);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    Tessellator tessellator = Tessellator.instance;
+                    GL11.glDisable(GL11.GL_TEXTURE_2D);
+                    tessellator.startDrawingQuads();
+                    int i = fontrenderer.getStringWidth(s) / 2;
+                    tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+                    tessellator.addVertex(-i - 1, -1D, 0.0D);
+                    tessellator.addVertex(-i - 1, 8D, 0.0D);
+                    tessellator.addVertex(i + 1, 8D, 0.0D);
+                    tessellator.addVertex(i + 1, -1D, 0.0D);
+                    tessellator.draw();
+                    GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    GL11.glDepthMask(true);
+                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 0, 0x20ffffff);
+                    GL11.glEnable(GL11.GL_LIGHTING);
+                    GL11.glDisable(GL11.GL_BLEND);
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    GL11.glPopMatrix();
+                }
+                else
+                {
+                    func_96449_a(par1EntityLiving, par2, par4, par6, s, f1, d);
+                }
+            }
+        }
+        if (Minecraft.getMinecraft().gameSettings.showDebugInfo && labels){
             if (par1EntityLiving instanceof EntityEnderman){
                 renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4 + 1D, par6, 64);
             }else{
                 renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
             }
+        }
+    }
+
+    protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10)
+    {
+        if (par1EntityLiving.isPlayerSleeping())
+        {
+            renderLivingLabel(par1EntityLiving, par8Str, par2, par4 - 1.5D, par6, 64);
+        }
+        else
+        {
+            renderLivingLabel(par1EntityLiving, par8Str, par2, par4, par6, 64);
         }
     }
 
@@ -441,7 +522,7 @@ public class RenderLiving extends Render
             f1 = (float)((double)f1 * (Math.sqrt(Math.sqrt(d)) / 2D));
         }
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
+        GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + par1EntityLiving.height + 0.5F, (float)par7);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

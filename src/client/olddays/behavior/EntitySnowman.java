@@ -20,6 +20,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityLiving.class, 16F, 0, true, false, IMob.mobSelector));
     }
 
+    @Override
     protected void attackEntity(Entity entity, float f)
     {
         if (!fixai){
@@ -34,7 +35,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
                 EntitySnowball entitysnowball = new EntitySnowball(worldObj, this);
                 double d2 = (entity.posY + (double)entity.getEyeHeight()) - 1.1000000238418579D - entitysnowball.posY;
                 float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-                func_85030_a("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+                playSound("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
                 worldObj.spawnEntityInWorld(entitysnowball);
                 entitysnowball.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12F);
                 attackTime = 10;
@@ -66,7 +67,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         super.onLivingUpdate();
         if (entityToAttack == null && !hasPath() && worldObj.rand.nextInt(100) == 0 && fixai)
         {
-            List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityMob.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
+            List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityMob.class, AxisAlignedBB.getAABBPool().getAABB(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
             if (!list.isEmpty())
             {
                 setTarget((Entity)list.get(worldObj.rand.nextInt(list.size())));
@@ -94,7 +95,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 
             if (worldObj.getBlockId(l, i1, j1) == 0 && worldObj.getBiomeGenForCoords(l, j1).getFloatTemperature() < 0.8F && Block.snow.canPlaceBlockAt(worldObj, l, i1, j1))
             {
-                worldObj.setBlockWithNotify(l, i1, j1, Block.snow.blockID);
+                worldObj.setBlock(l, i1, j1, Block.snow.blockID);
             }
         }
     }
@@ -104,11 +105,12 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
      */
     protected int getDropItemId()
     {
-        return Item.snowball.shiftedIndex;
+        return Item.snowball.itemID;
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -116,14 +118,14 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 
         for (int j = 0; j < i; j++)
         {
-            dropItem(Item.snowball.shiftedIndex, 1);
+            dropItem(Item.snowball.itemID, 1);
         }
     }
 
     /**
      * Attack the specified entity using a ranged attack.
      */
-    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving)
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving, float par2)
     {
         EntitySnowball entitysnowball = new EntitySnowball(worldObj, this);
         double d = par1EntityLiving.posX - posX;
@@ -131,7 +133,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         double d2 = par1EntityLiving.posZ - posZ;
         float f = MathHelper.sqrt_double(d * d + d2 * d2) * 0.2F;
         entitysnowball.setThrowableHeading(d, d1 + (double)f, d2, 1.6F, 12F);
-        func_85030_a("random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+        playSound("random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
         worldObj.spawnEntityInWorld(entitysnowball);
     }
 }

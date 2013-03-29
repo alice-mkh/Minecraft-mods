@@ -10,6 +10,7 @@ public class OldWorldGenDungeons extends WorldGenerator
     {
     }
 
+    @Override
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         byte byte0 = 3;
@@ -58,7 +59,7 @@ public class OldWorldGenDungeons extends WorldGenerator
                     {
                         if (l1 >= 0 && !par1World.getBlockMaterial(i1, l1 - 1, k2).isSolid())
                         {
-                            par1World.setBlockWithNotify(i1, l1, k2, 0);
+                            par1World.setBlockToAir(i1, l1, k2);
                             continue;
                         }
 
@@ -69,16 +70,16 @@ public class OldWorldGenDungeons extends WorldGenerator
 
                         if (l1 == par4 - 1 && par2Random.nextInt(4) != 0)
                         {
-                            par1World.setBlockWithNotify(i1, l1, k2, Block.cobblestoneMossy.blockID);
+                            par1World.setBlock(i1, l1, k2, Block.cobblestoneMossy.blockID, 0, 2);
                         }
                         else
                         {
-                            par1World.setBlockWithNotify(i1, l1, k2, Block.cobblestone.blockID);
+                            par1World.setBlock(i1, l1, k2, Block.cobblestone.blockID, 0, 2);
                         }
                     }
                     else
                     {
-                        par1World.setBlockWithNotify(i1, l1, k2, 0);
+                        par1World.setBlockToAir(i1, l1, k2);
                     }
                 }
             }
@@ -126,7 +127,7 @@ public class OldWorldGenDungeons extends WorldGenerator
                     continue;
                 }
 
-                par1World.setBlockWithNotify(l2, i3, j3, Block.chest.blockID);
+                par1World.setBlock(l2, i3, j3, Block.chest.blockID, 0, 2);
                 TileEntityChest tileentitychest = (TileEntityChest)par1World.getBlockTileEntity(l2, i3, j3);
 
                 if (tileentitychest == null)
@@ -156,12 +157,12 @@ public class OldWorldGenDungeons extends WorldGenerator
             }
         }
 
-        par1World.setBlockWithNotify(par3, par4, par5, Block.mobSpawner.blockID);
+        par1World.setBlock(par3, par4, par5, Block.mobSpawner.blockID, 0, 2);
         TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)par1World.getBlockTileEntity(par3, par4, par5);
 
         if (tileentitymobspawner != null)
         {
-            tileentitymobspawner.setMobID(pickMobSpawner(par2Random));
+            tileentitymobspawner.func_98049_a().setMobID(pickMobSpawner(par2Random));
         }
         else
         {
@@ -225,7 +226,7 @@ public class OldWorldGenDungeons extends WorldGenerator
 
         if (i == 9 && par1Random.nextInt(10) == 0)
         {
-            return new ItemStack(Item.itemsList[Item.record13.shiftedIndex + par1Random.nextInt(2)]);
+            return new ItemStack(Item.itemsList[Item.record13.itemID + par1Random.nextInt(2)]);
         }
 
         if (i == 10)
@@ -235,7 +236,7 @@ public class OldWorldGenDungeons extends WorldGenerator
 
         if (i == 11)
         {
-            return Item.field_92105_bW.func_92109_a(par1Random);
+            return Item.enchantedBook.func_92109_a(par1Random);
         }
         else
         {

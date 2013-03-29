@@ -580,8 +580,8 @@ public class ChunkProviderHell implements IChunkProvider
         {
             int i1 = i + hellRNG.nextInt(16) + 8;
             int k2 = hellRNG.nextInt(120) + 4;
-            int i4 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenHellLava(Block.lavaMoving.blockID)).generate(worldObj, hellRNG, i1, k2, i4);
+            int k4 = j + hellRNG.nextInt(16) + 8;
+            (new WorldGenHellLava(Block.lavaMoving.blockID, false)).generate(worldObj, hellRNG, i1, k2, k4);
         }
 
         int l = hellRNG.nextInt(hellRNG.nextInt(10) + 1) + 1;
@@ -589,9 +589,9 @@ public class ChunkProviderHell implements IChunkProvider
         for (int j1 = 0; j1 < l; j1++)
         {
             int l2 = i + hellRNG.nextInt(16) + 8;
-            int j4 = hellRNG.nextInt(120) + 4;
-            int k5 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenFire()).generate(worldObj, hellRNG, l2, j4, k5);
+            int l4 = hellRNG.nextInt(120) + 4;
+            int k6 = j + hellRNG.nextInt(16) + 8;
+            (new WorldGenFire()).generate(worldObj, hellRNG, l2, l4, k6);
         }
 
         l = hellRNG.nextInt(hellRNG.nextInt(10) + 1);
@@ -599,33 +599,51 @@ public class ChunkProviderHell implements IChunkProvider
         for (int k1 = 0; k1 < l; k1++)
         {
             int i3 = i + hellRNG.nextInt(16) + 8;
-            int k4 = hellRNG.nextInt(120) + 4;
-            int l5 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenGlowStone1()).generate(worldObj, hellRNG, i3, k4, l5);
+            int i5 = hellRNG.nextInt(120) + 4;
+            int l6 = j + hellRNG.nextInt(16) + 8;
+            (new WorldGenGlowStone1()).generate(worldObj, hellRNG, i3, i5, l6);
         }
 
         for (int l1 = 0; l1 < 10; l1++)
         {
             int j3 = i + hellRNG.nextInt(16) + 8;
-            int l4 = hellRNG.nextInt(128);
-            int i6 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenGlowStone2()).generate(worldObj, hellRNG, j3, l4, i6);
+            int j5 = hellRNG.nextInt(128);
+            int i7 = j + hellRNG.nextInt(16) + 8;
+            (new WorldGenGlowStone2()).generate(worldObj, hellRNG, j3, j5, i7);
         }
 
         if (hellRNG.nextInt(1) == 0)
         {
             int i2 = i + hellRNG.nextInt(16) + 8;
             int k3 = hellRNG.nextInt(128);
-            int i5 = j + hellRNG.nextInt(16) + 8;
-            (new OldWorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, hellRNG, i2, k3, i5);
+            int k5 = j + hellRNG.nextInt(16) + 8;
+            (new OldWorldGenFlowers(Block.mushroomBrown.blockID)).generate(worldObj, hellRNG, i2, k3, k5);
         }
 
         if (hellRNG.nextInt(1) == 0)
         {
             int j2 = i + hellRNG.nextInt(16) + 8;
             int l3 = hellRNG.nextInt(128);
-            int j5 = j + hellRNG.nextInt(16) + 8;
-            (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, hellRNG, j2, l3, j5);
+            int l5 = j + hellRNG.nextInt(16) + 8;
+            (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, hellRNG, j2, l3, l5);
+        }
+
+        WorldGenMinable worldgenminable = new WorldGenMinable(Block.oreNetherQuartz.blockID, 13, Block.netherrack.blockID);
+
+        for (int i4 = 0; i4 < 16; i4++)
+        {
+            int i6 = i + hellRNG.nextInt(16);
+            int j7 = hellRNG.nextInt(108) + 10;
+            int l7 = j + hellRNG.nextInt(16);
+            worldgenminable.generate(worldObj, hellRNG, i6, j7, l7);
+        }
+
+        for (int j4 = 0; j4 < 16; j4++)
+        {
+            int j6 = i + hellRNG.nextInt(16);
+            int k7 = hellRNG.nextInt(108) + 10;
+            int i8 = j + hellRNG.nextInt(16);
+            (new WorldGenHellLava(Block.lavaMoving.blockID, true)).generate(worldObj, hellRNG, j6, k7, i8);
         }
 
         BlockSand.fallInstantly = false;
@@ -641,10 +659,9 @@ public class ChunkProviderHell implements IChunkProvider
     }
 
     /**
-     * Unloads the 100 oldest chunks from memory, due to a bug with chunkSet.add() never being called it thinks the list
-     * is always empty and will not remove any chunks.
+     * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.
      */
-    public boolean unload100OldestChunks()
+    public boolean unloadQueuedChunks()
     {
         return false;
     }
@@ -700,7 +717,7 @@ public class ChunkProviderHell implements IChunkProvider
         return 0;
     }
 
-    public void func_82695_e(int par1, int par2)
+    public void recreateStructures(int par1, int par2)
     {
         genNetherBridge.generate(this, worldObj, par1, par2, null);
     }

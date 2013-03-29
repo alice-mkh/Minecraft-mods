@@ -219,7 +219,7 @@ public class RenderPlayer2 extends RenderLiving
             GL11.glPushMatrix();
             modelBipedMain.bipedHead.postRender(0.0625F);
 
-            if (itemstack.getItem().shiftedIndex < 256)
+            if (itemstack.getItem().itemID < 256)
             {
                 if (RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
                 {
@@ -231,7 +231,7 @@ public class RenderPlayer2 extends RenderLiving
 
                 renderManager.itemRenderer.renderItem(par1EntityPlayer, itemstack, 0);
             }
-            else if (itemstack.getItem().shiftedIndex == Item.skull.shiftedIndex)
+            else if (itemstack.getItem().itemID == Item.skull.itemID)
             {
                 float f2 = 1.0625F;
                 GL11.glScalef(f2, -f2, -f2);
@@ -268,7 +268,7 @@ public class RenderPlayer2 extends RenderLiving
             }
         }
 
-        if (loadDownloadableImageTexture(par1EntityPlayer.playerCloakUrl, null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape())
+        if (loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape())
         {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);
@@ -343,7 +343,7 @@ public class RenderPlayer2 extends RenderLiving
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(f5, -f5, f5);
             }
-            else if (itemstack1.itemID == Item.bow.shiftedIndex)
+            else if (itemstack1.itemID == Item.bow.itemID)
             {
                 float f6 = 0.625F;
                 GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
@@ -413,7 +413,7 @@ public class RenderPlayer2 extends RenderLiving
         GL11.glScalef(f, f, f);
     }
 
-    public void func_82441_a(EntityPlayer par1EntityPlayer)
+    public void renderFirstPersonArm(EntityPlayer par1EntityPlayer)
     {
         float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(1.0F) : 1.0F;
         GL11.glColor3f(f, f, f);

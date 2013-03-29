@@ -20,6 +20,7 @@ public class WorldSSP2 extends WorldSSP
     /**
      * Creates the bonus chest in the world.
      */
+    @Override
     protected void createBonusChest()
     {
         if (ODNBXlite.Generator == ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV && ODNBXlite.IndevSpawnY < ODNBXlite.IndevHeight){
@@ -34,7 +35,7 @@ public class WorldSSP2 extends WorldSSP
             }else if (dir == 2){
                 k += 2;
             }
-            setBlockWithNotify(j, l, k, Block.chest.blockID);
+            setBlock(j, l, k, Block.chest.blockID);
             TileEntityChest tileentitychest = (TileEntityChest)getBlockTileEntity(j, l, k);
             if (tileentitychest != null && tileentitychest != null){
                 WeightedRandomChestContent.generateChestContents(rand, bonusChestContent, tileentitychest, 10);
@@ -62,9 +63,9 @@ public class WorldSSP2 extends WorldSSP
         while (true);
     }
 
-    public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p)
+    public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p, ILogAgent log)
     {
-        super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p);
+        super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, p, log);
         par3WorldProvider.registerWorld(this);
         turnOnOldSpawners();
         calculateInitialSkylight();
@@ -72,9 +73,9 @@ public class WorldSSP2 extends WorldSSP
         ODNBXlite.IndevWorld = null;
     }
 
-    public WorldSSP2(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p)
+    public WorldSSP2(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p, ILogAgent log)
     {
-        super(par1World, par2WorldProvider, p);
+        super(par1World, par2WorldProvider, p, log);
 //         ODNBXlite.SetGenerator(this, worldInfo.mapsGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
         ODNBXlite.refreshProperties();
         turnOnOldSpawners();
@@ -84,19 +85,19 @@ public class WorldSSP2 extends WorldSSP
         ODNBXlite.IndevWorld = null;
     }
 
-    public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, Profiler p)
+    public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, Profiler p, ILogAgent log)
     {
-        this(par1ISaveHandler, par2Str, par3WorldSettings, ((WorldProvider)(null)), p);
+        this(par1ISaveHandler, par2Str, par3WorldSettings, ((WorldProvider)(null)), p, log);
     }
 
-    public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p)
+    public WorldSSP2(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler p, ILogAgent log)
     {
-        super(par1ISaveHandler, par2Str, par3WorldSettings, par4WorldProvider, p);
+        super(par1ISaveHandler, par2Str, par3WorldSettings, par4WorldProvider, p, log);
         provider.registerWorld(this);
 
         if (isNewWorld)
         {
-            generateSpawnPoint();
+            generateSpawnPoint(par3WorldSettings);
             if (par3WorldSettings.isBonusChestEnabled()){
                 createBonusChest();
             }
@@ -117,7 +118,8 @@ public class WorldSSP2 extends WorldSSP
     /**
      * Finds an initial spawn location upon creating a new world
      */
-    protected void generateSpawnPoint()
+    @Override
+    protected void generateSpawnPoint(WorldSettings par1WorldSettings)
     {
         if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
             if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_11){
@@ -190,8 +192,8 @@ public class WorldSSP2 extends WorldSSP
             findingSpawnPoint = true;
             worldInfo.setSpawnPosition(ODNBXlite.IndevSpawnX, ODNBXlite.IndevSpawnY, ODNBXlite.IndevSpawnZ);
             if (!ODNBXlite.Import && ODNBXlite.IndevSpawnY < ODNBXlite.IndevHeight){
-                setBlockWithNotify(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
-                setBlockWithNotify(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+                setBlock(ODNBXlite.IndevSpawnX-2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
+                setBlock(ODNBXlite.IndevSpawnX+2, ODNBXlite.IndevSpawnY+3, ODNBXlite.IndevSpawnZ, Block.torchWood.blockID);
             }
             findingSpawnPoint = false;
         }else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_CLASSIC){
@@ -214,6 +216,7 @@ public class WorldSSP2 extends WorldSSP
     /**
      * Sets a new spawn location by finding an uncovered block at a random (x,z) location in the chunk.
      */
+    @Override
     public void setSpawnLocation()
     {
         if (ODNBXlite.isFinite()){
@@ -266,6 +269,7 @@ public class WorldSSP2 extends WorldSSP
     /**
      * spawns a player, load data from level.dat if needed and loads surrounding chunks
      */
+    @Override
     public void spawnPlayerWithLoadedChunks(EntityPlayer par1EntityPlayer)
     {
         try
@@ -302,6 +306,7 @@ public class WorldSSP2 extends WorldSSP
     /**
      * Runs a single tick for the world
      */
+    @Override
     public void tick()
     {
         field_35467_J = field_35468_K;
@@ -361,7 +366,7 @@ public class WorldSSP2 extends WorldSSP
             }
         }
         theProfiler.endStartSection("chunkSource");
-        chunkProvider.unload100OldestChunks();
+        chunkProvider.unloadQueuedChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
         boolean nightPotion = Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision);
@@ -409,6 +414,7 @@ public class WorldSSP2 extends WorldSSP
      * plays random cave ambient sounds and runs updateTick on random blocks within each chunk in the vacinity of a
      * player
      */
+    @Override
     protected void tickBlocksAndAmbiance()
     {
         func_48461_r();
@@ -456,11 +462,11 @@ public class WorldSSP2 extends WorldSSP
                     int i7 = chunk.getBlockID(l3, l5, l4);
                     if(i7 == 0 && Block.snow.canPlaceBlockAt(this, l3 + k, l5, l4 + l) && k6 != 0 && k6 != Block.ice.blockID && Block.blocksList[k6].blockMaterial.isSolid())
                     {
-                        setBlockWithNotify(l3 + k, l5, l4 + l, Block.snow.blockID);
+                        setBlock(l3 + k, l5, l4 + l, Block.snow.blockID);
                     }
                     if((k6 == Block.waterMoving.blockID || k6 == Block.waterStill.blockID) && chunk.getBlockMetadata(l3, l5 - 1, l4) == 0)
                     {
-                        setBlockWithNotify(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
+                        setBlock(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
                     }
                 }
             }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
@@ -471,11 +477,11 @@ public class WorldSSP2 extends WorldSSP
                 int l10 = getPrecipitationHeight(l8 + k, l9 + l);
                 if(isRaining() && isBlockFreezable(l8 + k, l10 - 1, l9 + l))
                 {
-                    setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
+                    setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                 }
                 if(isRaining() && canSnowAt(l8 + k, l10, l9 + l))
                 {
-                    setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
+                    setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
                 }
             }else{
                 if(rand.nextInt(16) == 0 && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))
@@ -491,11 +497,11 @@ public class WorldSSP2 extends WorldSSP
                         int k66 = chunk.getBlockID(l8, l10, l9);
                         if(isRaining() && k66 == 0 && Block.snow.canPlaceBlockAt(this, l8 + k, l10, l9 + l) && i66 != 0 && i66 != Block.ice.blockID && Block.blocksList[i66].blockMaterial.isSolid())
                         {
-                            setBlockWithNotify(l8 + k, l10, l9 + l, Block.snow.blockID);
+                            setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
                         }
                         if(i66 == Block.waterStill.blockID && chunk.getBlockMetadata(l8, l10 - 1, l9) == 0)
                         {
-                            setBlockWithNotify(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
+                            setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                         }
                     }
                 }
@@ -553,6 +559,7 @@ public class WorldSSP2 extends WorldSSP
     /**
      * calls calculateCelestialAngle
      */
+    @Override
     public float getCelestialAngle(float par1)
     {
         if(ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY && provider.dimensionId==0){
@@ -571,6 +578,7 @@ public class WorldSSP2 extends WorldSSP
      * Returns how bright the block is shown as which is the block's light value looked up in a lookup table (light
      * values aren't linear for brightness). Args: x, y, z
      */
+    @Override
     public float getLightBrightness(int par1, int par2, int par3)
     {
         if (provider.dimensionId == 1){
@@ -579,6 +587,7 @@ public class WorldSSP2 extends WorldSSP
         return super.getLightBrightness(par1, par2, par3);
     }
 
+    @Override
     public float getBrightness(int par1, int par2, int par3, int par4)
     {
         if (provider.dimensionId == 1){

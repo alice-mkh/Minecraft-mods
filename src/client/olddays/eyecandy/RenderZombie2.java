@@ -76,7 +76,7 @@ public class RenderZombie2 extends RenderBiped
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(f, -f, f);
             }
-            else if (itemstack.itemID == Item.bow.shiftedIndex)
+            else if (itemstack.itemID == Item.bow.itemID)
             {
                 float f1 = 0.625F;
                 GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
@@ -161,7 +161,7 @@ public class RenderZombie2 extends RenderBiped
 
     protected void func_82430_a(EntityZombie par1EntityZombie, float par2, float par3, float par4)
     {
-        if (par1EntityZombie.func_82230_o())
+        if (par1EntityZombie.isConverting())
         {
             par3 += (float)(Math.cos((double)par1EntityZombie.ticksExisted * 3.25D) * Math.PI * 0.25D);
         }
@@ -169,11 +169,13 @@ public class RenderZombie2 extends RenderBiped
         super.rotateCorpse(par1EntityZombie, par2, par3, par4);
     }
 
+    @Override
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
     {
         func_82428_a((EntityZombie)par1EntityLiving, par2);
     }
 
+    @Override
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         func_82427_a((EntityZombie)par1EntityLiving);
@@ -183,6 +185,7 @@ public class RenderZombie2 extends RenderBiped
     /**
      * Queries whether should render the specified pass or not.
      */
+    @Override
     protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
         func_82427_a((EntityZombie)par1EntityLiving);
@@ -193,6 +196,7 @@ public class RenderZombie2 extends RenderBiped
         return super.shouldRenderPass((EntityZombie)par1EntityLiving, par2, par3);
     }
 
+    @Override
     protected void rotateCorpse(EntityLiving par1EntityLiving, float par2, float par3, float par4)
     {
         func_82430_a((EntityZombie)par1EntityLiving, par2, par3, par4);

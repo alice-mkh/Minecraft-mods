@@ -36,18 +36,21 @@ public class GuiOldDaysBase extends GuiScreen{
         specialButtons = 2;
     }
 
+    @Override
     public void updateScreen(){
         field.updateCursorCounter();
     }
 
+    @Override
     public void onGuiClosed(){
         Keyboard.enableRepeatEvents(false);
     }
 
+    @Override
     public void initGui()
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        controlList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
     }
 
     protected void addButton(int i, boolean b, int j, String name, boolean e){
@@ -61,7 +64,7 @@ public class GuiOldDaysBase extends GuiScreen{
         int y = height / 6 - top + ((i2/2) * margin);
         GuiButton button = new GuiButton(j+1, x, y, 150, 20, name);
         button.enabled = e;
-        controlList.add(button);
+        buttonList.add(button);
     }
 
     protected void addButton(int i, boolean b, int j, OldDaysProperty p){
@@ -77,20 +80,21 @@ public class GuiOldDaysBase extends GuiScreen{
         int top = b ? 15 : -15;
         int y = height / 6 - top + ((i2/2) * margin);
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, p, false);
-        controlList.add(button);
+        buttonList.add(button);
         GuiButton tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
-        controlList.add(tooltipButton);
+        buttonList.add(tooltipButton);
     }
 
     protected void postInitGui(int count){
-        controlList.add(left = new GuiButtonPage(LEFT_ID, 30, height, width, false, this));
-        controlList.add(right = new GuiButtonPage(RIGHT_ID, 30, height, width, true, this));
+        buttonList.add(left = new GuiButtonPage(LEFT_ID, 30, height, width, false, this));
+        buttonList.add(right = new GuiButtonPage(RIGHT_ID, 30, height, width, true, this));
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
         Keyboard.enableRepeatEvents(hasFields);
         maxpage = (count-1) / max;
         setPage(0);
     }
 
+    @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         if (!guibutton.enabled){
@@ -110,6 +114,7 @@ public class GuiOldDaysBase extends GuiScreen{
         }
     }
 
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
@@ -125,22 +130,22 @@ public class GuiOldDaysBase extends GuiScreen{
         }
         for (int i = 0; i < max*2; i++){
             int i2 = i+(page*max*2)+1;
-            if (i2<=controlList.size()-specialButtons){
-                ((GuiButton)controlList.get(i2)).drawButton = false;
+            if (i2<=buttonList.size()-specialButtons){
+                ((GuiButton)buttonList.get(i2)).drawButton = false;
             }
         }
         page = to;
         for (int i = 0; i < max*2; i++){
             int i2 = i+(page*max*2)+1;
-            if (i2<=controlList.size()-specialButtons){
-                GuiButton guibutton = ((GuiButton)controlList.get(i2));
+            if (i2<=buttonList.size()-specialButtons){
+                GuiButton guibutton = ((GuiButton)buttonList.get(i2));
                 guibutton.drawButton = (guibutton.id >= TOOLTIP_OFFSET) ? guibutton.enabled : true;
             }
         }
         left.drawButton = page>0;
         right.drawButton = page<maxpage;
         if (displayField){
-            showField(false, ((GuiButton)controlList.get(fieldId)));
+            showField(false, ((GuiButton)buttonList.get(fieldId)));
         }
     }
 
@@ -154,6 +159,7 @@ public class GuiOldDaysBase extends GuiScreen{
 //         }
     }
 
+    @Override
     protected void keyTyped(char par1, int par2)
     {
         if (!displayField){
@@ -198,6 +204,7 @@ public class GuiOldDaysBase extends GuiScreen{
         }
     }
 
+    @Override
     public boolean doesGuiPauseGame(){
         return Minecraft.getMinecraft().enableSP;
     }

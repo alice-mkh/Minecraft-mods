@@ -8,22 +8,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.*;
 
-public class TextureManager{
+public class OldDaysTextureManager{
     private RenderEngine renderEngine;
-    protected ArrayList<TextureSpriteFX> textureHooks;
+//    protected ArrayList<TextureSpriteFX> textureHooks;
     protected ArrayList<TextureHook> textureHooks2;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
-    public TextureManager(){
+    public OldDaysTextureManager(){
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
-        textureHooks = new ArrayList<TextureSpriteFX>();
+//        textureHooks = new ArrayList<TextureSpriteFX>();
         textureHooks2 = new ArrayList<TextureHook>();
         entryCache = new HashMap<String, Boolean>();
     }
 
     public void setTextureHook(String name, int i2, String name2, int index, boolean b){
-        TextureSpriteFX fx2 = null;
+/*        TextureSpriteFX fx2 = null;
         for (int i = 0; i < textureHooks.size(); i++){
             TextureSpriteFX fx = textureHooks.get(i);
             if (fx.sprite2 == name && fx.index2 == i2){
@@ -46,11 +46,11 @@ public class TextureManager{
         fx2.onTick2();
         try{
             renderEngine.updateDynamicTextures();
-        }catch(Exception ex){}
+        }catch(Exception ex){}*/
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
-        for (int i = 0; i < textureHooks2.size(); i++){
+/*        for (int i = 0; i < textureHooks2.size(); i++){
             TextureHook hook = textureHooks2.get(i);
             if (hook.origname.equals(origname) && hook.newname.equals(newname)){
                 hook.enabled = b;
@@ -59,21 +59,21 @@ public class TextureManager{
             }
         }
         textureHooks2.add(new TextureHook(origname, newname, b));
-        refreshTextureHooks();
+        refreshTextureHooks();*/
     }
  
     public void onTick(){
-        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraft().renderEngine.getTexture("/terrain.png"));
+/*        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
+            renderEngine.bindTexture("/terrain.png");
             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
             entryCache.clear();
             setFallback(!hasEntry("olddays"));
-        }
+        }*/
     }
 
     public void refreshTextureHooks(){
-        for (TextureHook hook : textureHooks2){
+/*        for (TextureHook hook : textureHooks2){
             try{
                 TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
                 ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
@@ -82,7 +82,7 @@ public class TextureManager{
             }catch(Exception ex){
                 ex.printStackTrace();
             }
-        }
+        }*/
     }
 
     private void setFallback(boolean b){
@@ -95,10 +95,10 @@ public class TextureManager{
             }
             module.onFallbackChange(b);
         }
-        for (int i = 0; i < textureHooks.size(); i++){
+/*        for (int i = 0; i < textureHooks.size(); i++){
             textureHooks.get(i).refresh(false);
             textureHooks.get(i).onTick2();
-        }
+        }*/
     }
 
     public boolean hasEntry(String... str){
@@ -141,10 +141,10 @@ public class TextureManager{
     }
 
     public void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
-        RenderEngine renderEngine = mod_OldDays.getMinecraft().renderEngine;
+/*        RenderEngine renderEngine = mod_OldDays.getMinecraft().renderEngine;
         TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
         renderEngine.registerTextureFX(fx);
-        textureHooks.add(fx);
+        textureHooks.add(fx);*/
     }
 
     private class TextureHook{

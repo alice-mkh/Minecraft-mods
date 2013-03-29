@@ -7,21 +7,26 @@ public class BlockLeaves extends BlockLeavesBase
 {
     public static boolean apples = true;
 
-    /**
-     * The base index in terrain.png corresponding to the fancy version of the leaf texture. This is stored so we can
-     * switch the displayed version between fancy and fast graphics (fast is this index + 1).
-     */
-    private int baseIndexInPNG;
     public static final String LEAF_TYPES[] =
     {
         "oak", "spruce", "birch", "jungle"
     };
+    public static final String field_94396_b[][] =
+    {
+        {
+            "leaves", "leaves_spruce", "leaves", "leaves_jungle"
+        }, {
+            "leaves_opaque", "leaves_spruce_opaque", "leaves_opaque", "leaves_jungle_opaque"
+        }
+    };
+    private int field_94394_cP;
+    private Icon iconArray[][];
     int adjacentTreeBlocks[];
 
-    protected BlockLeaves(int par1, int par2)
+    protected BlockLeaves(int par1)
     {
-        super(par1, par2, Material.leaves, false);
-        baseIndexInPNG = par2;
+        super(par1, Material.leaves, false);
+        iconArray = new Icon[2][];
         setTickRandomly(true);
         setCreativeTab(CreativeTabs.tabDecorations);
     }
@@ -110,7 +115,7 @@ public class BlockLeaves extends BlockLeavesBase
                         if (j1 == Block.leaves.blockID)
                         {
                             int k1 = par1World.getBlockMetadata(par2 + k, par3 + l, par4 + i1);
-                            par1World.setBlockMetadata(par2 + k, par3 + l, par4 + i1, k1 | 8);
+                            par1World.setBlockMetadataWithNotify(par2 + k, par3 + l, par4 + i1, k1 | 8, 4);
                         }
                     }
                 }
@@ -223,7 +228,7 @@ public class BlockLeaves extends BlockLeavesBase
 
             if (k1 >= 0)
             {
-                par1World.setBlockMetadata(par2, par3, par4, i & -9);
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, i & -9, 4);
             }
             else
             {
@@ -249,7 +254,7 @@ public class BlockLeaves extends BlockLeavesBase
     private void removeLeaves(World par1World, int par2, int par3, int par4)
     {
         dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-        par1World.setBlockWithNotify(par2, par3, par4, 0);
+        par1World.setBlockToAir(par2, par3, par4);
     }
 
     /**
@@ -275,20 +280,42 @@ public class BlockLeaves extends BlockLeavesBase
     {
         if (!par1World.isRemote)
         {
-            byte byte0 = 20;
+            int i = 20;
 
             if ((par5 & 3) == 3)
             {
-                byte0 = 40;
+                i = 40;
             }
 
-            if (par1World.rand.nextInt(byte0) == 0)
+            if (par7 > 0)
             {
-                int i = idDropped(par5, par1World.rand, par7);
-                dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(i, 1, damageDropped(par5)));
+                i -= 2 << par7;
+
+                if (i < 10)
+                {
+                    i = 10;
+                }
             }
 
-            if ((par5 & 3) == 0 && par1World.rand.nextInt(200) == 0 && apples)
+            if (par1World.rand.nextInt(i) == 0)
+            {
+                int j = idDropped(par5, par1World.rand, par7);
+                dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(j, 1, damageDropped(par5)));
+            }
+
+            i = 200;
+
+            if (par7 > 0)
+            {
+                i -= 10 << par7;
+
+                if (i < 40)
+                {
+                    i = 40;
+                }
+            }
+
+            if ((par5 & 3) == 0 && par1World.rand.nextInt(i) == 0 && apples)
             {
                 dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.appleRed, 1, 0));
             }
@@ -301,7 +328,7 @@ public class BlockLeaves extends BlockLeavesBase
      */
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
-        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.shiftedIndex)
+        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.itemID)
         {
             par2EntityPlayer.addStat(StatList.mineBlockStatArray[blockID], 1);
             dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Block.leaves.blockID, 1, par6 & 3));
@@ -332,20 +359,20 @@ public class BlockLeaves extends BlockLeavesBase
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if ((par2 & 3) == 1)
         {
-            return blockIndexInTexture + 80;
+            return iconArray[field_94394_cP][1];
         }
 
         if ((par2 & 3) == 3)
         {
-            return blockIndexInTexture + 144;
+            return iconArray[field_94394_cP][3];
         }
         else
         {
-            return blockIndexInTexture;
+            return iconArray[field_94394_cP][0];
         }
     }
 
@@ -355,7 +382,7 @@ public class BlockLeaves extends BlockLeavesBase
     public void setGraphicsLevel(boolean par1)
     {
         graphicsLevel = par1;
-        blockIndexInTexture = baseIndexInPNG + (par1 ? 0 : 1);
+        field_94394_cP = par1 ? 0 : 1;
     }
 
     /**
@@ -376,5 +403,22 @@ public class BlockLeaves extends BlockLeavesBase
     protected ItemStack createStackedBlock(int par1)
     {
         return new ItemStack(blockID, 1, par1 & 3);
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        for (int i = 0; i < field_94396_b.length; i++)
+        {
+            iconArray[i] = new Icon[field_94396_b[i].length];
+
+            for (int j = 0; j < field_94396_b[i].length; j++)
+            {
+                iconArray[i][j] = par1IconRegister.registerIcon(field_94396_b[i][j]);
+            }
+        }
     }
 }

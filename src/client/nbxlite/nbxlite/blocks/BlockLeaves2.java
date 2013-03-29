@@ -7,19 +7,9 @@ public class BlockLeaves2 extends BlockLeaves
 {
     public static boolean decay = true;
 
-    public int fasttex;
-    public int fancytex;
-
-    /**
-     * The base index in terrain.png corresponding to the fancy version of the leaf texture. This is stored so we can
-     * switch the displayed version between fancy and fast graphics (fast is this index + 1).
-     */
-    private int baseIndexInPNG;
-
-    public BlockLeaves2(int par1, int par2)
+    public BlockLeaves2(int par1)
     {
-        super(par1, par2);
-        baseIndexInPNG = par2;
+        super(par1);
     }
 
     /**
@@ -98,7 +88,7 @@ public class BlockLeaves2 extends BlockLeaves
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+/*    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if ((par2 & 3) == 1)
         {
@@ -119,5 +109,5 @@ public class BlockLeaves2 extends BlockLeaves
             }
             return fasttex;
         }
-    }
+    }*/
 }

@@ -13,7 +13,9 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
     /** The large double chest model. */
     private ModelChest largeChestModel;
-    private boolean field_92061_d;
+
+    /** If true, chests will be rendered with the Christmas present textures. */
+    private boolean isChristmas;
 
     public TileEntityChestRenderer()
     {
@@ -23,7 +25,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
         if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
         {
-            field_92061_d = true;
+            isChristmas = true;
         }
     }
 
@@ -46,7 +48,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
             Block block = par1TileEntityChest.getBlockType();
             i = par1TileEntityChest.getBlockMetadata();
 
-            if (block != null && i == 0)
+            if ((block instanceof BlockChest) && i == 0)
             {
                 ((BlockChest)block).unifyAdjacentChests(par1TileEntityChest.getWorldObj(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 i = par1TileEntityChest.getBlockMetadata();
@@ -66,7 +68,11 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
         {
             modelchest = largeChestModel;
 
-            if (field_92061_d)
+            if (par1TileEntityChest.func_98041_l() == 1)
+            {
+                bindTextureByName("/item/chests/trap_large.png");
+            }
+            else if (isChristmas)
             {
                 bindTextureByName("/item/largexmaschest.png");
             }
@@ -79,7 +85,11 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
         {
             modelchest = chestModel;
 
-            if (field_92061_d)
+            if (par1TileEntityChest.func_98041_l() == 1)
+            {
+                bindTextureByName("/item/chests/trap_small.png");
+            }
+            else if (isChristmas)
             {
                 bindTextureByName("/item/xmaschest.png");
             }

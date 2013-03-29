@@ -6,8 +6,12 @@ import java.util.Random;
 public class ComponentVillageField2 extends ComponentVillage
 {
     private int averageGroundLevel;
-    private int field_82675_b;
-    private int field_82676_c;
+
+    /** First crop type for this field. */
+    private int cropTypeA;
+
+    /** Second crop type for this field. */
+    private int cropTypeB;
 
     public ComponentVillageField2(ComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
@@ -15,8 +19,8 @@ public class ComponentVillageField2 extends ComponentVillage
         averageGroundLevel = -1;
         coordBaseMode = par5;
         boundingBox = par4StructureBoundingBox;
-        field_82675_b = pickRandomCrop(par3Random);
-        field_82676_c = pickRandomCrop(par3Random);
+        cropTypeA = pickRandomCrop(par3Random);
+        cropTypeB = pickRandomCrop(par3Random);
     }
 
     /**
@@ -81,10 +85,10 @@ public class ComponentVillageField2 extends ComponentVillage
 
         for (int i = 1; i <= 7; i++)
         {
-            placeBlockAtCurrentPosition(par1World, field_82675_b, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 1, 1, i, par3StructureBoundingBox);
-            placeBlockAtCurrentPosition(par1World, field_82675_b, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 2, 1, i, par3StructureBoundingBox);
-            placeBlockAtCurrentPosition(par1World, field_82676_c, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 4, 1, i, par3StructureBoundingBox);
-            placeBlockAtCurrentPosition(par1World, field_82676_c, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 5, 1, i, par3StructureBoundingBox);
+            placeBlockAtCurrentPosition(par1World, cropTypeA, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 1, 1, i, par3StructureBoundingBox);
+            placeBlockAtCurrentPosition(par1World, cropTypeA, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 2, 1, i, par3StructureBoundingBox);
+            placeBlockAtCurrentPosition(par1World, cropTypeB, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 4, 1, i, par3StructureBoundingBox);
+            placeBlockAtCurrentPosition(par1World, cropTypeB, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 5, 1, i, par3StructureBoundingBox);
         }
 
         for (int j = 0; j < 9; j++)

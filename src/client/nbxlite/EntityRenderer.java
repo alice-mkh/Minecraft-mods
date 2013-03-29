@@ -234,8 +234,8 @@ public class EntityRenderer
         {
             float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
             float f2 = f * f * f * 8F;
-            smoothCamFilterX = mouseFilterXAxis.func_76333_a(smoothCamYaw, 0.05F * f2);
-            smoothCamFilterY = mouseFilterYAxis.func_76333_a(smoothCamPitch, 0.05F * f2);
+            smoothCamFilterX = mouseFilterXAxis.smooth(smoothCamYaw, 0.05F * f2);
+            smoothCamFilterY = mouseFilterYAxis.smooth(smoothCamPitch, 0.05F * f2);
             smoothCamPartialTicks = 0.0F;
             smoothCamYaw = 0.0F;
             smoothCamPitch = 0.0F;
@@ -287,6 +287,7 @@ public class EntityRenderer
             return;
         }
 
+        mc.pointedEntityLiving = null;
         double d = mc.playerController.getBlockReachDistance();
         mc.objectMouseOver = mc.renderViewEntity.rayTrace(d, par1);
         double d1 = d;
@@ -359,6 +360,11 @@ public class EntityRenderer
         if (pointedEntity != null && (d2 < d1 || mc.objectMouseOver == null))
         {
             mc.objectMouseOver = new MovingObjectPosition(pointedEntity);
+
+            if (pointedEntity instanceof EntityLiving)
+            {
+                mc.pointedEntityLiving = (EntityLiving)pointedEntity;
+            }
         }
     }
 
@@ -371,6 +377,16 @@ public class EntityRenderer
         fovMultiplierTemp = entityplayersp.getFOVMultiplier();
         fovModifierHandPrev = fovModifierHand;
         fovModifierHand += (fovMultiplierTemp - fovModifierHand) * 0.5F;
+
+        if (fovModifierHand > 1.5F)
+        {
+            fovModifierHand = 1.5F;
+        }
+
+        if (fovModifierHand < 0.1F)
+        {
+            fovModifierHand = 0.1F;
+        }
     }
 
     /**
@@ -599,7 +615,7 @@ public class EntityRenderer
 
         GLU.gluPerspective(getFOVModifier(par1, true), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
 
-        if (mc.playerController.func_78747_a())
+        if (mc.playerController.enableEverythingIsScrewedUpMode())
         {
             float f1 = 0.6666667F;
             GL11.glScalef(1.0F, f1, 1.0F);
@@ -698,7 +714,7 @@ public class EntityRenderer
 
         GLU.gluPerspective(getFOVModifier(par1, false), (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, farPlaneDistance * 2.0F);
 
-        if (mc.playerController.func_78747_a())
+        if (mc.playerController.enableEverythingIsScrewedUpMode())
         {
             float f1 = 0.6666667F;
             GL11.glScalef(1.0F, f1, 1.0F);
@@ -720,7 +736,7 @@ public class EntityRenderer
             setupViewBobbing(par1);
         }
 
-        if (mc.gameSettings.thirdPersonView == 0 && !mc.renderViewEntity.isPlayerSleeping() && !mc.gameSettings.hideGUI && !mc.playerController.func_78747_a())
+        if (mc.gameSettings.thirdPersonView == 0 && !mc.renderViewEntity.isPlayerSleeping() && !mc.gameSettings.hideGUI && !mc.playerController.enableEverythingIsScrewedUpMode())
         {
             enableLightmap(par1);
             itemRenderer.renderItemInFirstPerson(par1);
@@ -766,7 +782,7 @@ public class EntityRenderer
         GL11.glScalef(f, f, f);
         GL11.glTranslatef(8F, 8F, 8F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        mc.renderEngine.bindTexture(lightmapTexture);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, lightmapTexture);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -775,6 +791,7 @@ public class EntityRenderer
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        mc.renderEngine.resetBoundTexture();
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
@@ -901,7 +918,7 @@ public class EntityRenderer
 
         for (int i = 0; i < 256; i++)
         {
-            float f = worldclient.func_72971_b(1.0F) * 0.95F + 0.05F;
+            float f = worldclient.getSunBrightness(1.0F) * 0.95F + 0.05F;
             float f1 = ((World)(worldclient)).provider.lightBrightnessTable[i / 16] * f;
             float f2 = ((World)(worldclient)).provider.lightBrightnessTable[i % 16] * (torchFlickerX * 0.1F + 1.5F);
 
@@ -910,8 +927,8 @@ public class EntityRenderer
                 f1 = ((World)(worldclient)).provider.lightBrightnessTable[i / 16];
             }
 
-            float f3 = f1 * (worldclient.func_72971_b(1.0F) * 0.65F + 0.35F);
-            float f4 = f1 * (worldclient.func_72971_b(1.0F) * 0.65F + 0.35F);
+            float f3 = f1 * (worldclient.getSunBrightness(1.0F) * 0.65F + 0.35F);
+            float f4 = f1 * (worldclient.getSunBrightness(1.0F) * 0.65F + 0.35F);
             float f5 = f1;
             float f6 = f2;
             float f7 = f2 * ((f2 * 0.6F + 0.4F) * 0.6F + 0.4F);
@@ -1151,7 +1168,7 @@ public class EntityRenderer
 
         if (mc.currentScreen != null)
         {
-            GL11.glClear(256);
+            GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
             try
             {
@@ -1220,7 +1237,7 @@ public class EntityRenderer
             mc.mcProfiler.endStartSection("clear");
             GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
             updateFogColor(par1);
-            GL11.glClear(16640);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glEnable(GL11.GL_CULL_FACE);
             mc.mcProfiler.endStartSection("camera");
             setupCameraTransform(par1, i);
@@ -1238,7 +1255,7 @@ public class EntityRenderer
             GL11.glEnable(GL11.GL_FOG);
             setupFog(1, par1);
 
-            if (mc.gameSettings.ambientOcclusion)
+            if (mc.gameSettings.ambientOcclusion != 0)
             {
                 GL11.glShadeModel(GL11.GL_SMOOTH);
             }
@@ -1267,12 +1284,13 @@ public class EntityRenderer
 
             if (entityliving.posY < 128D && !fixClouds)
             {
-                func_82829_a(renderglobal, par1);
+                renderCloudsCheck(renderglobal, par1);
             }
 
+            mc.mcProfiler.endStartSection("prepareterrain");
             setupFog(0, par1);
             GL11.glEnable(GL11.GL_FOG);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));
+            mc.renderEngine.bindTexture("/terrain.png");
             RenderHelper.disableStandardItemLighting();
             mc.mcProfiler.endStartSection("terrain");
             renderglobal.sortAndRender(entityliving, 0, par1);
@@ -1313,13 +1331,13 @@ public class EntityRenderer
             setupFog(0, par1);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));
+            mc.renderEngine.bindTexture("/terrain.png");
 
             if (mc.gameSettings.fancyGraphics)
             {
                 mc.mcProfiler.endStartSection("water");
 
-                if (mc.gameSettings.ambientOcclusion)
+                if (mc.gameSettings.ambientOcclusion != 0)
                 {
                     GL11.glShadeModel(GL11.GL_SMOOTH);
                 }
@@ -1388,14 +1406,14 @@ public class EntityRenderer
 
             if (entityliving.posY >= 128D || fixClouds)
             {
-                func_82829_a(renderglobal, par1);
+                renderCloudsCheck(renderglobal, par1);
             }
 
             mc.mcProfiler.endStartSection("hand");
 
             if (cameraZoom == 1.0D)
             {
-                GL11.glClear(256);
+                GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
                 renderHand(par1, i);
             }
 
@@ -1410,7 +1428,10 @@ public class EntityRenderer
         mc.mcProfiler.endSection();
     }
 
-    private void func_82829_a(RenderGlobal par1RenderGlobal, float par2)
+    /**
+     * Render clouds if enabled
+     */
+    private void renderCloudsCheck(RenderGlobal par1RenderGlobal, float par2)
     {
         if (mc.gameSettings.shouldRenderClouds())
         {
@@ -1551,7 +1572,7 @@ public class EntityRenderer
         GL11.glEnable(3042 /*GL_BLEND*/);
         GL11.glBlendFunc(770, 771);
         GL11.glAlphaFunc(516, 0.01F);
-        GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/environment/snow.png"));
+        mc.renderEngine.bindTexture("/environment/snow.png");
         double d = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)f;
         double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)f;
         double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)f;
@@ -1606,7 +1627,7 @@ public class EntityRenderer
                         tessellator.draw();
                     }
                     byte0 = 1;
-                    GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/environment/snow.png"));
+                    mc.renderEngine.bindTexture("/environment/snow.png");
                     tessellator.startDrawingQuads();
                 }
                 float f8 = ((float)(rendererUpdateCount & 0x1ff) + f) / 512F;
@@ -1657,7 +1678,7 @@ public class EntityRenderer
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/environment/snow.png"));
+        mc.renderEngine.bindTexture("/environment/snow.png");
         double var8 = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
         double var10 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
         double var12 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
@@ -1773,7 +1794,7 @@ public class EntityRenderer
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/environment/snow.png"));
+        mc.renderEngine.bindTexture("/environment/snow.png");
         double d = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
         double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
         double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
@@ -1851,7 +1872,7 @@ public class EntityRenderer
                         }
 
                         byte0 = 0;
-                        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/environment/rain.png"));
+                        mc.renderEngine.bindTexture("/environment/rain.png");
                         tessellator.startDrawingQuads();
                     }
 
@@ -1881,7 +1902,7 @@ public class EntityRenderer
                     }
 
                     byte0 = 1;
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/environment/snow.png"));
+                    mc.renderEngine.bindTexture("/environment/snow.png");
                     tessellator.startDrawingQuads();
                 }
 
@@ -1924,7 +1945,7 @@ public class EntityRenderer
     public void setupOverlayRendering()
     {
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        GL11.glClear(256);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000D, 3000D);
@@ -2006,7 +2027,7 @@ public class EntityRenderer
 
         if (cloudFog)
         {
-            Vec3 vec3_3 = worldclient.drawClouds(par1);
+            Vec3 vec3_3 = worldclient.getCloudColour(par1);
             fogColorRed = (float)vec3_3.xCoord;
             fogColorGreen = (float)vec3_3.yCoord;
             fogColorBlue = (float)vec3_3.zCoord;

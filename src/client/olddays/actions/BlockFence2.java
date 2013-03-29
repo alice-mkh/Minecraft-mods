@@ -5,24 +5,20 @@ public class BlockFence2 extends BlockFence
     public static boolean bigfences = false;
     public static boolean connect = true;
 
-    public BlockFence2(int par1, int par2)
+    public BlockFence2(int par1, String par2Str, Material par3Material)
     {
-        super(par1, par2);
-    }
-
-    public BlockFence2(int par1, int par2, Material par3Material)
-    {
-        super(par1, par2, par3Material);
+        super(par1, par2Str, par3Material);
     }
 
     /**
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         if (bigfences){
-            return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2, par3, par4, par2 + 1, (float)par3 + 1.5F, par4 + 1);
+            return AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2 + 1, (float)par3 + 1.5F, par4 + 1);
         }
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
@@ -30,6 +26,7 @@ public class BlockFence2 extends BlockFence
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (bigfences){
@@ -42,6 +39,7 @@ public class BlockFence2 extends BlockFence
     /**
      * Returns true if the specified block can be connected by a fence
      */
+    @Override
     public boolean canConnectFenceTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (!connect){

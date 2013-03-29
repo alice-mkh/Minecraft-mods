@@ -19,6 +19,7 @@ public class OldWorldGenClay extends WorldGenerator
         numberOfBlocks = i;
     }
 
+    @Override
     public boolean generate(World world, Random random, int i, int j, int k)
     {
         if(world.getBlockMaterial(i, j, k) != Material.water)

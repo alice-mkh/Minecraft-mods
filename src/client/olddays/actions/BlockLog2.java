@@ -15,13 +15,14 @@ public class BlockLog2 extends BlockLog
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+    @Override
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack stack)
     {
         if (rotate){
-            super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLiving);
+            super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLiving, stack);
             return;
         }
         int i = par1World.getBlockMetadata(par2, par3, par4) & 3;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, i | 0);
+        par1World.setBlockMetadataWithNotify(par2, par3, par4, i | 0, 3);
     }
 }

@@ -23,6 +23,7 @@ public class BiomeDecorator2 extends BiomeDecorator
     /**
      * The method that does the work of actually decorating chunks
      */
+    @Override
     protected void decorate()
     {
         if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14){

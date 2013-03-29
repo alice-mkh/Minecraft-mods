@@ -60,27 +60,11 @@ public class OldDaysModule{
     }
 
     public void addRecipe(ItemStack stack, Object... obj){
-        CraftingManager.getInstance().func_92103_a(stack, obj);
+        CraftingManager.getInstance().addRecipe(stack, obj);
     }
 
     public void addShapelessRecipe(ItemStack stack, Object... obj){
         CraftingManager.getInstance().addShapelessRecipe(stack, obj);
-    }
-
-    public void dumpRecipes(){
-        try{
-            List list = CraftingManager.getInstance().getRecipeList();
-            for (int i = 0; i < list.size(); i++){
-                ItemStack stack = ((IRecipe)list.get(i)).getRecipeOutput();
-                if (stack == null){
-                    continue;
-                }
-                String match = stack.toString();
-                System.out.println("OldDays: Found recipe: "+match);
-            }
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
     }
 
     public void dumpRecipes(String str){
@@ -92,7 +76,7 @@ public class OldDaysModule{
                     continue;
                 }
                 String match = stack.toString();
-                if (match.contains(str)){
+                if (str == null || match.contains(str)){
                     System.out.println("OldDays: Found recipe: "+match);
                 }
             }
@@ -240,7 +224,7 @@ public class OldDaysModule{
         }
     }
 
-    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, Icon override){
         return false;
     }
 

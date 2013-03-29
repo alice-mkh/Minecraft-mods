@@ -89,11 +89,11 @@ public class Explosion
                         if (j3 > 0)
                         {
                             Block block = Block.blocksList[j3];
-                            float f3 = exploder == null ? block.getExplosionResistance(exploder) : exploder.func_82146_a(this, block, k2, l2, i3);
+                            float f3 = exploder == null ? block.getExplosionResistance(exploder) : exploder.func_82146_a(this, worldObj, k2, l2, i3, block);
                             f1 -= (f3 + 0.3F) * f2;
                         }
 
-                        if (f1 > 0.0F)
+                        if (f1 > 0.0F && (exploder == null || exploder.func_96091_a(this, worldObj, k2, l2, i3, j3, f1)))
                         {
                             hashset.add(new ChunkPosition(k2, l2, i3));
                         }
@@ -116,7 +116,7 @@ public class Explosion
         int k1 = MathHelper.floor_double(explosionY + (double)explosionSize + 1.0D);
         int l1 = MathHelper.floor_double(explosionZ - (double)explosionSize - 1.0D);
         int i2 = MathHelper.floor_double(explosionZ + (double)explosionSize + 1.0D);
-        List list = worldObj.getEntitiesWithinAABBExcludingEntity(exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(j, j1, l1, l, k1, i2));
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(exploder, AxisAlignedBB.getAABBPool().getAABB(j, j1, l1, l, k1, i2));
         Vec3 vec3 = worldObj.getWorldVec3Pool().getVecFromPool(explosionX, explosionY, explosionZ);
 
         for (int j2 = 0; j2 < list.size(); j2++)
@@ -147,7 +147,7 @@ public class Explosion
             d10 /= d11;
             double d12 = worldObj.getBlockDensity(vec3, entity.boundingBox);
             double d13 = (1.0D - d4) * d12;
-            entity.attackEntityFrom(oldexplosion ? DamageSource.field_76375_l : DamageSource.explosion, (int)(((d13 * d13 + d13) / 2D) * 8D * (double)explosionSize + 1.0D));
+            entity.attackEntityFrom(oldexplosion ? new DamageSource("explosionOld") : DamageSource.setExplosionSource(this), (int)(((d13 * d13 + d13) / 2D) * 8D * (double)explosionSize + 1.0D));
             double d14 = EnchantmentProtection.func_92092_a(entity, d13);
             entity.motionX += d6 * d14;
             entity.motionY += d8 * d14;
@@ -222,18 +222,11 @@ public class Explosion
 
                     if (block.canDropFromExplosion(this))
                     {
-                        block.dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 0.3F, 0);
+                        block.dropBlockAsItemWithChance(worldObj, i, k, i1, worldObj.getBlockMetadata(i, k, i1), 1.0F / explosionSize, 0);
                     }
 
-                    if (net.minecraft.client.Minecraft.getMinecraft().enableSP){
-                        worldObj.setBlockWithNotify(i, k, i1, 0);
-                    }else
-                    if (worldObj.setBlockAndMetadataWithUpdate(i, k, i1, 0, 0, worldObj.isRemote))
-                    {
-                        worldObj.notifyBlocksOfNeighborChange(i, k, i1, 0);
-                    }
-
-                    block.onBlockDestroyedByExplosion(worldObj, i, k, i1);
+                    worldObj.setBlock(i, k, i1, 0, 0, 3);
+                    block.onBlockDestroyedByExplosion(worldObj, i, k, i1, this);
                 }
             }
             while (true);
@@ -259,7 +252,7 @@ public class Explosion
 
                 if (l1 == 0 && Block.opaqueCubeLookup[i2] && explosionRNG.nextInt(3) == 0)
                 {
-                    worldObj.setBlockWithNotify(j, l, j1, Block.fire.blockID);
+                    worldObj.setBlock(j, l, j1, Block.fire.blockID);
                 }
             }
             while (true);
@@ -269,5 +262,27 @@ public class Explosion
     public Map func_77277_b()
     {
         return field_77288_k;
+    }
+
+    public EntityLiving func_94613_c()
+    {
+        if (exploder == null)
+        {
+            return null;
+        }
+
+        if (exploder instanceof EntityTNTPrimed)
+        {
+            return ((EntityTNTPrimed)exploder).func_94083_c();
+        }
+
+        if (exploder instanceof EntityLiving)
+        {
+            return (EntityLiving)exploder;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

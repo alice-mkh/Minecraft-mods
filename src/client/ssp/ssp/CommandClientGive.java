@@ -4,24 +4,27 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientGive extends CommandGive
 {
-    protected EntityPlayer func_71537_a(String par1Str)
+    /**
+     * Returns the given ICommandSender as a EntityPlayer or throw an exception.
+     */
+    public static EntityPlayer getCommandSenderAsPlayer2(ICommandSender par0ICommandSender)
     {
-        return Minecraft.getMinecraft().thePlayer;
+        if (par0ICommandSender instanceof EntityPlayer)
+        {
+            return (EntityPlayer)par0ICommandSender;
+        }
+        else
+        {
+            throw new PlayerNotFoundException("You must specify which player you wish to perform this action on.", new Object[0]);
+        }
     }
 
-    protected String[] getPlayers()
-    {
-        return (new String[]
-                {
-                    Minecraft.getMinecraft().thePlayer.username
-                });
-    }
-
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length >= 2)
         {
-            EntityPlayer entityplayer = func_71537_a(par2ArrayOfStr[0]);
+            EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
             int i = parseIntWithMin(par1ICommandSender, par2ArrayOfStr[1], 1);
             int j = 1;
             int k = 0;
@@ -61,6 +64,7 @@ public class CommandClientGive extends CommandGive
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

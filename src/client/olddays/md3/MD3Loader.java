@@ -27,6 +27,7 @@ public class MD3Loader {
    }
 
    private MD3Model load(ByteBuffer var1) throws IOException {
+      Vec3Pool vec3Pool = new Vec3Pool(300, 2000);
       var1.order(ByteOrder.LITTLE_ENDIAN);
       if(!readString(var1, 4).equals("IDP3")) {
          throw new IOException("Not a valid MD3 file (bad magic number)");
@@ -52,9 +53,9 @@ public class MD3Loader {
 
          for(int i = 0; i < frames; ++i) {
             MD3Frame var12 = new MD3Frame();
-            var12.min = nextVec3(var1);
-            var12.max = nextVec3(var1);
-            var12.origin = nextVec3(var1);
+            var12.min = nextVec3(vec3Pool, var1);
+            var12.max = nextVec3(vec3Pool, var1);
+            var12.origin = nextVec3(vec3Pool, var1);
             var12.radius = var1.getFloat();
             var12.name = readString(var1, 16);
             model.frames[i] = var12;
@@ -70,10 +71,10 @@ public class MD3Loader {
             for(int var9 = 0; var9 < tags; ++var9) {
                MD3Tag var11 = var14[var9];
                var11.name = readString(var1, 64);
-               var11.coords[var8] = nextVec3(var1);
-               var11.c[var8] = nextVec3(var1);
-               var11.d[var8] = nextVec3(var1);
-               var11.e[var8] = nextVec3(var1);
+               var11.coords[var8] = nextVec3(vec3Pool, var1);
+               var11.c[var8] = nextVec3(vec3Pool, var1);
+               var11.d[var8] = nextVec3(vec3Pool, var1);
+               var11.e[var8] = nextVec3(vec3Pool, var1);
             }
          }
 
@@ -157,11 +158,11 @@ public class MD3Loader {
       }
    }
 
-   private static Vec3 nextVec3(ByteBuffer var0) {
+   private static Vec3 nextVec3(Vec3Pool vec3Pool, ByteBuffer var0) {
       float var1 = var0.getFloat();
       float var2 = var0.getFloat();
       float var3 = var0.getFloat();
-      return Vec3.vec3dPool.getVecFromPool(var1, var2, var3);
+      return vec3Pool.getVecFromPool(var1, var2, var3);
    }
 
    private static String readString(ByteBuffer var0, int var1) {

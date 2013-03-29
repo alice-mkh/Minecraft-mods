@@ -13,14 +13,14 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     public boolean helmet;
     public boolean armor;
 
-    private EntityAIArrowAttack field_85037_d;
-    private EntityAIAttackOnCollide field_85038_e;
+    private EntityAIArrowAttack aiArrowAttack;
+    private EntityAIAttackOnCollide aiAttackOnCollide;
 
     public EntitySkeleton(World par1World)
     {
         super(par1World);
-        field_85037_d = new EntityAIArrowAttack(this, 0.25F, 60, 10F);
-        field_85038_e = new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, 0.31F, false);
+        aiArrowAttack = new EntityAIArrowAttack(this, 0.25F, 20, 60, 15F);
+        aiAttackOnCollide = new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, 0.31F, false);
         texture = "/mob/skeleton.png";
         moveSpeed = 0.25F;
         helmet = Math.random() < 0.20000000298023224D;
@@ -36,7 +36,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
         if (par1World != null && !par1World.isRemote)
         {
-            func_85036_m();
+            setCombatTask();
         }
     }
 
@@ -46,11 +46,13 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         dataWatcher.addObject(13, new Byte((byte)0));
     }
 
+    @Override
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || survivaltest;
     }
 
+    @Override
     protected void attackEntity(Entity entity, float f)
     {
         if (!fixai && !survivaltest){
@@ -62,7 +64,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             EntityArrow entityarrow = new EntityArrow(worldObj, this, 1.0F);
             double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.69999998807907104D - entityarrow.posY;
             float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-            func_85030_a("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+            playSound("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
             worldObj.spawnEntityInWorld(entityarrow);
             entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12F);
         }else if (f < 10F)
@@ -76,14 +78,14 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
                     entityarrow.posY += 1.3999999761581421D;
                     double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityarrow.posY;
                     float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-                    func_85030_a("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+                    playSound("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
                     worldObj.spawnEntityInWorld(entityarrow);
                     entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, /*0.6*/1.1F, 12F);
                     attackTime = 30;
                 }else{
                     double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.69999998807907104D - entityarrow.posY;
                     float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-                    func_85030_a("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+                    playSound("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
                     worldObj.spawnEntityInWorld(entityarrow);
                     entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12F);
                     attackTime = 60;
@@ -94,10 +96,11 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         }
     }
 
+    @Override
     protected void onDeathUpdate(){
         if (survivaltest && deathTime >= 19){
             int i = (int)((Math.random() + Math.random()) * 3D + 4D);
-            func_85030_a("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+            playSound("random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
             if (worldObj.getGameRules().getGameRuleBooleanValue("doMobLoot")){
                 for(int j = 0; j < i; j++){
                     EntityArrow arrow = new EntityArrow(worldObj, this, 0.4F);
@@ -168,7 +171,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        func_85030_a("mob.skeleton.step", 0.15F, 1.0F);
+        playSound("mob.skeleton.step", 0.15F, 1.0F);
     }
 
     public boolean attackEntityAsMob(Entity par1Entity)
@@ -257,6 +260,11 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             }
         }
 
+        if (worldObj.isRemote && getSkeletonType() == 1)
+        {
+            setSize(0.72F, 2.34F);
+        }
+
         super.onLivingUpdate();
     }
 
@@ -285,11 +293,12 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
      */
     protected int getDropItemId()
     {
-        return Item.arrow.shiftedIndex;
+        return Item.arrow.itemID;
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -299,7 +308,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
             for (int l = 0; l < i; l++)
             {
-                dropItem(Item.coal.shiftedIndex, 1);
+                dropItem(Item.coal.itemID, 1);
             }
         }
         else
@@ -309,7 +318,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             if (!survivaltest){
                 for (int i1 = 0; i1 < j; i1++)
                 {
-                    dropItem(Item.arrow.shiftedIndex, 1);
+                    dropItem(Item.arrow.itemID, 1);
                 }
             }
         }
@@ -318,7 +327,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
         for (int j1 = 0; j1 < k; j1++)
         {
-            dropItem(Item.bone.shiftedIndex, 1);
+            dropItem(Item.bone.itemID, 1);
         }
     }
 
@@ -326,13 +335,16 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     {
         if (getSkeletonType() == 1)
         {
-            entityDropItem(new ItemStack(Item.skull.shiftedIndex, 1, 1), 0.0F);
+            entityDropItem(new ItemStack(Item.skull.itemID, 1, 1), 0.0F);
         }
     }
 
-    protected void func_82164_bB()
+    /**
+     * Makes entity wear random armor based on difficulty
+     */
+    protected void addRandomArmor()
     {
-        super.func_82164_bB();
+        super.addRandomArmor();
         if (getCurrentItemOrArmor(1) != null || getCurrentItemOrArmor(2) != null || getCurrentItemOrArmor(3) != null || getCurrentItemOrArmor(4) != null){
             helmet = false;
             armor = false;
@@ -362,21 +374,21 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     {
         if ((worldObj.provider instanceof WorldProviderHell) && getRNG().nextInt(5) > 0)
         {
-            tasks.addTask(4, field_85038_e);
+            tasks.addTask(4, aiAttackOnCollide);
             setSkeletonType(1);
             setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
         }
         else
         {
-            tasks.addTask(4, field_85037_d);
-            func_82164_bB();
+            tasks.addTask(4, aiArrowAttack);
+            addRandomArmor();
             if (!custom){
                 return;
             }
             func_82162_bC();
         }
 
-        canPickUpLoot = rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting];
+        setCanPickUpLoot(rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting]);
 
         if (getCurrentItemOrArmor(4) == null)
         {
@@ -390,30 +402,34 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         }
     }
 
-    public void func_85036_m()
+    /**
+     * sets this entity's combat AI.
+     */
+    public void setCombatTask()
     {
-        tasks.func_85156_a(field_85038_e);
-        tasks.func_85156_a(field_85037_d);
+        tasks.removeTask(aiAttackOnCollide);
+        tasks.removeTask(aiArrowAttack);
         ItemStack itemstack = getHeldItem();
 
-        if (itemstack != null && itemstack.itemID == Item.bow.shiftedIndex)
+        if (itemstack != null && itemstack.itemID == Item.bow.itemID)
         {
-            tasks.addTask(4, field_85037_d);
+            tasks.addTask(4, aiArrowAttack);
         }
         else
         {
-            tasks.addTask(4, field_85038_e);
+            tasks.addTask(4, aiAttackOnCollide);
         }
     }
 
     /**
      * Attack the specified entity using a ranged attack.
      */
-    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving)
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving, float par2)
     {
-        EntityArrow entityarrow = new EntityArrow(worldObj, this, par1EntityLiving, 1.6F, 12F);
+        EntityArrow entityarrow = new EntityArrow(worldObj, this, par1EntityLiving, 1.6F, 14 - worldObj.difficultySetting * 4);
         int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, getHeldItem());
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, getHeldItem());
+        entityarrow.setDamage((double)(par2 * 2.0F) + (rand.nextGaussian() * 0.25D + (double)((float)worldObj.difficultySetting * 0.11F)));
 
         if (i > 0)
         {
@@ -430,7 +446,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             entityarrow.setFire(100);
         }
 
-        func_85030_a("random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+        playSound("random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
         worldObj.spawnEntityInWorld(entityarrow);
     }
 
@@ -452,7 +468,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
         if (par1 == 1)
         {
-            setSize(0.72F, 2.16F);
+            setSize(0.72F, 2.34F);
         }
         else
         {
@@ -473,7 +489,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             setSkeletonType(byte0);
         }
 
-        func_85036_m();
+        setCombatTask();
         helmet = par1NBTTagCompound.getBoolean("Helmet");
         armor = par1NBTTagCompound.getBoolean("Armor");
     }
@@ -498,7 +514,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 
         if (!worldObj.isRemote && par1 == 0)
         {
-            func_85036_m();
+            setCombatTask();
         }
     }
 }

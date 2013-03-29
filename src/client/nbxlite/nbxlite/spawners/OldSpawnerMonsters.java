@@ -13,6 +13,7 @@ public class OldSpawnerMonsters extends OldSpawnerAnimals
         super(i, type);
     }
 
+    @Override
     protected ChunkPosition func_1151_a(World world, int i, int j)
     {
         int k = i + world.rand.nextInt(16);

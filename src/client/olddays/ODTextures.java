@@ -52,6 +52,7 @@ public class ODTextures extends OldDaysModule{
         replaceBlocks();
     }
 
+    @Override
     public void callback (int i){
         boolean fallback = !hasTextures("olddays/textures.png");
         switch(i){
@@ -136,41 +137,29 @@ public class ODTextures extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.blockSteel.blockID] = null;
-            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID, 22));
+            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID));
             customsteel.setHardness(5F);
             customsteel.setResistance(10F);
             customsteel.setStepSound(Block.soundMetalFootstep);
-            customsteel.setBlockName("blockIron");
-            customsteel.sidetex = mod_OldDays.getFreeTextureIndex();
-            customsteel.bottomtex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customsteel.sidetex, "/olddays/oreblocks/ironside.png", 0, 1, 1);
-            addTextureHook("/terrain.png", customsteel.bottomtex, "/olddays/oreblocks/ironbottom.png", 0, 1, 1);
+            customsteel.getIndirectPowerOutput("blockIron");
             Block.blocksList[Block.blockSteel.blockID] = customsteel;
-            mod_OldDays.setField(Block.class, null, 61, customsteel);//Block: blockSteel
+            mod_OldDays.setField(Block.class, null, 60, customsteel);//Block: blockSteel
             Block.blocksList[Block.blockGold.blockID] = null;
-            BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, 23));
+            BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID));
             customgold.setHardness(3F);
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
-            customgold.setBlockName("blockGold");
-            customgold.sidetex = mod_OldDays.getFreeTextureIndex();
-            customgold.bottomtex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customgold.sidetex, "/olddays/oreblocks/goldside.png", 0, 1, 1);
-            addTextureHook("/terrain.png", customgold.bottomtex, "/olddays/oreblocks/goldbottom.png", 0, 1, 1);
+            customgold.getIndirectPowerOutput("blockGold");
             Block.blocksList[Block.blockGold.blockID] = customgold;
-            mod_OldDays.setField(Block.class, null, 60, customgold);//Block: blockGold
-            Block.blocksList[Block.blockDiamond .blockID] = null;
-            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID, 24));
+            mod_OldDays.setField(Block.class, null, 59, customgold);//Block: blockGold
+            Block.blocksList[Block.blockDiamond.blockID] = null;
+            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID));
             customdiamond.setHardness(5F);
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
-            customdiamond.setBlockName("blockDiamond");
-            customdiamond.sidetex = mod_OldDays.getFreeTextureIndex();
-            customdiamond.bottomtex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customdiamond.sidetex, "/olddays/oreblocks/diamondside.png", 0, 1, 1);
-            addTextureHook("/terrain.png", customdiamond.bottomtex, "/olddays/oreblocks/diamondbottom.png", 0, 1, 1);
+            customdiamond.getIndirectPowerOutput("blockDiamond");
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
-            mod_OldDays.setField(Block.class, null, 76, customdiamond);//Block: blockDiamond
+            mod_OldDays.setField(Block.class, null, 75, customdiamond);//Block: blockDiamond
         }catch (Exception ex){
             System.out.println(ex);
         }

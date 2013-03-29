@@ -21,8 +21,8 @@ public class EntityPig extends EntityAnimal
         tasks.addTask(1, new EntityAIPanic(this, 0.38F));
         tasks.addTask(2, aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
         tasks.addTask(3, new EntityAIMate(this, f));
-        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.shiftedIndex, false));
-        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrot.shiftedIndex, false));
+        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.itemID, false));
+        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrot.itemID, false));
         tasks.addTask(5, new EntityAIFollowParent(this, 0.28F));
         tasks.addTask(6, new EntityAIWander(this, f));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
@@ -37,6 +37,7 @@ public class EntityPig extends EntityAnimal
         return true;
     }
 
+    @Override
     public boolean getCanSpawnHere()
     {
         return super.getCanSpawnHere() || survivaltest;
@@ -59,7 +60,7 @@ public class EntityPig extends EntityAnimal
     public boolean canBeSteered()
     {
         ItemStack itemstack = ((EntityPlayer)riddenByEntity).getHeldItem();
-        return itemstack != null && itemstack.itemID == Item.carrotOnAStick.shiftedIndex;
+        return itemstack != null && itemstack.itemID == Item.carrotOnAStick.itemID;
     }
 
     protected void entityInit()
@@ -115,7 +116,7 @@ public class EntityPig extends EntityAnimal
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        func_85030_a("mob.pig.step", 0.15F, 1.0F);
+        playSound("mob.pig.step", 0.15F, 1.0F);
     }
 
     /**
@@ -148,16 +149,17 @@ public class EntityPig extends EntityAnimal
     {
         if (isBurning())
         {
-            return Item.porkCooked.shiftedIndex;
+            return Item.porkCooked.itemID;
         }
         else
         {
-            return Item.porkRaw.shiftedIndex;
+            return Item.porkRaw.itemID;
         }
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
      */
     protected void dropFewItems(boolean par1, int par2)
     {
@@ -167,17 +169,17 @@ public class EntityPig extends EntityAnimal
         {
             if (isBurning())
             {
-                dropItem(Item.porkCooked.shiftedIndex, 1);
+                dropItem(Item.porkCooked.itemID, 1);
             }
             else
             {
-                dropItem(Item.porkRaw.shiftedIndex, 1);
+                dropItem(Item.porkRaw.itemID, 1);
             }
         }
 
         if (getSaddled())
         {
-            dropItem(Item.saddle.shiftedIndex, 1);
+            dropItem(Item.saddle.itemID, 1);
         }
     }
 
@@ -250,7 +252,7 @@ public class EntityPig extends EntityAnimal
      */
     public boolean isBreedingItem(ItemStack par1ItemStack)
     {
-        return par1ItemStack != null && par1ItemStack.itemID == Item.carrot.shiftedIndex;
+        return par1ItemStack != null && par1ItemStack.itemID == Item.carrot.itemID;
     }
 
     /**
@@ -261,11 +263,12 @@ public class EntityPig extends EntityAnimal
         return aiControlledByPlayer;
     }
 
-    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
     {
         return spawnBabyAnimal(par1EntityAgeable);
     }
 
+    @Override
     protected void updateEntityActionState(){
         if (fixai && aiControlledByPlayer.shouldExecute()){
             aiControlledByPlayer.updateTask();

@@ -4,19 +4,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientGameMode extends CommandGameMode
 {
-    protected EntityPlayer func_71540_a(String par1Str)
-    {
-        return Minecraft.getMinecraft().thePlayer;
-    }
-
-    protected String[] getListOfPlayerUsernames()
-    {
-        return (new String[]
-                {
-                    Minecraft.getMinecraft().thePlayer.username
-                });
-    }
-
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
@@ -38,6 +26,7 @@ public class CommandClientGameMode extends CommandGameMode
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();

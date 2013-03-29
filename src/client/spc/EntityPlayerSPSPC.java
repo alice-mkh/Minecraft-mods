@@ -24,8 +24,8 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     public static Object MESSAGESHOWN;
     public static Object STARTUP;
     public String curmcversion;
-    public static final String MCVERSION = "1.4.6";
-    public static final SPCVersion SPCVERSION = new SPCVersion("Single Player Commands","3.3",new Date(1333630063890L)); // 2012-04-05 22:47:43
+    public static final String MCVERSION = "1.5.1";
+    public static final SPCVersion SPCVERSION = new SPCVersion("Single Player Commands","3.4",new Date(1333630063890L)); // 2012-04-05 22:47:43
     public Vector<String> missingRequiredClasses;
     public Vector<String> missingOptionalClasses;
 
@@ -127,11 +127,11 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     }
 
     @Override
-    public float getCurrentPlayerStrVsBlock(Block block) {
+    public float getCurrentPlayerStrVsBlock(Block block, boolean par2) {
         if (canRunSPC() && ph.instant) {
             return Float.MAX_VALUE;
         }
-        return super.getCurrentPlayerStrVsBlock(block);
+        return super.getCurrentPlayerStrVsBlock(block, par2);
     }
 
     @Override

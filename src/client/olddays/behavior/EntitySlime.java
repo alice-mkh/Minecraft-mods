@@ -6,6 +6,10 @@ public class EntitySlime extends EntityLiving implements IMob
 {
     public static int slimeSpawn = 5;
 
+    private static final float field_100000_e[] =
+    {
+        1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F
+    };
     public float field_70813_a;
     public float field_70811_b;
     public float field_70812_c;
@@ -117,7 +121,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (makesSoundOnLand())
             {
-                func_85030_a(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+                playSound(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             }
 
             field_70813_a = -0.5F;
@@ -159,7 +163,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (makesSoundOnJump())
             {
-                func_85030_a(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+                playSound(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
             }
 
             moveStrafing = 1.0F - rand.nextFloat() * 2.0F;
@@ -230,7 +234,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (canEntityBeSeen(par1EntityPlayer) && getDistanceSqToEntity(par1EntityPlayer) < 0.59999999999999998D * (double)i * (0.59999999999999998D * (double)i) && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength()))
             {
-                func_85030_a("mob.attack", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                playSound("mob.attack", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
             }
         }
     }
@@ -274,7 +278,7 @@ public class EntitySlime extends EntityLiving implements IMob
     {
         if (getSlimeSize() == 1)
         {
-            return Item.slimeBall.shiftedIndex;
+            return Item.slimeBall.itemID;
         }
         else
         {
@@ -315,7 +319,9 @@ public class EntitySlime extends EntityLiving implements IMob
 
         if (slimeSpawn > 4 && (getSlimeSize() == 1 || worldObj.difficultySetting > 0))
         {
-            if (worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ)) == BiomeGenBase.swampland && posY > 50D && posY < 70D && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
+            BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
+
+            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && rand.nextFloat() < 0.5F && rand.nextFloat() < field_100000_e[worldObj.getMoonPhase()] && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
             {
                 return super.getCanSpawnHere();
             }

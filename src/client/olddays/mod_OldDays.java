@@ -18,7 +18,7 @@ import java.lang.reflect.Modifier;
 public class mod_OldDays extends Mod{
 
     public mod_OldDays(){
-        texman = new TextureManager();
+        texman = new OldDaysTextureManager();
         saveman = new SavingManager(this);
         smpman = new SMPManager(this);
         modules = new ArrayList<OldDaysModule>();
@@ -26,18 +26,22 @@ public class mod_OldDays extends Mod{
         keyBindings = new ArrayList<KeyBinding>();
     }
 
+    @Override
     public String getModVersion(){
         return "3.0";
     }
 
+    @Override
     public String getMcVersion(){
-        return "1.4.6";
+        return "1.5.1";
     }
 
+    @Override
     public String getModName(){
         return "OldDays";
     }
 
+    @Override
     public void load(){
         setUseTick(true, true);
         registerKey(keySettings = new KeyBinding(lang.get("OldDays Settings"), 35));
@@ -45,7 +49,8 @@ public class mod_OldDays extends Mod{
         saveman.loadAll();
     }
 
-    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
+    @Override
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, Icon override){
         for (int j = 0; j < modules.size(); j++){
             if (modules.get(j).renderBlocks(r, i, b, x, y, z, id, override)){
                 return true;
@@ -54,6 +59,7 @@ public class mod_OldDays extends Mod{
         return false;
     }
 
+    @Override
     public void onTick(){
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
@@ -73,6 +79,7 @@ public class mod_OldDays extends Mod{
         }
     }
 
+    @Override
     public void handlePacketFromClient(Packet300Custom packet, EntityPlayerMP player){
         if (packet.getId() == SMPManager.PACKET_C2S_PROP){
             OldDaysProperty prop = readProperty(packet.getData()[0]);
@@ -98,6 +105,7 @@ public class mod_OldDays extends Mod{
         super.handlePacketFromClient(packet, player);
     }
 
+    @Override
     public void handlePacketFromServer(Packet300Custom packet){
         if (packet.getId() == SMPManager.PACKET_S2C_PROP){
             OldDaysProperty prop = readProperty(packet.getData()[0]);
@@ -163,10 +171,12 @@ public class mod_OldDays extends Mod{
         return prop;
     }
 
+    @Override
     public void onLoginServer(EntityPlayerMP player){
         sendPacketToPlayer(player, SMPManager.PACKET_S2C_SEED, ""+player.worldObj.getSeed());
     }
 
+    @Override
     public void onLoginClient(){
         if (!isVanillaSMP()){
             return;
@@ -183,10 +193,12 @@ public class mod_OldDays extends Mod{
         }
     }
 
+    @Override
     public void onInitClient(){
         sendPacketToServer(SMPManager.PACKET_C2S_REQUEST, ""+-1);
     }
 
+    @Override
     public void onGUITick(GuiScreen gui){
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
@@ -387,6 +399,7 @@ public class mod_OldDays extends Mod{
         KeyBinding.resetKeyBindingArrayAndHash();
     }
 
+    @Override
     public void onLoadingSP(String par1Str, String par2Str){
         for (int i = 0; i < modules.size(); i++){
             OldDaysModule module = modules.get(i);
@@ -422,7 +435,8 @@ public class mod_OldDays extends Mod{
     }
 
     public static int getFreeTextureIndex(){
-        for (int i = 0; i < freeTextures.length; i++){
+        return 0;
+/*        for (int i = 0; i < freeTextures.length; i++){
             if (freeTextures[i] >= 0){
                 int j = freeTextures[i];
                 freeTextures[i] = -1;
@@ -430,19 +444,21 @@ public class mod_OldDays extends Mod{
             }
         }
         System.out.println("OldDays: Free textures are over!");
-        return -1;
+        return -1;*/
     }
 
+    @Override
     public void refreshTextures(){
-        texman.refreshTextureHooks();
+//         texman.refreshTextureHooks();
+//         getMinecraft().renderEngine.refreshTextureMaps();
     }
 
     public KeyBinding keySettings;
-    public static TextureManager texman;
+    public static OldDaysTextureManager texman;
     public static SavingManager saveman;
     public static SMPManager smpman;
     public static ArrayList<OldDaysModule> modules;
     public static OldDaysEasyLocalization lang;
     public static ArrayList<KeyBinding> keyBindings;
-    private static int[] freeTextures = new int[]{26, 27, 42, 57, 58, 187, 188, 189, 190, 191, 217, 218, 219, 220, 221, 233, 234, 235, 236};
+//     private static int[] freeTextures = new int[]{26, 27, 42, 57, 58, 187, 188, 189, 190, 191, 217, 218, 219, 220, 221, 233, 234, 235, 236};
 }

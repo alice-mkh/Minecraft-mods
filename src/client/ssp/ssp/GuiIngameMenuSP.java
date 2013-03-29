@@ -20,34 +20,36 @@ public class GuiIngameMenuSP extends GuiScreen
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
+    @Override
     public void initGui()
     {
         updateCounter2 = 0;
-        controlList.clear();
+        buttonList.clear();
         byte byte0 = -16;
-        controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + byte0, StatCollector.translateToLocal("menu.returnToMenu")));
+        buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + byte0, StatCollector.translateToLocal("menu.returnToMenu")));
 
         if (mc.isMultiplayerWorld())
         {
-            ((GuiButton)controlList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
+            ((GuiButton)buttonList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
         }
 
-        controlList.add(new GuiButton(4, width / 2 - 100, height / 4 + 24 + byte0, StatCollector.translateToLocal("menu.returnToGame")));
-        controlList.add(new GuiButton(5, width / 2 - 100, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.achievements")));
-        controlList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
+        buttonList.add(new GuiButton(4, width / 2 - 100, height / 4 + 24 + byte0, StatCollector.translateToLocal("menu.returnToGame")));
+        buttonList.add(new GuiButton(5, width / 2 - 100, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.achievements")));
+        buttonList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
         if (mc.sspoptions.getShareButton()){
-            controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.options")));
+            buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.options")));
             GuiButton guibutton;
-            controlList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));
+            buttonList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));
             guibutton.enabled = !mc.isMultiplayerWorld();
         }else{
-            controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, StatCollector.translateToLocal("menu.options")));
+            buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, StatCollector.translateToLocal("menu.options")));
         }
     }
 
     /**
      * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
      */
+    @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
         switch (par1GuiButton.id)
@@ -95,6 +97,7 @@ public class GuiIngameMenuSP extends GuiScreen
     /**
      * Called from the main game loop to update the screen.
      */
+    @Override
     public void updateScreen()
     {
         super.updateScreen();
@@ -104,6 +107,7 @@ public class GuiIngameMenuSP extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
+    @Override
     public void drawScreen(int par1, int par2, float par3)
     {
         drawDefaultBackground();

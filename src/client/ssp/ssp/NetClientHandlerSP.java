@@ -19,42 +19,44 @@ public class NetClientHandlerSP extends NetClientHandler
 //         serverHandler = new NetServerHandlerSP(new EntityPlayerMP(null, par1Minecraft.theWorld, null, null));
     }
 
-    public void func_72547_c()
+    @Override
+    public void cleanup()
     {
     }
 
     /**
      * Processes the packets that have been read since the last call to this function.
      */
+    @Override
     public void processReadPackets()
     {
     }
 
-    public boolean func_72469_b()
-    {
-        return false;
-    }
-
+    @Override
     public void handleLogin(Packet1Login par1Packet1Login)
     {
         Minecraft.invokeModMethod("ModLoader", "clientConnect", new Class[]{NetClientHandler.class, Packet1Login.class}, this, par1Packet1Login);
     }
 
+    @Override
     public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect)
     {
         Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
     }
 
+    @Override
     public void handleErrorMessage(String par1Str, Object par2ArrayOfObj[])
     {
         Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
     }
 
+    @Override
     public void disconnect()
     {
         Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
     }
 
+    @Override
     public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload)
     {
         if ("MC|AdvCdm".equals(par1Packet250CustomPayload.channel)){
@@ -97,12 +99,14 @@ public class NetClientHandlerSP extends NetClientHandler
     /**
      * determine if it is a server handler
      */
+    @Override
     public boolean isServerHandler()
     {
         return false;
     }
 
-    public INetworkManager func_72548_f()
+    @Override
+    public INetworkManager getNetManager()
     {
         return null;
     }
@@ -110,15 +114,18 @@ public class NetClientHandlerSP extends NetClientHandler
     /**
      * Adds the packet to the send queue
      */
+    @Override
     public void addToSendQueue(Packet par1Packet)
     {
         par1Packet.processPacket(this/*serverHandler*/);
     }
 
+    @Override
     public void handleAnimation(Packet18Animation par1Packet18Animation)
     {
     }
 
+    @Override
     public void handleClientCommand(Packet205ClientCommand packet205clientcommand)
     {
         if (packet205clientcommand.forceRespawn == 1)

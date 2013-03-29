@@ -1,24 +1,16 @@
 package net.minecraft.src;
 
 import java.util.List;
-import java.util.Random;
 import net.minecraft.server.MinecraftServer;
 
-public class EntityMinecart extends Entity implements IInventory
+public abstract class EntityMinecart extends Entity
 {
     public static boolean boosters = false;
 
-    private ItemStack cargoItems[];
-    private int fuel;
-    private boolean field_70499_f;
-
-    /** The type of minecart, 2 for powered, 1 for storage. */
-    public int minecartType;
-    public double pushX;
-    public double pushZ;
+    private boolean isInReverse;
     private final IUpdatePlayerListBox field_82344_g;
-    private boolean field_82345_h;
-    private static final int field_70500_g[][][] =
+    private String field_94102_c;
+    private static final int matrix[][][] =
     {
         {
             {
@@ -97,14 +89,30 @@ public class EntityMinecart extends Entity implements IInventory
     public EntityMinecart(World par1World)
     {
         super(par1World);
-        cargoItems = new ItemStack[36];
-        fuel = 0;
-        field_70499_f = false;
-        field_82345_h = true;
+        isInReverse = false;
         preventEntitySpawning = true;
         setSize(0.98F, 0.7F);
         yOffset = height / 2.0F;
         field_82344_g = par1World == null ? null : par1World.func_82735_a(this);
+    }
+
+    public static EntityMinecart func_94090_a(World par0World, double par1, double par3, double par5, int par7)
+    {
+        switch (par7)
+        {
+            case 1:
+                return new EntityMinecartChest(par0World, par1, par3, par5);
+            case 2:
+                return new EntityMinecartFurnace(par0World, par1, par3, par5);
+            case 3:
+                return new EntityMinecartTNT(par0World, par1, par3, par5);
+            case 4:
+                return new EntityMinecartMobSpawner(par0World, par1, par3, par5);
+            case 5:
+                return new EntityMinecartHopper(par0World, par1, par3, par5);
+        }
+
+        return new EntityMinecartEmpty(par0World, par1, par3, par5);
     }
 
     /**
@@ -118,10 +126,12 @@ public class EntityMinecart extends Entity implements IInventory
 
     protected void entityInit()
     {
-        dataWatcher.addObject(16, new Byte((byte)0));
         dataWatcher.addObject(17, new Integer(0));
         dataWatcher.addObject(18, new Integer(1));
         dataWatcher.addObject(19, new Integer(0));
+        dataWatcher.addObject(20, new Integer(0));
+        dataWatcher.addObject(21, new Integer(6));
+        dataWatcher.addObject(22, Byte.valueOf((byte)0));
     }
 
     /**
@@ -156,7 +166,7 @@ public class EntityMinecart extends Entity implements IInventory
         return true;
     }
 
-    public EntityMinecart(World par1World, double par2, double par4, double par6, int par8)
+    public EntityMinecart(World par1World, double par2, double par4, double par6)
     {
         this(par1World);
         setPosition(par2, par4 + (double)yOffset, par6);
@@ -166,7 +176,6 @@ public class EntityMinecart extends Entity implements IInventory
         prevPosX = par2;
         prevPosY = par4;
         prevPosZ = par6;
-        minecartType = par8;
     }
 
     /**
@@ -187,83 +196,48 @@ public class EntityMinecart extends Entity implements IInventory
             return true;
         }
 
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
 
-        func_70494_i(-func_70493_k());
-        func_70497_h(10);
+        setRollingDirection(-getRollingDirection());
+        setRollingAmplitude(10);
         setBeenAttacked();
         setDamage(getDamage() + par2 * 10);
+        boolean flag = (par1DamageSource.getEntity() instanceof EntityPlayer) && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
 
-        if ((par1DamageSource.getEntity() instanceof EntityPlayer) && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode)
-        {
-            setDamage(100);
-        }
-
-        if (getDamage() > 40)
+        if (flag || getDamage() > 40)
         {
             if (riddenByEntity != null)
             {
                 riddenByEntity.mountEntity(this);
             }
 
-            setDead();
-            dropItemWithOffset(Item.minecartEmpty.shiftedIndex, 1, 0.0F);
-
-            if (minecartType == 1)
+            if (!flag || isInvNameLocalized())
             {
-                EntityMinecart entityminecart = this;
-                label0:
-
-                for (int i = 0; i < entityminecart.getSizeInventory(); i++)
-                {
-                    ItemStack itemstack = entityminecart.getStackInSlot(i);
-
-                    if (itemstack == null)
-                    {
-                        continue;
-                    }
-
-                    float f = rand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = rand.nextFloat() * 0.8F + 0.1F;
-                    float f2 = rand.nextFloat() * 0.8F + 0.1F;
-
-                    do
-                    {
-                        if (itemstack.stackSize <= 0)
-                        {
-                            continue label0;
-                        }
-
-                        int j = rand.nextInt(21) + 10;
-
-                        if (j > itemstack.stackSize)
-                        {
-                            j = itemstack.stackSize;
-                        }
-
-                        itemstack.stackSize -= j;
-                        EntityItem entityitem = new EntityItem(worldObj, posX + (double)f, posY + (double)f1, posZ + (double)f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
-                        float f3 = 0.05F;
-                        entityitem.motionX = (float)rand.nextGaussian() * f3;
-                        entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
-                        entityitem.motionZ = (float)rand.nextGaussian() * f3;
-                        worldObj.spawnEntityInWorld(entityitem);
-                    }
-                    while (true);
-                }
-
-                dropItemWithOffset(Block.chest.blockID, 1, 0.0F);
+                func_94095_a(par1DamageSource);
             }
-            else if (minecartType == 2)
+            else
             {
-                dropItemWithOffset(Block.stoneOvenIdle.blockID, 1, 0.0F);
+                setDead();
             }
         }
 
         return true;
+    }
+
+    public void func_94095_a(DamageSource par1DamageSource)
+    {
+        setDead();
+        ItemStack itemstack = new ItemStack(Item.minecartEmpty, 1);
+
+        if (field_94102_c != null)
+        {
+            itemstack.setItemName(field_94102_c);
+        }
+
+        entityDropItem(itemstack, 0.0F);
     }
 
     /**
@@ -271,8 +245,8 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public void performHurtAnimation()
     {
-        func_70494_i(-func_70493_k());
-        func_70497_h(10);
+        setRollingDirection(-getRollingDirection());
+        setRollingAmplitude(10);
         setDamage(getDamage() + getDamage() * 10);
     }
 
@@ -289,70 +263,12 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public void setDead()
     {
-        if (field_82345_h)
-        {
-            label0:
-
-            for (int i = 0; i < getSizeInventory(); i++)
-            {
-                ItemStack itemstack = getStackInSlot(i);
-
-                if (itemstack == null)
-                {
-                    continue;
-                }
-
-                float f = rand.nextFloat() * 0.8F + 0.1F;
-                float f1 = rand.nextFloat() * 0.8F + 0.1F;
-                float f2 = rand.nextFloat() * 0.8F + 0.1F;
-
-                do
-                {
-                    if (itemstack.stackSize <= 0)
-                    {
-                        continue label0;
-                    }
-
-                    int j = rand.nextInt(21) + 10;
-
-                    if (j > itemstack.stackSize)
-                    {
-                        j = itemstack.stackSize;
-                    }
-
-                    itemstack.stackSize -= j;
-                    EntityItem entityitem = new EntityItem(worldObj, posX + (double)f, posY + (double)f1, posZ + (double)f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
-
-                    if (itemstack.hasTagCompound())
-                    {
-                        entityitem.func_92059_d().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
-                    }
-
-                    float f3 = 0.05F;
-                    entityitem.motionX = (float)rand.nextGaussian() * f3;
-                    entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
-                    entityitem.motionZ = (float)rand.nextGaussian() * f3;
-                    worldObj.spawnEntityInWorld(entityitem);
-                }
-                while (true);
-            }
-        }
-
         super.setDead();
 
         if (field_82344_g != null)
         {
             field_82344_g.update();
         }
-    }
-
-    /**
-     * Teleports the entity to another dimension. Params: Dimension number to teleport to
-     */
-    public void travelToDimension(int par1)
-    {
-        field_82345_h = false;
-        super.travelToDimension(par1);
     }
 
     /**
@@ -365,9 +281,9 @@ public class EntityMinecart extends Entity implements IInventory
             field_82344_g.update();
         }
 
-        if (func_70496_j() > 0)
+        if (getRollingAmplitude() > 0)
         {
-            func_70497_h(func_70496_j() - 1);
+            setRollingAmplitude(getRollingAmplitude() - 1);
         }
 
         if (getDamage() > 0)
@@ -378,11 +294,6 @@ public class EntityMinecart extends Entity implements IInventory
         if (posY < -64D)
         {
             kill();
-        }
-
-        if (isMinecartPowered() && rand.nextInt(4) == 0)
-        {
-            worldObj.spawnParticle("largesmoke", posX, posY + 0.80000000000000004D, posZ, 0.0D, 0.0D, 0.0D);
         }
 
         if (!worldObj.isRemote && (worldObj instanceof WorldServer))
@@ -468,7 +379,7 @@ public class EntityMinecart extends Entity implements IInventory
         int k = MathHelper.floor_double(posY);
         int l = MathHelper.floor_double(posZ);
 
-        if (BlockRail.isRailBlockAt(worldObj, i, k - 1, l))
+        if (BlockRailBase.isRailBlockAt(worldObj, i, k - 1, l))
         {
             k--;
         }
@@ -477,328 +388,19 @@ public class EntityMinecart extends Entity implements IInventory
         double d4 = 0.0078125D;
         int i1 = worldObj.getBlockId(i, k, l);
 
-        if (BlockRail.isRailBlock(i1))
+        if (BlockRailBase.isRailBlock(i1))
         {
-            fallDistance = 0.0F;
-            Vec3 vec3 = func_70489_a(posX, posY, posZ);
             int j1 = worldObj.getBlockMetadata(i, k, l);
-            posY = k;
-            boolean flag = false;
-            boolean flag1 = false;
+            func_94091_a(i, k, l, d2, d4, i1, j1);
 
-            if (i1 == Block.railPowered.blockID)
+            if (i1 == Block.railActivator.blockID)
             {
-                flag = (j1 & 8) != 0;
-                flag1 = !flag;
-            }
-
-            if (((BlockRail)Block.blocksList[i1]).isPowered())
-            {
-                j1 &= 7;
-            }
-
-            if (j1 >= 2 && j1 <= 5)
-            {
-                posY = k + 1;
-            }
-
-            if (j1 == 2)
-            {
-                motionX -= d4;
-            }
-
-            if (j1 == 3)
-            {
-                motionX += d4;
-            }
-
-            if (j1 == 4)
-            {
-                motionZ += d4;
-            }
-
-            if (j1 == 5)
-            {
-                motionZ -= d4;
-            }
-
-            int ai[][] = field_70500_g[j1];
-            double d9 = ai[1][0] - ai[0][0];
-            double d10 = ai[1][2] - ai[0][2];
-            double d11 = Math.sqrt(d9 * d9 + d10 * d10);
-            double d12 = motionX * d9 + motionZ * d10;
-
-            if (d12 < 0.0D)
-            {
-                d9 = -d9;
-                d10 = -d10;
-            }
-
-            double d13 = Math.sqrt(motionX * motionX + motionZ * motionZ);
-            motionX = (d13 * d9) / d11;
-            motionZ = (d13 * d10) / d11;
-
-            if (riddenByEntity != null)
-            {
-                double d16 = riddenByEntity.motionX * riddenByEntity.motionX + riddenByEntity.motionZ * riddenByEntity.motionZ;
-                double d19 = motionX * motionX + motionZ * motionZ;
-
-                if (d16 > 0.0001D && d19 < 0.01D)
-                {
-                    motionX += riddenByEntity.motionX * 0.10000000000000001D;
-                    motionZ += riddenByEntity.motionZ * 0.10000000000000001D;
-                    flag1 = false;
-                }
-            }
-
-            if (flag1)
-            {
-                double d17 = Math.sqrt(motionX * motionX + motionZ * motionZ);
-
-                if (d17 < 0.029999999999999999D)
-                {
-                    motionX *= 0.0D;
-                    motionY *= 0.0D;
-                    motionZ *= 0.0D;
-                }
-                else
-                {
-                    motionX *= 0.5D;
-                    motionY *= 0.0D;
-                    motionZ *= 0.5D;
-                }
-            }
-
-            double d18 = 0.0D;
-            double d20 = (double)i + 0.5D + (double)ai[0][0] * 0.5D;
-            double d21 = (double)l + 0.5D + (double)ai[0][2] * 0.5D;
-            double d22 = (double)i + 0.5D + (double)ai[1][0] * 0.5D;
-            double d23 = (double)l + 0.5D + (double)ai[1][2] * 0.5D;
-            d9 = d22 - d20;
-            d10 = d23 - d21;
-
-            if (d9 == 0.0D)
-            {
-                posX = (double)i + 0.5D;
-                d18 = posZ - (double)l;
-            }
-            else if (d10 == 0.0D)
-            {
-                posZ = (double)l + 0.5D;
-                d18 = posX - (double)i;
-            }
-            else
-            {
-                double d24 = posX - d20;
-                double d26 = posZ - d21;
-                d18 = (d24 * d9 + d26 * d10) * 2D;
-            }
-
-            posX = d20 + d9 * d18;
-            posZ = d21 + d10 * d18;
-            setPosition(posX, posY + (double)yOffset, posZ);
-            double d25 = motionX;
-            double d27 = motionZ;
-
-            if (riddenByEntity != null)
-            {
-                d25 *= 0.75D;
-                d27 *= 0.75D;
-            }
-
-            if (d25 < -d2)
-            {
-                d25 = -d2;
-            }
-
-            if (d25 > d2)
-            {
-                d25 = d2;
-            }
-
-            if (d27 < -d2)
-            {
-                d27 = -d2;
-            }
-
-            if (d27 > d2)
-            {
-                d27 = d2;
-            }
-
-            moveEntity(d25, 0.0D, d27);
-
-            if (ai[0][1] != 0 && MathHelper.floor_double(posX) - i == ai[0][0] && MathHelper.floor_double(posZ) - l == ai[0][2])
-            {
-                setPosition(posX, posY + (double)ai[0][1], posZ);
-            }
-            else if (ai[1][1] != 0 && MathHelper.floor_double(posX) - i == ai[1][0] && MathHelper.floor_double(posZ) - l == ai[1][2])
-            {
-                setPosition(posX, posY + (double)ai[1][1], posZ);
-            }
-
-            if (riddenByEntity != null)
-            {
-                motionX *= 0.99699997901916504D;
-                motionY *= 0.0D;
-                motionZ *= 0.99699997901916504D;
-            }
-            else
-            {
-                if (minecartType == 2)
-                {
-                    double d28 = pushX * pushX + pushZ * pushZ;
-
-                    if (d28 > 0.0001D)
-                    {
-                        d28 = MathHelper.sqrt_double(d28);
-                        pushX /= d28;
-                        pushZ /= d28;
-                        double d30 = 0.040000000000000001D;
-                        motionX *= 0.80000001192092896D;
-                        motionY *= 0.0D;
-                        motionZ *= 0.80000001192092896D;
-                        motionX += pushX * d30;
-                        motionZ += pushZ * d30;
-                    }
-                    else
-                    {
-                        motionX *= 0.89999997615814209D;
-                        motionY *= 0.0D;
-                        motionZ *= 0.89999997615814209D;
-                    }
-                }
-
-                motionX *= 0.95999997854232788D;
-                motionY *= 0.0D;
-                motionZ *= 0.95999997854232788D;
-            }
-
-            Vec3 vec3_1 = func_70489_a(posX, posY, posZ);
-
-            if (vec3_1 != null && vec3 != null)
-            {
-                double d29 = (vec3.yCoord - vec3_1.yCoord) * 0.050000000000000003D;
-                double d14 = Math.sqrt(motionX * motionX + motionZ * motionZ);
-
-                if (d14 > 0.0D)
-                {
-                    motionX = (motionX / d14) * (d14 + d29);
-                    motionZ = (motionZ / d14) * (d14 + d29);
-                }
-
-                setPosition(posX, vec3_1.yCoord, posZ);
-            }
-
-            int l1 = MathHelper.floor_double(posX);
-            int i2 = MathHelper.floor_double(posZ);
-
-            if (l1 != i || i2 != l)
-            {
-                double d15 = Math.sqrt(motionX * motionX + motionZ * motionZ);
-                motionX = d15 * (double)(l1 - i);
-                motionZ = d15 * (double)(i2 - l);
-            }
-
-            if (minecartType == 2)
-            {
-                double d31 = pushX * pushX + pushZ * pushZ;
-
-                if (d31 > 0.0001D && motionX * motionX + motionZ * motionZ > 0.001D)
-                {
-                    d31 = MathHelper.sqrt_double(d31);
-                    pushX /= d31;
-                    pushZ /= d31;
-
-                    if (pushX * motionX + pushZ * motionZ < 0.0D)
-                    {
-                        pushX = 0.0D;
-                        pushZ = 0.0D;
-                    }
-                    else
-                    {
-                        pushX = motionX;
-                        pushZ = motionZ;
-                    }
-                }
-            }
-
-            if (flag)
-            {
-                double d32 = Math.sqrt(motionX * motionX + motionZ * motionZ);
-
-                if (d32 > 0.01D)
-                {
-                    double d33;
-                    if (boosters){
-                        d33 = 0.04D;
-                    }else{
-                        d33 = 0.059999999999999998D;
-                    }
-                    motionX += (motionX / d32) * d33;
-                    motionZ += (motionZ / d32) * d33;
-                }
-                else if (j1 == 1)
-                {
-                    if (worldObj.isBlockNormalCube(i - 1, k, l))
-                    {
-                        motionX = 0.02D;
-                    }
-                    else if (worldObj.isBlockNormalCube(i + 1, k, l))
-                    {
-                        motionX = -0.02D;
-                    }
-                }
-                else if (j1 == 0)
-                {
-                    if (worldObj.isBlockNormalCube(i, k, l - 1))
-                    {
-                        motionZ = 0.02D;
-                    }
-                    else if (worldObj.isBlockNormalCube(i, k, l + 1))
-                    {
-                        motionZ = -0.02D;
-                    }
-                }
+                func_96095_a(i, k, l, (j1 & 8) != 0);
             }
         }
         else
         {
-            if (motionX < -d2)
-            {
-                motionX = -d2;
-            }
-
-            if (motionX > d2)
-            {
-                motionX = d2;
-            }
-
-            if (motionZ < -d2)
-            {
-                motionZ = -d2;
-            }
-
-            if (motionZ > d2)
-            {
-                motionZ = d2;
-            }
-
-            if (onGround)
-            {
-                motionX *= 0.5D;
-                motionY *= 0.5D;
-                motionZ *= 0.5D;
-            }
-
-            moveEntity(motionX, motionY, motionZ);
-
-            if (!onGround)
-            {
-                motionX *= 0.94999998807907104D;
-                motionY *= 0.94999998807907104D;
-                motionZ *= 0.94999998807907104D;
-            }
+            func_94088_b(d2);
         }
 
         doBlockCollisions();
@@ -810,7 +412,7 @@ public class EntityMinecart extends Entity implements IInventory
         {
             rotationYaw = (float)((Math.atan2(d7, d6) * 180D) / Math.PI);
 
-            if (field_70499_f)
+            if (isInReverse)
             {
                 rotationYaw += 180F;
             }
@@ -821,7 +423,7 @@ public class EntityMinecart extends Entity implements IInventory
         if (d8 < -170D || d8 >= 170D)
         {
             rotationYaw += 180F;
-            field_70499_f = !field_70499_f;
+            isInReverse = !isInReverse;
         }
 
         setRotation(rotationYaw, rotationPitch);
@@ -849,18 +451,297 @@ public class EntityMinecart extends Entity implements IInventory
 
             riddenByEntity = null;
         }
+    }
 
-        if (fuel > 0)
+    public void func_96095_a(int i, int j, int k, boolean flag)
+    {
+    }
+
+    protected void func_94088_b(double par1)
+    {
+        if (motionX < -par1)
         {
-            fuel--;
+            motionX = -par1;
         }
 
-        if (fuel <= 0)
+        if (motionX > par1)
         {
-            pushX = pushZ = 0.0D;
+            motionX = par1;
         }
 
-        setMinecartPowered(fuel > 0);
+        if (motionZ < -par1)
+        {
+            motionZ = -par1;
+        }
+
+        if (motionZ > par1)
+        {
+            motionZ = par1;
+        }
+
+        if (onGround)
+        {
+            motionX *= 0.5D;
+            motionY *= 0.5D;
+            motionZ *= 0.5D;
+        }
+
+        moveEntity(motionX, motionY, motionZ);
+
+        if (!onGround)
+        {
+            motionX *= 0.94999998807907104D;
+            motionY *= 0.94999998807907104D;
+            motionZ *= 0.94999998807907104D;
+        }
+    }
+
+    protected void func_94091_a(int par1, int par2, int par3, double par4, double par6, int par8, int par9)
+    {
+        fallDistance = 0.0F;
+        Vec3 vec3 = func_70489_a(posX, posY, posZ);
+        posY = par2;
+        boolean flag = false;
+        boolean flag1 = false;
+
+        if (par8 == Block.railPowered.blockID)
+        {
+            flag = (par9 & 8) != 0;
+            flag1 = !flag;
+        }
+
+        if (((BlockRailBase)Block.blocksList[par8]).isPowered())
+        {
+            par9 &= 7;
+        }
+
+        if (par9 >= 2 && par9 <= 5)
+        {
+            posY = par2 + 1;
+        }
+
+        if (par9 == 2)
+        {
+            motionX -= par6;
+        }
+
+        if (par9 == 3)
+        {
+            motionX += par6;
+        }
+
+        if (par9 == 4)
+        {
+            motionZ += par6;
+        }
+
+        if (par9 == 5)
+        {
+            motionZ -= par6;
+        }
+
+        int ai[][] = matrix[par9];
+        double d = ai[1][0] - ai[0][0];
+        double d1 = ai[1][2] - ai[0][2];
+        double d2 = Math.sqrt(d * d + d1 * d1);
+        double d3 = motionX * d + motionZ * d1;
+
+        if (d3 < 0.0D)
+        {
+            d = -d;
+            d1 = -d1;
+        }
+
+        double d4 = Math.sqrt(motionX * motionX + motionZ * motionZ);
+
+        if (d4 > 2D)
+        {
+            d4 = 2D;
+        }
+
+        motionX = (d4 * d) / d2;
+        motionZ = (d4 * d1) / d2;
+
+        if (riddenByEntity != null)
+        {
+            double d7 = riddenByEntity.motionX * riddenByEntity.motionX + riddenByEntity.motionZ * riddenByEntity.motionZ;
+            double d10 = motionX * motionX + motionZ * motionZ;
+
+            if (d7 > 0.0001D && d10 < 0.01D)
+            {
+                motionX += riddenByEntity.motionX * 0.10000000000000001D;
+                motionZ += riddenByEntity.motionZ * 0.10000000000000001D;
+                flag1 = false;
+            }
+        }
+
+        if (flag1)
+        {
+            double d8 = Math.sqrt(motionX * motionX + motionZ * motionZ);
+
+            if (d8 < 0.029999999999999999D)
+            {
+                motionX *= 0.0D;
+                motionY *= 0.0D;
+                motionZ *= 0.0D;
+            }
+            else
+            {
+                motionX *= 0.5D;
+                motionY *= 0.0D;
+                motionZ *= 0.5D;
+            }
+        }
+
+        double d9 = 0.0D;
+        double d11 = (double)par1 + 0.5D + (double)ai[0][0] * 0.5D;
+        double d12 = (double)par3 + 0.5D + (double)ai[0][2] * 0.5D;
+        double d13 = (double)par1 + 0.5D + (double)ai[1][0] * 0.5D;
+        double d14 = (double)par3 + 0.5D + (double)ai[1][2] * 0.5D;
+        d = d13 - d11;
+        d1 = d14 - d12;
+
+        if (d == 0.0D)
+        {
+            posX = (double)par1 + 0.5D;
+            d9 = posZ - (double)par3;
+        }
+        else if (d1 == 0.0D)
+        {
+            posZ = (double)par3 + 0.5D;
+            d9 = posX - (double)par1;
+        }
+        else
+        {
+            double d15 = posX - d11;
+            double d17 = posZ - d12;
+            d9 = (d15 * d + d17 * d1) * 2D;
+        }
+
+        posX = d11 + d * d9;
+        posZ = d12 + d1 * d9;
+        setPosition(posX, posY + (double)yOffset, posZ);
+        double d16 = motionX;
+        double d18 = motionZ;
+
+        if (riddenByEntity != null)
+        {
+            d16 *= 0.75D;
+            d18 *= 0.75D;
+        }
+
+        if (d16 < -par4)
+        {
+            d16 = -par4;
+        }
+
+        if (d16 > par4)
+        {
+            d16 = par4;
+        }
+
+        if (d18 < -par4)
+        {
+            d18 = -par4;
+        }
+
+        if (d18 > par4)
+        {
+            d18 = par4;
+        }
+
+        moveEntity(d16, 0.0D, d18);
+
+        if (ai[0][1] != 0 && MathHelper.floor_double(posX) - par1 == ai[0][0] && MathHelper.floor_double(posZ) - par3 == ai[0][2])
+        {
+            setPosition(posX, posY + (double)ai[0][1], posZ);
+        }
+        else if (ai[1][1] != 0 && MathHelper.floor_double(posX) - par1 == ai[1][0] && MathHelper.floor_double(posZ) - par3 == ai[1][2])
+        {
+            setPosition(posX, posY + (double)ai[1][1], posZ);
+        }
+
+        func_94101_h();
+        Vec3 vec3_1 = func_70489_a(posX, posY, posZ);
+
+        if (vec3_1 != null && vec3 != null)
+        {
+            double d19 = (vec3.yCoord - vec3_1.yCoord) * 0.050000000000000003D;
+            double d5 = Math.sqrt(motionX * motionX + motionZ * motionZ);
+
+            if (d5 > 0.0D)
+            {
+                motionX = (motionX / d5) * (d5 + d19);
+                motionZ = (motionZ / d5) * (d5 + d19);
+            }
+
+            setPosition(posX, vec3_1.yCoord, posZ);
+        }
+
+        int i = MathHelper.floor_double(posX);
+        int j = MathHelper.floor_double(posZ);
+
+        if (i != par1 || j != par3)
+        {
+            double d6 = Math.sqrt(motionX * motionX + motionZ * motionZ);
+            motionX = d6 * (double)(i - par1);
+            motionZ = d6 * (double)(j - par3);
+        }
+
+        if (flag)
+        {
+            double d20 = Math.sqrt(motionX * motionX + motionZ * motionZ);
+
+            if (d20 > 0.01D)
+            {
+                double d21;
+                if (boosters){
+                    d21 = 0.04D;
+                }else{
+                    d21 = 0.059999999999999998D;
+                }
+                motionX += (motionX / d20) * d21;
+                motionZ += (motionZ / d20) * d21;
+            }
+            else if (par9 == 1)
+            {
+                if (worldObj.isBlockNormalCube(par1 - 1, par2, par3))
+                {
+                    motionX = 0.02D;
+                }
+                else if (worldObj.isBlockNormalCube(par1 + 1, par2, par3))
+                {
+                    motionX = -0.02D;
+                }
+            }
+            else if (par9 == 0)
+            {
+                if (worldObj.isBlockNormalCube(par1, par2, par3 - 1))
+                {
+                    motionZ = 0.02D;
+                }
+                else if (worldObj.isBlockNormalCube(par1, par2, par3 + 1))
+                {
+                    motionZ = -0.02D;
+                }
+            }
+        }
+    }
+
+    protected void func_94101_h()
+    {
+        if (riddenByEntity != null)
+        {
+            motionX *= 0.99699997901916504D;
+            motionY *= 0.0D;
+            motionZ *= 0.99699997901916504D;
+        }
+        else
+        {
+            motionX *= 0.95999997854232788D;
+            motionY *= 0.0D;
+            motionZ *= 0.95999997854232788D;
+        }
     }
 
     public Vec3 func_70495_a(double par1, double par3, double par5, double par7)
@@ -869,18 +750,18 @@ public class EntityMinecart extends Entity implements IInventory
         int j = MathHelper.floor_double(par3);
         int k = MathHelper.floor_double(par5);
 
-        if (BlockRail.isRailBlockAt(worldObj, i, j - 1, k))
+        if (BlockRailBase.isRailBlockAt(worldObj, i, j - 1, k))
         {
             j--;
         }
 
         int l = worldObj.getBlockId(i, j, k);
 
-        if (BlockRail.isRailBlock(l))
+        if (BlockRailBase.isRailBlock(l))
         {
             int i1 = worldObj.getBlockMetadata(i, j, k);
 
-            if (((BlockRail)Block.blocksList[l]).isPowered())
+            if (((BlockRailBase)Block.blocksList[l]).isPowered())
             {
                 i1 &= 7;
             }
@@ -892,7 +773,7 @@ public class EntityMinecart extends Entity implements IInventory
                 par3 = j + 1;
             }
 
-            int ai[][] = field_70500_g[i1];
+            int ai[][] = matrix[i1];
             double d = ai[1][0] - ai[0][0];
             double d1 = ai[1][2] - ai[0][2];
             double d2 = Math.sqrt(d * d + d1 * d1);
@@ -924,19 +805,19 @@ public class EntityMinecart extends Entity implements IInventory
         int j = MathHelper.floor_double(par3);
         int k = MathHelper.floor_double(par5);
 
-        if (BlockRail.isRailBlockAt(worldObj, i, j - 1, k))
+        if (BlockRailBase.isRailBlockAt(worldObj, i, j - 1, k))
         {
             j--;
         }
 
         int l = worldObj.getBlockId(i, j, k);
 
-        if (BlockRail.isRailBlock(l))
+        if (BlockRailBase.isRailBlock(l))
         {
             int i1 = worldObj.getBlockMetadata(i, j, k);
             par3 = j;
 
-            if (((BlockRail)Block.blocksList[l]).isPowered())
+            if (((BlockRailBase)Block.blocksList[l]).isPowered())
             {
                 i1 &= 7;
             }
@@ -946,7 +827,7 @@ public class EntityMinecart extends Entity implements IInventory
                 par3 = j + 1;
             }
 
-            int ai[][] = field_70500_g[i1];
+            int ai[][] = matrix[i1];
             double d = 0.0D;
             double d1 = (double)i + 0.5D + (double)ai[0][0] * 0.5D;
             double d2 = (double)j + 0.5D + (double)ai[0][1] * 0.5D;
@@ -998,65 +879,39 @@ public class EntityMinecart extends Entity implements IInventory
     }
 
     /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        par1NBTTagCompound.setInteger("Type", minecartType);
-
-        if (minecartType == 2)
-        {
-            par1NBTTagCompound.setDouble("PushX", pushX);
-            par1NBTTagCompound.setDouble("PushZ", pushZ);
-            par1NBTTagCompound.setShort("Fuel", (short)fuel);
-        }
-        else if (minecartType == 1)
-        {
-            NBTTagList nbttaglist = new NBTTagList();
-
-            for (int i = 0; i < cargoItems.length; i++)
-            {
-                if (cargoItems[i] != null)
-                {
-                    NBTTagCompound nbttagcompound = new NBTTagCompound();
-                    nbttagcompound.setByte("Slot", (byte)i);
-                    cargoItems[i].writeToNBT(nbttagcompound);
-                    nbttaglist.appendTag(nbttagcompound);
-                }
-            }
-
-            par1NBTTagCompound.setTag("Items", nbttaglist);
-        }
-    }
-
-    /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        minecartType = par1NBTTagCompound.getInteger("Type");
-
-        if (minecartType == 2)
+        if (par1NBTTagCompound.getBoolean("CustomDisplayTile"))
         {
-            pushX = par1NBTTagCompound.getDouble("PushX");
-            pushZ = par1NBTTagCompound.getDouble("PushZ");
-            fuel = par1NBTTagCompound.getShort("Fuel");
+            func_94094_j(par1NBTTagCompound.getInteger("DisplayTile"));
+            func_94092_k(par1NBTTagCompound.getInteger("DisplayData"));
+            func_94086_l(par1NBTTagCompound.getInteger("DisplayOffset"));
         }
-        else if (minecartType == 1)
+
+        if (par1NBTTagCompound.hasKey("CustomName") && par1NBTTagCompound.getString("CustomName").length() > 0)
         {
-            NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
-            cargoItems = new ItemStack[getSizeInventory()];
+            field_94102_c = par1NBTTagCompound.getString("CustomName");
+        }
+    }
 
-            for (int i = 0; i < nbttaglist.tagCount(); i++)
-            {
-                NBTTagCompound nbttagcompound = (NBTTagCompound)nbttaglist.tagAt(i);
-                int j = nbttagcompound.getByte("Slot") & 0xff;
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        if (func_94100_s())
+        {
+            par1NBTTagCompound.setBoolean("CustomDisplayTile", true);
+            par1NBTTagCompound.setInteger("DisplayTile", func_94089_m() != null ? func_94089_m().blockID : 0);
+            par1NBTTagCompound.setInteger("DisplayData", func_94098_o());
+            par1NBTTagCompound.setInteger("DisplayOffset", func_94099_q());
+        }
 
-                if (j >= 0 && j < cargoItems.length)
-                {
-                    cargoItems[j] = ItemStack.loadItemStackFromNBT(nbttagcompound);
-                }
-            }
+        if (field_94102_c != null && field_94102_c.length() > 0)
+        {
+            par1NBTTagCompound.setString("CustomName", field_94102_c);
         }
     }
 
@@ -1080,7 +935,7 @@ public class EntityMinecart extends Entity implements IInventory
             return;
         }
 
-        if ((par1Entity instanceof EntityLiving) && !(par1Entity instanceof EntityPlayer) && !(par1Entity instanceof EntityIronGolem) && minecartType == 0 && motionX * motionX + motionZ * motionZ > 0.01D && riddenByEntity == null && par1Entity.ridingEntity == null)
+        if ((par1Entity instanceof EntityLiving) && !(par1Entity instanceof EntityPlayer) && !(par1Entity instanceof EntityIronGolem) && func_94087_l() == 0 && motionX * motionX + motionZ * motionZ > 0.01D && riddenByEntity == null && par1Entity.ridingEntity == null)
         {
             par1Entity.mountEntity(this);
         }
@@ -1133,7 +988,7 @@ public class EntityMinecart extends Entity implements IInventory
                     d8 = par1Entity.motionZ + motionZ;
                 }
 
-                if (((EntityMinecart)par1Entity).minecartType == 2 && minecartType != 2)
+                if (((EntityMinecart)par1Entity).func_94087_l() == 2 && func_94087_l() != 2)
                 {
                     motionX *= 0.20000000298023224D;
                     motionZ *= 0.20000000298023224D;
@@ -1141,7 +996,7 @@ public class EntityMinecart extends Entity implements IInventory
                     par1Entity.motionX *= 0.94999998807907104D;
                     par1Entity.motionZ *= 0.94999998807907104D;
                 }
-                else if (((EntityMinecart)par1Entity).minecartType != 2 && minecartType == 2)
+                else if (((EntityMinecart)par1Entity).func_94087_l() != 2 && func_94087_l() == 2)
                 {
                     par1Entity.motionX *= 0.20000000298023224D;
                     par1Entity.motionZ *= 0.20000000298023224D;
@@ -1167,152 +1022,6 @@ public class EntityMinecart extends Entity implements IInventory
                 par1Entity.addVelocity(d / 4D, 0.0D, d1 / 4D);
             }
         }
-    }
-
-    /**
-     * Returns the number of slots in the inventory.
-     */
-    public int getSizeInventory()
-    {
-        return 27;
-    }
-
-    /**
-     * Returns the stack in slot i
-     */
-    public ItemStack getStackInSlot(int par1)
-    {
-        return cargoItems[par1];
-    }
-
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (cargoItems[par1] != null)
-        {
-            if (cargoItems[par1].stackSize <= par2)
-            {
-                ItemStack itemstack = cargoItems[par1];
-                cargoItems[par1] = null;
-                return itemstack;
-            }
-
-            ItemStack itemstack1 = cargoItems[par1].splitStack(par2);
-
-            if (cargoItems[par1].stackSize == 0)
-            {
-                cargoItems[par1] = null;
-            }
-
-            return itemstack1;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
-    public ItemStack getStackInSlotOnClosing(int par1)
-    {
-        if (cargoItems[par1] != null)
-        {
-            ItemStack itemstack = cargoItems[par1];
-            cargoItems[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        cargoItems[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = getInventoryStackLimit();
-        }
-    }
-
-    /**
-     * Returns the name of the inventory.
-     */
-    public String getInvName()
-    {
-        return "container.minecart";
-    }
-
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    /**
-     * Called when an the contents of an Inventory change, usually
-     */
-    public void onInventoryChanged()
-    {
-    }
-
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-        if (minecartType == 0)
-        {
-            if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != par1EntityPlayer)
-            {
-                return true;
-            }
-
-            if (!worldObj.isRemote)
-            {
-                par1EntityPlayer.mountEntity(this);
-            }
-        }
-        else if (minecartType == 1)
-        {
-            if (!worldObj.isRemote)
-            {
-                par1EntityPlayer.displayGUIChest(this);
-            }
-        }
-        else if (minecartType == 2)
-        {
-            ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-
-            if (itemstack != null && itemstack.itemID == Item.coal.shiftedIndex)
-            {
-                if (--itemstack.stackSize == 0)
-                {
-                    par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
-                }
-
-                fuel += 3600;
-            }
-
-            pushX = posX - par1EntityPlayer.posX;
-            pushZ = posZ - par1EntityPlayer.posZ;
-        }
-
-        return true;
     }
 
     /**
@@ -1343,50 +1052,6 @@ public class EntityMinecart extends Entity implements IInventory
     }
 
     /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        if (isDead)
-        {
-            return false;
-        }
-
-        return par1EntityPlayer.getDistanceSqToEntity(this) <= 64D;
-    }
-
-    /**
-     * Is this minecart powered (Fuel > 0)
-     */
-    protected boolean isMinecartPowered()
-    {
-        return (dataWatcher.getWatchableObjectByte(16) & 1) != 0;
-    }
-
-    /**
-     * Set if this minecart is powered (Fuel > 0)
-     */
-    protected void setMinecartPowered(boolean par1)
-    {
-        if (par1)
-        {
-            dataWatcher.updateObject(16, Byte.valueOf((byte)(dataWatcher.getWatchableObjectByte(16) | 1)));
-        }
-        else
-        {
-            dataWatcher.updateObject(16, Byte.valueOf((byte)(dataWatcher.getWatchableObjectByte(16) & -2)));
-        }
-    }
-
-    public void openChest()
-    {
-    }
-
-    public void closeChest()
-    {
-    }
-
-    /**
      * Sets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
      * 40.
      */
@@ -1404,23 +1069,153 @@ public class EntityMinecart extends Entity implements IInventory
         return dataWatcher.getWatchableObjectInt(19);
     }
 
-    public void func_70497_h(int par1)
+    /**
+     * Sets the rolling amplitude the cart rolls while being attacked.
+     */
+    public void setRollingAmplitude(int par1)
     {
         dataWatcher.updateObject(17, Integer.valueOf(par1));
     }
 
-    public int func_70496_j()
+    /**
+     * Gets the rolling amplitude the cart rolls while being attacked.
+     */
+    public int getRollingAmplitude()
     {
         return dataWatcher.getWatchableObjectInt(17);
     }
 
-    public void func_70494_i(int par1)
+    /**
+     * Sets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
+     */
+    public void setRollingDirection(int par1)
     {
         dataWatcher.updateObject(18, Integer.valueOf(par1));
     }
 
-    public int func_70493_k()
+    /**
+     * Gets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
+     */
+    public int getRollingDirection()
     {
         return dataWatcher.getWatchableObjectInt(18);
+    }
+
+    public abstract int func_94087_l();
+
+    public Block func_94089_m()
+    {
+        if (!func_94100_s())
+        {
+            return func_94093_n();
+        }
+        else
+        {
+            int i = getDataWatcher().getWatchableObjectInt(20) & 0xffff;
+            return i <= 0 || i >= Block.blocksList.length ? null : Block.blocksList[i];
+        }
+    }
+
+    public Block func_94093_n()
+    {
+        return null;
+    }
+
+    public int func_94098_o()
+    {
+        if (!func_94100_s())
+        {
+            return func_94097_p();
+        }
+        else
+        {
+            return getDataWatcher().getWatchableObjectInt(20) >> 16;
+        }
+    }
+
+    public int func_94097_p()
+    {
+        return 0;
+    }
+
+    public int func_94099_q()
+    {
+        if (!func_94100_s())
+        {
+            return func_94085_r();
+        }
+        else
+        {
+            return getDataWatcher().getWatchableObjectInt(21);
+        }
+    }
+
+    public int func_94085_r()
+    {
+        return 6;
+    }
+
+    public void func_94094_j(int par1)
+    {
+        getDataWatcher().updateObject(20, Integer.valueOf(par1 & 0xffff | func_94098_o() << 16));
+        func_94096_e(true);
+    }
+
+    public void func_94092_k(int par1)
+    {
+        Block block = func_94089_m();
+        int i = block != null ? block.blockID : 0;
+        getDataWatcher().updateObject(20, Integer.valueOf(i & 0xffff | par1 << 16));
+        func_94096_e(true);
+    }
+
+    public void func_94086_l(int par1)
+    {
+        getDataWatcher().updateObject(21, Integer.valueOf(par1));
+        func_94096_e(true);
+    }
+
+    public boolean func_94100_s()
+    {
+        return getDataWatcher().getWatchableObjectByte(22) == 1;
+    }
+
+    public void func_94096_e(boolean par1)
+    {
+        getDataWatcher().updateObject(22, Byte.valueOf((byte)(par1 ? 1 : 0)));
+    }
+
+    public void func_96094_a(String par1Str)
+    {
+        field_94102_c = par1Str;
+    }
+
+    /**
+     * Gets the username of the entity.
+     */
+    public String getEntityName()
+    {
+        if (field_94102_c != null)
+        {
+            return field_94102_c;
+        }
+        else
+        {
+            return super.getEntityName();
+        }
+    }
+
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
+    {
+        return field_94102_c != null;
+    }
+
+    public String func_95999_t()
+    {
+        return field_94102_c;
     }
 }

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientShowSeed extends CommandShowSeed
 {
+    @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
@@ -13,6 +14,7 @@ public class CommandClientShowSeed extends CommandShowSeed
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;

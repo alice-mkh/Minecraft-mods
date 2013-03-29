@@ -35,6 +35,7 @@ public class NetClientHandler extends NetHandler
      */
     public List playerInfoList;
     public int currentServerMaxPlayers;
+    private GuiScreen field_98183_l;
 
     /** RNG. */
     Random rand;
@@ -47,10 +48,27 @@ public class NetClientHandler extends NetHandler
         playerInfoMap = new HashMap();
         playerInfoList = new ArrayList();
         currentServerMaxPlayers = 20;
+        field_98183_l = null;
         rand = new Random();
         mc = par1Minecraft;
         Socket socket = new Socket(InetAddress.getByName(par2Str), par3);
-        netManager = new TcpConnection(socket, "Client", this);
+        netManager = new TcpConnection(par1Minecraft.getLogAgent(), socket, "Client", this);
+    }
+
+    public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3, GuiScreen par4GuiScreen) throws IOException
+    {
+        disconnected = false;
+        doneLoadingTerrain = false;
+        mapStorage = new MapStorage(null);
+        playerInfoMap = new HashMap();
+        playerInfoList = new ArrayList();
+        currentServerMaxPlayers = 20;
+        field_98183_l = null;
+        rand = new Random();
+        mc = par1Minecraft;
+        field_98183_l = par4GuiScreen;
+        Socket socket = new Socket(InetAddress.getByName(par2Str), par3);
+        netManager = new TcpConnection(par1Minecraft.getLogAgent(), socket, "Client", this);
     }
 
     public NetClientHandler(Minecraft par1Minecraft, IntegratedServer par2IntegratedServer) throws IOException
@@ -61,9 +79,10 @@ public class NetClientHandler extends NetHandler
         playerInfoMap = new HashMap();
         playerInfoList = new ArrayList();
         currentServerMaxPlayers = 20;
+        field_98183_l = null;
         rand = new Random();
         mc = par1Minecraft;
-        netManager = new MemoryConnection(this);
+        netManager = new MemoryConnection(par1Minecraft.getLogAgent(), this);
         par2IntegratedServer.getServerListeningThread().func_71754_a((MemoryConnection)netManager, par1Minecraft.session.username);
     }
 
@@ -113,12 +132,12 @@ public class NetClientHandler extends NetHandler
     {
         String s = par1Packet253ServerAuthData.getServerId().trim();
         java.security.PublicKey publickey = par1Packet253ServerAuthData.getPublicKey();
-        javax.crypto.SecretKey secretkey = CryptManager.func_75890_a();
+        javax.crypto.SecretKey secretkey = CryptManager.createNewSharedKey();
 
         if (!"-".equals(s))
         {
-            String s1 = (new BigInteger(CryptManager.func_75895_a(s, publickey, secretkey))).toString(16);
-            String s2 = func_72550_a(mc.session.username, mc.session.sessionId, s1);
+            String s1 = (new BigInteger(CryptManager.getServerIdHash(s, publickey, secretkey))).toString(16);
+            String s2 = sendSessionRequest(mc.session.username, mc.session.sessionId, s1);
 
             if (!"ok".equalsIgnoreCase(s2))
             {
@@ -133,7 +152,10 @@ public class NetClientHandler extends NetHandler
         addToSendQueue(new Packet252SharedKey(secretkey, publickey, par1Packet253ServerAuthData.getVerifyToken()));
     }
 
-    private String func_72550_a(String par1Str, String par2Str, String par3Str)
+    /**
+     * Send request to http://session.minecraft.net with user's sessionId and serverId hash
+     */
+    private String sendSessionRequest(String par1Str, String par2Str, String par3Str)
     {
         try
         {
@@ -166,7 +188,7 @@ public class NetClientHandler extends NetHandler
     {
         mc.playerController = new PlayerControllerMP(mc, this);
         mc.statFileWriter.readStat(StatList.joinMultiplayerStat, 1);
-        worldClient = new WorldClient(this, new WorldSettings(0L, par1Packet1Login.gameType, false, par1Packet1Login.hardcoreMode, par1Packet1Login.terrainType), par1Packet1Login.dimension, par1Packet1Login.difficultySetting, mc.mcProfiler);
+        worldClient = new WorldClient(this, new WorldSettings(0L, par1Packet1Login.gameType, false, par1Packet1Login.hardcoreMode, par1Packet1Login.terrainType), par1Packet1Login.dimension, par1Packet1Login.difficultySetting, mc.mcProfiler, mc.getLogAgent());
         worldClient.isRemote = true;
         mc.loadWorld(worldClient);
         mc.thePlayer.dimension = par1Packet1Login.dimension;
@@ -188,15 +210,7 @@ public class NetClientHandler extends NetHandler
 
         if (par1Packet23VehicleSpawn.type == 10)
         {
-            obj = new EntityMinecart(worldClient, d, d1, d2, 0);
-        }
-        else if (par1Packet23VehicleSpawn.type == 11)
-        {
-            obj = new EntityMinecart(worldClient, d, d1, d2, 1);
-        }
-        else if (par1Packet23VehicleSpawn.type == 12)
-        {
-            obj = new EntityMinecart(worldClient, d, d1, d2, 2);
+            obj = EntityMinecart.func_94090_a(worldClient, d, d1, d2, par1Packet23VehicleSpawn.throwerEntityId);
         }
         else if (par1Packet23VehicleSpawn.type == 90)
         {
@@ -269,7 +283,7 @@ public class NetClientHandler extends NetHandler
         }
         else if (par1Packet23VehicleSpawn.type == 50)
         {
-            obj = new EntityTNTPrimed(worldClient, d, d1, d2);
+            obj = new EntityTNTPrimed(worldClient, d, d1, d2, null);
         }
         else if (par1Packet23VehicleSpawn.type == 51)
         {
@@ -464,7 +478,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleBlockItemSwitch(Packet16BlockItemSwitch par1Packet16BlockItemSwitch)
     {
-        if (par1Packet16BlockItemSwitch.id >= 0 && par1Packet16BlockItemSwitch.id < InventoryPlayer.func_70451_h())
+        if (par1Packet16BlockItemSwitch.id >= 0 && par1Packet16BlockItemSwitch.id < InventoryPlayer.getHotbarSize())
         {
             mc.thePlayer.inventory.currentItem = par1Packet16BlockItemSwitch.id;
         }
@@ -504,7 +518,7 @@ public class NetClientHandler extends NetHandler
         else
         {
             float f = (float)(par1Packet35EntityHeadRotation.headRotationYaw * 360) / 256F;
-            entity.setHeadRotationYaw(f);
+            entity.setRotationYawHead(f);
             return;
         }
     }
@@ -637,10 +651,21 @@ public class NetClientHandler extends NetHandler
         disconnected = true;
         Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
         mc.loadWorld(null);
-        mc.displayGuiScreen(new GuiDisconnected("disconnect.disconnected", "disconnect.genericReason", new Object[]
-                {
-                    par1Packet255KickDisconnect.reason
-                }));
+
+        if (field_98183_l != null)
+        {
+            mc.displayGuiScreen(new GuiScreenDisconnectedOnline(field_98183_l, "disconnect.disconnected", "disconnect.genericReason", new Object[]
+                    {
+                        par1Packet255KickDisconnect.reason
+                    }));
+        }
+        else
+        {
+            mc.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu()), "disconnect.disconnected", "disconnect.genericReason", new Object[]
+                    {
+                        par1Packet255KickDisconnect.reason
+                    }));
+        }
     }
 
     public void handleErrorMessage(String par1Str, Object par2ArrayOfObj[])
@@ -649,13 +674,18 @@ public class NetClientHandler extends NetHandler
         {
             return;
         }
+
+        disconnected = true;
+        Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
+        mc.loadWorld(null);
+
+        if (field_98183_l != null)
+        {
+            mc.displayGuiScreen(new GuiScreenDisconnectedOnline(field_98183_l, "disconnect.lost", par1Str, par2ArrayOfObj));
+        }
         else
         {
-            disconnected = true;
-            Minecraft.invokeModMethod("ModLoader", "clientDisconnect", new Class[]{});
-            mc.loadWorld(null);
-            mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
-            return;
+            mc.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu()), "disconnect.lost", par1Str, par2ArrayOfObj));
         }
     }
 
@@ -926,7 +956,9 @@ public class NetClientHandler extends NetHandler
         if (par1Packet9Respawn.respawnDimension != mc.thePlayer.dimension)
         {
             doneLoadingTerrain = false;
-            worldClient = new WorldClient(this, new WorldSettings(0L, par1Packet9Respawn.gameType, false, mc.theWorld.getWorldInfo().isHardcoreModeEnabled(), par1Packet9Respawn.terrainType), par1Packet9Respawn.respawnDimension, par1Packet9Respawn.difficulty, mc.mcProfiler);
+            Scoreboard scoreboard = worldClient.getScoreboard();
+            worldClient = new WorldClient(this, new WorldSettings(0L, par1Packet9Respawn.gameType, false, mc.theWorld.getWorldInfo().isHardcoreModeEnabled(), par1Packet9Respawn.terrainType), par1Packet9Respawn.respawnDimension, par1Packet9Respawn.difficulty, mc.mcProfiler, mc.getLogAgent());
+            worldClient.func_96443_a(scoreboard);
             worldClient.isRemote = true;
             mc.loadWorld(worldClient);
             mc.thePlayer.dimension = par1Packet9Respawn.respawnDimension;
@@ -954,19 +986,62 @@ public class NetClientHandler extends NetHandler
         switch (par1Packet100OpenWindow.inventoryType)
         {
             case 0:
-                entityclientplayermp.displayGUIChest(new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.slotsCount));
+                entityclientplayermp.displayGUIChest(new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.field_94500_e, par1Packet100OpenWindow.slotsCount));
+                ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
+                break;
+            case 9:
+                TileEntityHopper tileentityhopper = new TileEntityHopper();
+
+                if (par1Packet100OpenWindow.field_94500_e)
+                {
+                    tileentityhopper.func_96115_a(par1Packet100OpenWindow.windowTitle);
+                }
+
+                entityclientplayermp.func_94064_a(tileentityhopper);
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 2:
-                entityclientplayermp.displayGUIFurnace(new TileEntityFurnace());
+                TileEntityFurnace tileentityfurnace = new TileEntityFurnace();
+
+                if (par1Packet100OpenWindow.field_94500_e)
+                {
+                    tileentityfurnace.func_94129_a(par1Packet100OpenWindow.windowTitle);
+                }
+
+                entityclientplayermp.displayGUIFurnace(tileentityfurnace);
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 5:
-                entityclientplayermp.displayGUIBrewingStand(new TileEntityBrewingStand());
+                TileEntityBrewingStand tileentitybrewingstand = new TileEntityBrewingStand();
+
+                if (par1Packet100OpenWindow.field_94500_e)
+                {
+                    tileentitybrewingstand.func_94131_a(par1Packet100OpenWindow.windowTitle);
+                }
+
+                entityclientplayermp.displayGUIBrewingStand(tileentitybrewingstand);
+                ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
+                break;
+            case 10:
+                TileEntityDropper tileentitydropper = new TileEntityDropper();
+
+                if (par1Packet100OpenWindow.field_94500_e)
+                {
+                    tileentitydropper.func_94049_a(par1Packet100OpenWindow.windowTitle);
+                }
+
+                entityclientplayermp.displayGUIDispenser(tileentitydropper);
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 3:
-                entityclientplayermp.displayGUIDispenser(new TileEntityDispenser());
+                TileEntityDispenser tileentitydispenser = new TileEntityDispenser();
+
+                if (par1Packet100OpenWindow.field_94500_e)
+                {
+                    tileentitydispenser.func_94049_a(par1Packet100OpenWindow.windowTitle);
+                }
+
+                entityclientplayermp.displayGUIDispenser(tileentitydispenser);
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 1:
@@ -974,15 +1049,22 @@ public class NetClientHandler extends NetHandler
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 4:
-                entityclientplayermp.displayGUIEnchantment(MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posZ));
+                entityclientplayermp.displayGUIEnchantment(MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayerSP)(entityclientplayermp)).posZ), par1Packet100OpenWindow.field_94500_e ? par1Packet100OpenWindow.windowTitle : null);
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 6:
-                entityclientplayermp.displayGUIMerchant(new NpcMerchant(entityclientplayermp));
+                entityclientplayermp.displayGUIMerchant(new NpcMerchant(entityclientplayermp), par1Packet100OpenWindow.field_94500_e ? par1Packet100OpenWindow.windowTitle : null);
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 7:
-                entityclientplayermp.displayGUIBeacon(new TileEntityBeacon());
+                TileEntityBeacon tileentitybeacon = new TileEntityBeacon();
+                entityclientplayermp.displayGUIBeacon(tileentitybeacon);
+
+                if (par1Packet100OpenWindow.field_94500_e)
+                {
+                    tileentitybeacon.func_94047_a(par1Packet100OpenWindow.windowTitle);
+                }
+
                 ((EntityPlayerSP)(entityclientplayermp)).openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 8:
@@ -1167,10 +1249,10 @@ public class NetClientHandler extends NetHandler
 
     public void handleMapChunks(Packet56MapChunks par1Packet56MapChunks)
     {
-        for (int i = 0; i < par1Packet56MapChunks.func_73581_d(); i++)
+        for (int i = 0; i < par1Packet56MapChunks.getNumberOfChunkInPacket(); i++)
         {
-            int j = par1Packet56MapChunks.func_73582_a(i);
-            int k = par1Packet56MapChunks.func_73580_b(i);
+            int j = par1Packet56MapChunks.getChunkPosX(i);
+            int k = par1Packet56MapChunks.getChunkPosZ(i);
             worldClient.doPreChunk(j, k, true);
             worldClient.invalidateBlockReceiveRegion(j << 4, 0, k << 4, (j << 4) + 15, 256, (k << 4) + 15);
             Chunk chunk = worldClient.getChunkFromChunkCoords(j, k);
@@ -1186,7 +1268,7 @@ public class NetClientHandler extends NetHandler
                 continue;
             }
 
-            chunk.fillChunk(par1Packet56MapChunks.func_73583_c(i), par1Packet56MapChunks.field_73590_a[i], par1Packet56MapChunks.field_73588_b[i], true);
+            chunk.fillChunk(par1Packet56MapChunks.getChunkCompressedData(i), par1Packet56MapChunks.field_73590_a[i], par1Packet56MapChunks.field_73588_b[i], true);
             worldClient.markBlockRangeForRenderUpdate(j << 4, 0, k << 4, (j << 4) + 15, 256, (k << 4) + 15);
 
             if (!(worldClient.provider instanceof WorldProviderSurface))
@@ -1197,22 +1279,24 @@ public class NetClientHandler extends NetHandler
     }
 
     /**
-     * packet.processPacket is only called if this returns true
+     * If this returns false, all packets will be queued for the main thread to handle, even if they would otherwise be
+     * processed asynchronously. Used to avoid processing packets on the client before the world has been downloaded
+     * (which happens on the main thread)
      */
-    public boolean canProcessPackets()
+    public boolean canProcessPacketsAsync()
     {
         return mc != null && mc.theWorld != null && mc.thePlayer != null && worldClient != null;
     }
 
-    public void handleBed(Packet70GameEvent par1Packet70GameEvent)
+    public void handleGameEvent(Packet70GameEvent par1Packet70GameEvent)
     {
         EntityClientPlayerMP entityclientplayermp = mc.thePlayer;
-        int i = par1Packet70GameEvent.bedState;
+        int i = par1Packet70GameEvent.eventType;
         int j = par1Packet70GameEvent.gameMode;
 
-        if (i >= 0 && i < Packet70GameEvent.bedChat.length && Packet70GameEvent.bedChat[i] != null)
+        if (i >= 0 && i < Packet70GameEvent.clientMessage.length && Packet70GameEvent.clientMessage[i] != null)
         {
-            entityclientplayermp.addChatMessage(Packet70GameEvent.bedChat[i]);
+            entityclientplayermp.addChatMessage(Packet70GameEvent.clientMessage[i]);
         }
 
         if (i == 1)
@@ -1265,7 +1349,7 @@ public class NetClientHandler extends NetHandler
         }
         else if (i == 6)
         {
-            worldClient.playSound(((EntityPlayer)(entityclientplayermp)).posX, ((EntityPlayer)(entityclientplayermp)).posY + (double)entityclientplayermp.getEyeHeight(), ((EntityPlayer)(entityclientplayermp)).posZ, "random.successful_hit", 0.15F, 0.45F, false);
+            worldClient.playSound(((EntityPlayer)(entityclientplayermp)).posX, ((EntityPlayer)(entityclientplayermp)).posY + (double)entityclientplayermp.getEyeHeight(), ((EntityPlayer)(entityclientplayermp)).posZ, "random.successful_hit", 0.18F, 0.45F, false);
         }
     }
 
@@ -1274,13 +1358,13 @@ public class NetClientHandler extends NetHandler
      */
     public void handleMapData(Packet131MapData par1Packet131MapData)
     {
-        if (par1Packet131MapData.itemID == Item.map.shiftedIndex)
+        if (par1Packet131MapData.itemID == Item.map.itemID)
         {
             ItemMap.getMPMapData(par1Packet131MapData.uniqueID, mc.theWorld).updateMPMapData(par1Packet131MapData.itemData);
         }
         else
         {
-            System.out.println((new StringBuilder()).append("Unknown itemid: ").append(par1Packet131MapData.uniqueID).toString());
+            mc.getLogAgent().logWarning((new StringBuilder()).append("Unknown itemid: ").append(par1Packet131MapData.uniqueID).toString());
         }
     }
 
@@ -1317,7 +1401,9 @@ public class NetClientHandler extends NetHandler
         }
         else
         {
-            ((EntityLiving)entity).addPotionEffect(new PotionEffect(par1Packet41EntityEffect.effectId, par1Packet41EntityEffect.duration, par1Packet41EntityEffect.effectAmplifier));
+            PotionEffect potioneffect = new PotionEffect(par1Packet41EntityEffect.effectId, par1Packet41EntityEffect.duration, par1Packet41EntityEffect.effectAmplifier);
+            potioneffect.func_100012_b(par1Packet41EntityEffect.func_100008_d());
+            ((EntityLiving)entity).addPotionEffect(potioneffect);
             return;
         }
     }
@@ -1393,7 +1479,7 @@ public class NetClientHandler extends NetHandler
         ((EntityPlayer)(entityclientplayermp)).capabilities.disableDamage = par1Packet202PlayerAbilities.getDisableDamage();
         ((EntityPlayer)(entityclientplayermp)).capabilities.allowFlying = par1Packet202PlayerAbilities.getAllowFlying();
         ((EntityPlayer)(entityclientplayermp)).capabilities.setFlySpeed(par1Packet202PlayerAbilities.getFlySpeed());
-        ((EntityPlayer)(entityclientplayermp)).capabilities.func_82877_b(par1Packet202PlayerAbilities.func_82558_j());
+        ((EntityPlayer)(entityclientplayermp)).capabilities.setPlayerWalkSpeed(par1Packet202PlayerAbilities.func_82558_j());
     }
 
     public void handleAutoComplete(Packet203AutoComplete par1Packet203AutoComplete)
@@ -1455,6 +1541,123 @@ public class NetClientHandler extends NetHandler
         else
         {
             Minecraft.invokeModMethod("ModLoader", "clientCustomPayload", new Class[]{Packet250CustomPayload.class}, par1Packet250CustomPayload);
+        }
+    }
+
+    public void func_96436_a(Packet206SetObjective par1Packet206SetObjective)
+    {
+        Scoreboard scoreboard = worldClient.getScoreboard();
+
+        if (par1Packet206SetObjective.field_96483_c == 0)
+        {
+            ScoreObjective scoreobjective = scoreboard.func_96535_a(par1Packet206SetObjective.field_96484_a, ScoreObjectiveCriteria.field_96641_b);
+            scoreobjective.func_96681_a(par1Packet206SetObjective.field_96482_b);
+        }
+        else
+        {
+            ScoreObjective scoreobjective1 = scoreboard.func_96518_b(par1Packet206SetObjective.field_96484_a);
+
+            if (par1Packet206SetObjective.field_96483_c == 1)
+            {
+                scoreboard.func_96519_k(scoreobjective1);
+            }
+            else if (par1Packet206SetObjective.field_96483_c == 2)
+            {
+                scoreobjective1.func_96681_a(par1Packet206SetObjective.field_96482_b);
+            }
+        }
+    }
+
+    public void func_96437_a(Packet207SetScore par1Packet207SetScore)
+    {
+        Scoreboard scoreboard = worldClient.getScoreboard();
+        ScoreObjective scoreobjective = scoreboard.func_96518_b(par1Packet207SetScore.field_96486_b);
+
+        if (par1Packet207SetScore.field_96485_d == 0)
+        {
+            Score score = scoreboard.func_96529_a(par1Packet207SetScore.field_96488_a, scoreobjective);
+            score.func_96647_c(par1Packet207SetScore.field_96487_c);
+        }
+        else if (par1Packet207SetScore.field_96485_d == 1)
+        {
+            scoreboard.func_96515_c(par1Packet207SetScore.field_96488_a);
+        }
+    }
+
+    public void func_96438_a(Packet208SetDisplayObjective par1Packet208SetDisplayObjective)
+    {
+        Scoreboard scoreboard = worldClient.getScoreboard();
+
+        if (par1Packet208SetDisplayObjective.field_96480_b.length() == 0)
+        {
+            scoreboard.func_96530_a(par1Packet208SetDisplayObjective.field_96481_a, null);
+        }
+        else
+        {
+            ScoreObjective scoreobjective = scoreboard.func_96518_b(par1Packet208SetDisplayObjective.field_96480_b);
+            scoreboard.func_96530_a(par1Packet208SetDisplayObjective.field_96481_a, scoreobjective);
+        }
+    }
+
+    public void func_96435_a(Packet209SetPlayerTeam par1Packet209SetPlayerTeam)
+    {
+        Scoreboard scoreboard = worldClient.getScoreboard();
+        ScorePlayerTeam scoreplayerteam;
+
+        if (par1Packet209SetPlayerTeam.field_96489_f == 0)
+        {
+            scoreplayerteam = scoreboard.func_96527_f(par1Packet209SetPlayerTeam.field_96495_a);
+        }
+        else
+        {
+            scoreplayerteam = scoreboard.func_96508_e(par1Packet209SetPlayerTeam.field_96495_a);
+        }
+
+        if (par1Packet209SetPlayerTeam.field_96489_f == 0 || par1Packet209SetPlayerTeam.field_96489_f == 2)
+        {
+            scoreplayerteam.func_96664_a(par1Packet209SetPlayerTeam.field_96493_b);
+            scoreplayerteam.func_96666_b(par1Packet209SetPlayerTeam.field_96494_c);
+            scoreplayerteam.func_96662_c(par1Packet209SetPlayerTeam.field_96491_d);
+            scoreplayerteam.func_98298_a(par1Packet209SetPlayerTeam.field_98212_g);
+        }
+
+        if (par1Packet209SetPlayerTeam.field_96489_f == 0 || par1Packet209SetPlayerTeam.field_96489_f == 3)
+        {
+            String s;
+
+            for (Iterator iterator = par1Packet209SetPlayerTeam.field_96492_e.iterator(); iterator.hasNext(); scoreboard.func_96521_a(s, scoreplayerteam))
+            {
+                s = (String)iterator.next();
+            }
+        }
+
+        if (par1Packet209SetPlayerTeam.field_96489_f == 4)
+        {
+            String s1;
+
+            for (Iterator iterator1 = par1Packet209SetPlayerTeam.field_96492_e.iterator(); iterator1.hasNext(); scoreboard.func_96512_b(s1, scoreplayerteam))
+            {
+                s1 = (String)iterator1.next();
+            }
+        }
+
+        if (par1Packet209SetPlayerTeam.field_96489_f == 1)
+        {
+            scoreboard.func_96511_d(scoreplayerteam);
+        }
+    }
+
+    public void func_98182_a(Packet63WorldParticles par1Packet63WorldParticles)
+    {
+        for (int i = 0; i < par1Packet63WorldParticles.func_98202_m(); i++)
+        {
+            double d = rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98196_i();
+            double d1 = rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98201_j();
+            double d2 = rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98199_k();
+            double d3 = rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98197_l();
+            double d4 = rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98197_l();
+            double d5 = rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98197_l();
+            worldClient.spawnParticle(par1Packet63WorldParticles.func_98195_d(), par1Packet63WorldParticles.func_98200_f() + d, par1Packet63WorldParticles.func_98194_g() + d1, par1Packet63WorldParticles.func_98198_h() + d2, d3, d4, d5);
         }
     }
 

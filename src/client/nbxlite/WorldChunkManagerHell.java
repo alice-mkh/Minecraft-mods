@@ -21,10 +21,12 @@ public class WorldChunkManagerHell extends WorldChunkManager
         oldField_4201_e = OldBiomeGenBase.hell;
     }
 
+    @Override
     public OldBiomeGenBase oldGetBiomeGenAt(int i, int j){
         return oldField_4201_e;
     }
 
+    @Override
     public double[] getTemperatures_old(double ad[], int i, int j, int k, int l)
     {
         if(ad == null || ad.length < k * l)
@@ -35,6 +37,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
         return ad;
     }
 
+    @Override
     public OldBiomeGenBase[] oldLoadBlockGeneratorData(OldBiomeGenBase aoldbiomegenbase[], int i, int j, int k, int l)
     {
         if(aoldbiomegenbase == null || aoldbiomegenbase.length < k * l)

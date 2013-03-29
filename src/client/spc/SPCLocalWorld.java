@@ -149,7 +149,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
     */
    @Override
    public void setBlockData(Vector pos, int data) {
-      world.setBlockMetadataWithNotify(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),data);
+      world.setBlockMetadataWithNotify(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),data, 3);
    }
 
    /**
@@ -157,7 +157,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
     */
    @Override
    public boolean setBlockType(Vector pos, int type) {
-      return world.setBlockWithNotify(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),type);
+      return world.setBlock(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),type);
    }
 
    /**
@@ -213,8 +213,8 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
       } else if (block instanceof MobSpawnerBlock) { // Sets mob spawner
          TileEntityMobSpawner tile = (TileEntityMobSpawner)world.getBlockTileEntity(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
          if (tile != null) {
-            ((MobSpawnerBlock)block).setDelay((short)tile.delay);
-            ((MobSpawnerBlock)block).setMobType(tile.getMobID());
+            ((MobSpawnerBlock)block).setDelay((short)tile.func_98049_a().field_98286_b);
+            ((MobSpawnerBlock)block).setMobType(tile.func_98049_a().func_98276_e());
             return true;
          } else  {
             return false;
@@ -251,8 +251,8 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
          try {
             TileEntityMobSpawner tile = (TileEntityMobSpawner)world.getBlockTileEntity(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ());
             if (tile != null) {
-               tile.setMobID(((MobSpawnerBlock)block).getMobType());
-               tile.delay = (((MobSpawnerBlock)block).getDelay());
+               tile.func_98049_a().setMobID(((MobSpawnerBlock)block).getMobType());
+               tile.func_98049_a().field_98286_b = (((MobSpawnerBlock)block).getDelay());
                return true;
             } else {
                return false;
@@ -390,7 +390,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
             for (int x = minx; x < maxx; x++){
                 for (int y = miny; y < maxy; y++){
                     for (int z = minz; z < maxz; z++){
-                        world.setBlockAndMetadata(cx + x, y, cz + z, c.getBlockID(x, y, z), c.getBlockMetadata(x, y, z));
+                        world.setBlock(cx + x, y, cz + z, c.getBlockID(x, y, z), c.getBlockMetadata(x, y, z), 0);
                     }
                 }
             }

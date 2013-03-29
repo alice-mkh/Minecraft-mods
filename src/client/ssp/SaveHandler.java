@@ -1,13 +1,10 @@
 package net.minecraft.src;
 
 import java.io.*;
-import java.util.logging.Logger;
+import net.minecraft.server.MinecraftServer;
 
 public class SaveHandler implements ISaveHandler, IPlayerFileData
 {
-    /** Reference to the logger. */
-    private static final Logger logger = Logger.getLogger("Minecraft");
-
     /** The directory in which to save world data. */
     private final File worldDirectory;
 
@@ -197,6 +194,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     /**
      * saves level.dat and backs up the existing one to level.dat_old
      */
+    @Override
     public void saveWorldInfoAndPlayer(WorldInfo par1WorldInfo, java.util.List par2List)
     {
         NBTTagCompound nbttagcompound = par1WorldInfo.getNBTTagCompoundWithPlayers(par2List);
@@ -298,14 +296,14 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception exception)
         {
-            logger.warning((new StringBuilder()).append("Failed to save player data for ").append(par1EntityPlayer.username).toString());
+            MinecraftServer.getServer().getLogAgent().logWarning((new StringBuilder()).append("Failed to save player data for ").append(par1EntityPlayer.username).toString());
         }
     }
 
     /**
      * Reads the player data from disk into the specified PlayerEntityMP.
      */
-    public void readPlayerData(EntityPlayer par1EntityPlayer)
+    public NBTTagCompound readPlayerData(EntityPlayer par1EntityPlayer)
     {
         NBTTagCompound nbttagcompound = getPlayerData(par1EntityPlayer.username);
 
@@ -313,6 +311,8 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         {
             par1EntityPlayer.readFromNBT(nbttagcompound);
         }
+
+        return nbttagcompound;
     }
 
     /**
@@ -331,7 +331,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception exception)
         {
-            logger.warning((new StringBuilder()).append("Failed to load player data for ").append(par1Str).toString());
+            MinecraftServer.getServer().getLogAgent().logWarning((new StringBuilder()).append("Failed to load player data for ").append(par1Str).toString());
         }
 
         return null;

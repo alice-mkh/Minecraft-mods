@@ -171,4 +171,9 @@ public class ContainerPlayer extends Container
 
         return itemstack;
     }
+
+    public boolean func_94530_a(ItemStack par1ItemStack, Slot par2Slot)
+    {
+        return par2Slot.inventory != craftResult && super.func_94530_a(par1ItemStack, par2Slot);
+    }
 }

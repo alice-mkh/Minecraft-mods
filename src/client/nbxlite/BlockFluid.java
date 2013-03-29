@@ -4,9 +4,11 @@ import java.util.Random;
 
 public abstract class BlockFluid extends Block
 {
+    private Icon theIcon[];
+
     protected BlockFluid(int par1, Material par2Material)
     {
-        super(par1, (par2Material != Material.lava ? 12 : 14) * 16 + 13, par2Material);
+        super(par1, par2Material);
         float f = 0.0F;
         float f1 = 0.0F;
         setBlockBounds(0.0F + f1, 0.0F + f, 0.0F + f1, 1.0F + f1, 1.0F + f, 1.0F + f1);
@@ -49,17 +51,17 @@ public abstract class BlockFluid extends Block
     }
 
     /**
-     * Returns the block texture based on the side being looked at.  Args: side
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSide(int par1)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (par1 == 0 || par1 == 1)
         {
-            return blockIndexInTexture;
+            return theIcon[0];
         }
         else
         {
-            return blockIndexInTexture + 1;
+            return theIcon[1];
         }
     }
 
@@ -343,14 +345,21 @@ public abstract class BlockFluid extends Block
     /**
      * How many world ticks before ticking
      */
-    public int tickRate()
+    public int tickRate(World par1World)
     {
         if (blockMaterial == Material.water)
         {
             return 5;
         }
 
-        return blockMaterial != Material.lava ? 0 : 30;
+        if (blockMaterial == Material.lava)
+        {
+            return !par1World.provider.hasNoSky ? 30 : 10;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     /**
@@ -538,12 +547,12 @@ public abstract class BlockFluid extends Block
 
         if (par4Material == Material.water)
         {
-            vec3 = ((BlockFluid)Block.waterMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
+            vec3 = Block.waterMoving.getFlowVector(par0IBlockAccess, par1, par2, par3);
         }
 
         if (par4Material == Material.lava)
         {
-            vec3 = ((BlockFluid)Block.lavaMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
+            vec3 = Block.lavaMoving.getFlowVector(par0IBlockAccess, par1, par2, par3);
         }
 
         if (vec3.xCoord == 0.0D && vec3.zCoord == 0.0D)
@@ -618,11 +627,11 @@ public abstract class BlockFluid extends Block
 
                 if (i == 0)
                 {
-                    par1World.setBlockWithNotify(par2, par3, par4, Block.obsidian.blockID);
+                    par1World.setBlock(par2, par3, par4, Block.obsidian.blockID);
                 }
                 else if (i <= 4)
                 {
-                    par1World.setBlockWithNotify(par2, par3, par4, Block.cobblestone.blockID);
+                    par1World.setBlock(par2, par3, par4, Block.cobblestone.blockID);
                 }
 
                 triggerLavaMixEffects(par1World, par2, par3, par4);
@@ -640,6 +649,55 @@ public abstract class BlockFluid extends Block
         for (int i = 0; i < 8; i++)
         {
             par1World.spawnParticle("largesmoke", (double)par2 + Math.random(), (double)par3 + 1.2D, (double)par4 + Math.random(), 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        if (blockMaterial == Material.lava)
+        {
+            theIcon = (new Icon[]
+                    {
+                        par1IconRegister.registerIcon("lava"), par1IconRegister.registerIcon("lava_flow")
+                    });
+        }
+        else
+        {
+            theIcon = (new Icon[]
+                    {
+                        par1IconRegister.registerIcon("water"), par1IconRegister.registerIcon("water_flow")
+                    });
+        }
+    }
+
+    public static Icon func_94424_b(String par0Str)
+    {
+        if (par0Str == "water")
+        {
+            return Block.waterMoving.theIcon[0];
+        }
+
+        if (par0Str == "water_flow")
+        {
+            return Block.waterMoving.theIcon[1];
+        }
+
+        if (par0Str == "lava")
+        {
+            return Block.lavaMoving.theIcon[0];
+        }
+
+        if (par0Str == "lava_flow")
+        {
+            return Block.lavaMoving.theIcon[1];
+        }
+        else
+        {
+            return null;
         }
     }
 }

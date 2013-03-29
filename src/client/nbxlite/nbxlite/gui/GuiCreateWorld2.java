@@ -62,7 +62,7 @@ public class GuiCreateWorld2 extends GuiScreen
     /** E.g. New World, Neue Welt, Nieuwe wereld, Neuvo Mundo */
     private String localizedNewWorldText;
     private int worldTypeId;
-    public String field_82290_a;
+    public String generatorOptionsToUse;
     private static final String ILLEGAL_WORLD_NAMES[] =
     {
         "CON", "COM", "PRN", "AUX", "CLOCK$", "NUL", "COM1", "COM2", "COM3", "COM4",
@@ -82,7 +82,7 @@ public class GuiCreateWorld2 extends GuiScreen
         bonusItems = false;
         isHardcore = false;
         worldTypeId = 0;
-        field_82290_a = "";
+        generatorOptionsToUse = "";
         parentGuiScreen = par1GuiScreen;
         seed = "";
         skipIndev = false;
@@ -98,6 +98,7 @@ public class GuiCreateWorld2 extends GuiScreen
     /**
      * Called from the main game loop to update the screen.
      */
+    @Override
     public void updateScreen()
     {
         textboxWorldName.updateCursorCounter();
@@ -107,24 +108,25 @@ public class GuiCreateWorld2 extends GuiScreen
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
+    @Override
     public void initGui()
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         Keyboard.enableRepeatEvents(true);
-        controlList.clear();
-        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("selectWorld.create")));
-        controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
-        controlList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
-        controlList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
-        controlList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
+        buttonList.clear();
+        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("selectWorld.create")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
+        buttonList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
+        buttonList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
+        buttonList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
         buttonGenerateStructures.drawButton = false;
-        controlList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
+        buttonList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
         buttonBonusItems.drawButton = false;
-        controlList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
+        buttonList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         buttonWorldType.drawButton = false;
-        controlList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
+        buttonList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
         buttonAllowCommands.drawButton = false;
-        controlList.add(field_82289_B = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
+        buttonList.add(field_82289_B = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
         field_82289_B.drawButton = false;
 
         if (GeneratorList.genfeatures[GeneratorList.gencurrent] != 2 || GeneratorList.feat2worldtype[GeneratorList.feat2current] < 1){
@@ -137,7 +139,7 @@ public class GuiCreateWorld2 extends GuiScreen
             }
         }
         if (GeneratorList.genfeatures[GeneratorList.gencurrent] != 2 || GeneratorList.feat2worldtype[GeneratorList.feat2current] < 3){
-            field_82290_a = "";
+            generatorOptionsToUse = "";
         }
         generateStructures = GeneratorList.genstructures[GeneratorList.gencurrent];
 
@@ -146,8 +148,8 @@ public class GuiCreateWorld2 extends GuiScreen
         textboxWorldName.setText(localizedNewWorldText);
         textboxSeed = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxSeed.setText(seed);
-        controlList.add(nbxliteButton = new GuiButton(9, width / 2 - 155, 130, 310, 20, genNBXliteButtonName()));
-        controlList.add(nbxliteButtonShort = new GuiButton(10, width / 2 - 155, 130, 150, 20, genNBXliteButtonName()));
+        buttonList.add(nbxliteButton = new GuiButton(9, width / 2 - 155, 130, 310, 20, genNBXliteButtonName()));
+        buttonList.add(nbxliteButtonShort = new GuiButton(10, width / 2 - 155, 130, 150, 20, genNBXliteButtonName()));
         nbxliteButton.drawButton = false;
         nbxliteButtonShort.drawButton = false;
         func_82288_a(moreOptions);
@@ -325,6 +327,7 @@ public class GuiCreateWorld2 extends GuiScreen
     /**
      * Called when the screen is unloaded. Used to disable keyboard repeat events
      */
+    @Override
     public void onGuiClosed()
     {
         Keyboard.enableRepeatEvents(false);
@@ -332,13 +335,14 @@ public class GuiCreateWorld2 extends GuiScreen
 
     public void forceCreate(){
         skipIndev = true;
-        actionPerformed(((GuiButton)controlList.get(0)));
+        actionPerformed(((GuiButton)buttonList.get(0)));
         skipIndev = false;
     }
 
     /**
      * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
      */
+    @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
         if (!par1GuiButton.enabled)
@@ -386,7 +390,7 @@ public class GuiCreateWorld2 extends GuiScreen
 
             EnumGameType enumgametype = EnumGameType.getByName(gameMode);
             WorldSettings worldsettings = new WorldSettings(l, enumgametype, generateStructures, isHardcore, WorldType.worldTypes[worldTypeId]);
-            worldsettings.func_82750_a(field_82290_a);
+            worldsettings.func_82750_a(generatorOptionsToUse);
 
             if (bonusItems && !isHardcore)
             {
@@ -492,7 +496,7 @@ public class GuiCreateWorld2 extends GuiScreen
             }
             while (true);
 
-            field_82290_a = "";
+            generatorOptionsToUse = "";
             updateButtonText();
             func_82288_a(moreOptions);
         }
@@ -504,7 +508,7 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         else if (par1GuiButton.id == 8)
         {
-             mc.displayGuiScreen(new GuiCreateFlatWorld2(this, field_82290_a));
+             mc.displayGuiScreen(new GuiCreateFlatWorld2(this, generatorOptionsToUse));
         }
         else if (par1GuiButton.id == 9 || par1GuiButton.id == 10)
         {
@@ -546,6 +550,7 @@ public class GuiCreateWorld2 extends GuiScreen
     /**
      * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
      */
+    @Override
     protected void keyTyped(char par1, int par2)
     {
         if (textboxWorldName.isFocused() && !moreOptions)
@@ -561,16 +566,17 @@ public class GuiCreateWorld2 extends GuiScreen
 
         if (par1 == '\r')
         {
-            actionPerformed((GuiButton)controlList.get(0));
+            actionPerformed((GuiButton)buttonList.get(0));
         }
 
-        ((GuiButton)controlList.get(0)).enabled = textboxWorldName.getText().length() > 0;
+        ((GuiButton)buttonList.get(0)).enabled = textboxWorldName.getText().length() > 0;
         makeUseableName();
     }
 
     /**
      * Called when the mouse is clicked.
      */
+    @Override
     protected void mouseClicked(int par1, int par2, int par3)
     {
         super.mouseClicked(par1, par2, par3);
@@ -588,6 +594,7 @@ public class GuiCreateWorld2 extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
+    @Override
     public void drawScreen(int par1, int par2, float par3)
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
@@ -621,8 +628,8 @@ public class GuiCreateWorld2 extends GuiScreen
                     par1WorldInfo.getWorldName()
                 });
         seed = (new StringBuilder()).append(par1WorldInfo.getSeed()).append("").toString();
-        worldTypeId = par1WorldInfo.getTerrainType().func_82747_f();
-        field_82290_a = par1WorldInfo.func_82571_y();
+        worldTypeId = par1WorldInfo.getTerrainType().getWorldTypeID();
+        generatorOptionsToUse = par1WorldInfo.getGeneratorOptions();
         generateStructures = par1WorldInfo.isMapFeaturesEnabled();
         commandsAllowed = par1WorldInfo.areCommandsAllowed();
 

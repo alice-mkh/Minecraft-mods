@@ -45,10 +45,10 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   30,6,     6,     "DefaultFeaturesRelease", 6).setUseNames();
         replaceBlocks();
         registerGears();
-        terrfx = new TextureTerrainPngFX();
-        bedrockfx = new TextureTerrainPngFX();
-        waterfx = new TextureTerrainPngFX();
-        lavafx = new TextureTerrainPngFX();
+//        terrfx = new TextureTerrainPngFX();
+//        bedrockfx = new TextureTerrainPngFX();
+//        waterfx = new TextureTerrainPngFX();
+//        lavafx = new TextureTerrainPngFX();
         GuiSelectWorld.nbxlite = true;
         WorldInfo.useNBXlite = true;
         set(RenderGlobal.class, "nbxlite", true);
@@ -56,6 +56,7 @@ public class ODNBXlite extends OldDaysModule{
         set(ItemRenderer.class, "olddays", true);
     }
 
+    @Override
     public void callback(int i){
         switch(i){
             case 1: setGen(0);
@@ -79,7 +80,7 @@ public class ODNBXlite extends OldDaysModule{
             case 12:setInWorldInfo("cloudcolor", CloudColor); break;
             case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
             case 14:setInWorldInfo("cloudheight", CloudHeight); break;
-            case 15:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
+//             case 15:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
             case 16:set(EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
                     set(EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
             case 17:set(ItemHoe2.class, "oldhoes", OldHoes); break;
@@ -208,6 +209,7 @@ public class ODNBXlite extends OldDaysModule{
         reload();
     }
 
+    @Override
     public String[] getAdditionalPackageData(){
         return new String[]{getGenName(Generator, MapFeatures, SnowCovered),
                             ""+IndevSpawnX,
@@ -218,6 +220,7 @@ public class ODNBXlite extends OldDaysModule{
                             ""+IndevWidthZ};
     }
 
+    @Override
     public void readAdditionalPackageData(String[] data){
         Generator = getGen(data[0], 0);
         MapFeatures = getGen(data[0], 1);
@@ -232,6 +235,7 @@ public class ODNBXlite extends OldDaysModule{
         SetGenerator();
     }
 
+    @Override
     public void onLoadingSP(String par1Str, String par2Str){
         if (saveLoader.isOldMapFormat(par1Str) && saveLoader.getWorldInfo(par1Str).getSaveVersion() != 19132){
             convertMapFormatOld(par1Str, par2Str);
@@ -312,21 +316,19 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     private void registerGears(){
-        int index = mod_OldDays.getFreeTextureIndex();
-        int index2 = mod_OldDays.getFreeTextureIndex();
-        Block gear = new BlockGear(gearId, index, index2);
+//         int index = mod_OldDays.getFreeTextureIndex();
+//         int index2 = mod_OldDays.getFreeTextureIndex();
+        Block gear = new BlockGear(gearId/*, index, index2*/);
         gear.setHardness(0.5F);
-        gear.setBlockName("gear");
-        
+        gear.getIndirectPowerOutput("gear");
         gear.disableStats();
-//         ModLoader.addName(gear, "Gear");
         Block.blocksList[gearId] = gear;
         new ItemBlock(gearId - 256);
-        Item.itemsList[gearId].setItemName("gear");
+        Item.itemsList[gearId].setUnlocalizedName("gear");
         Block.blocksList[gearId].initializeBlock();
-        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(index, 0));
-        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(index2, 1));
-        gearRenderID = 36;
+//        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(index, 0));
+//        mod_OldDays.getMinecraft().renderEngine.registerTextureFX(new TextureGearFX(index2, 1));
+        gearRenderID = 40;
     }
 
     public static int getSkyLightInBounds(int par2){
@@ -573,7 +575,8 @@ public class ODNBXlite extends OldDaysModule{
         return 0;
     }
 
-    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, int override){
+    @Override
+    public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, Icon override){
         if (id == gearRenderID){
             return BlockGear.renderBlockGear(r, i, b, x, y, z, override);
         }
@@ -585,6 +588,7 @@ public class ODNBXlite extends OldDaysModule{
         return Generator==GEN_BIOMELESS && (MapFeatures==FEATURES_INDEV || MapFeatures==FEATURES_CLASSIC) && (world==null || world.provider.dimensionId==0);
     }
 
+    @Override
     public boolean onTick(){
         Minecraft minecraft = mod_OldDays.getMinecraft();
         if (isFinite() && !minecraft.theWorld.isRemote){
@@ -593,6 +597,7 @@ public class ODNBXlite extends OldDaysModule{
         return true;
     }
 
+    @Override
     public boolean onGUITick(GuiScreen gui){
         Minecraft minecraft = mod_OldDays.getMinecraft();
         if (!rendererReplaced){
@@ -650,62 +655,61 @@ public class ODNBXlite extends OldDaysModule{
             BlockGrass2 customgrass = (BlockGrass2)(new BlockGrass2(Block.grass.blockID));
             customgrass.setHardness(0.6F);
             customgrass.setStepSound(Block.soundGrassFootstep);
-            customgrass.setBlockName("grass");
+            customgrass.getIndirectPowerOutput("grass");
             Block.blocksList[Block.grass.blockID] = customgrass;
             mod_OldDays.setField(Block.class, null, 21, customgrass);//Block: grass*/
-            Block.grass.toptex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", Block.grass.toptex, "/olddays/grasstop.png", 0, 1, 1);
-            Block.grass.sidetex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", Block.grass.sidetex, "/olddays/grassside.png", 0, 1, 1);
+//            Block.grass.toptex = mod_OldDays.getFreeTextureIndex();
+//            addTextureHook("/terrain.png", Block.grass.toptex, "/olddays/grasstop.png", 0, 1, 1);
+//            Block.grass.sidetex = mod_OldDays.getFreeTextureIndex();
+//            addTextureHook("/terrain.png", Block.grass.sidetex, "/olddays/grassside.png", 0, 1, 1);
+//            customleaves.fasttex = mod_OldDays.getFreeTextureIndex();
+//            addTextureHook("/terrain.png", customleaves.fasttex, "/olddays/leavesfast.png", 0, 1, 1);
+//            customleaves.fancytex = mod_OldDays.getFreeTextureIndex();
+//            addTextureHook("/terrain.png", customleaves.fancytex, "/olddays/leavesfancy.png", 0, 1, 1);*/
+
             Block.blocksList[Block.leaves.blockID] = null;
-            BlockLeaves2 customleaves = (BlockLeaves2)(new BlockLeaves2(Block.leaves.blockID, 52));
+            BlockLeaves2 customleaves = (BlockLeaves2)(new BlockLeaves2(Block.leaves.blockID));
             customleaves.setHardness(0.2F);
             customleaves.setLightOpacity(1);
             customleaves.setStepSound(Block.soundGrassFootstep);
-            customleaves.setBlockName("leaves");
-            customleaves.setRequiresSelfNotify();
+            customleaves.getIndirectPowerOutput("leaves");
             Block.blocksList[Block.leaves.blockID] = customleaves;
-            mod_OldDays.setField(Block.class, null, 37, customleaves);//Block: leaves
-            customleaves.fasttex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customleaves.fasttex, "/olddays/leavesfast.png", 0, 1, 1);
-            customleaves.fancytex = mod_OldDays.getFreeTextureIndex();
-            addTextureHook("/terrain.png", customleaves.fancytex, "/olddays/leavesfancy.png", 0, 1, 1);
+            mod_OldDays.setField(Block.class, null, 36, customleaves);//Block: leaves
+            Item.itemsList[Block.leaves.blockID] = null;
+            Item.itemsList[Block.leaves.blockID] = (new ItemLeaves(Block.leaves.blockID - 256)).setUnlocalizedName("leaves");
             Block.blocksList[Block.tallGrass.blockID] = null;
-            BlockTallGrass2 customtallgrass = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID, 39));
+            BlockTallGrass2 customtallgrass = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID));
             customtallgrass.setHardness(0.0F);
             customtallgrass.setStepSound(Block.soundGrassFootstep);
-            customtallgrass.setBlockName("tallgrass");
+            customtallgrass.getIndirectPowerOutput("tallgrass");
             Block.blocksList[Block.tallGrass.blockID] = customtallgrass;
-            mod_OldDays.setField(Block.class, null, 50, customtallgrass);//Block: tallGrass
+            mod_OldDays.setField(Block.class, null, 49, customtallgrass);//Block: tallGrass
+            Item.itemsList[Block.tallGrass.blockID] = null;
+            Item.itemsList[Block.tallGrass.blockID] = (new ItemColored(Block.tallGrass.blockID - 256, true)).setBlockNames(new String[]{"shrub", "grass", "fern"});
             Block.blocksList[Block.vine.blockID] = null;
             BlockVine2 customvine = (BlockVine2)(new BlockVine2(Block.vine.blockID));
             customvine.setHardness(0.2F);
             customvine.setStepSound(Block.soundGrassFootstep);
-            customvine.setBlockName("vine");
-            customvine.setRequiresSelfNotify();
+            customvine.getIndirectPowerOutput("vine");
             Block.blocksList[Block.vine.blockID] = customvine;
-            mod_OldDays.setField(Block.class, null, 125, customvine);//Block: vine
-
+            mod_OldDays.setField(Block.class, null, 124, customvine);//Block: vine
+            Item.itemsList[Block.vine.blockID] = null;
+            Item.itemsList[Block.vine.blockID] = new ItemColored(Block.vine.blockID - 256, false);
             Item.itemsList[256 + 34] = null;
             ItemHoe2 hoeWood = new ItemHoe2(34, EnumToolMaterial.WOOD);
-            hoeWood.setIconCoord(0, 8);
-            hoeWood.setItemName("hoeWood");
+            hoeWood.setUnlocalizedName("hoeWood");
             Item.itemsList[256 + 35] = null;
             ItemHoe2 hoeStone = new ItemHoe2(35, EnumToolMaterial.STONE);
-            hoeStone.setIconCoord(1, 8);
-            hoeStone.setItemName("hoeStone");
+            hoeStone.setUnlocalizedName("hoeStone");
             Item.itemsList[256 + 36] = null;
             ItemHoe2 hoeSteel = new ItemHoe2(36, EnumToolMaterial.IRON);
-            hoeSteel.setIconCoord(2, 8);
-            hoeSteel.setItemName("hoeIron");
+            hoeSteel.setUnlocalizedName("hoeIron");
             Item.itemsList[256 + 37] = null;
             ItemHoe2 hoeDiamond = new ItemHoe2(37, EnumToolMaterial.EMERALD);
-            hoeDiamond.setIconCoord(3, 8);
-            hoeDiamond.setItemName("hoeDiamond");
+            hoeDiamond.setUnlocalizedName("hoeDiamond");
             Item.itemsList[256 + 38] = null;
             ItemHoe2 hoeGold = new ItemHoe2(38, EnumToolMaterial.GOLD);
-            hoeGold.setIconCoord(4, 8);
-            hoeGold.setItemName("hoeGold");
+            hoeGold.setUnlocalizedName("hoeGold");
         }catch (Exception exception){
             System.out.println(exception);
         }
@@ -916,7 +920,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void setTextureFX2(){
-        org.lwjgl.opengl.GL11.glBindTexture(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, mod_OldDays.getMinecraft().renderEngine.getTexture("/terrain.png"));
+/*        mod_OldDays.getMinecraft().renderEngine.bindTexture("/terrain.png");
         textureWidth = org.lwjgl.opengl.GL11.glGetTexLevelParameteri(org.lwjgl.opengl.GL11.GL_TEXTURE_2D, 0, org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH) / 16;
         int id = SurrGroundType;
         if (SurrGroundHeight<=SurrWaterHeight || SurrWaterType==Block.lavaStill.blockID && SurrGroundType==Block.grass.blockID){
@@ -933,7 +937,7 @@ public class ODNBXlite extends OldDaysModule{
         bedrockfx.changeIndex(Block.bedrock.blockIndexInTexture, false);
         waterfx.changeIndex(Block.waterStill.blockIndexInTexture, false);
         lavafx.changeIndex(Block.lavaStill.blockIndexInTexture, false);
-        emptyImage = mod_OldDays.getMinecraft().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));
+        emptyImage = mod_OldDays.getMinecraft().renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(textureWidth, textureWidth, 2));*/
     }
 
     public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){
@@ -1135,10 +1139,10 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean DefaultNewOres = false;
     public static McLevelImporter mclevelimporter = null;
     public static int gearId = 200;
-    public static TextureTerrainPngFX terrfx;
-    public static TextureTerrainPngFX bedrockfx;
-    public static TextureTerrainPngFX waterfx;
-    public static TextureTerrainPngFX lavafx;
+//    public static TextureTerrainPngFX terrfx;
+//    public static TextureTerrainPngFX bedrockfx;
+//    public static TextureTerrainPngFX waterfx;
+//    public static TextureTerrainPngFX lavafx;
     public static int emptyImage;
     public static int textureWidth;
 

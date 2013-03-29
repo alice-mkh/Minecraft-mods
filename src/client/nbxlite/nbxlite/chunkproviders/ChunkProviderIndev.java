@@ -7,6 +7,7 @@ public class ChunkProviderIndev extends ChunkProviderBaseFinite{
         super(world, l);
     }
 
+    @Override
     public void generateFiniteLevel(){
         ODNBXlite.generateIndevLevel(seed);
     }

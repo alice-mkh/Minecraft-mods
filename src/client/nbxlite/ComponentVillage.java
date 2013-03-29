@@ -164,12 +164,12 @@ abstract class ComponentVillage extends StructureComponent
                 return Block.sandStone.blockID;
             }
 
-            if (par1 == Block.stairCompactPlanks.blockID)
+            if (par1 == Block.stairsWoodOak.blockID)
             {
                 return Block.stairsSandStone.blockID;
             }
 
-            if (par1 == Block.stairCompactCobblestone.blockID)
+            if (par1 == Block.stairsCobblestone.blockID)
             {
                 return Block.stairsSandStone.blockID;
             }
@@ -242,6 +242,7 @@ abstract class ComponentVillage extends StructureComponent
         super.fillCurrentPositionBlocksDownwards(par1World, i, j, par4, par5, par6, par7StructureBoundingBox);
     }
 
+    @Override
     protected boolean generateStructureChestContents(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, int par4, int par5, int par6, WeightedRandomChestContent par7ArrayOfWeightedRandomChestContent[], int par8){
         if (!ODNBXlite.villageChests()){
             return true;

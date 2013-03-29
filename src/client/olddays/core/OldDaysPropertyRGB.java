@@ -15,10 +15,12 @@ public class OldDaysPropertyRGB extends OldDaysPropertyInt{
         allowedInSMP = false;
     }
 
+    @Override
     public String getButtonText(){
         return mod_OldDays.lang.get(getName()+".name")+": 0x"+Integer.toHexString(value);
     }
 
+    @Override
     public void loadFromString(String str){
         if (str.matches("^defau[l]?[t]?$")){
             value = defaultValue;
@@ -47,10 +49,12 @@ public class OldDaysPropertyRGB extends OldDaysPropertyInt{
         value = 0;
     }
 
+    @Override
     public String saveToString(){
         return Integer.toHexString(value).toUpperCase();
     }
 
+    @Override
     public String[] getTooltip(){
         ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));

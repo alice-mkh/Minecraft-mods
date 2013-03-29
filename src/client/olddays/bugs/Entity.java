@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import net.minecraft.server.MinecraftServer;
 
 public abstract class Entity
@@ -26,6 +25,7 @@ public abstract class Entity
 
     /** The entity we are currently riding */
     public Entity ridingEntity;
+    public boolean field_98038_p;
 
     /** Reference to the World object. */
     public World worldObj;
@@ -193,7 +193,8 @@ public abstract class Entity
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
     protected int field_82152_aq;
-    private boolean field_83001_bt;
+    private boolean invulnerable;
+    private UUID entityUniqueID;
     public EnumEntitySize myEntitySize;
 
     public Entity(World par1World)
@@ -229,7 +230,8 @@ public abstract class Entity
         dataWatcher = new DataWatcher();
         addedToChunk = false;
         field_82152_aq = 0;
-        field_83001_bt = false;
+        invulnerable = false;
+        entityUniqueID = UUID.randomUUID();
         myEntitySize = EnumEntitySize.SIZE_2;
         worldObj = par1World;
         setPosition(0.0D, 0.0D, 0.0D);
@@ -314,8 +316,15 @@ public abstract class Entity
      */
     protected void setSize(float par1, float par2)
     {
-        width = par1;
-        height = par2;
+        if (par1 != width || par2 != height)
+        {
+            width = par1;
+            height = par2;
+            boundingBox.maxX = boundingBox.minX + (double)width;
+            boundingBox.maxZ = boundingBox.minZ + (double)width;
+            boundingBox.maxY = boundingBox.minY + (double)height;
+        }
+
         float f = par1 % 2.0F;
 
         if ((double)f < 0.375D)
@@ -819,15 +828,6 @@ public abstract class Entity
                 par5 = d11;
                 boundingBox.setBB(axisalignedbb1);
             }
-            else
-            {
-                double d13 = boundingBox.minY - (double)(int)boundingBox.minY;
-
-                if (d13 > 0.0D)
-                {
-                    ySize += d13 + 0.01D;
-                }
-            }
         }
 
         worldObj.theProfiler.endSection();
@@ -869,7 +869,7 @@ public abstract class Entity
 
             if (k2 == 0)
             {
-                int l2 = worldObj.func_85175_e(l, i2 - 1, j2);
+                int l2 = worldObj.blockGetRenderType(l, i2 - 1, j2);
 
                 if (l2 == 11 || l2 == 32 || l2 == 21)
                 {
@@ -898,7 +898,7 @@ public abstract class Entity
                         f = 1.0F;
                     }
 
-                    func_85030_a("liquid.swim", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+                    playSound("liquid.swim", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
                 }
 
                 if (oldstepsound){
@@ -934,7 +934,7 @@ public abstract class Entity
 
         if (flag2 && fire > 0)
         {
-            func_85030_a("random.fizz", 0.7F, 1.6F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+            playSound("random.fizz", 0.7F, 1.6F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
             fire = -fireResistance;
         }
 
@@ -983,15 +983,15 @@ public abstract class Entity
         if (worldObj.getBlockId(par1, par2 + 1, par3) == Block.snow.blockID)
         {
             stepsound = Block.snow.stepSound;
-            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            playSound(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
         else if (!Block.blocksList[par4].blockMaterial.isLiquid())
         {
-            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            playSound(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
     }
 
-    public void func_85030_a(String par1Str, float par2, float par3)
+    public void playSound(String par1Str, float par2, float par3)
     {
         worldObj.playSoundAtEntity(this, par1Str, par2, par3);
     }
@@ -1005,11 +1005,11 @@ public abstract class Entity
             return;
         }
         if (this instanceof EntitySilverfish){
-            func_85030_a("mob.silverfish.step", 1.0F, 1.0F);
+            playSound("mob.silverfish.step", 1.0F, 1.0F);
             return;
         }
         if (this instanceof EntityIronGolem){
-            func_85030_a("mob.irongolem.walk", 1.0F, 1.0F);
+            playSound("mob.irongolem.walk", 1.0F, 1.0F);
             return;
         }
         StepSound stepsound = Block.blocksList[par4].stepSound;
@@ -1017,11 +1017,11 @@ public abstract class Entity
         if (worldObj.getBlockId(par1, par2 + 1, par3) == Block.snow.blockID)
         {
             stepsound = Block.snow.stepSound;
-            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            playSound(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
         else if (!Block.blocksList[par4].blockMaterial.isLiquid())
         {
-            func_85030_a(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+            playSound(stepsound.getStepSound(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
         }
     }
 
@@ -1124,7 +1124,7 @@ public abstract class Entity
                     f = 1.0F;
                 }
 
-                func_85030_a("liquid.splash", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+                playSound("liquid.splash", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
                 float f1 = MathHelper.floor_double(boundingBox.minY);
 
                 for (int i = 0; (float)i < 1.0F + width * 20F; i++)
@@ -1418,7 +1418,7 @@ public abstract class Entity
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (func_85032_ar())
+        if (isEntityInvulnerable())
         {
             return false;
         }
@@ -1484,6 +1484,22 @@ public abstract class Entity
         return null;
     }
 
+    public boolean func_98035_c(NBTTagCompound par1NBTTagCompound)
+    {
+        String s = getEntityString();
+
+        if (isDead || s == null)
+        {
+            return false;
+        }
+        else
+        {
+            par1NBTTagCompound.setString("id", s);
+            writeToNBT(par1NBTTagCompound);
+            return true;
+        }
+    }
+
     /**
      * adds the ID of this entity to the NBT given
      */
@@ -1491,7 +1507,7 @@ public abstract class Entity
     {
         String s = getEntityString();
 
-        if (isDead || s == null)
+        if (isDead || s == null || riddenByEntity != null)
         {
             return false;
         }
@@ -1527,9 +1543,21 @@ public abstract class Entity
             par1NBTTagCompound.setShort("Air", (short)getAir());
             par1NBTTagCompound.setBoolean("OnGround", onGround);
             par1NBTTagCompound.setInteger("Dimension", dimension);
-            par1NBTTagCompound.setBoolean("Invulnerable", field_83001_bt);
+            par1NBTTagCompound.setBoolean("Invulnerable", invulnerable);
             par1NBTTagCompound.setInteger("PortalCooldown", timeUntilPortal);
+            par1NBTTagCompound.setLong("UUIDMost", entityUniqueID.getMostSignificantBits());
+            par1NBTTagCompound.setLong("UUIDLeast", entityUniqueID.getLeastSignificantBits());
             writeEntityToNBT(par1NBTTagCompound);
+
+            if (ridingEntity != null)
+            {
+                NBTTagCompound nbttagcompound = new NBTTagCompound("Riding");
+
+                if (ridingEntity.func_98035_c(nbttagcompound))
+                {
+                    par1NBTTagCompound.setTag("Riding", nbttagcompound);
+                }
+            }
         }
         catch (Throwable throwable)
         {
@@ -1579,8 +1607,14 @@ public abstract class Entity
             setAir(par1NBTTagCompound.getShort("Air"));
             onGround = par1NBTTagCompound.getBoolean("OnGround");
             dimension = par1NBTTagCompound.getInteger("Dimension");
-            field_83001_bt = par1NBTTagCompound.getBoolean("Invulnerable");
+            invulnerable = par1NBTTagCompound.getBoolean("Invulnerable");
             timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
+
+            if (par1NBTTagCompound.hasKey("UUIDMost") && par1NBTTagCompound.hasKey("UUIDLeast"))
+            {
+                entityUniqueID = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
+            }
+
             setPosition(posX, posY, posZ);
             setRotation(rotationYaw, rotationPitch);
             readEntityFromNBT(par1NBTTagCompound);
@@ -1793,6 +1827,11 @@ public abstract class Entity
 
     public void updateRiderPosition()
     {
+        if (riddenByEntity == null)
+        {
+            return;
+        }
+
         if (!(riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)riddenByEntity).func_71066_bF())
         {
             riddenByEntity.lastTickPosX = lastTickPosX;
@@ -1839,22 +1878,9 @@ public abstract class Entity
             return;
         }
 
-        if (ridingEntity == par1Entity)
-        {
-            unmountEntity(par1Entity);
-            ridingEntity.riddenByEntity = null;
-            ridingEntity = null;
-            return;
-        }
-
         if (ridingEntity != null)
         {
             ridingEntity.riddenByEntity = null;
-        }
-
-        if (par1Entity.riddenByEntity != null)
-        {
-            par1Entity.riddenByEntity.ridingEntity = null;
         }
 
         ridingEntity = par1Entity;
@@ -1866,9 +1892,16 @@ public abstract class Entity
      */
     public void unmountEntity(Entity par1Entity)
     {
-        double d = par1Entity.posX;
-        double d1 = par1Entity.boundingBox.minY + (double)par1Entity.height;
-        double d2 = par1Entity.posZ;
+        double d = posX;
+        double d1 = posY;
+        double d2 = posZ;
+
+        if (par1Entity != null)
+        {
+            d = par1Entity.posX;
+            d1 = par1Entity.boundingBox.minY + (double)par1Entity.height;
+            d2 = par1Entity.posZ;
+        }
 
         for (double d3 = -1.5D; d3 < 2D; d3 += 1.5D)
         {
@@ -1964,7 +1997,7 @@ public abstract class Entity
 
         if (!worldObj.isRemote && !inPortal)
         {
-            field_82152_aq = Direction.func_82372_a(d, d1);
+            field_82152_aq = Direction.getMovementDirection(d, d1);
         }
 
         inPortal = true;
@@ -2067,6 +2100,11 @@ public abstract class Entity
     public boolean getHasActivePotion()
     {
         return getFlag(5);
+    }
+
+    public boolean func_98034_c(EntityPlayer par1EntityPlayer)
+    {
+        return getHasActivePotion();
     }
 
     public void setHasActivePotion(boolean par1)
@@ -2275,7 +2313,7 @@ public abstract class Entity
         return this == par1Entity;
     }
 
-    public float setRotationYawHead()
+    public float getRotationYawHead()
     {
         return 0.0F;
     }
@@ -2283,7 +2321,7 @@ public abstract class Entity
     /**
      * Sets the head's yaw rotation of the entity.
      */
-    public void setHeadRotationYaw(float f)
+    public void setRotationYawHead(float f)
     {
     }
 
@@ -2308,9 +2346,12 @@ public abstract class Entity
                 });
     }
 
-    public boolean func_85032_ar()
+    /**
+     * Return whether this entity is invulnerable to damage.
+     */
+    public boolean isEntityInvulnerable()
     {
-        return field_83001_bt;
+        return invulnerable;
     }
 
     public void func_82149_j(Entity par1Entity)
@@ -2348,7 +2389,7 @@ public abstract class Entity
         WorldServer worldserver = minecraftserver.worldServerForDimension(i);
         WorldServer worldserver1 = minecraftserver.worldServerForDimension(par1);
         dimension = par1;
-        worldObj.setEntityDead(this);
+        worldObj.removeEntity(this);
         isDead = false;
         worldObj.theProfiler.startSection("reposition");
         minecraftserver.getConfigurationManager().transferEntityToWorld(this, i, worldserver, worldserver1);
@@ -2363,14 +2404,19 @@ public abstract class Entity
 
         isDead = true;
         worldObj.theProfiler.endSection();
-        worldserver.func_82742_i();
-        worldserver1.func_82742_i();
+        worldserver.resetUpdateEntityTick();
+        worldserver1.resetUpdateEntityTick();
         worldObj.theProfiler.endSection();
     }
 
-    public float func_82146_a(Explosion par1Explosion, Block par2Block, int par3, int par4, int par5)
+    public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
     {
-        return par2Block.getExplosionResistance(this);
+        return par6Block.getExplosionResistance(this);
+    }
+
+    public boolean func_96091_a(Explosion par1Explosion, World par2World, int par3, int i, int j, int k, float f)
+    {
+        return true;
     }
 
     public int func_82143_as()
@@ -2395,13 +2441,13 @@ public abstract class Entity
     {
         par1CrashReportCategory.addCrashSectionCallable("Entity Type", new CallableEntityType(this));
         par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(entityId));
-        par1CrashReportCategory.addCrashSection("Name", getEntityName());
-        par1CrashReportCategory.addCrashSection("Exact location", String.format("%.2f, %.2f, %.2f", new Object[]
+        par1CrashReportCategory.addCrashSectionCallable("Entity Name", new CallableEntityName(this));
+        par1CrashReportCategory.addCrashSection("Entity's Exact location", String.format("%.2f, %.2f, %.2f", new Object[]
                 {
                     Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
                 }));
-        par1CrashReportCategory.addCrashSection("Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)));
-        par1CrashReportCategory.addCrashSection("Momentum", String.format("%.2f, %.2f, %.2f", new Object[]
+        par1CrashReportCategory.addCrashSection("Entity's Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)));
+        par1CrashReportCategory.addCrashSection("Entity's Momentum", String.format("%.2f, %.2f, %.2f", new Object[]
                 {
                     Double.valueOf(motionX), Double.valueOf(motionY), Double.valueOf(motionZ)
                 }));
@@ -2413,5 +2459,15 @@ public abstract class Entity
     public boolean canRenderOnFire()
     {
         return isBurning();
+    }
+
+    public boolean func_96092_aw()
+    {
+        return true;
+    }
+
+    public String func_96090_ax()
+    {
+        return getEntityName();
     }
 }

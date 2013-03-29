@@ -14,6 +14,7 @@ public class OldBiomeGenSky extends OldBiomeGenBase
         spawnableCreatureList.add(new SpawnListEntryBeta(net.minecraft.src.EntityChicken.class, 10));
     }
 
+    @Override
     public int getSkyColorByTemp(float f)
     {
         return 0xc0c0ff;

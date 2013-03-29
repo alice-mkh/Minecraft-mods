@@ -24,6 +24,7 @@ public class RenderManager
 
     /** Rendermanager's variable for the player */
     public EntityLiving livingPlayer;
+    public EntityLiving field_96451_i;
     public float playerViewY;
     public float playerViewX;
 
@@ -71,13 +72,13 @@ public class RenderManager
         entityRenderMap.put(net.minecraft.src.EntityPainting.class, new RenderPainting());
         entityRenderMap.put(net.minecraft.src.EntityItemFrame.class, new RenderItemFrame());
         entityRenderMap.put(net.minecraft.src.EntityArrow.class, new RenderArrow());
-        entityRenderMap.put(net.minecraft.src.EntitySnowball.class, new RenderSnowball(Item.snowball.getIconFromDamage(0)));
-        entityRenderMap.put(net.minecraft.src.EntityEnderPearl.class, new RenderSnowball(Item.enderPearl.getIconFromDamage(0)));
-        entityRenderMap.put(net.minecraft.src.EntityEnderEye.class, new RenderSnowball(Item.eyeOfEnder.getIconFromDamage(0)));
-        entityRenderMap.put(net.minecraft.src.EntityEgg.class, new RenderSnowball(Item.egg.getIconFromDamage(0)));
-        entityRenderMap.put(net.minecraft.src.EntityPotion.class, new RenderSnowball(154));
-        entityRenderMap.put(net.minecraft.src.EntityExpBottle.class, new RenderSnowball(Item.expBottle.getIconFromDamage(0)));
-        entityRenderMap.put(net.minecraft.src.EntityFireworkRocket.class, new RenderSnowball(Item.field_92104_bU.getIconFromDamage(0)));
+        entityRenderMap.put(net.minecraft.src.EntitySnowball.class, new RenderSnowball(Item.snowball));
+        entityRenderMap.put(net.minecraft.src.EntityEnderPearl.class, new RenderSnowball(Item.enderPearl));
+        entityRenderMap.put(net.minecraft.src.EntityEnderEye.class, new RenderSnowball(Item.eyeOfEnder));
+        entityRenderMap.put(net.minecraft.src.EntityEgg.class, new RenderSnowball(Item.egg));
+        entityRenderMap.put(net.minecraft.src.EntityPotion.class, new RenderSnowball(Item.potion, 16384));
+        entityRenderMap.put(net.minecraft.src.EntityExpBottle.class, new RenderSnowball(Item.expBottle));
+        entityRenderMap.put(net.minecraft.src.EntityFireworkRocket.class, new RenderSnowball(Item.firework));
         entityRenderMap.put(net.minecraft.src.EntityLargeFireball.class, new RenderFireball(2.0F));
         entityRenderMap.put(net.minecraft.src.EntitySmallFireball.class, new RenderFireball(0.5F));
         entityRenderMap.put(net.minecraft.src.EntityWitherSkull.class, new RenderWitherSkull());
@@ -85,6 +86,8 @@ public class RenderManager
         entityRenderMap.put(net.minecraft.src.EntityXPOrb.class, new RenderXPOrb());
         entityRenderMap.put(net.minecraft.src.EntityTNTPrimed.class, new RenderTNTPrimed());
         entityRenderMap.put(net.minecraft.src.EntityFallingSand.class, new RenderFallingSand());
+        entityRenderMap.put(net.minecraft.src.EntityMinecartTNT.class, new RenderTntMinecart());
+        entityRenderMap.put(net.minecraft.src.EntityMinecartMobSpawner.class, new RenderMinecartMobSpawner());
         entityRenderMap.put(net.minecraft.src.EntityMinecart.class, new RenderMinecart());
         entityRenderMap.put(net.minecraft.src.EntityBoat.class, new RenderBoat());
         entityRenderMap.put(net.minecraft.src.EntityFishHook.class, new RenderFish());
@@ -120,12 +123,13 @@ public class RenderManager
      * Caches the current frame's active render info, including the current World, RenderEngine, GameSettings and
      * FontRenderer settings, as well as interpolated player position, pitch and yaw.
      */
-    public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, GameSettings par5GameSettings, float par6)
+    public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, EntityLiving par5EntityLiving, GameSettings par6GameSettings, float par7)
     {
         worldObj = par1World;
         renderEngine = par2RenderEngine;
-        options = par5GameSettings;
+        options = par6GameSettings;
         livingPlayer = par4EntityLiving;
+        field_96451_i = par5EntityLiving;
         fontRenderer = par3FontRenderer;
 
         if (par4EntityLiving.isPlayerSleeping())
@@ -142,18 +146,18 @@ public class RenderManager
         }
         else
         {
-            playerViewY = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par6;
-            playerViewX = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par6;
+            playerViewY = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par7;
+            playerViewX = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par7;
         }
 
-        if (par5GameSettings.thirdPersonView == 2)
+        if (par6GameSettings.thirdPersonView == 2)
         {
             playerViewY += 180F;
         }
 
-        viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
-        viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
-        viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
+        viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par7;
+        viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par7;
+        viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par7;
     }
 
     /**
@@ -317,5 +321,15 @@ public class RenderManager
     public FontRenderer getFontRenderer()
     {
         return fontRenderer;
+    }
+
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        Render render;
+
+        for (Iterator iterator = entityRenderMap.values().iterator(); iterator.hasNext(); render.updateIcons(par1IconRegister))
+        {
+            render = (Render)iterator.next();
+        }
     }
 }

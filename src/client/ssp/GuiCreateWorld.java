@@ -63,7 +63,9 @@ public class GuiCreateWorld extends GuiScreen
     /** E.g. New World, Neue Welt, Nieuwe wereld, Neuvo Mundo */
     private String localizedNewWorldText;
     private int worldTypeId;
-    public String field_82290_a;
+
+    /** Generator options to use when creating the world. */
+    public String generatorOptionsToUse;
     private static final String ILLEGAL_WORLD_NAMES[] =
     {
         "CON", "COM", "PRN", "AUX", "CLOCK$", "NUL", "COM1", "COM2", "COM3", "COM4",
@@ -80,7 +82,7 @@ public class GuiCreateWorld extends GuiScreen
         bonusItems = false;
         isHardcore = false;
         worldTypeId = 0;
-        field_82290_a = "";
+        generatorOptionsToUse = "";
         parentGuiScreen = par1GuiScreen;
         seed = "";
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
@@ -102,20 +104,20 @@ public class GuiCreateWorld extends GuiScreen
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
         Keyboard.enableRepeatEvents(true);
-        controlList.clear();
-        controlList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("selectWorld.create")));
-        controlList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
-        controlList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
-        controlList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
-        controlList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
+        buttonList.clear();
+        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("selectWorld.create")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
+        buttonList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
+        buttonList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
+        buttonList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
         buttonGenerateStructures.drawButton = false;
-        controlList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
+        buttonList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
         buttonBonusItems.drawButton = false;
-        controlList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
+        buttonList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
         buttonWorldType.drawButton = false;
-        controlList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
+        buttonList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
         buttonAllowCommands.drawButton = false;
-        controlList.add(buttonCustomize = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
+        buttonList.add(buttonCustomize = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
         buttonCustomize.drawButton = false;
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxWorldName.setFocused(true);
@@ -267,7 +269,7 @@ public class GuiCreateWorld extends GuiScreen
 
             EnumGameType enumgametype = EnumGameType.getByName(gameMode);
             WorldSettings worldsettings = new WorldSettings(l, enumgametype, generateStructures, isHardcore, WorldType.worldTypes[worldTypeId]);
-            worldsettings.func_82750_a(field_82290_a);
+            worldsettings.func_82750_a(generatorOptionsToUse);
 
             if (bonusItems && !isHardcore)
             {
@@ -373,7 +375,7 @@ public class GuiCreateWorld extends GuiScreen
             }
             while (true);
 
-            field_82290_a = "";
+            generatorOptionsToUse = "";
             updateButtonText();
             func_82288_a(moreOptions);
         }
@@ -385,7 +387,7 @@ public class GuiCreateWorld extends GuiScreen
         }
         else if (par1GuiButton.id == 8)
         {
-            mc.displayGuiScreen(new GuiCreateFlatWorld(this, field_82290_a));
+            mc.displayGuiScreen(new GuiCreateFlatWorld(this, generatorOptionsToUse));
         }
     }
 
@@ -434,10 +436,10 @@ public class GuiCreateWorld extends GuiScreen
 
         if (par1 == '\r')
         {
-            actionPerformed((GuiButton)controlList.get(0));
+            actionPerformed((GuiButton)buttonList.get(0));
         }
 
-        ((GuiButton)controlList.get(0)).enabled = textboxWorldName.getText().length() > 0;
+        ((GuiButton)buttonList.get(0)).enabled = textboxWorldName.getText().length() > 0;
         makeUseableName();
     }
 
@@ -494,8 +496,8 @@ public class GuiCreateWorld extends GuiScreen
                     par1WorldInfo.getWorldName()
                 });
         seed = (new StringBuilder()).append(par1WorldInfo.getSeed()).append("").toString();
-        worldTypeId = par1WorldInfo.getTerrainType().func_82747_f();
-        field_82290_a = par1WorldInfo.func_82571_y();
+        worldTypeId = par1WorldInfo.getTerrainType().getWorldTypeID();
+        generatorOptionsToUse = par1WorldInfo.getGeneratorOptions();
         generateStructures = par1WorldInfo.isMapFeaturesEnabled();
         commandsAllowed = par1WorldInfo.areCommandsAllowed();
 
