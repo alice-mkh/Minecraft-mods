@@ -8,6 +8,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
+import net.minecraft.src.IconRegister;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraft.src.RenderBlocks;
@@ -15,6 +16,8 @@ import net.minecraft.src.Tessellator;
 
 public class BlockGear extends Block
 {
+    private Icon blockIcon2;
+
     public BlockGear(int par1)
     {
         super(par1, Material.circuits);
@@ -109,12 +112,19 @@ public class BlockGear extends Block
         setBlockBounds(f, f1, f2, f3, f4, f5);
     }
 
-    public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, Block b, int i, int j, int k, Icon override){
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        blockIcon = par1IconRegister.registerIcon("olddays_gear_1");
+        blockIcon2 = par1IconRegister.registerIcon("olddays_gear_2");
+    }
+
+    public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, BlockGear b, int i, int j, int k, Icon override){
         Tessellator tessellator = Tessellator.instance;
 
-        Icon icon = b.getBlockTextureFromSide(0);
+        Icon icon = b.blockIcon;
         if((i + j + k & 1) == 1){
-            //FIXME: ALTERNATE GEAR TEXTURE
+            icon = b.blockIcon2;
         }
         if (r.hasOverrideBlockTexture())
         {

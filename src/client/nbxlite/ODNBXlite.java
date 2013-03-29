@@ -574,7 +574,7 @@ public class ODNBXlite extends OldDaysModule{
     @Override
     public boolean renderBlocks(RenderBlocks r, IBlockAccess i, Block b, int x, int y, int z, int id, Icon override){
         if (id == gearRenderID){
-            return BlockGear.renderBlockGear(r, i, b, x, y, z, override);
+            return BlockGear.renderBlockGear(r, i, (BlockGear)b, x, y, z, override);
         }
         return false;
     }
