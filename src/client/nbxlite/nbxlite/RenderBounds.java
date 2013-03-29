@@ -200,10 +200,10 @@ public class RenderBounds{
             ff = ODNBXlite.getLightFloat(ODNBXlite.SurrWaterHeight);
         }
         if (anim){
-            //FIXME
             renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[ODNBXlite.SurrWaterType].getBlockTextureFromSide(1).getIconName() + ".png");
         }else{
-            renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[ODNBXlite.SurrWaterType].getBlockTextureFromSide(1).getIconName() + ".png");
+            String name = Block.blocksList[ODNBXlite.SurrWaterType].getUnlocalizedName().replace("tile.", "").replace("Still", "").replace("Moving", "");
+            renderEngine.bindTexture("/olddays/classic_" + name + ".png");
         }
         GL11.glEnable(GL11.GL_BLEND);
         renderLiquidBounds(f, ff);
