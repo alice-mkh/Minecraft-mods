@@ -1,16 +1,14 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 
 public abstract class TextureFX extends TextureStitched{
+    public static boolean allowTextureFX = true;
+
     protected byte[] imageData;
     protected boolean anaglyphEnabled;
     protected int tileSize;
-    private ByteBuffer textureData;
+    private Texture tmp;
 
     public TextureFX(String str){
         super(str);
@@ -19,35 +17,32 @@ public abstract class TextureFX extends TextureStitched{
         tileSize = 1;
     }
 
-
     public abstract void onTick();
 
     @Override
     public void updateAnimation(){
-        if (textureList == null || textureList.size() <= 0){
+        if (!allowTextureFX){
+            super.updateAnimation();
             return;
         }
-        if (textureData == null){
-            textureData = ((Texture)textureList.get(0)).getTextureData();
-        }
-        if (textureData == null){
-            return;
+        if (tmp == null){
+            tmp = new Texture(getIconName(), 2, 16 * tileSize, 16 * tileSize, 10496, 6408, 9728, 9728, 0, null);
         }
         anaglyphEnabled = Minecraft.getMinecraft().gameSettings.anaglyph;
         onTick();
-        textureData.clear();
+        tmp.getTextureData().clear();
         if (tileSize == 1){
-            textureData.put(imageData);
+            tmp.getTextureData().put(imageData);
         }else{
             for (int i = 0; i < tileSize; i++){
                 for (int j = 0; j < 16; j++){
                     for (int k = 0; k < tileSize; k++){
-                        textureData.put(imageData, 16 * 4 * j, 16 * 4);
+                        tmp.getTextureData().put(imageData, 16 * 4 * j, 16 * 4);
                     }
                 }
             }
         }
-        textureData.position(0).limit(imageData.length * tileSize * tileSize);
-        textureSheet.copyFrom(originX, originY, (Texture)textureList.get(0), rotated);
+        tmp.getTextureData().position(0).limit(imageData.length * tileSize * tileSize);
+        textureSheet.copyFrom(originX, originY, tmp, rotated);
     }
 }
