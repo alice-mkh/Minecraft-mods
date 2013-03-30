@@ -181,11 +181,14 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
-//         TextureMap items = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
+        TextureMap items = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
 
         Icon[] origWater = (Icon[])(core.getField(BlockFluid.class, Block.waterStill, 0));
         Icon[] origLava = (Icon[])(core.getField(BlockFluid.class, Block.lavaStill, 0));
         Icon[] origFire = (Icon[])(core.getField(BlockFire.class, Block.fire, 2));
+        Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, 195)); //Block: blockIcon
+        Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, 176)); //Item: iconIndex
+        Icon origCompass = (Icon)(core.getField(Item.class, Item.compass, 176));
 
         Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater[0]);
         Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWater[1]);
@@ -193,12 +196,18 @@ public class ODTextures extends OldDaysModule{
         Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX(), origLava[1]);
         Icon fire0 = core.texman.registerCustomIcon(blocks, "fire_0", new TextureFlamesFX(0), origFire[0]);
         Icon fire1 = core.texman.registerCustomIcon(blocks, "fire_1", new TextureFlamesFX(1), origFire[1]);
+        Icon portal = core.texman.registerCustomIcon(blocks, "portal", new TexturePortalFX(), origPortal);
+        Icon clock = core.texman.registerCustomIcon(blocks, "clock", new TextureWatchFX(), origClock);
+        Icon compass = core.texman.registerCustomIcon(blocks, "compass", new TextureCompassFX(), origCompass);
 
         core.setField(BlockFluid.class, Block.waterStill, 0, new Icon[]{water, waterFlowing});
         core.setField(BlockFluid.class, Block.waterMoving, 0, new Icon[]{water, waterFlowing});
         core.setField(BlockFluid.class, Block.lavaStill, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFluid.class, Block.lavaMoving, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFire.class, Block.fire, 2, new Icon[]{fire0, fire1});
+        core.setField(Block.class, Block.portal, 195, portal);
+        core.setField(Item.class, Item.pocketSundial, 176, clock);
+        core.setField(Item.class, Item.compass, 176, compass);
         mod_OldDays.texman.updateTextureFXes();
     }
 
