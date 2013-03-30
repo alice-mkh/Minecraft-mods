@@ -748,6 +748,16 @@ textures.leatherarmor.name=Antigua armadura de piel
 textures.food.name=Antiguos items de comida
  textures.food.desc1=Hace que la comida tenga textura.
  textures.food.desc2=§aCambiado en la 1.4.
+//FIXME
+textures.procedural.name=Procedural textures
+ textures.procedural.desc1=Prettier, but slower.
+ textures.procedural.desc2=<-Affected textures:
+ textures.procedural.desc3=<- §rWater§7; §rLava§7;
+ textures.procedural.desc4=<- §rFire§7; §rNether Portal§7;
+ textures.procedural.desc5=<- §rClock§7; §rCompass§7.
+ textures.procedural.desc6=§4May cause problems
+ textures.procedural.desc7=§4with HD texture packs!
+ textures.procedural.desc8=§aRemoved in 1.5.
 
 nbxlite.gen.name=Generador
  nbxlite.gen.desc1=Fija el generador principal.

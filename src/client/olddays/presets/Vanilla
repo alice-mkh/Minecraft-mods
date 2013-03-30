@@ -108,6 +108,7 @@ Textures.Cocoa=false
 Textures.Netherrack=false
 Textures.LeatherArmor=false
 Textures.Food=false
+Textures.Procedural=false
 Bugs.Boosters=false
 Bugs.WaterLifts=false
 Bugs.LavaToasters=false

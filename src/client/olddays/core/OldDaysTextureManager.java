@@ -200,7 +200,9 @@ public class OldDaysTextureManager{
                 break;
             }
         }
-        textureFXList.add(icon);
+        if (icon instanceof TextureFX){
+            textureFXList.add(icon);
+        }
         try{
             icon.copyFrom((TextureStitched)from);
         }catch(Exception e){}

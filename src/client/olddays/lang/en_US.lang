@@ -738,6 +738,15 @@ textures.leatherarmor.name=Old leather armor
 textures.food.name=Old food items
  textures.food.desc1=Makes food items have border.
  textures.food.desc2=§aChanged in 1.4.
+textures.procedural.name=Procedural textures
+ textures.procedural.desc1=Prettier, but slower.
+ textures.procedural.desc2=<-Affected textures:
+ textures.procedural.desc3=<- §rWater§7; §rLava§7;
+ textures.procedural.desc4=<- §rFire§7; §rNether Portal§7;
+ textures.procedural.desc5=<- §rClock§7; §rCompass§7.
+ textures.procedural.desc6=§4May cause problems
+ textures.procedural.desc7=§4with HD texture packs!
+ textures.procedural.desc8=§aRemoved in 1.5.
 
 nbxlite.gen.name=Generator
  nbxlite.gen.desc1=Sets main terrain generation.

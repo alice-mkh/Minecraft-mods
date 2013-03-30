@@ -286,7 +286,7 @@ mobs.sheepeatgrass.name=Овцы едят траву
  mobs.sheepeatgrass.desc2=и отращивать шерсть.
  mobs.sheepeatgrass.desc3=§aУдалено в 0.31, добавлено в 1.1.
 mobs.spiderscanclimb.name=Пауки ползают по стенам
- mobs.spiderscanclimb.desc1=§аДобавлено в 1.2.
+ mobs.spiderscanclimb.desc1=§aДобавлено в 1.2.
 mobs.survivaltestmobs.name=Мобы из Survival Test
  mobs.survivaltestmobs.desc1=Меняет многих мобов, чтобы сделать их
  mobs.survivaltestmobs.desc2=похожими на них же из Survival Test:
@@ -751,6 +751,15 @@ textures.food.name=Старая еда
 //FIXME
  textures.food.desc1=Makes food items have border.
  textures.food.desc2=§aИзменены в 1.4.
+textures.procedural.name=Процедурные текстуры
+ textures.procedural.desc1=Красивее, но медленнее.
+ textures.procedural.desc2=<-Действует на:
+ textures.procedural.desc3=<- §rВоду§7; §rЛаву§7;
+ textures.procedural.desc4=<- §rОгонь§7; §rПортал в Ад§7;
+ textures.procedural.desc5=<- §rЧасы§7; §rКомпас§7.
+ textures.procedural.desc6=§4Могут вызвать проблемы
+ textures.procedural.desc7=§4с HD-текстурпаками!
+ textures.procedural.desc8=§aУдалены в 1.5.
 
 nbxlite.gen.name=Генератор
  nbxlite.gen.desc1=Основная генерация.
