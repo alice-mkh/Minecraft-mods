@@ -14,6 +14,10 @@ public class RenderBounds{
     private static World worldObj;
     private static ByteBuffer imageData;
     private static int emptyImage = -1;
+    private static int width;
+    private static int height;
+    private static int prevWidth;
+    private static int prevHeight;
 
     private static void renderGroundBounds(float f, float ff){
         Tessellator tessellator = Tessellator.instance;
@@ -286,9 +290,11 @@ public class RenderBounds{
         }
         Icon icon = b.getBlockTextureFromSide(side ? 2 : 1);
         Texture tex = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
-        int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
-        int height = width;
-        if (imageData == null){
+        prevWidth = width;
+        prevHeight = height;
+        width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
+        height = width;
+        if (imageData == null || prevWidth != width || prevHeight != height){
             imageData = ByteBuffer.allocateDirect(width * height * 4);
         }
         imageData.clear();
