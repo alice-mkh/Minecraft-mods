@@ -2,21 +2,20 @@ package net.minecraft.src;
 
 public class BlockOreStorageOld extends BlockOreStorage
 {
-    public int sidetex;
-    public int bottomtex;
     public static boolean oldtextures = true;
 
-    public BlockOreStorageOld(int par1)
+    private Icon sidetex;
+    private Icon bottomtex;
+    private String name;
+
+    public BlockOreStorageOld(int par1, String str)
     {
         super(par1);
+        name = str;
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
-/*
     @Override
-    public int getBlockTextureFromSide(int par1)
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (oldtextures){
             if (par1 >= 2){
@@ -26,6 +25,13 @@ public class BlockOreStorageOld extends BlockOreStorage
                 return bottomtex;
             }
         }
-        return blockIndexInTexture;
-    }*/
+        return blockIcon;
+    }
+
+    @Override
+    public void registerIcons(IconRegister reg){
+        super.registerIcons(reg);
+        sidetex = reg.registerIcon("olddays_" + name + "_side");
+        bottomtex = reg.registerIcon("olddays_" + name + "_bottom");
+    }
 }

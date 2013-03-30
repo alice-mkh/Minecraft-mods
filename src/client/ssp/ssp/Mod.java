@@ -109,8 +109,6 @@ public abstract class Mod{
 
     public void refreshTextures(){}
 
-    public void updateTextures(){}
-
     protected void setUseTick(boolean game, boolean gui){
         usesTick = game;
         usesGUITick = gui;

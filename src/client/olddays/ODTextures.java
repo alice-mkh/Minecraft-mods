@@ -39,7 +39,7 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
         new OldDaysPropertyBool(this, 33,true,  "Food");
         for (int i = 1; i <= properties.size(); i++){
-            if (i != 15 && (i < 24 || i == 30 || i == 31 || i >= 33)){
+            if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
                 getPropertyById(i).setFallback("olddays/textures.png");
             }
         }
@@ -88,7 +88,7 @@ public class ODTextures extends OldDaysModule{
             case 25:setTextureHook("/mob/slime.png", "/olddays/slime.png", Slimes && !fallback); break;
             case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve && !fallback); break;
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
-            case 28:setTextureHook("/terrain/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
+            case 28:setTextureHook("/environment/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
             case 29:setTextureHook("/gui/items.png", 15, "/gui/items.png", 239, !ArmorShape);
                     setTextureHook("/gui/items.png", 31, "/gui/items.png", 239, !ArmorShape);
                     setTextureHook("/gui/items.png", 47, "/gui/items.png", 239, !ArmorShape);
@@ -137,7 +137,7 @@ public class ODTextures extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.blockSteel.blockID] = null;
-            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID));
+            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID, "iron"));
             customsteel.setHardness(5F);
             customsteel.setResistance(10F);
             customsteel.setStepSound(Block.soundMetalFootstep);
@@ -145,7 +145,7 @@ public class ODTextures extends OldDaysModule{
             Block.blocksList[Block.blockSteel.blockID] = customsteel;
             mod_OldDays.setField(Block.class, null, 60, customsteel);//Block: blockSteel
             Block.blocksList[Block.blockGold.blockID] = null;
-            BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID));
+            BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, "gold"));
             customgold.setHardness(3F);
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
@@ -153,7 +153,7 @@ public class ODTextures extends OldDaysModule{
             Block.blocksList[Block.blockGold.blockID] = customgold;
             mod_OldDays.setField(Block.class, null, 59, customgold);//Block: blockGold
             Block.blocksList[Block.blockDiamond.blockID] = null;
-            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID));
+            BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID, "diamond"));
             customdiamond.setHardness(5F);
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);

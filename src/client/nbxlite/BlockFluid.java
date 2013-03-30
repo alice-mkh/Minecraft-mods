@@ -658,6 +658,23 @@ public abstract class BlockFluid extends Block
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
+        if (true){
+            if (blockMaterial == Material.lava)
+            {
+                theIcon = (new Icon[]
+                        {
+                            mod_OldDays.texman.registerCustomIcon(par1IconRegister, "lava", new TextureLavaFX()), mod_OldDays.texman.registerCustomIcon(par1IconRegister, "lava_flow", new TextureLavaFlowFX())
+                        });
+            }
+            else
+            {
+                theIcon = (new Icon[]
+                        {
+                            mod_OldDays.texman.registerCustomIcon(par1IconRegister, "water", new TextureWaterFX()), mod_OldDays.texman.registerCustomIcon(par1IconRegister, "water_flow", new TextureWaterFlowFX())
+                        });
+            }
+            return;
+        }
         if (blockMaterial == Material.lava)
         {
             theIcon = (new Icon[]

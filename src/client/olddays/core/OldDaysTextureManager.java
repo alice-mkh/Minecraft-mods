@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import java.io.File;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +54,7 @@ public class OldDaysTextureManager{
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
-/*        for (int i = 0; i < textureHooks2.size(); i++){
+        for (int i = 0; i < textureHooks2.size(); i++){
             TextureHook hook = textureHooks2.get(i);
             if (hook.origname.equals(origname) && hook.newname.equals(newname)){
                 hook.enabled = b;
@@ -63,36 +63,48 @@ public class OldDaysTextureManager{
             }
         }
         textureHooks2.add(new TextureHook(origname, newname, b));
-        refreshTextureHooks();*/
+        refreshTextureHooks();
     }
  
     public void onTick(){
-/*        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
-            renderEngine.bindTexture("/terrain.png");
-            TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
+        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
+//             renderEngine.bindTexture("/terrain.png");
+//             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
             entryCache.clear();
             setFallback(!hasEntry("olddays"));
-        }*/
-    }
-
-    public void updateTextureFXes(){
-        for (TextureStitched fx : textureFXList){
-            fx.updateAnimation();
         }
     }
 
     public void refreshTextureHooks(){
-/*        for (TextureHook hook : textureHooks2){
+        for (TextureHook hook : textureHooks2){
             try{
                 TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
                 ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
                 BufferedImage image = ImageIO.read(texpack.getResourceAsStream(hook.enabled ? hook.newname : hook.origname));
-                renderEngine.setupTexture(image, renderEngine.getTexture(hook.origname));
+                int id = 0;
+                try{
+                    Method m = null;
+                    Method[] methods = (RenderEngine.class).getDeclaredMethods();
+                    for (int i = 0; i < methods.length; i++){
+                        if (methods[i].toGenericString().matches("^private int (net.minecraft.src.)?[a-zA-Z]{1,12}.[a-zA-Z]{1,10}.java.lang.String.$")){
+                            m = methods[i];
+                            break;
+                        }
+                    }
+                    if (m == null){
+                        return;
+                    }
+                    m.setAccessible(true);
+                    id = (Integer)(m.invoke(renderEngine, hook.origname));
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
+                renderEngine.setupTexture(image, id);
             }catch(Exception ex){
                 ex.printStackTrace();
             }
-        }*/
+        }
     }
 
     private void setFallback(boolean b){

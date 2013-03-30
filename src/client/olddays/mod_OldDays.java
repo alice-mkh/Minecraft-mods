@@ -12,7 +12,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class mod_OldDays extends Mod{
@@ -449,13 +448,7 @@ public class mod_OldDays extends Mod{
 
     @Override
     public void refreshTextures(){
-//         texman.refreshTextureHooks();
-//         getMinecraft().renderEngine.refreshTextureMaps();
-    }
-
-    @Override
-    public void updateTextures(){
-        texman.updateTextureFXes();
+        texman.refreshTextureHooks();
 //         getMinecraft().renderEngine.refreshTextureMaps();
     }
 
@@ -466,5 +459,4 @@ public class mod_OldDays extends Mod{
     public static ArrayList<OldDaysModule> modules;
     public static OldDaysEasyLocalization lang;
     public static ArrayList<KeyBinding> keyBindings;
-//     private static int[] freeTextures = new int[]{26, 27, 42, 57, 58, 187, 188, 189, 190, 191, 217, 218, 219, 220, 221, 233, 234, 235, 236};
 }
