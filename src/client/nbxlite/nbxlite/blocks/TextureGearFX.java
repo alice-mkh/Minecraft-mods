@@ -10,10 +10,10 @@ import net.minecraft.src.ODNBXlite;
 
 public class TextureGearFX extends TextureFX
 {
-  private int tickCounter = 0;
-  private int[] gear = new int[1024];
-  private int[] gearmiddle = new int[1024];
-  private int h;
+    private int tickCounter = 0;
+    private int[] gear = new int[1024];
+    private int[] gearmiddle = new int[1024];
+    private int h;
 
     public TextureGearFX(int par2)
     {
@@ -23,7 +23,6 @@ public class TextureGearFX extends TextureFX
         try{
             ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
             ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
-            return;
         }catch (IOException localIOException){
             localIOException.printStackTrace();
         }

@@ -448,8 +448,17 @@ public class mod_OldDays extends Mod{
 
     @Override
     public void refreshTextures(){
+        for (int i = 0; i < modules.size(); i++){
+            OldDaysModule module = modules.get(i);
+            module.refreshTextures();
+        }
         texman.refreshTextureHooks();
 //         getMinecraft().renderEngine.refreshTextureMaps();
+    }
+
+    @Override
+    public void updateTextures(){
+        texman.updateTextureFXes();
     }
 
     public KeyBinding keySettings;

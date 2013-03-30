@@ -38,6 +38,7 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 31,true,  "Netherrack");
         new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
         new OldDaysPropertyBool(this, 33,true,  "Food");
+        new OldDaysPropertyBool(this, 34,true,  "Procedural");
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
                 getPropertyById(i).setFallback("olddays/textures.png");
@@ -97,6 +98,7 @@ public class ODTextures extends OldDaysModule{
             case 31:setTextureHook("/terrain.png", 103, "/olddays/textures.png", 65, Netherrack && !fallback); break;
             case 32:setArmor(LeatherArmor && !fallback); break;
             case 33:setFood(fallback); break;
+            case 34:refreshTextures(); break;
         }
     }
 
@@ -133,6 +135,7 @@ public class ODTextures extends OldDaysModule{
     public static boolean Netherrack = true;
     public static boolean LeatherArmor = true;
     public static boolean Food = true;
+    public static boolean Procedural = false;
 
     private void replaceBlocks(){
         try{
@@ -163,6 +166,35 @@ public class ODTextures extends OldDaysModule{
         }catch (Exception ex){
             System.out.println(ex);
         }
+    }
+
+    @Override
+    public void refreshTextures(){
+        System.out.println(Procedural);
+        try{
+            core.getMinecraft().renderEngine.refreshTextureMaps();
+        }catch(Exception e){}
+        try{
+            reload();
+        }catch(Exception e){}
+        if (!Procedural){
+            core.texman.removeTextureFXes();
+            return;
+        }
+        TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
+//         TextureMap items = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
+
+        Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX());
+        Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX());
+        Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX());
+        Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX());
+
+        core.setField(BlockFluid.class, Block.waterStill, 0, new Icon[]{water, waterFlowing});
+        core.setField(BlockFluid.class, Block.waterMoving, 0, new Icon[]{water, waterFlowing});
+        core.setField(BlockFluid.class, Block.lavaStill, 0, new Icon[]{lava, lavaFlowing});
+        core.setField(BlockFluid.class, Block.lavaMoving, 0, new Icon[]{lava, lavaFlowing});
+        mod_OldDays.texman.updateTextureFXes();
+//         core.setField(RenderEngine.class, core.getMinecraft().renderEngine, 8, blocks);
     }
 
     private void setStone(){

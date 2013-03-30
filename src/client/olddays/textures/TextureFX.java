@@ -1,10 +1,9 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 
 public abstract class TextureFX extends TextureStitched{
-    public static boolean allowTextureFX = true;
-
     protected byte[] imageData;
     protected boolean anaglyphEnabled;
     protected int tileSize;
@@ -21,8 +20,7 @@ public abstract class TextureFX extends TextureStitched{
 
     @Override
     public void updateAnimation(){
-        if (!allowTextureFX){
-            super.updateAnimation();
+        if (textureSheet == null){
             return;
         }
         if (tmp == null){

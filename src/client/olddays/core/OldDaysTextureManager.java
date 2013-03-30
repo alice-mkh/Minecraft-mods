@@ -7,6 +7,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.*;
 
@@ -184,17 +185,27 @@ public class OldDaysTextureManager{
         if (!(map instanceof TextureMap)){
             return icon;
         }
-        Map textureStichedMap = (Map)(mod_OldDays.getField(TextureMap.class, (TextureMap)map, 9));
-        if (textureStichedMap == null){
+        Map textureStitchedMap = (Map)(mod_OldDays.getField(TextureMap.class, (TextureMap)map, 9));
+        if (textureStitchedMap == null){
             return icon;
         }
-        TextureStitched texturestitched = (TextureStitched)textureStichedMap.get(par1Str);
+        TextureStitched texturestitched = (TextureStitched)textureStitchedMap.get(par1Str);
         if (texturestitched == null || texturestitched != icon)
         {
-            textureStichedMap.put(par1Str, icon);
+            textureStitchedMap.put(par1Str, icon);
         }
         textureFXList.add(icon);
         return icon;
+    }
+
+    public void updateTextureFXes(){
+        for (TextureStitched fx : textureFXList){
+            fx.updateAnimation();
+        }
+    }
+
+    public void removeTextureFXes(){
+        textureFXList.clear();
     }
 
     private class TextureHook{

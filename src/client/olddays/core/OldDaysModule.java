@@ -255,4 +255,6 @@ public class OldDaysModule{
     }
 
     public void readAdditionalPackageData(String[] data){}
+
+    public void refreshTextures(){}
 }
