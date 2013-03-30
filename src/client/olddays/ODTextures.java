@@ -185,16 +185,20 @@ public class ODTextures extends OldDaysModule{
 
         Icon[] origWater = (Icon[])(core.getField(BlockFluid.class, Block.waterStill, 0));
         Icon[] origLava = (Icon[])(core.getField(BlockFluid.class, Block.lavaStill, 0));
+        Icon[] origFire = (Icon[])(core.getField(BlockFire.class, Block.fire, 2));
 
         Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater[0]);
         Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWater[1]);
         Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX(), origLava[0]);
         Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX(), origLava[1]);
+        Icon fire0 = core.texman.registerCustomIcon(blocks, "fire_0", new TextureFlamesFX(0), origFire[0]);
+        Icon fire1 = core.texman.registerCustomIcon(blocks, "fire_1", new TextureFlamesFX(1), origFire[1]);
 
         core.setField(BlockFluid.class, Block.waterStill, 0, new Icon[]{water, waterFlowing});
         core.setField(BlockFluid.class, Block.waterMoving, 0, new Icon[]{water, waterFlowing});
         core.setField(BlockFluid.class, Block.lavaStill, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFluid.class, Block.lavaMoving, 0, new Icon[]{lava, lavaFlowing});
+        core.setField(BlockFire.class, Block.fire, 2, new Icon[]{fire0, fire1});
         mod_OldDays.texman.updateTextureFXes();
     }
 

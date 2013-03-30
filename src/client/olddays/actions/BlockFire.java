@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class BlockFire extends Block
 {
-    public static boolean oldFire = false;
-    public static boolean infiniteBurn = false;
-    public static boolean fixedDamage = false;
-
     private int chanceToEncourageFire[];
     private int abilityToCatchFire[];
     private Icon iconArray[];
+
+    public static boolean oldFire = false;
+    public static boolean infiniteBurn = false;
+    public static boolean fixedDamage = false;
 
     protected BlockFire(int par1)
     {
