@@ -16,7 +16,6 @@ public class TextureWaterFlowFX extends TextureFX
         field_76884_i = new float[256];
         field_76881_j = new float[256];
         tickCounter = 0;
-        tileSize = 2;
     }
 
     public void onTick()

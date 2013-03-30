@@ -16,7 +16,6 @@ public class TextureLavaFlowFX extends TextureFX
         field_76875_i = new float[256];
         field_76872_j = new float[256];
         field_76873_k = 0;
-        tileSize = 2;
     }
 
     public void onTick()
