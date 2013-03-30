@@ -285,30 +285,25 @@ public class RenderBounds{
             }
         }
         Icon icon = b.getBlockTextureFromSide(side ? 2 : 1);
-        Texture tex = null;
-        try{
-            tex = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
-        }catch(Exception e){
-            e.printStackTrace();
-            return;
-        }
-        int width = 16;
+        Texture tex = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
+        int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
+        int height = width;
         if (imageData == null){
-            imageData = ByteBuffer.allocateDirect(width * width * 4);
+            imageData = ByteBuffer.allocateDirect(width * height * 4);
         }
         imageData.clear();
-        for (int i = 0; i < width; i++){
+        for (int i = 0; i < height; i++){
             int start = (((icon.getOriginY() + i) * icon.getSheetWidth()) + icon.getOriginX()) * 4;
             tex.getTextureData().clear();
             tex.getTextureData().position(start).limit(start + width * 4);
             imageData.put(tex.getTextureData());
             tex.getTextureData().clear();
         }
-        imageData.position(0).limit(width * width * 4);
+        imageData.position(0).limit(width * height * 4);
         if (emptyImage == -1){
-            emptyImage = mc.renderEngine.allocateAndSetupTexture(new BufferedImage(width, width, 2));
+            emptyImage = mc.renderEngine.allocateAndSetupTexture(new BufferedImage(width, height, 2));
         }
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, emptyImage);
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
+        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
     }
 }
