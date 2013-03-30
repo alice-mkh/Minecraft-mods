@@ -170,7 +170,6 @@ public class ODTextures extends OldDaysModule{
 
     @Override
     public void refreshTextures(){
-        System.out.println(Procedural);
         try{
             core.getMinecraft().renderEngine.refreshTextureMaps();
         }catch(Exception e){}
@@ -184,17 +183,19 @@ public class ODTextures extends OldDaysModule{
         TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
 //         TextureMap items = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
 
-        Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX());
-        Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX());
-        Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX());
-        Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX());
+        Icon[] origWater = (Icon[])(core.getField(BlockFluid.class, Block.waterStill, 0));
+        Icon[] origLava = (Icon[])(core.getField(BlockFluid.class, Block.lavaStill, 0));
+
+        Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater[0]);
+        Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWater[1]);
+        Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX(), origLava[0]);
+        Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX(), origLava[1]);
 
         core.setField(BlockFluid.class, Block.waterStill, 0, new Icon[]{water, waterFlowing});
         core.setField(BlockFluid.class, Block.waterMoving, 0, new Icon[]{water, waterFlowing});
         core.setField(BlockFluid.class, Block.lavaStill, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFluid.class, Block.lavaMoving, 0, new Icon[]{lava, lavaFlowing});
         mod_OldDays.texman.updateTextureFXes();
-//         core.setField(RenderEngine.class, core.getMinecraft().renderEngine, 8, blocks);
     }
 
     private void setStone(){

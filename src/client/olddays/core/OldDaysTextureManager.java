@@ -177,7 +177,7 @@ public class OldDaysTextureManager{
         textureHooks.add(fx);*/
     }
 
-    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon)
+    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon, Icon from)
     {
         if (par1Str == null){
             (new RuntimeException("Don't register null!")).printStackTrace();
@@ -194,8 +194,21 @@ public class OldDaysTextureManager{
         {
             textureStitchedMap.put(par1Str, icon);
         }
+        for (TextureStitched fx : textureFXList){
+            if (fx.getIconName().equals(par1Str)){
+                textureFXList.remove(fx);
+                break;
+            }
+        }
         textureFXList.add(icon);
+        try{
+            icon.copyFrom((TextureStitched)from);
+        }catch(Exception e){}
         return icon;
+    }
+
+    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon){
+        return registerCustomIcon(map, par1Str, icon, null);
     }
 
     public void updateTextureFXes(){
