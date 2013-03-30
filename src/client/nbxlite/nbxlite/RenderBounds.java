@@ -1,8 +1,9 @@
 package net.minecraft.src.nbxlite;
 
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.nio.ByteBuffer;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
@@ -11,6 +12,8 @@ public class RenderBounds{
     private static RenderEngine renderEngine;
     private static Minecraft mc;
     private static World worldObj;
+    private static ByteBuffer imageData;
+    private static int emptyImage = -1;
 
     private static void renderGroundBounds(float f, float ff){
         Tessellator tessellator = Tessellator.instance;
@@ -182,13 +185,13 @@ public class RenderBounds{
         boolean anim = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glRotatef(90F, 0F, 0F, 1F);
-        renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[id].getBlockTextureFromSide(1).getIconName() + ".png");
+        bindTexture(Block.blocksList[id], false, true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         renderGroundBounds(f, ff);
         if (ODNBXlite.MapFeatures == ODNBXlite.FEATURES_CLASSIC && (ODNBXlite.SurrGroundHeight>=0 || ODNBXlite.SurrWaterHeight>=0)){
-            renderEngine.bindTexture("/textures/blocks/" + Block.bedrock.getBlockTextureFromSide(2).getIconName() + ".png");
+            bindTexture(Block.bedrock, true, true);
             renderSideBounds(f);
-            renderEngine.bindTexture("/textures/blocks/" + Block.bedrock.getBlockTextureFromSide(1).getIconName() + ".png");
+            bindTexture(Block.bedrock, false, true);
             renderBottomBounds(f);
         }
         if (!Minecraft.oldlighting){
@@ -199,12 +202,7 @@ public class RenderBounds{
         }else{
             ff = ODNBXlite.getLightFloat(ODNBXlite.SurrWaterHeight);
         }
-        if (anim){
-            renderEngine.bindTexture("/textures/blocks/" + Block.blocksList[ODNBXlite.SurrWaterType].getBlockTextureFromSide(1).getIconName() + ".png");
-        }else{
-            String name = Block.blocksList[ODNBXlite.SurrWaterType].getUnlocalizedName().replace("tile.", "").replace("Still", "").replace("Moving", "");
-            renderEngine.bindTexture("/olddays/classic_" + name + ".png");
-        }
+        bindTexture(Block.blocksList[ODNBXlite.SurrWaterType], false, anim);
         GL11.glEnable(GL11.GL_BLEND);
         renderLiquidBounds(f, ff);
         GL11.glRotatef(-90F, 0F, 0F, 1F);
@@ -274,5 +272,43 @@ public class RenderBounds{
         tessellator.draw();
         tessellator.setTranslation(0, 0, 0);
 //         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    private static void bindTexture(Block b, boolean side, boolean anim){
+        if (!anim){
+            if (b == Block.waterStill || b == Block.waterMoving){
+                renderEngine.bindTexture("/olddays/classic_water.png");
+                return;
+            }else if (b == Block.lavaStill || b == Block.lavaMoving){
+                renderEngine.bindTexture("/olddays/classic_lava.png");
+                return;
+            }
+        }
+        Icon icon = b.getBlockTextureFromSide(side ? 2 : 1);
+        Texture tex = null;
+        try{
+            tex = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
+        }catch(Exception e){
+            e.printStackTrace();
+            return;
+        }
+        int width = 16;
+        if (imageData == null){
+            imageData = ByteBuffer.allocateDirect(width * width * 4);
+        }
+        imageData.clear();
+        for (int i = 0; i < width; i++){
+            int start = (((icon.getOriginY() + i) * icon.getSheetWidth()) + icon.getOriginX()) * 4;
+            tex.getTextureData().clear();
+            tex.getTextureData().position(start).limit(start + width * 4);
+            imageData.put(tex.getTextureData());
+            tex.getTextureData().clear();
+        }
+        imageData.position(0).limit(width * width * 4);
+        if (emptyImage == -1){
+            emptyImage = mc.renderEngine.allocateAndSetupTexture(new BufferedImage(width, width, 2));
+        }
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, emptyImage);
+        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, width, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
     }
 }
