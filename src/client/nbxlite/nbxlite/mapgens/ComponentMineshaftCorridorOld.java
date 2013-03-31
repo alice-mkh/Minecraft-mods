@@ -327,4 +327,31 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
 
         return true;
     }
+
+    /**
+     * Used to generate chests with items in it. ex: Temple Chests, Village Blacksmith Chests, Mineshaft Chests.
+     */
+    @Override
+    protected boolean generateStructureChestContents(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, int par4, int par5, int par6, WeightedRandomChestContent par7ArrayOfWeightedRandomChestContent[], int par8)
+    {
+        if (ODNBXlite.noCartsInMineshafts()){
+            return super.generateStructureChestContents(par1World, par2StructureBoundingBox, par3Random, par4, par5, par6, par7ArrayOfWeightedRandomChestContent, par8);
+        }
+        int i = getXWithOffset(par4, par6);
+        int j = getYWithOffset(par5);
+        int k = getZWithOffset(par4, par6);
+
+        if (par2StructureBoundingBox.isVecInside(i, j, k) && par1World.getBlockId(i, j, k) == 0)
+        {
+            par1World.setBlock(i, j, k, Block.rail.blockID, getMetadataWithOffset(Block.rail.blockID, par3Random.nextBoolean() ? 1 : 0), 2);
+            EntityMinecartChest entityminecartchest = new EntityMinecartChest(par1World, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F);
+            WeightedRandomChestContent.generateChestContents(par3Random, par7ArrayOfWeightedRandomChestContent, entityminecartchest, par8);
+            par1World.spawnEntityInWorld(entityminecartchest);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

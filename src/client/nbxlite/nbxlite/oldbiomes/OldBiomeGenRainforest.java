@@ -3,10 +3,10 @@ package net.minecraft.src.nbxlite.oldbiomes;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.nbxlite.spawners.SpawnListEntryBeta;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenHugeTrees;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.WorldGenerator;
 import net.minecraft.src.WorldGenBigTree;
-import net.minecraft.src.WorldGenHugeTrees;
 import net.minecraft.src.WorldGenShrub;
 import net.minecraft.src.WorldGenTrees;
 import net.minecraft.src.ODNBXlite;
@@ -33,7 +33,7 @@ public class OldBiomeGenRainforest extends OldBiomeGenBase
             }
             if (random.nextInt(3) == 0)
             {
-                return new WorldGenHugeTrees(false, 10 + random.nextInt(20), 3, 3);
+                return new OldWorldGenHugeTrees(false, 10 + random.nextInt(20), 3, 3);
             }
             else
             {

@@ -109,14 +109,15 @@ public class WorldGenTrees extends WorldGenerator
                         continue;
                     }
 
-                    boolean old = ODNBXlite.MapFeatures < ODNBXlite.FEATURES_14 || ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES;
+                    boolean trees15 = ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_15;
+                    boolean old = ODNBXlite.MapFeatures < ODNBXlite.FEATURES_14;
                     if (((!par1World.isAirBlock(k4, k1, k5) || old) && (!old || Block.opaqueCubeLookup[par1World.getBlockId(k4, k1, k5)]))){
                         continue;
                     }
 
                     int i6 = par1World.getBlockId(k4, k1, k5);
 
-                    if (i6 == 0 || i6 == Block.leaves.blockID)
+                    if (i6 == 0 || (i6 == Block.leaves.blockID && trees15))
                     {
                         setBlockAndMetadata(par1World, k4, k1, k5, Block.leaves.blockID, metaLeaves);
                     }

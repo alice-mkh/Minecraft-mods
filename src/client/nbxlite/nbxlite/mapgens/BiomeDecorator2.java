@@ -68,6 +68,9 @@ public class BiomeDecorator2 extends BiomeDecorator
             if (worldgenerator instanceof WorldGenTrees && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_12){
                 worldgenerator = biome.oldWorldGeneratorTrees;
             }
+            if (worldgenerator instanceof WorldGenForest && ODNBXlite.MapFeatures<ODNBXlite.FEATURES_15){
+                worldgenerator = biome.oldWorldGeneratorForest;
+            }
             worldgenerator.setScale(1.0D, 1.0D, 1.0D);
             worldgenerator.generate(currentWorld, randomGenerator, j6, currentWorld.getHeightValue(j6, k10), k10);
         }

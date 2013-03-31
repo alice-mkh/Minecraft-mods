@@ -3,9 +3,9 @@ package net.minecraft.src.nbxlite.oldbiomes;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.nbxlite.spawners.SpawnListEntryBeta;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenForest;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.WorldGenBigTree;
-import net.minecraft.src.WorldGenForest;
 import net.minecraft.src.WorldGenerator;
 
 public class OldBiomeGenForest extends OldBiomeGenBase
@@ -20,7 +20,7 @@ public class OldBiomeGenForest extends OldBiomeGenBase
     {
         if(random.nextInt(5) == 0)
         {
-            return new WorldGenForest(false);
+            return new OldWorldGenForest(false);
         }
         if(random.nextInt(3) == 0)
         {

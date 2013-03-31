@@ -9,6 +9,7 @@ import net.minecraft.src.nbxlite.mapgens.BiomeDecorator2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenHills2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenDesertOld;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenJungleOld;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenForest;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 
@@ -116,6 +117,7 @@ public abstract class BiomeGenBase
 
     /** The forest generator. */
     protected WorldGenForest worldGeneratorForest;
+    public OldWorldGenForest oldWorldGeneratorForest;
 
     /** The swamp tree generator. */
     protected WorldGenSwamp worldGeneratorSwamp;
@@ -155,6 +157,7 @@ public abstract class BiomeGenBase
         oldWorldGeneratorTrees = new OldWorldGenTrees(false);
         worldGeneratorBigTree = new WorldGenBigTree(false);
         worldGeneratorForest = new WorldGenForest(false);
+        oldWorldGeneratorForest = new OldWorldGenForest(false);
         worldGeneratorSwamp = new WorldGenSwamp();
         biomeID = par1;
         biomeList[par1] = this;

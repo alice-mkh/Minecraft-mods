@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
+import net.minecraft.src.nbxlite.mapgens.OldMapGenCavesHell;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenFlowers;
 import net.minecraft.src.nbxlite.noise.BetaNoiseGeneratorOctaves;
 
@@ -40,6 +41,7 @@ public class ChunkProviderHell implements IChunkProvider
     private double gravelNoise[];
     private double netherrackExclusivityNoise[];
     private MapGenBase netherCaveGenerator;
+    private MapGenBase netherCaveGeneratorOld;
     double noiseData1[];
     double noiseData2[];
     double noiseData3[];
@@ -54,6 +56,7 @@ public class ChunkProviderHell implements IChunkProvider
         gravelNoise = new double[256];
         netherrackExclusivityNoise = new double[256];
         netherCaveGenerator = new MapGenCavesHell();
+        netherCaveGeneratorOld = new OldMapGenCavesHell();
         worldObj = par1World;
         hellRNG = new Random(par2);
         netherNoiseGen1 = new NoiseGeneratorOctaves(hellRNG, 16);
@@ -281,7 +284,11 @@ public class ChunkProviderHell implements IChunkProvider
         byte abyte0[] = new byte[32768];
         generateNetherTerrain(par1, par2, abyte0);
         replaceBlocksForBiome(par1, par2, abyte0);
-        netherCaveGenerator.generate(this, worldObj, par1, par2, abyte0);
+        if (ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES || ODNBXlite.MapFeatures < ODNBXlite.FEATURES_15){
+            netherCaveGeneratorOld.generate(this, worldObj, par1, par2, abyte0);
+        }else{
+            netherCaveGenerator.generate(this, worldObj, par1, par2, abyte0);
+        }
         if(generateStructures){
             genNetherBridge.generate(this, worldObj, par1, par2, abyte0);
         }
@@ -581,7 +588,7 @@ public class ChunkProviderHell implements IChunkProvider
             int i1 = i + hellRNG.nextInt(16) + 8;
             int k2 = hellRNG.nextInt(120) + 4;
             int k4 = j + hellRNG.nextInt(16) + 8;
-            (new WorldGenHellLava(Block.lavaMoving.blockID, false)).generate(worldObj, hellRNG, i1, k2, k4);
+            (new WorldGenHellLava(Block.lavaMoving.blockID, ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES || ODNBXlite.MapFeatures < ODNBXlite.FEATURES_15)).generate(worldObj, hellRNG, i1, k2, k4);
         }
 
         int l = hellRNG.nextInt(hellRNG.nextInt(10) + 1) + 1;
@@ -628,22 +635,24 @@ public class ChunkProviderHell implements IChunkProvider
             (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, hellRNG, j2, l3, l5);
         }
 
-        WorldGenMinable worldgenminable = new WorldGenMinable(Block.oreNetherQuartz.blockID, 13, Block.netherrack.blockID);
+        if ((ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_15) || ODNBXlite.GenerateNewOres){
+            WorldGenMinable worldgenminable = new WorldGenMinable(Block.oreNetherQuartz.blockID, 13, Block.netherrack.blockID);
 
-        for (int i4 = 0; i4 < 16; i4++)
-        {
-            int i6 = i + hellRNG.nextInt(16);
-            int j7 = hellRNG.nextInt(108) + 10;
-            int l7 = j + hellRNG.nextInt(16);
-            worldgenminable.generate(worldObj, hellRNG, i6, j7, l7);
-        }
+            for (int i4 = 0; i4 < 16; i4++)
+            {
+                int i6 = i + hellRNG.nextInt(16);
+                int j7 = hellRNG.nextInt(108) + 10;
+                int l7 = j + hellRNG.nextInt(16);
+                worldgenminable.generate(worldObj, hellRNG, i6, j7, l7);
+            }
 
-        for (int j4 = 0; j4 < 16; j4++)
-        {
-            int j6 = i + hellRNG.nextInt(16);
-            int k7 = hellRNG.nextInt(108) + 10;
-            int i8 = j + hellRNG.nextInt(16);
-            (new WorldGenHellLava(Block.lavaMoving.blockID, true)).generate(worldObj, hellRNG, j6, k7, i8);
+            for (int j4 = 0; j4 < 16; j4++)
+            {
+                int j6 = i + hellRNG.nextInt(16);
+                int k7 = hellRNG.nextInt(108) + 10;
+                int i8 = j + hellRNG.nextInt(16);
+                (new WorldGenHellLava(Block.lavaMoving.blockID, true)).generate(worldObj, hellRNG, j6, k7, i8);
+            }
         }
 
         BlockSand.fallInstantly = false;
