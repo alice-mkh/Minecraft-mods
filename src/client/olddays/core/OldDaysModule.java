@@ -119,20 +119,8 @@ public class OldDaysModule{
         }
     }
 
-    public static void addTextureHook(String origname, int origi, String newname, int newi){
-        mod_OldDays.texman.addTextureHook(origname, origi, newname, newi);
-    }
-
-    public static void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
-        mod_OldDays.texman.addTextureHook(origname, origi, newname, newi, w, h);
-    }
-
     public static void setTextureHook(String origname, String newname, boolean b){
         mod_OldDays.texman.setTextureHook(origname, newname, b);
-    }
-
-    public static void setTextureHook(String name, int i2, String name2, int index, boolean b){
-        mod_OldDays.texman.setTextureHook(name, i2, name2, index, b);
     }
 
     public static boolean hasTextures(String... str){
@@ -141,6 +129,10 @@ public class OldDaysModule{
 
     public static boolean hasIcons(boolean b, String... str){
         return mod_OldDays.texman.hasIcons(b, str);
+    }
+
+    public static void replaceIcon(Icon i, String newIcon, int x, int y){
+        mod_OldDays.texman.replaceIcon(i, newIcon, x, y);
     }
 
     public void callback(int i){}

@@ -9,70 +9,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.*;
+import java.util.zip.ZipFile;
 
 public class OldDaysTextureManager{
     private RenderEngine renderEngine;
-//    protected ArrayList<TextureSpriteFX> textureHooks;
-    protected ArrayList<TextureHook> textureHooks2;
+    protected ArrayList<TextureHook> textureHooks;
     protected ArrayList<TextureStitched> textureFXList;
-    public ArrayList<TextureStitched> texturesToRedraw;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
     public OldDaysTextureManager(){
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
-//        textureHooks = new ArrayList<TextureSpriteFX>();
-        textureHooks2 = new ArrayList<TextureHook>();
+        textureHooks = new ArrayList<TextureHook>();
         textureFXList = new ArrayList<TextureStitched>();
-        texturesToRedraw = new ArrayList<TextureStitched>();
         entryCache = new HashMap<String, Boolean>();
     }
 
-    public void setTextureHook(String name, int i2, String name2, int index, boolean b){
-/*        TextureSpriteFX fx2 = null;
-        for (int i = 0; i < textureHooks.size(); i++){
-            TextureSpriteFX fx = textureHooks.get(i);
-            if (fx.sprite2 == name && fx.index2 == i2){
-                fx2 = fx;
-                break;
-            }
-        }
-        if (fx2 == null){
-            addTextureHook(name, i2, name2, index);
-            for (int i = 0; i < textureHooks.size(); i++){
-                TextureSpriteFX fx = textureHooks.get(i);
-                if (fx.sprite2 == name && fx.index2 == i2){
-                    fx2 = fx;
-                    break;
-                }
-            }
-        }
-        fx2.sprite = name2;
-        fx2.changeIndex(index, b, false);
-        fx2.onTick2();
-        try{
-            renderEngine.updateDynamicTextures();
-        }catch(Exception ex){}*/
-    }
-
     public void setTextureHook(String origname, String newname, boolean b){
-        for (int i = 0; i < textureHooks2.size(); i++){
-            TextureHook hook = textureHooks2.get(i);
+        for (int i = 0; i < textureHooks.size(); i++){
+            TextureHook hook = textureHooks.get(i);
             if (hook.origname.equals(origname) && hook.newname.equals(newname)){
                 hook.enabled = b;
                 refreshTextureHooks();
                 return;
             }
         }
-        textureHooks2.add(new TextureHook(origname, newname, b));
+        textureHooks.add(new TextureHook(origname, newname, b));
         refreshTextureHooks();
     }
  
     public void onTick(){
         if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
-//             renderEngine.bindTexture("/terrain.png");
-//             TextureSpriteFX.w = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) / 16;
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
             entryCache.clear();
             setFallback(!hasEntry("olddays"));
@@ -80,7 +47,7 @@ public class OldDaysTextureManager{
     }
 
     public void refreshTextureHooks(){
-        for (TextureHook hook : textureHooks2){
+        for (TextureHook hook : textureHooks){
             try{
                 TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
                 ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
@@ -120,10 +87,6 @@ public class OldDaysTextureManager{
             }
             module.onFallbackChange(b);
         }
-/*        for (int i = 0; i < textureHooks.size(); i++){
-            textureHooks.get(i).refresh(false);
-            textureHooks.get(i).onTick2();
-        }*/
     }
 
     public boolean hasEntry(String... str){
@@ -168,17 +131,6 @@ public class OldDaysTextureManager{
         return hasEntry(str);
     }
 
-    public void addTextureHook(String origname, int origi, String newname, int newi){
-        addTextureHook(origname, origi, newname, newi, 16, 16);
-    }
-
-    public void addTextureHook(String origname, int origi, String newname, int newi, int w, int h){
-/*        RenderEngine renderEngine = mod_OldDays.getMinecraft().renderEngine;
-        TextureSpriteFX fx = new TextureSpriteFX(origname, newname, w, h, origi, newi);
-        renderEngine.registerTextureFX(fx);
-        textureHooks.add(fx);*/
-    }
-
     public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon, Icon from)
     {
         if (par1Str == null || !(map instanceof TextureMap)){
@@ -193,13 +145,13 @@ public class OldDaysTextureManager{
         {
             textureStitchedMap.put(par1Str, icon);
         }
-        for (TextureStitched fx : textureFXList){
-            if (fx.getIconName().equals(par1Str)){
-                textureFXList.remove(fx);
-                break;
-            }
-        }
         if (icon instanceof TextureFX){
+            for (TextureStitched fx : textureFXList){
+                if (fx.getIconName().equals(par1Str)){
+                    textureFXList.remove(fx);
+                    break;
+                }
+            }
             textureFXList.add(icon);
         }
         if (from != null){
@@ -216,18 +168,44 @@ public class OldDaysTextureManager{
 
     public void updateTextureFXes(){
         for (TextureStitched fx : textureFXList){
-            fx.updateAnimation();
+            try{
+                fx.updateAnimation();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
-        for (TextureStitched tex : texturesToRedraw){
-            tex.updateAnimation();
-        }
-        texturesToRedraw.clear();
     }
 
     public void removeTextureFXes(){
         renderEngine.refreshTextures();
         textureFXList.clear();
         renderEngine.updateDynamicTextures();
+    }
+
+    public void replaceIcon(Icon icon, String newIcon, int x, int y){
+        Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
+        boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
+        int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
+        int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
+        int[] ints = new int[width * height];
+        try{
+            ImageIO.read(getClass().getResource(newIcon)).getRGB(x * width, y * height, width, height, ints, 0, width);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        Texture tex = new Texture(newIcon, 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        byte[] bytes = new byte[ints.length * 4];
+        for (int i = 0; i < ints.length; i++){
+            int color = ints[i];
+            bytes[i * 4 + 0] = (byte)(color >> 16 & 0xFF);
+            bytes[i * 4 + 1] = (byte)(color >> 8 & 0xFF);
+            bytes[i * 4 + 2] = (byte)(color & 0xFF);
+            bytes[i * 4 + 3] = (byte)(color >>> 24 & 0xFF);
+        }
+        tex.getTextureData().position(0).limit(bytes.length);
+        tex.getTextureData().put(bytes);
+        tex.getTextureData().clear();
+        sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
     }
 
     private class TextureHook{
