@@ -157,6 +157,10 @@ public class OldDaysModule{
         mod_OldDays.texman.replaceIcon(i, newIcon, x, y, orig, b);
     }
 
+    public static void eraseIcon(Icon i, String orig, boolean b){
+        mod_OldDays.texman.eraseIcon(i, orig, b);
+    }
+
     public void callback(int i){}
 
     public void set(Class c, String name, Object value, boolean necessary){

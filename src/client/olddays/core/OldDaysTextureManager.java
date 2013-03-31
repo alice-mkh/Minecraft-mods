@@ -181,6 +181,22 @@ public class OldDaysTextureManager{
         renderEngine.updateDynamicTextures();
     }
 
+    public void eraseIcon(Icon icon, String origIcon, boolean b){
+        if (icon == null){
+            return;
+        }
+        if (b){
+            replaceIcon(icon, "", 0, 0, origIcon, false);
+            return;
+        }
+        Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
+        boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
+        int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
+        int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
+        Texture tex = new Texture("", 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
+    }
+
     public void replaceIcon(Icon icon, String newIcon, int x, int y, String origIcon, boolean b){
         if (icon == null){
             return;
