@@ -16,6 +16,7 @@ public class OldDaysTextureManager{
 //    protected ArrayList<TextureSpriteFX> textureHooks;
     protected ArrayList<TextureHook> textureHooks2;
     protected ArrayList<TextureStitched> textureFXList;
+    public ArrayList<TextureStitched> texturesToRedraw;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
@@ -24,6 +25,7 @@ public class OldDaysTextureManager{
 //        textureHooks = new ArrayList<TextureSpriteFX>();
         textureHooks2 = new ArrayList<TextureHook>();
         textureFXList = new ArrayList<TextureStitched>();
+        texturesToRedraw = new ArrayList<TextureStitched>();
         entryCache = new HashMap<String, Boolean>();
     }
 
@@ -179,10 +181,7 @@ public class OldDaysTextureManager{
 
     public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon, Icon from)
     {
-        if (par1Str == null){
-            (new RuntimeException("Don't register null!")).printStackTrace();
-        }
-        if (!(map instanceof TextureMap)){
+        if (par1Str == null || !(map instanceof TextureMap)){
             return icon;
         }
         Map textureStitchedMap = (Map)(mod_OldDays.getField(TextureMap.class, (TextureMap)map, 9));
@@ -203,9 +202,11 @@ public class OldDaysTextureManager{
         if (icon instanceof TextureFX){
             textureFXList.add(icon);
         }
-        try{
-            icon.copyFrom((TextureStitched)from);
-        }catch(Exception e){}
+        if (from != null){
+            try{
+                icon.copyFrom((TextureStitched)from);
+            }catch(Exception e){}
+        }
         return icon;
     }
 
@@ -217,10 +218,16 @@ public class OldDaysTextureManager{
         for (TextureStitched fx : textureFXList){
             fx.updateAnimation();
         }
+        for (TextureStitched tex : texturesToRedraw){
+            tex.updateAnimation();
+        }
+        texturesToRedraw.clear();
     }
 
     public void removeTextureFXes(){
+        renderEngine.refreshTextures();
         textureFXList.clear();
+        renderEngine.updateDynamicTextures();
     }
 
     private class TextureHook{

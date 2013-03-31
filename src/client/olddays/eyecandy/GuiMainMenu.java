@@ -63,6 +63,7 @@ public class GuiMainMenu extends GuiScreen
     private int field_92021_u;
     private int field_92020_v;
     private int field_92019_w;
+    private float maxUpdates = 0.0001F;
 
     public GuiMainMenu()
     {
@@ -186,6 +187,7 @@ public class GuiMainMenu extends GuiScreen
         {
             splashText = "OOoooOOOoooo! Spooky!";
         }
+        maxUpdates  = (calendar.get(2) - 2 == 1) && (calendar.get(5) == 1) ? 0.5F : 0.0001F;
 
         StringTranslate stringtranslate = StringTranslate.getInstance();
         int i = height / 4 + 48;
@@ -555,7 +557,7 @@ public class GuiMainMenu extends GuiScreen
         if (!oldlogo){
             mc.renderEngine.bindTexture("/title/mclogo.png");
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            if ((double)updateCounter < 0.0001D)
+            if ((double)updateCounter < maxUpdates)
             {
                 drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
                 drawTexturedModalRect(i + 99, byte0 + 0, 129, 0, 27, 44);
@@ -710,7 +712,7 @@ public class GuiMainMenu extends GuiScreen
                 for(int j1 = 0; j1 < minecraftLogo[i1].length(); j1++)
                 {
                     char c = minecraftLogo[i1].charAt(j1);
-                    if (i1 == 2 && ((double)updateCounter2 < 0.0001D))
+                    if (i1 == 2 && ((double)updateCounter2 < maxUpdates))
                     {
                         if (i1 == 2){
                             c = minecraftLogo[i1].charAt(j1 == 20 ? j1 - 1 : (j1 == 16 ? j1 + 1 : j1));

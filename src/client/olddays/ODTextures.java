@@ -56,49 +56,17 @@ public class ODTextures extends OldDaysModule{
     @Override
     public void callback (int i){
         boolean fallback = !hasTextures("olddays/textures.png");
+        if (i >= 1 && i <= 23 || i >= 29 && i <= 33){
+            refreshIconReplacements();
+        }
         switch(i){
-            case 1: setTextureHook("/terrain.png", 16, "/olddays/textures.png", Cobblestone<1 ? 0 : 1, Cobblestone<2 && !fallback); break;
-            case 2: setTextureHook("/terrain.png", 36, "/olddays/textures.png", 2, MossStone && !fallback); break;
-            case 3: setStone(); break;
-            case 4: setTextureHook("/terrain.png", 7, "/olddays/textures.png", Brick<1 ? 6 : 7, Brick<2 && !fallback); break;
-            case 5: setTextureHook("/terrain.png", 18, "/olddays/textures.png", 11, Sand && !fallback); break;
-            case 6: setTextureHook("/terrain.png", 19, "/olddays/textures.png", Gravel<1 ? 12 : 64, Gravel<2 && !fallback); break;
-            case 7: setTextureHook("/terrain.png", 2, "/olddays/textures.png", 14, Dirt && !fallback);
-                    setTextureHook("/terrain.png", 3, "/olddays/textures.png", 15, Dirt && !fallback); break;
-            case 8: setTextureHook("/terrain.png", 0, "/olddays/textures.png", 13, Grass && !fallback); break;
-            case 9: setTextureHook("/terrain.png", 4, "/olddays/textures.png", Planks<1 ? 4 : 5, Planks<2 && !fallback); break;
-            case 10:setTextureHook("/terrain.png", 15, "/olddays/textures.png", Sapling<1 ? 9 : 10, Sapling<2 && !fallback); break;
-            case 11:setCloth(); break;
-            case 12:setTextureHook("/terrain.png", 105, "/olddays/textures.png", 17, Glowstone && !fallback); break;
             case 13:setOreBlocks(); break;
-            case 14:setTextureHook("/terrain.png", 65, "/olddays/textures.png", 16, Spawner && !fallback); break;
-            case 15:setTextureHook("/terrain.png", 62, Stone && !fallback ? "/olddays/textures.png" : "/terrain.png", Stone && !fallback ? 3 : 1, Furnace); break;
-            case 16:setTextureHook("/terrain.png", 46, "/olddays/textures.png", 48, Dispenser && !fallback); break;
-            case 17:setTextureHook("/terrain.png", 11, "/olddays/textures.png", 8, Web && !fallback); break;
-            case 18:setFood(fallback); break;
-            case 19:setTextureHook("/gui/items.png", 112, "/olddays/textures.png", 56, Axes && !fallback);
-                    setTextureHook("/gui/items.png", 113, "/olddays/textures.png", 57, Axes && !fallback);
-                    setTextureHook("/gui/items.png", 114, "/olddays/textures.png", 58, Axes && !fallback);
-                    setTextureHook("/gui/items.png", 115, "/olddays/textures.png", 59, Axes && !fallback);
-                    setTextureHook("/gui/items.png", 116, "/olddays/textures.png", 60, Axes && !fallback); break;
-            case 20:setTextureHook("/gui/items.png", 7, "/olddays/textures.png", 52, Coal && !fallback); break;
-            case 21:setTextureHook("/gui/items.png", 6, "/olddays/textures.png", 53, Flint && !fallback); break;
-            case 22:setTextureHook("/gui/items.png", 5, "/olddays/textures.png", 54, FlintSteel && !fallback); break;
-            case 23:setTextureHook("/gui/items.png", 24, "/olddays/textures.png", 55, Feather && !fallback); break;
             case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs && !fallback); break;
             case 25:setTextureHook("/mob/slime.png", "/olddays/slime.png", Slimes && !fallback); break;
             case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve && !fallback); break;
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
             case 28:setTextureHook("/environment/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
-            case 29:setTextureHook("/gui/items.png", 15, "/gui/items.png", 239, !ArmorShape);
-                    setTextureHook("/gui/items.png", 31, "/gui/items.png", 239, !ArmorShape);
-                    setTextureHook("/gui/items.png", 47, "/gui/items.png", 239, !ArmorShape);
-                    setTextureHook("/gui/items.png", 63, "/gui/items.png", 239, !ArmorShape); break;
-            case 30:setTextureHook("/gui/items.png", 126, "/olddays/textures.png", 63, Cocoa && !fallback); break;
-            case 31:setTextureHook("/terrain.png", 103, "/olddays/textures.png", 65, Netherrack && !fallback); break;
-            case 32:setArmor(LeatherArmor && !fallback); break;
-            case 33:setFood(fallback); break;
-            case 34:refreshTextures(); break;
+            case 34:refreshTextureFXes(true); break;
         }
     }
 
@@ -170,12 +138,14 @@ public class ODTextures extends OldDaysModule{
 
     @Override
     public void refreshTextures(){
-        try{
-            core.getMinecraft().renderEngine.refreshTextureMaps();
-        }catch(Exception e){}
-        try{
-            reload();
-        }catch(Exception e){}
+        refreshTextureFXes(false);
+        refreshIconReplacements();
+    }
+
+    private void refreshTextureFXes(boolean refreshBlocks){
+        if (core.getField(BlockFluid.class, Block.waterStill, 0) == null){
+            return;
+        }
         if (!Procedural){
             core.texman.removeTextureFXes();
             return;
@@ -183,17 +153,27 @@ public class ODTextures extends OldDaysModule{
         TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
         TextureMap items = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
 
-        Icon[] origWater = (Icon[])(core.getField(BlockFluid.class, Block.waterStill, 0));
-        Icon[] origLava = (Icon[])(core.getField(BlockFluid.class, Block.lavaStill, 0));
+        if (blocks == null || items == null){
+            return;
+        }
+
+        if (refreshBlocks){
+            core.getMinecraft().renderEngine.refreshTextures();
+        }
+
+        Icon origWater = BlockFluid.func_94424_b("water");
+        Icon origWaterFlow = BlockFluid.func_94424_b("water_flow");
+        Icon origLava = BlockFluid.func_94424_b("lava");
+        Icon origLavaFlow = BlockFluid.func_94424_b("lava_flow");
         Icon[] origFire = (Icon[])(core.getField(BlockFire.class, Block.fire, 2));
         Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, 195)); //Block: blockIcon
         Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, 176)); //Item: iconIndex
         Icon origCompass = (Icon)(core.getField(Item.class, Item.compass, 176));
 
-        Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater[0]);
-        Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWater[1]);
-        Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX(), origLava[0]);
-        Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX(), origLava[1]);
+        Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater);
+        Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWaterFlow);
+        Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX(), origLava);
+        Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX(), origLavaFlow);
         Icon fire0 = core.texman.registerCustomIcon(blocks, "fire_0", new TextureFlamesFX(0), origFire[0]);
         Icon fire1 = core.texman.registerCustomIcon(blocks, "fire_1", new TextureFlamesFX(1), origFire[1]);
         Icon portal = core.texman.registerCustomIcon(blocks, "portal", new TexturePortalFX(), origPortal);
@@ -211,51 +191,13 @@ public class ODTextures extends OldDaysModule{
         mod_OldDays.texman.updateTextureFXes();
     }
 
-    private void setStone(){
-        setTextureHook("/terrain.png", 1, "/olddays/textures.png", 3, Stone && hasTextures("olddays/textures.png"));
-        callback(15);
+    private void refreshIconReplacements(){
+        TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
+        Icon i = blocks.registerIcon("olddays_cobblestone");
     }
 
     private void setOreBlocks(){
         set(BlockOreStorageOld.class, "oldtextures", OreBlocks<1 && hasTextures("olddays/textures.png"));
-        setTextureHook("/terrain.png", 22, "/olddays/textures.png", 49, OreBlocks<2 && hasTextures("olddays/textures.png"));
-        setTextureHook("/terrain.png", 23, "/olddays/textures.png", 50, OreBlocks<2 && hasTextures("olddays/textures.png"));
-        setTextureHook("/terrain.png", 24, "/olddays/textures.png", 51, OreBlocks<2 && hasTextures("olddays/textures.png"));
         reload();
-    }
-
-    private void setCloth(){
-        int[] orig =    new int[]{64, 113, 114, 129, 130, 145, 146, 161, 162, 177, 178, 193, 194, 209, 210, 225};
-        int[] beta =    new int[]{47, 18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  61};
-        int[] classic = new int[]{47, 45,  45,  32,  44,  36,  35,  24,  34,  40,  39,  41,  43,  38,  33,  46};
-        for (int i = 0; i < 16; i++){
-            setTextureHook("/terrain.png", orig[i], "/olddays/textures.png", Wool<1 ? classic[i] : beta[i], Wool<2 && hasTextures("olddays/textures.png"));
-        }
-    }
-
-    private void setArmor(boolean b){
-        for (int i = 0; i < 4; i++){
-            setTextureHook("/gui/items.png", (i + 9) * 16, "/olddays/textures.png", 66 + i, b);
-            setTextureHook("/gui/items.png", i * 16, "/gui/items.png", 239, b);
-        }
-        setTextureHook("/armor/cloth_1_b.png", "/olddays/cloth_1.png", b);
-        setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
-        setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
-        setTextureHook("/armor/cloth_2.png", "/olddays/cloth_empty.png", b);
-    }
-
-    private void setFood(boolean fallback){
-        for (int i = 0; i < 2; i++){
-            setTextureHook("/gui/items.png", 105 + i, "/olddays/textures.png", 72 + i, Food && !fallback);//Beef
-            setTextureHook("/gui/items.png", 121 + i, "/olddays/textures.png", 74 + i, Food && !fallback);//Chicken
-        }
-        setTextureHook("/gui/items.png", 87, "/olddays/textures.png", 70, Food && !fallback);
-        setTextureHook("/gui/items.png", 10, "/olddays/textures.png", 76, Food && !fallback);//Apple
-        setTextureHook("/gui/items.png", 41, "/olddays/textures.png", 77, Food && !fallback);//Bread
-        if (Porkchop){
-            setTextureHook("/gui/items.png", 88, "/olddays/textures.png", Food ? 62 : 78, !fallback);
-        }else{
-            setTextureHook("/gui/items.png", 88, "/olddays/textures.png", 71, Food && !fallback);
-        }
     }
 }

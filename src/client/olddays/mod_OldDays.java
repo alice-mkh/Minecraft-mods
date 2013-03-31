@@ -433,19 +433,6 @@ public class mod_OldDays extends Mod{
         return false;
     }
 
-    public static int getFreeTextureIndex(){
-        return 0;
-/*        for (int i = 0; i < freeTextures.length; i++){
-            if (freeTextures[i] >= 0){
-                int j = freeTextures[i];
-                freeTextures[i] = -1;
-                return j;
-            }
-        }
-        System.out.println("OldDays: Free textures are over!");
-        return -1;*/
-    }
-
     @Override
     public void refreshTextures(){
         for (int i = 0; i < modules.size(); i++){
@@ -453,7 +440,6 @@ public class mod_OldDays extends Mod{
             module.refreshTextures();
         }
         texman.refreshTextureHooks();
-//         getMinecraft().renderEngine.refreshTextureMaps();
     }
 
     @Override
