@@ -81,7 +81,7 @@ public class GuiNBXlite extends GuiScreen{
             buttonList.add(betaFeaturesButton[i]=new GuiButton(70+i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, ""));
         }
         for (int i=0; i<=GeneratorList.feat2length; i++){
-            buttonList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + (i * 21), 210, 20, ""));
+            buttonList.add(releaseFeaturesButton[i]=new GuiButton(80+i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, ""));
         }
         buttonList.add(newOresButton = new GuiButton(2, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, ""));
         buttonList.add(jungleButton = new GuiButton(3, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, ""));
@@ -340,7 +340,7 @@ public class GuiNBXlite extends GuiScreen{
         for (int i = 0; i <= GeneratorList.feat2length; i++){
             releaseFeaturesButton[i].drawButton = release;
         }
-        newOresButton.drawButton = beta || GeneratorList.genores[GeneratorList.gencurrent] || (release && GeneratorList.feat2current<6);
+        newOresButton.drawButton = beta || GeneratorList.genores[GeneratorList.gencurrent] || (release && GeneratorList.feat2current<ODNBXlite.FEATURES_15);
         jungleButton.drawButton = beta && GeneratorList.feat1current==5;
         toggleButton.drawButton = indev || classic;
     }

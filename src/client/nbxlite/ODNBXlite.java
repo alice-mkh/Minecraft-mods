@@ -15,8 +15,8 @@ public class ODNBXlite extends OldDaysModule{
         super(c, 8, "NBXlite");
         new OldDaysPropertyInt(this,   1, 0,     5,     "Gen", 5).setUseNames().setGUIRefresh().disableLoading();
         new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   3, 0,     4,     "BetaFeatures", FEATURES_JUNGLE).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   4, 0,     5,     "ReleaseFeatures", FEATURES_14).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   3, 0,     4,     "BetaFeatures", 7).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   4, 0,     5,     "ReleaseFeatures", 7).setUseNames().disableLoading();
         new OldDaysPropertyBool(this,  5, false, false, "GenerateNewOres").disableLoading();
         new OldDaysPropertyInt(this,   6, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
         new OldDaysPropertyInt(this,   7, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
@@ -42,7 +42,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyBool(this,  27,true,  true,  "ShowGUI");
         new OldDaysPropertyInt(this,   28,6,     6,     "DefaultGenerator", 6).setUseNames();
         new OldDaysPropertyInt(this,   29,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
-        new OldDaysPropertyInt(this,   30,6,     6,     "DefaultFeaturesRelease", 6).setUseNames();
+        new OldDaysPropertyInt(this,   30,6,     7,     "DefaultFeaturesRelease", 7).setUseNames();
         replaceBlocks();
         registerGears();
         GuiSelectWorld.nbxlite = true;
@@ -127,7 +127,7 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean ShowGUI = true;
     public static int DefaultGenerator = 6;
     public static int DefaultFeaturesBeta = 5;
-    public static int DefaultFeaturesRelease = 6;
+    public static int DefaultFeaturesRelease = 7;
     public static int Saplings = -1;
 
     public static int DefaultTheme = 0;
@@ -469,6 +469,8 @@ public class ODNBXlite extends OldDaysModule{
                 result.append("132");
             }else if (feats==FEATURES_14){
                 result.append("14");
+            }else if (feats==FEATURES_15){
+                result.append("15");
             }
         }
         return result.toString();
@@ -556,6 +558,9 @@ public class ODNBXlite extends OldDaysModule{
                 }
                 if (gen.contains("14")){
                     return FEATURES_14;
+                }
+                if (gen.contains("15")){
+                    return FEATURES_15;
                 }
                 return 0;
             }
@@ -1117,6 +1122,7 @@ public class ODNBXlite extends OldDaysModule{
     public static final int FEATURES_13 = 4;
     public static final int FEATURES_132 = 5;
     public static final int FEATURES_14 = 6;
+    public static final int FEATURES_15 = 7;
 
     public static final int THEME_NORMAL = 0;
     public static final int THEME_HELL = 1;
