@@ -70,6 +70,7 @@ Actions.OldCrops=false
 Actions.OldBoatBreaking=false
 Actions.OldHardness=false
 Actions.Apples=true
+Actions.OldBoneMeal=false
 Crafting.OldSlabs=3
 Crafting.Ladders=3
 NBXlite.LeavesDecay=2
