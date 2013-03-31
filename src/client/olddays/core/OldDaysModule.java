@@ -134,11 +134,23 @@ public class OldDaysModule{
     public static void replaceBlockIcon(Block bl, String newIcon, int x, int y, boolean b){
         Icon i = null;
         try{
-            i = bl.getBlockTextureFromSide(0);
+            i = bl.getBlockTextureFromSide(1);
         }catch(NullPointerException e){
             return;
         }
-        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, bl.getUnlocalizedName2(), b);
+        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, "/textures/blocks/" + bl.getUnlocalizedName2() + ".png", b);
+    }
+
+    public static void replaceItemIcon(Item it, String newIcon, int x, int y, boolean b){
+        Icon i = null;
+        try{
+            i = it.getIconFromDamage(0);
+        }catch(NullPointerException e){
+            return;
+        }
+        String str = it.getUnlocalizedName();
+        str = str.substring(5, str.length());
+        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, "/textures/items/" + str + ".png", b);
     }
 
     public static void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){

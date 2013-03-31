@@ -131,8 +131,7 @@ public class OldDaysTextureManager{
         return hasEntry(str);
     }
 
-    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon, Icon from)
-    {
+    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureStitched icon, Icon from){
         if (par1Str == null || !(map instanceof TextureMap)){
             return icon;
         }
@@ -187,13 +186,12 @@ public class OldDaysTextureManager{
             return;
         }
         b = b && hasEntry(newIcon);
-        Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
         if (!b){
             x = 0;
             y = 0;
-            int type = (Integer)(mod_OldDays.getField(Texture.class, sheet, 2));
-            newIcon = "/textures/" + (type == 1 ? "blocks/" : "items/") + origIcon + ".png";
+            newIcon = origIcon;
         }
+        Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
         boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));

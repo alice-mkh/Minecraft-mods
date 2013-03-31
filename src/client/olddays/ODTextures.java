@@ -61,13 +61,38 @@ public class ODTextures extends OldDaysModule{
             case 2: replaceBlockIcon(Block.cobblestoneMossy, "/olddays/textures.png", 2, 0, MossStone); break;
             case 3: replaceBlockIcon(Block.stone, "/olddays/textures.png", 3, 0, Stone); break;
             case 4: replaceBlockIcon(Block.brick, "/olddays/textures.png", 6 + Brick, 0, Brick < 2); break;
+            case 5: replaceBlockIcon(Block.sand, "/olddays/textures.png", 11, 0, Sand); break;
+            case 6: replaceBlockIcon(Block.gravel, "/olddays/textures.png", Gravel == 0 ? 12 : 0, Gravel == 0 ? 0 : 4, Gravel < 2); break;
+            case 7: replaceBlockIcon(Block.dirt, "/olddays/textures.png", 14, 0, Dirt); break;
+
             case 9: replaceBlockIcon(Block.planks, "/olddays/textures.png", 4 + Planks, 0, Planks < 2); break;
+            case 10:replaceBlockIcon(Block.sapling, "/olddays/textures.png", 9 + Sapling, 0, Sapling < 2); break;
+
+            case 12:replaceBlockIcon(Block.glowStone, "/olddays/textures.png", 1, 1, Glowstone); break;
             case 13:setOreBlocks(); break;
+            case 14:replaceBlockIcon(Block.mobSpawner, "/olddays/textures.png", 0, 1, Spawner); break;
+
+            case 16:setDispenser(); break;
+            case 17:replaceBlockIcon(Block.web, "/olddays/textures.png", 8, 0, Web); break;
+
+            case 19:replaceItemIcon(Item.axeWood, "/olddays/textures.png", 8, 3, Axes);
+                    replaceItemIcon(Item.axeStone, "/olddays/textures.png", 9, 3, Axes);
+                    replaceItemIcon(Item.axeSteel, "/olddays/textures.png", 10, 3, Axes);
+                    replaceItemIcon(Item.axeDiamond, "/olddays/textures.png", 11, 3, Axes);
+                    replaceItemIcon(Item.axeGold, "/olddays/textures.png", 12, 3, Axes); break;
+            case 20:replaceItemIcon(Item.coal, "/olddays/textures.png", 4, 3, Coal); break;
+            case 21:replaceItemIcon(Item.flint, "/olddays/textures.png", 5, 3, Flint); break;
+            case 22:replaceItemIcon(Item.flintAndSteel, "/olddays/textures.png", 6, 3, FlintSteel); break;
+            case 23:replaceItemIcon(Item.feather, "/olddays/textures.png", 7, 3, Feather); break;
             case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs && !fallback); break;
             case 25:setTextureHook("/mob/slime.png", "/olddays/slime.png", Slimes && !fallback); break;
             case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve && !fallback); break;
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
             case 28:setTextureHook("/environment/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
+
+            case 30:setCocoa(); break;
+            case 31:replaceBlockIcon(Block.netherrack, "/olddays/textures.png", 1, 4, Netherrack); break;
+
             case 34:refreshTextureFXes(true); refreshIconReplacements(); break;
         }
     }
@@ -202,7 +227,30 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void setOreBlocks(){
-        set(BlockOreStorageOld.class, "oldtextures", OreBlocks<1 && hasTextures("olddays/textures.png"));
+        replaceBlockIcon(Block.blockSteel, "/olddays/textures.png", 1, 3, OreBlocks < 2);
+        replaceBlockIcon(Block.blockGold, "/olddays/textures.png", 2, 3, OreBlocks < 2);
+        replaceBlockIcon(Block.blockDiamond, "/olddays/textures.png", 3, 3, OreBlocks < 2);
+        set(BlockOreStorageOld.class, "oldtextures", OreBlocks < 1 && hasTextures("olddays/textures.png"));
         reload();
+    }
+
+    private void setDispenser(){
+        Icon i = null;
+        try{
+            i = Block.dispenser.getBlockTextureFromSideAndMetadata(3, 3);
+        }catch(NullPointerException e){
+            return;
+        }
+        replaceIcon(i, "/olddays/textures.png", 0, 3, "/textures/blocks/dispenser_front.png", Dispenser);
+    }
+
+    private void setCocoa(){
+        Icon i = null;
+        try{
+            i = Item.dyePowder.getIconFromDamage(3);
+        }catch(NullPointerException e){
+            return;
+        }
+        replaceIcon(i, "/olddays/textures.png", 15, 3, "/textures/items/dyePowder_brown.png", Cocoa);
     }
 }
