@@ -56,9 +56,6 @@ public class ODTextures extends OldDaysModule{
     @Override
     public void callback (int i){
         boolean fallback = !hasTextures("olddays/textures.png");
-        if (i >= 1 && i <= 23 || i >= 29 && i <= 33){
-            refreshIconReplacements();
-        }
         switch(i){
             case 13:setOreBlocks(); break;
             case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs && !fallback); break;
@@ -67,6 +64,9 @@ public class ODTextures extends OldDaysModule{
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
             case 28:setTextureHook("/environment/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
             case 34:refreshTextureFXes(true); break;
+        }
+        if (i >= 1 && i <= 23 || i >= 29 && i <= 34){
+            refreshIconReplacements();
         }
     }
 
@@ -192,8 +192,14 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void refreshIconReplacements(){
-        TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
-        Icon i = blocks.registerIcon("olddays_cobblestone");
+        if (core.getField(BlockFluid.class, Block.waterStill, 0) == null){
+            return;
+        }
+        if (Cobblestone < 2){
+            replaceIcon(Block.cobblestone.getBlockTextureFromSide(0), "/olddays/textures.png", Cobblestone, 0);
+        }else{
+            replaceIcon(Block.cobblestone.getBlockTextureFromSide(0), "/textures/blocks/stonebrick.png", 0, 0);
+        }
     }
 
     private void setOreBlocks(){
