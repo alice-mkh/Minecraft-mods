@@ -188,6 +188,9 @@ abstract class ComponentVillage extends StructureComponent
      */
     protected int getBiomeSpecificBlockMetadata(int par1, int par2)
     {
+        if (ODNBXlite.oldVillageTorches() && par1 == Block.cloth.blockID && par2 == 15){
+            return 1;
+        }
         if (startPiece.inDesert && ODNBXlite.desertVillages())
         {
             if (par1 == Block.wood.blockID)

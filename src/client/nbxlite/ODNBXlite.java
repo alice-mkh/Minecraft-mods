@@ -843,7 +843,11 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static boolean noCartsInMineshafts(){
-        return Generator!=GEN_NEWBIOMES || MapFeatures<FEATURES_15;
+        return Generator==GEN_NEWBIOMES && MapFeatures<FEATURES_15;
+    }
+
+    public static boolean oldVillageTorches(){
+        return Generator==GEN_NEWBIOMES && MapFeatures<FEATURES_15;
     }
 
     public static void SetGenerator(){
