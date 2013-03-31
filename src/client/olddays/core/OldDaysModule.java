@@ -131,8 +131,18 @@ public class OldDaysModule{
         return mod_OldDays.texman.hasIcons(b, str);
     }
 
-    public static void replaceIcon(Icon i, String newIcon, int x, int y){
-        mod_OldDays.texman.replaceIcon(i, newIcon, x, y);
+    public static void replaceBlockIcon(Block bl, String newIcon, int x, int y, boolean b){
+        Icon i = null;
+        try{
+            i = bl.getBlockTextureFromSide(0);
+        }catch(NullPointerException e){
+            return;
+        }
+        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, bl.getUnlocalizedName2(), b);
+    }
+
+    public static void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){
+        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, orig, b);
     }
 
     public void callback(int i){}

@@ -182,8 +182,18 @@ public class OldDaysTextureManager{
         renderEngine.updateDynamicTextures();
     }
 
-    public void replaceIcon(Icon icon, String newIcon, int x, int y){
+    public void replaceIcon(Icon icon, String newIcon, int x, int y, String origIcon, boolean b){
+        if (icon == null){
+            return;
+        }
+        b = b && hasEntry(newIcon);
         Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
+        if (!b){
+            x = 0;
+            y = 0;
+            int type = (Integer)(mod_OldDays.getField(Texture.class, sheet, 2));
+            newIcon = "/textures/" + (type == 1 ? "blocks/" : "items/") + origIcon + ".png";
+        }
         boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));

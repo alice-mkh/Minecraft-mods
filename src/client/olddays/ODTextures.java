@@ -57,16 +57,18 @@ public class ODTextures extends OldDaysModule{
     public void callback (int i){
         boolean fallback = !hasTextures("olddays/textures.png");
         switch(i){
+            case 1: replaceBlockIcon(Block.cobblestone, "/olddays/textures.png", Cobblestone, 0, Cobblestone < 2); break;
+            case 2: replaceBlockIcon(Block.cobblestoneMossy, "/olddays/textures.png", 2, 0, MossStone); break;
+            case 3: replaceBlockIcon(Block.stone, "/olddays/textures.png", 3, 0, Stone); break;
+            case 4: replaceBlockIcon(Block.brick, "/olddays/textures.png", 6 + Brick, 0, Brick < 2); break;
+            case 9: replaceBlockIcon(Block.planks, "/olddays/textures.png", 4 + Planks, 0, Planks < 2); break;
             case 13:setOreBlocks(); break;
             case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs && !fallback); break;
             case 25:setTextureHook("/mob/slime.png", "/olddays/slime.png", Slimes && !fallback); break;
             case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve && !fallback); break;
             case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
             case 28:setTextureHook("/environment/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
-            case 34:refreshTextureFXes(true); break;
-        }
-        if (i >= 1 && i <= 23 || i >= 29 && i <= 34){
-            refreshIconReplacements();
+            case 34:refreshTextureFXes(true); refreshIconReplacements(); break;
         }
     }
 
@@ -192,13 +194,10 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void refreshIconReplacements(){
-        if (core.getField(BlockFluid.class, Block.waterStill, 0) == null){
-            return;
-        }
-        if (Cobblestone < 2){
-            replaceIcon(Block.cobblestone.getBlockTextureFromSide(0), "/olddays/textures.png", Cobblestone, 0);
-        }else{
-            replaceIcon(Block.cobblestone.getBlockTextureFromSide(0), "/textures/blocks/stonebrick.png", 0, 0);
+        for (int i = 1; i < 34; i++){
+            if (i <= 23 || i >= 29){
+                callback(i);
+            }
         }
     }
 
