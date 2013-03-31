@@ -71,6 +71,7 @@ class ContainerCreativeOld extends Container
             Block.waterlily,
             Block.tallGrass,
             Block.chest,
+            Block.chestTrapped,
             Block.enderChest,
             Block.workbench,
             Block.glass,
@@ -89,6 +90,7 @@ class ContainerCreativeOld extends Container
             Block.rail,
             Block.railPowered,
             Block.railDetector,
+            Block.railActivator,
             Block.torchWood,
             Block.stairsWoodOak,
             Block.stairsWoodSpruce,
@@ -102,6 +104,8 @@ class ContainerCreativeOld extends Container
             Block.lever,
             Block.pressurePlateStone,
             Block.pressurePlatePlanks,
+            Block.pressurePlateGold,
+            Block.pressurePlateIron,
             Block.torchRedstoneActive,
             Block.woodenButton,
             Block.stoneButton,
@@ -111,7 +115,14 @@ class ContainerCreativeOld extends Container
             Block.redstoneLampIdle,
             Block.anvil,
             Block.beacon,
-            Block.commandBlock
+            Block.commandBlock,
+            Block.daylightSensor,
+            Block.hopperBlock,
+            Block.dropper,
+            Block.blockRedstone,
+            Block.oreNetherQuartz,
+            Block.blockNetherQuartz,
+            Block.stairCompactNetherQuartz
         };
 
         for (int j2 = 0; j2 < ablock.length; j2++)
