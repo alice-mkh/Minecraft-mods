@@ -30,7 +30,7 @@ public class BlockFarmlandOld extends BlockFarmland{
     {
         if (oldbreaking && !par1World.isRemote && par1World.rand.nextInt(4) == 0)
         {
-            par1World.setBlock(par2, par3, par4, Block.dirt.blockID, 0, 2);
+            par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
         }
     }
 }
