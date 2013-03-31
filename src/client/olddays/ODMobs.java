@@ -13,6 +13,7 @@ public class ODMobs extends OldDaysModule{
         new OldDaysPropertyInt(this,  8, 10,    11,    "Mobs", 11).setUseNames();
         new OldDaysPropertyInt(this,  9, 2,     6,     "Slimes", 6).setUseNames();
         new OldDaysPropertyBool(this, 10,false, false, "Endermen");
+        new OldDaysPropertyBool(this, 11,false, true,  "Squids");
     }
 
     @Override
@@ -64,6 +65,7 @@ public class ODMobs extends OldDaysModule{
                     set(EntitySkeleton.class, "custom", Mobs>=11); break;
             case 9: set(EntitySlime.class, "slimeSpawn", Slimes); break;
             case 10:set(EntityEnderman.class, "oldPicking", Endermen); break;
+            case 11:set(EntityWaterMob.class, "squidsNeedWater", Squids); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addEntity(EntitySteve.class, "Steve", 201);
@@ -85,4 +87,5 @@ public class ODMobs extends OldDaysModule{
     public static int Mobs = 10;
     public static int Slimes = 3;
     public static boolean Endermen;
+    public static boolean Squids;
 }
