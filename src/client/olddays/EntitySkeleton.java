@@ -9,17 +9,20 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     public static boolean survivaltest = false;
     public static boolean fast = false;
     public static boolean custom = true;
+    public static boolean pre15 = false;
 
     public boolean helmet;
     public boolean armor;
 
     private EntityAIArrowAttack aiArrowAttack;
+    private EntityAIArrowAttack2 oldAiArrowAttack;
     private EntityAIAttackOnCollide aiAttackOnCollide;
 
     public EntitySkeleton(World par1World)
     {
         super(par1World);
         aiArrowAttack = new EntityAIArrowAttack(this, 0.25F, 20, 60, 15F);
+        oldAiArrowAttack = new EntityAIArrowAttack2(this, 0.25F, 20, 60, 10F);
         aiAttackOnCollide = new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, 0.31F, false);
         texture = "/mob/skeleton.png";
         moveSpeed = 0.25F;
@@ -380,7 +383,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         }
         else
         {
-            tasks.addTask(4, aiArrowAttack);
+            tasks.addTask(4, pre15 ? oldAiArrowAttack : aiArrowAttack);
             addRandomArmor();
             if (!custom){
                 return;
@@ -409,11 +412,12 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     {
         tasks.removeTask(aiAttackOnCollide);
         tasks.removeTask(aiArrowAttack);
+        tasks.removeTask(oldAiArrowAttack);
         ItemStack itemstack = getHeldItem();
 
         if (itemstack != null && itemstack.itemID == Item.bow.itemID)
         {
-            tasks.addTask(4, aiArrowAttack);
+            tasks.addTask(4, pre15 ? oldAiArrowAttack : aiArrowAttack);
         }
         else
         {
@@ -426,10 +430,12 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
      */
     public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving, float par2)
     {
-        EntityArrow entityarrow = new EntityArrow(worldObj, this, par1EntityLiving, 1.6F, 14 - worldObj.difficultySetting * 4);
+        EntityArrow entityarrow = new EntityArrow(worldObj, this, par1EntityLiving, 1.6F, pre15 ? 12F : (14 - worldObj.difficultySetting * 4));
         int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, getHeldItem());
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, getHeldItem());
-        entityarrow.setDamage((double)(par2 * 2.0F) + (rand.nextGaussian() * 0.25D + (double)((float)worldObj.difficultySetting * 0.11F)));
+        if (!pre15){
+            entityarrow.setDamage((double)(par2 * 2.0F) + (rand.nextGaussian() * 0.25D + (double)((float)worldObj.difficultySetting * 0.11F)));
+        }
 
         if (i > 0)
         {
