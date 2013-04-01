@@ -116,6 +116,10 @@ actions.oldhardness.name=Antigua dureza de bloques
 actions.apples.name=Apples from leaves
  actions.apples.desc1=Disables apples dropping from leaves.
  actions.apples.desc2=§aAdded in 1.1.
+actions.oldbonemeal.name=Old bone meal
+ actions.oldbonemeal.desc1=One use is enough to
+ actions.oldbonemeal.desc2=fully grow anything.
+ actions.oldbonemeal.desc3=§aChanged in 1.5.
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros
@@ -271,7 +275,7 @@ gameplay.oldexplosion.name=Explosiones antiguas
 mobs.ai.name=IA de Mobs
  mobs.ai.desc1=Cambia el comportamiento de mobs.
  mobs.ai1=Indev
- //FIXME
+//FIXME
  mobs.ai1.desc=Mobs never stop and use pathfinding
  mobs.ai2=Alpha
  mobs.ai2.desc=Más tranquilos y saltan menos
@@ -281,6 +285,9 @@ mobs.ai.name=IA de Mobs
  mobs.ai4.desc=IA super avanzada
  mobs.ai5=1.4
  mobs.ai5.desc=Distinto rango de visión
+//FIXME
+ mobs.ai6=1.5
+ mobs.ai6.desc=Zombie and skeleton changes, mobs avoid rails
 mobs.animalsflee.name=Pánico de animales
  mobs.animalsflee.desc1=Si se activa, los mobs
  mobs.animalsflee.desc2=correrán al dañarse.
@@ -356,9 +363,16 @@ mobs.slimes.name=Generación de slimes
  mobs.slimes5.desc=Menos slimes en mundos Super-llanos
  mobs.slimes6=1.4
  mobs.slimes6.desc=Limos en pantanos
+//FIXME
+ mobs.slimes6=1.5
+ mobs.slimes6.desc=Slimes in swamps depend on moon phase
 mobs.endermen.name=Enderman sin regla
  mobs.endermen.desc1=Deja a los enderman coger casi cualquier bloque.
  mobs.endermen.desc2=§aCambiado en 1.0.
+//FIXME
+mobs.squids.name=Squids need water
+ mobs.squids.desc1=Squids suffocate outside of water.
+ mobs.squids.desc2=§aAdded in 1.4.4.
 
 eyecandy.oldwalking.name=Animación antigua
  eyecandy.oldwalking.desc1=El jugador mueve los brazos
@@ -399,7 +413,10 @@ eyecandy.mainmenu.name=Menú principal
  eyecandy.mainmenu2=Beta 1.7.3
  eyecandy.mainmenu2.desc=No hay panorama
  eyecandy.mainmenu3=Beta 1.8.1
- eyecandy.mainmenu3.desc=Normal, panorama.
+//FIXME
+ eyecandy.mainmenu3.desc=Texture pack button
+ eyecandy.mainmenu4=1.5
+ eyecandy.mainmenu4.desc=Default
 eyecandy.olddigging.name=Antiguas trizas de bloques
  eyecandy.olddigging.desc1=Hace a los bloques usar la textura
  eyecandy.olddigging.desc2=de los lados en vez de la parte de
@@ -822,6 +839,9 @@ nbxlite.releasefeatures.name=Caraterísticas
  nbxlite.releasefeatures6.desc=Troncos rotados en las ramas
  nbxlite.releasefeatures7=1.4
  nbxlite.releasefeatures7.desc=Guaridas de brujas
+//FIXME
+ nbxlite.releasefeatures8=1.5
+ nbxlite.releasefeatures8.desc=Nether changes, minecarts in shafts
 nbxlite.generatenewores.name=Generar nuevos minerales
  nbxlite.generatenewores.desc1=Classic: §rDiamante, redstone, lapis
  nbxlite.generatenewores.desc2=Indev: §rRedstone, lapis
@@ -961,6 +981,8 @@ nbxlite.defaultfeaturesrelease.name=Default features
  nbxlite.defaultfeaturesrelease6.desc=Rotated logs for branches
  nbxlite.defaultfeaturesrelease7=1.4
  nbxlite.defaultfeaturesrelease7.desc=Swamp huts
+ nbxlite.defaultfeaturesrelease8=1.5
+ nbxlite.defaultfeaturesrelease8.desc=Nether changes, minecarts in shafts
 nbxlite.saplings.name=Oak saplings
  nbxlite.saplings.desc1=Sets trees oak sapling can grow.
  nbxlite.saplings1=Only normal

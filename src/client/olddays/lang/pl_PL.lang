@@ -114,6 +114,11 @@ actions.oldhardness.name=Stara wytrzymałość bloków
 actions.apples.name=Jabłka z liści
  actions.apples.desc1=Wyłącza jabłka wypadające z liści
  actions.apples.desc2=§aDodane w 1.1.
+//FIXME
+actions.oldbonemeal.name=Old bone meal
+ actions.oldbonemeal.desc1=One use is enough to
+ actions.oldbonemeal.desc2=fully grow anything.
+ actions.oldbonemeal.desc3=§aChanged in 1.5.
 
 bugs.boosters.name=Boostery
  bugs.boosters.desc1=Pozwala na przyśpieszenie wózków
@@ -276,6 +281,9 @@ mobs.ai.name=Inteligencja mobów
  mobs.ai4.desc=O wiele bardziej zaawansowana inteligencja
  mobs.ai5=1.4
  mobs.ai5.desc=Inny zasięg widoczności
+//FIXME
+ mobs.ai6=1.5
+ mobs.ai6.desc=Zombie and skeleton changes, mobs avoid rails
 mobs.animalsflee.name=Panika zwierząt
  mobs.animalsflee.desc1=Jeśli włączone, zwierzęta będą
  mobs.animalsflee.desc2=uciekać po otrzymaniu obrażeń.
@@ -351,9 +359,16 @@ mobs.slimes.name=Spawn slime'ów
  mobs.slimes5.desc=Mniej slime'ów w światach Superflat
  mobs.slimes6=1.4
  mobs.slimes6.desc=Slime'y na bagnach
+//FIXME
+ mobs.slimes6=1.5
+ mobs.slimes6.desc=Slimes in swamps depend on moon phase
 mobs.endermen.name=Nieograniczeni endermani
  mobs.endermen.desc1=Pozwala endermanom nieść prawie każdy blok
  mobs.endermen.desc2=§aZmienione w 1.0.
+//FIXME
+mobs.squids.name=Squids need water
+ mobs.squids.desc1=Squids suffocate outside of water.
+ mobs.squids.desc2=§aAdded in 1.4.4.
 
 eyecandy.oldwalking.name=Stare chodzenie
  eyecandy.oldwalking.desc1=Gracz wymachuje rękami podczas
@@ -394,7 +409,9 @@ eyecandy.mainmenu.name=Menu główne
  eyecandy.mainmenu2=Beta 1.7.3
  eyecandy.mainmenu2.desc=Bez panoramy
  eyecandy.mainmenu3=Beta 1.8.1
- eyecandy.mainmenu3.desc=Domyślne
+ eyecandy.mainmenu3.desc=Texture pack button
+ eyecandy.mainmenu4=1.5
+ eyecandy.mainmenu4.desc=Domyślne
 eyecandy.olddigging.name=Stare cząsteczki kopania
  eyecandy.olddigging.desc1=Powoduje, że pojawiają się cząsteczki
  eyecandy.olddigging.desc2=bocznej tekstury zamiast dolnej.
@@ -816,6 +833,9 @@ nbxlite.releasefeatures.name=Cechy
  nbxlite.releasefeatures6.desc=Obrócone pnie drzew jako gałęzie
  nbxlite.releasefeatures7=1.4
  nbxlite.releasefeatures7.desc=Bagienne chałupy
+//FIXME
+ nbxlite.releasefeatures8=1.5
+ nbxlite.releasefeatures8.desc=Nether changes, minecarts in shafts
 nbxlite.generatenewores.name=Wygeneruj nowe rudy
  nbxlite.generatenewores.desc1=Classic: §rDiament, czerwony kamień, lapis
  nbxlite.generatenewores.desc2=Indev: §rCzerwony kamień, lapis
@@ -954,6 +974,9 @@ nbxlite.defaultfeaturesrelease.name=Domyślne cechy
  nbxlite.defaultfeaturesrelease6.desc=Obrócone pnie drzew dla gałęzi
  nbxlite.defaultfeaturesrelease7=1.4
  nbxlite.defaultfeaturesrelease7.desc=Bagienne chałupy
+//FIXME
+ nbxlite.defaultfeaturesrelease8=1.5
+ nbxlite.defaultfeaturesrelease8.desc=Tree and Nether changes, minecarts in shafts
 nbxlite.saplings.name=Sadzonki dębów
  nbxlite.saplings.desc1=Ustawia rodzaje drzew jakie mogą wyrosnąć z tychże sadzonek.
  nbxlite.saplings1=Tylko normalne
