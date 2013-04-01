@@ -72,10 +72,10 @@ public class ItemFood extends Item
 
     public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
+        par1ItemStack.stackSize--;
         if(!heal){
-            par1ItemStack.stackSize--;
+            par3EntityPlayer.getFoodStats().addStats(this);
         }
-        par3EntityPlayer.getFoodStats().addStats(this);
         par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
         onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
         return par1ItemStack;
@@ -131,7 +131,7 @@ public class ItemFood extends Item
                 par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
             }
         }else{
-            onFoodEaten(par1ItemStack, par2World, par3EntityPlayer);
+            onEaten(par1ItemStack, par2World, par3EntityPlayer);
             if (this.itemID==Item.bowlSoup.itemID){
                 return new ItemStack(Item.bowlEmpty);
             }
