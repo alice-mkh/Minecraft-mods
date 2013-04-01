@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 
 public class TextureCompassFX extends TextureFX
@@ -22,8 +20,7 @@ public class TextureCompassFX extends TextureFX
 
         try
         {
-            BufferedImage bufferedimage = ImageIO.read((net.minecraft.client.Minecraft.class).getResource("/olddays/compass.png"));
-            bufferedimage.getRGB(0, 0, 16, 16, compassIconImageData, 0, 16);
+            getImage("/olddays/compass.png").getRGB(0, 0, 16, 16, compassIconImageData, 0, 16);
         }
         catch (IOException ioexception)
         {

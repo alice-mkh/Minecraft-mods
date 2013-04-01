@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 
 public abstract class TextureFX extends TextureStitched{
@@ -38,5 +41,11 @@ public abstract class TextureFX extends TextureStitched{
                 textureSheet.copyFrom(originX + 16 * i, originY + 16 * j, tmp, rotated);
             }
         }
+    }
+
+    protected BufferedImage getImage(String str) throws IOException{
+        TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
+        ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
+        return ImageIO.read(texpack.getResourceAsStream(str));
     }
 }

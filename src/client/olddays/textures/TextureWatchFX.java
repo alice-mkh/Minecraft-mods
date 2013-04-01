@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 
 public class TextureWatchFX extends TextureFX
@@ -25,10 +23,8 @@ public class TextureWatchFX extends TextureFX
 
         try
         {
-            BufferedImage bufferedimage = ImageIO.read((Minecraft.class).getResource("/olddays/clock.png"));
-            bufferedimage.getRGB(0, 0, 16, 16, watchIconImageData, 0, 16);
-            bufferedimage = ImageIO.read((Minecraft.class).getResource("/misc/dial.png"));
-            bufferedimage.getRGB(0, 0, 16, 16, dialImageData, 0, 16);
+            getImage("/olddays/clock.png").getRGB(0, 0, 16, 16, watchIconImageData, 0, 16);
+            getImage("/misc/dial.png").getRGB(0, 0, 16, 16, dialImageData, 0, 16);
         }
         catch (IOException ioexception)
         {
