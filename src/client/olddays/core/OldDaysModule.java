@@ -149,7 +149,7 @@ public class OldDaysModule{
             return;
         }
         String str = it.getUnlocalizedName();
-        str = str.substring(5, str.length());
+        str = str.substring(5);
         mod_OldDays.texman.replaceIcon(i, newIcon, x, y, "/textures/items/" + str + ".png", b);
     }
 

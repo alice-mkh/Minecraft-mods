@@ -516,9 +516,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         sndManager.loadSoundSettings(gameSettings);
         renderGlobal = new RenderGlobal(this, renderEngine);
         renderEngine.refreshTextureMaps();
-        for (Mod mod : mods){
-            mod.refreshTextures();
-        }
         GL11.glViewport(0, 0, displayWidth, displayHeight);
         effectRenderer = new EffectRenderer(theWorld, renderEngine);
 

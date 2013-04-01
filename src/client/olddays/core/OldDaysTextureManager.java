@@ -12,13 +12,15 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 public class OldDaysTextureManager{
+    private mod_OldDays core;
     private RenderEngine renderEngine;
     protected ArrayList<TextureHook> textureHooks;
     protected ArrayList<TextureStitched> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
-    public OldDaysTextureManager(){
+    public OldDaysTextureManager(mod_OldDays olddays){
+        core = olddays;
         renderEngine = mod_OldDays.getMinecraft().renderEngine;
         textureHooks = new ArrayList<TextureHook>();
         textureFXList = new ArrayList<TextureStitched>();
@@ -42,6 +44,7 @@ public class OldDaysTextureManager{
         if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
             entryCache.clear();
+            core.refreshTextures();
             setFallback(!hasEntry("olddays"));
         }
     }
@@ -126,7 +129,7 @@ public class OldDaysTextureManager{
 
     public boolean hasIcons(boolean items, String... str){
         for (String s : str){
-            s = "/textures/" + (items ? "items" : "terrain") + "/" + s + ".png";
+            s = "textures/" + (items ? "items" : "terrain") + "/" + s + ".png";
         }
         return hasEntry(str);
     }
@@ -201,7 +204,8 @@ public class OldDaysTextureManager{
         if (icon == null){
             return;
         }
-        b = b && hasEntry(newIcon);
+//         System.out.println(newIcon+" "+origIcon);
+        b = b && newIcon.length() > 0 && hasEntry(newIcon.substring(1));
         if (!b){
             x = 0;
             y = 0;
@@ -213,7 +217,9 @@ public class OldDaysTextureManager{
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
         int[] ints = new int[width * height];
         try{
-            ImageIO.read(getClass().getResource(newIcon)).getRGB(x * width, y * height, width, height, ints, 0, width);
+            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
+            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
+            ImageIO.read(texpack.getResourceAsStream(newIcon)).getRGB(x * width, y * height, width, height, ints, 0, width);
         }catch(Exception e){
             e.printStackTrace();
         }

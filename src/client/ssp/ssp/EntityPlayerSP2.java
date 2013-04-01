@@ -615,26 +615,10 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         if (entity != null)
         {
-            if (entity instanceof EntityLiving)
-            {
-                setRevengeTarget((EntityLiving)entity);
-            }
+            setRevengeTarget((EntityLiving)entity);
 
-            if (entity instanceof EntityPlayer)
-            {
-                recentlyHit = 60;
-                attackingPlayer = (EntityPlayer)entity;
-            }
-            else if (entity instanceof EntityWolf)
-            {
-                EntityWolf entitywolf = (EntityWolf)entity;
-
-                if (entitywolf.isTamed())
-                {
-                    recentlyHit = 60;
-                    attackingPlayer = null;
-                }
-            }
+            recentlyHit = 60;
+            attackingPlayer = (EntityPlayer)entity;
         }
 
         if (flag)

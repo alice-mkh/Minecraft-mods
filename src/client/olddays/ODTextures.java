@@ -94,7 +94,7 @@ public class ODTextures extends OldDaysModule{
             case 31:replaceBlockIcon(Block.netherrack, "/olddays/textures.png", 1, 4, Netherrack); break;
             case 32:setArmor(LeatherArmor && !fallback); break;
             case 33:setFood(); break;
-            case 34:refreshTextureFXes(true); refreshIconReplacements(); break;
+            case 34:refreshTextureFXes(true); break;
         }
     }
 
@@ -167,7 +167,7 @@ public class ODTextures extends OldDaysModule{
     @Override
     public void refreshTextures(){
         refreshTextureFXes(false);
-        refreshIconReplacements();
+//         refreshIconReplacements();
     }
 
     private void refreshTextureFXes(boolean refreshBlocks){
@@ -348,7 +348,7 @@ public class ODTextures extends OldDaysModule{
                 break;
             }
             String str = items[i].getUnlocalizedName();
-            str = "/textures/items/" + str.substring(5, str.length()) + ".png";
+            str = "/textures/items/" + str.substring(5) + ".png";
             replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
             eraseIcon(icon2, str, !b);
         }

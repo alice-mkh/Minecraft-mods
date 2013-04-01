@@ -94,7 +94,7 @@ public class SavingManager{
                         core.sendCallback(id, i);
                     }catch(Exception ex2){
                         System.out.println("OldDays: Error with loading property "+prop.field.getName()+" in module "+module.name);
-                        System.out.println(ex2);
+                        ex2.printStackTrace();
                     }
                 }
             }
@@ -218,7 +218,7 @@ public class SavingManager{
                 str = str.substring(9, str.lastIndexOf('!'));
             }catch(Exception e2){
                 str = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-                str = str.substring(5, str.length());
+                str = str.substring(5);
             }
             str = str.replace("%20", " ").replace("%23", "#");
             ZipFile jar = new ZipFile(str);

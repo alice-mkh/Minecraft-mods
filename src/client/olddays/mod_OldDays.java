@@ -15,14 +15,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class mod_OldDays extends Mod{
-
     public mod_OldDays(){
-        texman = new OldDaysTextureManager();
+        texman = new OldDaysTextureManager(this);
         saveman = new SavingManager(this);
         smpman = new SMPManager(this);
         modules = new ArrayList<OldDaysModule>();
         lang = new OldDaysEasyLocalization("olddays");
         keyBindings = new ArrayList<KeyBinding>();
+        resetOptionsForNextWorld = false;
     }
 
     @Override
@@ -126,6 +126,7 @@ public class mod_OldDays extends Mod{
                 getModuleById(id).readAdditionalPackageData(data2);
             }
             System.out.println("Received "+getModuleById(id).name+" module.");
+            resetOptionsForNextWorld = true;
             return;
         }
         if (packet.getId() == SMPManager.PACKET_S2C_SEED){
@@ -404,7 +405,10 @@ public class mod_OldDays extends Mod{
             OldDaysModule module = modules.get(i);
             module.onLoadingSP(par1Str, par2Str);
         }
-        saveman.loadAll();
+        if (resetOptionsForNextWorld){
+            saveman.loadAll();
+            resetOptionsForNextWorld = false;
+        }
     }
 
     public static boolean isVanillaSMP(){
@@ -454,4 +458,5 @@ public class mod_OldDays extends Mod{
     public static ArrayList<OldDaysModule> modules;
     public static OldDaysEasyLocalization lang;
     public static ArrayList<KeyBinding> keyBindings;
+    public static boolean resetOptionsForNextWorld;
 }
