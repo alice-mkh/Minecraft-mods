@@ -20,6 +20,8 @@ public class GuiMainMenu extends GuiScreen
     public static String version = "OFF";
     public static boolean panorama = true;
     public static boolean oldlogo = false;
+    public static boolean texturepacks = true;
+
     String minecraftLogo[] = {
         " *   * * *   * *** *** *** *** *** ***",
         " ** ** * **  * *   *   * * * * *    * ",
@@ -29,6 +31,9 @@ public class GuiMainMenu extends GuiScreen
     };
     private LogoEffectRandomizer logoEffects[][];
     public static boolean replaceGuiSelectWorld = true;
+
+    public GuiButton onlineButton;
+    public GuiButton texturePackButton;
 
     /** The RNG used by the Main Menu Screen. */
     private static final Random rand = new Random();
@@ -212,6 +217,9 @@ public class GuiMainMenu extends GuiScreen
             buttonList.add(new GuiButton(0, width / 2 - 100, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.options")));
             buttonList.add(new GuiButton(4, width / 2 + 2, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.quit")));
         }
+        if (texturepacks && texturePackButton == null){
+            buttonList.add(new GuiButton(10, width / 2 - 100, i + 48, stringtranslate.translateKey("options.texture.pack")));
+        }
 
         buttonList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
         field_92025_p = "";
@@ -254,7 +262,15 @@ public class GuiMainMenu extends GuiScreen
 
     private void func_98060_b(StringTranslate par1StringTranslate, int par2, int par3)
     {
-        buttonList.add(new GuiButton(3, width / 2 - 100, par2 + par3 * 2, par1StringTranslate.translateKey("menu.online")));
+        if (texturepacks){
+            buttonList.add(onlineButton = new GuiButton(3, width / 2 + 2, par2 + par3 * 2, 98, 20, par1StringTranslate.translateKey("menu.online")));
+            if (texturePackButton != null){
+                buttonList.remove(texturePackButton);
+            }
+            buttonList.add(texturePackButton = new GuiButton(10, width / 2 - 100, par2 + par3 * 2, 98, 20, par1StringTranslate.translateKey("options.texture.pack")));
+        }else{
+            buttonList.add(onlineButton = new GuiButton(3, width / 2 - 100, par2 + par3 * 2, par1StringTranslate.translateKey("menu.online")));
+        }
     }
 
     /**
@@ -315,6 +331,11 @@ public class GuiMainMenu extends GuiScreen
         if (par1GuiButton.id == 4)
         {
             mc.shutdown();
+        }
+
+        if (par1GuiButton.id == 10)
+        {
+            mc.displayGuiScreen(new GuiTexturePacks(this, mc.gameSettings));
         }
 
         if (par1GuiButton.id == 11)

@@ -14,7 +14,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   6, true,  "OldChest");
         new OldDaysPropertyBool(this,   7, true,  "MobLabels");
         new OldDaysPropertyBool(this,   8, false, "MobArmor").setRefreshOnFallback();
-        new OldDaysPropertyInt(this,    9, 0,     "MainMenu", 2).setUseNames();
+        new OldDaysPropertyInt(this,    9, 0,     "MainMenu", 3).setUseNames();
         new OldDaysPropertyBool(this,   10,true,  "OldDigging");
         new OldDaysPropertyBool(this,   11,true,  "OldWires");
         new OldDaysPropertyInt(this,    12,1,     "Tooltips", 2).setUseNames();
@@ -60,7 +60,8 @@ public class ODEyecandy extends OldDaysModule{
                     set(RenderZombie2.class, "fallback", !hasTextures("olddays/plate.png"));
                     set(RenderSkeleton2.class, "fallback", !hasTextures("olddays/plate.png")); break;
             case 9: set(GuiMainMenu.class, "panorama", MainMenu>1);
-                    set(GuiMainMenu.class, "oldlogo", MainMenu<1); break;
+                    set(GuiMainMenu.class, "oldlogo", MainMenu<1);
+                    set(GuiMainMenu.class, "texturepacks", MainMenu<3); break;
             case 10:set(EntityDiggingFX.class, "oldparticles", OldDigging); break;
             case 11:set(BlockRedstoneWireOld.class, "cross", OldWires);
                     reload(); break;
