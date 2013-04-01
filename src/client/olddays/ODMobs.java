@@ -33,7 +33,9 @@ public class ODMobs extends OldDaysModule{
                     set(EntityLiving.class, "oldrange", AI<4);
                     set(EntityCreeper.class, "oldrange", AI<4);
                     set(EntityAITarget.class, "oldai", AI<4);
-                    set(PathFinder.class, "oldai", AI<5); break;
+                    set(PathFinder.class, "oldai", AI<5);
+                    set(EntityLiving.class, "pre15", AI<5);
+                    set(EntityZombie.class, "pre15", AI<5); break;
             case 2: set(EntityAIPanic.class, "disablePanic", !AnimalsFlee);
                     set(EntityCreature.class, "nopanic", !AnimalsFlee); break;
             case 3: set(EntitySheep.class, "caneatgrass", SheepEatGrass); break;

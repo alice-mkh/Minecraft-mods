@@ -8,6 +8,7 @@ public class EntityZombie extends EntityMob
     public static boolean burns = true;
     public static boolean defense = true;
     public static boolean custom = true;
+    public static boolean pre15 = false;
 
     public boolean helmet;
     public boolean armor;
@@ -35,7 +36,7 @@ public class EntityZombie extends EntityMob
         tasks.addTask(6, new EntityAIWander(this, moveSpeed));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 8F));
         tasks.addTask(7, new EntityAILookIdle(this));
-        targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+        targetTasks.addTask(1, new EntityAIHurtByTarget(this, !pre15));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
         targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityVillager.class, 16F, 0, false));
     }
@@ -215,7 +216,7 @@ public class EntityZombie extends EntityMob
     {
         ItemStack itemstack = getHeldItem();
         float f = (float)(getMaxHealth() - getHealth()) / (float)getMaxHealth();
-        int i = 3 + MathHelper.floor_float(f * 4F);
+        int i = pre15 ? 4 : (3 + MathHelper.floor_float(f * 4F));
 
         if (itemstack != null)
         {

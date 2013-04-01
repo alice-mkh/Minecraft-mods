@@ -17,6 +17,7 @@ public abstract class EntityLiving extends Entity
     public static boolean enablescore = false;
     public static boolean oldswing = false;
     public static boolean oldrange = false;
+    public static boolean pre15 = false;
 
     public boolean newai(){
         if (this instanceof EntityOcelot){
@@ -399,7 +400,7 @@ public abstract class EntityLiving extends Entity
         moveHelper = new EntityMoveHelper(this);
         jumpHelper = new EntityJumpHelper(this);
         bodyHelper = new EntityBodyHelper(this);
-        navigator = new PathNavigate(this, par1World, func_96121_ay());
+        navigator = new PathNavigate(this, par1World, pre15 ? 16F : func_96121_ay());
         senses = new EntitySenses(this);
         field_70770_ap = (float)(Math.random() + 1.0D) * 0.01F;
         setPosition(posX, posY, posZ);
