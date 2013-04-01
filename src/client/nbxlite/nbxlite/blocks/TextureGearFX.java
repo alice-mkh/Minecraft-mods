@@ -4,9 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import net.minecraft.src.Block;
+import net.minecraft.src.ITexturePack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TextureFX;
+import net.minecraft.src.TexturePackList;
 import net.minecraft.src.ODNBXlite;
+import net.minecraft.src.mod_OldDays;
 
 public class TextureGearFX extends TextureFX
 {
@@ -21,8 +24,10 @@ public class TextureGearFX extends TextureFX
         this.h = ((par2 << 1) - 1);
         tickCounter = 2;
         try{
-            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
-            ImageIO.read((net.minecraft.src.nbxlite.blocks.TextureGearFX.class).getResource("/olddays/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
+            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
+            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
+            ImageIO.read(texpack.getResourceAsStream("/olddays/gear.png")).getRGB(0, 0, 32, 32, gear, 0, 32);
+            ImageIO.read(texpack.getResourceAsStream("/olddays/gearmiddle.png")).getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
         }catch (IOException localIOException){
             localIOException.printStackTrace();
         }
