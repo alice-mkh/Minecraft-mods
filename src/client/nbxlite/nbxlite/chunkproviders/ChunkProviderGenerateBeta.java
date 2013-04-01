@@ -265,7 +265,9 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
 
     @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
-        caveGenerator.generate(this, worldObj, i, j, abyte0);
+        if (abyte0 != null){
+            caveGenerator.generate(this, worldObj, i, j, abyte0);
+        }
         if(mapFeaturesEnabled)
         {
             ravineGenerator.generate(this, worldObj, i, j, abyte0);

@@ -231,9 +231,11 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
 
     @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
-        caveGenerator.generate(this, worldObj, i, j, abyte0);
-        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
-            ravineGenerator.generate(this, worldObj, i, j, abyte0);
+        if (abyte0 != null){
+            caveGenerator.generate(this, worldObj, i, j, abyte0);
+            if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181){
+                ravineGenerator.generate(this, worldObj, i, j, abyte0);
+            }
         }
         if (mapFeaturesEnabled)
         {
@@ -253,7 +255,7 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
                 templeGenerator.generate(this, worldObj, i, j, abyte0);
             }
         }
-        if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
+        if (abyte0 != null && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA181){
             ravineGenerator.generate(this, worldObj, i, j, abyte0);
         }
     }

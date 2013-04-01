@@ -189,7 +189,9 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
 
     @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
-        caveGenerator.generate(this, worldObj, i, j, abyte0);
+        if (abyte0 != null){
+            caveGenerator.generate(this, worldObj, i, j, abyte0);
+        }
         if (mapFeaturesEnabled){
             strongholdGen.generate(this, worldObj, i, j, abyte0);
         }
