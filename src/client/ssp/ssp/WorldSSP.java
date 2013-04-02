@@ -1603,6 +1603,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                 long l = worldInfo.getWorldTotalTime() + 24000L;
                 worldInfo.setWorldTime(l - l % 24000L);
                 func_82738_a(l - l % 24000L);
+                field_35467_J = 0D;
+                field_35468_K = 0D;
                 wakeUpAllPlayers();
             }
         }
