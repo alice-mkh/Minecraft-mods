@@ -24,10 +24,8 @@ public class FakeServer extends IntegratedServer
         setDemo(par1Minecraft.isDemo());
         canCreateBonusChest(par4WorldSettings.isBonusChestEnabled());
         setBuildLimit(256);
-        setConfigurationManager(new FakeServerPlayerList(this));
         mc = par1Minecraft;
         field_71350_m = par4WorldSettings;
-        commandManager2 = new ClientCommandManager();
         worldServers = new WorldServer[3];
 //         for (int i = 0; i < worldServers.length; i++){
 //             worldServers[i] = new FakeWorldServer(this, (WorldSSP)par1Minecraft.theWorld, par4WorldSettings);
@@ -269,5 +267,15 @@ public class FakeServer extends IntegratedServer
     public ICommandManager getCommandManager()
     {
         return commandManager2;
+    }
+
+    public void setCommandManager(ICommandManager i)
+    {
+        commandManager2 = i;
+    }
+
+    @Override
+    public ILogAgent getLogAgent(){
+        return Minecraft.getMinecraft().getLogAgent();
     }
 }

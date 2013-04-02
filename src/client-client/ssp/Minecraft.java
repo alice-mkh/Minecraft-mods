@@ -2818,6 +2818,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     {
         changeWorld1(null);
         System.gc();
+        WorldSettings par3WorldSettings2 = null;
+        if (par3WorldSettings == null){
+            ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
+            par3WorldSettings2 = new WorldSettings(isavehandler.loadWorldInfo());
+        }else{
+            par3WorldSettings2 = par3WorldSettings;
+        }
+        theIntegratedServer = new FakeServer(this, par1Str, par2Str, par3WorldSettings2);
         for (Mod mod : mods){
             mod.onLoadingSP(par1Str, par2Str);
         }
@@ -2858,13 +2866,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
         }
         lastWorld = par1Str;
-        if (sspoptions.getFakeServer()){
-            if (par3WorldSettings == null){
-                ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
-                par3WorldSettings = new WorldSettings(isavehandler.loadWorldInfo());
-            }
-            theIntegratedServer = new FakeServer(this, par1Str, par2Str, par3WorldSettings);
-        }
+        theIntegratedServer.setConfigurationManager(new FakeServerPlayerList((FakeServer)theIntegratedServer));
+        ((FakeServer)theIntegratedServer).setCommandManager(new ClientCommandManager());
     }
 
     /**
