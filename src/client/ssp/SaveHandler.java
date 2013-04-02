@@ -76,9 +76,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
      */
     public void checkSessionLock() throws MinecraftException
     {
-        if (net.minecraft.client.Minecraft.getMinecraft().sspoptions.getFakeServer()){
-            return;
-        }
         try
         {
             File file = new File(worldDirectory, "session.lock");
