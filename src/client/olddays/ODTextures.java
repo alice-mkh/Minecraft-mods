@@ -51,6 +51,7 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
         replaceBlocks();
+        prevProcedural = Procedural;
     }
 
     @Override
@@ -133,6 +134,8 @@ public class ODTextures extends OldDaysModule{
     public static boolean Food = true;
     public static boolean Procedural = false;
 
+    private static boolean prevProcedural;
+
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.blockSteel.blockID] = null;
@@ -174,8 +177,13 @@ public class ODTextures extends OldDaysModule{
         if (core.getField(BlockFluid.class, Block.waterStill, 0) == null){
             return;
         }
+        if (refreshBlocks && Procedural == prevProcedural){
+            return;
+        }
+        prevProcedural = Procedural;
         if (!Procedural){
             core.texman.removeTextureFXes();
+            refreshIconReplacements();
             return;
         }
         TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
@@ -187,6 +195,7 @@ public class ODTextures extends OldDaysModule{
 
         if (refreshBlocks){
             core.getMinecraft().renderEngine.refreshTextures();
+            refreshIconReplacements();
         }
 
         Icon origWater = BlockFluid.func_94424_b("water");

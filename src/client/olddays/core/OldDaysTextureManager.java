@@ -224,16 +224,14 @@ public class OldDaysTextureManager{
             e.printStackTrace();
         }
         Texture tex = new Texture(newIcon, 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
-        byte[] bytes = new byte[ints.length * 4];
+        tex.getTextureData().position(0);
         for (int i = 0; i < ints.length; i++){
             int color = ints[i];
-            bytes[i * 4 + 0] = (byte)(color >> 16 & 0xFF);
-            bytes[i * 4 + 1] = (byte)(color >> 8 & 0xFF);
-            bytes[i * 4 + 2] = (byte)(color & 0xFF);
-            bytes[i * 4 + 3] = (byte)(color >>> 24 & 0xFF);
+            tex.getTextureData().put((byte)(color >> 16 & 0xFF));
+            tex.getTextureData().put((byte)(color >> 8 & 0xFF));
+            tex.getTextureData().put((byte)(color & 0xFF));
+            tex.getTextureData().put((byte)(color >> 24 & 0xFF));
         }
-        tex.getTextureData().position(0).limit(bytes.length);
-        tex.getTextureData().put(bytes);
         tex.getTextureData().clear();
         sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
     }
