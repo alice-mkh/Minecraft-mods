@@ -23,15 +23,20 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         registerCommand(new CommandClientExperience());
         registerCommand(new CommandClientTp());
         registerCommand(new CommandClientGive());
+        registerCommand(new CommandClientEffect());
+//         registerCommand(new CommandEnchant());
         registerCommand(new CommandClientEmote());
         registerCommand(new CommandClientShowSeed());
         registerCommand(new CommandClientHelp());
         registerCommand(new CommandClientDebug());
-        registerCommand(new CommandClientPublishLocal());
+//         registerCommand(new CommandServerMessage());
         registerCommand(new CommandClientSay());
         registerCommand(new CommandClientSetSpawnpoint());
         registerCommand(new CommandClientGameRule());
         registerCommand(new CommandClientClear());
+//         registerCommand(new ServerCommandTestFor());
+//         registerCommand(new ServerCommandScoreboard());
+        registerCommand(new CommandClientPublishLocal());
         Minecraft.getMinecraft().addCommandsSP(this);
         CommandBase.setAdminCommander(this);
     }

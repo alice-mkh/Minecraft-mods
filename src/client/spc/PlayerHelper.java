@@ -291,7 +291,7 @@ public class PlayerHelper {
       CMDS.put("dupe", new String[] { "Duplicates the selected itemstack.", "[all]", "all" });
       CMDS.put("duplicate", new String[] { "Duplicates the selected itemstack.", "[all]", "all" });
       CMDS.put("dropstore", new String[] { "Transfers everything in your inventory into a chest that it creates next to you.", "", "" });
-      CMDS.put("effect", new String[] { "Configures potion effects on the player", "<list|remove TYPE|add TYPE [DURATION] [STRENGTH]", "add 1 100 1" });
+      CMDS.put("effect2", new String[] { "Configures potion effects on the player", "<list|remove TYPE|add TYPE [DURATION] [STRENGTH]", "add 1 100 1" });
       CMDS.put("enchant", new String[] { "Enchants the currently selected item", "<list|remove|add TYPE [LEVEL]>", "add protection 10" });
       CMDS.put("enderman", new String[] { "Enderman command to enable/disable block pickup", "pickup [enable|disable]", "pickup disable" });
       CMDS.put("explode", new String[] { "Creates an explosion at the players current location.", "<SIZE>", "10" });
@@ -4783,7 +4783,7 @@ public class PlayerHelper {
          /*
           * Adds potion effects to the player
           */
-      } else if (split[0].equalsIgnoreCase("effect")) {
+      } else if (split[0].equalsIgnoreCase("effect2")) {
          if (split.length < 2) {
             sendError(ERRMSG_PARAM);
             return;
