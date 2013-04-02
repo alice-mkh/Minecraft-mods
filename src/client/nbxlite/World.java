@@ -1184,22 +1184,22 @@ public abstract class World implements IBlockAccess
             int k1 = getSavedLightValue(par1EnumSkyBlock, par2, par3, par4 - 1);
             if ((ODNBXlite.SurrWaterType==Block.waterStill.blockID||ODNBXlite.SurrWaterType==Block.waterMoving.blockID) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 if (isBounds3(par2-1, par3, par4)){
-                    j = ODNBXlite.getSkyLightInBounds2(par3);
+                    j = ODNBXlite.getLightInBounds(par1EnumSkyBlock, par3);
                 }
                 if (isBounds3(par2+1, par3, par4)){
-                    k = ODNBXlite.getSkyLightInBounds2(par3);
+                    k = ODNBXlite.getLightInBounds(par1EnumSkyBlock, par3);
                 }
                 if (isBounds3(par2, par3-1, par4)){
-                    l = ODNBXlite.getSkyLightInBounds2(par3-1);
+                    l = ODNBXlite.getLightInBounds(par1EnumSkyBlock, par3-1);
                 }
                 if (isBounds3(par2, par3+1, par4)){
-                    i1 = ODNBXlite.getSkyLightInBounds2(par3+1);
+                    i1 = ODNBXlite.getLightInBounds(par1EnumSkyBlock, par3+1);
                 }
                 if (isBounds3(par2, par3, par4-1)){
-                    j1 = ODNBXlite.getSkyLightInBounds2(par3);
+                    j1 = ODNBXlite.getLightInBounds(par1EnumSkyBlock, par3);
                 }
                 if (isBounds3(par2, par3, par4+1)){
-                    k1 = ODNBXlite.getSkyLightInBounds2(par3);
+                    k1 = ODNBXlite.getLightInBounds(par1EnumSkyBlock, par3);
                 }
             }
 
