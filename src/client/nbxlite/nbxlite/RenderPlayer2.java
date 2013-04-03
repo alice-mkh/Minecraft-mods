@@ -23,6 +23,11 @@ public class RenderPlayer2 extends RenderLiving
         modelArmor = new ModelBiped(0.5F);
     }
 
+    protected void func_98191_a(EntityPlayer par1EntityPlayer)
+    {
+        loadDownloadableImageTexture(par1EntityPlayer.skinUrl, par1EntityPlayer.getTexture());
+    }
+
     /**
      * Set the specified armor model as the player model. Args: player, armorSlot, partialTick
      */
@@ -500,6 +505,11 @@ public class RenderPlayer2 extends RenderLiving
     protected void renderLivingAt(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
         renderPlayerSleep((EntityPlayer)par1EntityLiving, par2, par4, par6);
+    }
+
+    protected void func_98190_a(EntityLiving par1EntityLiving)
+    {
+        func_98191_a((EntityPlayer)par1EntityLiving);
     }
 
     /**
