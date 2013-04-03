@@ -131,17 +131,17 @@ public class OldDaysModule{
         return mod_OldDays.texman.hasIcons(b, str);
     }
 
-    public static void replaceBlockIcon(Block bl, String newIcon, int x, int y, boolean b){
+    public void replaceBlockIcon(Block bl, String newIcon, int x, int y, boolean b){
         Icon i = null;
         try{
             i = bl.getBlockTextureFromSide(1);
         }catch(NullPointerException e){
             return;
         }
-        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, "/textures/blocks/" + bl.getUnlocalizedName2() + ".png", b);
+        replaceIcon(i, newIcon, x, y, "/textures/blocks/" + bl.getUnlocalizedName2() + ".png", b);
     }
 
-    public static void replaceItemIcon(Item it, String newIcon, int x, int y, boolean b){
+    public void replaceItemIcon(Item it, String newIcon, int x, int y, boolean b){
         Icon i = null;
         try{
             i = it.getIconFromDamage(0);
@@ -150,14 +150,14 @@ public class OldDaysModule{
         }
         String str = it.getUnlocalizedName();
         str = str.substring(5);
-        mod_OldDays.texman.replaceIcon(i, newIcon, x, y, "/textures/items/" + str + ".png", b);
+        replaceIcon(i, newIcon, x, y, "/textures/items/" + str + ".png", b);
     }
 
-    public static void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){
+    public void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){
         mod_OldDays.texman.replaceIcon(i, newIcon, x, y, orig, b);
     }
 
-    public static void eraseIcon(Icon i, String orig, boolean b){
+    public void eraseIcon(Icon i, String orig, boolean b){
         mod_OldDays.texman.eraseIcon(i, orig, b);
     }
 

@@ -204,7 +204,6 @@ public class OldDaysTextureManager{
         if (icon == null){
             return;
         }
-//         System.out.println(newIcon+" "+origIcon);
         b = b && newIcon.length() > 0 && hasEntry(newIcon.substring(1));
         if (!b){
             x = 0;
@@ -234,6 +233,48 @@ public class OldDaysTextureManager{
         }
         tex.getTextureData().clear();
         sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
+    }
+
+    public boolean copyIconFromSheet(Icon icon, String str, HashMap<String, Integer> indexMap){
+        if (!hasEntry(str.substring(1)) || icon == null || indexMap == null || !indexMap.containsKey(icon.getIconName())){
+            return false;
+        }
+        int index = indexMap.get(icon.getIconName());
+        if (index < 0 || index >= 256){
+            return false;
+        }
+        int x = index % 16;
+        int y = index / 16;
+        Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
+        int[] ints = null;
+        int width = 16;
+        int height = 16;
+        try{
+            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
+            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
+            BufferedImage image = ImageIO.read(texpack.getResourceAsStream(str));
+            width = image.getWidth() / 16;
+            height = image.getHeight() / 16;
+            ints = new int[width * height];
+            image.getRGB(x * width, y * height, width, height, ints, 0, width);
+            image = null;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        Texture tmp = new Texture(icon.getIconName(), 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        tmp.getTextureData().position(0);
+        for (int i = 0; i < ints.length; i++){
+            int color = ints[i];
+            tmp.getTextureData().put((byte)(color >> 16 & 0xFF));
+            tmp.getTextureData().put((byte)(color >> 8 & 0xFF));
+            tmp.getTextureData().put((byte)(color & 0xFF));
+            tmp.getTextureData().put((byte)(color >> 24 & 0xFF));
+        }
+        tmp.getTextureData().clear();
+        boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
+        sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tmp, rot);
+        return true;
     }
 
     private class TextureHook{

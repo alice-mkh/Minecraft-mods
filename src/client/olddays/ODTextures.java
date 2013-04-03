@@ -39,6 +39,7 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
         new OldDaysPropertyBool(this, 33,true,  "Food");
         new OldDaysPropertyBool(this, 34,true,  "Procedural");
+        new OldDaysPropertyBool(this, 35,false, "TerrainPng");
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
                 getPropertyById(i).setFallback("olddays/textures.png");
@@ -50,6 +51,7 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(27).setFallback("olddays/explosion.png");
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
+        getPropertyById(35).setFallback("terrain.png", "gui/items.png");
         replaceBlocks();
         prevProcedural = Procedural;
     }
@@ -96,6 +98,7 @@ public class ODTextures extends OldDaysModule{
             case 32:setArmor(LeatherArmor && !fallback); break;
             case 33:setFood(); break;
             case 34:refreshTextureFXes(true); break;
+            case 35:copyTerrainPng(); copyGuiItemsPng(); refreshIconReplacements(); break;
         }
     }
 
@@ -133,6 +136,7 @@ public class ODTextures extends OldDaysModule{
     public static boolean LeatherArmor = true;
     public static boolean Food = true;
     public static boolean Procedural = false;
+    public static boolean TerrainPng = false;
 
     private static boolean prevProcedural;
 
@@ -171,6 +175,8 @@ public class ODTextures extends OldDaysModule{
     public void refreshTextures(){
         refreshTextureFXes(false);
 //         refreshIconReplacements();
+        copyTerrainPng();
+        copyGuiItemsPng();
     }
 
     private void refreshTextureFXes(boolean refreshBlocks){
@@ -229,6 +235,8 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void refreshIconReplacements(){
+        copyTerrainPng();
+        copyGuiItemsPng();
         for (int i = 1; i < 34; i++){
             if (i <= 23 || i >= 29){
                 callback(i);
@@ -365,5 +373,59 @@ public class ODTextures extends OldDaysModule{
         setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
         setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
         setTextureHook("/armor/cloth_2.png", "/olddays/cloth_empty.png", b);
+    }
+
+    private void copyTerrainPng(){
+        if (!TerrainPng){
+            return;
+        }
+        Icon[] icons = new Icon[256];
+        for (Icon i : icons){
+            if (i == null){
+                continue;
+            }
+            core.texman.copyIconFromSheet(i, "/terrain.png", terrainIndexMap);
+        }
+    }
+
+    private void copyGuiItemsPng(){
+        if (!TerrainPng){
+            return;
+        }
+        Icon[] icons = new Icon[256];
+        for (Icon i : icons){
+            if (i == null){
+                continue;
+            }
+            core.texman.copyIconFromSheet(i, "/gui/items.png", itemsIndexMap);
+        }
+    }
+
+    @Override
+    public void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){
+        if (TerrainPng){
+            if (i == null){
+                return;
+            }
+            if (!b || newIcon.length() <= 0 || !hasTextures(newIcon.substring(1))){
+                if (!(i instanceof TextureStitched)){
+                    return;
+                }
+                Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
+                boolean items = sheet.getTextureName().equals("items");
+                if (core.texman.copyIconFromSheet(i, items ? "/gui/items.png" : "/terrain.png", items ? itemsIndexMap : terrainIndexMap)){
+                    return;
+                }
+            }
+        }
+        super.replaceIcon(i, newIcon, x, y, orig, b);
+    }
+
+    private static HashMap<String, Integer> terrainIndexMap;
+    private static HashMap<String, Integer> itemsIndexMap;
+
+    static{
+        terrainIndexMap = new HashMap<String, Integer>();
+        itemsIndexMap = new HashMap<String, Integer>();
     }
 }
