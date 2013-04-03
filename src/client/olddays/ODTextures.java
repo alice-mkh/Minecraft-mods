@@ -385,6 +385,7 @@ public class ODTextures extends OldDaysModule{
         }
         Icon[] icons = new Icon[256];
         try{
+            Icon logIcons[] = (Icon[])(mod_OldDays.getField(BlockLog.class, Block.wood, 2));
             icons[0] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 0));
             icons[1] = Block.stone.getBlockTextureFromSide(0);
             icons[2] = Block.dirt.getBlockTextureFromSide(0);
@@ -392,7 +393,32 @@ public class ODTextures extends OldDaysModule{
             icons[4] = Block.planks.getBlockTextureFromSide(0);
             icons[5] = Block.stoneSingleSlab.getBlockTextureFromSideAndMetadata(2, 0);
             icons[6] = Block.stoneSingleSlab.getBlockTextureFromSideAndMetadata(0, 0);
+            icons[7] = Block.brick.getBlockTextureFromSide(0);
+            icons[8] = Block.tnt.getBlockTextureFromSide(2);
+            icons[9] = Block.tnt.getBlockTextureFromSide(1);
+            icons[10] = Block.tnt.getBlockTextureFromSide(0);
+            icons[11] = Block.web.getBlockTextureFromSide(0);
+            icons[12] = Block.plantRed.getBlockTextureFromSide(0);
+            icons[13] = Block.plantYellow.getBlockTextureFromSide(0);
+            //14 is animated
+            icons[15] = Block.sapling.getBlockTextureFromSide(0);
+            icons[16] = Block.cobblestone.getBlockTextureFromSide(0);
+            icons[17] = Block.bedrock.getBlockTextureFromSide(0);
+            icons[18] = Block.sand.getBlockTextureFromSide(0);
+            icons[19] = Block.gravel.getBlockTextureFromSide(0);
+            icons[20] = logIcons[0];
+            icons[21] = (Icon)(mod_OldDays.getField(BlockLog.class, Block.wood, 3));
+            icons[22] = Block.blockSteel.getBlockTextureFromSide(1);
+            icons[23] = Block.blockGold.getBlockTextureFromSide(1);
+            icons[24] = Block.blockDiamond.getBlockTextureFromSide(1);
+            icons[25] = Block.blockEmerald.getBlockTextureFromSide(1);
+
             icons[38] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 2));
+
+            icons[116] = logIcons[1];
+            icons[117] = logIcons[2];
+
+            icons[153] = logIcons[3];
         }catch(Exception e){}
         for (Icon i : icons){
             if (i == null){
@@ -407,6 +433,8 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         Icon[] icons = new Icon[256];
+        try{
+        }catch(Exception e){}
         for (Icon i : icons){
             if (i == null){
                 continue;
@@ -447,7 +475,32 @@ public class ODTextures extends OldDaysModule{
         terrainIndexMap.put("wood", 4);
         terrainIndexMap.put("stoneslab_side", 5);
         terrainIndexMap.put("stoneslab_top", 6);
+        terrainIndexMap.put("brick", 7);
+        terrainIndexMap.put("tnt_side", 8);
+        terrainIndexMap.put("tnt_top", 9);
+        terrainIndexMap.put("tnt_bottom", 10);
+        terrainIndexMap.put("web", 11);
+        terrainIndexMap.put("rose", 12);
+        terrainIndexMap.put("flower", 13);
+        //14 is animated
+        terrainIndexMap.put("sapling", 15);
+        terrainIndexMap.put("stonebrick", 16);
+        terrainIndexMap.put("bedrock", 17);
+        terrainIndexMap.put("sand", 18);
+        terrainIndexMap.put("gravel", 19);
+        terrainIndexMap.put("tree_side", 20);
+        terrainIndexMap.put("tree_top", 21);
+        terrainIndexMap.put("blockIron", 22);
+        terrainIndexMap.put("blockGold", 23);
+        terrainIndexMap.put("blockDiamond", 24);
+        terrainIndexMap.put("blockEmerald", 25);
+
         terrainIndexMap.put("grass_side_overlay", 38);
+
+        terrainIndexMap.put("tree_spruce", 116);
+        terrainIndexMap.put("tree_birch", 117);
+
+        terrainIndexMap.put("tree_jungle", 153);
 
         itemsIndexMap = new HashMap<String, Integer>();
     }
