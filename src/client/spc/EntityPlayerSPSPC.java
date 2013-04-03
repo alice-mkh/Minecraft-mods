@@ -25,7 +25,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     public static Object STARTUP;
     public String curmcversion;
     public static final String MCVERSION = "1.5.1";
-    public static final SPCVersion SPCVERSION = new SPCVersion("Single Player Commands","3.4",new Date(1333630063890L)); // 2012-04-05 22:47:43
+    public static final SPCVersion SPCVERSION = new SPCVersion("Single Player Commands","3.3",new Date(1333630063890L)); // 2012-04-05 22:47:43
     public Vector<String> missingRequiredClasses;
     public Vector<String> missingOptionalClasses;
 
@@ -308,41 +308,6 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     }
 
     /*
-     * showErrorFrame - shows a Swing JFrame containing troubleshooting information if SPC was installed incorrectly.
-     */
-    public void showErrorFrame() {
-        JFrame frame = new JFrame();
-        JTextPane textarea = new JTextPane();
-
-        frame.setBackground(Color.lightGray);
-        textarea.setContentType("text/html");
-
-        String text = "<html><p>";
-        text = text.concat("Single Player Commands v" + SPCVERSION.getVersion() + " for Minecraft version " + MCVERSION + "<br />");
-        text = text.concat("Running Minecraft version " + curmcversion + "<br />");
-        text = text.concat("You are missing the following class files necessary for <br />" + "Single Player Commands to operate:<br /><br /><ul>");
-        for (String missing : missingRequiredClasses) {
-            text = text.concat("<li>" + missing + "</li>");
-        }
-        text = text.concat("</ul><br />");
-
-        text = text.concat("Make sure that all of the class files listed above are in minecraft.jar.<br />");
-        text = text.concat("If they are not, copy them from your SPC download folder into minecraft.jar<br />" + "and try running Minecraft again.<br />");
-        text = text.concat("If errors persist, copy and paste this error log to <a href=\"http://bit.ly/spcmod\">http://bit.ly/spcmod</a> for help.");
-        text = text.concat("</p></html>");
-
-        textarea.setText(text);
-
-        frame.setLayout(new BorderLayout());
-        frame.add(textarea, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
-        addChatMessage("\2474" + "SPC Error: Not installed properly.");
-        addChatMessage("\2474" + "Check dialog window for more information.");
-        MESSAGESHOWN = new Object();
-    }
-
-    /*
      * initPlayerHelper - initializes the PlayerHelper variable. Only called if all necessary SPC files exist.
      */
     public void initPlayerHelper(Session session) {
@@ -351,7 +316,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
         multiplayer = mc.isMultiplayerWorld();
 
         if (STARTUP == null && !multiplayer) {
-            ph.sendMessage("\2478Single Player Commands (" + SPCVERSION.getVersion() + ") - http://bit.ly/spcmod");
+            ph.sendMessage("\2478Single Player Commands (" + SPCVERSION.getVersion() + ")");
             Calendar cal = Calendar.getInstance();
             if (cal.get(Calendar.DAY_OF_MONTH) == 25 && cal.get(Calendar.MONTH) == 11) {
                 String name = username == null || username.equalsIgnoreCase("") ? "" : "Dear " + username + ", ";
@@ -379,9 +344,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
          */
         if (!curmcversion.equalsIgnoreCase(MCVERSION)) {
             addChatMessage("\2474" + "Single Player Commands v" + SPCVERSION.getVersion() + " is not compatible with Minecraft v" + curmcversion);
-            addChatMessage("\2474" + "Visit http://bit.ly/spcmod to download the correct version.");
             System.err.println("Single Player Commands v" + SPCVERSION.getVersion() + " is not compatible with Minecraft v" + curmcversion);
-            System.err.println("Visit http://bit.ly/spcmod to download the correct version.");
         }
         Package p = EntityPlayerSP.class.getPackage();
         String prefix = p == null ? "" : p.getName() + ".";

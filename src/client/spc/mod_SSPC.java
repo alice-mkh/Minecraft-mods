@@ -17,7 +17,7 @@ public class mod_SSPC extends Mod{
 
     @Override
     public String getModVersion(){
-        return "3.4";
+        return "3.3";
     }
 
     @Override
