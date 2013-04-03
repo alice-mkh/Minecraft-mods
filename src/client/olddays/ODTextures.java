@@ -266,8 +266,8 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void setCloth(){
-        int[] beta =    new int[]{47, 18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  61};
-        int[] classic = new int[]{47, 45,  45,  32,  44,  36,  35,  24,  34,  40,  39,  41,  43,  38,  33,  46};
+        int[] beta =    new int[]{47, 31, 29, 27, 25, 23, 21, 19, 61, 30, 28, 26, 24, 22, 20, 18};
+        int[] classic = new int[]{47, 33, 43, 39, 34, 35, 44, 45, 46, 38, 41, 40, 24, 36, 32, 45};
         Icon[] icons = null;
         try{
             icons = (Icon[])(mod_OldDays.getField(BlockCloth.class, Block.cloth, 0));
