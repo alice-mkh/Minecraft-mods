@@ -108,6 +108,7 @@ public class OldDaysTextureManager{
                         entryCache.put(str[i], false);
                         return false;
                     }
+                    entryCache.put(str[i], true);
                 }else if (texpack instanceof TexturePackFolder){
                     File orig = ((File)mod_OldDays.getField(TexturePackImplementation.class, texpack, 2));
                     File file = new File(orig, str[i]);
@@ -132,8 +133,8 @@ public class OldDaysTextureManager{
     }
 
     public boolean hasIcons(boolean items, String... str){
-        for (String s : str){
-            s = "textures/" + (items ? "items" : "terrain") + "/" + s + ".png";
+        for (int i = 0; i < str.length; i++){
+            str[i] = "textures/" + (items ? "items" : "blocks") + "/" + str[i] + ".png";
         }
         return hasEntry(str);
     }
