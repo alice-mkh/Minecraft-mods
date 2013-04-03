@@ -96,12 +96,16 @@ public class OldDaysTextureManager{
         try{
             TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
             ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-            if (texpack instanceof TexturePackDefault){
-                return true;
-            }
             for (int i = 0; i < str.length; i++){
                 if (entryCache.containsKey(str[i])){
                     if (!entryCache.get(str[i])){
+                        return false;
+                    }
+                }else if (texpack instanceof TexturePackDefault){
+                    try{
+                        texpack.getResourceAsStream("/" + str[i]);
+                    }catch(Exception e){
+                        entryCache.put(str[i], false);
                         return false;
                     }
                 }else if (texpack instanceof TexturePackFolder){
