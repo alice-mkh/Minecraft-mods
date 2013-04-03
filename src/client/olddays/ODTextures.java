@@ -39,7 +39,7 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
         new OldDaysPropertyBool(this, 33,true,  "Food");
         new OldDaysPropertyBool(this, 34,true,  "Procedural");
-//         new OldDaysPropertyBool(this, 35,false, "TerrainPng");
+        new OldDaysPropertyBool(this, 35,false, "TerrainPng");
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
                 getPropertyById(i).setFallback("olddays/textures.png");
@@ -51,7 +51,7 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(27).setFallback("olddays/explosion.png");
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
-//         getPropertyById(35).setFallback("terrain.png", "gui/items.png");
+        getPropertyById(35).setFallback("terrain.png", "gui/items.png");
         replaceBlocks();
         prevProcedural = Procedural;
     }
@@ -98,7 +98,11 @@ public class ODTextures extends OldDaysModule{
             case 32:setArmor(LeatherArmor && !fallback); break;
             case 33:setFood(); break;
             case 34:refreshTextureFXes(true); break;
-            case 35:copyTerrainPng(); copyGuiItemsPng(); refreshIconReplacements(); break;
+            case 35:if (core.getMinecraft().theWorld != null){
+                        core.getMinecraft().renderEngine.refreshTextureMaps();
+                    }copyTerrainPng();
+                    copyGuiItemsPng();
+                    refreshIconReplacements(); break;
         }
     }
 
@@ -380,11 +384,16 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         Icon[] icons = new Icon[256];
-        icons[0] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 0));
-        icons[1] = Block.stone.getBlockTextureFromSide(0);
-        icons[2] = Block.dirt.getBlockTextureFromSide(0);
-        icons[3] = (Icon)(mod_OldDays.getField(Block.class, Block.grass, 195));
-        icons[38] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 2));
+        try{
+            icons[0] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 0));
+            icons[1] = Block.stone.getBlockTextureFromSide(0);
+            icons[2] = Block.dirt.getBlockTextureFromSide(0);
+            icons[3] = (Icon)(mod_OldDays.getField(Block.class, Block.grass, 195));
+            icons[4] = Block.planks.getBlockTextureFromSide(0);
+            icons[5] = Block.stoneSingleSlab.getBlockTextureFromSideAndMetadata(2, 0);
+            icons[6] = Block.stoneSingleSlab.getBlockTextureFromSideAndMetadata(0, 0);
+            icons[38] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 2));
+        }catch(Exception e){}
         for (Icon i : icons){
             if (i == null){
                 continue;
@@ -435,6 +444,9 @@ public class ODTextures extends OldDaysModule{
         terrainIndexMap.put("stone", 1);
         terrainIndexMap.put("dirt", 2);
         terrainIndexMap.put("grass_side", 3);
+        terrainIndexMap.put("wood", 4);
+        terrainIndexMap.put("stoneslab_side", 5);
+        terrainIndexMap.put("stoneslab_top", 6);
         terrainIndexMap.put("grass_side_overlay", 38);
 
         itemsIndexMap = new HashMap<String, Integer>();
