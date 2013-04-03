@@ -380,6 +380,11 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         Icon[] icons = new Icon[256];
+        icons[0] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 0));
+        icons[1] = Block.stone.getBlockTextureFromSide(0);
+        icons[2] = Block.dirt.getBlockTextureFromSide(0);
+        icons[3] = (Icon)(mod_OldDays.getField(Block.class, Block.grass, 195));
+        icons[38] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 2));
         for (Icon i : icons){
             if (i == null){
                 continue;
@@ -426,6 +431,12 @@ public class ODTextures extends OldDaysModule{
 
     static{
         terrainIndexMap = new HashMap<String, Integer>();
+        terrainIndexMap.put("grass_top", 0);
+        terrainIndexMap.put("stone", 1);
+        terrainIndexMap.put("dirt", 2);
+        terrainIndexMap.put("grass_side", 3);
+        terrainIndexMap.put("grass_side_overlay", 38);
+
         itemsIndexMap = new HashMap<String, Integer>();
     }
 }
