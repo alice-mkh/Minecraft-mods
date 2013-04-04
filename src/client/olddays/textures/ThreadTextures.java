@@ -57,9 +57,13 @@ public class ThreadTextures extends Thread{
             icons[36] = Block.cobblestoneMossy.getBlockTextureFromSide(0);
             icons[37] = Block.obsidian.getBlockTextureFromSide(0);
             icons[38] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 2));
-            icons[39] = Block.tallGrass.getBlockTextureFromSide(0);
-
-            icons[46] = Block.dispenser.getBlockTextureFromSideAndMetadata(3, 3);
+            icons[39] = Block.tallGrass.getBlockTextureFromSideAndMetadata(0, 1);
+            //40 is unused
+            icons[41] = Block.beacon.func_94446_i();
+            icons[43] = Block.workbench.getBlockTextureFromSide(1);
+            icons[44] = Block.furnaceIdle.getBlockTextureFromSideAndMetadata(2, 2);
+            icons[45] = Block.furnaceIdle.getBlockTextureFromSideAndMetadata(3, 2);
+            icons[46] = Block.dispenser.getBlockTextureFromSide(2);
             //47 is animated
             icons[48] = Block.sponge.getBlockTextureFromSide(0);
             icons[49] = Block.glass.getBlockTextureFromSide(0);
@@ -67,6 +71,26 @@ public class ThreadTextures extends Thread{
             icons[51] = Block.oreRedstone.getBlockTextureFromSide(0);
             icons[52] = leavesIcons[0][0];
             icons[53] = leavesIcons[1][0];
+            icons[54] = Block.stoneBrick.getBlockTextureFromSide(0);
+            icons[55] = Block.tallGrass.getBlockTextureFromSideAndMetadata(0, 0);
+            icons[56] = Block.tallGrass.getBlockTextureFromSideAndMetadata(0, 2);
+            icons[59] = Block.workbench.getBlockTextureFromSide(3);
+            icons[60] = Block.workbench.getBlockTextureFromSide(2);
+            icons[61] = Block.furnaceBurning.getBlockTextureFromSideAndMetadata(2, 2);
+            icons[62] = Block.furnaceIdle.getBlockTextureFromSide(0);
+            icons[63] = Block.sapling.getBlockTextureFromSideAndMetadata(0, 2);
+            icons[64] = Block.cloth.getBlockTextureFromSideAndMetadata(0, 0);
+            icons[65] = Block.mobSpawner.getBlockTextureFromSide(0);
+            icons[66] = Block.blockSnow.getBlockTextureFromSide(0);
+            icons[67] = Block.ice.getBlockTextureFromSide(0);
+            icons[68] = (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 3));
+            icons[69] = Block.cactus.getBlockTextureFromSide(1);
+            icons[70] = Block.cactus.getBlockTextureFromSide(2);
+            icons[71] = Block.cactus.getBlockTextureFromSide(0);
+            icons[72] = Block.blockClay.getBlockTextureFromSide(0);
+            icons[73] = Block.reed.getBlockTextureFromSide(0);
+
+            icons[79] = Block.sapling.getBlockTextureFromSideAndMetadata(0, 1);
 
             icons[116] = Block.wood.getBlockTextureFromSideAndMetadata(2, 1);
             icons[117] = Block.wood.getBlockTextureFromSideAndMetadata(2, 2);
@@ -137,7 +161,11 @@ public class ThreadTextures extends Thread{
         terrainIndexMap.put("obsidian", 37);
         terrainIndexMap.put("grass_side_overlay", 38);
         terrainIndexMap.put("tallgrass", 39);
-
+        //40 is unused
+        terrainIndexMap.put("beacon", 41);
+        terrainIndexMap.put("workbench_top", 43);
+        terrainIndexMap.put("furnace_front", 44);
+        terrainIndexMap.put("furnace_side", 45);
         terrainIndexMap.put("dispenser_front", 46);
         //47 is animated
         terrainIndexMap.put("sponge", 48);
@@ -146,6 +174,26 @@ public class ThreadTextures extends Thread{
         terrainIndexMap.put("oreRedstone", 51);
         terrainIndexMap.put("leaves", 52);
         terrainIndexMap.put("leaves_opaque", 53);
+        terrainIndexMap.put("stonebricksmooth", 54);
+        terrainIndexMap.put("deadbush", 55);
+        terrainIndexMap.put("fern", 56);
+        terrainIndexMap.put("workbench_side", 59);
+        terrainIndexMap.put("workbench_front", 60);
+        terrainIndexMap.put("furnace_front_lit", 61);
+        terrainIndexMap.put("furnace_top", 62);
+        terrainIndexMap.put("sapling_spruce", 63);
+        terrainIndexMap.put("cloth_0", 64);
+        terrainIndexMap.put("mobSpawner", 65);
+        terrainIndexMap.put("snow", 66);
+        terrainIndexMap.put("ice", 67);
+        terrainIndexMap.put("snow_side", 68);
+        terrainIndexMap.put("cactus_top", 69);
+        terrainIndexMap.put("cactus_side", 70);
+        terrainIndexMap.put("cactus_bottom", 71);
+        terrainIndexMap.put("clay", 72);
+        terrainIndexMap.put("reeds", 73);
+
+        terrainIndexMap.put("sapling_birch", 79);
 
         terrainIndexMap.put("tree_spruce", 116);
         terrainIndexMap.put("tree_birch", 117);
