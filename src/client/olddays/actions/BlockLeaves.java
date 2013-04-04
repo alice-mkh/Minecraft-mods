@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class BlockLeaves extends BlockLeavesBase
 {
-    public static boolean apples = true;
-
     public static final String LEAF_TYPES[] =
     {
         "oak", "spruce", "birch", "jungle"
@@ -22,6 +20,8 @@ public class BlockLeaves extends BlockLeavesBase
     private int field_94394_cP;
     private Icon iconArray[][];
     int adjacentTreeBlocks[];
+
+    public static boolean apples = true;
 
     protected BlockLeaves(int par1)
     {
