@@ -3,20 +3,31 @@ package net.minecraft.src;
 import java.util.HashMap;
 
 public class ThreadTextures extends Thread{
-    public static final HashMap<String, Integer> terrainIndexMap;
-    public static final HashMap<String, Integer> itemsIndexMap;
+    public static HashMap<String, Integer> terrainIndexMap;
+    public static HashMap<String, Integer> itemsIndexMap;
     private static int fillingMap = 0;
+    private static boolean filledTerrain = false;
+    private static boolean filledItems = false;
 
     public ThreadTextures(){}
 
     @Override
     public void run(){
+        if (!filledTerrain){
+            terrainIndexMap = new HashMap<String, Integer>();
+            fillingMap = 1;
+        }
         Icon[] icons = getTerrainIcons();
         for (Icon i : icons){
             if (i == null){
                 continue;
             }
             mod_OldDays.texman.copyIconFromSheet(i, "/terrain.png", terrainIndexMap);
+        }
+        fillingMap = 0;
+        if (!filledItems){
+            itemsIndexMap = new HashMap<String, Integer>();
+            fillingMap = 2;
         }
         icons = getItemIcons();
         for (Icon i : icons){
@@ -25,13 +36,14 @@ public class ThreadTextures extends Thread{
             }
             mod_OldDays.texman.copyIconFromSheet(i, "/gui/items.png", itemsIndexMap);
         }
+        fillingMap = 0;
     }
 
     private static Icon getIcon(int i, String str, Icon icon){
-        if (fillingMap == 1){
+        if (fillingMap == 1 && !terrainIndexMap.containsKey(str)){
             terrainIndexMap.put(str, i);
         }
-        if (fillingMap == 2){
+        if (fillingMap == 2 && !itemsIndexMap.containsKey(str)){
             itemsIndexMap.put(str, i);
         }
         return icon;
@@ -124,7 +136,12 @@ public class ThreadTextures extends Thread{
             icons[83] = getIcon(83, "ladder", Block.ladder.getBlockTextureFromSide(0));
             icons[84] = getIcon(84, "trapdoor", Block.trapdoor.getBlockTextureFromSide(0));
             icons[85] = getIcon(85, "fenceIron", Block.fenceIron.getBlockTextureFromSide(0));
-
+            icons[86] = getIcon(86, "farmland_wet", Block.tilledField.getBlockTextureFromSideAndMetadata(1, 1));
+            icons[87] = getIcon(87, "farmland_dry", Block.tilledField.getBlockTextureFromSideAndMetadata(1, 0));
+            for (int i = 0; i < 8; i++){
+                icons[88 + i] = getIcon(88 + i, "crops_" + i, Block.crops.getBlockTextureFromSideAndMetadata(0, i));
+            }
+            icons[96] = getIcon(96, "lever", Block.lever.getBlockTextureFromSide(0));
             icons[97] = getIcon(97, "doorWood_lower", doorIcons[0]);
             icons[98] = getIcon(98, "doorIron_lower", doorIcons[2]);
 
@@ -132,6 +149,9 @@ public class ThreadTextures extends Thread{
             icons[117] = getIcon(117, "tree_birch", Block.wood.getBlockTextureFromSideAndMetadata(2, 2));
 
             icons[153] = getIcon(153, "tree_jungle", Block.wood.getBlockTextureFromSideAndMetadata(2, 3));
+            if (fillingMap > 0){
+                filledTerrain = true;
+            }
         }catch(Exception e){}
         return icons;
     }
@@ -139,17 +159,10 @@ public class ThreadTextures extends Thread{
     private static Icon[] getItemIcons(){
         Icon[] icons = new Icon[256];
         try{
+            if (fillingMap > 0){
+                filledItems = true;
+            }
         }catch(Exception e){}
         return icons;
-    }
-
-    static{
-        terrainIndexMap = new HashMap<String, Integer>();
-        fillingMap = 1;
-        getTerrainIcons();
-        fillingMap = 2;
-        getItemIcons();
-        fillingMap = 0;
-        itemsIndexMap = new HashMap<String, Integer>();
     }
 }
