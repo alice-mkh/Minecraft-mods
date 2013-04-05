@@ -379,7 +379,7 @@ public class ODTextures extends OldDaysModule{
         if (!TerrainPng){
             return;
         }
-        (new ThreadTextures(core)).start();
+        (new ThreadTextures()).start();
     }
 
     @Override
