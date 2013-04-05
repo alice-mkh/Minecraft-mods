@@ -157,17 +157,63 @@ public class ThreadTextures extends Thread{
 //             icons[109] = getIcon(109, "piston_bottom", Block.pistonBase.getBlockTextureFromSide(5));
             icons[110] = getIcon(110, "piston_inner_top", BlockPistonBase.func_94496_b("piston_inner_top"));
             icons[111] = getIcon(111, "stem_straight", Block.pumpkinStem.getBlockTextureFromSide(0));
-
+            icons[112] = getIcon(112, "rail_turn", Block.rail.getBlockTextureFromSideAndMetadata(0, 6));
+            icons[113] = getIcon(113, "cloth_15", Block.cloth.getBlockTextureFromSideAndMetadata(0, 15));
+            icons[114] = getIcon(114, "cloth_7", Block.cloth.getBlockTextureFromSideAndMetadata(0, 7));
             icons[115] = getIcon(115, "redtorch", Block.torchRedstoneIdle.getBlockTextureFromSide(0));
             icons[116] = getIcon(116, "tree_spruce", Block.wood.getBlockTextureFromSideAndMetadata(2, 1));
             icons[117] = getIcon(117, "tree_birch", Block.wood.getBlockTextureFromSideAndMetadata(2, 2));
             icons[118] = getIcon(118, "pumpkin_side", Block.pumpkin.getBlockTextureFromSide(2));
             icons[119] = getIcon(119, "pumpkin_face", Block.pumpkin.getBlockTextureFromSide(3));
             icons[120] = getIcon(120, "pumpkin_jack", Block.pumpkinLantern.getBlockTextureFromSide(3));
-
+            icons[121] = getIcon(121, "cake_top", Block.cake.getBlockTextureFromSide(1));
+            icons[122] = getIcon(122, "cake_side", Block.cake.getBlockTextureFromSide(2));
+            icons[123] = getIcon(123, "cake_inner", Block.cake.getBlockTextureFromSideAndMetadata(4, 1));
+            icons[124] = getIcon(124, "cake_bottom", Block.cake.getBlockTextureFromSide(0));
+            icons[125] = getIcon(125, "mushroom_skin_red", Block.mushroomCapRed.getBlockTextureFromSideAndMetadata(1, 1));
+            icons[126] = getIcon(126, "mushroom_skin_brown", Block.mushroomCapBrown.getBlockTextureFromSideAndMetadata(1, 1));
             icons[127] = getIcon(127, "stem_bent", ((BlockStem)Block.pumpkinStem).func_94368_p());
-
+            icons[128] = getIcon(128, "rail", Block.rail.getBlockTextureFromSide(0));
+            icons[129] = getIcon(129, "cloth_14", Block.cloth.getBlockTextureFromSideAndMetadata(0, 14));
+            icons[130] = getIcon(130, "cloth_6", Block.cloth.getBlockTextureFromSideAndMetadata(0, 6));
+            icons[131] = getIcon(131, "repeater", Block.redstoneRepeaterIdle.getBlockTextureFromSide(1));
+            icons[132] = getIcon(132, "leaves_spruce", leavesIcons[0][1]);
+            icons[133] = getIcon(133, "leaves_spruce_opaque", leavesIcons[1][1]);
+            icons[134] = getIcon(134, "bed_feet_top", Block.bed.getBlockTextureFromSideAndMetadata(1, 0));
+            icons[135] = getIcon(135, "bed_head_top", Block.bed.getBlockTextureFromSideAndMetadata(1, 8));
+            icons[136] = getIcon(136, "melon_side", Block.melon.getBlockTextureFromSide(2));
+            icons[137] = getIcon(137, "melon_top", Block.melon.getBlockTextureFromSide(1));
+            icons[138] = getIcon(138, "cauldron_top", Block.cauldron.getBlockTextureFromSide(1));
+            icons[139] = getIcon(139, "cauldron_inner", BlockCauldron.func_94375_b("cauldron_inner"));
+            icons[140] = getIcon(140, "cake", Item.cake.getIconFromDamage(0));
+            icons[141] = getIcon(141, "mushroom_skin_stem", Block.mushroomCapRed.getBlockTextureFromSideAndMetadata(2, 10));
+            icons[142] = getIcon(142, "mushroom_inside", Block.mushroomCapRed.getBlockTextureFromSide(0));
+            icons[143] = getIcon(143, "vine", Block.vine.getBlockTextureFromSide(0));
+            icons[144] = getIcon(144, "blockLapis", Block.blockLapis.getBlockTextureFromSide(0));
+            icons[145] = getIcon(145, "cloth_13", Block.cloth.getBlockTextureFromSideAndMetadata(0, 13));
+            icons[146] = getIcon(146, "cloth_5", Block.cloth.getBlockTextureFromSideAndMetadata(0, 5));
+            icons[147] = getIcon(147, "repeater_lit", Block.redstoneRepeaterActive.getBlockTextureFromSide(1));
+            icons[148] = getIcon(148, "thinglass_top", ((BlockPane)Block.thinGlass).getSideTextureIndex());
+            icons[149] = getIcon(149, "bed_feet_end", Block.bed.getBlockTextureFromSideAndMetadata(2, 0));
+            icons[150] = getIcon(150, "bed_feet_side", Block.bed.getBlockTextureFromSideAndMetadata(5, 0));
+            icons[151] = getIcon(151, "bed_head_side", Block.bed.getBlockTextureFromSideAndMetadata(3, 8));
+            icons[152] = getIcon(152, "bed_head_end", Block.bed.getBlockTextureFromSideAndMetadata(4, 8));
             icons[153] = getIcon(153, "tree_jungle", Block.wood.getBlockTextureFromSideAndMetadata(2, 3));
+            icons[154] = getIcon(154, "cauldron_side", Block.cauldron.getBlockTextureFromSide(2));
+            icons[155] = getIcon(155, "cauldron_bottom", BlockCauldron.func_94375_b("cauldron_bottom"));
+            icons[156] = getIcon(156, "brewingStand_base", ((BlockBrewingStand)Block.brewingStand).func_94448_e());
+            icons[157] = getIcon(157, "brewingStand", Block.brewingStand.getBlockTextureFromSide(0));
+            icons[158] = getIcon(158, "endframe_top", Block.endPortalFrame.getBlockTextureFromSide(1));
+            icons[159] = getIcon(159, "endframe_side", Block.endPortalFrame.getBlockTextureFromSide(2));
+            icons[160] = getIcon(160, "oreLapis", Block.oreLapis.getBlockTextureFromSide(0));
+            icons[161] = getIcon(161, "cloth_12", Block.cloth.getBlockTextureFromSideAndMetadata(0, 12));
+            icons[162] = getIcon(162, "cloth_4", Block.cloth.getBlockTextureFromSideAndMetadata(0, 4));
+            icons[163] = getIcon(163, "goldenRail", Block.railPowered.getBlockTextureFromSide(0));
+
+            icons[174] = getIcon(174, "endframe_eye", ((BlockEndPortalFrame)Block.endPortalFrame).func_94398_p());
+            icons[175] = getIcon(175, "whiteStone", Block.whiteStone.getBlockTextureFromSide(0));
+
+            icons[179] = getIcon(179, "goldenRail_powered", Block.railPowered.getBlockTextureFromSideAndMetadata(0, 8));
             if (fillingMap > 0){
                 filledTerrain = true;
             }
