@@ -144,9 +144,28 @@ public class ThreadTextures extends Thread{
             icons[96] = getIcon(96, "lever", Block.lever.getBlockTextureFromSide(0));
             icons[97] = getIcon(97, "doorWood_lower", doorIcons[0]);
             icons[98] = getIcon(98, "doorIron_lower", doorIcons[2]);
+            icons[99] = getIcon(99, "redtorch_lit", Block.torchRedstoneActive.getBlockTextureFromSide(0));
+            icons[100] = getIcon(100, "stonebricksmooth_mossy", Block.stoneBrick.getBlockTextureFromSideAndMetadata(0, 1));
+            icons[101] = getIcon(101, "stonebricksmooth_cracked", Block.stoneBrick.getBlockTextureFromSideAndMetadata(0, 2));
+            icons[102] = getIcon(102, "pumpkin_top", Block.pumpkin.getBlockTextureFromSide(0));
+            icons[103] = getIcon(103, "hellrock", Block.netherrack.getBlockTextureFromSide(0));
+            icons[104] = getIcon(104, "hellsand", Block.slowSand.getBlockTextureFromSide(0));
+            icons[105] = getIcon(105, "lightgem", Block.glowStone.getBlockTextureFromSide(0));
+            icons[106] = getIcon(106, "piston_top_sticky", BlockPistonBase.func_94496_b("piston_top_sticky"));
+            icons[107] = getIcon(107, "piston_top", BlockPistonBase.func_94496_b("piston_top"));
+            icons[108] = getIcon(108, "piston_side", BlockPistonBase.func_94496_b("piston_side"));
+//             icons[109] = getIcon(109, "piston_bottom", Block.pistonBase.getBlockTextureFromSide(5));
+            icons[110] = getIcon(110, "piston_inner_top", BlockPistonBase.func_94496_b("piston_inner_top"));
+            icons[111] = getIcon(111, "stem_straight", Block.pumpkinStem.getBlockTextureFromSide(0));
 
+            icons[115] = getIcon(115, "redtorch", Block.torchRedstoneIdle.getBlockTextureFromSide(0));
             icons[116] = getIcon(116, "tree_spruce", Block.wood.getBlockTextureFromSideAndMetadata(2, 1));
             icons[117] = getIcon(117, "tree_birch", Block.wood.getBlockTextureFromSideAndMetadata(2, 2));
+            icons[118] = getIcon(118, "pumpkin_side", Block.pumpkin.getBlockTextureFromSide(2));
+            icons[119] = getIcon(119, "pumpkin_face", Block.pumpkin.getBlockTextureFromSide(3));
+            icons[120] = getIcon(120, "pumpkin_jack", Block.pumpkinLantern.getBlockTextureFromSide(3));
+
+            icons[127] = getIcon(127, "stem_bent", ((BlockStem)Block.pumpkinStem).func_94368_p());
 
             icons[153] = getIcon(153, "tree_jungle", Block.wood.getBlockTextureFromSideAndMetadata(2, 3));
             if (fillingMap > 0){
