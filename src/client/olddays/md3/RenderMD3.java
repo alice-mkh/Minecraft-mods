@@ -35,7 +35,7 @@ public class RenderMD3 extends RenderLiving {
    public final void renderMD3(EntityLiving entity, float f, float f1, float f2, float f3, float f4)
    {
         f3 = f2;
-        f2 = f1;
+        f2 = f1 - (float)entity.yOffset;
         f1 = f;
         GL11.glPushMatrix();
         float f5 = entity.prevRenderYawOffset + (entity.renderYawOffset - entity.prevRenderYawOffset) * f4;
