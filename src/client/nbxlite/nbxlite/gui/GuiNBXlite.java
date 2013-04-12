@@ -40,10 +40,10 @@ public class GuiNBXlite extends GuiScreen{
         genButtons = new GuiButton[GeneratorList.genlength + 1];
         for (int i = 0; i < genButtons.length; i++){
             genButtons[i] = new GuiButton(2 + i, width / 2 - 170, height / 6 + (i * 21), 100, 20, "");
+            genButtons[i].displayString = mod_OldDays.lang.get(GeneratorList.genname[i]);
             buttonList.add(genButtons[i]);
         }
         genButtons[GeneratorList.gencurrent].enabled = false;
-        refreshPage();
     }
 
     public void refreshPage(){
@@ -61,17 +61,15 @@ public class GuiNBXlite extends GuiScreen{
         int scaledHeight = scaledresolution.getScaledHeight();
         page.setWorldAndResolution(mc, scaledWidth, scaledHeight);
         page.initButtons();
-        updateButtonText();
-        updateButtonVisibility();
-        updateButtonPosition();
+        page.updateButtonText();
+        page.updateButtonVisibility();
+        page.updateButtonPosition();
     }
 
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height){
         super.setWorldAndResolution(mc, width, height);
-        if (page != null){
-            page.setWorldAndResolution(mc, width, height);
-        }
+        refreshPage();
     }
 
     public void selectNBXliteSettings(){
@@ -163,20 +161,5 @@ public class GuiNBXlite extends GuiScreen{
         drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         page.drawScreen(i, j, f);
         super.drawScreen(i, j, f);
-    }
-
-    private void updateButtonText(){
-        for (int i = 0; i <= GeneratorList.genlength; i++){
-            genButtons[i].displayString = mod_OldDays.lang.get(GeneratorList.genname[i]);
-        }
-        page.updateButtonText();
-    }
-
-    private void updateButtonVisibility(){
-        page.updateButtonVisibility();
-    }
-
-    private void updateButtonPosition(){
-        page.updateButtonPosition();
     }
 }
