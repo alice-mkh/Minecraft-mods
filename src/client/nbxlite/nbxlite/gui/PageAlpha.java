@@ -3,13 +3,13 @@ package net.minecraft.src.nbxlite.gui;
 import java.util.Random;
 import net.minecraft.src.*;
 
-public class PageInfdevAlpha extends Page{
+public class PageAlpha extends Page{
     private GuiButton themeButton;
     private GuiButton newOresButton;
     private boolean newores;
     private int mode;
 
-    public PageInfdevAlpha(GuiNBXlite parent, int mode){
+    public PageAlpha(GuiNBXlite parent, int mode){
         super(parent);
         newores = ODNBXlite.DefaultNewOres;
         this.mode = mode;
@@ -75,11 +75,15 @@ public class PageInfdevAlpha extends Page{
     @Override
     public void selectSettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
-        ODNBXlite.MapFeatures = mode;
+        switch(mode){
+            case 0: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INFDEV0227; break;
+            case 1: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INFDEV0420; break;
+            case 2: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_ALPHA11201; break;
+        }
         ODNBXlite.MapTheme = GeneratorList.themecurrent;
-        if(mode == 1 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
+        if(ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS){
             ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
-        ODNBXlite.GenerateNewOres=newores;
+        ODNBXlite.GenerateNewOres = newores;
     }
 }

@@ -41,7 +41,7 @@ public class GuiNBXlite extends GuiScreen{
         genButtons = new GuiButton[GeneratorList.genlength + 1];
         for (int i = 0; i < genButtons.length; i++){
             genButtons[i] = new GuiButton(2 + i, width / 2 - 170, height / 6 + (i * 21), 100, 20, "");
-            genButtons[i].displayString = mod_OldDays.lang.get(GeneratorList.genname[i]);
+            genButtons[i].displayString = mod_OldDays.lang.get("nbxlite.defaultgenerator" + (i + 1));
             buttonList.add(genButtons[i]);
         }
         genButtons[GeneratorList.gencurrent].enabled = false;
@@ -51,9 +51,9 @@ public class GuiNBXlite extends GuiScreen{
         switch (GeneratorList.gencurrent){
             case 0: page = new PageFinite(this, false); break;
             case 1: page = new PageFinite(this, true); break;
-            case 2: page = new PageInfdevAlpha(this, 2); break;
-            case 3: page = new PageInfdevAlpha(this, 1); break;
-            case 4: page = new PageInfdevAlpha(this, 0); break;
+            case 2: page = new PageAlpha(this, 0); break;
+            case 3: page = new PageAlpha(this, 1); break;
+            case 4: page = new PageAlpha(this, 2); break;
             case 5: page = new PageBeta(this); break;
             default: page = new PageRelease(this); break;
         }
@@ -187,7 +187,7 @@ public class GuiNBXlite extends GuiScreen{
 //             drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
             page.drawScrollbar();
         }
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (GeneratorList.gencurrent + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);
     }
 

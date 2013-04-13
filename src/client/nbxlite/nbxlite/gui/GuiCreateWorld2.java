@@ -201,7 +201,7 @@ public class GuiCreateWorld2 extends GuiScreen
         str.append(mod_OldDays.lang.get("settings"));
         str.append(": ");
         if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(mod_OldDays.lang.get(GeneratorList.genname[GeneratorList.gencurrent]));
+            str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (GeneratorList.gencurrent + 1)));
             if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
                 str.append(", ");
             }
