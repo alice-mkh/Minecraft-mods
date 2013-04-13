@@ -2,6 +2,7 @@ package net.minecraft.src.nbxlite.gui;
 
 import java.util.List;
 import java.util.Collections;
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
@@ -63,7 +64,7 @@ public class GuiNBXlite extends GuiScreen{
         page.initButtons();
         page.updateButtonText();
         page.updateButtonVisibility();
-        page.updateButtonPosition();
+        page.calculateMinScrolling();
     }
 
     @Override
@@ -139,14 +140,6 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     @Override
-    protected void mouseClicked(int par1, int par2, int par3){
-        if (page != null){
-            page.mouseClicked2(par1, par2, par3);
-        }
-        super.mouseClicked(par1, par2, par3);
-    }
-
-    @Override
     protected void mouseMovedOrUp(int par1, int par2, int par3){
         if (page != null){
             page.mouseMovedOrUp2(par1, par2, par3);
@@ -155,11 +148,64 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     @Override
+    protected void func_85041_a(int i, int j, int k, long l)
+    {
+        if (page != null){
+            page.func_85041_a_2(i, j, k, l);
+        }
+        super.func_85041_a(i, j, k, l);
+    }
+
+    @Override
+    public void handleMouseInput()
+    {
+        if (page != null){
+            page.handleMouseInput();
+        }
+        super.handleMouseInput();
+    }
+
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
+        int pageTop = page.getTop();
+        int pageBottom = page.getBottom();
+        int pageLeft = page.getLeft();
+        int pageRight = page.getRight();
+        if (page.canBeScrolled()){
+            drawDirtRect(pageLeft, pageRight, pageTop, pageBottom, true, page.getScrolling());
+        }
         page.drawScreen(i, j, f);
+        if (page.canBeScrolled()){
+            drawDirtRect(pageLeft, pageRight, 0, pageTop, false, 0);
+            drawDirtRect(pageLeft, pageRight, pageBottom, height, false, 0);
+            drawGradientRect(pageLeft, pageTop, pageRight, pageTop + 5, 0xff000000, 0x00000000);
+            drawGradientRect(pageLeft, pageBottom - 5, pageRight, pageBottom, 0x00000000, 0xff000000);
+            drawRect(pageLeft - 1, pageTop, pageLeft, pageBottom, 0xff000000);
+            drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
+//             page.drawScrollbar();
+        }
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);
+    }
+
+    private void drawDirtRect(int x1, int x2, int y1, int y2, boolean scrolling, int i)
+    {
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_FOG);
+        Tessellator tessellator = Tessellator.instance;
+        mc.renderEngine.bindTexture("/gui/background.png");
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        float f = 32F;
+        tessellator.startDrawingQuads();
+        float xOffset = (x1 % 32) / f;
+        float yOffset = (y1 % 32) / f;
+        tessellator.setColorOpaque_I(scrolling ? 0x202020 : 0x404040);
+        tessellator.addVertexWithUV(x1, y2, 0.0D, xOffset, (float)(y2 - y1 - i) / f + yOffset);
+        tessellator.addVertexWithUV(x2, y2, 0.0D, (float)(x2 - x1) / f + xOffset, (float)(y2 - y1 - i) / f + yOffset);
+        tessellator.addVertexWithUV(x2, y1, 0.0D, (float)(x2 - x1) / f + xOffset, yOffset - i / f);
+        tessellator.addVertexWithUV(x1, y1, 0.0D, xOffset, yOffset - i / f);
+        tessellator.draw();
     }
 }

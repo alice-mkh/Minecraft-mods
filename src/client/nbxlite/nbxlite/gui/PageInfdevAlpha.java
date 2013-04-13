@@ -4,7 +4,7 @@ import java.util.Random;
 import net.minecraft.src.*;
 
 public class PageInfdevAlpha extends Page{
-    private GuiButton alphaThemeButton;
+    private GuiButton themeButton;
     private GuiButton newOresButton;
     private boolean newores;
     private int mode;
@@ -17,15 +17,22 @@ public class PageInfdevAlpha extends Page{
 
     @Override
     public void initButtons(){
-        buttonList.add(alphaThemeButton = new GuiButton(0, width / 2 - 75 + leftmargin, height / 6 + 44, 150, 20, ""));
-        buttonList.add(newOresButton = new GuiButton(1, width / 2 - 75 + leftmargin, height / 6 + 84, 150, 20, ""));
+        buttonList.add(themeButton = new GuiButton(0, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        buttonList.add(newOresButton = new GuiButton(1, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+    }
+
+    @Override
+    public void scrolled(){
+        themeButton.yPosition = height / 6 + 44 + scrolling;
+        newOresButton.yPosition = height / 6 + 84 + scrolling;
+        updateButtonPosition();
     }
 
     @Override
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
-        alphaThemeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
     }
 
     @Override
@@ -35,18 +42,19 @@ public class PageInfdevAlpha extends Page{
 
     @Override
     public void drawScreen(int i, int j, float f){
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 67, 0xa0a0a0);
         super.drawScreen(i, j, f);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 67 + scrolling, 0xa0a0a0);
     }
 
     @Override
     protected void actionPerformed(GuiButton guibutton){
+        super.actionPerformed(guibutton);
         if (!guibutton.enabled){
             return;
         }
         if (guibutton == newOresButton){
             newores = !newores;
-        }else if (guibutton == alphaThemeButton){
+        }else if (guibutton == themeButton){
             if (GeneratorList.themecurrent < GeneratorList.themelength){
                 GeneratorList.themecurrent++;
             }else{
@@ -56,6 +64,7 @@ public class PageInfdevAlpha extends Page{
         updateButtonPosition();
         updateButtonVisibility();
         updateButtonText();
+        calculateMinScrolling();
     }
 
     @Override

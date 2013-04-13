@@ -17,14 +17,23 @@ public class PageRelease extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, "");
+            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
             String name = mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1));
             name += " (" + mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1)+".desc") + ")";
             featuresButtons[i].displayString = name;
             buttonList.add(featuresButtons[i]);
         }
-        buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, ""));
+        buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[GeneratorList.feat2current].enabled=false;
+    }
+
+    @Override
+    public void scrolled(){
+        for (int i = 0; i < featuresButtons.length; i++){
+            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrolling;
+        }
+        newOresButton.yPosition = height / 6 + 149 + scrolling;
+        updateButtonPosition();
     }
 
     @Override
@@ -40,6 +49,7 @@ public class PageRelease extends Page{
 
     @Override
     protected void actionPerformed(GuiButton guibutton){
+        super.actionPerformed(guibutton);
         if (!guibutton.enabled){
             return;
         }
@@ -53,6 +63,7 @@ public class PageRelease extends Page{
         updateButtonPosition();
         updateButtonVisibility();
         updateButtonText();
+        calculateMinScrolling();
     }
 
     @Override

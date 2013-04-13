@@ -20,7 +20,7 @@ public class PageBeta extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, height / 6 + ((i - 1) * 21), 210, 20, "");
+            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
             String name = mod_OldDays.lang.get(GeneratorList.feat1name[i]);
             if (GeneratorList.feat1desc[i] != ""){
                 name += " (" + mod_OldDays.lang.get(GeneratorList.feat1desc[i]) + ")";
@@ -28,9 +28,19 @@ public class PageBeta extends Page{
             featuresButtons[i].displayString = name;
             buttonList.add(featuresButtons[i]);
         }
-        buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, height / 6 + 84, 150, 20, ""));
-        buttonList.add(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, height / 6 + 149, 150, 20, ""));
+        buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        buttonList.add(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[GeneratorList.feat1current].enabled=false;
+    }
+
+    @Override
+    public void scrolled(){
+        for (int i = 0; i < featuresButtons.length; i++){
+            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrolling;
+        }
+        jungleButton.yPosition = height / 6 + 149 + scrolling;
+        newOresButton.yPosition = height / 6 + 127 + scrolling;
+        updateButtonPosition();
     }
 
     @Override
@@ -46,16 +56,8 @@ public class PageBeta extends Page{
     }
 
     @Override
-    public void updateButtonPosition(){
-        if (GeneratorList.feat1current == 5){
-            newOresButton.yPosition = height / 6 + 127;
-        }else{
-            newOresButton.yPosition = height / 6 + 135;
-        }
-    }
-
-    @Override
     protected void actionPerformed(GuiButton guibutton){
+        super.actionPerformed(guibutton);
         if (!guibutton.enabled){
             return;
         }
@@ -71,6 +73,7 @@ public class PageBeta extends Page{
         updateButtonPosition();
         updateButtonVisibility();
         updateButtonText();
+        calculateMinScrolling();
     }
 
     @Override
