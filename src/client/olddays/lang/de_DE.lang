@@ -1043,13 +1043,8 @@ shapeDeep=Deep
 sizeSmall=Small
 sizeNormal=Normal
 sizeHuge=Huge
-
 indevType=Typ
-genClassic=Classic
-genIndev=Indev
 typeInland=Inland
 typeIsland=Insel
 typeFloating=Schwebend
 typeFlat=Flach
-descriptionGenClassic=Endliche Welt
-descriptionGenIndev=Endliche Welt, viele Optionen

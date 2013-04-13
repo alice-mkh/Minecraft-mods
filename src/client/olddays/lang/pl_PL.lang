@@ -1014,13 +1014,8 @@ shapeDeep=Głęboki
 sizeSmall=Mały
 sizeNormal=Normalny
 sizeHuge=Duży
-
 indevType=Typ
-genClassic=Classic
-genIndev=Indev
 typeInland=Śródląd
 typeIsland=Wyspa
 typeFloating=Latająca wyspa
 typeFlat=Płaski
-descriptionGenClassic=Ograniczona mapa
-descriptionGenIndev=Ograniczona mapa, wiele opcji

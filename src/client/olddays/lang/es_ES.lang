@@ -1014,13 +1014,8 @@ shapeDeep=Profundo
 sizeSmall=Pequeño
 sizeNormal=Normal
 sizeHuge=Inmenso
-
 indevType=Tipo
-genClassic=Classic
-genIndev=Indev
 typeInland=Interior
 typeIsland=Isla
 typeFloating=Flotando
 typeFlat=Plano
-descriptionGenClassic=Mapa finito
-descriptionGenIndev=Mapa finito, muchas opciones
