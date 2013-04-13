@@ -64,6 +64,7 @@ public class GuiNBXlite extends GuiScreen{
         page.initButtons();
         page.updateButtonText();
         page.updateButtonVisibility();
+        page.scrolled();
         page.calculateMinScrolling();
     }
 
@@ -183,8 +184,8 @@ public class GuiNBXlite extends GuiScreen{
             drawGradientRect(pageLeft, pageTop, pageRight, pageTop + 5, 0xff000000, 0x00000000);
             drawGradientRect(pageLeft, pageBottom - 5, pageRight, pageBottom, 0x00000000, 0xff000000);
             drawRect(pageLeft - 1, pageTop, pageLeft, pageBottom, 0xff000000);
-            drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
-//             page.drawScrollbar();
+//             drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
+            page.drawScrollbar();
         }
         drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.gendesc[GeneratorList.gencurrent]), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);

@@ -4,7 +4,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
-import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
 public abstract class Page extends GuiScreen{
@@ -15,7 +14,7 @@ public abstract class Page extends GuiScreen{
     protected int maxScrolling;
 
     private boolean dragging;
-    private boolean reverse;
+    private boolean scrollbarDragging;
     private int clickY;
 
     protected GuiNBXlite parent;
@@ -27,7 +26,7 @@ public abstract class Page extends GuiScreen{
         minScrolling = 10;
         maxScrolling = 10;
         dragging = false;
-        reverse = false;
+        scrollbarDragging = false;
     }
 
     public abstract void initButtons();
@@ -66,6 +65,8 @@ public abstract class Page extends GuiScreen{
         return minScrolling < maxScrolling;
     }
 
+    protected abstract int getContentHeight();
+
     public void mouseMovedOrUp2(int par1, int par2, int par3){
         mouseMovedOrUp(par1, par2, par3);
     }
@@ -82,9 +83,9 @@ public abstract class Page extends GuiScreen{
         }
         if (par1 > getLeft() && par1 < getRight() && par2 > getTop() && par2 < getBottom()){
             dragging = true;
-/*            if (par1 > getRight() - SCROLLBAR_WIDTH){
-                reverse = true;
-            }*/
+            if (par1 > getRight() - SCROLLBAR_WIDTH){
+                scrollbarDragging = true;
+            }
         }
         clickY = par2;
     }
@@ -96,7 +97,7 @@ public abstract class Page extends GuiScreen{
             return;
         }
         dragging = false;
-        reverse = false;
+        scrollbarDragging = false;
     }
 
     @Override
@@ -109,9 +110,23 @@ public abstract class Page extends GuiScreen{
         if (delta == 0){
             return;
         }
-        if (reverse){
-            delta = -delta;
-//             delta = -delta / (getTop() - bottom - 4) * (maxScrolling - minScrolling);
+        if (scrollbarDragging){
+            int bottomtop = getBottom() - getTop();
+            float scrollMultiplier = -1.0F;
+            int cHeight = getContentHeight();
+            int l2 = cHeight - bottomtop + 4;
+            if (l2 < 1){
+                l2 = 1;
+            }
+            int k3 = (int)((float)(bottomtop * bottomtop) / (float)cHeight);
+            if (k3 < 32){
+                k3 = 32;
+            }
+            if (k3 > bottomtop - 8){
+                k3 = bottomtop - 8;
+            }
+            scrollMultiplier /= (float)(bottomtop - k3) / (float)l2;
+            delta *= scrollMultiplier;
         }
         if (scrolling + delta < minScrolling){
             scrolling = minScrolling;
@@ -124,31 +139,8 @@ public abstract class Page extends GuiScreen{
         scrolled();
     }
 
-    private int getContentHeight(){
-        int min = 0;
-        for (Object o : buttonList){
-            GuiButton b = (GuiButton)o;
-            if (!b.drawButton){
-                continue;
-            }
-            int y = -b.yPosition - 20;
-            if (y < min){
-                min = y;
-            }
-        }
-        return -min;
-    }
-
     public void calculateMinScrolling(){
-        ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        int temp = scrolling;
-        scrolling = 5 * scaledresolution.getScaleFactor();
-        scrolled();
-        scrolling = temp;
-        int min = -getContentHeight();
-        maxScrolling = (5 * scaledresolution.getScaleFactor());
-        min += height * 5 / 6 + maxScrolling;
-        minScrolling = min;
+        minScrolling = -getContentHeight() - 40 + getBottom() - getTop();
         if (scrolling < minScrolling){
             scrolling = minScrolling;
         }
@@ -180,13 +172,12 @@ public abstract class Page extends GuiScreen{
         }
         super.handleMouseInput();
     }
-/*
+
     public void drawScrollbar(){
-        ScaledResolution sres = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int top = getTop();
         int bottom = getBottom();
         int delta = bottom - top;
-        int cHeight = getContentHeight() + delta;
+        int cHeight = getContentHeight() + 44;
         int j3 = cHeight - (delta - 4);
         int right = getRight();
         int left = right - SCROLLBAR_WIDTH;
@@ -197,11 +188,14 @@ public abstract class Page extends GuiScreen{
                 size = 32;
             }
             if (size > delta){
-//                 size = delta;
+                size = delta;
             }
-            int k4 = (-scrolling * (delta - size)) / j3 + top;
+            int k4 = ((-scrolling + maxScrolling) * (delta - size)) / j3 + top;
             if (k4 < top){
-//                 k4 = top;
+                k4 = top;
+            }
+            if (k4 + size > bottom){
+                k4 = bottom - size;
             }
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             tessellator.startDrawingQuads();
@@ -227,5 +221,5 @@ public abstract class Page extends GuiScreen{
             tessellator.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
-    }*/
+    }
 }

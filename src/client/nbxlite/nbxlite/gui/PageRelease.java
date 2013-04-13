@@ -37,6 +37,11 @@ public class PageRelease extends Page{
     }
 
     @Override
+    public int getContentHeight(){
+        return newOresButton.drawButton ? 149 : ((featuresButtons.length - 2) * 21);
+    }
+
+    @Override
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));

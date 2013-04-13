@@ -44,6 +44,11 @@ public class PageBeta extends Page{
     }
 
     @Override
+    public int getContentHeight(){
+        return jungleButton.drawButton ? 149 : 127;
+    }
+
+    @Override
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));

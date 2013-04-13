@@ -54,6 +54,14 @@ public class PageFinite extends Page{
     }
 
     @Override
+    public int getContentHeight(){
+        if (origIndev){
+            return indev ? 119 : 114;
+        }
+        return 130;
+    }
+
+    @Override
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
