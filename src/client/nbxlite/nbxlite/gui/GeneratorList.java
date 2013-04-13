@@ -23,13 +23,6 @@ public class GeneratorList{
     public static int feat2length = 7;
     public static int[] feat2worldtype = {0, 0, 1, 1, 2, 2, 3, 3};
 
-    public static int infdevdefault = ODNBXlite.DefaultGenerator == 3 ? 0 : 1;
-    public static int infdevcurrent;
-    public static int infdevlength = 2;
-    public static String[] infdevname = {"02.27", "04.20", "06.08"};
-    public static String[] infdevdesc = {"", "", ""};
-    public static int[] infdevgen = {ODNBXlite.FEATURES_INFDEV0227, ODNBXlite.FEATURES_INFDEV0420, ODNBXlite.FEATURES_INFDEV0608};
-
     public static int themedefault = ODNBXlite.DefaultTheme;
     public static int themecurrent;
     public static int themelength = 3;
