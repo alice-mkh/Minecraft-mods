@@ -113,7 +113,7 @@ public abstract class Page extends GuiScreen{
         if (scrollbarDragging){
             int bottomtop = getBottom() - getTop();
             float scrollMultiplier = -1.0F;
-            int cHeight = getContentHeight();
+            int cHeight = getContentHeight() + 44;
             int l2 = cHeight - bottomtop + 4;
             if (l2 < 1){
                 l2 = 1;
