@@ -182,8 +182,8 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         ODNBXlite.MapTheme = GeneratorList.themedefault;
         ODNBXlite.IndevMapType = GeneratorList.typedefault;
-        ODNBXlite.IndevWidthX = GeneratorList.sizes[GeneratorList.xdefault];
-        ODNBXlite.IndevWidthZ = GeneratorList.sizes[GeneratorList.zdefault];
+        ODNBXlite.IndevWidthX = 1 << GeneratorList.xdefault + 6;
+        ODNBXlite.IndevWidthZ = 1 << GeneratorList.zdefault + 6;
         ODNBXlite.IndevHeight = ODNBXlite.DefaultFiniteDepth+32;
         ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
         ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);

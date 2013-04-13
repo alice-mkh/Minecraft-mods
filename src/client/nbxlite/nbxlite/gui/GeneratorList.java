@@ -38,7 +38,6 @@ public class GeneratorList{
     public static int zcurrent;
     public static int xdefault = ODNBXlite.DefaultFiniteWidth;
     public static int zdefault = ODNBXlite.DefaultFiniteLength;
-    public static int[] sizes = {64, 128, 256, 512};
 
     public static int shapecurrent;
     public static int shapedefault = 0;

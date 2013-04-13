@@ -70,7 +70,7 @@ public class PageFinite extends Page{
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
         typeButton.displayString = mod_OldDays.lang.get("indevType") + ": " + mod_OldDays.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
         for (int i = 0; i < 4; i++){
-            widthButtons[i].displayString = Integer.toString(GeneratorList.sizes[i]);
+            widthButtons[i].displayString = Integer.toString(1 << i + 6);
             lengthButtons[i].displayString = widthButtons[i].displayString;
         }
         toggleButton.displayString = origIndev ? "+" : "-";
@@ -205,8 +205,8 @@ public class PageFinite extends Page{
                 }
             }
         }else{
-            ODNBXlite.IndevWidthX=GeneratorList.sizes[GeneratorList.xcurrent];
-            ODNBXlite.IndevWidthZ=GeneratorList.sizes[GeneratorList.zcurrent];
+            ODNBXlite.IndevWidthX = 1 << GeneratorList.xcurrent + 6;
+            ODNBXlite.IndevWidthZ = 1 << GeneratorList.zcurrent + 6;
             ODNBXlite.IndevHeight=heightSlider.getSizeValue();
         }
         ODNBXlite.GenerateNewOres=newores;
