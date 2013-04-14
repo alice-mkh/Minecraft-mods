@@ -72,6 +72,7 @@ public class GuiCreateWorld2 extends GuiScreen
     private GuiButton nbxliteButton;
     private GuiButton nbxliteButtonShort;
     private boolean skipIndev;
+    private GuiNBXlite nbxliteGui;
 
     public GuiCreateWorld2(GuiScreen par1GuiScreen)
     {
@@ -87,7 +88,7 @@ public class GuiCreateWorld2 extends GuiScreen
         seed = "";
         skipIndev = false;
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
-        setDefaultNBXliteSettings();
+        nbxliteGui = new GuiNBXlite(this);
     }
 
     public void fixHardcoreButtons(){
@@ -148,94 +149,14 @@ public class GuiCreateWorld2 extends GuiScreen
         textboxWorldName.setText(localizedNewWorldText);
         textboxSeed = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxSeed.setText(seed);
-        buttonList.add(nbxliteButton = new GuiButton(9, width / 2 - 155, 130, 310, 20, genNBXliteButtonName()));
-        buttonList.add(nbxliteButtonShort = new GuiButton(10, width / 2 - 155, 130, 150, 20, genNBXliteButtonName()));
+        String str = nbxliteGui.getButtonName();
+        buttonList.add(nbxliteButton = new GuiButton(9, width / 2 - 155, 130, 310, 20, str));
+        buttonList.add(nbxliteButtonShort = new GuiButton(10, width / 2 - 155, 130, 150, 20, str));
         nbxliteButton.drawButton = false;
         nbxliteButtonShort.drawButton = false;
         func_82288_a(moreOptions);
         makeUseableName();
         updateButtonText();
-    }
-
-    public static void setDefaultNBXliteSettings(){
-        GeneratorList.gendefault=ODNBXlite.DefaultGenerator;
-        GeneratorList.feat1default=ODNBXlite.DefaultFeaturesBeta;
-        GeneratorList.feat2default=ODNBXlite.DefaultFeaturesRelease;
-        GeneratorList.themedefault=ODNBXlite.DefaultTheme;
-        GeneratorList.typedefault=ODNBXlite.DefaultIndevType;
-        GeneratorList.gencurrent = GeneratorList.gendefault;
-        GeneratorList.themecurrent = GeneratorList.themedefault;
-        GeneratorList.feat1current = GeneratorList.feat1default;
-        GeneratorList.feat2current = GeneratorList.feat2default;
-        GeneratorList.typecurrent = GeneratorList.typedefault;
-        GeneratorList.shapecurrent = GeneratorList.shapedefault;
-        GeneratorList.sizecurrent = GeneratorList.sizedefault;
-        GeneratorList.xcurrent = GeneratorList.xdefault;
-        GeneratorList.zcurrent = GeneratorList.zdefault;
-        ODNBXlite.Generator = GeneratorList.genfeatures[GeneratorList.gendefault];
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-            ODNBXlite.MapFeatures = GeneratorList.genfeats[GeneratorList.gendefault];
-        }else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES){
-            ODNBXlite.MapFeatures = GeneratorList.feat1default;
-        }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
-            ODNBXlite.MapFeatures = GeneratorList.feat2default;
-        }
-        ODNBXlite.MapTheme = GeneratorList.themedefault;
-        ODNBXlite.IndevMapType = GeneratorList.typedefault;
-        ODNBXlite.IndevWidthX = 1 << GeneratorList.xdefault + 6;
-        ODNBXlite.IndevWidthZ = 1 << GeneratorList.zdefault + 6;
-        ODNBXlite.IndevHeight = ODNBXlite.DefaultFiniteDepth+32;
-        ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
-        ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-        ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
-        if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201){
-            ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
-        }
-    }
-
-    public static String genNBXliteButtonName(){
-        StringBuilder str = new StringBuilder();
-        str.append(mod_OldDays.lang.get("settings"));
-        str.append(": ");
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (GeneratorList.gencurrent + 1)));
-            if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
-                str.append(", ");
-            }
-        }
-        if (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2){
-            str.append(" (");
-            str.append(ODNBXlite.IndevWidthX);
-            str.append("x");
-            str.append(ODNBXlite.IndevWidthZ);
-            if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
-                str.append("x");
-                str.append(ODNBXlite.IndevHeight-32);
-            }
-            str.append("), ");
-        }
-        if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
-            str.append(mod_OldDays.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
-            str.append(", ");
-        }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
-            if (GeneratorList.gencurrent == 4 && ODNBXlite.SnowCovered){
-                str.append(" (");
-                str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
-                str.append(")");
-            }
-        }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
-            str.append(mod_OldDays.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
-        }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
-            str.append(mod_OldDays.lang.get("nbxlite.releasefeatures"+(GeneratorList.feat2current+1)));
-        }
-        return str.toString();
     }
 
     /**
@@ -512,7 +433,7 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         else if (par1GuiButton.id == 9 || par1GuiButton.id == 10)
         {
-             mc.displayGuiScreen(new GuiNBXlite(this));
+             mc.displayGuiScreen(nbxliteGui);
              moreOptions = false;
         }
     }
@@ -646,42 +567,7 @@ public class GuiCreateWorld2 extends GuiScreen
             gameMode = "creative";
         }
         if (par1WorldInfo.nbxlite){
-            ODNBXlite.IndevWidthX = par1WorldInfo.indevX;
-            ODNBXlite.IndevWidthZ = par1WorldInfo.indevZ;
-            ODNBXlite.IndevHeight = par1WorldInfo.indevY;
-            ODNBXlite.SurrWaterType = par1WorldInfo.surrwatertype;
-            ODNBXlite.SurrWaterHeight = par1WorldInfo.surrwaterheight;
-            ODNBXlite.SurrGroundType = par1WorldInfo.surrgroundtype;
-            ODNBXlite.SurrGroundHeight = par1WorldInfo.surrgroundheight;
-            ODNBXlite.CloudHeight = par1WorldInfo.cloudheight;
-            ODNBXlite.SkyBrightness = par1WorldInfo.skybrightness;
-            ODNBXlite.SkyColor = par1WorldInfo.skycolor;
-            ODNBXlite.FogColor = par1WorldInfo.fogcolor;
-            ODNBXlite.CloudColor = par1WorldInfo.cloudcolor;
-            ODNBXlite.Generator = par1WorldInfo.mapGen;
-            ODNBXlite.MapFeatures = par1WorldInfo.mapGenExtra;
-            ODNBXlite.MapTheme = par1WorldInfo.mapTheme;
-            ODNBXlite.IndevMapType = par1WorldInfo.mapType;
-            ODNBXlite.SnowCovered = par1WorldInfo.snowCovered;
-            ODNBXlite.GenerateNewOres = par1WorldInfo.newOres;
-            if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES){
-                GeneratorList.gencurrent = 5;
-                GeneratorList.feat1current = ODNBXlite.MapFeatures;
-            }else if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES){
-                GeneratorList.gencurrent = 6;
-                GeneratorList.feat2current = ODNBXlite.MapFeatures;
-            }else{
-                switch (ODNBXlite.MapFeatures){
-                    case ODNBXlite.FEATURES_ALPHA11201: GeneratorList.gencurrent = 4; break;
-                    case ODNBXlite.FEATURES_INFDEV0420: GeneratorList.gencurrent = 3; break;
-                    case ODNBXlite.FEATURES_INFDEV0608: GeneratorList.gencurrent = 3; break;
-                    case ODNBXlite.FEATURES_INFDEV0227: GeneratorList.gencurrent = 2; break;
-                    case ODNBXlite.FEATURES_INDEV: GeneratorList.gencurrent = 1; break;
-                    case ODNBXlite.FEATURES_CLASSIC: GeneratorList.gencurrent = 0; break;
-                }
-                GeneratorList.typecurrent = ODNBXlite.IndevMapType;
-                GeneratorList.themecurrent = ODNBXlite.MapTheme;
-            }
+            nbxliteGui.loadSettingsFromWorldInfo(par1WorldInfo);
         }
     }
 }

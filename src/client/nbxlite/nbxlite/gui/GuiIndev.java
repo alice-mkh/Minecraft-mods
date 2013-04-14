@@ -9,10 +9,10 @@ import net.minecraft.src.StatCollector;
 
 public final class GuiIndev extends GuiScreen{
     private GuiScreen parent;
-    private int mapType = GeneratorList.typedefault;
-    private int mapShape = GeneratorList.shapedefault;
-    private int mapSize = GeneratorList.sizedefault;
-    private int mapTheme = GeneratorList.themedefault;
+    private int mapType = ODNBXlite.DefaultIndevType;
+    private int mapShape = 0;
+    private int mapSize = 1;
+    private int mapTheme = ODNBXlite.DefaultTheme;
 
     public GuiIndev(GuiScreen gui){
         parent = gui;

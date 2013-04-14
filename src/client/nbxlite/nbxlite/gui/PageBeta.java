@@ -22,7 +22,7 @@ public class PageBeta extends Page{
         for (int i = 0; i < l; i++){
             featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
             String name = mod_OldDays.lang.get(GeneratorList.feat1name[i]);
-            if (GeneratorList.feat1desc[i] != ""){
+            if (i != ODNBXlite.FEATURES_SKY){
                 name += " (" + mod_OldDays.lang.get(GeneratorList.feat1desc[i]) + ")";
             }
             featuresButtons[i].displayString = name;

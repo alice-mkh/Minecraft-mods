@@ -77,15 +77,16 @@ public abstract class Page extends GuiScreen{
 
     @Override
     public void mouseClicked(int par1, int par2, int par3){
+        if (par1 < getLeft() || par1 > getRight() || par2 < getTop() || par2 > getBottom()){
+            return;
+        }
         super.mouseClicked(par1, par2, par3);
         if (!canBeScrolled()){
             return;
         }
-        if (par1 > getLeft() && par1 < getRight() && par2 > getTop() && par2 < getBottom()){
-            dragging = true;
-            if (par1 > getRight() - SCROLLBAR_WIDTH){
-                scrollbarDragging = true;
-            }
+        dragging = true;
+        if (par1 > getRight() - SCROLLBAR_WIDTH){
+            scrollbarDragging = true;
         }
         clickY = par2;
     }

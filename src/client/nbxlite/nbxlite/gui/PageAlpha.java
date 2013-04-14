@@ -81,7 +81,7 @@ public class PageAlpha extends Page{
             case 2: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_ALPHA11201; break;
         }
         ODNBXlite.MapTheme = GeneratorList.themecurrent;
-        if(ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS){
+        if(mode == 2 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
             ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
         ODNBXlite.GenerateNewOres = newores;

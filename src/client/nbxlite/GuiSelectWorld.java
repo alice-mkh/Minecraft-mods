@@ -190,6 +190,7 @@ public class GuiSelectWorld extends GuiScreen
                     Object o = c.getDeclaredConstructor(GuiScreen.class).newInstance(this);
                     mc.displayGuiScreen((GuiScreen)o);
                 }catch(Throwable t){
+                    t.printStackTrace();
                     nbxlite = false;
                 }
             }else{
@@ -277,9 +278,6 @@ public class GuiSelectWorld extends GuiScreen
         if (nbxlite && !mc.getSaveLoader().getSaveLoader(getSaveFileName(par1), false).loadWorldInfo().nbxlite){
             try{
                 ODNBXlite.Import = true;
-                Class c = net.minecraft.src.nbxlite.gui.GuiCreateWorld2.class;
-                Method method = c.getDeclaredMethod("setDefaultNBXliteSettings");
-                method.invoke(null);
                 Class c2 = net.minecraft.src.nbxlite.gui.GuiNBXlite.class;
                 Object o = c2.getDeclaredConstructor(GuiScreen.class, String.class, Integer.TYPE).newInstance(this, getSaveFileName(par1), par1);
                 mc.displayGuiScreen((GuiScreen)o);
