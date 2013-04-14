@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Tessellator;
+import net.minecraft.src.WorldInfo;
 
 public abstract class Page extends GuiScreen{
     public static final int SCROLLBAR_WIDTH = 6;
@@ -39,7 +40,11 @@ public abstract class Page extends GuiScreen{
 
     public void updateButtonText(){}
 
-    public abstract void selectSettings();
+    public abstract void applySettings();
+
+    public abstract void setDefaultSettings();
+
+    public abstract void loadFromWorldInfo(WorldInfo w);
 
     public int getScrolling(){
         return scrolling - maxScrolling;

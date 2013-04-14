@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
 public class GuiNBXlite extends GuiScreen{
+    private int currentGen;
+
     private String selectedWorld;
     private int number;
     private boolean newworld;
@@ -20,7 +22,8 @@ public class GuiNBXlite extends GuiScreen{
     public GuiNBXlite(GuiScreen guiscreen){
         parent = guiscreen;
         newworld = true;
-        applySettings(true);
+        setDefaultSettings();
+        applySettings();
     }
 
     public GuiNBXlite(GuiScreen guiscreen, String world, int i){
@@ -46,11 +49,11 @@ public class GuiNBXlite extends GuiScreen{
             genButtons[i].displayString = mod_OldDays.lang.get("nbxlite.defaultgenerator" + (i + 1));
             buttonList.add(genButtons[i]);
         }
-        genButtons[GeneratorList.gencurrent].enabled = false;
+        genButtons[currentGen].enabled = false;
     }
 
     public void setPage(){
-        switch (GeneratorList.gencurrent){
+        switch (currentGen){
             case 0: page = new PageFinite(this, false); break;
             case 1: page = new PageFinite(this, true); break;
             case 2: page = new PageAlpha(this, 0); break;
@@ -92,7 +95,7 @@ public class GuiNBXlite extends GuiScreen{
         }
         Collections.sort(saveList);
         mc.displayGuiScreen(null);
-        applySettings(false);
+        applySettings();
         String s = selectedWorld;
         if (s == null)
         {
@@ -114,7 +117,8 @@ public class GuiNBXlite extends GuiScreen{
             return;
         }
         if (guibutton.id == 1){
-            applySettings(true);
+            setDefaultSettings();
+            applySettings();
             mc.displayGuiScreen(parent);
             if (parent instanceof GuiCreateWorld2){
                 ((GuiCreateWorld2)parent).fixHardcoreButtons();
@@ -124,14 +128,14 @@ public class GuiNBXlite extends GuiScreen{
                 selectWorld();
                 return;
             }
-            applySettings(false);
+            applySettings();
             mc.displayGuiScreen(parent);
             if (parent instanceof GuiCreateWorld2){
                 ((GuiCreateWorld2)parent).fixHardcoreButtons();
             }
         }else if (guibutton.id >= 2 && guibutton.id < 2 + genButtons.length){
-            genButtons[GeneratorList.gencurrent].enabled = true;
-            GeneratorList.gencurrent = guibutton.id - 2;
+            genButtons[currentGen].enabled = true;
+            currentGen = guibutton.id - 2;
             guibutton.enabled = false;
             refreshPage();
         }
@@ -184,7 +188,7 @@ public class GuiNBXlite extends GuiScreen{
 //             drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
             page.drawScrollbar();
         }
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (GeneratorList.gencurrent + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);
     }
 
@@ -207,56 +211,50 @@ public class GuiNBXlite extends GuiScreen{
         tessellator.draw();
     }
 
-    public static String getButtonName(){
+    public String getButtonName(){
         StringBuilder str = new StringBuilder();
         str.append(mod_OldDays.lang.get("settings"));
         str.append(": ");
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
-            str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (GeneratorList.gencurrent + 1)));
-            if (GeneratorList.genplus[GeneratorList.gencurrent]==0){
+        if (GeneratorList.genfeatures[currentGen] == 0){
+            str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1)));
+            if (GeneratorList.genplus[currentGen] == 0){
                 str.append(", ");
             }
         }
-        if (GeneratorList.genplus[GeneratorList.gencurrent]==1 || GeneratorList.genplus[GeneratorList.gencurrent]==2){
+        if (GeneratorList.genplus[currentGen] >= 1){
             str.append(" (");
             str.append(ODNBXlite.IndevWidthX);
             str.append("x");
             str.append(ODNBXlite.IndevWidthZ);
-            if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
+            if (GeneratorList.genplus[currentGen] == 1){
                 str.append("x");
                 str.append(ODNBXlite.IndevHeight-32);
             }
             str.append("), ");
         }
-        if (GeneratorList.genplus[GeneratorList.gencurrent]==1){
+        if (GeneratorList.genplus[currentGen] == 1){
             str.append(mod_OldDays.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
             str.append(", ");
         }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==0){
+        if (GeneratorList.genfeatures[currentGen] == 0){
             str.append(mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
-            if (GeneratorList.gencurrent == 4 && ODNBXlite.SnowCovered){
+            if (currentGen == 4 && ODNBXlite.SnowCovered){
                 str.append(" (");
                 str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
                 str.append(")");
             }
         }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==1){
+        if (GeneratorList.genfeatures[currentGen] == 1){
             str.append(mod_OldDays.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
         }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent]==2){
+        if (GeneratorList.genfeatures[currentGen] == 2){
             str.append(mod_OldDays.lang.get("nbxlite.releasefeatures"+(GeneratorList.feat2current+1)));
         }
         return str.toString();
     }
 
-    public void applySettings(boolean def){
-        if (def){
-            GeneratorList.gencurrent = ODNBXlite.DefaultGenerator;
-            setPage();
-            setDefaultSettings();
-        }else{
-            page.selectSettings();
-        }
+    public void applySettings(){
+        page.applySettings();
         ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
         ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
         ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
@@ -265,34 +263,34 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     public void setDefaultSettings(){
-        GeneratorList.themecurrent = ODNBXlite.DefaultTheme;
-        GeneratorList.feat1current = ODNBXlite.DefaultFeaturesBeta;
-        GeneratorList.feat2current = ODNBXlite.DefaultFeaturesRelease;
-        GeneratorList.typecurrent = ODNBXlite.DefaultIndevType;
-        GeneratorList.shapecurrent = 0;
-        GeneratorList.sizecurrent = 1;
-        GeneratorList.xcurrent = ODNBXlite.DefaultFiniteWidth;
-        GeneratorList.zcurrent = ODNBXlite.DefaultFiniteLength;
-        ODNBXlite.Generator = GeneratorList.genfeatures[ODNBXlite.DefaultGenerator];
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
-            ODNBXlite.MapFeatures = GeneratorList.genfeats[ODNBXlite.DefaultGenerator];
-        }else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES){
-            ODNBXlite.MapFeatures = ODNBXlite.DefaultFeaturesBeta;
-        }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
-            ODNBXlite.MapFeatures = ODNBXlite.DefaultFeaturesRelease;
+        currentGen = ODNBXlite.DefaultGenerator;
+        if (page != null){
+            page.setDefaultSettings();
         }
-        ODNBXlite.MapTheme = ODNBXlite.DefaultTheme;
-        ODNBXlite.IndevMapType = ODNBXlite.DefaultIndevType;
-        ODNBXlite.IndevWidthX = 1 << GeneratorList.xcurrent + 6;
-        ODNBXlite.IndevWidthZ = 1 << GeneratorList.zcurrent + 6;
-        ODNBXlite.IndevHeight = ODNBXlite.DefaultFiniteDepth+32;
-        ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
-        if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && (ODNBXlite.MapTheme==ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS) && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201){
-            ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
-        }
+        setPage();
+        page.setDefaultSettings();
     }
 
     public void loadSettingsFromWorldInfo(WorldInfo par1WorldInfo){
+        ODNBXlite.Generator = par1WorldInfo.mapGen;
+        ODNBXlite.MapFeatures = par1WorldInfo.mapGenExtra;
+        if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES){
+            currentGen = 5;
+        }else if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES){
+            currentGen = 6;
+        }else{
+            switch (ODNBXlite.MapFeatures){
+                case ODNBXlite.FEATURES_ALPHA11201: currentGen = 4; break;
+                case ODNBXlite.FEATURES_INFDEV0420: currentGen = 3; break;
+                case ODNBXlite.FEATURES_INFDEV0608: currentGen = 3; break;
+                case ODNBXlite.FEATURES_INFDEV0227: currentGen = 2; break;
+                case ODNBXlite.FEATURES_INDEV: currentGen = 1; break;
+                case ODNBXlite.FEATURES_CLASSIC: currentGen = 0; break;
+            }
+        }
+        setPage();
+        page.loadFromWorldInfo(par1WorldInfo);
+
         ODNBXlite.IndevWidthX = par1WorldInfo.indevX;
         ODNBXlite.IndevWidthZ = par1WorldInfo.indevZ;
         ODNBXlite.IndevHeight = par1WorldInfo.indevY;
@@ -300,34 +298,26 @@ public class GuiNBXlite extends GuiScreen{
         ODNBXlite.SurrWaterHeight = par1WorldInfo.surrwaterheight;
         ODNBXlite.SurrGroundType = par1WorldInfo.surrgroundtype;
         ODNBXlite.SurrGroundHeight = par1WorldInfo.surrgroundheight;
+
         ODNBXlite.CloudHeight = par1WorldInfo.cloudheight;
         ODNBXlite.SkyBrightness = par1WorldInfo.skybrightness;
         ODNBXlite.SkyColor = par1WorldInfo.skycolor;
         ODNBXlite.FogColor = par1WorldInfo.fogcolor;
         ODNBXlite.CloudColor = par1WorldInfo.cloudcolor;
-        ODNBXlite.Generator = par1WorldInfo.mapGen;
-        ODNBXlite.MapFeatures = par1WorldInfo.mapGenExtra;
-        ODNBXlite.MapTheme = par1WorldInfo.mapTheme;
-        ODNBXlite.IndevMapType = par1WorldInfo.mapType;
-        ODNBXlite.SnowCovered = par1WorldInfo.snowCovered;
-        ODNBXlite.GenerateNewOres = par1WorldInfo.newOres;
-        if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES){
-            GeneratorList.gencurrent = 5;
-            GeneratorList.feat1current = ODNBXlite.MapFeatures;
-        }else if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES){
-            GeneratorList.gencurrent = 6;
-            GeneratorList.feat2current = ODNBXlite.MapFeatures;
-        }else{
-            switch (ODNBXlite.MapFeatures){
-                case ODNBXlite.FEATURES_ALPHA11201: GeneratorList.gencurrent = 4; break;
-                case ODNBXlite.FEATURES_INFDEV0420: GeneratorList.gencurrent = 3; break;
-                case ODNBXlite.FEATURES_INFDEV0608: GeneratorList.gencurrent = 3; break;
-                case ODNBXlite.FEATURES_INFDEV0227: GeneratorList.gencurrent = 2; break;
-                case ODNBXlite.FEATURES_INDEV: GeneratorList.gencurrent = 1; break;
-                case ODNBXlite.FEATURES_CLASSIC: GeneratorList.gencurrent = 0; break;
-            }
-            GeneratorList.typecurrent = ODNBXlite.IndevMapType;
-            GeneratorList.themecurrent = ODNBXlite.MapTheme;
+    }
+
+    public int allowWorldTypes(){
+        if (ODNBXlite.Generator != ODNBXlite.GEN_NEWBIOMES){
+            return 0;
         }
+        return GeneratorList.feat2worldtype[ODNBXlite.MapFeatures];
+    }
+
+    public boolean enableStructuresByDefault(){
+        return ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES;
+    }
+
+    public boolean isIndev(){
+        return ODNBXlite.Generator == ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV;
     }
 }

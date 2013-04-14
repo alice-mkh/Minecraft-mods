@@ -22,7 +22,7 @@ public class PageFinite extends Page{
         widthButtons = new GuiButton[4];
         lengthButtons = new GuiButton[4];
         origIndev = mc.indevShapeSize;
-        newores = ODNBXlite.DefaultNewOres;
+        newores = ODNBXlite.GenerateNewOres;
     }
 
     @Override
@@ -183,7 +183,7 @@ public class PageFinite extends Page{
     }
 
     @Override
-    public void selectSettings(){
+    public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         ODNBXlite.MapFeatures = indev ? 3 : 4;
         ODNBXlite.MapTheme=GeneratorList.themecurrent;
@@ -207,8 +207,31 @@ public class PageFinite extends Page{
         }else{
             ODNBXlite.IndevWidthX = 1 << GeneratorList.xcurrent + 6;
             ODNBXlite.IndevWidthZ = 1 << GeneratorList.zcurrent + 6;
-            ODNBXlite.IndevHeight=heightSlider.getSizeValue();
+            ODNBXlite.IndevHeight = heightSlider.getSizeValue();
         }
         ODNBXlite.GenerateNewOres=newores;
+    }
+
+    @Override
+    public void setDefaultSettings(){
+        GeneratorList.typecurrent = ODNBXlite.DefaultIndevType;
+        GeneratorList.themecurrent = ODNBXlite.DefaultTheme;
+        GeneratorList.shapecurrent = 0;
+        GeneratorList.sizecurrent = 1;
+        GeneratorList.xcurrent = ODNBXlite.DefaultFiniteWidth;
+        GeneratorList.zcurrent = ODNBXlite.DefaultFiniteLength;
+        newores = ODNBXlite.DefaultNewOres;
+        heightSlider.sliderValue = heightSlider.setSizeValue(ODNBXlite.DefaultFiniteDepth);
+    }
+
+    @Override
+    public void loadFromWorldInfo(WorldInfo w){
+        GeneratorList.typecurrent = w.mapType;
+        GeneratorList.themecurrent = w.mapTheme;
+        newores = w.newOres;
+        ODNBXlite.IndevHeight = w.indevY;
+        ODNBXlite.MapTheme=GeneratorList.themecurrent;
+        ODNBXlite.GenerateNewOres=newores;
+        ODNBXlite.IndevMapType=GeneratorList.typecurrent;
     }
 }

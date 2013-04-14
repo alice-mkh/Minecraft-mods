@@ -11,7 +11,7 @@ public class PageAlpha extends Page{
 
     public PageAlpha(GuiNBXlite parent, int mode){
         super(parent);
-        newores = ODNBXlite.DefaultNewOres;
+        newores = ODNBXlite.GenerateNewOres;
         this.mode = mode;
     }
 
@@ -73,7 +73,7 @@ public class PageAlpha extends Page{
     }
 
     @Override
-    public void selectSettings(){
+    public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         switch(mode){
             case 0: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INFDEV0227; break;
@@ -84,6 +84,21 @@ public class PageAlpha extends Page{
         if(mode == 2 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
             ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
+        ODNBXlite.GenerateNewOres = newores;
+    }
+
+    @Override
+    public void setDefaultSettings(){
+        GeneratorList.themecurrent = ODNBXlite.DefaultTheme;
+        newores = ODNBXlite.DefaultNewOres;
+    }
+
+    @Override
+    public void loadFromWorldInfo(WorldInfo w){
+        GeneratorList.themecurrent = w.mapTheme;
+        newores = w.newOres;
+        ODNBXlite.SnowCovered = w.snowCovered;
+        ODNBXlite.MapTheme = GeneratorList.themecurrent;
         ODNBXlite.GenerateNewOres = newores;
     }
 }

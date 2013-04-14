@@ -130,19 +130,20 @@ public class GuiCreateWorld2 extends GuiScreen
         buttonList.add(field_82289_B = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
         field_82289_B.drawButton = false;
 
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent] != 2 || GeneratorList.feat2worldtype[GeneratorList.feat2current] < 1){
+        int allowWorldTypes = nbxliteGui.allowWorldTypes();
+        if (allowWorldTypes < 1){
             buttonWorldType.enabled = false;
             worldTypeId = 0;
         }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent] != 2 || GeneratorList.feat2worldtype[GeneratorList.feat2current] < 2){
+        if (allowWorldTypes < 2){
             if (WorldType.worldTypes[worldTypeId] == WorldType.LARGE_BIOMES){
                 worldTypeId = 0;
             }
         }
-        if (GeneratorList.genfeatures[GeneratorList.gencurrent] != 2 || GeneratorList.feat2worldtype[GeneratorList.feat2current] < 3){
+        if (allowWorldTypes < 3){
             generatorOptionsToUse = "";
         }
-        generateStructures = GeneratorList.genstructures[GeneratorList.gencurrent];
+        generateStructures = nbxliteGui.enableStructuresByDefault();
 
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxWorldName.setFocused(true);
@@ -277,7 +278,7 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         else if (par1GuiButton.id == 0)
         {
-            if (!ODNBXlite.ShowGUI && GeneratorList.genplus[GeneratorList.gencurrent]==1 && !skipIndev){
+            if (!ODNBXlite.ShowGUI && nbxliteGui.isIndev() && !skipIndev){
                 mc.displayGuiScreen(new GuiIndev(this));
                 return;
             }
@@ -403,7 +404,7 @@ public class GuiCreateWorld2 extends GuiScreen
 
             do
             {
-                if (WorldType.worldTypes[worldTypeId] != null && WorldType.worldTypes[worldTypeId].getCanBeCreated() && (GeneratorList.feat2worldtype[GeneratorList.feat2current] > 1 || WorldType.worldTypes[worldTypeId] != WorldType.LARGE_BIOMES))
+                if (WorldType.worldTypes[worldTypeId] != null && WorldType.worldTypes[worldTypeId].getCanBeCreated() && (nbxliteGui.allowWorldTypes() > 1 || WorldType.worldTypes[worldTypeId] != WorldType.LARGE_BIOMES))
                 {
                     break;
                 }
@@ -451,7 +452,7 @@ public class GuiCreateWorld2 extends GuiScreen
         buttonBonusItems.drawButton = moreOptions;
         buttonWorldType.drawButton = moreOptions;
         buttonAllowCommands.drawButton = moreOptions;
-        field_82289_B.drawButton = moreOptions && WorldType.worldTypes[worldTypeId] == WorldType.FLAT && GeneratorList.genfeatures[GeneratorList.gencurrent] == 2 && GeneratorList.feat2worldtype[GeneratorList.feat2current] >= 3;
+        field_82289_B.drawButton = moreOptions && WorldType.worldTypes[worldTypeId] == WorldType.FLAT && nbxliteGui.allowWorldTypes() >= 3;
 
         if (moreOptions)
         {

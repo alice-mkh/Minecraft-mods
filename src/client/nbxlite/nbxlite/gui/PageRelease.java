@@ -10,7 +10,7 @@ public class PageRelease extends Page{
     public PageRelease(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat2length + 1];
-        newores = ODNBXlite.DefaultNewOres;
+        newores = ODNBXlite.GenerateNewOres;
     }
 
     @Override
@@ -72,9 +72,22 @@ public class PageRelease extends Page{
     }
 
     @Override
-    public void selectSettings(){
+    public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_NEWBIOMES;
         ODNBXlite.MapFeatures=GeneratorList.feat2current;
+        ODNBXlite.GenerateNewOres=newores;
+    }
+
+    @Override
+    public void setDefaultSettings(){
+        GeneratorList.feat2current = ODNBXlite.DefaultFeaturesRelease;
+        newores = ODNBXlite.DefaultNewOres;
+    }
+
+    @Override
+    public void loadFromWorldInfo(WorldInfo w){
+        GeneratorList.feat2current = w.mapGenExtra;
+        newores = w.newOres;
         ODNBXlite.GenerateNewOres=newores;
     }
 }

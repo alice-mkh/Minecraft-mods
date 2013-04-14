@@ -12,8 +12,8 @@ public class PageBeta extends Page{
     public PageBeta(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat1length + 1];
-        jungle = false;
-        newores = ODNBXlite.DefaultNewOres;
+        jungle = ODNBXlite.MapFeatures == ODNBXlite.FEATURES_JUNGLE;
+        newores = ODNBXlite.GenerateNewOres;
     }
 
     @Override
@@ -82,9 +82,23 @@ public class PageBeta extends Page{
     }
 
     @Override
-    public void selectSettings(){
+    public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_OLDBIOMES;
         ODNBXlite.MapFeatures = jungle ? ODNBXlite.FEATURES_JUNGLE : GeneratorList.feat1current;
+        ODNBXlite.GenerateNewOres=newores;
+    }
+
+    @Override
+    public void setDefaultSettings(){
+        GeneratorList.feat1current = ODNBXlite.DefaultFeaturesBeta;
+        newores = ODNBXlite.DefaultNewOres;
+        jungle = ODNBXlite.DefaultFeaturesBeta == ODNBXlite.FEATURES_JUNGLE;
+    }
+
+    @Override
+    public void loadFromWorldInfo(WorldInfo w){
+        newores = w.newOres;
+        GeneratorList.feat1current = w.mapGenExtra;
         ODNBXlite.GenerateNewOres=newores;
     }
 }

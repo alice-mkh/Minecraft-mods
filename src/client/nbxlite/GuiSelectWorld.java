@@ -217,6 +217,7 @@ public class GuiSelectWorld extends GuiScreen
                     ((GuiCreateWorld2)o).func_82286_a(worldinfo);
                     mc.displayGuiScreen((GuiScreen)o);
                 }catch(Throwable t){
+                    t.printStackTrace();
                     nbxlite = false;
                 }
             }else{
