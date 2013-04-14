@@ -64,13 +64,16 @@ public class GuiNBXlite extends GuiScreen{
         }
     }
 
-    public void refreshPage(){
+    public void refreshPage(boolean reset){
         setPage();
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int scaledWidth = scaledresolution.getScaledWidth();
         int scaledHeight = scaledresolution.getScaledHeight();
         page.setWorldAndResolution(mc, scaledWidth, scaledHeight);
         page.initButtons();
+        if (reset){
+            page.setDefaultSettings();
+        }
         page.updateButtonText();
         page.updateButtonVisibility();
         page.scrolled();
@@ -80,7 +83,7 @@ public class GuiNBXlite extends GuiScreen{
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height){
         super.setWorldAndResolution(mc, width, height);
-        refreshPage();
+        refreshPage(false);
     }
 
     public void selectWorld()
@@ -137,7 +140,8 @@ public class GuiNBXlite extends GuiScreen{
             genButtons[currentGen].enabled = true;
             currentGen = guibutton.id - 2;
             guibutton.enabled = false;
-            refreshPage();
+            refreshPage(true);
+            page.setDefaultSettings();
         }
     }
 
