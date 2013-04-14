@@ -7285,34 +7285,60 @@ public class RenderBlocks
         float f2 = 0.8F;
         float f3 = 0.6F;
         int j = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4);
-        tessellator.setBrightness(renderMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : j);
-        tessellator.setColorOpaque_F(f, f, f);
+        float ff = 1.0F;
+        float ff2 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(renderMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : j);
+        }else{
+            ff = renderMinY <= 0.0D ? par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4) : ff2;
+        }
+        tessellator.setColorOpaque_F(f * ff, f * ff, f * ff);
         renderBottomFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
         flag = true;
-        tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : j);
-        tessellator.setColorOpaque_F(f1, f1, f1);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : j);
+        }else{
+            ff = renderMaxY >= 1.0D ? par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4) : ff2;
+        }
+        tessellator.setColorOpaque_F(f1 * ff, f1 * ff, f1 * ff);
         renderTopFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
         flag = true;
-        tessellator.setBrightness(renderMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : j);
-        tessellator.setColorOpaque_F(f2, f2, f2);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(renderMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : j);
+        }else{
+            ff = renderMinZ <= 0.0D ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1) : ff2;
+        }
+        tessellator.setColorOpaque_F(f2 * ff, f2 * ff, f2 * ff);
         Icon icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2);
         renderEastFace(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
-        tessellator.setBrightness(renderMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : j);
-        tessellator.setColorOpaque_F(f2, f2, f2);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(renderMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : j);
+        }else{
+            ff = renderMaxZ >= 1.0D ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1) : ff2;
+        }
+        tessellator.setColorOpaque_F(f2 * ff, f2 * ff, f2 * ff);
         icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3);
         renderWestFace(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
-        tessellator.setBrightness(renderMinX <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : j);
-        tessellator.setColorOpaque_F(f3, f3, f3);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(renderMinX <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : j);
+        }else{
+            ff = renderMinX <= 0.0D ? par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4) : ff2;
+        }
+        tessellator.setColorOpaque_F(f3 * ff, f3 * ff, f3 * ff);
         icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4);
         renderNorthFace(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
-        tessellator.setBrightness(renderMaxX >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : j);
-        tessellator.setColorOpaque_F(f3, f3, f3);
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(renderMaxX >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : j);
+        }else{
+            ff = renderMaxX >= 1.0D ? par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4) : ff2;
+        }
+        tessellator.setColorOpaque_F(f3 * ff, f3 * ff, f3 * ff);
         icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5);
         renderSouthFace(par1Block, par2, par3, par4, icon);
         flag = true;
