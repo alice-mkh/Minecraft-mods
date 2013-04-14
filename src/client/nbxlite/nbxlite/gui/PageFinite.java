@@ -221,7 +221,7 @@ public class PageFinite extends Page{
         GeneratorList.xcurrent = ODNBXlite.DefaultFiniteWidth;
         GeneratorList.zcurrent = ODNBXlite.DefaultFiniteLength;
         newores = ODNBXlite.DefaultNewOres;
-        heightSlider.sliderValue = heightSlider.setSizeValue(ODNBXlite.DefaultFiniteDepth);
+        heightSlider.sliderValue = heightSlider.setSizeValue(ODNBXlite.DefaultFiniteDepth + 32);
     }
 
     @Override
