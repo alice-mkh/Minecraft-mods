@@ -49,7 +49,6 @@ public class ODEyecandy extends OldDaysModule{
             case 5: set(ItemRenderer.class, "items2d", Items2D); break;
             case 6: set(BlockChestOld.class, "normalblock", OldChest);
                     set(TileEntityChestRenderer.class, "hidemodel", OldChest);
-                    set(RenderMinecart2.class, "shiftChest", OldChest);
                     if (OldChest){
                         Block.blocksList[Block.chest.blockID].setBlockBoundsBasedOnState(null, 0, 0, 0);
                         Block.blocksList[Block.chestTrapped.blockID].setBlockBoundsBasedOnState(null, 0, 0, 0);
@@ -105,6 +104,7 @@ public class ODEyecandy extends OldDaysModule{
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(EntityEnderman.class, new RenderEnderman2());
             addRenderer(EntityMinecart.class, new RenderMinecart2());
+            addRenderer(EntityMinecartTNT.class, new RenderTntMinecart2());
             addRenderer(EntityPigZombie.class, new RenderZombie());
             addRenderer(EntityZombie.class, new RenderZombie2());
             addRenderer(EntitySkeleton.class, new RenderSkeleton2(new ModelSkeleton()));

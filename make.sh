@@ -52,7 +52,7 @@ CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEnt
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
        `find EntitySuspendFX` `find RenderItem` RenderItemFrame2 `find GuiScreen`
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
-       RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
+       RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png textures/blocks/olddays_chest_top.png textures/blocks/olddays_chest_side.png
         textures/blocks/olddays_chest_back_left.png textures/blocks/olddays_chest_back_right.png textures/blocks/olddays_chest_front.png
         textures/blocks/olddays_chest_front_left.png textures/blocks/olddays_chest_front_right.png olddays/allitems.png
@@ -71,7 +71,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVi
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem`
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper` `find ItemEnchantedBook`
-       `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 `find BlockGrass`
+       `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 RenderTntMinecart2 `find BlockGrass`
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityEnderChestRenderer` `find BlockSapling`
        `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped` `find ItemRenderer`"
 ADD[9]="textures/blocks/olddays_grass_top.png textures/blocks/olddays_grass_side.png textures/blocks/olddays_leaves_fast.png
@@ -96,7 +96,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem`
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer` `find GuiScreen`
         BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev
-        ModelMobArmor RenderEnderman2 RenderMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
+        ModelMobArmor RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
         SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
         `find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree` `find BlockGrass`
         `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
