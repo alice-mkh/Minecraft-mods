@@ -34,7 +34,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond(this,  19,1,     0,     "OpaqueFlatClouds");
         new OldDaysPropertyCond2(this, 20,1,     0,     "ClassicLight", 2);
         new OldDaysPropertyCond(this,  21,1,     0,     "BedrockFog");
-        new OldDaysPropertyCond2(this, 22,-1,    0,     "Sunset", 2);
+        new OldDaysPropertyCond2(this, 22,-1,    2,     "Sunset", 2);
         new OldDaysPropertyCond(this,  23,1,     0,     "SunriseAtNorth");
         new OldDaysPropertyCond(this,  24,1,     0,     "OldStars");
         new OldDaysPropertyBool(this,  25,true,  false, "OldNetherFog");
@@ -42,7 +42,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyBool(this,  27,true,  true,  "ShowGUI");
         new OldDaysPropertyInt(this,   28,6,     6,     "DefaultGenerator", 6).setUseNames();
         new OldDaysPropertyInt(this,   29,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
-        new OldDaysPropertyInt(this,   30,6,     7,     "DefaultFeaturesRelease", 7).setUseNames();
+        new OldDaysPropertyInt(this,   30,7,     7,     "DefaultFeaturesRelease", 7).setUseNames();
         replaceBlocks();
         registerGears();
         GuiSelectWorld.nbxlite = true;
