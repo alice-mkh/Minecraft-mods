@@ -2385,7 +2385,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /**
      * Gets a random mob for spawning in this world.
      */
-    public SpawnListEntry getRandomMob(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
+    public SpawnListEntry spawnRandomCreature(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
         List list = getChunkProvider().getPossibleCreatures(par1EnumCreatureType, par2, par3, par4);
 

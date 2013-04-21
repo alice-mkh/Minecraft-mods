@@ -9,6 +9,7 @@ public final class SpawnerAnimalsBeta
 {
     private static Set eligibleChunksForSpawning = new HashSet();
     protected static final Class nightSpawnEntities[];
+    private static Map classToStringMapping;
 
     public SpawnerAnimalsBeta()
     {
@@ -67,7 +68,7 @@ public final class SpawnerAnimalsBeta
                     {
                         ChunkCoordIntPair var10 = (ChunkCoordIntPair)var39.next();
                         OldBiomeGenBase var11 = var0.getWorldChunkManager().oldGetBiomeGenAtChunkCoord(var10);
-                        List var12 = var11.getSpawnableList(var38);
+                        List var12 = cleanSpawnList(var11.getSpawnableList(var38), var0.provider.dimensionId);
                         if(var12 != null && !var12.isEmpty())
                         {
                             int var13 = 0;
@@ -138,10 +139,7 @@ public final class SpawnerAnimalsBeta
                                                     }
 
                                                     var43.setLocationAndAngles((double)var27, (double)var28, (double)var29, var0.rand.nextFloat() * 360.0F, 0.0F);
-//                                                     if(!var43.allow(var0.provider.dimensionId))
-//                                                     {
-//                                                         continue;
-//                                                     }
+
                                                     if(var43.getCanSpawnHere())
                                                     {
                                                         ++var20;
@@ -275,10 +273,23 @@ public final class SpawnerAnimalsBeta
     }
 */
 
+    private static List cleanSpawnList(List spawnSubclasses, int dimensionId){
+        List list = new ArrayList();
+        for (Object o : spawnSubclasses){
+            SpawnListEntryBeta s = (SpawnListEntryBeta)o;
+            String str = (String)(classToStringMapping.get(s.entityClass));
+            if (EntityLiving.allow(str, dimensionId)){
+                list.add(s);
+            }
+        }
+        return list;
+    }
+
     static 
     {
         nightSpawnEntities = (new Class[] {
             net.minecraft.src.EntitySpider.class, net.minecraft.src.EntityZombie.class, net.minecraft.src.EntitySkeleton.class
         });
+        classToStringMapping = (Map)(mod_OldDays.getField(EntityList.class, null, 1));
     }
 }

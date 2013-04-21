@@ -8,6 +8,7 @@ public final class SpawnerAnimals
     /** The 17x17 area around the player where mobs can spawn */
     private static HashMap eligibleChunksForSpawning = new HashMap();
     protected static final Class nightSpawnEntities[];
+    private static Map classToStringMapping;
 
     /**
      * Given a chunk, find a random position in it.
@@ -129,7 +130,7 @@ public final class SpawnerAnimals
                                                         {
                                                             if (var21 == null)
                                                             {
-                                                                var21 = par0WorldServer.spawnRandomCreature(var34, var17, var18, var19);
+                                                                var21 = spawnRandomCreature(par0WorldServer, var34, var17, var18, var19);
 
                                                                 if (var21 == null)
                                                                 {
@@ -151,10 +152,6 @@ public final class SpawnerAnimals
 
                                                             var38.setLocationAndAngles((double)var23, (double)var24, (double)var25, par0WorldServer.rand.nextFloat() * 360.0F, 0.0F);
 
-//                                                             if(!var38.allow(par0WorldServer.provider.dimensionId))
-//                                                             {
-//                                                                 continue;
-//                                                             }
                                                             if (var38.getCanSpawnHere())
                                                             {
                                                                 ++var15;
@@ -295,7 +292,7 @@ public final class SpawnerAnimals
                                                         {
                                                             if (var21 == null)
                                                             {
-                                                                var21 = par0WorldServer.getRandomMob(var34, var17, var18, var19);
+                                                                var21 = spawnRandomCreature(par0WorldServer, var34, var17, var18, var19);
 
                                                                 if (var21 == null)
                                                                 {
@@ -458,11 +455,31 @@ public final class SpawnerAnimals
         }
     }
 
+    private static SpawnListEntry spawnRandomCreature(World w, EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4){
+        if (w instanceof FakeWorldServer){
+            return null;
+        }
+        List list2 = w.getChunkProvider().getPossibleCreatures(par1EnumCreatureType, par2, par3, par4);
+        List list = new ArrayList();
+        for (Object o : list2){
+            SpawnListEntry s = (SpawnListEntry)o;
+            String str = (String)(classToStringMapping.get(s.entityClass));
+            if (EntityLiving.allow(str, w.provider.dimensionId)){
+                list.add(s);
+            }
+        }
+        if (list == null || list.isEmpty()){
+            return null;
+        }
+        return (SpawnListEntry)WeightedRandom.getRandomItem(w.rand, list);
+    }
+
     static
     {
         nightSpawnEntities = (new Class[]
                 {
                     net.minecraft.src.EntitySpider.class, net.minecraft.src.EntityZombie.class, net.minecraft.src.EntitySkeleton.class
                 });
+        classToStringMapping = (Map)(mod_OldDays.getField(EntityList.class, null, 1));
     }
 }

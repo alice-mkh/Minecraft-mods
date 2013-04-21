@@ -19,7 +19,7 @@ public class OldSpawnerAnimals
         maxSpawns = i;
         spawnBaseClass = type.getCreatureClass();
         spawnSubclasses = OldBiomeGenBase.notABiome.getSpawnableList(type);
-        classToStringMapping = (Map)(mod_OldDays.getField(EntityList.class, null, "classToStringMapping"));
+        classToStringMapping = (Map)(mod_OldDays.getField(EntityList.class, null, 1));
     }
 
     public void func_1150_a(World world)
@@ -95,7 +95,7 @@ public class OldSpawnerAnimals
             if(world.rand.nextInt(10) == 0)
             {
                 List spawnSubclasses2 = cleanSpawnList(world.provider.dimensionId);
-                if (spawnSubclasses2.size() <= 0){
+                if (spawnSubclasses2.isEmpty()){
                     return 0;
                 }
                 int j1 = world.rand.nextInt(spawnSubclasses2.size());
@@ -215,7 +215,7 @@ public class OldSpawnerAnimals
             if(world.rand.nextInt(10) == 0)
             {
                 List spawnSubclasses2 = cleanSpawnList(world.provider.dimensionId);
-                if (spawnSubclasses2.size() <= 0){
+                if (spawnSubclasses2.isEmpty()){
                     return 0;
                 }
                 int j1 = world.rand.nextInt(spawnSubclasses2.size());
