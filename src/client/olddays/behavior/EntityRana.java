@@ -24,9 +24,4 @@ public class EntityRana extends EntityCreature implements IMob{
     public int getMaxHealth(){
         return 5;
     }
-
-    @Override
-    public boolean allow(int dim){
-        return false;
-    }
 }

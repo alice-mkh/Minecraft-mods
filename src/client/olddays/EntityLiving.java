@@ -38,13 +38,15 @@ public abstract class EntityLiving extends Entity
         return newai;
     }
 
-    public boolean allow(int dim){
-        String id = EntityList.getEntityString(this);
+    public static boolean allow(String id, int dim){
         /*if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
             return false;
         }*/
         if (dim!=0){
             return true;
+        }
+        if (id == "Steve" || id == "Rana"){
+            return false;
         }
         if (nonewmobs<11 && id=="Bat"){
             return false;

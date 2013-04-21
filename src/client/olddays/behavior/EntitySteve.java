@@ -33,11 +33,6 @@ public class EntitySteve extends EntityCreature implements IMob{
         return 5;
     }
 
-    @Override
-    public boolean allow(int dim){
-        return false;
-    }
-
     public static class RenderMD3Steve extends RenderMD3{
         public RenderMD3Steve(boolean anim, String model, String texture){
             super(anim, model, texture + ".png", texture + "2.png", texture + "3.png"); 

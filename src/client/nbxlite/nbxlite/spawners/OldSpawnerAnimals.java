@@ -7,11 +7,11 @@ import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
 
 public class OldSpawnerAnimals
 {
-
     private int maxSpawns;
     private Class spawnBaseClass;
     private List spawnSubclasses;
     private Set nearbyChunkSet;
+    private Map classToStringMapping;
 
     public OldSpawnerAnimals(int i, EnumCreatureType type)
     {
@@ -19,6 +19,7 @@ public class OldSpawnerAnimals
         maxSpawns = i;
         spawnBaseClass = type.getCreatureClass();
         spawnSubclasses = OldBiomeGenBase.notABiome.getSpawnableList(type);
+        classToStringMapping = (Map)(mod_OldDays.getField(EntityList.class, null, "classToStringMapping"));
     }
 
     public void func_1150_a(World world)
@@ -93,7 +94,11 @@ public class OldSpawnerAnimals
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             if(world.rand.nextInt(10) == 0)
             {
-                int j1 = world.rand.nextInt(spawnSubclasses.size());
+                List spawnSubclasses2 = cleanSpawnList(world.provider.dimensionId);
+                if (spawnSubclasses2.size() <= 0){
+                    return 0;
+                }
+                int j1 = world.rand.nextInt(spawnSubclasses2.size());
                 ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
@@ -140,7 +145,7 @@ public class OldSpawnerAnimals
                         EntityLiving entityliving;
                         try
                         {
-                            entityliving = (EntityLiving)((SpawnListEntryBeta)spawnSubclasses.get(j1)).entityClass.getConstructor(new Class[] {
+                            entityliving = (EntityLiving)((SpawnListEntryBeta)spawnSubclasses2.get(j1)).entityClass.getConstructor(new Class[] {
                                 net.minecraft.src.World.class
                             }).newInstance(new Object[] {
                                 world
@@ -159,10 +164,6 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
-//                         if(!entityliving.allow(world.provider.dimensionId))
-//                         {
-//                             continue;
-//                         }
                         if(isBounds(i3, k3)){
                             continue;
                         }
@@ -213,7 +214,11 @@ public class OldSpawnerAnimals
             ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)iterator.next();
             if(world.rand.nextInt(10) == 0)
             {
-                int j1 = world.rand.nextInt(spawnSubclasses.size());
+                List spawnSubclasses2 = cleanSpawnList(world.provider.dimensionId);
+                if (spawnSubclasses2.size() <= 0){
+                    return 0;
+                }
+                int j1 = world.rand.nextInt(spawnSubclasses2.size());
                 ChunkPosition chunkposition = func_1151_a(world, chunkcoordintpair.chunkXPos * 16, chunkcoordintpair.chunkZPos * 16);
                 int l1 = chunkposition.x;
                 int j2 = chunkposition.y;
@@ -256,7 +261,7 @@ public class OldSpawnerAnimals
                         EntityLiving entityliving;
                         try
                         {
-                            entityliving = (EntityLiving)((SpawnListEntryBeta)spawnSubclasses.get(j1)).entityClass.getConstructor(new Class[] {
+                            entityliving = (EntityLiving)((SpawnListEntryBeta)spawnSubclasses2.get(j1)).entityClass.getConstructor(new Class[] {
                                 net.minecraft.src.World.class
                             }).newInstance(new Object[] {
                                 world
@@ -272,10 +277,6 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
-//                         if(!entityliving.allow(world.provider.dimensionId))
-//                         {
-//                             continue;
-//                         }
                         if(isBounds(i3, k3)){
                             continue;
                         }
@@ -293,5 +294,17 @@ public class OldSpawnerAnimals
     public static int getWorldHeight(World w, int i, int j){
         Chunk c = w.getChunkFromBlockCoords(i, j);
         return Math.max(c.getTopFilledSegment() - 16, 128);
+    }
+
+    private List cleanSpawnList(int dimensionId){
+        List list = new ArrayList();
+        for (Object o : spawnSubclasses){
+            SpawnListEntryBeta s = (SpawnListEntryBeta)o;
+            String str = (String)(classToStringMapping.get(s.entityClass));
+            if (EntityLiving.allow(str, dimensionId)){
+                list.add(s);
+            }
+        }
+        return list;
     }
 }
