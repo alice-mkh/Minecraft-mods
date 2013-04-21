@@ -30,15 +30,22 @@ public class RenderGlobal2 extends RenderGlobal{
 
     FloatBuffer floatBuffer;
 
-    public RenderGlobal2(Minecraft mc2, RenderEngine re){
+    public RenderGlobal2(Minecraft mc2, RenderEngine re, boolean optifine){
         super(mc2, re);
         mc = mc2;
         renderEngine = re;
         floatBuffer = BufferUtils.createFloatBuffer(16);
-        starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 16));
-        setStars(oldstars);
-        glSkyList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 17));
-        glSkyList2 = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 18));
+        if (optifine){
+            starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 15));
+            setStars(oldstars);
+            glSkyList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 16));
+            glSkyList2 = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 17));
+        }else{
+            starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 16));
+            setStars(oldstars);
+            glSkyList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 17));
+            glSkyList2 = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 18));
+        }
         cloudTickCounter = 0;
     }
 
@@ -330,21 +337,19 @@ public class RenderGlobal2 extends RenderGlobal{
             GL11.glColor3f(f, f1, f2);
         }
 
-        if (GL11.glIsList(glSkyList2)){
-            if (ODNBXlite.VoidFog==0){
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0.0F, -(float)(d - 16D), 0.0F);
-                GL11.glCallList(glSkyList2);
-                GL11.glPopMatrix();
-            }else if (ODNBXlite.VoidFog==1){
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0.0F, -(float)(Math.max(d, 1.0D) - 16D), 0.0F);
-                GL11.glCallList(glSkyList2);
-                GL11.glPopMatrix();
-            }else if (ODNBXlite.VoidFog<4){
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glCallList(glSkyList2);
-            }
+        if (ODNBXlite.VoidFog==0){
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, -(float)(d - 16D), 0.0F);
+            GL11.glCallList(glSkyList2);
+            GL11.glPopMatrix();
+        }else if (ODNBXlite.VoidFog==1){
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, -(float)(Math.max(d, 1.0D) - 16D), 0.0F);
+            GL11.glCallList(glSkyList2);
+            GL11.glPopMatrix();
+        }else if (ODNBXlite.VoidFog<4){
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glCallList(glSkyList2);
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
