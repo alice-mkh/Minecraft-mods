@@ -159,10 +159,10 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
-                        if(!entityliving.allow(world.provider.dimensionId))
-                        {
-                            continue;
-                        }
+//                         if(!entityliving.allow(world.provider.dimensionId))
+//                         {
+//                             continue;
+//                         }
                         if(isBounds(i3, k3)){
                             continue;
                         }
@@ -272,10 +272,10 @@ public class OldSpawnerAnimals
                         {
                             continue;
                         }
-                        if(!entityliving.allow(world.provider.dimensionId))
-                        {
-                            continue;
-                        }
+//                         if(!entityliving.allow(world.provider.dimensionId))
+//                         {
+//                             continue;
+//                         }
                         if(isBounds(i3, k3)){
                             continue;
                         }

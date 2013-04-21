@@ -151,10 +151,10 @@ public final class SpawnerAnimals
 
                                                             var38.setLocationAndAngles((double)var23, (double)var24, (double)var25, par0WorldServer.rand.nextFloat() * 360.0F, 0.0F);
 
-                                                            if(!var38.allow(par0WorldServer.provider.dimensionId))
-                                                            {
-                                                                continue;
-                                                            }
+//                                                             if(!var38.allow(par0WorldServer.provider.dimensionId))
+//                                                             {
+//                                                                 continue;
+//                                                             }
                                                             if (var38.getCanSpawnHere())
                                                             {
                                                                 ++var15;
@@ -317,10 +317,10 @@ public final class SpawnerAnimals
 
                                                             var38.setLocationAndAngles((double)var23, (double)var24, (double)var25, par0WorldServer.rand.nextFloat() * 360.0F, 0.0F);
 
-                                                            if(!var38.allow(par0WorldServer.provider.dimensionId))
-                                                            {
-                                                                continue;
-                                                            }
+//                                                             if(!var38.allow(par0WorldServer.provider.dimensionId))
+//                                                             {
+//                                                                 continue;
+//                                                             }
                                                             if (var38.getCanSpawnHere())
                                                             {
                                                                 ++var15;
