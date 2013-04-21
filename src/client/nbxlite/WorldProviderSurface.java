@@ -29,15 +29,10 @@ public class WorldProviderSurface extends WorldProvider
     @Override
     public IChunkProvider createChunkGenerator()
     {
-        if (terrainType == WorldType.FLAT)
-        {
-            return new ChunkProviderFlat(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled(), field_82913_c);
-        }
-        else
-        {
+        if (terrainType == WorldType.DEFAULT || terrainType == WorldType.DEFAULT_1_1 || terrainType == WorldType.LARGE_BIOMES){
             return new ChunkProviderGenerate2(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
         }
-//         return terrainType.getChunkGenerator(worldObj);
+        return super.createChunkGenerator();
     }
 
     /**
@@ -46,15 +41,18 @@ public class WorldProviderSurface extends WorldProvider
     @Override
     public boolean canCoordinateBeSpawn(int par1, int par2)
     {
+        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
+            return super.canCoordinateBeSpawn(par1, par2);
+        }
+        int i = worldObj.getFirstUncoveredBlock(par1, par2);
+        if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+            return i == Block.grass.blockID;
+        }
         if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420){
             return true;
         }
-        int i = worldObj.getFirstUncoveredBlock(par1, par2);
         if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
             return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();
-        }
-        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
-            return i == Block.grass.blockID;
         }
         return i == Block.sand.blockID;
     }
