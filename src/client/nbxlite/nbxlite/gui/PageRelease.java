@@ -61,8 +61,10 @@ public class PageRelease extends Page{
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton.id < featuresButtons.length){
-            featuresButtons[GeneratorList.feat2current].enabled = true;
             GeneratorList.feat2current = guibutton.id;
+            for (GuiButton button : featuresButtons){
+                button.enabled = true;
+            }
             guibutton.enabled = false;
         }
         updateButtonPosition();
