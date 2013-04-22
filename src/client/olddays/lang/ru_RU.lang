@@ -119,7 +119,7 @@ actions.oldbonemeal.name=Старая костная мука
  actions.oldbonemeal.desc3=§aИзменена в 1.5.
 actions.snowfallonglass.name=Снег на стекле
  actions.snowfallonglass.desc1=Позволяет снегу падать на стекло.
- actions.snowfallonglass.desc2=§aУдалено в ???
+ actions.snowfallonglass.desc2=§aУдалено в Альфе 1.0.5.
 
 bugs.boosters.name=Бустеры
  bugs.boosters.desc1=Позволяет ускорять вагонетки

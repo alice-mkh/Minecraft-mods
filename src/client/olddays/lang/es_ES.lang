@@ -121,7 +121,7 @@ actions.oldbonemeal.name=Antiguo polvo de hueso
 //FIXME
 actions.snowfallonglass.name=Snowfall on glass
  actions.snowfallonglass.desc1=Allows snow to fall on glass.
- actions.snowfallonglass.desc2=§aRemoved in ???
+ actions.snowfallonglass.desc2=§aRemoved in Alpha 1.0.5.
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros
