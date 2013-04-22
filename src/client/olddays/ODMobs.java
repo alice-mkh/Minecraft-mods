@@ -10,7 +10,7 @@ public class ODMobs extends OldDaysModule{
         new OldDaysPropertyBool(this, 5, false, false, "SurvivalTestMobs");
         new OldDaysPropertyBool(this, 6, true,  false, "FastSkeletons");
         new OldDaysPropertyBool(this, 7, true,  false, "OldHealth");
-        new OldDaysPropertyInt(this,  8, 10,    11,    "Mobs", 11).setUseNames();
+        new OldDaysPropertyInt(this,  8, 12,    13,    "Mobs", 13).setUseNames();
         new OldDaysPropertyInt(this,  9, 2,     6,     "Slimes", 6).setUseNames();
         new OldDaysPropertyBool(this, 10,false, false, "Endermen");
         new OldDaysPropertyBool(this, 11,false, true,  "Squids");
@@ -74,6 +74,8 @@ public class ODMobs extends OldDaysModule{
         if (!renderersAdded && RenderManager.instance!=null){
             addEntity(EntitySteve.class, "Steve", 201);
             addEntity(EntityRana.class, "Rana", 202);
+            addMobSpawn(EnumCreatureType.monster, net.minecraft.src.EntitySteve.class, 12, 4, 4);
+            addMobSpawn(EnumCreatureType.monster, net.minecraft.src.EntityRana.class, 12, 4, 4);
             String str = "/olddays/md3/";
             addRenderer(EntitySteve.class, new EntitySteve.RenderMD3Steve(false, str + "mcexport01.MD3", str + "mcexport"));
             addRenderer(EntityRana.class, new RenderMD3(false, str + "rana.MD3", str + "cube-nes.png"));

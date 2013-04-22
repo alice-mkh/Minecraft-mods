@@ -12,7 +12,7 @@ public abstract class EntityLiving extends Entity
     public static boolean jumpdelay = true;
     public static boolean survivaltest = false;
     public static boolean armorblocksall = false;
-    public static int nonewmobs = 10;
+    public static int nonewmobs = 13;
     public static boolean toolbreakanim = true;
     public static boolean enablescore = false;
     public static boolean oldswing = false;
@@ -39,40 +39,40 @@ public abstract class EntityLiving extends Entity
     }
 
     public static boolean allow(String id, int dim){
-        /*if (nonewmobs<9 && (id=="LavaSlime" || id=="Blaze") && dim==-1){
-            return false;
-        }*/
         if (dim!=0){
             return true;
         }
-        if (id == "Steve" || id == "Rana"){
+        if (nonewmobs<13 && id=="Bat"){
             return false;
         }
-        if (nonewmobs<11 && id=="Bat"){
+        if (nonewmobs<12 && id=="Ozelot"){
             return false;
         }
-        if (nonewmobs<10 && id=="Ozelot"){
+        if (nonewmobs<11 && (id=="MushroomCow" || id=="Villager")){
             return false;
         }
-        if (nonewmobs<9 && (id=="MushroomCow" || id=="Villager")){
+        if (nonewmobs<10 && id=="Enderman"){
             return false;
         }
-        if (nonewmobs<8 && id=="Enderman"){
+        if (nonewmobs<8 && id=="Wolf"){
             return false;
         }
-        if (nonewmobs<7 && id=="Wolf"){
+        if (nonewmobs<7 && id=="Squid"){
             return false;
         }
-        if (nonewmobs<5 && id=="Squid"){
+        if (nonewmobs<6 && id=="Chicken"){
             return false;
         }
-        if (nonewmobs<4 && id=="Chicken"){
+        if (nonewmobs<5 && id=="Slime"){
             return false;
         }
-        if (nonewmobs<2 && id=="Cow"){
+        if (nonewmobs<4 && id=="Cow"){
             return false;
         }
-        if (nonewmobs<1 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider" || id=="Creeper")){
+        if (nonewmobs<3 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider" || id=="Creeper")){
+            return false;
+        }
+        if ((nonewmobs != 1 && id == "Rana") || (nonewmobs != 2 && id == "Steve")){
             return false;
         }
         return true;
