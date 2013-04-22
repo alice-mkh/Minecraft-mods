@@ -275,4 +275,19 @@ public class OldDaysModule{
     public void readAdditionalPackageData(String[] data){}
 
     public void refreshTextures(){}
+
+    public void addMobSpawn(EnumCreatureType t, Class c, int i, int j, int k){
+        for (OldDaysModule module : core.modules){
+            module.addMobSpawn_do(t, c, i, j, k);
+        }
+        for (BiomeGenBase biome : BiomeGenBase.biomeList){
+            if (biome == null || biome == BiomeGenBase.hell || biome == BiomeGenBase.sky){
+                continue;
+            }
+            List list = biome.getSpawnableList(t);
+            list.add(new SpawnListEntry(c, i, j, k));
+        }
+    }
+
+    protected void addMobSpawn_do(EnumCreatureType t, Class c, int i, int j, int k){}
 }

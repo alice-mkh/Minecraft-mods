@@ -7,7 +7,8 @@ import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 import net.minecraft.src.nbxlite.indev.*;
-import net.minecraft.src.nbxlite.indev.McLevelImporter;
+import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
+import net.minecraft.src.nbxlite.spawners.SpawnListEntryBeta;
 import java.util.zip.*;
 
 public class ODNBXlite extends OldDaysModule{
@@ -616,43 +617,58 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     private boolean tickPushing(Minecraft minecraft){
-        Entity entity;
-        for (int k = 0; k < minecraft.theWorld.loadedEntityList.size(); k++)
-        {
-            entity = (Entity)minecraft.theWorld.loadedEntityList.get(k);
-            pushBack(entity);
+        for (Object o : minecraft.theWorld.loadedEntityList){
+            Entity entity = (Entity)o;
+            if (MapFeatures==FEATURES_INDEV){
+                if (entity.posX>IndevWidthX+8){
+                    entity.motionX-=(entity.posX-IndevWidthX)/950;
+                }
+                if (entity.posX<-8){
+                    entity.motionX-=(entity.posX)/950;
+                }
+                if (entity.posZ>IndevWidthZ+8){
+                    entity.motionZ-=(entity.posZ-IndevWidthZ)/950;
+                }
+                if (entity.posZ<-8){
+                    entity.motionZ-=(entity.posZ)/950;
+                }
+            }
+            if (MapFeatures==FEATURES_CLASSIC){
+                if (entity.posX>IndevWidthX){
+                    entity.motionX-=0.5;
+                }
+                if (entity.posX<0){
+                    entity.motionX+=0.5;
+                }
+                if (entity.posZ>IndevWidthZ){
+                    entity.motionZ-=0.5;
+                }
+                if (entity.posZ<0){
+                    entity.motionZ+=0.5;
+                }
+            }
         }
         return true;
     }
 
-    private void pushBack(Entity entity){
-        if (MapFeatures==FEATURES_INDEV){
-            if (entity.posX>IndevWidthX+8){
-                entity.motionX-=(entity.posX-IndevWidthX)/950;
-            }
-            if (entity.posX<-8){
-                entity.motionX-=(entity.posX)/950;
-            }
-            if (entity.posZ>IndevWidthZ+8){
-                entity.motionZ-=(entity.posZ-IndevWidthZ)/950;
-            }
-            if (entity.posZ<-8){
-                entity.motionZ-=(entity.posZ)/950;
-            }
-        }
-        if (MapFeatures==FEATURES_CLASSIC){
-            if (entity.posX>IndevWidthX){
-                entity.motionX-=0.5;
-            }
-            if (entity.posX<0){
-                entity.motionX+=0.5;
-            }
-            if (entity.posZ>IndevWidthZ){
-                entity.motionZ-=0.5;
-            }
-            if (entity.posZ<0){
-                entity.motionZ+=0.5;
-            }
+    protected void addMobSpawn_do(EnumCreatureType t, Class c, int i, int j, int k){
+        OldBiomeGenBase[] biomes = new OldBiomeGenBase[]{
+            OldBiomeGenBase.rainforest,
+            OldBiomeGenBase.swampland,
+            OldBiomeGenBase.seasonalForest,
+            OldBiomeGenBase.forest,
+            OldBiomeGenBase.savanna,
+            OldBiomeGenBase.shrubland,
+            OldBiomeGenBase.taiga,
+            OldBiomeGenBase.desert,
+            OldBiomeGenBase.plains,
+            OldBiomeGenBase.iceDesert,
+            OldBiomeGenBase.tundra,
+            OldBiomeGenBase.notABiome
+        };
+        for (OldBiomeGenBase biome : biomes){
+            List list = biome.getSpawnableList(t);
+            list.add(new SpawnListEntryBeta(c, i));
         }
     }
 
