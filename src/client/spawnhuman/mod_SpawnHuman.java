@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import net.minecraft.client.Minecraft;
 
 public class mod_SpawnHuman extends Mod{
@@ -28,7 +29,7 @@ public class mod_SpawnHuman extends Mod{
         try{
             RenderHuman r = new RenderHuman(new ModelHuman(), 0.5F);
             r.setRenderManager(renderMan);
-            HashMap map = ((HashMap)mod_OldDays.getField(RenderManager.class, renderMan, 0));
+            HashMap map = ((HashMap)getField(RenderManager.class, renderMan, 0));
             map.put(EntityHuman.class, r);
             System.out.println("Added "+r.getClass().getName()+" renderer");
         }catch(Exception ex){
@@ -109,6 +110,17 @@ public class mod_SpawnHuman extends Mod{
                     entityliving.spawnExplosionParticle();
                 }
             }
+        }
+    }
+
+    private Object getField(Class c, Object o, int num){
+        try{
+            Field f = c.getDeclaredFields()[num];
+            f.setAccessible(true);
+            return f.get(o);
+        }catch(Exception ex){
+            System.out.println(ex);
+            return null;
         }
     }
 
