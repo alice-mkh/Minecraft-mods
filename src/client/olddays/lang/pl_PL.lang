@@ -118,10 +118,9 @@ actions.oldbonemeal.name=Stara mączka kostna
  actions.oldbonemeal.desc1=Wystarczy jedna aby
  actions.oldbonemeal.desc2=rośliny w pełni wyrosły.
  actions.oldbonemeal.desc3=§aZmienione w 1.5.
-//FIXME
-actions.snowfallonglass.name=Snowfall on glass
- actions.snowfallonglass.desc1=Allows snow to fall on glass.
- actions.snowfallonglass.desc2=§aRemoved in Alpha 1.0.5.
+actions.snowfallonglass.name=Śnieg na szkle
+ actions.snowfallonglass.desc1=Pozwala na opady śniegu na blokach szkła.
+ actions.snowfallonglass.desc2=§aUsunięte w Alphie 1.0.5.
 
 bugs.boosters.name=Boostery
  bugs.boosters.desc1=Pozwala na przyśpieszenie wózków
@@ -325,11 +324,10 @@ mobs.mobs.name=Dozwolone moby
 mobs.mobs.desc1=Określa które moby mogą się pojawiać.
  mobs.mobs1=Classic
  mobs.mobs1.desc=Brak mobów
-//FIXME
- mobs.mobs2=0.31 (Ranas)
- mobs.mobs2.desc=Only Ranas
- mobs.mobs3=0.31 (Steves)
- mobs.mobs3.desc=Only Steves
+ mobs.mobs2=0.31 (Rana)
+ mobs.mobs2.desc=Jedynie Rana
+ mobs.mobs3=0.31 (Steve)
+ mobs.mobs3.desc=Jedynie odmiany Steve'ów
  mobs.mobs4=Indev
  mobs.mobs4.desc=Brak krów
  mobs.mobs5=Alpha 1.0.8
