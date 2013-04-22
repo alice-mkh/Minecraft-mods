@@ -71,10 +71,8 @@ public class PageBeta extends Page{
         }else if (guibutton == jungleButton){
             jungle = !jungle;
         }else if (guibutton.id < featuresButtons.length){
+            featuresButtons[GeneratorList.feat1current].enabled = true;
             GeneratorList.feat1current = guibutton.id;
-            for (GuiButton button : featuresButtons){
-                button.enabled = true;
-            }
             guibutton.enabled = false;
         }
         updateButtonPosition();
