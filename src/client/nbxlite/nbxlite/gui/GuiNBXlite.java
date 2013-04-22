@@ -70,10 +70,10 @@ public class GuiNBXlite extends GuiScreen{
         int scaledWidth = scaledresolution.getScaledWidth();
         int scaledHeight = scaledresolution.getScaledHeight();
         page.setWorldAndResolution(mc, scaledWidth, scaledHeight);
-        page.initButtons();
         if (reset){
             page.setDefaultSettings();
         }
+        page.initButtons();
         page.updateButtonText();
         page.updateButtonVisibility();
         page.scrolled();

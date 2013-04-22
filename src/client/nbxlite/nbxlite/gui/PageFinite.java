@@ -15,6 +15,7 @@ public class PageFinite extends Page{
     private GuiButton toggleButton;
     private GuiButton newOresButton;
     private boolean newores;
+    private float tempSliderValue;
 
     public PageFinite(GuiNBXlite parent, boolean indev){
         super(parent);
@@ -23,6 +24,7 @@ public class PageFinite extends Page{
         lengthButtons = new GuiButton[4];
         origIndev = mc.indevShapeSize;
         newores = ODNBXlite.GenerateNewOres;
+        tempSliderValue = 0.0F;
     }
 
     @Override
@@ -40,6 +42,7 @@ public class PageFinite extends Page{
         buttonList.add(newOresButton = new GuiButton(14, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
         widthButtons[GeneratorList.xcurrent].enabled=false;
         lengthButtons[GeneratorList.zcurrent].enabled=false;
+        heightSlider.sliderValue = tempSliderValue;
     }
 
     @Override
@@ -221,7 +224,7 @@ public class PageFinite extends Page{
         GeneratorList.xcurrent = ODNBXlite.DefaultFiniteWidth;
         GeneratorList.zcurrent = ODNBXlite.DefaultFiniteLength;
         newores = ODNBXlite.DefaultNewOres;
-        heightSlider.sliderValue = heightSlider.setSizeValue(ODNBXlite.DefaultFiniteDepth + 32);
+        tempSliderValue = GuiSliderCustom.setSizeValue(ODNBXlite.DefaultFiniteDepth + 32);
     }
 
     @Override
