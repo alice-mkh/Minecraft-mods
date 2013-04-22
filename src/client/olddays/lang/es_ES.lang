@@ -118,6 +118,10 @@ actions.oldbonemeal.name=Antiguo polvo de hueso
  actions.oldbonemeal.desc1=Un solo uso sirve para
  actions.oldbonemeal.desc2=hacer crecer algo.
  actions.oldbonemeal.desc3=§aCambiado en 1.5.
+//FIXME
+actions.snowfallonglass.name=Snowfall on glass
+ actions.snowfallonglass.desc1=Allows snow to fall on glass.
+ actions.snowfallonglass.desc2=§aRemoved in ???
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros

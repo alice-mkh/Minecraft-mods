@@ -118,6 +118,10 @@ actions.oldbonemeal.name=Stara mączka kostna
  actions.oldbonemeal.desc1=Wystarczy jedna aby
  actions.oldbonemeal.desc2=rośliny w pełni wyrosły.
  actions.oldbonemeal.desc3=§aZmienione w 1.5.
+//FIXME
+actions.snowfallonglass.name=Snowfall on glass
+ actions.snowfallonglass.desc1=Allows snow to fall on glass.
+ actions.snowfallonglass.desc2=§aRemoved in ???
 
 bugs.boosters.name=Boostery
  bugs.boosters.desc1=Pozwala na przyśpieszenie wózków

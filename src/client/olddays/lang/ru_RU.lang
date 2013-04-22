@@ -117,6 +117,9 @@ actions.oldbonemeal.name=Старая костная мука
  actions.oldbonemeal.desc1=Одного применения достаточно
  actions.oldbonemeal.desc2=для выращивания чего угодно.
  actions.oldbonemeal.desc3=§aИзменена в 1.5.
+actions.snowfallonglass.name=Снег на стекле
+ actions.snowfallonglass.desc1=Позволяет снегу падать на стекло.
+ actions.snowfallonglass.desc2=§aУдалено в ???
 
 bugs.boosters.name=Бустеры
  bugs.boosters.desc1=Позволяет ускорять вагонетки

@@ -116,6 +116,9 @@ actions.oldbonemeal.name=Old bone meal
  actions.oldbonemeal.desc1=One use is enough to
  actions.oldbonemeal.desc2=fully grow anything.
  actions.oldbonemeal.desc3=§aChanged in 1.5.
+actions.snowfallonglass.name=Snowfall on glass
+ actions.snowfallonglass.desc1=Allows snow to fall on glass.
+ actions.snowfallonglass.desc2=§aRemoved in ???
 
 bugs.boosters.name=Boosters
  bugs.boosters.desc1=Allows boosting minecarts by
