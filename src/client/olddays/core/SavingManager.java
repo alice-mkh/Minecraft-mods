@@ -160,8 +160,11 @@ public class SavingManager{
                         continue;
                     }
                     String value = properties.getProperty(propname, prop.getDefaultValue()).trim();
+                    String oldVal = prop.saveToString();
                     prop.loadFromString(value);
-                    core.sendCallback2(i, j);
+                    if (!oldVal.equals(prop.saveToString())){
+                        core.sendCallback2(i, j);
+                    }
                 }
                 saveModuleProperties(i);
             }
