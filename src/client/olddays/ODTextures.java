@@ -37,7 +37,7 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 32,true,  "LeatherArmor");
         new OldDaysPropertyBool(this, 33,true,  "Food");
         new OldDaysPropertyBool(this, 34,true,  "Procedural");
-//         new OldDaysPropertyBool(this, 35,false, "TerrainPng");
+        new OldDaysPropertyBool(this, 35,false, "TerrainPng");
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
                 getPropertyById(i).setFallback("olddays/textures.png");
@@ -49,7 +49,7 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(27).setFallback("olddays/explosion.png");
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
-//         getPropertyById(35).setFallback("terrain.png", "gui/items.png");
+        getPropertyById(35).setFallback("terrain.png", "gui/items.png");
         replaceBlocks();
         prevProcedural = Procedural;
     }
@@ -378,12 +378,8 @@ public class ODTextures extends OldDaysModule{
         if (!TerrainPng){
             return;
         }
-        Thread t = new ThreadTextures();
-        if (core.getMinecraft().theWorld == null){
-            t.start();
-        }else{
-            t.start();
-        }
+        ThreadTextures t = new ThreadTextures();
+        t.run();
     }
 
     @Override

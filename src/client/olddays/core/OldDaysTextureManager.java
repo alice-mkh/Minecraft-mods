@@ -18,6 +18,9 @@ public class OldDaysTextureManager{
     protected ArrayList<TextureStitched> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
+    private Texture tmp;
+    private int tmpWidth;
+    private int tmpHeight;
 
     public OldDaysTextureManager(mod_OldDays olddays){
         core = olddays;
@@ -201,7 +204,7 @@ public class OldDaysTextureManager{
         boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
-        Texture tex = new Texture("", 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        Texture tex = getTempTexture(width, height);
         sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
     }
 
@@ -227,7 +230,7 @@ public class OldDaysTextureManager{
         }catch(Exception e){
             e.printStackTrace();
         }
-        Texture tex = new Texture(newIcon, 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        Texture tex = getTempTexture(width, height);
         tex.getTextureData().position(0);
         for (int i = 0; i < ints.length; i++){
             int color = ints[i];
@@ -267,7 +270,7 @@ public class OldDaysTextureManager{
             e.printStackTrace();
             return false;
         }
-        Texture tmp = new Texture(icon.getIconName(), 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        Texture tmp = getTempTexture(width, height);
         tmp.getTextureData().position(0);
         for (int i = 0; i < ints.length; i++){
             int color = ints[i];
@@ -280,6 +283,16 @@ public class OldDaysTextureManager{
         boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tmp, rot);
         return true;
+    }
+
+    private Texture getTempTexture(int width, int height){
+        if (tmp != null && width == tmpWidth && height == tmpHeight){
+            return tmp;
+        }
+        tmpWidth = width;
+        tmpHeight = height;
+        tmp = new Texture("", 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        return tmp;
     }
 
     private class TextureHook{

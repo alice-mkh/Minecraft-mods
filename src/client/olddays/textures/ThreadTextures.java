@@ -2,16 +2,13 @@ package net.minecraft.src;
 
 import java.util.HashMap;
 
-public class ThreadTextures extends Thread{
+public class ThreadTextures{
     public static HashMap<String, Integer> terrainIndexMap;
     public static HashMap<String, Integer> itemsIndexMap;
     private static int fillingMap = 0;
     private static boolean filledTerrain = false;
     private static boolean filledItems = false;
 
-    public ThreadTextures(){}
-
-    @Override
     public void run(){
         if (!filledTerrain){
             terrainIndexMap = new HashMap<String, Integer>();
