@@ -378,8 +378,7 @@ public class ODTextures extends OldDaysModule{
         if (!TerrainPng || !hasTextures("terrain.png", "gui/items.png")){
             return;
         }
-        ThreadTextures t = new ThreadTextures();
-        t.run();
+        TerrainPngSupport.copyAll();
     }
 
     @Override
@@ -394,7 +393,7 @@ public class ODTextures extends OldDaysModule{
                 }
                 Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
                 boolean items = sheet.getTextureName().equals("items");
-                if (core.texman.copyIconFromSheet(i, items ? "/gui/items.png" : "/terrain.png", items ? ThreadTextures.itemsIndexMap : ThreadTextures.terrainIndexMap)){
+                if (core.texman.copyIconFromSheet(i, items ? "/gui/items.png" : "/terrain.png", items ? TerrainPngSupport.itemsIndexMap : TerrainPngSupport.terrainIndexMap)){
                     return;
                 }
             }

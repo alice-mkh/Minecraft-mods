@@ -2,14 +2,14 @@ package net.minecraft.src;
 
 import java.util.HashMap;
 
-public class ThreadTextures{
+public class TerrainPngSupport{
     public static HashMap<String, Integer> terrainIndexMap;
     public static HashMap<String, Integer> itemsIndexMap;
     private static int fillingMap = 0;
     private static boolean filledTerrain = false;
     private static boolean filledItems = false;
 
-    public void run(){
+    public static void copyAll(){
         if (!filledTerrain){
             terrainIndexMap = new HashMap<String, Integer>();
             fillingMap = 1;
