@@ -34,7 +34,7 @@ MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-da
            spawn-human spc ssp"
 UNUSED[0]="spc_tester spc_WorldEditGUI spc_aprilfools1 spc_AprilFools2012"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep`
-       `find BlockStairs` `find EntityBoat` `find ItemDye` `find BlockLeaves`
+       `find BlockStairs` `find EntityBoat` `find ItemDye` `find BlockLeaves` `find BlockSnow`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2
         EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
 CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` `find EntityLiving`
@@ -62,7 +62,7 @@ CP[6]="SoundManager2 ODSounds"
 ADD[6]="olddays/sounds"
 CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld TextureWaterFX TextureWaterFlowFX TextureLavaFX TextureLavaFlowFX TextureFlamesFX TexturePortalFX TextureWatchFX
-       TextureCompassFX ODTextures"
+       TextureCompassFX ODTextures TerrainPngSupport"
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png
         olddays/slime.png olddays/cloth_1.png olddays/cloth_2.png olddays/cloth_empty.png textures/blocks/olddays_iron_side.png
         textures/blocks/olddays_iron_bottom.png textures/blocks/olddays_gold_side.png textures/blocks/olddays_gold_bottom.png
@@ -85,9 +85,9 @@ ADD[10]="olddays/lang olddays/presets"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves`
-        `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find TileEntityEnderChestRenderer` PathIndev
+        `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find TileEntityEnderChestRenderer` PathIndev `find BlockSnow`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay `find ItemEnchantedBook`
-        `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
+        `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget` TerrainPngSupport
         OldDaysTextureManager\$TextureHook `find ItemDye` EntityAIArrowAttack2 `find PathFinder` TextureFX TextureCompassFX
         TextureWaterFX TextureWaterFlowFX TextureLavaFX TextureLavaFlowFX TextureFlamesFX TexturePortalFX TextureWatchFX
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` PathEntityIndev `find BlockSapling`
