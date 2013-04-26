@@ -42,7 +42,7 @@ public class PageAlpha extends Page{
 
     @Override
     public void updateButtonVisibility(){
-        newOresButton.drawButton = mode < 2;
+        newOresButton.drawButton = mode > 0;
     }
 
     @Override
