@@ -175,7 +175,7 @@ public class ODTextures extends OldDaysModule{
     @Override
     public void refreshTextures(){
         refreshTextureFXes(false);
-//         refreshIconReplacements();
+        refreshIconReplacements();
         copyTextureSheets();
     }
 
@@ -375,7 +375,7 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void copyTextureSheets(){
-        if (!TerrainPng){
+        if (!TerrainPng || !hasTextures("terrain.png", "gui/items.png")){
             return;
         }
         ThreadTextures t = new ThreadTextures();
