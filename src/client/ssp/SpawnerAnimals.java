@@ -480,6 +480,12 @@ public final class SpawnerAnimals
                 {
                     net.minecraft.src.EntitySpider.class, net.minecraft.src.EntityZombie.class, net.minecraft.src.EntitySkeleton.class
                 });
-        classToStringMapping = (Map)(mod_OldDays.getField(EntityList.class, null, 1));
+        try{
+            java.lang.reflect.Field f = (EntityList.class).getDeclaredFields()[1];
+            f.setAccessible(true);
+            classToStringMapping = (Map)(f.get(null));
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 }
