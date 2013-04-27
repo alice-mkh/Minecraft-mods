@@ -6,11 +6,13 @@ public class PageRelease extends Page{
     private GuiButton[] featuresButtons;
     private GuiButton newOresButton;
     private boolean newores;
+    private int features;
 
     public PageRelease(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat2length + 1];
         newores = ODNBXlite.GenerateNewOres;
+        features = 0;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class PageRelease extends Page{
             buttonList.add(featuresButtons[i]);
         }
         buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        featuresButtons[GeneratorList.feat2current].enabled=false;
+        featuresButtons[features].enabled=false;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class PageRelease extends Page{
 
     @Override
     public void updateButtonVisibility(){
-        newOresButton.drawButton = GeneratorList.feat2current<ODNBXlite.FEATURES_15;
+        newOresButton.drawButton = features<ODNBXlite.FEATURES_15;
     }
 
     @Override
@@ -61,8 +63,8 @@ public class PageRelease extends Page{
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton.id < featuresButtons.length){
-            featuresButtons[GeneratorList.feat2current].enabled = true;
-            GeneratorList.feat2current = guibutton.id;
+            featuresButtons[features].enabled = true;
+            features = guibutton.id;
             guibutton.enabled = false;
         }
         updateButtonPosition();
@@ -74,20 +76,25 @@ public class PageRelease extends Page{
     @Override
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_NEWBIOMES;
-        ODNBXlite.MapFeatures=GeneratorList.feat2current;
+        ODNBXlite.MapFeatures=features;
         ODNBXlite.GenerateNewOres=newores;
     }
 
     @Override
     public void setDefaultSettings(){
-        GeneratorList.feat2current = ODNBXlite.DefaultFeaturesRelease;
+        features = ODNBXlite.DefaultFeaturesRelease;
         newores = ODNBXlite.DefaultNewOres;
     }
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
-        GeneratorList.feat2current = w.mapGenExtra;
+        features = w.mapGenExtra;
         newores = w.newOres;
         ODNBXlite.GenerateNewOres=newores;
+    }
+
+    @Override
+    public String getString(){
+        return mod_OldDays.lang.get("nbxlite.releasefeatures" + (features + 1));
     }
 }

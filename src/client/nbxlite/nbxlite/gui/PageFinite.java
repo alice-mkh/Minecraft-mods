@@ -16,6 +16,11 @@ public class PageFinite extends Page{
     private GuiButton newOresButton;
     private boolean newores;
     private float tempSliderValue;
+    private int theme;
+    private int size;
+    private int shape;
+    private int xSize;
+    private int zSize;
 
     public PageFinite(GuiNBXlite parent, boolean indev){
         super(parent);
@@ -25,6 +30,11 @@ public class PageFinite extends Page{
         origIndev = mc.indevShapeSize;
         newores = ODNBXlite.GenerateNewOres;
         tempSliderValue = 0.0F;
+        theme = 0;
+        size = 0;
+        shape = 0;
+        xSize = 0;
+        zSize = 0;
     }
 
     @Override
@@ -40,8 +50,8 @@ public class PageFinite extends Page{
         buttonList.add(toggleButton = new GuiButton(12, width / 2 + 85 + leftmargin, 0, 20, 20, ""));
         buttonList.add(heightSlider = new GuiSliderCustom(13, (width / 2 - 75) + leftmargin, 0, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
         buttonList.add(newOresButton = new GuiButton(14, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        widthButtons[GeneratorList.xcurrent].enabled=false;
-        lengthButtons[GeneratorList.zcurrent].enabled=false;
+        widthButtons[xSize].enabled=false;
+        lengthButtons[zSize].enabled=false;
         heightSlider.sliderValue = tempSliderValue;
     }
 
@@ -68,10 +78,10 @@ public class PageFinite extends Page{
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
-        sizeButton.displayString = mod_OldDays.lang.get("indevSize") + ": " + mod_OldDays.lang.get(GeneratorList.sizename[GeneratorList.sizecurrent]);
-        shapeButton.displayString = mod_OldDays.lang.get("indevShape") + ": " + mod_OldDays.lang.get(GeneratorList.shapename[GeneratorList.shapecurrent]);
-        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
-        typeButton.displayString = mod_OldDays.lang.get("indevType") + ": " + mod_OldDays.lang.get(GeneratorList.typename[GeneratorList.typecurrent]);
+        sizeButton.displayString = mod_OldDays.lang.get("indevSize") + ": " + mod_OldDays.lang.get(GeneratorList.sizename[size]);
+        shapeButton.displayString = mod_OldDays.lang.get("indevShape") + ": " + mod_OldDays.lang.get(GeneratorList.shapename[shape]);
+        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[theme]);
+        typeButton.displayString = mod_OldDays.lang.get("indevType") + ": " + mod_OldDays.lang.get(GeneratorList.typename[type]);
         for (int i = 0; i < 4; i++){
             widthButtons[i].displayString = Integer.toString(1 << i + 6);
             lengthButtons[i].displayString = widthButtons[i].displayString;
@@ -121,9 +131,9 @@ public class PageFinite extends Page{
             drawString(fontRenderer, mod_OldDays.lang.get("width")+": ", width / 2 - 120 + leftmargin, height / 6 - 10 + scrolling, 0xa0a0a0);
             drawString(fontRenderer, mod_OldDays.lang.get("length")+": ", width / 2 - 120 + leftmargin, height / 6 + 20 + scrolling, 0xa0a0a0);
         }
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin - (origIndev ? 10 : 0), themeButton.yPosition + 22, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[theme]), width / 2 + leftmargin - (origIndev ? 10 : 0), themeButton.yPosition + 22, 0xa0a0a0);
         if (indev && !origIndev){
-            if (GeneratorList.typecurrent==2){
+            if (type==2){
                 int count = (heightSlider.getSizeValue() - 64) / 48 + 1;
                 if (count==1){
                     drawCenteredString(fontRenderer, mod_OldDays.lang.get("1Layer"), width / 2 + leftmargin, height / 6 + 114 + scrolling, 0xa0a0a0);
@@ -143,36 +153,36 @@ public class PageFinite extends Page{
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton == typeButton){
-            if (GeneratorList.typecurrent < GeneratorList.typelength){
-                GeneratorList.typecurrent++;
+            if (type < GeneratorList.typelength){
+                type++;
             }else{
-                GeneratorList.typecurrent = 0;
+                type = 0;
             }
         }else if (guibutton == themeButton){
-            if (GeneratorList.themecurrent < GeneratorList.themelength){
-                GeneratorList.themecurrent++;
+            if (theme < GeneratorList.themelength){
+                theme++;
             }else{
-                GeneratorList.themecurrent = 0;
+                theme = 0;
             }
         }else if (guibutton.id >= 2 && guibutton.id <= 5){
-            widthButtons[GeneratorList.xcurrent].enabled = true;
-            GeneratorList.xcurrent = guibutton.id - 2;
+            widthButtons[xSize].enabled = true;
+            xSize = guibutton.id - 2;
             guibutton.enabled = false;
         }else if (guibutton.id >= 6 && guibutton.id <= 9){
-            lengthButtons[GeneratorList.zcurrent].enabled = true;
-            GeneratorList.zcurrent = guibutton.id - 6;
+            lengthButtons[zSize].enabled = true;
+            zSize = guibutton.id - 6;
             guibutton.enabled = false;
         }else if (guibutton == shapeButton){
-            if (GeneratorList.shapecurrent < GeneratorList.shapename.length - 1){
-                GeneratorList.shapecurrent++;
+            if (shape < GeneratorList.shapename.length - 1){
+                shape++;
             }else{
-                GeneratorList.shapecurrent = 0;
+                shape = 0;
             }
         }else if (guibutton == sizeButton){
-            if (GeneratorList.sizecurrent < GeneratorList.sizename.length - 1){
-                GeneratorList.sizecurrent++;
+            if (size < GeneratorList.sizename.length - 1){
+                size++;
             }else{
-                GeneratorList.sizecurrent = 0;
+                size = 0;
             }
         }else if (guibutton == toggleButton){
             origIndev = !origIndev;
@@ -189,27 +199,27 @@ public class PageFinite extends Page{
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         ODNBXlite.MapFeatures = indev ? 3 : 4;
-        ODNBXlite.MapTheme=GeneratorList.themecurrent;
+        ODNBXlite.MapTheme=theme;
         if (indev){
-            ODNBXlite.IndevMapType=GeneratorList.typecurrent;
+            ODNBXlite.IndevMapType=type;
         }
         if (origIndev){
-            ODNBXlite.IndevWidthX = 128 << GeneratorList.sizecurrent;
-            ODNBXlite.IndevWidthZ = 128 << GeneratorList.sizecurrent;
+            ODNBXlite.IndevWidthX = 128 << size;
+            ODNBXlite.IndevWidthZ = 128 << size;
             ODNBXlite.IndevHeight = 64;
             if (ODNBXlite.MapFeatures == ODNBXlite.FEATURES_INDEV){
-                if (GeneratorList.shapecurrent == 1){
+                if (shape == 1){
                     ODNBXlite.IndevWidthX /= 2;
                     ODNBXlite.IndevWidthZ <<= 1;
-                }else if (GeneratorList.shapecurrent == 2){
+                }else if (shape == 2){
                     ODNBXlite.IndevWidthZ /= 2;
                     ODNBXlite.IndevWidthX /= 2;
                     ODNBXlite.IndevHeight = 256;
                 }
             }
         }else{
-            ODNBXlite.IndevWidthX = 1 << GeneratorList.xcurrent + 6;
-            ODNBXlite.IndevWidthZ = 1 << GeneratorList.zcurrent + 6;
+            ODNBXlite.IndevWidthX = 1 << xSize + 6;
+            ODNBXlite.IndevWidthZ = 1 << zSize + 6;
             ODNBXlite.IndevHeight = heightSlider.getSizeValue();
         }
         ODNBXlite.GenerateNewOres=newores;
@@ -217,24 +227,45 @@ public class PageFinite extends Page{
 
     @Override
     public void setDefaultSettings(){
-        GeneratorList.typecurrent = ODNBXlite.DefaultIndevType;
-        GeneratorList.themecurrent = ODNBXlite.DefaultTheme;
-        GeneratorList.shapecurrent = 0;
-        GeneratorList.sizecurrent = 1;
-        GeneratorList.xcurrent = ODNBXlite.DefaultFiniteWidth;
-        GeneratorList.zcurrent = ODNBXlite.DefaultFiniteLength;
+        type = ODNBXlite.DefaultIndevType;
+        theme = ODNBXlite.DefaultTheme;
+        shape = 0;
+        size = 1;
+        xSize = ODNBXlite.DefaultFiniteWidth;
+        zSize = ODNBXlite.DefaultFiniteLength;
         newores = ODNBXlite.DefaultNewOres;
         tempSliderValue = GuiSliderCustom.setSizeValue(ODNBXlite.DefaultFiniteDepth + 32);
     }
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
-        GeneratorList.typecurrent = w.mapType;
-        GeneratorList.themecurrent = w.mapTheme;
+        type = w.mapType;
+        theme = w.mapTheme;
         newores = w.newOres;
         ODNBXlite.IndevHeight = w.indevY;
-        ODNBXlite.MapTheme=GeneratorList.themecurrent;
+        ODNBXlite.MapTheme=theme;
         ODNBXlite.GenerateNewOres=newores;
-        ODNBXlite.IndevMapType=GeneratorList.typecurrent;
+        ODNBXlite.IndevMapType=type;
+    }
+
+    @Override
+    public String getString(){
+        StringBuilder str = new StringBuilder();
+        str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (indev ? 2 : 1)));
+        str.append(" (");
+        str.append(ODNBXlite.IndevWidthX);
+        str.append("x");
+        str.append(ODNBXlite.IndevWidthZ);
+        if (indev){
+            str.append("x");
+            str.append(ODNBXlite.IndevHeight-32);
+        }
+        str.append("), ");
+        if (indev){
+            str.append(mod_OldDays.lang.get(GeneratorList.typename[type]));
+            str.append(", ");
+        }
+        str.append(mod_OldDays.lang.get(GeneratorList.themename[theme]));
+        return str.toString();
     }
 }

@@ -8,12 +8,14 @@ public class PageBeta extends Page{
     private GuiButton jungleButton;
     private boolean newores;
     private boolean jungle;
+    private int features;
 
     public PageBeta(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat1length + 1];
         jungle = ODNBXlite.MapFeatures == ODNBXlite.FEATURES_JUNGLE;
         newores = ODNBXlite.GenerateNewOres;
+        features = 0;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class PageBeta extends Page{
         }
         buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         buttonList.add(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        featuresButtons[GeneratorList.feat1current].enabled=false;
+        featuresButtons[features].enabled=false;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class PageBeta extends Page{
 
     @Override
     public void updateButtonVisibility(){
-        jungleButton.drawButton = GeneratorList.feat1current == 5;
+        jungleButton.drawButton = features == 5;
     }
 
     @Override
@@ -71,8 +73,8 @@ public class PageBeta extends Page{
         }else if (guibutton == jungleButton){
             jungle = !jungle;
         }else if (guibutton.id < featuresButtons.length){
-            featuresButtons[GeneratorList.feat1current].enabled = true;
-            GeneratorList.feat1current = guibutton.id;
+            featuresButtons[features].enabled = true;
+            features = guibutton.id;
             guibutton.enabled = false;
         }
         updateButtonPosition();
@@ -84,13 +86,13 @@ public class PageBeta extends Page{
     @Override
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_OLDBIOMES;
-        ODNBXlite.MapFeatures = jungle ? ODNBXlite.FEATURES_JUNGLE : GeneratorList.feat1current;
+        ODNBXlite.MapFeatures = jungle ? ODNBXlite.FEATURES_JUNGLE : features;
         ODNBXlite.GenerateNewOres=newores;
     }
 
     @Override
     public void setDefaultSettings(){
-        GeneratorList.feat1current = ODNBXlite.DefaultFeaturesBeta;
+        features = ODNBXlite.DefaultFeaturesBeta;
         newores = ODNBXlite.DefaultNewOres;
         jungle = ODNBXlite.DefaultFeaturesBeta == ODNBXlite.FEATURES_JUNGLE;
     }
@@ -98,7 +100,12 @@ public class PageBeta extends Page{
     @Override
     public void loadFromWorldInfo(WorldInfo w){
         newores = w.newOres;
-        GeneratorList.feat1current = w.mapGenExtra;
+        features = w.mapGenExtra;
         ODNBXlite.GenerateNewOres=newores;
+    }
+
+    @Override
+    public String getString(){
+        return mod_OldDays.lang.get(GeneratorList.feat1name[features]);
     }
 }

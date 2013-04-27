@@ -216,45 +216,7 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     public String getButtonName(){
-        StringBuilder str = new StringBuilder();
-        str.append(mod_OldDays.lang.get("settings"));
-        str.append(": ");
-        if (GeneratorList.genfeatures[currentGen] == 0){
-            str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1)));
-            if (GeneratorList.genplus[currentGen] == 0){
-                str.append(", ");
-            }
-        }
-        if (GeneratorList.genplus[currentGen] >= 1){
-            str.append(" (");
-            str.append(ODNBXlite.IndevWidthX);
-            str.append("x");
-            str.append(ODNBXlite.IndevWidthZ);
-            if (GeneratorList.genplus[currentGen] == 1){
-                str.append("x");
-                str.append(ODNBXlite.IndevHeight-32);
-            }
-            str.append("), ");
-        }
-        if (GeneratorList.genplus[currentGen] == 1){
-            str.append(mod_OldDays.lang.get(GeneratorList.typename[GeneratorList.typecurrent]));
-            str.append(", ");
-        }
-        if (GeneratorList.genfeatures[currentGen] == 0){
-            str.append(mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]));
-            if (currentGen == 4 && ODNBXlite.SnowCovered){
-                str.append(" (");
-                str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
-                str.append(")");
-            }
-        }
-        if (GeneratorList.genfeatures[currentGen] == 1){
-            str.append(mod_OldDays.lang.get(GeneratorList.feat1name[GeneratorList.feat1current]));
-        }
-        if (GeneratorList.genfeatures[currentGen] == 2){
-            str.append(mod_OldDays.lang.get("nbxlite.releasefeatures"+(GeneratorList.feat2current+1)));
-        }
-        return str.toString();
+        return mod_OldDays.lang.get("settings") + ": " + page.getString();
     }
 
     public void applySettings(){

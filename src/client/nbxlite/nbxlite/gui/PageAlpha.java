@@ -4,15 +4,21 @@ import java.util.Random;
 import net.minecraft.src.*;
 
 public class PageAlpha extends Page{
+    private int[] feats = new int[]{ODNBXlite.FEATURES_INFDEV0227,
+                                    ODNBXlite.FEATURES_INFDEV0420,
+                                    ODNBXlite.FEATURES_ALPHA11201};
+
     private GuiButton themeButton;
     private GuiButton newOresButton;
     private boolean newores;
     private int mode;
+    private int theme;
 
     public PageAlpha(GuiNBXlite parent, int mode){
         super(parent);
         newores = ODNBXlite.GenerateNewOres;
         this.mode = mode;
+        theme = 0;
     }
 
     @Override
@@ -37,7 +43,7 @@ public class PageAlpha extends Page{
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
-        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[GeneratorList.themecurrent]);
+        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[themee]);
     }
 
     @Override
@@ -48,7 +54,7 @@ public class PageAlpha extends Page{
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[GeneratorList.themecurrent]), width / 2 + leftmargin, height / 6 + 67 + scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[themee]), width / 2 + leftmargin, height / 6 + 67 + scrolling, 0xa0a0a0);
     }
 
     @Override
@@ -60,10 +66,10 @@ public class PageAlpha extends Page{
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton == themeButton){
-            if (GeneratorList.themecurrent < GeneratorList.themelength){
-                GeneratorList.themecurrent++;
+            if (themee < GeneratorList.themelength){
+                themee++;
             }else{
-                GeneratorList.themecurrent = 0;
+                themee = 0;
             }
         }
         updateButtonPosition();
@@ -75,12 +81,8 @@ public class PageAlpha extends Page{
     @Override
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
-        switch(mode){
-            case 0: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INFDEV0227; break;
-            case 1: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INFDEV0420; break;
-            case 2: ODNBXlite.MapFeatures = ODNBXlite.FEATURES_ALPHA11201; break;
-        }
-        ODNBXlite.MapTheme = GeneratorList.themecurrent;
+        ODNBXlite.MapFeatures = feats[mode];
+        ODNBXlite.MapTheme = themee;
         if(mode == 2 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
             ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
@@ -89,16 +91,30 @@ public class PageAlpha extends Page{
 
     @Override
     public void setDefaultSettings(){
-        GeneratorList.themecurrent = ODNBXlite.DefaultTheme;
+        theme = ODNBXlite.DefaultTheme;
         newores = ODNBXlite.DefaultNewOres;
     }
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
-        GeneratorList.themecurrent = w.mapTheme;
+        themee = w.mapTheme;
         newores = w.newOres;
         ODNBXlite.SnowCovered = w.snowCovered;
-        ODNBXlite.MapTheme = GeneratorList.themecurrent;
+        ODNBXlite.MapTheme = themee;
         ODNBXlite.GenerateNewOres = newores;
+    }
+
+    @Override
+    public String getString(){
+        StringBuilder str = new StringBuilder();
+        str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (mode + 3)));
+        str.append(", ");
+        str.append(mod_OldDays.lang.get(GeneratorList.themename[themee]));
+        if (mode == 2 && ODNBXlite.SnowCovered){
+            str.append(" (");
+            str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
+            str.append(")");
+        }
+        return str.toString();
     }
 }

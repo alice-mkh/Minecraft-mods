@@ -46,6 +46,8 @@ public abstract class Page extends GuiScreen{
 
     public abstract void loadFromWorldInfo(WorldInfo w);
 
+    public abstract String getString();
+
     public int getScrolling(){
         return scrolling - maxScrolling;
     }
