@@ -17,6 +17,7 @@ public class PageFinite extends Page{
     private boolean newores;
     private float tempSliderValue;
     private int theme;
+    private int type;
     private int size;
     private int shape;
     private int xSize;
@@ -31,6 +32,7 @@ public class PageFinite extends Page{
         newores = ODNBXlite.GenerateNewOres;
         tempSliderValue = 0.0F;
         theme = 0;
+        type = 0;
         size = 0;
         shape = 0;
         xSize = 0;
@@ -80,7 +82,7 @@ public class PageFinite extends Page{
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
         sizeButton.displayString = mod_OldDays.lang.get("indevSize") + ": " + mod_OldDays.lang.get(GeneratorList.sizename[size]);
         shapeButton.displayString = mod_OldDays.lang.get("indevShape") + ": " + mod_OldDays.lang.get(GeneratorList.shapename[shape]);
-        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[theme]);
+        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
         typeButton.displayString = mod_OldDays.lang.get("indevType") + ": " + mod_OldDays.lang.get(GeneratorList.typename[type]);
         for (int i = 0; i < 4; i++){
             widthButtons[i].displayString = Integer.toString(1 << i + 6);
@@ -131,7 +133,7 @@ public class PageFinite extends Page{
             drawString(fontRenderer, mod_OldDays.lang.get("width")+": ", width / 2 - 120 + leftmargin, height / 6 - 10 + scrolling, 0xa0a0a0);
             drawString(fontRenderer, mod_OldDays.lang.get("length")+": ", width / 2 - 120 + leftmargin, height / 6 + 20 + scrolling, 0xa0a0a0);
         }
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[theme]), width / 2 + leftmargin - (origIndev ? 10 : 0), themeButton.yPosition + 22, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + leftmargin - (origIndev ? 10 : 0), themeButton.yPosition + 22, 0xa0a0a0);
         if (indev && !origIndev){
             if (type==2){
                 int count = (heightSlider.getSizeValue() - 64) / 48 + 1;
@@ -153,13 +155,13 @@ public class PageFinite extends Page{
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton == typeButton){
-            if (type < GeneratorList.typelength){
+            if (type < 3){
                 type++;
             }else{
                 type = 0;
             }
         }else if (guibutton == themeButton){
-            if (theme < GeneratorList.themelength){
+            if (theme < 3){
                 theme++;
             }else{
                 theme = 0;
@@ -265,7 +267,7 @@ public class PageFinite extends Page{
             str.append(mod_OldDays.lang.get(GeneratorList.typename[type]));
             str.append(", ");
         }
-        str.append(mod_OldDays.lang.get(GeneratorList.themename[theme]));
+        str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
         return str.toString();
     }
 }

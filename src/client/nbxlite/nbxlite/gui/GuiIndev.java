@@ -34,7 +34,7 @@ public final class GuiIndev extends GuiScreen{
         ((GuiButton)buttonList.get(0)).displayString = (mod_OldDays.lang.get("indevType")+": "+mod_OldDays.lang.get(GeneratorList.typename[mapType]));
         ((GuiButton)buttonList.get(1)).displayString = (mod_OldDays.lang.get("indevShape")+": "+mod_OldDays.lang.get(GeneratorList.shapename[mapShape]));
         ((GuiButton)buttonList.get(2)).displayString = (mod_OldDays.lang.get("indevSize")+": " +mod_OldDays.lang.get(GeneratorList.sizename[mapSize]));
-        ((GuiButton)buttonList.get(3)).displayString = (mod_OldDays.lang.get("nbxlite.maptheme.name")+": "+mod_OldDays.lang.get(GeneratorList.themename[mapTheme]));
+        ((GuiButton)buttonList.get(3)).displayString = (mod_OldDays.lang.get("nbxlite.maptheme.name")+": "+mod_OldDays.lang.get("nbxlite.maptheme" + (mapTheme + 1)));
     }
 
     @Override
@@ -66,13 +66,13 @@ public final class GuiIndev extends GuiScreen{
                 ((GuiCreateWorld2)parent).forceCreate();
             }
         }else if (guibutton.id == 0){
-            mapType = (mapType + 1) % (GeneratorList.typelength + 1);
+            mapType = (mapType + 1) % GeneratorList.typename.length;
         }else if (guibutton.id == 1){
             mapShape = (mapShape + 1) % GeneratorList.shapename.length;
         }else if (guibutton.id == 2){
             mapSize = (mapSize + 1) % GeneratorList.sizename.length;
         }else if (guibutton.id == 3){
-            mapTheme = (mapTheme + 1) % (GeneratorList.themelength + 1);
+            mapTheme = (mapTheme + 1) % 4;
         }
         refresh();
     }

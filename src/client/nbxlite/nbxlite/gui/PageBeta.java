@@ -23,9 +23,9 @@ public class PageBeta extends Page{
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
             featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
-            String name = mod_OldDays.lang.get(GeneratorList.feat1name[i]);
+            String name = mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1));
             if (i != ODNBXlite.FEATURES_SKY){
-                name += " (" + mod_OldDays.lang.get(GeneratorList.feat1desc[i]) + ")";
+                name += " (" + mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1) + ".desc") + ")";
             }
             featuresButtons[i].displayString = name;
             buttonList.add(featuresButtons[i]);
@@ -106,6 +106,6 @@ public class PageBeta extends Page{
 
     @Override
     public String getString(){
-        return mod_OldDays.lang.get(GeneratorList.feat1name[features]);
+        return mod_OldDays.lang.get("nbxlite.betafeatures" + (features + 1));
     }
 }

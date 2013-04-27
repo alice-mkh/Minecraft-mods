@@ -43,7 +43,7 @@ public class PageAlpha extends Page{
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
-        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get(GeneratorList.themename[themee]);
+        themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PageAlpha extends Page{
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get(GeneratorList.themedesc[themee]), width / 2 + leftmargin, height / 6 + 67 + scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + leftmargin, height / 6 + 67 + scrolling, 0xa0a0a0);
     }
 
     @Override
@@ -66,10 +66,10 @@ public class PageAlpha extends Page{
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton == themeButton){
-            if (themee < GeneratorList.themelength){
-                themee++;
+            if (theme < 3){
+                theme++;
             }else{
-                themee = 0;
+                theme = 0;
             }
         }
         updateButtonPosition();
@@ -82,7 +82,7 @@ public class PageAlpha extends Page{
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         ODNBXlite.MapFeatures = feats[mode];
-        ODNBXlite.MapTheme = themee;
+        ODNBXlite.MapTheme = theme;
         if(mode == 2 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
             ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
@@ -97,10 +97,10 @@ public class PageAlpha extends Page{
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
-        themee = w.mapTheme;
+        theme = w.mapTheme;
         newores = w.newOres;
         ODNBXlite.SnowCovered = w.snowCovered;
-        ODNBXlite.MapTheme = themee;
+        ODNBXlite.MapTheme = theme;
         ODNBXlite.GenerateNewOres = newores;
     }
 
@@ -109,7 +109,7 @@ public class PageAlpha extends Page{
         StringBuilder str = new StringBuilder();
         str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (mode + 3)));
         str.append(", ");
-        str.append(mod_OldDays.lang.get(GeneratorList.themename[themee]));
+        str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
         if (mode == 2 && ODNBXlite.SnowCovered){
             str.append(" (");
             str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
