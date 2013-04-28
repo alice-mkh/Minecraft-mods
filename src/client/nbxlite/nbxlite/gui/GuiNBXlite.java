@@ -45,7 +45,7 @@ public class GuiNBXlite extends GuiScreen{
         buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StringTranslate.getInstance().translateKey("gui.cancel")));
         genButtons = new GuiButton[GeneratorList.genlength + 1];
         for (int i = 0; i < genButtons.length; i++){
-            genButtons[i] = new GuiButton(2 + i, width / 2 - 170, height / 6 + (i * 21), 100, 20, "");
+            genButtons[i] = new GuiButton(2 + i, width / 2 - 170, height / 6 + ((i + 1) * 21), 100, 20, "");
             genButtons[i].displayString = mod_OldDays.lang.get("nbxlite.defaultgenerator" + (i + 1));
             buttonList.add(genButtons[i]);
         }
@@ -56,10 +56,8 @@ public class GuiNBXlite extends GuiScreen{
         switch (currentGen){
             case 0: page = new PageFinite(this, false); break;
             case 1: page = new PageFinite(this, true); break;
-            case 2: page = new PageAlpha(this, 0); break;
-            case 3: page = new PageAlpha(this, 1); break;
-            case 4: page = new PageAlpha(this, 2); break;
-            case 5: page = new PageBeta(this); break;
+            case 2: page = new PageAlpha(this); break;
+            case 3: page = new PageBeta(this); break;
             default: page = new PageRelease(this); break;
         }
     }
@@ -241,17 +239,14 @@ public class GuiNBXlite extends GuiScreen{
         ODNBXlite.Generator = par1WorldInfo.mapGen;
         ODNBXlite.MapFeatures = par1WorldInfo.mapGenExtra;
         if (ODNBXlite.Generator == ODNBXlite.GEN_OLDBIOMES){
-            currentGen = 5;
+            currentGen = 3;
         }else if (ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES){
-            currentGen = 6;
+            currentGen = 4;
         }else{
             switch (ODNBXlite.MapFeatures){
-                case ODNBXlite.FEATURES_ALPHA11201: currentGen = 4; break;
-                case ODNBXlite.FEATURES_INFDEV0420: currentGen = 3; break;
-                case ODNBXlite.FEATURES_INFDEV0608: currentGen = 3; break;
-                case ODNBXlite.FEATURES_INFDEV0227: currentGen = 2; break;
                 case ODNBXlite.FEATURES_INDEV: currentGen = 1; break;
                 case ODNBXlite.FEATURES_CLASSIC: currentGen = 0; break;
+                default: currentGen = 2; break;
             }
         }
         setPage();

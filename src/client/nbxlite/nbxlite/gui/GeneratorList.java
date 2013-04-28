@@ -3,10 +3,7 @@ package net.minecraft.src.nbxlite.gui;
 import net.minecraft.src.ODNBXlite;
 
 public class GeneratorList{
-    public static int genlength = 6;
-    public static int[] genfeatures = {0, 0, 0, 0, 0, 1, 2};
-    public static int[] genfeats = {4, 3, 2, 1, 0, 0, 0};
-    public static int[] genplus = {2, 1, 0, 0, 0, 0, 0};
+    public static int genlength = 4;
 
     public static int feat1length = 6;
 

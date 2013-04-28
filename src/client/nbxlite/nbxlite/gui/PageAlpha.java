@@ -4,39 +4,48 @@ import java.util.Random;
 import net.minecraft.src.*;
 
 public class PageAlpha extends Page{
-    private int[] feats = new int[]{ODNBXlite.FEATURES_INFDEV0227,
-                                    ODNBXlite.FEATURES_INFDEV0420,
-                                    ODNBXlite.FEATURES_ALPHA11201};
-
+    private GuiButton[] featuresButtons;
     private GuiButton themeButton;
     private GuiButton newOresButton;
     private boolean newores;
-    private int mode;
     private int theme;
+    private int features;
 
-    public PageAlpha(GuiNBXlite parent, int mode){
+    public PageAlpha(GuiNBXlite parent){
         super(parent);
+        featuresButtons = new GuiButton[ODNBXlite.BIOMELESS_FEATURES.length];
         newores = ODNBXlite.GenerateNewOres;
-        this.mode = mode;
         theme = 0;
     }
 
     @Override
     public void initButtons(){
-        buttonList.add(themeButton = new GuiButton(0, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        buttonList.add(newOresButton = new GuiButton(1, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        int l = featuresButtons.length;
+        for (int i = 0; i < l; i++){
+            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
+            String name = mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (i + 1));
+            name += " (" + mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (i + 1) + ".desc") + ")";
+            featuresButtons[i].displayString = name;
+            buttonList.add(featuresButtons[i]);
+        }
+        buttonList.add(themeButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        buttonList.add(newOresButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        featuresButtons[features].enabled=false;
     }
 
     @Override
     public void scrolled(){
-        themeButton.yPosition = height / 6 + 44 + scrolling;
-        newOresButton.yPosition = height / 6 + 84 + scrolling;
+        for (int i = 0; i < featuresButtons.length; i++){
+            featuresButtons[i].yPosition = height / 6 + (i * 21) + scrolling;
+        }
+        themeButton.yPosition = height / 6 + 85 + scrolling;
+        newOresButton.yPosition = height / 6 + 120 + scrolling;
         updateButtonPosition();
     }
 
     @Override
     public int getContentHeight(){
-        return newOresButton.drawButton ? 84 : 67;
+        return newOresButton.drawButton ? 120 : 108;
     }
 
     @Override
@@ -48,13 +57,13 @@ public class PageAlpha extends Page{
 
     @Override
     public void updateButtonVisibility(){
-        newOresButton.drawButton = mode > 0;
+        newOresButton.drawButton = features > 0;
     }
 
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + leftmargin, height / 6 + 67 + scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + leftmargin, height / 6 + 108 + scrolling, 0xa0a0a0);
     }
 
     @Override
@@ -71,6 +80,10 @@ public class PageAlpha extends Page{
             }else{
                 theme = 0;
             }
+        }else if (guibutton.id < featuresButtons.length){
+            featuresButtons[features].enabled = true;
+            features = guibutton.id;
+            guibutton.enabled = false;
         }
         updateButtonPosition();
         updateButtonVisibility();
@@ -81,9 +94,9 @@ public class PageAlpha extends Page{
     @Override
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
-        ODNBXlite.MapFeatures = feats[mode];
+        ODNBXlite.MapFeatures = ODNBXlite.BIOMELESS_FEATURES[features];
         ODNBXlite.MapTheme = theme;
-        if(mode == 2 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
+        if(features == 3 && (ODNBXlite.MapTheme == ODNBXlite.THEME_NORMAL || ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS)){
             ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
         }
         ODNBXlite.GenerateNewOres = newores;
@@ -91,6 +104,7 @@ public class PageAlpha extends Page{
 
     @Override
     public void setDefaultSettings(){
+        features = ODNBXlite.DefaultFeaturesBiomeless;
         theme = ODNBXlite.DefaultTheme;
         newores = ODNBXlite.DefaultNewOres;
     }
@@ -107,10 +121,10 @@ public class PageAlpha extends Page{
     @Override
     public String getString(){
         StringBuilder str = new StringBuilder();
-        str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (mode + 3)));
+        str.append(mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (features + 1)));
         str.append(", ");
         str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
-        if (mode == 2 && ODNBXlite.SnowCovered){
+        if (features == 3 && ODNBXlite.SnowCovered){
             str.append(" (");
             str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
             str.append(")");

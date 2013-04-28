@@ -14,36 +14,38 @@ import java.util.zip.*;
 public class ODNBXlite extends OldDaysModule{
     public ODNBXlite(mod_OldDays c){
         super(c, 8, "NBXlite");
-        new OldDaysPropertyInt(this,   1, 0,     5,     "Gen", 5).setUseNames().setGUIRefresh().disableLoading();
+        new OldDaysPropertyInt(this,   1, 0,     2,     "Gen", 2).setUseNames().setGUIRefresh().disableLoading();
         new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   3, 0,     4,     "BetaFeatures", 7).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   4, 0,     5,     "ReleaseFeatures", 7).setUseNames().disableLoading();
-        new OldDaysPropertyBool(this,  5, false, false, "GenerateNewOres").disableLoading();
-        new OldDaysPropertyInt(this,   6, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
-        new OldDaysPropertyInt(this,   7, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
-        new OldDaysPropertyInt(this,   8, 31,    0,     "SurrWaterHeight", -999, 256).setField().disableLoading();
-        new OldDaysPropertyInt(this,   9, 9,     0,     "SurrWaterType", 8, 11).disableLoading();
-        new OldDaysPropertyRGB(this,   10,0,     0,     "SkyColor").disableLoading();
-        new OldDaysPropertyRGB(this,   11,0,     0,     "FogColor").disableLoading();
-        new OldDaysPropertyRGB(this,   12,0,     0,     "CloudColor").disableLoading();
-        new OldDaysPropertyInt(this,   13,-1,    -1,    "SkyBrightness", -1, 16).setField().disableLoading();
-        new OldDaysPropertyFloat(this, 14,128F,  128F,  "CloudHeight", -999.0F, 999.0F).disableLoading();
-        new OldDaysPropertyCond(this,  15,1,     2,     "LeavesDecay");
-        new OldDaysPropertyBool(this,  16,true,  false, "OldSpawning");
-        new OldDaysPropertyCond(this,  17,1,     0,     "OldHoes");
-        new OldDaysPropertyBool(this,  18,false, false, "TexturedClouds");
-        new OldDaysPropertyCond(this,  19,1,     0,     "OpaqueFlatClouds");
-        new OldDaysPropertyCond2(this, 20,1,     0,     "ClassicLight", 2);
-        new OldDaysPropertyCond(this,  21,1,     0,     "BedrockFog");
-        new OldDaysPropertyCond2(this, 22,-1,    2,     "Sunset", 2);
-        new OldDaysPropertyCond(this,  23,1,     0,     "SunriseAtNorth");
-        new OldDaysPropertyCond(this,  24,1,     0,     "OldStars");
-        new OldDaysPropertyBool(this,  25,true,  false, "OldNetherFog");
-        new OldDaysPropertyCond2(this, 26,-1,    2,     "Saplings", 2);
-        new OldDaysPropertyBool(this,  27,true,  true,  "ShowGUI");
-        new OldDaysPropertyInt(this,   28,6,     6,     "DefaultGenerator", 6).setUseNames();
-        new OldDaysPropertyInt(this,   29,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
-        new OldDaysPropertyInt(this,   30,7,     7,     "DefaultFeaturesRelease", 7).setUseNames();
+        new OldDaysPropertyInt(this,   3, 0,     3,     "BiomelessFeatures", 3).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   4, 0,     4,     "BetaFeatures", 7).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   5, 0,     5,     "ReleaseFeatures", 7).setUseNames().disableLoading();
+        new OldDaysPropertyBool(this,  6, false, false, "GenerateNewOres").disableLoading();
+        new OldDaysPropertyInt(this,   7, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
+        new OldDaysPropertyInt(this,   8, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
+        new OldDaysPropertyInt(this,   9, 31,    0,     "SurrWaterHeight", -999, 256).setField().disableLoading();
+        new OldDaysPropertyInt(this,   10,9,     0,     "SurrWaterType", 8, 11).disableLoading();
+        new OldDaysPropertyRGB(this,   11,0,     0,     "SkyColor").disableLoading();
+        new OldDaysPropertyRGB(this,   12,0,     0,     "FogColor").disableLoading();
+        new OldDaysPropertyRGB(this,   13,0,     0,     "CloudColor").disableLoading();
+        new OldDaysPropertyInt(this,   14,-1,    -1,    "SkyBrightness", -1, 16).setField().disableLoading();
+        new OldDaysPropertyFloat(this, 15,128F,  128F,  "CloudHeight", -999.0F, 999.0F).disableLoading();
+        new OldDaysPropertyCond(this,  16,1,     2,     "LeavesDecay");
+        new OldDaysPropertyBool(this,  17,true,  false, "OldSpawning");
+        new OldDaysPropertyCond(this,  18,1,     0,     "OldHoes");
+        new OldDaysPropertyBool(this,  19,false, false, "TexturedClouds");
+        new OldDaysPropertyCond(this,  20,1,     0,     "OpaqueFlatClouds");
+        new OldDaysPropertyCond2(this, 21,1,     0,     "ClassicLight", 2);
+        new OldDaysPropertyCond(this,  22,1,     0,     "BedrockFog");
+        new OldDaysPropertyCond2(this, 23,-1,    2,     "Sunset", 2);
+        new OldDaysPropertyCond(this,  24,1,     0,     "SunriseAtNorth");
+        new OldDaysPropertyCond(this,  25,1,     0,     "OldStars");
+        new OldDaysPropertyBool(this,  26,true,  false, "OldNetherFog");
+        new OldDaysPropertyCond2(this, 27,-1,    2,     "Saplings", 2);
+        new OldDaysPropertyBool(this,  28,true,  true,  "ShowGUI");
+        new OldDaysPropertyInt(this,   29,4,     4,     "DefaultGenerator", 4).setUseNames();
+        new OldDaysPropertyInt(this,   30,3,     3,     "DefaultFeaturesBiomeless", 3).setUseNames();
+        new OldDaysPropertyInt(this,   31,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
+        new OldDaysPropertyInt(this,   32,7,     7,     "DefaultFeaturesRelease", 7).setUseNames();
         replaceBlocks();
         registerGears();
         GuiSelectWorld.nbxlite = true;
@@ -60,38 +62,40 @@ public class ODNBXlite extends OldDaysModule{
                     setInWorldInfo("mapGen", Generator);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
             case 2: setInWorldInfo("mapTheme", MapTheme); break;
-            case 3: setGen(1);
+            case 3: setGen(3);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
-            case 4: setGen(2);
+            case 4: setGen(1);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
-            case 5: setInWorldInfo("newOres", GenerateNewOres); break;
-            case 6: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
-            case 7: if (Block.blocksList[SurrGroundType] == null){
+            case 5: setGen(2);
+                    setInWorldInfo("mapGenExtra", MapFeatures); break;
+            case 6: setInWorldInfo("newOres", GenerateNewOres); break;
+            case 7: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
+            case 8: if (Block.blocksList[SurrGroundType] == null){
                         SurrGroundType = Block.bedrock.blockID;
                     }
                     setInWorldInfo("surrgroundtype", SurrGroundType); break;
-            case 8: setInWorldInfo("surrwaterheight", SurrWaterHeight); break;
-            case 9: setInWorldInfo("surrwatertype", SurrWaterType); break;
-            case 10:setInWorldInfo("skycolor", SkyColor); break;
-            case 11:setInWorldInfo("fogcolor", FogColor); break;
-            case 12:setInWorldInfo("cloudcolor", CloudColor); break;
-            case 13:setInWorldInfo("skybrightness", SkyBrightness); break;
-            case 14:setInWorldInfo("cloudheight", CloudHeight); break;
-            case 15:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
-            case 16:set(EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
+            case 9: setInWorldInfo("surrwaterheight", SurrWaterHeight); break;
+            case 10:setInWorldInfo("surrwatertype", SurrWaterType); break;
+            case 11:setInWorldInfo("skycolor", SkyColor); break;
+            case 12:setInWorldInfo("fogcolor", FogColor); break;
+            case 13:setInWorldInfo("cloudcolor", CloudColor); break;
+            case 14:setInWorldInfo("skybrightness", SkyBrightness); break;
+            case 15:setInWorldInfo("cloudheight", CloudHeight); break;
+            case 16:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
+            case 17:set(EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
                     set(EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
-            case 17:set(ItemHoe2.class, "oldhoes", OldHoes); break;
-            case 18:set(RenderGlobal2.class, "texClouds", TexturedClouds); break;
-            case 19:set(RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
-            case 20:setLighting(ClassicLight, i); break;
-            case 21:set(EntityRenderer.class, "voidFog", BedrockFog); break;
-            case 22:set(RenderGlobal2.class, "sunriseColors", Sunset >= 1);
+            case 18:set(ItemHoe2.class, "oldhoes", OldHoes); break;
+            case 19:set(RenderGlobal2.class, "texClouds", TexturedClouds); break;
+            case 20:set(RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
+            case 21:setLighting(ClassicLight, i); break;
+            case 22:set(EntityRenderer.class, "voidFog", BedrockFog); break;
+            case 23:set(RenderGlobal2.class, "sunriseColors", Sunset >= 1);
                     set(EntityRenderer.class, "sunriseFog", Sunset >= 2);
-            case 23:set(EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
+            case 24:set(EntityRenderer.class, "sunriseAtNorth", SunriseAtNorth);
                     set(RenderGlobal2.class, "sunriseAtNorth", SunriseAtNorth); break;
-            case 24:setOldStars(OldStars); break;
-            case 25:set(EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
-            case 26:set(BlockSapling.class, "mode", Saplings); break;
+            case 25:setOldStars(OldStars); break;
+            case 26:set(EntityRenderer.class, "oldNetherFog", OldNetherFog); break;
+            case 27:set(BlockSapling.class, "mode", Saplings); break;
         }
         if (!renderersAdded && RenderManager.instance!=null){
             addRenderer(EntityGhast.class, new RenderGhast2());//Disable ghast shading with classic light
@@ -107,6 +111,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static int Gen;
+    public static int BiomelessFeatures;
     public static int BetaFeatures;
     public static int ReleaseFeatures;
     public static boolean GenerateNewOres=true;
@@ -127,7 +132,8 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean OldStars;
     public static boolean OldNetherFog = true;
     public static boolean ShowGUI = true;
-    public static int DefaultGenerator = 6;
+    public static int DefaultGenerator = 2;
+    public static int DefaultFeaturesBiomeless = 3;
     public static int DefaultFeaturesBeta = 5;
     public static int DefaultFeaturesRelease = 7;
     public static int Saplings = -1;
@@ -255,24 +261,13 @@ public class ODNBXlite extends OldDaysModule{
         if (isFinite()){
             return;
         }
-        if (Gen == 0){
-            MapFeatures = FEATURES_INFDEV0227;
-            Generator = GEN_BIOMELESS;
-        }else if (Gen == 1){
-            MapFeatures = FEATURES_INFDEV0420;
-            Generator = GEN_BIOMELESS;
-        }else if (Gen == 2){
-            MapFeatures = FEATURES_INFDEV0608;
-            Generator = GEN_BIOMELESS;
-        }else if (Gen == 3){
-            MapFeatures = FEATURES_ALPHA11201;
-            Generator = GEN_BIOMELESS;
-        }else if (Gen == 4){
+        Generator = Gen;
+        if (Gen == GEN_BIOMELESS){
+            MapFeatures = BIOMELESS_FEATURES[BiomelessFeatures];
+        }else if (Gen == GEN_OLDBIOMES){
             MapFeatures = BetaFeatures;
-            Generator = GEN_OLDBIOMES;
-        }else if (Gen == 5){
+        }else if (Gen == GEN_NEWBIOMES){
             MapFeatures = ReleaseFeatures;
-            Generator = GEN_NEWBIOMES;
         }
         refreshProperties();
         if (mod_OldDays.getMinecraft().theWorld != null){
@@ -284,33 +279,32 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void refreshProperties(){
+        Gen = Generator;
         if (Generator == GEN_NEWBIOMES){
-            Gen = 5;
             ReleaseFeatures = MapFeatures;
         }else if (Generator == GEN_OLDBIOMES){
-            Gen = 4;
             BetaFeatures = MapFeatures;
-        }else if (MapFeatures == FEATURES_ALPHA11201){
-            Gen = 3;
-        }else if (MapFeatures == FEATURES_INFDEV0608){
-            Gen = 2;
-        }else if (MapFeatures == FEATURES_INFDEV0420){
-            Gen = 1;
-        }else if (MapFeatures == FEATURES_INFDEV0227){
-            Gen = 0;
+        }else if (Generator == GEN_BIOMELESS){
+            for (int i = 0; i < BIOMELESS_FEATURES.length; i++){
+                if (MapFeatures == BIOMELESS_FEATURES[i]){
+                    BiomelessFeatures = i;
+                    break;
+                }
+            }
         }
-        for (int i = 1; i <= 14; i++){
+        for (int i = 1; i <= 15; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).updateValue();
         }
-        for (int i = 1; i <= 5; i++){
+        for (int i = 1; i <= 6; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).disabled = isFinite() ? 5 : 0;
         }
-        for (int i = 6; i <= 9; i++){
+        for (int i = 7; i <= 10; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).disabled = isFinite() ? 0 : 6;
         }
         mod_OldDays.getModuleById(8).getPropertyById(2).disabled = Generator == GEN_BIOMELESS ? 0 : 7;
-        mod_OldDays.getModuleById(8).getPropertyById(3).disabled = isFinite() ? 5 : (Generator == GEN_OLDBIOMES ? 0 : 8);
-        mod_OldDays.getModuleById(8).getPropertyById(4).disabled = isFinite() ? 5 : (Generator == GEN_NEWBIOMES ? 0 : 9);
+        mod_OldDays.getModuleById(8).getPropertyById(3).disabled = isFinite() ? 5 : (Generator == GEN_BIOMELESS ? 0 : 7);
+        mod_OldDays.getModuleById(8).getPropertyById(4).disabled = isFinite() ? 5 : (Generator == GEN_OLDBIOMES ? 0 : 8);
+        mod_OldDays.getModuleById(8).getPropertyById(5).disabled = isFinite() ? 5 : (Generator == GEN_NEWBIOMES ? 0 : 9);
     }
 
     private void registerGears(){
@@ -1163,6 +1157,12 @@ public class ODNBXlite extends OldDaysModule{
     public static final int TYPE_ISLAND = 1;
     public static final int TYPE_FLOATING = 2;
     public static final int TYPE_FLAT = 3;
+
+
+    public static int[] BIOMELESS_FEATURES = new int[]{ODNBXlite.FEATURES_INFDEV0227,
+                                                       ODNBXlite.FEATURES_INFDEV0420,
+                                                       ODNBXlite.FEATURES_INFDEV0608,
+                                                       ODNBXlite.FEATURES_ALPHA11201};
 
     public static int gearRenderID;
     public static boolean rendererReplaced = false;
