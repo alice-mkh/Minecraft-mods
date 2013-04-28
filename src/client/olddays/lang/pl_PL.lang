@@ -777,8 +777,7 @@ nbxlite.gen.name=Generator
  nbxlite.gen.desc1=Ustawia główny generator terenu.
  nbxlite.gen.desc2=Zmienia też spawn mobów.
  nbxlite.gen1=Infdev/Alpha
-//FIXME
- nbxlite.gen1.desc=No biomes
+ nbxlite.gen1.desc=Brak biomów
  nbxlite.gen2=Beta
  nbxlite.gen2.desc=Małe biomy
  nbxlite.gen3=Wydania oficjalne
@@ -941,8 +940,7 @@ nbxlite.defaultgenerator.name=Domyślny generator
  nbxlite.defaultgenerator2=Indev
  nbxlite.defaultgenerator2.desc=Ograniczona mapa, wiele opcji
  nbxlite.defaultgenerator3=Infdev/Alpha
-//FIXME
- nbxlite.defaultgenerator3.desc=No biomes.
+ nbxlite.defaultgenerator3.desc=Brak biomów
  nbxlite.defaultgenerator4=Beta
  nbxlite.defaultgenerator4.desc=Małe biomy
  nbxlite.defaultgenerator5=Wydania oficjalne
