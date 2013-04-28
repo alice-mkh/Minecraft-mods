@@ -63,6 +63,9 @@ public class WorldProviderSurface extends WorldProvider
     @Override
     public float getCloudHeight()
     {
+        if (ODNBXlite.CloudHeight == -1F){
+            return ODNBXlite.getCloudHeight();
+        }
         return ODNBXlite.CloudHeight;
     }
 

@@ -56,11 +56,7 @@ public final class GuiIndev extends GuiScreen{
                 ODNBXlite.IndevHeight = 256;
             }
             ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
-            ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-            ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-            ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-            ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-            ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+            ODNBXlite.setDefaultColors();
             mc.displayGuiScreen(parent);
             if (parent instanceof GuiCreateWorld2){
                 ((GuiCreateWorld2)parent).forceCreate();

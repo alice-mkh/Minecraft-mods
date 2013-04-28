@@ -195,11 +195,11 @@ public class WorldInfo
                 newOres = nbxliteTag.getBoolean("NewOres");
                 if (!nbxliteTag.hasKey("Theme")){
                     mapTheme = ODNBXlite.THEME_NORMAL;
-                    cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-                    skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
-                    skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                    fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                    cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                    cloudheight = -1F;
+                    skybrightness = -1;
+                    skycolor = 0;
+                    fogcolor = 0;
+                    cloudcolor = 0;
                 }else{
                     try{
                         NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
@@ -230,11 +230,11 @@ public class WorldInfo
                                     mapTheme = 2;
                                 }
                             }
-                            cloudheight = ODNBXlite.setCloudHeight(mapGen, mapGenExtra, mapTheme, mapType);
-                            skybrightness = ODNBXlite.setSkyBrightness(mapTheme);
-                            skycolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 0);
-                            fogcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 1);
-                            cloudcolor = ODNBXlite.setSkyColor(mapGen, mapGenExtra, mapTheme, 2);
+                            cloudheight = -1F;
+                            skybrightness = -1;
+                            skycolor = 0;
+                            fogcolor = 0;
+                            cloudcolor = 0;
                         }
                     }
                 }

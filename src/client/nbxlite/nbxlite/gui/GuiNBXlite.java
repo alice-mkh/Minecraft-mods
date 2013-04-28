@@ -219,11 +219,7 @@ public class GuiNBXlite extends GuiScreen{
 
     public void applySettings(){
         page.applySettings();
-        ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-        ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+        ODNBXlite.setDefaultColors();
     }
 
     public void setDefaultSettings(){

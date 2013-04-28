@@ -183,11 +183,7 @@ public abstract class World implements IBlockAccess
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
         ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
-        ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-        ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
-        ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
+        ODNBXlite.setDefaultColors();
         ODNBXlite.setIndevBounds(ODNBXlite.MapFeatures == ODNBXlite.FEATURES_CLASSIC ? 5 : ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
         ODNBXlite.refreshProperties();
         calculateInitialSkylight();
@@ -423,11 +419,11 @@ public abstract class World implements IBlockAccess
                 worldInfo.surrwaterheight = ODNBXlite.SurrWaterHeight;
                 worldInfo.surrgroundtype = ODNBXlite.SurrGroundType;
                 worldInfo.surrgroundheight = ODNBXlite.SurrGroundHeight;
-                worldInfo.cloudheight = ODNBXlite.setCloudHeight(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType);
-                worldInfo.skybrightness = ODNBXlite.setSkyBrightness(ODNBXlite.MapTheme);
-                worldInfo.skycolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
-                worldInfo.fogcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
-                worldInfo.cloudcolor = ODNBXlite.setSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+                worldInfo.cloudheight = -1F;
+                worldInfo.skybrightness = -1;
+                worldInfo.skycolor = 0;
+                worldInfo.fogcolor = 0;
+                worldInfo.cloudcolor = 0;
                 par1ISaveHandler.saveWorldInfo(worldInfo);
             }
             provider.registerWorld(this);
@@ -1901,7 +1897,7 @@ public abstract class World implements IBlockAccess
     {
         int brightness = 0;
         if (ODNBXlite.SkyBrightness == -1){
-            brightness = ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme);
+            brightness = ODNBXlite.getSkyBrightness();
         }else{
             brightness = ODNBXlite.SkyBrightness;
         }
@@ -1935,7 +1931,7 @@ public abstract class World implements IBlockAccess
         float f = getCelestialAngle(par1);
         int brightness = 0;
         if (ODNBXlite.SkyBrightness == -1){
-            brightness = ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme);
+            brightness = ODNBXlite.getSkyBrightness();
         }else{
             brightness = ODNBXlite.SkyBrightness;
         }
@@ -1996,7 +1992,7 @@ public abstract class World implements IBlockAccess
                     float f7 = (float)getWorldChunkManager().getTemperature_old(i, j);
                     k = getWorldChunkManager().oldGetBiomeGenAt(i, j).getSkyColorByTemp(f7);
                 }else{
-                    k = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 0);
+                    k = ODNBXlite.getSkyColor(0);
                 }
             }else{
                 k = ODNBXlite.SkyColor;
@@ -2069,7 +2065,7 @@ public abstract class World implements IBlockAccess
         if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
             return 1.0F;
         }
-        if(ODNBXlite.SkyBrightness == 16 || (ODNBXlite.SkyBrightness == -1 && ODNBXlite.getSkyBrightness(ODNBXlite.MapTheme) == 16)){
+        if(ODNBXlite.SkyBrightness == 16 || (ODNBXlite.SkyBrightness == -1 && ODNBXlite.getSkyBrightness() == 16)){
             return 1.0F;
         }
         return provider.calculateCelestialAngle(worldInfo.getWorldTime(), par1);
@@ -2093,7 +2089,7 @@ public abstract class World implements IBlockAccess
     {
         int clouds = 0;
         if (ODNBXlite.CloudColor == 0){
-            clouds = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 2);
+            clouds = ODNBXlite.getSkyColor(2);
         }else{
             clouds = ODNBXlite.CloudColor;
         }
@@ -2148,7 +2144,7 @@ public abstract class World implements IBlockAccess
     {
         int fog = 0;
         if (ODNBXlite.FogColor == 0){
-            fog = ODNBXlite.getSkyColor(ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, 1);
+            fog = ODNBXlite.getSkyColor(1);
         }else{
             fog = ODNBXlite.FogColor;
         }

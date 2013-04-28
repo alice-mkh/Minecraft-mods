@@ -944,120 +944,114 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    public static float setCloudHeight(int gen, int feats, int theme, int type){
-        if (gen==GEN_NEWBIOMES){
-            return CloudHeight = 128F;
+    public static float getCloudHeight(){
+        if (Generator == GEN_NEWBIOMES){
+            return 128F;
         }
-        if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
-            return CloudHeight = 8F;
+        if (Generator == GEN_OLDBIOMES && MapFeatures == FEATURES_SKY){
+            return 8F;
         }
-        if (gen==GEN_BIOMELESS){
-            if (feats==FEATURES_INFDEV0227 || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
-                return CloudHeight = theme==THEME_PARADISE ? 182F : 120F;
+        if (Generator == GEN_BIOMELESS){
+            if (MapFeatures == FEATURES_INFDEV0227 || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
+                return (MapTheme == THEME_PARADISE) ? 182F : 120F;
             }
-            if (feats==FEATURES_INDEV || feats==FEATURES_CLASSIC){
-                if (theme==THEME_PARADISE){
-                    return CloudHeight = IndevHeight+64;
+            if (MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_CLASSIC){
+                if (MapTheme == THEME_PARADISE){
+                    return IndevHeight + 64;
                 }
-                if (type==TYPE_FLOATING && theme!=THEME_HELL){
-                    return CloudHeight = -16F;
+                if (IndevMapType == TYPE_FLOATING && IndevMapType == THEME_HELL){
+                    return -16F;
                 }
-                return CloudHeight = IndevHeight+2;
+                return IndevHeight + 2;
             }
-            if(theme==THEME_PARADISE){
-                return CloudHeight = 170F;
+            if(MapTheme == THEME_PARADISE){
+                return 170F;
             }
-            return CloudHeight = 108F;
+            return 108F;
         }
-        return CloudHeight = 108F;
+        return 108F;
     }
 
-    public static int setSkyBrightness(int theme){
-        return SkyBrightness = getSkyBrightness(theme);
-    }
-
-    public static int getSkyBrightness(int theme){
-        if (theme==THEME_HELL){
+    public static int getSkyBrightness(){
+        if (MapTheme == THEME_HELL){
             return 7;
         }
-        if (theme==THEME_WOODS){
+        if (MapTheme == THEME_WOODS){
             return 12;
         }
-        if (theme==THEME_PARADISE){
+        if (MapTheme == THEME_PARADISE){
             return 16;
         }
         return 15;
     }
 
-    public static int setSkyColor(int gen, int feats, int theme, int num){
-        if (num==0){
-            return SkyColor = getSkyColor(gen, feats, theme, num);
-        }
-        if (num==1){
-            return FogColor = getSkyColor(gen, feats, theme, num);
-        }
-        return CloudColor = getSkyColor(gen, feats, theme, num);
-    }
-
-    public static int getSkyColor(int gen, int feats, int theme, int num){
-        if (num==0){
-            if (theme==THEME_HELL){
+    public static int getSkyColor(int num){
+        if (num == 0){
+            if (MapTheme == THEME_HELL){
                 return 0x100400;
             }
-            if (theme==THEME_WOODS){
+            if (MapTheme == THEME_WOODS){
                 return 0x757d87;
             }
-            if (theme==THEME_PARADISE){
+            if (MapTheme == THEME_PARADISE){
                 return 0xc6deff;
             }
-            if (gen==GEN_BIOMELESS){
-                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+            if (Generator == GEN_BIOMELESS){
+                if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
                     return 0x99ccff;
                 }
-                if (feats==FEATURES_INFDEV0227){
+                if (MapFeatures == FEATURES_INFDEV0227){
                     return 0x0000ff;
                 }
                 return 0x88bbff;
             }
-            if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+            if (Generator == GEN_OLDBIOMES && MapFeatures == FEATURES_SKY){
                 return 0xb9b8f4;
             }
             return 0;
         }
-        if (num==1){
-            if (theme==THEME_HELL){
+        if (num == 1){
+            if (MapTheme == THEME_HELL){
                 return 0x100400;
             }
-            if (theme==THEME_WOODS){
+            if (MapTheme == THEME_WOODS){
                 return 0x4d5a5b;
             }
-            if (theme==THEME_PARADISE){
+            if (MapTheme == THEME_PARADISE){
                 return 0xc6deff;
             }
-            if (gen==GEN_BIOMELESS){
-                if (feats==FEATURES_CLASSIC || feats==FEATURES_INDEV || feats==FEATURES_INFDEV0227){
+            if (Generator == GEN_BIOMELESS){
+                if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0227){
                     return 0xffffff;
                 }
-                if (feats==FEATURES_INFDEV0420 || feats==FEATURES_INFDEV0608){
+                if (MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
                     return 0xb0d0ff;
                 }
                 return 0;
             }
-            if (gen==GEN_OLDBIOMES && feats==FEATURES_SKY){
+            if (Generator == GEN_OLDBIOMES && MapFeatures == FEATURES_SKY){
                 return 0x9493bb;
             }
             return 0;
         }
-        if (theme==THEME_HELL){
+        if (MapTheme == THEME_HELL){
             return 0x210800;
         }
-        if (theme==THEME_WOODS){
+        if (MapTheme == THEME_WOODS){
             return 0x4d5a5b;
         }
-        if (theme==THEME_PARADISE){
+        if (MapTheme == THEME_PARADISE){
             return 0xeeeeff;
         }
         return 0xffffff;
+    }
+
+    public static void setDefaultColors(){
+        SkyColor = 0;
+        FogColor = 0;
+        CloudColor = 0;
+        SkyBrightness = -1;
+        CloudHeight = -1F;
     }
 
     public static void generateIndevLevel(long seed){
