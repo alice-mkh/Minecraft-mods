@@ -901,7 +901,7 @@ public class ODNBXlite extends OldDaysModule{
             VoidFog = 0;
         }else if (Generator==GEN_OLDBIOMES && MapFeatures==FEATURES_SKY){
             VoidFog = 3;
-        }else if (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201 && MapTheme>THEME_NORMAL){
+        }else if (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201 && MapTheme == THEME_HELL){
             VoidFog = 3;
         }else if (Generator==GEN_OLDBIOMES || (Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201)){
             VoidFog = 2;
