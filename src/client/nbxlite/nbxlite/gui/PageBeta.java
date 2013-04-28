@@ -15,7 +15,7 @@ public class PageBeta extends Page{
         featuresButtons = new GuiButton[GeneratorList.feat1length + 1];
         jungle = ODNBXlite.MapFeatures == ODNBXlite.FEATURES_JUNGLE;
         newores = ODNBXlite.GenerateNewOres;
-        features = 0;
+        features = ODNBXlite.DefaultFeaturesBeta;
     }
 
     @Override

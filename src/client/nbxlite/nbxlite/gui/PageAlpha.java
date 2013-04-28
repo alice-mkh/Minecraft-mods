@@ -16,6 +16,7 @@ public class PageAlpha extends Page{
         featuresButtons = new GuiButton[ODNBXlite.BIOMELESS_FEATURES.length];
         newores = ODNBXlite.GenerateNewOres;
         theme = 0;
+        features = ODNBXlite.DefaultFeaturesBiomeless;
     }
 
     @Override

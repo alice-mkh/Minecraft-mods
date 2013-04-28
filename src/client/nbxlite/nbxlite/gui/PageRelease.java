@@ -12,7 +12,7 @@ public class PageRelease extends Page{
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat2length + 1];
         newores = ODNBXlite.GenerateNewOres;
-        features = 0;
+        features = ODNBXlite.DefaultFeaturesRelease;
     }
 
     @Override
