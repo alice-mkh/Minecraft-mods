@@ -52,9 +52,8 @@ public class PageBeta extends Page{
 
     @Override
     public void updateButtonText(){
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + stringtranslate.translateKey("options." + (newores ? "on" : "off"));
-        jungleButton.displayString = mod_OldDays.lang.get("betaJungle") + ": " + stringtranslate.translateKey("options." + (jungle ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        jungleButton.displayString = mod_OldDays.lang.get("betaJungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
     }
 
     @Override
