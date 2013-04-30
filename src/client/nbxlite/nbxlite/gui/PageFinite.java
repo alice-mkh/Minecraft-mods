@@ -224,6 +224,7 @@ public class PageFinite extends Page{
             ODNBXlite.IndevWidthZ = 1 << zSize + 6;
             ODNBXlite.IndevHeight = heightSlider.getSizeValue();
         }
+        ODNBXlite.setIndevBounds(type, theme);
         ODNBXlite.GenerateNewOres=newores;
     }
 
