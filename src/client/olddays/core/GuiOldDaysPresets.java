@@ -11,9 +11,7 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
     public GuiOldDaysPresets(GuiScreen guiscreen, mod_OldDays core){
         super(guiscreen, core);
         custom = false;
-        max = 8;
         presets = new String[]{};
-        specialButtons = 5;
     }
 
     @Override
@@ -24,8 +22,16 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
 
     protected void updateList(String str){
         buttonList.clear();
+        int y = height / 6 + 150;
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
+        GuiButton switch1 = new GuiButton(-1, width / 2 - 75, height - 58, 75, 20, mod_OldDays.lang.get("gui.presets.default"));
+        GuiButton switch2 = new GuiButton(-2, width / 2 + 1, height - 58, 75, 20, mod_OldDays.lang.get("gui.presets.custom"));
+        switch1.enabled = custom;
+        switch2.enabled = !custom;
+        buttonList.add(button);
+        buttonList.add(switch1);
+        buttonList.add(switch2);
         presets = custom ? core.saveman.getCustomPresets() : core.saveman.getDefaultPresets();
         int count = 0;
         searchField.correct = true;
@@ -35,51 +41,42 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         }catch(PatternSyntaxException ex){
             searchField.correct = false;
         }
+        contentHeight = 0;
         if (searchField.correct){
             for (int i = 0; i < presets.length; i++){
                 if (pat.matcher(presets[i].toLowerCase()).find()){
-                    addButton(count++, false, i, presets[i], true, true);
+                    addButton(count++, true, i, presets[i], true, true);
                 }
             }
         }
-        int y = height / 6 - 15 + ((11/2) * 30);
-//         GuiButton save = new GuiButton(presets.length + 1, width / 2 - 155/*75*/, y, 150, 20, mod_OldDays.lang.get("gui.presets.save"));
-//         save.enabled = custom;
-//         buttonList.add(save);
-        if (custom){
-            addButton(count, false, presets.length, "+", custom, false);
-            ((GuiButton)buttonList.get(buttonList.size() - 1)).drawButton = custom && presets.length < max;
+        if (custom && str.length() <= 0){
+            addButton(count, true, -4, "+", custom, false);
+            ((GuiButton)buttonList.get(buttonList.size() - 1)).drawButton = custom;
         }
-        GuiButton switch1 = new GuiButton(presets.length + 2, width / 2 - 75/*5*/, y, 75, 20, mod_OldDays.lang.get("gui.presets.default"));
-        GuiButton switch2 = new GuiButton(presets.length + 3, width / 2 + 1/*81*/, y, 75, 20, mod_OldDays.lang.get("gui.presets.custom"));
-        switch1.enabled = custom;
-        switch2.enabled = !custom;
-        buttonList.add(switch1);
-        buttonList.add(switch2);
-        postInitGui(presets.length + (custom ? 1 : 0));
-        setPage(0);
+        postInitGui();
     }
 
     protected void addButton(int i, boolean b, int j, String name, boolean e, boolean delete){
         int offset = 3;
         int x = width / 2 - 155;
         int x2 = x - offset - 20;
-        int i2 = i % max;
-        if (i2 % 2 != 0){
+        if (i % 2 != 0){
            x+=160;
            x2+=330 + (offset * 2);
         }
         int margin = 30;
-        int top = b ? 15 : -15;
-        int y = height / 6 - top + ((i2/2) * margin);
-        GuiButton button = new GuiButton(j+1, x, y, 150, 20, name);
+        int top = !b ? 25 : -5;
+        int y = height / 6 - top + (i / 2) * margin;
+        contentHeight = (i / 2) * margin;
+        GuiButton button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
         buttonList.add(button);
         if (!delete){
             return;
         }
-        GuiButton deleteButton = new GuiButton(j+TOOLTIP_OFFSET+1, x2, y, 20, 20, "x");
+        GuiButton deleteButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, true, "x");
         deleteButton.enabled = custom;
+        deleteButton.drawButton = custom;
         buttonList.add(deleteButton);
     }
 
@@ -93,15 +90,7 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             mc.displayGuiScreen(parent);
             return;
         }
-        if (guibutton.id == LEFT_ID){
-            setPage(page-1);
-            return;
-        }
-        if (guibutton.id == RIGHT_ID){
-            setPage(page+1);
-            return;
-        }
-        if (guibutton.id == presets.length + 1 && custom){
+        if (guibutton.id == -3 && custom){
             field = new GuiTextField(fontRenderer, guibutton.xPosition+2, guibutton.yPosition+2, 146, 16);
             showField(true, guibutton);
             current = mod_OldDays.lang.get("gui.presets.new");
@@ -110,14 +99,16 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             guibutton.enabled = false;
             return;
         }
-        if (guibutton.id == presets.length + 2){
+        if (guibutton.id == -1){
             custom = false;
             updateList(searchField.getText().trim());
+            restoreList = false;
             return;
         }
-        if (guibutton.id == presets.length + 3){
+        if (guibutton.id == -2){
             custom = true;
             updateList(searchField.getText().trim());
+            restoreList = false;
             return;
         }
         if (guibutton.id > TOOLTIP_OFFSET){
@@ -151,5 +142,10 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             }
             super.keyTyped(par1, par2);
         }
+    }
+
+    @Override
+    public int getBottom(){
+        return super.getBottom() - 25;
     }
 }

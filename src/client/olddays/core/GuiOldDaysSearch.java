@@ -9,7 +9,6 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
 
     public GuiOldDaysSearch(GuiScreen guiscreen, mod_OldDays core){
         super(guiscreen, core, -1);
-        max = 10;
         hasFields = true;
     }
 
@@ -62,7 +61,8 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
     protected void updateList(String str){
         buttonList.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
+        buttonList.add(button);
         int count = 0;
         searchField.correct = true;
         Pattern pat = null;
@@ -71,6 +71,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         }catch(PatternSyntaxException ex){
             searchField.correct = false;
         }
+        contentHeight = 0;
         if (searchField.correct){
             for (int i = 0; i < mod_OldDays.modules.size(); i++){
                 OldDaysModule module = mod_OldDays.modules.get(i);
@@ -82,8 +83,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
                 }
             }
         }
-        postInitGui(count);
-        setPage(0);
+        postInitGui();
     }
 
     @Override
@@ -94,14 +94,6 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         }
         if (guibutton.id == 0){
             mc.displayGuiScreen(parent);
-            return;
-        }
-        if (guibutton.id == LEFT_ID){
-            setPage(page-1);
-            return;
-        }
-        if (guibutton.id == RIGHT_ID){
-            setPage(page+1);
             return;
         }
         GuiButtonProp guibuttonprop = (GuiButtonProp)guibutton;
@@ -137,5 +129,10 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         if (showTooltip != null){
             drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
         }
+    }
+
+    @Override
+    public int getTop(){
+        return super.getTop() + 32;
     }
 }

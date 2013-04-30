@@ -20,14 +20,14 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         for (int i = 0; i < count; i++){
             addButton(i, true, i, mod_OldDays.getModuleById(id).getPropertyById(i + 1));
         }
-        postInitGui(count);
+        postInitGui();
     }
 
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         super.actionPerformed(guibutton);
-        if (guibutton.id <= 0 || guibutton.id >= LEFT_ID){
+        if (guibutton.id <= 0){
             return;
         }
         if (!guibutton.enabled){
@@ -96,6 +96,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
         if(!b){
             GuiButtonProp propButton = (GuiButtonProp)button;
+            if (propButton.prop == null){
+                return;
+            }
             mod_OldDays.sendCallbackAndSave(propButton.prop.module.id, propButton.prop.id);
             send(propButton.prop);
         }
@@ -154,6 +157,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         {
             button.displayString = mod_OldDays.getPropertyButtonText(button.prop);
             showField(false, button);
+        }
+        if (button.prop == null){
+            return;
         }
         if (par2 == 1){
             button.prop.loadFromString(current);
