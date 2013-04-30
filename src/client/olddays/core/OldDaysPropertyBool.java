@@ -5,17 +5,11 @@ public class OldDaysPropertyBool extends OldDaysProperty{
     public boolean smpValue;
     public boolean defaultValue;
 
-    public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, String f){
+    public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, boolean smp, String f){
         super(m, i, f);
         value = defaultValue = b;
         guitype = GUI_TYPE_BUTTON;
-    }
-
-    public OldDaysPropertyBool(OldDaysModule m, int i, boolean b, boolean smp, String f){
-        this(m, i, b, f);
         smpValue = smp;
-        allowedInSMP = false;
-        m.isLocal = false;
     }
 
     @Override
@@ -53,6 +47,11 @@ public class OldDaysPropertyBool extends OldDaysProperty{
             disable();
             return;
         }
+    }
+
+    @Override
+    public String getSMPValue(){
+        return ""+smpValue;
     }
 
     @Override

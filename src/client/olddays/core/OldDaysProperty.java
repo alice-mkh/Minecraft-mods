@@ -14,7 +14,6 @@ public abstract class OldDaysProperty{
     public Field field;
     public OldDaysModule module;
     public boolean error;
-    public boolean allowedInSMP;
     public boolean allowedInFallback;
     public boolean noSounds;
     public int disabled;
@@ -28,7 +27,6 @@ public abstract class OldDaysProperty{
         id = i;
         guitype = GUI_TYPE_BUTTON;
         error = false;
-        allowedInSMP = true;
         allowedInFallback = true;
         refreshFallback = false;
         noSounds = false;
@@ -59,7 +57,7 @@ public abstract class OldDaysProperty{
         if (!mod_OldDays.texman.hasEntry(fallback)){
             return 2;
         }
-        if (!allowedInSMP && mod_OldDays.isVanillaSMP()){
+        if (!module.isLocal && mod_OldDays.isVanillaSMP()){
             return 3;
         }
         if (noSounds){
@@ -87,6 +85,8 @@ public abstract class OldDaysProperty{
     }
 
     public abstract void updateValue();
+
+    public abstract String getSMPValue();
 
     public abstract void setSMPValue();
 

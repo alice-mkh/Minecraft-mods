@@ -194,7 +194,7 @@ public class mod_OldDays extends Mod{
             OldDaysModule module = modules.get(id);
             for (int i = 1; i <= module.properties.size(); i++){
                 OldDaysProperty prop = module.getPropertyById(i);
-                if (!prop.allowedInSMP){
+                if (!module.isLocal){
                     prop.setSMPValue();
                     sendCallback2(id, i);
                 }

@@ -3,16 +3,11 @@ package net.minecraft.src;
 import java.util.ArrayList;
 
 public class OldDaysPropertyRGB extends OldDaysPropertyInt{
-    public OldDaysPropertyRGB(OldDaysModule m, int i, int v, String f){
-        super(m, i, v, f, 0xFFFFFF);
+    public OldDaysPropertyRGB(OldDaysModule m, int i, int v, int smp, String f){
+        super(m, i, v, smp, f, 0xFFFFFF);
         defaultValue = v;
         guitype = GUI_TYPE_FIELD;
-    }
-
-    public OldDaysPropertyRGB(OldDaysModule m, int i, int v, int smp, String f){
-        this(m, i, v, f);
         smpValue = smp;
-        allowedInSMP = false;
     }
 
     @Override

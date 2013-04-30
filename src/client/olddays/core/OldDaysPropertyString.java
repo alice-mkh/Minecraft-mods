@@ -5,17 +5,11 @@ public class OldDaysPropertyString extends OldDaysProperty{
     public String smpValue;
     public String defaultValue;
 
-    public OldDaysPropertyString(OldDaysModule m, int i, String str, String f){
+    public OldDaysPropertyString(OldDaysModule m, int i, String str, String smp, String f){
         super(m, i, f);
         value = defaultValue = str;
         guitype = GUI_TYPE_FIELD;
-    }
-
-    public OldDaysPropertyString(OldDaysModule m, int i, String str, String smp, String f){
-        this(m, i, str, f);
         smpValue = smp;
-        allowedInSMP = false;
-        m.isLocal = false;
     }
 
     @Override
@@ -48,6 +42,11 @@ public class OldDaysPropertyString extends OldDaysProperty{
             disable();
             return;
         }
+    }
+
+    @Override
+    public String getSMPValue(){
+        return smpValue;
     }
 
     @Override

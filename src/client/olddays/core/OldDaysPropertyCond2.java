@@ -4,15 +4,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
-    public OldDaysPropertyCond2(OldDaysModule m, int i, int v, String f, int m2){
-        super(m, i, v, f, -1, m2);
-        useNames = true;
-    }
-
     public OldDaysPropertyCond2(OldDaysModule m, int i, int v, int smp, String f, int m2){
-        this(m, i, v, f, m2);
-        allowedInSMP = false;
-        m.isLocal = false;
+        super(m, i, v, smp, f, -1, m2);
+        useNames = true;
+        smpValue = smp;
     }
 
     public int getValue(){

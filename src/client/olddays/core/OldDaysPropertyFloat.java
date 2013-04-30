@@ -9,19 +9,13 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
     public float min;
     public float max;
 
-    public OldDaysPropertyFloat(OldDaysModule m, int i, float v, String f, float m1, float m2){
+    public OldDaysPropertyFloat(OldDaysModule m, int i, float v, float smp, String f, float m1, float m2){
         super(m, i, f);
         value = defaultValue = v;
         guitype = GUI_TYPE_FIELD;
         min = m1;
         max = m2;
-    }
-
-    public OldDaysPropertyFloat(OldDaysModule m, int i, float v, float smp, String f, float m1, float m2){
-        this(m, i, v, f, m1, m2);
         smpValue = smp;
-        allowedInSMP = false;
-        m.isLocal = false;
     }
 
     @Override
@@ -72,6 +66,11 @@ public class OldDaysPropertyFloat extends OldDaysProperty{
             disable();
             return;
         }
+    }
+
+    @Override
+    public String getSMPValue(){
+        return ""+smpValue;
     }
 
     @Override

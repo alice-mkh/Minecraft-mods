@@ -10,24 +10,14 @@ public class OldDaysPropertyInt extends OldDaysProperty{
     public int max;
     public boolean useNames;
 
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int m1, int m2){
+    public OldDaysPropertyInt(OldDaysModule m, int i, int v, int smp, String f, int m1, int m2){
         super(m, i, f);
         value = defaultValue = v;
         guitype = GUI_TYPE_BUTTON;
         min = m1;
         max = m2;
         useNames = false;
-    }
-
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, int smp, String f, int m1, int m2){
-        this(m, i, v, f, m1, m2);
         smpValue = smp;
-        allowedInSMP = false;
-        m.isLocal = false;
-    }
-
-    public OldDaysPropertyInt(OldDaysModule m, int i, int v, String f, int m2){
-        this(m, i, v, f, 0, m2);
     }
 
     public OldDaysPropertyInt(OldDaysModule m, int i, int v, int smp, String f, int m2){
@@ -82,6 +72,11 @@ public class OldDaysPropertyInt extends OldDaysProperty{
             disable();
             return;
         }
+    }
+
+    @Override
+    public String getSMPValue(){
+        return ""+smpValue;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class OldDaysModule{
         minecraft = mod_OldDays.getMinecraft();
         last = 0;
         renderersAdded = false;
-        isLocal = true;
+        isLocal = false;
     }
 
     public OldDaysProperty getPropertyById(int id){
