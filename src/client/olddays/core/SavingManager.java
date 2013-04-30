@@ -143,13 +143,20 @@ public class SavingManager{
     public void loadPreset(String name, boolean custom){
         Properties properties = new Properties();
         try{
+            int mode = 0;
             if (custom){
                 File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/presets");
                 dir.mkdirs();
                 properties.load(new FileInputStream(new File(dir, name)));
             }else{
-                InputStream stream = getClass().getClassLoader().getResourceAsStream("olddays/presets/"+name);
-                properties.load(stream);
+                if (name.equals("OldDays")){
+                    mode = 1;
+                }else if (name.equals("Vanilla")){
+                    mode = 2;
+                }else{
+                    InputStream stream = getClass().getClassLoader().getResourceAsStream("olddays/presets/"+name);
+                    properties.load(stream);
+                }
             }
             for (int i = 0; i < core.modules.size(); i++){
                 OldDaysModule module = core.modules.get(i);
@@ -159,9 +166,13 @@ public class SavingManager{
                     if (!prop.canBeLoaded){
                         continue;
                     }
-                    String value = properties.getProperty(propname, prop.getDefaultValue()).trim();
                     String oldVal = prop.saveToString();
-                    prop.loadFromString(value);
+                    switch(mode){
+                        case 0: String value = properties.getProperty(propname, prop.getDefaultValue()).trim();
+                                prop.loadFromString(value); break;
+                        case 1: prop.setDefaultValue(); break;
+                        case 2: prop.setSMPValue(); break;
+                    }
                     if (!oldVal.equals(prop.saveToString())){
                         core.sendCallback2(i, j);
                     }
@@ -214,6 +225,8 @@ public class SavingManager{
 
     public String[] getDefaultPresets(){
         ArrayList<String> presets = new ArrayList<String>();
+        presets.add("OldDays");
+        presets.add("Vanilla");
         try{
             String str = "";
             try{
