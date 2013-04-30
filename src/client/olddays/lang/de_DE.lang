@@ -10,6 +10,8 @@ module.nbxlite=NBXlite
 
 gui.on=AN
 gui.off=AUS
+//FIXME
+gui.random=Random
 gui.auto=Autom.
 gui.possible=Mögliche Werte
 gui.error1=Wegen Mod-Inkompatibilität deaktiviert

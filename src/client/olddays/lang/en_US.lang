@@ -10,6 +10,7 @@ module.nbxlite=NBXlite
 
 gui.on=ON
 gui.off=OFF
+gui.random=Random
 gui.auto=Auto
 gui.possible=Possible values
 gui.error1=Disabled because of mod conflict

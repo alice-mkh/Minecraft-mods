@@ -10,6 +10,8 @@ module.nbxlite=NBXlite
 
 gui.on=WŁ
 gui.off=WYŁ
+//FIXME
+gui.random=Random
 gui.auto=Auto
 gui.possible=Możliwe wartości
 gui.error1=Wyłączone z powodu konfliktu modów
