@@ -10,8 +10,7 @@ module.nbxlite=NBXlite
 
 gui.on=WŁ
 gui.off=WYŁ
-//FIXME
-gui.random=Random
+gui.random=Losowe
 gui.auto=Auto
 gui.possible=Możliwe wartości
 gui.error1=Wyłączone z powodu konfliktu modów
@@ -948,8 +947,7 @@ nbxlite.defaultgenerator.name=Domyślny generator
  nbxlite.defaultgenerator5=Wydania oficjalne
  nbxlite.defaultgenerator5.desc=Duże, różne biomy
 nbxlite.defaultfeaturesbiomeless.name=Domyślne cechy
-//FIXME
- nbxlite.defaultfeaturesbiomeless.desc1=Used when creating a new Infdev/Alpha world.
+ nbxlite.defaultfeaturesbiomeless.desc1=Używane podczas tworzenia świata Infdev lub Alpha.
  nbxlite.defaultfeaturesbiomeless1=Infdev (02.27)
  nbxlite.defaultfeaturesbiomeless1.desc=Opustoszałe nieużytki
  nbxlite.defaultfeaturesbiomeless2=Infdev (04.20)
