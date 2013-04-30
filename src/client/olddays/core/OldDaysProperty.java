@@ -98,11 +98,16 @@ public abstract class OldDaysProperty{
 
     public abstract String saveToString();
 
-    public abstract void onChange();
+    public abstract void onChange(boolean flag);
 
     protected void disable(){
+        if (error){
+            return;
+        }
         System.out.println("Error in "+module.name+" module, "+field.getName()+" property, disabling");
         error = true;
+        setSMPValue();
+        mod_OldDays.newlyDisabled.add(this);
     }
 
     public String getName(){

@@ -20,6 +20,7 @@ public class mod_OldDays extends Mod{
         saveman = new SavingManager(this);
         smpman = new SMPManager(this);
         modules = new ArrayList<OldDaysModule>();
+        newlyDisabled = new ArrayList<OldDaysProperty>();
         lang = new OldDaysEasyLocalization("olddays");
         keyBindings = new ArrayList<KeyBinding>();
         resetOptionsForNextWorld = false;
@@ -59,7 +60,15 @@ public class mod_OldDays extends Mod{
     }
 
     @Override
-    public void onTick(){
+    public void onTick(boolean worldExists){
+        for (OldDaysProperty prop : newlyDisabled){
+            prop.module.last = -1;
+            prop.onChange(false);
+        }
+        newlyDisabled.clear();
+        if (!worldExists){
+            return;
+        }
         texman.onTick();
         for (int i = 0; i < modules.size(); i++){
             modules.get(i).onTick();
@@ -278,12 +287,12 @@ public class mod_OldDays extends Mod{
 
     public static void sendCallback(int id, int id2){
         getModuleById(id).last = id2;
-        getModuleById(id).getPropertyById(id2).onChange();
+        getModuleById(id).getPropertyById(id2).onChange(true);
     }
 
     public static void sendCallback2(int id, int id2){
         modules.get(id).last = id2;
-        modules.get(id).getPropertyById(id2).onChange();
+        modules.get(id).getPropertyById(id2).onChange(true);
     }
 
     public static void sendCallbackAndSave(int id, int id2){
@@ -311,7 +320,7 @@ public class mod_OldDays extends Mod{
             for (int j = 0; j < module.properties.size(); j++){
                 OldDaysProperty prop = module.properties.get(j);
                 if (prop instanceof OldDaysPropertyCond || prop instanceof OldDaysPropertyCond2){
-                    prop.onChange();
+                    prop.onChange(true);
                 }
             }
         }
@@ -459,4 +468,5 @@ public class mod_OldDays extends Mod{
     public static OldDaysEasyLocalization lang;
     public static ArrayList<KeyBinding> keyBindings;
     public static boolean resetOptionsForNextWorld;
+    public static ArrayList<OldDaysProperty> newlyDisabled;
 }

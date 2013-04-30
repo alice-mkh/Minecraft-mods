@@ -30,16 +30,18 @@ public class OldDaysPropertyCond extends OldDaysPropertyInt{
     }
 
     @Override
-    public void onChange(){
-        if (shouldSkipUpdates()){
+    public void onChange(boolean flag){
+        if (shouldSkipUpdates() && flag){
             return;
         }
         try{
             field.set(module, getBoolValue());
             module.callback(id);
         }catch(Exception ex){
-            ex.printStackTrace();
-            disable();
+            if (flag){
+                ex.printStackTrace();
+                disable();
+            }
         }
     }
 

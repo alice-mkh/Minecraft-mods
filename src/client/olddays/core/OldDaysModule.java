@@ -173,8 +173,8 @@ public class OldDaysModule{
             c.getDeclaredField(name).set(null, value);
         }catch(Exception ex){
             if (necessary){
-                System.out.println("No \""+name+"\" field at the "+c.getName()+" class");
                 if (getPropertyById(last) != null){
+                    System.out.println("No \""+name+"\" field at the "+c.getName()+" class");
                     getPropertyById(last).disable();
                 }
             }

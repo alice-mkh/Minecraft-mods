@@ -24,16 +24,18 @@ public class OldDaysPropertyString extends OldDaysProperty{
     }
 
     @Override
-    public void onChange(){
-        if (shouldSkipUpdates()){
+    public void onChange(boolean flag){
+        if (shouldSkipUpdates() && flag){
             return;
         }
         try{
             field.set(module, value);
             module.callback(id);
         }catch(Exception ex){
-            ex.printStackTrace();
-            disable();
+            if (flag){
+                ex.printStackTrace();
+                disable();
+            }
         }
     }
 
@@ -61,12 +63,6 @@ public class OldDaysPropertyString extends OldDaysProperty{
     @Override
     public void setDefaultValue(){
         value = defaultValue;
-    }
-
-    @Override
-    protected void disable(){
-        super.disable();
-        value = smpValue;
     }
 
     @Override

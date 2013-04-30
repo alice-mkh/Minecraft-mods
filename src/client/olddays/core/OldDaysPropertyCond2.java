@@ -23,6 +23,7 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
                 return i;
             }catch(Exception ex){
                 ex.printStackTrace();
+                disable();
                 return 0;
             }
         }
@@ -30,16 +31,18 @@ public class OldDaysPropertyCond2 extends OldDaysPropertyInt{
     }
 
     @Override
-    public void onChange(){
-        if (shouldSkipUpdates()){
+    public void onChange(boolean flag){
+        if (shouldSkipUpdates() && flag){
             return;
         }
         try{
             field.set(module, getValue());
             module.callback(id);
         }catch(Exception ex){
-            ex.printStackTrace();
-            disable();
+            if (flag){
+                ex.printStackTrace();
+                disable();
+            }
         }
     }
 

@@ -20,7 +20,7 @@ public abstract class Mod{
 
     public void onLoadingMP(){}
 
-    public void onTick(){}
+    public void onTick(boolean worldExists){}
 
     public void onGUITick(GuiScreen screen){}
 

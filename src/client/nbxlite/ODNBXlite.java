@@ -87,7 +87,7 @@ public class ODNBXlite extends OldDaysModule{
             case 18:set(ItemHoe2.class, "oldhoes", OldHoes); break;
             case 19:set(RenderGlobal2.class, "texClouds", TexturedClouds); break;
             case 20:set(RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
-            case 21:setLighting(ClassicLight, i); break;
+            case 21:setLighting(ClassicLight); break;
             case 22:set(EntityRenderer.class, "voidFog", BedrockFog); break;
             case 23:set(RenderGlobal2.class, "sunriseColors", Sunset >= 1);
                     set(EntityRenderer.class, "sunriseFog", Sunset >= 2);
@@ -202,14 +202,14 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    public void setLighting(int i, int i2){
-        if (i >= 2 && !Minecraft.getMinecraft().enableSP){
+    public void setLighting(int i){
+        if (ClassicLight >= 2 && !Minecraft.getMinecraft().enableSP){
             i = 1;
         }
-        set(EntityRenderer.class, "classicLight", i > 0);
-        set(RenderGhast2.class, "bright", i > 0);
-        Minecraft.oldlighting = i > 1;
-        oldLightEngine = i > 1;
+        set(RenderGhast2.class, "bright", ClassicLight > 0);
+        Minecraft.oldlighting = ClassicLight > 1;
+        oldLightEngine = ClassicLight > 1;
+        set(EntityRenderer.class, "classicLight", ClassicLight > 0);
         reload();
     }
 

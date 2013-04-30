@@ -1066,8 +1066,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         mcProfiler.endSection();
         mcProfiler.startSection("mods");
         for (Mod mod : mods){
-            if (mod.usesTick && theWorld != null){
-                mod.onTick();
+            if (mod.usesTick){
+                mod.onTick(theWorld != null);
             }
             if (mod.usesGUITick){
                 mod.onGUITick(currentScreen);
