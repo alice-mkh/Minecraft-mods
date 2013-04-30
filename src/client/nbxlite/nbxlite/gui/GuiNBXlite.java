@@ -9,6 +9,7 @@ import net.minecraft.src.*;
 
 public class GuiNBXlite extends GuiScreen{
     private int currentGen;
+    private int prevGen;
 
     private String selectedWorld;
     private int number;
@@ -22,6 +23,7 @@ public class GuiNBXlite extends GuiScreen{
     public GuiNBXlite(GuiScreen guiscreen){
         parent = guiscreen;
         newworld = true;
+        prevGen = -1;
         setDefaultSettings();
         applySettings();
     }
@@ -53,6 +55,7 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     public void setPage(){
+        prevGen = currentGen;
         switch (currentGen){
             case 0: page = new PageFinite(this, false); break;
             case 1: page = new PageFinite(this, true); break;
@@ -63,7 +66,9 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     public void refreshPage(boolean reset){
-        setPage();
+        if (currentGen != prevGen){
+            setPage();
+        }
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int scaledWidth = scaledresolution.getScaledWidth();
         int scaledHeight = scaledresolution.getScaledHeight();
