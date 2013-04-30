@@ -13,7 +13,7 @@ public class mod_SpawnHuman extends Mod{
 
     @Override
     public String getModVersion(){
-        return "r1";
+        return "r2";
     }
 
     @Override
@@ -97,7 +97,10 @@ public class mod_SpawnHuman extends Mod{
     }
 
     @Override
-    public void onTick(){
+    public void onTick(boolean worldExists){
+        if (!worldExists){
+            return;
+        }
         if (keySpawn.isPressed()){
             Minecraft mc = Minecraft.getMinecraft();
             EntityPlayer entityplayer = mc.thePlayer;
