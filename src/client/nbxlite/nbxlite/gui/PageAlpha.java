@@ -72,7 +72,7 @@ public class PageAlpha extends Page{
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + leftmargin, height / 6 + 87 + scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 87 + scrolling, 0xa0a0a0);
     }
 
     @Override
