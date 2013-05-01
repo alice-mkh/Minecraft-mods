@@ -35,7 +35,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
                 if (field.isFocused()){
                     showField(false, ((GuiButton)buttonList.get(fieldId)));
                 }
-            }else if (buttonList.get(fieldId) != null && buttonList.get(fieldId) instanceof GuiButtonProp){
+            }else if (buttonList != null && buttonList.get(fieldId) != null && buttonList.get(fieldId) instanceof GuiButtonProp){
                 GuiButtonProp button = ((GuiButtonProp)buttonList.get(fieldId));
                 button.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
@@ -60,6 +60,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
 
     protected void updateList(String str){
         buttonList.clear();
+        separators.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
         GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
         buttonList.add(button);
@@ -75,9 +76,18 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         if (searchField.correct){
             for (int i = 0; i < mod_OldDays.modules.size(); i++){
                 OldDaysModule module = mod_OldDays.modules.get(i);
+                boolean separator = true;
                 for (int j = 0; j < module.properties.size(); j++){
                     OldDaysProperty prop = module.getPropertyById(j + 1);
                     if (matches(prop, pat)){
+                        if (separator){
+                            if (count % 2 == 1){
+                                count++;
+                            }
+                            addSeparator(count, mod_OldDays.lang.get("module."+module.name.toLowerCase()));
+//                             count += 2;
+                            separator = false;
+                        }
                         addButton(count, false, count++, prop);
                     }
                 }
