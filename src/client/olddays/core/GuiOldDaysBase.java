@@ -104,8 +104,13 @@ public class GuiOldDaysBase extends GuiScreen{
         buttonList.add(tooltipButton);
     }
 
-    protected void addSeparator(int y, String str){
-        separators.add(new GuiOldDaysSeparator(height / 6 + y * 15 + 10 * separators.size(), str));
+    protected int addSeparator(int y, boolean b, String str){
+        if (y % 2 == 1){
+            y++;
+        }
+        int top = b ? 30 : 0;
+        separators.add(new GuiOldDaysSeparator(height / 6 - top + y * 15 + 10 * separators.size(), str));
+        return y;
     }
 
     protected void postInitGui(){

@@ -81,11 +81,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
                     OldDaysProperty prop = module.getPropertyById(j + 1);
                     if (matches(prop, pat)){
                         if (separator){
-                            if (count % 2 == 1){
-                                count++;
-                            }
-                            addSeparator(count, mod_OldDays.lang.get("module."+module.name.toLowerCase()));
-//                             count += 2;
+                            count = addSeparator(count, false, mod_OldDays.lang.get("module."+module.name.toLowerCase()));
                             separator = false;
                         }
                         addButton(count, false, count++, prop);

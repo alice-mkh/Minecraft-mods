@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 public class GuiOldDaysSeparator extends Gui{
-    public OldDaysProperty prop;
-    public boolean help;
     public int baseY;
     public int scrolling;
     public String displayString;
