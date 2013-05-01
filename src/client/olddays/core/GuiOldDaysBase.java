@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
 public class GuiOldDaysBase extends GuiScreen{
+    public static String version = "OFF";
+
     public static final int SCROLLBAR_WIDTH = 6;
     public static final int TOOLTIP_OFFSET = 500;
 
@@ -152,6 +154,11 @@ public class GuiOldDaysBase extends GuiScreen{
         buttonList = fakeButtonList;
         super.drawScreen(i, j, f);
         buttonList = tempList;
+        String str = version.contains(":") ? version.split(":", 2)[0] : version;
+        if (str.equals("OFF")){
+            str = "";
+        }
+        fontRenderer.drawStringWithShadow(str, 2, 2, 0x505050);
     }
 
     protected void showField(boolean b, GuiButton button){
@@ -423,6 +430,9 @@ public class GuiOldDaysBase extends GuiScreen{
         }
         for (GuiOldDaysSeparator s : separators){
             s.scrolled(canBeScrolled(), scrolling);
+        }
+        if (displayField){
+            showField(false, ((GuiButton)buttonList.get(fieldId)));
         }
         //FIXME: Field should scroll too.
     }
