@@ -47,6 +47,18 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         OldDaysProperty prop = guibutton.prop;
         int m = prop.module.id;
         int p = prop.id;
+        if (prop.highlight){
+            prop.highlight = false;
+            boolean shouldHighlightModule = false;
+            for (int i = 1; i <= prop.module.properties.size(); i++){
+                OldDaysProperty prop2 = prop.module.getPropertyById(i);
+                if (prop2.highlight){
+                    shouldHighlightModule = true;
+                    break;
+                }
+            }
+            prop.module.highlight = shouldHighlightModule;
+        }
         if (prop.guitype == OldDaysProperty.GUI_TYPE_BUTTON){
             boolean shift = isShiftPressed();
             if (shift){

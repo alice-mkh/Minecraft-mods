@@ -68,7 +68,7 @@ public class GuiOldDaysBase extends GuiScreen{
         buttonList.add(button);
     }
 
-    protected void addButton(int i, boolean b, int j, String name, boolean e){
+    protected GuiButtonProp addButton(int i, boolean b, int j, String name, boolean e){
         int x = width / 2 - 155;
         if (i % 2 != 0){
            x+=160;
@@ -79,9 +79,10 @@ public class GuiOldDaysBase extends GuiScreen{
         y += 10 * separators.size();
         contentHeight = (i / 2) * margin;
         contentHeight += 10 * separators.size();
-        GuiButton button = new GuiButtonProp(j+1, x, y, false, name);
+        GuiButtonProp button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
         buttonList.add(button);
+        return button;
     }
 
     protected void addButton(int i, boolean b, int j, OldDaysProperty p){

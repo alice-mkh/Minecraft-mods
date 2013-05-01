@@ -17,6 +17,7 @@ public class OldDaysModule{
     public int last;
     public boolean renderersAdded;
     public boolean isLocal;
+    public boolean highlight;
 
     public OldDaysModule(mod_OldDays c, int i, String s){
         core = c;
@@ -27,6 +28,7 @@ public class OldDaysModule{
         last = 0;
         renderersAdded = false;
         isLocal = false;
+        highlight = false;
     }
 
     public OldDaysProperty getPropertyById(int id){

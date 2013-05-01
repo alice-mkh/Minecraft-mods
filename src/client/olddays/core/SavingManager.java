@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 
 public class SavingManager{
     public mod_OldDays core;
+    public static boolean highlight = true;
 
     public SavingManager(mod_OldDays c){
         core = c;
@@ -17,7 +18,9 @@ public class SavingManager{
         Minecraft mc = Minecraft.getMinecraft();
         try{
             File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
-            dir.mkdirs();
+            if (dir.mkdirs()){
+                highlight = false;
+            }
             File file = new File(dir, "Core.properties");
             if(file.createNewFile()){
                 mc.useSP = true;
@@ -66,12 +69,18 @@ public class SavingManager{
         OldDaysModule module = core.getModuleById(id);
         try{
             File dir = new File(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays");
-            dir.mkdirs();
+            if (dir.mkdirs()){
+                highlight = false;
+            }
             File file = new File(dir, module.name+".properties");
             if(file.createNewFile()){
                 for (int i = 1; i <= module.properties.size(); i++){
+                    module.getPropertyById(i).highlight = highlight;
+                    module.highlight = highlight;
                     core.sendCallback(id, i);
                 }
+                saveModuleProperties(id);
+                return;
             }
             properties.load(new FileInputStream(mod_OldDays.getMinecraft().getMinecraftDir()+"/olddays/"+module.name+".properties"));
             for (int i = 1; i <= module.properties.size(); i++){
@@ -83,6 +92,8 @@ public class SavingManager{
                     String value = properties.getProperty(prop.field.getName()).trim();
                     if (value==null){
                         prop.setDefaultValue();
+                        prop.highlight = highlight;
+                        prop.module.highlight = highlight;
                         core.sendCallback(id, i);
                         continue;
                     }
@@ -91,6 +102,8 @@ public class SavingManager{
                 }catch(Exception ex){
                     try{
                         prop.setDefaultValue();
+                        prop.highlight = highlight;
+                        prop.module.highlight = highlight;
                         core.sendCallback(id, i);
                     }catch(Exception ex2){
                         System.out.println("OldDays: Error with loading property "+prop.field.getName()+" in module "+module.name);
