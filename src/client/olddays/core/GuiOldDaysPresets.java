@@ -22,6 +22,7 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
 
     protected void updateList(String str){
         buttonList.clear();
+        separators.clear();
         int y = height / 6 + 150;
         StringTranslate stringtranslate = StringTranslate.getInstance();
         GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
@@ -67,7 +68,9 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         int margin = 30;
         int top = !b ? 25 : -5;
         int y = height / 6 - top + (i / 2) * margin;
+        y += 10 * separators.size();
         contentHeight = (i / 2) * margin;
+        contentHeight += 10 * separators.size();
         GuiButton button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
         buttonList.add(button);

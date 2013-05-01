@@ -28,6 +28,7 @@ public class GuiOldDaysBase extends GuiScreen{
     private int clickY;
     protected int contentHeight;
     protected boolean restoreList;
+    protected ArrayList<GuiOldDaysSeparator> separators;
 
     public GuiOldDaysBase(GuiScreen guiscreen, mod_OldDays c){
         parent = guiscreen;
@@ -44,6 +45,7 @@ public class GuiOldDaysBase extends GuiScreen{
         dragging = false;
         scrollbarDragging = false;
         restoreList = true;
+        separators = new ArrayList<GuiOldDaysSeparator>();
     }
 
     @Override
@@ -72,7 +74,9 @@ public class GuiOldDaysBase extends GuiScreen{
         int margin = 30;
         int top = b ? 25 : -5;
         int y = height / 6 - top + ((i/2) * margin);
+        y += 10 * separators.size();
         contentHeight = (i / 2) * margin;
+        contentHeight += 10 * separators.size();
         GuiButton button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
         buttonList.add(button);
@@ -89,11 +93,17 @@ public class GuiOldDaysBase extends GuiScreen{
         int margin = 30;
         int top = b ? 25 : -5;
         int y = height / 6 - top + ((i/2) * margin);
+        y += 10 * separators.size();
         contentHeight = (i / 2) * margin;
+        contentHeight += 10 * separators.size();
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, p, false);
         buttonList.add(button);
         GuiButton tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
         buttonList.add(tooltipButton);
+    }
+
+    protected void addSeparator(int y, String str){
+        separators.add(new GuiOldDaysSeparator(height / 6 + y * 15 + 10 * separators.size(), str));
     }
 
     protected void postInitGui(){
@@ -118,7 +128,10 @@ public class GuiOldDaysBase extends GuiScreen{
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
-        super.drawScreen(i,j,f);
+        super.drawScreen(i, j, f);
+        for (GuiOldDaysSeparator s : separators){
+            s.draw(fontRenderer, width);
+        }
         if (displayField){
             field.drawTextBox();
         }
@@ -407,6 +420,9 @@ public class GuiOldDaysBase extends GuiScreen{
                 continue;
             }
             ((GuiButtonProp)button).scrolled(canBeScrolled(), scrolling);
+        }
+        for (GuiOldDaysSeparator s : separators){
+            s.scrolled(canBeScrolled(), scrolling);
         }
         //FIXME: Field should scroll too.
     }
