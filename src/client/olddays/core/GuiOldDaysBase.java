@@ -77,8 +77,10 @@ public class GuiOldDaysBase extends GuiScreen{
         int top = b ? 25 : -5;
         int y = height / 6 - top + ((i/2) * margin);
         y += 10 * separators.size();
-        contentHeight = (i / 2) * margin;
-        contentHeight += 10 * separators.size();
+        int newContentHeight = (i / 2) * margin + 10 * separators.size();
+        if (newContentHeight > contentHeight){
+            contentHeight = newContentHeight;
+        }
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
         buttonList.add(button);
@@ -97,8 +99,10 @@ public class GuiOldDaysBase extends GuiScreen{
         int top = b ? 25 : -5;
         int y = height / 6 - top + ((i/2) * margin);
         y += 10 * separators.size();
-        contentHeight = (i / 2) * margin;
-        contentHeight += 10 * separators.size();
+        int newContentHeight = (i / 2) * margin + 10 * separators.size();
+        if (newContentHeight > contentHeight){
+            contentHeight = newContentHeight;
+        }
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, p, false);
         buttonList.add(button);
         GuiButton tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
