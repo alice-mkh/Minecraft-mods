@@ -16,9 +16,11 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     @Override
     public void initGui(){
         super.initGui();
-        int count = mod_OldDays.getModuleById(id).properties.size();
-        for (int i = 0; i < count; i++){
-            addButton(i, true, i, mod_OldDays.getModuleById(id).getPropertyById(i + 1));
+        if (id >= 0){
+            int count = mod_OldDays.getModuleById(id).properties.size();
+            for (int i = 0; i < count; i++){
+                addButton(i, true, i, mod_OldDays.getModuleById(id).getPropertyById(i + 1));
+            }
         }
         postInitGui();
     }
@@ -214,7 +216,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (!show){
             showTooltip = null;
         }
-        if (showTooltip != null && !(this instanceof GuiOldDaysSearch)){
+        if (showTooltip != null){
             drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
         }
     }

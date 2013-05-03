@@ -19,7 +19,6 @@ public class GuiOldDaysBase extends GuiScreen{
     protected int tooltipTimer;
     protected int fieldId;
     protected String current;
-    protected boolean hasFields;
     protected mod_OldDays core;
 
     protected int scrolling;
@@ -32,12 +31,15 @@ public class GuiOldDaysBase extends GuiScreen{
     protected boolean restoreList;
     protected ArrayList<GuiOldDaysSeparator> separators;
 
+    protected boolean hasSearchField;
+    protected GuiTextFieldSearch searchField;
+
     public GuiOldDaysBase(GuiScreen guiscreen, mod_OldDays c){
         parent = guiscreen;
         displayField = false;
         fieldId = 0;
         tooltipTimer = 0;
-        hasFields = false;
+        hasSearchField = false;
         core = c;
 
         scrolling = 10;
@@ -48,11 +50,16 @@ public class GuiOldDaysBase extends GuiScreen{
         scrollbarDragging = false;
         restoreList = true;
         separators = new ArrayList<GuiOldDaysSeparator>();
+
+        hasSearchField = false;
     }
 
     @Override
     public void updateScreen(){
         field.updateCursorCounter();
+        if (hasSearchField){
+            searchField.updateCursorCounter();
+        }
     }
 
     @Override
@@ -66,6 +73,14 @@ public class GuiOldDaysBase extends GuiScreen{
         StringTranslate stringtranslate = StringTranslate.getInstance();
         GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
         buttonList.add(button);
+        if (hasSearchField){
+            searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
+            searchField.setMaxStringLength(999);
+            searchField.setFocused(true);
+            searchField.setCanLoseFocus(false);
+            Keyboard.enableRepeatEvents(true);
+        }
+        updateList("");
     }
 
     protected GuiButtonProp addButton(int i, boolean b, int j, String name, boolean e){
@@ -120,7 +135,7 @@ public class GuiOldDaysBase extends GuiScreen{
 
     protected void postInitGui(){
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
-        Keyboard.enableRepeatEvents(hasFields);
+        Keyboard.enableRepeatEvents(hasSearchField);
         calculateMinScrolling();
     }
 
@@ -164,6 +179,9 @@ public class GuiOldDaysBase extends GuiScreen{
         buttonList = fakeButtonList;
         super.drawScreen(i, j, f);
         buttonList = tempList;
+        if (hasSearchField){
+            searchField.drawTextBox();
+        }
         String str = version.contains(":") ? version.split(":", 2)[0] : version;
         if (str.equals("OFF")){
             str = "";
@@ -173,15 +191,27 @@ public class GuiOldDaysBase extends GuiScreen{
 
     protected void showField(boolean b, GuiButton button){
         displayField = b;
-        Keyboard.enableRepeatEvents(b && hasFields);
+        Keyboard.enableRepeatEvents(b && hasSearchField);
         button.enabled = !b;
         field.setFocused(b);
+        if (hasSearchField){
+            searchField.setFocused(!b);
+            searchField.setCanLoseFocus(b);
+        }
     }
 
     @Override
     protected void keyTyped(char par1, int par2)
     {
-        if (!displayField){
+        if (hasSearchField && searchField.isFocused()){
+            searchField.textboxKeyTyped(par1, par2);
+            if (par1 == '\r' || par2 == 1 || ((par2 == 211 || par2 == 14) && searchField.getText().length() <= 0)){
+                mc.displayGuiScreen(parent);
+                return;
+            }
+            updateList(searchField.getText().trim());
+            return;
+        }else if (!displayField){
             super.keyTyped(par1, par2);
             if (par2 == 1 || par1 == '\0'){
                 return;
@@ -424,7 +454,7 @@ public class GuiOldDaysBase extends GuiScreen{
     }
 
     public int getTop(){
-        return height / 6 - 25;
+        return height / 6 + (hasSearchField ? 7 : -25);
     }
 
     public int getBottom(){
@@ -446,4 +476,6 @@ public class GuiOldDaysBase extends GuiScreen{
         }
         //FIXME: Field should scroll too.
     }
+
+    protected void updateList(String str){}
 }

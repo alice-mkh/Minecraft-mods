@@ -14,12 +14,6 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
         presets = new String[]{};
     }
 
-    @Override
-    public void initGui(){
-        super.initGui();
-        updateList("");
-    }
-
     protected void updateList(String str){
         buttonList.clear();
         separators.clear();
