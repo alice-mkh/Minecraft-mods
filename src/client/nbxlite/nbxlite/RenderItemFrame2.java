@@ -54,7 +54,7 @@ public class RenderItemFrame2 extends Render
         renderBlocksInstance.clearOverrideBlockTexture();
         renderBlocksInstance.unlockBlockBounds();
         GL11.glPopMatrix();
-        renderBlocksInstance.setOverrideBlockTexture(Block.planks.getBlockTextureFromSideAndMetadata(1, 2));
+        renderBlocksInstance.setOverrideBlockTexture(Block.planks.getIcon(1, 2));
         GL11.glPushMatrix();
         renderBlocksInstance.overrideBlockBounds(0.0D, 0.5F - f2, 0.5F - f2, f + 0.0001F, (f + 0.5F) - f2, 0.5F + f2);
         renderBlocksInstance.renderBlockAsItem(block, 0, f6);

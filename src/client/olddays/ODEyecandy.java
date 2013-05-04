@@ -150,28 +150,21 @@ public class ODEyecandy extends OldDaysModule{
             BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54, 0));
             customchest.setHardness(2.5F);
             customchest.setStepSound(Block.soundWoodFootstep);
-            customchest.getIndirectPowerOutput("chest");
+            customchest.setUnlocalizedName("chest");
             Block.blocksList[Block.chest.blockID] = customchest;
             mod_OldDays.setField(Block.class, null, 72, customchest);//Block: chest
             Block.blocksList[Block.chestTrapped.blockID] = null;
             BlockChestOld customchest2 = (BlockChestOld)(new BlockChestOld(146, 1));
             customchest2.setHardness(2.5F);
             customchest2.setStepSound(Block.soundWoodFootstep);
-            customchest2.getIndirectPowerOutput("chestTrap");
+            customchest2.setUnlocalizedName("chestTrap");
             Block.blocksList[Block.chestTrapped.blockID] = customchest2;
             mod_OldDays.setField(Block.class, null, 164, customchest2);//Block: chestTrapped
-           /* addTextureHook("/terrain.png", BlockChestOld.toptex, "/olddays/chest.png", 0, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.sidetex, "/olddays/chest.png", 1, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.fronttex, "/olddays/chest.png", 2, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.texfrontleft, "/olddays/chest.png", 3, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.texfrontright, "/olddays/chest.png", 4, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.texbackleft, "/olddays/chest.png", 6, 3, 3);
-            addTextureHook("/terrain.png", BlockChestOld.texbackright, "/olddays/chest.png", 7, 3, 3);*/
             Block.blocksList[Block.redstoneWire.blockID] = null;
             BlockRedstoneWireOld customwire = (BlockRedstoneWireOld)(new BlockRedstoneWireOld(Block.redstoneWire.blockID));
             customwire.setHardness(0F);
             customwire.setStepSound(Block.soundPowderFootstep);
-            customwire.getIndirectPowerOutput("redstoneDust");
+            customwire.setUnlocalizedName("redstoneDust");
             customwire.disableStats();
             Block.blocksList[Block.redstoneWire.blockID] = customwire;
             mod_OldDays.setField(Block.class, null, 73, customwire);//Block: redstoneWire
@@ -180,7 +173,7 @@ public class ODEyecandy extends OldDaysModule{
             customfence.setHardness(2.0F);
             customfence.setResistance(5F);
             customfence.setStepSound(Block.soundWoodFootstep);
-            customfence.getIndirectPowerOutput("fence");
+            customfence.setUnlocalizedName("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
             mod_OldDays.setField(Block.class, null, 103, customfence);//Block: fence
         }catch (Exception ex){

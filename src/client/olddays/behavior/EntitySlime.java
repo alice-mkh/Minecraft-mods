@@ -6,7 +6,7 @@ public class EntitySlime extends EntityLiving implements IMob
 {
     public static int slimeSpawn = 5;
 
-    private static final float field_100000_e[] =
+    private static final float spawnChances[] =
     {
         1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F
     };
@@ -322,7 +322,7 @@ public class EntitySlime extends EntityLiving implements IMob
         {
             BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && (slimeSpawn > 5 || (rand.nextFloat() < 0.5F && rand.nextFloat() < field_100000_e[worldObj.getMoonPhase()])) && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
+            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && (slimeSpawn > 5 || (rand.nextFloat() < 0.5F && rand.nextFloat() < spawnChances[worldObj.getMoonPhase()])) && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
             {
                 return super.getCanSpawnHere();
             }

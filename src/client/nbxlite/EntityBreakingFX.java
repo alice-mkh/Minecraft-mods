@@ -5,7 +5,7 @@ public class EntityBreakingFX extends EntityFX
     public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item, RenderEngine par9RenderEngine)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        func_94052_a(par9RenderEngine, par8Item.getIconFromDamage(0));
+        setParticleIcon(par9RenderEngine, par8Item.getIconFromDamage(0));
         particleRed = particleGreen = particleBlue = 1.0F;
         particleGravity = Block.blockSnow.blockParticleGravity;
         particleScale /= 2.0F;
@@ -35,12 +35,12 @@ public class EntityBreakingFX extends EntityFX
         float f3 = f2 + 0.01560938F;
         float f4 = 0.1F * particleScale;
 
-        if (particleTextureIndex != null)
+        if (particleIcon != null)
         {
-            f = particleTextureIndex.getInterpolatedU((particleTextureJitterX / 4F) * 16F);
-            f1 = particleTextureIndex.getInterpolatedU(((particleTextureJitterX + 1.0F) / 4F) * 16F);
-            f2 = particleTextureIndex.getInterpolatedV((particleTextureJitterY / 4F) * 16F);
-            f3 = particleTextureIndex.getInterpolatedV(((particleTextureJitterY + 1.0F) / 4F) * 16F);
+            f = particleIcon.getInterpolatedU((particleTextureJitterX / 4F) * 16F);
+            f1 = particleIcon.getInterpolatedU(((particleTextureJitterX + 1.0F) / 4F) * 16F);
+            f2 = particleIcon.getInterpolatedV((particleTextureJitterY / 4F) * 16F);
+            f3 = particleIcon.getInterpolatedV(((particleTextureJitterY + 1.0F) / 4F) * 16F);
         }
 
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);

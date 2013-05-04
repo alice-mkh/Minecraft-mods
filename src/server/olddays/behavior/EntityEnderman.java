@@ -478,7 +478,7 @@ public class EntityEnderman extends EntityMob
         canCarryBlocksOld[Block.mushroomBrown.blockID] = true;
         canCarryBlocksOld[Block.mushroomRed.blockID] = true;
         canCarryBlocksOld[Block.blockGold.blockID] = true;
-        canCarryBlocksOld[Block.blockSteel.blockID] = true;
+        canCarryBlocksOld[Block.blockIron.blockID] = true;
         canCarryBlocksOld[Block.brick.blockID] = true;
         canCarryBlocksOld[Block.tnt.blockID] = true;
         canCarryBlocksOld[Block.bookShelf.blockID] = true;

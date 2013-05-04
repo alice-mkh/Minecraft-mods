@@ -213,8 +213,8 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
       } else if (block instanceof MobSpawnerBlock) { // Sets mob spawner
          TileEntityMobSpawner tile = (TileEntityMobSpawner)world.getBlockTileEntity(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
          if (tile != null) {
-            ((MobSpawnerBlock)block).setDelay((short)tile.func_98049_a().field_98286_b);
-            ((MobSpawnerBlock)block).setMobType(tile.func_98049_a().func_98276_e());
+            ((MobSpawnerBlock)block).setDelay((short)tile.func_98049_a().spawnDelay);
+            ((MobSpawnerBlock)block).setMobType(tile.func_98049_a().getEntityNameToSpawn());
             return true;
          } else  {
             return false;
@@ -252,7 +252,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
             TileEntityMobSpawner tile = (TileEntityMobSpawner)world.getBlockTileEntity(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ());
             if (tile != null) {
                tile.func_98049_a().setMobID(((MobSpawnerBlock)block).getMobType());
-               tile.func_98049_a().field_98286_b = (((MobSpawnerBlock)block).getDelay());
+               tile.func_98049_a().spawnDelay = (((MobSpawnerBlock)block).getDelay());
                return true;
             } else {
                return false;

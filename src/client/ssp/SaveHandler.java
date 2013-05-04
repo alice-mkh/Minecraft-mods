@@ -64,9 +64,9 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     }
 
     /**
-     * gets the File object corresponding to the base directory of this save (saves/404 for a save called 404 etc)
+     * Gets the File object corresponding to the base directory of this world.
      */
-    protected File getSaveDirectory()
+    protected File getWorldDirectory()
     {
         return worldDirectory;
     }
@@ -378,7 +378,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     /**
      * Returns the name of the directory where world information is saved.
      */
-    public String getSaveDirectoryName()
+    public String getWorldDirectoryName()
     {
         return saveDirectoryName;
     }

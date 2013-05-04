@@ -10,7 +10,7 @@ public class EntityDiggingFX extends EntityFX
     {
         super(par1World, par2, par4, par6, par8, par10, par12);
         blockInstance = par14Block;
-        func_94052_a(par17RenderEngine, par14Block.getBlockTextureFromSideAndMetadata(oldparticles ? 2 : 0, par16));
+        setParticleIcon(par17RenderEngine, par14Block.getIcon(oldparticles ? 2 : 0, par16));
         particleGravity = par14Block.blockParticleGravity;
         particleRed = particleGreen = particleBlue = 0.6F;
         particleScale /= 2.0F;
@@ -64,12 +64,12 @@ public class EntityDiggingFX extends EntityFX
         float f3 = f2 + 0.01560938F;
         float f4 = 0.1F * particleScale;
 
-        if (particleTextureIndex != null)
+        if (particleIcon != null)
         {
-            f = particleTextureIndex.getInterpolatedU((particleTextureJitterX / 4F) * 16F);
-            f1 = particleTextureIndex.getInterpolatedU(((particleTextureJitterX + 1.0F) / 4F) * 16F);
-            f2 = particleTextureIndex.getInterpolatedV((particleTextureJitterY / 4F) * 16F);
-            f3 = particleTextureIndex.getInterpolatedV(((particleTextureJitterY + 1.0F) / 4F) * 16F);
+            f = particleIcon.getInterpolatedU((particleTextureJitterX / 4F) * 16F);
+            f1 = particleIcon.getInterpolatedU(((particleTextureJitterX + 1.0F) / 4F) * 16F);
+            f2 = particleIcon.getInterpolatedV((particleTextureJitterY / 4F) * 16F);
+            f3 = particleIcon.getInterpolatedV(((particleTextureJitterY + 1.0F) / 4F) * 16F);
         }
 
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);

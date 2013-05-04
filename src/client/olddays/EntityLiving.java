@@ -148,7 +148,7 @@ public abstract class EntityLiving extends Entity
     };
     private static final float armorProbability[] =
     {
-        0.0F, 0.0F, 0.05F, 0.02F
+        0.0F, 0.0F, 0.05F, 0.07F
     };
     public static final float pickUpLootProability[] =
     {
@@ -242,7 +242,7 @@ public abstract class EntityLiving extends Entity
     public float limbYaw;
 
     /**
-     * Only relevant when legYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently
+     * Only relevant when limbYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently
      * are.
      */
     public float limbSwing;
@@ -286,7 +286,7 @@ public abstract class EntityLiving extends Entity
     private float maximumHomeDistance;
     private ItemStack equipment[];
     protected float equipmentDropChances[];
-    private ItemStack field_82180_bT[];
+    private ItemStack previousEquipment[];
 
     /** Whether an arm swing is currently in progress. */
     public boolean isSwingInProgress;
@@ -381,7 +381,7 @@ public abstract class EntityLiving extends Entity
         maximumHomeDistance = -1F;
         equipment = new ItemStack[5];
         equipmentDropChances = new float[5];
-        field_82180_bT = new ItemStack[5];
+        previousEquipment = new ItemStack[5];
         isSwingInProgress = false;
         swingProgressInt = 0;
         canPickUpLoot = false;
@@ -953,10 +953,10 @@ public abstract class EntityLiving extends Entity
             {
                 ItemStack itemstack = getCurrentItemOrArmor(i);
 
-                if (!ItemStack.areItemStacksEqual(itemstack, field_82180_bT[i]) && worldObj instanceof WorldServer)
+                if (!ItemStack.areItemStacksEqual(itemstack, previousEquipment[i]) && worldObj instanceof WorldServer)
                 {
                     ((WorldServer)worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet5PlayerInventory(entityId, i, itemstack));
-                    field_82180_bT[i] = itemstack != null ? itemstack.copy() : null;
+                    previousEquipment[i] = itemstack != null ? itemstack.copy() : null;
                 }
             }
 
@@ -2405,7 +2405,7 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
-        return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
+        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
     }
 
     /**
@@ -2592,14 +2592,14 @@ public abstract class EntityLiving extends Entity
                 {
                     dataWatcher.updateObject(9, Byte.valueOf((byte)0));
                     dataWatcher.updateObject(8, Integer.valueOf(0));
-                    setHasActivePotion(false);
+                    setInvisible(false);
                 }
                 else
                 {
                     int i = PotionHelper.calcPotionLiquidColor(activePotionsMap.values());
                     dataWatcher.updateObject(9, Byte.valueOf(((byte)(PotionHelper.func_82817_b(activePotionsMap.values()) ? 1 : 0))));
                     dataWatcher.updateObject(8, Integer.valueOf(i));
-                    setHasActivePotion(isPotionActive(Potion.invisibility.id));
+                    setInvisible(isPotionActive(Potion.invisibility.id));
                 }
             }
 
@@ -2613,7 +2613,7 @@ public abstract class EntityLiving extends Entity
         {
             boolean flag1 = false;
 
-            if (!getHasActivePotion())
+            if (!isInvisible())
             {
                 flag1 = rand.nextBoolean();
             }
@@ -3064,7 +3064,7 @@ public abstract class EntityLiving extends Entity
 
                 if (par1 == 3)
                 {
-                    return Item.helmetSteel;
+                    return Item.helmetIron;
                 }
 
                 if (par1 == 4)
@@ -3091,7 +3091,7 @@ public abstract class EntityLiving extends Entity
 
                 if (par1 == 3)
                 {
-                    return Item.plateSteel;
+                    return Item.plateIron;
                 }
 
                 if (par1 == 4)
@@ -3118,7 +3118,7 @@ public abstract class EntityLiving extends Entity
 
                 if (par1 == 3)
                 {
-                    return Item.legsSteel;
+                    return Item.legsIron;
                 }
 
                 if (par1 == 4)
@@ -3145,7 +3145,7 @@ public abstract class EntityLiving extends Entity
 
                 if (par1 == 3)
                 {
-                    return Item.bootsSteel;
+                    return Item.bootsIron;
                 }
 
                 if (par1 == 4)
@@ -3326,5 +3326,10 @@ public abstract class EntityLiving extends Entity
     public void setCanPickUpLoot(boolean par1)
     {
         canPickUpLoot = par1;
+    }
+
+    public boolean func_104002_bU()
+    {
+        return persistenceRequired;
     }
 }

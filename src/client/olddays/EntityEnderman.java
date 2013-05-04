@@ -17,6 +17,7 @@ public class EntityEnderman extends EntityMob
      */
     private int teleportDelay;
     private int field_70826_g;
+    private boolean field_104003_g;
 
     public EntityEnderman(World par1World)
     {
@@ -74,6 +75,8 @@ public class EntityEnderman extends EntityMob
         {
             if (shouldAttackPlayer(entityplayer))
             {
+                field_104003_g = true;
+
                 if (field_70826_g == 0)
                 {
                     worldObj.playSoundAtEntity(entityplayer, "mob.endermen.stare", 1.0F, 1.0F);
@@ -188,6 +191,7 @@ public class EntityEnderman extends EntityMob
             {
                 entityToAttack = null;
                 setScreaming(false);
+                field_104003_g = false;
                 teleportRandomly();
             }
         }
@@ -196,7 +200,13 @@ public class EntityEnderman extends EntityMob
         {
             entityToAttack = null;
             setScreaming(false);
+            field_104003_g = false;
             teleportRandomly();
+        }
+
+        if (isScreaming() && !field_104003_g && rand.nextInt(100) == 0)
+        {
+            setScreaming(false);
         }
 
         isJumping = false;
@@ -434,8 +444,15 @@ public class EntityEnderman extends EntityMob
 
         setScreaming(true);
 
+        if ((par1DamageSource instanceof EntityDamageSource) && (par1DamageSource.getEntity() instanceof EntityPlayer))
+        {
+            field_104003_g = true;
+        }
+
         if (par1DamageSource instanceof EntityDamageSourceIndirect)
         {
+            field_104003_g = false;
+
             for (int i = 0; i < 64; i++)
             {
                 if (teleportRandomly())
@@ -511,7 +528,7 @@ public class EntityEnderman extends EntityMob
         carriableBlocksOld[Block.mushroomBrown.blockID] = true;
         carriableBlocksOld[Block.mushroomRed.blockID] = true;
         carriableBlocksOld[Block.blockGold.blockID] = true;
-        carriableBlocksOld[Block.blockSteel.blockID] = true;
+        carriableBlocksOld[Block.blockIron.blockID] = true;
         carriableBlocksOld[Block.brick.blockID] = true;
         carriableBlocksOld[Block.tnt.blockID] = true;
         carriableBlocksOld[Block.bookShelf.blockID] = true;

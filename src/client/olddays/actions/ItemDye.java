@@ -142,7 +142,7 @@ public class ItemDye extends Item
                 }else
                 if ((double)par1World.rand.nextFloat() < 0.45000000000000001D)
                 {
-                    ((BlockSapling)Block.sapling).func_96477_c(par1World, par2, par3, par4, par1World.rand);
+                    ((BlockSapling)Block.sapling).markOrGrowMarked(par1World, par2, par3, par4, par1World.rand);
                 }
 
                 par0ItemStack.stackSize--;
@@ -355,7 +355,7 @@ public class ItemDye extends Item
         }
     }
 
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
         field_94594_d = new Icon[field_94595_b.length];
 

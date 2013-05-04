@@ -153,6 +153,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     private long timeOfLastWarning;
     private String userMessage;
     private boolean startProfiling;
+    private boolean field_104057_T;
 
     public MinecraftServer(File par1File)
     {
@@ -162,6 +163,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         tickCounter = 0;
         texturePack = "";
         serverIsRunning = false;
+        field_104057_T = false;
         mcServer = this;
         usageSnooper = new PlayerUsageSnooper("server", this);
         anvilFile = par1File;
@@ -495,7 +497,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         catch (Throwable var48)
         {
             var48.printStackTrace();
-            getLogAgent().func_98234_c("Encountered an unexpected exception " + var48.getClass().getSimpleName(), var48);
+            getLogAgent().logSevereException("Encountered an unexpected exception " + var48.getClass().getSimpleName(), var48);
             CrashReport var2 = null;
 
             if (var48 instanceof ReportedException)
@@ -511,11 +513,11 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
             if (var2.saveToFile(var3, getLogAgent()))
             {
-                getLogAgent().func_98232_c("This crash report has been saved to: " + var3.getAbsolutePath());
+                getLogAgent().logSevere("This crash report has been saved to: " + var3.getAbsolutePath());
             }
             else
             {
-                getLogAgent().func_98232_c("We were unable to save this crash report to disk.");
+                getLogAgent().logSevere("We were unable to save this crash report to disk.");
             }
 
             this.finalTick(var2);
@@ -765,7 +767,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public String getMinecraftVersion()
     {
-        return "1.5.1";
+        return "1.5.2";
     }
 
     /**
@@ -820,7 +822,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logSevere(String par1Str)
     {
-        getLogAgent().func_98232_c(par1Str);
+        getLogAgent().logSevere(par1Str);
     }
 
     /**
@@ -1083,7 +1085,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
     /**
      * WARNING : directly calls
-     * getActiveAnvilConverter().deleteWorldDirectory(theWorldServer[0].getSaveHandler().getSaveDirectoryName());
+     * getActiveAnvilConverter().deleteWorldDirectory(theWorldServer[0].getSaveHandler().getWorldDirectoryName());
      */
     public void deleteWorldAndStopServer()
     {
@@ -1100,7 +1102,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             }
         }
 
-        getActiveAnvilConverter().deleteWorldDirectory(worldServers[0].getSaveHandler().getSaveDirectoryName());
+        getActiveAnvilConverter().deleteWorldDirectory(worldServers[0].getSaveHandler().getWorldDirectoryName());
         initiateShutdown();
     }
 
@@ -1332,6 +1334,16 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     }
 
     public abstract ILogAgent getLogAgent();
+
+    public void func_104055_i(boolean par1)
+    {
+        field_104057_T = par1;
+    }
+
+    public boolean func_104056_am()
+    {
+        return field_104057_T;
+    }
 
     /**
      * Gets the current player count, maximum player count, and player entity list.

@@ -9,7 +9,7 @@ public class EntityBoat extends Entity
     public static boolean oldbreaking = false;
 
     private boolean field_70279_a;
-    private double field_70276_b;
+    private double speedMultiplier;
     private int boatPosRotationIncrements;
     private double boatX;
     private double boatY;
@@ -24,7 +24,7 @@ public class EntityBoat extends Entity
     {
         super(par1World);
         field_70279_a = true;
-        field_70276_b = 0.070000000000000007D;
+        speedMultiplier = 0.070000000000000007D;
         preventEntitySpawning = true;
         setSize(1.5F, 0.6F);
         yOffset = height / 2.0F;
@@ -327,8 +327,8 @@ public class EntityBoat extends Entity
 
         if (riddenByEntity != null)
         {
-            motionX += riddenByEntity.motionX * field_70276_b;
-            motionZ += riddenByEntity.motionZ * field_70276_b;
+            motionX += riddenByEntity.motionX * speedMultiplier;
+            motionZ += riddenByEntity.motionZ * speedMultiplier;
         }
 
         double d7 = Math.sqrt(motionX * motionX + motionZ * motionZ);
@@ -341,22 +341,22 @@ public class EntityBoat extends Entity
             d7 = 0.34999999999999998D;
         }
 
-        if (d7 > d1 && field_70276_b < 0.34999999999999998D)
+        if (d7 > d1 && speedMultiplier < 0.34999999999999998D)
         {
-            field_70276_b += (0.34999999999999998D - field_70276_b) / 35D;
+            speedMultiplier += (0.34999999999999998D - speedMultiplier) / 35D;
 
-            if (field_70276_b > 0.34999999999999998D)
+            if (speedMultiplier > 0.34999999999999998D)
             {
-                field_70276_b = 0.34999999999999998D;
+                speedMultiplier = 0.34999999999999998D;
             }
         }
         else
         {
-            field_70276_b -= (field_70276_b - 0.070000000000000007D) / 35D;
+            speedMultiplier -= (speedMultiplier - 0.070000000000000007D) / 35D;
 
-            if (field_70276_b < 0.070000000000000007D)
+            if (speedMultiplier < 0.070000000000000007D)
             {
-                field_70276_b = 0.070000000000000007D;
+                speedMultiplier = 0.070000000000000007D;
             }
         }
 
@@ -371,7 +371,7 @@ public class EntityBoat extends Entity
 
         if (isCollidedHorizontally && d1 > 0.20000000000000001D)
         {
-            if (!worldObj.isRemote)
+            if (!worldObj.isRemote && !isDead)
             {
                 setDead();
 

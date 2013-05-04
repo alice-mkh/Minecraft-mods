@@ -131,11 +131,11 @@ public class TeleporterSP
                 l2 = 1;
             }
 
-            int i3 = par2Entity.func_82148_at();
+            int i3 = par2Entity.getTeleportDirection();
 
             if (l2 > -1)
             {
-                int j3 = Direction.field_71578_g[l2];
+                int j3 = Direction.rotateLeft[l2];
                 int k3 = Direction.offsetX[l2];
                 int l3 = Direction.offsetZ[l2];
                 int i4 = Direction.offsetX[j3];
@@ -145,8 +145,8 @@ public class TeleporterSP
 
                 if (flag && flag1)
                 {
-                    l2 = Direction.footInvisibleFaceRemap[l2];
-                    j3 = Direction.footInvisibleFaceRemap[j3];
+                    l2 = Direction.rotateOpposite[l2];
+                    j3 = Direction.rotateOpposite[j3];
                     k3 = Direction.offsetX[l2];
                     l3 = Direction.offsetZ[l2];
                     i4 = Direction.offsetX[j3];
@@ -187,12 +187,12 @@ public class TeleporterSP
                     f2 = 1.0F;
                     f3 = 1.0F;
                 }
-                else if (l2 == Direction.footInvisibleFaceRemap[i3])
+                else if (l2 == Direction.rotateOpposite[i3])
                 {
                     f2 = -1F;
                     f3 = -1F;
                 }
-                else if (l2 == Direction.enderEyeMetaToDirection[i3])
+                else if (l2 == Direction.rotateRight[i3])
                 {
                     f4 = 1.0F;
                     f5 = -1F;

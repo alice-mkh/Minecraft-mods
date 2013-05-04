@@ -151,4 +151,9 @@ public class ChunkProviderBaseInfinite implements IChunkProvider{
     {
         generateStructures(par1, par2, null);
     }
+
+    @Override
+    public void func_104112_b()
+    {
+    }
 }

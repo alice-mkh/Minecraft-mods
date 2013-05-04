@@ -85,7 +85,9 @@ public abstract class World implements IBlockAccess
     private final Vec3Pool vecPool;
     private final Calendar theCalendar;
     protected Scoreboard worldScoreboard;
-    private final ILogAgent field_98181_L;
+
+    /** The log agent for this world. */
+    private final ILogAgent worldLogAgent;
     private ArrayList collidingBoundingBoxes;
     private boolean scanningTileEntities;
 
@@ -166,7 +168,7 @@ public abstract class World implements IBlockAccess
         worldInfo = new WorldInfo(par4WorldSettings, par2Str);
         provider = par3WorldProvider;
         mapStorage = new MapStorage(par1ISaveHandler);
-        field_98181_L = par6ILogAgent;
+        worldLogAgent = par6ILogAgent;
         VillageCollection villagecollection = (VillageCollection)mapStorage.loadData(net.minecraft.src.VillageCollection.class, "villages");
 
         if (villagecollection == null)
@@ -222,7 +224,7 @@ public abstract class World implements IBlockAccess
         saveHandler = par1ISaveHandler;
         theProfiler = par5Profiler;
         mapStorage = new MapStorage(par1ISaveHandler);
-        field_98181_L = par6ILogAgent;
+        worldLogAgent = par6ILogAgent;
         worldInfo = par1ISaveHandler.loadWorldInfo();
 
         if (par4WorldProvider != null)
@@ -518,7 +520,7 @@ public abstract class World implements IBlockAccess
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception getting block type in world");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
             crashreportcategory.addCrashSection("Found chunk", Boolean.valueOf(chunk == null));
-            crashreportcategory.addCrashSection("Location", CrashReportCategory.func_85071_a(par1, par2, par3));
+            crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(par1, par2, par3));
             throw new ReportedException(crashreport);
         }
     }
@@ -634,10 +636,9 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 0x02
-     * will trigger a block update both on server and on client, flag 0x04, if used with 0x02, will prevent a block
-     * update on client worlds. Flag 0x01 will pass the original block ID when notifying adjacent blocks, otherwise it
-     * will pass 0.
+     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 1 will
+     * cause a block update. Flag 2 will send the change to clients (you almost always want this). Flag 4 prevents the
+     * block from being re-rendered, if this is a client world. Flags can be added together.
      */
     public boolean setBlock(int par1, int par2, int par3, int par4, int par5, int par6)
     {
@@ -1856,7 +1857,7 @@ public abstract class World implements IBlockAccess
     /**
      * calculates and returns a list of colliding bounding boxes within a given AABB
      */
-    public List getAllCollidingBoundingBoxes(AxisAlignedBB par1AxisAlignedBB)
+    public List getCollidingBlockBounds(AxisAlignedBB par1AxisAlignedBB)
     {
         collidingBoundingBoxes.clear();
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2573,15 +2574,15 @@ public abstract class World implements IBlockAccess
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB
      */
-    public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
     {
-        return checkIfAABBIsClearExcludingEntity(par1AxisAlignedBB, null);
+        return checkNoEntityCollision(par1AxisAlignedBB, null);
     }
 
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB, excluding the given entity
      */
-    public boolean checkIfAABBIsClearExcludingEntity(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
     {
         List list = getEntitiesWithinAABBExcludingEntity(null, par1AxisAlignedBB);
 
@@ -2601,7 +2602,7 @@ public abstract class World implements IBlockAccess
     /**
      * Returns true if there are any blocks in the region constrained by an AxisAlignedBB
      */
-    public boolean isAABBNonEmpty(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkBlockCollision(AxisAlignedBB par1AxisAlignedBB)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
         int j = MathHelper.floor_double(par1AxisAlignedBB.maxX + 1.0D);
@@ -3179,10 +3180,14 @@ public abstract class World implements IBlockAccess
     public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[getBlockId(par1, par2, par3)];
-        return func_102026_a(block, getBlockMetadata(par1, par2, par3));
+        return isBlockTopFacingSurfaceSolid(block, getBlockMetadata(par1, par2, par3));
     }
 
-    public boolean func_102026_a(Block par1Block, int par2)
+    /**
+     * Performs check to see if the block is a normal, solid block, or if the metadata of the block indicates that its
+     * facing puts its solid side upwards. (inverted stairs, for example)
+     */
+    public boolean isBlockTopFacingSurfaceSolid(Block par1Block, int par2)
     {
         if (par1Block == null)
         {
@@ -3606,7 +3611,7 @@ public abstract class World implements IBlockAccess
         updateLightByType(EnumSkyBlock.Block, par1, par2, par3);
     }
 
-    private int func_98179_a(int par1, int par2, int par3, EnumSkyBlock par4EnumSkyBlock)
+    private int computeLightValue(int par1, int par2, int par3, EnumSkyBlock par4EnumSkyBlock)
     {
         if (par4EnumSkyBlock == EnumSkyBlock.Sky && canBlockSeeTheSky(par1, par2, par3))
         {
@@ -3669,7 +3674,7 @@ public abstract class World implements IBlockAccess
         int j = 0;
         theProfiler.startSection("getBrightness");
         int k = getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
-        int l = func_98179_a(par2, par3, par4, par1EnumSkyBlock);
+        int l = computeLightValue(par2, par3, par4, par1EnumSkyBlock);
 
         if (l > k)
         {
@@ -3746,7 +3751,7 @@ public abstract class World implements IBlockAccess
             int j2 = ((j1 >> 6 & 0x3f) - 32) + par3;
             int l2 = ((j1 >> 12 & 0x3f) - 32) + par4;
             int j3 = getSavedLightValue(par1EnumSkyBlock, l1, j2, l2);
-            int i4 = func_98179_a(l1, j2, l2, par1EnumSkyBlock);
+            int i4 = computeLightValue(l1, j2, l2, par1EnumSkyBlock);
 
             if (i4 != j3)
             {
@@ -3817,10 +3822,10 @@ public abstract class World implements IBlockAccess
      */
     public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
-        return func_94576_a(par1Entity, par2AxisAlignedBB, null);
+        return getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB, null);
     }
 
-    public List func_94576_a(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
+    public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
     {
         ArrayList arraylist = new ArrayList();
         int i = MathHelper.floor_double((par2AxisAlignedBB.minX - 2D) / 16D);
@@ -3934,7 +3939,7 @@ public abstract class World implements IBlockAccess
         {
             Entity entity = (Entity)loadedEntityList.get(j);
 
-            if (par1Class.isAssignableFrom(entity.getClass()))
+            if ((!(entity instanceof EntityLiving) || !((EntityLiving)entity).func_104002_bU()) && par1Class.isAssignableFrom(entity.getClass()))
             {
                 i++;
             }
@@ -3979,7 +3984,7 @@ public abstract class World implements IBlockAccess
             axisalignedbb = null;
         }
 
-        if (axisalignedbb != null && !checkIfAABBIsClearExcludingEntity(axisalignedbb, par7Entity))
+        if (axisalignedbb != null && !checkNoEntityCollision(axisalignedbb, par7Entity))
         {
             return false;
         }
@@ -4258,7 +4263,7 @@ public abstract class World implements IBlockAccess
                 d2 *= 0.80000001192092896D;
             }
 
-            if (entityplayer1.getHasActivePotion())
+            if (entityplayer1.isInvisible())
             {
                 float f = entityplayer1.func_82243_bO();
 
@@ -4587,7 +4592,7 @@ public abstract class World implements IBlockAccess
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Playing level event");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Level event being played");
-            crashreportcategory.addCrashSection("Block coordinates", CrashReportCategory.func_85071_a(par3, par4, par5));
+            crashreportcategory.addCrashSection("Block coordinates", CrashReportCategory.getLocationInfo(par3, par4, par5));
             crashreportcategory.addCrashSection("Event source", par1EntityPlayer);
             crashreportcategory.addCrashSection("Event type", Integer.valueOf(par2));
             crashreportcategory.addCrashSection("Event data", Integer.valueOf(par6));
@@ -4761,7 +4766,7 @@ public abstract class World implements IBlockAccess
 
     public ILogAgent getWorldLogAgent()
     {
-        return field_98181_L;
+        return worldLogAgent;
     }
 
     private boolean isBounds(int x, int y, int z){

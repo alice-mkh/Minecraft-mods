@@ -54,7 +54,7 @@ public class ODActions extends OldDaysModule{
                     set(ItemPickaxe2.class, "oldhardness", OldHardness);
                     mod_OldDays.setField(ItemTool.class, Item.shovelWood, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(ItemTool.class, Item.shovelStone, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
-                    mod_OldDays.setField(ItemTool.class, Item.shovelSteel, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
+                    mod_OldDays.setField(ItemTool.class, Item.shovelIron, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(ItemTool.class, Item.shovelGold, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(ItemTool.class, Item.shovelDiamond, 0, OldHardness ? oldSpadeBlocks : spadeBlocks);
                     mod_OldDays.setField(Block.class, Block.obsidian, 178, OldHardness ? 10F : 50F); break;
@@ -107,7 +107,7 @@ public class ODActions extends OldDaysModule{
             BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(46));
             customtnt.setHardness(0.0F);
             customtnt.setStepSound(Block.soundGrassFootstep);
-            customtnt.getIndirectPowerOutput("tnt");
+            customtnt.setUnlocalizedName("tnt");
             Block.blocksList[Block.tnt.blockID] = customtnt;
             mod_OldDays.setField(Block.class, null, 64, customtnt);//Block: tnt
             Block.blocksList[Block.fence.blockID] = null;
@@ -115,21 +115,21 @@ public class ODActions extends OldDaysModule{
             customfence.setHardness(2.0F);
             customfence.setResistance(5F);
             customfence.setStepSound(Block.soundWoodFootstep);
-            customfence.getIndirectPowerOutput("fence");
+            customfence.setUnlocalizedName("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
             mod_OldDays.setField(Block.class, null, 103, customfence);//Block: fence
             Block.blocksList[Block.tilledField.blockID] = null;
             BlockFarmlandOld customTilledField = (BlockFarmlandOld)(new BlockFarmlandOld(60));
             customTilledField.setHardness(0.6F);
             customTilledField.setStepSound(Block.soundGravelFootstep);
-            customTilledField.getIndirectPowerOutput("farmland");
+            customTilledField.setUnlocalizedName("farmland");
             Block.blocksList[Block.tilledField.blockID] = customTilledField;
             mod_OldDays.setField(Block.class, null, 78, customTilledField);//Block: tilledField
             Block.blocksList[Block.wood.blockID] = null;
             BlockLog2 customWood = (BlockLog2)(new BlockLog2(17));
             customWood.setHardness(2.0F);
             customWood.setStepSound(Block.soundWoodFootstep);
-            customWood.getIndirectPowerOutput("log");
+            customWood.setUnlocalizedName("log");
             Block.blocksList[Block.wood.blockID] = customWood;
             mod_OldDays.setField(Block.class, null, 35, customWood);//Block: wood
             Item.itemsList[Block.wood.blockID] = null;
@@ -149,9 +149,9 @@ public class ODActions extends OldDaysModule{
         pickaxeStone.setUnlocalizedName("pickaxeStone");
         mod_OldDays.setField(Item.class, null, 21, pickaxeStone);//Item: pickaxeStone
         Item.itemsList[256 + 1] = null;
-        ItemPickaxe2 pickaxeSteel = new ItemPickaxe2(1, EnumToolMaterial.IRON);
-        pickaxeSteel.setUnlocalizedName("pickaxeIron");
-        mod_OldDays.setField(Item.class, null, 4, pickaxeSteel);//Item: pickaxeSteel
+        ItemPickaxe2 pickaxeIron = new ItemPickaxe2(1, EnumToolMaterial.IRON);
+        pickaxeIron.setUnlocalizedName("pickaxeIron");
+        mod_OldDays.setField(Item.class, null, 4, pickaxeIron);//Item: pickaxeIron
         Item.itemsList[256 + 22] = null;
         ItemPickaxe2 pickaxeDiamond = new ItemPickaxe2(22, EnumToolMaterial.EMERALD);
         pickaxeDiamond.setUnlocalizedName("pickaxeDiamond");
@@ -170,9 +170,9 @@ public class ODActions extends OldDaysModule{
         axeStone.setUnlocalizedName("hatchetStone");
         mod_OldDays.setField(Item.class, null, 22, axeStone);//Item: axeStone
         Item.itemsList[256 + 2] = null;
-        ItemAxe2 axeSteel = new ItemAxe2(2, EnumToolMaterial.IRON);
-        axeSteel.setUnlocalizedName("hatchetIron");
-        mod_OldDays.setField(Item.class, null, 5, axeSteel);//Item: axeSteel
+        ItemAxe2 axeIron = new ItemAxe2(2, EnumToolMaterial.IRON);
+        axeIron.setUnlocalizedName("hatchetIron");
+        mod_OldDays.setField(Item.class, null, 5, axeIron);//Item: axeIron
         Item.itemsList[256 + 23] = null;
         ItemAxe2 axeDiamond = new ItemAxe2(23, EnumToolMaterial.EMERALD);
         axeDiamond.setUnlocalizedName("hatchetDiamond");
@@ -207,11 +207,11 @@ public class ODActions extends OldDaysModule{
         mod_OldDays.setField(Item.class, Item.shovelStone, maxDamage, stone);
         mod_OldDays.setField(Item.class, Item.swordStone, maxDamage, stone);
         mod_OldDays.setField(Item.class, Item.hoeStone, maxDamage, stone);
-        mod_OldDays.setField(Item.class, Item.pickaxeSteel, maxDamage, iron);
-        mod_OldDays.setField(Item.class, Item.axeSteel, maxDamage, iron);
-        mod_OldDays.setField(Item.class, Item.shovelSteel, maxDamage, iron);
-        mod_OldDays.setField(Item.class, Item.swordSteel, maxDamage, iron);
-        mod_OldDays.setField(Item.class, Item.hoeSteel, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.pickaxeIron, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.axeIron, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.shovelIron, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.swordIron, maxDamage, iron);
+        mod_OldDays.setField(Item.class, Item.hoeIron, maxDamage, iron);
         mod_OldDays.setField(Item.class, Item.pickaxeGold, maxDamage, gold);
         mod_OldDays.setField(Item.class, Item.axeGold, maxDamage, gold);
         mod_OldDays.setField(Item.class, Item.shovelGold, maxDamage, gold);

@@ -359,7 +359,7 @@ public class BlockLeaves extends BlockLeavesBase
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         if ((par2 & 3) == 1)
         {

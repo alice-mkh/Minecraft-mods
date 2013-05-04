@@ -57,7 +57,7 @@ public class SPCWorld implements SPCWorldInterface {
    public File getWorldDir() {
       ISaveHandler sh = ((ISaveHandler) world.saveHandler);
       if (sh instanceof SaveHandler) {
-         return ((SaveHandler) sh).getSaveDirectory();
+         return ((SaveHandler) sh).getWorldDirectory();
       } else {
          return new File("");
       }

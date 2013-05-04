@@ -24,7 +24,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     public static Object MESSAGESHOWN;
     public static Object STARTUP;
     public String curmcversion;
-    public static final String MCVERSION = "1.5.1";
+    public static final String MCVERSION = "1.5.2";
     public static final SPCVersion SPCVERSION = new SPCVersion("Single Player Commands","3.3",new Date(1333630063890L)); // 2012-04-05 22:47:43
     public Vector<String> missingRequiredClasses;
     public Vector<String> missingOptionalClasses;
@@ -94,7 +94,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         if (canRunSPC()) {
-            ph.writeWaypointsToNBT(((SaveHandler) this.mc.theWorld.saveHandler).getSaveDirectory());
+            ph.writeWaypointsToNBT(((SaveHandler) this.mc.theWorld.saveHandler).getWorldDirectory());
         }
     }
 
@@ -105,7 +105,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         if (canRunSPC()) {
-            ph.readWaypointsFromNBT(((SaveHandler) this.mc.theWorld.saveHandler).getSaveDirectory());
+            ph.readWaypointsFromNBT(((SaveHandler) this.mc.theWorld.saveHandler).getWorldDirectory());
         }
     }
 

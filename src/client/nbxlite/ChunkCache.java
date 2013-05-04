@@ -371,7 +371,7 @@ public class ChunkCache implements IBlockAccess
     public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[getBlockId(par1, par2, par3)];
-        return worldObj.func_102026_a(block, getBlockMetadata(par1, par2, par3));
+        return worldObj.isBlockTopFacingSurfaceSolid(block, getBlockMetadata(par1, par2, par3));
     }
 
     /**

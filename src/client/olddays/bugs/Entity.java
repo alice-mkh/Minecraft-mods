@@ -98,7 +98,7 @@ public abstract class Entity
 
     /** The distance walked multiplied by 0.6 */
     public float distanceWalkedModified;
-    public float field_82151_R;
+    public float distanceWalkedOnStepModified;
     public float fallDistance;
 
     /**
@@ -192,7 +192,7 @@ public abstract class Entity
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
-    protected int field_82152_aq;
+    protected int teleportDirection;
     private boolean invulnerable;
     private UUID entityUniqueID;
     public EnumEntitySize myEntitySize;
@@ -212,7 +212,7 @@ public abstract class Entity
         height = 1.8F;
         prevDistanceWalkedModified = 0.0F;
         distanceWalkedModified = 0.0F;
-        field_82151_R = 0.0F;
+        distanceWalkedOnStepModified = 0.0F;
         fallDistance = 0.0F;
         nextStepDistance = 1;
         ySize = 0.0F;
@@ -229,7 +229,7 @@ public abstract class Entity
         isImmuneToFire = false;
         dataWatcher = new DataWatcher();
         addedToChunk = false;
-        field_82152_aq = 0;
+        teleportDirection = 0;
         invulnerable = false;
         entityUniqueID = UUID.randomUUID();
         myEntitySize = EnumEntitySize.SIZE_2;
@@ -883,11 +883,11 @@ public abstract class Entity
             }
 
             distanceWalkedModified += (double)MathHelper.sqrt_double(d8 * d8 + d12 * d12) * 0.59999999999999998D;
-            field_82151_R += (double)MathHelper.sqrt_double(d8 * d8 + d10 * d10 + d12 * d12) * 0.59999999999999998D;
+            distanceWalkedOnStepModified += (double)MathHelper.sqrt_double(d8 * d8 + d10 * d10 + d12 * d12) * 0.59999999999999998D;
 
-            if (field_82151_R > (float)nextStepDistance && k2 > 0)
+            if (distanceWalkedOnStepModified > (float)nextStepDistance && k2 > 0)
             {
-                nextStepDistance = (int)field_82151_R + 1;
+                nextStepDistance = (int)distanceWalkedOnStepModified + 1;
 
                 if (isInWater())
                 {
@@ -1484,7 +1484,7 @@ public abstract class Entity
         return null;
     }
 
-    public boolean func_98035_c(NBTTagCompound par1NBTTagCompound)
+    public boolean addNotRiddenEntityID(NBTTagCompound par1NBTTagCompound)
     {
         String s = getEntityString();
 
@@ -1553,7 +1553,7 @@ public abstract class Entity
             {
                 NBTTagCompound nbttagcompound = new NBTTagCompound("Riding");
 
-                if (ridingEntity.func_98035_c(nbttagcompound))
+                if (ridingEntity.addNotRiddenEntityID(nbttagcompound))
                 {
                     par1NBTTagCompound.setTag("Riding", nbttagcompound);
                 }
@@ -1916,7 +1916,7 @@ public abstract class Entity
                 int j = (int)(posZ + d4);
                 AxisAlignedBB axisalignedbb = boundingBox.getOffsetBoundingBox(d3, 1.0D, d4);
 
-                if (!worldObj.getAllCollidingBoundingBoxes(axisalignedbb).isEmpty())
+                if (!worldObj.getCollidingBlockBounds(axisalignedbb).isEmpty())
                 {
                     continue;
                 }
@@ -1997,7 +1997,7 @@ public abstract class Entity
 
         if (!worldObj.isRemote && !inPortal)
         {
-            field_82152_aq = Direction.getMovementDirection(d, d1);
+            teleportDirection = Direction.getMovementDirection(d, d1);
         }
 
         inPortal = true;
@@ -2097,17 +2097,17 @@ public abstract class Entity
         setFlag(3, par1);
     }
 
-    public boolean getHasActivePotion()
+    public boolean isInvisible()
     {
         return getFlag(5);
     }
 
     public boolean func_98034_c(EntityPlayer par1EntityPlayer)
     {
-        return getHasActivePotion();
+        return isInvisible();
     }
 
-    public void setHasActivePotion(boolean par1)
+    public void setInvisible(boolean par1)
     {
         setFlag(5, par1);
     }
@@ -2190,7 +2190,7 @@ public abstract class Entity
         double d = par1 - (double)i;
         double d1 = par3 - (double)j;
         double d2 = par5 - (double)k;
-        List list = worldObj.getAllCollidingBoundingBoxes(boundingBox);
+        List list = worldObj.getCollidingBlockBounds(boundingBox);
 
         if (!list.isEmpty() || worldObj.func_85174_u(i, j, k))
         {
@@ -2370,7 +2370,7 @@ public abstract class Entity
         par1Entity.writeToNBT(nbttagcompound);
         readFromNBT(nbttagcompound);
         timeUntilPortal = par1Entity.timeUntilPortal;
-        field_82152_aq = par1Entity.field_82152_aq;
+        teleportDirection = par1Entity.teleportDirection;
     }
 
     /**
@@ -2424,9 +2424,9 @@ public abstract class Entity
         return oldrange ? 4 : 3;
     }
 
-    public int func_82148_at()
+    public int getTeleportDirection()
     {
-        return field_82152_aq;
+        return teleportDirection;
     }
 
     /**
@@ -2446,7 +2446,7 @@ public abstract class Entity
                 {
                     Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
                 }));
-        par1CrashReportCategory.addCrashSection("Entity's Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)));
+        par1CrashReportCategory.addCrashSection("Entity's Block location", CrashReportCategory.getLocationInfo(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)));
         par1CrashReportCategory.addCrashSection("Entity's Momentum", String.format("%.2f, %.2f, %.2f", new Object[]
                 {
                     Double.valueOf(motionX), Double.valueOf(motionY), Double.valueOf(motionZ)
@@ -2466,7 +2466,10 @@ public abstract class Entity
         return true;
     }
 
-    public String func_96090_ax()
+    /**
+     * Returns the translated name of the entity.
+     */
+    public String getTranslatedEntityName()
     {
         return getEntityName();
     }

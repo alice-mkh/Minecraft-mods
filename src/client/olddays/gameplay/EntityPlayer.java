@@ -727,12 +727,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public void addToPlayerScore(Entity par1Entity, int par2)
     {
         addScore(par2);
-        Collection collection = func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96640_e);
+        Collection collection = getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96640_e);
 
         if (par1Entity instanceof EntityPlayer)
         {
             addStat(StatList.playerKillsStat, 1);
-            collection.addAll(func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96639_d));
+            collection.addAll(getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96639_d));
         }
         else
         {
@@ -744,7 +744,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         for (Iterator iterator = collection.iterator(); iterator.hasNext(); score.func_96648_a())
         {
             ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
-            score = func_96123_co().func_96529_a(getEntityName(), scoreobjective);
+            score = getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective);
         }
     }
 
@@ -945,11 +945,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
     }
 
-    public void func_94064_a(TileEntityHopper tileentityhopper)
+    public void displayGUIHopper(TileEntityHopper tileentityhopper)
     {
     }
 
-    public void func_96125_a(EntityMinecartHopper entityminecarthopper)
+    public void displayGUIHopperMinecart(EntityMinecartHopper entityminecarthopper)
     {
     }
 
@@ -1052,8 +1052,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public boolean func_96122_a(EntityPlayer par1EntityPlayer)
     {
-        ScorePlayerTeam scoreplayerteam = func_96124_cp();
-        ScorePlayerTeam scoreplayerteam1 = par1EntityPlayer.func_96124_cp();
+        ScorePlayerTeam scoreplayerteam = getTeam();
+        ScorePlayerTeam scoreplayerteam1 = par1EntityPlayer.getTeam();
 
         if (scoreplayerteam != scoreplayerteam1)
         {
@@ -2031,17 +2031,17 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
                 if (i >= 18)
                 {
-                    return Item.bow.func_94599_c(2);
+                    return Item.bow.getItemIconForUseDuration(2);
                 }
 
                 if (i > 13)
                 {
-                    return Item.bow.func_94599_c(1);
+                    return Item.bow.getItemIconForUseDuration(1);
                 }
 
                 if (i > 0)
                 {
-                    return Item.bow.func_94599_c(0);
+                    return Item.bow.getItemIconForUseDuration(0);
                 }
             }
         }
@@ -2208,7 +2208,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             Block block = Block.blocksList[i];
 
-            if (block.blockMaterial.func_85157_q())
+            if (block.blockMaterial.isAlwaysHarvested())
             {
                 return true;
             }
@@ -2312,7 +2312,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             experienceTotal = par1EntityPlayer.experienceTotal;
             experience = par1EntityPlayer.experience;
             setScore(par1EntityPlayer.getScore());
-            field_82152_aq = par1EntityPlayer.field_82152_aq;
+            teleportDirection = par1EntityPlayer.teleportDirection;
         }
         else if (worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {
@@ -2411,13 +2411,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public boolean func_98034_c(EntityPlayer par1EntityPlayer)
     {
-        if (!getHasActivePotion())
+        if (!isInvisible())
         {
             return false;
         }
 
-        ScorePlayerTeam scoreplayerteam = func_96124_cp();
-        return scoreplayerteam == null || par1EntityPlayer == null || par1EntityPlayer.func_96124_cp() != scoreplayerteam || !scoreplayerteam.func_98297_h();
+        ScorePlayerTeam scoreplayerteam = getTeam();
+        return scoreplayerteam == null || par1EntityPlayer == null || par1EntityPlayer.getTeam() != scoreplayerteam || !scoreplayerteam.func_98297_h();
     }
 
     public ItemStack[] getLastActiveItems()
@@ -2435,19 +2435,22 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return !capabilities.isFlying;
     }
 
-    public Scoreboard func_96123_co()
+    public Scoreboard getWorldScoreboard()
     {
         return worldObj.getScoreboard();
     }
 
-    public ScorePlayerTeam func_96124_cp()
+    public ScorePlayerTeam getTeam()
     {
-        return func_96123_co().func_96509_i(username);
+        return getWorldScoreboard().getPlayersTeam(username);
     }
 
-    public String func_96090_ax()
+    /**
+     * Returns the translated name of the entity.
+     */
+    public String getTranslatedEntityName()
     {
-        return ScorePlayerTeam.func_96667_a(func_96124_cp(), username);
+        return ScorePlayerTeam.func_96667_a(getTeam(), username);
     }
 
     /**

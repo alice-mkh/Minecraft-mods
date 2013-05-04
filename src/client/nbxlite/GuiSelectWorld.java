@@ -242,7 +242,7 @@ public class GuiSelectWorld extends GuiScreen
     public void selectWorld(int par1)
     {
         if (nbxlite && getSaveFileName(par1).endsWith(".mclevel")){
-            File dir = ((SaveConverterMcRegion)ODNBXlite.saveLoader).getSaveDirectory();
+            File dir = ((SaveConverterMcRegion)ODNBXlite.saveLoader).getWorldDirectory();
             try{
                 File mclevel = new File(dir, getSaveFileName(par1));
                 ODNBXlite.mclevelimporter = new McLevelImporter(mclevel);

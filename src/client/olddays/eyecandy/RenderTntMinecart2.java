@@ -29,7 +29,7 @@ public class RenderTntMinecart2 extends RenderMinecart2
             GL11.glScalef(f1, f1, f1);
         }
 
-        super.func_94144_a(par1EntityMinecartTNT, par2, par3Block, par4);
+        super.renderBlockInMinecart(par1EntityMinecartTNT, par2, par3Block, par4);
 
         if (i > -1 && (i / 5) % 2 == 0)
         {
@@ -50,7 +50,7 @@ public class RenderTntMinecart2 extends RenderMinecart2
     }
 
     @Override
-    protected void func_94144_a(EntityMinecart par1EntityMinecart, float par2, Block par3Block, int par4)
+    protected void renderBlockInMinecart(EntityMinecart par1EntityMinecart, float par2, Block par3Block, int par4)
     {
         func_94146_a((EntityMinecartTNT)par1EntityMinecart, par2, par3Block, par4);
     }

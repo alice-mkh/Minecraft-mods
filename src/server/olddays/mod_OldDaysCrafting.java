@@ -209,11 +209,11 @@ public class mod_OldDaysCrafting extends mod_OldDays{
         removeRecipe("1xtile.blockGold@0");
         removeRecipe("1xtile.blockDiamond@0");
         if (b){
-            ModLoader.addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"##", "##", '#', Item.ingotIron});
+            ModLoader.addRecipe(new ItemStack(Block.blockIron, 1), new Object[]{"##", "##", '#', Item.ingotIron});
             ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"##", "##", '#', Item.ingotGold});
             ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"##", "##", '#', Item.diamond});
         }else{
-            ModLoader.addRecipe(new ItemStack(Block.blockSteel, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
+            ModLoader.addRecipe(new ItemStack(Block.blockIron, 1), new Object[]{"###", "###", "###", '#', Item.ingotIron});
             ModLoader.addRecipe(new ItemStack(Block.blockGold, 1), new Object[]{"###", "###", "###", '#', Item.ingotGold});
             ModLoader.addRecipe(new ItemStack(Block.blockDiamond, 1), new Object[]{"###", "###", "###", '#', Item.diamond});
         }
@@ -222,7 +222,7 @@ public class mod_OldDaysCrafting extends mod_OldDays{
         removeRecipe(n+"xitem.ingotGold@0");
         removeRecipe(n+"xitem.emerald@0");
         n = b ? 4 : 9;
-        ModLoader.addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockSteel});
+        ModLoader.addRecipe(new ItemStack(Item.ingotIron, n), new Object[]{"#", '#', Block.blockIron});
         ModLoader.addRecipe(new ItemStack(Item.ingotGold, n), new Object[]{"#", '#', Block.blockGold});
         ModLoader.addRecipe(new ItemStack(Item.diamond, n), new Object[]{"#", '#', Block.blockDiamond});
     }

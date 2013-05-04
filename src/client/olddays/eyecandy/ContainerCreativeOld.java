@@ -26,7 +26,7 @@ class ContainerCreativeOld extends Container
             Block.blockEmerald,
             Block.blockDiamond,
             Block.blockGold,
-            Block.blockSteel,
+            Block.blockIron,
             Block.bedrock,
             Block.blockLapis,
             Block.brick,
@@ -122,7 +122,7 @@ class ContainerCreativeOld extends Container
             Block.blockRedstone,
             Block.oreNetherQuartz,
             Block.blockNetherQuartz,
-            Block.stairCompactNetherQuartz
+            Block.stairsNetherQuartz
         };
 
         for (int j2 = 0; j2 < ablock.length; j2++)

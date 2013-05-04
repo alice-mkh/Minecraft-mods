@@ -79,7 +79,7 @@ public class ODTextures extends OldDaysModule{
             case 18:setPorkchop(); break;
             case 19:replaceItemIcon(Item.axeWood, "/olddays/textures.png", 8, 3, Axes);
                     replaceItemIcon(Item.axeStone, "/olddays/textures.png", 9, 3, Axes);
-                    replaceItemIcon(Item.axeSteel, "/olddays/textures.png", 10, 3, Axes);
+                    replaceItemIcon(Item.axeIron, "/olddays/textures.png", 10, 3, Axes);
                     replaceItemIcon(Item.axeDiamond, "/olddays/textures.png", 11, 3, Axes);
                     replaceItemIcon(Item.axeGold, "/olddays/textures.png", 12, 3, Axes); break;
             case 20:replaceItemIcon(Item.coal, "/olddays/textures.png", 4, 3, Coal); break;
@@ -144,20 +144,20 @@ public class ODTextures extends OldDaysModule{
 
     private void replaceBlocks(){
         try{
-            Block.blocksList[Block.blockSteel.blockID] = null;
-            BlockOreStorageOld customsteel = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockSteel.blockID, "iron"));
-            customsteel.setHardness(5F);
-            customsteel.setResistance(10F);
-            customsteel.setStepSound(Block.soundMetalFootstep);
-            customsteel.getIndirectPowerOutput("blockIron");
-            Block.blocksList[Block.blockSteel.blockID] = customsteel;
-            mod_OldDays.setField(Block.class, null, 60, customsteel);//Block: blockSteel
+            Block.blocksList[Block.blockIron.blockID] = null;
+            BlockOreStorageOld customiron = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockIron.blockID, "iron"));
+            customiron.setHardness(5F);
+            customiron.setResistance(10F);
+            customiron.setStepSound(Block.soundMetalFootstep);
+            customiron.setUnlocalizedName("blockIron");
+            Block.blocksList[Block.blockIron.blockID] = customiron;
+            mod_OldDays.setField(Block.class, null, 60, customiron);//Block: blockIron
             Block.blocksList[Block.blockGold.blockID] = null;
             BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, "gold"));
             customgold.setHardness(3F);
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
-            customgold.getIndirectPowerOutput("blockGold");
+            customgold.setUnlocalizedName("blockGold");
             Block.blocksList[Block.blockGold.blockID] = customgold;
             mod_OldDays.setField(Block.class, null, 59, customgold);//Block: blockGold
             Block.blocksList[Block.blockDiamond.blockID] = null;
@@ -165,7 +165,7 @@ public class ODTextures extends OldDaysModule{
             customdiamond.setHardness(5F);
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
-            customdiamond.getIndirectPowerOutput("blockDiamond");
+            customdiamond.setUnlocalizedName("blockDiamond");
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
             mod_OldDays.setField(Block.class, null, 75, customdiamond);//Block: blockDiamond
         }catch (Exception ex){
@@ -285,7 +285,7 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void setOreBlocks(){
-        replaceBlockIcon(Block.blockSteel, "/olddays/textures.png", 1, 3, OreBlocks < 2);
+        replaceBlockIcon(Block.blockIron, "/olddays/textures.png", 1, 3, OreBlocks < 2);
         replaceBlockIcon(Block.blockGold, "/olddays/textures.png", 2, 3, OreBlocks < 2);
         replaceBlockIcon(Block.blockDiamond, "/olddays/textures.png", 3, 3, OreBlocks < 2);
         set(BlockOreStorageOld.class, "oldtextures", OreBlocks < 1 && hasTextures("olddays/textures.png"));
@@ -309,7 +309,7 @@ public class ODTextures extends OldDaysModule{
     private void setDispenser(){
         Icon i = null;
         try{
-            i = Block.dispenser.getBlockTextureFromSideAndMetadata(3, 3);
+            i = Block.dispenser.getIcon(3, 3);
         }catch(NullPointerException e){
             return;
         }

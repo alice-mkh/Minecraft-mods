@@ -388,7 +388,7 @@ public class EntityItem extends Entity
         {
             if (worldObj != null)
             {
-                worldObj.getWorldLogAgent().func_98232_c((new StringBuilder()).append("Item entity ").append(entityId).append(" has no item?!").toString());
+                worldObj.getWorldLogAgent().logSevere((new StringBuilder()).append("Item entity ").append(entityId).append(" has no item?!").toString());
             }
 
             return new ItemStack(Block.stone);

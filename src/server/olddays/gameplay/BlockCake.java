@@ -50,7 +50,7 @@ public class BlockCake extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public int getIcon(int par1, int par2)
     {
         if (par1 == 1)
         {

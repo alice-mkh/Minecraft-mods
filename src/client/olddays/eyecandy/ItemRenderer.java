@@ -479,7 +479,7 @@ public class ItemRenderer
 
             GL11.glPopMatrix();
         }
-        else if (!entityclientplayermp.getHasActivePotion())
+        else if (!entityclientplayermp.isInvisible())
         {
             GL11.glPushMatrix();
             float f7 = 0.8F;

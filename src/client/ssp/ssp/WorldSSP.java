@@ -1153,7 +1153,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB
      */
     @Override
-    public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
     {
         List list = getEntitiesWithinAABBExcludingEntity(null, par1AxisAlignedBB);
 
@@ -2140,7 +2140,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * y, z
      */
     @Override
-    public void func_73029_E(int par1, int par2, int par3)
+    public void doVoidFogParticles(int par1, int par2, int par3)
     {
         byte byte0 = 16;
         Random random = new Random();

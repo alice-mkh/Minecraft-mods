@@ -119,4 +119,9 @@ public class ChunkProviderGenerate2
     {
         getCurrentProvider().recreateStructures(par1, par2);
     }
+
+    @Override
+    public void func_104112_b()
+    {
+    }
 }

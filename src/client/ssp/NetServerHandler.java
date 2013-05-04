@@ -321,7 +321,7 @@ public class NetServerHandler extends NetHandler
 
             AxisAlignedBB axisalignedbb = playerEntity.boundingBox.copy().expand(f4, f4, f4).addCoord(0.0D, -0.55000000000000004D, 0.0D);
 
-            if (!mcServer.isFlightAllowed() && !playerEntity.theItemInWorldManager.isCreative() && !worldserver.isAABBNonEmpty(axisalignedbb))
+            if (!mcServer.isFlightAllowed() && !playerEntity.theItemInWorldManager.isCreative() && !worldserver.checkBlockCollision(axisalignedbb))
             {
                 if (d18 >= -0.03125D)
                 {
@@ -548,7 +548,7 @@ public class NetServerHandler extends NetHandler
     public void handleErrorMessage(String par1Str, Object par2ArrayOfObj[])
     {
         mcServer.getLogAgent().logInfo((new StringBuilder()).append(playerEntity.username).append(" lost connection: ").append(par1Str).toString());
-        mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat((new StringBuilder()).append(EnumChatFormatting.YELLOW).append(playerEntity.func_96090_ax()).append(" left the game.").toString()));
+        mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat((new StringBuilder()).append(EnumChatFormatting.YELLOW).append(playerEntity.getTranslatedEntityName()).append(" left the game.").toString()));
         mcServer.getConfigurationManager().playerLoggedOut(playerEntity);
         connectionClosed = true;
 
@@ -661,7 +661,7 @@ public class NetServerHandler extends NetHandler
                 return;
             }
 
-            s = (new StringBuilder()).append("<").append(playerEntity.func_96090_ax()).append("> ").append(s).toString();
+            s = (new StringBuilder()).append("<").append(playerEntity.getTranslatedEntityName()).append("> ").append(s).toString();
             mcServer.getLogAgent().logInfo(s);
             mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(s, false));
         }

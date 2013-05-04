@@ -82,7 +82,7 @@ public class CommandClientTp extends CommandServerTp
                 par4Str = par4Str.substring(1);
             }
 
-            d += func_82363_b(par1ICommandSender, par4Str);
+            d += parseDouble(par1ICommandSender, par4Str);
 
             if (!flag1 && !flag)
             {
