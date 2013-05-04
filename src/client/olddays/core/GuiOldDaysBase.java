@@ -7,10 +7,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
-public class GuiOldDaysBase extends GuiScreen{
+public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     public static String version = "OFF";
 
-    public static final int SCROLLBAR_WIDTH = 6;
     public static final int TOOLTIP_OFFSET = 500;
 
     protected GuiScreen parent;
@@ -20,17 +19,10 @@ public class GuiOldDaysBase extends GuiScreen{
     protected int fieldId;
     protected String current;
     protected mod_OldDays core;
-
-    protected int scrolling;
-    protected int minScrolling;
-    protected int maxScrolling;
-    private boolean dragging;
-    private boolean scrollbarDragging;
-    private int clickY;
     protected int contentHeight;
+    protected GuiScrolling scrollingGui;
     protected boolean restoreList;
     protected ArrayList<GuiOldDaysSeparator> separators;
-
     protected boolean hasSearchField;
     protected GuiTextFieldSearch searchField;
 
@@ -41,16 +33,9 @@ public class GuiOldDaysBase extends GuiScreen{
         tooltipTimer = 0;
         hasSearchField = false;
         core = c;
-
-        scrolling = 10;
-        clickY = 0;
-        minScrolling = 10;
-        maxScrolling = 10;
-        dragging = false;
-        scrollbarDragging = false;
+        scrollingGui = new GuiScrolling(this);
         restoreList = true;
         separators = new ArrayList<GuiOldDaysSeparator>();
-
         hasSearchField = false;
     }
 
@@ -136,7 +121,7 @@ public class GuiOldDaysBase extends GuiScreen{
     protected void postInitGui(){
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
         Keyboard.enableRepeatEvents(hasSearchField);
-        calculateMinScrolling();
+        scrollingGui.calculateMinScrolling();
     }
 
     @Override
@@ -162,11 +147,11 @@ public class GuiOldDaysBase extends GuiScreen{
         if (displayField){
             field.drawTextBox();
         }
-        drawDirtRect(0, width, 0, getTop(), false, 0);
-        drawDirtRect(0, width, getBottom(), height, false, 0);
+        GuiScrolling.drawDirtRect(0, width, 0, getTop(), false, 0);
+        GuiScrolling.drawDirtRect(0, width, getBottom(), height, false, 0);
         drawGradientRect(0, getTop(), width, getTop() + 5, 0xff000000, 0x00000000);
         drawGradientRect(0, getBottom() - 5, width, getBottom(), 0x00000000, 0xff000000);
-        drawScrollbar();
+        scrollingGui.drawScrollbar();
         List tempList = buttonList;
         ArrayList fakeButtonList = new ArrayList();
         for (int k = 0; k < buttonList.size(); k++){
@@ -262,34 +247,14 @@ public class GuiOldDaysBase extends GuiScreen{
         return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
     }
 
-    public boolean canBeScrolled(){
-        return minScrolling < maxScrolling;
-    }
-
-    protected int getContentHeight(){
+    @Override
+    public int getContentHeight(){
         return contentHeight - 10;
     }
 
     @Override
     public void handleMouseInput(){
-        if (canBeScrolled() && !mc.gameSettings.touchscreen){
-            int l = Mouse.getEventDWheel();
-            if (l != 0){
-                if (l > 0){
-                    l = -1;
-                }else if (l < 0){
-                    l = 1;
-                }
-                scrolling -= l * 10;
-                if (scrolling < minScrolling){
-                    scrolling = minScrolling;
-                }
-                if (!canBeScrolled() || scrolling > maxScrolling){
-                    scrolling = maxScrolling;
-                }
-                scrolled();
-            }
-        }
+        scrollingGui.handleMouseInput(mc);
         super.handleMouseInput();
     }
 
@@ -310,166 +275,55 @@ public class GuiOldDaysBase extends GuiScreen{
             buttonList = tempList;
         }
         restoreList = true;
-        if (par2 < getTop() || par2 > getBottom()){
+        if (par1 < getLeft() || par1 > getRight() || par2 < getTop() || par2 > getBottom()){
             return;
         }
         super.mouseClicked(par1, par2, par3);
-        if (!canBeScrolled()){
-            return;
-        }
-        dragging = true;
-        if (par1 > width - SCROLLBAR_WIDTH){
-            scrollbarDragging = true;
-        }
-        clickY = par2;
+        scrollingGui.mouseClicked(par1, par2, par3);
     }
 
     @Override
     public void mouseMovedOrUp(int par1, int par2, int par3){
         super.mouseMovedOrUp(par1, par2, par3);
-        if (!canBeScrolled() || !dragging){
-            return;
-        }
-        dragging = false;
-        scrollbarDragging = false;
+        scrollingGui.mouseMovedOrUp(par1, par2, par3);
     }
 
     @Override
     protected void func_85041_a(int i, int j, int k, long l){
         super.func_85041_a(i, j, k, l);
-        if (!canBeScrolled() || !dragging){
-            return;
-        }
-        int delta = j - clickY;
-        if (delta == 0){
-            return;
-        }
-        if (scrollbarDragging){
-            int bottomtop = getBottom() - getTop();
-            float scrollMultiplier = -1.0F;
-            int cHeight = getContentHeight() + 44;
-            int l2 = cHeight - bottomtop + 4;
-            if (l2 < 1){
-                l2 = 1;
-            }
-            int k3 = (int)((float)(bottomtop * bottomtop) / (float)cHeight);
-            if (k3 < 32){
-                k3 = 32;
-            }
-            if (k3 > bottomtop - 8){
-                k3 = bottomtop - 8;
-            }
-            scrollMultiplier /= (float)(bottomtop - k3) / (float)l2;
-            delta *= scrollMultiplier;
-        }
-        if (scrolling + delta < minScrolling){
-            scrolling = minScrolling;
-        }else if (delta + scrolling > maxScrolling){
-            scrolling = maxScrolling;
-        }else{
-            scrolling += delta;
-        }
-        clickY = j;
-        scrolled();
+        scrollingGui.func_85041_a(i, j, k, l);
     }
 
-    public void calculateMinScrolling(){
-        minScrolling = -getContentHeight() - 40 + getBottom() - getTop();
-        if (scrolling < minScrolling){
-            scrolling = minScrolling;
-        }
-        if (!canBeScrolled() || scrolling > maxScrolling){
-            scrolling = maxScrolling;
-        }
-        scrolled();
-    }
-
-    public void drawScrollbar(){
-        int top = getTop();
-        int bottom = getBottom();
-        int delta = bottom - top;
-        int cHeight = getContentHeight() + 44;
-        int j3 = cHeight - (delta - 4);
-        int right = width;
-        int left = right - SCROLLBAR_WIDTH;
-        Tessellator tessellator = Tessellator.instance;
-        if (j3 > 0){
-            int size = (delta * delta) / cHeight;
-            if (size < 32){
-                size = 32;
-            }
-            if (size > delta){
-                size = delta;
-            }
-            int k4 = ((-scrolling + maxScrolling) * (delta - size)) / j3 + top;
-            if (k4 < top){
-                k4 = top;
-            }
-            if (k4 + size > bottom){
-                k4 = bottom - size;
-            }
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_I(0, 255);
-            tessellator.addVertexWithUV(left, bottom, 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(right, bottom, 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(right, top, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(left, top, 0.0D, 0.0D, 0.0D);
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_I(0x808080, 255);
-            tessellator.addVertexWithUV(left, k4 + size, 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(right, k4 + size, 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(right, k4, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(left, k4, 0.0D, 0.0D, 0.0D);
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_I(0xc0c0c0, 255);
-            tessellator.addVertexWithUV(left, k4 + size - 1, 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(right - 1, k4 + size - 1, 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(right - 1, k4, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(left, k4, 0.0D, 0.0D, 0.0D);
-            tessellator.draw();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-        }
-    }
-
-    private void drawDirtRect(int x1, int x2, int y1, int y2, boolean scrolling, int i)
-    {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_FOG);
-        Tessellator tessellator = Tessellator.instance;
-        mc.renderEngine.bindTexture("/gui/background.png");
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        float f = 32F;
-        tessellator.startDrawingQuads();
-        float xOffset = (x1 % 32) / f;
-        float yOffset = (y1 % 32) / f;
-        tessellator.setColorOpaque_I(scrolling ? 0x202020 : 0x404040);
-        tessellator.addVertexWithUV(x1, y2, 0.0D, xOffset, (float)(y2 - y1 - i) / f + yOffset);
-        tessellator.addVertexWithUV(x2, y2, 0.0D, (float)(x2 - x1) / f + xOffset, (float)(y2 - y1 - i) / f + yOffset);
-        tessellator.addVertexWithUV(x2, y1, 0.0D, (float)(x2 - x1) / f + xOffset, yOffset - i / f);
-        tessellator.addVertexWithUV(x1, y1, 0.0D, xOffset, yOffset - i / f);
-        tessellator.draw();
-    }
-
+    @Override
     public int getTop(){
         return height / 6 + (hasSearchField ? 7 : -25);
     }
 
+    @Override
     public int getBottom(){
         return height - 35;
     }
 
+    @Override
+    public int getLeft(){
+        return 0;
+    }
+
+    @Override
+    public int getRight(){
+        return width;
+    }
+
+    @Override
     public void scrolled(){
         for (Object button : buttonList){
             if (!(button instanceof GuiButtonProp)){
                 continue;
             }
-            ((GuiButtonProp)button).scrolled(canBeScrolled(), scrolling);
+            ((GuiButtonProp)button).scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
         }
         for (GuiOldDaysSeparator s : separators){
-            s.scrolled(canBeScrolled(), scrolling);
+            s.scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
         }
         if (displayField){
             showField(false, ((GuiButton)buttonList.get(fieldId)));

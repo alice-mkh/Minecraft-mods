@@ -41,11 +41,11 @@ public class PageAlpha extends Page{
     @Override
     public void scrolled(){
         for (int i = 0; i < featuresButtons.length; i++){
-            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrolling;
+            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrollingGui.scrolling;
         }
-        themeButton.yPosition = height / 6 + 64 + scrolling;
-        newOresButton.yPosition = height / 6 + 99 + scrolling;
-        snowButton.yPosition = height / 6 + 121 + scrolling;
+        themeButton.yPosition = height / 6 + 64 + scrollingGui.scrolling;
+        newOresButton.yPosition = height / 6 + 99 + scrollingGui.scrolling;
+        snowButton.yPosition = height / 6 + 121 + scrollingGui.scrolling;
         updateButtonPosition();
     }
 
@@ -76,7 +76,7 @@ public class PageAlpha extends Page{
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 87 + scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 87 + scrollingGui.scrolling, 0xa0a0a0);
     }
 
     @Override
