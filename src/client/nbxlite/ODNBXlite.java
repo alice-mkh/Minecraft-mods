@@ -310,7 +310,7 @@ public class ODNBXlite extends OldDaysModule{
     private void registerGears(){
         Block gear = new BlockGear(gearId);
         gear.setHardness(0.5F);
-        gear.getIndirectPowerOutput("gear");
+        gear.setUnlocalizedName("gear");
         gear.disableStats();
         Block.blocksList[gearId] = gear;
         new ItemBlock(gearId - 256);
@@ -673,7 +673,7 @@ public class ODNBXlite extends OldDaysModule{
             customleaves.setHardness(0.2F);
             customleaves.setLightOpacity(1);
             customleaves.setStepSound(Block.soundGrassFootstep);
-            customleaves.getIndirectPowerOutput("leaves");
+            customleaves.setUnlocalizedName("leaves");
             Block.blocksList[Block.leaves.blockID] = customleaves;
             mod_OldDays.setField(Block.class, null, 36, customleaves);//Block: leaves
             Item.itemsList[Block.leaves.blockID] = null;
@@ -682,7 +682,7 @@ public class ODNBXlite extends OldDaysModule{
             BlockTallGrass2 customtallgrass = (BlockTallGrass2)(new BlockTallGrass2(Block.tallGrass.blockID));
             customtallgrass.setHardness(0.0F);
             customtallgrass.setStepSound(Block.soundGrassFootstep);
-            customtallgrass.getIndirectPowerOutput("tallgrass");
+            customtallgrass.setUnlocalizedName("tallgrass");
             Block.blocksList[Block.tallGrass.blockID] = customtallgrass;
             mod_OldDays.setField(Block.class, null, 49, customtallgrass);//Block: tallGrass
             Item.itemsList[Block.tallGrass.blockID] = null;
@@ -691,7 +691,7 @@ public class ODNBXlite extends OldDaysModule{
             BlockVine2 customvine = (BlockVine2)(new BlockVine2(Block.vine.blockID));
             customvine.setHardness(0.2F);
             customvine.setStepSound(Block.soundGrassFootstep);
-            customvine.getIndirectPowerOutput("vine");
+            customvine.setUnlocalizedName("vine");
             Block.blocksList[Block.vine.blockID] = customvine;
             mod_OldDays.setField(Block.class, null, 124, customvine);//Block: vine
             Item.itemsList[Block.vine.blockID] = null;
@@ -703,8 +703,8 @@ public class ODNBXlite extends OldDaysModule{
             ItemHoe2 hoeStone = new ItemHoe2(35, EnumToolMaterial.STONE);
             hoeStone.setUnlocalizedName("hoeStone");
             Item.itemsList[256 + 36] = null;
-            ItemHoe2 hoeSteel = new ItemHoe2(36, EnumToolMaterial.IRON);
-            hoeSteel.setUnlocalizedName("hoeIron");
+            ItemHoe2 hoeIron = new ItemHoe2(36, EnumToolMaterial.IRON);
+            hoeIron.setUnlocalizedName("hoeIron");
             Item.itemsList[256 + 37] = null;
             ItemHoe2 hoeDiamond = new ItemHoe2(37, EnumToolMaterial.EMERALD);
             hoeDiamond.setUnlocalizedName("hoeDiamond");

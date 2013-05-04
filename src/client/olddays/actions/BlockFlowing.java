@@ -349,7 +349,7 @@ public class BlockFlowing extends BlockFluid
     {
         int i = par1World.getBlockId(par2, par3, par4);
 
-        if (i == Block.doorWood.blockID || i == Block.doorSteel.blockID || i == Block.signPost.blockID || i == Block.ladder.blockID || i == Block.reed.blockID)
+        if (i == Block.doorWood.blockID || i == Block.doorIron.blockID || i == Block.signPost.blockID || i == Block.ladder.blockID || i == Block.reed.blockID)
         {
             return true;
         }

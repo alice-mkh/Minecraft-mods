@@ -28,7 +28,9 @@ public class EntityFX extends Entity
 
     /** Particle alpha */
     protected float particleAlpha;
-    protected Icon particleTextureIndex;
+
+    /** The icon field from which the given particle pulls its texture. */
+    protected Icon particleIcon;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;
@@ -39,7 +41,7 @@ public class EntityFX extends Entity
         particleAge = 0;
         particleMaxAge = 0;
         particleAlpha = 1.0F;
-        particleTextureIndex = null;
+        particleIcon = null;
         setSize(0.2F, 0.2F);
         yOffset = height / 2.0F;
         setPosition(par2, par4, par6);
@@ -160,12 +162,12 @@ public class EntityFX extends Entity
         float f3 = f2 + 0.0624375F;
         float f4 = 0.1F * particleScale;
 
-        if (particleTextureIndex != null)
+        if (particleIcon != null)
         {
-            f = particleTextureIndex.getMinU();
-            f1 = particleTextureIndex.getMaxU();
-            f2 = particleTextureIndex.getMinV();
-            f3 = particleTextureIndex.getMaxV();
+            f = particleIcon.getMinU();
+            f1 = particleIcon.getMaxU();
+            f2 = particleIcon.getMinV();
+            f3 = particleIcon.getMaxV();
         }
 
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);
@@ -198,15 +200,15 @@ public class EntityFX extends Entity
     {
     }
 
-    public void func_94052_a(RenderEngine par1RenderEngine, Icon par2Icon)
+    public void setParticleIcon(RenderEngine par1RenderEngine, Icon par2Icon)
     {
         if (getFXLayer() == 1)
         {
-            particleTextureIndex = par2Icon;
+            particleIcon = par2Icon;
         }
         else if (getFXLayer() == 2)
         {
-            particleTextureIndex = par2Icon;
+            particleIcon = par2Icon;
         }
         else
         {

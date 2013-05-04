@@ -148,7 +148,7 @@ public class BlockChestOld extends BlockChest
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         if (!normalblock){
             return blockIcon;
@@ -181,7 +181,7 @@ public class BlockChestOld extends BlockChest
         texSide = par1IconRegister.registerIcon("olddays_chest_side");
         texBackLeft = par1IconRegister.registerIcon("olddays_chest_back_left");
         texBackRight = par1IconRegister.registerIcon("olddays_chest_back_right");
-        if (field_94443_a == 1){
+        if (isTrapped == 1){
             texFront = par1IconRegister.registerIcon("olddays_chest_front_trap");
             texFrontLeft = par1IconRegister.registerIcon("olddays_chest_front_left_trap");
             texFrontRight = par1IconRegister.registerIcon("olddays_chest_front_right_trap");

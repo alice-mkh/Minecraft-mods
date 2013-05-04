@@ -97,7 +97,7 @@ public class GuiGameOver extends GuiScreen
             case 1:
                 if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                 {
-                    String s = mc.theWorld.getSaveHandler().getSaveDirectoryName();
+                    String s = mc.theWorld.getSaveHandler().getWorldDirectoryName();
                     mc.exitToMainMenu("Deleting world");
                     ISaveFormat isaveformat = mc.getSaveLoader();
                     isaveformat.flushCache();

@@ -255,13 +255,13 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     }
 
     @Override
-    public void func_94064_a(TileEntityHopper par1TileEntityHopper)
+    public void displayGUIHopper(TileEntityHopper par1TileEntityHopper)
     {
         mc.displayGuiScreen(new GuiHopper(inventory, par1TileEntityHopper));
     }
 
     @Override
-    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
+    public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper)
     {
         mc.displayGuiScreen(new GuiHopper(inventory, par1EntityMinecartHopper));
     }

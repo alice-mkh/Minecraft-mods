@@ -768,11 +768,11 @@ public class RenderBlocks
         tessellator.addVertexWithUV(d13, d14, d15, d4, d6);
         tessellator.addVertexWithUV(d12, d14, d15, d5, d7);
         tessellator.addVertexWithUV(d12, d14, d16, d9, d11);
-        int l = Direction.headInvisibleFace[j];
+        int l = Direction.directionToFacing[j];
 
         if (flag)
         {
-            l = Direction.headInvisibleFace[Direction.footInvisibleFaceRemap[j]];
+            l = Direction.directionToFacing[Direction.rotateOpposite[j]];
         }
 
         byte byte0 = 4;
@@ -800,7 +800,7 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(f8, f11, f14);
             }
             flipTexture = byte0 == 2;
-            renderEastFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
+            renderFaceZNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
         }
 
         if (l != 3 && (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 + 1, 3)))
@@ -813,7 +813,7 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(f8, f11, f14);
             }
             flipTexture = byte0 == 3;
-            renderWestFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
+            renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
         }
 
         if (l != 4 && (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 - 1, par3, par4, 4)))
@@ -826,7 +826,7 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(f9, f12, f15);
             }
             flipTexture = byte0 == 4;
-            renderNorthFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
+            renderFaceXNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
         }
 
         if (l != 5 && (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 + 1, par3, par4, 5)))
@@ -839,7 +839,7 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(f9, f12, f15);
             }
             flipTexture = byte0 == 5;
-            renderSouthFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5));
+            renderFaceXPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5));
         }
 
         flipTexture = false;
@@ -853,7 +853,7 @@ public class RenderBlocks
     {
         setRenderBounds(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
-        setOverrideBlockTexture(par1BlockBrewingStand.func_94448_e());
+        setOverrideBlockTexture(par1BlockBrewingStand.getBrewingStandIcon());
         setRenderBounds(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
         setRenderBounds(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
@@ -951,13 +951,13 @@ public class RenderBlocks
         tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
         Icon icon = par1BlockCauldron.getBlockTextureFromSide(2);
         float f6 = 0.125F;
-        renderSouthFace(par1BlockCauldron, ((float)par2 - 1.0F) + f6, par3, par4, icon);
-        renderNorthFace(par1BlockCauldron, ((float)par2 + 1.0F) - f6, par3, par4, icon);
-        renderWestFace(par1BlockCauldron, par2, par3, ((float)par4 - 1.0F) + f6, icon);
-        renderEastFace(par1BlockCauldron, par2, par3, ((float)par4 + 1.0F) - f6, icon);
+        renderFaceXPos(par1BlockCauldron, ((float)par2 - 1.0F) + f6, par3, par4, icon);
+        renderFaceXNeg(par1BlockCauldron, ((float)par2 + 1.0F) - f6, par3, par4, icon);
+        renderFaceZPos(par1BlockCauldron, par2, par3, ((float)par4 - 1.0F) + f6, icon);
+        renderFaceZNeg(par1BlockCauldron, par2, par3, ((float)par4 + 1.0F) - f6, icon);
         Icon icon1 = BlockCauldron.func_94375_b("cauldron_inner");
-        renderTopFace(par1BlockCauldron, par2, ((float)par3 - 1.0F) + 0.25F, par4, icon1);
-        renderBottomFace(par1BlockCauldron, par2, ((float)par3 + 1.0F) - 0.75F, par4, icon1);
+        renderFaceYPos(par1BlockCauldron, par2, ((float)par3 - 1.0F) + 0.25F, par4, icon1);
+        renderFaceYNeg(par1BlockCauldron, par2, ((float)par3 + 1.0F) - 0.75F, par4, icon1);
         int j = blockAccess.getBlockMetadata(par2, par3, par4);
 
         if (j > 0)
@@ -969,7 +969,7 @@ public class RenderBlocks
                 j = 3;
             }
 
-            renderTopFace(par1BlockCauldron, par2, ((float)par3 - 1.0F) + (6F + (float)j * 3F) / 16F, par4, icon2);
+            renderFaceYPos(par1BlockCauldron, par2, ((float)par3 - 1.0F) + (6F + (float)j * 3F) / 16F, par4, icon2);
         }
 
         return true;
@@ -1002,11 +1002,11 @@ public class RenderBlocks
 
         tessellator.setColorOpaque_F(f * f1, f * f3, f * f5);
         float f8 = 0.1865F;
-        renderSouthFace(par1BlockFlowerPot, ((float)par2 - 0.5F) + f8, par3, par4, icon);
-        renderNorthFace(par1BlockFlowerPot, ((float)par2 + 0.5F) - f8, par3, par4, icon);
-        renderWestFace(par1BlockFlowerPot, par2, par3, ((float)par4 - 0.5F) + f8, icon);
-        renderEastFace(par1BlockFlowerPot, par2, par3, ((float)par4 + 0.5F) - f8, icon);
-        renderTopFace(par1BlockFlowerPot, par2, ((float)par3 - 0.5F) + f8 + 0.1875F, par4, getBlockIcon(Block.dirt));
+        renderFaceXPos(par1BlockFlowerPot, ((float)par2 - 0.5F) + f8, par3, par4, icon);
+        renderFaceXNeg(par1BlockFlowerPot, ((float)par2 + 0.5F) - f8, par3, par4, icon);
+        renderFaceZPos(par1BlockFlowerPot, par2, par3, ((float)par4 - 0.5F) + f8, icon);
+        renderFaceZNeg(par1BlockFlowerPot, par2, par3, ((float)par4 + 0.5F) - f8, icon);
+        renderFaceYPos(par1BlockFlowerPot, par2, ((float)par3 - 0.5F) + f8 + 0.1875F, par4, getBlockIcon(Block.dirt));
         int k = blockAccess.getBlockMetadata(par2, par3, par4);
 
         if (k != 0)
@@ -1195,27 +1195,27 @@ public class RenderBlocks
             Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
-            renderBottomFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 0, par12));
+            renderFaceYNeg(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 0, par12));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderTopFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 1, par12));
+            renderFaceYPos(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 1, par12));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1F);
-            renderEastFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 2, par12));
+            renderFaceZNeg(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 2, par12));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, 1.0F);
-            renderWestFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 3, par12));
+            renderFaceZPos(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 3, par12));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(-1F, 0.0F, 0.0F);
-            renderNorthFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 4, par12));
+            renderFaceXNeg(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 4, par12));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            renderSouthFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 5, par12));
+            renderFaceXPos(par1BlockAnvil, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockAnvil, 5, par12));
             tessellator.draw();
         }
         else
@@ -4179,7 +4179,7 @@ public class RenderBlocks
             }
             float f7 = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4) : 1.0F;
             tessellator.setColorOpaque_F(f3 * f7, f3 * f7, f3 * f7);
-            renderBottomFace(par1Block, par2, (double)par3 + d6, par4, getBlockIconFromSide(par1Block, 0));
+            renderFaceYNeg(par1Block, par2, (double)par3 + d6, par4, getBlockIconFromSide(par1Block, 0));
             flag2 = true;
         }
 
@@ -4361,7 +4361,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
-        renderBottomFace(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 0, par6));
+        renderFaceYNeg(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 0, par6));
         f5 = Minecraft.oldlighting ? par1Block.getBlockBrightness(par2World, par3, par4 + 1, par5) : 1.0F;
 
         if (f5 < f4)
@@ -4370,7 +4370,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
-        renderTopFace(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 1, par6));
+        renderFaceYPos(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 1, par6));
         f5 = Minecraft.oldlighting ? par1Block.getBlockBrightness(par2World, par3, par4, par5 - 1) : 1.0F;
 
         if (f5 < f4)
@@ -4379,7 +4379,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
-        renderEastFace(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 2, par6));
+        renderFaceZNeg(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 2, par6));
         f5 = Minecraft.oldlighting ? par1Block.getBlockBrightness(par2World, par3, par4, par5 + 1) : 1.0F;
 
         if (f5 < f4)
@@ -4388,7 +4388,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
-        renderWestFace(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 3, par6));
+        renderFaceZPos(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 3, par6));
         f5 = Minecraft.oldlighting ? par1Block.getBlockBrightness(par2World, par3 - 1, par4, par5) : 1.0F;
 
         if (f5 < f4)
@@ -4397,7 +4397,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
-        renderNorthFace(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 4, par6));
+        renderFaceXNeg(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 4, par6));
         f5 = Minecraft.oldlighting ? par1Block.getBlockBrightness(par2World, par3 + 1, par4, par5) : 1.0F;
 
         if (f5 < f4)
@@ -4406,7 +4406,7 @@ public class RenderBlocks
         }
 
         tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
-        renderSouthFace(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 5, par6));
+        renderFaceXPos(par1Block, -0.5D, -0.5D, -0.5D, getBlockIconFromSideAndMetadata(par1Block, 5, par6));
         tessellator.draw();
     }
 
@@ -4645,7 +4645,7 @@ public class RenderBlocks
             colorRedTopRight *= f22;
             colorGreenTopRight *= f22;
             colorBlueTopRight *= f22;
-            renderBottomFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
+            renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
             flag = true;
         }
 
@@ -4749,7 +4749,7 @@ public class RenderBlocks
             colorRedTopRight *= f23;
             colorGreenTopRight *= f23;
             colorBlueTopRight *= f23;
-            renderTopFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
+            renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
             flag = true;
         }
 
@@ -4865,7 +4865,7 @@ public class RenderBlocks
             colorGreenTopRight *= f24;
             colorBlueTopRight *= f24;
             Icon icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2);
-            renderEastFace(par1Block, par2, par3, par4, icon);
+            renderFaceZNeg(par1Block, par2, par3, par4, icon);
 
             if (fancyGrass && icon.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -4881,7 +4881,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderEastFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceZNeg(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -4999,7 +4999,7 @@ public class RenderBlocks
             colorGreenTopRight *= f25;
             colorBlueTopRight *= f25;
             Icon icon1 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3);
-            renderWestFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
+            renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
 
             if (fancyGrass && icon1.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -5015,7 +5015,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderWestFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceZPos(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -5133,7 +5133,7 @@ public class RenderBlocks
             colorGreenTopRight *= f26;
             colorBlueTopRight *= f26;
             Icon icon2 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4);
-            renderNorthFace(par1Block, par2, par3, par4, icon2);
+            renderFaceXNeg(par1Block, par2, par3, par4, icon2);
 
             if (fancyGrass && icon2.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -5149,7 +5149,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderNorthFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceXNeg(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -5267,7 +5267,7 @@ public class RenderBlocks
             colorGreenTopRight *= f27;
             colorBlueTopRight *= f27;
             Icon icon3 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5);
-            renderSouthFace(par1Block, par2, par3, par4, icon3);
+            renderFaceXPos(par1Block, par2, par3, par4, icon3);
 
             if (fancyGrass && icon3.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -5283,7 +5283,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderSouthFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceXPos(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -5426,7 +5426,7 @@ public class RenderBlocks
             colorRedTopRight *= f22;
             colorGreenTopRight *= f22;
             colorBlueTopRight *= f22;
-            renderBottomFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
+            renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
             flag = true;
         }
 
@@ -5530,7 +5530,7 @@ public class RenderBlocks
             colorRedTopRight *= f23;
             colorGreenTopRight *= f23;
             colorBlueTopRight *= f23;
-            renderTopFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
+            renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
             flag = true;
         }
 
@@ -5654,7 +5654,7 @@ public class RenderBlocks
             colorGreenTopRight *= f24;
             colorBlueTopRight *= f24;
             Icon icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2);
-            renderEastFace(par1Block, par2, par3, par4, icon);
+            renderFaceZNeg(par1Block, par2, par3, par4, icon);
 
             if (fancyGrass && icon.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -5670,7 +5670,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderEastFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceZNeg(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -5796,7 +5796,7 @@ public class RenderBlocks
             colorGreenTopRight *= f25;
             colorBlueTopRight *= f25;
             Icon icon1 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3);
-            renderWestFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
+            renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
 
             if (fancyGrass && icon1.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -5812,7 +5812,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderWestFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceZPos(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -5938,7 +5938,7 @@ public class RenderBlocks
             colorGreenTopRight *= f26;
             colorBlueTopRight *= f26;
             Icon icon2 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4);
-            renderNorthFace(par1Block, par2, par3, par4, icon2);
+            renderFaceXNeg(par1Block, par2, par3, par4, icon2);
 
             if (fancyGrass && icon2.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -5954,7 +5954,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderNorthFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceXNeg(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -6080,7 +6080,7 @@ public class RenderBlocks
             colorGreenTopRight *= f27;
             colorBlueTopRight *= f27;
             Icon icon3 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5);
-            renderSouthFace(par1Block, par2, par3, par4, icon3);
+            renderFaceXPos(par1Block, par2, par3, par4, icon3);
 
             if (fancyGrass && icon3.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
@@ -6096,7 +6096,7 @@ public class RenderBlocks
                 colorBlueBottomLeft *= par7;
                 colorBlueBottomRight *= par7;
                 colorBlueTopRight *= par7;
-                renderSouthFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceXPos(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -6185,7 +6185,7 @@ public class RenderBlocks
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
                 tessellator.setColorOpaque_F(ff * f7, ff * f10, ff * f13);
             }
-            renderBottomFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
+            renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
             flag = true;
         }
 
@@ -6198,7 +6198,7 @@ public class RenderBlocks
                 float ff = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
                 tessellator.setColorOpaque_F(ff * f4, ff * f5, ff * f6);
             }
-            renderTopFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
+            renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
             flag = true;
         }
 
@@ -6212,13 +6212,13 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(ff * f8, ff * f11, ff * f14);
             }
             Icon icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2);
-            renderEastFace(par1Block, par2, par3, par4, icon);
+            renderFaceZNeg(par1Block, par2, par3, par4, icon);
 
             if (fancyGrass && icon.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
                 float ff = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1) : 1.0F;
                 tessellator.setColorOpaque_F(ff * f8 * par5, ff * f11 * par6, ff * f14 * par7);
-                renderEastFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceZNeg(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -6234,13 +6234,13 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(ff * f8, ff * f11, ff * f14);
             }
             Icon icon1 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3);
-            renderWestFace(par1Block, par2, par3, par4, icon1);
+            renderFaceZPos(par1Block, par2, par3, par4, icon1);
 
             if (fancyGrass && icon1.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
                 float ff = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1) : 1.0F;
                 tessellator.setColorOpaque_F(ff * f8 * par5, ff * f11 * par6, ff * f14 * par7);
-                renderWestFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceZPos(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -6256,13 +6256,13 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(ff * f9, ff * f12, ff * f15);
             }
             Icon icon2 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4);
-            renderNorthFace(par1Block, par2, par3, par4, icon2);
+            renderFaceXNeg(par1Block, par2, par3, par4, icon2);
 
             if (fancyGrass && icon2.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
                 float ff = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4) : 1.0F;
                 tessellator.setColorOpaque_F(ff * f9 * par5, ff * f12 * par6, ff * f15 * par7);
-                renderNorthFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceXNeg(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -6278,13 +6278,13 @@ public class RenderBlocks
                 tessellator.setColorOpaque_F(ff * f9, ff * f12, ff * f15);
             }
             Icon icon3 = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5);
-            renderSouthFace(par1Block, par2, par3, par4, icon3);
+            renderFaceXPos(par1Block, par2, par3, par4, icon3);
 
             if (fancyGrass && icon3.getIconName().equals("grass_side") && !hasOverrideBlockTexture())
             {
                 float ff = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4) : 1.0F;
                 tessellator.setColorOpaque_F(ff * f9 * par5, ff * f12 * par6, ff * f15 * par7);
-                renderSouthFace(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
+                renderFaceXPos(par1Block, par2, par3, par4, BlockGrass.getIconSideOverlay());
             }
 
             flag = true;
@@ -6462,7 +6462,7 @@ public class RenderBlocks
         setOverrideBlockTexture(getBlockIcon(Block.glass));
         setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
-        setOverrideBlockTexture(par1BlockBeacon.func_94446_i());
+        setOverrideBlockTexture(par1BlockBeacon.getBeaconIcon());
         setRenderBounds(0.1875D, f, 0.1875D, 0.8125D, 0.875D, 0.8125D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         clearOverrideBlockTexture();
@@ -6537,7 +6537,7 @@ public class RenderBlocks
                 }
             }
             tessellator.setColorOpaque_F(f4 * ff5, f8 * ff5, f12 * ff5);
-            renderBottomFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
+            renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
             flag = true;
         }
 
@@ -6557,7 +6557,7 @@ public class RenderBlocks
                 }
             }
             tessellator.setColorOpaque_F(f5 * ff5, f9 * ff5, f13 * ff5);
-            renderTopFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
+            renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
             flag = true;
         }
 
@@ -6578,7 +6578,7 @@ public class RenderBlocks
             }
             tessellator.setColorOpaque_F(f6 * ff5, f10 * ff5, f14 * ff5);
             tessellator.addTranslation(0.0F, 0.0F, f16);
-            renderEastFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
+            renderFaceZNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
             tessellator.addTranslation(0.0F, 0.0F, -f16);
             flag = true;
         }
@@ -6600,7 +6600,7 @@ public class RenderBlocks
             }
             tessellator.setColorOpaque_F(f6 * ff5, f10 * ff5, f14 * ff5);
             tessellator.addTranslation(0.0F, 0.0F, -f16);
-            renderWestFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
+            renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
             tessellator.addTranslation(0.0F, 0.0F, f16);
             flag = true;
         }
@@ -6622,7 +6622,7 @@ public class RenderBlocks
             }
             tessellator.setColorOpaque_F(f7 * ff5, f11 * ff5, f15 * ff5);
             tessellator.addTranslation(f16, 0.0F, 0.0F);
-            renderNorthFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
+            renderFaceXNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
             tessellator.addTranslation(-f16, 0.0F, 0.0F);
             flag = true;
         }
@@ -6644,7 +6644,7 @@ public class RenderBlocks
             }
             tessellator.setColorOpaque_F(f7 * ff5, f11 * ff5, f15 * ff5);
             tessellator.addTranslation(-f16, 0.0F, 0.0F);
-            renderSouthFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5));
+            renderFaceXPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5));
             tessellator.addTranslation(f16, 0.0F, 0.0F);
             flag = true;
         }
@@ -7063,7 +7063,7 @@ public class RenderBlocks
     private boolean renderBlockHopperMetadata(BlockHopper par1BlockHopper, int par2, int par3, int par4, int par5, boolean par6)
     {
         Tessellator tessellator = Tessellator.instance;
-        int i = BlockHopper.func_94451_c(par5);
+        int i = BlockHopper.getDirectionFromMetadata(par5);
         double d = 0.625D;
         setRenderBounds(0.0D, d, 0.0D, 1.0D, 1.0D, 1.0D);
 
@@ -7071,27 +7071,27 @@ public class RenderBlocks
         {
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
-            renderBottomFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 0, par5));
+            renderFaceYNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 0, par5));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderTopFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 1, par5));
+            renderFaceYPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 1, par5));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1F);
-            renderEastFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 2, par5));
+            renderFaceZNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 2, par5));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, 1.0F);
-            renderWestFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 3, par5));
+            renderFaceZPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 3, par5));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(-1F, 0.0F, 0.0F);
-            renderNorthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 4, par5));
+            renderFaceXNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 4, par5));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            renderSouthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 5, par5));
+            renderFaceXPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1BlockHopper, 5, par5));
             tessellator.draw();
         }
         else
@@ -7123,40 +7123,40 @@ public class RenderBlocks
             tessellator.setColorOpaque_F(f * f1, f * f3, f * f4);
         }
 
-        Icon icon = BlockHopper.func_94453_b("hopper");
-        Icon icon1 = BlockHopper.func_94453_b("hopper_inside");
+        Icon icon = BlockHopper.getHopperIcon("hopper");
+        Icon icon1 = BlockHopper.getHopperIcon("hopper_inside");
         float f2 = 0.125F;
 
         if (par6)
         {
             tessellator.startDrawingQuads();
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            renderSouthFace(par1BlockHopper, -1F + f2, 0.0D, 0.0D, icon);
+            renderFaceXPos(par1BlockHopper, -1F + f2, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(-1F, 0.0F, 0.0F);
-            renderNorthFace(par1BlockHopper, 1.0F - f2, 0.0D, 0.0D, icon);
+            renderFaceXNeg(par1BlockHopper, 1.0F - f2, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, 1.0F);
-            renderWestFace(par1BlockHopper, 0.0D, 0.0D, -1F + f2, icon);
+            renderFaceZPos(par1BlockHopper, 0.0D, 0.0D, -1F + f2, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1F);
-            renderEastFace(par1BlockHopper, 0.0D, 0.0D, 1.0F - f2, icon);
+            renderFaceZNeg(par1BlockHopper, 0.0D, 0.0D, 1.0F - f2, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderTopFace(par1BlockHopper, 0.0D, -1D + d, 0.0D, icon1);
+            renderFaceYPos(par1BlockHopper, 0.0D, -1D + d, 0.0D, icon1);
             tessellator.draw();
         }
         else
         {
-            renderSouthFace(par1BlockHopper, ((float)par2 - 1.0F) + f2, par3, par4, icon);
-            renderNorthFace(par1BlockHopper, ((float)par2 + 1.0F) - f2, par3, par4, icon);
-            renderWestFace(par1BlockHopper, par2, par3, ((float)par4 - 1.0F) + f2, icon);
-            renderEastFace(par1BlockHopper, par2, par3, ((float)par4 + 1.0F) - f2, icon);
-            renderTopFace(par1BlockHopper, par2, (double)((float)par3 - 1.0F) + d, par4, icon1);
+            renderFaceXPos(par1BlockHopper, ((float)par2 - 1.0F) + f2, par3, par4, icon);
+            renderFaceXNeg(par1BlockHopper, ((float)par2 + 1.0F) - f2, par3, par4, icon);
+            renderFaceZPos(par1BlockHopper, par2, par3, ((float)par4 - 1.0F) + f2, icon);
+            renderFaceZNeg(par1BlockHopper, par2, par3, ((float)par4 + 1.0F) - f2, icon);
+            renderFaceYPos(par1BlockHopper, par2, (double)((float)par3 - 1.0F) + d, par4, icon1);
         }
 
         setOverrideBlockTexture(icon);
@@ -7169,27 +7169,27 @@ public class RenderBlocks
         {
             tessellator.startDrawingQuads();
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            renderSouthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
+            renderFaceXPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(-1F, 0.0F, 0.0F);
-            renderNorthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
+            renderFaceXNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, 1.0F);
-            renderWestFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
+            renderFaceZPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1F);
-            renderEastFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
+            renderFaceZNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderTopFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
+            renderFaceYPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
-            renderBottomFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
+            renderFaceYNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, icon);
             tessellator.draw();
         }
         else
@@ -7293,7 +7293,7 @@ public class RenderBlocks
             ff = renderMinY <= 0.0D ? par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4) : ff2;
         }
         tessellator.setColorOpaque_F(f * ff, f * ff, f * ff);
-        renderBottomFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
+        renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
         flag = true;
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : j);
@@ -7301,7 +7301,7 @@ public class RenderBlocks
             ff = renderMaxY >= 1.0D ? par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4) : ff2;
         }
         tessellator.setColorOpaque_F(f1 * ff, f1 * ff, f1 * ff);
-        renderTopFace(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
+        renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
         flag = true;
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(renderMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : j);
@@ -7310,7 +7310,7 @@ public class RenderBlocks
         }
         tessellator.setColorOpaque_F(f2 * ff, f2 * ff, f2 * ff);
         Icon icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2);
-        renderEastFace(par1Block, par2, par3, par4, icon);
+        renderFaceZNeg(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
         if (!Minecraft.oldlighting){
@@ -7320,7 +7320,7 @@ public class RenderBlocks
         }
         tessellator.setColorOpaque_F(f2 * ff, f2 * ff, f2 * ff);
         icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3);
-        renderWestFace(par1Block, par2, par3, par4, icon);
+        renderFaceZPos(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
         if (!Minecraft.oldlighting){
@@ -7330,7 +7330,7 @@ public class RenderBlocks
         }
         tessellator.setColorOpaque_F(f3 * ff, f3 * ff, f3 * ff);
         icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4);
-        renderNorthFace(par1Block, par2, par3, par4, icon);
+        renderFaceXNeg(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
         if (!Minecraft.oldlighting){
@@ -7340,7 +7340,7 @@ public class RenderBlocks
         }
         tessellator.setColorOpaque_F(f3 * ff, f3 * ff, f3 * ff);
         icon = getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5);
-        renderSouthFace(par1Block, par2, par3, par4, icon);
+        renderFaceXPos(par1Block, par2, par3, par4, icon);
         flag = true;
         flipTexture = false;
         return flag;
@@ -7349,7 +7349,7 @@ public class RenderBlocks
     /**
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
-    public void renderBottomFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
+    public void renderFaceYNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -7455,7 +7455,7 @@ public class RenderBlocks
     /**
      * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
      */
-    public void renderTopFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
+    public void renderFaceYPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -7559,9 +7559,9 @@ public class RenderBlocks
     }
 
     /**
-     * Renders the given texture to the east (z-negative) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the north (z-negative) face of the block.  Args: block, x, y, z, texture
      */
-    public void renderEastFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
+    public void renderFaceZNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -7672,9 +7672,9 @@ public class RenderBlocks
     }
 
     /**
-     * Renders the given texture to the west (z-positive) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the south (z-positive) face of the block.  Args: block, x, y, z, texture
      */
-    public void renderWestFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
+    public void renderFaceZPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -7785,9 +7785,9 @@ public class RenderBlocks
     }
 
     /**
-     * Renders the given texture to the north (x-negative) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the west (x-negative) face of the block.  Args: block, x, y, z, texture
      */
-    public void renderNorthFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
+    public void renderFaceXNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -7898,9 +7898,9 @@ public class RenderBlocks
     }
 
     /**
-     * Renders the given texture to the south (x-positive) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the east (x-positive) face of the block.  Args: block, x, y, z, texture
      */
-    public void renderSouthFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
+    public void renderFaceXPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -8056,7 +8056,7 @@ public class RenderBlocks
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
-            renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 0, par2));
+            renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 0, par2));
             tessellator.draw();
 
             if (flag && useInventoryTint)
@@ -8070,7 +8070,7 @@ public class RenderBlocks
 
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 1, par2));
+            renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 1, par2));
             tessellator.draw();
 
             if (flag && useInventoryTint)
@@ -8080,19 +8080,19 @@ public class RenderBlocks
 
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1F);
-            renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 2, par2));
+            renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 2, par2));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, 1.0F);
-            renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 3, par2));
+            renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 3, par2));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(-1F, 0.0F, 0.0F);
-            renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 4, par2));
+            renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 4, par2));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 5, par2));
+            renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 5, par2));
             tessellator.draw();
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         }
@@ -8125,34 +8125,34 @@ public class RenderBlocks
             float f1 = 0.0625F;
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, -1F, 0.0F);
-            renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
+            renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
+            renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1F);
             tessellator.addTranslation(0.0F, 0.0F, f1);
-            renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
+            renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
             tessellator.addTranslation(0.0F, 0.0F, -f1);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, 1.0F);
             tessellator.addTranslation(0.0F, 0.0F, -f1);
-            renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
+            renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
             tessellator.addTranslation(0.0F, 0.0F, f1);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(-1F, 0.0F, 0.0F);
             tessellator.addTranslation(f1, 0.0F, 0.0F);
-            renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
+            renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
             tessellator.addTranslation(-f1, 0.0F, 0.0F);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
             tessellator.addTranslation(-f1, 0.0F, 0.0F);
-            renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
+            renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
             tessellator.addTranslation(f1, 0.0F, 0.0F);
             tessellator.draw();
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -8197,27 +8197,27 @@ public class RenderBlocks
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1F, 0.0F);
-                renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
+                renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
+                renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, -1F);
-                renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
+                renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
+                renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(-1F, 0.0F, 0.0F);
-                renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
+                renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
+                renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
                 tessellator.draw();
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
@@ -8283,17 +8283,17 @@ public class RenderBlocks
                 i1 += byte0;
                 setRenderBounds(0.5F - f9, f11, 0.5F - f9, 0.5F + f9, f10, 0.5F + f9);
                 tessellator.setNormal(0.0F, -1F, 0.0F);
-                renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
+                renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
+                renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
                 tessellator.setNormal(0.0F, 0.0F, -1F);
-                renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
+                renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
+                renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
                 tessellator.setNormal(-1F, 0.0F, 0.0F);
-                renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
+                renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
+                renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
             }
 
             tessellator.draw();
@@ -8331,27 +8331,27 @@ public class RenderBlocks
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1F, 0.0F);
-                renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
+                renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
+                renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, -1F);
-                renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
+                renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
+                renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(-1F, 0.0F, 0.0F);
-                renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
+                renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
+                renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
                 tessellator.draw();
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
@@ -8384,27 +8384,27 @@ public class RenderBlocks
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1F, 0.0F);
-                renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
+                renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 0));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
+                renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 1));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, -1F);
-                renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
+                renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
+                renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 3));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(-1F, 0.0F, 0.0F);
-                renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
+                renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 4));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
+                renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSide(par1Block, 5));
                 tessellator.draw();
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
@@ -8426,27 +8426,27 @@ public class RenderBlocks
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1F, 0.0F);
-                renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 0, par2));
+                renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 0, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 1, par2));
+                renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 1, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, -1F);
-                renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 2, par2));
+                renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 2, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 3, par2));
+                renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 3, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(-1F, 0.0F, 0.0F);
-                renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 4, par2));
+                renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 4, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 5, par2));
+                renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 5, par2));
                 tessellator.draw();
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
@@ -8471,7 +8471,7 @@ public class RenderBlocks
                 else if (i2 == 1)
                 {
                     setRenderBounds(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
-                    setOverrideBlockTexture(Block.beacon.func_94446_i());
+                    setOverrideBlockTexture(Block.beacon.getBeaconIcon());
                 }
                 else if (i2 == 2)
                 {
@@ -8482,27 +8482,27 @@ public class RenderBlocks
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1F, 0.0F);
-                renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 0, par2));
+                renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 0, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 1, par2));
+                renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 1, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, -1F);
-                renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 2, par2));
+                renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 2, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 3, par2));
+                renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 3, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(-1F, 0.0F, 0.0F);
-                renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 4, par2));
+                renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 4, par2));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 5, par2));
+                renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(par1Block, 5, par2));
                 tessellator.draw();
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
@@ -8608,7 +8608,7 @@ public class RenderBlocks
 
     public Icon getBlockIconFromSideAndMetadata(Block par1Block, int par2, int par3)
     {
-        return getIconSafe(par1Block.getBlockTextureFromSideAndMetadata(par2, par3));
+        return getIconSafe(par1Block.getIcon(par2, par3));
     }
 
     public Icon getBlockIconFromSide(Block par1Block, int par2)

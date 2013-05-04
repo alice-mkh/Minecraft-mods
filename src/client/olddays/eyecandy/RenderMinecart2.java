@@ -73,9 +73,9 @@ public class RenderMinecart2 extends RenderMinecart
             GL11.glRotatef(((MathHelper.sin(f4) * f4 * f5) / 10F) * (float)par1EntityMinecart.getRollingDirection(), 1.0F, 0.0F, 0.0F);
         }
 
-        int i = par1EntityMinecart.func_94099_q();
-        Block block = par1EntityMinecart.func_94089_m();
-        int j = par1EntityMinecart.func_94098_o();
+        int i = par1EntityMinecart.getDisplayTileOffset();
+        Block block = par1EntityMinecart.getDisplayTile();
+        int j = par1EntityMinecart.getDisplayTileData();
 
         if (block != null)
         {
@@ -84,7 +84,7 @@ public class RenderMinecart2 extends RenderMinecart
             float f6 = 0.75F;
             GL11.glScalef(f6, f6, f6);
             GL11.glTranslatef(0.0F, (float)i / 16F, 0.0F);
-            func_94144_a(par1EntityMinecart, par9, block, j);
+            renderBlockInMinecart(par1EntityMinecart, par9, block, j);
             GL11.glPopMatrix();
             float ff = Minecraft.oldlighting ? par1EntityMinecart.getBrightness(par9) : 1.0F;
             GL11.glColor4f(ff, ff, ff, 1.0F);
@@ -97,7 +97,7 @@ public class RenderMinecart2 extends RenderMinecart
     }
 
     @Override
-    protected void func_94144_a(EntityMinecart par1EntityMinecart, float par2, Block par3Block, int par4)
+    protected void renderBlockInMinecart(EntityMinecart par1EntityMinecart, float par2, Block par3Block, int par4)
     {
         float f = par1EntityMinecart.getBrightness(par2);
         GL11.glPushMatrix();

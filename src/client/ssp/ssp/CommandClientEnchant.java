@@ -30,7 +30,7 @@ public class CommandClientEnchant extends CommandEnchant
                         });
             }
 
-            if (!enchantment.func_92089_a(itemstack))
+            if (!enchantment.canApply(itemstack))
             {
                 notifyAdmins(par1ICommandSender, "commands.enchant.cantEnchant", new Object[0]);
                 return;

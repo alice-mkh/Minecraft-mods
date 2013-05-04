@@ -143,7 +143,7 @@ public class RenderPlayer2 extends RenderLiving
 
     protected void func_82440_a(EntityPlayer par1EntityPlayer, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        if (!par1EntityPlayer.getHasActivePotion())
+        if (!par1EntityPlayer.isInvisible())
         {
             super.renderModel(par1EntityPlayer, par2, par3, par4, par5, par6, par7);
         }
@@ -154,7 +154,7 @@ public class RenderPlayer2 extends RenderLiving
      */
     protected void renderName(EntityPlayer par1EntityPlayer, double par2, double par4, double par6)
     {
-        if (Minecraft.isGuiEnabled() && par1EntityPlayer != renderManager.livingPlayer && !par1EntityPlayer.getHasActivePotion())
+        if (Minecraft.isGuiEnabled() && par1EntityPlayer != renderManager.livingPlayer && !par1EntityPlayer.isInvisible())
         {
             float f = 1.6F;
             float f1 = 0.01666667F * f;
@@ -273,7 +273,7 @@ public class RenderPlayer2 extends RenderLiving
             }
         }
 
-        if (loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape())
+        if (loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, null) && !par1EntityPlayer.isInvisible() && !par1EntityPlayer.getHideCape())
         {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);

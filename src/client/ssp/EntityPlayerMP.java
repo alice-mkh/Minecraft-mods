@@ -124,7 +124,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (par1NBTTagCompound.hasKey("playerGameType"))
         {
-            theItemInWorldManager.setGameType(EnumGameType.getByID(par1NBTTagCompound.getInteger("playerGameType")));
+            if (MinecraftServer.getServer().func_104056_am())
+            {
+                theItemInWorldManager.setGameType(MinecraftServer.getServer().getGameType());
+            }
+            else
+            {
+                theItemInWorldManager.setGameType(EnumGameType.getByID(par1NBTTagCompound.getInteger("playerGameType")));
+            }
         }
     }
 
@@ -233,10 +240,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void setEntityHealth(int par1)
     {
         super.setEntityHealth(par1);
-        Collection collection = func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
+        Collection collection = getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
         ScoreObjective scoreobjective;
 
-        for (Iterator iterator = collection.iterator(); iterator.hasNext(); func_96123_co().func_96529_a(getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[]
+        for (Iterator iterator = collection.iterator(); iterator.hasNext(); getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[]
                 {
                     this
                 })))
@@ -309,7 +316,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         for (Iterator iterator = collection.iterator(); iterator.hasNext(); score.func_96648_a())
         {
             ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
-            score = func_96123_co().func_96529_a(getEntityName(), scoreobjective);
+            score = getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective);
         }
 
         EntityLiving entityliving = func_94060_bK();
@@ -552,7 +559,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         openContainer.addCraftingToCrafters(this);
     }
 
-    public void func_94064_a(TileEntityHopper par1TileEntityHopper)
+    public void displayGUIHopper(TileEntityHopper par1TileEntityHopper)
     {
         incrementWindowID();
         playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(currentWindowId, 9, par1TileEntityHopper.getInvName(), par1TileEntityHopper.getSizeInventory(), par1TileEntityHopper.isInvNameLocalized()));
@@ -561,7 +568,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         openContainer.addCraftingToCrafters(this);
     }
 
-    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
+    public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper)
     {
         incrementWindowID();
         playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(currentWindowId, 9, par1EntityMinecartHopper.getInvName(), par1EntityMinecartHopper.getSizeInventory(), par1EntityMinecartHopper.isInvNameLocalized()));

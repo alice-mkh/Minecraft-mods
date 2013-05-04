@@ -9,7 +9,7 @@ public abstract class EntityMinecart extends Entity
 
     private boolean isInReverse;
     private final IUpdatePlayerListBox field_82344_g;
-    private String field_94102_c;
+    private String entityName;
     private static final int matrix[][][] =
     {
         {
@@ -96,7 +96,13 @@ public abstract class EntityMinecart extends Entity
         field_82344_g = par1World == null ? null : par1World.func_82735_a(this);
     }
 
-    public static EntityMinecart func_94090_a(World par0World, double par1, double par3, double par5, int par7)
+    /**
+     * Creates a new minecart of the specified type in the specified location in the given world. par0World - world to
+     * create the minecart in, double par1,par3,par5 represent x,y,z respectively. int par7 specifies the type: 1 for
+     * MinecartChest, 2 for MinecartFurnace, 3 for MinecartTNT, 4 for MinecartMobSpawner, 5 for MinecartHopper and 0 for
+     * a standard empty minecart
+     */
+    public static EntityMinecart createMinecart(World par0World, double par1, double par3, double par5, int par7)
     {
         switch (par7)
         {
@@ -216,7 +222,7 @@ public abstract class EntityMinecart extends Entity
 
             if (!flag || isInvNameLocalized())
             {
-                func_94095_a(par1DamageSource);
+                killMinecart(par1DamageSource);
             }
             else
             {
@@ -227,14 +233,14 @@ public abstract class EntityMinecart extends Entity
         return true;
     }
 
-    public void func_94095_a(DamageSource par1DamageSource)
+    public void killMinecart(DamageSource par1DamageSource)
     {
         setDead();
         ItemStack itemstack = new ItemStack(Item.minecartEmpty, 1);
 
-        if (field_94102_c != null)
+        if (entityName != null)
         {
-            itemstack.setItemName(field_94102_c);
+            itemstack.setItemName(entityName);
         }
 
         entityDropItem(itemstack, 0.0F);
@@ -391,11 +397,11 @@ public abstract class EntityMinecart extends Entity
         if (BlockRailBase.isRailBlock(i1))
         {
             int j1 = worldObj.getBlockMetadata(i, k, l);
-            func_94091_a(i, k, l, d2, d4, i1, j1);
+            updateOnTrack(i, k, l, d2, d4, i1, j1);
 
             if (i1 == Block.railActivator.blockID)
             {
-                func_96095_a(i, k, l, (j1 & 8) != 0);
+                onActivatorRailPass(i, k, l, (j1 & 8) != 0);
             }
         }
         else
@@ -453,7 +459,10 @@ public abstract class EntityMinecart extends Entity
         }
     }
 
-    public void func_96095_a(int i, int j, int k, boolean flag)
+    /**
+     * Called every tick the minecart is on an activator rail.
+     */
+    public void onActivatorRailPass(int i, int j, int k, boolean flag)
     {
     }
 
@@ -496,7 +505,7 @@ public abstract class EntityMinecart extends Entity
         }
     }
 
-    protected void func_94091_a(int par1, int par2, int par3, double par4, double par6, int par8, int par9)
+    protected void updateOnTrack(int par1, int par2, int par3, double par4, double par6, int par8, int par9)
     {
         fallDistance = 0.0F;
         Vec3 vec3 = func_70489_a(posX, posY, posZ);
@@ -661,7 +670,7 @@ public abstract class EntityMinecart extends Entity
             setPosition(posX, posY + (double)ai[1][1], posZ);
         }
 
-        func_94101_h();
+        applyDrag();
         Vec3 vec3_1 = func_70489_a(posX, posY, posZ);
 
         if (vec3_1 != null && vec3 != null)
@@ -728,7 +737,7 @@ public abstract class EntityMinecart extends Entity
         }
     }
 
-    protected void func_94101_h()
+    protected void applyDrag()
     {
         if (riddenByEntity != null)
         {
@@ -885,14 +894,14 @@ public abstract class EntityMinecart extends Entity
     {
         if (par1NBTTagCompound.getBoolean("CustomDisplayTile"))
         {
-            func_94094_j(par1NBTTagCompound.getInteger("DisplayTile"));
-            func_94092_k(par1NBTTagCompound.getInteger("DisplayData"));
-            func_94086_l(par1NBTTagCompound.getInteger("DisplayOffset"));
+            setDisplayTile(par1NBTTagCompound.getInteger("DisplayTile"));
+            setDisplayTileData(par1NBTTagCompound.getInteger("DisplayData"));
+            setDisplayTileOffset(par1NBTTagCompound.getInteger("DisplayOffset"));
         }
 
         if (par1NBTTagCompound.hasKey("CustomName") && par1NBTTagCompound.getString("CustomName").length() > 0)
         {
-            field_94102_c = par1NBTTagCompound.getString("CustomName");
+            entityName = par1NBTTagCompound.getString("CustomName");
         }
     }
 
@@ -901,17 +910,17 @@ public abstract class EntityMinecart extends Entity
      */
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (func_94100_s())
+        if (hasDisplayTile())
         {
             par1NBTTagCompound.setBoolean("CustomDisplayTile", true);
-            par1NBTTagCompound.setInteger("DisplayTile", func_94089_m() != null ? func_94089_m().blockID : 0);
-            par1NBTTagCompound.setInteger("DisplayData", func_94098_o());
-            par1NBTTagCompound.setInteger("DisplayOffset", func_94099_q());
+            par1NBTTagCompound.setInteger("DisplayTile", getDisplayTile() != null ? getDisplayTile().blockID : 0);
+            par1NBTTagCompound.setInteger("DisplayData", getDisplayTileData());
+            par1NBTTagCompound.setInteger("DisplayOffset", getDisplayTileOffset());
         }
 
-        if (field_94102_c != null && field_94102_c.length() > 0)
+        if (entityName != null && entityName.length() > 0)
         {
-            par1NBTTagCompound.setString("CustomName", field_94102_c);
+            par1NBTTagCompound.setString("CustomName", entityName);
         }
     }
 
@@ -935,7 +944,7 @@ public abstract class EntityMinecart extends Entity
             return;
         }
 
-        if ((par1Entity instanceof EntityLiving) && !(par1Entity instanceof EntityPlayer) && !(par1Entity instanceof EntityIronGolem) && func_94087_l() == 0 && motionX * motionX + motionZ * motionZ > 0.01D && riddenByEntity == null && par1Entity.ridingEntity == null)
+        if ((par1Entity instanceof EntityLiving) && !(par1Entity instanceof EntityPlayer) && !(par1Entity instanceof EntityIronGolem) && getMinecartType() == 0 && motionX * motionX + motionZ * motionZ > 0.01D && riddenByEntity == null && par1Entity.ridingEntity == null)
         {
             par1Entity.mountEntity(this);
         }
@@ -988,7 +997,7 @@ public abstract class EntityMinecart extends Entity
                     d8 = par1Entity.motionZ + motionZ;
                 }
 
-                if (((EntityMinecart)par1Entity).func_94087_l() == 2 && func_94087_l() != 2)
+                if (((EntityMinecart)par1Entity).getMinecartType() == 2 && getMinecartType() != 2)
                 {
                     motionX *= 0.20000000298023224D;
                     motionZ *= 0.20000000298023224D;
@@ -996,7 +1005,7 @@ public abstract class EntityMinecart extends Entity
                     par1Entity.motionX *= 0.94999998807907104D;
                     par1Entity.motionZ *= 0.94999998807907104D;
                 }
-                else if (((EntityMinecart)par1Entity).func_94087_l() != 2 && func_94087_l() == 2)
+                else if (((EntityMinecart)par1Entity).getMinecartType() != 2 && getMinecartType() == 2)
                 {
                     par1Entity.motionX *= 0.20000000298023224D;
                     par1Entity.motionZ *= 0.20000000298023224D;
@@ -1101,13 +1110,13 @@ public abstract class EntityMinecart extends Entity
         return dataWatcher.getWatchableObjectInt(18);
     }
 
-    public abstract int func_94087_l();
+    public abstract int getMinecartType();
 
-    public Block func_94089_m()
+    public Block getDisplayTile()
     {
-        if (!func_94100_s())
+        if (!hasDisplayTile())
         {
-            return func_94093_n();
+            return getDefaultDisplayTile();
         }
         else
         {
@@ -1116,16 +1125,16 @@ public abstract class EntityMinecart extends Entity
         }
     }
 
-    public Block func_94093_n()
+    public Block getDefaultDisplayTile()
     {
         return null;
     }
 
-    public int func_94098_o()
+    public int getDisplayTileData()
     {
-        if (!func_94100_s())
+        if (!hasDisplayTile())
         {
-            return func_94097_p();
+            return getDefaultDisplayTileData();
         }
         else
         {
@@ -1133,16 +1142,16 @@ public abstract class EntityMinecart extends Entity
         }
     }
 
-    public int func_94097_p()
+    public int getDefaultDisplayTileData()
     {
         return 0;
     }
 
-    public int func_94099_q()
+    public int getDisplayTileOffset()
     {
-        if (!func_94100_s())
+        if (!hasDisplayTile())
         {
-            return func_94085_r();
+            return getDefaultDisplayTileOffset();
         }
         else
         {
@@ -1150,44 +1159,44 @@ public abstract class EntityMinecart extends Entity
         }
     }
 
-    public int func_94085_r()
+    public int getDefaultDisplayTileOffset()
     {
         return 6;
     }
 
-    public void func_94094_j(int par1)
+    public void setDisplayTile(int par1)
     {
-        getDataWatcher().updateObject(20, Integer.valueOf(par1 & 0xffff | func_94098_o() << 16));
-        func_94096_e(true);
+        getDataWatcher().updateObject(20, Integer.valueOf(par1 & 0xffff | getDisplayTileData() << 16));
+        setHasDisplayTile(true);
     }
 
-    public void func_94092_k(int par1)
+    public void setDisplayTileData(int par1)
     {
-        Block block = func_94089_m();
+        Block block = getDisplayTile();
         int i = block != null ? block.blockID : 0;
         getDataWatcher().updateObject(20, Integer.valueOf(i & 0xffff | par1 << 16));
-        func_94096_e(true);
+        setHasDisplayTile(true);
     }
 
-    public void func_94086_l(int par1)
+    public void setDisplayTileOffset(int par1)
     {
         getDataWatcher().updateObject(21, Integer.valueOf(par1));
-        func_94096_e(true);
+        setHasDisplayTile(true);
     }
 
-    public boolean func_94100_s()
+    public boolean hasDisplayTile()
     {
         return getDataWatcher().getWatchableObjectByte(22) == 1;
     }
 
-    public void func_94096_e(boolean par1)
+    public void setHasDisplayTile(boolean par1)
     {
         getDataWatcher().updateObject(22, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
     public void func_96094_a(String par1Str)
     {
-        field_94102_c = par1Str;
+        entityName = par1Str;
     }
 
     /**
@@ -1195,9 +1204,9 @@ public abstract class EntityMinecart extends Entity
      */
     public String getEntityName()
     {
-        if (field_94102_c != null)
+        if (entityName != null)
         {
-            return field_94102_c;
+            return entityName;
         }
         else
         {
@@ -1211,11 +1220,11 @@ public abstract class EntityMinecart extends Entity
      */
     public boolean isInvNameLocalized()
     {
-        return field_94102_c != null;
+        return entityName != null;
     }
 
     public String func_95999_t()
     {
-        return field_94102_c;
+        return entityName;
     }
 }

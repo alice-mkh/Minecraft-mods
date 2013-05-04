@@ -345,4 +345,9 @@ public class ChunkProvider implements IChunkProvider
     public IChunkProvider getChunkProvider(){
         return chunkProvider;
     }
+
+    @Override
+    public void func_104112_b()
+    {
+    }
 }

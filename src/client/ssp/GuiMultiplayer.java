@@ -432,7 +432,7 @@ public class GuiMultiplayer extends GuiScreen
                 {
                     par1ServerData.gameVersion = "???";
                     par1ServerData.serverMOTD = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
-                    par1ServerData.field_82821_f = 61;
+                    par1ServerData.field_82821_f = 62;
                     par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                 }
             }
@@ -462,7 +462,7 @@ public class GuiMultiplayer extends GuiScreen
                 }
 
                 par1ServerData.gameVersion = "1.3";
-                par1ServerData.field_82821_f = 59;
+                par1ServerData.field_82821_f = 60;
             }
         }
         finally

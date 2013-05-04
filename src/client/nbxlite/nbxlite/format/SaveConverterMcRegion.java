@@ -25,7 +25,7 @@ public class SaveConverterMcRegion extends SaveFormatOld
         return "Scaevolus' McRegion";
     }
 
-    public File getSaveDirectory(){
+    public File getWorldDirectory(){
         return savesDirectory;
     }
 

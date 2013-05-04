@@ -34,8 +34,12 @@ public class GuiIngame extends Gui
 
     /** Previous frame vignette brightness (slowly changes by 1% each frame) */
     public float prevVignetteBrightness;
-    private int field_92017_k;
-    private ItemStack field_92016_l;
+
+    /** Remaining ticks the item highlight should be visible */
+    private int remainingHighlightTicks;
+
+    /** The ItemStack that is currently being highlighted */
+    private ItemStack highlightingItemStack;
 
     public GuiIngame(Minecraft par1Minecraft)
     {
@@ -390,9 +394,9 @@ public class GuiIngame extends Gui
         {
             mc.mcProfiler.startSection("toolHighlight");
 
-            if (field_92017_k > 0 && field_92016_l != null)
+            if (remainingHighlightTicks > 0 && highlightingItemStack != null)
             {
-                String s = field_92016_l.getDisplayName();
+                String s = highlightingItemStack.getDisplayName();
                 int l1 = (i - fontrenderer.getStringWidth(s)) / 2;
                 int l2 = j - 59;
 
@@ -401,7 +405,7 @@ public class GuiIngame extends Gui
                     l2 += 14;
                 }
 
-                int k3 = (int)(((float)field_92017_k * 256F) / 10F);
+                int k3 = (int)(((float)remainingHighlightTicks * 256F) / 10F);
 
                 if (k3 > 255)
                 {
@@ -602,7 +606,7 @@ public class GuiIngame extends Gui
                 }
 
                 GuiPlayerInfo guiplayerinfo = (GuiPlayerInfo)list.get(i8);
-                ScorePlayerTeam scoreplayerteam = mc.theWorld.getScoreboard().func_96509_i(guiplayerinfo.name);
+                ScorePlayerTeam scoreplayerteam = mc.theWorld.getScoreboard().getPlayersTeam(guiplayerinfo.name);
                 String s4 = ScorePlayerTeam.func_96667_a(scoreplayerteam, guiplayerinfo.name);
                 fontrenderer.drawStringWithShadow(s4, l8, l9, 0xffffff);
 
@@ -613,7 +617,7 @@ public class GuiIngame extends Gui
 
                     if (j14 - i13 > 5)
                     {
-                        Score score = scoreobjective.func_96682_a().func_96529_a(guiplayerinfo.name, scoreobjective);
+                        Score score = scoreobjective.getScoreboard().func_96529_a(guiplayerinfo.name, scoreobjective);
                         String s5 = (new StringBuilder()).append(EnumChatFormatting.YELLOW).append("").append(score.func_96652_c()).toString();
                         fontrenderer.drawStringWithShadow(s5, j14 - fontrenderer.getStringWidth(s5), l9, 0xffffff);
                     }
@@ -662,7 +666,7 @@ public class GuiIngame extends Gui
 
     private void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer)
     {
-        Scoreboard scoreboard = par1ScoreObjective.func_96682_a();
+        Scoreboard scoreboard = par1ScoreObjective.getScoreboard();
         Collection collection = scoreboard.func_96534_i(par1ScoreObjective);
 
         if (collection.size() > 15)
@@ -670,12 +674,12 @@ public class GuiIngame extends Gui
             return;
         }
 
-        int i = par4FontRenderer.getStringWidth(par1ScoreObjective.func_96678_d());
+        int i = par4FontRenderer.getStringWidth(par1ScoreObjective.getDisplayName());
 
         for (Iterator iterator = collection.iterator(); iterator.hasNext();)
         {
             Score score = (Score)iterator.next();
-            ScorePlayerTeam scoreplayerteam = scoreboard.func_96509_i(score.func_96653_e());
+            ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.func_96653_e());
             String s = (new StringBuilder()).append(ScorePlayerTeam.func_96667_a(scoreplayerteam, score.func_96653_e())).append(": ").append(EnumChatFormatting.RED).append(score.func_96652_c()).toString();
             i = Math.max(i, par4FontRenderer.getStringWidth(s));
         }
@@ -696,7 +700,7 @@ public class GuiIngame extends Gui
 
             Score score1 = (Score)iterator1.next();
             i1++;
-            ScorePlayerTeam scoreplayerteam1 = scoreboard.func_96509_i(score1.func_96653_e());
+            ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.func_96653_e());
             String s1 = ScorePlayerTeam.func_96667_a(scoreplayerteam1, score1.func_96653_e());
             String s2 = (new StringBuilder()).append(EnumChatFormatting.RED).append("").append(score1.func_96652_c()).toString();
             int j1 = l;
@@ -708,7 +712,7 @@ public class GuiIngame extends Gui
 
             if (i1 == collection.size())
             {
-                String s3 = par1ScoreObjective.func_96678_d();
+                String s3 = par1ScoreObjective.getDisplayName();
                 drawRect(j1 - 2, k1 - par4FontRenderer.FONT_HEIGHT - 1, l1, k1 - 1, 0x60000000);
                 drawRect(j1 - 2, k1 - 1, l1, k1, 0x50000000);
                 par4FontRenderer.drawString(s3, (j1 + i / 2) - par4FontRenderer.getStringWidth(s3) / 2, k1 - par4FontRenderer.FONT_HEIGHT, 0x20ffffff);
@@ -893,18 +897,18 @@ public class GuiIngame extends Gui
 
             if (itemstack == null)
             {
-                field_92017_k = 0;
+                remainingHighlightTicks = 0;
             }
-            else if (field_92016_l == null || itemstack.itemID != field_92016_l.itemID || !ItemStack.areItemStackTagsEqual(itemstack, field_92016_l) || !itemstack.isItemStackDamageable() && itemstack.getItemDamage() != field_92016_l.getItemDamage())
+            else if (highlightingItemStack == null || itemstack.itemID != highlightingItemStack.itemID || !ItemStack.areItemStackTagsEqual(itemstack, highlightingItemStack) || !itemstack.isItemStackDamageable() && itemstack.getItemDamage() != highlightingItemStack.getItemDamage())
             {
-                field_92017_k = 40;
+                remainingHighlightTicks = 40;
             }
-            else if (field_92017_k > 0)
+            else if (remainingHighlightTicks > 0)
             {
-                field_92017_k--;
+                remainingHighlightTicks--;
             }
 
-            field_92016_l = itemstack;
+            highlightingItemStack = itemstack;
         }
     }
 

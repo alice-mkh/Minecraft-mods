@@ -21,7 +21,7 @@ public abstract class EntityWaterMob extends EntityCreature implements IAnimals
      */
     public boolean getCanSpawnHere()
     {
-        return worldObj.checkIfAABBIsClear(boundingBox);
+        return worldObj.checkNoEntityCollision(boundingBox);
     }
 
     /**

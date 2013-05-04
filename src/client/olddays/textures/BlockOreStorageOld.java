@@ -15,7 +15,7 @@ public class BlockOreStorageOld extends BlockOreStorage
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         if (oldtextures){
             if (par1 >= 2){

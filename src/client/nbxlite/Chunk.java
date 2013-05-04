@@ -851,7 +851,7 @@ public class Chunk
 
         if (i != xPosition || j != zPosition)
         {
-            worldObj.getWorldLogAgent().func_98232_c((new StringBuilder()).append("Wrong location! ").append(par1Entity).toString());
+            worldObj.getWorldLogAgent().logSevere((new StringBuilder()).append("Wrong location! ").append(par1Entity).toString());
             Thread.dumpStack();
         }
 

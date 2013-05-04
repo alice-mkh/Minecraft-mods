@@ -335,13 +335,8 @@ public class RenderGlobal implements IWorldAccess
             j = 400;
         }
 
-        if (nbxlite){
-            renderChunksWide = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthX - 16 : j) / 16 + 1;
-            renderChunksDeep = (ODNBXlite.isFinite() ? ODNBXlite.IndevWidthZ - 16 : j) / 16 + 1;
-        }else{
-            renderChunksWide = j / 16 + 1;
-            renderChunksDeep = j / 16 + 1;
-        }
+        renderChunksWide = j / 16 + 1;
+        renderChunksDeep = j / 16 + 1;
         renderChunksTall = 16;
         worldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
         sortedWorldRenderers = new WorldRenderer[renderChunksWide * renderChunksTall * renderChunksDeep];
@@ -488,9 +483,6 @@ public class RenderGlobal implements IWorldAccess
      */
     private void markRenderersForNewPosition(int par1, int par2, int par3)
     {
-        if (nbxlite && ODNBXlite.isFinite()){
-            return;
-        }
         par1 -= 8;
         par2 -= 8;
         par3 -= 8;
@@ -1405,6 +1397,13 @@ public class RenderGlobal implements IWorldAccess
         for (int k = 0; k < i; k++)
         {
             WorldRenderer worldrenderer = (WorldRenderer)worldRenderersToUpdate.get(k);
+            if (nbxlite){
+                if (ODNBXlite.isFinite()){
+                    if (worldrenderer.posX<0 || worldrenderer.posZ<0 || worldrenderer.posX>ODNBXlite.IndevWidthX-16 || worldrenderer.posZ>ODNBXlite.IndevWidthZ-16){
+                        continue;
+                    }
+                }
+            }
             if (worldrenderer == null)
             {
                 continue;

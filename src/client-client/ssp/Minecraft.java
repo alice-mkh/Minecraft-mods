@@ -453,7 +453,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft 1.5.1");
+        Display.setTitle("Minecraft Minecraft 1.5.2");
         getLogAgent().logInfo((new StringBuilder()).append("LWJGL Version: ").append(Sys.getVersion()).toString());
 
         try
@@ -760,9 +760,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (i != 0)
         {
             String s = GLU.gluErrorString(i);
-            getLogAgent().func_98232_c("########## GL ERROR ##########");
-            getLogAgent().func_98232_c((new StringBuilder()).append("@ ").append(par1Str).toString());
-            getLogAgent().func_98232_c((new StringBuilder()).append(i).append(": ").append(s).toString());
+            getLogAgent().logSevere("########## GL ERROR ##########");
+            getLogAgent().logSevere((new StringBuilder()).append("@ ").append(par1Str).toString());
+            getLogAgent().logSevere((new StringBuilder()).append(i).append(": ").append(s).toString());
         }
     }
 
@@ -2054,7 +2054,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (!isGamePaused && theWorld != null)
             {
-                theWorld.func_73029_E(MathHelper.floor_double(thePlayer.posX), MathHelper.floor_double(thePlayer.posY), MathHelper.floor_double(thePlayer.posZ));
+                theWorld.doVoidFogParticles(MathHelper.floor_double(thePlayer.posX), MathHelper.floor_double(thePlayer.posY), MathHelper.floor_double(thePlayer.posZ));
             }
 
             mcProfiler.endStartSection("particles");
@@ -2545,7 +2545,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             flag1 = Item.itemsList[i].getHasSubtypes();
-            int k1 = i < 256 && !Block.blocksList[block.blockID].func_82505_u_() ? i : block.blockID;
+            int k1 = i < 256 && !Block.blocksList[block.blockID].isFlowerPot() ? i : block.blockID;
             j = Block.blocksList[k1].getDamageValue(theWorld, k, i1, j1);
         }
         else if (objectMouseOver.typeOfHit == EnumMovingObjectType.ENTITY && objectMouseOver.entityHit != null && flag)
@@ -2573,21 +2573,21 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             {
                 EntityMinecart entityminecart = (EntityMinecart)objectMouseOver.entityHit;
 
-                if (entityminecart.func_94087_l() == 2)
+                if (entityminecart.getMinecartType() == 2)
                 {
                     i = Item.minecartPowered.itemID;
                 }
-                else if (entityminecart.func_94087_l() == 1)
+                else if (entityminecart.getMinecartType() == 1)
                 {
                     i = Item.minecartCrate.itemID;
                 }
-                else if (entityminecart.func_94087_l() == 3)
+                else if (entityminecart.getMinecartType() == 3)
                 {
-                    i = Item.tntMinecart.itemID;
+                    i = Item.minecartTnt.itemID;
                 }
-                else if (entityminecart.func_94087_l() == 5)
+                else if (entityminecart.getMinecartType() == 5)
                 {
-                    i = Item.hopperMinecart.itemID;
+                    i = Item.minecartHopper.itemID;
                 }
                 else
                 {
@@ -3441,7 +3441,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public String getVersion(){
-        return "1.5.1";
+        return "1.5.2";
     }
 
     private void registerCustomPacket(){

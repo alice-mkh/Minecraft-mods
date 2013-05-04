@@ -612,7 +612,7 @@ public class WorldSSP2 extends WorldSSP
             axisalignedbb = null;
         }
 
-        if (axisalignedbb != null && !checkIfAABBIsClear(axisalignedbb))
+        if (axisalignedbb != null && !checkNoEntityCollision(axisalignedbb))
         {
             return false;
         }

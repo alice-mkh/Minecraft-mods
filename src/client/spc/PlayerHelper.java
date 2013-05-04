@@ -515,7 +515,7 @@ public class PlayerHelper {
    public File getWorldDir() {
       ISaveHandler sh = ((ISaveHandler) this.mc.theWorld.saveHandler);
       if (sh instanceof SaveHandler) {
-         return ((SaveHandler) sh).getSaveDirectory();
+         return ((SaveHandler) sh).getWorldDirectory();
       } else {
          return new File("");
       }
@@ -4727,7 +4727,7 @@ public class PlayerHelper {
                     blocks[Block.sandStone.blockID] = enable;
                     blocks[Block.cloth.blockID] = enable;
                     blocks[Block.blockGold.blockID] = enable;
-                    blocks[Block.blockSteel.blockID] = enable;
+                    blocks[Block.blockIron.blockID] = enable;
                     blocks[Block.brick.blockID] = enable;
                     blocks[Block.bookShelf.blockID] = enable;
                     blocks[Block.cobblestoneMossy.blockID] = enable;

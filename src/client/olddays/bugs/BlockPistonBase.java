@@ -10,9 +10,15 @@ public class BlockPistonBase extends Block
     /** This pistons is the sticky one? */
     private final boolean isSticky;
     private boolean ignoreUpdates;
-    private Icon field_94498_b;
-    private Icon field_94499_c;
-    private Icon field_94497_cO;
+
+    /** Only visible when piston is extended */
+    private Icon innerTopIcon;
+
+    /** Bottom side texture */
+    private Icon bottomIcon;
+
+    /** Top icon of piston depends on (either sticky or normal) */
+    private Icon topIcon;
 
     public BlockPistonBase(int par1, boolean par2)
     {
@@ -30,7 +36,7 @@ public class BlockPistonBase extends Block
      */
     public Icon getPistonExtensionTexture()
     {
-        return field_94497_cO;
+        return topIcon;
     }
 
     public void func_96479_b(float par1, float par2, float par3, float par4, float par5, float par6)
@@ -41,30 +47,30 @@ public class BlockPistonBase extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         int i = getOrientation(par2);
 
         if (i > 5)
         {
-            return field_94497_cO;
+            return topIcon;
         }
 
         if (par1 == i)
         {
             if (isExtended(par2) || minX > 0.0D || minY > 0.0D || minZ > 0.0D || maxX < 1.0D || maxY < 1.0D || maxZ < 1.0D)
             {
-                return field_94498_b;
+                return innerTopIcon;
             }
             else
             {
-                return field_94497_cO;
+                return topIcon;
             }
         }
 
-        if (par1 == Facing.faceToSide[i])
+        if (par1 == Facing.oppositeSide[i])
         {
-            return field_94499_c;
+            return bottomIcon;
         }
         else
         {
@@ -81,17 +87,17 @@ public class BlockPistonBase extends Block
 
         if (par0Str == "piston_top")
         {
-            return Block.pistonBase.field_94497_cO;
+            return Block.pistonBase.topIcon;
         }
 
         if (par0Str == "piston_top_sticky")
         {
-            return Block.pistonStickyBase.field_94497_cO;
+            return Block.pistonStickyBase.topIcon;
         }
 
         if (par0Str == "piston_inner_top")
         {
-            return Block.pistonBase.field_94498_b;
+            return Block.pistonBase.innerTopIcon;
         }
         else
         {
@@ -106,9 +112,9 @@ public class BlockPistonBase extends Block
     public void registerIcons(IconRegister par1IconRegister)
     {
         blockIcon = par1IconRegister.registerIcon("piston_side");
-        field_94497_cO = par1IconRegister.registerIcon(isSticky ? "piston_top_sticky" : "piston_top");
-        field_94498_b = par1IconRegister.registerIcon("piston_inner_top");
-        field_94499_c = par1IconRegister.registerIcon("piston_bottom");
+        topIcon = par1IconRegister.registerIcon(isSticky ? "piston_top_sticky" : "piston_top");
+        innerTopIcon = par1IconRegister.registerIcon("piston_inner_top");
+        bottomIcon = par1IconRegister.registerIcon("piston_bottom");
     }
 
     /**

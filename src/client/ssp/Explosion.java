@@ -273,7 +273,7 @@ public class Explosion
 
         if (exploder instanceof EntityTNTPrimed)
         {
-            return ((EntityTNTPrimed)exploder).func_94083_c();
+            return ((EntityTNTPrimed)exploder).getTntPlacedBy();
         }
 
         if (exploder instanceof EntityLiving)

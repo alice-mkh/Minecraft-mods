@@ -329,7 +329,7 @@ public class WorldClient extends World
         }
     }
 
-    public void func_73029_E(int par1, int par2, int par3)
+    public void doVoidFogParticles(int par1, int par2, int par3)
     {
         byte byte0 = 16;
         Random random = new Random();

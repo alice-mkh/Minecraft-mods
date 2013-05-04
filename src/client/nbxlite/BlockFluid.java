@@ -53,7 +53,7 @@ public abstract class BlockFluid extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         if (par1 == 0 || par1 == 1)
         {

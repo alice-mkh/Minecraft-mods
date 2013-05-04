@@ -219,11 +219,11 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("1xtile.blockGold@0");
         removeRecipe("1xtile.blockDiamond0");
         if (b){
-            addRecipe(new ItemStack(Block.blockSteel, 1), "##", "##", '#', Item.ingotIron);
+            addRecipe(new ItemStack(Block.blockIron, 1), "##", "##", '#', Item.ingotIron);
             addRecipe(new ItemStack(Block.blockGold, 1), "##", "##", '#', Item.ingotGold);
             addRecipe(new ItemStack(Block.blockDiamond, 1), "##", "##", '#', Item.diamond);
         }else{
-            addRecipe(new ItemStack(Block.blockSteel, 1), "###", "###", "###", '#', Item.ingotIron);
+            addRecipe(new ItemStack(Block.blockIron, 1), "###", "###", "###", '#', Item.ingotIron);
             addRecipe(new ItemStack(Block.blockGold, 1), "###", "###", "###", '#', Item.ingotGold);
             addRecipe(new ItemStack(Block.blockDiamond, 1), "###", "###", "###", '#', Item.diamond);
         }
@@ -232,7 +232,7 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe(n+"xitem.ingotGold@0");
         removeRecipe(n+"xitem.diamond@0");
         n = b ? 4 : 9;
-        addRecipe(new ItemStack(Item.ingotIron, n), "#", '#', Block.blockSteel);
+        addRecipe(new ItemStack(Item.ingotIron, n), "#", '#', Block.blockIron);
         addRecipe(new ItemStack(Item.ingotGold, n), "#", '#', Block.blockGold);
         addRecipe(new ItemStack(Item.diamond, n), "#", '#', Block.blockDiamond);
     }

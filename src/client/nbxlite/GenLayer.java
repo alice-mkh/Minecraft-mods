@@ -62,9 +62,9 @@ public abstract class GenLayer
         }
 
         GenLayer obj1 = obj;
-        obj1 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj1)), 0);
+        obj1 = GenLayerZoom.magnify(1000L, ((GenLayer)(obj1)), 0);
         obj1 = new GenLayerRiverInit(100L, ((GenLayer)(obj1)));
-        obj1 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj1)), byte0 + 2);
+        obj1 = GenLayerZoom.magnify(1000L, ((GenLayer)(obj1)), byte0 + 2);
         if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_12){
             obj1 = new GenLayerRiver12(1L, ((GenLayer)(obj1)));
         }else{
@@ -72,7 +72,7 @@ public abstract class GenLayer
         }
         obj1 = new GenLayerSmooth(1000L, ((GenLayer)(obj1)));
         GenLayer obj2 = obj;
-        obj2 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj2)), 0);
+        obj2 = GenLayerZoom.magnify(1000L, ((GenLayer)(obj2)), 0);
         if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){
             obj2 = new GenLayerBiome(200L, ((GenLayer)(obj2)), par2WorldType);
         }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_12){
@@ -82,7 +82,7 @@ public abstract class GenLayer
         }else{
             obj2 = new GenLayerVillageLandscape18(200L, ((GenLayer)(obj2)));
         }
-        obj2 = GenLayerZoom.func_75915_a(1000L, ((GenLayer)(obj2)), 2);
+        obj2 = GenLayerZoom.magnify(1000L, ((GenLayer)(obj2)), 2);
         if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_11 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_12){
             obj2 = new GenLayerHills12(1000L, ((GenLayer)(obj2)));
         }else if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13){

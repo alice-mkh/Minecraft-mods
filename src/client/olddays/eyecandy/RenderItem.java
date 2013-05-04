@@ -499,10 +499,10 @@ public class RenderItem extends Render
      */
     public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
     {
-        renderItemStack(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5, null);
+        renderItemOverlayIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5, null);
     }
 
-    public void renderItemStack(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str)
+    public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str)
     {
         if (par3ItemStack == null)
         {

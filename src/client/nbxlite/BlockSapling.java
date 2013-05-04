@@ -15,7 +15,7 @@ public class BlockSapling extends BlockFlower
     {
         "sapling", "sapling_spruce", "sapling_birch", "sapling_jungle"
     };
-    private Icon field_94371_c[];
+    private Icon saplingIcon[];
 
     protected BlockSapling(int par1)
     {
@@ -39,20 +39,20 @@ public class BlockSapling extends BlockFlower
 
         if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(7) == 0)
         {
-            func_96477_c(par1World, par2, par3, par4, par5Random);
+            markOrGrowMarked(par1World, par2, par3, par4, par5Random);
         }
     }
 
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         par2 &= 3;
-        return field_94371_c[par2];
+        return saplingIcon[par2];
     }
 
-    public void func_96477_c(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void markOrGrowMarked(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int i = par1World.getBlockMetadata(par2, par3, par4);
 
@@ -202,11 +202,11 @@ public class BlockSapling extends BlockFlower
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        field_94371_c = new Icon[field_94370_b.length];
+        saplingIcon = new Icon[field_94370_b.length];
 
-        for (int i = 0; i < field_94371_c.length; i++)
+        for (int i = 0; i < saplingIcon.length; i++)
         {
-            field_94371_c[i] = par1IconRegister.registerIcon(field_94370_b[i]);
+            saplingIcon[i] = par1IconRegister.registerIcon(field_94370_b[i]);
         }
     }
 }

@@ -197,7 +197,7 @@ public class PlayerControllerCreative extends PlayerController
         creativeBlocksList.add(Block.oreCoal);
         creativeBlocksList.add(Block.oreIron);
         creativeBlocksList.add(Block.oreGold);
-        creativeBlocksList.add(Block.blockSteel);
+        creativeBlocksList.add(Block.blockIron);
         creativeBlocksList.add(Block.blockGold);
         creativeBlocksList.add(Block.bookShelf);
         creativeBlocksList.add(Block.tnt);

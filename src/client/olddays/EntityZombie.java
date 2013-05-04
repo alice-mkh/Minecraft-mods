@@ -310,11 +310,11 @@ public class EntityZombie extends EntityMob
 
             if (i == 0)
             {
-                setCurrentItemOrArmor(0, new ItemStack(Item.swordSteel));
+                setCurrentItemOrArmor(0, new ItemStack(Item.swordIron));
             }
             else
             {
-                setCurrentItemOrArmor(0, new ItemStack(Item.shovelSteel));
+                setCurrentItemOrArmor(0, new ItemStack(Item.shovelIron));
             }
         }
     }
