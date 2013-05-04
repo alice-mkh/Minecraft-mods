@@ -1100,7 +1100,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void setFlag(String str, boolean b){
-        flags.put(str, true);
+        flags.put(str, b);
     }
 
     public static boolean getDefaultFlag(String str){
