@@ -26,10 +26,10 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
 
     @Override
     protected void actionPerformed(GuiButton guibutton){
-        super.actionPerformed(guibutton);
         if (!guibutton.enabled){
             return;
         }
+        super.actionPerformed(guibutton);
         if (guibutton.id == -1){
             mc.useSP = !mc.useSP;
             guibutton.displayString = mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off");
@@ -42,6 +42,8 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             mc.displayGuiScreen(presets);
             return;
         }
-        mc.displayGuiScreen(new GuiOldDaysSettings(this, core, guibutton.id-1));
+        if (guibutton.id > 0){
+            mc.displayGuiScreen(new GuiOldDaysSettings(this, core, guibutton.id-1));
+        }
     }
 }
