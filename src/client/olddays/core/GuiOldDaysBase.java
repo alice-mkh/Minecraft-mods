@@ -1,44 +1,50 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
-public class GuiOldDaysBase extends GuiScreen{
-    public static final int LEFT_ID = 998;
-    public static final int RIGHT_ID = 999;
+public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
+    public static String version = "OFF";
+
     public static final int TOOLTIP_OFFSET = 500;
 
     protected GuiScreen parent;
-    protected int max;
-    protected int maxpage;
-    protected int page;
-    protected GuiButton left;
-    protected GuiButton right;
     protected boolean displayField;
     protected GuiTextField field;
     protected int tooltipTimer;
     protected int fieldId;
     protected String current;
-    protected boolean hasFields;
     protected mod_OldDays core;
-    protected int specialButtons;
+    protected int contentHeight;
+    protected GuiScrolling scrollingGui;
+    protected boolean restoreList;
+    protected ArrayList<GuiOldDaysSeparator> separators;
+    protected boolean hasSearchField;
+    protected GuiTextFieldSearch searchField;
 
     public GuiOldDaysBase(GuiScreen guiscreen, mod_OldDays c){
         parent = guiscreen;
-        max = 12;
-        maxpage = 1;
-        page = 0;
         displayField = false;
         fieldId = 0;
         tooltipTimer = 0;
-        hasFields = false;
+        hasSearchField = false;
         core = c;
-        specialButtons = 2;
+        scrollingGui = new GuiScrolling(this);
+        restoreList = true;
+        separators = new ArrayList<GuiOldDaysSeparator>();
+        hasSearchField = false;
     }
 
     @Override
     public void updateScreen(){
         field.updateCursorCounter();
+        if (hasSearchField){
+            searchField.updateCursorCounter();
+        }
     }
 
     @Override
@@ -50,48 +56,72 @@ public class GuiOldDaysBase extends GuiScreen{
     public void initGui()
     {
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
+        buttonList.add(button);
+        if (hasSearchField){
+            searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
+            searchField.setMaxStringLength(999);
+            searchField.setFocused(true);
+            searchField.setCanLoseFocus(false);
+            Keyboard.enableRepeatEvents(true);
+        }
+        updateList("");
     }
 
-    protected void addButton(int i, boolean b, int j, String name, boolean e){
+    protected GuiButtonProp addButton(int i, boolean b, int j, String name, boolean e){
         int x = width / 2 - 155;
-        int i2 = i % max;
-        if (i2 % 2 != 0){
+        if (i % 2 != 0){
            x+=160;
         }
         int margin = 30;
-        int top = b ? 15 : -15;
-        int y = height / 6 - top + ((i2/2) * margin);
-        GuiButton button = new GuiButton(j+1, x, y, 150, 20, name);
+        int top = b ? 25 : -5;
+        int y = height / 6 - top + ((i/2) * margin);
+        y += 10 * separators.size();
+        int newContentHeight = (i / 2) * margin + 10 * separators.size();
+        if (newContentHeight > contentHeight){
+            contentHeight = newContentHeight;
+        }
+        GuiButtonProp button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
         buttonList.add(button);
+        return button;
     }
 
     protected void addButton(int i, boolean b, int j, OldDaysProperty p){
         int offset = 3;
         int x = width / 2 - 155;
         int x2 = x - offset - 20;
-        int i2 = i % max;
-        if (i2 % 2 != 0){
+        if (i % 2 != 0){
            x+=160;
            x2+=330 + (offset * 2);
         }
         int margin = 30;
-        int top = b ? 15 : -15;
-        int y = height / 6 - top + ((i2/2) * margin);
+        int top = b ? 25 : -5;
+        int y = height / 6 - top + ((i/2) * margin);
+        y += 10 * separators.size();
+        int newContentHeight = (i / 2) * margin + 10 * separators.size();
+        if (newContentHeight > contentHeight){
+            contentHeight = newContentHeight;
+        }
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, p, false);
         buttonList.add(button);
         GuiButton tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
         buttonList.add(tooltipButton);
     }
 
-    protected void postInitGui(int count){
-        buttonList.add(left = new GuiButtonPage(LEFT_ID, 30, height, width, false, this));
-        buttonList.add(right = new GuiButtonPage(RIGHT_ID, 30, height, width, true, this));
+    protected int addSeparator(int y, boolean b, String str){
+        if (y % 2 == 1){
+            y++;
+        }
+        int top = b ? 30 : 0;
+        separators.add(new GuiOldDaysSeparator(height / 6 - top + y * 15 + 10 * separators.size(), str));
+        return y;
+    }
+
+    protected void postInitGui(){
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
-        Keyboard.enableRepeatEvents(hasFields);
-        maxpage = (count-1) / max;
-        setPage(0);
+        Keyboard.enableRepeatEvents(hasSearchField);
+        scrollingGui.calculateMinScrolling();
     }
 
     @Override
@@ -104,65 +134,65 @@ public class GuiOldDaysBase extends GuiScreen{
             mc.displayGuiScreen(parent);
             return;
         }
-        if (guibutton.id == LEFT_ID){
-            setPage(page-1);
-            return;
-        }
-        if (guibutton.id == RIGHT_ID){
-            setPage(page+1);
-            return;
-        }
     }
 
     @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
-        super.drawScreen(i,j,f);
+        super.drawScreen(i, j, f);
+        for (GuiOldDaysSeparator s : separators){
+            s.draw(fontRenderer, width);
+        }
         if (displayField){
             field.drawTextBox();
         }
-    }
-
-    protected void setPage(int to){
-        if (to>maxpage || to<0){
-            return;
-        }
-        for (int i = 0; i < max*2; i++){
-            int i2 = i+(page*max*2)+1;
-            if (i2<=buttonList.size()-specialButtons){
-                ((GuiButton)buttonList.get(i2)).drawButton = false;
+        scrollingGui.drawFrameAndScrollbar(height);
+        List tempList = buttonList;
+        ArrayList fakeButtonList = new ArrayList();
+        for (int k = 0; k < buttonList.size(); k++){
+            Object o = buttonList.get(k);
+            if (o instanceof GuiButtonProp){
+                continue;
             }
+            fakeButtonList.add(o);
         }
-        page = to;
-        for (int i = 0; i < max*2; i++){
-            int i2 = i+(page*max*2)+1;
-            if (i2<=buttonList.size()-specialButtons){
-                GuiButton guibutton = ((GuiButton)buttonList.get(i2));
-                guibutton.drawButton = (guibutton.id >= TOOLTIP_OFFSET) ? guibutton.enabled : true;
-            }
+        buttonList = fakeButtonList;
+        super.drawScreen(i, j, f);
+        buttonList = tempList;
+        if (hasSearchField){
+            searchField.drawTextBox();
         }
-        left.drawButton = page>0;
-        right.drawButton = page<maxpage;
-        if (displayField){
-            showField(false, ((GuiButton)buttonList.get(fieldId)));
+        String str = version.contains(":") ? version.split(":", 2)[0] : version;
+        if (str.equals("OFF")){
+            str = "";
         }
+        fontRenderer.drawStringWithShadow(str, 2, 2, 0x505050);
     }
 
     protected void showField(boolean b, GuiButton button){
         displayField = b;
-        Keyboard.enableRepeatEvents(b && hasFields);
+        Keyboard.enableRepeatEvents(b && hasSearchField);
         button.enabled = !b;
         field.setFocused(b);
-//         if(!b){
-//             current = "";
-//         }
+        if (hasSearchField){
+            searchField.setFocused(!b);
+            searchField.setCanLoseFocus(b);
+        }
     }
 
     @Override
     protected void keyTyped(char par1, int par2)
     {
-        if (!displayField){
+        if (hasSearchField && searchField.isFocused()){
+            searchField.textboxKeyTyped(par1, par2);
+            if (par1 == '\r' || par2 == 1 || ((par2 == 211 || par2 == 14) && searchField.getText().length() <= 0)){
+                mc.displayGuiScreen(parent);
+                return;
+            }
+            updateList(searchField.getText().trim());
+            return;
+        }else if (!displayField){
             super.keyTyped(par1, par2);
             if (par2 == 1 || par1 == '\0'){
                 return;
@@ -211,5 +241,97 @@ public class GuiOldDaysBase extends GuiScreen{
 
     protected boolean isShiftPressed(){
         return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
+    }
+
+    @Override
+    public int getContentHeight(){
+        return contentHeight - 10;
+    }
+
+    @Override
+    public void handleMouseInput(){
+        scrollingGui.handleMouseInput();
+        super.handleMouseInput();
+    }
+
+    @Override
+    protected void mouseClicked(int par1, int par2, int par3){
+        List tempList = buttonList;
+        ArrayList fakeButtonList = new ArrayList();
+        for (int i = 0; i < buttonList.size(); i++){
+            Object o = buttonList.get(i);
+            if (o instanceof GuiButtonProp){
+                continue;
+            }
+            fakeButtonList.add(o);
+        }
+        buttonList = fakeButtonList;
+        super.mouseClicked(par1, par2, par3);
+        if (restoreList){
+            buttonList = tempList;
+        }
+        restoreList = true;
+        if (par1 < getLeft() || par1 > getRight() || par2 < getTop() || par2 > getBottom()){
+            return;
+        }
+        super.mouseClicked(par1, par2, par3);
+        scrollingGui.mouseClicked(par1, par2, par3);
+    }
+
+    @Override
+    public void mouseMovedOrUp(int par1, int par2, int par3){
+        super.mouseMovedOrUp(par1, par2, par3);
+        scrollingGui.mouseMovedOrUp(par1, par2, par3);
+    }
+
+    @Override
+    protected void func_85041_a(int i, int j, int k, long l){
+        super.func_85041_a(i, j, k, l);
+        scrollingGui.func_85041_a(i, j, k, l);
+    }
+
+    @Override
+    public int getTop(){
+        return height / 6 + (hasSearchField ? 7 : -25);
+    }
+
+    @Override
+    public int getBottom(){
+        return height - 35;
+    }
+
+    @Override
+    public int getLeft(){
+        return 0;
+    }
+
+    @Override
+    public int getRight(){
+        return width;
+    }
+
+    @Override
+    public void scrolled(){
+        for (Object button : buttonList){
+            if (!(button instanceof GuiButtonProp)){
+                continue;
+            }
+            ((GuiButtonProp)button).scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
+        }
+        for (GuiOldDaysSeparator s : separators){
+            s.scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
+        }
+        if (displayField){
+            showField(false, ((GuiButton)buttonList.get(fieldId)));
+        }
+        //FIXME: Field should scroll too.
+    }
+
+    protected void updateList(String str){}
+
+    @Override
+    public void setWorldAndResolution(Minecraft mc, int width, int height){
+        super.setWorldAndResolution(mc, width, height);
+        scrollingGui.mc = mc;
     }
 }

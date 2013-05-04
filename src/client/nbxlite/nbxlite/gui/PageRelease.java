@@ -32,9 +32,9 @@ public class PageRelease extends Page{
     @Override
     public void scrolled(){
         for (int i = 0; i < featuresButtons.length; i++){
-            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrolling;
+            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrollingGui.scrolling;
         }
-        newOresButton.yPosition = height / 6 + 149 + scrolling;
+        newOresButton.yPosition = height / 6 + 149 + scrollingGui.scrolling;
         updateButtonPosition();
     }
 

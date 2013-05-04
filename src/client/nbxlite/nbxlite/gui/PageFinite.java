@@ -60,11 +60,11 @@ public class PageFinite extends Page{
     @Override
     public void scrolled(){
         for (int i = 0; i < 4; i++){
-            widthButtons[i].yPosition = height / 6 - 16 + scrolling;
-            lengthButtons[i].yPosition = height / 6 + 14 + scrolling;
+            widthButtons[i].yPosition = height / 6 - 16 + scrollingGui.scrolling;
+            lengthButtons[i].yPosition = height / 6 + 14 + scrollingGui.scrolling;
         }
-        heightSlider.yPosition = height / 6 + 44 + scrolling;
-        toggleButton.yPosition = height / 6 + 14 + scrolling;
+        heightSlider.yPosition = height / 6 + 44 + scrollingGui.scrolling;
+        toggleButton.yPosition = height / 6 + 14 + scrollingGui.scrolling;
         updateButtonPosition();
     }
 
@@ -104,19 +104,19 @@ public class PageFinite extends Page{
 
     @Override
     public void updateButtonPosition(){
-        newOresButton.yPosition=height / 6 + (origIndev ? (!indev ? 68 : 119) : 69) + scrolling;
+        newOresButton.yPosition=height / 6 + (origIndev ? (!indev ? 68 : 119) : 69) + scrollingGui.scrolling;
         newOresButton.xPosition=width / 2 - (origIndev ? 85 : 75) + leftmargin;
         int[] xcoords = new int[]{94, -16, 14, 126};
         if (origIndev){
             xcoords = !indev ? new int[]{0, 0, 44, 92} : new int[]{4, 28, 52, 76};
         }
-        typeButton.yPosition = height / 6 + xcoords[0] + scrolling;
-        shapeButton.yPosition = height / 6 + xcoords[1] + scrolling;
-        sizeButton.yPosition = height / 6 + xcoords[2] + scrolling;
-        themeButton.yPosition = height / 6 + xcoords[3] + scrolling;
+        typeButton.yPosition = height / 6 + xcoords[0] + scrollingGui.scrolling;
+        shapeButton.yPosition = height / 6 + xcoords[1] + scrollingGui.scrolling;
+        sizeButton.yPosition = height / 6 + xcoords[2] + scrollingGui.scrolling;
+        themeButton.yPosition = height / 6 + xcoords[3] + scrollingGui.scrolling;
         for (int i = 0; i < 4; i++){
-            widthButtons[i].yPosition = height / 6 + xcoords[1] + scrolling;
-            lengthButtons[i].yPosition = height / 6 + xcoords[2] + scrolling;
+            widthButtons[i].yPosition = height / 6 + xcoords[1] + scrollingGui.scrolling;
+            lengthButtons[i].yPosition = height / 6 + xcoords[2] + scrollingGui.scrolling;
         }
         int xpos = width / 2 - (origIndev ? 85 : 75) + leftmargin;
         typeButton.xPosition = xpos;
@@ -129,17 +129,17 @@ public class PageFinite extends Page{
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
         if (!origIndev){
-            drawString(fontRenderer, mod_OldDays.lang.get("width")+": ", width / 2 - 120 + leftmargin, height / 6 - 10 + scrolling, 0xa0a0a0);
-            drawString(fontRenderer, mod_OldDays.lang.get("length")+": ", width / 2 - 120 + leftmargin, height / 6 + 20 + scrolling, 0xa0a0a0);
+            drawString(fontRenderer, mod_OldDays.lang.get("width")+": ", width / 2 - 120 + leftmargin, height / 6 - 10 + scrollingGui.scrolling, 0xa0a0a0);
+            drawString(fontRenderer, mod_OldDays.lang.get("length")+": ", width / 2 - 120 + leftmargin, height / 6 + 20 + scrollingGui.scrolling, 0xa0a0a0);
         }
         drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + leftmargin - (origIndev ? 10 : 0), themeButton.yPosition + 22, 0xa0a0a0);
         if (indev && !origIndev){
             if (type==2){
                 int count = (heightSlider.getSizeValue() - 64) / 48 + 1;
                 if (count==1){
-                    drawCenteredString(fontRenderer, mod_OldDays.lang.get("1Layer"), width / 2 + leftmargin, height / 6 + 114 + scrolling, 0xa0a0a0);
+                    drawCenteredString(fontRenderer, mod_OldDays.lang.get("1Layer"), width / 2 + leftmargin, height / 6 + 114 + scrollingGui.scrolling, 0xa0a0a0);
                 }else{
-                    drawCenteredString(fontRenderer, mod_OldDays.lang.get(count+"Layers"), width / 2 + leftmargin, height / 6 + 114 + scrolling, 0xa0a0a0);
+                    drawCenteredString(fontRenderer, mod_OldDays.lang.get(count+"Layers"), width / 2 + leftmargin, height / 6 + 114 + scrollingGui.scrolling, 0xa0a0a0);
                 }
             }
         }

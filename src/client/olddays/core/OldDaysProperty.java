@@ -21,6 +21,7 @@ public abstract class OldDaysProperty{
     public boolean refreshFallback;
     public String[] fallback;
     public boolean canBeLoaded;
+    public boolean highlight;
 
     public OldDaysProperty(OldDaysModule m, int i, String f){
         module = m;
@@ -39,6 +40,7 @@ public abstract class OldDaysProperty{
             disable();
         }
         canBeLoaded = true;
+        highlight = false;
         module.properties.add(this);
     }
 

@@ -16,18 +16,20 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     @Override
     public void initGui(){
         super.initGui();
-        int count = mod_OldDays.getModuleById(id).properties.size();
-        for (int i = 0; i < count; i++){
-            addButton(i, true, i, mod_OldDays.getModuleById(id).getPropertyById(i + 1));
+        if (id >= 0){
+            int count = mod_OldDays.getModuleById(id).properties.size();
+            for (int i = 0; i < count; i++){
+                addButton(i, true, i, mod_OldDays.getModuleById(id).getPropertyById(i + 1));
+            }
         }
-        postInitGui(count);
+        postInitGui();
     }
 
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
         super.actionPerformed(guibutton);
-        if (guibutton.id <= 0 || guibutton.id >= LEFT_ID){
+        if (guibutton.id <= 0){
             return;
         }
         if (!guibutton.enabled){
@@ -47,6 +49,18 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         OldDaysProperty prop = guibutton.prop;
         int m = prop.module.id;
         int p = prop.id;
+        if (prop.highlight){
+            prop.highlight = false;
+            boolean shouldHighlightModule = false;
+            for (int i = 1; i <= prop.module.properties.size(); i++){
+                OldDaysProperty prop2 = prop.module.getPropertyById(i);
+                if (prop2.highlight){
+                    shouldHighlightModule = true;
+                    break;
+                }
+            }
+            prop.module.highlight = shouldHighlightModule;
+        }
         if (prop.guitype == OldDaysProperty.GUI_TYPE_BUTTON){
             boolean shift = isShiftPressed();
             if (shift){
@@ -96,6 +110,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }
         if(!b){
             GuiButtonProp propButton = (GuiButtonProp)button;
+            if (propButton.prop == null){
+                return;
+            }
             mod_OldDays.sendCallbackAndSave(propButton.prop.module.id, propButton.prop.id);
             send(propButton.prop);
         }
@@ -155,6 +172,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             button.displayString = mod_OldDays.getPropertyButtonText(button.prop);
             showField(false, button);
         }
+        if (button.prop == null){
+            return;
+        }
         if (par2 == 1){
             button.prop.loadFromString(current);
             mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
@@ -196,7 +216,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (!show){
             showTooltip = null;
         }
-        if (showTooltip != null && !(this instanceof GuiOldDaysSearch)){
+        if (showTooltip != null){
             drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
         }
     }

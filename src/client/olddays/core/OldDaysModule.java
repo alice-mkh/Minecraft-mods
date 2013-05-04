@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OldDaysModule{
+public class OldDaysModule implements Comparable<OldDaysModule>{
     public int id;
     public String name;
     public ArrayList<OldDaysProperty> properties;
@@ -17,6 +17,7 @@ public class OldDaysModule{
     public int last;
     public boolean renderersAdded;
     public boolean isLocal;
+    public boolean highlight;
 
     public OldDaysModule(mod_OldDays c, int i, String s){
         core = c;
@@ -27,6 +28,7 @@ public class OldDaysModule{
         last = 0;
         renderersAdded = false;
         isLocal = false;
+        highlight = false;
     }
 
     public OldDaysProperty getPropertyById(int id){
@@ -290,4 +292,14 @@ public class OldDaysModule{
     }
 
     protected void addMobSpawn_do(EnumCreatureType t, Class c, int i, int j, int k){}
+
+    @Override
+    public int compareTo(OldDaysModule m){
+        if (id < m.id){
+            return -1;
+        }else if (id > m.id){
+            return 1;
+        }
+        return 0;
+    }
 }

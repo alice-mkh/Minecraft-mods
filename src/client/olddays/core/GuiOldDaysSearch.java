@@ -5,27 +5,10 @@ import java.util.regex.*;
 import org.lwjgl.input.Keyboard;
 
 public class GuiOldDaysSearch extends GuiOldDaysSettings{
-    protected GuiTextFieldSearch searchField;
 
     public GuiOldDaysSearch(GuiScreen guiscreen, mod_OldDays core){
         super(guiscreen, core, -1);
-        max = 10;
-        hasFields = true;
-    }
-
-    @Override
-    public void initGui(){
-        searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
-        searchField.setMaxStringLength(999);
-        searchField.setFocused(true);
-        searchField.setCanLoseFocus(false);
-        Keyboard.enableRepeatEvents(true);
-    }
-
-    protected void showField(boolean b, GuiButton button){
-        super.showField(b, button);
-        searchField.setFocused(!b);
-        searchField.setCanLoseFocus(b);
+        hasSearchField = true;
     }
 
     @Override
@@ -36,7 +19,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
                 if (field.isFocused()){
                     showField(false, ((GuiButton)buttonList.get(fieldId)));
                 }
-            }else if (buttonList.get(fieldId) != null && buttonList.get(fieldId) instanceof GuiButtonProp){
+            }else if (buttonList != null && buttonList.get(fieldId) != null && buttonList.get(fieldId) instanceof GuiButtonProp){
                 GuiButtonProp button = ((GuiButtonProp)buttonList.get(fieldId));
                 button.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
@@ -59,10 +42,13 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         return false;
     }
 
+    @Override
     protected void updateList(String str){
         buttonList.clear();
+        separators.clear();
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        buttonList.add(new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame")));
+        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
+        buttonList.add(button);
         int count = 0;
         searchField.correct = true;
         Pattern pat = null;
@@ -71,19 +57,24 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         }catch(PatternSyntaxException ex){
             searchField.correct = false;
         }
+        contentHeight = 0;
         if (searchField.correct){
             for (int i = 0; i < mod_OldDays.modules.size(); i++){
                 OldDaysModule module = mod_OldDays.modules.get(i);
+                boolean separator = true;
                 for (int j = 0; j < module.properties.size(); j++){
                     OldDaysProperty prop = module.getPropertyById(j + 1);
                     if (matches(prop, pat)){
+                        if (separator){
+                            count = addSeparator(count, false, mod_OldDays.lang.get("module."+module.name.toLowerCase()));
+                            separator = false;
+                        }
                         addButton(count, false, count++, prop);
                     }
                 }
             }
         }
-        postInitGui(count);
-        setPage(0);
+        postInitGui();
     }
 
     @Override
@@ -96,46 +87,7 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
             mc.displayGuiScreen(parent);
             return;
         }
-        if (guibutton.id == LEFT_ID){
-            setPage(page-1);
-            return;
-        }
-        if (guibutton.id == RIGHT_ID){
-            setPage(page+1);
-            return;
-        }
         GuiButtonProp guibuttonprop = (GuiButtonProp)guibutton;
         actionPerformed(guibuttonprop);
-    }
-
-    @Override
-    protected void keyTyped(char par1, int par2){
-        if (searchField.isFocused()){
-            searchField.textboxKeyTyped(par1, par2);
-            if (par1 == '\r' || par2 == 1 || ((par2 == 211 || par2 == 14) && searchField.getText().length() <= 0)){
-                mc.displayGuiScreen(parent);
-                return;
-            }
-            updateList(searchField.getText().trim());
-            return;
-        }else{
-            super.keyTyped(par1, par2);
-        }
-    }
-
-    @Override
-    public void updateScreen(){
-        super.updateScreen();
-        searchField.updateCursorCounter();
-    }
-
-    @Override
-    public void drawScreen(int i, int j, float f)
-    {
-        super.drawScreen(i, j, f);
-        searchField.drawTextBox();
-        if (showTooltip != null){
-            drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
-        }
     }
 }

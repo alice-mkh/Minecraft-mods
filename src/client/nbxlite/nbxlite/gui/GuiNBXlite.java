@@ -69,6 +69,7 @@ public class GuiNBXlite extends GuiScreen{
         if (currentGen != prevGen){
             setPage();
         }
+        page.setMc(mc);
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int scaledWidth = scaledresolution.getScaledWidth();
         int scaledHeight = scaledresolution.getScaledHeight();
@@ -178,44 +179,11 @@ public class GuiNBXlite extends GuiScreen{
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
-        int pageTop = page.getTop();
-        int pageBottom = page.getBottom();
-        int pageLeft = page.getLeft();
-        int pageRight = page.getRight();
-        if (page.canBeScrolled()){
-            drawDirtRect(pageLeft, pageRight, pageTop, pageBottom, true, page.getScrolling());
-        }
+        page.drawScrollingBackground();
         page.drawScreen(i, j, f);
-        if (page.canBeScrolled()){
-            drawDirtRect(pageLeft, pageRight, 0, pageTop, false, 0);
-            drawDirtRect(pageLeft, pageRight, pageBottom, height, false, 0);
-            drawGradientRect(pageLeft, pageTop, pageRight, pageTop + 5, 0xff000000, 0x00000000);
-            drawGradientRect(pageLeft, pageBottom - 5, pageRight, pageBottom, 0x00000000, 0xff000000);
-            drawRect(pageLeft - 1, pageTop, pageLeft, pageBottom, 0xff000000);
-//             drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
-            page.drawScrollbar();
-        }
+        page.drawFrameAndScrollbar();
         drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);
-    }
-
-    private void drawDirtRect(int x1, int x2, int y1, int y2, boolean scrolling, int i)
-    {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_FOG);
-        Tessellator tessellator = Tessellator.instance;
-        mc.renderEngine.bindTexture("/gui/background.png");
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        float f = 32F;
-        tessellator.startDrawingQuads();
-        float xOffset = (x1 % 32) / f;
-        float yOffset = (y1 % 32) / f;
-        tessellator.setColorOpaque_I(scrolling ? 0x202020 : 0x404040);
-        tessellator.addVertexWithUV(x1, y2, 0.0D, xOffset, (float)(y2 - y1 - i) / f + yOffset);
-        tessellator.addVertexWithUV(x2, y2, 0.0D, (float)(x2 - x1) / f + xOffset, (float)(y2 - y1 - i) / f + yOffset);
-        tessellator.addVertexWithUV(x2, y1, 0.0D, (float)(x2 - x1) / f + xOffset, yOffset - i / f);
-        tessellator.addVertexWithUV(x1, y1, 0.0D, xOffset, yOffset - i / f);
-        tessellator.draw();
     }
 
     public String getButtonName(){

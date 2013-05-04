@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
@@ -269,6 +270,7 @@ public class mod_OldDays extends Mod{
             modules.add(module);
             System.out.println("OldDays: Loaded "+module.name+" module");
         }
+        Collections.sort(modules);
     }
 
     public static String getPropertyButtonText(OldDaysProperty prop){

@@ -71,7 +71,8 @@ public class ODEyecandy extends OldDaysModule{
                     reload(); break;
             case 14:set(RenderLiving.class, "stick", Arrows); break;
             case 15:set(GuiIngame.class, "version", Version);
-                    set(GuiMainMenu.class, "version", Version); break;
+                    set(GuiMainMenu.class, "version", Version);
+                    GuiOldDaysBase.version = Version; break;
             case 16:set(RenderHelper.class, "shadows", InvBlocks > 1);
                     set(RenderHelper.class, "oldrotation", InvBlocks < 1);
                     set(RenderPlayer2.class, "oldrotation", InvBlocks < 3);
