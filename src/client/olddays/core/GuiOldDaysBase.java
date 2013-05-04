@@ -147,11 +147,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         if (displayField){
             field.drawTextBox();
         }
-        GuiScrolling.drawDirtRect(0, width, 0, getTop(), false, 0);
-        GuiScrolling.drawDirtRect(0, width, getBottom(), height, false, 0);
-        drawGradientRect(0, getTop(), width, getTop() + 5, 0xff000000, 0x00000000);
-        drawGradientRect(0, getBottom() - 5, width, getBottom(), 0x00000000, 0xff000000);
-        scrollingGui.drawScrollbar();
+        scrollingGui.drawFrameAndScrollbar(height);
         List tempList = buttonList;
         ArrayList fakeButtonList = new ArrayList();
         for (int k = 0; k < buttonList.size(); k++){
@@ -254,7 +250,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     @Override
     public void handleMouseInput(){
-        scrollingGui.handleMouseInput(mc);
+        scrollingGui.handleMouseInput();
         super.handleMouseInput();
     }
 
@@ -332,4 +328,10 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     }
 
     protected void updateList(String str){}
+
+    @Override
+    public void setWorldAndResolution(Minecraft mc, int width, int height){
+        super.setWorldAndResolution(mc, width, height);
+        scrollingGui.mc = mc;
+    }
 }

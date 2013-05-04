@@ -4,13 +4,14 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
-public class GuiScrolling{
+public class GuiScrolling extends Gui{
     public static final int SCROLLBAR_WIDTH = 6;
 
     private IScrollingGui gui;
+    public Minecraft mc;
     public int scrolling;
-    public int minScrolling;
-    public int maxScrolling;
+    private int minScrolling;
+    private int maxScrolling;
     private boolean dragging;
     private boolean scrollbarDragging;
     private int clickY;
@@ -25,7 +26,7 @@ public class GuiScrolling{
         scrollbarDragging = false;
     }
 
-    public void handleMouseInput(Minecraft mc){
+    public void handleMouseInput(){
         if (canBeScrolled() && !mc.gameSettings.touchscreen){
             int l = Mouse.getEventDWheel();
             if (l != 0){
@@ -98,7 +99,26 @@ public class GuiScrolling{
         gui.scrolled();
     }
 
-    public void drawScrollbar(){
+    public void mouseClicked(int par1, int par2, int par3){
+        if (!canBeScrolled()){
+            return;
+        }
+        dragging = true;
+        if (par1 > gui.getRight() - SCROLLBAR_WIDTH){
+            scrollbarDragging = true;
+        }
+        clickY = par2;
+    }
+
+    public void mouseMovedOrUp(int par1, int par2, int par3){
+        if (!canBeScrolled() || !dragging){
+            return;
+        }
+        dragging = false;
+        scrollbarDragging = false;
+    }
+
+    private void drawScrollbar(){
         int top = gui.getTop();
         int bottom = gui.getBottom();
         int delta = bottom - top;
@@ -148,26 +168,7 @@ public class GuiScrolling{
         }
     }
 
-    public void mouseClicked(int par1, int par2, int par3){
-        if (!canBeScrolled()){
-            return;
-        }
-        dragging = true;
-        if (par1 > gui.getRight() - SCROLLBAR_WIDTH){
-            scrollbarDragging = true;
-        }
-        clickY = par2;
-    }
-
-    public void mouseMovedOrUp(int par1, int par2, int par3){
-        if (!canBeScrolled() || !dragging){
-            return;
-        }
-        dragging = false;
-        scrollbarDragging = false;
-    }
-
-    public static void drawDirtRect(int x1, int x2, int y1, int y2, boolean scrolling, int i)
+    private void drawDirtRect(int x1, int x2, int y1, int y2, boolean scrolling, int i)
     {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
@@ -184,5 +185,22 @@ public class GuiScrolling{
         tessellator.addVertexWithUV(x2, y1, 0.0D, (float)(x2 - x1) / f + xOffset, yOffset - i / f);
         tessellator.addVertexWithUV(x1, y1, 0.0D, xOffset, yOffset - i / f);
         tessellator.draw();
+    }
+
+    public void drawFrameAndScrollbar(int height){
+        int pageLeft = gui.getLeft();
+        int pageRight = gui.getRight();
+        int pageTop = gui.getTop();
+        int pageBottom = gui.getBottom();
+        drawDirtRect(pageLeft, pageRight, 0, pageTop, false, 0);
+        drawDirtRect(pageLeft, pageRight, pageBottom, height, false, 0);
+        drawGradientRect(pageLeft, pageTop, pageRight, pageTop + 5, 0xff000000, 0x00000000);
+        drawGradientRect(pageLeft, pageBottom - 5, pageRight, pageBottom, 0x00000000, 0xff000000);
+        drawRect(pageLeft - 1, pageTop, pageLeft, pageBottom, 0xff000000);
+        drawScrollbar();
+    }
+ 
+    public void drawScrollingBackground(){
+        drawDirtRect(gui.getLeft(), gui.getRight(), gui.getTop(), gui.getBottom(), true, scrolling - maxScrolling);
     }
 }

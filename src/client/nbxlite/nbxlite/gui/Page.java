@@ -1,11 +1,9 @@
 package net.minecraft.src.nbxlite.gui;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
-import net.minecraft.src.Tessellator;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.GuiScrolling;
 import net.minecraft.src.IScrollingGui;
@@ -22,6 +20,7 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
 
     public void setMc(Minecraft mc){
         this.mc = mc;
+        scrollingGui.mc = mc;
     }
 
     public abstract void initButtons();
@@ -42,10 +41,6 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
     public abstract void loadFromWorldInfo(WorldInfo w);
 
     public abstract String getString();
-
-    public int getScrolling(){
-        return scrollingGui.scrolling - scrollingGui.maxScrolling;
-    }
 
     @Override
     public int getLeft(){
@@ -109,11 +104,21 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
 
     @Override
     public void handleMouseInput(){
-        scrollingGui.handleMouseInput(mc);
+        scrollingGui.handleMouseInput();
         super.handleMouseInput();
     }
 
-    public void drawScrollbar(){
-        scrollingGui.drawScrollbar();
+    public void drawScrollingBackground(){
+        if (!canBeScrolled()){
+            return;
+        }
+        scrollingGui.drawScrollingBackground();
+    }
+
+    public void drawFrameAndScrollbar(){
+        if (!scrollingGui.canBeScrolled()){
+            return;
+        }
+        scrollingGui.drawFrameAndScrollbar(height);
     }
 }

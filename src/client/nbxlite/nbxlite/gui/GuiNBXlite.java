@@ -63,13 +63,13 @@ public class GuiNBXlite extends GuiScreen{
             case 3: page = new PageBeta(this); break;
             default: page = new PageRelease(this); break;
         }
-        page.setMc(mc);
     }
 
     public void refreshPage(boolean reset){
         if (currentGen != prevGen){
             setPage();
         }
+        page.setMc(mc);
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int scaledWidth = scaledresolution.getScaledWidth();
         int scaledHeight = scaledresolution.getScaledHeight();
@@ -179,23 +179,9 @@ public class GuiNBXlite extends GuiScreen{
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
-        int pageTop = page.getTop();
-        int pageBottom = page.getBottom();
-        int pageLeft = page.getLeft();
-        int pageRight = page.getRight();
-        if (page.canBeScrolled()){
-            GuiScrolling.drawDirtRect(pageLeft, pageRight, pageTop, pageBottom, true, page.getScrolling());
-        }
+        page.drawScrollingBackground();
         page.drawScreen(i, j, f);
-        if (page.canBeScrolled()){
-            GuiScrolling.drawDirtRect(pageLeft, pageRight, 0, pageTop, false, 0);
-            GuiScrolling.drawDirtRect(pageLeft, pageRight, pageBottom, height, false, 0);
-            drawGradientRect(pageLeft, pageTop, pageRight, pageTop + 5, 0xff000000, 0x00000000);
-            drawGradientRect(pageLeft, pageBottom - 5, pageRight, pageBottom, 0x00000000, 0xff000000);
-            drawRect(pageLeft - 1, pageTop, pageLeft, pageBottom, 0xff000000);
-//             drawRect(pageRight, pageTop, pageRight + 1, pageBottom, 0xff000000);
-            page.drawScrollbar();
-        }
+        page.drawFrameAndScrollbar();
         drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);
     }
