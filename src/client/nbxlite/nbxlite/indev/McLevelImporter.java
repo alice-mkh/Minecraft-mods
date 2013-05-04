@@ -59,7 +59,7 @@ public class McLevelImporter{
         }
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         ODNBXlite.MapFeatures = ODNBXlite.FEATURES_INDEV;
-        ODNBXlite.GenerateNewOres = false;
+        ODNBXlite.setFlag("newores", false);
         ODNBXlite.Import = true;
         ODNBXlite.IndevWorld = blocks;
         ODNBXlite.IndevWidthX = width;

@@ -29,7 +29,7 @@ public class PageFinite extends Page{
         widthButtons = new GuiButton[4];
         lengthButtons = new GuiButton[4];
         origIndev = mc.indevShapeSize;
-        newores = ODNBXlite.GenerateNewOres;
+        newores = ODNBXlite.getDefaultFlag("newores");
         tempSliderValue = 0.0F;
         theme = 0;
         type = 0;
@@ -78,7 +78,7 @@ public class PageFinite extends Page{
 
     @Override
     public void updateButtonText(){
-        newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         sizeButton.displayString = mod_OldDays.lang.get("indevSize") + ": " + mod_OldDays.lang.get(GeneratorList.sizename[size]);
         shapeButton.displayString = mod_OldDays.lang.get("indevShape") + ": " + mod_OldDays.lang.get(GeneratorList.shapename[shape]);
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
@@ -224,7 +224,7 @@ public class PageFinite extends Page{
             ODNBXlite.IndevHeight = heightSlider.getSizeValue();
         }
         ODNBXlite.setIndevBounds(type, theme);
-        ODNBXlite.GenerateNewOres=newores;
+        ODNBXlite.setFlag("newores", newores);
     }
 
     @Override
@@ -235,7 +235,7 @@ public class PageFinite extends Page{
         size = 1;
         xSize = ODNBXlite.DefaultFiniteWidth;
         zSize = ODNBXlite.DefaultFiniteLength;
-        newores = ODNBXlite.DefaultNewOres;
+        newores = ODNBXlite.getDefaultFlag("newores");
         tempSliderValue = GuiSliderCustom.setSizeValue(ODNBXlite.DefaultFiniteDepth + 32);
     }
 
@@ -243,11 +243,10 @@ public class PageFinite extends Page{
     public void loadFromWorldInfo(WorldInfo w){
         type = w.mapType;
         theme = w.mapTheme;
-        newores = w.newOres;
         ODNBXlite.IndevHeight = w.indevY;
         ODNBXlite.MapTheme=theme;
-        ODNBXlite.GenerateNewOres=newores;
         ODNBXlite.IndevMapType=type;
+        newores = ODNBXlite.getFlagFromString(w.flags, "newores");
     }
 
     @Override

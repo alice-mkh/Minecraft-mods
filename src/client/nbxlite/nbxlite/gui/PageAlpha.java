@@ -16,7 +16,7 @@ public class PageAlpha extends Page{
     public PageAlpha(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[ODNBXlite.BIOMELESS_FEATURES.length];
-        newores = ODNBXlite.GenerateNewOres;
+        newores = ODNBXlite.getDefaultFlag("newores");
         theme = 0;
         snow = 1;
         features = ODNBXlite.DefaultFeaturesBiomeless;
@@ -57,7 +57,7 @@ public class PageAlpha extends Page{
     @Override
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
         snowButton.displayString = stringtranslate.translateKey("tile.snow.name") + ": ";
         if (snow == 1){
@@ -124,24 +124,23 @@ public class PageAlpha extends Page{
         }else{
             ODNBXlite.SnowCovered = false;
         }
-        ODNBXlite.GenerateNewOres = newores;
+        ODNBXlite.setFlag("newores", newores);
     }
 
     @Override
     public void setDefaultSettings(){
         features = ODNBXlite.DefaultFeaturesBiomeless;
         theme = ODNBXlite.DefaultTheme;
-        newores = ODNBXlite.DefaultNewOres;
+        newores = ODNBXlite.getDefaultFlag("newores");
     }
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
         theme = w.mapTheme;
-        newores = w.newOres;
         snow = w.snowCovered ? 2 : 0;
         ODNBXlite.SnowCovered = w.snowCovered;
         ODNBXlite.MapTheme = theme;
-        ODNBXlite.GenerateNewOres = newores;
+        newores = ODNBXlite.getFlagFromString(w.flags, "newores");
     }
 
     @Override

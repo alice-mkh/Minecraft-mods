@@ -420,7 +420,7 @@ public class ChunkProviderSky extends ChunkProviderBaseInfinite{
             int j15 = l + rand.nextInt(16);
             (new OldWorldGenMinable(Block.oreLapis.blockID, 6, false)).generate(worldObj, rand, k7, l10, j15);
         }
-        if (ODNBXlite.GenerateNewOres){
+        if (ODNBXlite.getFlag("newores")){
             int max = 0;
             detection: for(int iii = k; iii < k + 16; iii++){
                 for(int jjj = l; jjj < l + 16; jjj++){

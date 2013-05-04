@@ -11,7 +11,7 @@ public class PageRelease extends Page{
     public PageRelease(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat2length + 1];
-        newores = ODNBXlite.GenerateNewOres;
+        newores = ODNBXlite.getDefaultFlag("newores");
         features = ODNBXlite.DefaultFeaturesRelease;
     }
 
@@ -45,7 +45,7 @@ public class PageRelease extends Page{
 
     @Override
     public void updateButtonText(){
-        newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
     }
 
     @Override
@@ -76,20 +76,19 @@ public class PageRelease extends Page{
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_NEWBIOMES;
         ODNBXlite.MapFeatures=features;
-        ODNBXlite.GenerateNewOres=newores;
+        ODNBXlite.setFlag("newores", newores);
     }
 
     @Override
     public void setDefaultSettings(){
         features = ODNBXlite.DefaultFeaturesRelease;
-        newores = ODNBXlite.DefaultNewOres;
+        newores = ODNBXlite.getDefaultFlag("newores");
     }
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
         features = w.mapGenExtra;
-        newores = w.newOres;
-        ODNBXlite.GenerateNewOres=newores;
+        newores = ODNBXlite.getFlagFromString(w.flags, "newores");
     }
 
     @Override

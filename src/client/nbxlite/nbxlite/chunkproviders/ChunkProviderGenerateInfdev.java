@@ -309,7 +309,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
             int z2 = z1 + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
-        if (ODNBXlite.GenerateNewOres){
+        if (ODNBXlite.getFlag("newores")){
             for(int i = 0; i < 8; i++)
             {
                 int x2 = x1 + rand.nextInt(16);

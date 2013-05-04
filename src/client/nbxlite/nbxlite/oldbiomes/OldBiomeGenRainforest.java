@@ -22,7 +22,7 @@ public class OldBiomeGenRainforest extends OldBiomeGenBase
     @Override
     public WorldGenerator getRandomWorldGenForTrees(Random random)
     {
-        if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){
+        if (ODNBXlite.getFlag("jungle")){
             if (random.nextInt(10) == 0)
             {
                 return new WorldGenBigTree(false);

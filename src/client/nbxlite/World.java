@@ -184,7 +184,7 @@ public abstract class World implements IBlockAccess
 
         par3WorldProvider.registerWorld(this);
         chunkProvider = createChunkProvider();
-        ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
+        ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered);
         ODNBXlite.setDefaultColors();
         ODNBXlite.setIndevBounds(ODNBXlite.MapFeatures == ODNBXlite.FEATURES_CLASSIC ? 5 : ODNBXlite.IndevMapType, ODNBXlite.MapTheme);
         ODNBXlite.refreshProperties();
@@ -285,10 +285,10 @@ public abstract class World implements IBlockAccess
             worldInfo.mapGen = ODNBXlite.Generator;
             worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
             worldInfo.mapTheme = ODNBXlite.MapTheme;
-            worldInfo.newOres = ODNBXlite.GenerateNewOres;
+            worldInfo.flags = ODNBXlite.getFlags();
             if (provider.dimensionId == 0){
                 worldInfo.snowCovered = ODNBXlite.SnowCovered;
-                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
+                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered);
                 if (!(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV && ODNBXlite.Import)){
                     worldInfo.cloudheight = ODNBXlite.CloudHeight;
                     worldInfo.skybrightness = ODNBXlite.SkyBrightness;
@@ -404,14 +404,15 @@ public abstract class World implements IBlockAccess
                 ODNBXlite.SkyColor = worldInfo.skycolor;
                 ODNBXlite.FogColor = worldInfo.fogcolor;
                 ODNBXlite.CloudColor = worldInfo.cloudcolor;
-                ODNBXlite.SetGenerator(this, worldInfo.mapGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
+                ODNBXlite.setFlags(worldInfo.flags);
+                ODNBXlite.SetGenerator(this, worldInfo.mapGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered);
             }else{
                 worldInfo.nbxlite = true;
-                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered, ODNBXlite.GenerateNewOres);
+                ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered);
                 worldInfo.mapGen = ODNBXlite.Generator;
                 worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
                 worldInfo.mapTheme = ODNBXlite.MapTheme;
-                worldInfo.newOres = ODNBXlite.GenerateNewOres;
+                worldInfo.flags = ODNBXlite.getFlags();
                 worldInfo.mapType = ODNBXlite.IndevMapType;
                 worldInfo.indevX = ODNBXlite.IndevWidthX;
                 worldInfo.indevZ = ODNBXlite.IndevWidthZ;
@@ -3290,8 +3291,7 @@ public abstract class World implements IBlockAccess
         if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))){
             updateWeather();
         }
     }

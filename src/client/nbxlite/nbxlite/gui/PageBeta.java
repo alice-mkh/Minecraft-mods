@@ -13,8 +13,8 @@ public class PageBeta extends Page{
     public PageBeta(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat1length + 1];
-        jungle = ODNBXlite.MapFeatures == ODNBXlite.FEATURES_JUNGLE;
-        newores = ODNBXlite.GenerateNewOres;
+        jungle = ODNBXlite.getDefaultFlag("jungle");
+        newores = ODNBXlite.getDefaultFlag("newores");
         features = ODNBXlite.DefaultFeaturesBeta;
     }
 
@@ -52,7 +52,7 @@ public class PageBeta extends Page{
 
     @Override
     public void updateButtonText(){
-        newOresButton.displayString = mod_OldDays.lang.get("nbxlite.generatenewores.name") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         jungleButton.displayString = mod_OldDays.lang.get("betaJungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
     }
 
@@ -85,26 +85,31 @@ public class PageBeta extends Page{
     @Override
     public void applySettings(){
         ODNBXlite.Generator = ODNBXlite.GEN_OLDBIOMES;
-        ODNBXlite.MapFeatures = jungle ? ODNBXlite.FEATURES_JUNGLE : features;
-        ODNBXlite.GenerateNewOres=newores;
+        ODNBXlite.MapFeatures = features;
+        ODNBXlite.setFlag("jungle", jungle);
+        ODNBXlite.setFlag("newores", newores);
     }
 
     @Override
     public void setDefaultSettings(){
         features = ODNBXlite.DefaultFeaturesBeta;
-        newores = ODNBXlite.DefaultNewOres;
-        jungle = ODNBXlite.DefaultFeaturesBeta == ODNBXlite.FEATURES_JUNGLE;
+        newores = ODNBXlite.getDefaultFlag("newores");
+        jungle = ODNBXlite.getDefaultFlag("jungle");
     }
 
     @Override
     public void loadFromWorldInfo(WorldInfo w){
-        newores = w.newOres;
         features = w.mapGenExtra;
-        ODNBXlite.GenerateNewOres=newores;
+        newores = ODNBXlite.getFlagFromString(w.flags, "newores");
+        jungle = ODNBXlite.getFlagFromString(w.flags, "jungle");
     }
 
     @Override
     public String getString(){
-        return mod_OldDays.lang.get("nbxlite.betafeatures" + (features + 1));
+        String str = mod_OldDays.lang.get("nbxlite.betafeatures" + (features + 1));
+        if (jungle){
+            str += " (" + mod_OldDays.lang.get("betaJungle") + ")";
+        }
+        return str;
     }
 }

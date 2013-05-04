@@ -55,7 +55,7 @@ public final class GuiIndev extends GuiScreen{
                 ODNBXlite.IndevWidthX /= 2;
                 ODNBXlite.IndevHeight = 256;
             }
-            ODNBXlite.GenerateNewOres = ODNBXlite.DefaultNewOres;
+            ODNBXlite.setDefaultFlag("newores");
             ODNBXlite.setIndevBounds(mapType, mapTheme);
             ODNBXlite.setDefaultColors();
             mc.displayGuiScreen(parent);

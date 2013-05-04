@@ -17,7 +17,7 @@ public class BiomeGenHills2 extends BiomeGenHills
     public void decorate(World par1World, Random par2Random, int par3, int par4)
     {
         super.decorate(par1World, par2Random, par3, par4);
-        if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13 || ODNBXlite.GenerateNewOres){
+        if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_13 || ODNBXlite.getFlag("newores")){
             int i = 3 + par2Random.nextInt(6);
 
             for (int j = 0; j < i; j++)
@@ -33,7 +33,7 @@ public class BiomeGenHills2 extends BiomeGenHills
                 }
             }
         }
-        if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14 || ODNBXlite.GenerateNewOres){
+        if (ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_14 || ODNBXlite.getFlag("newores")){
             for (int j = 0; j < 7; j++)
             {
                 int l = par3 + par2Random.nextInt(16);

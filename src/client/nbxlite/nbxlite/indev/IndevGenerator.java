@@ -367,7 +367,7 @@ label0:
         int j3 = a(Block.oreIron.blockID, 800, 8, (k1 * 3) / 5);
         int l3 = a(Block.oreGold.blockID, 500, 6, (k1 << 1) / 5);
         l1 = a(Block.oreDiamond.blockID, 800, 2, k1 / 5);
-        if (ODNBXlite.GenerateNewOres){
+        if (ODNBXlite.getFlag("newores")){
             int redstone = a(Block.oreRedstone.blockID, 800, 4, (k1 << 1) / 5);
             int lapis = a(Block.oreLapis.blockID, 600, 4, (k1 << 1) / 5);
             System.out.println("Coal: "+j2+", Iron: "+j3+", Lapis: "+lapis+", Gold: "+l3+", Redstone: "+redstone+", Diamond: "+l1);

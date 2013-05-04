@@ -478,7 +478,7 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             int l10 = l + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, i6, k8, l10);
         }
-        if(ODNBXlite.GenerateNewOres)
+        if(ODNBXlite.getFlag("newores"))
         {
             for(int k13 = 0; k13 < 1; k13++)
             {

@@ -82,9 +82,9 @@ public class WorldInfo
     public int skycolor;
     public int fogcolor;
     public int cloudcolor;
-    public boolean newOres;
+    public String flags;
 
-    public static final int NBXLITE_INFO_VERSION = 2;
+    public static final int NBXLITE_INFO_VERSION = 3;
 
     protected WorldInfo()
     {
@@ -192,52 +192,33 @@ public class WorldInfo
                 mapGen = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 0);
                 mapGenExtra = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 1);
                 snowCovered = ODNBXlite.getGen(nbxliteTag.getString("Generator"), 2)>0;
-                newOres = nbxliteTag.getBoolean("NewOres");
-                if (!nbxliteTag.hasKey("Theme")){
-                    mapTheme = ODNBXlite.THEME_NORMAL;
-                    cloudheight = -1F;
-                    skybrightness = -1;
-                    skycolor = 0;
-                    fogcolor = 0;
-                    cloudcolor = 0;
-                }else{
-                    try{
-                        NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
-                        if (mapGen==ODNBXlite.GEN_BIOMELESS){
-                            mapTheme = themeTag.getInteger("Generation");
-                            if (nbxliteTag.getInteger("Version") < 2){
-                                if (mapTheme == 2){
-                                    mapTheme = 3;
-                                }else if (mapTheme == 3){
-                                    mapTheme = 2;
-                                }
-                            }
-                        }else{
-                            mapTheme = ODNBXlite.THEME_NORMAL;
-                        }
-                        cloudheight = themeTag.getFloat("CloudHeight");
-                        skybrightness = themeTag.getInteger("SkyBrightness");
-                        skycolor = themeTag.getInteger("SkyColor");
-                        fogcolor = themeTag.getInteger("FogColor");
-                        cloudcolor = themeTag.getInteger("CloudColor");
-                    }catch(Exception ex){
-                        if (ex.getMessage().contains("cannot be cast")){
-                            mapTheme = nbxliteTag.getInteger("Theme");
-                            if (nbxliteTag.getInteger("Version") < 2){
-                                if (mapTheme == 2){
-                                    mapTheme = 3;
-                                }else if (mapTheme == 3){
-                                    mapTheme = 2;
-                                }
-                            }
-                            cloudheight = -1F;
-                            skybrightness = -1;
-                            skycolor = 0;
-                            fogcolor = 0;
-                            cloudcolor = 0;
-                        }
+                flags = nbxliteTag.getString("Flags");
+                if (nbxliteTag.getInteger("Version") < 3){
+                    if (nbxliteTag.getString("Generator").endsWith("/jungle")){
+                        flags += (flags.length() <= 0) ? "jungle" : ";jungle";
+                    }
+                    if (nbxliteTag.getBoolean("NewOres")){
+                        flags += (flags.length() <= 0) ? "newores" : ";newores";
                     }
                 }
+                NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
+                if (mapGen==ODNBXlite.GEN_BIOMELESS){
+                    mapTheme = themeTag.getInteger("Generation");
+                    if (nbxliteTag.getInteger("Version") < 2){
+                        if (mapTheme == 2){
+                            mapTheme = 3;
+                        }else if (mapTheme == 3){
+                            mapTheme = 2;
+                        }
+                    }
+                }else{
+                    mapTheme = ODNBXlite.THEME_NORMAL;
+                }
+                cloudheight = themeTag.getFloat("CloudHeight");
+                skybrightness = themeTag.getInteger("SkyBrightness");
+                skycolor = themeTag.getInteger("SkyColor");
+                fogcolor = themeTag.getInteger("FogColor");
+                cloudcolor = themeTag.getInteger("CloudColor");
                 if (mapGen==ODNBXlite.GEN_BIOMELESS){
                     if (mapGenExtra==ODNBXlite.FEATURES_INDEV || mapGenExtra==ODNBXlite.FEATURES_CLASSIC){
                         NBTTagCompound finiteTag = nbxliteTag.getCompoundTag("Indev");
@@ -292,7 +273,7 @@ public class WorldInfo
             indevX = ODNBXlite.IndevWidthX;
             indevY = ODNBXlite.IndevHeight;
             indevZ = ODNBXlite.IndevWidthZ;
-            newOres = ODNBXlite.GenerateNewOres;
+            flags = ODNBXlite.getFlags();
             surrgroundheight = ODNBXlite.SurrGroundHeight;
             surrgroundtype = ODNBXlite.SurrGroundType;
             surrwaterheight = ODNBXlite.SurrWaterHeight;
@@ -343,7 +324,7 @@ public class WorldInfo
         indevX = par1WorldInfo.indevX;
         indevY = par1WorldInfo.indevY;
         indevZ = par1WorldInfo.indevZ;
-        newOres = par1WorldInfo.newOres;
+        flags = par1WorldInfo.flags;
         surrgroundheight = par1WorldInfo.surrgroundheight;
         surrgroundtype = par1WorldInfo.surrgroundtype;
         surrwaterheight = par1WorldInfo.surrwaterheight;
@@ -429,7 +410,7 @@ public class WorldInfo
             NBTTagCompound nbxliteTag = new NBTTagCompound();
             nbxliteTag.setInteger("Version", NBXLITE_INFO_VERSION);
             nbxliteTag.setString("Generator", ODNBXlite.getGenName(mapGen, mapGenExtra, snowCovered));
-            nbxliteTag.setBoolean("NewOres", newOres);
+            nbxliteTag.setString("Flags", flags);
             NBTTagCompound themeTag = new NBTTagCompound();
             themeTag.setInteger("Generation", mapTheme);
             themeTag.setFloat("CloudHeight", cloudheight);

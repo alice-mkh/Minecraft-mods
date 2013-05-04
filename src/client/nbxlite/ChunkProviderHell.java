@@ -635,7 +635,7 @@ public class ChunkProviderHell implements IChunkProvider
             (new OldWorldGenFlowers(Block.mushroomRed.blockID)).generate(worldObj, hellRNG, j2, l3, l5);
         }
 
-        if ((ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_15) || ODNBXlite.GenerateNewOres){
+        if ((ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_15) || ODNBXlite.getFlag("newores")){
             WorldGenMinable worldgenminable = new WorldGenMinable(Block.oreNetherQuartz.blockID, 13, Block.netherrack.blockID);
 
             for (int i4 = 0; i4 < 16; i4++)

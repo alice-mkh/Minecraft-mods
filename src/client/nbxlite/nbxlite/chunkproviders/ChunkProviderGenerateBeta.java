@@ -524,7 +524,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }
         }
 
-        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10 || ODNBXlite.GenerateNewOres)
+        if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA10 || ODNBXlite.getFlag("newores"))
         {
             for(int i = 0; i < 1; i++)
             {
@@ -539,7 +539,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             }
 
         }
-        if (ODNBXlite.GenerateNewOres){
+        if (ODNBXlite.getFlag("newores")){
             int max = 0;
             detection: for(int i = x1; i < x1 + 16; i++){
                 for(int j = z1; j < z1 + 16; j++){
@@ -578,7 +578,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         }
         if(oldbiomegenbase == OldBiomeGenBase.rainforest)
         {
-            if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){
+            if (ODNBXlite.getFlag("jungle")){
                 trees += treenoise + 50;
                 trees *= 2;
             }else{
@@ -780,7 +780,7 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             WorldGenDesertWells worldgendesertwells = new WorldGenDesertWells();
             worldgendesertwells.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2) + 1, z2);
         }
-        if(oldbiomegenbase == OldBiomeGenBase.rainforest && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE){
+        if(oldbiomegenbase == OldBiomeGenBase.rainforest && ODNBXlite.getFlag("jungle")){
             WorldGenVines worldgenvines = new WorldGenVines();
             for (int i = 0; i < 50; i++)
             {

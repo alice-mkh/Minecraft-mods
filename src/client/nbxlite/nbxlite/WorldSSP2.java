@@ -76,7 +76,6 @@ public class WorldSSP2 extends WorldSSP
     public WorldSSP2(WorldSSP par1World, WorldProvider par2WorldProvider, Profiler p, ILogAgent log)
     {
         super(par1World, par2WorldProvider, p, log);
-//         ODNBXlite.SetGenerator(this, worldInfo.mapsGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered, worldInfo.newOres);
         ODNBXlite.refreshProperties();
         turnOnOldSpawners();
         par2WorldProvider.registerWorld(this);
@@ -321,8 +320,7 @@ public class WorldSSP2 extends WorldSSP
         if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_JUNGLE))){
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))){
             updateWeather();
         }
 

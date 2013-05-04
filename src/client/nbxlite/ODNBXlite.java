@@ -17,9 +17,9 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   1, 0,     2,     "Gen", 2).setUseNames().setGUIRefresh().disableLoading();
         new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   3, 0,     3,     "BiomelessFeatures", 3).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   4, 0,     4,     "BetaFeatures", 7).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   4, 0,     5,     "BetaFeatures", 6).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   5, 0,     5,     "ReleaseFeatures", 7).setUseNames().disableLoading();
-        new OldDaysPropertyBool(this,  6, false, false, "GenerateNewOres").disableLoading();
+        new OldDaysPropertyString(this,6, "",    "",    "Flags").disableLoading();
         new OldDaysPropertyInt(this,   7, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
         new OldDaysPropertyInt(this,   8, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
         new OldDaysPropertyInt(this,   9, 31,    0,     "SurrWaterHeight", -999, 256).setField().disableLoading();
@@ -53,6 +53,7 @@ public class ODNBXlite extends OldDaysModule{
         set(RenderGlobal.class, "nbxlite", true);
         Minecraft.getMinecraft().worldClass = WorldSSP2.class;
         set(ItemRenderer.class, "olddays", true);
+        flags = new HashMap<String, Boolean>();
     }
 
     @Override
@@ -68,7 +69,7 @@ public class ODNBXlite extends OldDaysModule{
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
             case 5: setGen(2);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
-            case 6: setInWorldInfo("newOres", GenerateNewOres); break;
+            case 6: setFlags(Flags); setInWorldInfo("flags", Flags); break;
             case 7: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
             case 8: if (Block.blocksList[SurrGroundType] == null){
                         SurrGroundType = Block.bedrock.blockID;
@@ -114,7 +115,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int BiomelessFeatures;
     public static int BetaFeatures;
     public static int ReleaseFeatures;
-    public static boolean GenerateNewOres=true;
+    public static String Flags;
     public static int SkyColor = 0;
     public static int FogColor = 0;
     public static int CloudColor = 0;
@@ -271,7 +272,7 @@ public class ODNBXlite extends OldDaysModule{
         }
         refreshProperties();
         if (mod_OldDays.getMinecraft().theWorld != null){
-            SetGenerator(mod_OldDays.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
+            SetGenerator(mod_OldDays.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered);
             if ((i == 0 && (Gen == 0 || Gen >= 3)) || (i == 1 && (BetaFeatures >= 3 || BetaFeatures == 0)) || i == 2){
                 reload();
             }
@@ -292,6 +293,7 @@ public class ODNBXlite extends OldDaysModule{
                 }
             }
         }
+        Flags = getFlags();
         for (int i = 1; i <= 15; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).updateValue();
         }
@@ -445,8 +447,6 @@ public class ODNBXlite extends OldDaysModule{
                     result.append("5");
                 }else if (feats==FEATURES_BETA173){
                     result.append("73");
-                }else if (feats==FEATURES_JUNGLE){
-                    result.append("73/jungle");
                 }
             }
         }else if (gen==GEN_NEWBIOMES){
@@ -525,11 +525,7 @@ public class ODNBXlite extends OldDaysModule{
                     return FEATURES_BETA15;
                 }
                 if (gen.contains("beta173")){
-                    if (gen.endsWith("/jungle")){
-                        return FEATURES_JUNGLE;
-                    }else{
-                        return FEATURES_BETA173;
-                    }
+                    return FEATURES_BETA173;
                 }
                 return 0;
             }
@@ -867,10 +863,10 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static void SetGenerator(){
-        SetGenerator(Minecraft.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered, GenerateNewOres);
+        SetGenerator(Minecraft.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered);
     }
 
-    public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow, boolean ores){
+    public static void SetGenerator(World world, int gen, int features, int theme, int type, boolean snow){
         Generator=gen;
         MapFeatures=features;
         if (gen==GEN_NEWBIOMES){
@@ -890,7 +886,7 @@ public class ODNBXlite extends OldDaysModule{
             BiomeGenBase.jungleHills.minHeight = features<FEATURES_13 ? 0.2F : 0.5F;
         }
         MapTheme = gen==GEN_BIOMELESS ? theme : 0;
-        if ((Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_JUNGLE || MapFeatures == FEATURES_SKY || MapFeatures == FEATURES_BETA173)) || Generator == GEN_NEWBIOMES){
+        if ((Generator == GEN_OLDBIOMES && (MapFeatures == FEATURES_SKY || MapFeatures == FEATURES_BETA173)) || Generator == GEN_NEWBIOMES){
             world.provider.registerWorld(world);
         }
         SnowCovered = gen==GEN_BIOMELESS && features==FEATURES_ALPHA11201 && snow;
@@ -911,7 +907,6 @@ public class ODNBXlite extends OldDaysModule{
         mod_OldDays.getModuleById(8).set(EntityRenderer.class, "oldFog", isFinite(), false);
         mod_OldDays.getModuleById(8).set(EntityRenderer.class, "snow", SnowCovered, false);
         mod_OldDays.getModuleById(8).set(EntityRenderer.class, "bounds", isFinite(), false);
-        GenerateNewOres=ores;
         try{
             EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
             EntityWolf.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
@@ -1087,6 +1082,58 @@ public class ODNBXlite extends OldDaysModule{
         ODNBXlite.IndevSpawnZ = gen2.spawnZ;
     }
 
+    public static boolean getFlagFromString(String flags, String str){
+        String[] strs = flags.split(";");
+        for (String s : strs){
+            if (s.equals(str)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean getFlag(String str){
+        if (flags.containsKey(str)){
+            return flags.get(str);
+        }
+        return false;
+    }
+
+    public static void setFlag(String str, boolean b){
+        flags.put(str, true);
+    }
+
+    public static boolean getDefaultFlag(String str){
+        return false;
+    }
+
+    public static void setDefaultFlag(String str){
+        setFlag(str, getDefaultFlag(str));
+    }
+
+    public static String getFlags(){
+        StringBuilder b = new StringBuilder();
+        Iterator<Map.Entry<String, Boolean>> i = flags.entrySet().iterator();
+        while (i.hasNext()){
+            Map.Entry<String, Boolean> entry = i.next();
+            if (entry.getValue() && entry.getKey().length() > 0){
+                b.append(entry.getKey());
+                if (i.hasNext()){
+                    b.append(";");
+                }
+            }
+        }
+        return b.toString().trim();
+    }
+
+    public static void setFlags(String str){
+        flags.clear();
+        String[] strs = str.split(";");
+        for (String s : strs){
+            flags.put(s, true);
+        }
+    }
+
     public static int Generator = 2;
     public static boolean SnowCovered = false;
     public static int VoidFog=0;//0 - default; 1 - no void fog, horizon moves; 2 - no void fog, horizon doesn't move; 3 - no void fog, no bottom color; 4 - no void fog, no horizon
@@ -1109,9 +1156,9 @@ public class ODNBXlite extends OldDaysModule{
     public static int SurrWaterType;
     public static int SurrGroundType;
     public static boolean Import = false;
-    public static boolean DefaultNewOres = false;
     public static McLevelImporter mclevelimporter = null;
     public static int gearId = 200;
+    public static HashMap<String, Boolean> flags;
 
     public static final int GEN_BIOMELESS = 0;
     public static final int GEN_OLDBIOMES = 1;
@@ -1131,7 +1178,6 @@ public class ODNBXlite extends OldDaysModule{
     public static final int FEATURES_BETA15 = 4;
     public static final int FEATURES_BETA173 = 5;
     public static final int FEATURES_SKY = 6;
-    public static final int FEATURES_JUNGLE = 7;
 
     public static final int FEATURES_BETA181 = 0;
     public static final int FEATURES_10 = 1;
