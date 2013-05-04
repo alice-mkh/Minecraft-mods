@@ -9,6 +9,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.WorldGenerator;
 import net.minecraft.src.WorldGenBigTree;
+import net.minecraft.src.ODNBXlite;
 
 public class OldBiomeGenBase
 {
@@ -131,7 +132,7 @@ public class OldBiomeGenBase
         f1 *= f;
         if(f < 0.1F)
         {
-            return tundra;
+            return ODNBXlite.getFlag("iceDesert") ? iceDesert : tundra;
         }
         if(f1 < 0.2F)
         {
