@@ -58,7 +58,7 @@ public class PageBeta extends Page{
     @Override
     public void updateButtonText(){
         newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
-        jungleButton.displayString = mod_OldDays.lang.get("flag.ungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
+        jungleButton.displayString = mod_OldDays.lang.get("flag.jungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
         iceDesertButton.displayString = mod_OldDays.lang.get("flag.icedesert") + ": " + mod_OldDays.lang.get("gui." + (iceDesert ? "on" : "off"));
     }
 
