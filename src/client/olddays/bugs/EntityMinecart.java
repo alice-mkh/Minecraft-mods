@@ -563,7 +563,7 @@ public abstract class EntityMinecart extends Entity
 
         double d4 = Math.sqrt(motionX * motionX + motionZ * motionZ);
 
-        if (d4 > 2D)
+        if (!boosters && d4 > 2D)
         {
             d4 = 2D;
         }
@@ -976,12 +976,7 @@ public abstract class EntityMinecart extends Entity
 
             if (par1Entity instanceof EntityMinecart)
             {
-                double d7;
-                double d8;
-                if (boosters){
-                    d7 = par1Entity.motionX + motionX;
-                    d8 = par1Entity.motionZ + motionZ;
-                }else{
+                if (!boosters){
                     double d4 = par1Entity.posX - posX;
                     double d5 = par1Entity.posZ - posZ;
                     Vec3 vec3 = worldObj.getWorldVec3Pool().getVecFromPool(d4, 0.0D, d5).normalize();
@@ -992,10 +987,9 @@ public abstract class EntityMinecart extends Entity
                     {
                         return;
                     }
-
-                    d7 = par1Entity.motionX + motionX;
-                    d8 = par1Entity.motionZ + motionZ;
                 }
+                double d7 = par1Entity.motionX + motionX;
+                double d8 = par1Entity.motionZ + motionZ;
 
                 if (((EntityMinecart)par1Entity).getMinecartType() == 2 && getMinecartType() != 2)
                 {
