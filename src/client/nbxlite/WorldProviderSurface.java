@@ -48,7 +48,7 @@ public class WorldProviderSurface extends WorldProvider
         if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
             return i == Block.grass.blockID;
         }
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420){
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420 && ODNBXlite.MapFeatures != ODNBXlite.FEATURES_INFDEV0618){
             return true;
         }
         if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
