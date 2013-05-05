@@ -851,19 +851,8 @@ nbxlite.releasefeatures.name=Caraterísticas
  nbxlite.releasefeatures8.desc=Cuarzo, carros en minas abandonadas
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7, §aicedesert§7
+ nbxlite.flags.desc1=Available flags
  nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
- nbxlite.flags.desc3=<-§anewores§7: Generar nuevos minerales:
- nbxlite.flags.desc4=<- Classic: §rDiamante, redstone, lapis
- nbxlite.flags.desc5=<- Indev: §rRedstone, lapis
- nbxlite.flags.desc6=<- Infdev (02.27): §rNada
- nbxlite.flags.desc7=<- Infdev (04.20): §rRedstone, lapis, esmeraldas
- nbxlite.flags.desc8=<- Infdev (06.08): §rRedstone, lapis, esmeraldas
- nbxlite.flags.desc9=<- Alpha: §rLapis, esmeraldas
- nbxlite.flags.desc10=<- Beta: §rEsmeraldas
-//FIXME
- nbxlite.flags.desc11=<-§ajungle§7: Jungles for the Beta generator
- nbxlite.flags.desc12=<-§aicedesert§7: Ice deserts for the Beta generator
 nbxlite.surrgroundheight.name=Límite vertical
  nbxlite.surrgroundheight.desc1=Fija el límite vertical de mundos finitos.
 nbxlite.surrgroundtype.name=Bloque de límite vertical
@@ -1018,13 +1007,23 @@ nbxlite.saplings.name=Semilla de roble
  nbxlite.saplings3=Por defecto
  nbxlite.saplings3.desc=1/10 de posibilidad de ser un árbol grande
 
+flag.newores=Generar nuevos minerales
+ flag.newores.desc=Generar nuevos minerales:
+ flag.newores.desc1=Classic: §rDiamante, redstone, lapis
+ flag.newores.desc2=Indev: §rRedstone, lapis
+ flag.newores.desc3=Infdev (02.27): §rNada
+ flag.newores.desc4=Infdev: §rRedstone, lapis, esmeraldas
+ flag.newores.desc5=Alpha: §rLapis, esmeraldas
+ flag.newores.desc6=Beta: §rEsmeraldas
+flag.jungle=Selva
+//FIXME
+ flag.jungle.desc=Jungles for the Beta generator
+flag.icedesert=Ice deserts
+ flag.icedesert.desc=Ice deserts for the Beta generator
+
 convert=Seleccionar opciones del mundo
 continue=Continuar
 settings=Opciones
-newOres=Generar nuevos minerales
-betaJungle=Selva
-//FIXME
-betaIceDesert=Ice deserts
 1Layer=Una capa
 2Layers=Dos capas
 3Layers=Tres capas

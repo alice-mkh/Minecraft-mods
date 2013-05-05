@@ -57,7 +57,7 @@ public class PageAlpha extends Page{
     @Override
     public void updateButtonText(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
         snowButton.displayString = stringtranslate.translateKey("tile.snow.name") + ": ";
         if (snow == 1){

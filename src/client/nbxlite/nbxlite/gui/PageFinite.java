@@ -78,7 +78,7 @@ public class PageFinite extends Page{
 
     @Override
     public void updateButtonText(){
-        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         sizeButton.displayString = mod_OldDays.lang.get("indevSize") + ": " + mod_OldDays.lang.get(GeneratorList.sizename[size]);
         shapeButton.displayString = mod_OldDays.lang.get("indevShape") + ": " + mod_OldDays.lang.get(GeneratorList.shapename[shape]);
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));

@@ -45,7 +45,7 @@ public class PageRelease extends Page{
 
     @Override
     public void updateButtonText(){
-        newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
+        newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
     }
 
     @Override

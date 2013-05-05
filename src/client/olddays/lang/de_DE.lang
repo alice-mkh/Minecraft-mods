@@ -876,19 +876,8 @@ nbxlite.releasefeatures.name=Eigenschaften
  nbxlite.releasefeatures8.desc=Quartz, minecarts in shafts
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7, §aicedesert§7
+ nbxlite.flags.desc1=Available flags
  nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
- nbxlite.flags.desc3=<-§anewores§7: Neue Erze generieren:
- nbxlite.flags.desc4=<- Classic: §rDiamant, Redstone, Lapislazuli
- nbxlite.flags.desc5=<- Indev: §rRedstone, Lapislazuli
- nbxlite.flags.desc6=<- Infdev (02.27): §rNichts
- nbxlite.flags.desc7=<- Infdev (04.20): §rRedstone, Lapislazuli, Smaragde
- nbxlite.flags.desc8=<- Infdev (06.08): §rRedstone, Lapislazuli, Smaragde
- nbxlite.flags.desc9=<- Alpha: §rLapislazuli, Smaragde
- nbxlite.flags.desc10=<- Beta: §rSmaragde
-//FIXME
- nbxlite.flags.desc11=<-§ajungle§7: Jungles for the Beta generator
- nbxlite.flags.desc12=<-§aicedesert§7: Ice deserts for the Beta generator
 nbxlite.surrgroundheight.name=Grundgrenzenhöhe
  nbxlite.surrgroundheight.desc1=Höhe der Grenzen von endlichen Welten.
 nbxlite.surrgroundtype.name=Grenzblocktyp
@@ -1044,13 +1033,23 @@ nbxlite.saplings.name=Oak sapling
  nbxlite.saplings3=Default
  nbxlite.saplings3.desc=1/10 chance of large trees
 
+flag.newores=Neue Erze generieren
+ flag.newores.desc=Neue Erze generieren:
+ flag.newores.desc1=lassic: §rDiamant, Redstone, Lapislazuli
+ flag.newores.desc2=Indev: §rRedstone, Lapislazuli
+ flag.newores.desc3=Infdev (02.27): §rNichts
+ flag.newores.desc4=Infdev: §rRedstone, Lapislazuli, Smaragde
+ flag.newores.desc5=Alpha: §rLapislazuli, Smaragde
+ flag.newores.desc6=Beta: §rSmaragde
+flag.jungle=Dschungel
+//FIXME
+ flag.jungle.desc=Jungles for the Beta generator
+flag.icedesert=Ice deserts
+ flag.icedesert.desc=Ice deserts for the Beta generator
+
 convert=Wähle Welt-Einstellungen
 continue=Fortsetzen
 settings=Einstellungen
-newOres=Neue Erze generieren
-betaJungle=Dschungel
-//FIXME
-betaIceDesert=Ice deserts
 1Layer=Eine Schicht
 2Layers=Zwei Schichten
 3Layers=Drei Schichten

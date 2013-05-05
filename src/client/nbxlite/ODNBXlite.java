@@ -19,7 +19,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   3, 0,     4,     "BiomelessFeatures", 4).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   4, 0,     5,     "BetaFeatures", 6).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   5, 0,     5,     "ReleaseFeatures", 7).setUseNames().disableLoading();
-        new OldDaysPropertyString(this,6, "",    "",    "Flags").disableLoading();
+        new OldDaysPropertyFlags(this, 6,               "Flags").disableLoading();
         new OldDaysPropertyInt(this,   7, 32,    0,     "SurrGroundHeight", -999, 256).setField().disableLoading();
         new OldDaysPropertyInt(this,   8, 1,     0,     "SurrGroundType", 1, 256).setField().disableLoading();
         new OldDaysPropertyInt(this,   9, 31,    0,     "SurrWaterHeight", -999, 256).setField().disableLoading();
@@ -1221,4 +1221,6 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean oldLightEngine = false;
 
     public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().getMinecraftDir(), "saves"));
+
+    public static String[] FLAGS = new String[]{"newores", "jungle", "icedesert", "fixbeaches"};
 }
