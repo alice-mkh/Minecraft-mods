@@ -845,9 +845,8 @@ nbxlite.releasefeatures.name=Cechy
  nbxlite.releasefeatures7.desc=Bagienne chałupy
  nbxlite.releasefeatures8=1.5
  nbxlite.releasefeatures8.desc=Ruda kwarcu w Netherze, wózki w kopalniach
-//FIXME
-nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7, §aicedesert§7
+nbxlite.flags.name=Flagi
+ nbxlite.flags.desc1=Dostępne flagi: §rnewores§7, §ajungle§7, §aicedesert§7
  nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
  nbxlite.flags.desc3=<-§anewores§7: Wygeneruj nowe rudy:
  nbxlite.flags.desc4=<- Classic: §rDiament, czerwony kamień, lapis
@@ -857,9 +856,8 @@ nbxlite.flags.name=Flags
  nbxlite.flags.desc8=<- Infdev (06.08): §rCzerwony kamień, lapis, szmaragdy
  nbxlite.flags.desc9=<- Alpha: §rLapis, szmaragdy
  nbxlite.flags.desc10=<- Beta: §rSzmaragdy
-//FIXME
- nbxlite.flags.desc11=<-§ajungle§7: Jungles for the Beta generator
- nbxlite.flags.desc12=<-§aicedesert§7: Ice deserts for the Beta generator
+ nbxlite.flags.desc11=<-§ajungle§7: Dżungle dla generatora Bety
+ nbxlite.flags.desc12=<-§aicedesert§7: Lodowe pustynie dla generatora Bety
 nbxlite.surrgroundheight.name=Wysokość granicy mapy
  nbxlite.surrgroundheight.desc1=Ustawia wysokość granicy mapy ograniczonej
 nbxlite.surrgroundtype.name=Typ granicy mapy
@@ -898,8 +896,7 @@ nbxlite.oldhoes.name=Stare motyki
  nbxlite.oldhoes.desc3=§aZmienione w Becie 1.6.
 nbxlite.texturedclouds.name=Teksturowane chmury
  nbxlite.texturedclouds.desc1=Powoduje, że chmury 3D mają teksturę.
-//FIXME
- nbxlite.texturedclouds.desc2=§aAuto: §7Infdev (06.18).
+ nbxlite.texturedclouds.desc2=§aAutomatycznie: §7Infdev (06.18).
  nbxlite.texturedclouds.desc3=§aDodane w późnej fazie Infdev, usunięte we wczesnej Alphie.
 nbxlite.opaqueflatclouds.name=Płaskie chmury
  nbxlite.opaqueflatclouds.desc1=Wymusza płaskie chmury, usuwa przeźroczystość.
@@ -1017,8 +1014,7 @@ continue=Kontynuuj
 settings=Ustawienia
 newOres=Wygeneruj nowe rudy
 betaJungle=Dżungla
-//FIXME
-betaIceDesert=Ice deserts
+betaIceDesert=Lodowe pustynie
 1Layer=Jedna warstwa
 2Layers=Dwie warstwy
 3Layers=Trzy warstwy
