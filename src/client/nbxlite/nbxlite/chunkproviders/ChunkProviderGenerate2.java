@@ -9,6 +9,7 @@ public class ChunkProviderGenerate2
     public ChunkProviderBaseFinite indevGen;
     public ChunkProviderBaseFinite classicGen;
     public ChunkProviderBaseInfinite infdevGen;
+    public ChunkProviderBaseInfinite infdev2Gen;
     public ChunkProviderBaseInfinite oldInfdevGen;
     public ChunkProviderBaseInfinite alphaGen;
     public ChunkProviderBaseInfinite betaGen;
@@ -18,6 +19,7 @@ public class ChunkProviderGenerate2
     public ChunkProviderGenerate2(World world, long l, boolean flag)
     {
         infdevGen = new ChunkProviderGenerateInfdev(world, l, flag);
+        infdev2Gen = new ChunkProviderGenerateInfdev2(world, l, flag);
         oldInfdevGen = new ChunkProviderGenerateOldInfdev(world, l, flag);
         indevGen = new ChunkProviderIndev(world, l);
         classicGen = new ChunkProviderClassic(world, l);
@@ -31,6 +33,8 @@ public class ChunkProviderGenerate2
         if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201){
                 return alphaGen;
+            }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0618){
+                return infdev2Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0420 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608){
                 return infdevGen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){

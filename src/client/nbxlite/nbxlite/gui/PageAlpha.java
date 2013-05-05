@@ -43,15 +43,15 @@ public class PageAlpha extends Page{
         for (int i = 0; i < featuresButtons.length; i++){
             featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrollingGui.scrolling;
         }
-        themeButton.yPosition = height / 6 + 64 + scrollingGui.scrolling;
-        newOresButton.yPosition = height / 6 + 99 + scrollingGui.scrolling;
-        snowButton.yPosition = height / 6 + 121 + scrollingGui.scrolling;
+        themeButton.yPosition = height / 6 + 85 + scrollingGui.scrolling;
+        newOresButton.yPosition = height / 6 + 120 + scrollingGui.scrolling;
+        snowButton.yPosition = height / 6 + 142 + scrollingGui.scrolling;
         updateButtonPosition();
     }
 
     @Override
     public int getContentHeight(){
-        return snowButton.drawButton ? 121 : (newOresButton.drawButton ? 99 : 87);
+        return snowButton.drawButton ? 142 : (newOresButton.drawButton ? 120 : 108);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class PageAlpha extends Page{
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 87 + scrollingGui.scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 108 + scrollingGui.scrolling, 0xa0a0a0);
     }
 
     @Override
@@ -158,6 +158,6 @@ public class PageAlpha extends Page{
     }
 
     private boolean canSnow(){
-        return features == 3 && (theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS);
+        return ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201 && (theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS);
     }
 }
