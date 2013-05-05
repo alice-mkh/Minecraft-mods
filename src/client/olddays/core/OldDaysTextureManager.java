@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -204,7 +205,7 @@ public class OldDaysTextureManager{
         boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
-        Texture tex = getTempTexture(width, height);
+        Texture tex = getTempTexture(width, height, true);
         sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
     }
 
@@ -230,7 +231,7 @@ public class OldDaysTextureManager{
         }catch(Exception e){
             e.printStackTrace();
         }
-        Texture tex = getTempTexture(width, height);
+        Texture tex = getTempTexture(width, height, false);
         tex.getTextureData().position(0);
         for (int i = 0; i < ints.length; i++){
             int color = ints[i];
@@ -270,7 +271,7 @@ public class OldDaysTextureManager{
             e.printStackTrace();
             return false;
         }
-        Texture tmp = getTempTexture(width, height);
+        Texture tmp = getTempTexture(width, height, false);
         tmp.getTextureData().position(0);
         for (int i = 0; i < ints.length; i++){
             int color = ints[i];
@@ -285,8 +286,14 @@ public class OldDaysTextureManager{
         return true;
     }
 
-    private Texture getTempTexture(int width, int height){
+    private Texture getTempTexture(int width, int height, boolean erase){
         if (tmp != null && width == tmpWidth && height == tmpHeight){
+            if (erase){
+                ByteBuffer b = tmp.getTextureData();
+                b.position(0);
+                b.put(new byte[width * height * 4]);
+                b.clear();
+            }
             return tmp;
         }
         tmpWidth = width;
