@@ -146,7 +146,7 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
                                 double d20 = d17 + (d18 - d17) * d19;
                                 int i6 = 0;
                                 if((d1 << 3) + i5 < 64)
-                                    i6 = Block.waterStill.blockID;
+                                    i6 = ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
                                 if(d20 > 0.0D)
                                     i6 = Block.stone.blockID;
                                 abyte0[k5] = (byte)i6;
@@ -170,12 +170,13 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
             {
                 double d1 = (i1 << 4) + i2;
                 double d3 = (j1 << 4) + k2;
-                boolean flag1 = noiseSandGen.a(d1 * 0.03125D, d3 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > 0.0D;
+                double ddd = ODNBXlite.MapTheme==ODNBXlite.THEME_PARADISE ? -0.29999999999999999D : 0.0D;
+                boolean flag1 = noiseSandGen.a(d1 * 0.03125D, d3 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > ddd;
                 boolean flag2 = noiseSandGen.a(d3 * 0.03125D, 109.0134D, d1 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
                 int k3 = (int)(rockSandGen.func_806_a(d1 * 0.03125D * 2D, d3 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int l3 = i2 << 11 | k2 << 7 | 0x7f;
                 int i4 = -1;
-                int j4 = Block.grass.blockID;
+                int j4 = ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.dirt.blockID : Block.grass.blockID;
                 int k4 = Block.dirt.blockID;
                 for(int l4 = 127; l4 >= 0; l4--)
                 {
@@ -195,19 +196,19 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
                             } else
                             if(l4 >= 60 && l4 <= 65)
                             {
-                                j4 = Block.grass.blockID;
+                                j4 = ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.dirt.blockID : Block.grass.blockID;
                                 k4 = Block.dirt.blockID;
                                 if(flag2)
                                     j4 = 0;
                                 if(flag2)
                                     k4 = Block.gravel.blockID;
                                 if(flag1)
-                                    j4 = Block.sand.blockID;
+                                    j4 = ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.grass.blockID : Block.sand.blockID;
                                 if(flag1)
                                     k4 = Block.sand.blockID;
                             }
                             if(l4 < 64 && j4 == 0)
-                                j4 = Block.waterStill.blockID;
+                                j4 = ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.lavaStill.blockID : Block.waterStill.blockID;
                             i4 = k3;
                             if(l4 >= 63)
                                 abyte0[l3] = (byte)j4;
@@ -402,7 +403,7 @@ label0:
                                     {
                                         abyte0[l2] = 0;
                                         if(flag2 && abyte0[l2 - 1] == Block.dirt.blockID)
-                                            abyte0[l2 - 1] = (byte)Block.grass.blockID;
+                                            abyte0[l2 - 1] = (byte)(ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.dirt.blockID : Block.grass.blockID);
                                     }
                             }
                             l2--;
@@ -481,6 +482,9 @@ label0:
         if(trees < 0){
             trees = 0;
         }
+        if(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS){
+            trees += 20;
+        }
         OldWorldGenTrees treegen = new OldWorldGenTrees(false);
         if(rand.nextInt(10) == 0)
         {
@@ -528,7 +532,7 @@ label0:
             int k8 = k + rand.nextInt(16) + 8;
             int j10 = rand.nextInt(rand.nextInt(120) + 8);
             j1 = i1 + rand.nextInt(16) + 8;
-            (new WorldGenLiquids(Block.waterMoving.blockID)).generate(theWorld, rand, k8, j10, j1);
+            (new WorldGenLiquids(ODNBXlite.MapTheme == ODNBXlite.THEME_HELL ? Block.lavaMoving.blockID : Block.waterMoving.blockID)).generate(theWorld, rand, k8, j10, j1);
         }
 
         for(int i6 = 0; i6 < 20; i6++)
