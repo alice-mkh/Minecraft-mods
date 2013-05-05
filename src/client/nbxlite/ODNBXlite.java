@@ -1137,9 +1137,9 @@ public class ODNBXlite extends OldDaysModule{
 
     public static void setFlags(String str){
         flags.clear();
-        String[] strs = str.trim().split(";");
+        String[] strs = str.split(";");
         for (String s : strs){
-            flags.put(s, true);
+            flags.put(s.trim(), true);
         }
     }
 
