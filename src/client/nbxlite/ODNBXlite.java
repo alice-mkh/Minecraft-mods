@@ -1222,5 +1222,5 @@ public class ODNBXlite extends OldDaysModule{
 
     public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().getMinecraftDir(), "saves"));
 
-    public static String[] FLAGS = new String[]{"newores", "jungle", "icedesert", "fixbeaches"};
+    public static String[] FLAGS = new String[]{"newores", "jungle", "icedesert"};
 }
