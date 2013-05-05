@@ -478,6 +478,46 @@ label0:
             int j4 = i1 + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID, 8)).generate(theWorld, rand, j1, l2, j4);
         }
+        if (ODNBXlite.getFlag("newores")){
+            for(int i = 0; i < 8; i++)
+            {
+                int x2 = k + rand.nextInt(16);
+                int y2 = rand.nextInt(16);
+                int z2 = i1 + rand.nextInt(16);
+                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID, 7)).generate(worldObj, rand, x2, y2, z2);
+            }
+            for(int i = 0; i < 1; i++)
+            {
+                int x2 = k + rand.nextInt(16);
+                int y2 = rand.nextInt(16) + rand.nextInt(16);
+                int z2 = i1 + rand.nextInt(16);
+                (new SuperOldWorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, x2, y2, z2);
+            }
+            int max = 0;
+            detection: for(int i = k; i < k + 16; i++){
+                for(int j = i1; j < i1 + 16; j++){
+                    int h = worldObj.getPrecipitationHeight(i, j);
+                    if (max < h){
+                        max = h;
+                    }
+                    if (max > 108){
+                        break detection;
+                    }
+                }
+            }
+            if (max > 108){
+                for (int i = 0; i < 3 + rand.nextInt(6); i++){
+                    int x2 = k + rand.nextInt(16);
+                    int y2 = rand.nextInt(28) + 4;
+                    int z2 = i1 + rand.nextInt(16);
+                    int id = worldObj.getBlockId(x2, y2, z2);
+                    if (id == Block.stone.blockID){
+                        worldObj.setBlock(x2, y2, z2, Block.oreEmerald.blockID);
+                    }
+                }
+            }
+        }
+
         int trees = (int)(mobSpawnerNoise.func_806_a((double)k * 0.5D, (double)i1 * 0.5D) / 8D + rand.nextDouble() * 4D + 4D);
         if(trees < 0){
             trees = 0;
