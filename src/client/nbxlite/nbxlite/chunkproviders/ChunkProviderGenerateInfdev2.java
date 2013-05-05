@@ -23,6 +23,10 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
     private double terrainAlt2[];
     private double detail[];
     private double roughness[];
+    public MapGenStronghold2 strongholdGenerator;
+    public MapGenVillage villageGenerator;
+    public MapGenMineshaft mineshaftGenerator;
+    private MapGenBase ravineGenerator;
 
     public ChunkProviderGenerateInfdev2(World world, long l, boolean flag)
     {
@@ -30,6 +34,13 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
         fixLight = true;
         theWorld = world;
         rand = new Random(l);
+        if(flag)
+        {
+            ravineGenerator = new MapGenRavine();
+            strongholdGenerator = new MapGenStronghold2();
+            villageGenerator = new MapGenVillage();
+            mineshaftGenerator = new MapGenMineshaft();
+        }
         terrainAlt1Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
         terrainGenerator = new InfdevNoiseGeneratorOctaves(rand, 8);
@@ -250,6 +261,13 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
                 }
             }
         }
+        if(mapFeaturesEnabled)
+        {
+            ravineGenerator.generate(this, worldObj, i1, j1, abyte0);
+            mineshaftGenerator.generate(this, worldObj, i1, j1, abyte0);
+            villageGenerator.generate(this, worldObj, i1, j1, abyte0);
+            strongholdGenerator.generate(this, worldObj, i1, j1, abyte0);
+        }
     }
 
     private void generateCaves(int i1, int j1, byte abyte0[], double d1, double d2, 
@@ -405,6 +423,12 @@ label0:
     public void populate(IChunkProvider ichunkprovider2, int i1, int j1)
     {
         rand.setSeed((long)i1 * 0x12f88dd3L + (long)j1 * 0x36d41eecL);
+        if(mapFeaturesEnabled)
+        {
+            strongholdGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+            villageGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+        }
         int k = i1 << 4;
         i1 = j1 << 4;
         for(j1 = 0; j1 < 20; j1++)
