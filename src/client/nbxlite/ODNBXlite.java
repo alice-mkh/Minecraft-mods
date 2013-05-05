@@ -1094,7 +1094,7 @@ public class ODNBXlite extends OldDaysModule{
     public static boolean getFlagFromString(String flags, String str){
         String[] strs = flags.split(";");
         for (String s : strs){
-            if (s.equals(str)){
+            if (s.trim().equals(str)){
                 return true;
             }
         }
@@ -1137,7 +1137,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static void setFlags(String str){
         flags.clear();
-        String[] strs = str.split(";");
+        String[] strs = str.trim().split(";");
         for (String s : strs){
             flags.put(s, true);
         }
