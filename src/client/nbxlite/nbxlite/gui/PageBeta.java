@@ -6,8 +6,10 @@ public class PageBeta extends Page{
     private GuiButton[] featuresButtons;
     private GuiButton newOresButton;
     private GuiButton jungleButton;
+    private GuiButton iceDesertButton;
     private boolean newores;
     private boolean jungle;
+    private boolean iceDesert;
     private int features;
 
     public PageBeta(GuiNBXlite parent){
@@ -15,6 +17,7 @@ public class PageBeta extends Page{
         featuresButtons = new GuiButton[GeneratorList.feat1length + 1];
         jungle = ODNBXlite.getDefaultFlag("jungle");
         newores = ODNBXlite.getDefaultFlag("newores");
+        iceDesert = ODNBXlite.getDefaultFlag("icedesert");
         features = ODNBXlite.DefaultFeaturesBeta;
     }
 
@@ -32,6 +35,7 @@ public class PageBeta extends Page{
         }
         buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         buttonList.add(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        buttonList.add(iceDesertButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
@@ -40,25 +44,28 @@ public class PageBeta extends Page{
         for (int i = 0; i < featuresButtons.length; i++){
             featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrollingGui.scrolling;
         }
-        jungleButton.yPosition = height / 6 + 149 + scrollingGui.scrolling;
         newOresButton.yPosition = height / 6 + 127 + scrollingGui.scrolling;
+        jungleButton.yPosition = height / 6 + 149 + scrollingGui.scrolling;
+        iceDesertButton.yPosition = height / 6 + 171 + scrollingGui.scrolling;
         updateButtonPosition();
     }
 
     @Override
     public int getContentHeight(){
-        return jungleButton.drawButton ? 149 : 127;
+        return jungleButton.drawButton ? 171 : 127;
     }
 
     @Override
     public void updateButtonText(){
         newOresButton.displayString = mod_OldDays.lang.get("newOres") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         jungleButton.displayString = mod_OldDays.lang.get("betaJungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
+        iceDesertButton.displayString = mod_OldDays.lang.get("betaIceDesert") + ": " + mod_OldDays.lang.get("gui." + (iceDesert ? "on" : "off"));
     }
 
     @Override
     public void updateButtonVisibility(){
         jungleButton.drawButton = features == 5;
+        iceDesertButton.drawButton = features == 5;
     }
 
     @Override
@@ -71,6 +78,8 @@ public class PageBeta extends Page{
             newores = !newores;
         }else if (guibutton == jungleButton){
             jungle = !jungle;
+        }else if (guibutton == iceDesertButton){
+            iceDesert = !iceDesert;
         }else if (guibutton.id < featuresButtons.length){
             featuresButtons[features].enabled = true;
             features = guibutton.id;
@@ -87,6 +96,7 @@ public class PageBeta extends Page{
         ODNBXlite.Generator = ODNBXlite.GEN_OLDBIOMES;
         ODNBXlite.MapFeatures = features;
         ODNBXlite.setFlag("jungle", jungle);
+        ODNBXlite.setFlag("icedesert", iceDesert);
         ODNBXlite.setFlag("newores", newores);
     }
 
@@ -95,6 +105,7 @@ public class PageBeta extends Page{
         features = ODNBXlite.DefaultFeaturesBeta;
         newores = ODNBXlite.getDefaultFlag("newores");
         jungle = ODNBXlite.getDefaultFlag("jungle");
+        iceDesert = ODNBXlite.getDefaultFlag("icedesert");
     }
 
     @Override
@@ -102,6 +113,7 @@ public class PageBeta extends Page{
         features = w.mapGenExtra;
         newores = ODNBXlite.getFlagFromString(w.flags, "newores");
         jungle = ODNBXlite.getFlagFromString(w.flags, "jungle");
+        iceDesert = ODNBXlite.getFlagFromString(w.flags, "icedesert");
     }
 
     @Override

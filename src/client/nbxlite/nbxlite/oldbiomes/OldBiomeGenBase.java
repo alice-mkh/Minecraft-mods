@@ -132,7 +132,7 @@ public class OldBiomeGenBase
         f1 *= f;
         if(f < 0.1F)
         {
-            return ODNBXlite.getFlag("iceDesert") ? iceDesert : tundra;
+            return ODNBXlite.getFlag("icedesert") ? iceDesert : tundra;
         }
         if(f1 < 0.2F)
         {

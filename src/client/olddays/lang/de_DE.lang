@@ -873,7 +873,7 @@ nbxlite.releasefeatures.name=Eigenschaften
  nbxlite.releasefeatures8.desc=Quartz, minecarts in shafts
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7
+ nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7, §aicedesert§7
  nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
  nbxlite.flags.desc3=<-§anewores§7: Neue Erze generieren:
  nbxlite.flags.desc4=<- Classic: §rDiamant, Redstone, Lapislazuli
@@ -885,6 +885,7 @@ nbxlite.flags.name=Flags
  nbxlite.flags.desc10=<- Beta: §rSmaragde
 //FIXME
  nbxlite.flags.desc11=<-§ajungle§7: Jungles for the Beta generator
+ nbxlite.flags.desc12=<-§aicedesert§7: Ice deserts for the Beta generator
 nbxlite.surrgroundheight.name=Grundgrenzenhöhe
  nbxlite.surrgroundheight.desc1=Höhe der Grenzen von endlichen Welten.
 nbxlite.surrgroundtype.name=Grenzblocktyp
@@ -1040,6 +1041,8 @@ continue=Fortsetzen
 settings=Einstellungen
 newOres=Neue Erze generieren
 betaJungle=Dschungel
+//FIXME
+betaIceDesert=Ice deserts
 1Layer=Eine Schicht
 2Layers=Zwei Schichten
 3Layers=Drei Schichten

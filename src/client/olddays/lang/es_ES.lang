@@ -848,7 +848,7 @@ nbxlite.releasefeatures.name=Caraterísticas
  nbxlite.releasefeatures8.desc=Cuarzo, carros en minas abandonadas
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7
+ nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7, §aicedesert§7
  nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
  nbxlite.flags.desc3=<-§anewores§7: Generar nuevos minerales:
  nbxlite.flags.desc4=<- Classic: §rDiamante, redstone, lapis
@@ -860,6 +860,7 @@ nbxlite.flags.name=Flags
  nbxlite.flags.desc10=<- Beta: §rEsmeraldas
 //FIXME
  nbxlite.flags.desc11=<-§ajungle§7: Jungles for the Beta generator
+ nbxlite.flags.desc12=<-§aicedesert§7: Ice deserts for the Beta generator
 nbxlite.surrgroundheight.name=Límite vertical
  nbxlite.surrgroundheight.desc1=Fija el límite vertical de mundos finitos.
 nbxlite.surrgroundtype.name=Bloque de límite vertical
@@ -1014,6 +1015,8 @@ continue=Continuar
 settings=Opciones
 newOres=Generar nuevos minerales
 betaJungle=Selva
+//FIXME
+betaIceDesert=Ice deserts
 1Layer=Una capa
 2Layers=Dos capas
 3Layers=Tres capas

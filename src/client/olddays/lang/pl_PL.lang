@@ -844,7 +844,7 @@ nbxlite.releasefeatures.name=Cechy
  nbxlite.releasefeatures8.desc=Ruda kwarcu w Netherze, wózki w kopalniach
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7
+ nbxlite.flags.desc1=Available flags: §rnewores§7, §ajungle§7, §aicedesert§7
  nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
  nbxlite.flags.desc3=<-§anewores§7: Wygeneruj nowe rudy:
  nbxlite.flags.desc4=<- Classic: §rDiament, czerwony kamień, lapis
@@ -856,6 +856,7 @@ nbxlite.flags.name=Flags
  nbxlite.flags.desc10=<- Beta: §rSzmaragdy
 //FIXME
  nbxlite.flags.desc11=<-§ajungle§7: Jungles for the Beta generator
+ nbxlite.flags.desc12=<-§aicedesert§7: Ice deserts for the Beta generator
 nbxlite.surrgroundheight.name=Wysokość granicy mapy
  nbxlite.surrgroundheight.desc1=Ustawia wysokość granicy mapy ograniczonej
 nbxlite.surrgroundtype.name=Typ granicy mapy
@@ -1008,6 +1009,8 @@ continue=Kontynuuj
 settings=Ustawienia
 newOres=Wygeneruj nowe rudy
 betaJungle=Dżungla
+//FIXME
+betaIceDesert=Ice deserts
 1Layer=Jedna warstwa
 2Layers=Dwie warstwy
 3Layers=Trzy warstwy
