@@ -27,7 +27,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     public void actionPerformedScrolling(GuiButton b){
         GuiButtonProp guibutton = (GuiButtonProp)b;
         if (guibutton.help){
-            showTooltip = showTooltip == null ? guibutton : null;
+            showTooltip = guibutton;
             return;
         }
         displayField = false;
@@ -55,8 +55,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             }
             send(prop);
         }else if (prop.guitype == OldDaysProperty.GUI_TYPE_FIELD){
-            int offset = 0;
-            field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
+            field = new GuiTextField(fontRenderer, guibutton.xPosition+2, guibutton.yPosition+2, 146, 16);
             field.setMaxStringLength(999);
             fieldButton = (GuiButtonProp)guibutton;
             showField(true);
@@ -87,7 +86,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     @Override
     protected void showField(boolean b){
         super.showField(b);
-        if(!b){
+        if(!b && fieldButton.prop != null){
             mod_OldDays.sendCallbackAndSave(fieldButton.prop.module.id, fieldButton.prop.id);
             send(fieldButton.prop);
         }
@@ -112,19 +111,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
                 mod_OldDays.sendCallbackAndSave(fieldButton.prop.module.id, fieldButton.prop.id);
                 showField(false);
             }
-        }
-        GuiButtonProp guibuttonprop = null;
-        for (int i = 0; i < buttonList.size(); i++){
-            GuiButton guibutton = (GuiButton)buttonList.get(i);
-            if (guibutton.mousePressed(mc, par1, par2)){
-                if (guibutton instanceof GuiButtonProp){
-                    guibuttonprop = (GuiButtonProp)guibutton;
-                }
-            }
-        }
-        if (guibuttonprop == null){
-            showTooltip = null;
-            return;
         }
     }
 
@@ -176,18 +162,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     public void drawScreen(int i, int j, float f)
     {
         super.drawScreen(i, j, f);
-        boolean show = false;
-        for (int k = 0; k < buttonList.size(); k++){
-            if (!(buttonList.get(k) instanceof GuiButtonProp)){
-                continue;
-            }
-            GuiButtonProp button = ((GuiButtonProp)buttonList.get(k));
-            if (i > button.xPosition && i < button.xPosition+150 && j > button.yPosition && j < button.yPosition+20 && button.drawButton){
-                show = true;
-                break;
-            }
-        }
-        if (!show){
+        if (showTooltip != null && (i <= showTooltip.xPosition || i >= showTooltip.xPosition+20 || j <= showTooltip.yPosition || j >= showTooltip.yPosition+20)){
             showTooltip = null;
         }
         if (showTooltip != null){
