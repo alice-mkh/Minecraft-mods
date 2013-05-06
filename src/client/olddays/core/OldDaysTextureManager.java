@@ -190,6 +190,7 @@ public class OldDaysTextureManager{
     public void removeTextureFXes(){
         renderEngine.refreshTextures();
         textureFXList.clear();
+        System.gc();
         renderEngine.updateDynamicTextures();
     }
 
