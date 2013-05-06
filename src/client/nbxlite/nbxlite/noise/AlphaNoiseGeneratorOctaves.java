@@ -32,6 +32,19 @@ public class AlphaNoiseGeneratorOctaves extends NoiseGenerator
         return d2;
     }
 
+    public double generateNoise(double d, double d1, double d2)
+    {
+        double d3 = 0.0D;
+        double d4 = 1.0D;
+        for(int i = 0; i < octaves; i++)
+        {
+            d3 += generatorCollection[i].generateNoise(d * d4, d1 * d4, d2 * d4) / d4;
+            d4 /= 2D;
+        }
+
+        return d3;
+    }
+
     public double[] generateNoiseOctaves(double ad[], double d, double d1, double d2, 
             int i, int j, int k, double d3, double d4, 
             double d5)

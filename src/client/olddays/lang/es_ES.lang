@@ -1020,6 +1020,8 @@ flag.jungle=Selva
  flag.jungle.desc=Jungles for the Beta generator
 flag.icedesert=Ice deserts
  flag.icedesert.desc=Ice deserts for the Beta generator
+flag.fixbeaches=Fix beaches
+ flag.fixbeaches.desc=Fixes beaches for Alpha and Beta generators
 
 convert=Seleccionar opciones del mundo
 continue=Continuar

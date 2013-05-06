@@ -8,7 +8,9 @@ public class PageAlpha extends Page{
     private GuiButton themeButton;
     private GuiButton newOresButton;
     private GuiButton snowButton;
+    private GuiButton fixBeachesButton;
     private boolean newores;
+    private boolean fixbeaches;
     private int theme;
     private int features;
     private int snow;
@@ -17,6 +19,7 @@ public class PageAlpha extends Page{
         super(parent);
         featuresButtons = new GuiButton[ODNBXlite.BIOMELESS_FEATURES.length];
         newores = ODNBXlite.getDefaultFlag("newores");
+        fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
         theme = 0;
         snow = 1;
         features = ODNBXlite.DefaultFeaturesBiomeless;
@@ -35,6 +38,7 @@ public class PageAlpha extends Page{
         buttonList.add(themeButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         buttonList.add(newOresButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         buttonList.add(snowButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        buttonList.add(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
@@ -46,12 +50,13 @@ public class PageAlpha extends Page{
         themeButton.yPosition = height / 6 + 85 + scrollingGui.scrolling;
         newOresButton.yPosition = height / 6 + 120 + scrollingGui.scrolling;
         snowButton.yPosition = height / 6 + 142 + scrollingGui.scrolling;
+        fixBeachesButton.yPosition = height / 6 + 164 + scrollingGui.scrolling;
         updateButtonPosition();
     }
 
     @Override
     public int getContentHeight(){
-        return snowButton.drawButton ? 142 : (newOresButton.drawButton ? 120 : 108);
+        return fixBeachesButton.drawButton ? 164 : (snowButton.drawButton ? 142 : (newOresButton.drawButton ? 120 : 108));
     }
 
     @Override
@@ -65,12 +70,14 @@ public class PageAlpha extends Page{
         }else{
             snowButton.displayString += mod_OldDays.lang.get("gui." + (snow > 0 ? "on" : "off"));
         }
+        fixBeachesButton.displayString = mod_OldDays.lang.get("flag.fixbeaches") + ": " + mod_OldDays.lang.get("gui." + (fixbeaches ? "on" : "off"));
     }
 
     @Override
     public void updateButtonVisibility(){
         newOresButton.drawButton = features > 0;
         snowButton.drawButton = canSnow();
+        fixBeachesButton.drawButton = ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201;
     }
 
     @Override
@@ -87,6 +94,8 @@ public class PageAlpha extends Page{
         }
         if (guibutton == newOresButton){
             newores = !newores;
+        }else if (guibutton == fixBeachesButton){
+            fixbeaches = !fixbeaches;
         }else if (guibutton == themeButton){
             if (theme < 3){
                 theme++;
@@ -125,6 +134,7 @@ public class PageAlpha extends Page{
             ODNBXlite.SnowCovered = false;
         }
         ODNBXlite.setFlag("newores", newores);
+        ODNBXlite.setFlag("fixbeaches", fixbeaches);
     }
 
     @Override
@@ -132,6 +142,7 @@ public class PageAlpha extends Page{
         features = ODNBXlite.DefaultFeaturesBiomeless;
         theme = ODNBXlite.DefaultTheme;
         newores = ODNBXlite.getDefaultFlag("newores");
+        fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
     }
 
     @Override
@@ -141,6 +152,7 @@ public class PageAlpha extends Page{
         ODNBXlite.SnowCovered = w.snowCovered;
         ODNBXlite.MapTheme = theme;
         newores = ODNBXlite.getFlagFromString(w.flags, "newores");
+        fixbeaches = ODNBXlite.getFlagFromString(w.flags, "fixbeaches");
     }
 
     @Override

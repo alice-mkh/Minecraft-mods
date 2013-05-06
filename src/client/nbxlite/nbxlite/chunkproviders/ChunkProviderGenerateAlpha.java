@@ -147,9 +147,11 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
     protected void replaceBlocks(int i, int j, byte abyte0[]){
         byte byte0 = 64;
         double d = 0.03125D;
-        sandNoise = noiseSandGen.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
-        gravelNoise = noiseSandGen.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
-        stoneNoise = rockSandGen.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
+        if (!ODNBXlite.getFlag("fixbeaches")){
+            sandNoise = noiseSandGen.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
+            gravelNoise = noiseSandGen.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
+            stoneNoise = rockSandGen.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
+        }
         for(int l = 0; l < 16; l++)
         {
             for(int i1 = 0; i1 < 16; i1++)
@@ -159,9 +161,20 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
                 {
                     d1 = -0.29999999999999999D;
                 }
-                boolean flag = sandNoise[l + i1 * 16] + rand.nextDouble() * 0.20000000000000001D > d1;
-                boolean flag1 = gravelNoise[l + i1 * 16] + rand.nextDouble() * 0.20000000000000001D > 3D;
-                int j1 = (int)(stoneNoise[l + i1 * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
+                boolean flag = false;
+                boolean flag1 = false;
+                int j1 = 0;
+                if (ODNBXlite.getFlag("fixbeaches")){
+                    double dd2 = (i << 4) + l;
+                    double dd4 = (j << 4) + i1;
+                    flag = noiseSandGen.generateNoise(dd2 * d, dd4 * d, 0.0D) + rand.nextDouble() * 0.20000000000000001D > d1;
+                    flag1 = noiseSandGen.generateNoise(dd4 * d, d, dd2 * d) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                    j1 = (int)(rockSandGen.func_806_a(dd2 * d * 2D, dd4 * d * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
+                }else{
+                    flag = sandNoise[l + i1 * 16] + rand.nextDouble() * 0.20000000000000001D > d1;
+                    flag1 = gravelNoise[l + i1 * 16] + rand.nextDouble() * 0.20000000000000001D > 3D;
+                    j1 = (int)(stoneNoise[l + i1 * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
+                }
                 int k1 = -1;
                 byte byte1;
                 if(ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){

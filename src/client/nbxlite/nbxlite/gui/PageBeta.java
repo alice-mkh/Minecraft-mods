@@ -7,9 +7,11 @@ public class PageBeta extends Page{
     private GuiButton newOresButton;
     private GuiButton jungleButton;
     private GuiButton iceDesertButton;
+    private GuiButton fixBeachesButton;
     private boolean newores;
     private boolean jungle;
     private boolean iceDesert;
+    private boolean fixbeaches;
     private int features;
 
     public PageBeta(GuiNBXlite parent){
@@ -18,6 +20,7 @@ public class PageBeta extends Page{
         jungle = ODNBXlite.getDefaultFlag("jungle");
         newores = ODNBXlite.getDefaultFlag("newores");
         iceDesert = ODNBXlite.getDefaultFlag("icedesert");
+        fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
         features = ODNBXlite.DefaultFeaturesBeta;
     }
 
@@ -36,6 +39,7 @@ public class PageBeta extends Page{
         buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         buttonList.add(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         buttonList.add(iceDesertButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        buttonList.add(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
@@ -47,12 +51,13 @@ public class PageBeta extends Page{
         newOresButton.yPosition = height / 6 + 127 + scrollingGui.scrolling;
         jungleButton.yPosition = height / 6 + 149 + scrollingGui.scrolling;
         iceDesertButton.yPosition = height / 6 + 171 + scrollingGui.scrolling;
+        fixBeachesButton.yPosition = height / 6 + (jungleButton.drawButton ? 193 : 149) + scrollingGui.scrolling;
         updateButtonPosition();
     }
 
     @Override
     public int getContentHeight(){
-        return jungleButton.drawButton ? 171 : 127;
+        return jungleButton.drawButton ? 193 : (fixBeachesButton.drawButton ? 149 : 127);
     }
 
     @Override
@@ -60,12 +65,14 @@ public class PageBeta extends Page{
         newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         jungleButton.displayString = mod_OldDays.lang.get("flag.jungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
         iceDesertButton.displayString = mod_OldDays.lang.get("flag.icedesert") + ": " + mod_OldDays.lang.get("gui." + (iceDesert ? "on" : "off"));
+        fixBeachesButton.displayString = mod_OldDays.lang.get("flag.fixbeaches") + ": " + mod_OldDays.lang.get("gui." + (fixbeaches ? "on" : "off"));
     }
 
     @Override
     public void updateButtonVisibility(){
         jungleButton.drawButton = features == 5;
         iceDesertButton.drawButton = features == 5;
+        fixBeachesButton.drawButton = features <= 5;
     }
 
     @Override
@@ -80,6 +87,8 @@ public class PageBeta extends Page{
             jungle = !jungle;
         }else if (guibutton == iceDesertButton){
             iceDesert = !iceDesert;
+        }else if (guibutton == fixBeachesButton){
+            fixbeaches = !fixbeaches;
         }else if (guibutton.id < featuresButtons.length){
             featuresButtons[features].enabled = true;
             features = guibutton.id;
@@ -98,6 +107,7 @@ public class PageBeta extends Page{
         ODNBXlite.setFlag("jungle", jungle);
         ODNBXlite.setFlag("icedesert", iceDesert);
         ODNBXlite.setFlag("newores", newores);
+        ODNBXlite.setFlag("fixbeaches", fixbeaches);
     }
 
     @Override
@@ -106,6 +116,7 @@ public class PageBeta extends Page{
         newores = ODNBXlite.getDefaultFlag("newores");
         jungle = ODNBXlite.getDefaultFlag("jungle");
         iceDesert = ODNBXlite.getDefaultFlag("icedesert");
+        fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
     }
 
     @Override
@@ -114,6 +125,7 @@ public class PageBeta extends Page{
         newores = ODNBXlite.getFlagFromString(w.flags, "newores");
         jungle = ODNBXlite.getFlagFromString(w.flags, "jungle");
         iceDesert = ODNBXlite.getFlagFromString(w.flags, "icedesert");
+        fixbeaches = ODNBXlite.getFlagFromString(w.flags, "fixbeaches");
     }
 
     @Override

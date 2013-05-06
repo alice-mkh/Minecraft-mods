@@ -1011,6 +1011,8 @@ flag.jungle=Джунгли
  flag.jungle.desc=Джунгли для генератора Беты
 flag.icedesert=Ледяные пустыни
  flag.icedesert.desc=Ледяные пустыни для генератора Беты
+flag.fixbeaches=Исправить пляжи
+ flag.fixbeaches.desc=Исправляет пляжи в генераторах Альфы и Беты
 
 convert=Укажите параметры мира
 continue=Продолжить

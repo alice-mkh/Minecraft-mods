@@ -155,28 +155,42 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
     protected void replaceBlocksForOldBiome(int i, int j, byte abyte0[], OldBiomeGenBase aoldbiomegenbase[]){
         byte byte0 = 64;
         double d = 0.03125D;
-        sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
-        if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
-            gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
-        }else{
-            gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
+        if (!ODNBXlite.getFlag("fixbeaches")){
+            sandNoise = field_909_n.generateNoiseOctaves(sandNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d, d, 1.0D);
+            if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
+                gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, j * 16, 109.0134D, i * 16, 16, 1, 16, d, 1.0D, d);
+            }else{
+                gravelNoise = field_909_n.generateNoiseOctaves(gravelNoise, i * 16, 109.0134D, j * 16, 16, 1, 16, d, 1.0D, d);
+            }
+            stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
         }
-        stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
         for(int k = 0; k < 16; k++)
         {
             for(int l = 0; l < 16; l++)
             {
-                OldBiomeGenBase oldbiomegenbase = aoldbiomegenbase[ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120 ? k + l * 16 : k * 16 + l];
-                boolean flag = sandNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D > 0.0D;
-                boolean flag1 = gravelNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D > 3D;
-                int i1 = (int)(stoneNoise[k + l * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
+                boolean b = ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120 && (ODNBXlite.MapFeatures < ODNBXlite.FEATURES_BETA14 || !ODNBXlite.getFlag("fixbeaches"));
+                OldBiomeGenBase oldbiomegenbase = aoldbiomegenbase[b ? k + l * 16 : k * 16 + l];
+                boolean flag = false;
+                boolean flag1 = false;
+                int i1 = 0;
+                if (ODNBXlite.getFlag("fixbeaches")){
+                    double dd2 = (i << 4) + k;
+                    double dd4 = (j << 4) + l;
+                    flag = field_909_n.generateNoise(dd2 * d, dd4 * d, 0.0D) + rand.nextDouble() * 0.20000000000000001D > 0D;
+                    flag1 = field_909_n.generateNoise(dd4 * d, d, dd2 * d) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                    i1 = (int)(noiseGen4.func_806_a(dd2 * d * 2D, dd4 * d * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
+                }else{
+                    flag = sandNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D > 0.0D;
+                    flag1 = gravelNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D > 3D;
+                    i1 = (int)(stoneNoise[k + l * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
+                }
                 int j1 = -1;
                 byte byte1 = oldbiomegenbase.topBlock;
                 byte byte2 = oldbiomegenbase.fillerBlock;
                 for(int k1 = 127; k1 >= 0; k1--)
                 {
                     int l1 = (l * 16 + k) * 128 + k1;
-                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14){
+                    if (ODNBXlite.MapFeatures<ODNBXlite.FEATURES_BETA14 || ODNBXlite.getFlag("fixbeaches")){
                         l1 = (k * 16 + l) * 128 + k1;
                     }
                     if(k1 <= (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_ALPHA120 ? 0 + rand.nextInt(6) - 1 : 0 + rand.nextInt(5)))
