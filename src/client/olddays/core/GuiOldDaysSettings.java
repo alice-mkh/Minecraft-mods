@@ -70,13 +70,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             }
             send(prop);
         }else if (prop.guitype == OldDaysProperty.GUI_TYPE_FIELD){
-            /*int offset = fontRenderer.getStringWidth(prop.name+":")-2;
-            offset += (150-fontRenderer.getStringWidth(mod_OldDays.getPropertyButtonText(prop)))/2;
-            if (fontRenderer.getStringWidth(prop.saveToString() > 138 - offset){
-                offset = 0;
-            }*/
             int offset = 0;
             field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
+            field.setMaxStringLength(999);
             showField(true, guibutton);
             if (prop.saveToString().equals("OFF")){
                 current = "";
@@ -130,6 +126,15 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             }
             return;
         }
+        if (displayField){
+            field.mouseClicked(par1, par2, par3);
+            if (!field.isFocused()){
+                GuiButtonProp guibuttonprop = (GuiButtonProp)(buttonList.get(fieldId));
+                guibuttonprop.prop.loadFromString(current);
+                mod_OldDays.sendCallbackAndSave(guibuttonprop.prop.module.id, guibuttonprop.prop.id);
+                showField(false, guibuttonprop);
+            }
+        }
         GuiButtonProp guibuttonprop = null;
         for (int i = 0; i < buttonList.size(); i++){
             GuiButton guibutton = (GuiButton)buttonList.get(i);
@@ -142,11 +147,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (guibuttonprop == null){
             showTooltip = null;
             return;
-        }
-        if (displayField){
-            field.mouseClicked(par1, par2, par3);
-            guibuttonprop.prop.loadFromString(current);
-            mod_OldDays.sendCallbackAndSave(guibuttonprop.prop.module.id, guibuttonprop.prop.id);
         }
     }
 

@@ -63,7 +63,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
             searchField.setMaxStringLength(999);
             searchField.setFocused(true);
             searchField.setCanLoseFocus(false);
-            Keyboard.enableRepeatEvents(true);
         }
         updateList("");
     }
@@ -120,6 +119,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     protected void postInitGui(){
         field = new GuiTextField(fontRenderer, 0, 0, 150, 20);
+        field.setMaxStringLength(999);
         Keyboard.enableRepeatEvents(hasSearchField);
         scrollingGui.calculateMinScrolling();
     }
@@ -172,7 +172,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     protected void showField(boolean b, GuiButton button){
         displayField = b;
-        Keyboard.enableRepeatEvents(b && hasSearchField);
+        Keyboard.enableRepeatEvents(b || hasSearchField);
         button.enabled = !b;
         field.setFocused(b);
         if (hasSearchField){
