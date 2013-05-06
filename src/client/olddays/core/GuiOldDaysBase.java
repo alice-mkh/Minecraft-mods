@@ -14,8 +14,8 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     protected GuiScreen parent;
     protected boolean displayField;
     protected GuiTextField field;
+    protected GuiButtonProp fieldButton;
     protected int tooltipTimer;
-    protected int fieldId;
     protected String current;
     protected mod_OldDays core;
     protected int contentHeight;
@@ -27,7 +27,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     public GuiOldDaysBase(GuiScreen guiscreen, mod_OldDays c){
         parent = guiscreen;
         displayField = false;
-        fieldId = 0;
         tooltipTimer = 0;
         hasSearchField = false;
         core = c;
@@ -38,7 +37,9 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     @Override
     public void updateScreen(){
-        field.updateCursorCounter();
+        if (field != null){
+            field.updateCursorCounter();
+        }
         if (hasSearchField){
             searchField.updateCursorCounter();
         }
@@ -159,10 +160,10 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         fontRenderer.drawStringWithShadow(str, 2, 2, 0x505050);
     }
 
-    protected void showField(boolean b, GuiButton button){
+    protected void showField(boolean b){
         displayField = b;
         Keyboard.enableRepeatEvents(b || hasSearchField);
-        button.enabled = !b;
+        fieldButton.enabled = !b;
         field.setFocused(b);
         if (hasSearchField){
             searchField.setFocused(!b);
@@ -287,7 +288,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
             s.scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
         }
         if (displayField){
-            showField(false, scrollingGui.buttonList.get(fieldId));
+            showField(false);
         }
         //FIXME: Field should scroll too.
     }

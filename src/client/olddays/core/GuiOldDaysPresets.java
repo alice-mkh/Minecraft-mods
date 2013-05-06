@@ -108,10 +108,10 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
     public void actionPerformedScrolling(GuiButton guibutton){
         if (guibutton.id == -3 && custom){
             field = new GuiTextField(fontRenderer, guibutton.xPosition+2, guibutton.yPosition+2, 146, 16);
-            showField(true, guibutton);
+            fieldButton = (GuiButtonProp)guibutton;
+            showField(true);
             current = mod_OldDays.lang.get("gui.presets.new");
             field.setText(current);
-            fieldId = presets.length * 2;
             guibutton.enabled = false;
             return;
         }
@@ -135,12 +135,12 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             return;
         }else{
             if (par2 == 1){
-                showField(false, scrollingGui.buttonList.get(fieldId));
+                showField(false);
                 return;
             }
             if (par1 == '\r'){
                 core.saveman.savePreset(current.trim());
-                showField(false, scrollingGui.buttonList.get(fieldId));
+                showField(false);
                 updateList(searchField.getText().trim());
                 return;
             }

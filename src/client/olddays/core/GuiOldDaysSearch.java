@@ -17,13 +17,12 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         if (searchField.isFocused()){
             if (this instanceof GuiOldDaysPresets){
                 if (field.isFocused()){
-                    showField(false, scrollingGui.buttonList.get(fieldId));
+                    showField(false);
                 }
-            }else if (displayField && buttonList != null && scrollingGui.buttonList.get(fieldId) != null && scrollingGui.buttonList.get(fieldId) instanceof GuiButtonProp){
-                GuiButtonProp button = ((GuiButtonProp)scrollingGui.buttonList.get(fieldId));
-                button.prop.loadFromString(current);
-                mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
-                showField(false, button);
+            }else if (displayField && buttonList != null && fieldButton != null){
+                fieldButton.prop.loadFromString(current);
+                mod_OldDays.sendCallbackAndSave(fieldButton.prop.module.id, fieldButton.prop.id);
+                showField(false);
             }
         }
         super.mouseClicked(par1, par2, par3);

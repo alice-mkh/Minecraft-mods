@@ -6,8 +6,7 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
     }
 
     @Override
-    public void initGui(){
-        super.initGui();
+    protected void updateList(String str){
         int count = mod_OldDays.modules.size();
         for (int i = 0; i < count; i++){
             OldDaysModule module = mod_OldDays.modules.get(i);

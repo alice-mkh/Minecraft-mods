@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.lang.reflect.Field;
 import net.minecraft.client.Minecraft;
 
 public class GuiOldDaysSettings extends GuiOldDaysBase{
@@ -14,8 +13,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     }
 
     @Override
-    public void initGui(){
-        super.initGui();
+    protected void updateList(String str){
         if (id >= 0){
             int count = mod_OldDays.getModuleById(id).properties.size();
             for (int i = 0; i < count; i++){
@@ -60,7 +58,8 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             int offset = 0;
             field = new GuiTextField(fontRenderer, guibutton.xPosition+offset+2, guibutton.yPosition+2, 146-offset, 16);
             field.setMaxStringLength(999);
-            showField(true, guibutton);
+            fieldButton = (GuiButtonProp)guibutton;
+            showField(true);
             if (prop.saveToString().equals("OFF")){
                 current = "";
                 field.setText("");
@@ -68,7 +67,6 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
                 current = prop.saveToString();
                 field.setText(prop.saveToString());
             }
-            fieldId = guibutton.id * 2 - 2;
             guibutton.enabled = false;
         }
         mod_OldDays.sendCallbackAndSave(m, p);
@@ -86,18 +84,12 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         core.sendPacketToServer(SMPManager.PACKET_C2S_PROP, prop.module.id+" "+prop.id+" "+prop.saveToString());
     }
 
-    protected void showField(boolean b, GuiButton button){
-        super.showField(b, button);
-        if (!(button instanceof GuiButtonProp)){
-            return;
-        }
+    @Override
+    protected void showField(boolean b){
+        super.showField(b);
         if(!b){
-            GuiButtonProp propButton = (GuiButtonProp)button;
-            if (propButton.prop == null){
-                return;
-            }
-            mod_OldDays.sendCallbackAndSave(propButton.prop.module.id, propButton.prop.id);
-            send(propButton.prop);
+            mod_OldDays.sendCallbackAndSave(fieldButton.prop.module.id, fieldButton.prop.id);
+            send(fieldButton.prop);
         }
     }
 
@@ -108,7 +100,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             if (displayField){
                 field.mouseClicked(par1, par2, par3);
                 if (!field.isFocused()){
-                    showField(false, scrollingGui.buttonList.get(fieldId));
+                    showField(false);
                 }
             }
             return;
@@ -116,10 +108,9 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (displayField){
             field.mouseClicked(par1, par2, par3);
             if (!field.isFocused()){
-                GuiButtonProp guibuttonprop = (GuiButtonProp)(scrollingGui.buttonList.get(fieldId));
-                guibuttonprop.prop.loadFromString(current);
-                mod_OldDays.sendCallbackAndSave(guibuttonprop.prop.module.id, guibuttonprop.prop.id);
-                showField(false, guibuttonprop);
+                fieldButton.prop.loadFromString(current);
+                mod_OldDays.sendCallbackAndSave(fieldButton.prop.module.id, fieldButton.prop.id);
+                showField(false);
             }
         }
         GuiButtonProp guibuttonprop = null;
@@ -150,24 +141,20 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (str==null || str.equals("")){
             str = "OFF";
         }
-        if (!(scrollingGui.buttonList.get(fieldId) instanceof GuiButtonProp)){
-            return;
-        }
-        GuiButtonProp button = ((GuiButtonProp)scrollingGui.buttonList.get(fieldId));
         if (par1 == '\r')
         {
-            button.displayString = mod_OldDays.getPropertyButtonText(button.prop);
-            showField(false, button);
+            fieldButton.displayString = mod_OldDays.getPropertyButtonText(fieldButton.prop);
+            showField(false);
         }
-        if (button.prop == null){
+        if (fieldButton.prop == null){
             return;
         }
         if (par2 == 1){
-            button.prop.loadFromString(current);
-            mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
+            fieldButton.prop.loadFromString(current);
+            mod_OldDays.sendCallbackAndSave(fieldButton.prop.module.id, fieldButton.prop.id);
         }else{
-            button.prop.loadFromString(str);
-            mod_OldDays.sendCallback(button.prop.module.id, button.prop.id);
+            fieldButton.prop.loadFromString(str);
+            mod_OldDays.sendCallback(fieldButton.prop.module.id, fieldButton.prop.id);
         }
     }
 
