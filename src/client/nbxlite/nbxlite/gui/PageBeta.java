@@ -34,12 +34,12 @@ public class PageBeta extends Page{
                 name += " (" + mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1) + ".desc") + ")";
             }
             featuresButtons[i].displayString = name;
-            buttonList.add(featuresButtons[i]);
+            addButton(featuresButtons[i]);
         }
-        buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        buttonList.add(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        buttonList.add(iceDesertButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        buttonList.add(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(iceDesertButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
@@ -76,11 +76,7 @@ public class PageBeta extends Page{
     }
 
     @Override
-    protected void actionPerformed(GuiButton guibutton){
-        super.actionPerformed(guibutton);
-        if (!guibutton.enabled){
-            return;
-        }
+    public void actionPerformedScrolling(GuiButton guibutton){
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton == jungleButton){

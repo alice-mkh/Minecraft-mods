@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,9 @@ public class GuiScrolling extends Gui{
     private boolean scrollbarDragging;
     private int clickY;
 
+    public ArrayList<GuiButton> buttonList;
+    private GuiButton selectedButton;
+
     public GuiScrolling(IScrollingGui gui){
         this.gui = gui;
         scrolling = 10;
@@ -24,6 +28,7 @@ public class GuiScrolling extends Gui{
         clickY = 0;
         dragging = false;
         scrollbarDragging = false;
+        buttonList = new ArrayList<GuiButton>();
     }
 
     public void handleMouseInput(){
@@ -42,7 +47,7 @@ public class GuiScrolling extends Gui{
                 if (!canBeScrolled() || scrolling > maxScrolling){
                     scrolling = maxScrolling;
                 }
-                gui.scrolled();
+                scrolled();
             }
         }
     }
@@ -55,7 +60,7 @@ public class GuiScrolling extends Gui{
         if (!canBeScrolled() || scrolling > maxScrolling){
             scrolling = maxScrolling;
         }
-        gui.scrolled();
+        scrolled();
     }
 
     public boolean canBeScrolled(){
@@ -96,10 +101,23 @@ public class GuiScrolling extends Gui{
             scrolling += delta;
         }
         clickY = j;
-        gui.scrolled();
+        scrolled();
     }
 
     public void mouseClicked(int par1, int par2, int par3){
+        if (par1 < gui.getLeft() || par1 > gui.getRight() || par2 < gui.getTop() || par2 > gui.getBottom()){
+            return;
+        }
+        if (par3 == 0){
+            for (int i = 0; i < buttonList.size(); i++){
+                GuiButton guibutton = buttonList.get(i);
+                if (guibutton.mousePressed(mc, par1, par2) && guibutton.enabled){
+                    selectedButton = guibutton;
+                    mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+                    gui.actionPerformedScrolling(guibutton);
+                }
+            }
+        }
         if (!canBeScrolled()){
             return;
         }
@@ -111,6 +129,10 @@ public class GuiScrolling extends Gui{
     }
 
     public void mouseMovedOrUp(int par1, int par2, int par3){
+        if (selectedButton != null && par3 == 0){
+            selectedButton.mouseReleased(par1, par2);
+            selectedButton = null;
+        }
         if (!canBeScrolled() || !dragging){
             return;
         }
@@ -202,5 +224,25 @@ public class GuiScrolling extends Gui{
  
     public void drawScrollingBackground(){
         drawDirtRect(gui.getLeft(), gui.getRight(), gui.getTop(), gui.getBottom(), true, scrolling - maxScrolling);
+    }
+
+    private void scrolled(){
+        for (GuiButton button : buttonList){
+            if (button instanceof GuiButtonProp){
+                ((GuiButtonProp)button).scrolled(canBeScrolled(), scrolling);
+            }
+        }
+        gui.scrolled();
+    }
+
+    public void drawButtons(int i, int j){
+        for (int k = 0; k < buttonList.size(); k++){
+            GuiButton guibutton = buttonList.get(k);
+            if (i < gui.getLeft() || i > gui.getRight() || j < gui.getTop() || j > gui.getBottom()){
+                guibutton.drawButton(mc, -1000, -1000);
+            }else{
+                guibutton.drawButton(mc, i, j);
+            }
+        }
     }
 }

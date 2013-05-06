@@ -23,9 +23,9 @@ public class PageRelease extends Page{
             String name = mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1));
             name += " (" + mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1)+".desc") + ")";
             featuresButtons[i].displayString = name;
-            buttonList.add(featuresButtons[i]);
+            addButton(featuresButtons[i]);
         }
-        buttonList.add(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
@@ -54,11 +54,7 @@ public class PageRelease extends Page{
     }
 
     @Override
-    protected void actionPerformed(GuiButton guibutton){
-        super.actionPerformed(guibutton);
-        if (!guibutton.enabled){
-            return;
-        }
+    public void actionPerformedScrolling(GuiButton guibutton){
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton.id < featuresButtons.length){

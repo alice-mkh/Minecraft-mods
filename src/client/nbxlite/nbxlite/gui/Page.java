@@ -115,10 +115,21 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
         scrollingGui.drawScrollingBackground();
     }
 
+    public void drawButtons(int i, int j){
+        scrollingGui.drawButtons(i, j);
+    }
+
     public void drawFrameAndScrollbar(){
         if (!scrollingGui.canBeScrolled()){
             return;
         }
         scrollingGui.drawFrameAndScrollbar(height);
+    }
+
+    @Override
+    public void actionPerformedScrolling(GuiButton b){}
+
+    protected final void addButton(GuiButton b){
+        scrollingGui.buttonList.add(b);
     }
 }

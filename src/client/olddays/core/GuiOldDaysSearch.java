@@ -17,10 +17,10 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
         if (searchField.isFocused()){
             if (this instanceof GuiOldDaysPresets){
                 if (field.isFocused()){
-                    showField(false, ((GuiButton)buttonList.get(fieldId)));
+                    showField(false, scrollingGui.buttonList.get(fieldId));
                 }
-            }else if (buttonList != null && buttonList.get(fieldId) != null && buttonList.get(fieldId) instanceof GuiButtonProp){
-                GuiButtonProp button = ((GuiButtonProp)buttonList.get(fieldId));
+            }else if (displayField && buttonList != null && scrollingGui.buttonList.get(fieldId) != null && scrollingGui.buttonList.get(fieldId) instanceof GuiButtonProp){
+                GuiButtonProp button = ((GuiButtonProp)scrollingGui.buttonList.get(fieldId));
                 button.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(button.prop.module.id, button.prop.id);
                 showField(false, button);
@@ -44,11 +44,8 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
 
     @Override
     protected void updateList(String str){
-        buttonList.clear();
+        scrollingGui.buttonList.clear();
         separators.clear();
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
-        buttonList.add(button);
         int count = 0;
         searchField.correct = true;
         Pattern pat = null;
@@ -75,19 +72,5 @@ public class GuiOldDaysSearch extends GuiOldDaysSettings{
             }
         }
         postInitGui();
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton guibutton)
-    {
-        if (!guibutton.enabled){
-            return;
-        }
-        if (guibutton.id == 0){
-            mc.displayGuiScreen(parent);
-            return;
-        }
-        GuiButtonProp guibuttonprop = (GuiButtonProp)guibutton;
-        actionPerformed(guibuttonprop);
     }
 }

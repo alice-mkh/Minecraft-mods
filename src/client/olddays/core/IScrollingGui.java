@@ -12,4 +12,6 @@ public interface IScrollingGui{
     public int getLeft();
 
     public int getRight();
+
+    public void actionPerformedScrolling(GuiButton guibutton);
 }

@@ -41,17 +41,17 @@ public class PageFinite extends Page{
 
     @Override
     public void initButtons(){
-        buttonList.add(typeButton = new GuiButton(0, width / 2 - 75 + leftmargin, 0, 150, 20,""));
-        buttonList.add(themeButton = new GuiButton(1, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        addButton(typeButton = new GuiButton(0, width / 2 - 75 + leftmargin, 0, 150, 20,""));
+        addButton(themeButton = new GuiButton(1, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
         for (int i = 0; i < 4; i++){
-            buttonList.add(widthButtons[i]=new GuiButton(2+i, (width / 2 - 82+(41*i)) + leftmargin, 0, 40, 20, ""));
-            buttonList.add(lengthButtons[i]=new GuiButton(6+i, (width / 2 - 82+(41*i)) + leftmargin, 0, 40, 20, ""));
+            addButton(widthButtons[i]=new GuiButton(2+i, (width / 2 - 82+(41*i)) + leftmargin, 0, 40, 20, ""));
+            addButton(lengthButtons[i]=new GuiButton(6+i, (width / 2 - 82+(41*i)) + leftmargin, 0, 40, 20, ""));
         }
-        buttonList.add(shapeButton = new GuiButton(10, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        buttonList.add(sizeButton = new GuiButton(11, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        buttonList.add(toggleButton = new GuiButton(12, width / 2 + 85 + leftmargin, 0, 20, 20, ""));
-        buttonList.add(heightSlider = new GuiSliderCustom(13, (width / 2 - 75) + leftmargin, 0, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
-        buttonList.add(newOresButton = new GuiButton(14, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        addButton(shapeButton = new GuiButton(10, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        addButton(sizeButton = new GuiButton(11, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        addButton(toggleButton = new GuiButton(12, width / 2 + 85 + leftmargin, 0, 20, 20, ""));
+        addButton(heightSlider = new GuiSliderCustom(13, (width / 2 - 75) + leftmargin, 0, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
+        addButton(newOresButton = new GuiButton(14, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
         widthButtons[xSize].enabled=false;
         lengthButtons[zSize].enabled=false;
         heightSlider.sliderValue = tempSliderValue;
@@ -146,11 +146,7 @@ public class PageFinite extends Page{
     }
 
     @Override
-    protected void actionPerformed(GuiButton guibutton){
-        super.actionPerformed(guibutton);
-        if (!guibutton.enabled){
-            return;
-        }
+    public void actionPerformedScrolling(GuiButton guibutton){
         if (guibutton == newOresButton){
             newores = !newores;
         }else if (guibutton == typeButton){

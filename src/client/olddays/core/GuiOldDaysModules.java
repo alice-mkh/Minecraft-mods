@@ -17,6 +17,10 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             addButton(i, true, module.id, mod_OldDays.lang.get("module."+module.name.toLowerCase()), true).highlight = module.highlight;
         }
         postInitGui();
+    }
+
+    @Override
+    protected void addCustomButtons(){
         GuiButton ssp = new GuiButton(-1, width / 2 - 155, height - 28, 75, 20, mod_OldDays.lang.get("gui.ssp")+": "+mod_OldDays.lang.get(mc.useSP ? "gui.on" : "gui.off"));
         GuiButton presets = new GuiButton(-2, width / 2 + 81, height - 28, 75, 20, mod_OldDays.lang.get("gui.presets"));
         presets.enabled = !core.isVanillaSMP();
@@ -42,8 +46,10 @@ public class GuiOldDaysModules extends GuiOldDaysBase{
             mc.displayGuiScreen(presets);
             return;
         }
-        if (guibutton.id > 0){
-            mc.displayGuiScreen(new GuiOldDaysSettings(this, core, guibutton.id-1));
-        }
+    }
+
+    @Override
+    public void actionPerformedScrolling(GuiButton guibutton){
+        mc.displayGuiScreen(new GuiOldDaysSettings(this, core, guibutton.id-1));
     }
 }

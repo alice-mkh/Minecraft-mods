@@ -180,6 +180,7 @@ public class GuiNBXlite extends GuiScreen{
     {
         drawDefaultBackground();
         page.drawScrollingBackground();
+        page.drawButtons(i, j);
         page.drawScreen(i, j, f);
         page.drawFrameAndScrollbar();
         drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);

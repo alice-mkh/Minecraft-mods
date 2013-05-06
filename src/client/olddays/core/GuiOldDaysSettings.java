@@ -26,21 +26,8 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     }
 
     @Override
-    protected void actionPerformed(GuiButton guibutton)
-    {
-        super.actionPerformed(guibutton);
-        if (guibutton.id <= 0){
-            return;
-        }
-        if (!guibutton.enabled){
-            return;
-        }
-        GuiButtonProp guibuttonprop = (GuiButtonProp)guibutton;
-        actionPerformed(guibuttonprop);
-    }
-
-    protected void actionPerformed(GuiButtonProp guibutton)
-    {
+    public void actionPerformedScrolling(GuiButton b){
+        GuiButtonProp guibutton = (GuiButtonProp)b;
         if (guibutton.help){
             showTooltip = showTooltip == null ? guibutton : null;
             return;
@@ -81,7 +68,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
                 current = prop.saveToString();
                 field.setText(prop.saveToString());
             }
-            fieldId = guibutton.id * 2 - 1;
+            fieldId = guibutton.id * 2 - 2;
             guibutton.enabled = false;
         }
         mod_OldDays.sendCallbackAndSave(m, p);
@@ -121,7 +108,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             if (displayField){
                 field.mouseClicked(par1, par2, par3);
                 if (!field.isFocused()){
-                    showField(false, ((GuiButton)buttonList.get(fieldId)));
+                    showField(false, scrollingGui.buttonList.get(fieldId));
                 }
             }
             return;
@@ -129,7 +116,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (displayField){
             field.mouseClicked(par1, par2, par3);
             if (!field.isFocused()){
-                GuiButtonProp guibuttonprop = (GuiButtonProp)(buttonList.get(fieldId));
+                GuiButtonProp guibuttonprop = (GuiButtonProp)(scrollingGui.buttonList.get(fieldId));
                 guibuttonprop.prop.loadFromString(current);
                 mod_OldDays.sendCallbackAndSave(guibuttonprop.prop.module.id, guibuttonprop.prop.id);
                 showField(false, guibuttonprop);
@@ -163,10 +150,10 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (str==null || str.equals("")){
             str = "OFF";
         }
-        if (!(buttonList.get(fieldId) instanceof GuiButtonProp)){
+        if (!(scrollingGui.buttonList.get(fieldId) instanceof GuiButtonProp)){
             return;
         }
-        GuiButtonProp button = ((GuiButtonProp)buttonList.get(fieldId));
+        GuiButtonProp button = ((GuiButtonProp)scrollingGui.buttonList.get(fieldId));
         if (par1 == '\r')
         {
             button.displayString = mod_OldDays.getPropertyButtonText(button.prop);

@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -21,7 +20,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     protected mod_OldDays core;
     protected int contentHeight;
     protected GuiScrolling scrollingGui;
-    protected boolean restoreList;
     protected ArrayList<GuiOldDaysSeparator> separators;
     protected boolean hasSearchField;
     protected GuiTextFieldSearch searchField;
@@ -34,7 +32,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         hasSearchField = false;
         core = c;
         scrollingGui = new GuiScrolling(this);
-        restoreList = true;
         separators = new ArrayList<GuiOldDaysSeparator>();
         hasSearchField = false;
     }
@@ -53,11 +50,11 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     }
 
     @Override
-    public void initGui()
-    {
+    public void initGui(){
         StringTranslate stringtranslate = StringTranslate.getInstance();
         GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
         buttonList.add(button);
+        addCustomButtons();
         if (hasSearchField){
             searchField = new GuiTextFieldSearch(fontRenderer, width / 2 - 153, height / 6 - 13, 306, 16);
             searchField.setMaxStringLength(999);
@@ -82,7 +79,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         }
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, false, name);
         button.enabled = e;
-        buttonList.add(button);
+        scrollingGui.buttonList.add(button);
         return button;
     }
 
@@ -103,9 +100,9 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
             contentHeight = newContentHeight;
         }
         GuiButtonProp button = new GuiButtonProp(j+1, x, y, p, false);
-        buttonList.add(button);
-        GuiButton tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
-        buttonList.add(tooltipButton);
+        scrollingGui.buttonList.add(button);
+        GuiButtonProp tooltipButton = new GuiButtonProp(j+TOOLTIP_OFFSET+1, x2, y, p, true);
+        scrollingGui.buttonList.add(tooltipButton);
     }
 
     protected int addSeparator(int y, boolean b, String str){
@@ -125,8 +122,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     }
 
     @Override
-    protected void actionPerformed(GuiButton guibutton)
-    {
+    protected void actionPerformed(GuiButton guibutton){
         if (!guibutton.enabled){
             return;
         }
@@ -137,9 +133,13 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     }
 
     @Override
+    public void actionPerformedScrolling(GuiButton guibutton){}
+
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
+        scrollingGui.drawButtons(i, j);
         super.drawScreen(i, j, f);
         for (GuiOldDaysSeparator s : separators){
             s.draw(fontRenderer, width);
@@ -148,18 +148,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
             field.drawTextBox();
         }
         scrollingGui.drawFrameAndScrollbar(height);
-        List tempList = buttonList;
-        ArrayList fakeButtonList = new ArrayList();
-        for (int k = 0; k < buttonList.size(); k++){
-            Object o = buttonList.get(k);
-            if (o instanceof GuiButtonProp){
-                continue;
-            }
-            fakeButtonList.add(o);
-        }
-        buttonList = fakeButtonList;
         super.drawScreen(i, j, f);
-        buttonList = tempList;
         if (hasSearchField){
             searchField.drawTextBox();
         }
@@ -256,24 +245,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     @Override
     protected void mouseClicked(int par1, int par2, int par3){
-        List tempList = buttonList;
-        ArrayList fakeButtonList = new ArrayList();
-        for (int i = 0; i < buttonList.size(); i++){
-            Object o = buttonList.get(i);
-            if (o instanceof GuiButtonProp){
-                continue;
-            }
-            fakeButtonList.add(o);
-        }
-        buttonList = fakeButtonList;
-        super.mouseClicked(par1, par2, par3);
-        if (restoreList){
-            buttonList = tempList;
-        }
-        restoreList = true;
-        if (par1 < getLeft() || par1 > getRight() || par2 < getTop() || par2 > getBottom()){
-            return;
-        }
         super.mouseClicked(par1, par2, par3);
         scrollingGui.mouseClicked(par1, par2, par3);
     }
@@ -312,26 +283,23 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     @Override
     public void scrolled(){
-        for (Object button : buttonList){
-            if (!(button instanceof GuiButtonProp)){
-                continue;
-            }
-            ((GuiButtonProp)button).scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
-        }
         for (GuiOldDaysSeparator s : separators){
             s.scrolled(scrollingGui.canBeScrolled(), scrollingGui.scrolling);
         }
         if (displayField){
-            showField(false, ((GuiButton)buttonList.get(fieldId)));
+            showField(false, scrollingGui.buttonList.get(fieldId));
         }
         //FIXME: Field should scroll too.
     }
 
-    protected void updateList(String str){}
-
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height){
+        scrollingGui.buttonList.clear();
         super.setWorldAndResolution(mc, width, height);
         scrollingGui.mc = mc;
     }
+
+    protected void updateList(String str){}
+
+    protected void addCustomButtons(){}
 }
