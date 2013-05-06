@@ -317,7 +317,7 @@ public class WorldGenBigTree extends WorldGenerator
             int i1 = Math.abs(ai1[2] - par1ArrayOfInteger[2]);
             int j1 = Math.max(l, i1);
 
-            if (j1 > 0 && ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures >= ODNBXlite.FEATURES_13)
+            if (j1 > 0 && ODNBXlite.Generator == ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures > ODNBXlite.FEATURES_13)
             {
                 if (l == j1)
                 {
