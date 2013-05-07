@@ -320,7 +320,8 @@ public class WorldSSP2 extends WorldSSP
         if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))){
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173)) ||
+            ODNBXlite.getFlag("weather")){
             updateWeather();
         }
 

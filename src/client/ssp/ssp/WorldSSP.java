@@ -1047,43 +1047,6 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     }
 
     /**
-     * Gets the height to which rain/snow will fall. Calculates it if not already stored.
-     */
-    @Override
-    public int getPrecipitationHeight(int par1, int par2)
-    {
-        return getChunkFromBlockCoords(par1, par2).getPrecipitationHeight(par1 & 0xf, par2 & 0xf);
-    }
-
-    /**
-     * Finds the highest block on the x, z coordinate that is solid and returns its y coord. Args x, z
-     */
-    @Override
-    public int getTopSolidOrLiquidBlock(int par1, int par2)
-    {
-        Chunk chunk = getChunkFromBlockCoords(par1, par2);
-        int i = chunk.getTopFilledSegment() + 16;
-        par1 &= 0xf;
-        par2 &= 0xf;
-
-        while (i > 0)
-        {
-            int j = chunk.getBlockID(par1, i, par2);
-
-            if (j == 0 || !Block.blocksList[j].blockMaterial.blocksMovement() || Block.blocksList[j].blockMaterial == Material.leaves)
-            {
-                i--;
-            }
-            else
-            {
-                return i + 1;
-            }
-        }
-
-        return -1;
-    }
-
-    /**
      * Schedules a tick to a block with a delay (Most commonly the tick rate)
      */
     @Override

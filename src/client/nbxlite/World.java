@@ -2178,6 +2178,9 @@ public abstract class World implements IBlockAccess
      */
     public int getPrecipitationHeight(int par1, int par2)
     {
+        if (isBounds(par1, 100, par2)){
+            return Math.max(ODNBXlite.SurrGroundHeight, ODNBXlite.SurrWaterHeight);
+        }
         return getChunkFromBlockCoords(par1, par2).getPrecipitationHeight(par1 & 0xf, par2 & 0xf);
     }
 
@@ -2186,6 +2189,9 @@ public abstract class World implements IBlockAccess
      */
     public int getTopSolidOrLiquidBlock(int par1, int par2)
     {
+        if (isBounds(par1, 100, par2)){
+            return Math.max(ODNBXlite.SurrGroundHeight, ODNBXlite.SurrWaterHeight);
+        }
         Chunk chunk = getChunkFromBlockCoords(par1, par2);
         int i = chunk.getTopFilledSegment() + 15;
         par1 &= 0xf;
@@ -3291,7 +3297,8 @@ public abstract class World implements IBlockAccess
         if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
            (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
            (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))){
+            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173)) ||
+            ODNBXlite.getFlag("weather")){
             updateWeather();
         }
     }
