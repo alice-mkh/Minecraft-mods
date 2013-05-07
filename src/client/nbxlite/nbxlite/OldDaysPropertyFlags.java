@@ -17,23 +17,13 @@ public class OldDaysPropertyFlags extends OldDaysPropertyString{
         ArrayList<String> list = new ArrayList<String>();
         list.add(mod_OldDays.lang.get(getName()+".name"));
         list.add("");
-        StringBuilder available = new StringBuilder();
-        available.append(mod_OldDays.lang.get(getName()+".desc1"));
-        available.append(": §a");
-        for (int i = 0; i < ODNBXlite.FLAGS.length; i++){
-            available.append(ODNBXlite.FLAGS[i]);
-            if (i < ODNBXlite.FLAGS.length - 1){
-                available.append("§7, §a");
-            }
-        }
-        list.add(available.toString());
         int num = mod_OldDays.getDescriptionNumber(getName()+".desc");
-        for (int i = 1; i < num; i++){
+        for (int i = 0; i < num; i++){
             list.add("§7"+mod_OldDays.lang.get(getName()+".desc"+(i+1)));
         }
         for (int i = 0; i < ODNBXlite.FLAGS.length; i++){
             String str = "flag."+ODNBXlite.FLAGS[i]+".desc";
-            list.add("<-§a"+ODNBXlite.FLAGS[i]+"§7: "+mod_OldDays.lang.get(str));
+            list.add("<- §a"+ODNBXlite.FLAGS[i]+"§7: "+mod_OldDays.lang.get(str));
             int num2 = mod_OldDays.getDescriptionNumber(str);
             for (int j = 0; j < num2; j++){
                 list.add("<-    §7"+mod_OldDays.lang.get(str+(j+1)));

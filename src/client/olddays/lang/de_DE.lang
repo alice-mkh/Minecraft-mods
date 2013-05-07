@@ -876,8 +876,8 @@ nbxlite.releasefeatures.name=Eigenschaften
  nbxlite.releasefeatures8.desc=Quartz, minecarts in shafts
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Available flags
- nbxlite.flags.desc2=Example string: §rflag1;flag2;flag3
+ nbxlite.flags.desc1=Example string: §rflag1;flag2;flag3
+ nbxlite.flags.desc2=<-Available flags:
 nbxlite.surrgroundheight.name=Grundgrenzenhöhe
  nbxlite.surrgroundheight.desc1=Höhe der Grenzen von endlichen Welten.
 nbxlite.surrgroundtype.name=Grenzblocktyp
