@@ -131,6 +131,7 @@ public class PageAlpha extends Page{
         }
         ODNBXlite.setFlag("newores", newores);
         ODNBXlite.setFlag("fixbeaches", fixbeaches);
+        ODNBXlite.setFlag("weather", false);
     }
 
     @Override

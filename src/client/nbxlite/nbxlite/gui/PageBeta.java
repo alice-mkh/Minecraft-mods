@@ -70,9 +70,9 @@ public class PageBeta extends Page{
 
     @Override
     public void updateButtonVisibility(){
-        jungleButton.drawButton = features == 5;
-        iceDesertButton.drawButton = features == 5;
-        fixBeachesButton.drawButton = features <= 5;
+        jungleButton.drawButton = features == ODNBXlite.FEATURES_BETA173;
+        iceDesertButton.drawButton = features == ODNBXlite.FEATURES_BETA173;
+        fixBeachesButton.drawButton = features <= ODNBXlite.FEATURES_BETA173;
     }
 
     @Override
@@ -104,6 +104,7 @@ public class PageBeta extends Page{
         ODNBXlite.setFlag("icedesert", iceDesert);
         ODNBXlite.setFlag("newores", newores);
         ODNBXlite.setFlag("fixbeaches", fixbeaches);
+        ODNBXlite.setFlag("weather", features == ODNBXlite.FEATURES_BETA15 || features == ODNBXlite.FEATURES_BETA173);
     }
 
     @Override

@@ -73,6 +73,7 @@ public class PageRelease extends Page{
         ODNBXlite.Generator = ODNBXlite.GEN_NEWBIOMES;
         ODNBXlite.MapFeatures=features;
         ODNBXlite.setFlag("newores", newores);
+        ODNBXlite.setFlag("weather", true);
     }
 
     @Override

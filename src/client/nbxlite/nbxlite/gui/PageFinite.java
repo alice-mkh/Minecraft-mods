@@ -221,6 +221,7 @@ public class PageFinite extends Page{
         }
         ODNBXlite.setIndevBounds(type, theme);
         ODNBXlite.setFlag("newores", newores);
+        ODNBXlite.setFlag("weather", false);
     }
 
     @Override

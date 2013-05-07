@@ -84,7 +84,7 @@ public class WorldInfo
     public int cloudcolor;
     public String flags;
 
-    public static final int NBXLITE_INFO_VERSION = 3;
+    public static final int NBXLITE_INFO_VERSION = 4;
 
     protected WorldInfo()
     {
@@ -183,8 +183,6 @@ public class WorldInfo
         {
             allowCommands = theGameType == EnumGameType.CREATIVE;
         }
-        
-        
         if (useNBXlite){
             nbxlite = par1NBTTagCompound.hasKey("NBXlite");
             if (nbxlite){
@@ -199,6 +197,11 @@ public class WorldInfo
                     }
                     if (nbxliteTag.getBoolean("NewOres")){
                         flags += (flags.length() <= 0) ? "newores" : ";newores";
+                    }
+                }
+                if (nbxliteTag.getInteger("Version") == 3){
+                    if (mapGen==ODNBXlite.GEN_NEWBIOMES || mapGen==ODNBXlite.GEN_OLDBIOMES && (mapGenExtra==ODNBXlite.FEATURES_BETA15 || mapGenExtra==ODNBXlite.FEATURES_BETA173)){
+                        flags += (flags.length() <= 0) ? "weather" : ";weather";
                     }
                 }
                 NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
