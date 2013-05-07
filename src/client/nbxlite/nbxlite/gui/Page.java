@@ -12,10 +12,12 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
     protected int leftmargin = 90;
     protected GuiScrolling scrollingGui;
     protected GuiNBXlite parent;
+    private int contentHeight;
 
     public Page(GuiNBXlite parent){
         this.parent = parent;
         scrollingGui = new GuiScrolling(this);
+        contentHeight = 0;
     }
 
     public void setMc(Minecraft mc){
@@ -26,7 +28,9 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
     public abstract void initButtons();
 
     @Override
-    public abstract void scrolled();
+    public void scrolled(){
+        contentHeight = 0;
+    }
 
     public void updateButtonPosition(){}
 
@@ -67,7 +71,9 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
     }
 
     @Override
-    public abstract int getContentHeight();
+    public int getContentHeight(){
+        return contentHeight;
+    }
 
     public void mouseMovedOrUp2(int par1, int par2, int par3){
         mouseMovedOrUp(par1, par2, par3);
@@ -127,9 +133,21 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
     }
 
     @Override
-    public void actionPerformedScrolling(GuiButton b){}
+    public void actionPerformedScrolling(GuiButton b){
+        updateButtonVisibility();
+        scrolled();
+        updateButtonText();
+        calculateMinScrolling();
+    }
 
     protected final void addButton(GuiButton b){
         scrollingGui.buttonList.add(b);
+    }
+
+    protected void setY(GuiButton b, int i){
+        b.yPosition = height / 6 + scrollingGui.scrolling + i;
+        if (i > contentHeight && b.drawButton){
+            contentHeight = i;
+        }
     }
 }

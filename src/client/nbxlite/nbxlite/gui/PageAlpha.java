@@ -9,8 +9,10 @@ public class PageAlpha extends Page{
     private GuiButton newOresButton;
     private GuiButton snowButton;
     private GuiButton fixBeachesButton;
+    private GuiButton weatherButton;
     private boolean newores;
     private boolean fixbeaches;
+    private boolean weather;
     private int theme;
     private int features;
     private int snow;
@@ -20,6 +22,7 @@ public class PageAlpha extends Page{
         featuresButtons = new GuiButton[ODNBXlite.BIOMELESS_FEATURES.length];
         newores = ODNBXlite.getDefaultFlag("newores");
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
+        weather = ODNBXlite.getDefaultFlag("weather");
         theme = 0;
         snow = 1;
         features = ODNBXlite.DefaultFeaturesBiomeless;
@@ -39,24 +42,22 @@ public class PageAlpha extends Page{
         addButton(newOresButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         addButton(snowButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         addButton(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(weatherButton = new GuiButton(l + 4, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
     @Override
     public void scrolled(){
+        super.scrolled();
         for (int i = 0; i < featuresButtons.length; i++){
-            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrollingGui.scrolling;
+            setY(featuresButtons[i], (i - 1) * 21);
         }
-        themeButton.yPosition = height / 6 + 85 + scrollingGui.scrolling;
-        newOresButton.yPosition = height / 6 + 120 + scrollingGui.scrolling;
-        snowButton.yPosition = height / 6 + 142 + scrollingGui.scrolling;
-        fixBeachesButton.yPosition = height / 6 + 164 + scrollingGui.scrolling;
+        setY(themeButton, 85);
+        setY(newOresButton, 120);
+        setY(weatherButton, newOresButton.drawButton ? 142 : 120);
+        setY(snowButton, 164);
+        setY(fixBeachesButton, 185);
         updateButtonPosition();
-    }
-
-    @Override
-    public int getContentHeight(){
-        return fixBeachesButton.drawButton ? 164 : (snowButton.drawButton ? 142 : (newOresButton.drawButton ? 120 : 108));
     }
 
     @Override
@@ -65,18 +66,20 @@ public class PageAlpha extends Page{
         newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
         snowButton.displayString = stringtranslate.translateKey("tile.snow.name") + ": ";
-        if (snow == 1){
+        if (snow == 1 && !weather){
             snowButton.displayString += mod_OldDays.lang.get("gui.random") + (theme == ODNBXlite.THEME_WOODS ? " (50%)" : " (25%)");
         }else{
-            snowButton.displayString += mod_OldDays.lang.get("gui." + (snow > 0 ? "on" : "off"));
+            snowButton.displayString += mod_OldDays.lang.get("gui." + (snow > 0 && !weather ? "on" : "off"));
         }
         fixBeachesButton.displayString = mod_OldDays.lang.get("flag.fixbeaches") + ": " + mod_OldDays.lang.get("gui." + (fixbeaches ? "on" : "off"));
+        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather ? "on" : "off"));
     }
 
     @Override
     public void updateButtonVisibility(){
         newOresButton.drawButton = features > 0;
         snowButton.drawButton = canSnow();
+        snowButton.enabled = !weather;
         fixBeachesButton.drawButton = ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201;
     }
 
@@ -92,6 +95,8 @@ public class PageAlpha extends Page{
             newores = !newores;
         }else if (guibutton == fixBeachesButton){
             fixbeaches = !fixbeaches;
+        }else if (guibutton == weatherButton){
+            weather = !weather;
         }else if (guibutton == themeButton){
             if (theme < 3){
                 theme++;
@@ -109,10 +114,7 @@ public class PageAlpha extends Page{
             features = guibutton.id;
             guibutton.enabled = false;
         }
-        updateButtonPosition();
-        updateButtonVisibility();
-        updateButtonText();
-        calculateMinScrolling();
+        super.actionPerformedScrolling(guibutton);
     }
 
     @Override
@@ -120,7 +122,7 @@ public class PageAlpha extends Page{
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         ODNBXlite.MapFeatures = ODNBXlite.BIOMELESS_FEATURES[features];
         ODNBXlite.MapTheme = theme;
-        if (canSnow()){
+        if (canSnow() && !weather){
             if (snow == 1){
                 ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
             }else{
@@ -131,7 +133,7 @@ public class PageAlpha extends Page{
         }
         ODNBXlite.setFlag("newores", newores);
         ODNBXlite.setFlag("fixbeaches", fixbeaches);
-        ODNBXlite.setFlag("weather", false);
+        ODNBXlite.setFlag("weather", weather);
     }
 
     @Override
@@ -140,6 +142,7 @@ public class PageAlpha extends Page{
         theme = ODNBXlite.DefaultTheme;
         newores = ODNBXlite.getDefaultFlag("newores");
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
+        weather = ODNBXlite.getDefaultFlag("weather");
     }
 
     @Override
@@ -149,7 +152,7 @@ public class PageAlpha extends Page{
         ODNBXlite.SnowCovered = w.snowCovered;
         ODNBXlite.MapTheme = theme;
         newores = ODNBXlite.getFlagFromString(w.flags, "newores");
-        fixbeaches = ODNBXlite.getFlagFromString(w.flags, "fixbeaches");
+        weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
     @Override

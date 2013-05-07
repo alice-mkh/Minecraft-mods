@@ -14,7 +14,9 @@ public class PageFinite extends Page{
     private GuiSliderCustom heightSlider;
     private GuiButton toggleButton;
     private GuiButton newOresButton;
+    private GuiButton weatherButton;
     private boolean newores;
+    private boolean weather;
     private float tempSliderValue;
     private int theme;
     private int type;
@@ -30,6 +32,7 @@ public class PageFinite extends Page{
         lengthButtons = new GuiButton[4];
         origIndev = mc.indevShapeSize;
         newores = ODNBXlite.getDefaultFlag("newores");
+        weather = ODNBXlite.getDefaultFlag("weather");
         tempSliderValue = 0.0F;
         theme = 0;
         type = 0;
@@ -52,6 +55,7 @@ public class PageFinite extends Page{
         addButton(toggleButton = new GuiButton(12, width / 2 + 85 + leftmargin, 0, 20, 20, ""));
         addButton(heightSlider = new GuiSliderCustom(13, (width / 2 - 75) + leftmargin, 0, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
         addButton(newOresButton = new GuiButton(14, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        addButton(weatherButton = new GuiButton(15, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         widthButtons[xSize].enabled=false;
         lengthButtons[zSize].enabled=false;
         heightSlider.sliderValue = tempSliderValue;
@@ -59,21 +63,14 @@ public class PageFinite extends Page{
 
     @Override
     public void scrolled(){
+        super.scrolled();
         for (int i = 0; i < 4; i++){
-            widthButtons[i].yPosition = height / 6 - 16 + scrollingGui.scrolling;
-            lengthButtons[i].yPosition = height / 6 + 14 + scrollingGui.scrolling;
+            setY(widthButtons[i], -16);
+            setY(lengthButtons[i], 14);
         }
-        heightSlider.yPosition = height / 6 + 44 + scrollingGui.scrolling;
-        toggleButton.yPosition = height / 6 + 14 + scrollingGui.scrolling;
+        setY(heightSlider, 44);
+        setY(toggleButton, 14);
         updateButtonPosition();
-    }
-
-    @Override
-    public int getContentHeight(){
-        if (origIndev){
-            return indev ? 119 : 114;
-        }
-        return 130;
     }
 
     @Override
@@ -88,6 +85,7 @@ public class PageFinite extends Page{
             lengthButtons[i].displayString = widthButtons[i].displayString;
         }
         toggleButton.displayString = origIndev ? "+" : "-";
+        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather ? "on" : "off"));
     }
 
     @Override
@@ -104,25 +102,27 @@ public class PageFinite extends Page{
 
     @Override
     public void updateButtonPosition(){
-        newOresButton.yPosition=height / 6 + (origIndev ? (!indev ? 68 : 119) : 69) + scrollingGui.scrolling;
-        newOresButton.xPosition=width / 2 - (origIndev ? 85 : 75) + leftmargin;
-        int[] xcoords = new int[]{94, -16, 14, 126};
+        int[] ycoords = !indev ? new int[]{0, -16, 14, 69, 44, 101} : new int[]{94, -16, 14, 126, 69, 158};
         if (origIndev){
-            xcoords = !indev ? new int[]{0, 0, 44, 92} : new int[]{4, 28, 52, 76};
+            ycoords = !indev ? new int[]{0, 0, 4, 28, 68, 90} : new int[]{4, 28, 52, 76, 108, 130};
         }
-        typeButton.yPosition = height / 6 + xcoords[0] + scrollingGui.scrolling;
-        shapeButton.yPosition = height / 6 + xcoords[1] + scrollingGui.scrolling;
-        sizeButton.yPosition = height / 6 + xcoords[2] + scrollingGui.scrolling;
-        themeButton.yPosition = height / 6 + xcoords[3] + scrollingGui.scrolling;
+        setY(typeButton, ycoords[0]);
+        setY(shapeButton, ycoords[1]);
+        setY(sizeButton, ycoords[2]);
+        setY(themeButton, ycoords[3]);
         for (int i = 0; i < 4; i++){
-            widthButtons[i].yPosition = height / 6 + xcoords[1] + scrollingGui.scrolling;
-            lengthButtons[i].yPosition = height / 6 + xcoords[2] + scrollingGui.scrolling;
+            setY(widthButtons[i], ycoords[1]);
+            setY(lengthButtons[i], ycoords[2]);
         }
+        setY(newOresButton, ycoords[4]);
+        setY(weatherButton, ycoords[5]);
         int xpos = width / 2 - (origIndev ? 85 : 75) + leftmargin;
         typeButton.xPosition = xpos;
         shapeButton.xPosition = xpos;
         sizeButton.xPosition = xpos;
         themeButton.xPosition = xpos;
+        newOresButton.xPosition = xpos;
+        weatherButton.xPosition = xpos;
     }
 
     @Override
@@ -136,11 +136,7 @@ public class PageFinite extends Page{
         if (indev && !origIndev){
             if (type==2){
                 int count = (heightSlider.getSizeValue() - 64) / 48 + 1;
-                if (count==1){
-                    drawCenteredString(fontRenderer, mod_OldDays.lang.get("1Layer"), width / 2 + leftmargin, height / 6 + 114 + scrollingGui.scrolling, 0xa0a0a0);
-                }else{
-                    drawCenteredString(fontRenderer, mod_OldDays.lang.get(count+"Layers"), width / 2 + leftmargin, height / 6 + 114 + scrollingGui.scrolling, 0xa0a0a0);
-                }
+                drawCenteredString(fontRenderer, mod_OldDays.lang.get(count == 1 ? "1Layer" : count+"Layers"), width / 2 + leftmargin, height / 6 + 116 + scrollingGui.scrolling, 0xa0a0a0);
             }
         }
     }
@@ -185,11 +181,10 @@ public class PageFinite extends Page{
             origIndev = !origIndev;
             mc.indevShapeSize = origIndev;
             mod_OldDays.saveman.saveCoreProperties();
+        }else if (guibutton == weatherButton){
+            weather = !weather;
         }
-        updateButtonPosition();
-        updateButtonVisibility();
-        updateButtonText();
-        calculateMinScrolling();
+        super.actionPerformedScrolling(guibutton);
     }
 
     @Override
@@ -221,7 +216,7 @@ public class PageFinite extends Page{
         }
         ODNBXlite.setIndevBounds(type, theme);
         ODNBXlite.setFlag("newores", newores);
-        ODNBXlite.setFlag("weather", false);
+        ODNBXlite.setFlag("weather", weather);
     }
 
     @Override
@@ -233,6 +228,7 @@ public class PageFinite extends Page{
         xSize = ODNBXlite.DefaultFiniteWidth;
         zSize = ODNBXlite.DefaultFiniteLength;
         newores = ODNBXlite.getDefaultFlag("newores");
+        weather = ODNBXlite.getDefaultFlag("weather");
         tempSliderValue = GuiSliderCustom.setSizeValue(ODNBXlite.DefaultFiniteDepth + 32);
     }
 
@@ -244,6 +240,7 @@ public class PageFinite extends Page{
         ODNBXlite.MapTheme=theme;
         ODNBXlite.IndevMapType=type;
         newores = ODNBXlite.getFlagFromString(w.flags, "newores");
+        weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
     @Override

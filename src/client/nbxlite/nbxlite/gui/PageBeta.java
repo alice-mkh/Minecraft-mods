@@ -8,10 +8,12 @@ public class PageBeta extends Page{
     private GuiButton jungleButton;
     private GuiButton iceDesertButton;
     private GuiButton fixBeachesButton;
+    private GuiButton weatherButton;
     private boolean newores;
     private boolean jungle;
     private boolean iceDesert;
     private boolean fixbeaches;
+    private boolean weather;
     private int features;
 
     public PageBeta(GuiNBXlite parent){
@@ -21,6 +23,7 @@ public class PageBeta extends Page{
         newores = ODNBXlite.getDefaultFlag("newores");
         iceDesert = ODNBXlite.getDefaultFlag("icedesert");
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
+        weather = getDefaultWeather();
         features = ODNBXlite.DefaultFeaturesBeta;
     }
 
@@ -40,24 +43,22 @@ public class PageBeta extends Page{
         addButton(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         addButton(iceDesertButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         addButton(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(weatherButton = new GuiButton(l + 4, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
         featuresButtons[features].enabled=false;
     }
 
     @Override
     public void scrolled(){
+        super.scrolled();
         for (int i = 0; i < featuresButtons.length; i++){
-            featuresButtons[i].yPosition = height / 6 + ((i - 1) * 21) + scrollingGui.scrolling;
+            setY(featuresButtons[i], (i - 1) * 21);
         }
-        newOresButton.yPosition = height / 6 + 127 + scrollingGui.scrolling;
-        jungleButton.yPosition = height / 6 + 149 + scrollingGui.scrolling;
-        iceDesertButton.yPosition = height / 6 + 171 + scrollingGui.scrolling;
-        fixBeachesButton.yPosition = height / 6 + (jungleButton.drawButton ? 193 : 149) + scrollingGui.scrolling;
+        setY(newOresButton, 127);
+        setY(jungleButton, 149);
+        setY(iceDesertButton, 171);
+        setY(fixBeachesButton, jungleButton.drawButton ? 193 : 149);
+        setY(weatherButton, jungleButton.drawButton ? 215 : 171);
         updateButtonPosition();
-    }
-
-    @Override
-    public int getContentHeight(){
-        return jungleButton.drawButton ? 193 : (fixBeachesButton.drawButton ? 149 : 127);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class PageBeta extends Page{
         jungleButton.displayString = mod_OldDays.lang.get("flag.jungle") + ": " + mod_OldDays.lang.get("gui." + (jungle ? "on" : "off"));
         iceDesertButton.displayString = mod_OldDays.lang.get("flag.icedesert") + ": " + mod_OldDays.lang.get("gui." + (iceDesert ? "on" : "off"));
         fixBeachesButton.displayString = mod_OldDays.lang.get("flag.fixbeaches") + ": " + mod_OldDays.lang.get("gui." + (fixbeaches ? "on" : "off"));
+        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather ? "on" : "off"));
     }
 
     @Override
@@ -73,6 +75,7 @@ public class PageBeta extends Page{
         jungleButton.drawButton = features == ODNBXlite.FEATURES_BETA173;
         iceDesertButton.drawButton = features == ODNBXlite.FEATURES_BETA173;
         fixBeachesButton.drawButton = features <= ODNBXlite.FEATURES_BETA173;
+        weatherButton.drawButton = features <= ODNBXlite.FEATURES_BETA173;
     }
 
     @Override
@@ -85,15 +88,14 @@ public class PageBeta extends Page{
             iceDesert = !iceDesert;
         }else if (guibutton == fixBeachesButton){
             fixbeaches = !fixbeaches;
+        }else if (guibutton == weatherButton){
+            weather = !weather;
         }else if (guibutton.id < featuresButtons.length){
             featuresButtons[features].enabled = true;
             features = guibutton.id;
             guibutton.enabled = false;
         }
-        updateButtonPosition();
-        updateButtonVisibility();
-        updateButtonText();
-        calculateMinScrolling();
+        super.actionPerformedScrolling(guibutton);
     }
 
     @Override
@@ -104,7 +106,8 @@ public class PageBeta extends Page{
         ODNBXlite.setFlag("icedesert", iceDesert);
         ODNBXlite.setFlag("newores", newores);
         ODNBXlite.setFlag("fixbeaches", fixbeaches);
-        ODNBXlite.setFlag("weather", features == ODNBXlite.FEATURES_BETA15 || features == ODNBXlite.FEATURES_BETA173);
+        ODNBXlite.setFlag("weather", weather && features != ODNBXlite.FEATURES_SKY);
+//         ODNBXlite.setFlag("weather", features == ODNBXlite.FEATURES_BETA15 || features == ODNBXlite.FEATURES_BETA173);
     }
 
     @Override
@@ -114,6 +117,7 @@ public class PageBeta extends Page{
         jungle = ODNBXlite.getDefaultFlag("jungle");
         iceDesert = ODNBXlite.getDefaultFlag("icedesert");
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
+        weather = getDefaultWeather();
     }
 
     @Override
@@ -123,6 +127,7 @@ public class PageBeta extends Page{
         jungle = ODNBXlite.getFlagFromString(w.flags, "jungle");
         iceDesert = ODNBXlite.getFlagFromString(w.flags, "icedesert");
         fixbeaches = ODNBXlite.getFlagFromString(w.flags, "fixbeaches");
+        weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
     @Override
@@ -132,5 +137,9 @@ public class PageBeta extends Page{
             str += " (" + mod_OldDays.lang.get("betaJungle") + ")";
         }
         return str;
+    }
+
+    private boolean getDefaultWeather(){
+        return ODNBXlite.getDefaultFlag("weather") || features == ODNBXlite.FEATURES_BETA15 || features == ODNBXlite.FEATURES_BETA173;
     }
 }
