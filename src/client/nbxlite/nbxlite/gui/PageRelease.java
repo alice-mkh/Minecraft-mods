@@ -14,7 +14,7 @@ public class PageRelease extends Page{
         super(parent);
         featuresButtons = new GuiButton[GeneratorList.feat2length + 1];
         newores = ODNBXlite.getDefaultFlag("newores");
-        weather = ODNBXlite.getDefaultFlag("weather");
+        weather = true;
         features = ODNBXlite.DefaultFeaturesRelease;
     }
 
@@ -81,7 +81,7 @@ public class PageRelease extends Page{
     public void setDefaultSettings(){
         features = ODNBXlite.DefaultFeaturesRelease;
         newores = ODNBXlite.getDefaultFlag("newores");
-        weather = ODNBXlite.getDefaultFlag("weather");
+        weather = true;
     }
 
     @Override
