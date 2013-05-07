@@ -339,8 +339,7 @@ public class WorldServer extends World
             }
 
             theProfiler.endStartSection("iceandsnow");
-            if(rand.nextInt(4) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.dimensionId==0)
-            {
+            if(ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.SnowCovered && provider.dimensionId==0 && rand.nextInt(4) == 0){
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l2 = updateLCG >> 2;
                 int l3 = l2 & 0xf;
@@ -359,69 +358,49 @@ public class WorldServer extends World
                         setBlock(l3 + k, l5 - 1, l4 + l, Block.ice.blockID);
                     }
                 }
-            }else if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures < ODNBXlite.FEATURES_13){
+            }else if (ODNBXlite.getFlag("weather") && rand.nextInt(16) == 0){
                 updateLCG = updateLCG * 3 + 0x3c6ef35f;
                 int l7 = updateLCG >> 2;
                 int l8 = l7 & 0xf;
                 int l9 = l7 >> 8 & 0xf;
                 int l10 = getPrecipitationHeight(l8 + k, l9 + l);
-                if(isRaining() && isBlockFreezable(l8 + k, l10 - 1, l9 + l))
-                {
-                    setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
-                }
-                if(isRaining() && canSnowAt(l8 + k, l10, l9 + l))
-                {
-                    setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
-                }
-            }else if(rand.nextInt(16) == 0 && ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173))
-            {
-                updateLCG = updateLCG * 3 + 0x3c6ef35f;
-                int l7 = updateLCG >> 2;
-                int l8 = l7 & 0xf;
-                int l9 = l7 >> 8 & 0xf;
-                int l10 = getPrecipitationHeight(l8 + k, l9 + l);
-                if(getWorldChunkManager().oldGetBiomeGenAt(l8 + k, l9 + l).getEnableSnow() && l10 >= 0 && l10 < 128 && chunk.getSavedLightValue(EnumSkyBlock.Block, l8, l10, l9) < 10)
-                {
-                    int i66 = chunk.getBlockID(l8, l10 - 1, l9);
-                    int k66 = chunk.getBlockID(l8, l10, l9);
-                    if(isRaining() && k66 == 0 && Block.snow.canPlaceBlockAt(this, l8 + k, l10, l9 + l) && i66 != 0 && i66 != Block.ice.blockID && Block.blocksList[i66].blockMaterial.isSolid())
-                    {
-                        setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
-                    }
-                    if(i66 == Block.waterStill.blockID && chunk.getBlockMetadata(l8, l10 - 1, l9) == 0)
+                if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES){
+                    if (isBlockFreezableNaturally(l8 + k, l10 - 1, l9 + l))
                     {
                         setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                     }
-                }
-            }else if (rand.nextInt(16) == 0)
-            {
-                updateLCG = updateLCG * 3 + 0x3c6ef35f;
-                int j1 = updateLCG >> 2;
-                int l1 = j1 & 0xf;
-                int k2 = j1 >> 8 & 0xf;
-                int j3 = getPrecipitationHeight(l1 + k, k2 + l);
 
-                if (isBlockFreezableNaturally(l1 + k, j3 - 1, k2 + l))
-                {
-                    setBlock(l1 + k, j3 - 1, k2 + l, Block.ice.blockID);
-                }
-
-                if (isRaining() && canSnowAt(l1 + k, j3, k2 + l))
-                {
-                    setBlock(l1 + k, j3, k2 + l, Block.snow.blockID);
-                }
-
-                if (isRaining())
-                {
-                    BiomeGenBase biomegenbase = getBiomeGenForCoords(l1 + k, k2 + l);
-
-                    if (biomegenbase.canSpawnLightningBolt())
+                    if (isRaining() && canSnowAt(l8 + k, l10, l9 + l))
                     {
-                        int l3 = getBlockId(l1 + k, j3 - 1, k2 + l);
+                        setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
+                    }
 
-                        if (l3 != 0)
+                    if (isRaining())
+                    {
+                        BiomeGenBase biomegenbase = getBiomeGenForCoords(l8 + k, l9 + l);
+
+                        if (biomegenbase.canSpawnLightningBolt())
                         {
-                            Block.blocksList[l3].fillWithRain(this, l1 + k, j3 - 1, k2 + l);
+                            int l3 = getBlockId(l8 + k, l10 - 1, l9 + l);
+
+                            if (l3 != 0)
+                            {
+                                Block.blocksList[l3].fillWithRain(this, l8 + k, l10 - 1, l9 + l);
+                            }
+                        }
+                    }
+                }else{
+                    if(getWorldChunkManager().oldGetBiomeGenAt(l8 + k, l9 + l).getEnableSnow() && l10 >= 0 && l10 < 128 && chunk.getSavedLightValue(EnumSkyBlock.Block, l8, l10, l9) < 10)
+                    {
+                        int i66 = chunk.getBlockID(l8, l10 - 1, l9);
+                        int k66 = chunk.getBlockID(l8, l10, l9);
+                        if(isRaining() && k66 == 0 && Block.snow.canPlaceBlockAt(this, l8 + k, l10, l9 + l) && i66 != 0 && i66 != Block.ice.blockID && Block.blocksList[i66].blockMaterial.isSolid())
+                        {
+                            setBlock(l8 + k, l10, l9 + l, Block.snow.blockID);
+                        }
+                        if(i66 == Block.waterStill.blockID && chunk.getBlockMetadata(l8, l10 - 1, l9) == 0)
+                        {
+                            setBlock(l8 + k, l10 - 1, l9 + l, Block.ice.blockID);
                         }
                     }
                 }

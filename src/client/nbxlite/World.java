@@ -282,6 +282,7 @@ public abstract class World implements IBlockAccess
 
         if (flag)
         {
+            ODNBXlite.flags.clear();
             worldInfo.mapGen = ODNBXlite.Generator;
             worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
             worldInfo.mapTheme = ODNBXlite.MapTheme;
@@ -3294,12 +3295,10 @@ public abstract class World implements IBlockAccess
      */
     public void tick()
     {
-        if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES ||
-           (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES &&
-           (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA15 ||
-            ODNBXlite.MapFeatures==ODNBXlite.FEATURES_BETA173)) ||
-            ODNBXlite.getFlag("weather")){
-            updateWeather();
+        updateWeather();
+        if (!ODNBXlite.getFlag("weather")){
+            setRainStrength(0);
+            worldInfo.setThunderTime(10000);
         }
     }
 
