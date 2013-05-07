@@ -199,7 +199,7 @@ public class WorldInfo
                         flags += (flags.length() <= 0) ? "newores" : ";newores";
                     }
                 }
-                if (nbxliteTag.getInteger("Version") == 3){
+                if (nbxliteTag.getInteger("Version") < 4){
                     if (mapGen==ODNBXlite.GEN_NEWBIOMES || mapGen==ODNBXlite.GEN_OLDBIOMES && (mapGenExtra==ODNBXlite.FEATURES_BETA15 || mapGenExtra==ODNBXlite.FEATURES_BETA173)){
                         flags += (flags.length() <= 0) ? "weather" : ";weather";
                     }
