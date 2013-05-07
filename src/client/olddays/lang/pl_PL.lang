@@ -1014,6 +1014,8 @@ flag.icedesert=Lodowe pustynie
 //FIXME
 flag.fixbeaches=Fix beaches
  flag.fixbeaches.desc=Fixes beaches for Alpha and Beta generators
+flag.weather=Weather
+ flag.weather.desc=Enables weather
 
 convert=Wybierz ustawienia świata
 continue=Kontynuuj

@@ -1013,6 +1013,8 @@ flag.icedesert=Ледяные пустыни
  flag.icedesert.desc=Ледяные пустыни для генератора Беты
 flag.fixbeaches=Исправить пляжи
  flag.fixbeaches.desc=Исправляет пляжи в генераторах Альфы и Беты
+flag.weather=Погода
+ flag.weather.desc=Включает погоду
 
 convert=Укажите параметры мира
 continue=Продолжить

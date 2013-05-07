@@ -1022,6 +1022,8 @@ flag.icedesert=Ice deserts
  flag.icedesert.desc=Ice deserts for the Beta generator
 flag.fixbeaches=Fix beaches
  flag.fixbeaches.desc=Fixes beaches for Alpha and Beta generators
+flag.weather=Weather
+ flag.weather.desc=Enables weather
 
 convert=Seleccionar opciones del mundo
 continue=Continuar
