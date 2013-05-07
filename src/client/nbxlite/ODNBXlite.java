@@ -963,7 +963,7 @@ public class ODNBXlite extends OldDaysModule{
                 if (MapTheme == THEME_PARADISE){
                     return IndevHeight + 64;
                 }
-                if (IndevMapType == TYPE_FLOATING && IndevMapType == THEME_HELL){
+                if (IndevMapType == TYPE_FLOATING && IndevMapType != THEME_HELL){
                     return -16F;
                 }
                 return IndevHeight + 2;
