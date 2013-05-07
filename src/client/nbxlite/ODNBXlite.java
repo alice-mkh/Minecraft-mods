@@ -301,7 +301,7 @@ public class ODNBXlite extends OldDaysModule{
         for (int i = 1; i <= 15; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).updateValue();
         }
-        for (int i = 1; i <= 6; i++){
+        for (int i = 1; i <= 5; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).disabled = isFinite() ? 5 : 0;
         }
         for (int i = 7; i <= 10; i++){
