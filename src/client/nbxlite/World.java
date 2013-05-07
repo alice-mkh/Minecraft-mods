@@ -282,7 +282,6 @@ public abstract class World implements IBlockAccess
 
         if (flag)
         {
-            ODNBXlite.flags.clear();
             worldInfo.mapGen = ODNBXlite.Generator;
             worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
             worldInfo.mapTheme = ODNBXlite.MapTheme;

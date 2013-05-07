@@ -192,6 +192,7 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     public void applySettings(){
+        ODNBXlite.flags.clear();
         page.applySettings();
         ODNBXlite.setDefaultColors();
     }
