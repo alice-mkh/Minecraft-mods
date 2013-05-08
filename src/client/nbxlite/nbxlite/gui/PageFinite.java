@@ -85,7 +85,7 @@ public class PageFinite extends Page{
             lengthButtons[i].displayString = widthButtons[i].displayString;
         }
         toggleButton.displayString = origIndev ? "+" : "-";
-        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather ? "on" : "off"));
+        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather && weatherButton.enabled ? "on" : "off"));
     }
 
     @Override
@@ -98,6 +98,7 @@ public class PageFinite extends Page{
         shapeButton.drawButton = origIndev && indev;
         sizeButton.drawButton = origIndev;
         typeButton.drawButton = indev;
+        weatherButton.enabled = theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS;
     }
 
     @Override
@@ -216,7 +217,7 @@ public class PageFinite extends Page{
         }
         ODNBXlite.setIndevBounds(type, theme);
         ODNBXlite.setFlag("newores", newores);
-        ODNBXlite.setFlag("weather", weather);
+        ODNBXlite.setFlag("weather", weather && weatherButton.enabled);
     }
 
     @Override

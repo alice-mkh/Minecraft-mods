@@ -72,7 +72,7 @@ public class PageAlpha extends Page{
             snowButton.displayString += mod_OldDays.lang.get("gui." + (snow > 0 && !weather ? "on" : "off"));
         }
         fixBeachesButton.displayString = mod_OldDays.lang.get("flag.fixbeaches") + ": " + mod_OldDays.lang.get("gui." + (fixbeaches ? "on" : "off"));
-        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather ? "on" : "off"));
+        weatherButton.displayString = mod_OldDays.lang.get("flag.weather") + ": " + mod_OldDays.lang.get("gui." + (weather && weatherButton.enabled ? "on" : "off"));
     }
 
     @Override
@@ -80,6 +80,7 @@ public class PageAlpha extends Page{
         newOresButton.drawButton = features > 0;
         snowButton.drawButton = canSnow();
         snowButton.enabled = !weather;
+        weatherButton.enabled = theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS;
         fixBeachesButton.drawButton = ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201;
     }
 
@@ -133,7 +134,7 @@ public class PageAlpha extends Page{
         }
         ODNBXlite.setFlag("newores", newores);
         ODNBXlite.setFlag("fixbeaches", fixbeaches);
-        ODNBXlite.setFlag("weather", weather);
+        ODNBXlite.setFlag("weather", weather && weatherButton.enabled);
     }
 
     @Override
