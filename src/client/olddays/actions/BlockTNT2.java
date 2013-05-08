@@ -15,20 +15,16 @@ public class BlockTNT2 extends BlockTNT
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
      */
     @Override
-    public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
+    public void func_94391_a(World par1World, int par2, int par3, int par4, int par5, EntityLiving l)
     {
         if (par1World.isRemote)
         {
             return;
         }
 
-        if ((par5 & 1) == 0 && !punchToActivate)
+        if ((par5 & 1) == 1 || punchToActivate)
         {
-            dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Block.tnt.blockID, 1, 0));
-        }
-        else
-        {
-            EntityTNTPrimed2 entitytntprimed = new EntityTNTPrimed2(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, null);
+            EntityTNTPrimed2 entitytntprimed = new EntityTNTPrimed2(par1World, (float)par2 + 0.5F, (float)par3 + 0.5F, (float)par4 + 0.5F, l);
             par1World.spawnEntityInWorld(entitytntprimed);
             par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
         }
