@@ -1011,11 +1011,10 @@ flag.jungle=Dżungla
  flag.jungle.desc=Dżungle dla generatora Bety
 flag.icedesert=Lodowe pustynie
  flag.icedesert.desc=Lodowe pustynie dla generatora Bety
-//FIXME
-flag.fixbeaches=Fix beaches
- flag.fixbeaches.desc=Fixes beaches for Alpha and Beta generators
-flag.weather=Weather
- flag.weather.desc=Enables weather
+flag.fixbeaches=Naprawa plaż
+ flag.fixbeaches.desc=Naprawia plaże dla generatorów z Alphy i Bety
+flag.weather=Pogoda
+ flag.weather.desc=Włącza pogodę
 
 convert=Wybierz ustawienia świata
 continue=Kontynuuj
