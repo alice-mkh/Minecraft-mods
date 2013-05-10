@@ -400,6 +400,8 @@ public class GuiCreateWorld2 extends GuiScreen
         {
             generateStructures = !generateStructures;
             structuresGui.enabled = generateStructures;
+            structuresGui.setDefaultSettings(generateStructures);
+            structuresGui.applySettings();
             updateButtonText();
         }
         else if (par1GuiButton.id == 7)
