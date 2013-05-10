@@ -93,6 +93,7 @@ public class GuiCreateWorld2 extends GuiScreen
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
         nbxliteGui = new GuiNBXlite(this);
         structuresGui = new GuiStructures(this);
+        structuresGui.enabled = generateStructures;
         recreate = false;
     }
 
@@ -150,6 +151,7 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         if (!recreate){
             generateStructures = nbxliteGui.enableStructuresByDefault();
+            structuresGui.enabled = generateStructures;
             structuresGui.setDefaultSettings(generateStructures);
         }
 
@@ -397,6 +399,7 @@ public class GuiCreateWorld2 extends GuiScreen
         else if (par1GuiButton.id == 4)
         {
             generateStructures = !generateStructures;
+            structuresGui.enabled = generateStructures;
             updateButtonText();
         }
         else if (par1GuiButton.id == 7)
@@ -570,6 +573,7 @@ public class GuiCreateWorld2 extends GuiScreen
         worldTypeId = par1WorldInfo.getTerrainType().getWorldTypeID();
         generatorOptionsToUse = par1WorldInfo.getGeneratorOptions();
         generateStructures = par1WorldInfo.isMapFeaturesEnabled();
+        structuresGui.enabled = generateStructures;
         commandsAllowed = par1WorldInfo.areCommandsAllowed();
 
         if (par1WorldInfo.isHardcoreModeEnabled())

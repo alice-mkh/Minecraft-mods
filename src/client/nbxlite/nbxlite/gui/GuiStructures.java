@@ -12,6 +12,7 @@ public class GuiStructures extends GuiScreen{
     private GuiScreen parent;
     private boolean[] structures;
     private GuiButton[] buttons;
+    public boolean enabled;
 
     public GuiStructures(GuiScreen gui){
         parent = gui;
@@ -32,7 +33,7 @@ public class GuiStructures extends GuiScreen{
     }
 
     private void refresh(){
-        boolean[] b = ODNBXlite.getAvailableStructures(ODNBXlite.Generator, ODNBXlite.MapFeatures);
+        boolean[] b = ODNBXlite.getAvailableStructures(enabled, ODNBXlite.Generator, ODNBXlite.MapFeatures);
         for (int i = 0; i < buttons.length; i++){
             buttons[i].enabled = b[i];
             buttons[i].displayString = mod_OldDays.lang.get("structures." + ODNBXlite.STRUCTURES[i].toLowerCase()) + ": " + mod_OldDays.lang.get("gui." + (b[i] && structures[i] ? "on" : "off"));

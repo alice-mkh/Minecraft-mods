@@ -1143,10 +1143,10 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    public static boolean[] getAvailableStructures(int gen, int feats){
+    public static boolean[] getAvailableStructures(boolean structures, int gen, int feats){
         boolean[] b = new boolean[STRUCTURES.length];
         for (int i = 0; i < b.length; i++){
-            b[i] = true;
+            b[i] = structures;
         }
         boolean finite = gen == GEN_BIOMELESS && (feats == FEATURES_INDEV || feats == FEATURES_CLASSIC);
         boolean infdev0227 = gen == GEN_BIOMELESS && (feats == FEATURES_INFDEV0227);
@@ -1159,6 +1159,9 @@ public class ODNBXlite extends OldDaysModule{
             b[5] = false;
         }else if (gen == GEN_BIOMELESS){
             b[5] = false;
+        }else if (gen == GEN_NEWBIOMES){
+            b[0] = true;
+            b[4] = structures || feats > ODNBXlite.FEATURES_BETA181;
         }
         return b;
     }
