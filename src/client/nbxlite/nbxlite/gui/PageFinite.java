@@ -5,16 +5,16 @@ import net.minecraft.src.*;
 public class PageFinite extends Page{
     private boolean indev;
     private boolean origIndev;
-    private GuiButton typeButton;
-    private GuiButton themeButton;
-    private GuiButton[] widthButtons;
-    private GuiButton[] lengthButtons;
-    private GuiButton sizeButton;
-    private GuiButton shapeButton;
+    private GuiButtonNBXlite typeButton;
+    private GuiButtonNBXlite themeButton;
+    private GuiButtonNBXlite[] widthButtons;
+    private GuiButtonNBXlite[] lengthButtons;
+    private GuiButtonNBXlite sizeButton;
+    private GuiButtonNBXlite shapeButton;
     private GuiSliderCustom heightSlider;
-    private GuiButton toggleButton;
-    private GuiButton newOresButton;
-    private GuiButton weatherButton;
+    private GuiButtonNBXlite toggleButton;
+    private GuiButtonNBXlite newOresButton;
+    private GuiButtonNBXlite weatherButton;
     private boolean newores;
     private boolean weather;
     private float tempSliderValue;
@@ -28,8 +28,8 @@ public class PageFinite extends Page{
     public PageFinite(GuiNBXlite parent, boolean indev){
         super(parent);
         this.indev = indev;
-        widthButtons = new GuiButton[4];
-        lengthButtons = new GuiButton[4];
+        widthButtons = new GuiButtonNBXlite[4];
+        lengthButtons = new GuiButtonNBXlite[4];
         origIndev = mc.indevShapeSize;
         newores = ODNBXlite.getDefaultFlag("newores");
         weather = ODNBXlite.getDefaultFlag("weather");
@@ -44,18 +44,18 @@ public class PageFinite extends Page{
 
     @Override
     public void initButtons(){
-        addButton(typeButton = new GuiButton(0, width / 2 - 75 + leftmargin, 0, 150, 20,""));
-        addButton(themeButton = new GuiButton(1, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
+        addButton(typeButton = new GuiButtonNBXlite(0, width / 2 - 75 + leftmargin, 150));
+        addButton(themeButton = new GuiButtonNBXlite(1, width / 2 - 75 + leftmargin, 150));
         for (int i = 0; i < 4; i++){
-            addButton(widthButtons[i]=new GuiButton(2+i, (width / 2 - 82+(41*i)) + leftmargin, 0, 40, 20, ""));
-            addButton(lengthButtons[i]=new GuiButton(6+i, (width / 2 - 82+(41*i)) + leftmargin, 0, 40, 20, ""));
+            addButton(widthButtons[i]=new GuiButtonNBXlite(2+i, (width / 2 - 82+(41*i)) + leftmargin, 40));
+            addButton(lengthButtons[i]=new GuiButtonNBXlite(6+i, (width / 2 - 82+(41*i)) + leftmargin, 40));
         }
-        addButton(shapeButton = new GuiButton(10, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        addButton(sizeButton = new GuiButton(11, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        addButton(toggleButton = new GuiButton(12, width / 2 + 85 + leftmargin, 0, 20, 20, ""));
-        addButton(heightSlider = new GuiSliderCustom(13, (width / 2 - 75) + leftmargin, 0, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
-        addButton(newOresButton = new GuiButton(14, width / 2 - 75 + leftmargin, 0, 150, 20, ""));
-        addButton(weatherButton = new GuiButton(15, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(shapeButton = new GuiButtonNBXlite(10, width / 2 - 75 + leftmargin, 150));
+        addButton(sizeButton = new GuiButtonNBXlite(11, width / 2 - 75 + leftmargin, 150));
+        addButton(toggleButton = new GuiButtonNBXlite(12, width / 2 + 85 + leftmargin, 20));
+        addButton(heightSlider = new GuiSliderCustom(13, (width / 2 - 75) + leftmargin, mod_OldDays.lang.get("depth") + ": ", GuiSliderCustom.setSizeValue(ODNBXlite.IndevHeight)));
+        addButton(newOresButton = new GuiButtonNBXlite(14, width / 2 - 75 + leftmargin, 150));
+        addButton(weatherButton = new GuiButtonNBXlite(15, width / 2 - 85 + leftmargin, 150));
         widthButtons[xSize].enabled=false;
         lengthButtons[zSize].enabled=false;
         heightSlider.sliderValue = tempSliderValue;

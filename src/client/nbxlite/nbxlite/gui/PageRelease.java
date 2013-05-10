@@ -3,16 +3,16 @@ package net.minecraft.src.nbxlite.gui;
 import net.minecraft.src.*;
 
 public class PageRelease extends Page{
-    private GuiButton[] featuresButtons;
-    private GuiButton newOresButton;
-    private GuiButton weatherButton;
+    private GuiButtonNBXlite[] featuresButtons;
+    private GuiButtonNBXlite newOresButton;
+    private GuiButtonNBXlite weatherButton;
     private boolean newores;
     private boolean weather;
     private int features;
 
     public PageRelease(GuiNBXlite parent){
         super(parent);
-        featuresButtons = new GuiButton[GeneratorList.feat2length + 1];
+        featuresButtons = new GuiButtonNBXlite[GeneratorList.feat2length + 1];
         newores = ODNBXlite.getDefaultFlag("newores");
         weather = true;
         features = ODNBXlite.DefaultFeaturesRelease;
@@ -22,14 +22,14 @@ public class PageRelease extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
+            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 115) + leftmargin, 210);
             String name = mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1));
             name += " (" + mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1)+".desc") + ")";
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
         }
-        addButton(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(weatherButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(newOresButton = new GuiButtonNBXlite(l, width / 2 - 85 + leftmargin, 150));
+        addButton(weatherButton = new GuiButtonNBXlite(l + 1, width / 2 - 85 + leftmargin, 150));
         featuresButtons[features].enabled=false;
     }
 

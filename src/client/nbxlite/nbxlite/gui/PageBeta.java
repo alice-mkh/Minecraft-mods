@@ -3,12 +3,12 @@ package net.minecraft.src.nbxlite.gui;
 import net.minecraft.src.*;
 
 public class PageBeta extends Page{
-    private GuiButton[] featuresButtons;
-    private GuiButton newOresButton;
-    private GuiButton jungleButton;
-    private GuiButton iceDesertButton;
-    private GuiButton fixBeachesButton;
-    private GuiButton weatherButton;
+    private GuiButtonNBXlite[] featuresButtons;
+    private GuiButtonNBXlite newOresButton;
+    private GuiButtonNBXlite jungleButton;
+    private GuiButtonNBXlite iceDesertButton;
+    private GuiButtonNBXlite fixBeachesButton;
+    private GuiButtonNBXlite weatherButton;
     private boolean newores;
     private boolean jungle;
     private boolean iceDesert;
@@ -18,7 +18,7 @@ public class PageBeta extends Page{
 
     public PageBeta(GuiNBXlite parent){
         super(parent);
-        featuresButtons = new GuiButton[GeneratorList.feat1length + 1];
+        featuresButtons = new GuiButtonNBXlite[GeneratorList.feat1length + 1];
         jungle = ODNBXlite.getDefaultFlag("jungle");
         newores = ODNBXlite.getDefaultFlag("newores");
         iceDesert = ODNBXlite.getDefaultFlag("icedesert");
@@ -31,7 +31,7 @@ public class PageBeta extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
+            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 115) + leftmargin, 210);
             String name = mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1));
             if (i != ODNBXlite.FEATURES_SKY){
                 name += " (" + mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1) + ".desc") + ")";
@@ -39,11 +39,11 @@ public class PageBeta extends Page{
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
         }
-        addButton(newOresButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(jungleButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(iceDesertButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(weatherButton = new GuiButton(l + 4, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(newOresButton = new GuiButtonNBXlite(l, width / 2 - 85 + leftmargin, 150));
+        addButton(jungleButton = new GuiButtonNBXlite(l + 1, width / 2 - 85 + leftmargin, 150));
+        addButton(iceDesertButton = new GuiButtonNBXlite(l + 2, width / 2 - 85 + leftmargin, 150));
+        addButton(fixBeachesButton = new GuiButtonNBXlite(l + 3, width / 2 - 85 + leftmargin, 150));
+        addButton(weatherButton = new GuiButtonNBXlite(l + 4, width / 2 - 85 + leftmargin, 150));
         featuresButtons[features].enabled=false;
     }
 

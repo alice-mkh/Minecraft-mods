@@ -17,7 +17,7 @@ public class GuiScrolling extends Gui{
     private boolean scrollbarDragging;
     private int clickY;
 
-    public ArrayList<GuiButton> buttonList;
+    public ArrayList<GuiButtonOldDays> buttonList;
     private GuiButton selectedButton;
 
     public GuiScrolling(IScrollingGui gui){
@@ -28,7 +28,7 @@ public class GuiScrolling extends Gui{
         clickY = 0;
         dragging = false;
         scrollbarDragging = false;
-        buttonList = new ArrayList<GuiButton>();
+        buttonList = new ArrayList<GuiButtonOldDays>();
     }
 
     public void handleMouseInput(){
@@ -110,7 +110,7 @@ public class GuiScrolling extends Gui{
         }
         if (par3 == 0){
             for (int i = 0; i < buttonList.size(); i++){
-                GuiButton guibutton = buttonList.get(i);
+                GuiButtonOldDays guibutton = buttonList.get(i);
                 if (guibutton.mousePressed(mc, par1, par2) && guibutton.enabled){
                     selectedButton = guibutton;
                     mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
@@ -227,17 +227,15 @@ public class GuiScrolling extends Gui{
     }
 
     private void scrolled(){
-        for (GuiButton button : buttonList){
-            if (button instanceof GuiButtonProp){
-                ((GuiButtonProp)button).scrolled(canBeScrolled(), scrolling);
-            }
+        for (GuiButtonOldDays button : buttonList){
+            button.scrolled(canBeScrolled(), scrolling);
         }
         gui.scrolled();
     }
 
     public void drawButtons(int i, int j){
         for (int k = 0; k < buttonList.size(); k++){
-            GuiButton guibutton = buttonList.get(k);
+            GuiButtonOldDays guibutton = buttonList.get(k);
             if (i < gui.getLeft() || i > gui.getRight() || j < gui.getTop() || j > gui.getBottom()){
                 guibutton.drawButton(mc, -1000, -1000);
             }else{

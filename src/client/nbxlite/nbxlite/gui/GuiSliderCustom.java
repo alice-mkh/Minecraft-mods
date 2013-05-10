@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.*;
 
-public class GuiSliderCustom extends GuiButton
+public class GuiSliderCustom extends GuiButtonNBXlite
 {
     /** The value of this slider control. */
     public float sliderValue;
@@ -13,9 +13,9 @@ public class GuiSliderCustom extends GuiButton
     public boolean dragging;
     public String name;
 
-    public GuiSliderCustom(int par1, int par2, int par3, String par5Str, float par6)
+    public GuiSliderCustom(int par1, int par2, String par5Str, float par6)
     {
-        super(par1, par2, par3, 150, 20, par5Str);
+        super(par1, par2, 150);
         sliderValue = 1.0F;
         dragging = false;
         name = par5Str;

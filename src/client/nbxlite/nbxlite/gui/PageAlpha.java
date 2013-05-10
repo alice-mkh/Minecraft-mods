@@ -4,12 +4,12 @@ import java.util.Random;
 import net.minecraft.src.*;
 
 public class PageAlpha extends Page{
-    private GuiButton[] featuresButtons;
-    private GuiButton themeButton;
-    private GuiButton newOresButton;
-    private GuiButton snowButton;
-    private GuiButton fixBeachesButton;
-    private GuiButton weatherButton;
+    private GuiButtonNBXlite[] featuresButtons;
+    private GuiButtonNBXlite themeButton;
+    private GuiButtonNBXlite newOresButton;
+    private GuiButtonNBXlite snowButton;
+    private GuiButtonNBXlite fixBeachesButton;
+    private GuiButtonNBXlite weatherButton;
     private boolean newores;
     private boolean fixbeaches;
     private boolean weather;
@@ -19,7 +19,7 @@ public class PageAlpha extends Page{
 
     public PageAlpha(GuiNBXlite parent){
         super(parent);
-        featuresButtons = new GuiButton[ODNBXlite.BIOMELESS_FEATURES.length];
+        featuresButtons = new GuiButtonNBXlite[ODNBXlite.BIOMELESS_FEATURES.length];
         newores = ODNBXlite.getDefaultFlag("newores");
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
         weather = ODNBXlite.getDefaultFlag("weather");
@@ -32,17 +32,17 @@ public class PageAlpha extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButton(i, (width / 2 - 115) + leftmargin, 0, 210, 20, "");
+            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 115) + leftmargin, 210);
             String name = mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (i + 1));
             name += " (" + mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (i + 1) + ".desc") + ")";
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
         }
-        addButton(themeButton = new GuiButton(l, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(newOresButton = new GuiButton(l + 1, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(snowButton = new GuiButton(l + 2, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(fixBeachesButton = new GuiButton(l + 3, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
-        addButton(weatherButton = new GuiButton(l + 4, width / 2 - 85 + leftmargin, 0, 150, 20, ""));
+        addButton(themeButton = new GuiButtonNBXlite(l, width / 2 - 85 + leftmargin, 150));
+        addButton(newOresButton = new GuiButtonNBXlite(l + 1, width / 2 - 85 + leftmargin, 150));
+        addButton(snowButton = new GuiButtonNBXlite(l + 2, width / 2 - 85 + leftmargin, 150));
+        addButton(fixBeachesButton = new GuiButtonNBXlite(l + 3, width / 2 - 85 + leftmargin, 150));
+        addButton(weatherButton = new GuiButtonNBXlite(l + 4, width / 2 - 85 + leftmargin, 150));
         featuresButtons[features].enabled=false;
     }
 

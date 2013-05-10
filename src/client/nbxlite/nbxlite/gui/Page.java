@@ -5,8 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.WorldInfo;
-import net.minecraft.src.GuiScrolling;
 import net.minecraft.src.IScrollingGui;
+import net.minecraft.src.GuiButtonOldDays;
+import net.minecraft.src.GuiScrolling;
 
 public abstract class Page extends GuiScreen implements IScrollingGui{
     protected int leftmargin = 90;
@@ -140,7 +141,7 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
         calculateMinScrolling();
     }
 
-    protected final void addButton(GuiButton b){
+    protected final void addButton(GuiButtonOldDays b){
         scrollingGui.buttonList.add(b);
     }
 
