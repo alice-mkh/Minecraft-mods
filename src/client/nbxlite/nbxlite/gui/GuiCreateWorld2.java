@@ -75,7 +75,7 @@ public class GuiCreateWorld2 extends GuiScreen
     private boolean skipIndev;
     private GuiNBXlite nbxliteGui;
     private GuiStructures structuresGui;
-    private boolean recreate;
+    public boolean shouldModifyStructures;
 
     public GuiCreateWorld2(GuiScreen par1GuiScreen)
     {
@@ -94,7 +94,7 @@ public class GuiCreateWorld2 extends GuiScreen
         nbxliteGui = new GuiNBXlite(this);
         structuresGui = new GuiStructures(this);
         structuresGui.enabled = generateStructures;
-        recreate = false;
+        shouldModifyStructures = true;
     }
 
     public void fixHardcoreButtons(){
@@ -149,10 +149,12 @@ public class GuiCreateWorld2 extends GuiScreen
         if (allowWorldTypes < 3){
             generatorOptionsToUse = "";
         }
-        if (!recreate){
+        System.out.println("1"+generateStructures+" "+shouldModifyStructures);
+        if (shouldModifyStructures){
             generateStructures = nbxliteGui.enableStructuresByDefault();
             structuresGui.enabled = generateStructures;
             structuresGui.setDefaultSettings(generateStructures);
+            shouldModifyStructures = false;
         }
 
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
@@ -594,6 +596,7 @@ public class GuiCreateWorld2 extends GuiScreen
             nbxliteGui.loadSettingsFromWorldInfo(par1WorldInfo);
             ODNBXlite.Structures = par1WorldInfo.structures;
         }
-        recreate = true;
+        System.out.println("1"+generateStructures);
+        shouldModifyStructures = false;
     }
 }

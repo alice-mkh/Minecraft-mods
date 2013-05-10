@@ -138,6 +138,7 @@ public class GuiNBXlite extends GuiScreen{
             applySettings();
             mc.displayGuiScreen(parent);
             if (parent instanceof GuiCreateWorld2){
+                ((GuiCreateWorld2)parent).shouldModifyStructures = true;
                 ((GuiCreateWorld2)parent).fixHardcoreButtons();
             }
         }else if (guibutton.id >= 2 && guibutton.id < 2 + genButtons.length){
