@@ -489,7 +489,7 @@ public class GuiCreateWorld2 extends GuiScreen
 
         nbxliteButton.drawButton = moreOptions && ODNBXlite.ShowGUI && !field_82289_B.drawButton;
         nbxliteButtonShort.drawButton = moreOptions && ODNBXlite.ShowGUI && field_82289_B.drawButton;
-        structuresButton.drawButton = moreOptions;
+        structuresButton.drawButton = moreOptions && ODNBXlite.ShowGUI;
     }
 
     /**
