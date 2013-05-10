@@ -286,6 +286,7 @@ public abstract class World implements IBlockAccess
             worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
             worldInfo.mapTheme = ODNBXlite.MapTheme;
             worldInfo.flags = ODNBXlite.getFlags();
+            worldInfo.structures = ODNBXlite.Structures;
             if (provider.dimensionId == 0){
                 worldInfo.snowCovered = ODNBXlite.SnowCovered;
                 ODNBXlite.SetGenerator(this, ODNBXlite.Generator, ODNBXlite.MapFeatures, ODNBXlite.MapTheme, ODNBXlite.IndevMapType, ODNBXlite.SnowCovered);
@@ -405,6 +406,7 @@ public abstract class World implements IBlockAccess
                 ODNBXlite.FogColor = worldInfo.fogcolor;
                 ODNBXlite.CloudColor = worldInfo.cloudcolor;
                 ODNBXlite.setFlags(worldInfo.flags);
+                ODNBXlite.Structures = worldInfo.structures;
                 ODNBXlite.SetGenerator(this, worldInfo.mapGen, worldInfo.mapGenExtra, worldInfo.mapTheme, worldInfo.mapType, worldInfo.snowCovered);
             }else{
                 worldInfo.nbxlite = true;
@@ -413,6 +415,7 @@ public abstract class World implements IBlockAccess
                 worldInfo.mapGenExtra = ODNBXlite.MapFeatures;
                 worldInfo.mapTheme = ODNBXlite.MapTheme;
                 worldInfo.flags = ODNBXlite.getFlags();
+                worldInfo.structures = ODNBXlite.Structures;
                 worldInfo.mapType = ODNBXlite.IndevMapType;
                 worldInfo.indevX = ODNBXlite.IndevWidthX;
                 worldInfo.indevZ = ODNBXlite.IndevWidthZ;

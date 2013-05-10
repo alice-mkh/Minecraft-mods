@@ -264,10 +264,18 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
         }
         if(mapFeaturesEnabled)
         {
-            ravineGenerator.generate(this, worldObj, i1, j1, abyte0);
-            mineshaftGenerator.generate(this, worldObj, i1, j1, abyte0);
-            villageGenerator.generate(this, worldObj, i1, j1, abyte0);
-            strongholdGenerator.generate(this, worldObj, i1, j1, abyte0);
+            if (ODNBXlite.Structures[0]){
+                ravineGenerator.generate(this, worldObj, i1, j1, abyte0);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generate(this, worldObj, i1, j1, abyte0);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generate(this, worldObj, i1, j1, abyte0);
+            }
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generate(this, worldObj, i1, j1, abyte0);
+            }
         }
     }
 
@@ -426,9 +434,15 @@ label0:
         rand.setSeed((long)i1 * 0x12f88dd3L + (long)j1 * 0x36d41eecL);
         if(mapFeaturesEnabled)
         {
-            strongholdGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
-            villageGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
-            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i1, j1);
+            }
         }
         int k = i1 << 4;
         i1 = j1 << 4;

@@ -1016,6 +1016,14 @@ flag.fixbeaches=Исправить пляжи
 flag.weather=Погода
  flag.weather.desc=Включает погоду
 
+structures.select=Выберите строения
+structures.ravines=Каньоны
+structures.villages=Деревни NPC
+structures.strongholds=Крепости
+structures.mineshafts=Заброшенные нахты
+structures.netherfortresses=Адские крепости
+structures.temples=Храмы и хижины ведьм
+
 convert=Укажите параметры мира
 continue=Продолжить
 settings=Параметры

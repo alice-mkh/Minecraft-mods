@@ -83,8 +83,9 @@ public class WorldInfo
     public int fogcolor;
     public int cloudcolor;
     public String flags;
+    public boolean[] structures;
 
-    public static final int NBXLITE_INFO_VERSION = 4;
+    public static final int NBXLITE_INFO_VERSION = 5;
 
     protected WorldInfo()
     {
@@ -204,6 +205,15 @@ public class WorldInfo
                         flags += (flags.length() <= 0) ? "weather" : ";weather";
                     }
                 }
+                if (nbxliteTag.getInteger("Version") < 5){
+                    structures = ODNBXlite.getDefaultStructures(mapFeaturesEnabled, mapGen, mapGenExtra);
+                }else{
+                    structures = new boolean[ODNBXlite.STRUCTURES.length];
+                    NBTTagCompound structuresTag = nbxliteTag.getCompoundTag("Structures");
+                    for (int i = 0; i < structures.length; i++){
+                        structures[i] = structuresTag.getBoolean(ODNBXlite.STRUCTURES[i]);
+                    }
+                }
                 NBTTagCompound themeTag = nbxliteTag.getCompoundTag("Theme");
                 if (mapGen==ODNBXlite.GEN_BIOMELESS){
                     mapTheme = themeTag.getInteger("Generation");
@@ -277,6 +287,7 @@ public class WorldInfo
             indevY = ODNBXlite.IndevHeight;
             indevZ = ODNBXlite.IndevWidthZ;
             flags = ODNBXlite.getFlags();
+            structures = ODNBXlite.Structures;
             surrgroundheight = ODNBXlite.SurrGroundHeight;
             surrgroundtype = ODNBXlite.SurrGroundType;
             surrwaterheight = ODNBXlite.SurrWaterHeight;
@@ -328,6 +339,7 @@ public class WorldInfo
         indevY = par1WorldInfo.indevY;
         indevZ = par1WorldInfo.indevZ;
         flags = par1WorldInfo.flags;
+        structures = par1WorldInfo.structures;
         surrgroundheight = par1WorldInfo.surrgroundheight;
         surrgroundtype = par1WorldInfo.surrgroundtype;
         surrwaterheight = par1WorldInfo.surrwaterheight;
@@ -414,6 +426,11 @@ public class WorldInfo
             nbxliteTag.setInteger("Version", NBXLITE_INFO_VERSION);
             nbxliteTag.setString("Generator", ODNBXlite.getGenName(mapGen, mapGenExtra, snowCovered));
             nbxliteTag.setString("Flags", flags);
+            NBTTagCompound structuresTag = new NBTTagCompound();
+            for (int i = 0; i < structures.length; i++){
+                structuresTag.setBoolean(ODNBXlite.STRUCTURES[i], structures[i]);
+            }
+            nbxliteTag.setCompoundTag("Structures", structuresTag);
             NBTTagCompound themeTag = new NBTTagCompound();
             themeTag.setInteger("Generation", mapTheme);
             themeTag.setFloat("CloudHeight", cloudheight);

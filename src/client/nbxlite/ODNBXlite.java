@@ -1143,6 +1143,47 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
+    public static boolean[] getAvailableStructures(int gen, int feats){
+        boolean[] b = new boolean[STRUCTURES.length];
+        for (int i = 0; i < b.length; i++){
+            b[i] = true;
+        }
+        boolean finite = gen == GEN_BIOMELESS && (feats == FEATURES_INDEV || feats == FEATURES_CLASSIC);
+        boolean infdev0227 = gen == GEN_BIOMELESS && (feats == FEATURES_INFDEV0227);
+        boolean sky = gen == GEN_OLDBIOMES && feats == FEATURES_SKY;
+        if (finite || infdev0227 || sky){
+            b[0] = false;
+            b[1] = false;
+            b[2] = false;
+            b[3] = false;
+            b[5] = false;
+        }else if (gen == GEN_BIOMELESS){
+            b[5] = false;
+        }
+        return b;
+    }
+
+    public static boolean[] getDefaultStructures(boolean structures, int gen, int feats){
+        boolean[] b = new boolean[STRUCTURES.length];
+        boolean finite = gen == GEN_BIOMELESS && (feats == FEATURES_INDEV || feats == FEATURES_CLASSIC);
+        boolean infdev0227 = gen == GEN_BIOMELESS && (feats == FEATURES_INFDEV0227);
+        boolean sky = gen == GEN_OLDBIOMES && feats == FEATURES_SKY;
+        if (finite || infdev0227 || sky){
+            structures = false;
+        }
+        for (int i = 0; i < b.length; i++){
+            b[i] = structures;
+        }
+        if (gen == GEN_NEWBIOMES){
+            b[0] = true;
+            b[4] = feats > ODNBXlite.FEATURES_BETA181;
+            b[5] = feats > ODNBXlite.FEATURES_12;
+        }else if (gen == GEN_BIOMELESS){
+            b[5] = false;
+        }
+        return b;
+    }
+
     public static int Generator = 2;
     public static boolean SnowCovered = false;
     public static int VoidFog=0;//0 - default; 1 - no void fog, horizon moves; 2 - no void fog, horizon doesn't move; 3 - no void fog, no bottom color; 4 - no void fog, no horizon
@@ -1223,4 +1264,7 @@ public class ODNBXlite extends OldDaysModule{
     public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().getMinecraftDir(), "saves"));
 
     public static String[] FLAGS = new String[]{"newores", "jungle", "icedesert", "fixbeaches", "weather"};
+
+    public static String[] STRUCTURES = new String[]{"Ravines", "Villages", "Strongholds", "Mineshafts", "NetherFortresses", "Temples"};
+    public static boolean[] Structures = new boolean[STRUCTURES.length];
 }

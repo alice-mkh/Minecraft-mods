@@ -23,6 +23,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
     public MapGenStronghold2 strongholdGenerator;
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
+    private MapGenBase ravineGenerator;
 
     public ChunkProviderGenerateInfdev(World world, long l, boolean flag){
         super(world, l, flag);
@@ -39,6 +40,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
             strongholdGenerator = new MapGenStronghold2();
             villageGenerator = new MapGenVillage();
             mineshaftGenerator = new MapGenMineshaft();
+            ravineGenerator = new MapGenRavine();
         }
         field_4180_q = new double[425];
     }
@@ -262,9 +264,18 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
     @Override
     protected void generateStructures(int i, int j, byte abyte0[]){
         if(mapFeaturesEnabled){
-            mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
-            villageGenerator.generate(this, worldObj, i, j, abyte0);
-            strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            if (ODNBXlite.Structures[0]){
+                ravineGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            }
         }
     }
 
@@ -275,9 +286,15 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         int z1 = z << 4;
         if(mapFeaturesEnabled)
         {
-            strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
         }
         for(int i = 0; i < 20; i++)
         {

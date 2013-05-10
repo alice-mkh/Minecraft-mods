@@ -284,11 +284,21 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         }
         if(mapFeaturesEnabled)
         {
-            ravineGenerator.generate(this, worldObj, i, j, abyte0);
-            mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
-            villageGenerator.generate(this, worldObj, i, j, abyte0);
-            strongholdGenerator.generate(this, worldObj, i, j, abyte0);
-            templeGenerator.generate(this, worldObj, i, j, abyte0);
+            if (ODNBXlite.Structures[0]){
+                ravineGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[5]){
+                templeGenerator.generate(this, worldObj, i, j, abyte0);
+            }
         }
     }
 
@@ -411,10 +421,18 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
         boolean flag = false;
         if(mapFeaturesEnabled)
         {
-            strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            flag = villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
-            templeGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
+            if (ODNBXlite.Structures[1]){
+                flag = villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
+            if (ODNBXlite.Structures[5]){
+                templeGenerator.generateStructuresInChunk(worldObj, rand, x, z);
+            }
         }
         double d = 0.25D;
         if (ODNBXlite.MapFeatures>ODNBXlite.FEATURES_ALPHA120){

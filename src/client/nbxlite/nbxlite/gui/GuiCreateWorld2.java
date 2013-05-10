@@ -71,8 +71,11 @@ public class GuiCreateWorld2 extends GuiScreen
     };
     private GuiButton nbxliteButton;
     private GuiButton nbxliteButtonShort;
+    private GuiButton structuresButton;
     private boolean skipIndev;
     private GuiNBXlite nbxliteGui;
+    private GuiStructures structuresGui;
+    private boolean recreate;
 
     public GuiCreateWorld2(GuiScreen par1GuiScreen)
     {
@@ -89,6 +92,8 @@ public class GuiCreateWorld2 extends GuiScreen
         skipIndev = false;
         localizedNewWorldText = StatCollector.translateToLocal("selectWorld.newWorld");
         nbxliteGui = new GuiNBXlite(this);
+        structuresGui = new GuiStructures(this);
+        recreate = false;
     }
 
     public void fixHardcoreButtons(){
@@ -143,7 +148,10 @@ public class GuiCreateWorld2 extends GuiScreen
         if (allowWorldTypes < 3){
             generatorOptionsToUse = "";
         }
-        generateStructures = nbxliteGui.enableStructuresByDefault();
+        if (!recreate){
+            generateStructures = nbxliteGui.enableStructuresByDefault();
+            structuresGui.setDefaultSettings(generateStructures);
+        }
 
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxWorldName.setFocused(true);
@@ -153,8 +161,10 @@ public class GuiCreateWorld2 extends GuiScreen
         String str = nbxliteGui.getButtonName();
         buttonList.add(nbxliteButton = new GuiButton(9, width / 2 - 155, 130, 310, 20, str));
         buttonList.add(nbxliteButtonShort = new GuiButton(10, width / 2 - 155, 130, 150, 20, str));
+        buttonList.add(structuresButton = new GuiButton(11, width / 2 - 177, 100, 20, 20, "+"));
         nbxliteButton.drawButton = false;
         nbxliteButtonShort.drawButton = false;
+        structuresButton.drawButton = false;
         func_82288_a(moreOptions);
         makeUseableName();
         updateButtonText();
@@ -324,6 +334,7 @@ public class GuiCreateWorld2 extends GuiScreen
                 worldsettings.enableCommands();
             }
 
+            structuresGui.applySettings();
             mc.enableSP = mc.useSP;
             if (mc.enableSP){
                 mc.setController(enumgametype);
@@ -437,6 +448,11 @@ public class GuiCreateWorld2 extends GuiScreen
              mc.displayGuiScreen(nbxliteGui);
              moreOptions = false;
         }
+        else if (par1GuiButton.id == 11)
+        {
+             mc.displayGuiScreen(structuresGui);
+             moreOptions = false;
+        }
     }
 
     private void func_82287_i()
@@ -467,6 +483,7 @@ public class GuiCreateWorld2 extends GuiScreen
 
         nbxliteButton.drawButton = moreOptions && ODNBXlite.ShowGUI && !field_82289_B.drawButton;
         nbxliteButtonShort.drawButton = moreOptions && ODNBXlite.ShowGUI && field_82289_B.drawButton;
+        structuresButton.drawButton = moreOptions;
     }
 
     /**
@@ -569,6 +586,8 @@ public class GuiCreateWorld2 extends GuiScreen
         }
         if (par1WorldInfo.nbxlite){
             nbxliteGui.loadSettingsFromWorldInfo(par1WorldInfo);
+            ODNBXlite.Structures = par1WorldInfo.structures;
         }
+        recreate = true;
     }
 }

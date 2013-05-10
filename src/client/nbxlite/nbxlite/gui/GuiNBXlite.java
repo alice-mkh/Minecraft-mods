@@ -194,6 +194,7 @@ public class GuiNBXlite extends GuiScreen{
     public void applySettings(){
         ODNBXlite.flags.clear();
         page.applySettings();
+        ODNBXlite.Structures = ODNBXlite.getDefaultStructures(enableStructuresByDefault(), ODNBXlite.Generator, ODNBXlite.MapFeatures);
         ODNBXlite.setDefaultColors();
     }
 

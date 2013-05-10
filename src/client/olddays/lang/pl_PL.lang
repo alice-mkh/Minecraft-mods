@@ -1016,6 +1016,15 @@ flag.fixbeaches=Naprawa plaż
 flag.weather=Pogoda
  flag.weather.desc=Włącza pogodę
 
+//FIXME
+structures.select=Select structures
+structures.ravines=Ravines
+structures.villages=NPC villages
+structures.strongholds=Strongholds
+structures.mineshafts=Abandoned mineshafts
+structures.netherfortresses=Nether fortresses
+structures.temples=Temples and witch huts
+
 convert=Wybierz ustawienia świata
 continue=Kontynuuj
 settings=Ustawienia
