@@ -149,7 +149,6 @@ public class GuiCreateWorld2 extends GuiScreen
         if (allowWorldTypes < 3){
             generatorOptionsToUse = "";
         }
-        System.out.println("1"+generateStructures+" "+shouldModifyStructures);
         if (shouldModifyStructures){
             generateStructures = nbxliteGui.enableStructuresByDefault();
             structuresGui.enabled = generateStructures;
@@ -596,7 +595,6 @@ public class GuiCreateWorld2 extends GuiScreen
             nbxliteGui.loadSettingsFromWorldInfo(par1WorldInfo);
             ODNBXlite.Structures = par1WorldInfo.structures;
         }
-        System.out.println("1"+generateStructures);
         shouldModifyStructures = false;
     }
 }
