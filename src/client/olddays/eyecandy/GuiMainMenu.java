@@ -20,7 +20,7 @@ public class GuiMainMenu extends GuiScreen
     public static String version = "OFF";
     public static boolean panorama = true;
     public static boolean oldlogo = false;
-    public static boolean texturepacks = true;
+    public static boolean texturepacks = false;
 
     String minecraftLogo[] = {
         " *   * * *   * *** *** *** *** *** ***",
