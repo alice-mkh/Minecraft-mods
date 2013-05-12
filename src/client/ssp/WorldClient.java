@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 
 public class WorldClient extends World
 {
+    protected boolean nightPotionPrev;
+
     /** The packets that need to be sent to the server. */
     private NetClientHandler sendQueue;
 
@@ -54,6 +56,29 @@ public class WorldClient extends World
         super.tick();
         func_82738_a(getTotalWorldTime() + 1L);
         setWorldTime(getWorldTime() + 1L);
+
+        if (Minecraft.oldlighting){
+            int i = calculateSkylightSubtracted(1.0F);
+            boolean nightPotion = Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision);
+            boolean nightPotionChanged = false;
+            if (nightPotion != nightPotionPrev){
+                nightPotionChanged = true;
+            }
+            nightPotionPrev = nightPotion;
+
+            if (i != skylightSubtracted || nightPotionChanged)
+            {
+                skylightSubtracted = i;
+                for(int j = 0; j < worldAccesses.size(); j++)
+                {
+                    ((RenderGlobal)worldAccesses.get(j)).updateAllRenderers(false);
+                }
+                if (nightPotionChanged){
+                    nightPotionChanged = false;
+                }
+            }
+        }
+
         theProfiler.startSection("reEntryProcessing");
 
         for (int i = 0; i < 10 && !entitySpawnQueue.isEmpty(); i++)

@@ -208,9 +208,6 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public void setLighting(int i){
-        if (ClassicLight >= 2 && !Minecraft.getMinecraft().enableSP){
-            i = 1;
-        }
         set(RenderGhast2.class, "bright", ClassicLight > 0);
         Minecraft.oldlighting = ClassicLight > 1;
         oldLightEngine = ClassicLight > 1;

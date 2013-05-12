@@ -368,24 +368,24 @@ public class WorldSSP2 extends WorldSSP
         chunkProvider.unloadQueuedChunks();
         int i = calculateSkylightSubtracted(1.0F);
 
-        boolean nightPotion = Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision);
-        boolean nightPotionChanged = false;
-        if (nightPotion != nightPotionPrev){
-            nightPotionChanged = true;
-        }
-        nightPotionPrev = nightPotion;
+        if (ODNBXlite.oldLightEngine){
+            boolean nightPotion = Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision);
+            boolean nightPotionChanged = false;
+            if (nightPotion != nightPotionPrev){
+                nightPotionChanged = true;
+            }
+            nightPotionPrev = nightPotion;
 
-        if (i != skylightSubtracted || nightPotionChanged)
-        {
-            skylightSubtracted = i;
-            if (ODNBXlite.oldLightEngine){
+            if (i != skylightSubtracted || nightPotionChanged)
+            {
+                skylightSubtracted = i;
                 for(int j = 0; j < worldAccesses.size(); j++)
                 {
                     ((RenderGlobal)worldAccesses.get(j)).updateAllRenderers(false);
                 }
-            }
-            if (nightPotionChanged){
-                nightPotionChanged = false;
+                if (nightPotionChanged){
+                    nightPotionChanged = false;
+                }
             }
         }
 
