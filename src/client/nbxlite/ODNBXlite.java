@@ -1171,12 +1171,10 @@ public class ODNBXlite extends OldDaysModule{
         boolean finite = gen == GEN_BIOMELESS && (feats == FEATURES_INDEV || feats == FEATURES_CLASSIC);
         boolean infdev0227 = gen == GEN_BIOMELESS && (feats == FEATURES_INFDEV0227);
         boolean sky = gen == GEN_OLDBIOMES && feats == FEATURES_SKY;
-        if (finite || infdev0227 || sky){
-            structures = false;
-        }
         for (int i = 0; i < b.length; i++){
-            b[i] = structures;
+            b[i] = structures && !finite && !infdev0227 && !sky;
         }
+        b[4] = structures;
         if (gen == GEN_NEWBIOMES){
             b[0] = true;
             b[4] = feats > ODNBXlite.FEATURES_BETA181;
