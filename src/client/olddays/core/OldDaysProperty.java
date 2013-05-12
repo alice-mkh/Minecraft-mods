@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public abstract class OldDaysProperty{
     public static final int GUI_TYPE_BUTTON = 1;
-    public static final int GUI_TYPE_DROPDOWN = 2;
-    public static final int GUI_TYPE_FIELD = 3;
+    public static final int GUI_TYPE_FIELD = 2;
+    public static final int GUI_TYPE_PAGE = 3;
 
     public int id;
     public int type;
@@ -156,5 +156,15 @@ public abstract class OldDaysProperty{
     public OldDaysProperty disableLoading(){
         canBeLoaded = false;
         return this;
+    }
+
+    protected int parseInt(String str){
+        int i = 0;
+        try{
+            i = Integer.parseInt(str);
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+        return i;
     }
 }

@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 public class GuiOldDaysSettings extends GuiOldDaysBase{
     private int id;
     protected GuiButtonProp showTooltip;
+    protected GuiButtonProp showPropertyPage;
+    protected GuiButton[] propertyPageButtons;
 
     public GuiOldDaysSettings(GuiScreen guiscreen, mod_OldDays core, int i){
         super(guiscreen, core);
@@ -21,6 +23,31 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             }
         }
         postInitGui();
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton guibutton){
+        if (!guibutton.enabled){
+            return;
+        }
+        super.actionPerformed(guibutton);
+        if (showPropertyPage == null){
+            return;
+        }
+        OldDaysPropertySet set = (OldDaysPropertySet)showPropertyPage.prop;
+        if (guibutton == propertyPageButtons[set.value.length]){
+            showPropertyPage = null;
+            propertyPageButtons = null;
+        }else{
+            boolean shift = isShiftPressed();
+            if (shift){
+                set.decrementValue(-guibutton.id - 10);
+            }else{
+                set.incrementValue(-guibutton.id - 10);
+            }
+            send(set);
+            mod_OldDays.sendCallbackAndSave(set.module.id, set.id);
+        }
     }
 
     @Override
@@ -67,6 +94,16 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
                 field.setText(prop.saveToString());
             }
             guibutton.enabled = false;
+        }else if (prop.guitype == OldDaysProperty.GUI_TYPE_PAGE){
+            showPropertyPage = guibutton;
+            OldDaysPropertySet set = (OldDaysPropertySet)prop;
+            propertyPageButtons = new GuiButton[set.value.length + 1];
+            for (int i = 0; i < set.value.length; i++){
+                GuiButton button = new GuiButton(-i - 10, 0, 0, 150, 20, "");
+                propertyPageButtons[i] = button;
+            }
+            GuiButton button = new GuiButton(-set.value.length - 10, 0, 0, 200, 20, mod_OldDays.lang.get("continue"));
+            propertyPageButtons[set.value.length] = button;
         }
         mod_OldDays.sendCallbackAndSave(m, p);
         guibutton.enabled = !prop.isDisabled();
@@ -94,6 +131,21 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
 
     @Override
     protected void mouseClicked(int par1, int par2, int par3){
+        if (showPropertyPage != null){
+            if (par3 == 0){
+                for (int i = 0; i < propertyPageButtons.length; i++){
+                    GuiButton guibutton = propertyPageButtons[i];
+                    if (guibutton.mousePressed(mc, par1, par2)){
+                        mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+                        actionPerformed(guibutton);
+                        if (propertyPageButtons == null){
+                            break;
+                        }
+                    }
+                }
+            }
+            return;
+        }
         super.mouseClicked(par1, par2, par3);
         if (this instanceof GuiOldDaysPresets){
             if (displayField){
@@ -159,14 +211,44 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     }
 
     @Override
-    public void drawScreen(int i, int j, float f)
-    {
-        super.drawScreen(i, j, f);
-        if (showTooltip != null && (i <= showTooltip.xPosition || i >= showTooltip.xPosition+20 || j <= showTooltip.yPosition || j >= showTooltip.yPosition+20)){
-            showTooltip = null;
+    public void drawScreen(int i, int j, float f){
+        if (showPropertyPage != null){
+            super.drawScreen(-1000, -1000, f);
+            drawPropertyPage(showPropertyPage, width / 2, height / 2);
+            for (int k = 0; k < propertyPageButtons.length; k++){
+                GuiButton guibutton = propertyPageButtons[k];
+                guibutton.drawButton(mc, i, j);
+            }
+        }else{
+            super.drawScreen(i, j, f);
+            if (showTooltip != null && (i <= showTooltip.xPosition || i >= showTooltip.xPosition+20 || j <= showTooltip.yPosition || j >= showTooltip.yPosition+20)){
+                showTooltip = null;
+            }
+            if (showTooltip != null){
+                drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
+            }
         }
-        if (showTooltip != null){
-            drawTooltip(showTooltip.prop.getTooltip(), width / 2, height / 2);
+    }
+
+    protected void drawPropertyPage(GuiButtonProp propButton, int x, int y){
+        int margin0 = 5;
+        int margin = margin0 + 20;
+        int padding = 10;
+        int w = 300 + padding * 3;
+        int h = padding * 3 + margin0 + margin * (propertyPageButtons.length / 2 + 1);
+        drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
+        OldDaysPropertySet set = (OldDaysPropertySet)propButton.prop;
+        drawCenteredString(fontRenderer, set.getButtonText(), x, y - h / 2 + padding / 2, 0xffffff);
+        for (int i = 0; i < propertyPageButtons.length; i++){
+            GuiButton button = propertyPageButtons[i];
+            button.xPosition = (i % 2 == 0) ? (x - 150 - padding / 2) : (x + padding / 2);
+            button.yPosition = y - h / 2 + 2 * padding + margin * (i / 2);
+            if (i < set.value.length){
+                button.displayString = set.getValueButtonText(i);
+            }else{
+                button.xPosition = x - 100;
+                button.yPosition += 2 * margin0;
+            }
         }
     }
 }

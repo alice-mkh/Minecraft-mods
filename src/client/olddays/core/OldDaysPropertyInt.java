@@ -96,10 +96,7 @@ public class OldDaysPropertyInt extends OldDaysProperty{
 
     @Override
     public void loadFromString(String str){
-        int i = 0;
-        try{
-            i = Integer.parseInt(str);
-        }catch(Exception ex){}
+        int i = parseInt(str);
         if (i < min){
             i = min;
         }

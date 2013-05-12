@@ -204,7 +204,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         int w2 = 0;
         for (int j = 0; j < length; j++){
             int width = fontRenderer.getStringWidth(strings[j].replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
-           if (w < width + margin * 2){
+            if (w < width + margin * 2){
                 w = width + margin * 2;
                 w2 = width / 2;
             }
