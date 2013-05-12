@@ -10,7 +10,6 @@ module.nbxlite=NBXlite
 
 gui.on=ВКЛ
 gui.off=ВЫКЛ
-//FIXME
 gui.random=Случайно
 gui.auto=Авто
 gui.possible=Возможные значения
@@ -803,8 +802,8 @@ nbxlite.biomelessfeatures.name=Особенности
  nbxlite.biomelessfeatures2.desc=Холмы с большими деревьями
  nbxlite.biomelessfeatures3=Infdev (08.06)
  nbxlite.biomelessfeatures3.desc=Холмы с обычными деревьями
-//FIXME
  nbxlite.biomelessfeatures4=Infdev (18.06)
+//FIXME
  nbxlite.biomelessfeatures4.desc=
  nbxlite.biomelessfeatures5=Альфа
  nbxlite.biomelessfeatures5.desc=Нейтральная местность
@@ -884,8 +883,7 @@ nbxlite.oldhoes.name=Старые мотыги
  nbxlite.oldhoes.desc3=§aИзменены в Бете 1.6.
 nbxlite.texturedclouds.name=Текстурированные облака
  nbxlite.texturedclouds.desc1=Добавляет текстуру на 3D облака.
-//FIXME
- nbxlite.texturedclouds.desc2=§aAuto: §7Infdev (06.18).
+ nbxlite.texturedclouds.desc2=§aАвто: §7Infdev (06.18).
  nbxlite.texturedclouds.desc3=§aДобавлены в конце Infdev, удалены в начале Альфы.
 nbxlite.opaqueflatclouds.name=Плоские непрозрачные облака
  nbxlite.opaqueflatclouds.desc1=Облака всегда плоские и непрозрачные
