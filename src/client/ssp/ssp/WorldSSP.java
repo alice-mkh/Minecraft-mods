@@ -323,7 +323,6 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             checkSessionLock();
         }catch(MinecraftException ex){
             ex.printStackTrace();
-            return;
         }
         saveHandler.saveWorldInfoAndPlayer(worldInfo, playerEntities);
         worldInfo.setSaveVersion(19133);
