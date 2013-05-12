@@ -3,14 +3,9 @@ package net.minecraft.src.nbxlite;
 import java.util.ArrayList;
 import net.minecraft.src.*;
 
-public class OldDaysPropertyFlags extends OldDaysPropertyString{
+public class OldDaysPropertyFlags extends OldDaysPropertySet{
     public OldDaysPropertyFlags(OldDaysModule m, int i, String f){
-        super(m, i, "", "", f);
-    }
-
-    @Override
-    public String getButtonText(){
-        return mod_OldDays.lang.get(getName()+".name");
+        super(m, i, createDefaultValueString(false), createDefaultValueString(true), f, createContentString());
     }
 
     public String[] getTooltip(){
@@ -36,5 +31,31 @@ public class OldDaysPropertyFlags extends OldDaysPropertyString{
             list.add("§4"+mod_OldDays.lang.get("gui.error"+getDisableReason()));
         }
         return list.toArray(new String[list.size()]);
+    }
+
+    @Override
+    public String getValueButtonText(int i){
+        StringBuilder b = new StringBuilder();
+        b.append(mod_OldDays.lang.get("flag." + ODNBXlite.FLAGS[i]));
+        b.append(": ");
+        b.append(mod_OldDays.lang.get("gui." + (value[i] > 0 ? "on" : "off")));
+        return b.toString();
+    }
+
+    private static String createDefaultValueString(boolean smp){
+        StringBuilder b = new StringBuilder();
+        for (String str : ODNBXlite.FLAGS){
+            b.append(ODNBXlite.getDefaultFlag(str) ? 1 : 0);
+            b.append(";");
+        }
+        return b.substring(0, b.length() - 1);
+    }
+
+    private static String createContentString(){
+        StringBuilder b = new StringBuilder();
+        for (String str : ODNBXlite.FLAGS){
+            b.append("b;");
+        }
+        return b.substring(0, b.length() - 1);
     }
 }

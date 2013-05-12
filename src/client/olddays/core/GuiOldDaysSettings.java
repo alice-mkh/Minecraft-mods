@@ -246,8 +246,11 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             if (i < set.value.length){
                 button.displayString = set.getValueButtonText(i);
             }else{
+                if (i % 2 != 0){
+                    i++;
+                }
                 button.xPosition = x - 100;
-                button.yPosition += 2 * margin0;
+                button.yPosition = y - h / 2 + 2 * padding + margin * (i / 2) + 2 * margin0;
             }
         }
     }

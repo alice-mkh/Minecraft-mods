@@ -69,7 +69,7 @@ public class ODNBXlite extends OldDaysModule{
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
             case 5: setGen(2);
                     setInWorldInfo("mapGenExtra", MapFeatures); break;
-            case 6: setFlags(Flags); setInWorldInfo("flags", Flags); break;
+            case 6: setFlags(generateFlagString(Flags)); setInWorldInfo("flags", generateFlagString(Flags)); break;
             case 7: setInWorldInfo("surrgroundheight", SurrGroundHeight); break;
             case 8: if (Block.blocksList[SurrGroundType] == null){
                         SurrGroundType = Block.bedrock.blockID;
@@ -115,7 +115,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int BiomelessFeatures;
     public static int BetaFeatures;
     public static int ReleaseFeatures;
-    public static String Flags;
+    public static int[] Flags;
     public static int SkyColor = 0;
     public static int FogColor = 0;
     public static int CloudColor = 0;
@@ -297,7 +297,7 @@ public class ODNBXlite extends OldDaysModule{
                 }
             }
         }
-        Flags = getFlags();
+        Flags = generateFlagArray(getFlags());
         for (int i = 1; i <= 15; i++){
             mod_OldDays.getModuleById(8).getPropertyById(i).updateValue();
         }
@@ -1141,6 +1141,35 @@ public class ODNBXlite extends OldDaysModule{
         for (String s : strs){
             flags.put(s.trim(), true);
         }
+    }
+
+    public static String generateFlagString(int[] ai){
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < ai.length; i++){
+            if (ai[i] > 0){
+                b.append(FLAGS[i]);
+                b.append(";");
+            }
+        }
+        return b.length() > 0 ? b.substring(0, b.length() - 1) : "";
+    }
+
+    public static int[] generateFlagArray(String str){
+        String[] s = str.split(";");
+        int[] ai = new int[FLAGS.length];
+        for (int i = 0; i < s.length; i++){
+            int j = 0;
+            for (; j < FLAGS.length; j++){
+                if (FLAGS[j].equals(s[i])){
+                    break;
+                }
+            }
+            if (j >= ai.length){
+                continue;
+            }
+            ai[j] = 1;
+        }
+        return ai;
     }
 
     public static boolean[] getAvailableStructures(boolean structures, int gen, int feats){

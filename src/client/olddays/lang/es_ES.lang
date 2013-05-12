@@ -851,8 +851,7 @@ nbxlite.releasefeatures.name=Caraterísticas
  nbxlite.releasefeatures8.desc=Cuarzo, carros en minas abandonadas
 //FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=Example string: §rflag1;flag2;flag3
- nbxlite.flags.desc2=<-Available flags:
+ nbxlite.flags.desc1=<-Available flags:
 nbxlite.surrgroundheight.name=Límite vertical
  nbxlite.surrgroundheight.desc1=Fija el límite vertical de mundos finitos.
 nbxlite.surrgroundtype.name=Bloque de límite vertical
