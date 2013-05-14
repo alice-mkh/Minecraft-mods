@@ -6,7 +6,7 @@ UPLOADDIR=~/Dropbox/Public/minecraft-mods-daily
 
 cd $MCPDIR
 cd src-mods
-YESTERDAY=`date --date="yesterday-1minute" -I`
+YESTERDAY=`date --date="yesterday" -I`
 LOG=`git log --since=$YESTERDAY`
 git log --since=$YESTERDAY > $UPLOADDIR/changelog-latest
 if diff -q $UPLOADDIR/changelog-latest $UPLOADDIR/latest/changelog > /dev/null; then
