@@ -24,7 +24,7 @@ rm unused.zip
 cd ..
 rm latest
 ln -s $VERSION latest
-FILES=`ls -v | tail -7`
+FILES=`ls -v | tail -12`
 mkdir temp
 for F in $FILES; do
     mv $F temp
