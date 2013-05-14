@@ -66,7 +66,6 @@ public class TerrainPngSupport{
             put(icons, 11, "web", Block.web.getIcon(0, 0));
             put(icons, 12, "rose", Block.plantRed.getIcon(0, 0));
             put(icons, 13, "flower", Block.plantYellow.getIcon(0, 0));
-            //14 is animated
             put(icons, 15, "sapling", Block.sapling.getIcon(0, 0));
             put(icons, 16, "stonebrick", Block.cobblestone.getIcon(0, 0));
             put(icons, 17, "bedrock", Block.bedrock.getIcon(0, 0));
@@ -82,7 +81,6 @@ public class TerrainPngSupport{
             put(icons, 28, "mushroom_red", Block.mushroomRed.getIcon(0, 0));
             put(icons, 29, "mushroom_brown", Block.mushroomBrown.getIcon(0, 0));
             put(icons, 30, "sapling_jungle", Block.sapling.getIcon(0, 3));
-            //31 is animated
             put(icons, 32, "oreGold", Block.oreGold.getIcon(0, 0));
             put(icons, 33, "oreIron", Block.oreIron.getIcon(0, 0));
             put(icons, 34, "oreCoal", Block.oreCoal.getIcon(0, 0));
@@ -91,13 +89,11 @@ public class TerrainPngSupport{
             put(icons, 37, "obsidian", Block.obsidian.getIcon(0, 0));
             put(icons, 38, "grass_side_overlay", (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 2)));
             put(icons, 39, "tallgrass", Block.tallGrass.getIcon(0, 1));
-            //40 is unused
             put(icons, 41, "beacon", Block.beacon.getBeaconIcon());
             put(icons, 43, "workbench_top", Block.workbench.getIcon(1, 0));
             put(icons, 44, "furnace_front", Block.furnaceIdle.getIcon(2, 2));
             put(icons, 45, "furnace_side", Block.furnaceIdle.getIcon(3, 2));
             put(icons, 46, "dispenser_front", Block.dispenser.getIcon(2, 0));
-            //47 is animated
             put(icons, 48, "sponge", Block.sponge.getIcon(0, 0));
             put(icons, 49, "glass", Block.glass.getIcon(0, 0));
             put(icons, 50, "oreDiamond", Block.oreDiamond.getIcon(0, 0));
@@ -152,7 +148,7 @@ public class TerrainPngSupport{
             put(icons, 106, "piston_top_sticky", BlockPistonBase.func_94496_b("piston_top_sticky"));
             put(icons, 107, "piston_top", BlockPistonBase.func_94496_b("piston_top"));
             put(icons, 108, "piston_side", BlockPistonBase.func_94496_b("piston_side"));
-//             put(icons, 109, "piston_bottom", Block.pistonBase.getIcon(5, 0));
+            put(icons, 109, "piston_bottom", Block.pistonBase.getIcon(1, 0));
             put(icons, 110, "piston_inner_top", BlockPistonBase.func_94496_b("piston_inner_top"));
             put(icons, 111, "stem_straight", Block.pumpkinStem.getIcon(0, 0));
             put(icons, 112, "rail_turn", Block.rail.getIcon(0, 6));
