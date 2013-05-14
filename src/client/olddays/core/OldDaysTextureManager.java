@@ -300,6 +300,7 @@ public class OldDaysTextureManager{
         tmpWidth = width;
         tmpHeight = height;
         tmp = new Texture("", 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
+        System.gc();
         return tmp;
     }
 

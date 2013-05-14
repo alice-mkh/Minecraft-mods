@@ -306,8 +306,9 @@ public class RenderBounds{
             tex.getTextureData().clear();
         }
         imageData.position(0).limit(width * height * 4);
-        if (emptyImage == -1){
+        if (emptyImage == -1 || prevWidth != width || prevHeight != height){
             emptyImage = mc.renderEngine.allocateAndSetupTexture(new BufferedImage(width, height, 2));
+            System.gc();
         }
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, emptyImage);
         GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
