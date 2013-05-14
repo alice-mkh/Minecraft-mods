@@ -232,7 +232,9 @@ public class ODTextures extends OldDaysModule{
         core.setField(Block.class, Block.portal, 195, portal);
         core.setField(Item.class, Item.pocketSundial, 176, clock);
         core.setField(Item.class, Item.compass, 176, compass);
+
         mod_OldDays.texman.updateTextureFXes();
+        System.gc();
     }
 
     private void refreshIconReplacements(){
