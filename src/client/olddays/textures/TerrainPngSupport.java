@@ -227,6 +227,22 @@ public class TerrainPngSupport{
             put(icons, 181, "redstoneDust_line_overlay", BlockRedstoneWire.func_94409_b("redstoneDust_line_overlay"));
             put(icons, 182, "enchantment_side", Block.enchantmentTable.getIcon(2, 0));
             put(icons, 183, "enchantment_bottom", Block.enchantmentTable.getIcon(0, 0));
+            put(icons, 184, "commandBlock", Block.commandBlock.getIcon(0, 0));
+            //FIXME: Item frame back
+            put(icons, 186, "flowerPot", Block.flowerPot.getIcon(0, 0));
+            put(icons, 187, "comparator", Block.redstoneComparatorIdle.getIcon(1, 0));
+            put(icons, 188, "comparator_lit", Block.redstoneComparatorActive.getIcon(1, 0));
+            put(icons, 191, "netherquartz", Block.oreNetherQuartz.getIcon(0, 0));
+            put(icons, 192, "sandstone_side", Block.sandStone.getIcon(2, 0));
+            put(icons, 193, "cloth_10", Block.cloth.getIcon(0, 10));
+            put(icons, 194, "cloth_2", Block.cloth.getIcon(0, 2));
+            put(icons, 195, "detectorRail", Block.railDetector.getIcon(0, 0));
+            put(icons, 196, "leaves_jungle", leavesIcons[0][3]);
+            put(icons, 197, "leaves_jungle_opaque", leavesIcons[1][3]);
+            put(icons, 198, "wood_spruce", Block.planks.getIcon(0, 1));
+            put(icons, 199, "wood_birch", Block.planks.getIcon(0, 2));
+
+            put(icons, 214, "wood_jungle", Block.planks.getIcon(0, 3));
             if (fillingMap > 0){
                 filledTerrain = true;
             }
