@@ -263,6 +263,12 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     private void fixLeaves(String s, String s1){
+        boolean alpha = Generator==GEN_BIOMELESS && MapFeatures==FEATURES_ALPHA11201;
+        boolean infdev = Generator==GEN_BIOMELESS && MapFeatures==FEATURES_INFDEV0618;
+        boolean beta = Generator==GEN_OLDBIOMES && MapFeatures<=FEATURES_BETA10;
+        if (!infdev && !alpha && !beta){
+            return;
+        }
         Minecraft mc = Minecraft.getMinecraft();
         if (mod_OldDays.getMinecraft().enableSP){
             mc.loadingScreen.resetProgressAndMessage("Fixing leaves");
