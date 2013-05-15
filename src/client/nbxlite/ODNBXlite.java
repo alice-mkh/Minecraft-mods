@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
+import net.minecraft.src.nbxlite.format.LeavesFixer;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 import net.minecraft.src.nbxlite.indev.*;
 import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
@@ -246,6 +247,9 @@ public class ODNBXlite extends OldDaysModule{
         if (saveLoader.isOldMapFormat(par1Str) && saveLoader.getWorldInfo(par1Str).getSaveVersion() != 19132){
             convertMapFormatOld(par1Str, par2Str);
         }
+        if (Minecraft.getMinecraft().getSaveLoader().isOldMapFormat(par1Str)){
+            fixLeaves(par1Str, par2Str);
+        }
     }
 
     private void convertMapFormatOld(String s, String s1)
@@ -256,7 +260,15 @@ public class ODNBXlite extends OldDaysModule{
             mc.loadingScreen.resetProgresAndWorkingMessage("This may take a while :)");
         }
         saveLoader.convertMapFormat(s, mc.loadingScreen);
-//         mc.startWorldSSP(s, s1, new WorldSettings(0L, EnumGameType.SURVIVAL, true, false, WorldType.DEFAULT));
+    }
+
+    private void fixLeaves(String s, String s1){
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mod_OldDays.getMinecraft().enableSP){
+            mc.loadingScreen.resetProgressAndMessage("Fixing leaves");
+            mc.loadingScreen.resetProgresAndWorkingMessage("This may take a while :)");
+        }
+        LeavesFixer.fixAllLeaves(s, mc.loadingScreen);
     }
 
     public static void setGen(int i){
