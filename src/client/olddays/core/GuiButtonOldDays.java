@@ -28,4 +28,8 @@ public class GuiButtonOldDays extends GuiButton{
         }
         super.drawButton(par1Minecraft, par2, par3);
     }
+
+    public int getHeight(){
+        return height;
+    }
 }

@@ -227,7 +227,7 @@ public class GuiScrolling extends Gui{
     }
 
     private void scrolled(){
-        for (GuiButtonOldDays button : buttonList){
+        for (GuiButtonOldDays button: buttonList){
             button.scrolled(canBeScrolled(), scrolling);
         }
         gui.scrolled();
@@ -236,6 +236,9 @@ public class GuiScrolling extends Gui{
     public void drawButtons(int i, int j){
         for (int k = 0; k < buttonList.size(); k++){
             GuiButtonOldDays guibutton = buttonList.get(k);
+            if (guibutton.yPosition + guibutton.getHeight() <= gui.getTop() || guibutton.yPosition >= gui.getBottom()){
+                continue;
+            }
             if (i < gui.getLeft() || i > gui.getRight() || j < gui.getTop() || j > gui.getBottom()){
                 guibutton.drawButton(mc, -1000, -1000);
             }else{
