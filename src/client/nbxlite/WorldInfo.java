@@ -245,9 +245,14 @@ public class WorldInfo
                         mapType = finiteTag.getInteger("Type");
                     }
                 }
-                if (par1NBTTagCompound.hasKey("snowCovered")){
-                    snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
-                }
+            }
+            if (par1NBTTagCompound.hasKey("snowCovered")){
+                snowCovered = par1NBTTagCompound.getBoolean("snowCovered");
+                ODNBXlite.SnowCovered = snowCovered;
+            }
+            if (par1NBTTagCompound.hasKey("SnowCovered")){
+                snowCovered = par1NBTTagCompound.getBoolean("SnowCovered");
+                ODNBXlite.SnowCovered = snowCovered;
             }
         }
 

@@ -24,7 +24,7 @@ public class PageAlpha extends Page{
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
         weather = ODNBXlite.getDefaultFlag("weather");
         theme = 0;
-        snow = 1;
+        snow = parent.newworld ? 1 : (ODNBXlite.SnowCovered ? 2 : 0);
         features = ODNBXlite.DefaultFeaturesBiomeless;
     }
 
@@ -79,8 +79,8 @@ public class PageAlpha extends Page{
     public void updateButtonVisibility(){
         newOresButton.drawButton = features > 0;
         snowButton.drawButton = canSnow();
-        snowButton.enabled = !weather;
-        weatherButton.enabled = theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS;
+        snowButton.enabled = parent.newworld && !weather;
+        weatherButton.enabled = (theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS) && (!ODNBXlite.SnowCovered || parent.newworld);
         fixBeachesButton.drawButton = ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201;
     }
 
@@ -123,14 +123,16 @@ public class PageAlpha extends Page{
         ODNBXlite.Generator = ODNBXlite.GEN_BIOMELESS;
         ODNBXlite.MapFeatures = ODNBXlite.BIOMELESS_FEATURES[features];
         ODNBXlite.MapTheme = theme;
-        if (canSnow() && !weather){
-            if (snow == 1){
-                ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
+        if (parent.newworld){
+            if (canSnow() && !weather){
+                if (snow == 1){
+                    ODNBXlite.SnowCovered = (new Random()).nextInt(ODNBXlite.MapTheme == ODNBXlite.THEME_WOODS ? 2 : 4) == 0;
+                }else{
+                    ODNBXlite.SnowCovered = snow > 0;
+                }
             }else{
-                ODNBXlite.SnowCovered = snow > 0;
+                ODNBXlite.SnowCovered = false;
             }
-        }else{
-            ODNBXlite.SnowCovered = false;
         }
         ODNBXlite.setFlag("newores", newores);
         ODNBXlite.setFlag("fixbeaches", fixbeaches);

@@ -13,7 +13,7 @@ public class GuiNBXlite extends GuiScreen{
 
     private String selectedWorld;
     private int number;
-    private boolean newworld;
+    public boolean newworld;
     private int leftmargin = 90;
     private GuiScreen parent;
     private GuiButton[] genButtons;
@@ -29,10 +29,13 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     public GuiNBXlite(GuiScreen guiscreen, String world, int i){
-        this(guiscreen);
+        parent = guiscreen;
         selectedWorld = world;
         number = i;
         newworld = false;
+        prevGen = -1;
+        setDefaultSettings();
+        applySettings();
     }
 
     @Override
