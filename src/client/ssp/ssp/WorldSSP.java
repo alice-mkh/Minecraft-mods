@@ -2424,6 +2424,33 @@ public class WorldSSP extends WorldClient implements IBlockAccess
         return crashreportcategory;
     }
 
+//This method is very important! Without it you will be able to place blocks in yourself.
+    @Override
+    public boolean canPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity, ItemStack par8ItemStack)
+    {
+        int i = getBlockId(par2, par3, par4);
+        Block block = Block.blocksList[i];
+        Block block1 = Block.blocksList[par1];
+        AxisAlignedBB axisalignedbb = block1.getCollisionBoundingBoxFromPool(this, par2, par3, par4);
+
+        if (par5)
+        {
+            axisalignedbb = null;
+        }
+
+        if (axisalignedbb != null && !checkNoEntityCollision(axisalignedbb))
+        {
+            return false;
+        }
+
+        if (block != null && (block == Block.waterMoving || block == Block.waterStill || block == Block.lavaMoving || block == Block.lavaStill || block == Block.fire || block.blockMaterial.isReplaceable()))
+        {
+            block = null;
+        }
+
+        return par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6);
+    }
+
     static
     {
         bonusChestContent = (new WeightedRandomChestContent[]
