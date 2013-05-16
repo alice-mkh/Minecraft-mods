@@ -615,16 +615,9 @@ public class ODNBXlite extends OldDaysModule{
         Minecraft minecraft = mod_OldDays.getMinecraft();
         if (!rendererReplaced){
 //             minecraft.entityRenderer = new EntityRenderer2(minecraft);
-            boolean optifine = false;
-            Icon[] destroy = null;
-            try{
-                destroy = (Icon[])(core.getField(RenderGlobal.class, minecraft.renderGlobal, 26));
-            }catch(ClassCastException e){
-                optifine = true;
-                destroy = (Icon[])(core.getField(RenderGlobal.class, minecraft.renderGlobal, 25));
-            }
-            minecraft.renderGlobal = new RenderGlobal2(minecraft, minecraft.renderEngine, optifine);
-            core.setField(RenderGlobal.class, minecraft.renderGlobal, optifine ? 25 : 26, destroy);
+            Icon[] destroy = (Icon[])(core.getField(RenderGlobal.class, minecraft.renderGlobal, 25));
+            minecraft.renderGlobal = new RenderGlobal2(minecraft, minecraft.renderEngine);
+            core.setField(RenderGlobal.class, minecraft.renderGlobal, 25, destroy);
             rendererReplaced = true;
         }
         return true;

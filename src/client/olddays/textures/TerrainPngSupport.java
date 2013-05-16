@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.HashMap;
+import net.minecraft.client.Minecraft;
 
 public class TerrainPngSupport{
     public static HashMap<String, Integer> terrainIndexMap;
@@ -51,6 +52,8 @@ public class TerrainPngSupport{
         try{
             Icon[][] leavesIcons = (Icon[][])(mod_OldDays.getField(BlockLeaves.class, Block.leaves, 3));
             Icon[] doorIcons = (Icon[])(mod_OldDays.getField(BlockDoor.class, Block.doorWood, 2));
+            Icon[] anvilIcons = (Icon[])(mod_OldDays.getField(BlockAnvil.class, Block.anvil, 3));
+            Icon[] destroyIcons = (Icon[])(mod_OldDays.getField(RenderGlobal.class, Minecraft.getMinecraft().renderGlobal, 25));
 
             put(icons, 0, "grass_top", (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 0)));
             put(icons, 1, "stone", Block.stone.getIcon(0, 0));
@@ -112,7 +115,7 @@ public class TerrainPngSupport{
             put(icons, 65, "mobSpawner", Block.mobSpawner.getIcon(0, 0));
             put(icons, 66, "snow", Block.blockSnow.getIcon(0, 0));
             put(icons, 67, "ice", Block.ice.getIcon(0, 0));
-            put(icons, 68, "snow_side", (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 3)));
+            put(icons, 68, "snow_side", (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 1)));
             put(icons, 69, "cactus_top", Block.cactus.getIcon(1, 0));
             put(icons, 70, "cactus_side", Block.cactus.getIcon(2, 0));
             put(icons, 71, "cactus_bottom", Block.cactus.getIcon(0, 0));
@@ -237,8 +240,36 @@ public class TerrainPngSupport{
             put(icons, 197, "leaves_jungle_opaque", leavesIcons[1][3]);
             put(icons, 198, "wood_spruce", Block.planks.getIcon(0, 1));
             put(icons, 199, "wood_birch", Block.planks.getIcon(0, 2));
-
+            put(icons, 200, "carrots_0", Block.carrot.getIcon(0, 1));
+            put(icons, 201, "carrots_1", Block.carrot.getIcon(0, 3));
+            put(icons, 202, "carrots_2", Block.carrot.getIcon(0, 5));
+            put(icons, 203, "carrots_3", Block.carrot.getIcon(0, 7));
+            put(icons, 200, "potatoes_0", Block.potato.getIcon(0, 1));
+            put(icons, 201, "potatoes_1", Block.potato.getIcon(0, 3));
+            put(icons, 202, "potatoes_2", Block.potato.getIcon(0, 5));
+            put(icons, 204, "potatoes_3", Block.potato.getIcon(0, 7));
+            put(icons, 208, "sandstone_bottom", Block.sandStone.getIcon(0, 0));
+            put(icons, 209, "cloth_9", Block.cloth.getIcon(0, 9));
+            put(icons, 210, "cloth_1", Block.cloth.getIcon(0, 1));
+            put(icons, 211, "redstoneLight", Block.redstoneLampIdle.getIcon(0, 0));
+            put(icons, 212, "redstoneLight_lit", Block.redstoneLampActive.getIcon(0, 0));
+            put(icons, 213, "stonebricksmooth_carved", Block.stoneBrick.getIcon(0, 3));
             put(icons, 214, "wood_jungle", Block.planks.getIcon(0, 3));
+            put(icons, 215, "anvil_base", Block.anvil.getIcon(0, 0));
+            put(icons, 216, "anvil_top_damaged_1", anvilIcons[1]);
+            put(icons, 224, "netherBrick", Block.netherBrick.getIcon(0, 0));
+            put(icons, 225, "cloth_8", Block.cloth.getIcon(0, 8));
+            put(icons, 226, "netherStalk_0", Block.netherStalk.getIcon(0, 0));
+            put(icons, 227, "netherStalk_1", Block.netherStalk.getIcon(0, 2));
+            put(icons, 228, "netherStalk_2", Block.netherStalk.getIcon(0, 4));
+            put(icons, 229, "sandstone_carved", Block.sandStone.getIcon(2, 1));
+            put(icons, 230, "sandstone_smooth", Block.sandStone.getIcon(2, 2));
+            put(icons, 231, "anvil_top", anvilIcons[0]);
+            put(icons, 232, "anvil_top_damaged_2", anvilIcons[2]);
+            for (int i = 0; i < 10; i++){
+                put(icons, 240 + i, "destroy_" + i, destroyIcons[i]);
+            }
+
             if (fillingMap > 0){
                 filledTerrain = true;
             }

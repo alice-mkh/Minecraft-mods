@@ -8,8 +8,6 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderGlobal implements IWorldAccess
 {
-    public static boolean nbxlite = false;
-
     public List tileEntities;
     private WorldClient theWorld;
 
@@ -145,6 +143,8 @@ public class RenderGlobal implements IWorldAccess
      * The offset used to determine if a renderer is one of the sixteenth that are being updated this frame
      */
     int frustumCheckOffset;
+
+    public static boolean nbxlite = false;
 
     public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine)
     {
