@@ -54,7 +54,6 @@ public class TerrainPngSupport{
             Icon[] doorIcons = (Icon[])(mod_OldDays.getField(BlockDoor.class, Block.doorWood, 2));
             Icon[] anvilIcons = (Icon[])(mod_OldDays.getField(BlockAnvil.class, Block.anvil, 3));
             Icon[] destroyIcons = (Icon[])(mod_OldDays.getField(RenderGlobal.class, Minecraft.getMinecraft().renderGlobal, 25));
-
             put(icons, 0, "grass_top", (Icon)(mod_OldDays.getField(BlockGrass.class, Block.grass, 0)));
             put(icons, 1, "stone", Block.stone.getIcon(0, 0));
             put(icons, 2, "dirt", Block.dirt.getIcon(0, 0));
@@ -269,7 +268,6 @@ public class TerrainPngSupport{
             for (int i = 0; i < 10; i++){
                 put(icons, 240 + i, "destroy_" + i, destroyIcons[i]);
             }
-
             if (fillingMap > 0){
                 filledTerrain = true;
             }
@@ -280,6 +278,16 @@ public class TerrainPngSupport{
     private static Icon[] getItemIcons(){
         Icon[] icons = new Icon[256];
         try{
+            put(icons, 0, "helmetCloth", Item.helmetLeather.getIconFromDamage(0));
+            put(icons, 1, "helmetChain", Item.helmetChain.getIconFromDamage(0));
+            put(icons, 2, "helmetIron", Item.helmetIron.getIconFromDamage(0));
+            put(icons, 3, "helmetDiamond", Item.helmetDiamond.getIconFromDamage(0));
+            put(icons, 4, "helmetGold", Item.helmetGold.getIconFromDamage(0));
+            put(icons, 5, "flintAndSteel", Item.flintAndSteel.getIconFromDamage(0));
+            put(icons, 6, "flint", Item.flint.getIconFromDamage(0));
+            put(icons, 7, "coal", Item.coal.getIconFromDamage(0));
+            put(icons, 10, "apple", Item.appleRed.getIconFromDamage(0));
+            put(icons, 11, "appleGold", Item.appleGold.getIconFromDamage(0));
             if (fillingMap > 0){
                 filledItems = true;
             }

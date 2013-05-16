@@ -403,4 +403,24 @@ public class ODTextures extends OldDaysModule{
         }
         super.replaceIcon(i, newIcon, x, y, orig, b);
     }
+
+    @Override
+    public void eraseIcon(Icon i, String orig, boolean b){
+        if (TerrainPng){
+            if (i == null){
+                return;
+            }
+            if (!b){
+                if (!(i instanceof TextureStitched)){
+                    return;
+                }
+                Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
+                boolean items = sheet.getTextureName().equals("items");
+                if (core.texman.copyIconFromSheet(i, items ? "/gui/items.png" : "/terrain.png", items ? TerrainPngSupport.itemsIndexMap : TerrainPngSupport.terrainIndexMap)){
+                    return;
+                }
+            }
+        }
+        super.eraseIcon(i, orig, b);
+    }
 }
