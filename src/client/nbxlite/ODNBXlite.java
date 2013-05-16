@@ -856,7 +856,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static boolean villageChests(){
-        return (Generator==GEN_NEWBIOMES && MapFeatures>=FEATURES_11) || Generator==GEN_OLDBIOMES;
+        return Generator!=GEN_NEWBIOMES || MapFeatures>=FEATURES_11;
     }
 
     public static boolean villagers(){
