@@ -37,7 +37,7 @@ public abstract class TextureFX extends TextureStitched{
         for (int i = 0; i <  width / 16; i++){
             for (int j = 0; j < height / 16; j++){
                 tmp.getTextureData().position(0);
-                textureSheet.copyFrom(originX + 16 * i, originY + 16 * j, tmp, rotated);
+                textureSheet.func_104062_b(originX + 16 * i, originY + 16 * j, tmp);
             }
         }
     }
