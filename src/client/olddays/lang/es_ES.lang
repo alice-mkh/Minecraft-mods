@@ -10,8 +10,7 @@ module.nbxlite=NBXlite
 
 gui.on=Sí
 gui.off=No
-//FIXME
-gui.random=Random
+gui.random=Aleatorio
 gui.auto=Automático
 gui.possible=Valores posibles
 gui.error1=Desactivado por conflicto con mods
@@ -120,10 +119,9 @@ actions.oldbonemeal.name=Antiguo polvo de hueso
  actions.oldbonemeal.desc1=Un solo uso sirve para
  actions.oldbonemeal.desc2=hacer crecer algo.
  actions.oldbonemeal.desc3=§aCambiado en 1.5.
-//FIXME
-actions.snowfallonglass.name=Snowfall on glass
- actions.snowfallonglass.desc1=Allows snow to fall on glass.
- actions.snowfallonglass.desc2=§aRemoved in Alpha 1.0.5.
+actions.snowfallonglass.name=Nieve en vidrio
+ actions.snowfallonglass.desc1=Permite a la nieve caer en vidrio.
+ actions.snowfallonglass.desc2=§aRemovido en Alpha 1.0.5.
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros
@@ -329,11 +327,10 @@ mobs.mobs.name=Mobs permitidos
 mobs.mobs.desc1=Determina que mobs pueden aparecer.
  mobs.mobs1=Classic
  mobs.mobs1.desc=No hay mobs
-//FIXME
  mobs.mobs2=0.31 (Ranas)
- mobs.mobs2.desc=Only Ranas
+ mobs.mobs2.desc=Sólo Ranas
  mobs.mobs3=0.31 (Steves)
- mobs.mobs3.desc=Only Steves
+ mobs.mobs3.desc=Sólo Steves
  mobs.mobs4=Indev
  mobs.mobs4.desc=No hay vacas
  mobs.mobs5=Alpha 1.0.8
@@ -538,7 +535,7 @@ sounds.drr.name=Flecha antigua
  sounds.drr.desc1=¡Drr!
  sounds.drr.desc2=§aCambiado en 1.0.
 sounds.eat.name=Sonido al comer
- sounds.eat.desc1=Om ñam ñam... ¡Errp!
+ sounds.eat.desc1=Om ñam ñam... ¡Berrp!
  sounds.eat.desc2=§aAñadido en 1.0.
  sounds.drink.name=Sonido al beber
  sounds.drink.desc1=§aAñadido en 1.0.
@@ -781,15 +778,14 @@ nbxlite.gen.name=Generador
  nbxlite.gen.desc1=Fija el generador principal.
  nbxlite.gen.desc2=Afecta la generación de mobs.
  nbxlite.gen1=Infdev/Alpha
-//FIXME
- nbxlite.gen1.desc=No biomes
+ nbxlite.gen1.desc=Sin biomas
  nbxlite.gen2=Beta
- nbxlite.gen2.desc=Pequeños biomas
+ nbxlite.gen2.desc=Biomas pequeños
  nbxlite.gen3=Lanzamiento
  nbxlite.gen3.desc=Biomas grandes y diversos
-nbxlite.maptheme.name=Theme
+nbxlite.maptheme.name=Tema
  nbxlite.maptheme.desc1=Afecta la generación. No cambiará los
- nbxlite.maptheme.desc2=colores o la luz del sol, ¡cambialas tu!
+ nbxlite.maptheme.desc2=colores o la luz del sol, ¡cambialas tú!
  nbxlite.maptheme.desc3=§aAñadido en 0.31, removido en Indev.
  nbxlite.maptheme1=Normal
  nbxlite.maptheme1.desc=Cielo azul, hierba verde
@@ -849,9 +845,8 @@ nbxlite.releasefeatures.name=Caraterísticas
  nbxlite.releasefeatures7.desc=Guaridas de brujas
  nbxlite.releasefeatures8=1.5
  nbxlite.releasefeatures8.desc=Cuarzo, carros en minas abandonadas
-//FIXME
 nbxlite.flags.name=Flags
- nbxlite.flags.desc1=<-Available flags:
+ nbxlite.flags.desc1=<-Flags disponibles:
 nbxlite.surrgroundheight.name=Límite vertical
  nbxlite.surrgroundheight.desc1=Fija el límite vertical de mundos finitos.
 nbxlite.surrgroundtype.name=Bloque de límite vertical
@@ -890,7 +885,6 @@ nbxlite.oldhoes.name=Azadón antiguo
  nbxlite.oldhoes.desc3=§aCambiado en Beta 1.6.
 nbxlite.texturedclouds.name=Nubes con texturas
  nbxlite.texturedclouds.desc1=Hace a las nubes 3D tener textura.
-//FIXME
  nbxlite.texturedclouds.desc2=§aAuto: §7Infdev (06.18).
  nbxlite.texturedclouds.desc3=§aAñadido en Infdev, removido en principios de Alpha.
 nbxlite.opaqueflatclouds.name=Nubes planas y opacas
@@ -942,16 +936,14 @@ nbxlite.defaultgenerator.name=Generador normal
  nbxlite.defaultgenerator1.desc=Mapas finitos
  nbxlite.defaultgenerator2=Indev
  nbxlite.defaultgenerator2.desc=Mapas finitos, más opciones
-//FIXME
  nbxlite.defaultgenerator3=Infdev/Alpha
- nbxlite.defaultgenerator3.desc=No biomes.
+ nbxlite.defaultgenerator3.desc=Sin biomas.
  nbxlite.defaultgenerator4=Beta
  nbxlite.defaultgenerator4.desc=Biomas pequeños
  nbxlite.defaultgenerator5=Release
  nbxlite.defaultgenerator5.desc=Biomas largos y distintivos
 nbxlite.defaultfeaturesbiomeless.name=Características por defecto
-//FIXME
- nbxlite.defaultfeaturesbiomeless.desc1=Used when creating a new Infdev/Alpha world.
+ nbxlite.defaultfeaturesbiomeless.desc1=Usadas cuando se crea un nuevo mundo Infdev/Alpha.
  nbxlite.defaultfeaturesbiomeless1=Infdev (02.27)
  nbxlite.defaultfeaturesbiomeless1.desc=Páramos vacíos
  nbxlite.defaultfeaturesbiomeless2=Infdev (04.20)
@@ -1015,23 +1007,21 @@ flag.newores=Generar nuevos minerales
  flag.newores.desc5=Alpha: §rLapis, esmeraldas
  flag.newores.desc6=Beta: §rEsmeraldas
 flag.jungle=Selva
-//FIXME
- flag.jungle.desc=Jungles for the Beta generator
-flag.icedesert=Ice deserts
- flag.icedesert.desc=Ice deserts for the Beta generator
-flag.fixbeaches=Fix beaches
- flag.fixbeaches.desc=Fixes beaches for Alpha and Beta generators
-flag.weather=Weather
- flag.weather.desc=Enables weather
+ flag.jungle.desc=Selvas en generador Beta
+flag.icedesert=Desiertos de hielo
+ flag.icedesert.desc=Desiertos de hielo en generador Beta
+flag.fixbeaches=Arreglo de Playas
+ flag.fixbeaches.desc=Arregla las playas en generadores Beta y Alpha
+flag.weather=Clima
+ flag.weather.desc=Actica el clima
 
-//FIXME
-structures.select=Select structures
-structures.ravines=Ravines
-structures.villages=NPC villages
-structures.strongholds=Strongholds
-structures.mineshafts=Abandoned mineshafts
-structures.netherfortresses=Nether fortresses
-structures.temples=Temples and witch huts
+structures.select=Seleccione estructuras
+structures.ravines=Barrancos
+structures.villages=Aldeas de NPC
+structures.strongholds=Fortalezas
+structures.mineshafts=Minas abandonadas
+structures.netherfortresses=Fortalezas del Nether
+structures.temples=Templos y chozas de brujas
 
 convert=Seleccionar opciones del mundo
 continue=Continuar
