@@ -446,7 +446,7 @@ public abstract class EntityCreature extends EntityLiving
         }
         float f = super.getSpeedModifier();
 
-        if (fleeingTick > 0 && !isAIEnabled() && !nopanic)
+        if (fleeingTick > 0 && (!isAIEnabled() || !newai) && !nopanic)
         {
             f *= 2.0F;
         }
