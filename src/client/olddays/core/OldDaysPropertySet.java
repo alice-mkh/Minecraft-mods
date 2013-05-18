@@ -10,6 +10,9 @@ public class OldDaysPropertySet extends OldDaysProperty{
     private int[] min;
     private int[] max;
     private int length;
+    private boolean useTemplates;
+    private ArrayList<int[]> templates;
+    private int currentTemplate;
 
     public OldDaysPropertySet(OldDaysModule m, int i, String v, String smp, String f, String content){
         super(m, i, f);
@@ -17,6 +20,16 @@ public class OldDaysPropertySet extends OldDaysProperty{
         value = defaultValue = parseString(v);
         smpValue = parseString(smp);
         guitype = GUI_TYPE_PAGE;
+        useTemplates = false;
+        templates = new ArrayList<int[]>();
+        currentTemplate = 0;
+    }
+
+    public void addTemplates(String... str){
+        for (String s : str){
+            templates.add(parseString(s));
+        }
+        useTemplates = true;
     }
 
     @Override
@@ -75,6 +88,10 @@ public class OldDaysPropertySet extends OldDaysProperty{
     }
 
     public int[] parseString(String str){
+        if (useTemplates && str.startsWith("t")){
+            currentTemplate = parseInt(str.substring(1, str.length()));
+            return selectTemplate(currentTemplate);
+        }
         String[] s = str.split(";");
         int[] values = new int[length];
         for (int i = 0; i < length; i++){
@@ -86,12 +103,20 @@ public class OldDaysPropertySet extends OldDaysProperty{
                 values[i] = max[i];
             }
         }
+        if (useTemplates){
+            currentTemplate = -1;
+        }
         return values;
     }
 
     @Override
     public String saveToString(){
         StringBuilder b = new StringBuilder();
+        if (useTemplates && currentTemplate >= 0){
+            b.append("t");
+            b.append(currentTemplate);
+            return b.toString();
+        }
         for (int i : value){
             b.append(i);
             b.append(";");
@@ -144,5 +169,42 @@ public class OldDaysPropertySet extends OldDaysProperty{
             max[i] = parseInt(str2[1]);
             useNames[i] = parseInt(str2[2]) > 0;
         }
+    }
+
+    public boolean shouldUseTemplates(){
+        return useTemplates;
+    }
+
+    public String getTemplateButtonText(){
+        if (currentTemplate < 0){
+            return mod_OldDays.lang.get("gui.custom");
+        }
+        return mod_OldDays.lang.get(getName()+".template"+currentTemplate);
+    }
+
+    public void changeTemplate(boolean shift){
+        if (shift){
+            currentTemplate--;
+        }else{
+            currentTemplate++;
+        }
+        if (currentTemplate >= templates.size()){
+            currentTemplate = -1;
+        }
+        if (currentTemplate < -1){
+            currentTemplate = templates.size() - 1;
+        }
+        value = selectTemplate(currentTemplate);
+    }
+
+    private int[] selectTemplate(int i){
+        if (i < 0){
+            return defaultValue;
+        }
+        return templates.get(i);
+    }
+
+    public boolean shouldButtonsBeEnabled(){
+        return !useTemplates || currentTemplate < 0;
     }
 }

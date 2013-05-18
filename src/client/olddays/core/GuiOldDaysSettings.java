@@ -38,6 +38,10 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (guibutton == propertyPageButtons[set.value.length]){
             showPropertyPage = null;
             propertyPageButtons = null;
+        }else if (guibutton == propertyPageButtons[set.value.length + 1]){
+            set.changeTemplate(isShiftPressed());
+            send(set);
+            mod_OldDays.sendCallbackAndSave(set.module.id, set.id);
         }else{
             boolean shift = isShiftPressed();
             if (shift){
@@ -97,13 +101,17 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         }else if (prop.guitype == OldDaysProperty.GUI_TYPE_PAGE){
             showPropertyPage = guibutton;
             OldDaysPropertySet set = (OldDaysPropertySet)prop;
-            propertyPageButtons = new GuiButton[set.value.length + 1];
+            propertyPageButtons = new GuiButton[set.value.length + (set.shouldUseTemplates() ? 2 : 1)];
             for (int i = 0; i < set.value.length; i++){
                 GuiButton button = new GuiButton(-i - 10, 0, 0, 150, 20, "");
                 propertyPageButtons[i] = button;
             }
             GuiButton button = new GuiButton(-set.value.length - 10, 0, 0, 200, 20, mod_OldDays.lang.get("continue"));
             propertyPageButtons[set.value.length] = button;
+            if (set.shouldUseTemplates()){
+                GuiButton button2 = new GuiButton(-set.value.length - 11, 0, 0, 200, 20, "");
+                propertyPageButtons[set.value.length + 1] = button2;
+            }
         }
         mod_OldDays.sendCallbackAndSave(m, p);
         guibutton.enabled = !prop.isDisabled();
@@ -231,13 +239,13 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
     }
 
     protected void drawPropertyPage(GuiButtonProp propButton, int x, int y){
+        OldDaysPropertySet set = (OldDaysPropertySet)propButton.prop;
         int margin0 = 5;
         int margin = margin0 + 20;
         int padding = 10;
         int w = 300 + padding * 3;
-        int h = padding * 3 + margin0 + margin * (propertyPageButtons.length / 2 + 1);
+        int h = padding * 3 + margin0 + margin * (propertyPageButtons.length / 2 + (set.shouldUseTemplates() ? 2 : 1));
         drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
-        OldDaysPropertySet set = (OldDaysPropertySet)propButton.prop;
         drawCenteredString(fontRenderer, set.getButtonText(), x, y - h / 2 + padding / 2, 0xffffff);
         for (int i = 0; i < propertyPageButtons.length; i++){
             GuiButton button = propertyPageButtons[i];
@@ -245,12 +253,24 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             button.yPosition = y - h / 2 + 2 * padding + margin * (i / 2);
             if (i < set.value.length){
                 button.displayString = set.getValueButtonText(i);
+                if (set.shouldUseTemplates()){
+                    button.yPosition += margin + margin0;
+                }
+                button.enabled = set.shouldButtonsBeEnabled();
+            }else if (i > set.value.length){
+                button.displayString = set.getTemplateButtonText();
+                button.xPosition = x - 100;
+                button.yPosition = y - h / 2 + 2 * padding;
             }else{
+                int i2 = i;
                 if (i % 2 != 0){
-                    i++;
+                    i2++;
+                }
+                if (set.shouldUseTemplates()){
+                    i2 += 2;
                 }
                 button.xPosition = x - 100;
-                button.yPosition = y - h / 2 + 2 * padding + margin * (i / 2) + 2 * margin0;
+                button.yPosition = y - h / 2 + 2 * padding + margin * (i2 / 2) + 3 * margin0;
             }
         }
     }
