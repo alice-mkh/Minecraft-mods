@@ -68,7 +68,7 @@ public class RenderPlayer2 extends RenderLiving
                     modelbiped.isChild = mainModel.isChild;
                 }
 
-                float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par2) : 1.0F;
+                float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par3) : 1.0F;
 
                 if (itemarmor.getArmorMaterial() == EnumArmorMaterial.CLOTH)
                 {
@@ -100,7 +100,7 @@ public class RenderPlayer2 extends RenderLiving
             {
                 ItemArmor itemarmor = (ItemArmor)item;
                 loadTexture((new StringBuilder()).append("/armor/").append(armorFilenamePrefix[itemarmor.renderIndex]).append("_").append(par2 != 2 ? 1 : 2).append("_b.png").toString());
-                float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par2) : 1.0F;
+                float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par3) : 1.0F;
                 GL11.glColor3f(f, f, f);
             }
         }
@@ -141,74 +141,6 @@ public class RenderPlayer2 extends RenderLiving
         modelArmorChestplate.heldItemRight = modelArmor.heldItemRight = modelBipedMain.heldItemRight = 0;
     }
 
-    protected void func_82440_a(EntityPlayer par1EntityPlayer, float par2, float par3, float par4, float par5, float par6, float par7)
-    {
-        if (!par1EntityPlayer.isInvisible())
-        {
-            super.renderModel(par1EntityPlayer, par2, par3, par4, par5, par6, par7);
-        }
-    }
-
-    /**
-     * Used to render a player's name above their head
-     */
-    protected void renderName(EntityPlayer par1EntityPlayer, double par2, double par4, double par6)
-    {
-        if (Minecraft.isGuiEnabled() && par1EntityPlayer != renderManager.livingPlayer && !par1EntityPlayer.isInvisible())
-        {
-            float f = 1.6F;
-            float f1 = 0.01666667F * f;
-            double d = par1EntityPlayer.getDistanceSqToEntity(renderManager.livingPlayer);
-            float f2 = par1EntityPlayer.isSneaking() ? 32F : 64F;
-
-            if (d < (double)(f2 * f2))
-            {
-                String s = par1EntityPlayer.username;
-
-                if (par1EntityPlayer.isSneaking())
-                {
-                    FontRenderer fontrenderer = getFontRendererFromRenderManager();
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + 2.3F, (float)par6);
-                    GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                    GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-                    GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-                    GL11.glScalef(-f1, -f1, f1);
-                    GL11.glDisable(GL11.GL_LIGHTING);
-                    GL11.glTranslatef(0.0F, 0.25F / f1, 0.0F);
-                    GL11.glDepthMask(false);
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                    Tessellator tessellator = Tessellator.instance;
-                    GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    tessellator.startDrawingQuads();
-                    int i = fontrenderer.getStringWidth(s) / 2;
-                    tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                    tessellator.addVertex(-i - 1, -1D, 0.0D);
-                    tessellator.addVertex(-i - 1, 8D, 0.0D);
-                    tessellator.addVertex(i + 1, 8D, 0.0D);
-                    tessellator.addVertex(i + 1, -1D, 0.0D);
-                    tessellator.draw();
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
-                    GL11.glDepthMask(true);
-                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 0, 0x20ffffff);
-                    GL11.glEnable(GL11.GL_LIGHTING);
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glPopMatrix();
-                }
-                else if (par1EntityPlayer.isPlayerSleeping())
-                {
-                    renderLivingLabel(par1EntityPlayer, s, par2, par4 - 1.5D, par6, 64);
-                }
-                else
-                {
-                    renderLivingLabel(par1EntityPlayer, s, par2, par4, par6, 64);
-                }
-            }
-        }
-    }
-
     /**
      * Method for adding special render rules
      */
@@ -217,6 +149,7 @@ public class RenderPlayer2 extends RenderLiving
         float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par2) : 1.0F;
         GL11.glColor3f(f, f, f);
         super.renderEquippedItems(par1EntityPlayer, par2);
+        super.renderArrowsStuckInEntity(par1EntityPlayer, par2);
         ItemStack itemstack = par1EntityPlayer.inventory.armorItemInSlot(3);
 
         if (itemstack != null)
@@ -280,40 +213,40 @@ public class RenderPlayer2 extends RenderLiving
             double d = (par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2) - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);
             double d1 = (par1EntityPlayer.field_71096_bN + (par1EntityPlayer.field_71095_bQ - par1EntityPlayer.field_71096_bN) * (double)par2) - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
             double d2 = (par1EntityPlayer.field_71097_bO + (par1EntityPlayer.field_71085_bR - par1EntityPlayer.field_71097_bO) * (double)par2) - (par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)par2);
-            float f12 = par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2;
-            double d3 = MathHelper.sin((f12 * (float)Math.PI) / 180F);
-            double d4 = -MathHelper.cos((f12 * (float)Math.PI) / 180F);
-            float f14 = (float)d1 * 10F;
+            float f15 = par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2;
+            double d3 = MathHelper.sin((f15 * (float)Math.PI) / 180F);
+            double d4 = -MathHelper.cos((f15 * (float)Math.PI) / 180F);
+            float f17 = (float)d1 * 10F;
 
-            if (f14 < -6F)
+            if (f17 < -6F)
             {
-                f14 = -6F;
+                f17 = -6F;
             }
 
-            if (f14 > 32F)
+            if (f17 > 32F)
             {
-                f14 = 32F;
+                f17 = 32F;
             }
 
-            float f15 = (float)(d * d3 + d2 * d4) * 100F;
-            float f16 = (float)(d * d4 - d2 * d3) * 100F;
+            float f18 = (float)(d * d3 + d2 * d4) * 100F;
+            float f19 = (float)(d * d4 - d2 * d3) * 100F;
 
-            if (f15 < 0.0F)
+            if (f18 < 0.0F)
             {
-                f15 = 0.0F;
+                f18 = 0.0F;
             }
 
-            float f17 = par1EntityPlayer.prevCameraYaw + (par1EntityPlayer.cameraYaw - par1EntityPlayer.prevCameraYaw) * par2;
-            f14 += MathHelper.sin((par1EntityPlayer.prevDistanceWalkedModified + (par1EntityPlayer.distanceWalkedModified - par1EntityPlayer.prevDistanceWalkedModified) * par2) * 6F) * 32F * f17;
+            float f20 = par1EntityPlayer.prevCameraYaw + (par1EntityPlayer.cameraYaw - par1EntityPlayer.prevCameraYaw) * par2;
+            f17 += MathHelper.sin((par1EntityPlayer.prevDistanceWalkedModified + (par1EntityPlayer.distanceWalkedModified - par1EntityPlayer.prevDistanceWalkedModified) * par2) * 6F) * 32F * f20;
 
             if (par1EntityPlayer.isSneaking())
             {
-                f14 += 25F;
+                f17 += 25F;
             }
 
-            GL11.glRotatef(6F + f15 / 2.0F + f14, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(f16 / 2.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(-f16 / 2.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(6F + f18 / 2.0F + f17, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(f19 / 2.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-f19 / 2.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
             modelBipedMain.renderCloak(0.0625F);
             GL11.glPopMatrix();
@@ -346,7 +279,7 @@ public class RenderPlayer2 extends RenderLiving
                 f5 *= 0.75F;
                 GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(f5, -f5, f5);
+                GL11.glScalef(-f5, -f5, f5);
             }
             else if (itemstack1.itemID == Item.bow.itemID)
             {
@@ -394,17 +327,21 @@ public class RenderPlayer2 extends RenderLiving
             {
                 for (int j = 0; j <= 1; j++)
                 {
-                    int k = itemstack1.getItem().getColorFromItemStack(itemstack1, j);
-                    float f10 = (float)(k >> 16 & 0xff) / 255F;
-                    float f11 = (float)(k >> 8 & 0xff) / 255F;
-                    float f13 = (float)(k & 0xff) / 255F;
-                    float ff = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(par2) : 1.0F;
-                    GL11.glColor4f(ff * f10, ff * f11, ff * f13, 1.0F);
+                    int l = itemstack1.getItem().getColorFromItemStack(itemstack1, j);
+                    float f11 = (float)(l >> 16 & 0xff) / 255F;
+                    float f13 = (float)(l >> 8 & 0xff) / 255F;
+                    float f16 = (float)(l & 0xff) / 255F;
+                    GL11.glColor4f(f * f11, f * f13, f * f16, 1.0F);
                     renderManager.itemRenderer.renderItem(par1EntityPlayer, itemstack1, j);
                 }
             }
             else
             {
+                int k = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
+                float f10 = (float)(k >> 16 & 0xff) / 255F;
+                float f12 = (float)(k >> 8 & 0xff) / 255F;
+                float f14 = (float)(k & 0xff) / 255F;
+                GL11.glColor4f(f * f10, f * f12, f * f14, 1.0F);
                 renderManager.itemRenderer.renderItem(par1EntityPlayer, itemstack1, 0);
             }
 
@@ -418,9 +355,36 @@ public class RenderPlayer2 extends RenderLiving
         GL11.glScalef(f, f, f);
     }
 
+    protected void func_96450_a(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, String par8Str, float par9, double par10)
+    {
+        if (par10 < 100D)
+        {
+            Scoreboard scoreboard = par1EntityPlayer.getWorldScoreboard();
+            ScoreObjective scoreobjective = scoreboard.func_96539_a(2);
+
+            if (scoreobjective != null)
+            {
+                Score score = scoreboard.func_96529_a(par1EntityPlayer.getEntityName(), scoreobjective);
+
+                if (par1EntityPlayer.isPlayerSleeping())
+                {
+                    renderLivingLabel(par1EntityPlayer, (new StringBuilder()).append(score.func_96652_c()).append(" ").append(scoreobjective.getDisplayName()).toString(), par2, par4 - 1.5D, par6, 64);
+                }
+                else
+                {
+                    renderLivingLabel(par1EntityPlayer, (new StringBuilder()).append(score.func_96652_c()).append(" ").append(scoreobjective.getDisplayName()).toString(), par2, par4, par6, 64);
+                }
+
+                par4 += (float)getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * par9;
+            }
+        }
+
+        super.func_96449_a(par1EntityPlayer, par2, par4, par6, par8Str, par9, par10);
+    }
+
     public void renderFirstPersonArm(EntityPlayer par1EntityPlayer)
     {
-        float f = Minecraft.oldlighting ? par1EntityPlayer.getBrightness(1.0F) : 1.0F;
+        float f = 1.0F;
         GL11.glColor3f(f, f, f);
         modelBipedMain.onGround = 0.0F;
         modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, par1EntityPlayer);
@@ -459,12 +423,9 @@ public class RenderPlayer2 extends RenderLiving
         }
     }
 
-    /**
-     * Passes the specialRender and renders it
-     */
-    protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
+    protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10)
     {
-        renderName((EntityPlayer)par1EntityLiving, par2, par4, par6);
+        func_96450_a((EntityPlayer)par1EntityLiving, par2, par4, par6, par8Str, par9, par10);
     }
 
     /**
@@ -510,14 +471,6 @@ public class RenderPlayer2 extends RenderLiving
     protected void func_98190_a(EntityLiving par1EntityLiving)
     {
         func_98191_a((EntityPlayer)par1EntityLiving);
-    }
-
-    /**
-     * Renders the model in RenderLiving
-     */
-    protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7)
-    {
-        func_82440_a((EntityPlayer)par1EntityLiving, par2, par3, par4, par5, par6, par7);
     }
 
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)

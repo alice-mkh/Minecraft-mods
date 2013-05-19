@@ -337,7 +337,7 @@ public class RenderLiving extends Render
 
     protected void renderEquippedItems(EntityLiving entityliving, float f)
     {
-        if(stick)
+        if(stick && !(this instanceof RenderPlayer) && !(this instanceof RenderPlayer2))
         {
             renderArrowsStuckInEntity(entityliving, f);
         }
