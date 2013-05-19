@@ -203,11 +203,10 @@ public class OldDaysTextureManager{
             return;
         }
         Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
-        boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
         Texture tex = getTempTexture(width, height, true);
-        sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
+        sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tex);
     }
 
     public void replaceIcon(Icon icon, String newIcon, int x, int y, String origIcon, boolean b){
@@ -221,7 +220,6 @@ public class OldDaysTextureManager{
             newIcon = origIcon;
         }
         Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
-        boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
         int width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         int height = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 8));
         int[] ints = new int[width * height];
@@ -242,7 +240,7 @@ public class OldDaysTextureManager{
             tex.getTextureData().put((byte)(color >> 24 & 0xFF));
         }
         tex.getTextureData().clear();
-        sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tex, rot);
+        sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tex);
     }
 
     public boolean copyIconFromSheet(Icon icon, String str, HashMap<String, Integer> indexMap){
@@ -282,8 +280,7 @@ public class OldDaysTextureManager{
             tmp.getTextureData().put((byte)(color >> 24 & 0xFF));
         }
         tmp.getTextureData().clear();
-        boolean rot = (Boolean)(mod_OldDays.getField(TextureStitched.class, icon, 4));
-        sheet.copyFrom(icon.getOriginX(), icon.getOriginY(), tmp, rot);
+        sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tmp);
         return true;
     }
 
