@@ -38,7 +38,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (guibutton == propertyPageButtons[set.value.length]){
             showPropertyPage = null;
             propertyPageButtons = null;
-        }else if (guibutton == propertyPageButtons[set.value.length + 1]){
+        }else if (set.shouldUseTemplates() && guibutton == propertyPageButtons[set.value.length + 1]){
             set.changeTemplate(isShiftPressed());
             send(set);
             mod_OldDays.sendCallbackAndSave(set.module.id, set.id);
