@@ -6,6 +6,7 @@ Gameplay.CombatSystem=0
 Gameplay.AllowDebug=false
 Gameplay.AllowSprint=false
 Gameplay.Score=0
+Gameplay.AllowSneak=false
 Mobs.AI=0
 Mobs.SheepEatGrass=false
 Mobs.SpidersCanClimb=false

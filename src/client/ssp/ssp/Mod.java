@@ -111,6 +111,8 @@ public abstract class Mod{
 
     public void updateTextures(){}
 
+    public void onInitPlayer(EntityClientPlayerMP player, GameSettings settings){}
+
     protected void setUseTick(boolean game, boolean gui){
         usesTick = game;
         usesGUITick = gui;

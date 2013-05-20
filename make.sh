@@ -39,7 +39,7 @@ CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIte
         EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
 CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` `find EntityLiving`
        ODBugs"
-CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find EntityLiving` BlockCake2
+CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find EntityLiving` BlockCake2 MovementInputFromOptionsCustom
        `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay"
 ADD[3]="olddays/icons.png"
 CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget` `find PathFinder`
@@ -84,7 +84,7 @@ CP[10]="GuiOldDaysModules GuiOldDaysSettings mod_OldDays OldDaysModule OldDaysPr
 ADD[10]="olddays/lang olddays/presets"
 MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
-        `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves`
+        `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves` MovementInputFromOptionsCustom
         `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find TileEntityEnderChestRenderer` PathIndev `find BlockSnow`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay `find ItemEnchantedBook` IScrollingGui
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget` TerrainPngSupport

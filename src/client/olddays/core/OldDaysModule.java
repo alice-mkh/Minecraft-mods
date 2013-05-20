@@ -293,6 +293,8 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
 
     protected void addMobSpawn_do(EnumCreatureType t, Class c, int i, int j, int k){}
 
+    public void onInitPlayer(EntityClientPlayerMP player, GameSettings settings){}
+
     @Override
     public int compareTo(OldDaysModule m){
         if (id < m.id){

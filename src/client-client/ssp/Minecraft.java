@@ -2245,6 +2245,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             thePlayer.preparePlayerToSpawn();
             par1WorldClient.spawnEntityInWorld(thePlayer);
             thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
+            onInitPlayer();
             playerController.setPlayerCapabilities(thePlayer);
             renderViewEntity = thePlayer;
         }
@@ -2339,6 +2340,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         theWorld.spawnEntityInWorld(thePlayer);
         playerController.flipPlayer(thePlayer);
         thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
+        onInitPlayer();
         thePlayer.entityId = i;
         playerController.setPlayerCapabilities(thePlayer);
 
@@ -2959,6 +2961,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
 
             thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
+            onInitPlayer();
 
             if (renderGlobal != null)
             {
@@ -3154,6 +3157,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         playerController.flipPlayer(thePlayer);
         ((WorldSSP)theWorld).spawnPlayerWithLoadedChunks(thePlayer);
         thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
+        onInitPlayer();
         thePlayer.entityId = i;
         playerController.setPlayerCapabilities(thePlayer);
         preloadWorld(StatCollector.translateToLocal("menu.respawning"));
@@ -3566,6 +3570,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public void addCommandsSP(ClientCommandManager manager){
         for (Mod mod : mods){
             mod.addSPCommands(manager);
+        }
+    }
+
+    private void onInitPlayer(){
+        for (Mod mod : mods){
+            mod.onInitPlayer(thePlayer, gameSettings);
         }
     }
 }

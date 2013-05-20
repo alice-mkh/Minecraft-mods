@@ -462,6 +462,14 @@ public class mod_OldDays extends Mod{
         texman.updateTextureFXes();
     }
 
+    @Override
+    public void onInitPlayer(EntityClientPlayerMP player, GameSettings settings){
+        for (int i = 0; i < modules.size(); i++){
+            OldDaysModule module = modules.get(i);
+            module.onInitPlayer(player, settings);
+        }
+    }
+
     public KeyBinding keySettings;
     public static OldDaysTextureManager texman;
     public static SavingManager saveman;

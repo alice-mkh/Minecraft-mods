@@ -21,6 +21,7 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyBool(this, 16,false, true,  "BucketStacking");
         new OldDaysPropertyInt(this,  17,2,     2,     "Score", 2).setUseNames();
         new OldDaysPropertyBool(this, 18,true,  false, "OldExplosion");
+        new OldDaysPropertyBool(this, 19,true,  true,  "AllowSneak");
         replaceBlocks();
     }
 
@@ -58,6 +59,7 @@ public class ODGameplay extends OldDaysModule{
                     set(GuiIngame.class, "score", Score == 1);
                     set(GuiGameOver.class, "oldScore", Score == 0); break;
             case 18:set(Explosion.class, "oldexplosion", OldExplosion); break;
+            case 19:set(MovementInputFromOptionsCustom.class, "allowSneak", AllowSneak); break;
         }
     }
 
@@ -79,6 +81,7 @@ public class ODGameplay extends OldDaysModule{
     public static boolean BucketStacking;
     public static int Score = 2;
     public static boolean OldExplosion = true;
+    public static boolean AllowSneak = true;
 
     private void replaceBlocks(){
         try{
@@ -93,6 +96,11 @@ public class ODGameplay extends OldDaysModule{
         }catch (Exception exception){
             System.out.println(exception);
         }
+    }
+
+    @Override
+    public void onInitPlayer(EntityClientPlayerMP player, GameSettings settings){
+        player.movementInput = new MovementInputFromOptionsCustom(player, settings);
     }
 
     private void setSwordDamage(boolean b){
