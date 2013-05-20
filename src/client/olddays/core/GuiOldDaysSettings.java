@@ -187,7 +187,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         if (str == null || str.equals("")){
             str = "OFF";
         }
-        if (par1 == '\r' || par2 == 1)
+        if (par1 == '\r' || par2 == 28 || par2 == 1)
         {
             fieldButton.displayString = mod_OldDays.getPropertyButtonText(fieldButton.prop);
             showField(false);

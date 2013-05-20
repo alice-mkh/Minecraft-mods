@@ -134,7 +134,7 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             updateList(searchField.getText().trim());
             return;
         }else{
-            if (par1 == '\r'){
+            if (par1 == '\r' || par2 == 28){
                 core.saveman.savePreset(current.trim());
                 showField(false);
                 updateList(searchField.getText().trim());

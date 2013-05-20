@@ -176,7 +176,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     {
         if (hasSearchField && searchField.isFocused()){
             searchField.textboxKeyTyped(par1, par2);
-            if (par1 == '\r' || par2 == 1 || ((par2 == 211 || par2 == 14) && searchField.getText().length() <= 0)){
+            if (par1 == '\r' || par2 == 28 || par2 == 1 || ((par2 == 211 || par2 == 14) && searchField.getText().length() <= 0)){
                 mc.displayGuiScreen(parent);
                 return;
             }
