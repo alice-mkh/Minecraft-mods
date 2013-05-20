@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderSkeleton2 extends RenderLiving
+public class RenderSkeleton2 extends RenderSkeleton
 {
     public static boolean mobArmor = false;
     public static boolean fallback = false;
@@ -12,7 +12,7 @@ public class RenderSkeleton2 extends RenderLiving
 
     public RenderSkeleton2(ModelSkeleton model)
     {
-        super(model, 0.5F);
+        super();
         modelBipedMain = model;
         armor = new ModelMobArmor(1.2F);
     }
@@ -114,29 +114,10 @@ public class RenderSkeleton2 extends RenderLiving
     @Override
     protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        return renderArmor((EntitySkeleton)par1EntityLiving, par2, par3);
-    }
-
-    protected void func_82438_a(EntitySkeleton par1EntitySkeleton, float par2)
-    {
-        if (par1EntitySkeleton.getSkeletonType() == 1)
-        {
-            GL11.glScalef(1.2F, 1.2F, 1.2F);
+        int armor = renderArmor((EntitySkeleton)par1EntityLiving, par2, par3);
+        if (armor > 0){
+            return armor;
         }
-    }
-
-    protected void func_82422_c()
-    {
-        GL11.glTranslatef(0.09375F, 0.1875F, 0.0F);
-    }
-
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    @Override
-    protected void preRenderCallback(EntityLiving par1EntityLiving, float par2)
-    {
-        func_82438_a((EntitySkeleton)par1EntityLiving, par2);
+        return super.shouldRenderPass(par1EntityLiving, par2, par3);
     }
 }

@@ -59,6 +59,7 @@ public class RenderZombie2 extends RenderBiped
 
     protected void renderEquippedItems2(EntityLiving par1EntityLiving, float par2)
     {
+        super.renderEquippedItems(par1EntityLiving, par2);
         ItemStack itemstack = par1EntityLiving.getHeldItem();
 
         if (itemstack != null)
