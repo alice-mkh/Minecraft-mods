@@ -13,11 +13,10 @@ public class RenderBounds{
     private static Minecraft mc;
     private static World worldObj;
     private static ByteBuffer imageData;
+    private static ByteBuffer sheetData;
     private static int emptyImage = -1;
     private static int width;
     private static int height;
-    private static int prevWidth;
-    private static int prevHeight;
 
     private static void renderGroundBounds(float f, float ff){
         Tessellator tessellator = Tessellator.instance;
@@ -289,21 +288,27 @@ public class RenderBounds{
             }
         }
         Icon icon = b.getBlockTextureFromSide(side ? 2 : 1);
-        Texture tex = (Texture)(mod_OldDays.getField(TextureStitched.class, icon, 1));
-        prevWidth = width;
-        prevHeight = height;
+        int prevWidth = width;
+        int prevHeight = height;
         width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
         height = width;
         if (imageData == null || prevWidth != width || prevHeight != height){
             imageData = ByteBuffer.allocateDirect(width * height * 4);
+            System.gc();
         }
+        if (sheetData == null || prevWidth != width || prevHeight != height){
+            sheetData = ByteBuffer.allocateDirect(icon.getSheetWidth() * icon.getSheetHeight() * 4);
+            System.gc();
+        }
+        renderEngine.bindTexture("/terrain.png");
+        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, sheetData);
         imageData.clear();
+        sheetData.clear();
         for (int i = 0; i < height; i++){
             int start = (((icon.getOriginY() + i) * icon.getSheetWidth()) + icon.getOriginX()) * 4;
-            tex.getTextureData().clear();
-            tex.getTextureData().position(start).limit(start + width * 4);
-            imageData.put(tex.getTextureData());
-            tex.getTextureData().clear();
+            sheetData.position(start).limit(start + width * 4);
+            imageData.put(sheetData);
+            sheetData.clear();
         }
         imageData.position(0).limit(width * height * 4);
         if (emptyImage == -1 || prevWidth != width || prevHeight != height){
