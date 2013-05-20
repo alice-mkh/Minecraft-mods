@@ -134,14 +134,14 @@ public class GuiOldDaysPresets extends GuiOldDaysSearch{
             updateList(searchField.getText().trim());
             return;
         }else{
-            if (par2 == 1){
-                showField(false);
-                return;
-            }
             if (par1 == '\r'){
                 core.saveman.savePreset(current.trim());
                 showField(false);
                 updateList(searchField.getText().trim());
+                return;
+            }
+            if (par2 == 1){
+                showField(false);
                 return;
             }
             super.keyTyped(par1, par2);

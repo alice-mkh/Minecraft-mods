@@ -184,10 +184,10 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         field.textboxKeyTyped(par1, par2);
         current = field.getText();
         String str = field.getText().trim();
-        if (str==null || str.equals("")){
+        if (str == null || str.equals("")){
             str = "OFF";
         }
-        if (par1 == '\r')
+        if (par1 == '\r' || par2 == 1)
         {
             fieldButton.displayString = mod_OldDays.getPropertyButtonText(fieldButton.prop);
             showField(false);
@@ -202,6 +202,8 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             fieldButton.prop.loadFromString(str);
             mod_OldDays.sendCallback(fieldButton.prop.module.id, fieldButton.prop.id);
         }
+            fieldButton.prop.loadFromString(str);
+            mod_OldDays.sendCallback(fieldButton.prop.module.id, fieldButton.prop.id);
     }
 
     private void refresh(){
