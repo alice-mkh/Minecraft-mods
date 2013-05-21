@@ -246,7 +246,13 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
         int margin = margin0 + 20;
         int padding = 10;
         int w = 300 + padding * 3;
-        int h = padding * 3 + margin0 + margin * (propertyPageButtons.length / 2 + (set.shouldUseTemplates() ? 2 : 1));
+        int l = propertyPageButtons.length / 2 + 1;
+        if (set.shouldUseTemplates()){
+            if (l % 2 != 0){
+                l += 1;
+            }
+        }
+        int h = padding * 4 + margin * l;
         drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
         drawCenteredString(fontRenderer, set.getButtonText(), x, y - h / 2 + padding / 2, 0xffffff);
         for (int i = 0; i < propertyPageButtons.length; i++){
