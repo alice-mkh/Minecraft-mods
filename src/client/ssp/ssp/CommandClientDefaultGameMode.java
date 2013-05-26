@@ -11,9 +11,10 @@ public class CommandClientDefaultGameMode extends CommandDefaultGameMode
         {
             EnumGameType mode = getGameModeFromCommand(par1ICommandSender, par2ArrayOfStr[0]);
             Minecraft.getMinecraft().theWorld.getWorldInfo().setGameType(mode);
+            String s = StatCollector.translateToLocal((new StringBuilder()).append("gameMode.").append(mode.getName()).toString());
             notifyAdmins(par1ICommandSender, "commands.defaultgamemode.success", new Object[]
                     {
-                        par2ArrayOfStr[0]
+                        s
                     });
             return;
         }
