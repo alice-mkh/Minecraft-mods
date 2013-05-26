@@ -92,6 +92,10 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
         if (str == null || str.equals(p.getEntityName())){
             return (EntityPlayerSP2)p;
         }
+        EntityPlayerMP mp = PlayerSelector.matchOnePlayer(i, str);
+        if (mp != null && mp.getEntityName().equals(p.getEntityName())){
+            return (EntityPlayerSP2)p;
+        }
         throw new PlayerNotFoundException();
     }
 }
