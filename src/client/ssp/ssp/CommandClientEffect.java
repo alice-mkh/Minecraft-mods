@@ -9,7 +9,7 @@ public class CommandClientEffect extends CommandEffect
     {
         if (par2ArrayOfStr.length >= 2)
         {
-            EntityPlayer entityplayer = Minecraft.getMinecraft().thePlayer;
+            EntityPlayerSP2 entityplayer = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr[0]);
             int i = parseIntWithMin(par1ICommandSender, par2ArrayOfStr[1], 2);
             int j = 600;
             int k = 30;

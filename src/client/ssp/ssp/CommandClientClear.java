@@ -8,7 +8,7 @@ public class CommandClientClear extends CommandClearInventory
     @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
-        EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
+        EntityPlayerSP2 entityplayer = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr.length == 3 ? par2ArrayOfStr[0] : null);
         int i = par2ArrayOfStr.length < 2 ? -1 : parseIntWithMin(par1ICommandSender, par2ArrayOfStr[1], 1);
         int j = par2ArrayOfStr.length < 3 ? -1 : parseIntWithMin(par1ICommandSender, par2ArrayOfStr[2], 0);
         int k = entityplayer.inventory.clearInventory(i, j);
@@ -26,20 +26,5 @@ public class CommandClientClear extends CommandClearInventory
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
-    }
-
-    /**
-     * Returns the given ICommandSender as a EntityPlayer or throw an exception.
-     */
-    public static EntityPlayer getCommandSenderAsPlayer2(ICommandSender par0ICommandSender)
-    {
-        if (par0ICommandSender instanceof EntityPlayer)
-        {
-            return (EntityPlayer)par0ICommandSender;
-        }
-        else
-        {
-            throw new PlayerNotFoundException("You must specify which player you wish to perform this action on.", new Object[0]);
-        }
     }
 }

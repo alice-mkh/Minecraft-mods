@@ -83,4 +83,15 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
             return commandSet2;
         }
     }
+
+    public static final EntityPlayerSP2 getPlayer(ICommandSender i, String str){
+        EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+        if (i instanceof EntityPlayer){
+            p = (EntityPlayer)i;
+        }
+        if (str == null || str.equals(p.getEntityName())){
+            return (EntityPlayerSP2)p;
+        }
+        throw new PlayerNotFoundException();
+    }
 }

@@ -7,14 +7,16 @@ public class CommandClientGameMode extends CommandGameMode
     @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
-        if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
+        if (par2ArrayOfStr.length > 0)
         {
             EnumGameType mode = getGameModeFromCommand(par1ICommandSender, par2ArrayOfStr[0]);
+            EntityPlayerSP2 p = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr.length > 1 ? par2ArrayOfStr[1] : null);
+            p.fallDistance = 0.0F;
             Minecraft.getMinecraft().setController(mode);
             Minecraft.getMinecraft().setGameMode(mode);
             notifyAdmins(par1ICommandSender, 1, "commands.gamemode.success.self", new Object[]
                     {
-                        par2ArrayOfStr[0]
+                        StatCollector.translateToLocal("gameMode." + mode.getName())
                     });
         }
         else

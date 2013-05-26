@@ -9,7 +9,7 @@ public class CommandClientEnchant extends CommandEnchant
     {
         if (par2ArrayOfStr.length >= 2)
         {
-            EntityPlayer entityplayer = Minecraft.getMinecraft().thePlayer;
+            EntityPlayerSP2 entityplayer = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr[0]);
             int i = parseIntBounded(par1ICommandSender, par2ArrayOfStr[1], 0, Enchantment.enchantmentsList.length - 1);
             int j = 1;
             ItemStack itemstack = entityplayer.getCurrentEquippedItem();

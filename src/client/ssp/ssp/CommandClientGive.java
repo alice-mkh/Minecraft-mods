@@ -4,27 +4,12 @@ import net.minecraft.client.Minecraft;
 
 public class CommandClientGive extends CommandGive
 {
-    /**
-     * Returns the given ICommandSender as a EntityPlayer or throw an exception.
-     */
-    public static EntityPlayer getCommandSenderAsPlayer2(ICommandSender par0ICommandSender)
-    {
-        if (par0ICommandSender instanceof EntityPlayer)
-        {
-            return (EntityPlayer)par0ICommandSender;
-        }
-        else
-        {
-            throw new PlayerNotFoundException("You must specify which player you wish to perform this action on.", new Object[0]);
-        }
-    }
-
     @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         if (par2ArrayOfStr.length >= 2)
         {
-            EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
+            EntityPlayerSP2 entityplayer = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr[0]);
             int i = parseIntWithMin(par1ICommandSender, par2ArrayOfStr[1], 1);
             int j = 1;
             int k = 0;

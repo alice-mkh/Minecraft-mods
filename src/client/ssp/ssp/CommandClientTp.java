@@ -14,43 +14,31 @@ public class CommandClientTp extends CommandServerTp
             if (minecraft.theWorld != null)
             {
                 int i = par2ArrayOfStr.length - 3;
-                EntityPlayerSP entityplayersp = null;
-                if (par1ICommandSender instanceof EntityPlayerSP){
-                    entityplayersp = (EntityPlayerSP)par1ICommandSender;
-                }else if (par2ArrayOfStr.length == 4){
-                    entityplayersp = getPlayerForUsername(par1ICommandSender, par2ArrayOfStr[0]);
-                }
-                if (entityplayersp == null){
-                    throw new PlayerNotFoundException("You must specify which player you wish to perform this action on.", new Object[0]);
-                }
+                EntityPlayerSP entityplayersp = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr.length == 4 ? par2ArrayOfStr[0] : null);
                 double d = func_82368_a(par1ICommandSender, entityplayersp.posX, par2ArrayOfStr[i++]);
                 double d1 = func_82367_a(par1ICommandSender, entityplayersp.posY, par2ArrayOfStr[i++], 0, 0);
                 double d2 = func_82368_a(par1ICommandSender, entityplayersp.posZ, par2ArrayOfStr[i++]);
                 entityplayersp.setPositionAndUpdate(d, d1, d2);
                 notifyAdmins(par1ICommandSender, "commands.tp.success.coordinates", new Object[]
                         {
-                            entityplayersp.username, Double.valueOf(d), Double.valueOf(d1), Double.valueOf(d2)
+                            entityplayersp.getEntityName(), Double.valueOf(d), Double.valueOf(d1), Double.valueOf(d2)
                         });
             }
 
             return;
         }
+        else if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2){
+            EntityPlayerSP p = ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr[0]);
+            ClientCommandManager.getPlayer(par1ICommandSender, par2ArrayOfStr[1]);
+            p.setPositionAndUpdate(p.posX, p.posY, p.posZ);
+            notifyAdmins(par1ICommandSender, "commands.tp.success", new Object[]
+                    {
+                        p.username, p.username
+                    });
+    }
         else
         {
             throw new WrongUsageException("commands.tp.usage", new Object[0]);
-        }
-    }
-
-    @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
-    {
-        if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
-        {
-            return getListOfStringsMatchingLastWord(par2ArrayOfStr, Minecraft.getMinecraft().getAllUsernames());
-        }
-        else
-        {
-            return null;
         }
     }
 
@@ -110,14 +98,5 @@ public class CommandClientTp extends CommandServerTp
         }
 
         return d;
-    }
-
-    public static EntityPlayerSP getPlayerForUsername(ICommandSender par0ICommandSender, String par1Str)
-    {
-        EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
-        if (!entityplayersp.username.equals(par1Str)){
-            throw new PlayerNotFoundException();
-        }
-        return entityplayersp;
     }
 }
