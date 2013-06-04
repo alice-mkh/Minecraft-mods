@@ -9,13 +9,14 @@ public class BetaNoiseGeneratorPerlin extends NoiseGenerator
     public double xCoord;
     public double yCoord;
     public double zCoord;
+    private boolean beta;
 
-    public BetaNoiseGeneratorPerlin()
+    public BetaNoiseGeneratorPerlin(boolean b)
     {
-        this(new Random());
+        this(new Random(), b);
     }
 
-    public BetaNoiseGeneratorPerlin(Random random)
+    public BetaNoiseGeneratorPerlin(Random random, boolean b)
     {
         permutations = new int[512];
         xCoord = random.nextDouble() * 256D;
@@ -34,6 +35,7 @@ public class BetaNoiseGeneratorPerlin extends NoiseGenerator
             permutations[k] = l;
             permutations[j + 256] = permutations[j];
         }
+        beta = b;
 
     }
 
@@ -105,7 +107,7 @@ public class BetaNoiseGeneratorPerlin extends NoiseGenerator
             int i, int j, int k, double d3, double d4, 
             double d5, double d6)
     {
-        if(j == 1)
+        if(j == 1 && beta)
         {
             boolean flag = false;
             boolean flag1 = false;

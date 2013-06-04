@@ -8,13 +8,13 @@ public class BetaNoiseGeneratorOctaves extends NoiseGenerator
     private BetaNoiseGeneratorPerlin generatorCollection[];
     private int octaves;
 
-    public BetaNoiseGeneratorOctaves(Random random, int i)
+    public BetaNoiseGeneratorOctaves(Random random, int i, boolean b)
     {
         octaves = i;
         generatorCollection = new BetaNoiseGeneratorPerlin[i];
         for(int j = 0; j < i; j++)
         {
-            generatorCollection[j] = new BetaNoiseGeneratorPerlin(random);
+            generatorCollection[j] = new BetaNoiseGeneratorPerlin(random, b);
         }
 
     }

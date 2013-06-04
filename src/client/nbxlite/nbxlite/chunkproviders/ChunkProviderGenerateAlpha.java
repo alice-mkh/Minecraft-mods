@@ -3,7 +3,7 @@ package net.minecraft.src.nbxlite.chunkproviders;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
-import net.minecraft.src.nbxlite.noise.AlphaNoiseGeneratorOctaves;
+import net.minecraft.src.nbxlite.noise.BetaNoiseGeneratorOctaves;
 import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenBase;
 import net.minecraft.src.nbxlite.mapgens.OldMapGenCaves;
@@ -15,14 +15,14 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
 public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
-    private AlphaNoiseGeneratorOctaves terrainAlt1Generator;
-    private AlphaNoiseGeneratorOctaves terrainAlt2Generator;
-    private AlphaNoiseGeneratorOctaves terrainGenerator;
-    private AlphaNoiseGeneratorOctaves noiseSandGen;
-    private AlphaNoiseGeneratorOctaves rockSandGen;
-    public AlphaNoiseGeneratorOctaves detailGenerator;
-    public AlphaNoiseGeneratorOctaves roughnessGenerator;
-    public AlphaNoiseGeneratorOctaves mobSpawnerNoise;
+    private BetaNoiseGeneratorOctaves terrainAlt1Generator;
+    private BetaNoiseGeneratorOctaves terrainAlt2Generator;
+    private BetaNoiseGeneratorOctaves terrainGenerator;
+    private BetaNoiseGeneratorOctaves noiseSandGen;
+    private BetaNoiseGeneratorOctaves rockSandGen;
+    public BetaNoiseGeneratorOctaves detailGenerator;
+    public BetaNoiseGeneratorOctaves roughnessGenerator;
+    public BetaNoiseGeneratorOctaves mobSpawnerNoise;
     private double field_4180_q[];
     private double sandNoise[];
     private double gravelNoise[];
@@ -52,14 +52,14 @@ public class ChunkProviderGenerateAlpha extends ChunkProviderBaseInfinite{
             villageGenerator = new MapGenVillage();
             mineshaftGenerator = new MapGenMineshaft();
         }
-        terrainAlt1Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
-        terrainAlt2Generator = new AlphaNoiseGeneratorOctaves(rand, 16);
-        terrainGenerator = new AlphaNoiseGeneratorOctaves(rand, 8);
-        noiseSandGen = new AlphaNoiseGeneratorOctaves(rand, 4);
-        rockSandGen = new AlphaNoiseGeneratorOctaves(rand, 4);
-        detailGenerator = new AlphaNoiseGeneratorOctaves(rand, 10);
-        roughnessGenerator = new AlphaNoiseGeneratorOctaves(rand, 16);
-        mobSpawnerNoise = new AlphaNoiseGeneratorOctaves(rand, 8);
+        terrainAlt1Generator = new BetaNoiseGeneratorOctaves(rand, 16, false);
+        terrainAlt2Generator = new BetaNoiseGeneratorOctaves(rand, 16, false);
+        terrainGenerator = new BetaNoiseGeneratorOctaves(rand, 8, false);
+        noiseSandGen = new BetaNoiseGeneratorOctaves(rand, 4, false);
+        rockSandGen = new BetaNoiseGeneratorOctaves(rand, 4, false);
+        detailGenerator = new BetaNoiseGeneratorOctaves(rand, 10, false);
+        roughnessGenerator = new BetaNoiseGeneratorOctaves(rand, 16, false);
+        mobSpawnerNoise = new BetaNoiseGeneratorOctaves(rand, 8, false);
     }
 
     @Override

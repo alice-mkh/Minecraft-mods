@@ -63,14 +63,14 @@ public class ChunkProviderGenerateBeta extends ChunkProviderBaseInfinite{
             templeGenerator = new MapGenScatteredFeature2();
         }
         unusedIntArray32x32 = new int[32][32];
-        noiseGen1 = new BetaNoiseGeneratorOctaves(rand, 16);
-        noiseGen2 = new BetaNoiseGeneratorOctaves(rand, 16);
-        noiseGen3 = new BetaNoiseGeneratorOctaves(rand, 8);
-        field_909_n = new BetaNoiseGeneratorOctaves(rand, 4);
-        noiseGen4 = new BetaNoiseGeneratorOctaves(rand, 4);
-        noiseGen5 = new BetaNoiseGeneratorOctaves(rand, 10);
-        noiseGen6 = new BetaNoiseGeneratorOctaves(rand, 16);
-        mobSpawnerNoise = new BetaNoiseGeneratorOctaves(rand, 8);
+        noiseGen1 = new BetaNoiseGeneratorOctaves(rand, 16, true);
+        noiseGen2 = new BetaNoiseGeneratorOctaves(rand, 16, true);
+        noiseGen3 = new BetaNoiseGeneratorOctaves(rand, 8, true);
+        field_909_n = new BetaNoiseGeneratorOctaves(rand, 4, true);
+        noiseGen4 = new BetaNoiseGeneratorOctaves(rand, 4, true);
+        noiseGen5 = new BetaNoiseGeneratorOctaves(rand, 10, true);
+        noiseGen6 = new BetaNoiseGeneratorOctaves(rand, 16, true);
+        mobSpawnerNoise = new BetaNoiseGeneratorOctaves(rand, 8, true);
     }
 
     @Override

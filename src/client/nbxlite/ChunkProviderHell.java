@@ -67,13 +67,13 @@ public class ChunkProviderHell implements IChunkProvider
         netherNoiseGen6 = new NoiseGeneratorOctaves(hellRNG, 10);
         netherNoiseGen7 = new NoiseGeneratorOctaves(hellRNG, 16);
 
-        field_4169_i = new BetaNoiseGeneratorOctaves(hellRNG, 16);
-        field_4168_j = new BetaNoiseGeneratorOctaves(hellRNG, 16);
-        field_4167_k = new BetaNoiseGeneratorOctaves(hellRNG, 8);
-        field_4166_l = new BetaNoiseGeneratorOctaves(hellRNG, 4);
-        field_4165_m = new BetaNoiseGeneratorOctaves(hellRNG, 4);
-        field_4177_a = new BetaNoiseGeneratorOctaves(hellRNG, 10);
-        field_4176_b = new BetaNoiseGeneratorOctaves(hellRNG, 16);
+        field_4169_i = new BetaNoiseGeneratorOctaves(hellRNG, 16, true);
+        field_4168_j = new BetaNoiseGeneratorOctaves(hellRNG, 16, true);
+        field_4167_k = new BetaNoiseGeneratorOctaves(hellRNG, 8, true);
+        field_4166_l = new BetaNoiseGeneratorOctaves(hellRNG, 4, true);
+        field_4165_m = new BetaNoiseGeneratorOctaves(hellRNG, 4, true);
+        field_4177_a = new BetaNoiseGeneratorOctaves(hellRNG, 10, true);
+        field_4176_b = new BetaNoiseGeneratorOctaves(hellRNG, 16, true);
 
         generateStructures = par1World.getWorldInfo().isMapFeaturesEnabled() || (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES && ODNBXlite.MapFeatures>ODNBXlite.FEATURES_BETA181);
     }
