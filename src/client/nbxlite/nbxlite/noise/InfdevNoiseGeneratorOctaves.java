@@ -32,7 +32,7 @@ public class InfdevNoiseGeneratorOctaves extends NoiseGenerator
         return d2;
     }
 
-    public double a(double d, double d1, double d2)
+    public double generateNoise(double d, double d1, double d2)
     {
         double d3 = 0.0D;
         double d4 = 1.0D;
@@ -45,7 +45,7 @@ public class InfdevNoiseGeneratorOctaves extends NoiseGenerator
         return d3;
     }
 
-    public double[] a(double ad[], int i, int j, int k, int l, int i1, int j1, 
+    public double[] generateNoiseOctaves(double ad[], int i, int j, int k, int l, int i1, int j1, 
             double d, double d1, double d2)
     {
         if(ad == null)

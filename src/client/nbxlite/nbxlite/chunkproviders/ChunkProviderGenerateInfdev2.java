@@ -55,11 +55,11 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
     @Override
     protected void generateTerrain(int i1, int j1, byte abyte0[]){
         boolean flag = false;
-        detail = detailGenerator.a(detail, i1 << 2, 0, j1 << 2, 5, 1, 5, 1.0D, 0.0D, 1.0D);
-        roughness = roughnessGenerator.a(roughness, i1 << 2, 0, j1 << 2, 5, 1, 5, 100D, 0.0D, 100D);
-        terrainMain = terrainGenerator.a(terrainMain, i1 << 2, 0, j1 << 2, 5, 17, 5, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
-        terrainAlt1 = terrainAlt1Generator.a(terrainAlt1, i1 << 2, 0, j1 << 2, 5, 17, 5, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
-        terrainAlt2 = terrainAlt2Generator.a(terrainAlt2, i1 << 2, 0, j1 << 2, 5, 17, 5, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        detail = detailGenerator.generateNoiseOctaves(detail, i1 << 2, 0, j1 << 2, 5, 1, 5, 1.0D, 0.0D, 1.0D);
+        roughness = roughnessGenerator.generateNoiseOctaves(roughness, i1 << 2, 0, j1 << 2, 5, 1, 5, 100D, 0.0D, 100D);
+        terrainMain = terrainGenerator.generateNoiseOctaves(terrainMain, i1 << 2, 0, j1 << 2, 5, 17, 5, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
+        terrainAlt1 = terrainAlt1Generator.generateNoiseOctaves(terrainAlt1, i1 << 2, 0, j1 << 2, 5, 17, 5, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainAlt2 = terrainAlt2Generator.generateNoiseOctaves(terrainAlt2, i1 << 2, 0, j1 << 2, 5, 17, 5, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
         int i3 = 0;
         int j6 = 0;
         for(int k6 = 0; k6 < 5; k6++)
@@ -171,8 +171,8 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
                 double d1 = (i1 << 4) + i2;
                 double d3 = (j1 << 4) + k2;
                 double ddd = ODNBXlite.MapTheme==ODNBXlite.THEME_PARADISE ? -0.29999999999999999D : 0.0D;
-                boolean flag1 = noiseSandGen.a(d1 * 0.03125D, d3 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > ddd;
-                boolean flag2 = noiseSandGen.a(d3 * 0.03125D, 109.0134D, d1 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                boolean flag1 = noiseSandGen.generateNoise(d1 * 0.03125D, d3 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > ddd;
+                boolean flag2 = noiseSandGen.generateNoise(d3 * 0.03125D, 109.0134D, d1 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
                 int k3 = (int)(rockSandGen.func_806_a(d1 * 0.03125D * 2D, d3 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int l3 = i2 << 11 | k2 << 7 | 0x7f;
                 int i4 = -1;

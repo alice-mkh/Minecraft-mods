@@ -50,9 +50,9 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
         byte byte00 = 5;
         byte byte01 = 17;
         byte byte02 = 5;
-        terrainMain = terrainGenerator.a(terrainMain, i << 2, 0, j << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
-        terrainAlt1 = terrainAlt1Generator.a(terrainAlt1, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
-        terrainAlt2 = terrainAlt2Generator.a(terrainAlt2, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainMain = terrainGenerator.generateNoiseOctaves(terrainMain, i << 2, 0, j << 2, byte00, byte01, byte02, 8.5551500000000011D, 4.2775750000000006D, 8.5551500000000011D);
+        terrainAlt1 = terrainAlt1Generator.generateNoiseOctaves(terrainAlt1, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
+        terrainAlt2 = terrainAlt2Generator.generateNoiseOctaves(terrainAlt2, i << 2, 0, j << 2, byte00, byte01, byte02, 684.41200000000003D, 684.41200000000003D, 684.41200000000003D);
         int k2 = 0;
         for(int j3 = 0; j3 < byte00; j3++)
         {
@@ -161,8 +161,8 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                 {
                     asd = -0.29999999999999999D;
                 }
-                boolean flag = noiseSandGen.a(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > asd;
-                boolean flag1 = noiseSandGen.a(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                boolean flag = noiseSandGen.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > asd;
+                boolean flag1 = noiseSandGen.generateNoise(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
                 int i4 = (int)(rockSandGen.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int j4 = l1 << 11 | j2 << 7 | 0x7f;
                 int k4 = -1;
