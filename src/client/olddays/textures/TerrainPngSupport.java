@@ -278,7 +278,7 @@ public class TerrainPngSupport{
     private static Icon[] getItemIcons(){
         Icon[] icons = new Icon[256];
         try{
-            put(icons, 0, "helmetCloth", Item.helmetLeather.getIconFromDamage(0));
+//             put(icons, 0, "helmetCloth", Item.helmetLeather.getIconFromDamageForRenderPass(0, 0));
             put(icons, 1, "helmetChain", Item.helmetChain.getIconFromDamage(0));
             put(icons, 2, "helmetIron", Item.helmetIron.getIconFromDamage(0));
             put(icons, 3, "helmetDiamond", Item.helmetDiamond.getIconFromDamage(0));
@@ -288,6 +288,8 @@ public class TerrainPngSupport{
             put(icons, 7, "coal", Item.coal.getIconFromDamage(0));
             put(icons, 10, "apple", Item.appleRed.getIconFromDamage(0));
             put(icons, 11, "appleGold", Item.appleGold.getIconFromDamage(0));
+            
+            put(icons, 144, "helmetCloth_overlay", Item.helmetLeather.getIconFromDamageForRenderPass(0, 1));
             if (fillingMap > 0){
                 filledItems = true;
             }

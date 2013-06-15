@@ -368,8 +368,8 @@ public class ODTextures extends OldDaysModule{
             }
             String str = items[i].getUnlocalizedName();
             str = "/textures/items/" + str.substring(5) + ".png";
-            replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
-            eraseIcon(icon2, str, !b);
+//             replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
+//             eraseIcon(icon2, str, !b);
         }
         setTextureHook("/armor/cloth_1_b.png", "/olddays/cloth_1.png", b);
         setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
@@ -386,17 +386,17 @@ public class ODTextures extends OldDaysModule{
 
     @Override
     public void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){
-        if (TerrainPng){
-            if (i == null){
-                return;
-            }
+        if (TerrainPng && i != null){
             if (!b || newIcon.length() <= 0 || !hasTextures(newIcon.substring(1))){
                 if (!(i instanceof TextureStitched)){
                     return;
                 }
                 Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
                 boolean items = sheet.getTextureName().equals("items");
-                if (core.texman.copyIconFromSheet(i, items ? "/gui/items.png" : "/terrain.png", items ? TerrainPngSupport.itemsIndexMap : TerrainPngSupport.terrainIndexMap)){
+                if (items && core.texman.copyIconFromSheet(i, "/gui/items.png", TerrainPngSupport.itemsIndexMap)){
+                    return;
+                }
+                if (!items && core.texman.copyIconFromSheet(i, "/terrain.png", TerrainPngSupport.terrainIndexMap)){
                     return;
                 }
             }
@@ -406,17 +406,17 @@ public class ODTextures extends OldDaysModule{
 
     @Override
     public void eraseIcon(Icon i, String orig, boolean b){
-        if (TerrainPng){
-            if (i == null){
-                return;
-            }
+        if (TerrainPng && i != null){
             if (!b){
                 if (!(i instanceof TextureStitched)){
                     return;
                 }
                 Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
                 boolean items = sheet.getTextureName().equals("items");
-                if (core.texman.copyIconFromSheet(i, items ? "/gui/items.png" : "/terrain.png", items ? TerrainPngSupport.itemsIndexMap : TerrainPngSupport.terrainIndexMap)){
+                if (items && core.texman.copyIconFromSheet(i, "/gui/items.png", TerrainPngSupport.itemsIndexMap)){
+                    return;
+                }
+                if (!items && core.texman.copyIconFromSheet(i, "/terrain.png", TerrainPngSupport.terrainIndexMap)){
                     return;
                 }
             }
