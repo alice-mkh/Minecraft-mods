@@ -271,6 +271,10 @@ gameplay.oldexplosion.name=Stare eksplozje
  gameplay.oldexplosion.desc1=Powoduje, że eksplozje zawsze
  gameplay.oldexplosion.desc2=zadają tą samą ilość obrażeń.
  gameplay.oldexplosion.desc3=§aZmienione w 1.3.
+//FIXME
+gameplay.allowsneak.name=Sneaking
+ gameplay.allowsneak.desc1=Allows to sneak.
+ gameplay.allowsneak.desc2=§aDodane w Alphie 1.1.1.
 
 mobs.ai.name=Inteligencja mobów
  mobs.ai.desc1=Ustawia ich ogólne zachowanie.
@@ -515,12 +519,21 @@ sounds.explode.name=Stary odgłos eksplozji
 sounds.xporb.name=Stary odgłos punktów doświadczenia
  sounds.xporb.desc1=Taki sam jak przedmiotów.
  sounds.xporb.desc2=§aZmieniony w 1.0.
-sounds.ooh.name=Stary odgłos otrzymywania obrażeń
- sounds.ooh.desc1=Uuu!
- sounds.ooh.desc2=§aZmieniony w 1.0.
+sounds.ooh.name=Odgłos otrzymywania obrażeń
+ sounds.ooh1=Beta
+ sounds.ooh1.desc=Uuu!
+ sounds.ooh2=1.0
+//FIXME
+ sounds.ooh2.desc=More "fleshy" sound
+ sounds.ooh3=1.4
+ sounds.ooh3.desc=Domyślny odgłos
 sounds.fall.name=Odgłos upadku
- sounds.fall.desc1=Łamanie kości.
- sounds.fall.desc2=§aDodany w 1.0.
+ sounds.fall1=WYŁ
+ sounds.fall1.desc=Brak dźwięków
+ sounds.fall2=1.0
+ sounds.fall2.desc=Łamanie kości
+ sounds.fall3=1.4
+ sounds.fall3.desc=Domyślny odgłos
 sounds.door.name=Stare odgłosy drzwi
  sounds.door.desc1=§aZmieniony w 1.0.
 sounds.chest.name=Dźwięk skrzyni
