@@ -7,8 +7,8 @@ import paulscode.sound.SoundSystem;
 public class SoundManager2 extends SoundManager{
     public static boolean explode = false;
     public static boolean xporb = false;
-    public static boolean nofall = true;
-    public static boolean hurt = false;
+    public static int fall = 2;
+    public static int hurt = 2;
     public static boolean door = false;
     public static int chest = 2;
     public static boolean bow = false;
@@ -60,10 +60,16 @@ public class SoundManager2 extends SoundManager{
         if (par1Str.startsWith("random.explode") && explode){
             str = "olddays.explode";
         }
-        if (par1Str.startsWith("damage.hit") && hurt){
+        if (par1Str.startsWith("damage.hit") && hurt < 2){
+            if (hurt == 1){
+                return "olddays.hurtflesh";
+            }
             str = "random.classic_hurt";
         }
-        if (par1Str.startsWith("damage.fall") && nofall){
+        if (par1Str.startsWith("damage.fall") && fall < 2){
+            if (fall == 1){
+                return "olddays.fall" + par1Str.substring(11);
+            }
             return "nothing";
         }
         if (par1Str.startsWith("random.bowhit") && drr){

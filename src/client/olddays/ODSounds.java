@@ -7,8 +7,8 @@ public class ODSounds extends OldDaysModule{
         super(c, 5, "Sounds");
         new OldDaysPropertyBool(this, 1, true,  false, "Explode");
         new OldDaysPropertyBool(this, 2, true,  false, "XPOrb");
-        new OldDaysPropertyBool(this, 3, true,  false, "Ooh");
-        new OldDaysPropertyBool(this, 4, false, true,  "Fall");
+        new OldDaysPropertyInt(this,  3, 0,     2,     "Ooh", 2).setUseNames();
+        new OldDaysPropertyInt(this,  4, 0,     2,     "Fall", 2).setUseNames();
         new OldDaysPropertyBool(this, 5, true,  false, "Door");
         new OldDaysPropertyInt(this,  6, 0,     2,     "Chest", 2).setUseNames();
         new OldDaysPropertyBool(this, 7, true,  false, "Bow");
@@ -34,6 +34,12 @@ public class ODSounds extends OldDaysModule{
         isLocal = true;
         Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
         addSound(1, "explode");
+        addSound(3, "hurtflesh1");
+        addSound(3, "hurtflesh2");
+        addSound(3, "hurtflesh3");
+        addSound(4, "fallbig1");
+        addSound(4, "fallbig2");
+        addSound(4, "fallsmall");
         addSound(5, "door_open");
         addSound(5, "door_close");
         addSound(6, "door_open");
@@ -59,7 +65,7 @@ public class ODSounds extends OldDaysModule{
             case 1: set(SoundManager2.class, "explode", Explode); break;
             case 2: set(SoundManager2.class, "xporb", XPOrb); break;
             case 3: set(SoundManager2.class, "hurt", Ooh); break;
-            case 4: set(SoundManager2.class, "nofall", !Fall); break;
+            case 4: set(SoundManager2.class, "fall", Fall); break;
             case 5: set(SoundManager2.class, "door", Door); break;
             case 6: set(SoundManager2.class, "chest", Chest); break;
             case 7: set(SoundManager2.class, "bow", Bow); break;
@@ -88,8 +94,8 @@ public class ODSounds extends OldDaysModule{
 
     public static boolean Explode = true;
     public static boolean XPOrb = true;
-    public static boolean Ooh = true;
-    public static boolean Fall;
+    public static int Ooh = 0;
+    public static int Fall = 0;
     public static boolean Door = true;
     public static int Chest = 0;
     public static boolean Bow = true;
