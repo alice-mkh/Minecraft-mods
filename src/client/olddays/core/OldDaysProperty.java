@@ -163,7 +163,9 @@ public abstract class OldDaysProperty{
         try{
             i = Integer.parseInt(str);
         }catch(NumberFormatException e){
-            e.printStackTrace();
+            highlight = true;
+            module.highlight = true;
+            System.out.println("Can't read " + field.getName() + "property.");
         }
         return i;
     }
