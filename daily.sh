@@ -9,7 +9,7 @@ cd src-mods
 YESTERDAY=`date --date="yesterday" -I`
 LOG=`git log --since=$YESTERDAY`
 git log --since=$YESTERDAY > $UPLOADDIR/changelog-latest
-if diff -q $UPLOADDIR/changelog-latest $UPLOADDIR/latest/changelog > /dev/null; then
+if [ ! -s $UPLOADDIR/changelog-latest ]; then
     exit 0
 fi
 notify-send -i document-properties "Daily Minecraft mod builds" "Starting building $VERSION"
