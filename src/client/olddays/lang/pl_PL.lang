@@ -106,13 +106,12 @@ actions.stairs.name=Schody
  actions.stairs1.desc1=otaczających bloków. Zwraca się w
  actions.stairs1.desc2=stronę solidnych bloków, jeśli takowy
  actions.stairs1.desc3=znajduje się pod nimi
-//FIXME
  actions.stairs2=Beta
- actions.stairs2.desc=No corner and upside-down stairs
+ actions.stairs2.desc=Brak narożnych i odwróconych schodów
  actions.stairs3=1.2.1
- actions.stairs3.desc=No corner stairs
+ actions.stairs3.desc=Brak narożnych schodów
  actions.stairs4=1.4.2
- actions.stairs4.desc=Default stairs
+ actions.stairs4.desc=Domyślne schody
 actions.oldboatbreaking.name=Stare niszczenie łodzi
  actions.oldboatbreaking.desc1=Powoduje, że upuszczają patyki i deski.
  actions.oldboatbreaking.desc2=§aZmienione w 1.3.
@@ -278,9 +277,8 @@ gameplay.oldexplosion.name=Stare eksplozje
  gameplay.oldexplosion.desc1=Powoduje, że eksplozje zawsze
  gameplay.oldexplosion.desc2=zadają tą samą ilość obrażeń.
  gameplay.oldexplosion.desc3=§aZmienione w 1.3.
-//FIXME
-gameplay.allowsneak.name=Sneaking
- gameplay.allowsneak.desc1=Allows to sneak.
+gameplay.allowsneak.name=Skradanie
+ gameplay.allowsneak.desc1=Umożliwia skradanie.
  gameplay.allowsneak.desc2=§aDodane w Alphie 1.1.1.
 
 mobs.ai.name=Inteligencja mobów
@@ -530,8 +528,7 @@ sounds.ooh.name=Odgłos otrzymywania obrażeń
  sounds.ooh1=Beta
  sounds.ooh1.desc=Uuu!
  sounds.ooh2=1.0
-//FIXME
- sounds.ooh2.desc=More "fleshy" sound
+ sounds.ooh2.desc=Bardziej "mięsisty" odgłos
  sounds.ooh3=1.4
  sounds.ooh3.desc=Domyślny odgłos
 sounds.fall.name=Odgłos upadku
@@ -662,16 +659,15 @@ crafting.oldsigns.name=Stare znaki
 crafting.oldmaps.name=Stare mapy
  crafting.oldmaps.desc1=Daje normalną mapę zamiast pustej.
  crafting.oldmaps.desc2=§aZmienione w 1.4.
-//FIXME
-crafting.oldarrows.name=Old arrows
- crafting.oldarrows.desc1=Use iron ingots instead of flint.
- crafting.oldarrows.desc2=§aChanged in Alpha 1.0.14.
-crafting.oldbread.name=Old bread
- crafting.oldbread.desc1=Requires §r6§7 wheat instead of §r3§7.
- crafting.oldbread.desc2=§aChanged in Indev.
-crafting.oldbuttons.name=Old stone buttons
- crafting.oldbuttons.desc1=Require §r2§7 blocks instead of §r1§7.
- crafting.oldbuttons.desc2=§aChanged in 1.4.2.
+crafting.oldarrows.name=Stare strzały
+ crafting.oldarrows.desc1=Wykorzystuje sztabki żelaza zamiast krzemienia.
+ crafting.oldarrows.desc2=§aZmienione w Alphie 1.0.14.
+crafting.oldbread.name=Stary chleb
+ crafting.oldbread.desc1=Wymaga §r6§7 sztuk zboża zamiast §r3§7.
+ crafting.oldbread.desc2=§aZmienione w Indev.
+crafting.oldbuttons.name=Stare kamienne przyciski
+ crafting.oldbuttons.desc1=Wymaga §r2§7 bloków zamiast §r1§7.
+ crafting.oldbuttons.desc2=§aZmienione w 1.4.2.
 
 textures.cobblestone.name=Bruk
  textures.cobblestone1=0.0.13a_03
