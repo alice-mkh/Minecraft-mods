@@ -105,6 +105,7 @@ actions.oldcrops.name=Alter Weizen
 actions.timecontrol.name=Zeit-Kontrolle
  actions.timecontrol.desc1=Erlaubt es, die Zeit mithilfe von F6/F7 zu kontrollieren.
  actions.timecontrol.desc2=§aIn der 1.8pre1 hinzugefügt, in der 1.8pre2 entfernt.
+//FIXME
 actions.stairs.name=Stairs
  actions.stairs1=Alpha
  actions.stairs1.desc=Direction is based on surrounding blocks,
