@@ -6,6 +6,8 @@ import java.util.Random;
 public class BlockStairs extends Block
 {
     public static boolean oldstairs = true;
+    public static boolean upsidedown = true;
+    public static boolean corner = true;
 
     private static final int field_72159_a[][] =
     {
@@ -133,6 +135,22 @@ public class BlockStairs extends Block
         float f3 = 1.0F;
         float f4 = 0.0F;
         float f5 = 0.5F;
+
+        if (!corner){
+            if (j == 0){
+                f2 = 0.5F;
+                f5 = 1.0F;
+            }else if (j == 1){
+                f3 = 0.5F;
+                f5 = 1.0F;
+            }else if (j == 2){
+                f4 = 0.5F;
+                f5 = 1.0F;
+            }
+            setBlockBounds(f2, f, f4, f3, f1, f5);
+            return true;
+        }
+
         boolean flag = true;
 
         if (j == 0)
@@ -247,6 +265,11 @@ public class BlockStairs extends Block
         float f3 = 0.5F;
         float f4 = 0.5F;
         float f5 = 1.0F;
+
+        if (!corner){
+            return false;
+        }
+
         boolean flag = false;
 
         if (j == 0)
@@ -568,7 +591,7 @@ public class BlockStairs extends Block
      */
     public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        if (par5 == 0 || par5 != 1 && (double)par7 > 0.5D)
+        if (upsidedown && (par5 == 0 || par5 != 1 && (double)par7 > 0.5D))
         {
             return par9 | 4;
         }

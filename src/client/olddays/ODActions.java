@@ -19,7 +19,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 12,false, true,  "LogRotation");
         new OldDaysPropertyBool(this, 13,true,  false, "OldCrops");
         new OldDaysPropertyBool(this, 14,false, false, "TimeControl");
-        new OldDaysPropertyBool(this, 15,false, false, "OldStairs");
+        new OldDaysPropertyInt(this,  15,1,     3,     "Stairs", 3).setUseNames();
         new OldDaysPropertyBool(this, 16,true,  false, "OldBoatBreaking");
         new OldDaysPropertyBool(this, 17,true,  false, "OldHardness");
         new OldDaysPropertyBool(this, 18,false, true,  "Apples");
@@ -48,7 +48,9 @@ public class ODActions extends OldDaysModule{
             case 12:set(BlockLog2.class, "rotate", LogRotation); break;
             case 13:set(BlockFarmlandOld.class, "oldbreaking", OldCrops); break;
             case 14:set(net.minecraft.client.Minecraft.class, "timecontrol", TimeControl); break;
-            case 15:set(BlockStairs.class, "oldstairs", OldStairs); break;
+            case 15:set(BlockStairs.class, "oldstairs", Stairs == 0);
+                    set(BlockStairs.class, "upsidedown", Stairs > 1);
+                    set(BlockStairs.class, "corner", Stairs > 2); break;
             case 16:set(EntityBoat.class, "oldbreaking", OldBoatBreaking); break;
             case 17:set(ItemAxe2.class, "oldhardness", OldHardness);
                     set(ItemPickaxe2.class, "oldhardness", OldHardness);
@@ -86,7 +88,7 @@ public class ODActions extends OldDaysModule{
     public static boolean LogRotation;
     public static boolean OldCrops = true;
     public static boolean TimeControl;
-    public static boolean OldStairs;
+    public static int Stairs;
     public static boolean OldBoatBreaking = true;
     public static boolean OldHardness = true;
     public static boolean Apples;

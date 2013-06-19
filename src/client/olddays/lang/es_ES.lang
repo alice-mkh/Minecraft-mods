@@ -102,10 +102,17 @@ actions.oldcrops.name=Antiguos cultivos
 actions.timecontrol.name=Control del Tiempo
  actions.timecontrol.desc1=Permite controlar el tiempo con teclas F6 y F7.
  actions.timecontrol.desc2=§aAñadido en Beta 1.8pre1, removido en 1.8pre2.
-actions.oldstairs.name=Escaleras antiguas
- actions.oldstairs.desc1=La dirección depende de los bloques cercanos
- actions.oldstairs.desc2=Cambia hacia donde bloques sólidos si está sobr.
- actions.oldstairs.desc3=§aCambiado en Alpha 1.2.0.
+actions.stairs.name=Escaleras
+ actions.stairs1=Alpha
+ actions.stairs1.desc==La dirección depende de los bloques cercanos
+ actions.stairs1.desc1=Cambia hacia donde bloques sólidos si está sobr
+//FIXME
+ actions.stairs2=Beta
+ actions.stairs2.desc=No corner and upside-down stairs
+ actions.stairs3=1.2.1
+ actions.stairs3.desc=No corner stairs
+ actions.stairs4=1.4.2
+ actions.stairs4.desc=Default stairs
 actions.oldboatbreaking.name=Antigua destrucción de botes
  actions.oldboatbreaking.desc1=Suelta palos y madera.
  actions.oldboatbreaking.desc2=§aCambiado en la 1.3.
