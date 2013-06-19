@@ -659,6 +659,9 @@ crafting.oldarrows.name=Старые стрелы
 crafting.oldbread.name=Старый хлеб
  crafting.oldbread.desc1=Требует §r6§7 пшеницы вместо §r3§7.
  crafting.oldbread.desc2=§aИзменен в Indev.
+crafting.oldbuttons.name=Старые каменные кнопки
+ crafting.oldbuttons.desc1=Требуют §r2§7 блока вместо §r1§7.
+ crafting.oldbuttons.desc2=§aИзменены в 1.4.2.
 
 textures.cobblestone.name=Булыжник
  textures.cobblestone1=0.0.13a_03

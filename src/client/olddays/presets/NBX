@@ -35,6 +35,7 @@ Crafting.Apple=0
 Crafting.Books=true
 Crafting.OldSigns=true
 Crafting.OldMaps=true
+Crafting.OldButtons=true
 Textures.Brick=2
 Textures.OreBlocks=1
 Textures.Furnace=false

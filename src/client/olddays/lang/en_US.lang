@@ -654,6 +654,9 @@ crafting.oldarrows.name=Old arrows
 crafting.oldbread.name=Old bread
  crafting.oldbread.desc1=Requires §r6§7 wheat instead of §r3§7.
  crafting.oldbread.desc2=§aChanged in Indev.
+crafting.oldbuttons.name=Old stone buttons
+ crafting.oldbuttons.desc1=Require §r2§7 blocks instead of §r1§7.
+ crafting.oldbuttons.desc2=§aChanged in 1.4.2.
 
 textures.cobblestone.name=Cobblestone
  textures.cobblestone1=0.0.13a_03

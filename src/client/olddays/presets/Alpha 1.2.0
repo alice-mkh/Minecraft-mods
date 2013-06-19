@@ -36,6 +36,7 @@ Crafting.Stew=true
 Crafting.Books=true
 Crafting.OldSigns=true
 Crafting.OldMaps=true
+Crafting.OldButtons=true
 Textures.Brick=1
 Textures.Steve=true
 NBXlite.LeavesDecay=0

@@ -19,6 +19,7 @@ public class ODCrafting extends OldDaysModule{
         new OldDaysPropertyBool(this, 12,false, false, "OldMaps");
         new OldDaysPropertyBool(this, 13,false, false, "OldArrows");
         new OldDaysPropertyBool(this, 14,false, false, "OldBread");
+        new OldDaysPropertyBool(this, 15,false, false, "OldButtons");
     }
 
     @Override
@@ -38,6 +39,7 @@ public class ODCrafting extends OldDaysModule{
             case 12:setMap(OldMaps); break;
             case 13:setArrows(OldArrows); break;
             case 14:setBread(OldBread); break;
+            case 15:setButtons(OldButtons); break;
         }
     }
 
@@ -55,6 +57,7 @@ public class ODCrafting extends OldDaysModule{
     public static boolean OldMaps;
     public static boolean OldArrows;
     public static boolean OldBread;
+    public static boolean OldButtons;
 
     private void setPlanks(boolean b){
         String str = "4xtile.wood@";
@@ -273,6 +276,17 @@ public class ODCrafting extends OldDaysModule{
             addRecipe(new ItemStack(Item.bread, 1), "###", "###", '#', Item.wheat);
         }else{
             addRecipe(new ItemStack(Item.bread, 1), "###", '#', Item.wheat);
+        }
+    }
+
+    private void setButtons(boolean b){
+        removeRecipe("1xtile.button@0");
+        removeRecipe("1xtile.button@0");
+        addRecipe(new ItemStack(Block.woodenButton, 1), "#", '#', Block.planks);
+        if (b){
+            addRecipe(new ItemStack(Block.stoneButton, 1), "#", "#", '#', Block.stone);
+        }else{
+            addRecipe(new ItemStack(Block.stoneButton, 1), "#", '#', Block.stone);
         }
     }
 }
