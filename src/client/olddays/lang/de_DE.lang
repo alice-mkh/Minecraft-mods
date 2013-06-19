@@ -675,6 +675,9 @@ crafting.oldsigns.name=Alte Schilder
 crafting.oldmaps.name=Old maps
  crafting.oldmaps.desc1=Gives normal map instead of empty one.
  crafting.oldmaps.desc2=§aChanged in 1.4.
+crafting.oldarrows.name=Old arrows
+ crafting.oldarrows.desc1=Use iron ingots instead of flint.
+ crafting.oldarrows.desc2=§aChanged in Alpha 1.0.14.
 
 textures.cobblestone.name=Pflasterstein.
  textures.cobblestone1=0.0.13a_03

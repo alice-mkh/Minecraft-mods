@@ -655,6 +655,10 @@ crafting.oldsigns.name=Stare znaki
 crafting.oldmaps.name=Stare mapy
  crafting.oldmaps.desc1=Daje normalną mapę zamiast pustej.
  crafting.oldmaps.desc2=§aZmienione w 1.4.
+//FIXME
+crafting.oldarrows.name=Old arrows
+ crafting.oldarrows.desc1=Use iron ingots instead of flint.
+ crafting.oldarrows.desc2=§aChanged in Alpha 1.0.14.
 
 textures.cobblestone.name=Bruk
  textures.cobblestone1=0.0.13a_03

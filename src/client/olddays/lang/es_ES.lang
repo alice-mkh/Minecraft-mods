@@ -656,6 +656,10 @@ crafting.oldsigns.name=Carteles antiguos
 crafting.oldmaps.name=Mapas antiguos
  crafting.oldmaps.desc1=Fabrica un mapa hecho en vez de uno vacío.
  crafting.oldmaps.desc2=§aCambiado en la 1.4.
+//FIXME
+crafting.oldarrows.name=Old arrows
+ crafting.oldarrows.desc1=Use iron ingots instead of flint.
+ crafting.oldarrows.desc2=§aChanged in Alpha 1.0.14.
 
 textures.cobblestone.name=Adoquín
  textures.cobblestone1=0.0.13a_03

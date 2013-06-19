@@ -653,6 +653,9 @@ crafting.oldsigns.name=Старые таблички
 crafting.oldmaps.name=Старые карты
  crafting.oldmaps.desc1=Дает нормальную карту вместо пустой.
  crafting.oldmaps.desc2=§aИзменены в 1.4.
+crafting.oldarrows.name=Старые стрелы
+ crafting.oldarrows.desc1=Используют железные слитки вместо кремня.
+ crafting.oldarrows.desc2=§aИзменены в Альфе 1.0.14.
 
 textures.cobblestone.name=Булыжник
  textures.cobblestone1=0.0.13a_03
