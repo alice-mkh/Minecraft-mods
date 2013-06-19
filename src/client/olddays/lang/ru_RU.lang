@@ -656,6 +656,9 @@ crafting.oldmaps.name=Старые карты
 crafting.oldarrows.name=Старые стрелы
  crafting.oldarrows.desc1=Используют железные слитки вместо кремня.
  crafting.oldarrows.desc2=§aИзменены в Альфе 1.0.14.
+crafting.oldbread.name=Старый хлеб
+ crafting.oldbread.desc1=Требует §r6§7 пшеницы вместо §r3§7.
+ crafting.oldbread.desc2=§aИзменен в Indev.
 
 textures.cobblestone.name=Булыжник
  textures.cobblestone1=0.0.13a_03

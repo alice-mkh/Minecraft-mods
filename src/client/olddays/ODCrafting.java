@@ -18,6 +18,7 @@ public class ODCrafting extends OldDaysModule{
         new OldDaysPropertyBool(this, 11,false, false, "OldSigns");
         new OldDaysPropertyBool(this, 12,false, false, "OldMaps");
         new OldDaysPropertyBool(this, 13,false, false, "OldArrows");
+        new OldDaysPropertyBool(this, 14,false, false, "OldBread");
     }
 
     @Override
@@ -36,6 +37,7 @@ public class ODCrafting extends OldDaysModule{
             case 11:setSign(OldSigns); break;
             case 12:setMap(OldMaps); break;
             case 13:setArrows(OldArrows); break;
+            case 14:setBread(OldBread); break;
         }
     }
 
@@ -52,6 +54,7 @@ public class ODCrafting extends OldDaysModule{
     public static boolean OldSigns;
     public static boolean OldMaps;
     public static boolean OldArrows;
+    public static boolean OldBread;
 
     private void setPlanks(boolean b){
         String str = "4xtile.wood@";
@@ -262,5 +265,14 @@ public class ODCrafting extends OldDaysModule{
         removeRecipe("4xitem.arrow@0");
         Item i = b ? Item.ingotIron : Item.flint;
         addRecipe(new ItemStack(Item.arrow, 4),  "X", "#", "Y", 'Y', Item.feather, 'X', i, '#', Item.stick);
+    }
+
+    private void setBread(boolean b){
+        removeRecipe("1xitem.bread@0");
+        if (b){
+            addRecipe(new ItemStack(Item.bread, 1), "###", "###", '#', Item.wheat);
+        }else{
+            addRecipe(new ItemStack(Item.bread, 1), "###", '#', Item.wheat);
+        }
     }
 }

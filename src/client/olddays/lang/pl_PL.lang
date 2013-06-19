@@ -659,6 +659,9 @@ crafting.oldmaps.name=Stare mapy
 crafting.oldarrows.name=Old arrows
  crafting.oldarrows.desc1=Use iron ingots instead of flint.
  crafting.oldarrows.desc2=§aChanged in Alpha 1.0.14.
+crafting.oldbread.name=Old bread
+ crafting.oldbread.desc1=Requires §r6§7 wheat instead of §r3§7.
+ crafting.oldbread.desc2=§aChanged in Indev.
 
 textures.cobblestone.name=Bruk
  textures.cobblestone1=0.0.13a_03
