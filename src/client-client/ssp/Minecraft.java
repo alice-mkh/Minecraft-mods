@@ -3437,10 +3437,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 return true;
             }
         }
-//FIXME: BLOCK RENDERING
-/*        invokeModMethod("ModLoader", "renderWorldBlock",
+        invokeModMethod("ModLoader", "renderWorldBlock",
                         new Class[]{RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE},
-                        r, i, x, y, z, b, id);*/
+                        r, i, x, y, z, b, id);
         return false;
     }
 
