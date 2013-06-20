@@ -381,13 +381,13 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             setSkeletonType(1);
             setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
         }
+        else if (!custom){
+            setCurrentItemOrArmor(0, new ItemStack(Item.bow));
+        }
         else
         {
             tasks.addTask(4, pre15 ? oldAiArrowAttack : aiArrowAttack);
             addRandomArmor();
-            if (!custom){
-                return;
-            }
             func_82162_bC();
         }
 
@@ -400,6 +400,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && rand.nextFloat() < 0.25F)
             {
                 setCurrentItemOrArmor(4, new ItemStack(rand.nextFloat() >= 0.1F ? Block.pumpkin : Block.pumpkinLantern));
+                helmet = false;
                 equipmentDropChances[4] = 0.0F;
             }
         }
