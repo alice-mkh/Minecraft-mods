@@ -42,7 +42,11 @@ public class ItemRenderer
     /**
      * Renders the item stack for being in an entity's hand Args: itemStack
      */
-    public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3)
+    public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3){
+        renderItem(par1EntityLiving, par2ItemStack, par3, false);
+    }
+
+    public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3, boolean b)
     {
         GL11.glPushMatrix();
 
@@ -81,7 +85,7 @@ public class ItemRenderer
             GL11.glTranslatef(-f4, -f5, 0.0F);
             float f6 = 1.5F;
             GL11.glScalef(f6, f6, f6);
-            if (items2d){
+            if (items2d && b){
                 GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(360F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-0.5F, -0.0625F, 0.0F);
@@ -90,7 +94,7 @@ public class ItemRenderer
                 GL11.glRotatef(335F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
             }
-            renderItemIn2D(tessellator, f1, f2, f, f3, icon.getSheetWidth(), icon.getSheetHeight(), 0.0625F);
+            renderItemIn2D_old(tessellator, f1, f2, f, f3, icon.getSheetWidth(), icon.getSheetHeight(), 0.0625F, b);
 
             if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0)
             {
@@ -108,14 +112,14 @@ public class ItemRenderer
                 float f9 = ((float)(Minecraft.getSystemTime() % 3000L) / 3000F) * 8F;
                 GL11.glTranslatef(f9, 0.0F, 0.0F);
                 GL11.glRotatef(-50F, 0.0F, 0.0F, 1.0F);
-                renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
+                renderItemIn2D_old(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F, b);
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
                 GL11.glScalef(f8, f8, f8);
                 f9 = ((float)(Minecraft.getSystemTime() % 4873L) / 4873F) * 8F;
                 GL11.glTranslatef(-f9, 0.0F, 0.0F);
                 GL11.glRotatef(10F, 0.0F, 0.0F, 1.0F);
-                renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
+                renderItemIn2D_old(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F, b);
                 GL11.glPopMatrix();
                 GL11.glMatrixMode(GL11.GL_MODELVIEW);
                 GL11.glDisable(GL11.GL_BLEND);
@@ -134,10 +138,6 @@ public class ItemRenderer
      */
     public static void renderItemIn2D(Tessellator par0Tessellator, float par1, float par2, float par3, float par4, int par5, int par6, float par7)
     {
-        if (items2d){
-            renderItemIn2D_old(par0Tessellator, par1, par2, par3, par4);
-            return;
-        }
         par0Tessellator.startDrawingQuads();
         par0Tessellator.setNormal(0.0F, 0.0F, 1.0F);
         par0Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, par1, par4);
@@ -216,7 +216,11 @@ public class ItemRenderer
         par0Tessellator.draw();
     }
 
-    private static void renderItemIn2D_old(Tessellator par1Tessellator, float par2, float par3, float par4, float par5){
+    private static void renderItemIn2D_old(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, int par6, int par7, float par8, boolean b){
+        if (!items2d || !b){
+            renderItemIn2D(par1Tessellator, par2, par3, par4, par5, par6, par7, par8);
+            return;
+        }
         float f = 1.0F;
         float f1 = 0.0625F;
         par1Tessellator.startDrawingQuads();
@@ -464,17 +468,17 @@ public class ItemRenderer
 
             if (itemstack.getItem().requiresMultipleRenderPasses())
             {
-                renderItem(entityclientplayermp, itemstack, 0);
+                renderItem(entityclientplayermp, itemstack, 0, true);
                 int i1 = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 1);
                 float f33 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f36 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f38 = (float)(i1 & 0xff) / 255F;
                 GL11.glColor4f(f3 * f33, f3 * f36, f3 * f38, 1.0F);
-                renderItem(entityclientplayermp, itemstack, 1);
+                renderItem(entityclientplayermp, itemstack, 1, true);
             }
             else
             {
-                renderItem(entityclientplayermp, itemstack, 0);
+                renderItem(entityclientplayermp, itemstack, 0, true);
             }
 
             GL11.glPopMatrix();
