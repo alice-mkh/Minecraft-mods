@@ -1660,6 +1660,7 @@ public class PlayerHelper {
             } else {
                es.setLocationAndAngles(ep.posX + 3, ep.posY, ep.posZ + 3, ep.rotationYaw, 0F);
             }
+            es.initCreature();
             mc.theWorld.spawnEntityInWorld(es);
             if (et != null) {
                es.mountEntity(et);
@@ -1736,6 +1737,7 @@ public class PlayerHelper {
                } else {
                   es.setLocationAndAngles(ep.posX + r.nextInt(5), ep.posY, ep.posZ + r.nextInt(5), ep.rotationYaw, 0F);
                }
+               es.initCreature();
                mc.theWorld.spawnEntityInWorld(es);
             }
          } catch (Exception e) {
