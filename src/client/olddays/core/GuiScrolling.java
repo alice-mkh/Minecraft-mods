@@ -32,7 +32,7 @@ public class GuiScrolling extends Gui{
     }
 
     public void handleMouseInput(){
-        if (canBeScrolled() && !mc.gameSettings.touchscreen){
+        if (canBeScrolled() && !mc.gameSettings.touchscreen && !Mouse.isButtonDown(0) && Mouse.next()){
             int l = Mouse.getEventDWheel();
             if (l != 0){
                 if (l > 0){
@@ -67,7 +67,7 @@ public class GuiScrolling extends Gui{
         return minScrolling < maxScrolling;
     }
 
-    public void func_85041_a(int i, int j, int k, long l){
+    public void drag(int i, int j){
         if (!canBeScrolled() || !dragging){
             return;
         }

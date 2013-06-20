@@ -80,8 +80,10 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
         mouseMovedOrUp(par1, par2, par3);
     }
 
-    protected void func_85041_a_2(int i, int j, int k, long l){
-        func_85041_a(i, j, k, l);
+    protected void handleMouse(int i, int j){
+        scrollingGui.drag(i, j);
+        scrollingGui.handleMouseInput();
+        super.handleMouseInput();
     }
 
     @Override
@@ -99,20 +101,8 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
         scrollingGui.mouseMovedOrUp(par1, par2, par3);
     }
 
-    @Override
-    protected void func_85041_a(int i, int j, int k, long l){
-        super.func_85041_a(i, j, k, l);
-        scrollingGui.func_85041_a(i, j, k, l);
-    }
-
     public void calculateMinScrolling(){
         scrollingGui.calculateMinScrolling();
-    }
-
-    @Override
-    public void handleMouseInput(){
-        scrollingGui.handleMouseInput();
-        super.handleMouseInput();
     }
 
     public void drawScrollingBackground(){

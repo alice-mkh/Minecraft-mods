@@ -162,24 +162,6 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     @Override
-    protected void func_85041_a(int i, int j, int k, long l)
-    {
-        if (page != null){
-            page.func_85041_a_2(i, j, k, l);
-        }
-        super.func_85041_a(i, j, k, l);
-    }
-
-    @Override
-    public void handleMouseInput()
-    {
-        if (page != null){
-            page.handleMouseInput();
-        }
-        super.handleMouseInput();
-    }
-
-    @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();
@@ -189,6 +171,9 @@ public class GuiNBXlite extends GuiScreen{
         page.drawFrameAndScrollbar();
         drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.defaultgenerator" + (currentGen + 1) + ".desc"), width / 2 + leftmargin, height / 6 - 30, 0xa0a0a0);
         super.drawScreen(i, j, f);
+        if (page != null){
+            page.handleMouse(i, j);
+        }
     }
 
     public String getButtonName(){

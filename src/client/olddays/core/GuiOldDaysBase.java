@@ -158,6 +158,9 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
             str = "";
         }
         fontRenderer.drawStringWithShadow(str, 2, 2, 0x505050);
+        scrollingGui.drag(i, j);
+        scrollingGui.handleMouseInput();
+        handleMouseInput();
     }
 
     protected void showField(boolean b){
@@ -239,12 +242,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     }
 
     @Override
-    public void handleMouseInput(){
-        scrollingGui.handleMouseInput();
-        super.handleMouseInput();
-    }
-
-    @Override
     protected void mouseClicked(int par1, int par2, int par3){
         super.mouseClicked(par1, par2, par3);
         scrollingGui.mouseClicked(par1, par2, par3);
@@ -254,12 +251,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     public void mouseMovedOrUp(int par1, int par2, int par3){
         super.mouseMovedOrUp(par1, par2, par3);
         scrollingGui.mouseMovedOrUp(par1, par2, par3);
-    }
-
-    @Override
-    protected void func_85041_a(int i, int j, int k, long l){
-        super.func_85041_a(i, j, k, l);
-        scrollingGui.func_85041_a(i, j, k, l);
     }
 
     @Override
