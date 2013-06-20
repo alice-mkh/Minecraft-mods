@@ -82,6 +82,10 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
 
     protected void handleMouse(int i, int j){
         scrollingGui.drag(i, j);
+    }
+
+    @Override
+    public void handleMouseInput(){
         scrollingGui.handleMouseInput();
         super.handleMouseInput();
     }

@@ -32,7 +32,7 @@ public class GuiScrolling extends Gui{
     }
 
     public void handleMouseInput(){
-        if (canBeScrolled() && !mc.gameSettings.touchscreen && !Mouse.isButtonDown(0) && Mouse.next()){
+        if (canBeScrolled() && !mc.gameSettings.touchscreen){
             int l = Mouse.getEventDWheel();
             if (l != 0){
                 if (l > 0){

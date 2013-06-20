@@ -162,6 +162,15 @@ public class GuiNBXlite extends GuiScreen{
     }
 
     @Override
+    public void handleMouseInput()
+    {
+        if (page != null){
+            page.handleMouseInput();
+        }
+        super.handleMouseInput();
+    }
+
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         drawDefaultBackground();

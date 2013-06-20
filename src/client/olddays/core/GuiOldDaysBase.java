@@ -159,8 +159,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         }
         fontRenderer.drawStringWithShadow(str, 2, 2, 0x505050);
         scrollingGui.drag(i, j);
-        scrollingGui.handleMouseInput();
-        handleMouseInput();
     }
 
     protected void showField(boolean b){
@@ -239,6 +237,12 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     @Override
     public int getContentHeight(){
         return contentHeight - 10;
+    }
+
+    @Override
+    public void handleMouseInput(){
+        scrollingGui.handleMouseInput();
+        super.handleMouseInput();
     }
 
     @Override
