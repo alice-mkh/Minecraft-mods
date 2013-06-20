@@ -368,8 +368,8 @@ public class ODTextures extends OldDaysModule{
             }
             String str = items[i].getUnlocalizedName();
             str = "/textures/items/" + str.substring(5) + ".png";
-//             replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
-//             eraseIcon(icon2, str, !b);
+             replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
+             eraseIcon(icon2, str, !b);
         }
         setTextureHook("/armor/cloth_1_b.png", "/olddays/cloth_1.png", b);
         setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
