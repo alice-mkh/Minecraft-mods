@@ -401,7 +401,10 @@ public class EntityZombie extends EntityMob
      */
     public void initCreature()
     {
-        if (custom || this instanceof EntityPigZombie){
+        if (this instanceof EntityPigZombie){
+            addRandomArmor();
+        }
+        if (custom){
             setCanPickUpLoot(rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting]);
 
             if (worldObj.rand.nextFloat() < 0.05F)
