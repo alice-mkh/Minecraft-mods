@@ -401,18 +401,17 @@ public class EntityZombie extends EntityMob
      */
     public void initCreature()
     {
-        if (!custom && !(this instanceof EntityPigZombie)){
-            return;
-        }
-        setCanPickUpLoot(rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting]);
+        if (custom || this instanceof EntityPigZombie){
+            setCanPickUpLoot(rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting]);
 
-        if (worldObj.rand.nextFloat() < 0.05F)
-        {
-            setVillager(true);
-        }
+            if (worldObj.rand.nextFloat() < 0.05F)
+            {
+                setVillager(true);
+            }
 
-        addRandomArmor();
-        func_82162_bC();
+            addRandomArmor();
+            func_82162_bC();
+        }
 
         if (getCurrentItemOrArmor(4) == null)
         {
@@ -421,6 +420,7 @@ public class EntityZombie extends EntityMob
             if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && rand.nextFloat() < 0.25F)
             {
                 setCurrentItemOrArmor(4, new ItemStack(rand.nextFloat() >= 0.1F ? Block.pumpkin : Block.pumpkinLantern));
+                helmet = false;
                 equipmentDropChances[4] = 0.0F;
             }
         }
