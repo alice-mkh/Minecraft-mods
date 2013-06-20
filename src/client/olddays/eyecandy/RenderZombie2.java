@@ -59,58 +59,10 @@ public class RenderZombie2 extends RenderBiped
 
     protected void renderEquippedItems2(EntityLiving par1EntityLiving, float par2)
     {
-        super.renderEquippedItems(par1EntityLiving, par2);
-        ItemStack itemstack = par1EntityLiving.getHeldItem();
-
-        if (itemstack != null)
+        if (par1EntityLiving.getHeldItem() != null)
         {
             GL11.glPushMatrix();
-            ((ModelBiped)modelBipedMain).bipedRightArm.postRender(0.0625F);
-            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
-
-            if (itemstack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
-            {
-                float f = 0.5F;
-                GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
-                f *= 0.75F;
-                GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(f, -f, f);
-            }
-            else if (itemstack.itemID == Item.bow.itemID)
-            {
-                float f1 = 0.625F;
-                GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
-                GL11.glRotatef(-20F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(f1, -f1, f1);
-                GL11.glRotatef(-100F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-            }
-            else if (Item.itemsList[itemstack.itemID].isFull3D())
-            {
-                float f2 = 0.625F;
-                GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
-                GL11.glScalef(f2, -f2, f2);
-                GL11.glRotatef(-100F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-            }
-            else
-            {
-                float f3 = 0.375F;
-                GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
-                GL11.glScalef(f3, f3, f3);
-                GL11.glRotatef(60F, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(20F, 0.0F, 0.0F, 1.0F);
-            }
-
-            renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, 0);
-
-            if (itemstack.getItem().requiresMultipleRenderPasses())
-            {
-                renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, 1);
-            }
-
+            armor.bipedRightArm.postRender(0.0625F);
             GL11.glPopMatrix();
         }
     }
