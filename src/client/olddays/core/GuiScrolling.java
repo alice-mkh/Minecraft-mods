@@ -40,7 +40,7 @@ public class GuiScrolling extends Gui{
                 }else if (l < 0){
                     l = 1;
                 }
-                scrolling -= l * 10;
+                scrolling -= l * 20;
                 if (scrolling < minScrolling){
                     scrolling = minScrolling;
                 }
