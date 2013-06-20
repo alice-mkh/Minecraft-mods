@@ -109,7 +109,7 @@ public class RenderBiped extends RenderLiving
 
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(par9) : 1.0F;
+        float f = 1.0F;
         ItemStack itemstack = par1EntityLiving.getHeldItem();
         func_82420_a(par1EntityLiving, itemstack);
         double d = par4 - (double)par1EntityLiving.yOffset;
@@ -119,7 +119,6 @@ public class RenderBiped extends RenderLiving
             d -= 0.125D;
         }
 
-        GL11.glColor3f(f, f, f);
         super.doRenderLiving(par1EntityLiving, par2, d, par6, par8, par9);
         field_82423_g.aimedBow = field_82425_h.aimedBow = modelBipedMain.aimedBow = false;
         field_82423_g.isSneak = field_82425_h.isSneak = modelBipedMain.isSneak = false;
