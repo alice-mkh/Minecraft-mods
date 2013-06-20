@@ -9,6 +9,7 @@ import net.minecraft.src.nbxlite.mapgens.BiomeDecorator2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenHills2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenDesertOld;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenJungleOld;
+import net.minecraft.src.nbxlite.mapgens.BiomeGenSky;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenForest;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTallGrass;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
@@ -134,7 +135,7 @@ public abstract class BiomeGenBase
     public static final BiomeGenBase betaIceDesert = (new BiomeGenDesert(39)).setColor(0xffed93).setBiomeName("Beta Ice Desert").setTemperatureRainfall(0.2F, 0.1F).func_76733_a(0xc4d339).setEnableSnow().setDisableRain();
     public static final BiomeGenBase betaTundra = (new BiomeGenSnow(40)).setColor(0x57ebf9).setBiomeName("Beta Tundra").setTemperatureRainfall(0.1F, 0.1F).func_76733_a(0xc4d339).setEnableSnow();
     public static final BiomeGenBase betaHell = (new BiomeGenHell(41)).setColor(0xff0000).setBiomeName("Beta Hell").setTemperatureRainfall(1F, 1F).setDisableRain();
-    public static final BiomeGenBase betaSky = (new BiomeGenEnd(42)).setColor(0x8080ff).setBiomeName("Beta Sky").setTemperatureRainfall(1F, 1F).setDisableRain();
+    public static final BiomeGenBase betaSky = (new BiomeGenSky(42)).setColor(0x8080ff).setBiomeName("Beta Sky").setTemperatureRainfall(1F, 1F).setDisableRain();
     public static final BiomeGenBase notABiome = (new BiomeGenPlains(43)).setColor(0xffffff).setBiomeName("No biomes").setTemperatureRainfall(1F, 1F);
     public static final BiomeGenBase notABiomeSnow = (new BiomeGenSnow(44)).setColor(0xffffff).setBiomeName("No biomes (winter)").setTemperatureRainfall(0.1F, 1F).setEnableSnow().setDisableRain();
 
