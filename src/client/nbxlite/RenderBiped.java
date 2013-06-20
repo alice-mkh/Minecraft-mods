@@ -79,7 +79,8 @@ public class RenderBiped extends RenderLiving
                     float f1 = (float)(i >> 16 & 0xff) / 255F;
                     float f2 = (float)(i >> 8 & 0xff) / 255F;
                     float f3 = (float)(i & 0xff) / 255F;
-                    GL11.glColor3f(f1, f2, f3);
+                    float f = Minecraft.oldlighting ? par1EntityLiving.getBrightness(par3) : 1.0F;
+                    GL11.glColor3f(f * f1, f * f2, f * f3);
                     return !itemstack.isItemEnchanted() ? 16 : 31;
                 }
 
