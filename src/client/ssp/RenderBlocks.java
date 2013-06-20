@@ -19,12 +19,12 @@ public class RenderBlocks
     /**
      * Set to true if the texture should be flipped horizontally during render*Face
      */
-    private boolean flipTexture;
+    public boolean flipTexture;
 
     /**
      * If true, renders all faces on all blocks rather than using the logic in Block.shouldSideBeRendered.  Unused.
      */
-    private boolean renderAllFaces;
+    public boolean renderAllFaces;
 
     /** Fancy grass side matching biome */
     public static boolean fancyGrass = true;
@@ -32,246 +32,246 @@ public class RenderBlocks
     public boolean useInventoryTint;
 
     /** The minimum X value for rendering (default 0.0). */
-    private double renderMinX;
+    public double renderMinX;
 
     /** The maximum X value for rendering (default 1.0). */
-    private double renderMaxX;
+    public double renderMaxX;
 
     /** The minimum Y value for rendering (default 0.0). */
-    private double renderMinY;
+    public double renderMinY;
 
     /** The maximum Y value for rendering (default 1.0). */
-    private double renderMaxY;
+    public double renderMaxY;
 
     /** The minimum Z value for rendering (default 0.0). */
-    private double renderMinZ;
+    public double renderMinZ;
 
     /** The maximum Z value for rendering (default 1.0). */
-    private double renderMaxZ;
+    public double renderMaxZ;
 
     /**
      * Set by overrideBlockBounds, to keep this class from changing the visual bounding box.
      */
-    private boolean lockBlockBounds;
-    private boolean partialRenderBounds;
-    private final Minecraft minecraftRB;
-    private int uvRotateEast;
-    private int uvRotateWest;
-    private int uvRotateSouth;
-    private int uvRotateNorth;
-    private int uvRotateTop;
-    private int uvRotateBottom;
+    public boolean lockBlockBounds;
+    public boolean partialRenderBounds;
+    public final Minecraft minecraftRB;
+    public int uvRotateEast;
+    public int uvRotateWest;
+    public int uvRotateSouth;
+    public int uvRotateNorth;
+    public int uvRotateTop;
+    public int uvRotateBottom;
 
     /** Whether ambient occlusion is enabled or not */
-    private boolean enableAO;
+    public boolean enableAO;
 
     /**
      * Used as a scratch variable for ambient occlusion on the north/bottom/east corner.
      */
-    private float aoLightValueScratchXYZNNN;
+    public float aoLightValueScratchXYZNNN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the bottom face and the north face.
      */
-    private float aoLightValueScratchXYNN;
+    public float aoLightValueScratchXYNN;
 
     /**
      * Used as a scratch variable for ambient occlusion on the north/bottom/west corner.
      */
-    private float aoLightValueScratchXYZNNP;
+    public float aoLightValueScratchXYZNNP;
 
     /**
      * Used as a scratch variable for ambient occlusion between the bottom face and the east face.
      */
-    private float aoLightValueScratchYZNN;
+    public float aoLightValueScratchYZNN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the bottom face and the west face.
      */
-    private float aoLightValueScratchYZNP;
+    public float aoLightValueScratchYZNP;
 
     /**
      * Used as a scratch variable for ambient occlusion on the south/bottom/east corner.
      */
-    private float aoLightValueScratchXYZPNN;
+    public float aoLightValueScratchXYZPNN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the bottom face and the south face.
      */
-    private float aoLightValueScratchXYPN;
+    public float aoLightValueScratchXYPN;
 
     /**
      * Used as a scratch variable for ambient occlusion on the south/bottom/west corner.
      */
-    private float aoLightValueScratchXYZPNP;
+    public float aoLightValueScratchXYZPNP;
 
     /**
      * Used as a scratch variable for ambient occlusion on the north/top/east corner.
      */
-    private float aoLightValueScratchXYZNPN;
+    public float aoLightValueScratchXYZNPN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the top face and the north face.
      */
-    private float aoLightValueScratchXYNP;
+    public float aoLightValueScratchXYNP;
 
     /**
      * Used as a scratch variable for ambient occlusion on the north/top/west corner.
      */
-    private float aoLightValueScratchXYZNPP;
+    public float aoLightValueScratchXYZNPP;
 
     /**
      * Used as a scratch variable for ambient occlusion between the top face and the east face.
      */
-    private float aoLightValueScratchYZPN;
+    public float aoLightValueScratchYZPN;
 
     /**
      * Used as a scratch variable for ambient occlusion on the south/top/east corner.
      */
-    private float aoLightValueScratchXYZPPN;
+    public float aoLightValueScratchXYZPPN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the top face and the south face.
      */
-    private float aoLightValueScratchXYPP;
+    public float aoLightValueScratchXYPP;
 
     /**
      * Used as a scratch variable for ambient occlusion between the top face and the west face.
      */
-    private float aoLightValueScratchYZPP;
+    public float aoLightValueScratchYZPP;
 
     /**
      * Used as a scratch variable for ambient occlusion on the south/top/west corner.
      */
-    private float aoLightValueScratchXYZPPP;
+    public float aoLightValueScratchXYZPPP;
 
     /**
      * Used as a scratch variable for ambient occlusion between the north face and the east face.
      */
-    private float aoLightValueScratchXZNN;
+    public float aoLightValueScratchXZNN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the south face and the east face.
      */
-    private float aoLightValueScratchXZPN;
+    public float aoLightValueScratchXZPN;
 
     /**
      * Used as a scratch variable for ambient occlusion between the north face and the west face.
      */
-    private float aoLightValueScratchXZNP;
+    public float aoLightValueScratchXZNP;
 
     /**
      * Used as a scratch variable for ambient occlusion between the south face and the west face.
      */
-    private float aoLightValueScratchXZPP;
+    public float aoLightValueScratchXZPP;
 
     /** Ambient occlusion brightness XYZNNN */
-    private int aoBrightnessXYZNNN;
+    public int aoBrightnessXYZNNN;
 
     /** Ambient occlusion brightness XYNN */
-    private int aoBrightnessXYNN;
+    public int aoBrightnessXYNN;
 
     /** Ambient occlusion brightness XYZNNP */
-    private int aoBrightnessXYZNNP;
+    public int aoBrightnessXYZNNP;
 
     /** Ambient occlusion brightness YZNN */
-    private int aoBrightnessYZNN;
+    public int aoBrightnessYZNN;
 
     /** Ambient occlusion brightness YZNP */
-    private int aoBrightnessYZNP;
+    public int aoBrightnessYZNP;
 
     /** Ambient occlusion brightness XYZPNN */
-    private int aoBrightnessXYZPNN;
+    public int aoBrightnessXYZPNN;
 
     /** Ambient occlusion brightness XYPN */
-    private int aoBrightnessXYPN;
+    public int aoBrightnessXYPN;
 
     /** Ambient occlusion brightness XYZPNP */
-    private int aoBrightnessXYZPNP;
+    public int aoBrightnessXYZPNP;
 
     /** Ambient occlusion brightness XYZNPN */
-    private int aoBrightnessXYZNPN;
+    public int aoBrightnessXYZNPN;
 
     /** Ambient occlusion brightness XYNP */
-    private int aoBrightnessXYNP;
+    public int aoBrightnessXYNP;
 
     /** Ambient occlusion brightness XYZNPP */
-    private int aoBrightnessXYZNPP;
+    public int aoBrightnessXYZNPP;
 
     /** Ambient occlusion brightness YZPN */
-    private int aoBrightnessYZPN;
+    public int aoBrightnessYZPN;
 
     /** Ambient occlusion brightness XYZPPN */
-    private int aoBrightnessXYZPPN;
+    public int aoBrightnessXYZPPN;
 
     /** Ambient occlusion brightness XYPP */
-    private int aoBrightnessXYPP;
+    public int aoBrightnessXYPP;
 
     /** Ambient occlusion brightness YZPP */
-    private int aoBrightnessYZPP;
+    public int aoBrightnessYZPP;
 
     /** Ambient occlusion brightness XYZPPP */
-    private int aoBrightnessXYZPPP;
+    public int aoBrightnessXYZPPP;
 
     /** Ambient occlusion brightness XZNN */
-    private int aoBrightnessXZNN;
+    public int aoBrightnessXZNN;
 
     /** Ambient occlusion brightness XZPN */
-    private int aoBrightnessXZPN;
+    public int aoBrightnessXZPN;
 
     /** Ambient occlusion brightness XZNP */
-    private int aoBrightnessXZNP;
+    public int aoBrightnessXZNP;
 
     /** Ambient occlusion brightness XZPP */
-    private int aoBrightnessXZPP;
+    public int aoBrightnessXZPP;
 
     /** Brightness top left */
-    private int brightnessTopLeft;
+    public int brightnessTopLeft;
 
     /** Brightness bottom left */
-    private int brightnessBottomLeft;
+    public int brightnessBottomLeft;
 
     /** Brightness bottom right */
-    private int brightnessBottomRight;
+    public int brightnessBottomRight;
 
     /** Brightness top right */
-    private int brightnessTopRight;
+    public int brightnessTopRight;
 
     /** Red color value for the top left corner */
-    private float colorRedTopLeft;
+    public float colorRedTopLeft;
 
     /** Red color value for the bottom left corner */
-    private float colorRedBottomLeft;
+    public float colorRedBottomLeft;
 
     /** Red color value for the bottom right corner */
-    private float colorRedBottomRight;
+    public float colorRedBottomRight;
 
     /** Red color value for the top right corner */
-    private float colorRedTopRight;
+    public float colorRedTopRight;
 
     /** Green color value for the top left corner */
-    private float colorGreenTopLeft;
+    public float colorGreenTopLeft;
 
     /** Green color value for the bottom left corner */
-    private float colorGreenBottomLeft;
+    public float colorGreenBottomLeft;
 
     /** Green color value for the bottom right corner */
-    private float colorGreenBottomRight;
+    public float colorGreenBottomRight;
 
     /** Green color value for the top right corner */
-    private float colorGreenTopRight;
+    public float colorGreenTopRight;
 
     /** Blue color value for the top left corner */
-    private float colorBlueTopLeft;
+    public float colorBlueTopLeft;
 
     /** Blue color value for the bottom left corner */
-    private float colorBlueBottomLeft;
+    public float colorBlueBottomLeft;
 
     /** Blue color value for the bottom right corner */
-    private float colorBlueBottomRight;
+    public float colorBlueBottomRight;
 
     /** Blue color value for the top right corner */
-    private float colorBlueTopRight;
+    public float colorBlueTopRight;
 
     public RenderBlocks(IBlockAccess par1IBlockAccess)
     {
@@ -625,7 +625,7 @@ public class RenderBlocks
     /**
      * Render BlockEndPortalFrame
      */
-    private boolean renderBlockEndPortalFrame(BlockEndPortalFrame par1BlockEndPortalFrame, int par2, int par3, int par4)
+    public boolean renderBlockEndPortalFrame(BlockEndPortalFrame par1BlockEndPortalFrame, int par2, int par3, int par4)
     {
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         int j = i & 3;
@@ -668,7 +668,7 @@ public class RenderBlocks
     /**
      * render a bed at the given coordinates
      */
-    private boolean renderBlockBed(Block par1Block, int par2, int par3, int par4)
+    public boolean renderBlockBed(Block par1Block, int par2, int par3, int par4)
     {
         Tessellator tessellator = Tessellator.instance;
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
@@ -849,7 +849,7 @@ public class RenderBlocks
     /**
      * Render BlockBrewingStand
      */
-    private boolean renderBlockBrewingStand(BlockBrewingStand par1BlockBrewingStand, int par2, int par3, int par4)
+    public boolean renderBlockBrewingStand(BlockBrewingStand par1BlockBrewingStand, int par2, int par3, int par4)
     {
         setRenderBounds(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
@@ -925,7 +925,7 @@ public class RenderBlocks
     /**
      * Render block cauldron
      */
-    private boolean renderBlockCauldron(BlockCauldron par1BlockCauldron, int par2, int par3, int par4)
+    public boolean renderBlockCauldron(BlockCauldron par1BlockCauldron, int par2, int par3, int par4)
     {
         renderStandardBlock(par1BlockCauldron, par2, par3, par4);
         Tessellator tessellator = Tessellator.instance;
@@ -978,7 +978,7 @@ public class RenderBlocks
     /**
      * Renders flower pot
      */
-    private boolean renderBlockFlowerpot(BlockFlowerPot par1BlockFlowerPot, int par2, int par3, int par4)
+    public boolean renderBlockFlowerpot(BlockFlowerPot par1BlockFlowerPot, int par2, int par3, int par4)
     {
         renderStandardBlock(par1BlockFlowerPot, par2, par3, par4);
         Tessellator tessellator = Tessellator.instance;
@@ -1090,7 +1090,7 @@ public class RenderBlocks
     /**
      * Renders anvil
      */
-    private boolean renderBlockAnvil(BlockAnvil par1BlockAnvil, int par2, int par3, int par4)
+    public boolean renderBlockAnvil(BlockAnvil par1BlockAnvil, int par2, int par3, int par4)
     {
         return renderBlockAnvilMetadata(par1BlockAnvil, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4));
     }
@@ -1125,7 +1125,7 @@ public class RenderBlocks
     /**
      * Renders anvil block with orientation
      */
-    private boolean renderBlockAnvilOrient(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, boolean par6)
+    public boolean renderBlockAnvilOrient(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, boolean par6)
     {
         int i = par6 ? 0 : par5 & 3;
         boolean flag = false;
@@ -1176,7 +1176,7 @@ public class RenderBlocks
     /**
      * Renders anvil block with rotation
      */
-    private float renderBlockAnvilRotate(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, float par6, float par7, float par8, float par9, boolean par10, boolean par11, int par12)
+    public float renderBlockAnvilRotate(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, float par6, float par7, float par8, float par9, boolean par10, boolean par11, int par12)
     {
         if (par10)
         {
@@ -1275,7 +1275,7 @@ public class RenderBlocks
     /**
      * render a redstone repeater at the given coordinates
      */
-    private boolean renderBlockRepeater(BlockRedstoneRepeater par1BlockRedstoneRepeater, int par2, int par3, int par4)
+    public boolean renderBlockRepeater(BlockRedstoneRepeater par1BlockRedstoneRepeater, int par2, int par3, int par4)
     {
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         int j = i & 3;
@@ -1375,7 +1375,7 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean renderBlockComparator(BlockComparator par1BlockComparator, int par2, int par3, int par4)
+    public boolean renderBlockComparator(BlockComparator par1BlockComparator, int par2, int par3, int par4)
     {
         Tessellator tessellator = Tessellator.instance;
         if (!Minecraft.oldlighting){
@@ -1433,14 +1433,14 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean renderBlockRedstoneLogic(BlockRedstoneLogic par1BlockRedstoneLogic, int par2, int par3, int par4)
+    public boolean renderBlockRedstoneLogic(BlockRedstoneLogic par1BlockRedstoneLogic, int par2, int par3, int par4)
     {
         Tessellator tessellator = Tessellator.instance;
         renderBlockRedstoneLogicMetadata(par1BlockRedstoneLogic, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4) & 3);
         return true;
     }
 
-    private void renderBlockRedstoneLogicMetadata(BlockRedstoneLogic par1BlockRedstoneLogic, int par2, int par3, int par4, int par5)
+    public void renderBlockRedstoneLogicMetadata(BlockRedstoneLogic par1BlockRedstoneLogic, int par2, int par3, int par4, int par5)
     {
         renderStandardBlock(par1BlockRedstoneLogic, par2, par3, par4);
         Tessellator tessellator = Tessellator.instance;
@@ -1509,7 +1509,7 @@ public class RenderBlocks
     /**
      * renders a block as a piston base
      */
-    private boolean renderPistonBase(Block par1Block, int par2, int par3, int par4, boolean par5)
+    public boolean renderPistonBase(Block par1Block, int par2, int par3, int par4, boolean par5)
     {
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         boolean flag = par5 || (i & 8) != 0;
@@ -1617,7 +1617,7 @@ public class RenderBlocks
     /**
      * Render piston rod up/down
      */
-    private void renderPistonRodUD(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14)
+    public void renderPistonRodUD(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14)
     {
         Icon icon = BlockPistonBase.func_94496_b("piston_side");
 
@@ -1641,7 +1641,7 @@ public class RenderBlocks
     /**
      * Render piston rod south/north
      */
-    private void renderPistonRodSN(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14)
+    public void renderPistonRodSN(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14)
     {
         Icon icon = BlockPistonBase.func_94496_b("piston_side");
 
@@ -1665,7 +1665,7 @@ public class RenderBlocks
     /**
      * Render piston rod east/west
      */
-    private void renderPistonRodEW(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14)
+    public void renderPistonRodEW(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14)
     {
         Icon icon = BlockPistonBase.func_94496_b("piston_side");
 
@@ -1699,7 +1699,7 @@ public class RenderBlocks
     /**
      * renders the pushing part of a piston
      */
-    private boolean renderPistonExtension(Block par1Block, int par2, int par3, int par4, boolean par5)
+    public boolean renderPistonExtension(Block par1Block, int par2, int par3, int par4, boolean par5)
     {
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         int j = BlockPistonExtension.getDirectionMeta(i);
@@ -4295,7 +4295,7 @@ public class RenderBlocks
     /**
      * Get fluid height
      */
-    private float getFluidHeight(int par1, int par2, int par3, Material par4Material)
+    public float getFluidHeight(int par1, int par2, int par3, Material par4Material)
     {
         int i = 0;
         float f = 0.0F;
@@ -6109,7 +6109,7 @@ public class RenderBlocks
     /**
      * Get ambient occlusion brightness
      */
-    private int getAoBrightness(int par1, int par2, int par3, int par4)
+    public int getAoBrightness(int par1, int par2, int par3, int par4)
     {
         if (par1 == 0)
         {
@@ -6129,7 +6129,7 @@ public class RenderBlocks
         return par1 + par2 + par3 + par4 >> 2 & 0xff00ff;
     }
 
-    private int mixAoBrightness(int par1, int par2, int par3, int par4, double par5, double par7, double par9, double par11)
+    public int mixAoBrightness(int par1, int par2, int par3, int par4, double par5, double par7, double par9, double par11)
     {
         int i = (int)((double)(par1 >> 16 & 0xff) * par5 + (double)(par2 >> 16 & 0xff) * par7 + (double)(par3 >> 16 & 0xff) * par9 + (double)(par4 >> 16 & 0xff) * par11) & 0xff;
         int j = (int)((double)(par1 & 0xff) * par5 + (double)(par2 & 0xff) * par7 + (double)(par3 & 0xff) * par9 + (double)(par4 & 0xff) * par11) & 0xff;
@@ -6296,7 +6296,7 @@ public class RenderBlocks
     /**
      * Renders a Cocoa block at the given coordinates
      */
-    private boolean renderBlockCocoa(BlockCocoa par1BlockCocoa, int par2, int par3, int par4)
+    public boolean renderBlockCocoa(BlockCocoa par1BlockCocoa, int par2, int par3, int par4)
     {
         Tessellator tessellator = Tessellator.instance;
         if (!Minecraft.oldlighting){
@@ -6453,7 +6453,7 @@ public class RenderBlocks
     /**
      * Renders beacon block
      */
-    private boolean renderBlockBeacon(BlockBeacon par1BlockBeacon, int par2, int par3, int par4)
+    public boolean renderBlockBeacon(BlockBeacon par1BlockBeacon, int par2, int par3, int par4)
     {
         float f = 0.1875F;
         setOverrideBlockTexture(getBlockIcon(Block.obsidian));
@@ -7034,7 +7034,7 @@ public class RenderBlocks
         return flag;
     }
 
-    private boolean renderBlockHopper(BlockHopper par1BlockHopper, int par2, int par3, int par4)
+    public boolean renderBlockHopper(BlockHopper par1BlockHopper, int par2, int par3, int par4)
     {
         Tessellator tessellator = Tessellator.instance;
         if (!Minecraft.oldlighting){
@@ -7060,7 +7060,7 @@ public class RenderBlocks
         return renderBlockHopperMetadata(par1BlockHopper, par2, par3, par4, blockAccess.getBlockMetadata(par2, par3, par4), false);
     }
 
-    private boolean renderBlockHopperMetadata(BlockHopper par1BlockHopper, int par2, int par3, int par4, int par5, boolean par6)
+    public boolean renderBlockHopperMetadata(BlockHopper par1BlockHopper, int par2, int par3, int par4, int par5, boolean par6)
     {
         Tessellator tessellator = Tessellator.instance;
         int i = BlockHopper.getDirectionFromMetadata(par5);
