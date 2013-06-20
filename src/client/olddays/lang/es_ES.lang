@@ -106,7 +106,6 @@ actions.stairs.name=Escaleras
  actions.stairs1=Alpha
  actions.stairs1.desc==La dirección depende de los bloques cercanos
  actions.stairs1.desc1=Cambia hacia donde bloques sólidos si está sobr
-
  actions.stairs2=Beta
  actions.stairs2.desc=No escaleras de lado ni hacia abajo.
  actions.stairs3=1.2.1
@@ -525,12 +524,10 @@ sounds.explode.name=Explosiones antiguas
 sounds.xporb.name=Orbes de Exp. antiguas
  sounds.xporb.desc1=Igual a los objetos.
  sounds.xporb.desc2=§aCambiado en 1.0.
-
 sounds.ooh.name=Sonido de daño
  sounds.ooh1=Beta
  sounds.ooh1.desc=¡Ooh!
  sounds.ooh2=1.0
-
  sounds.ooh2.desc=Sonido más "realista".
  sounds.ooh3=1.4
  sounds.ooh3.desc=Sonido normal
@@ -663,7 +660,6 @@ crafting.oldsigns.name=Carteles antiguos
 crafting.oldmaps.name=Mapas antiguos
  crafting.oldmaps.desc1=Fabrica un mapa hecho en vez de uno vacío.
  crafting.oldmaps.desc2=§aCambiado en la 1.4.
-
 crafting.oldarrows.name=Antiguas flechas
  crafting.oldarrows.desc1=Usan hierro en lugar de pedernales.
  crafting.oldarrows.desc2=§aCambiado en Alpha 1.0.14.
