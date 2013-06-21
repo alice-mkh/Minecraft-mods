@@ -3437,9 +3437,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 return true;
             }
         }
-        invokeModMethod("ModLoader", "renderWorldBlock",
-                        new Class[]{RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE},
-                        r, i, x, y, z, b, id);
+        Object o = invokeModMethod("ModLoader", "renderWorldBlock",
+                                   new Class[]{RenderBlocks.class, IBlockAccess.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class, Integer.TYPE},
+                                   r, i, x, y, z, b, id);
+        if (o != null){
+            return (Boolean)o;
+        }
         return false;
     }
 
@@ -3486,23 +3489,25 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         compat.put(mod, 1);
     }
 
-    private void invokeModMethod_do(String mod, String method, Class[] pars, Object... args){
+    private Object invokeModMethod_do(String mod, String method, Class[] pars, Object... args){
         if (compat.get(mod) <= 0){
-            return;
+            return null;
         }
         try{
             Class c = Class.forName((compat.get(mod) > 1 ? "net.minecraft.src." : "")+mod);
             Method m = c.getDeclaredMethod(method, pars);
-            m.invoke(null, args);
-//             System.out.printlsn("SSP: Invoking "+m.toString());
+            Object o = m.invoke(null, args);
+//            System.out.println("SSP: Invoking "+m.toString());
+            return o;
         }catch(Exception ex){
             ex.printStackTrace();
             compat.put(mod, 0);
         }
+        return null;
     }
 
-    public static void invokeModMethod(String mod, String method, Class[] pars, Object... args){
-        getMinecraft().invokeModMethod_do(mod, method, pars, args);
+    public static Object invokeModMethod(String mod, String method, Class[] pars, Object... args){
+        return getMinecraft().invokeModMethod_do(mod, method, pars, args);
     }
 
     public void enableProfiling()

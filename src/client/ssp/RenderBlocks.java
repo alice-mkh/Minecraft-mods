@@ -8578,10 +8578,6 @@ public class RenderBlocks
         {
             return true;
         }
-        else
-        {
-            net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "renderBlockIsItemFull3D", new Class[]{Integer.TYPE}, par0);
-        }
 
         if (par0 == 26)
         {
@@ -8596,6 +8592,13 @@ public class RenderBlocks
         if (par0 == 34)
         {
             return true;
+        }
+        else
+        {
+            Object o = net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "renderBlockIsItemFull3D", new Class[]{Integer.TYPE}, par0);
+            if (o != null){
+                return (Boolean)o;
+            }
         }
 
         return par0 == 35;
