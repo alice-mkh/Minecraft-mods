@@ -29,7 +29,7 @@ public class mod_OldDays extends Mod{
 
     @Override
     public String getModVersion(){
-        return "4.0";
+        return "4.1";
     }
 
     @Override
