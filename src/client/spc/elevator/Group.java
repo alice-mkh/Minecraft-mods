@@ -96,6 +96,9 @@ public class Group extends Entity{
 
     public void setMovement(int axis, double range, int ticks){
         double d = axis == 0 ? posX : (axis == 1 ? posY : posZ);
+        if (range == 0){
+            return;
+        }
         origCoords[axis] = d;
         movementRange[axis] = range;
         movementTicks[axis] = ticks;
@@ -107,6 +110,9 @@ public class Group extends Entity{
 
     public void setRotation(int axis, double range, int ticks){
         double d = axis == 0 ? rotationPitch : rotationYaw;
+        if (range == 0){
+            return;
+        }
         origRot[axis] = d;
         rotRange[axis] = range;
         rotTicks[axis] = ticks;
@@ -216,11 +222,11 @@ public class Group extends Entity{
 
     public void remove(){
         toBeRemoved = true;
-        setMovement(0, MathHelper.floor_double(posX) - posX, 15);
-        setMovement(1, MathHelper.floor_double(posY) - posY, 15);
-        setMovement(2, MathHelper.floor_double(posZ) - posZ, 15);
-        setRotation(1, -rotationPitch, 15);
-        setRotation(2, -rotationYaw, 15);
+        setMovement(0, MathHelper.floor_double(posX) - posX, 10);
+        setMovement(1, MathHelper.floor_double(posY) - posY, 10);
+        setMovement(2, MathHelper.floor_double(posZ) - posZ, 10);
+        setRotation(0, -rotationPitch, 10);
+        setRotation(1, -rotationYaw, 10);
     }
 
     public class BlockData{

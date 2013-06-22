@@ -89,8 +89,8 @@ public class spc_Elevators extends SPCPlugin{
             return;
         }
         if (args[2].equalsIgnoreCase("remove")){
-            g.remove();
             groups.remove(g);
+            g.remove();
             ph.sendMessage("Successfully removed "+args[1]);
             return;
         }
