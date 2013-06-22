@@ -34,7 +34,7 @@ public class spc_Elevators extends SPCPlugin{
         return "Elevators";
     }
 
-    @SPCCommand (cmd="/group",help="<list|NAME <move <x|y|z> <range> [ticks]|stop|rename|remove>>")
+    @SPCCommand (cmd="/group",help="<list|NAME <move <x|y|z> <range> [ticks]|rotate <pitch|yaw> <range> [ticks]|stop|rename NEWNAME|remove>>")
     public void group(String[] args){
         if (args.length < 2){
             ph.sendError("Not enough arguments");
@@ -89,8 +89,7 @@ public class spc_Elevators extends SPCPlugin{
             return;
         }
         if (args[2].equalsIgnoreCase("remove")){
-            g.join();
-            g.setDead();
+            g.remove();
             groups.remove(g);
             ph.sendMessage("Successfully removed "+args[1]);
             return;

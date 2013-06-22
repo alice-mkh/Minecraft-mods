@@ -22,7 +22,7 @@ public class RenderGroup extends Render{
                 loadTexture("/terrain.png");
                 Tessellator tessellator1 = Tessellator.instance;
                 tessellator1.startDrawingQuads();
-                tessellator1.setTranslation((float)(-x), (float)(-y), (float)(-z));
+                tessellator1.setTranslation(-x, -y, -z);
                 Block block = Block.blocksList[b.id];
                 rb.setRenderBoundsFromBlock(block);
                 rb.renderBlockAllFaces(block, x + b.x, y + b.y, z + b.z);

@@ -29,6 +29,7 @@ public class Group extends Entity{
     public double[] rotRange;
     public int[] rotTicks;
     public int[] rotTicksMax;
+    private boolean toBeRemoved;
 
     public Group(String str, World w){
         super(w);
@@ -50,6 +51,7 @@ public class Group extends Entity{
         rotRange = new double[2];
         rotTicks = new int[2];
         rotTicksMax = new int[2];
+        toBeRemoved = false;
     }
 
     public void updateFinished(){
@@ -180,6 +182,12 @@ public class Group extends Entity{
             rotRange[1] = 0;
             rotTicksMax[1] = 0;
         }
+        if (toBeRemoved){
+            if (movementTicks[0] <= 0 && movementTicks[1] <= 0 && movementTicks[2] <= 0 && rotTicks[0] <= 0 && rotTicks[1] <= 0){
+                join();
+                setDead();
+            }
+        }
     }
 
     @Override
@@ -204,6 +212,15 @@ public class Group extends Entity{
 
     public ArrayList<BlockData> getBlocks(){
         return blocks;
+    }
+
+    public void remove(){
+        toBeRemoved = true;
+        setMovement(0, MathHelper.floor_double(posX) - posX, 15);
+        setMovement(1, MathHelper.floor_double(posY) - posY, 15);
+        setMovement(2, MathHelper.floor_double(posZ) - posZ, 15);
+        setRotation(1, -rotationPitch, 15);
+        setRotation(2, -rotationYaw, 15);
     }
 
     public class BlockData{
