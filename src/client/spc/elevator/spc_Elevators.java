@@ -34,7 +34,7 @@ public class spc_Elevators extends SPCPlugin{
         return "Elevators";
     }
 
-    @SPCCommand (cmd="/group",help="<list|NAME <move <x|y|z> <range> [ticks]|rotate <pitch|yaw> <range> [ticks]|stop|rename NEWNAME|remove>>")
+    @SPCCommand (cmd="/group",help="<list|NAME <move <x|y|z> <range> [ticks]|rotate <range> [ticks]|stop|rename NEWNAME|remove>>")
     public void group(String[] args){
         if (args.length < 2){
             ph.sendError("Not enough arguments");
@@ -136,32 +136,32 @@ public class spc_Elevators extends SPCPlugin{
             return;
         }
         if (args[2].equalsIgnoreCase("rotate")){
-            if (args.length < 5){
+            if (args.length < 4){
                 ph.sendError("Not enough arguments");
                 return;
             }
-            int axis = -1;
-            if (args[3].equalsIgnoreCase("pitch")){
-                axis = 0;
-            }
-            if (args[3].equalsIgnoreCase("yaw")){
-                axis = 1;
-            }
-            if (axis < 0 || axis > 1){
-                ph.sendError("Incorrect axis");
-                return;
-            }
+//             int axis = -1;
+//             if (args[3].equalsIgnoreCase("pitch")){
+//                 axis = 0;
+//             }
+//             if (args[3].equalsIgnoreCase("yaw")){
+//                 axis = 1;
+//             }
+//             if (axis < 0 || axis > 1){
+//                 ph.sendError("Incorrect axis");
+//                 return;
+//             }
             double range = 0.0D;
             try {
-                range = Double.parseDouble(args[4]);
+                range = Double.parseDouble(args[3]);
             } catch (Exception e) {
                 ph.sendError("Incorrect range");
                 return;
             }
             int ticks = 0;
-            if (args.length > 5){
+            if (args.length > 4){
                 try{
-                    ticks = Integer.parseInt(args[5]);
+                    ticks = Integer.parseInt(args[4]);
                 }catch (Exception e){
                     ph.sendError("Incorrect ticks");
                     return;
@@ -170,7 +170,7 @@ public class spc_Elevators extends SPCPlugin{
                     ticks = 0;
                 }
             }
-            g.setRotation(axis, range, ticks);
+            g.setRotation(1/*axis*/, range, ticks);
             return;
         }
         if (args[2].equalsIgnoreCase("stop")){

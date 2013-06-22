@@ -37,9 +37,9 @@ public class RenderGroup extends Render{
         GL11.glPushMatrix();
         GL11.glTranslated(par2, par4, par6);
         float yaw = par1Entity.prevRotationYaw + (par1Entity.rotationYaw - par1Entity.prevRotationYaw) * par9;
-        float pitch = par1Entity.prevRotationPitch + (par1Entity.rotationPitch - par1Entity.prevRotationPitch) * par9;
+//         float pitch = par1Entity.prevRotationPitch + (par1Entity.rotationPitch - par1Entity.prevRotationPitch) * par9;
         GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(pitch, (float)Math.sin(yaw * Math.PI / 180), 0.0F, (float)Math.cos(yaw * Math.PI / 180));
+//         GL11.glRotatef(pitch, (float)Math.sin(yaw * Math.PI / 180), 0.0F, (float)Math.cos(yaw * Math.PI / 180));
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glCallList(g.list);
         GL11.glPopMatrix();
