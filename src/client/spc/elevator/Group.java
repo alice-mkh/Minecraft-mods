@@ -52,6 +52,7 @@ public class Group extends Entity{
         rotTicks = new int[2];
         rotTicksMax = new int[2];
         toBeRemoved = false;
+        ignoreFrustumCheck = true;
     }
 
     public void updateFinished(){
