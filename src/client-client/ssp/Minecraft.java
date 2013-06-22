@@ -300,7 +300,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     public boolean enableSP;
     public boolean useSP;
-    public SSPOptions sspoptions;
     private String lastWorld;
     public ArrayList<Mod> mods;
     private HashMap<String, Integer> compat; //0 - disabled; 1 - normal; 2 - mcp
@@ -369,7 +368,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         guiAchievement = new GuiAchievement(this);
         useSP = true;
         enableSP = useSP;
-        sspoptions = new SSPOptions();
         mods = new ArrayList<Mod>();
         compat = new HashMap<String, Integer>();
         worldClass = net.minecraft.src.WorldSSP.class;

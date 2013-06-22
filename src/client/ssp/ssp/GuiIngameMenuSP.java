@@ -36,7 +36,7 @@ public class GuiIngameMenuSP extends GuiScreen
         buttonList.add(new GuiButton(4, width / 2 - 100, height / 4 + 24 + byte0, StatCollector.translateToLocal("menu.returnToGame")));
         buttonList.add(new GuiButton(5, width / 2 - 100, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.achievements")));
         buttonList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
-        if (mc.sspoptions.getShareButton()){
+        if (SSPOptions.getShareButton()){
             buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.options")));
             GuiButton guibutton;
             buttonList.add(guibutton = new GuiButton(7, width / 2 + 2, height / 4 + 96 + byte0, 98, 20, StatCollector.translateToLocal("menu.shareToLan")));

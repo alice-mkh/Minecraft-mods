@@ -303,7 +303,9 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void onDeath(DamageSource par1DamageSource)
     {
-        mcServer.getConfigurationManager().sendChatMsg(field_94063_bt.func_94546_b());
+        if (!net.minecraft.client.Minecraft.getMinecraft().enableSP || SSPOptions.getDeathMessages()){
+            mcServer.getConfigurationManager().sendChatMsg(field_94063_bt.func_94546_b());
+        }
 
         if (!worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {

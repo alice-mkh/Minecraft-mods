@@ -1,19 +1,19 @@
 package net.minecraft.src;
 
 public class SSPOptions{
-    public boolean getDebugSeed(){
+    public static boolean getDebugSeed(){
         return true;
     }
 
-    public boolean getShareButton(){
+    public static boolean getShareButton(){
         return true;
     }
 
-    public boolean getSMPButton(){
+    public static boolean getSMPButton(){
         return true;
     }
 
-    public boolean getFakeServer(){
-        return true;
+    public static boolean getDeathMessages(){
+        return false;
     }
 }
