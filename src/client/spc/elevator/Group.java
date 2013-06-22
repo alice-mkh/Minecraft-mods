@@ -30,6 +30,7 @@ public class Group extends Entity{
     public int[] rotTicks;
     public int[] rotTicksMax;
     private boolean toBeRemoved;
+    private ComplexAABB aabb;
 
     public Group(String str, World w){
         super(w);
@@ -39,8 +40,10 @@ public class Group extends Entity{
         int y = MathHelper.floor_double(p.posY - p.yOffset) - 1;
         int z = MathHelper.floor_double(p.posZ);
         setPosition(x, y, z);
+        aabb = new ComplexAABB();
         blocks = new ArrayList<BlockData>();
-        addBlocksToList(x, y, z, x, y, z);
+        addBlocksToList(true, x, y, z, x, y, z);
+//         aabb.offset(x, y, z);
         update = true;
         list = -1;
         origCoords = new double[3];
@@ -63,7 +66,7 @@ public class Group extends Entity{
         update = false;
     }
 
-    public void addBlocksToList(int x0, int y0, int z0, int x, int y, int z){
+    public void addBlocksToList(boolean first, int x0, int y0, int z0, int x, int y, int z){
         for (BlockData b : blocks){
             if (x - x0 == b.x && y - y0 == b.y && z - z0 == b.z){
                 return;
@@ -81,12 +84,46 @@ public class Group extends Entity{
         int meta = worldObj.getBlockMetadata(x, y, z);
         BlockData b = new BlockData(x - x0, y - y0, z - z0, id, meta);
         blocks.add(b);
-        addBlocksToList(x0, y0, z0, x - 1, y, z);
-        addBlocksToList(x0, y0, z0, x + 1, y, z);
-        addBlocksToList(x0, y0, z0, x, y - 1, z);
-        addBlocksToList(x0, y0, z0, x, y + 1, z);
-        addBlocksToList(x0, y0, z0, x, y, z - 1);
-        addBlocksToList(x0, y0, z0, x, y, z + 1);
+        Block b2 = Block.blocksList[id];
+        if (first){
+            boundingBox.minX = x + b2.minX;
+            boundingBox.minY = y + b2.minY;
+            boundingBox.minZ = z + b2.minZ;
+            boundingBox.maxX = x + b2.maxX;
+            boundingBox.maxY = y + b2.maxY;
+            boundingBox.maxZ = z + b2.maxZ;
+        }else{
+            if (boundingBox.minX > x + b2.minX){
+                boundingBox.minX = x + b2.minX;
+            }
+            if (boundingBox.minY > y + b2.minY){
+                boundingBox.minY = y + b2.minY;
+            }
+            if (boundingBox.minZ > z + b2.minZ){
+                boundingBox.minZ = z + b2.minZ;
+            }
+            if (boundingBox.maxX < x + b2.maxX){
+                boundingBox.maxX = x + b2.maxX;
+            }
+            if (boundingBox.maxY < y + b2.maxY){
+                boundingBox.maxY = y + b2.maxY;
+            }
+            if (boundingBox.maxZ < z + b2.maxZ){
+                boundingBox.maxZ = z + b2.maxZ;
+            }
+        }
+        aabb.add(boundingBox.copy());
+//         ArrayList list = new ArrayList();
+//         Block.blocksList[id].addCollisionBoxesToList(worldObj, x, y, z, boundingBox.expand(x, y, z), list, this);
+//         for (Object o : list){
+//             aabb.add((AxisAlignedBB)o);
+//         }
+        addBlocksToList(false, x0, y0, z0, x - 1, y, z);
+        addBlocksToList(false, x0, y0, z0, x + 1, y, z);
+        addBlocksToList(false, x0, y0, z0, x, y - 1, z);
+        addBlocksToList(false, x0, y0, z0, x, y + 1, z);
+        addBlocksToList(false, x0, y0, z0, x, y, z - 1);
+        addBlocksToList(false, x0, y0, z0, x, y, z + 1);
     }
 
     public void removeBlocks(int x0, int y0, int z0){
@@ -136,10 +173,13 @@ public class Group extends Entity{
     public void onUpdate(){
         if (movementTicks[0] > 0){
             if (movementTicksMax[0] == 0){
+                offsetBB(movementRange[0], 0, 0);
                 setPosition(posX + movementRange[0], posY, posZ);
                 movementTicks[0] = 0;
             }else{
-                setPosition(origCoords[0] + movementRange[0] * (float)(movementTicksMax[0] - --movementTicks[0]) / (float)movementTicksMax[0], posY, posZ);
+                double d = origCoords[0] + movementRange[0] * (float)(movementTicksMax[0] - --movementTicks[0]) / (float)movementTicksMax[0];
+                offsetBB(d - posX, 0, 0);
+                setPosition(d, posY, posZ);
             }
         }else{
             movementRange[0] = 0;
@@ -147,10 +187,13 @@ public class Group extends Entity{
         }
         if (movementTicks[1] > 0){
             if (movementTicksMax[1] == 0){
+                offsetBB(0, movementRange[1], 0);
                 setPosition(posX, posY + movementRange[1], posZ);
                 movementTicks[1] = 0;
             }else{
-                setPosition(posX, origCoords[1] + movementRange[1] * (float)(movementTicksMax[1] - --movementTicks[1]) / (float)movementTicksMax[1], posZ);
+                double d = origCoords[1] + movementRange[1] * (float)(movementTicksMax[1] - --movementTicks[1]) / (float)movementTicksMax[1];
+                offsetBB(0, d - posY, 0);
+                setPosition(posX, d, posZ);
             }
         }else{
             movementRange[1] = 0;
@@ -158,10 +201,13 @@ public class Group extends Entity{
         }
         if (movementTicks[2] > 0){
             if (movementTicksMax[2] == 0){
+                offsetBB(0, 0, movementRange[2]);
                 setPosition(posX, posY, posZ + movementRange[2]);
                 movementTicks[2] = 0;
             }else{
-                setPosition(posX, posY, origCoords[2] + movementRange[2] * (float)(movementTicksMax[2] - --movementTicks[2]) / (float)movementTicksMax[2]);
+                double d = origCoords[2] + movementRange[2] * (float)(movementTicksMax[2] - --movementTicks[2]) / (float)movementTicksMax[2];
+                offsetBB(0, 0, d - posZ);
+                setPosition(posX, posY, d);
             }
         }else{
             movementRange[2] = 0;
@@ -197,6 +243,11 @@ public class Group extends Entity{
         }
     }
 
+    private void offsetBB(double x, double y, double z){
+        boundingBox.offset(x, y, z);
+        aabb.offset(x, y, z);
+    }
+
     @Override
     protected void entityInit(){
     }
@@ -219,6 +270,11 @@ public class Group extends Entity{
 
     public ArrayList<BlockData> getBlocks(){
         return blocks;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(){
+        return boundingBox;
     }
 
     public void remove(){
