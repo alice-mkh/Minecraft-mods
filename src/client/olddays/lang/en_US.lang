@@ -159,7 +159,7 @@ bugs.craftingslots.name=Crafting grid bug
 bugs.invwalking.name=Inventory walking
  bugs.invwalking.desc1=Allows walking with opened
  bugs.invwalking.desc2=Survival inventory.
- bugs.invwalking.desc3=§aFixed in some Infdev or Alpha.
+ bugs.invwalking.desc3=§aFixed in some Alpha.
 
 gameplay.enablexp.name=Experience
  gameplay.enablexp.desc1=When disabled, removes orbs and

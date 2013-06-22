@@ -161,7 +161,7 @@ bugs.craftingslots.name=Błąd z polem craftingu
 bugs.invwalking.name=Chodzenie z ekwipunkiem
  bugs.invwalking.desc1=Pozwala na chodzenie z otwartym
  bugs.invwalking.desc2=ekwipunkiem w Survivalu.
- bugs.invwalking.desc3=§aNaprawione między Infdev i Alpha.
+ bugs.invwalking.desc3=§aNaprawione w Alphie.
 
 gameplay.enablexp.name=Doświadczenie
  gameplay.enablexp.desc1=Jeśli wyłączone, usuwa kule i

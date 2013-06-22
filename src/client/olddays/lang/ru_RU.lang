@@ -160,7 +160,7 @@ bugs.craftingslots.name=Баг с сеткой крафта
 bugs.invwalking.name=Ходьба с инвентарем
  bugs.invwalking.desc1=Позволяет ходить с
  bugs.invwalking.desc2=открытым инвентарем.
- bugs.invwalking.desc3=§aИсправлена в Infdev или Альфе.
+ bugs.invwalking.desc3=§aИсправлена в Альфе.
 
 gameplay.enablexp.name=Опыт
  gameplay.enablexp.desc1=Когда выключен, убирает сферы
@@ -275,7 +275,6 @@ gameplay.oldexplosion.name=Старые взрывы
  gameplay.oldexplosion.desc1=Взрывы всегда наносят
  gameplay.oldexplosion.desc2=одинаковый урон.
  gameplay.oldexplosion.desc3=§aИзменены в 1.3.
-//FIXME
 gameplay.allowsneak.name=Приседание
  gameplay.allowsneak.desc1=Позволяет приседать.
  gameplay.allowsneak.desc2=§aДобавлено в Альфе 1.1.1.
@@ -527,8 +526,7 @@ sounds.ooh.name=Звук удара
  sounds.ooh1=Beta
  sounds.ooh1.desc=Ух!
  sounds.ooh2=1.0
-//FIXME
- sounds.ooh2.desc=More "fleshy" sound
+ sounds.ooh2.desc=Более "мясной" звук
  sounds.ooh3=1.4
  sounds.ooh3.desc=Стандартный звук
 sounds.fall.name=Звук падения

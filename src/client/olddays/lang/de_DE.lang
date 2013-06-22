@@ -165,7 +165,7 @@ bugs.craftingslots.name=Crafting-Feld-Fehler
 bugs.invwalking.name=Inventar-Laufen
  bugs.invwalking.desc1=Ermöglicht es mit geöffnetem
  bugs.invwalking.desc2=Inventar zu laufen.
- bugs.invwalking.desc3=§aIrgendwann in der Indev oder Alpha geändert.
+ bugs.invwalking.desc3=§aIn der Alpha geändert.
 
 gameplay.enablexp.name=Erfahrung
  gameplay.enablexp.desc1=Wenn deaktiviert, entfernt es Erfahrungsbällchen und die
