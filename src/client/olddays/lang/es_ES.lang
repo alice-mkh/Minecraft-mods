@@ -161,7 +161,7 @@ bugs.craftingslots.name=Bug de cuadro de crafteo
 bugs.invwalking.name=Caminar con inventario
  bugs.invwalking.desc1=Permite caminar con el inventario
  bugs.invwalking.desc2=de supervivencia abierto.
- bugs.invwalking.desc3=§aArreglado en Infdev o Alpha.
+ bugs.invwalking.desc3=§aArreglado en Alpha.
 
 gameplay.enablexp.name=Experiencia
  gameplay.enablexp.desc1=Cuando es activado, remueve la
