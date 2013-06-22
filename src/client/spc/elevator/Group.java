@@ -3,6 +3,18 @@ package net.minecraft.src;
 import java.util.ArrayList;
 
 public class Group extends Entity{
+    public static final int[] BLOCK_BLACKLIST = new int[]{
+        Block.stone.blockID,
+        Block.dirt.blockID,
+        Block.grass.blockID,
+        Block.sand.blockID,
+        Block.gravel.blockID,
+        Block.waterStill.blockID,
+        Block.waterMoving.blockID,
+        Block.lavaStill.blockID,
+        Block.lavaMoving.blockID
+    };
+
     public static PlayerHelper ph;
 
     private String name;
@@ -55,8 +67,13 @@ public class Group extends Entity{
             }
         }
         int id = worldObj.getBlockId(x, y, z);
-        if (id == 0 || id == Block.grass.blockID || id == Block.dirt.blockID || id == Block.stone.blockID){
+        if (id <= 0){
             return;
+        }
+        for (int i : BLOCK_BLACKLIST){
+            if (id == i){
+                return;
+            }
         }
         int meta = worldObj.getBlockMetadata(x, y, z);
         BlockData b = new BlockData(x - x0, y - y0, z - z0, id, meta);
