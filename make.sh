@@ -32,7 +32,7 @@ cd $ORIG_DIR
 MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-days-eyecandy old-days-sounds old-days-crafting
            old-days-textures old-days-nbxlite old-days old-days-allin1
            spawn-human spc ssp"
-UNUSED[0]="spc_tester spc_WorldEditGUI spc_aprilfools1 spc_AprilFools2012"
+UNUSED[0]="spc_tester spc_WorldEditGUI spc_aprilfools1 spc_AprilFools2012 spc_Elevators Group Group\$1 Group\$BlockData RenderGroup"
 CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep`
        `find BlockStairs` `find EntityBoat` `find ItemDye` `find BlockLeaves` `find BlockSnow`
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2
