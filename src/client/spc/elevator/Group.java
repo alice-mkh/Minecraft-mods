@@ -112,12 +112,12 @@ public class Group extends Entity{
                 boundingBox.maxZ = z + b2.maxZ;
             }
         }
-        aabb.add(boundingBox.copy());
-//         ArrayList list = new ArrayList();
-//         Block.blocksList[id].addCollisionBoxesToList(worldObj, x, y, z, boundingBox.expand(x, y, z), list, this);
-//         for (Object o : list){
-//             aabb.add((AxisAlignedBB)o);
-//         }
+//         aabb.add(boundingBox.copy());
+        ArrayList list = new ArrayList();
+        Block.blocksList[id].addCollisionBoxesToList(worldObj, x, y, z, boundingBox.expand(x, y, z), list, this);
+        for (Object o : list){
+            aabb.add((AxisAlignedBB)o);
+        }
         addBlocksToList(false, x0, y0, z0, x - 1, y, z);
         addBlocksToList(false, x0, y0, z0, x + 1, y, z);
         addBlocksToList(false, x0, y0, z0, x, y - 1, z);
@@ -173,13 +173,11 @@ public class Group extends Entity{
     public void onUpdate(){
         if (movementTicks[0] > 0){
             if (movementTicksMax[0] == 0){
-                offsetBB(movementRange[0], 0, 0);
-                setPosition(posX + movementRange[0], posY, posZ);
+                move(movementRange[0], 0, 0);
                 movementTicks[0] = 0;
             }else{
                 double d = origCoords[0] + movementRange[0] * (float)(movementTicksMax[0] - --movementTicks[0]) / (float)movementTicksMax[0];
-                offsetBB(d - posX, 0, 0);
-                setPosition(d, posY, posZ);
+                move(d - posX, 0, 0);
             }
         }else{
             movementRange[0] = 0;
@@ -187,13 +185,11 @@ public class Group extends Entity{
         }
         if (movementTicks[1] > 0){
             if (movementTicksMax[1] == 0){
-                offsetBB(0, movementRange[1], 0);
-                setPosition(posX, posY + movementRange[1], posZ);
+                move(0, movementRange[1], 0);
                 movementTicks[1] = 0;
             }else{
                 double d = origCoords[1] + movementRange[1] * (float)(movementTicksMax[1] - --movementTicks[1]) / (float)movementTicksMax[1];
-                offsetBB(0, d - posY, 0);
-                setPosition(posX, d, posZ);
+                move(0, d - posY, 0);
             }
         }else{
             movementRange[1] = 0;
@@ -201,13 +197,11 @@ public class Group extends Entity{
         }
         if (movementTicks[2] > 0){
             if (movementTicksMax[2] == 0){
-                offsetBB(0, 0, movementRange[2]);
-                setPosition(posX, posY, posZ + movementRange[2]);
+                move(0, 0, movementRange[2]);
                 movementTicks[2] = 0;
             }else{
                 double d = origCoords[2] + movementRange[2] * (float)(movementTicksMax[2] - --movementTicks[2]) / (float)movementTicksMax[2];
-                offsetBB(0, 0, d - posZ);
-                setPosition(posX, posY, d);
+                move(0, 0, d - posZ);
             }
         }else{
             movementRange[2] = 0;
@@ -243,7 +237,10 @@ public class Group extends Entity{
         }
     }
 
-    private void offsetBB(double x, double y, double z){
+    private void move(double x, double y, double z){
+        posX += x;
+        posY += y;
+        posZ += z;
         boundingBox.offset(x, y, z);
         aabb.offset(x, y, z);
     }
