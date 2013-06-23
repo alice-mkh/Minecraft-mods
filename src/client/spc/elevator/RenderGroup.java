@@ -6,33 +6,31 @@ public class RenderGroup extends Render{
     @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        Group g = (Group)par1Entity;
-        if (g.list < 0){
-            g.list = GLAllocation.generateDisplayLists(1);
+        Group.GroupBlock b = (Group.GroupBlock)par1Entity;
+        if (b.list < 0){
+            b.list = GLAllocation.generateDisplayLists(1);
         }
-        if (g.update){
+        if (b.update){
             int x = MathHelper.floor_double(par1Entity.posX);
             int y = MathHelper.floor_double(par1Entity.posY);
             int z = MathHelper.floor_double(par1Entity.posZ);
             RenderBlocks rb = new RenderBlocks(par1Entity.worldObj);
-            GL11.glNewList(g.list, GL11.GL_COMPILE);
-            for (Group.BlockData b : g.getBlocks()){
-                GL11.glPushMatrix();
-                GL11.glDisable(GL11.GL_LIGHTING);
-                loadTexture("/terrain.png");
-                Tessellator tessellator1 = Tessellator.instance;
-                tessellator1.startDrawingQuads();
-                tessellator1.setTranslation(-x, -y, -z);
-                Block block = Block.blocksList[b.id];
-                rb.setRenderBoundsFromBlock(block);
-                rb.renderBlockAllFaces(block, x + b.x, y + b.y, z + b.z);
-                tessellator1.setTranslation(0.0D, 0.0D, 0.0D);
-                tessellator1.draw();
-                GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glPopMatrix();
-            }
+            GL11.glNewList(b.list, GL11.GL_COMPILE);
+            GL11.glPushMatrix();
+            GL11.glDisable(GL11.GL_LIGHTING);
+            loadTexture("/terrain.png");
+            Tessellator tessellator1 = Tessellator.instance;
+            tessellator1.startDrawingQuads();
+            tessellator1.setTranslation(-x, -y, -z);
+            Block block = Block.blocksList[b.id];
+            rb.setRenderBoundsFromBlock(block);
+            rb.renderBlockAllFaces(block, x, y, z);
+            tessellator1.setTranslation(0.0D, 0.0D, 0.0D);
+            tessellator1.draw();
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glPopMatrix();
             GL11.glEndList();
-            g.updateFinished();
+            b.updateFinished();
         }
         GL11.glPushMatrix();
         GL11.glTranslated(par2, par4, par6);
@@ -41,7 +39,7 @@ public class RenderGroup extends Render{
         GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
 //         GL11.glRotatef(pitch, (float)Math.sin(yaw * Math.PI / 180), 0.0F, (float)Math.cos(yaw * Math.PI / 180));
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glCallList(g.list);
+        GL11.glCallList(b.list);
         GL11.glPopMatrix();
     }
 }

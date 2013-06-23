@@ -17,7 +17,7 @@ public class spc_Elevators extends SPCPlugin{
             Field f = RenderManager.class.getDeclaredFields()[0];
             f.setAccessible(true);
             HashMap map = ((HashMap)f.get(renderMan));
-            map.put(Group.class, r);
+            map.put(Group.GroupBlock.class, r);
             System.out.println("Added "+r.getClass().getName()+" renderer");
         }catch(Exception ex){
             System.out.println("Failed to add renderer: "+ex);
@@ -59,11 +59,10 @@ public class spc_Elevators extends SPCPlugin{
                 Group g = new Group(args[1], ph.mc.theWorld);
                 if (g.getBlocks().isEmpty()){
                     ph.sendError("Cannot create empty group");
-                    g.setDead();
+                    g.remove();
                     return;
                 }
                 groups.add(g);
-                ph.mc.theWorld.spawnEntityInWorld(g);
                 ph.sendMessage("Successfully created "+args[1]);
                 return;
             }
@@ -89,7 +88,6 @@ public class spc_Elevators extends SPCPlugin{
             return;
         }
         if (args[2].equalsIgnoreCase("remove")){
-            groups.remove(g);
             g.remove();
             ph.sendMessage("Successfully removed "+args[1]);
             return;
@@ -182,6 +180,16 @@ public class spc_Elevators extends SPCPlugin{
             return;
         }
         ph.sendMessage("No such command");
+    }
+
+    @Override
+    public void atUpdate(){
+        for (int i = 0; i < groups.size(); i++){
+            boolean b = groups.get(i).onUpdate();
+            if (b){
+                groups.remove(i);
+            }
+        }
     }
 
     private Group getGroupByName(String str){

@@ -114,7 +114,7 @@ ADD[12]="./char.png"
 MV[13]="CommandClientSPC EntityPlayerSPSPC PlayerHelper PlayerHelper\$1 SPCCheckVersion SPCCommand SPCEntity SPCEntityCamera SPCEntityInterface
         SPCLocalConfiguration SPCLocalPlayer SPCLocalWorld SPCObjectHit SPCPlugin SPCPluginManager SPCPoint SPCServerInterface SPCVersion
         SPCVersionInterface SPCWorld SPCWorldInterface Settings WorldEditPlugin mod_SSPC spc_WorldEdit spc_paint spc_path
-        spc_Elevators Group Group\$1 Group\$BlockData RenderGroup ComplexAABB"
+        spc_Elevators Group Group\$1 Group\$GroupBlock RenderGroup"
 ADD[13]="./WorldEdit.jar"
 MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
         `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` net/ other"
