@@ -11,20 +11,17 @@ public class RenderGroup extends Render{
             b.list = GLAllocation.generateDisplayLists(1);
         }
         if (b.update){
-            int x = MathHelper.floor_double(par1Entity.posX);
-            int y = MathHelper.floor_double(par1Entity.posY);
-            int z = MathHelper.floor_double(par1Entity.posZ);
-            RenderBlocks rb = new RenderBlocks(par1Entity.worldObj);
+            RenderBlocks rb = new RenderBlocks(b.group);
             GL11.glNewList(b.list, GL11.GL_COMPILE);
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_LIGHTING);
             loadTexture("/terrain.png");
             Tessellator tessellator1 = Tessellator.instance;
             tessellator1.startDrawingQuads();
-            tessellator1.setTranslation(-x, -y, -z);
+            tessellator1.setTranslation(-b.x, -b.y, -b.z);
             Block block = Block.blocksList[b.id];
             rb.setRenderBoundsFromBlock(block);
-            rb.renderBlockAllFaces(block, x, y, z);
+            rb.renderBlockAllFaces(block, b.x, b.y, b.z);
             tessellator1.setTranslation(0.0D, 0.0D, 0.0D);
             tessellator1.draw();
             GL11.glEnable(GL11.GL_LIGHTING);

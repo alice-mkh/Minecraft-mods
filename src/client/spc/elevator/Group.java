@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 
-public class Group{
+public class Group implements IBlockAccess{
     public static final int[] BLOCK_BLACKLIST = new int[]{
         Block.stone.blockID,
         Block.dirt.blockID,
@@ -195,6 +195,8 @@ public class Group{
 
     private void updateBlockRotation(float pitch, float yaw){
         for (GroupBlock b : blocks){
+            b.prevRotationPitch = b.rotationPitch;
+            b.prevRotationYaw = b.rotationYaw;
             b.rotationPitch = pitch;
             b.rotationYaw = yaw;
 //             b.posX = posX + Math.cos(pitch) * b.x;
@@ -208,6 +210,9 @@ public class Group{
         posY += y;
         posZ += z;
         for (GroupBlock b : blocks){
+            b.prevPosX = b.lastTickPosX = b.posX;
+            b.prevPosY = b.lastTickPosY = b.posY;
+            b.prevPosZ = b.lastTickPosZ = b.posZ;
             b.posX += x;
             b.posY += y;
             b.posZ += z;
@@ -235,6 +240,115 @@ public class Group{
         setRotation(0, -rotationPitch, 10);
         setRotation(1, -rotationYaw, 10);
     }
+
+    @Override
+    public int getBlockId(int i, int j, int k){
+        for (GroupBlock b : blocks){
+            if (b.x == i + 1 && b.y == j + 1 && b.z == k + 1){
+                return b.id;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public TileEntity getBlockTileEntity(int i, int j, int k){
+        return null;
+    }
+
+    @Override
+    public int getLightBrightnessForSkyBlocks(int i, int j, int k, int l){
+        return 15;
+    }
+
+    @Override
+    public float getBrightness(int i, int j, int k, int l){
+        return 1.0F;
+    }
+
+    @Override
+    public float getLightBrightness(int i, int j, int k){
+        return 1.0F;
+    }
+
+    @Override
+    public int getBlockMetadata(int i, int j, int k){
+        for (GroupBlock b : blocks){
+            if (b.x == i && b.y == j && b.z == k){
+                return b.meta;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public Material getBlockMaterial(int i, int j, int k){
+        int id = getBlockId(i, j, k);
+        if (id == 0){
+            return Material.air;
+        }
+        return Block.blocksList[id].blockMaterial;
+    }
+
+    @Override
+    public boolean isBlockOpaqueCube(int i, int j, int k){
+        Block block = Block.blocksList[getBlockId(i, j, k)];
+        if (block == null){
+            return false;
+        }
+        return block.isOpaqueCube();
+    }
+
+    @Override
+    public boolean isBlockNormalCube(int i, int j, int k){
+        Block block = Block.blocksList[getBlockId(i, j, k)];
+        if (block == null){
+            return false;
+        }
+        return block.blockMaterial.blocksMovement() && block.renderAsNormalBlock();
+    }
+
+    @Override
+    public boolean isAirBlock(int i, int j, int k){
+        Block block = Block.blocksList[getBlockId(i, j, k)];
+        return block == null;
+    }
+
+    @Override
+    public BiomeGenBase getBiomeGenForCoords(int i, int j){
+        return BiomeGenBase.icePlains;
+    }
+
+    @Override
+    public int getHeight(){
+        return worldObj.getHeight();
+    }
+
+    @Override
+    public boolean extendedLevelsInChunkCache(){
+        return false;
+    }
+
+    @Override
+    public boolean doesBlockHaveSolidTopSurface(int i, int j, int k){
+        Block block = Block.blocksList[getBlockId(i, j, k)];
+        return worldObj.isBlockTopFacingSurfaceSolid(block, getBlockMetadata(i, j, k));
+    }
+
+    @Override
+    public Vec3Pool getWorldVec3Pool(){
+        return worldObj.getWorldVec3Pool();
+    }
+
+    @Override
+    public int isBlockProvidingPowerTo(int i, int j, int k, int l){
+        int id = getBlockId(i, j, k);
+        if (id == 0){
+            return 0;
+        }
+        return Block.blocksList[id].isProvidingStrongPower(this, i, j, k, l);
+    }
+
 
     public class GroupBlock extends Entity{
         public int x;
