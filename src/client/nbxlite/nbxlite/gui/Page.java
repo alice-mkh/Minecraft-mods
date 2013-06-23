@@ -47,6 +47,8 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
 
     public abstract String getString();
 
+    public void postDrawScreen(int i, int j, float f){}
+
     @Override
     public int getLeft(){
         return width / 2 - 50;
@@ -143,6 +145,36 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
         b.yPosition = height / 6 + scrollingGui.scrolling + i;
         if (i > contentHeight && b.drawButton){
             contentHeight = i;
+        }
+    }
+
+    protected void drawTooltip(String[] strings, int x, int y){
+        int margin = 10;
+        int length = strings.length;
+        if (strings[length - 1] == null || strings[length - 1] == ""){
+            return;
+        }
+        int w = 0;
+        int w2 = 0;
+        for (int j = 0; j < length; j++){
+            int width = fontRenderer.getStringWidth(strings[j].replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
+            if (w < width + margin * 2){
+                w = width + margin * 2;
+                w2 = width / 2;
+            }
+        }
+        int h = (length * 10) + margin;
+        drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
+        for (int j = 0; j < length; j++){
+            String str = strings[j].replace("<-", "").replace("->", "");
+            int y2 = y + (j * 10) - (length * 5);
+            if (strings[j].startsWith("<-") || strings[j].startsWith("§7<-") || strings[j].startsWith("§4<-")){
+                drawString(fontRenderer, str, x - w / 2 + margin, y2, 0xffffff);
+            }else if (strings[j].endsWith("->")){
+                drawString(fontRenderer, str, x + w / 2 - margin - fontRenderer.getStringWidth(str), y2, 0xffffff);
+            }else{
+                drawString(fontRenderer, str, x - fontRenderer.getStringWidth(str.replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", "")) / 2, y2, 0xffffff);
+            }
         }
     }
 }

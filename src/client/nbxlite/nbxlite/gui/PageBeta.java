@@ -1,14 +1,17 @@
 package net.minecraft.src.nbxlite.gui;
 
+import java.util.ArrayList;
 import net.minecraft.src.*;
 
 public class PageBeta extends Page{
     private GuiButtonNBXlite[] featuresButtons;
+    private GuiButtonNBXlite[] helpButtons;
     private GuiButtonNBXlite newOresButton;
     private GuiButtonNBXlite jungleButton;
     private GuiButtonNBXlite iceDesertButton;
     private GuiButtonNBXlite fixBeachesButton;
     private GuiButtonNBXlite weatherButton;
+    private int help;
     private boolean newores;
     private boolean jungle;
     private boolean iceDesert;
@@ -19,6 +22,8 @@ public class PageBeta extends Page{
     public PageBeta(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButtonNBXlite[GeneratorList.feat1length + 1];
+        helpButtons = new GuiButtonNBXlite[featuresButtons.length];
+        help = -1;
         jungle = ODNBXlite.getDefaultFlag("jungle");
         newores = ODNBXlite.getDefaultFlag("newores");
         iceDesert = ODNBXlite.getDefaultFlag("icedesert");
@@ -31,13 +36,13 @@ public class PageBeta extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 115) + leftmargin, 210);
+            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 105) + leftmargin, 170);
             String name = mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1));
-            if (i != ODNBXlite.FEATURES_SKY){
-                name += " (" + mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1) + ".desc") + ")";
-            }
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
+            helpButtons[i] = new GuiButtonNBXlite(i + 100, (width / 2 + 66) + leftmargin, 20);
+            helpButtons[i].displayString = "?";
+            addButton(helpButtons[i]);
         }
         addButton(newOresButton = new GuiButtonNBXlite(l, width / 2 - 85 + leftmargin, 150));
         addButton(jungleButton = new GuiButtonNBXlite(l + 1, width / 2 - 85 + leftmargin, 150));
@@ -52,6 +57,7 @@ public class PageBeta extends Page{
         super.scrolled();
         for (int i = 0; i < featuresButtons.length; i++){
             setY(featuresButtons[i], (i - 1) * 21);
+            setY(helpButtons[i], (i - 1) * 21);
         }
         setY(newOresButton, 127);
         setY(jungleButton, 149);
@@ -79,6 +85,16 @@ public class PageBeta extends Page{
     }
 
     @Override
+    public void postDrawScreen(int i, int j, float f){
+        if (help >= 0 && (i <= helpButtons[help].xPosition || i >= helpButtons[help].xPosition+20 || j <= helpButtons[help].yPosition || j >= helpButtons[help].yPosition+20)){
+            help = -1;
+        }
+        if (help >= 0){
+            drawTooltip(getTooltip(help), width / 2, height / 2);
+        }
+    }
+
+    @Override
     public void actionPerformedScrolling(GuiButton guibutton){
         if (guibutton == newOresButton){
             newores = !newores;
@@ -94,6 +110,8 @@ public class PageBeta extends Page{
             featuresButtons[features].enabled = true;
             features = guibutton.id;
             guibutton.enabled = false;
+        }else if (guibutton.id > 99){
+            help = help < 0 ? guibutton.id - 100 : -1;
         }
         super.actionPerformedScrolling(guibutton);
     }
@@ -141,5 +159,18 @@ public class PageBeta extends Page{
 
     private boolean getDefaultWeather(){
         return ODNBXlite.getDefaultFlag("weather") || features == ODNBXlite.FEATURES_BETA15 || features == ODNBXlite.FEATURES_BETA173;
+    }
+
+    private String[] getTooltip(int i){
+        ArrayList<String> list = new ArrayList<String>();
+        String name = "nbxlite.betafeatures"+(i+1);
+        list.add(mod_OldDays.lang.get(name));
+        list.add("");
+        list.add("§7"+mod_OldDays.lang.get(name+".desc"));
+        int num2 = mod_OldDays.getDescriptionNumber(name+".desc");
+        for (int j = 0; j < num2; j++){
+            list.add("§7"+mod_OldDays.lang.get(name+".desc"+(j+1)));
+        }
+        return list.toArray(new String[list.size()]);
     }
 }

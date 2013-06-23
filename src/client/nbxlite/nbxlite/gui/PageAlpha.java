@@ -1,15 +1,18 @@
 package net.minecraft.src.nbxlite.gui;
 
+import java.util.ArrayList;
 import java.util.Random;
 import net.minecraft.src.*;
 
 public class PageAlpha extends Page{
     private GuiButtonNBXlite[] featuresButtons;
+    private GuiButtonNBXlite[] helpButtons;
     private GuiButtonNBXlite themeButton;
     private GuiButtonNBXlite newOresButton;
     private GuiButtonNBXlite snowButton;
     private GuiButtonNBXlite fixBeachesButton;
     private GuiButtonNBXlite weatherButton;
+    private int help;
     private boolean newores;
     private boolean fixbeaches;
     private boolean weather;
@@ -20,6 +23,8 @@ public class PageAlpha extends Page{
     public PageAlpha(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButtonNBXlite[ODNBXlite.BIOMELESS_FEATURES.length];
+        helpButtons = new GuiButtonNBXlite[featuresButtons.length];
+        help = -1;
         newores = ODNBXlite.getDefaultFlag("newores");
         fixbeaches = ODNBXlite.getDefaultFlag("fixbeaches");
         weather = ODNBXlite.getDefaultFlag("weather");
@@ -32,11 +37,13 @@ public class PageAlpha extends Page{
     public void initButtons(){
         int l = featuresButtons.length;
         for (int i = 0; i < l; i++){
-            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 115) + leftmargin, 210);
+            featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 105) + leftmargin, 170);
             String name = mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (i + 1));
-            name += " (" + mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (i + 1) + ".desc") + ")";
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
+            helpButtons[i] = new GuiButtonNBXlite(i + 100, (width / 2 + 66) + leftmargin, 20);
+            helpButtons[i].displayString = "?";
+            addButton(helpButtons[i]);
         }
         addButton(themeButton = new GuiButtonNBXlite(l, width / 2 - 85 + leftmargin, 150));
         addButton(newOresButton = new GuiButtonNBXlite(l + 1, width / 2 - 85 + leftmargin, 150));
@@ -51,6 +58,7 @@ public class PageAlpha extends Page{
         super.scrolled();
         for (int i = 0; i < featuresButtons.length; i++){
             setY(featuresButtons[i], (i - 1) * 21);
+            setY(helpButtons[i], (i - 1) * 21);
         }
         setY(themeButton, 85);
         setY(newOresButton, 120);
@@ -91,6 +99,16 @@ public class PageAlpha extends Page{
     }
 
     @Override
+    public void postDrawScreen(int i, int j, float f){
+        if (help >= 0 && (i <= helpButtons[help].xPosition || i >= helpButtons[help].xPosition+20 || j <= helpButtons[help].yPosition || j >= helpButtons[help].yPosition+20)){
+            help = -1;
+        }
+        if (help >= 0){
+            drawTooltip(getTooltip(help), width / 2, height / 2);
+        }
+    }
+
+    @Override
     public void actionPerformedScrolling(GuiButton guibutton){
         if (guibutton == newOresButton){
             newores = !newores;
@@ -114,6 +132,12 @@ public class PageAlpha extends Page{
             featuresButtons[features].enabled = true;
             features = guibutton.id;
             guibutton.enabled = false;
+        }else if (guibutton.id < featuresButtons.length){
+            featuresButtons[features].enabled = true;
+            features = guibutton.id;
+            guibutton.enabled = false;
+        }else if (guibutton.id > 99){
+            help = help < 0 ? guibutton.id - 100 : -1;
         }
         super.actionPerformedScrolling(guibutton);
     }
@@ -174,5 +198,18 @@ public class PageAlpha extends Page{
 
     private boolean canSnow(){
         return ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201 && (theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS);
+    }
+
+    private String[] getTooltip(int i){
+        ArrayList<String> list = new ArrayList<String>();
+        String name = "nbxlite.biomelessfeatures"+(i+1);
+        list.add(mod_OldDays.lang.get(name));
+        list.add("");
+        list.add("§7"+mod_OldDays.lang.get(name+".desc"));
+        int num2 = mod_OldDays.getDescriptionNumber(name+".desc");
+        for (int j = 0; j < num2; j++){
+            list.add("§7"+mod_OldDays.lang.get(name+".desc"+(j+1)));
+        }
+        return list.toArray(new String[list.size()]);
     }
 }

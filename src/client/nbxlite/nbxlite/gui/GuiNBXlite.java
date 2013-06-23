@@ -183,6 +183,7 @@ public class GuiNBXlite extends GuiScreen{
         if (page != null){
             page.handleMouse(i, j);
         }
+        page.postDrawScreen(i, j, f);
     }
 
     public String getButtonName(){
