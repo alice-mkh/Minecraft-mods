@@ -56,7 +56,12 @@ public class spc_Elevators extends SPCPlugin{
                 return;
             }
             if (getGroupByName(args[1]) == null){
-                Group g = new Group(args[1], ph.mc.theWorld);
+                SPCObjectHit spc = ph.getObjectHit();
+                if (spc == null || spc.blocky == -1){
+                    ph.sendError("You must be pointing a block");
+                    return;
+                }
+                Group g = new Group(args[1], ph.mc.theWorld, spc.blockx, spc.blocky, spc.blockz);
                 if (g.getBlocks().isEmpty()){
                     ph.sendError("Cannot create empty group");
                     g.remove();

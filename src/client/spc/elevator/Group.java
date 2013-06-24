@@ -36,13 +36,9 @@ public class Group implements IBlockAccess{
     private float rotationPitch;
     private float rotationYaw;
 
-    public Group(String str, World w){
+    public Group(String str, World w, int x, int y, int z){
         name = str;
         worldObj = w;
-        EntityPlayer p = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
-        int x = MathHelper.floor_double(p.posX);
-        int y = MathHelper.floor_double(p.posY - p.yOffset) - 1;
-        int z = MathHelper.floor_double(p.posZ);
         posX = x;
         posY = y;
         posZ = z;
