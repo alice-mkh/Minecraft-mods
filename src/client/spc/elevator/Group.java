@@ -86,33 +86,16 @@ public class Group implements IBlockAccess{
         b.boundingBox.maxX = x + b2.maxX;
         b.boundingBox.maxY = y + b2.maxY;
         b.boundingBox.maxZ = z + b2.maxZ;
-        addBlocksToList(x0, y0, z0, x - 1, y, z);
-        addBlocksToList(x0, y0, z0, x + 1, y, z);
-        addBlocksToList(x0, y0, z0, x, y - 1, z);
-        addBlocksToList(x0, y0, z0, x, y + 1, z);
-        addBlocksToList(x0, y0, z0, x, y, z - 1);
-        addBlocksToList(x0, y0, z0, x, y, z + 1);
-
-        addBlocksToList(x0, y0, z0, x - 1, y - 1, z);
-        addBlocksToList(x0, y0, z0, x + 1, y - 1, z);
-        addBlocksToList(x0, y0, z0, x - 1, y + 1, z);
-        addBlocksToList(x0, y0, z0, x + 1, y + 1, z);
-        addBlocksToList(x0, y0, z0, x, y - 1, z - 1);
-        addBlocksToList(x0, y0, z0, x, y + 1, z - 1);
-        addBlocksToList(x0, y0, z0, x, y - 1, z + 1);
-        addBlocksToList(x0, y0, z0, x, y + 1, z + 1);
-        addBlocksToList(x0, y0, z0, x - 1, y, z - 1);
-        addBlocksToList(x0, y0, z0, x + 1, y, z - 1);
-        addBlocksToList(x0, y0, z0, x - 1, y, z + 1);
-        addBlocksToList(x0, y0, z0, x + 1, y, z + 1);
-        addBlocksToList(x0, y0, z0, x - 1, y - 1, z - 1);
-        addBlocksToList(x0, y0, z0, x + 1, y - 1, z - 1);
-        addBlocksToList(x0, y0, z0, x - 1, y + 1, z - 1);
-        addBlocksToList(x0, y0, z0, x - 1, y - 1, z + 1);
-        addBlocksToList(x0, y0, z0, x + 1, y + 1, z - 1);
-        addBlocksToList(x0, y0, z0, x + 1, y - 1, z + 1);
-        addBlocksToList(x0, y0, z0, x - 1, y + 1, z + 1);
-        addBlocksToList(x0, y0, z0, x + 1, y + 1, z + 1);
+        for (int i = -1; i <= 1; i++){
+            for (int j = -1; j <= 1; j++){
+                for (int k = -1; k <= 1; k++){
+                    if (i == 0 && j == 0 && k == 0){
+                        continue;
+                    }
+                    addBlocksToList(x0, y0, z0, x + i, y + j, z + k);
+                }
+            }
+        }
     }
 
     public void setMovement(int axis, double range, int ticks){
