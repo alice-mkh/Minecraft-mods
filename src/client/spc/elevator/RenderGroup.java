@@ -27,7 +27,7 @@ public class RenderGroup extends Render{
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPopMatrix();
             GL11.glEndList();
-            b.updateFinished();
+            b.update = false;
         }
         GL11.glPushMatrix();
         GL11.glTranslated(par2, par4, par6);

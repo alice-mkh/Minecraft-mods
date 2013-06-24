@@ -9,6 +9,7 @@ public class Group implements IBlockAccess{
         Block.grass.blockID,
         Block.sand.blockID,
         Block.gravel.blockID,
+        Block.tallGrass.blockID,
         Block.waterStill.blockID,
         Block.waterMoving.blockID,
         Block.lavaStill.blockID,
@@ -77,6 +78,7 @@ public class Group implements IBlockAccess{
         GroupBlock b = new GroupBlock(this, x - x0, y - y0, z - z0, id, meta);
         blocks.add(b);
         worldObj.spawnEntityInWorld(b);
+        worldObj.setBlockToAir(x, y, z);
         Block b2 = Block.blocksList[id];
         b.boundingBox.minX = x + b2.minX;
         b.boundingBox.minY = y + b2.minY;
@@ -390,14 +392,6 @@ public class Group implements IBlockAccess{
         @Override
         public AxisAlignedBB getBoundingBox(){
             return boundingBox;
-        }
-
-        public void updateFinished(){
-            int x2 = MathHelper.floor_double(group.posX);
-            int y2 = MathHelper.floor_double(group.posY);
-            int z2 = MathHelper.floor_double(group.posZ);
-            worldObj.setBlockToAir(x + x2, y + y2, z + z2);
-            update = false;
         }
 
         public void join(){
