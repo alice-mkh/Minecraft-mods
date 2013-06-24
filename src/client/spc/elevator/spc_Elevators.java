@@ -74,8 +74,7 @@ public class spc_Elevators extends SPCPlugin{
             return;
         }
         if (getGroupByName(args[1]) == null){
-            ph.sendError("No such group");
-            return;
+            group(new String[]{args[0], args[1]});
         }
         Group g = getGroupByName(args[1]);
         if (args[2].equalsIgnoreCase("rename")){
