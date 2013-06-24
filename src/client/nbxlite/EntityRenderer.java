@@ -1217,6 +1217,15 @@ public class EntityRenderer
         double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
         double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
         mc.mcProfiler.endStartSection("center");
+        if (mc.enableSP){
+            IChunkProvider ichunkprovider = mc.theWorld.getChunkProvider();
+            if (ichunkprovider instanceof ChunkProviderLoadOrGenerate){
+                ChunkProviderLoadOrGenerate chunkproviderloadorgenerate = (ChunkProviderLoadOrGenerate)ichunkprovider;
+                int j = MathHelper.floor_float((int)d) >> 4;
+                int k = MathHelper.floor_float((int)d2) >> 4;
+                chunkproviderloadorgenerate.setCurrentChunkOver(j, k);
+            }
+        }
 
         for (int i = 0; i < 2; i++)
         {
