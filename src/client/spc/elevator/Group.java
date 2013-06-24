@@ -219,10 +219,10 @@ public class Group implements IBlockAccess{
             b.prevPosX = b.lastTickPosX = b.posX;
             b.prevPosY = b.lastTickPosY = b.posY;
             b.prevPosZ = b.lastTickPosZ = b.posZ;
-            b.posX += x;
-            b.posY += y;
-            b.posZ += z;
-            b.boundingBox.offset(x, y, z);
+            b.posX = posX + b.x;
+            b.posY = posY + b.y;
+            b.posZ = posZ + b.z;
+            b.boundingBox.offset(b.posX - b.prevPosX, b.posY - b.prevPosY, b.posZ - b.prevPosZ);
             b.prevRotationPitch = b.rotationPitch;
             b.prevRotationYaw = b.rotationYaw;
             b.rotationPitch = pitch;
