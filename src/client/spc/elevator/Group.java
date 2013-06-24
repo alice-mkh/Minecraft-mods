@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Group implements IBlockAccess{
     public static final int[] BLOCK_BLACKLIST = new int[]{
@@ -29,6 +30,7 @@ public class Group implements IBlockAccess{
     public int[] rotTicks;
     public int[] rotTicksMax;
     private boolean toBeRemoved;
+    public boolean shouldBeRemoved;
     private World worldObj;
     private double posX;
     private double posY;
@@ -44,6 +46,7 @@ public class Group implements IBlockAccess{
         posZ = z;
         blocks = new ArrayList<GroupBlock>();
         addBlocksToList(x, y, z, x, y, z);
+        blocks.get(blocks.size() - 1).last = true;
         origCoords = new double[3];
         movementRange = new double[3];
         movementTicks = new int[3];
@@ -53,6 +56,7 @@ public class Group implements IBlockAccess{
         rotTicks = new int[2];
         rotTicksMax = new int[2];
         toBeRemoved = false;
+        shouldBeRemoved = false;
     }
 
     public void addBlocksToList(int x0, int y0, int z0, int x, int y, int z){
@@ -122,14 +126,17 @@ public class Group implements IBlockAccess{
         }
     }
 
-    public boolean onUpdate(){
+    public void onUpdate(){
+        double xMovement = 0.0D;
+        double yMovement = 0.0D;
+        double zMovement = 0.0D;
         if (movementTicks[0] > 0){
             if (movementTicksMax[0] == 0){
-                move(movementRange[0], 0, 0);
+                xMovement = movementRange[0];
                 movementTicks[0] = 0;
             }else{
                 double d = origCoords[0] + movementRange[0] * (float)(movementTicksMax[0] - --movementTicks[0]) / (float)movementTicksMax[0];
-                move(d - posX, 0, 0);
+                xMovement = d - posX;
             }
         }else{
             movementRange[0] = 0;
@@ -137,11 +144,11 @@ public class Group implements IBlockAccess{
         }
         if (movementTicks[1] > 0){
             if (movementTicksMax[1] == 0){
-                move(0, movementRange[1], 0);
+                yMovement = movementRange[1];
                 movementTicks[1] = 0;
             }else{
                 double d = origCoords[1] + movementRange[1] * (float)(movementTicksMax[1] - --movementTicks[1]) / (float)movementTicksMax[1];
-                move(0, d - posY, 0);
+                yMovement = d - posY;
             }
         }else{
             movementRange[1] = 0;
@@ -149,11 +156,11 @@ public class Group implements IBlockAccess{
         }
         if (movementTicks[2] > 0){
             if (movementTicksMax[2] == 0){
-                move(0, 0, movementRange[2]);
+                zMovement = movementRange[2];
                 movementTicks[2] = 0;
             }else{
                 double d = origCoords[2] + movementRange[2] * (float)(movementTicksMax[2] - --movementTicks[2]) / (float)movementTicksMax[2];
-                move(0, 0, d - posZ);
+                zMovement = d - posZ;
             }
         }else{
             movementRange[2] = 0;
@@ -183,35 +190,32 @@ public class Group implements IBlockAccess{
         }
         rotationPitch = rotationPitch % 360;
         rotationYaw = rotationYaw % 360;
-        updateBlockRotation(rotationPitch, rotationYaw);
+        move(xMovement, yMovement, zMovement, rotationPitch, rotationYaw);
         if (toBeRemoved){
             if (movementTicks[0] <= 0 && movementTicks[1] <= 0 && movementTicks[2] <= 0 && rotTicks[0] <= 0 && rotTicks[1] <= 0){
                 for (GroupBlock block : blocks){
                     block.join();
                 }
-                return true;
+                shouldBeRemoved = true;
             }
         }
-        return false;
     }
 
-    private void updateBlockRotation(float pitch, float yaw){
-        for (GroupBlock b : blocks){
-            b.prevRotationPitch = b.rotationPitch;
-            b.prevRotationYaw = b.rotationYaw;
-            b.rotationPitch = pitch;
-            b.rotationYaw = yaw;
-//             b.posX = posX + Math.cos(pitch) * b.x;
-//             b.posZ = posZ + Math.sin(pitch) * b.z;
-            //FIXME: They should be moved when the group is rotating.
-        }
-    }
-
-    private void move(double x, double y, double z){
+    private void move(double x, double y, double z, float pitch, float yaw){
         posX += x;
         posY += y;
         posZ += z;
+        ArrayList<Entity> list = new ArrayList<Entity>();
         for (GroupBlock b : blocks){
+            AxisAlignedBB aabb = b.boundingBox.copy();
+            aabb.maxY += 3;
+            List list2 = worldObj.getEntitiesWithinAABBExcludingEntity(b, aabb);
+            for (Object o : list2){
+                if (o instanceof GroupBlock || list.contains(o)){
+                    continue;
+                }
+                list.add((Entity)o);
+            }
             b.prevPosX = b.lastTickPosX = b.posX;
             b.prevPosY = b.lastTickPosY = b.posY;
             b.prevPosZ = b.lastTickPosZ = b.posZ;
@@ -219,6 +223,16 @@ public class Group implements IBlockAccess{
             b.posY += y;
             b.posZ += z;
             b.boundingBox.offset(x, y, z);
+            b.prevRotationPitch = b.rotationPitch;
+            b.prevRotationYaw = b.rotationYaw;
+            b.rotationPitch = pitch;
+            b.rotationYaw = yaw;
+        }
+        for (Entity e : list){
+            e.posX += x;
+            e.posY += y;
+            e.posZ += z;
+            e.boundingBox.offset(x, y, z);
         }
     }
 
@@ -351,7 +365,6 @@ public class Group implements IBlockAccess{
         return Block.blocksList[id].isProvidingStrongPower(this, i, j, k, l);
     }
 
-
     public class GroupBlock extends Entity{
         public int x;
         public int y;
@@ -361,6 +374,7 @@ public class Group implements IBlockAccess{
         public Group group;
         public int list;
         public boolean update;
+        public boolean last;
 
         private GroupBlock(Group g, int x, int y, int z, int id, int meta){
             super(g.worldObj);
@@ -375,6 +389,7 @@ public class Group implements IBlockAccess{
             posX = g.posX + x;
             posY = g.posY + y;
             posZ = g.posZ + z;
+            last = false;
         }
 
         @Override
@@ -405,6 +420,10 @@ public class Group implements IBlockAccess{
         }
 
         @Override
-        public void onUpdate(){}
+        public void onUpdate(){
+            if (last){
+                group.onUpdate();
+            }
+        }
     }
 }

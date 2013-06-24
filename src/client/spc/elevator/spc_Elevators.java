@@ -189,8 +189,7 @@ public class spc_Elevators extends SPCPlugin{
     @Override
     public void atUpdate(){
         for (int i = 0; i < groups.size(); i++){
-            boolean b = groups.get(i).onUpdate();
-            if (b){
+            if (groups.get(i).shouldBeRemoved){
                 groups.remove(i);
             }
         }
