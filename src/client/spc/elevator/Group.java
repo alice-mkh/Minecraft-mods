@@ -92,6 +92,27 @@ public class Group implements IBlockAccess{
         addBlocksToList(x0, y0, z0, x, y + 1, z);
         addBlocksToList(x0, y0, z0, x, y, z - 1);
         addBlocksToList(x0, y0, z0, x, y, z + 1);
+
+        addBlocksToList(x0, y0, z0, x - 1, y - 1, z);
+        addBlocksToList(x0, y0, z0, x + 1, y - 1, z);
+        addBlocksToList(x0, y0, z0, x - 1, y + 1, z);
+        addBlocksToList(x0, y0, z0, x + 1, y + 1, z);
+        addBlocksToList(x0, y0, z0, x, y - 1, z - 1);
+        addBlocksToList(x0, y0, z0, x, y + 1, z - 1);
+        addBlocksToList(x0, y0, z0, x, y - 1, z + 1);
+        addBlocksToList(x0, y0, z0, x, y + 1, z + 1);
+        addBlocksToList(x0, y0, z0, x - 1, y, z - 1);
+        addBlocksToList(x0, y0, z0, x + 1, y, z - 1);
+        addBlocksToList(x0, y0, z0, x - 1, y, z + 1);
+        addBlocksToList(x0, y0, z0, x + 1, y, z + 1);
+        addBlocksToList(x0, y0, z0, x - 1, y - 1, z - 1);
+        addBlocksToList(x0, y0, z0, x + 1, y - 1, z - 1);
+        addBlocksToList(x0, y0, z0, x - 1, y + 1, z - 1);
+        addBlocksToList(x0, y0, z0, x - 1, y - 1, z + 1);
+        addBlocksToList(x0, y0, z0, x + 1, y + 1, z - 1);
+        addBlocksToList(x0, y0, z0, x + 1, y - 1, z + 1);
+        addBlocksToList(x0, y0, z0, x - 1, y + 1, z + 1);
+        addBlocksToList(x0, y0, z0, x + 1, y + 1, z + 1);
     }
 
     public void setMovement(int axis, double range, int ticks){
