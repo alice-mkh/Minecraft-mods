@@ -6,6 +6,7 @@ import java.util.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import net.minecraft.src.ssp.EntityPlayerSP2;
 
 public class GuiChat extends GuiScreen
 {

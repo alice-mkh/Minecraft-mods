@@ -1,7 +1,10 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.CommandServerPublishLocal;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.ICommandSender;
 
 public class CommandClientPublishLocal extends CommandServerPublishLocal
 {

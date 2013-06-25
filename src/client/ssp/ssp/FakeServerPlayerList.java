@@ -1,4 +1,4 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,6 +6,17 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.IntegratedPlayerList;
+import net.minecraft.src.IntegratedServer;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.Score;
+import net.minecraft.src.Scoreboard;
+import net.minecraft.src.ScoreObjective;
+import net.minecraft.src.ScorePlayerTeam;
 
 public class FakeServerPlayerList extends IntegratedPlayerList
 {

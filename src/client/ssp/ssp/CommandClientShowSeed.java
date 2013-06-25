@@ -1,6 +1,10 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandShowSeed;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.PlayerNotFoundException;
 
 public class CommandClientShowSeed extends CommandShowSeed
 {

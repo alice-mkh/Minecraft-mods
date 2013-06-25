@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +14,8 @@ import java.util.Enumeration;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import net.minecraft.client.Minecraft;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import net.minecraft.src.ssp.Mod;
+import net.minecraft.src.ssp.Packet300Custom;
 
 public class mod_OldDays extends Mod{
     public mod_OldDays(){

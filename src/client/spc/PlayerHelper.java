@@ -93,6 +93,9 @@ import org.lwjgl.opengl.Display;
 import paulscode.sound.SoundSystem;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.ssp.ClientCommandManager;
+import net.minecraft.src.ssp.TeleporterSP;
+import net.minecraft.src.ssp.WorldSSP;
 
 /**
  * This class is the core Single Player Commands class. It handles all input and controls all

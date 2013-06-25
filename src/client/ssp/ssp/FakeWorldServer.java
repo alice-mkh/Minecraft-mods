@@ -1,8 +1,25 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.PrintStream;
 import java.util.*;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.Chunk;
+import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityTracker;
+import net.minecraft.src.EnumCreatureType;
+import net.minecraft.src.Explosion;
+import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.IProgressUpdate;
+import net.minecraft.src.IWorldAccess;
+import net.minecraft.src.MinecraftException;
+import net.minecraft.src.PlayerManager;
+import net.minecraft.src.SpawnListEntry;
+import net.minecraft.src.Teleporter;
+import net.minecraft.src.World;
+import net.minecraft.src.WorldServer;
+import net.minecraft.src.WorldSettings;
 
 public class FakeWorldServer extends WorldServer
 {

@@ -10,6 +10,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
+import net.minecraft.src.ssp.ChunkProviderLoadOrGenerate;
 
 public class EntityRenderer
 {

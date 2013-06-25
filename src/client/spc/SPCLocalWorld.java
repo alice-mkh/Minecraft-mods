@@ -21,6 +21,7 @@ import com.sk89q.worldedit.blocks.NoteBlock;
 import com.sk89q.worldedit.blocks.SignBlock;
 import com.sk89q.worldedit.regions.Region;
 
+import net.minecraft.src.ssp.ChunkProvider;
 
 /**
  * Instantiates the WorldEdit world class which allows WorldEdit to interact

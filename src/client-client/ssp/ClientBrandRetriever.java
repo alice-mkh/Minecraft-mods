@@ -1,6 +1,6 @@
 package net.minecraft.client;
 
-import net.minecraft.src.Mod;
+import net.minecraft.src.ssp.Mod;
 
 public class ClientBrandRetriever
 {

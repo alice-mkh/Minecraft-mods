@@ -1,8 +1,14 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Vec3;
+import net.minecraft.src.World;
 
 public class PlayerControllerCreative extends PlayerController
 {

@@ -1,11 +1,20 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandBase;
+import net.minecraft.src.CommandHandler;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.IAdminCommand;
+import net.minecraft.src.ICommand;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.PlayerNotFoundException;
+import net.minecraft.src.PlayerSelector;
 
 public class ClientCommandManager extends CommandHandler implements IAdminCommand
 {

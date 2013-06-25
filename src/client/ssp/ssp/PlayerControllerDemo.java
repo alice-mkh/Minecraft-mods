@@ -1,7 +1,15 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.GameSettings;
+import net.minecraft.src.GuiScreenDemo;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.StringTranslate;
+import net.minecraft.src.Vec3;
+import net.minecraft.src.World;
 
 public class PlayerControllerDemo extends PlayerControllerSP
 {

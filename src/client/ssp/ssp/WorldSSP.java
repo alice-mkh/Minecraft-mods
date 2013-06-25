@@ -1,8 +1,55 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.PrintStream;
 import java.util.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockFluid;
+import net.minecraft.src.CrashReport;
+import net.minecraft.src.CrashReportCategory;
+import net.minecraft.src.Chunk;
+import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.ChunkCoordIntPair;
+import net.minecraft.src.ChunkPosition;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLightningBolt;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumCreatureType;
+import net.minecraft.src.EnumSkyBlock;
+import net.minecraft.src.Explosion;
+import net.minecraft.src.ExtendedBlockStorage;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.IChunkLoader;
+import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.ILogAgent;
+import net.minecraft.src.IProgressUpdate;
+import net.minecraft.src.ISaveHandler;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.IWorldAccess;
+import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.MinecraftException;
+import net.minecraft.src.MovingObjectPosition;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NextTickListEntry;
+import net.minecraft.src.Profiler;
+import net.minecraft.src.SpawnerAnimals;
+import net.minecraft.src.SpawnListEntry;
+import net.minecraft.src.ThreadedFileIOBase;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.Vec3;
+import net.minecraft.src.WeightedRandom;
+import net.minecraft.src.WeightedRandomChestContent;
+import net.minecraft.src.World;
+import net.minecraft.src.WorldChunkManager;
+import net.minecraft.src.WorldClient;
+import net.minecraft.src.WorldGeneratorBonusChest;
+import net.minecraft.src.WorldInfo;
+import net.minecraft.src.WorldProvider;
+import net.minecraft.src.WorldSettings;
 
 public class WorldSSP extends WorldClient implements IBlockAccess
 {
@@ -118,7 +165,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         if (isNewWorld)
         {
-            if (this.getClass() == net.minecraft.src.WorldSSP.class){
+            if (getClass() == WorldSSP.class){
                 generateSpawnPoint(par3WorldSettings);
             }
         }
@@ -2409,8 +2456,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
         CrashReportCategory crashreportcategory = par1CrashReport.makeCategoryDepth("Affected level", 1);
         crashreportcategory.addCrashSection("Level name", worldInfo != null ? ((Object)(worldInfo.getWorldName())) : "????");
-        crashreportcategory.addCrashSectionCallable("All players", new CallableLvl2(this));
-        crashreportcategory.addCrashSectionCallable("Chunk stats", new CallableLvl3(this));
+        crashreportcategory.addCrashSection("Chunk stats", chunkProvider.makeString());
 
         try
         {

@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import java.util.ArrayList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.ssp.ClientCommandManager;
+import net.minecraft.src.ssp.Mod;
 
 public class mod_SSPC extends Mod{
     @Override

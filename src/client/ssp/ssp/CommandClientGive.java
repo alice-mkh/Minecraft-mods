@@ -1,6 +1,12 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandGive;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NumberInvalidException;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientGive extends CommandGive
 {

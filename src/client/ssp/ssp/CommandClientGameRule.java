@@ -1,7 +1,11 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandGameRule;
+import net.minecraft.src.GameRules;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientGameRule extends CommandGameRule
 {

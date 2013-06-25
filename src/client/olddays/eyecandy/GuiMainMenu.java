@@ -14,6 +14,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import net.minecraft.src.ssp.PlayerControllerDemo;
 
 public class GuiMainMenu extends GuiScreen
 {

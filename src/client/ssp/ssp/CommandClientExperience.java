@@ -1,6 +1,10 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandXP;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientExperience extends CommandXP
 {

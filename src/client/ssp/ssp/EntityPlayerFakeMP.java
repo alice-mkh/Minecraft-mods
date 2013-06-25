@@ -1,4 +1,4 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -9,6 +9,24 @@ import java.util.LinkedList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.Container;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.EnumStatus;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.IMerchant;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.Packet204ClientInfo;
+import net.minecraft.src.Packet3Chat;
+import net.minecraft.src.StatBase;
+import net.minecraft.src.StringTranslate;
+import net.minecraft.src.TileEntityBrewingStand;
+import net.minecraft.src.TileEntityDispenser;
+import net.minecraft.src.TileEntityFurnace;
+import net.minecraft.src.WorldServer;
 
 public class EntityPlayerFakeMP extends EntityPlayerMP
 {
@@ -177,7 +195,6 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     @Override
     public void updateFlyingState(double par1, boolean par3)
     {
-        realPlayer.updateFallState(par1, par3);
     }
 
     /**

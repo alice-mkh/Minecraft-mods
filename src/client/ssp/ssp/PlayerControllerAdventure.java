@@ -1,6 +1,8 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumGameType;
 
 public class PlayerControllerAdventure extends PlayerControllerSP{
     public PlayerControllerAdventure(Minecraft par1Minecraft){

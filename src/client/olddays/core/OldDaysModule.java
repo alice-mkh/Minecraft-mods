@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.ssp.EntityPlayerSP2;
 
 public class OldDaysModule implements Comparable<OldDaysModule>{
     public int id;
@@ -166,9 +167,9 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
     public void callback(int i){}
 
     public void set(Class c, String name, Object value, boolean necessary){
-        if (c == net.minecraft.src.EntityPlayer.class){
+        if (c == EntityPlayer.class){
             try{
-                (net.minecraft.src.EntityPlayerSP2.class).getDeclaredField(name).set(null, value);
+                (EntityPlayerSP2.class).getDeclaredField(name).set(null, value);
             }catch(Exception e){}
         }
         try{

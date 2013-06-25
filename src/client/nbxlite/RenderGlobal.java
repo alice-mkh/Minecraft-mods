@@ -5,6 +5,7 @@ import java.util.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.src.ssp.WorldSSP;
 
 public class RenderGlobal implements IWorldAccess
 {

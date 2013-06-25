@@ -1,7 +1,17 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiAchievements;
+import net.minecraft.src.GuiButton;
+import net.minecraft.src.GuiMainMenu;
+import net.minecraft.src.GuiOptions;
+import net.minecraft.src.GuiScreen;
+import net.minecraft.src.GuiShareToLan;
+import net.minecraft.src.GuiStats;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.StatCollector;
+import net.minecraft.src.StatList;
 
 public class GuiIngameMenuSP extends GuiScreen
 {

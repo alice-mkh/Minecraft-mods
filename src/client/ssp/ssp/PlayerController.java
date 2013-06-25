@@ -1,6 +1,19 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.InventoryPlayer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.PlayerControllerMP;
+import net.minecraft.src.Session;
+import net.minecraft.src.Vec3;
+import net.minecraft.src.World;
 
 public class PlayerController extends PlayerControllerMP
 {

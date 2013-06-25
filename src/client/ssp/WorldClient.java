@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.ssp.NetClientHandlerSP;
 
 public class WorldClient extends World
 {

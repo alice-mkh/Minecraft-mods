@@ -16,6 +16,7 @@ import javax.swing.JTextPane;
 import org.lwjgl.opengl.Display;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.ssp.EntityPlayerSP2;
 
 public class EntityPlayerSPSPC extends EntityPlayerSP2{
     public PlayerHelper ph;

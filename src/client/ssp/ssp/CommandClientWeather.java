@@ -1,8 +1,13 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandWeather;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.World;
+import net.minecraft.src.WorldInfo;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientWeather extends CommandWeather
 {

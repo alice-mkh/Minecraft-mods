@@ -1,7 +1,10 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandServerEmote;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientEmote extends CommandServerEmote
 {

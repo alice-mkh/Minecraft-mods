@@ -1,7 +1,11 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.NetHandler;
+import net.minecraft.src.NetServerHandler;
+import net.minecraft.src.Packet;
+import net.minecraft.src.Packet255KickDisconnect;
 
 public class Packet300Custom extends Packet{
     private int id;
@@ -55,7 +59,7 @@ public class Packet300Custom extends Packet{
 
     @Override
     public void processPacket(NetHandler par1NetHandler){
-        if (par1NetHandler.getClass() == net.minecraft.src.NetHandler.class){
+        if (par1NetHandler.getClass() == NetHandler.class){
             par1NetHandler.unexpectedPacket(this);
         }
         toClient = !par1NetHandler.isServerHandler();

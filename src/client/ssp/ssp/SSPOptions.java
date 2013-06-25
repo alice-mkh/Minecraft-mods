@@ -1,4 +1,4 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 public class SSPOptions{
     public static boolean getDebugSeed(){

@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.gui.*;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
+import net.minecraft.src.ssp.SSPOptions;
 
 public class GuiSelectWorld extends GuiScreen
 {

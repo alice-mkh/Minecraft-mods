@@ -1,4 +1,4 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -6,6 +6,16 @@ import java.net.*;
 import java.util.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+import net.minecraft.src.INetworkManager;
+import net.minecraft.src.NetClientHandler;
+import net.minecraft.src.Packet;
+import net.minecraft.src.Packet1Login;
+import net.minecraft.src.Packet18Animation;
+import net.minecraft.src.Packet205ClientCommand;
+import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.src.Packet255KickDisconnect;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntityCommandBlock;
 
 public class NetClientHandlerSP extends NetClientHandler
 {

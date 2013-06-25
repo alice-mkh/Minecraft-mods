@@ -1,7 +1,17 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.GameSettings;
+import net.minecraft.src.GuiScreen;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Icon;
+import net.minecraft.src.NetClientHandler;
+import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.ServerConfigurationManager;
 
 public abstract class Mod{
     public boolean usesTick;

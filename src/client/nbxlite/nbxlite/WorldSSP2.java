@@ -7,6 +7,8 @@ import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.spawners.*;
 import net.minecraft.src.nbxlite.indev.*;
 import net.minecraft.src.nbxlite.chunkproviders.*;
+import net.minecraft.src.ssp.ChunkProviderLoadOrGenerate;
+import net.minecraft.src.ssp.WorldSSP;
 
 public class WorldSSP2 extends WorldSSP
 {

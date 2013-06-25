@@ -1,4 +1,4 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandDebug;
+import net.minecraft.src.CommandException;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Profiler;
+import net.minecraft.src.ProfilerResult;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientDebug extends CommandDebug
 {

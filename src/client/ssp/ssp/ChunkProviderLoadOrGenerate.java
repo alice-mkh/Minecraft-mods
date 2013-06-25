@@ -1,7 +1,15 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.IOException;
 import java.util.List;
+import net.minecraft.src.Chunk;
+import net.minecraft.src.ChunkCache;
+import net.minecraft.src.ChunkPosition;
+import net.minecraft.src.EnumCreatureType;
+import net.minecraft.src.IChunkLoader;
+import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.IProgressUpdate;
+import net.minecraft.src.World;
 
 public class ChunkProviderLoadOrGenerate implements IChunkProvider
 {

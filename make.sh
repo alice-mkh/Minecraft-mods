@@ -69,7 +69,7 @@ ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon
         textures/blocks/olddays_diamond_side.png textures/blocks/olddays_diamond_bottom.png olddays/clock.png olddays/compass.png"
 CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2`
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem`
-       `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2
+       `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2 GuiButtonNBXlite
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper` `find ItemEnchantedBook`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 RenderTntMinecart2 `find BlockGrass`
        `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityEnderChestRenderer` `find BlockSapling`
@@ -77,7 +77,7 @@ CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVi
 ADD[9]="textures/blocks/olddays_grass_top.png textures/blocks/olddays_grass_side.png textures/blocks/olddays_leaves_fast.png
         textures/blocks/olddays_leaves_fancy.png olddays/fluff.png olddays/gear.png olddays/gearmiddle.png
         textures/blocks/olddays_gear_0.png textures/blocks/olddays_gear_1.png olddays/classic_water.png olddays/classic_lava.png"
-CP[10]="GuiOldDaysModules GuiOldDaysSettings mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
+CP[10]="GuiOldDaysModules GuiOldDaysSettings mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool OldDaysPropertySet
         GuiButtonOldDays OldDaysTextureManager\$TextureHook TextureFX GuiOldDaysSeparator GuiScrolling IScrollingGui
         OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat OldDaysTextureManager SavingManager
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2 GuiOldDaysPresets"
@@ -95,7 +95,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve
         `find ModelBiped` `find RenderLiving` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem` GuiOldDaysSeparator
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer` `find GuiScreen`
-        BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev
+        BlockChestOld BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev GuiButtonNBXlite
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
         SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
         `find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree` `find BlockGrass`
@@ -104,7 +104,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         ComponentStrongholdStairsOld ComponentStrongholdCrossingOld `find WorldServer` RenderPlayer2 `find ChestItemRenderHelper`
         `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ `find EntityPickupFX`
         `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` GuiOldDaysPresets
-        GuiButtonOldDays GuiOldDaysModules GuiOldDaysSettings mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool
+        GuiButtonOldDays GuiOldDaysModules GuiOldDaysSettings mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool OldDaysPropertySet
         OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat OldDaysTextureManager SavingManager
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2"
 CP[11]="`find EntityLiving` `find ItemRenderer`"
@@ -117,7 +117,7 @@ MV[13]="CommandClientSPC EntityPlayerSPSPC PlayerHelper PlayerHelper\$1 SPCCheck
         spc_Elevators Group Group\$1 Group\$GroupBlock RenderGroup"
 ADD[13]="./WorldEdit.jar"
 MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
-        `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` net/ other"
+        `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` net/ ssp/ other"
 
 cd $ORIG_DIR_SERVER
 

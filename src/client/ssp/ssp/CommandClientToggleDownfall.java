@@ -1,6 +1,8 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandToggleDownfall;
+import net.minecraft.src.ICommandSender;
 
 public class CommandClientToggleDownfall extends CommandToggleDownfall
 {

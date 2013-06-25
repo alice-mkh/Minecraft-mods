@@ -1,6 +1,11 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.util.Random;
+import net.minecraft.src.Block;
+import net.minecraft.src.Direction;
+import net.minecraft.src.Entity;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.World;
 
 public class TeleporterSP
 {

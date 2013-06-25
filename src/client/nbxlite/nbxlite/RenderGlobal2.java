@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.BufferUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
+import net.minecraft.src.ssp.WorldSSP;
 
 public class RenderGlobal2 extends RenderGlobal{
     public static boolean texClouds = false;

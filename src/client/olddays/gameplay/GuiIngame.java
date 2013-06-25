@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import net.minecraft.src.ssp.SSPOptions;
 
 public class GuiIngame extends Gui
 {

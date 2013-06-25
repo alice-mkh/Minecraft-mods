@@ -1,6 +1,11 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandDefaultGameMode;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.StatCollector;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientDefaultGameMode extends CommandDefaultGameMode
 {

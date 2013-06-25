@@ -1,6 +1,14 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.CommandEnchant;
+import net.minecraft.src.Enchantment;
+import net.minecraft.src.ICommandSender;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagList;
+import net.minecraft.src.NumberInvalidException;
+import net.minecraft.src.WrongUsageException;
 
 public class CommandClientEnchant extends CommandEnchant
 {

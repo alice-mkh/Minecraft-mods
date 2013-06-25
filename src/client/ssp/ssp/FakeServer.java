@@ -1,9 +1,25 @@
-package net.minecraft.src;
+package net.minecraft.src.ssp;
 
 import java.io.*;
 import java.util.logging.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.CallableModded;
+import net.minecraft.src.CrashReport;
+import net.minecraft.src.EnumGameType;
+import net.minecraft.src.ICommandManager;
+import net.minecraft.src.ILogAgent;
+import net.minecraft.src.IntegratedServer;
+import net.minecraft.src.IntegratedServerListenThread;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.NetworkListenThread;
+import net.minecraft.src.PlayerUsageSnooper;
+import net.minecraft.src.ThreadLanServerPing;
+import net.minecraft.src.World;
+import net.minecraft.src.WorldInfo;
+import net.minecraft.src.WorldServer;
+import net.minecraft.src.WorldSettings;
+import net.minecraft.src.WorldType;
 
 public class FakeServer extends IntegratedServer
 {
@@ -123,7 +139,7 @@ public class FakeServer extends IntegratedServer
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
         par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableTypeFake(this));
-        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableIsModded(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableModded(mc));
         return par1CrashReport;
     }
 

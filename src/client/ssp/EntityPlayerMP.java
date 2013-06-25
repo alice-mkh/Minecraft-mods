@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.io.*;
 import java.util.*;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ssp.SSPOptions;
 
 public class EntityPlayerMP extends EntityPlayer implements ICrafting
 {

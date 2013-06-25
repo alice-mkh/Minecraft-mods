@@ -137,10 +137,24 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
-import net.minecraft.src.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.zip.*;
+import net.minecraft.src.*;
+import net.minecraft.src.ssp.ChunkProviderLoadOrGenerate;
+import net.minecraft.src.ssp.ClientCommandManager;
+import net.minecraft.src.ssp.FakeServer;
+import net.minecraft.src.ssp.FakeServerPlayerList;
+import net.minecraft.src.ssp.EntityPlayerSP2;
+import net.minecraft.src.ssp.GuiIngameMenuSP;
+import net.minecraft.src.ssp.Mod;
+import net.minecraft.src.ssp.Packet300Custom;
+import net.minecraft.src.ssp.PlayerController;
+import net.minecraft.src.ssp.PlayerControllerAdventure;
+import net.minecraft.src.ssp.PlayerControllerCreative;
+import net.minecraft.src.ssp.PlayerControllerSP;
+import net.minecraft.src.ssp.TeleporterSP;
+import net.minecraft.src.ssp.WorldSSP;
 
 public abstract class Minecraft implements Runnable, IPlayerUsage
 {
@@ -333,7 +347,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         leftClickCounter = 0;
         skipRenderWorld = false;
         objectMouseOver = null;
-        soundClass = net.minecraft.src.SoundManager.class;
+        soundClass = SoundManager.class;
         try{
             Object o = soundClass.getDeclaredConstructor().newInstance();
             sndManager = (SoundManager)o;
@@ -370,8 +384,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         enableSP = useSP;
         mods = new ArrayList<Mod>();
         compat = new HashMap<String, Integer>();
-        worldClass = net.minecraft.src.WorldSSP.class;
-        playerClass = net.minecraft.src.EntityPlayerSP2.class;
+        worldClass = WorldSSP.class;
+        playerClass = EntityPlayerSP2.class;
         ticksRan = 0;
         mouseTicksRan = 0;
         forcedDifficulty = -1;
@@ -2841,7 +2855,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 loadingScreen.resetProgresAndWorkingMessage("");
             }
 
-            net.minecraft.src.ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
+            ISaveHandler isavehandler = saveLoader.getSaveLoader(par1Str, false);
             WorldSSP world = null;
             try{
                 Object o = worldClass.getDeclaredConstructor(new Class[]{ISaveHandler.class, String.class, WorldSettings.class, Profiler.class, ILogAgent.class}).
@@ -2933,7 +2947,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             {
                 if (par3EntityPlayer == null)
                 {
-                    thePlayer = (EntityPlayerSP2)par1World.func_4085_a(net.minecraft.src.EntityPlayerSP2.class);
+                    thePlayer = (EntityPlayerSP2)par1World.func_4085_a(EntityPlayerSP2.class);
                 }
             }
             else if (thePlayer != null)
@@ -2971,7 +2985,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 effectRenderer.clearEffects(par1World);
             }
 
-            net.minecraft.src.IChunkProvider ichunkprovider = par1World.getChunkProvider();
+            IChunkProvider ichunkprovider = par1World.getChunkProvider();
 
             if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
             {
@@ -3118,7 +3132,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             flag = false;
         }
 
-        net.minecraft.src.IChunkProvider ichunkprovider = theWorld.getChunkProvider();
+        IChunkProvider ichunkprovider = theWorld.getChunkProvider();
 
         if (ichunkprovider instanceof ChunkProviderLoadOrGenerate)
         {
@@ -3369,7 +3383,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public void loadMods(){
-        Class c = net.minecraft.src.Mod.class;
+        Class c = Mod.class;
         String p = "";
         try{
             p = c.getPackage().getName()+".";
@@ -3452,7 +3466,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         try{
             int id = 1;
             Method m = null;
-            Method[] methods = (net.minecraft.src.Packet.class).getDeclaredMethods();
+            Method[] methods = (Packet.class).getDeclaredMethods();
             for (int i = 0; i < methods.length; i++){
                 if (methods[i].toGenericString().matches("^static void (net.minecraft.src.)?([a-zA-Z]{1,6}).[a-zA-Z]{1,17}.int,boolean,boolean,java.lang.Class.$")){
                     m = methods[i];
@@ -3463,7 +3477,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 return;
             }
             m.setAccessible(true);
-            m.invoke(null, new Object[]{251, true, true, net.minecraft.src.Packet300Custom.class});
+            m.invoke(null, new Object[]{251, true, true, Packet300Custom.class});
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -3538,7 +3552,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     }
 
     public void onLoginServer(EntityPlayerMP player){
-        player.playerNetServerHandler.sendPacketToPlayer(new net.minecraft.src.Packet300Custom(null, true, 0, ""));
+        player.playerNetServerHandler.sendPacketToPlayer(new Packet300Custom(null, true, 0, ""));
         for (int i = 0; i < mods.size(); i++){
             Mod mod = mods.get(i);
             mod.onLoginServer(player);

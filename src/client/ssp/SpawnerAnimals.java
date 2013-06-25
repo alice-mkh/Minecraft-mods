@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
+import net.minecraft.src.ssp.FakeWorldServer;
+import net.minecraft.src.ssp.WorldSSP;
 
 public final class SpawnerAnimals
 {
