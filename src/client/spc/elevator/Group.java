@@ -216,23 +216,23 @@ public class Group implements IBlockAccess{
                 }
                 list.add((Entity)o);
             }
+            b.boundingBox.offset(x, y, z);
             b.prevPosX = b.lastTickPosX = b.posX;
             b.prevPosY = b.lastTickPosY = b.posY;
             b.prevPosZ = b.lastTickPosZ = b.posZ;
             b.posX = posX + b.x;
             b.posY = posY + b.y;
             b.posZ = posZ + b.z;
-            b.boundingBox.offset(b.posX - b.prevPosX, b.posY - b.prevPosY, b.posZ - b.prevPosZ);
             b.prevRotationPitch = b.rotationPitch;
             b.prevRotationYaw = b.rotationYaw;
             b.rotationPitch = pitch;
             b.rotationYaw = yaw;
         }
         for (Entity e : list){
+            e.boundingBox.offset(x, y, z);
             e.posX += x;
             e.posY += y;
             e.posZ += z;
-            e.boundingBox.offset(x, y, z);
         }
     }
 
@@ -274,7 +274,7 @@ public class Group implements IBlockAccess{
 
     @Override
     public int getLightBrightnessForSkyBlocks(int i, int j, int k, int l){
-        return 15;
+        return 15 << 20 | 15 << 4;
     }
 
     @Override
@@ -386,9 +386,9 @@ public class Group implements IBlockAccess{
             group = g;
             list = -1;
             update = true;
-            posX = g.posX + x;
-            posY = g.posY + y;
-            posZ = g.posZ + z;
+            posX = prevPosX = lastTickPosX = g.posX + x;
+            posY = prevPosY = lastTickPosY = g.posY + y;
+            posZ = prevPosZ = lastTickPosZ = g.posZ + z;
             last = false;
         }
 
@@ -413,9 +413,7 @@ public class Group implements IBlockAccess{
             int x2 = MathHelper.floor_double(group.posX);
             int y2 = MathHelper.floor_double(group.posY);
             int z2 = MathHelper.floor_double(group.posZ);
-            for (GroupBlock b : blocks){
-                worldObj.setBlock(x + x2, y + y2, z + z2, id, meta, 3);
-            }
+            worldObj.setBlock(x + x2, y + y2, z + z2, id, meta, 3);
             setDead();
         }
 
@@ -424,6 +422,21 @@ public class Group implements IBlockAccess{
             if (last){
                 group.onUpdate();
             }
+        }
+
+        @Override
+        public boolean interact(EntityPlayer par1EntityPlayer){
+            System.out.println("Right click");
+            return true;
+        }
+
+        @Override
+        public boolean attackEntityFrom(DamageSource source, int i){
+            System.out.println("Left click");
+            if (!source.getDamageType().equals("player")){
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
+import net.minecraft.client.Minecraft;
 
 public class RenderGroup extends Render{
     @Override
@@ -21,7 +22,10 @@ public class RenderGroup extends Render{
             tessellator1.setTranslation(-b.x, -b.y, -b.z);
             Block block = Block.blocksList[b.id];
             rb.setRenderBoundsFromBlock(block);
-            rb.renderBlockAllFaces(block, b.x, b.y, b.z);
+            boolean l = Minecraft.getMinecraft().oldlighting;
+            Minecraft.getMinecraft().oldlighting = false;
+            rb.renderBlockByRenderType(block, b.x, b.y, b.z);
+            Minecraft.getMinecraft().oldlighting = l;
             tessellator1.setTranslation(0.0D, 0.0D, 0.0D);
             tessellator1.draw();
             GL11.glEnable(GL11.GL_LIGHTING);
