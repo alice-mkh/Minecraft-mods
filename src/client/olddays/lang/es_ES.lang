@@ -832,7 +832,8 @@ nbxlite.biomelessfeatures.name=Características
  nbxlite.biomelessfeatures3=Infdev (06.08)
  nbxlite.biomelessfeatures3.desc=Colinas con árboles normales
  nbxlite.biomelessfeatures4=Infdev (06.18)
- nbxlite.biomelessfeatures4.desc=Cuevas y nueva generación
+//FIXME
+ nbxlite.biomelessfeatures4.desc=
  nbxlite.biomelessfeatures5=Alpha
  nbxlite.biomelessfeatures5.desc=Terreno neutral y pacífico
 nbxlite.betafeatures.name=Características
@@ -977,7 +978,8 @@ nbxlite.defaultfeaturesbiomeless.name=Características por defecto
  nbxlite.defaultfeaturesbiomeless3=Infdev (06.20)
  nbxlite.defaultfeaturesbiomeless3.desc=Colinas con árboles normales
  nbxlite.defaultfeaturesbiomeless4=Infdev (06.18)
- nbxlite.defaultfeaturesbiomeless4.desc=Cuevas y nueva generación
+//FIXME
+ nbxlite.defaultfeaturesbiomeless4.desc=
  nbxlite.defaultfeaturesbiomeless5=Alpha
  nbxlite.defaultfeaturesbiomeless5.desc=Terreno neutral y pacífico
 nbxlite.defaultfeaturesbeta.name=Características por defecto
