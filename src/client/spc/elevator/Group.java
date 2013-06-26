@@ -75,7 +75,12 @@ public class Group implements IBlockAccess{
             }
         }
         int meta = worldObj.getBlockMetadata(x, y, z);
-        GroupBlock b = new GroupBlock(this, x - x0, y - y0, z - z0, id, meta);
+        TileEntity tile = worldObj.getBlockTileEntity(x, y, z);
+        worldObj.removeBlockTileEntity(x, y, z);
+        if (tile != null){
+            tile.validate();
+        }
+        GroupBlock b = new GroupBlock(this, x - x0, y - y0, z - z0, id, meta, tile);
         blocks.add(b);
         worldObj.spawnEntityInWorld(b);
         worldObj.setBlockToAir(x, y, z);
@@ -269,6 +274,11 @@ public class Group implements IBlockAccess{
 
     @Override
     public TileEntity getBlockTileEntity(int i, int j, int k){
+        for (GroupBlock b : blocks){
+            if (b.x == i && b.y == j && b.z == k){
+                return b.tileEntity;
+            }
+        }
         return null;
     }
 
@@ -371,18 +381,20 @@ public class Group implements IBlockAccess{
         public int z;
         public int id;
         public int meta;
+        public TileEntity tileEntity;
         public Group group;
         public int list;
         public boolean update;
         public boolean last;
 
-        private GroupBlock(Group g, int x, int y, int z, int id, int meta){
+        private GroupBlock(Group g, int x, int y, int z, int id, int meta, TileEntity t){
             super(g.worldObj);
             this.x = x;
             this.y = y;
             this.z = z;
             this.id = id;
             this.meta = meta;
+            tileEntity = t;
             group = g;
             list = -1;
             update = true;
@@ -414,11 +426,21 @@ public class Group implements IBlockAccess{
             int y2 = MathHelper.floor_double(group.posY);
             int z2 = MathHelper.floor_double(group.posZ);
             worldObj.setBlock(x + x2, y + y2, z + z2, id, meta, 3);
+            if (tileEntity != null){
+                tileEntity.xCoord = x + x2;
+                tileEntity.yCoord = y + y2;
+                tileEntity.zCoord = z + z2;
+                worldObj.setBlockTileEntity(x + x2, y + y2, z + z2, tileEntity);
+                System.out.println(tileEntity.toString());
+            }
             setDead();
         }
 
         @Override
         public void onUpdate(){
+            if (tileEntity != null && !tileEntity.isInvalid() && tileEntity.func_70309_m()){
+                tileEntity.updateEntity();
+            }
             if (last){
                 group.onUpdate();
             }
