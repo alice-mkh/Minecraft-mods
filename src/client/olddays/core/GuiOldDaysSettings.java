@@ -39,12 +39,11 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             showPropertyPage = null;
             propertyPageButtons = null;
         }else if (set.shouldUseTemplates() && guibutton == propertyPageButtons[set.value.length + 1]){
-            set.changeTemplate(isShiftPressed());
+            set.changeTemplate(isShiftKeyDown());
             send(set);
             mod_OldDays.sendCallbackAndSave(set.module.id, set.id);
         }else{
-            boolean shift = isShiftPressed();
-            if (shift){
+            if (isShiftKeyDown()){
                 set.decrementValue(-guibutton.id - 10);
             }else{
                 set.incrementValue(-guibutton.id - 10);
@@ -78,8 +77,7 @@ public class GuiOldDaysSettings extends GuiOldDaysBase{
             prop.module.highlight = shouldHighlightModule;
         }
         if (prop.guitype == OldDaysProperty.GUI_TYPE_BUTTON){
-            boolean shift = isShiftPressed();
-            if (shift){
+            if (isShiftKeyDown()){
                 prop.decrementValue();
             }else{
                 prop.incrementValue();

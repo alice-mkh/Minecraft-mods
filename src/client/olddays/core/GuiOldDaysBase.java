@@ -230,10 +230,6 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
         return Minecraft.getMinecraft().enableSP;
     }
 
-    protected boolean isShiftPressed(){
-        return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
-    }
-
     @Override
     public int getContentHeight(){
         return contentHeight - 10;
