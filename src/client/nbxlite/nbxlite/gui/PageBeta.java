@@ -163,13 +163,20 @@ public class PageBeta extends Page{
 
     private String[] getTooltip(int i){
         ArrayList<String> list = new ArrayList<String>();
-        String name = "nbxlite.betafeatures"+(i+1);
-        list.add(mod_OldDays.lang.get(name));
+        boolean[] features = new boolean[7];
+        features[0] = i >= ODNBXlite.FEATURES_BETA10;
+        features[1] = i >= ODNBXlite.FEATURES_BETA10 && i < ODNBXlite.FEATURES_BETA14;
+        features[2] = i >= ODNBXlite.FEATURES_BETA12;
+        features[3] = i >= ODNBXlite.FEATURES_BETA12;
+        features[4] = i >= ODNBXlite.FEATURES_BETA15;
+        features[5] = false;
+        features[6] = i >= ODNBXlite.FEATURES_BETA173;
+        String name = "beta";
+        list.add(mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1)));
         list.add("");
-        list.add("§7"+mod_OldDays.lang.get(name+".desc"));
-        int num2 = mod_OldDays.getDescriptionNumber(name+".desc");
-        for (int j = 0; j < num2; j++){
-            list.add("§7"+mod_OldDays.lang.get(name+".desc"+(j+1)));
+        int num = mod_OldDays.getDescriptionNumber(name+".feature");
+        for (int j = 0; j < num; j++){
+            list.add("<-• §"+(features[j] ? "a" : "c")+mod_OldDays.lang.get(name+".feature"+(j+1)));
         }
         return list.toArray(new String[list.size()]);
     }

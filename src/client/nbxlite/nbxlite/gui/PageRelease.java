@@ -119,13 +119,33 @@ public class PageRelease extends Page{
 
     private String[] getTooltip(int i){
         ArrayList<String> list = new ArrayList<String>();
-        String name = "nbxlite.releasefeatures"+(i+1);
-        list.add(mod_OldDays.lang.get(name));
+        boolean[] featuresBiomes = new boolean[3];
+        boolean[] featuresStructures = new boolean[6];
+        boolean[] featuresMisc = new boolean[5];
+        featuresBiomes[0] = featuresStructures[0] = i >= ODNBXlite.FEATURES_10;
+        featuresBiomes[1] = featuresStructures[1] = i >= ODNBXlite.FEATURES_11;
+        featuresBiomes[2] = featuresStructures[2] = featuresMisc[0] = i >= ODNBXlite.FEATURES_12;
+        featuresStructures[3] = featuresMisc[1] = i >= ODNBXlite.FEATURES_13;
+        featuresMisc[2] = i >= ODNBXlite.FEATURES_132;
+        featuresStructures[4] = featuresMisc[3] = i >= ODNBXlite.FEATURES_14;
+        featuresStructures[5] = featuresMisc[4] = i >= ODNBXlite.FEATURES_15;
+        String name = "release";
+        list.add(mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1)));
         list.add("");
-        list.add("§7"+mod_OldDays.lang.get(name+".desc"));
-        int num2 = mod_OldDays.getDescriptionNumber(name+".desc");
+        list.add(mod_OldDays.lang.get(name+".features.biomes"));
+        int num = mod_OldDays.getDescriptionNumber(name+".features.biomes");
+        for (int j = 0; j < num; j++){
+            list.add("<-• §"+(featuresBiomes[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.biomes"+(j+1)));
+        }
+        list.add(mod_OldDays.lang.get(name+".features.structures"));
+        int num2 = mod_OldDays.getDescriptionNumber(name+".features.structures");
         for (int j = 0; j < num2; j++){
-            list.add("§7"+mod_OldDays.lang.get(name+".desc"+(j+1)));
+            list.add("<-• §"+(featuresStructures[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.structures"+(j+1)));
+        }
+        list.add(mod_OldDays.lang.get(name+".features.misc"));
+        int num3 = mod_OldDays.getDescriptionNumber(name+".features.misc");
+        for (int j = 0; j < num3; j++){
+            list.add("<-• §"+(featuresMisc[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.misc"+(j+1)));
         }
         return list.toArray(new String[list.size()]);
     }
