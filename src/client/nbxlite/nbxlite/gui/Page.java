@@ -148,33 +148,46 @@ public abstract class Page extends GuiScreen implements IScrollingGui{
         }
     }
 
-    protected void drawTooltip(String[] strings, int x, int y){
+    protected void drawTooltip(String title, String[] strings, int x, int y){
+        drawTooltip(title, new String[][]{strings}, x, y);
+    }
+
+    protected void drawTooltip(String title, String[][] strings, int x, int y){
         int margin = 10;
-        int length = strings.length;
-        if (strings[length - 1] == null || strings[length - 1] == ""){
+        int length = 2;
+        if (title == null){
             return;
         }
-        int w = 0;
-        int w2 = 0;
-        for (int j = 0; j < length; j++){
-            int width = fontRenderer.getStringWidth(strings[j].replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
-            if (w < width + margin * 2){
-                w = width + margin * 2;
-                w2 = width / 2;
+        int w = margin;
+        int[] widths = new int[strings.length];
+        for (int i = 0; i < strings.length; i++){
+            String[] str = strings[i];
+            if (str.length <= 0 || str[str.length - 1] == null || str[str.length - 1] == ""){
+                return;
+            }
+            int w3 = 0;
+            for (int j = 0; j < str.length; j++){
+                int width = fontRenderer.getStringWidth(str[j].replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", ""));
+                if (widths[i] < width + margin){
+                    widths[i] = width + margin;
+                }
+            }
+            w += widths[i];
+            if (length < str.length + 2){
+                length = str.length + 2;
             }
         }
         int h = (length * 10) + margin;
         drawRect(x - w / 2, y - h / 2 - 1, x + w / 2, y + h / 2 - 1, 0xCC000000);
-        for (int j = 0; j < length; j++){
-            String str = strings[j].replace("<-", "").replace("->", "");
-            int y2 = y + (j * 10) - (length * 5);
-            if (strings[j].startsWith("<-") || strings[j].startsWith("§7<-") || strings[j].startsWith("§4<-")){
-                drawString(fontRenderer, str, x - w / 2 + margin, y2, 0xffffff);
-            }else if (strings[j].endsWith("->")){
-                drawString(fontRenderer, str, x + w / 2 - margin - fontRenderer.getStringWidth(str), y2, 0xffffff);
-            }else{
-                drawString(fontRenderer, str, x - fontRenderer.getStringWidth(str.replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", "")) / 2, y2, 0xffffff);
+        int x2 = x - w / 2 + margin;
+        drawString(fontRenderer, title, x - fontRenderer.getStringWidth(title.replace("<- ", "<").replaceAll("(§[0-9a-fk-or]|<-|->)", "")) / 2, y - length * 5, 0xffffff);
+        for (int i = 0; i < strings.length; i++){
+            for (int j = 0; j < strings[i].length; j++){
+                String str = strings[i][j].replace("<-", "").replace("->", "");
+                int y2 = y + ((j + 2) * 10) - (length * 5);
+                drawString(fontRenderer, str, x2, y2, 0xffffff);
             }
+            x2 +=widths[i];
         }
     }
 }

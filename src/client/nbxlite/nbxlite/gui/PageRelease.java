@@ -70,7 +70,11 @@ public class PageRelease extends Page{
             help = -1;
         }
         if (help >= 0){
-            drawTooltip(getTooltip(help), width / 2, height / 2);
+            String[][] str = new String[2][];
+            for (int k = 0; k < getColumns(); k++){
+                str[k] = getTooltip(help, k);
+            }
+            drawTooltip(getTitle(help), str, width / 2, height / 2);
         }
     }
 
@@ -117,35 +121,61 @@ public class PageRelease extends Page{
         return mod_OldDays.lang.get("nbxlite.releasefeatures" + (features + 1));
     }
 
-    private String[] getTooltip(int i){
-        ArrayList<String> list = new ArrayList<String>();
-        boolean[] featuresBiomes = new boolean[3];
-        boolean[] featuresStructures = new boolean[6];
-        boolean[] featuresMisc = new boolean[5];
-        featuresBiomes[0] = featuresStructures[0] = i >= ODNBXlite.FEATURES_10;
-        featuresBiomes[1] = featuresStructures[1] = i >= ODNBXlite.FEATURES_11;
-        featuresBiomes[2] = featuresStructures[2] = featuresMisc[0] = i >= ODNBXlite.FEATURES_12;
-        featuresStructures[3] = featuresMisc[1] = i >= ODNBXlite.FEATURES_13;
-        featuresMisc[2] = i >= ODNBXlite.FEATURES_132;
-        featuresStructures[4] = featuresMisc[3] = i >= ODNBXlite.FEATURES_14;
-        featuresStructures[5] = featuresMisc[4] = i >= ODNBXlite.FEATURES_15;
+    private int getColumns(){
+        return 2;
+    }
+
+    private String getTitle(int i){
         String name = "release";
-        list.add(mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1)));
-        list.add("");
-        list.add(mod_OldDays.lang.get(name+".features.biomes"));
-        int num = mod_OldDays.getDescriptionNumber(name+".features.biomes");
-        for (int j = 0; j < num; j++){
-            list.add("<-• §"+(featuresBiomes[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.biomes"+(j+1)));
+        return mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1));
+    }
+
+    private String[] getTooltip(int i, int col){
+        String name = "release";
+        ArrayList<String> list = new ArrayList<String>();
+        if (col == 0){
+            boolean[] featuresBiomes = new boolean[7];
+            featuresBiomes[0] = i >= ODNBXlite.FEATURES_10;
+            featuresBiomes[1] = i >= ODNBXlite.FEATURES_10;
+            featuresBiomes[2] = i >= ODNBXlite.FEATURES_10;
+            featuresBiomes[3] = i >= ODNBXlite.FEATURES_11;
+            featuresBiomes[4] = i >= ODNBXlite.FEATURES_11;
+            featuresBiomes[5] = i >= ODNBXlite.FEATURES_11;
+            featuresBiomes[6] = i >= ODNBXlite.FEATURES_12;
+            list.add(mod_OldDays.lang.get(name+".features.biomes"));
+            int num = mod_OldDays.getDescriptionNumber(name+".features.biomes");
+            for (int j = 0; j < num; j++){
+                list.add("<-• §"+(featuresBiomes[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.biomes"+(j+1)));
+            }
+            list.add("");
+            boolean[] featuresMisc = new boolean[5];
+            featuresMisc[0] = i >= ODNBXlite.FEATURES_12;
+            featuresMisc[1] = i >= ODNBXlite.FEATURES_13;
+            featuresMisc[2] = i >= ODNBXlite.FEATURES_132;
+            featuresMisc[3] = i >= ODNBXlite.FEATURES_14;
+            featuresMisc[4] = i >= ODNBXlite.FEATURES_15;
+            list.add(mod_OldDays.lang.get(name+".features.misc"));
+            int num2 = mod_OldDays.getDescriptionNumber(name+".features.misc");
+            for (int j = 0; j < num2; j++){
+                list.add("<-• §"+(featuresMisc[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.misc"+(j+1)));
+            }
         }
-        list.add(mod_OldDays.lang.get(name+".features.structures"));
-        int num2 = mod_OldDays.getDescriptionNumber(name+".features.structures");
-        for (int j = 0; j < num2; j++){
-            list.add("<-• §"+(featuresStructures[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.structures"+(j+1)));
-        }
-        list.add(mod_OldDays.lang.get(name+".features.misc"));
-        int num3 = mod_OldDays.getDescriptionNumber(name+".features.misc");
-        for (int j = 0; j < num3; j++){
-            list.add("<-• §"+(featuresMisc[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.misc"+(j+1)));
+        if (col == 1){
+            boolean[] featuresStructures = new boolean[9];
+            featuresStructures[0] = i >= ODNBXlite.FEATURES_10;
+            featuresStructures[1] = i >= ODNBXlite.FEATURES_11;
+            featuresStructures[2] = i >= ODNBXlite.FEATURES_11;
+            featuresStructures[3] = i >= ODNBXlite.FEATURES_12;
+            featuresStructures[4] = i >= ODNBXlite.FEATURES_13;
+            featuresStructures[5] = i >= ODNBXlite.FEATURES_13;
+            featuresStructures[6] = i >= ODNBXlite.FEATURES_14;
+            featuresStructures[7] = i >= ODNBXlite.FEATURES_14;
+            featuresStructures[8] = i >= ODNBXlite.FEATURES_14;
+            list.add(mod_OldDays.lang.get(name+".features.structures"));
+            int num = mod_OldDays.getDescriptionNumber(name+".features.structures");
+            for (int j = 0; j < num; j++){
+                list.add("<-• §"+(featuresStructures[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.structures"+(j+1)));
+            }
         }
         return list.toArray(new String[list.size()]);
     }

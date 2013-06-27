@@ -104,7 +104,7 @@ public class PageAlpha extends Page{
             help = -1;
         }
         if (help >= 0){
-            drawTooltip(getTooltip(help), width / 2, height / 2);
+            drawTooltip(getTitle(help), getTooltip(help, 0), width / 2, height / 2);
         }
     }
 
@@ -200,15 +200,17 @@ public class PageAlpha extends Page{
         return ODNBXlite.BIOMELESS_FEATURES[features] == ODNBXlite.FEATURES_ALPHA11201 && (theme == ODNBXlite.THEME_NORMAL || theme == ODNBXlite.THEME_WOODS);
     }
 
-    private String[] getTooltip(int i){
+    private String getTitle(int i){
+        String name = "biomeless"+(i+1);
+        return mod_OldDays.lang.get("nbxlite.biomelessfeatures"+(i+1));
+    }
+
+    private String[] getTooltip(int i, int col){
+        String name = "biomeless"+(i+1);
         ArrayList<String> list = new ArrayList<String>();
-        String name = "nbxlite.biomelessfeatures"+(i+1);
-        list.add(mod_OldDays.lang.get(name));
-        list.add("");
-        list.add("§7"+mod_OldDays.lang.get(name+".desc"));
         int num2 = mod_OldDays.getDescriptionNumber(name+".desc");
         for (int j = 0; j < num2; j++){
-            list.add("§7"+mod_OldDays.lang.get(name+".desc"+(j+1)));
+            list.add(mod_OldDays.lang.get(name+".desc"+(j+1)));
         }
         return list.toArray(new String[list.size()]);
     }

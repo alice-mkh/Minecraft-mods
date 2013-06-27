@@ -90,7 +90,7 @@ public class PageBeta extends Page{
             help = -1;
         }
         if (help >= 0){
-            drawTooltip(getTooltip(help), width / 2, height / 2);
+            drawTooltip(getTitle(help), getTooltip(help, 0), width / 2, height / 2);
         }
     }
 
@@ -161,7 +161,13 @@ public class PageBeta extends Page{
         return ODNBXlite.getDefaultFlag("weather") || features == ODNBXlite.FEATURES_BETA15 || features == ODNBXlite.FEATURES_BETA173;
     }
 
-    private String[] getTooltip(int i){
+    private String getTitle(int i){
+        String name = "beta";
+        return mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1));
+    }
+
+    private String[] getTooltip(int i, int col){
+        String name = "beta";
         ArrayList<String> list = new ArrayList<String>();
         boolean[] features = new boolean[7];
         features[0] = i >= ODNBXlite.FEATURES_BETA10;
@@ -171,9 +177,6 @@ public class PageBeta extends Page{
         features[4] = i >= ODNBXlite.FEATURES_BETA15;
         features[5] = false;
         features[6] = i >= ODNBXlite.FEATURES_BETA173;
-        String name = "beta";
-        list.add(mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1)));
-        list.add("");
         int num = mod_OldDays.getDescriptionNumber(name+".feature");
         for (int j = 0; j < num; j++){
             list.add("<-• §"+(features[j] ? "a" : "c")+mod_OldDays.lang.get(name+".feature"+(j+1)));
