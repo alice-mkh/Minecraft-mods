@@ -1044,11 +1044,12 @@ flag.weather=Weather
 
 beta.feature1=Lakes
 beta.feature2=Desert border glitch
-beta.feature3=Birches and pines
-beta.feature4=Lapis
-beta.feature5=Weather
-beta.feature6=Clay bug
-beta.feature7=Tall grass
+beta.feature3=Ore distribution bug
+beta.feature4=Birches and pines
+beta.feature5=Lapis
+beta.feature6=Weather
+beta.feature7=Clay bug
+beta.feature8=Tall grass
 
 release.features.biomes=Biomes
 release.features.biomes1=Ice plains
