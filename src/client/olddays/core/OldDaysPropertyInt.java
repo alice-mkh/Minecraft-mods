@@ -122,7 +122,9 @@ public class OldDaysPropertyInt extends OldDaysProperty{
         }
         if (useNames){
             for (int i = min; i <= max; i++){
-                list.add("<- • §a"+mod_OldDays.lang.get(getName()+(i+1))+"§7: "+mod_OldDays.lang.get(getName()+(i+1)+".desc"));
+                String str = getName()+(i+1)+".desc";
+                String str2 = mod_OldDays.isTranslated(str) ? "§7: "+mod_OldDays.lang.get(str) : "";
+                list.add("<- • §a"+mod_OldDays.lang.get(getName()+(i+1))+str2);
                 int num2 = mod_OldDays.getDescriptionNumber(getName()+(i+1)+".desc");
                 for (int j = 0; j < num2; j++){
                     list.add("<-    §7"+mod_OldDays.lang.get(getName()+(i+1)+".desc"+(j+1)));

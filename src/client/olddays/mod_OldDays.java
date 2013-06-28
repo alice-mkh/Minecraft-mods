@@ -313,9 +313,13 @@ public class mod_OldDays extends Mod{
         int i = 0;
         while (!end){
             i++;
-            end = (s+i).startsWith(lang.get(s+i));
+            end = !isTranslated(s+i);
         }
         return i - 1;
+    }
+
+    public static boolean isTranslated(String s){
+        return !s.equals(lang.get(s));
     }
 
     public static void refreshConditionProperties(){
