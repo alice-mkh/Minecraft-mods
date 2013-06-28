@@ -3389,7 +3389,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             p = c.getPackage().getName()+".";
         }catch(Exception ex){}
         if (p.endsWith("ssp.")){
-            p = p.replace(".ssp", "");
+            p = p.replace("ssp.", "");
         }
         String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(path.replace("%20", " ").replace("%23", "#")+p.replace(".", "/"));
