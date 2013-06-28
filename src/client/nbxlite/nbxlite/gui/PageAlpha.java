@@ -201,17 +201,31 @@ public class PageAlpha extends Page{
     }
 
     private String getTitle(int i){
-        String name = "biomeless"+(i+1);
-        return mod_OldDays.lang.get("nbxlite.biomelessfeatures"+(i+1));
+        String name = "biomeless";
+        return mod_OldDays.lang.get("nbxlite."+name+"features"+(i+1));
     }
 
     private String[] getTooltip(int i, int col){
-        String name = "biomeless"+(i+1);
+        String name = "biomeless";
         ArrayList<String> list = new ArrayList<String>();
-        int num2 = mod_OldDays.getDescriptionNumber(name+".desc");
-        for (int j = 0; j < num2; j++){
-            list.add(mod_OldDays.lang.get(name+".desc"+(j+1)));
+        boolean[] features = new boolean[12];
+        features[0] = i <= 0;
+        features[1] = i <= 0;
+        features[2] = i >= 1;
+        features[3] = i >= 1;
+        features[4] = i >= 3;
+        features[5] = i >= 3 || i == 0;
+        features[6] = i >= 3;
+        features[7] = i >= 4;
+        features[8] = i >= 4;
+        features[9] = i >= 4;
+        features[10] = i >= 4;
+        features[11] = i >= 4;
+        int num = mod_OldDays.getDescriptionNumber(name+".feature");
+        for (int j = 0; j < num; j++){
+            list.add("<-• §"+(features[j] ? "a" : "c")+mod_OldDays.lang.get(name+".feature"+(j+1)));
         }
+        list.add("<-• "+mod_OldDays.lang.get(name+".trees.value"+(i+1)));
         return list.toArray(new String[list.size()]);
     }
 }
