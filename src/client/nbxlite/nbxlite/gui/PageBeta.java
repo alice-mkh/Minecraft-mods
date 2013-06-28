@@ -22,7 +22,7 @@ public class PageBeta extends Page{
     public PageBeta(GuiNBXlite parent){
         super(parent);
         featuresButtons = new GuiButtonNBXlite[GeneratorList.feat1length + 1];
-        helpButtons = new GuiButtonNBXlite[featuresButtons.length];
+        helpButtons = new GuiButtonNBXlite[featuresButtons.length - 1];
         help = -1;
         jungle = ODNBXlite.getDefaultFlag("jungle");
         newores = ODNBXlite.getDefaultFlag("newores");
@@ -40,9 +40,11 @@ public class PageBeta extends Page{
             String name = mod_OldDays.lang.get("nbxlite.betafeatures" + (i + 1));
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
-            helpButtons[i] = new GuiButtonNBXlite(i + 100, (width / 2 + 66) + leftmargin, 20);
-            helpButtons[i].displayString = "?";
-            addButton(helpButtons[i]);
+            if (i < l - 1){
+                helpButtons[i] = new GuiButtonNBXlite(i + 100, (width / 2 + 66) + leftmargin, 20);
+                helpButtons[i].displayString = "?";
+                addButton(helpButtons[i]);
+            }
         }
         addButton(newOresButton = new GuiButtonNBXlite(l, width / 2 - 85 + leftmargin, 150));
         addButton(jungleButton = new GuiButtonNBXlite(l + 1, width / 2 - 85 + leftmargin, 150));
@@ -57,6 +59,8 @@ public class PageBeta extends Page{
         super.scrolled();
         for (int i = 0; i < featuresButtons.length; i++){
             setY(featuresButtons[i], (i - 1) * 21);
+        }
+        for (int i = 0; i < helpButtons.length; i++){
             setY(helpButtons[i], (i - 1) * 21);
         }
         setY(newOresButton, 127);
