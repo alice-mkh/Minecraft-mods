@@ -166,6 +166,7 @@ public abstract class Entity
     public String cloakUrl;
     protected boolean isImmuneToFire;
     protected DataWatcher dataWatcher;
+    public float entityBrightness;
     private double entityRiderPitchDelta;
     private double entityRiderYawDelta;
 
@@ -228,6 +229,7 @@ public abstract class Entity
         firstUpdate = true;
         isImmuneToFire = false;
         dataWatcher = new DataWatcher();
+        entityBrightness = 0.0F;
         addedToChunk = false;
         teleportDirection = 0;
         invulnerable = false;
@@ -1250,11 +1252,16 @@ public abstract class Entity
         {
             double d = (boundingBox.maxY - boundingBox.minY) * 0.66000000000000003D;
             int k = MathHelper.floor_double((posY - (double)yOffset) + d);
-            return worldObj.getLightBrightness(i, k, j);
+            float f1 = worldObj.getLightBrightness(i, k, j);
+            if(f1 < entityBrightness)
+            {
+                f1 = entityBrightness;
+            }
+            return f1;
         }
         else
         {
-            return 0.0F;
+            return entityBrightness;
         }
     }
 
