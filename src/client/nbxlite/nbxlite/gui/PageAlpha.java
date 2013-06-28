@@ -208,7 +208,7 @@ public class PageAlpha extends Page{
     private String[] getTooltip(int i, int col){
         String name = "biomeless";
         ArrayList<String> list = new ArrayList<String>();
-        boolean[] features = new boolean[12];
+        boolean[] features = new boolean[13];
         features[0] = i <= 0;
         features[1] = i <= 0;
         features[2] = i >= 1;
@@ -221,6 +221,7 @@ public class PageAlpha extends Page{
         features[9] = i >= 4;
         features[10] = i >= 4;
         features[11] = i >= 4;
+        features[12] = i >= 4;
         int num = mod_OldDays.getDescriptionNumber(name+".feature");
         for (int j = 0; j < num; j++){
             list.add("<-• §"+(features[j] ? "a" : "c")+mod_OldDays.lang.get(name+".feature"+(j+1)));
