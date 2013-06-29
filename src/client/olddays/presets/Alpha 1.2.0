@@ -38,6 +38,7 @@ Crafting.OldMaps=true
 Crafting.OldButtons=true
 Textures.Brick=1
 Textures.Steve=true
+Textures.MojangScreen=0
 NBXlite.LeavesDecay=0
 NBXlite.OldHoes=2
 NBXlite.OpaqueFlatClouds=0

@@ -66,7 +66,8 @@ CP[8]="BlockOreStorageOld TextureWaterFX TextureWaterFlowFX TextureLavaFX Textur
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png
         olddays/slime.png olddays/cloth_1.png olddays/cloth_2.png olddays/cloth_empty.png textures/blocks/olddays_iron_side.png
         textures/blocks/olddays_iron_bottom.png textures/blocks/olddays_gold_side.png textures/blocks/olddays_gold_bottom.png
-        textures/blocks/olddays_diamond_side.png textures/blocks/olddays_diamond_bottom.png olddays/clock.png olddays/compass.png"
+        textures/blocks/olddays_diamond_side.png textures/blocks/olddays_diamond_bottom.png olddays/clock.png olddays/compass.png
+        olddays/mojang.png olddays/mojang2.png"
 CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2`
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem`
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2 GuiButtonNBXlite

@@ -797,6 +797,13 @@ textures.procedural.name=Процедурные текстуры
  textures.procedural.desc6=§4Могут вызвать проблемы
  textures.procedural.desc7=§4с HD-текстурпаками!
  textures.procedural.desc8=§aУдалены в 1.5.
+textures.mojangscreen.name=Экран Mojang
+ textures.mojangscreen1=Альфа
+ textures.mojangscreen1.desc=Синий экран
+ textures.mojangscreen2=Бета 1.3
+ textures.mojangscreen2.desc=Логотип побольше
+ textures.mojangscreen3=Бета 1.8
+ textures.mojangscreen3.desc=Стандартный экран
 
 nbxlite.gen.name=Генератор
  nbxlite.gen.desc1=Основная генерация.

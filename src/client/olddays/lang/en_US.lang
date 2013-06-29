@@ -794,6 +794,13 @@ textures.procedural.name=Procedural textures
  textures.procedural.desc6=§4May cause problems
  textures.procedural.desc7=§4with HD texture packs!
  textures.procedural.desc8=§aRemoved in 1.5.
+textures.mojangscreen.name=Mojang screen
+ textures.mojangscreen1=Alpha
+ textures.mojangscreen1.desc=Blue screen
+ textures.mojangscreen2=Beta 1.3
+ textures.mojangscreen2.desc=Larger logo
+ textures.mojangscreen3=Beta 1.8
+ textures.mojangscreen3.desc=Default screen
 
 nbxlite.gen.name=Generator
  nbxlite.gen.desc1=Sets main terrain generation.

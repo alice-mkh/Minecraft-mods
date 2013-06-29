@@ -42,6 +42,7 @@ Crafting.OldArrows=true
 Crafting.OldButtons=true
 Textures.Wool=0
 Textures.Steve=true
+Textures.MojangScreen=0
 NBXlite.LeavesDecay=2
 NBXlite.OldHoes=2
 NBXlite.OpaqueFlatClouds=2

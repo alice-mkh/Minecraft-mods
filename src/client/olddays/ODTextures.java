@@ -37,7 +37,8 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 32,true,  false, "LeatherArmor");
         new OldDaysPropertyBool(this, 33,true,  false, "Food");
         new OldDaysPropertyBool(this, 34,true,  false, "Procedural");
-//         new OldDaysPropertyBool(this, 35,false, false, "TerrainPng");
+        new OldDaysPropertyInt(this,  35,0,     2,     "MojangScreen", 2).setUseNames();
+//         new OldDaysPropertyBool(this, 36,false, false, "TerrainPng");
         isLocal = true;
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
@@ -50,7 +51,8 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(27).setFallback("olddays/explosion.png");
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
-//         getPropertyById(35).setFallback("terrain.png", "gui/items.png");
+        getPropertyById(35).setFallback("olddays/mojang.png", "olddays/mojang2.png");
+//         getPropertyById(36).setFallback("terrain.png", "gui/items.png");
         replaceBlocks();
         prevProcedural = Procedural;
     }
@@ -97,7 +99,8 @@ public class ODTextures extends OldDaysModule{
             case 32:setArmor(LeatherArmor && !fallback); break;
             case 33:setFood(); break;
             case 34:refreshTextureFXes(true); break;
-            case 35:if (!TerrainPng && core.getMinecraft().theWorld != null){
+            case 35:setMojangScreen(); break;
+            case 36:if (!TerrainPng && core.getMinecraft().theWorld != null){
                         core.getMinecraft().renderEngine.refreshTextureMaps();
                         refreshTextureFXes(false);
                     }refreshIconReplacements(); break;
@@ -138,6 +141,7 @@ public class ODTextures extends OldDaysModule{
     public static boolean LeatherArmor = true;
     public static boolean Food = true;
     public static boolean Procedural = false;
+    public static int MojangScreen;
     public static boolean TerrainPng = false;
 
     private static boolean prevProcedural;
@@ -422,5 +426,15 @@ public class ODTextures extends OldDaysModule{
             }
         }
         super.eraseIcon(i, orig, b);
+    }
+
+    private void setMojangScreen(){
+        if (MojangScreen == 1){
+            setTextureHook("/title/mojang.png", "/olddays/mojang2.png", false);
+            setTextureHook("/title/mojang.png", "/olddays/mojang.png", true);
+            return;
+        }
+        setTextureHook("/title/mojang.png", "/olddays/mojang.png", false);
+        setTextureHook("/title/mojang.png", "/olddays/mojang2.png", MojangScreen == 0);
     }
 }

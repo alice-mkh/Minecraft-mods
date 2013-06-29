@@ -491,6 +491,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         gameSettings = new GameSettings(this, mcDataDir);
         texturePackList = new TexturePackList(mcDataDir, this);
         renderEngine = new RenderEngine(texturePackList, gameSettings);
+        loadMods();
         loadScreen();
         fontRenderer = new FontRenderer(gameSettings, "/font/default.png", renderEngine, false);
         standardGalacticFontRenderer = new FontRenderer(gameSettings, "/font/alternate.png", renderEngine, false);
@@ -508,7 +509,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         RenderManager.instance.itemRenderer = new ItemRenderer(this);
         statFileWriter = new StatFileWriter(session, mcDataDir);
         AchievementList.openInventory.setStatStringFormatter(new StatStringFormatKeyInv(this));
-        loadMods();
         loadScreen();
         Mouse.create();
         mouseHelper = new MouseHelper(mcCanvas, gameSettings);
