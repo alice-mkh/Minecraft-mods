@@ -279,7 +279,6 @@ gameplay.oldexplosion.name=Explosiones antiguas
  gameplay.oldexplosion.desc1=Hace a las explosiones
  gameplay.oldexplosion.desc2=siempre hacer el mismo daño.
  gameplay.oldexplosion.desc3=§aCambiado en la 1.3.
-
 gameplay.allowsneak.name=Agacharse.
  gameplay.allowsneak.desc1=Permite Agacharse.
  gameplay.allowsneak.desc2=§aAñadido en Alpha 1.1.1.
@@ -334,7 +333,7 @@ mobs.oldhealth.name=Antigua vida de mobs
  mobs.oldhealth.desc4=Enderman: §r20§7 en vez de §r40
  mobs.oldhealth.desc5=§aCambiado en 1.0.
 mobs.mobs.name=Mobs permitidos
-mobs.mobs.desc1=Determina que mobs pueden aparecer.
+ mobs.mobs.desc1=Determina que mobs pueden aparecer.
  mobs.mobs1=Classic
  mobs.mobs1.desc=No hay mobs
  mobs.mobs2=0.31 (Ranas)
@@ -1007,7 +1006,6 @@ flag.fixbeaches=Arreglo de Playas
 flag.weather=Clima
  flag.weather.desc=Activa el clima
 
-
 biomeless.feature1=Muros de obsidiana
 biomeless.feature2=Pirámides de ladrillo
 biomeless.feature3=Ores
@@ -1027,7 +1025,6 @@ biomeless.trees.value3=Trees: Pequeños
 biomeless.trees.value4=Trees: Pequeños
 biomeless.trees.value5=Trees: Mixtos
 
-
 beta.feature1=Lagos
 beta.feature2=Error de borde en desiertos
 beta.feature3=Bug en distribución de ores
@@ -1038,7 +1035,7 @@ beta.feature7=Bug en arcilla
 beta.feature8=Pasto
 
 release.features.biomes=Biomas
-release.features.biomes1=Planicies desérticas
+release.features.biomes1=Planicies de hielo
 release.features.biomes2=Biomas de setas
 release.features.biomes3=Pantanos 
 release.features.biomes4=Playas
