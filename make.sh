@@ -50,7 +50,7 @@ ADD[4]="olddays/md3"
 CP[5]="`find ModelBiped` `find RenderLiving` `find EntityEnderman` `find TileEntityChestRenderer` `find TileEntityEnderChestRenderer`
        `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLiving` `find ItemRenderer`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
-       `find EntitySuspendFX` `find RenderItem` RenderItemFrame2 `find GuiScreen`
+       `find EntitySuspendFX` `find RenderItem` RenderItemFrame2 `find GuiScreen` EntityAIArrowAttack2
        BlockChestOld BlockFence2 BlockRedstoneWireOld ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
        RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png textures/blocks/olddays_chest_top.png textures/blocks/olddays_chest_side.png
