@@ -2780,7 +2780,7 @@ public class RenderBlocks
             f4 = 0.0F;
         }
 
-        tessellator.setColorOpaque_F(f2, f3, f4);
+        tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
         double d = 0.015625D;
         double d1 = 0.015625D;
         boolean flag = BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2 - 1, par3, par4, 1) || !blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2 - 1, par3 - 1, par4, -1);
@@ -4253,8 +4253,10 @@ public class RenderBlocks
             float f14 = icon1.getInterpolatedV((1.0D - d9) * 16D * 0.5D);
             float f16 = icon1.getInterpolatedV((1.0D - d11) * 16D * 0.5D);
             float f17 = icon1.getInterpolatedV(8D);
-            tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, l, i1, j1));
-            float f18 = 1.0F;
+            if (!Minecraft.oldlighting){
+                tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, l, i1, j1));
+            }
+            float f18 = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, l, i1, j1) : 1.0F;
 
             if (k < 2)
             {
@@ -6506,31 +6508,61 @@ public class RenderBlocks
         float f14 = f2 * par7;
         float f15 = f3 * par7;
         float f16 = 0.0625F;
+        float ff4 = 1.0F;
+        float ff5 = 1.0F;
         int i = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4);
 
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 - 1, par4, 0))
         {
-            tessellator.setBrightness(renderMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
-            tessellator.setColorOpaque_F(f4, f8, f12);
+            if (!Minecraft.oldlighting){
+                tessellator.setBrightness(renderMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
+            }else{
+                ff4 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
+                ff5 = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
+                if(renderMinY > 0.0D)
+                {
+                    ff5 = f4;
+                }
+                if(Block.lightValue[par1Block.blockID] > 0)
+                {
+                    ff5 = 1.0F;
+                }
+            }
+            tessellator.setColorOpaque_F(f4 * ff5, f8 * ff5, f12 * ff5);
             renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
         }
 
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 + 1, par4, 1))
         {
-            tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
-            tessellator.setColorOpaque_F(f5, f9, f13);
+            if (!Minecraft.oldlighting){
+                tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
+            }else{
+                ff5 = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
+                if(renderMaxY < 1.0D)
+                {
+                    ff5 = ff4;
+                }
+                if(Block.lightValue[par1Block.blockID] > 0)
+                {
+                    ff5 = 1.0F;
+                }
+            }
+            tessellator.setColorOpaque_F(f5 * ff5, f9 * ff5, f13 * ff5);
             renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
         }
 
-        tessellator.setBrightness(i);
-        tessellator.setColorOpaque_F(f6, f10, f14);
+        float ff6 = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4) : 0;
+        if (!Minecraft.oldlighting){
+            tessellator.setBrightness(i);
+        }
+        tessellator.setColorOpaque_F(f6 * ff6, f10 * ff6, f14 * ff6);
         tessellator.addTranslation(0.0F, 0.0F, f16);
         renderFaceZNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
         tessellator.addTranslation(0.0F, 0.0F, -f16);
         tessellator.addTranslation(0.0F, 0.0F, -f16);
         renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
         tessellator.addTranslation(0.0F, 0.0F, f16);
-        tessellator.setColorOpaque_F(f7, f11, f15);
+        tessellator.setColorOpaque_F(f7 * ff6, f11 * ff6, f15 * ff6);
         tessellator.addTranslation(f16, 0.0F, 0.0F);
         renderFaceXNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
         tessellator.addTranslation(-f16, 0.0F, 0.0F);
