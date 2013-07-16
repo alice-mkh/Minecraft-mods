@@ -7,7 +7,6 @@ public abstract class EntityLiving extends EntityLivingBase
     public static boolean indevai = false;
     public static int nonewmobs = 13;
     public static boolean oldrange = false;
-    public static boolean pre15 = false;
     public static boolean fastzombies = false;
 
     public double getRealMoveSpeed(){
