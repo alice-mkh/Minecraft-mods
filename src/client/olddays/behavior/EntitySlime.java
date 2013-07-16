@@ -289,16 +289,29 @@ public class EntitySlime extends EntityLiving implements IMob
 
         Chunk chunk = worldObj.getChunkFromBlockCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-        if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
+        if (slimeSpawn==2){
+            return (getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 16D;
+        }
+
+        if (slimeSpawn > 3 && worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
         {
             return false;
         }
 
-        if (getSlimeSize() == 1 || worldObj.difficultySetting > 0)
+        if (slimeSpawn==3 || slimeSpawn==4)
+        {
+            if ((getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 40D)
+            {
+                return super.getCanSpawnHere();
+            }
+            return false;
+        }
+
+        if (slimeSpawn > 4 && (getSlimeSize() == 1 || worldObj.difficultySetting > 0))
         {
             BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && rand.nextFloat() < 0.5F && rand.nextFloat() < worldObj.func_130001_d() && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
+            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && (slimeSpawn > 5 || (rand.nextFloat() < 0.5F && rand.nextFloat() < worldObj.func_130001_d())) && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
             {
                 return super.getCanSpawnHere();
             }
