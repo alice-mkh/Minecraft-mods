@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 public class OldDaysTextureManager{
-/*    private mod_OldDays core;
+    private mod_OldDays core;
     private TextureManager renderEngine;
     protected ArrayList<TextureHook> textureHooks;
-    protected ArrayList<TextureAtlasSprite> textureFXList;
+/*    protected ArrayList<TextureAtlasSprite> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
     private Texture tmp;
@@ -24,24 +24,24 @@ public class OldDaysTextureManager{
     private int tmpHeight;*/
 
     public OldDaysTextureManager(mod_OldDays olddays){
-/*        core = olddays;
-        renderEngine = mod_OldDays.getMinecraft().renderEngine;
+        core = olddays;
+        renderEngine = mod_OldDays.getMinecraft().func_110434_K();
         textureHooks = new ArrayList<TextureHook>();
-        textureFXList = new ArrayList<TextureAtlasSprite>();
+/*        textureFXList = new ArrayList<TextureAtlasSprite>();
         entryCache = new HashMap<String, Boolean>();*/
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
-/*        for (int i = 0; i < textureHooks.size(); i++){
+        for (int i = 0; i < textureHooks.size(); i++){
             TextureHook hook = textureHooks.get(i);
-            if (hook.origname.equals(origname) && hook.newname.equals(newname)){
+            if (hook.equals(origname, newname)){
                 hook.enabled = b;
                 refreshTextureHooks();
                 return;
             }
         }
         textureHooks.add(new TextureHook(origname, newname, b));
-        refreshTextureHooks();*/
+        refreshTextureHooks();
     }
  
     public void onTick(){
@@ -54,34 +54,10 @@ public class OldDaysTextureManager{
     }
 
     public void refreshTextureHooks(){
-/*        for (TextureHook hook : textureHooks){
-            try{
-                TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-                ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-                BufferedImage image = ImageIO.read(texpack.getResourceAsStream(hook.enabled ? hook.newname : hook.origname));
-                int id = 0;
-                try{
-                    Method m = null;
-                    Method[] methods = (TextureManager.class).getDeclaredMethods();
-                    for (int i = 0; i < methods.length; i++){
-                        if (methods[i].toGenericString().matches("^private int (net.minecraft.src.)?[a-zA-Z]{1,12}.[a-zA-Z]{1,10}.java.lang.String.$")){
-                            m = methods[i];
-                            break;
-                        }
-                    }
-                    if (m == null){
-                        return;
-                    }
-                    m.setAccessible(true);
-                    id = (Integer)(m.invoke(renderEngine, hook.origname));
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
-                renderEngine.setupTexture(image, id);
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-        }*/
+        for (TextureHook hook : textureHooks){
+            TextureObject tex = new SimpleTexture(hook.enabled ? hook.newname : hook.origname);
+            renderEngine.func_110579_a(hook.origname, tex);
+        }
     }
 /*
     private void setFallback(boolean b){
@@ -302,14 +278,18 @@ public class OldDaysTextureManager{
     }
 */
     private class TextureHook{
-        private String origname;
-        private String newname;
+        private ResourceLocation origname;
+        private ResourceLocation newname;
         private boolean enabled;
 
         public TextureHook(String str1, String str2, boolean b){
-            origname = str1;
-            newname = str2;
+            origname = new ResourceLocation(str1);
+            newname = new ResourceLocation(str2);
             enabled = b;
+        }
+
+        public boolean equals(String str1, String str2){
+            return origname.func_110623_a().equals(str1) && newname.func_110623_a().equals(str2);
         }
     }
 }

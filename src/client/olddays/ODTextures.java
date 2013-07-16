@@ -86,11 +86,11 @@ public class ODTextures extends OldDaysModule{
             case 21:replaceItemIcon(Item.flint, "/olddays/textures.png", 5, 3, Flint); break;
             case 22:replaceItemIcon(Item.flintAndSteel, "/olddays/textures.png", 6, 3, FlintSteel); break;
             case 23:replaceItemIcon(Item.feather, "/olddays/textures.png", 7, 3, Feather); break;
-            case 24:setTextureHook("/mob/pig.png", "/olddays/pig.png", !Pigs && !fallback); break;
-            case 25:setTextureHook("/mob/slime.png", "/olddays/slime.png", Slimes && !fallback); break;
-            case 26:setTextureHook("/mob/char.png", "/olddays/char.png", Steve && !fallback); break;
-            case 27:setTextureHook("/misc/explosion.png", "/olddays/explosion.png", Explosion); break;
-            case 28:setTextureHook("/environment/moon_phases.png", "/olddays/moon_phases.png", !Moon && !fallback); break;
+            case 24:setTextureHook("textures/entity/pig/pig.png", "olddays/pig.png", !Pigs && !fallback); break;
+            case 25:setTextureHook("textures/entity/slime/slime.png", "olddays/slime.png", Slimes && !fallback); break;
+            case 26:setTextureHook("textures/entity/steve.png", "olddays/char.png", Steve && !fallback); break;
+            case 27:setTextureHook("textures/entity/explosion.png", "olddays/explosion.png", Explosion); break;
+            case 28:setTextureHook("textures/environment/moon_phases.png", "olddays/moon_phases.png", !Moon && !fallback); break;
             case 29:setArmorShape(); break;
             case 30:setCocoa(); break;
             case 31:replaceBlockIcon(Block.netherrack, "/olddays/textures.png", 1, 4, Netherrack); break;
@@ -369,19 +369,19 @@ public class ODTextures extends OldDaysModule{
              replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
              eraseIcon(icon2, str, !b);
         }
-        setTextureHook("/armor/cloth_1_b.png", "/olddays/cloth_1.png", b);
-        setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
-        setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
-        setTextureHook("/armor/cloth_2.png", "/olddays/cloth_empty.png", b);
+        setTextureHook("textures/models/armor/leather_layer_1_overlay.png", "olddays/cloth_1.png", b);
+        setTextureHook("textures/models/armor/leather_layer_2_overlay.png", "olddays/cloth_2.png", b);
+        setTextureHook("textures/models/armor/leather_layer_1.png", "olddays/cloth_empty.png", b);
+        setTextureHook("textures/models/armor/leather_layer_2.png", "olddays/cloth_empty.png", b);
     }
 
     private void setMojangScreen(){
         if (MojangScreen == 1){
-            setTextureHook("/title/mojang.png", "/olddays/mojang2.png", false);
-            setTextureHook("/title/mojang.png", "/olddays/mojang.png", true);
+            setTextureHook("textures/gui/title/mojang.png", "olddays/mojang2.png", false);
+            setTextureHook("textures/gui/title/mojang.png", "olddays/mojang.png", true);
             return;
         }
-        setTextureHook("/title/mojang.png", "/olddays/mojang.png", false);
-        setTextureHook("/title/mojang.png", "/olddays/mojang2.png", MojangScreen == 0);
+        setTextureHook("textures/gui/title/mojang.png", "olddays/mojang.png", false);
+        setTextureHook("textures/gui/title/mojang.png", "olddays/mojang2.png", MojangScreen == 0);
     }
 }
