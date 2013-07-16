@@ -16,10 +16,10 @@ public class OldDaysTextureManager{
     private mod_OldDays core;
     private TextureManager renderEngine;
     protected ArrayList<TextureHook> textureHooks;
-/*    protected ArrayList<TextureAtlasSprite> textureFXList;
+//     protected ArrayList<TextureAtlasSprite> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
-    private Texture tmp;
+/*    private Texture tmp;
     private int tmpWidth;
     private int tmpHeight;*/
 
@@ -27,8 +27,8 @@ public class OldDaysTextureManager{
         core = olddays;
         renderEngine = mod_OldDays.getMinecraft().func_110434_K();
         textureHooks = new ArrayList<TextureHook>();
-/*        textureFXList = new ArrayList<TextureAtlasSprite>();
-        entryCache = new HashMap<String, Boolean>();*/
+//         textureFXList = new ArrayList<TextureAtlasSprite>();
+        entryCache = new HashMap<String, Boolean>();
     }
 
     public void setTextureHook(String origname, String newname, boolean b){
@@ -45,12 +45,12 @@ public class OldDaysTextureManager{
     }
  
     public void onTick(){
-/*        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
+        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
             currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
             entryCache.clear();
             core.refreshTextures();
             setFallback(!hasEntry("olddays"));
-        }*/
+        }
     }
 
     public void refreshTextureHooks(){
@@ -59,7 +59,7 @@ public class OldDaysTextureManager{
             renderEngine.func_110579_a(hook.origname, tex);
         }
     }
-/*
+
     private void setFallback(boolean b){
         for (int i = 0; i < mod_OldDays.modules.size(); i++){
             OldDaysModule module = mod_OldDays.modules.get(i);
@@ -71,44 +71,29 @@ public class OldDaysTextureManager{
             module.onFallbackChange(b);
         }
     }
-*/
+
     public boolean hasEntry(String... str){
-/*        try{
-            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-            for (int i = 0; i < str.length; i++){
-                if (entryCache.containsKey(str[i])){
-                    if (!entryCache.get(str[i])){
+        ResourcePackRepository repo = mod_OldDays.getMinecraft().func_110438_M();
+        List list = repo.func_110613_c();
+        if (list.size() == 0){
+            return true;
+        }
+        for (Object o : list){
+            ResourcePack pack = ((ResourcePackRepositoryEntry)o).func_110514_c();
+            for (String s : str){
+                if (entryCache.containsKey(s)){
+                    if (!entryCache.get(s)){
                         return false;
                     }
-                }else if (texpack instanceof TexturePackDefault){
-                    try{
-                        texpack.getResourceAsStream("/" + str[i]);
-                    }catch(Exception e){
-                        entryCache.put(str[i], false);
-                        return false;
-                    }
-                    entryCache.put(str[i], true);
-                }else if (texpack instanceof TexturePackFolder){
-                    File orig = ((File)mod_OldDays.getField(TexturePackImplementation.class, texpack, 2));
-                    File file = new File(orig, str[i]);
-                    boolean b = file.exists();
-                    entryCache.put(str[i], b);
-                    if (!b){
-                        return false;
-                    }
-                }else{
-                    ZipFile file = ((ZipFile)mod_OldDays.getField(TexturePackCustom.class, texpack, 0));
-                    boolean b = file.getEntry(str[i]) != null;
-                    entryCache.put(str[i], b);
-                    if (!b){
-                        return false;
-                    }
+                    continue;
+                }
+                boolean b = pack.func_110589_b(new ResourceLocation(s));
+                entryCache.put(s, b);
+                if (!b){
+                    return false;
                 }
             }
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }*/
+        }
         return true;
     }
 
@@ -217,47 +202,6 @@ public class OldDaysTextureManager{
         }
         tex.getTextureData().clear();
         sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tex);*/
-    }
-
-    public boolean copyIconFromSheet(Icon icon, String str, HashMap<String, Integer> indexMap){
-/*        if (!hasEntry(str.substring(1)) || icon == null || indexMap == null || !indexMap.containsKey(icon.getIconName())){
-            return false;
-        }
-        int index = indexMap.get(icon.getIconName());
-        if (index < 0 || index >= 256){
-            return false;
-        }
-        int x = index % 16;
-        int y = index / 16;
-        Texture sheet = (Texture)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 1));
-        int[] ints = null;
-        int width = 16;
-        int height = 16;
-        try{
-            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-            BufferedImage image = ImageIO.read(texpack.getResourceAsStream(str));
-            width = image.getWidth() / 16;
-            height = image.getHeight() / 16;
-            ints = new int[width * height];
-            image.getRGB(x * width, y * height, width, height, ints, 0, width);
-            image = null;
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        Texture tmp = getTempTexture(width, height, false);
-        tmp.getTextureData().position(0);
-        for (int i = 0; i < ints.length; i++){
-            int color = ints[i];
-            tmp.getTextureData().put((byte)(color >> 16 & 0xFF));
-            tmp.getTextureData().put((byte)(color >> 8 & 0xFF));
-            tmp.getTextureData().put((byte)(color & 0xFF));
-            tmp.getTextureData().put((byte)(color >> 24 & 0xFF));
-        }
-        tmp.getTextureData().clear();
-        sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tmp);*/
-        return true;
     }
 /*
     private Texture getTempTexture(int width, int height, boolean erase){
