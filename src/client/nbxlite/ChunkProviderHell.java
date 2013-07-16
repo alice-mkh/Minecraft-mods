@@ -700,9 +700,17 @@ public class ChunkProviderHell implements IChunkProvider
      */
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
-        if (par1EnumCreatureType == EnumCreatureType.monster && genNetherBridge.hasStructureAt(par2, par3, par4))
+        if (par1EnumCreatureType == EnumCreatureType.monster)
         {
-            return genNetherBridge.getSpawnList();
+            if (genNetherBridge.hasStructureAt(par2, par3, par4))
+            {
+                return genNetherBridge.getSpawnList();
+            }
+
+            if (genNetherBridge.func_142038_b(par2, par3, par4) && worldObj.getBlockId(par2, par3 - 1, par4) == Block.netherBrick.blockID)
+            {
+                return genNetherBridge.getSpawnList();
+            }
         }
 
         BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(par2, par4);

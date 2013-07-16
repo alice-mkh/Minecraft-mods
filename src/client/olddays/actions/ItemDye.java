@@ -12,8 +12,8 @@ public class ItemDye extends Item
     };
     public static final String field_94595_b[] =
     {
-        "dyePowder_black", "dyePowder_red", "dyePowder_green", "dyePowder_brown", "dyePowder_blue", "dyePowder_purple", "dyePowder_cyan", "dyePowder_silver", "dyePowder_gray", "dyePowder_pink",
-        "dyePowder_lime", "dyePowder_yellow", "dyePowder_lightBlue", "dyePowder_magenta", "dyePowder_orange", "dyePowder_white"
+        "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink",
+        "lime", "yellow", "light_blue", "magenta", "orange", "white"
     };
     public static final int dyeColors[] =
     {
@@ -320,15 +320,12 @@ public class ItemDye extends Item
         }
     }
 
-    /**
-     * Called when a player right clicks an entity with an item.
-     */
-    public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
+    public boolean func_111207_a(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, EntityLivingBase par3EntityLivingBase)
     {
-        if (par2EntityLiving instanceof EntitySheep)
+        if (par3EntityLivingBase instanceof EntitySheep)
         {
-            EntitySheep entitysheep = (EntitySheep)par2EntityLiving;
-            int i = BlockCloth.getBlockFromDye(par1ItemStack.getItemDamage());
+            EntitySheep entitysheep = (EntitySheep)par3EntityLivingBase;
+            int i = BlockColored.getBlockFromDye(par1ItemStack.getItemDamage());
 
             if (!entitysheep.getSheared() && entitysheep.getFleeceColor() != i)
             {
@@ -361,7 +358,7 @@ public class ItemDye extends Item
 
         for (int i = 0; i < field_94595_b.length; i++)
         {
-            field_94594_d[i] = par1IconRegister.registerIcon(field_94595_b[i]);
+            field_94594_d[i] = par1IconRegister.registerIcon((new StringBuilder()).append(func_111208_A()).append("_").append(field_94595_b[i]).toString());
         }
     }
 }

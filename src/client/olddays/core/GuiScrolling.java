@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 
 public class GuiScrolling extends Gui{
     public static final int SCROLLBAR_WIDTH = 6;
@@ -195,7 +194,7 @@ public class GuiScrolling extends Gui{
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        mc.renderEngine.bindTexture("/gui/background.png");
+        mc.func_110434_K().func_110577_a(Gui.field_110325_k);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32F;
         tessellator.startDrawingQuads();

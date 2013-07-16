@@ -56,14 +56,14 @@ public abstract class EntityWaterMob extends EntityCreature implements IAnimals
         int i = getAir();
         super.onEntityUpdate();
 
-        if (isEntityAlive() && !isInsideOfMaterial(Material.water) && squidsNeedWater)
+        if (isEntityAlive() && !isInWater() && squidsNeedWater)
         {
             setAir(--i);
 
             if (getAir() == -20)
             {
                 setAir(0);
-                attackEntityFrom(DamageSource.drown, 2);
+                attackEntityFrom(DamageSource.drown, 2.0F);
             }
         }
         else

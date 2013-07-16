@@ -36,14 +36,13 @@ public class BlockCake2 extends BlockCake
     private void eatCakeSlice(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         if (heal){
-            if(par5EntityPlayer.health < 20){
+            if(par5EntityPlayer.func_110143_aJ() < 20){
                 par5EntityPlayer.heal(3);
                 int i = par1World.getBlockMetadata(par2, par3, par4) + 1;
 
                 if (i >= 6){
                     par1World.setBlockToAir(par2, par3, par4);
-                }
-                else{
+                }else{
                     par1World.setBlockMetadataWithNotify(par2, par3, par4, i, 2);
                 }
             }

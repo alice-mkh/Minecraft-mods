@@ -17,7 +17,6 @@ public class BlockFlowing extends BlockFluid
     protected BlockFlowing(int par1, Material par2Material)
     {
         super(par1, par2Material);
-        numAdjacentSources = 0;
         isOptimalFlowDirection = new boolean[4];
         flowCost = new int[4];
     }
@@ -50,33 +49,34 @@ public class BlockFlowing extends BlockFluid
         }
 
         boolean flag = true;
+        int j = tickRate(par1World);
 
         if (i > 0)
         {
-            int j = -100;
+            int k = -100;
             numAdjacentSources = 0;
-            j = getSmallestFlowDecay(par1World, par2 - 1, par3, par4, j);
-            j = getSmallestFlowDecay(par1World, par2 + 1, par3, par4, j);
-            j = getSmallestFlowDecay(par1World, par2, par3, par4 - 1, j);
-            j = getSmallestFlowDecay(par1World, par2, par3, par4 + 1, j);
-            int k = j + byte0;
+            k = getSmallestFlowDecay(par1World, par2 - 1, par3, par4, k);
+            k = getSmallestFlowDecay(par1World, par2 + 1, par3, par4, k);
+            k = getSmallestFlowDecay(par1World, par2, par3, par4 - 1, k);
+            k = getSmallestFlowDecay(par1World, par2, par3, par4 + 1, k);
+            int l = k + byte0;
 
-            if (k >= 8 || j < 0)
+            if (l >= 8 || k < 0)
             {
-                k = -1;
+                l = -1;
             }
 
             if (getFlowDecay(par1World, par2, par3 + 1, par4) >= 0)
             {
-                int i1 = getFlowDecay(par1World, par2, par3 + 1, par4);
+                int j1 = getFlowDecay(par1World, par2, par3 + 1, par4);
 
-                if (i1 >= 8)
+                if (j1 >= 8)
                 {
-                    k = i1;
+                    l = j1;
                 }
                 else
                 {
-                    k = i1 + 8;
+                    l = j1 + 8;
                 }
             }
 
@@ -84,21 +84,20 @@ public class BlockFlowing extends BlockFluid
             {
                 if (par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid())
                 {
-                    k = 0;
+                    l = 0;
                 }
                 else if (par1World.getBlockMaterial(par2, par3 - 1, par4) == blockMaterial && par1World.getBlockMetadata(par2, par3 - 1, par4) == 0)
                 {
-                    k = 0;
+                    l = 0;
                 }
             }
 
-            if (blockMaterial == Material.lava && i < 8 && k < 8 && k > i && par5Random.nextInt(4) != 0)
+            if (blockMaterial == Material.lava && i < 8 && l < 8 && l > i && par5Random.nextInt(4) != 0)
             {
-                k = i;
-                flag = false;
+                j *= 4;
             }
 
-            if (k == i)
+            if (l == i)
             {
                 if (flag)
                 {
@@ -107,7 +106,7 @@ public class BlockFlowing extends BlockFluid
             }
             else
             {
-                i = k;
+                i = l;
 
                 if (i < 0)
                 {
@@ -116,7 +115,7 @@ public class BlockFlowing extends BlockFluid
                 else
                 {
                     par1World.setBlockMetadataWithNotify(par2, par3, par4, i, 2);
-                    par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
+                    par1World.scheduleBlockUpdate(par2, par3, par4, blockID, j);
                     par1World.notifyBlocksOfNeighborChange(par2, par3, par4, blockID);
                 }
             }
@@ -147,36 +146,36 @@ public class BlockFlowing extends BlockFluid
         else if (i >= 0 && (i == 0 || blockBlocksFlow(par1World, par2, par3 - 1, par4)))
         {
             boolean aflag[] = getOptimalFlowDirections(par1World, par2, par3, par4);
-            int l = i + byte0;
+            int i1 = i + byte0;
 
             if (i >= 8)
             {
-                l = 1;
+                i1 = 1;
             }
 
-            if (l >= 8)
+            if (i1 >= 8)
             {
                 return;
             }
 
             if (aflag[0])
             {
-                flowIntoBlock(par1World, par2 - 1, par3, par4, l);
+                flowIntoBlock(par1World, par2 - 1, par3, par4, i1);
             }
 
             if (aflag[1])
             {
-                flowIntoBlock(par1World, par2 + 1, par3, par4, l);
+                flowIntoBlock(par1World, par2 + 1, par3, par4, i1);
             }
 
             if (aflag[2])
             {
-                flowIntoBlock(par1World, par2, par3, par4 - 1, l);
+                flowIntoBlock(par1World, par2, par3, par4 - 1, i1);
             }
 
             if (aflag[3])
             {
-                flowIntoBlock(par1World, par2, par3, par4 + 1, l);
+                flowIntoBlock(par1World, par2, par3, par4 + 1, i1);
             }
         }
     }
@@ -434,6 +433,6 @@ public class BlockFlowing extends BlockFluid
 
     public boolean func_82506_l()
     {
-        return false;
+        return true;
     }
 }

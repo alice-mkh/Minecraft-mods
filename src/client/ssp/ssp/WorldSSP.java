@@ -2,7 +2,6 @@ package net.minecraft.src.ssp;
 
 import java.io.PrintStream;
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
@@ -31,6 +30,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.IWorldAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.MinecraftException;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
@@ -99,6 +99,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
     /** true while the world is editing blocks */
     public boolean editingBlocks;
+
+    protected final SpawnerAnimals field_135059_Q = new SpawnerAnimals();
 
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p, ILogAgent log)
     {
@@ -591,13 +593,13 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * ray traces all blocks, including non-collideable ones
      */
     @Override
-    public MovingObjectPosition rayTraceBlocks(Vec3 par1Vec3, Vec3 par2Vec3)
+    public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3)
     {
         return rayTraceBlocks_do_do(par1Vec3, par2Vec3, false, false);
     }
 
     @Override
-    public MovingObjectPosition rayTraceBlocks_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
+    public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
     {
         return rayTraceBlocks_do_do(par1Vec3, par2Vec3, par3, false);
     }
@@ -928,7 +930,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
             getChunkFromChunkCoords(i, j).addEntity(par1Entity);
             loadedEntityList.add(par1Entity);
-            obtainEntitySkin(par1Entity);
+            onEntityAdded(par1Entity);
             return true;
         }
         else
@@ -941,7 +943,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * Start the skin for this entity downloading, if necessary, and increment its reference counter
      */
     @Override
-    protected void obtainEntitySkin(Entity par1Entity)
+    protected void onEntityAdded(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
@@ -953,7 +955,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
      * Decrement the reference counter for this entity's skin image data
      */
     @Override
-    protected void releaseEntitySkin(Entity par1Entity)
+    protected void onEntityRemoved(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
@@ -1098,11 +1100,11 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     @Override
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
     {
-        func_82740_a(par1, par2, par3, par4, par5, 0);
+        scheduleBlockUpdateWithPriority(par1, par2, par3, par4, par5, 0);
     }
 
     @Override
-    public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
+    public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
         byte byte0 = 8;
@@ -1127,7 +1129,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             if (par4 > 0)
             {
                 nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
-                nextticklistentry.func_82753_a(par6);
+                nextticklistentry.setPriority(par6);
             }
 
             if (!scheduledTickSet.contains(nextticklistentry))
@@ -1440,7 +1442,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
                     double d4 = par2AxisAlignedBB.minY + (par2AxisAlignedBB.maxY - par2AxisAlignedBB.minY) * (double)f1;
                     double d5 = par2AxisAlignedBB.minZ + (par2AxisAlignedBB.maxZ - par2AxisAlignedBB.minZ) * (double)f2;
 
-                    if (rayTraceBlocks(Vec3.createVectorHelper(d3, d4, d5), par1Vec3) == null)
+                    if (clip(Vec3.createVectorHelper(d3, d4, d5), par1Vec3) == null)
                     {
                         i++;
                     }
@@ -1620,7 +1622,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         theProfiler.startSection("mobSpawner");
         if (getGameRules().getGameRuleBooleanValue("doMobSpawning")){
-            SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
+            field_135059_Q.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
         }
         theProfiler.endStartSection("chunkSource");
         chunkProvider.unloadQueuedChunks();
@@ -2245,7 +2247,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         for (int j = 0; j < unloadedEntityList.size(); j++)
         {
-            releaseEntitySkin((Entity)unloadedEntityList.get(j));
+            onEntityRemoved((Entity)unloadedEntityList.get(j));
         }
 
         unloadedEntityList.clear();
@@ -2279,7 +2281,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             }
 
             loadedEntityList.remove(k--);
-            releaseEntitySkin(entity1);
+            onEntityRemoved(entity1);
         }
     }
 

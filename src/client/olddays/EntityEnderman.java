@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class EntityEnderman extends EntityMob
 {
@@ -9,6 +8,8 @@ public class EntityEnderman extends EntityMob
     public static boolean oldPicking = false;
     public static boolean oldhealth = false;
 
+    private static final UUID field_110192_bp;
+    private static final AttributeModifier field_110193_bq;
     private static boolean carriableBlocks[];
     private static boolean carriableBlocksOld[];
 
@@ -17,22 +18,22 @@ public class EntityEnderman extends EntityMob
      */
     private int teleportDelay;
     private int field_70826_g;
+    private Entity field_110194_bu;
     private boolean field_104003_g;
 
     public EntityEnderman(World par1World)
     {
         super(par1World);
-        teleportDelay = 0;
-        field_70826_g = 0;
-        texture = "/mob/enderman.png";
-        moveSpeed = 0.2F;
         setSize(0.6F, 2.9F);
         stepHeight = 1.0F;
     }
 
-    public int getMaxHealth()
+    protected void func_110147_ax()
     {
-        return oldhealth ? 20 : 40;
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(oldhealth ? 20D : 40D);
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.30000001192092896D);
+        func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(7D);
     }
 
     protected void entityInit()
@@ -134,10 +135,21 @@ public class EntityEnderman extends EntityMob
     {
         if (isWet())
         {
-            attackEntityFrom(DamageSource.drown, 1);
+            attackEntityFrom(DamageSource.drown, 1.0F);
         }
 
-        moveSpeed = entityToAttack == null ? 0.3F : 6.5F;
+        if (field_110194_bu != entityToAttack)
+        {
+            AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
+            attributeinstance.func_111124_b(field_110193_bq);
+
+            if (entityToAttack != null)
+            {
+                attributeinstance.func_111121_a(field_110193_bq);
+            }
+        }
+
+        field_110194_bu = entityToAttack;
 
         if (!worldObj.isRemote && worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
         {
@@ -222,9 +234,6 @@ public class EntityEnderman extends EntityMob
             {
                 if ((entityToAttack instanceof EntityPlayer) && shouldAttackPlayer((EntityPlayer)entityToAttack))
                 {
-                    moveStrafing = moveForward = 0.0F;
-                    moveSpeed = 0.0F;
-
                     if (entityToAttack.getDistanceSqToEntity(this) < 16D)
                     {
                         teleportRandomly();
@@ -435,7 +444,7 @@ public class EntityEnderman extends EntityMob
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {
@@ -479,16 +488,10 @@ public class EntityEnderman extends EntityMob
         dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 7;
-    }
-
     static
     {
+        field_110192_bp = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
+        field_110193_bq = (new AttributeModifier(field_110192_bp, "Attacking speed boost", 6.1999998092651367D, 0)).func_111168_a(false);
         carriableBlocks = new boolean[256];
         carriableBlocks[Block.grass.blockID] = true;
         carriableBlocks[Block.dirt.blockID] = true;

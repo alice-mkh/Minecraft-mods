@@ -7,6 +7,9 @@ public class RenderSkeleton2 extends RenderSkeleton
     public static boolean mobArmor = false;
     public static boolean fallback = false;
 
+    private static final ResourceLocation armorResource = new ResourceLocation("olddays/plate.png");
+    private static final ResourceLocation armorFallback = new ResourceLocation("textures/models/armor/iron_layer_1.png");
+
     private ModelMobArmor armor;
     private ModelSkeleton modelBipedMain;
 
@@ -23,7 +26,7 @@ public class RenderSkeleton2 extends RenderSkeleton
         {
             if (par2 == 1)
             {
-                loadTexture(fallback ? "/armor/iron_1.png" : "/olddays/plate.png");
+                func_110776_a(fallback ? armorFallback : armorResource);
                 GL11.glDisable(2884);
                 setRenderPassModel(armor);
                 armor.bipedHead.showModel = par1EntitySkeleton.helmet;
@@ -50,7 +53,7 @@ public class RenderSkeleton2 extends RenderSkeleton
     }
 
     @Override
-    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
     {
         super.renderEquippedItems(par1EntityLiving, par2);
         if (par1EntityLiving.getHeldItem() != null)
@@ -65,7 +68,7 @@ public class RenderSkeleton2 extends RenderSkeleton
      * Queries whether should render the specified pass or not.
      */
     @Override
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
+    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
     {
         int armor = renderArmor((EntitySkeleton)par1EntityLiving, par2, par3);
         if (armor > 0){

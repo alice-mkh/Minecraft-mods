@@ -13,18 +13,16 @@ public class EntityPig extends EntityAnimal
     public EntityPig(World par1World)
     {
         super(par1World);
-        texture = "/mob/pig.png";
         setSize(0.9F, 0.9F);
         getNavigator().setAvoidsWater(true);
-        float f = 0.25F;
         tasks.addTask(0, new EntityAISwimming(this));
-        tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-        tasks.addTask(2, aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
-        tasks.addTask(3, new EntityAIMate(this, f));
-        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.itemID, false));
-        tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrot.itemID, false));
-        tasks.addTask(5, new EntityAIFollowParent(this, 0.28F));
-        tasks.addTask(6, new EntityAIWander(this, f));
+        tasks.addTask(1, new EntityAIPanic(this, 1.25D));
+        tasks.addTask(2, aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.3F));
+        tasks.addTask(3, new EntityAIMate(this, 1.0D));
+        tasks.addTask(4, new EntityAITempt(this, 1.2D, Item.carrotOnAStick.itemID, false));
+        tasks.addTask(4, new EntityAITempt(this, 1.2D, Item.carrot.itemID, false));
+        tasks.addTask(5, new EntityAIFollowParent(this, 1.1000000000000001D));
+        tasks.addTask(6, new EntityAIWander(this, 1.0D));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(8, new EntityAILookIdle(this));
     }
@@ -43,9 +41,11 @@ public class EntityPig extends EntityAnimal
         return super.getCanSpawnHere() || survivaltest;
     }
 
-    public int getMaxHealth()
+    protected void func_110147_ax()
     {
-        return survivaltest ? 6 : 10;
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 6D : 10D);
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25D);
     }
 
     protected void updateAITasks()

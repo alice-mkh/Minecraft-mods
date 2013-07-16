@@ -2,18 +2,23 @@ package net.minecraft.src;
 
 public class EntityBreakingFX extends EntityFX
 {
-    public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item, RenderEngine par9RenderEngine)
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item)
+    {
+        this(par1World, par2, par4, par6, par8Item, 0);
+    }
+
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item, int par9)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        setParticleIcon(par9RenderEngine, par8Item.getIconFromDamage(0));
+        func_110125_a(par8Item.getIconFromDamage(par9));
         particleRed = particleGreen = particleBlue = 1.0F;
         particleGravity = Block.blockSnow.blockParticleGravity;
         particleScale /= 2.0F;
     }
 
-    public EntityBreakingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Item par14Item, RenderEngine par15RenderEngine)
+    public EntityBreakingFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Item par14Item, int par15)
     {
-        this(par1World, par2, par4, par6, par14Item, par15RenderEngine);
+        this(par1World, par2, par4, par6, par14Item, par15);
         motionX *= 0.10000000149011612D;
         motionY *= 0.10000000149011612D;
         motionZ *= 0.10000000149011612D;
@@ -46,7 +51,7 @@ public class EntityBreakingFX extends EntityFX
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);
         float f6 = (float)((prevPosY + (posY - prevPosY) * (double)par2) - interpPosY);
         float f7 = (float)((prevPosZ + (posZ - prevPosZ) * (double)par2) - interpPosZ);
-        float f8 = net.minecraft.client.Minecraft.oldlighting ? getBrightness(par2) : 1.0F;
+        float f8 = Minecraft.oldlighting ? getBrightness(par2) : 1.0F;
         par1Tessellator.setColorOpaque_F(f8 * particleRed, f8 * particleGreen, f8 * particleBlue);
         par1Tessellator.addVertexWithUV(f5 - par3 * f4 - par6 * f4, f6 - par4 * f4, f7 - par5 * f4 - par7 * f4, f, f3);
         par1Tessellator.addVertexWithUV((f5 - par3 * f4) + par6 * f4, f6 + par4 * f4, (f7 - par5 * f4) + par7 * f4, f, f2);

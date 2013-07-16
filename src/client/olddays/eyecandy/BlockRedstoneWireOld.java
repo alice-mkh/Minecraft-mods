@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.*;
-import net.minecraft.client.Minecraft;
 
 public class BlockRedstoneWireOld extends BlockRedstoneWire
 {

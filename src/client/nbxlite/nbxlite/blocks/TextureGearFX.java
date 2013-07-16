@@ -2,10 +2,8 @@ package net.minecraft.src.nbxlite.blocks;
 
 import java.io.IOException;
 import net.minecraft.src.Block;
-import net.minecraft.src.ITexturePack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TextureFX;
-import net.minecraft.src.TexturePackList;
 import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.mod_OldDays;
 

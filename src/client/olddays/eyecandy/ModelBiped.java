@@ -42,10 +42,6 @@ public class ModelBiped extends ModelBase
 
     public ModelBiped(float par1, float par2, int par3, int par4)
     {
-        heldItemLeft = 0;
-        heldItemRight = 0;
-        isSneak = false;
-        aimedBow = false;
         textureWidth = par3;
         textureHeight = par4;
         bipedCloak = new ModelRenderer(this, 0, 0);

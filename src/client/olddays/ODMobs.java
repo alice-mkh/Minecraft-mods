@@ -19,13 +19,14 @@ public class ODMobs extends OldDaysModule{
     @Override
     public void callback (int i){
         switch(i){
-            case 1: set(EntityLiving.class, "newai", AI>2);
+            case 1: set(EntityLivingBase.class, "newai", AI>2);
                     set(EntityCreeper.class, "fixai", AI<3);
                     set(EntitySkeleton.class, "fixai", AI<3);
                     set(EntitySnowman.class, "fixai", AI<3);
                     set(EntitySheep.class, "fixai", AI<3);
                     set(EntityWolf.class, "fixai", AI<3);
                     set(EntityPig.class, "fixai", AI<3);
+                    set(EntityPlayer.class, "alertWolves", AI<3);
                     set(EntityCreature.class, "jump", AI<2);
                     set(EntityCreature.class, "indevai", AI<1);
                     set(EntityLiving.class, "indevai", AI<1);
@@ -43,14 +44,14 @@ public class ODMobs extends OldDaysModule{
             case 4: set(EntitySpider.class, "canclimb", SpidersCanClimb); break;
             case 5: set(EntityCreeper.class, "survivaltest", SurvivalTestMobs);
                     set(EntityCreeper.class, "dark", SurvivalTestMobs);
-                    set(EntityCreature.class, "fastzombies", SurvivalTestMobs);
+                    set(EntityLiving.class, "fastzombies", SurvivalTestMobs);
                     set(EntityZombie.class, "burns", !SurvivalTestMobs);
                     set(EntitySkeleton.class, "survivaltest", SurvivalTestMobs);
                     set(EntitySpider.class, "survivaltest", SurvivalTestMobs);
                     set(EntitySheep.class, "survivaltest", SurvivalTestMobs);
                     set(EntitySheep.class, "hungry", SurvivalTestMobs);
                     set(EntityPig.class, "survivaltest", SurvivalTestMobs);
-                    set(EntityLiving.class, "survivaltest", SurvivalTestMobs); break;
+                    set(EntityLivingBase.class, "survivaltest", SurvivalTestMobs); break;
             case 6: set(EntitySkeleton.class, "fast", FastSkeletons); break;
             case 7: set(EntitySheep.class, "oldhealth", OldHealth);
                     set(EntitySpider.class, "oldhealth", OldHealth);
@@ -76,7 +77,7 @@ public class ODMobs extends OldDaysModule{
             addEntity(EntityRana.class, "Rana", 202);
             addMobSpawn(EnumCreatureType.monster, net.minecraft.src.EntitySteve.class, 12, 4, 4);
             addMobSpawn(EnumCreatureType.monster, net.minecraft.src.EntityRana.class, 12, 4, 4);
-            String str = "/olddays/md3/";
+            String str = "olddays/md3/";
             addRenderer(EntitySteve.class, new EntitySteve.RenderMD3Steve(false, str + "mcexport01.MD3", str + "mcexport"));
             addRenderer(EntityRana.class, new RenderMD3(false, str + "rana.MD3", str + "cube-nes.png"));
         }

@@ -8,7 +8,7 @@ public class StructureStrongholdPieces
     private static final StructureStrongholdPieceWeight pieceWeightArrayOld[];
     private static List structurePieceList;
     private static Class strongComponentType;
-    static int totalWeight = 0;
+    static int totalWeight;
     private static final StructureStrongholdStones strongholdStones = new StructureStrongholdStones(null);
 
     /**

@@ -12,9 +12,9 @@ public class BlockLeaves extends BlockLeavesBase
     public static final String field_94396_b[][] =
     {
         {
-            "leaves", "leaves_spruce", "leaves", "leaves_jungle"
+            "leaves_oak", "leaves_spruce", "leaves_birch", "leaves_jungle"
         }, {
-            "leaves_opaque", "leaves_spruce_opaque", "leaves_opaque", "leaves_jungle_opaque"
+            "leaves_oak_opaque", "leaves_spruce_opaque", "leaves_birch_opaque", "leaves_jungle_opaque"
         }
     };
     private int field_94394_cP;
@@ -369,6 +369,11 @@ public class BlockLeaves extends BlockLeavesBase
         if ((par2 & 3) == 3)
         {
             return iconArray[field_94394_cP][3];
+        }
+
+        if ((par2 & 3) == 2)
+        {
+            return iconArray[field_94394_cP][2];
         }
         else
         {

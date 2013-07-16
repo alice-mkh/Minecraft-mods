@@ -1,13 +1,13 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiScreenDemo;
+import net.minecraft.src.I18n;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.StringTranslate;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 
@@ -58,12 +58,11 @@ public class PlayerControllerDemo extends PlayerControllerSP
         else if (l1 == 1L)
         {
             GameSettings gamesettings = mc.gameSettings;
-            StringTranslate stringtranslate = StringTranslate.getInstance();
             String s = null;
 
             if (l == 100L)
             {
-                s = stringtranslate.translateKey("demo.help.movement");
+                s = I18n.func_135053_a("demo.help.movement");
                 s = String.format(s, new Object[]
                         {
                             Keyboard.getKeyName(gamesettings.keyBindForward.keyCode), Keyboard.getKeyName(gamesettings.keyBindLeft.keyCode), Keyboard.getKeyName(gamesettings.keyBindBack.keyCode), Keyboard.getKeyName(gamesettings.keyBindRight.keyCode)
@@ -71,7 +70,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
             }
             else if (l == 175L)
             {
-                s = stringtranslate.translateKey("demo.help.jump");
+                s = I18n.func_135053_a("demo.help.jump");
                 s = String.format(s, new Object[]
                         {
                             Keyboard.getKeyName(gamesettings.keyBindJump.keyCode)
@@ -79,7 +78,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
             }
             else if (l == 250L)
             {
-                s = stringtranslate.translateKey("demo.help.inventory");
+                s = I18n.func_135053_a("demo.help.inventory");
                 s = String.format(s, new Object[]
                         {
                             Keyboard.getKeyName(gamesettings.keyBindInventory.keyCode)

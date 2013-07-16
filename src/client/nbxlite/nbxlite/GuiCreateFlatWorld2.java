@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Iterator;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.nbxlite.gui.GuiCreateWorld2;
 
 public class GuiCreateFlatWorld2 extends GuiCreateFlatWorld

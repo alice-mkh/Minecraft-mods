@@ -120,7 +120,8 @@ public abstract class BlockFluid extends Block
     }
 
     /**
-     * Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag
+     * Returns whether this block is collideable based on the arguments passed in \n@param par1 block metaData \n@param
+     * par2 whether the player right-clicked while holding a boat
      */
     public boolean canCollideCheck(int par1, boolean par2)
     {
@@ -662,21 +663,21 @@ public abstract class BlockFluid extends Block
         {
             theIcon = (new Icon[]
                     {
-                        par1IconRegister.registerIcon("lava"), par1IconRegister.registerIcon("lava_flow")
+                        par1IconRegister.registerIcon("lava_still"), par1IconRegister.registerIcon("lava_flow")
                     });
         }
         else
         {
             theIcon = (new Icon[]
                     {
-                        par1IconRegister.registerIcon("water"), par1IconRegister.registerIcon("water_flow")
+                        par1IconRegister.registerIcon("water_still"), par1IconRegister.registerIcon("water_flow")
                     });
         }
     }
 
     public static Icon func_94424_b(String par0Str)
     {
-        if (par0Str == "water")
+        if (par0Str == "water_still")
         {
             return Block.waterMoving.theIcon[0];
         }
@@ -686,7 +687,7 @@ public abstract class BlockFluid extends Block
             return Block.waterMoving.theIcon[1];
         }
 
-        if (par0Str == "lava")
+        if (par0Str == "lava_still")
         {
             return Block.lavaMoving.theIcon[0];
         }

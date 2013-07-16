@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-
 public class GuiButtonOldDays extends GuiButton{
     protected int baseY;
 

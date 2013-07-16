@@ -20,7 +20,6 @@ public class FoodStats
 
     public FoodStats()
     {
-        foodTimer = 0;
         foodLevel = 20;
         prevFoodLevel = 20;
         foodSaturationLevel = 5F;
@@ -74,13 +73,14 @@ public class FoodStats
             }
         }
 
-        if (foodLevel >= 18 && par1EntityPlayer.shouldHeal())
+        if (par1EntityPlayer.worldObj.getGameRules().getGameRuleBooleanValue("naturalRegeneration") && foodLevel >= 18 && par1EntityPlayer.shouldHeal())
         {
             foodTimer++;
 
             if (foodTimer >= 80)
             {
-                par1EntityPlayer.heal(1);
+                par1EntityPlayer.heal(1.0F);
+                addExhaustion(3F);
                 foodTimer = 0;
             }
         }
@@ -90,9 +90,9 @@ public class FoodStats
 
             if (foodTimer >= 80)
             {
-                if (par1EntityPlayer.getHealth() > 10 || i >= 3 || par1EntityPlayer.getHealth() > 1 && i >= 2)
+                if (par1EntityPlayer.func_110143_aJ() > 10F || i >= 3 || par1EntityPlayer.func_110143_aJ() > 1.0F && i >= 2)
                 {
-                    par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1);
+                    par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1.0F);
                 }
 
                 foodTimer = 0;

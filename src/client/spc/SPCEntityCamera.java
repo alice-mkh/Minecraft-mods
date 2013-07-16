@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-
 public class SPCEntityCamera extends EntityPlayerSP {
 
    public SPCEntityCamera(Minecraft mc, World world, Session s, int i) {

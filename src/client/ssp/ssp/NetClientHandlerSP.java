@@ -4,13 +4,18 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.*;
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.INetworkManager;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet1Login;
+import net.minecraft.src.Packet10Flying;
 import net.minecraft.src.Packet18Animation;
+import net.minecraft.src.Packet27PlayerInput;
+import net.minecraft.src.Packet44UpdateAttributes;
+import net.minecraft.src.Packet133TileEditorOpen;
 import net.minecraft.src.Packet205ClientCommand;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet255KickDisconnect;
@@ -86,7 +91,7 @@ public class NetClientHandlerSP extends NetClientHandler
                     {
                         ((TileEntityCommandBlock)tileentity).setCommand(s1);
                         mc.theWorld.markBlockForUpdate(j, l, j1);
-                        mc.thePlayer.sendChatToPlayer((new StringBuilder()).append("Command set: ").append(s1).toString());
+                        mc.thePlayer.sendChatToPlayer(ChatMessageComponent.func_111077_e("Command set: "+s1));
                     }
                 }
                 catch (Exception exception3)
@@ -96,12 +101,13 @@ public class NetClientHandlerSP extends NetClientHandler
             }
             else
             {
-                mc.thePlayer.sendChatToPlayer(mc.thePlayer.translateString("advMode.notAllowed", new Object[0]));
+                mc.thePlayer.sendChatToPlayer(ChatMessageComponent.func_111077_e("advMode.notAllowed"));
             }
             return;
         }
         if (!("MC|TPack".equals(par1Packet250CustomPayload.channel)) &&
-            !("MC|TrList".equals(par1Packet250CustomPayload.channel))){
+            !("MC|TrList".equals(par1Packet250CustomPayload.channel)) &&
+            !("MC|Brand".equals(par1Packet250CustomPayload.channel))){
             Minecraft.invokeModMethod("ModLoader", "clientCustomPayload", new Class[]{Packet250CustomPayload.class}, par1Packet250CustomPayload);
         }
     }
@@ -132,6 +138,26 @@ public class NetClientHandlerSP extends NetClientHandler
 
     @Override
     public void handleAnimation(Packet18Animation par1Packet18Animation)
+    {
+    }
+
+    @Override
+    public void func_142031_a(Packet133TileEditorOpen par1Packet133TileEditorOpen)
+    {
+    }
+
+    @Override
+    public void func_110773_a(Packet44UpdateAttributes par1Packet44UpdateAttributes)
+    {
+    }
+
+    @Override
+    public void func_110774_a(Packet27PlayerInput par1Packet27PlayerInput)
+    {
+    }
+
+    @Override
+    public void handleFlying(Packet10Flying par1Packet10Flying)
     {
     }
 

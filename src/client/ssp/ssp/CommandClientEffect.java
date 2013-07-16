@@ -1,9 +1,9 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandEffect;
 import net.minecraft.src.CommandException;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NumberInvalidException;
 import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;

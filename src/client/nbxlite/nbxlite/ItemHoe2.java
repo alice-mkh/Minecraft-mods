@@ -19,7 +19,7 @@ public class ItemHoe2 extends ItemHoe
     @Override
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        if (!par2EntityPlayer.canCurrentToolHarvestBlock(par4, par5, par6))
+        if (!par2EntityPlayer.isCurrentToolAdventureModeExempt(par4, par5, par6))
         {
             return false;
         }
@@ -27,7 +27,7 @@ public class ItemHoe2 extends ItemHoe
         int i = par3World.getBlockId(par4, par5, par6);
         int j = par3World.getBlockId(par4, par5 + 1, par6);
 
-        if (par7 != 0 && j == 0 && i == Block.grass.blockID || i == Block.dirt.blockID)
+        if (par7 != 0 && j == 0 && (i == Block.grass.blockID || i == Block.dirt.blockID))
         {
             Block block = Block.tilledField;
             par3World.playSoundEffect((float)par4 + 0.5F, (float)par5 + 0.5F, (float)par6 + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);

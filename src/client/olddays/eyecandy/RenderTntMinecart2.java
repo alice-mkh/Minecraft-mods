@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 
 public class RenderTntMinecart2 extends RenderMinecart2
 {

@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 
 public class CommandClientSPC extends CommandBase{
     private String name;

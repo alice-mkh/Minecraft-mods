@@ -7,22 +7,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.Container;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityHorse;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.EnumStatus;
+import net.minecraft.src.I18n;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.IMerchant;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet204ClientInfo;
 import net.minecraft.src.Packet3Chat;
+import net.minecraft.src.PotionEffect;
 import net.minecraft.src.StatBase;
-import net.minecraft.src.StringTranslate;
+import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityBrewingStand;
 import net.minecraft.src.TileEntityDispenser;
 import net.minecraft.src.TileEntityFurnace;
@@ -31,9 +35,6 @@ import net.minecraft.src.WorldServer;
 public class EntityPlayerFakeMP extends EntityPlayerMP
 {
     private EntityPlayerSP2 realPlayer;
-
-    /** set to getHealth */
-    private int lastHealth = -99999999;
 
     /** set to foodStats.GetFoodLevel */
     private int lastFoodLevel = -99999999;
@@ -59,6 +60,8 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
      * The currently in use window ID. Incremented every time a window is opened.
      */
     private int currentWindowId = 0;
+
+    private float field_130068_bO;
 
     public EntityPlayerFakeMP(MinecraftServer par1MinecraftServer, String par3Str)
     {
@@ -128,7 +131,7 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
      * Called when the entity is attacked.
      */
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         return false;
     }
@@ -254,9 +257,18 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
         realPlayer.displayGUIMerchant(par1IMerchant, par2Str);
     }
 
-    /**
-     * inform the player of a change in a single slot
-     */
+    @Override
+    public void displayGUIEditSign(TileEntity par1TileEntity)
+    {
+        realPlayer.displayGUIEditSign(par1TileEntity);
+    }
+
+    @Override
+    public void func_110298_a(EntityHorse par1EntityHorse, IInventory par2IInventory)
+    {
+        realPlayer.func_110298_a(par1EntityHorse, par2IInventory);
+    }
+
     @Override
     public void sendSlotContents(Container par1Container, int par2, ItemStack par3ItemStack)
     {
@@ -295,7 +307,7 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     }
 
     @Override
-    public void closeInventory()
+    public void closeContainer()
     {
     }
 
@@ -319,9 +331,8 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     @Override
     public void addChatMessage(String par1Str)
     {
-        StringTranslate var2 = StringTranslate.getInstance();
-        String var3 = var2.translateKey(par1Str);
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(var3));
+        String var3 = I18n.func_135053_a(par1Str);
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat((ChatMessageComponent.func_111077_e(var3))));
     }
 
     /**
@@ -348,6 +359,11 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
         realPlayer.onEnchantmentCritical(par1Entity);
     }
 
+    @Override
+    protected void onChangedPotionEffect(PotionEffect par1PotionEffect, boolean par2)
+    {
+    }
+
     /**
      * Sends the player's abilities to the server (if there is one).
      */
@@ -370,9 +386,9 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     }
 
     @Override
-    public void sendChatToPlayer(String par1Str)
+    public void sendChatToPlayer(ChatMessageComponent par1ChatMessageComponent)
     {
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(par1Str));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(par1ChatMessageComponent));
     }
 
     @Override

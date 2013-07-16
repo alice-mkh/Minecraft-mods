@@ -35,12 +35,6 @@ public class EntityArrow extends Entity implements IProjectile
         xTile = -1;
         yTile = -1;
         zTile = -1;
-        inTile = 0;
-        inData = 0;
-        inGround = false;
-        canBePickedUp = 0;
-        arrowShake = 0;
-        ticksInAir = 0;
         damage = 2D;
         renderDistanceWeight = 10D;
         setSize(0.5F, 0.5F);
@@ -52,12 +46,6 @@ public class EntityArrow extends Entity implements IProjectile
         xTile = -1;
         yTile = -1;
         zTile = -1;
-        inTile = 0;
-        inData = 0;
-        inGround = false;
-        canBePickedUp = 0;
-        arrowShake = 0;
-        ticksInAir = 0;
         damage = 2D;
         renderDistanceWeight = 10D;
         setSize(0.5F, 0.5F);
@@ -65,31 +53,25 @@ public class EntityArrow extends Entity implements IProjectile
         yOffset = 0.0F;
     }
 
-    public EntityArrow(World par1World, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5)
+    public EntityArrow(World par1World, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase, float par4, float par5)
     {
         super(par1World);
         xTile = -1;
         yTile = -1;
         zTile = -1;
-        inTile = 0;
-        inData = 0;
-        inGround = false;
-        canBePickedUp = 0;
-        arrowShake = 0;
-        ticksInAir = 0;
         damage = 2D;
         renderDistanceWeight = 10D;
-        shootingEntity = par2EntityLiving;
+        shootingEntity = par2EntityLivingBase;
 
-        if (par2EntityLiving instanceof EntityPlayer)
+        if (par2EntityLivingBase instanceof EntityPlayer)
         {
             canBePickedUp = 1;
         }
 
-        posY = (par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight()) - 0.10000000149011612D;
-        double d = par3EntityLiving.posX - par2EntityLiving.posX;
-        double d1 = (par3EntityLiving.boundingBox.minY + (double)(par3EntityLiving.height / 3F)) - posY;
-        double d2 = par3EntityLiving.posZ - par2EntityLiving.posZ;
+        posY = (par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight()) - 0.10000000149011612D;
+        double d = par3EntityLivingBase.posX - par2EntityLivingBase.posX;
+        double d1 = (par3EntityLivingBase.boundingBox.minY + (double)(par3EntityLivingBase.height / 3F)) - posY;
+        double d2 = par3EntityLivingBase.posZ - par2EntityLivingBase.posZ;
         double d3 = MathHelper.sqrt_double(d * d + d2 * d2);
 
         if (d3 < 9.9999999999999995E-008D)
@@ -102,7 +84,7 @@ public class EntityArrow extends Entity implements IProjectile
             float f1 = (float)(-((Math.atan2(d1, d3) * 180D) / Math.PI));
             double d4 = d / d3;
             double d5 = d2 / d3;
-            setLocationAndAngles(par2EntityLiving.posX + d4, posY, par2EntityLiving.posZ + d5, f, f1);
+            setLocationAndAngles(par2EntityLivingBase.posX + d4, posY, par2EntityLivingBase.posZ + d5, f, f1);
             yOffset = 0.0F;
             float f2 = (float)d3 * 0.2F;
             setThrowableHeading(d, d1 + (double)f2, d2, par4, par5);
@@ -110,29 +92,23 @@ public class EntityArrow extends Entity implements IProjectile
         }
     }
 
-    public EntityArrow(World par1World, EntityLiving par2EntityLiving, float par3)
+    public EntityArrow(World par1World, EntityLivingBase par2EntityLivingBase, float par3)
     {
         super(par1World);
         xTile = -1;
         yTile = -1;
         zTile = -1;
-        inTile = 0;
-        inData = 0;
-        inGround = false;
-        canBePickedUp = 0;
-        arrowShake = 0;
-        ticksInAir = 0;
         damage = 2D;
         renderDistanceWeight = 10D;
-        shootingEntity = par2EntityLiving;
+        shootingEntity = par2EntityLivingBase;
 
-        if (par2EntityLiving instanceof EntityPlayer)
+        if (par2EntityLivingBase instanceof EntityPlayer)
         {
             canBePickedUp = 1;
         }
 
         setSize(0.5F, 0.5F);
-        setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
+        setLocationAndAngles(par2EntityLivingBase.posX, par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight(), par2EntityLivingBase.posZ, par2EntityLivingBase.rotationYaw, par2EntityLivingBase.rotationPitch);
         posX -= MathHelper.cos((rotationYaw / 180F) * (float)Math.PI) * 0.16F;
         posY -= 0.10000000149011612D;
         posZ -= MathHelper.sin((rotationYaw / 180F) * (float)Math.PI) * 0.16F;
@@ -353,13 +329,13 @@ public class EntityArrow extends Entity implements IProjectile
 
                 if (movingobjectposition.entityHit.attackEntityFrom(damagesource, j1))
                 {
-                    if (movingobjectposition.entityHit instanceof EntityLiving)
+                    if (movingobjectposition.entityHit instanceof EntityLivingBase)
                     {
-                        EntityLiving entityliving = (EntityLiving)movingobjectposition.entityHit;
+                        EntityLivingBase entitylivingbase = (EntityLivingBase)movingobjectposition.entityHit;
 
                         if (!worldObj.isRemote)
                         {
-                            entityliving.setArrowCountInEntity(entityliving.getArrowCountInEntity() + 1);
+                            entitylivingbase.setArrowCountInEntity(entitylivingbase.getArrowCountInEntity() + 1);
                         }
 
                         if (knockbackStrength > 0)
@@ -374,7 +350,7 @@ public class EntityArrow extends Entity implements IProjectile
 
                         if (shootingEntity != null)
                         {
-                            EnchantmentThorns.func_92096_a(shootingEntity, entityliving, rand);
+                            EnchantmentThorns.func_92096_a(shootingEntity, entitylivingbase, rand);
                         }
 
                         if (shootingEntity != null && movingobjectposition.entityHit != shootingEntity && (movingobjectposition.entityHit instanceof EntityPlayer) && (shootingEntity instanceof EntityPlayerMP))

@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.io.PrintStream;
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.oldbiomes.*;
 import net.minecraft.src.nbxlite.spawners.*;
 import net.minecraft.src.nbxlite.indev.*;
@@ -349,7 +348,7 @@ public class WorldSSP2 extends WorldSSP
         if (getGameRules().getGameRuleBooleanValue("doMobSpawning")){
             if (provider.dimensionId!=1){
                 if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                    SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
+                    field_135059_Q.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
@@ -363,7 +362,7 @@ public class WorldSSP2 extends WorldSSP
                     }
                 }
             }else{
-                SpawnerAnimals.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
+                field_135059_Q.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
             }
         }
         theProfiler.endStartSection("chunkSource");

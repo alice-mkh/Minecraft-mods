@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.mapgens.BiomeDecorator2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenHills2;
 import net.minecraft.src.nbxlite.mapgens.BiomeGenDesertOld;

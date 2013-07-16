@@ -5,13 +5,12 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 public class GuiMultiplayer extends GuiScreen
 {
     /** Number of outstanding ThreadPollServers threads */
-    private static int threadsPending = 0;
+    private static int threadsPending;
 
     /** Lock object for use with synchronized() */
     private static Object lock = new Object();
@@ -63,12 +62,6 @@ public class GuiMultiplayer extends GuiScreen
     public GuiMultiplayer(GuiScreen par1GuiScreen)
     {
         selectedServer = -1;
-        deleteClicked = false;
-        addClicked = false;
-        editClicked = false;
-        directClicked = false;
-        lagTooltip = null;
-        theServerData = null;
         listofLanServers = Collections.emptyList();
         parentScreen = par1GuiScreen;
     }
@@ -113,14 +106,13 @@ public class GuiMultiplayer extends GuiScreen
      */
     public void initGuiControls()
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        buttonList.add(field_96289_p = new GuiButton(7, width / 2 - 154, height - 28, 70, 20, stringtranslate.translateKey("selectServer.edit")));
-        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, stringtranslate.translateKey("selectServer.delete")));
-        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 100, 20, stringtranslate.translateKey("selectServer.select")));
-        buttonList.add(new GuiButton(4, width / 2 - 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.direct")));
-        buttonList.add(new GuiButton(3, width / 2 + 4 + 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.add")));
-        buttonList.add(new GuiButton(8, width / 2 + 4, height - 28, 70, 20, stringtranslate.translateKey("selectServer.refresh")));
-        buttonList.add(new GuiButton(0, width / 2 + 4 + 76, height - 28, 75, 20, stringtranslate.translateKey("gui.cancel")));
+        buttonList.add(field_96289_p = new GuiButton(7, width / 2 - 154, height - 28, 70, 20, I18n.func_135053_a("selectServer.edit")));
+        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, I18n.func_135053_a("selectServer.delete")));
+        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 100, 20, I18n.func_135053_a("selectServer.select")));
+        buttonList.add(new GuiButton(4, width / 2 - 50, height - 52, 100, 20, I18n.func_135053_a("selectServer.direct")));
+        buttonList.add(new GuiButton(3, width / 2 + 4 + 50, height - 52, 100, 20, I18n.func_135053_a("selectServer.add")));
+        buttonList.add(new GuiButton(8, width / 2 + 4, height - 28, 70, 20, I18n.func_135053_a("selectServer.refresh")));
+        buttonList.add(new GuiButton(0, width / 2 + 4 + 76, height - 28, 75, 20, I18n.func_135053_a("gui.cancel")));
         boolean flag = selectedServer >= 0 && selectedServer < serverSlotContainer.getSize();
         buttonSelect.enabled = flag;
         field_96289_p.enabled = flag;
@@ -173,11 +165,10 @@ public class GuiMultiplayer extends GuiScreen
             if (s != null)
             {
                 deleteClicked = true;
-                StringTranslate stringtranslate = StringTranslate.getInstance();
-                String s1 = stringtranslate.translateKey("selectServer.deleteQuestion");
-                String s2 = (new StringBuilder()).append("'").append(s).append("' ").append(stringtranslate.translateKey("selectServer.deleteWarning")).toString();
-                String s3 = stringtranslate.translateKey("selectServer.deleteButton");
-                String s4 = stringtranslate.translateKey("gui.cancel");
+                String s1 = I18n.func_135053_a("selectServer.deleteQuestion");
+                String s2 = (new StringBuilder()).append("'").append(s).append("' ").append(I18n.func_135053_a("selectServer.deleteWarning")).toString();
+                String s3 = I18n.func_135053_a("selectServer.deleteButton");
+                String s4 = I18n.func_135053_a("gui.cancel");
                 GuiYesNo guiyesno = new GuiYesNo(this, s1, s2, s3, s4, selectedServer);
                 mc.displayGuiScreen(guiyesno);
             }
@@ -189,12 +180,12 @@ public class GuiMultiplayer extends GuiScreen
         else if (par1GuiButton.id == 4)
         {
             directClicked = true;
-            mc.displayGuiScreen(new GuiScreenServerList(this, theServerData = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
+            mc.displayGuiScreen(new GuiScreenServerList(this, theServerData = new ServerData(I18n.func_135053_a("selectServer.defaultName"), "")));
         }
         else if (par1GuiButton.id == 3)
         {
             addClicked = true;
-            mc.displayGuiScreen(new GuiScreenAddServer(this, theServerData = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
+            mc.displayGuiScreen(new GuiScreenAddServer(this, theServerData = new ServerData(I18n.func_135053_a("selectServer.defaultName"), "")));
         }
         else if (par1GuiButton.id == 7)
         {
@@ -305,7 +296,7 @@ public class GuiMultiplayer extends GuiScreen
         }
         else if (isShiftKeyDown() && par2 == 208)
         {
-            if (i < internetServerList.countServers() - 1)
+            if ((i >= 0) & (i < internetServerList.countServers() - 1))
             {
                 internetServerList.swapServers(i, i + 1);
                 selectedServer++;
@@ -316,7 +307,7 @@ public class GuiMultiplayer extends GuiScreen
                 }
             }
         }
-        else if (par1 == '\r')
+        else if (par2 == 28 || par2 == 156)
         {
             actionPerformed((GuiButton)buttonList.get(2));
         }
@@ -332,10 +323,9 @@ public class GuiMultiplayer extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         lagTooltip = null;
-        StringTranslate stringtranslate = StringTranslate.getInstance();
         drawDefaultBackground();
         serverSlotContainer.drawScreen(par1, par2, par3);
-        drawCenteredString(fontRenderer, stringtranslate.translateKey("multiplayer.title"), width / 2, 20, 0xffffff);
+        drawCenteredString(fontRenderer, I18n.func_135053_a("multiplayer.title"), width / 2, 20, 0xffffff);
         super.drawScreen(par1, par2, par3);
 
         if (lagTooltip != null)
@@ -370,9 +360,9 @@ public class GuiMultiplayer extends GuiScreen
         mc.displayGuiScreen(new GuiConnecting(this, mc, par1ServerData));
     }
 
-    private static void func_74017_b(ServerData par1ServerData) throws IOException
+    private static void func_74017_b(ServerData par0ServerData) throws IOException
     {
-        ServerAddress serveraddress = ServerAddress.func_78860_a(par1ServerData.serverIP);
+        ServerAddress serveraddress = ServerAddress.func_78860_a(par0ServerData.serverIP);
         Socket socket = null;
         DataInputStream datainputstream = null;
         DataOutputStream dataoutputstream = null;
@@ -386,8 +376,9 @@ public class GuiMultiplayer extends GuiScreen
             socket.connect(new InetSocketAddress(serveraddress.getIP(), serveraddress.getPort()), 3000);
             datainputstream = new DataInputStream(socket.getInputStream());
             dataoutputstream = new DataOutputStream(socket.getOutputStream());
-            dataoutputstream.write(254);
-            dataoutputstream.write(1);
+            Packet254ServerPing packet254serverping = new Packet254ServerPing(74, serveraddress.getIP(), serveraddress.getPort());
+            dataoutputstream.writeByte(packet254serverping.getPacketId());
+            packet254serverping.writePacketData(dataoutputstream);
 
             if (datainputstream.read() != 255)
             {
@@ -413,27 +404,27 @@ public class GuiMultiplayer extends GuiScreen
 
                 if (MathHelper.parseIntWithDefault(as[0], 0) == 1)
                 {
-                    par1ServerData.serverMOTD = as[3];
-                    par1ServerData.field_82821_f = MathHelper.parseIntWithDefault(as[1], par1ServerData.field_82821_f);
-                    par1ServerData.gameVersion = as[2];
+                    par0ServerData.serverMOTD = as[3];
+                    par0ServerData.field_82821_f = MathHelper.parseIntWithDefault(as[1], par0ServerData.field_82821_f);
+                    par0ServerData.gameVersion = as[2];
                     int j = MathHelper.parseIntWithDefault(as[4], 0);
                     int l = MathHelper.parseIntWithDefault(as[5], 0);
 
                     if (j >= 0 && l >= 0)
                     {
-                        par1ServerData.populationInfo = (new StringBuilder()).append(EnumChatFormatting.GRAY).append("").append(j).append("").append(EnumChatFormatting.DARK_GRAY).append("/").append(EnumChatFormatting.GRAY).append(l).toString();
+                        par0ServerData.populationInfo = (new StringBuilder()).append(EnumChatFormatting.GRAY).append("").append(j).append("").append(EnumChatFormatting.DARK_GRAY).append("/").append(EnumChatFormatting.GRAY).append(l).toString();
                     }
                     else
                     {
-                        par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
+                        par0ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                     }
                 }
                 else
                 {
-                    par1ServerData.gameVersion = "???";
-                    par1ServerData.serverMOTD = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
-                    par1ServerData.field_82821_f = 62;
-                    par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
+                    par0ServerData.gameVersion = "???";
+                    par0ServerData.serverMOTD = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
+                    par0ServerData.field_82821_f = 75;
+                    par0ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                 }
             }
             else
@@ -450,19 +441,19 @@ public class GuiMultiplayer extends GuiScreen
                 }
                 catch (Exception exception) { }
 
-                par1ServerData.serverMOTD = (new StringBuilder()).append(EnumChatFormatting.GRAY).append(s).toString();
+                par0ServerData.serverMOTD = (new StringBuilder()).append(EnumChatFormatting.GRAY).append(s).toString();
 
                 if (k >= 0 && i1 > 0)
                 {
-                    par1ServerData.populationInfo = (new StringBuilder()).append(EnumChatFormatting.GRAY).append("").append(k).append("").append(EnumChatFormatting.DARK_GRAY).append("/").append(EnumChatFormatting.GRAY).append(i1).toString();
+                    par0ServerData.populationInfo = (new StringBuilder()).append(EnumChatFormatting.GRAY).append("").append(k).append("").append(EnumChatFormatting.DARK_GRAY).append("/").append(EnumChatFormatting.GRAY).append(i1).toString();
                 }
                 else
                 {
-                    par1ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
+                    par0ServerData.populationInfo = (new StringBuilder()).append("").append(EnumChatFormatting.DARK_GRAY).append("???").toString();
                 }
 
-                par1ServerData.gameVersion = "1.3";
-                par1ServerData.field_82821_f = 60;
+                par0ServerData.gameVersion = "1.3";
+                par0ServerData.field_82821_f = 73;
             }
         }
         finally

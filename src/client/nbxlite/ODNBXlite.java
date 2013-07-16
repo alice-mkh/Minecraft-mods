@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import java.io.*;
 import java.util.*;
 import net.minecraft.src.nbxlite.*;
@@ -615,9 +614,9 @@ public class ODNBXlite extends OldDaysModule{
         Minecraft minecraft = mod_OldDays.getMinecraft();
         if (!rendererReplaced){
 //             minecraft.entityRenderer = new EntityRenderer2(minecraft);
-            Icon[] destroy = (Icon[])(core.getField(RenderGlobal.class, minecraft.renderGlobal, 25));
-            minecraft.renderGlobal = new RenderGlobal2(minecraft, minecraft.renderEngine);
-            core.setField(RenderGlobal.class, minecraft.renderGlobal, 25, destroy);
+            Icon[] destroy = (Icon[])(core.getField(RenderGlobal.class, minecraft.renderGlobal, 29));
+            minecraft.renderGlobal = new RenderGlobal2(minecraft);
+            core.setField(RenderGlobal.class, minecraft.renderGlobal, 29, destroy);
             rendererReplaced = true;
         }
         return true;
@@ -687,8 +686,9 @@ public class ODNBXlite extends OldDaysModule{
             customleaves.setLightOpacity(1);
             customleaves.setStepSound(Block.soundGrassFootstep);
             customleaves.setUnlocalizedName("leaves");
+            customleaves.func_111022_d("leaves");
             Block.blocksList[Block.leaves.blockID] = customleaves;
-            mod_OldDays.setField(Block.class, null, 36, customleaves);//Block: leaves
+            mod_OldDays.setField(Block.class, null, 37, customleaves);//Block: leaves
             Item.itemsList[Block.leaves.blockID] = null;
             Item.itemsList[Block.leaves.blockID] = (new ItemLeaves(Block.leaves.blockID - 256)).setUnlocalizedName("leaves");
             Block.blocksList[Block.tallGrass.blockID] = null;
@@ -697,7 +697,7 @@ public class ODNBXlite extends OldDaysModule{
             customtallgrass.setStepSound(Block.soundGrassFootstep);
             customtallgrass.setUnlocalizedName("tallgrass");
             Block.blocksList[Block.tallGrass.blockID] = customtallgrass;
-            mod_OldDays.setField(Block.class, null, 49, customtallgrass);//Block: tallGrass
+            mod_OldDays.setField(Block.class, null, 50, customtallgrass);//Block: tallGrass
             Item.itemsList[Block.tallGrass.blockID] = null;
             Item.itemsList[Block.tallGrass.blockID] = (new ItemColored(Block.tallGrass.blockID - 256, true)).setBlockNames(new String[]{"shrub", "grass", "fern"});
             Block.blocksList[Block.vine.blockID] = null;
@@ -705,25 +705,31 @@ public class ODNBXlite extends OldDaysModule{
             customvine.setHardness(0.2F);
             customvine.setStepSound(Block.soundGrassFootstep);
             customvine.setUnlocalizedName("vine");
+            customvine.func_111022_d("vine");
             Block.blocksList[Block.vine.blockID] = customvine;
-            mod_OldDays.setField(Block.class, null, 124, customvine);//Block: vine
+            mod_OldDays.setField(Block.class, null, 125, customvine);//Block: vine
             Item.itemsList[Block.vine.blockID] = null;
             Item.itemsList[Block.vine.blockID] = new ItemColored(Block.vine.blockID - 256, false);
             Item.itemsList[256 + 34] = null;
-            ItemHoe2 hoeWood = new ItemHoe2(34, EnumToolMaterial.WOOD);
+            ItemHoe2 hoeWood = new ItemHoe2(Item.hoeWood.itemID, EnumToolMaterial.WOOD);
             hoeWood.setUnlocalizedName("hoeWood");
+            hoeWood.func_111206_d("wood_hoe");
             Item.itemsList[256 + 35] = null;
-            ItemHoe2 hoeStone = new ItemHoe2(35, EnumToolMaterial.STONE);
+            ItemHoe2 hoeStone = new ItemHoe2(Item.hoeStone.itemID, EnumToolMaterial.STONE);
             hoeStone.setUnlocalizedName("hoeStone");
+            hoeStone.func_111206_d("stone_hoe");
             Item.itemsList[256 + 36] = null;
-            ItemHoe2 hoeIron = new ItemHoe2(36, EnumToolMaterial.IRON);
+            ItemHoe2 hoeIron = new ItemHoe2(Item.hoeIron.itemID, EnumToolMaterial.IRON);
             hoeIron.setUnlocalizedName("hoeIron");
+            hoeIron.func_111206_d("iron_hoe");
             Item.itemsList[256 + 37] = null;
-            ItemHoe2 hoeDiamond = new ItemHoe2(37, EnumToolMaterial.EMERALD);
+            ItemHoe2 hoeDiamond = new ItemHoe2(Item.hoeDiamond.itemID, EnumToolMaterial.EMERALD);
             hoeDiamond.setUnlocalizedName("hoeDiamond");
+            hoeDiamond.func_111206_d("diamond_hoe");
             Item.itemsList[256 + 38] = null;
-            ItemHoe2 hoeGold = new ItemHoe2(38, EnumToolMaterial.GOLD);
+            ItemHoe2 hoeGold = new ItemHoe2(Item.hoeGold.itemID, EnumToolMaterial.GOLD);
             hoeGold.setUnlocalizedName("hoeGold");
+            hoeGold.func_111206_d("gold_hoe");
         }catch (Exception exception){
             System.out.println(exception);
         }
@@ -1299,7 +1305,7 @@ public class ODNBXlite extends OldDaysModule{
 
     public static boolean oldLightEngine = false;
 
-    public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().getMinecraftDir(), "saves"));
+    public static ISaveFormat saveLoader = new SaveConverterMcRegion(new File(mod_OldDays.getMinecraft().mcDataDir, "saves"));
 
     public static String[] FLAGS = new String[]{"newores", "jungle", "icedesert", "fixbeaches", "weather"};
 

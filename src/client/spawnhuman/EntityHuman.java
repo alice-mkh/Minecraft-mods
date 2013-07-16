@@ -5,13 +5,19 @@ public class EntityHuman extends EntityAnimal
     public EntityHuman(World world)
     {
         super(world);
-        if (mod_SpawnHuman.CustomTexture){
-            texture = "/char.png";
-        }else{
-            texture = "/mob/char.png";
-        }
         setSize(0.9F, 1.62F);
-        moveSpeed = 1.2F;
+    }
+
+    @Override
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        if (mod_SpawnHuman.Health==0){
+            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(9999D);
+        }else{
+            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(mod_SpawnHuman.Health);
+        }
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(1.2D);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class EntityHuman extends EntityAnimal
             double d3 = vec3d.yCoord - (double)i;
             float f2 = (float)((Math.atan2(d2, d1) * 180D) / 3.1415927410125732D) - 90F;
             float f3 = f2 - rotationYaw;
-            moveForward = moveSpeed;
+            moveForward = (float)func_110148_a(SharedMonsterAttributes.field_111263_d).func_111126_e();
             for(; f3 < -180F; f3 += 360F) { }
             for(; f3 >= 180F; f3 -= 360F) { }
             if(f3 > 10F)
@@ -108,16 +114,6 @@ public class EntityHuman extends EntityAnimal
 //         pathToEntity = worldObj.getEntityPathToXYZ(this, i, j, k, 10F);
         setPathToEntity(worldObj.getEntityPathToXYZ(this, i, j, k, 10F, true, false, false, true));
         worldObj.theProfiler.endSection();
-    }
-
-    @Override
-    public int getMaxHealth()
-    {
-        if (mod_SpawnHuman.Health==0){
-            return 9999;
-        }else{
-            return mod_SpawnHuman.Health;
-        }
     }
 
     @Override

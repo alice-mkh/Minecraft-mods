@@ -70,10 +70,9 @@ public class PageAlpha extends Page{
 
     @Override
     public void updateButtonText(){
-        StringTranslate stringtranslate = StringTranslate.getInstance();
         newOresButton.displayString = mod_OldDays.lang.get("flag.newores") + ": " + mod_OldDays.lang.get("gui." + (newores ? "on" : "off"));
         themeButton.displayString = mod_OldDays.lang.get("nbxlite.maptheme.name") + ": " + mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1));
-        snowButton.displayString = stringtranslate.translateKey("tile.snow.name") + ": ";
+        snowButton.displayString = I18n.func_135053_a("tile.snow.name") + ": ";
         if (snow == 1 && !weather){
             snowButton.displayString += mod_OldDays.lang.get("gui.random") + (theme == ODNBXlite.THEME_WOODS ? " (50%)" : " (25%)");
         }else{
@@ -190,7 +189,7 @@ public class PageAlpha extends Page{
         str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
         if (features == 3 && ODNBXlite.SnowCovered){
             str.append(" (");
-            str.append(StringTranslate.getInstance().translateKey("tile.snow.name"));
+            str.append(I18n.func_135053_a("tile.snow.name"));
             str.append(")");
         }
         return str.toString();

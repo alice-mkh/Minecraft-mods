@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 public class GuiContainerCreativeOld extends InventoryEffectRenderer
 {
+    private static final ResourceLocation bgResource = new ResourceLocation("olddays/allitems.png");
+
     private static InventoryBasic inventory = new InventoryBasic("tmp", false, 72);
 
     /** Amount scrolled in Creative mode inventory (0 = top, 1 = bottom) */
@@ -250,7 +251,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture("/olddays/allitems.png");
+        mc.func_110434_K().func_110577_a(bgResource);
         int j = guiLeft;
         int k = guiTop;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);

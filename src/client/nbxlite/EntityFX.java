@@ -38,10 +38,7 @@ public class EntityFX extends Entity
     protected EntityFX(World par1World, double par2, double par4, double par6)
     {
         super(par1World);
-        particleAge = 0;
-        particleMaxAge = 0;
         particleAlpha = 1.0F;
-        particleIcon = null;
         setSize(0.2F, 0.2F);
         yOffset = height / 2.0F;
         setPosition(par2, par4, par6);
@@ -173,7 +170,7 @@ public class EntityFX extends Entity
         float f5 = (float)((prevPosX + (posX - prevPosX) * (double)par2) - interpPosX);
         float f6 = (float)((prevPosY + (posY - prevPosY) * (double)par2) - interpPosY);
         float f7 = (float)((prevPosZ + (posZ - prevPosZ) * (double)par2) - interpPosZ);
-        float f8 = net.minecraft.client.Minecraft.oldlighting ? getBrightness(par2) : 1.0F;
+        float f8 = Minecraft.oldlighting ? getBrightness(par2) : 1.0F;
         par1Tessellator.setColorRGBA_F(particleRed * f8, particleGreen * f8, particleBlue * f8, particleAlpha);
         par1Tessellator.addVertexWithUV(f5 - par3 * f4 - par6 * f4, f6 - par4 * f4, f7 - par5 * f4 - par7 * f4, f1, f3);
         par1Tessellator.addVertexWithUV((f5 - par3 * f4) + par6 * f4, f6 + par4 * f4, (f7 - par5 * f4) + par7 * f4, f1, f2);
@@ -200,15 +197,15 @@ public class EntityFX extends Entity
     {
     }
 
-    public void setParticleIcon(RenderEngine par1RenderEngine, Icon par2Icon)
+    public void func_110125_a(Icon par1Icon)
     {
         if (getFXLayer() == 1)
         {
-            particleIcon = par2Icon;
+            particleIcon = par1Icon;
         }
         else if (getFXLayer() == 2)
         {
-            particleIcon = par2Icon;
+            particleIcon = par1Icon;
         }
         else
         {

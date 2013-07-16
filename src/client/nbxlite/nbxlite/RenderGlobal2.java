@@ -4,7 +4,6 @@ import java.nio.FloatBuffer;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.BufferUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 import net.minecraft.src.ssp.WorldSSP;
 
@@ -15,8 +14,14 @@ public class RenderGlobal2 extends RenderGlobal{
     public static boolean sunriseAtNorth = false;
     public static boolean oldstars = false;
 
+    private static final ResourceLocation field_110927_h = new ResourceLocation("textures/environment/moon_phases.png");
+    private static final ResourceLocation field_110928_i = new ResourceLocation("textures/environment/sun.png");
+    private static final ResourceLocation field_110925_j = new ResourceLocation("textures/environment/clouds.png");
+    private static final ResourceLocation field_110926_k = new ResourceLocation("textures/environment/end_sky.png");
+    private static final ResourceLocation fluffTexture = new ResourceLocation("olddays/fluff.png");
+
     protected Minecraft mc;
-    protected RenderEngine renderEngine;
+    protected TextureManager renderEngine;
     protected World worldObj;
     protected int cloudTickCounter;
 
@@ -31,16 +36,15 @@ public class RenderGlobal2 extends RenderGlobal{
 
     FloatBuffer floatBuffer;
 
-    public RenderGlobal2(Minecraft mc2, RenderEngine re){
-        super(mc2, re);
+    public RenderGlobal2(Minecraft mc2){
+        super(mc2);
         mc = mc2;
-        renderEngine = re;
+        renderEngine = mc2.func_110434_K();
         floatBuffer = BufferUtils.createFloatBuffer(16);
-        starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 15));
+        starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 19));
         setStars(oldstars);
-        glSkyList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 16));
-        glSkyList2 = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 17));
-        cloudTickCounter = 0;
+        glSkyList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 20));
+        glSkyList2 = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 21));
     }
 
     public void setStars(boolean b){
@@ -86,7 +90,7 @@ public class RenderGlobal2 extends RenderGlobal{
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.disableStandardItemLighting();
             GL11.glDepthMask(false);
-            renderEngine.bindTexture("/misc/tunnel.png");
+            renderEngine.func_110577_a(field_110926_k);
             Tessellator tessellator = Tessellator.instance;
 
             for (int i = 0; i < 6; i++)
@@ -231,7 +235,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glRotatef(worldObj.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
         if (ODNBXlite.DayNight>0){
             float f15 = 30F;
-            renderEngine.bindTexture("/environment/sun.png");
+            renderEngine.func_110577_a(field_110928_i);
             tessellator1.startDrawingQuads();
             tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
             tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
@@ -239,7 +243,7 @@ public class RenderGlobal2 extends RenderGlobal{
             tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
             tessellator1.draw();
             f15 = 20F;
-            renderEngine.bindTexture("/environment/moon_phases.png");
+            renderEngine.func_110577_a(field_110927_h);
             int i18 = worldObj.getMoonPhase();
             int l = i18 % 4;
             int i1 = (i18 / 4) % 2;
@@ -368,7 +372,7 @@ public class RenderGlobal2 extends RenderGlobal{
         byte byte0 = 32;
         int i = (opaqueFlatClouds ? 1024 : 256) / byte0;
         Tessellator tessellator = Tessellator.instance;
-        renderEngine.bindTexture("/environment/clouds.png");
+        renderEngine.func_110577_a(field_110925_j);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3d = worldObj.getCloudColour(par1);
@@ -452,7 +456,7 @@ public class RenderGlobal2 extends RenderGlobal{
         d2 -= j * 2048;
         if (texClouds){
             OpenGlHelper.setActiveTexture(33985);
-            renderEngine.bindTexture("/olddays/fluff.png");
+            renderEngine.func_110577_a(fluffTexture);
             GL11.glTexGeni(8192, 9472, 9217);
             GL11.glTexGen(8192, 9473, a(1.0F, 0.0F, 0.0F, 0.0F));
             GL11.glTexGeni(8193, 9472, 9217);
@@ -468,7 +472,7 @@ public class RenderGlobal2 extends RenderGlobal{
             OpenGlHelper.setActiveTexture(33984);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
-        renderEngine.bindTexture("/environment/clouds.png");
+        renderEngine.func_110577_a(field_110925_j);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3d = worldObj.getCloudColour(par1);

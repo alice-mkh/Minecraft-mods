@@ -92,7 +92,6 @@ import org.lwjgl.opengl.Display;
 
 import paulscode.sound.SoundSystem;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.ssp.ClientCommandManager;
 import net.minecraft.src.ssp.TeleporterSP;
 import net.minecraft.src.ssp.WorldSSP;
@@ -213,7 +212,7 @@ public class PlayerHelper {
    public static final HashMap<String, String[]> CMDS;
    public static Vector<String> ITEMNAMES;
    public static SPCPluginManager PLUGIN_MANAGER;
-   public static File MODDIR = new File(Minecraft.getMinecraftDir(), "mods/sppcommands/");
+   public static File MODDIR = new File(Minecraft.getMinecraft().mcDataDir, "mods/sppcommands/");
    public static Object HAS_STARTED_UP = null;
    public static String VALID_COLOURS = "0123456789abcdef";
    public static int MAGICNUMBER = -8383847;
@@ -372,7 +371,7 @@ public class PlayerHelper {
       // "<TIME_SECONDS> <COUNT> <COMMAND> {COMMANDPARAMS}", "1 -1 killnpc all" });
       CMDS.put("reset", new String[] { "Resets the settings to default", "", "" });
       CMDS.put("resize", new String[] { "Resizes the Minecraft window the size you want it", "[1080p|720p|480p|setdefault [WIDTH HEIGHT]|<WIDTH HEIGHT>]", "800 600" });
-      CMDS.put("reskin", new String[] { "Reskins the NPC which you are pointing at to the specified skin", "", "" });
+//       CMDS.put("reskin", new String[] { "Reskins the NPC which you are pointing at to the specified skin", "", "" });
       CMDS.put("return", new String[] { "Moves the player to the last position before teleport", "", "" });
       CMDS.put("ride", new String[] { "Rides the entity you are pointing at", "", "" });
       CMDS.put("s", new String[] { "Mark a waypoint on the world", "<NAME>", "example" });
@@ -384,7 +383,7 @@ public class PlayerHelper {
       CMDS.put("setspeed", new String[] { "Sets the speed that the player moves", "<SPEED|reset>", "3" });
       CMDS.put("sign", new String[] { "Allows placing and editing of signs without a GUI", "<add|edit> [\"LINE1\"] [\"LINE2\"] [\"LINE3\"] [\"LINE4\"]", "add \"Hello\" \"World\" \"   This\" \"is a test\"" });
       //TODO: CMDS.put("size", new String[] { "Sets the player size", "<SIZE|reset>", "1" });
-      CMDS.put("skin", new String[] { "Allows the user to change their skin to any valid player's skin.", "<PLAYERNAME|reset>", "trunksbomb" });
+//       CMDS.put("skin", new String[] { "Allows the user to change their skin to any valid player's skin.", "<PLAYERNAME|reset>", "trunksbomb" });
       CMDS.put("slippery", new String[] { "Makes the specified block slippery", "<BLOCK> [SLIPPERYNESS]", "grass 1.5" });
       CMDS.put("spawn", new String[] { "Spawns the specified creature.", "<CREATURENAME> [QTY]", "zombie 10" });
       CMDS.put("spawner", new String[] { "Changes the mob spawner the player is pointing at", "<TYPE>", "Creeper" });
@@ -704,7 +703,7 @@ public class PlayerHelper {
          if (Item.itemsList[i] == null) {
             ITEMNAMES.add(null);
          } else {
-            ITEMNAMES.add(StringTranslate.getInstance().translateNamedKey((Item.itemsList[i].getUnlocalizedName())).toString().trim().toLowerCase());
+            ITEMNAMES.add(I18n.func_135053_a((Item.itemsList[i].getUnlocalizedName())).toString().trim().toLowerCase());
          }
       }
 
@@ -806,8 +805,8 @@ public class PlayerHelper {
       superpunch = s.getDouble("superpunch", -1);
       ep.stepHeight = s.getFloat("stepheight", ep.stepHeight);
       toggledropgive = s.getBoolean("toggledropgive", true);
-      sizewidth = s.getInteger("sizewidth", mc.mcCanvas.getParent().getWidth());
-      sizeheight = s.getInteger("sizeheight", mc.mcCanvas.getParent().getHeight());
+      sizewidth = s.getInteger("sizewidth", mc.displayWidth);
+      sizeheight = s.getInteger("sizeheight", mc.displayHeight);
       timespeed = s.getInteger("timespeed",0);
       updateson = s.getBoolean("updateson",true);
       textcolornormal = s.getCharacter("textcolornormal", 'f');
@@ -1580,16 +1579,16 @@ public class PlayerHelper {
             return;
          }
          if (split[1].equalsIgnoreCase("max")) {
-            ep.health = 20;
+            ep.setEntityHealth(20);
          } else if (split[1].equalsIgnoreCase("min")) {
-            ep.health = 1;
+            ep.setEntityHealth(1);
          } else if (split[1].equalsIgnoreCase("infinite") || split[1].equalsIgnoreCase("inf")) {
-            ep.health = Short.MAX_VALUE;
+            ep.setEntityHealth(Short.MAX_VALUE);
          } else {
             sendError("Invalid health command: " + split[1]);
             return;
          }
-         sendMessage("Health set at " + split[1] + " (" + ep.health + ")");
+         sendMessage("Health set at " + split[1] + " (" + ep.func_110143_aJ() + ")");
 
          /*
           * Heal command - allows you to heal your player the specified number of half hearts.
@@ -1663,7 +1662,7 @@ public class PlayerHelper {
             } else {
                es.setLocationAndAngles(ep.posX + 3, ep.posY, ep.posZ + 3, ep.rotationYaw, 0F);
             }
-            es.initCreature();
+            es.func_110161_a(null);
             mc.theWorld.spawnEntityInWorld(es);
             if (et != null) {
                es.mountEntity(et);
@@ -1740,7 +1739,7 @@ public class PlayerHelper {
                } else {
                   es.setLocationAndAngles(ep.posX + r.nextInt(5), ep.posY, ep.posZ + r.nextInt(5), ep.rotationYaw, 0F);
                }
-               es.initCreature();
+               es.func_110161_a(null);
                mc.theWorld.spawnEntityInWorld(es);
             }
          } catch (Exception e) {
@@ -2762,7 +2761,7 @@ public class PlayerHelper {
                sendError(ERRMSG_PARAM);
                return;
             }
-            File parent = new File(Minecraft.getMinecraftDir(), "saves");
+            File parent = new File(mc.mcDataDir, "saves");
             File child = new File(parent, split[2]);
             if (!child.exists()) {
                parent = new File(split[2]);
@@ -2794,7 +2793,7 @@ public class PlayerHelper {
                String worldname = mc.theWorld.worldInfo.getWorldName();
                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS");
                String time = format.format(new Date());
-               copyDirectory(getWorldDir(), new File(Minecraft.getMinecraftDir(), "backup/" + worldname + "/" + time), l);
+               copyDirectory(getWorldDir(), new File(mc.mcDataDir, "backup/" + worldname + "/" + time), l);
             }
          } else if (split[1].equalsIgnoreCase("exit")) {
             mc.displayGuiScreen(new GuiMainMenu());
@@ -2812,7 +2811,7 @@ public class PlayerHelper {
                   return;
                }
             }
-            File parent = new File(Minecraft.getMinecraftDir(), "saves");
+            File parent = new File(mc.mcDataDir, "saves");
             String name = split.length > 2 ? split[2] : "" + System.currentTimeMillis();
             File child = new File(parent, name);
             if (child.exists()) {
@@ -2835,7 +2834,7 @@ public class PlayerHelper {
 
             mc.changeWorld2(world, "Creating a new world at: " + child.getAbsolutePath());
          } else if (split[1].equalsIgnoreCase("list")) {
-            File parent = new File(Minecraft.getMinecraftDir(), "saves");
+            File parent = new File(mc.mcDataDir, "saves");
             File list[] = parent.listFiles();
             String saves = null;
             for (int i = 0; i < list.length; i++) {
@@ -3255,7 +3254,7 @@ public class PlayerHelper {
 
          if (split.length > 1) {
             if (split[1].equalsIgnoreCase("reset")) {
-               ep.skinUrl = (new StringBuilder()).append("http://s3.amazonaws.com/MinecraftSkins/").append(sessionusername).append(".png").toString();
+               changeSkin(sessionusername);
                return;
             }
             String username = "";
@@ -3266,7 +3265,7 @@ public class PlayerHelper {
                }
             }
             username.trim();
-            changeSkin(ep, username);
+            changeSkin(username);
          }
 
          /*
@@ -3574,7 +3573,7 @@ public class PlayerHelper {
             return;
          }
          if (m.entityHit instanceof EntityLiving) {
-            ((EntityLiving) m.entityHit).texture = split[1];
+//             ((EntityLiving) m.entityHit).texture = split[1];
          }
 
          sendMessage("Reskined to " + split[1]);
@@ -4135,7 +4134,7 @@ public class PlayerHelper {
           */
       } else if (split[0].equalsIgnoreCase("resize")) {
          //[1080p|720p|480p|setdefault [WIDTH HEIGHT]|<WIDTH HEIGHT>]
-         //System.out.println(mc.mcCanvas.getParent().getWidth() + " " + mc.mcCanvas.getParent().getHeight());
+         //System.out.println(mc.displayWidth + " " + mc.displayHeight);
          Frame f = Frame.getFrames()[0];
          if (split.length == 1) {
             setWindowSize(sizewidth,sizeheight);
@@ -4257,7 +4256,7 @@ public class PlayerHelper {
             ep.motionX = 0;
             ep.motionY = 0;
             ep.motionZ = 0;
-            mc.renderViewEntity = new SPCEntityCamera(mc, mc.theWorld, mc.session, ep.dimension);
+            mc.renderViewEntity = new SPCEntityCamera(mc, mc.theWorld, mc.func_110432_I(), ep.dimension);
             mc.renderViewEntity.setPositionAndRotation(ep.posX, ep.posY, ep.posZ, ep.rotationYaw, ep.rotationPitch);
             movecamera = true;
             moveplayer = false;
@@ -4269,7 +4268,7 @@ public class PlayerHelper {
       } else if (split[0].equalsIgnoreCase("freezecam")) {
          if (movecamera == true) {
             if (!(mc.renderViewEntity instanceof SPCEntityCamera)) {
-               SPCEntityCamera cam = new SPCEntityCamera(mc, mc.theWorld, mc.session, ep.dimension);
+               SPCEntityCamera cam = new SPCEntityCamera(mc, mc.theWorld, mc.func_110432_I(), ep.dimension);
                freezecamyaw = ep.rotationYaw;
                freezecampitch = ep.rotationPitch;
                cam.setPositionAndRotation(ep.posX, ep.posY, ep.posZ, freezecamyaw, freezecampitch);
@@ -4614,7 +4613,7 @@ public class PlayerHelper {
             String list = "";
             for (int i = 0; i < Enchantment.enchantmentsList.length; i++) {
                if (Enchantment.enchantmentsList[i] != null) {
-                  list += StatCollector.translateToLocal(Enchantment.enchantmentsList[i].getName()).replace(' ', '_') + " (" + i + "), ";
+                  list += I18n.func_135053_a(Enchantment.enchantmentsList[i].getName()).replace(' ', '_') + " (" + i + "), ";
                }
             }
             sendMessage("Enchantments [name (id)]:");
@@ -4655,7 +4654,7 @@ public class PlayerHelper {
             }
             for (int i = 0; i < Enchantment.enchantmentsList.length; i++) {
                if (Enchantment.enchantmentsList[i] != null) {
-                  if (split[2].equalsIgnoreCase(StatCollector.translateToLocal(Enchantment.enchantmentsList[i].getName()).replace(' ', '_'))) {
+                  if (split[2].equalsIgnoreCase(I18n.func_135053_a(Enchantment.enchantmentsList[i].getName()).replace(' ', '_'))) {
                      e = Enchantment.enchantmentsList[i];
                   }
                }
@@ -4798,7 +4797,7 @@ public class PlayerHelper {
             String list = "";
             for (int i = 0; i < Potion.potionTypes.length; i++) {
                if (Potion.potionTypes[i] != null) {
-                  list += StatCollector.translateToLocal(Potion.potionTypes[i].getName()).replace(' ', '_') + " (" + i + "), ";
+                  list += I18n.func_135053_a(Potion.potionTypes[i].getName()).replace(' ', '_') + " (" + i + "), ";
                }
             }
             sendMessage("Potion effects [name (id)]: ");
@@ -4812,7 +4811,7 @@ public class PlayerHelper {
          }
          if (split[1].equalsIgnoreCase("add") || split[1].equalsIgnoreCase("remove")) {
             if (split[1].equalsIgnoreCase("remove") && split[2].equalsIgnoreCase("all")) {
-               ep.activePotionsMap.clear();
+               ep.clearActivePotions();
                ep.onNewPotionEffect(null);
                sendMessage("All potion effects removed.");
                return;
@@ -4829,7 +4828,7 @@ public class PlayerHelper {
             if (p == null) {
                for (int i = 0; i < Potion.potionTypes.length; i++) {
                   if (Potion.potionTypes[i] != null) {
-                     if (split[2].equalsIgnoreCase(StatCollector.translateToLocal(Potion.potionTypes[i].getName()).replace(' ', '_'))) {
+                     if (split[2].equalsIgnoreCase(I18n.func_135053_a(Potion.potionTypes[i].getName()).replace(' ', '_'))) {
                         p = Potion.potionTypes[i];
                         break;
                      }
@@ -4843,7 +4842,7 @@ public class PlayerHelper {
             if (split[1].equalsIgnoreCase("remove")) {
                ep.removePotionEffect(p.id);
                ep.onNewPotionEffect(null);
-               sendMessage("Effect " + StatCollector.translateToLocal(Potion.potionTypes[p.id].getName()) + " was disabled");
+               sendMessage("Effect " + I18n.func_135053_a(Potion.potionTypes[p.id].getName()) + " was disabled");
                return;
             }
 
@@ -4868,7 +4867,7 @@ public class PlayerHelper {
             PotionEffect pe = new PotionEffect(p.id,duration,effect);
             ep.addPotionEffect(pe);
             p.performEffect(ep, duration);
-            sendMessage("Effect " + StatCollector.translateToLocal(Potion.potionTypes[p.id].getName()) + " enabled for " + duration + " at strength " + effect);
+            sendMessage("Effect " + I18n.func_135053_a(Potion.potionTypes[p.id].getName()) + " enabled for " + duration + " at strength " + effect);
          } else {
             sendError(ERRMSG_PARSE);
             return;
@@ -4909,7 +4908,7 @@ public class PlayerHelper {
 
          TileEntity te = mc.theWorld.getBlockTileEntity(soh.blockx, soh.blocky, soh.blockz);
          if (te != null && te instanceof TileEntityMobSpawner) {
-            ((TileEntityMobSpawner)te).func_98049_a().setMobID(name);
+            ((TileEntityMobSpawner)te).getSpawnerLogic().setMobID(name);
          }
 
          /*
@@ -5412,7 +5411,7 @@ public class PlayerHelper {
          mc.renderGlobal.updateRenderers(ep, true);//TODO: XRAY*/
          //mc.displayGuiScreen(GuiConsole.getInstance());
 
-         /*File parent = new File(mc.getMinecraftDir(),"saves");
+         /*File parent = new File(mc.mcDataDir,"saves");
          World newworld = new World(new SaveHandler(parent, split[1], false),split[1], new WorldSettings(new Random().nextLong(),0,true, false));
          newworld.field_35473_a = Integer.parseInt(split[2]);
          newworld.field_35471_b = newworld.field_35473_a + 4;
@@ -6332,7 +6331,7 @@ public class PlayerHelper {
                
                e.setAttackTarget(null);
 
-               if (e instanceof EntityCreature && !(e instanceof EntityPlayerSPSPC) && allow) {
+               if (e instanceof EntityCreature && allow) {
                   ((EntityCreature) e).attackTime = 20;
                   /*Render r = RenderManager.instance.getEntityRenderObject(e);
                   if (r instanceof RenderLiving) {
@@ -6733,13 +6732,13 @@ public class PlayerHelper {
     * 
     * @param username The username of the player to change your skin to
     */
-   public void changeSkin(EntityPlayer entity, String username) {
-      entity.username = username;
-      entity.skinUrl = (new StringBuilder()).append("http://s3.amazonaws.com/MinecraftSkins/").append(username).append(".png").toString();
-      ep.worldObj.obtainEntitySkin(entity);
+   public void changeSkin(String username) {
+//       ep.setUsername(username);
+//       ep.skinUrl = (new StringBuilder()).append("http://s3.amazonaws.com/MinecraftSkins/").append(username).append(".png").toString();
       // ep.worldObj.loadDownloadableImageTexture(ep.skinUrl, null);
-      entity.updateCloak();
-
+      ep.func_110302_j();
+      ep.worldObj.onEntityAdded(ep);
+//       entity.updateCloak();
    }
 
    /**

@@ -1,9 +1,9 @@
 package net.minecraft.src.ssp;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandClearInventory;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 
 public class CommandClientClear extends CommandClearInventory
 {

@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -275,36 +274,14 @@ public class RenderBlocks
 
     public RenderBlocks(IBlockAccess par1IBlockAccess)
     {
-        overrideBlockTexture = null;
-        flipTexture = false;
-        renderAllFaces = false;
         useInventoryTint = true;
-        lockBlockBounds = false;
-        partialRenderBounds = false;
-        uvRotateEast = 0;
-        uvRotateWest = 0;
-        uvRotateSouth = 0;
-        uvRotateNorth = 0;
-        uvRotateTop = 0;
-        uvRotateBottom = 0;
         blockAccess = par1IBlockAccess;
         minecraftRB = Minecraft.getMinecraft();
     }
 
     public RenderBlocks()
     {
-        overrideBlockTexture = null;
-        flipTexture = false;
-        renderAllFaces = false;
         useInventoryTint = true;
-        lockBlockBounds = false;
-        partialRenderBounds = false;
-        uvRotateEast = 0;
-        uvRotateWest = 0;
-        uvRotateSouth = 0;
-        uvRotateNorth = 0;
-        uvRotateTop = 0;
-        uvRotateBottom = 0;
         minecraftRB = Minecraft.getMinecraft();
     }
 
@@ -854,12 +831,14 @@ public class RenderBlocks
         setRenderBounds(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
         setOverrideBlockTexture(par1BlockBrewingStand.getBrewingStandIcon());
+        renderAllFaces = true;
         setRenderBounds(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
         setRenderBounds(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
         setRenderBounds(0.125D, 0.0D, 0.5625D, 0.5D, 0.125D, 0.9375D);
         renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
+        renderAllFaces = false;
         clearOverrideBlockTexture();
         Tessellator tessellator = Tessellator.instance;
         if (!Minecraft.oldlighting){
@@ -955,14 +934,14 @@ public class RenderBlocks
         renderFaceXNeg(par1BlockCauldron, ((float)par2 + 1.0F) - f6, par3, par4, icon);
         renderFaceZPos(par1BlockCauldron, par2, par3, ((float)par4 - 1.0F) + f6, icon);
         renderFaceZNeg(par1BlockCauldron, par2, par3, ((float)par4 + 1.0F) - f6, icon);
-        Icon icon1 = BlockCauldron.func_94375_b("cauldron_inner");
+        Icon icon1 = BlockCauldron.func_94375_b("inner");
         renderFaceYPos(par1BlockCauldron, par2, ((float)par3 - 1.0F) + 0.25F, par4, icon1);
         renderFaceYNeg(par1BlockCauldron, par2, ((float)par3 + 1.0F) - 0.75F, par4, icon1);
         int j = blockAccess.getBlockMetadata(par2, par3, par4);
 
         if (j > 0)
         {
-            Icon icon2 = BlockFluid.func_94424_b("water");
+            Icon icon2 = BlockFluid.func_94424_b("water_still");
 
             if (j > 3)
             {
@@ -1514,6 +1493,7 @@ public class RenderBlocks
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         boolean flag = par5 || (i & 8) != 0;
         int j = BlockPistonBase.getOrientation(i);
+        float f = 0.25F;
 
         if (flag)
         {
@@ -1703,8 +1683,11 @@ public class RenderBlocks
     {
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
         int j = BlockPistonExtension.getDirectionMeta(i);
-        float f = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
-        float f1 = par5 ? 1.0F : 0.5F;
+        float f = 0.25F;
+        float f1 = 0.375F;
+        float f2 = 0.625F;
+        float f3 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
+        float f4 = par5 ? 1.0F : 0.5F;
         double d = par5 ? 16D : 8D;
 
         switch (j)
@@ -1716,28 +1699,28 @@ public class RenderBlocks
                 uvRotateNorth = 3;
                 setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
-                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.625F, (float)par4 + 0.625F, f * 0.8F, d);
-                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.375F, (float)par4 + 0.375F, f * 0.8F, d);
-                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.375F, (float)par4 + 0.625F, f * 0.6F, d);
-                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.25F, (float)par3 + 0.25F + f1, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.6F, d);
+                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.25F, (float)par3 + 0.25F + f4, (float)par4 + 0.625F, (float)par4 + 0.625F, f3 * 0.8F, d);
+                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.25F, (float)par3 + 0.25F + f4, (float)par4 + 0.375F, (float)par4 + 0.375F, f3 * 0.8F, d);
+                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.25F, (float)par3 + 0.25F + f4, (float)par4 + 0.375F, (float)par4 + 0.625F, f3 * 0.6F, d);
+                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.25F, (float)par3 + 0.25F + f4, (float)par4 + 0.625F, (float)par4 + 0.375F, f3 * 0.6F, d);
                 break;
             case 1:
                 setRenderBounds(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
-                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.625F, (((float)par3 - 0.25F) + 1.0F) - f1, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.625F, (float)par4 + 0.625F, f * 0.8F, d);
-                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.375F, (((float)par3 - 0.25F) + 1.0F) - f1, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.375F, (float)par4 + 0.375F, f * 0.8F, d);
-                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.375F, (((float)par3 - 0.25F) + 1.0F) - f1, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.375F, (float)par4 + 0.625F, f * 0.6F, d);
-                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.625F, (((float)par3 - 0.25F) + 1.0F) - f1, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.6F, d);
+                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.625F, (((float)par3 - 0.25F) + 1.0F) - f4, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.625F, (float)par4 + 0.625F, f3 * 0.8F, d);
+                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.375F, (((float)par3 - 0.25F) + 1.0F) - f4, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.375F, (float)par4 + 0.375F, f3 * 0.8F, d);
+                renderPistonRodUD((float)par2 + 0.375F, (float)par2 + 0.375F, (((float)par3 - 0.25F) + 1.0F) - f4, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.375F, (float)par4 + 0.625F, f3 * 0.6F, d);
+                renderPistonRodUD((float)par2 + 0.625F, (float)par2 + 0.625F, (((float)par3 - 0.25F) + 1.0F) - f4, ((float)par3 - 0.25F) + 1.0F, (float)par4 + 0.625F, (float)par4 + 0.375F, f3 * 0.6F, d);
                 break;
             case 2:
                 uvRotateSouth = 1;
                 uvRotateNorth = 2;
                 setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.25D);
                 renderStandardBlock(par1Block, par2, par3, par4);
-                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.25F, (float)par4 + 0.25F + f1, f * 0.6F, d);
-                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.25F, (float)par4 + 0.25F + f1, f * 0.6F, d);
-                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.25F, (float)par4 + 0.25F + f1, f * 0.5F, d);
-                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.25F, (float)par4 + 0.25F + f1, f, d);
+                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.25F, (float)par4 + 0.25F + f4, f3 * 0.6F, d);
+                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.25F, (float)par4 + 0.25F + f4, f3 * 0.6F, d);
+                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.25F, (float)par4 + 0.25F + f4, f3 * 0.5F, d);
+                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.25F, (float)par4 + 0.25F + f4, f3, d);
                 break;
             case 3:
                 uvRotateSouth = 2;
@@ -1746,10 +1729,10 @@ public class RenderBlocks
                 uvRotateBottom = 3;
                 setRenderBounds(0.0D, 0.0D, 0.75D, 1.0D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
-                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.375F, (((float)par4 - 0.25F) + 1.0F) - f1, ((float)par4 - 0.25F) + 1.0F, f * 0.6F, d);
-                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.625F, (((float)par4 - 0.25F) + 1.0F) - f1, ((float)par4 - 0.25F) + 1.0F, f * 0.6F, d);
-                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.375F, (((float)par4 - 0.25F) + 1.0F) - f1, ((float)par4 - 0.25F) + 1.0F, f * 0.5F, d);
-                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.625F, (((float)par4 - 0.25F) + 1.0F) - f1, ((float)par4 - 0.25F) + 1.0F, f, d);
+                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.375F, (((float)par4 - 0.25F) + 1.0F) - f4, ((float)par4 - 0.25F) + 1.0F, f3 * 0.6F, d);
+                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.625F, (((float)par4 - 0.25F) + 1.0F) - f4, ((float)par4 - 0.25F) + 1.0F, f3 * 0.6F, d);
+                renderPistonRodSN((float)par2 + 0.375F, (float)par2 + 0.625F, (float)par3 + 0.375F, (float)par3 + 0.375F, (((float)par4 - 0.25F) + 1.0F) - f4, ((float)par4 - 0.25F) + 1.0F, f3 * 0.5F, d);
+                renderPistonRodSN((float)par2 + 0.625F, (float)par2 + 0.375F, (float)par3 + 0.625F, (float)par3 + 0.625F, (((float)par4 - 0.25F) + 1.0F) - f4, ((float)par4 - 0.25F) + 1.0F, f3, d);
                 break;
             case 4:
                 uvRotateEast = 1;
@@ -1758,10 +1741,10 @@ public class RenderBlocks
                 uvRotateBottom = 1;
                 setRenderBounds(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
-                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f1, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.5F, d);
-                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f1, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.625F, f, d);
-                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f1, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.375F, f * 0.6F, d);
-                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f1, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.625F, f * 0.6F, d);
+                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f4, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.375F, f3 * 0.5F, d);
+                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f4, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.625F, f3, d);
+                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f4, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.375F, f3 * 0.6F, d);
+                renderPistonRodEW((float)par2 + 0.25F, (float)par2 + 0.25F + f4, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.625F, f3 * 0.6F, d);
                 break;
             case 5:
                 uvRotateEast = 2;
@@ -1770,10 +1753,10 @@ public class RenderBlocks
                 uvRotateBottom = 2;
                 setRenderBounds(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
                 renderStandardBlock(par1Block, par2, par3, par4);
-                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f1, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.375F, f * 0.5F, d);
-                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f1, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.625F, f, d);
-                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f1, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.375F, f * 0.6F, d);
-                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f1, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.625F, f * 0.6F, d);
+                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f4, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.375F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.375F, f3 * 0.5F, d);
+                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f4, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.625F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.625F, f3, d);
+                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f4, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.375F, (float)par3 + 0.625F, (float)par4 + 0.375F, (float)par4 + 0.375F, f3 * 0.6F, d);
+                renderPistonRodEW((((float)par2 - 0.25F) + 1.0F) - f4, ((float)par2 - 0.25F) + 1.0F, (float)par3 + 0.625F, (float)par3 + 0.375F, (float)par4 + 0.625F, (float)par4 + 0.625F, f3 * 0.6F, d);
                 break;
         }
 
@@ -2768,10 +2751,10 @@ public class RenderBlocks
     {
         Tessellator tessellator = Tessellator.instance;
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
-        Icon icon = BlockRedstoneWire.func_94409_b("redstoneDust_cross");
-        Icon icon1 = BlockRedstoneWire.func_94409_b("redstoneDust_line");
-        Icon icon2 = BlockRedstoneWire.func_94409_b("redstoneDust_cross_overlay");
-        Icon icon3 = BlockRedstoneWire.func_94409_b("redstoneDust_line_overlay");
+        Icon icon = BlockRedstoneWire.func_94409_b("cross");
+        Icon icon1 = BlockRedstoneWire.func_94409_b("line");
+        Icon icon2 = BlockRedstoneWire.func_94409_b("cross_overlay");
+        Icon icon3 = BlockRedstoneWire.func_94409_b("line_overlay");
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
         }
@@ -2797,7 +2780,9 @@ public class RenderBlocks
             f4 = 0.0F;
         }
 
-        tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
+        tessellator.setColorOpaque_F(f2, f3, f4);
+        double d = 0.015625D;
+        double d1 = 0.015625D;
         boolean flag = BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2 - 1, par3, par4, 1) || !blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2 - 1, par3 - 1, par4, -1);
         boolean flag1 = BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2 + 1, par3, par4, 3) || !blockAccess.isBlockNormalCube(par2 + 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2 + 1, par3 - 1, par4, -1);
         boolean flag2 = BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2, par3, par4 - 1, 2) || !blockAccess.isBlockNormalCube(par2, par3, par4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(blockAccess, par2, par3 - 1, par4 - 1, -1);
@@ -2848,6 +2833,7 @@ public class RenderBlocks
             int k = 0;
             int l = 16;
             int i1 = 16;
+            byte byte1 = 5;
 
             if (!flag)
             {
@@ -2926,6 +2912,8 @@ public class RenderBlocks
 
         if (!blockAccess.isBlockNormalCube(par2, par3 + 1, par4))
         {
+            float f9 = 0.021875F;
+
             if (blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && blockAccess.getBlockId(par2 - 1, par3 + 1, par4) == Block.redstoneWire.blockID)
             {
                 tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
@@ -3262,15 +3250,11 @@ public class RenderBlocks
             icon1 = par1BlockPane.getSideTextureIndex();
         }
 
-        int l = icon.getOriginX();
-        int i1 = icon.getOriginY();
         double d = icon.getMinU();
         double d1 = icon.getInterpolatedU(8D);
         double d2 = icon.getMaxU();
         double d3 = icon.getMinV();
         double d4 = icon.getMaxV();
-        int j1 = icon1.getOriginX();
-        int k1 = icon1.getOriginY();
         double d5 = icon1.getInterpolatedU(7D);
         double d6 = icon1.getInterpolatedU(9D);
         double d7 = icon1.getMinV();
@@ -3292,6 +3276,8 @@ public class RenderBlocks
         boolean flag3 = par1BlockPane.canThisPaneConnectToThisBlockID(blockAccess.getBlockId(par2 + 1, par3, par4));
         boolean flag4 = par1BlockPane.shouldSideBeRendered(blockAccess, par2, par3 + 1, par4, 1);
         boolean flag5 = par1BlockPane.shouldSideBeRendered(blockAccess, par2, par3 - 1, par4, 0);
+        double d20 = 0.01D;
+        double d21 = 0.0050000000000000001D;
 
         if (flag2 && flag3 || !flag2 && !flag3 && !flag && !flag1)
         {
@@ -4151,6 +4137,7 @@ public class RenderBlocks
             {
                 float f10 = MathHelper.sin(f8) * 0.25F;
                 float f13 = MathHelper.cos(f8) * 0.25F;
+                float f15 = 8F;
                 d7 = icon.getInterpolatedU(8F + (-f13 - f10) * 16F);
                 d14 = icon.getInterpolatedV(8F + (-f13 + f10) * 16F);
                 d8 = icon.getInterpolatedU(8F + (-f13 + f10) * 16F);
@@ -4264,27 +4251,25 @@ public class RenderBlocks
             float f9 = icon1.getInterpolatedU(0.0D);
             float f12 = icon1.getInterpolatedU(8D);
             float f14 = icon1.getInterpolatedV((1.0D - d9) * 16D * 0.5D);
-            float f15 = icon1.getInterpolatedV((1.0D - d11) * 16D * 0.5D);
-            float f16 = icon1.getInterpolatedV(8D);
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, l, i1, j1));
-            }
-            float f17 = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4) : 1.0F;
+            float f16 = icon1.getInterpolatedV((1.0D - d11) * 16D * 0.5D);
+            float f17 = icon1.getInterpolatedV(8D);
+            tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, l, i1, j1));
+            float f18 = 1.0F;
 
             if (k < 2)
             {
-                f17 *= f5;
+                f18 *= f5;
             }
             else
             {
-                f17 *= f6;
+                f18 *= f6;
             }
 
-            tessellator.setColorOpaque_F(f4 * f17 * f, f4 * f17 * f1, f4 * f17 * f2);
+            tessellator.setColorOpaque_F(f4 * f18 * f, f4 * f18 * f1, f4 * f18 * f2);
             tessellator.addVertexWithUV(d13, (double)par3 + d9, d15, f9, f14);
-            tessellator.addVertexWithUV(d17, (double)par3 + d11, d19, f12, f15);
-            tessellator.addVertexWithUV(d17, par3 + 0, d19, f12, f16);
-            tessellator.addVertexWithUV(d13, par3 + 0, d15, f9, f16);
+            tessellator.addVertexWithUV(d17, (double)par3 + d11, d19, f12, f16);
+            tessellator.addVertexWithUV(d17, par3 + 0, d19, f12, f17);
+            tessellator.addVertexWithUV(d13, par3 + 0, d15, f9, f17);
         }
 
         renderMinY = d;
@@ -4434,7 +4419,7 @@ public class RenderBlocks
         {
             if (partialRenderBounds)
             {
-                return func_102027_b(par1Block, par2, par3, par4, f, f1, f2);
+                return renderBlockWithAmbientOcclusion(par1Block, par2, par3, par4, f, f1, f2);
             }
             else
             {
@@ -5293,7 +5278,10 @@ public class RenderBlocks
         return flag;
     }
 
-    public boolean func_102027_b(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7)
+    /**
+     * Renders non-full-cube block with ambient occusion.  Args: block, x, y, z, red, green, blue (lighting)
+     */
+    public boolean renderBlockWithAmbientOcclusion(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7)
     {
         enableAO = true;
         boolean flag = false;
@@ -6456,15 +6444,17 @@ public class RenderBlocks
     public boolean renderBlockBeacon(BlockBeacon par1BlockBeacon, int par2, int par3, int par4)
     {
         float f = 0.1875F;
-        setOverrideBlockTexture(getBlockIcon(Block.obsidian));
-        setRenderBounds(0.125D, 0.0062500000931322575D, 0.125D, 0.875D, f, 0.875D);
-        renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         setOverrideBlockTexture(getBlockIcon(Block.glass));
         setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
-        setOverrideBlockTexture(par1BlockBeacon.getBeaconIcon());
+        renderAllFaces = true;
+        setOverrideBlockTexture(getBlockIcon(Block.obsidian));
+        setRenderBounds(0.125D, 0.0062500000931322575D, 0.125D, 0.875D, f, 0.875D);
+        renderStandardBlock(par1BlockBeacon, par2, par3, par4);
+        setOverrideBlockTexture(getBlockIcon(Block.beacon));
         setRenderBounds(0.1875D, f, 0.1875D, 0.8125D, 0.875D, 0.8125D);
         renderStandardBlock(par1BlockBeacon, par2, par3, par4);
+        renderAllFaces = false;
         clearOverrideBlockTexture();
         return true;
     }
@@ -6516,140 +6506,38 @@ public class RenderBlocks
         float f14 = f2 * par7;
         float f15 = f3 * par7;
         float f16 = 0.0625F;
-        float ff4 = 1.0F;
-        float ff5 = 1.0F;
         int i = par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4);
 
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 - 1, par4, 0))
         {
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(renderMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
-            }else{
-                ff4 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4);
-                ff5 = par1Block.getBlockBrightness(blockAccess, par2, par3 - 1, par4);
-                if(renderMinY > 0.0D)
-                {
-                    ff5 = f4;
-                }
-                if(Block.lightValue[par1Block.blockID] > 0)
-                {
-                    ff5 = 1.0F;
-                }
-            }
-            tessellator.setColorOpaque_F(f4 * ff5, f8 * ff5, f12 * ff5);
+            tessellator.setBrightness(renderMinY <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 - 1, par4) : i);
+            tessellator.setColorOpaque_F(f4, f8, f12);
             renderFaceYNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 0));
-            flag = true;
         }
 
         if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3 + 1, par4, 1))
         {
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
-            }else{
-                ff5 = par1Block.getBlockBrightness(blockAccess, par2, par3 + 1, par4);
-                if(renderMaxY < 1.0D)
-                {
-                    ff5 = ff4;
-                }
-                if(Block.lightValue[par1Block.blockID] > 0)
-                {
-                    ff5 = 1.0F;
-                }
-            }
-            tessellator.setColorOpaque_F(f5 * ff5, f9 * ff5, f13 * ff5);
+            tessellator.setBrightness(renderMaxY >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3 + 1, par4) : i);
+            tessellator.setColorOpaque_F(f5, f9, f13);
             renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
-            flag = true;
         }
 
-        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 - 1, 2))
-        {
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(renderMinZ <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 - 1) : i);
-            }else{
-                ff5 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 - 1);
-                if(renderMinZ > 0.0D)
-                {
-                    ff5 = ff4;
-                }
-                if(Block.lightValue[par1Block.blockID] > 0)
-                {
-                    ff5 = 1.0F;
-                }
-            }
-            tessellator.setColorOpaque_F(f6 * ff5, f10 * ff5, f14 * ff5);
-            tessellator.addTranslation(0.0F, 0.0F, f16);
-            renderFaceZNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
-            tessellator.addTranslation(0.0F, 0.0F, -f16);
-            flag = true;
-        }
-
-        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2, par3, par4 + 1, 3))
-        {
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(renderMaxZ >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4 + 1) : i);
-            }else{
-                ff5 = par1Block.getBlockBrightness(blockAccess, par2, par3, par4 + 1);
-                if(renderMaxZ < 1.0D)
-                {
-                    ff5 = ff4;
-                }
-                if(Block.lightValue[par1Block.blockID] > 0)
-                {
-                    ff5 = 1.0F;
-                }
-            }
-            tessellator.setColorOpaque_F(f6 * ff5, f10 * ff5, f14 * ff5);
-            tessellator.addTranslation(0.0F, 0.0F, -f16);
-            renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
-            tessellator.addTranslation(0.0F, 0.0F, f16);
-            flag = true;
-        }
-
-        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 - 1, par3, par4, 4))
-        {
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(renderMinX <= 0.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 - 1, par3, par4) : i);
-            }else{
-                ff5 = par1Block.getBlockBrightness(blockAccess, par2 - 1, par3, par4);
-                if(renderMinX > 0.0D)
-                {
-                    ff5 = ff4;
-                }
-                if(Block.lightValue[par1Block.blockID] > 0)
-                {
-                    ff5 = 1.0F;
-                }
-            }
-            tessellator.setColorOpaque_F(f7 * ff5, f11 * ff5, f15 * ff5);
-            tessellator.addTranslation(f16, 0.0F, 0.0F);
-            renderFaceXNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
-            tessellator.addTranslation(-f16, 0.0F, 0.0F);
-            flag = true;
-        }
-
-        if (renderAllFaces || par1Block.shouldSideBeRendered(blockAccess, par2 + 1, par3, par4, 5))
-        {
-            if (!Minecraft.oldlighting){
-                tessellator.setBrightness(renderMaxX >= 1.0D ? par1Block.getMixedBrightnessForBlock(blockAccess, par2 + 1, par3, par4) : i);
-            }else{
-                ff5 = par1Block.getBlockBrightness(blockAccess, par2 + 1, par3, par4);
-                if(renderMaxX < 1.0D)
-                {
-                    ff5 = ff4;
-                }
-                if(Block.lightValue[par1Block.blockID] > 0)
-                {
-                    ff5 = 1.0F;
-                }
-            }
-            tessellator.setColorOpaque_F(f7 * ff5, f11 * ff5, f15 * ff5);
-            tessellator.addTranslation(-f16, 0.0F, 0.0F);
-            renderFaceXPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5));
-            tessellator.addTranslation(f16, 0.0F, 0.0F);
-            flag = true;
-        }
-
-        return flag;
+        tessellator.setBrightness(i);
+        tessellator.setColorOpaque_F(f6, f10, f14);
+        tessellator.addTranslation(0.0F, 0.0F, f16);
+        renderFaceZNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 2));
+        tessellator.addTranslation(0.0F, 0.0F, -f16);
+        tessellator.addTranslation(0.0F, 0.0F, -f16);
+        renderFaceZPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 3));
+        tessellator.addTranslation(0.0F, 0.0F, f16);
+        tessellator.setColorOpaque_F(f7, f11, f15);
+        tessellator.addTranslation(f16, 0.0F, 0.0F);
+        renderFaceXNeg(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 4));
+        tessellator.addTranslation(-f16, 0.0F, 0.0F);
+        tessellator.addTranslation(-f16, 0.0F, 0.0F);
+        renderFaceXPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 5));
+        tessellator.addTranslation(f16, 0.0F, 0.0F);
+        return true;
     }
 
     public boolean renderBlockFence(BlockFence par1BlockFence, int par2, int par3, int par4)
@@ -6883,28 +6771,28 @@ public class RenderBlocks
         {
             uvRotateTop = 1;
             float f6 = 0.4375F;
-            float f10 = 0.5625F;
-            float f14 = 0.0F;
-            float f18 = 0.125F;
-            setRenderBounds(f6, f4, f14, f10, f5, f18);
+            float f14 = 0.5625F;
+            float f22 = 0.0F;
+            float f30 = 0.125F;
+            setRenderBounds(f6, f4, f22, f14, f5, f30);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f14 = 0.875F;
-            f18 = 1.0F;
-            setRenderBounds(f6, f4, f14, f10, f5, f18);
+            f22 = 0.875F;
+            f30 = 1.0F;
+            setRenderBounds(f6, f4, f22, f14, f5, f30);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             uvRotateTop = 0;
         }
         else
         {
             float f7 = 0.0F;
-            float f11 = 0.125F;
-            float f15 = 0.4375F;
-            float f19 = 0.5625F;
-            setRenderBounds(f7, f4, f15, f11, f5, f19);
+            float f15 = 0.125F;
+            float f23 = 0.4375F;
+            float f31 = 0.5625F;
+            setRenderBounds(f7, f4, f23, f15, f5, f31);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f7 = 0.875F;
-            f11 = 1.0F;
-            setRenderBounds(f7, f4, f15, f11, f5, f19);
+            f15 = 1.0F;
+            setRenderBounds(f7, f4, f23, f15, f5, f31);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
         }
 
@@ -6917,6 +6805,13 @@ public class RenderBlocks
 
             if (j == 3)
             {
+                float f8 = 0.0F;
+                float f16 = 0.125F;
+                float f24 = 0.875F;
+                float f32 = 1.0F;
+                float f38 = 0.5625F;
+                float f42 = 0.8125F;
+                float f46 = 0.9375F;
                 setRenderBounds(0.8125D, f, 0.0D, 0.9375D, f3, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
                 setRenderBounds(0.8125D, f, 0.875D, 0.9375D, f3, 1.0D);
@@ -6932,6 +6827,13 @@ public class RenderBlocks
             }
             else if (j == 1)
             {
+                float f9 = 0.0F;
+                float f17 = 0.125F;
+                float f25 = 0.875F;
+                float f33 = 1.0F;
+                float f39 = 0.0625F;
+                float f43 = 0.1875F;
+                float f47 = 0.4375F;
                 setRenderBounds(0.0625D, f, 0.0D, 0.1875D, f3, 0.125D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
                 setRenderBounds(0.0625D, f, 0.875D, 0.1875D, f3, 1.0D);
@@ -6947,6 +6849,13 @@ public class RenderBlocks
             }
             else if (j == 0)
             {
+                float f10 = 0.0F;
+                float f18 = 0.125F;
+                float f26 = 0.875F;
+                float f34 = 1.0F;
+                float f40 = 0.5625F;
+                float f44 = 0.8125F;
+                float f48 = 0.9375F;
                 setRenderBounds(0.0D, f, 0.8125D, 0.125D, f3, 0.9375D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
                 setRenderBounds(0.875D, f, 0.8125D, 1.0D, f3, 0.9375D);
@@ -6962,6 +6871,13 @@ public class RenderBlocks
             }
             else if (j == 2)
             {
+                float f11 = 0.0F;
+                float f19 = 0.125F;
+                float f27 = 0.875F;
+                float f35 = 1.0F;
+                float f41 = 0.0625F;
+                float f45 = 0.1875F;
+                float f49 = 0.4375F;
                 setRenderBounds(0.0D, f, 0.0625D, 0.125D, f3, 0.1875D);
                 renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
                 setRenderBounds(0.875D, f, 0.0625D, 1.0D, f3, 0.1875D);
@@ -6979,52 +6895,52 @@ public class RenderBlocks
         else if (j == 3 || j == 1)
         {
             uvRotateTop = 1;
-            float f8 = 0.4375F;
-            float f12 = 0.5625F;
-            float f16 = 0.375F;
-            float f20 = 0.5F;
-            setRenderBounds(f8, f, f16, f12, f3, f20);
+            float f12 = 0.4375F;
+            float f20 = 0.5625F;
+            float f28 = 0.375F;
+            float f36 = 0.5F;
+            setRenderBounds(f12, f, f28, f20, f3, f36);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f16 = 0.5F;
-            f20 = 0.625F;
-            setRenderBounds(f8, f, f16, f12, f3, f20);
+            f28 = 0.5F;
+            f36 = 0.625F;
+            setRenderBounds(f12, f, f28, f20, f3, f36);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f16 = 0.625F;
-            f20 = 0.875F;
-            setRenderBounds(f8, f, f16, f12, f1, f20);
+            f28 = 0.625F;
+            f36 = 0.875F;
+            setRenderBounds(f12, f, f28, f20, f1, f36);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            setRenderBounds(f8, f2, f16, f12, f3, f20);
+            setRenderBounds(f12, f2, f28, f20, f3, f36);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f16 = 0.125F;
-            f20 = 0.375F;
-            setRenderBounds(f8, f, f16, f12, f1, f20);
+            f28 = 0.125F;
+            f36 = 0.375F;
+            setRenderBounds(f12, f, f28, f20, f1, f36);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            setRenderBounds(f8, f2, f16, f12, f3, f20);
+            setRenderBounds(f12, f2, f28, f20, f3, f36);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
         }
         else
         {
-            float f9 = 0.375F;
-            float f13 = 0.5F;
-            float f17 = 0.4375F;
-            float f21 = 0.5625F;
-            setRenderBounds(f9, f, f17, f13, f3, f21);
+            float f13 = 0.375F;
+            float f21 = 0.5F;
+            float f29 = 0.4375F;
+            float f37 = 0.5625F;
+            setRenderBounds(f13, f, f29, f21, f3, f37);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f9 = 0.5F;
+            f13 = 0.5F;
+            f21 = 0.625F;
+            setRenderBounds(f13, f, f29, f21, f3, f37);
+            renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
             f13 = 0.625F;
-            setRenderBounds(f9, f, f17, f13, f3, f21);
+            f21 = 0.875F;
+            setRenderBounds(f13, f, f29, f21, f1, f37);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f9 = 0.625F;
-            f13 = 0.875F;
-            setRenderBounds(f9, f, f17, f13, f1, f21);
+            setRenderBounds(f13, f2, f29, f21, f3, f37);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            setRenderBounds(f9, f2, f17, f13, f3, f21);
+            f13 = 0.125F;
+            f21 = 0.375F;
+            setRenderBounds(f13, f, f29, f21, f1, f37);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            f9 = 0.125F;
-            f13 = 0.375F;
-            setRenderBounds(f9, f, f17, f13, f1, f21);
-            renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-            setRenderBounds(f9, f2, f17, f13, f3, f21);
+            setRenderBounds(f13, f2, f29, f21, f3, f37);
             renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
         }
 
@@ -7123,7 +7039,7 @@ public class RenderBlocks
             tessellator.setColorOpaque_F(f * f1, f * f3, f * f4);
         }
 
-        Icon icon = BlockHopper.getHopperIcon("hopper");
+        Icon icon = BlockHopper.getHopperIcon("hopper_outside");
         Icon icon1 = BlockHopper.getHopperIcon("hopper_inside");
         float f2 = 0.125F;
 
@@ -8456,7 +8372,7 @@ public class RenderBlocks
         else if (j == 35)
         {
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-            renderBlockAnvilOrient((BlockAnvil)par1Block, 0, 0, 0, par2, true);
+            renderBlockAnvilOrient((BlockAnvil)par1Block, 0, 0, 0, par2 << 2, true);
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         }
         else if (j == 34)
@@ -8471,7 +8387,7 @@ public class RenderBlocks
                 else if (i2 == 1)
                 {
                     setRenderBounds(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
-                    setOverrideBlockTexture(Block.beacon.getBeaconIcon());
+                    setOverrideBlockTexture(getBlockIcon(Block.beacon));
                 }
                 else if (i2 == 2)
                 {
@@ -8518,9 +8434,9 @@ public class RenderBlocks
         }
         else
         {
-            net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "renderInvBlock",
-                                                           new Class[]{RenderBlocks.class, Block.class, Integer.TYPE, Integer.TYPE},
-                                                           this, par1Block, par2, j);
+            Minecraft.invokeModMethod("ModLoader", "renderInvBlock",
+                                      new Class[]{RenderBlocks.class, Block.class, Integer.TYPE, Integer.TYPE},
+                                      this, par1Block, par2, j);
         }
     }
 
@@ -8595,7 +8511,7 @@ public class RenderBlocks
         }
         else
         {
-            Object o = net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "renderBlockIsItemFull3D", new Class[]{Integer.TYPE}, par0);
+            Object o = Minecraft.invokeModMethod("ModLoader", "renderBlockIsItemFull3D", new Class[]{Integer.TYPE}, par0);
             if (o != null){
                 return (Boolean)o;
             }
@@ -8628,11 +8544,9 @@ public class RenderBlocks
     {
         if (par1Icon == null)
         {
-            return minecraftRB.renderEngine.getMissingIcon(0);
+            par1Icon = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110575_b)).func_110572_b("missingno");
         }
-        else
-        {
-            return par1Icon;
-        }
+
+        return par1Icon;
     }
 }

@@ -15,8 +15,6 @@ public class EntityPickupFX extends EntityFX
     public EntityPickupFX(World par1World, Entity par2Entity, Entity par3Entity, float par4)
     {
         super(par1World, par2Entity.posX, par2Entity.posY, par2Entity.posZ, par2Entity.motionX, par2Entity.motionY, par2Entity.motionZ);
-        age = 0;
-        maxAge = 0;
         entityToPickUp = par2Entity;
         entityPickingUp = par3Entity;
         maxAge = 3;
@@ -36,7 +34,7 @@ public class EntityPickupFX extends EntityFX
         double d6 = d + (d3 - d) * (double)f;
         double d7 = d1 + (d4 - d1) * (double)f;
         double d8 = d2 + (d5 - d2) * (double)f;
-        if (net.minecraft.client.Minecraft.oldlighting){
+        if (Minecraft.oldlighting){
             int i = MathHelper.floor_double(d6);
             int j = MathHelper.floor_double(d7 + (double)(yOffset / 2.0F));
             int k = MathHelper.floor_double(d8);

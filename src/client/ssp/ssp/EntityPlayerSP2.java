@@ -1,20 +1,23 @@
 package net.minecraft.src.ssp;
 
 import java.util.Random;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Achievement;
 import net.minecraft.src.AchievementList;
+import net.minecraft.src.AttributeInstance;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityArrow;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityCrit2FX;
 import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityHorse;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityMinecartHopper;
 import net.minecraft.src.EntityPickupFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityWolf;
+import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiBrewingStand;
 import net.minecraft.src.GuiChest;
 import net.minecraft.src.GuiCommandBlock;
@@ -26,16 +29,20 @@ import net.minecraft.src.GuiFurnace;
 import net.minecraft.src.GuiHopper;
 import net.minecraft.src.GuiMerchant;
 import net.minecraft.src.GuiScreenBook;
+import net.minecraft.src.GuiScreenHorseInventory;
 import net.minecraft.src.GuiWinGame;
+import net.minecraft.src.I18n;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.IMerchant;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.MouseFilter;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Potion;
 import net.minecraft.src.Session;
+import net.minecraft.src.SharedMonsterAttributes;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.StatList;
 import net.minecraft.src.StringUtils;
@@ -69,13 +76,6 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         field_71161_cj = new MouseFilter();
         mc = par1Minecraft;
         dimension = par4;
-
-        if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0)
-        {
-            skinUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftSkins/").append(StringUtils.stripControlCodes(par3Session.username)).append(".png").toString();
-        }
-
-        username = par3Session.username;
     }
 
     @Override
@@ -152,7 +152,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      * Returns whether the entity is in a local (client) world
      */
     @Override
-    protected boolean isClientWorld()
+    public boolean isClientWorld()
     {
         return true;
     }
@@ -170,7 +170,9 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             f *= 1.1F;
         }
 
-        f *= ((landMovementFactor * getSpeedModifier()) / speedOnGround + 1.0F) / 2.0F;
+        
+        AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
+        f = (float)((double)f * ((attributeinstance.func_111126_e() / (double)capabilities.getWalkSpeed() + 1.0D) / 2D));
 
         if (isUsingItem() && getItemInUse().itemID == Item.bow.itemID)
         {
@@ -190,12 +192,6 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         }
 
         return f;
-    }
-
-    @Override
-    public void updateCloak()
-    {
-        cloakUrl = (new StringBuilder()).append("http://skins.minecraft.net/MinecraftCloaks/").append(StringUtils.stripControlCodes(username)).append(".png").toString();
     }
 
     /**
@@ -311,6 +307,12 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         mc.displayGuiScreen(new GuiHopper(inventory, par1EntityMinecartHopper));
     }
 
+    @Override
+    public void func_110298_a(EntityHorse par1EntityHorse, IInventory par2IInventory)
+    {
+        mc.displayGuiScreen(new GuiScreenHorseInventory(inventory, par2IInventory, par1EntityHorse));
+    }
+
     /**
      * Called when the player performs a critical hit on the Entity. Args: entity that was hit critically
      */
@@ -349,25 +351,25 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      * Updates health locally.
      */
     @Override
-    public void setHealth(int par1)
+    public void setHealth(float par1)
     {
-        int i = getHealth() - par1;
+        float f = func_110143_aJ() - par1;
 
-        if (i <= 0)
+        if (f <= 0.0F)
         {
             setEntityHealth(par1);
 
-            if (i < 0)
+            if (f < 0.0F)
             {
                 hurtResistantTime = maxHurtResistantTime / 2;
             }
         }
         else
         {
-            lastDamage = i;
-            setEntityHealth(getHealth());
+            field_110153_bc = f;
+            setEntityHealth(func_110143_aJ());
             hurtResistantTime = maxHurtResistantTime;
-            damageEntity(DamageSource.generic, i);
+            damageEntity(DamageSource.generic, f);
             hurtTime = maxHurtTime = 10;
         }
     }
@@ -513,9 +515,9 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     }
 
     @Override
-    public void sendChatToPlayer(String par1Str)
+    public void sendChatToPlayer(ChatMessageComponent par1ChatMessageComponent)
     {
-        mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
+        mc.ingameGUI.getChatGUI().printChatMessage((par1ChatMessageComponent.func_111068_a(true)));
     }
 
     /**
@@ -523,11 +525,11 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      * second with the reduced value. Args: damageAmount
      */
     @Override
-    protected void damageEntity(DamageSource par1DamageSource, int par2)
+    protected void damageEntity(DamageSource par1DamageSource, float par2)
     {
         if (!par1DamageSource.isUnblockable() && isBlocking())
         {
-            par2 = 1 + par2 >> 1;
+            par2 = 1 + (int)par2 >> 1;
         }
 
         if (armor<2){
@@ -541,7 +543,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             par2 = applyArmorCalculations(par1DamageSource, par2);
             par2 = applyPotionDamageCalculations(par1DamageSource, par2);
         }
-        health -= par2;
+        setEntityHealth(func_110143_aJ() - par2);
     }
 
     @Override
@@ -549,17 +551,11 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     {
     }
 
-    @Override
-    public boolean func_71066_bF()
-    {
-        return false;
-    }
-
     /**
      * Called when the entity is attacked.
      */
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (capabilities.disableDamage && !par1DamageSource.canHarmInCreative())
         {
@@ -568,7 +564,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         entityAge = 0;
 
-        if (getHealth() <= 0)
+        if (func_110143_aJ() <= 0)
         {
             return false;
         }
@@ -615,7 +611,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             alertWolves((EntityLiving)entity1, false);
         }
 
-        addStat(StatList.damageTakenStat, par2);
+        addStat(StatList.damageTakenStat, Math.round(par2 * 10F));
         if (worldObj.isRemote)
         {
             return false;
@@ -623,7 +619,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         entityAge = 0;
 
-        if (health <= 0)
+        if (func_110143_aJ() <= 0)
         {
             return false;
         }
@@ -638,19 +634,19 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F)
         {
-            if (par2 <= lastDamage)
+            if (par2 <= field_110153_bc)
             {
                 return false;
             }
 
-            damageEntity(par1DamageSource, par2 - lastDamage);
-            lastDamage = par2;
+            damageEntity(par1DamageSource, par2 - field_110153_bc);
+            field_110153_bc = par2;
             flag = false;
         }
         else
         {
-            lastDamage = par2;
-            prevHealth = health;
+            field_110153_bc = par2;
+            prevHealth = func_110143_aJ();
             hurtResistantTime = maxHurtResistantTime;
             damageEntity(par1DamageSource, par2);
             hurtTime = maxHurtTime = 10;
@@ -709,7 +705,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             }
         }
 
-        if (health <= 0)
+        if (func_110143_aJ() <= 0)
         {
             if (flag)
             {
@@ -726,24 +722,15 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         return true;
     }
 
-    /**
-     * Heal living entity (param: amount of half-hearts)
-     */
-    public void heal(int par1)
+    @Override
+    public void heal(float par1)
     {
-        if (health <= 0)
+        float f = func_110143_aJ();
+
+        if (f > 0.0F)
         {
-            return;
+            setEntityHealth(f + par1);
         }
-
-        health += par1;
-
-        if (health > getMaxHealth())
-        {
-            health = getMaxHealth();
-        }
-
-        hurtResistantTime = maxHurtResistantTime / 2;
     }
 
     /**
@@ -778,39 +765,6 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         worldObj.spawnEntityInWorld(entityitem);
     }
 
-    /**
-     * Swings the item the player is holding.
-     *//*
-    @Override
-    public void swingItem()
-    {
-        if (!isSwinging || swingProgressInt >= getSwingSpeedModifier() / 2 || swingProgressInt < 0)
-        {
-            swingProgressInt = -1;
-            isSwinging = true;
-        }
-    }
-*/
-    /**
-     * Returns the swing speed modifier
-     *//*
-    private int getSwingSpeedModifier()
-    {
-        if (isPotionActive(Potion.digSpeed))
-        {
-            return (oldswing ? 8 : 6) - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
-        }
-
-        if (isPotionActive(Potion.digSlowdown))
-        {
-            return (oldswing ? 8 : 6) + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
-        }
-        else
-        {
-            return (oldswing ? 8 : 6);
-        }
-    }
-*/
     /**
      * Gets the pitch of living sounds in living entities.
      */
@@ -872,5 +826,40 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         posY -= 1.6200000047683716D;
         super.writeToNBT(par1NBTTagCompound);
         posY += 1.6200000047683716D;
+    }
+
+    @Override
+    public boolean func_110317_t()
+    {
+        return ridingEntity != null && (ridingEntity instanceof EntityHorse);
+    }
+
+    @Override
+    protected void func_110318_g()
+    {
+        if (func_110317_t()){
+            ((EntityHorse)ridingEntity).func_110206_u((int)(func_110319_bJ() * 100F));
+        }
+    }
+
+    @Override
+    public void func_110322_i()
+    {
+        if (func_110317_t()){
+            ((EntityHorse)ridingEntity).func_110199_f(this);
+        }
+    }
+
+    @Override
+    public void mountEntity(Entity par1Entity)
+    {
+        super.mountEntity(par1Entity);
+        if (func_110317_t()){
+            GameSettings gamesettings = mc.gameSettings;
+            mc.ingameGUI.func_110326_a(I18n.func_135052_a("mount.onboard", new Object[]
+                    {
+                        GameSettings.getKeyDisplayString(gamesettings.keyBindSneak.keyCode)
+                    }), false);
+        }
     }
 }

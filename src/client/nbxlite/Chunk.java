@@ -55,12 +55,12 @@ public class Chunk
 
     /** Lowest value in the heightmap. */
     public int heightMapMinimum;
+    public long field_111204_q;
 
     /**
      * Contains the current round-robin relight check index, and is implied as the relight check location as well.
      */
     private int queuedLightChecks;
-    boolean field_76653_p;
 
     public Chunk(World par1World, int par2, int par3)
     {
@@ -68,16 +68,8 @@ public class Chunk
         blockBiomeArray = new byte[256];
         precipitationHeightMap = new int[256];
         updateSkylightColumns = new boolean[256];
-        isGapLightingUpdated = false;
         chunkTileEntityMap = new HashMap();
-        isTerrainPopulated = false;
-        isModified = false;
-        hasEntities = false;
-        lastSaveTime = 0L;
-        sendUpdates = false;
-        heightMapMinimum = 0;
         queuedLightChecks = 4096;
-        field_76653_p = false;
         entityLists = new List[16];
         worldObj = par1World;
         xPosition = par2;
@@ -1014,6 +1006,13 @@ public class Chunk
 
         for (int i = 0; i < entityLists.length; i++)
         {
+            Entity entity;
+
+            for (Iterator iterator = entityLists[i].iterator(); iterator.hasNext(); entity.func_110123_P())
+            {
+                entity = (Entity)iterator.next();
+            }
+
             worldObj.addLoadedEntities(entityLists[i]);
         }
     }

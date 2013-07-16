@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.ssp.NetClientHandlerSP;
 
 public class WorldClient extends World
@@ -56,7 +55,11 @@ public class WorldClient extends World
     {
         super.tick();
         func_82738_a(getTotalWorldTime() + 1L);
-        setWorldTime(getWorldTime() + 1L);
+
+        if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+        {
+            setWorldTime(getWorldTime() + 1L);
+        }
 
         if (Minecraft.oldlighting){
             int i = calculateSkylightSubtracted(1.0F);
@@ -199,12 +202,9 @@ public class WorldClient extends World
         entityList.remove(par1Entity);
     }
 
-    /**
-     * Start the skin for this entity downloading, if necessary, and increment its reference counter
-     */
-    protected void obtainEntitySkin(Entity par1Entity)
+    protected void onEntityAdded(Entity par1Entity)
     {
-        super.obtainEntitySkin(par1Entity);
+        super.onEntityAdded(par1Entity);
 
         if (entitySpawnQueue.contains(par1Entity))
         {
@@ -212,12 +212,9 @@ public class WorldClient extends World
         }
     }
 
-    /**
-     * Decrement the reference counter for this entity's skin image data
-     */
-    protected void releaseEntitySkin(Entity par1Entity)
+    protected void onEntityRemoved(Entity par1Entity)
     {
-        super.releaseEntitySkin(par1Entity);
+        super.onEntityRemoved(par1Entity);
 
         if (entityList.contains(par1Entity))
         {
@@ -401,7 +398,7 @@ public class WorldClient extends World
 
         for (int j = 0; j < unloadedEntityList.size(); j++)
         {
-            releaseEntitySkin((Entity)unloadedEntityList.get(j));
+            onEntityRemoved((Entity)unloadedEntityList.get(j));
         }
 
         unloadedEntityList.clear();
@@ -435,7 +432,7 @@ public class WorldClient extends World
             }
 
             loadedEntityList.remove(k--);
-            releaseEntitySkin(entity1);
+            onEntityRemoved(entity1);
         }
     }
 
@@ -447,6 +444,8 @@ public class WorldClient extends World
         CrashReportCategory crashreportcategory = super.addWorldInfoToCrashReport(par1CrashReport);
         crashreportcategory.addCrashSectionCallable("Forced entities", new CallableMPL1(this));
         crashreportcategory.addCrashSectionCallable("Retry entities", new CallableMPL2(this));
+        crashreportcategory.addCrashSectionCallable("Server brand", new WorldClientINNER3(this));
+        crashreportcategory.addCrashSectionCallable("Server type", new WorldClientINNER4(this));
         return crashreportcategory;
     }
 
@@ -488,6 +487,24 @@ public class WorldClient extends World
         worldScoreboard = par1Scoreboard;
     }
 
+    /**
+     * Sets the world time.
+     */
+    public void setWorldTime(long par1)
+    {
+        if (par1 < 0L)
+        {
+            par1 = -par1;
+            getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+        }
+        else
+        {
+            getGameRules().setOrCreateGameRule("doDaylightCycle", "true");
+        }
+
+        super.setWorldTime(par1);
+    }
+
     static Set getEntityList(WorldClient par0WorldClient)
     {
         return par0WorldClient.entityList;
@@ -496,5 +513,10 @@ public class WorldClient extends World
     static Set getEntitySpawnQueue(WorldClient par0WorldClient)
     {
         return par0WorldClient.entitySpawnQueue;
+    }
+
+    static Minecraft func_142030_c(WorldClient par0WorldClient)
+    {
+        return par0WorldClient.mc;
     }
 }

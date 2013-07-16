@@ -30,7 +30,6 @@ public class EntityXPOrb extends Entity
     public EntityXPOrb(World par1World, double par2, double par4, double par6, int par8)
     {
         super(par1World);
-        xpOrbAge = 0;
         xpOrbHealth = 5;
         setSize(0.5F, 0.5F);
         yOffset = height / 2.0F;
@@ -54,7 +53,6 @@ public class EntityXPOrb extends Entity
     public EntityXPOrb(World par1World)
     {
         super(par1World);
-        xpOrbAge = 0;
         xpOrbHealth = 5;
         setSize(0.25F, 0.25F);
         yOffset = height / 2.0F;
@@ -201,7 +199,7 @@ public class EntityXPOrb extends Entity
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {

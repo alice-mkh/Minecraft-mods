@@ -1,10 +1,11 @@
 package net.minecraft.src.ssp;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.CommandGameRule;
 import net.minecraft.src.GameRules;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.WrongUsageException;
 
 public class CommandClientGameRule extends CommandGameRule
@@ -42,7 +43,7 @@ public class CommandClientGameRule extends CommandGameRule
             if (gamerules1.hasRule(s1))
             {
                 String s3 = gamerules1.getGameRuleStringValue(s1);
-                par1ICommandSender.sendChatToPlayer((new StringBuilder()).append(s1).append(" = ").append(s3).toString());
+                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111066_d(s1).func_111079_a(" = ").func_111079_a(s3));
             }
             else
             {
@@ -58,7 +59,7 @@ public class CommandClientGameRule extends CommandGameRule
         if (par2ArrayOfStr.length == 0)
         {
             GameRules gamerules = func_82366_d();
-            par1ICommandSender.sendChatToPlayer(joinNiceString(gamerules.getRules()));
+            par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111066_d(joinNiceString(gamerules.getRules())));
             return;
         }
         else

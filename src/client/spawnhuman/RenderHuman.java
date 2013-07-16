@@ -4,8 +4,17 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderHuman extends RenderLiving{
+    private static final ResourceLocation texture1 = new ResourceLocation("textures/entity/steve.png");
+    private static final ResourceLocation texture2 = new ResourceLocation("char.png");
+
     public RenderHuman(ModelHuman modelhuman, float f){
         super(modelhuman, 0.5F);
+    }
+
+    @Override
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return mod_SpawnHuman.CustomTexture ? texture2 : texture1;
     }
 
     @Override
@@ -48,7 +57,7 @@ public class RenderHuman extends RenderLiving{
             preRenderCallback(par1EntityLiving, par9);
             float f5 = par1EntityLiving.prevLimbYaw + (par1EntityLiving.limbYaw - par1EntityLiving.prevLimbYaw) * par9;
             float f6 = par1EntityLiving.field_70763_ax + (par1EntityLiving.field_70764_aw - par1EntityLiving.field_70763_ax) * par9;
-            float f32 = par1EntityLiving.field_70768_au + (par1EntityLiving.field_70766_av - par1EntityLiving.field_70768_au) * par9;
+            float f32 = par1EntityLiving.field_70768_au + (par1EntityLiving.field_110154_aX - par1EntityLiving.field_70768_au) * par9;
             float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 - 23F;
             GL11.glTranslatef(0.0F, bob * f4 - 0.0078125F, 0.0F);
 
@@ -60,66 +69,6 @@ public class RenderHuman extends RenderLiving{
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             mainModel.setLivingAnimations(par1EntityLiving, f6, f5, par9);
             renderModel(par1EntityLiving, f6, f5, f3, f1 - f, f2, f4);
-
-            for (int i = 0; i < 4; i++)
-            {
-                int j = shouldRenderPass(par1EntityLiving, i, par9);
-
-                if (j <= 0)
-                {
-                    continue;
-                }
-
-                renderPassModel.setLivingAnimations(par1EntityLiving, f6, f5, par9);
-                renderPassModel.render(par1EntityLiving, f6, f5, f3, f1 - f, f2, f4);
-
-                if ((j & 0xf0) == 16)
-                {
-                    func_82408_c(par1EntityLiving, i, par9);
-                    renderPassModel.render(par1EntityLiving, f6, f5, f3, f1 - f, f2, f4);
-                }
-
-                if ((j & 0xf) == 15)
-                {
-                    float f8 = (float)par1EntityLiving.ticksExisted + par9;
-                    loadTexture("%blur%/misc/glint.png");
-                    GL11.glEnable(GL11.GL_BLEND);
-                    float f10 = 0.5F;
-                    GL11.glColor4f(f10, f10, f10, 1.0F);
-                    GL11.glDepthFunc(GL11.GL_EQUAL);
-                    GL11.glDepthMask(false);
-
-                    for (int i1 = 0; i1 < 2; i1++)
-                    {
-                        GL11.glDisable(GL11.GL_LIGHTING);
-                        float f13 = 0.76F;
-                        GL11.glColor4f(0.5F * f13, 0.25F * f13, 0.8F * f13, 1.0F);
-                        GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
-                        GL11.glMatrixMode(GL11.GL_TEXTURE);
-                        GL11.glLoadIdentity();
-                        float f15 = f8 * (0.001F + (float)i1 * 0.003F) * 20F;
-                        float f16 = 0.3333333F;
-                        GL11.glScalef(f16, f16, f16);
-                        GL11.glRotatef(30F - (float)i1 * 60F, 0.0F, 0.0F, 1.0F);
-                        GL11.glTranslatef(0.0F, f15, 0.0F);
-                        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                        renderPassModel.render(par1EntityLiving, f6, f5, f3, f1 - f, f2, f4);
-                    }
-
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glMatrixMode(GL11.GL_TEXTURE);
-                    GL11.glDepthMask(true);
-                    GL11.glLoadIdentity();
-                    GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                    GL11.glEnable(GL11.GL_LIGHTING);
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glDepthFunc(GL11.GL_LEQUAL);
-                }
-
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-            }
-
             GL11.glDepthMask(true);
             renderEquippedItems(par1EntityLiving, par9);
             float f7 = par1EntityLiving.getBrightness(par9);

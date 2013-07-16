@@ -1,7 +1,6 @@
 package net.minecraft.src.nbxlite.blocks;
 
 import java.util.Random;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.ODNBXlite;
 import net.minecraft.src.mod_OldDays;
 import net.minecraft.src.AxisAlignedBB;
@@ -11,6 +10,7 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
 import net.minecraft.src.IconRegister;
 import net.minecraft.src.Material;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.World;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
@@ -116,8 +116,8 @@ public class BlockGear extends Block
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        blockIcon = mod_OldDays.texman.registerCustomIcon(par1IconRegister, "olddays_gear_0", new TextureGearFX(0));
-        blockIcon2 = mod_OldDays.texman.registerCustomIcon(par1IconRegister, "olddays_gear_1", new TextureGearFX(1));
+//         blockIcon = mod_OldDays.texman.registerCustomIcon(par1IconRegister, "olddays_gear_0", new TextureGearFX(0));
+//         blockIcon2 = mod_OldDays.texman.registerCustomIcon(par1IconRegister, "olddays_gear_1", new TextureGearFX(1));
     }
 
     public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, BlockGear b, int i, int j, int k, Icon override){

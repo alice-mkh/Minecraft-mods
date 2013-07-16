@@ -29,16 +29,22 @@ public class EntityCreeper extends EntityMob
         super(par1World);
         fuseTime = 30;
         explosionRadius = 3;
-        texture = "/mob/creeper.png";
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAICreeperSwell(this));
-        tasks.addTask(3, new EntityAIAvoidEntity(this, net.minecraft.src.EntityOcelot.class, 6F, 0.25F, 0.3F));
-        tasks.addTask(4, new EntityAIAttackOnCollide(this, 0.25F, false));
-        tasks.addTask(5, new EntityAIWander(this, 0.2F));
+        tasks.addTask(3, new EntityAIAvoidEntity(this, net.minecraft.src.EntityOcelot.class, 6F, 1.0D, 1.2D));
+        tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
+        tasks.addTask(5, new EntityAIWander(this, 0.80000000000000004D));
         tasks.addTask(6, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 8F));
         tasks.addTask(6, new EntityAILookIdle(this));
-        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
+        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 0, true));
         targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+    }
+
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 10D : 20D);
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25D);
     }
 
     @Override
@@ -53,7 +59,7 @@ public class EntityCreeper extends EntityMob
         if (!dark){
             return super.getBrightnessForRender(f);
         }
-        float f1 = (float)(getMaxHealth() - health) / (getMaxHealth() * 2F);
+        float f1 = (float)(10F - func_110143_aJ()) / 20F;
         float f2 = (MathHelper.cos((float)entityAge + f) * 0.5F + 0.5F);
         return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 450F);
     }
@@ -157,7 +163,7 @@ public class EntityCreeper extends EntityMob
         }
         else
         {
-            return 3 + (health - 1);
+            return 3 + (int)(func_110143_aJ() - 1.0F);
         }
     }
 
@@ -173,11 +179,6 @@ public class EntityCreeper extends EntityMob
         {
             timeSinceIgnited = fuseTime - 5;
         }
-    }
-
-    public int getMaxHealth()
-    {
-        return survivaltest ? 10 : 20;
     }
 
     protected void entityInit()

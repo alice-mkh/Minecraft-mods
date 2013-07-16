@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 
 public class RenderGroup extends Render{
     @Override
@@ -16,7 +15,7 @@ public class RenderGroup extends Render{
             GL11.glNewList(b.list, GL11.GL_COMPILE);
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_LIGHTING);
-            loadTexture("/terrain.png");
+            func_110776_a(TextureMap.field_110575_b);
             Tessellator tessellator1 = Tessellator.instance;
             tessellator1.startDrawingQuads();
             tessellator1.setTranslation(-b.x, -b.y, -b.z);
@@ -42,5 +41,11 @@ public class RenderGroup extends Render{
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glCallList(b.list);
         GL11.glPopMatrix();
+    }
+
+    @Override
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return null;
     }
 }

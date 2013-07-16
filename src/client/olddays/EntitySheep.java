@@ -13,13 +13,13 @@ public class EntitySheep extends EntityAnimal
     public static int color = 2;
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, int i)
+    public boolean attackEntityFrom(DamageSource damagesource, float f)
     {
         if (!punchToShear){
-            return super.attackEntityFrom(damagesource, i);
+            return super.attackEntityFrom(damagesource, f);
         }
         Entity entity = damagesource.getEntity();
-        if(!worldObj.isRemote && !getSheared() && (entity instanceof EntityLiving))
+        if(!worldObj.isRemote && !getSheared() && (entity instanceof EntityLivingBase))
         {
             setSheared(true);
             int j = 1 + rand.nextInt(3);
@@ -34,7 +34,7 @@ public class EntitySheep extends EntityAnimal
             }
 
         }
-        return super.attackEntityFrom(damagesource, i);
+        return super.attackEntityFrom(damagesource, f);
     }
 
     @Override
@@ -150,17 +150,15 @@ public class EntitySheep extends EntityAnimal
     {
         super(par1World);
         aiEatGrass = new EntityAIEatGrass2(this);
-        texture = "/mob/sheep.png";
         setSize(0.9F, 1.3F);
-        float f = 0.23F;
         getNavigator().setAvoidsWater(true);
         tasks.addTask(0, new EntityAISwimming(this));
-        tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-        tasks.addTask(2, new EntityAIMate(this, f));
-        tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.itemID, false));
-        tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
+        tasks.addTask(1, new EntityAIPanic(this, 1.25D));
+        tasks.addTask(2, new EntityAIMate(this, 1.0D));
+        tasks.addTask(3, new EntityAITempt(this, 1.1000000000000001D, Item.wheat.itemID, false));
+        tasks.addTask(4, new EntityAIFollowParent(this, 1.1000000000000001D));
         tasks.addTask(5, aiEatGrass);
-        tasks.addTask(6, new EntityAIWander(this, f));
+        tasks.addTask(6, new EntityAIWander(this, 1.0D));
         tasks.addTask(7, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(8, new EntityAILookIdle(this));
         field_90016_e.setInventorySlotContents(0, new ItemStack(Item.dyePowder, 1, 0));
@@ -203,12 +201,11 @@ public class EntitySheep extends EntityAnimal
         super.onLivingUpdate();
     }
 
-    public int getMaxHealth()
+    protected void func_110147_ax()
     {
-        if (survivaltest){
-            return 6;
-        }
-        return oldhealth ? 10 : 8;
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 6D : (oldhealth ? 10D : 8D));
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.23000000417232513D);
     }
 
     protected void entityInit()
@@ -470,23 +467,15 @@ public class EntitySheep extends EntityAnimal
 
         if (isChild())
         {
-            int i = getGrowingAge() + 1200;
-
-            if (i > 0)
-            {
-                i = 0;
-            }
-
-            setGrowingAge(i);
+            func_110195_a(60);
         }
     }
 
-    /**
-     * Initialize this creature.
-     */
-    public void initCreature()
+    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
+        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
         setFleeceColor(getRandomFleeceColor(worldObj.rand));
+        return par1EntityLivingData;
     }
 
     private int func_90014_a(EntityAnimal par1EntityAnimal, EntityAnimal par2EntityAnimal)

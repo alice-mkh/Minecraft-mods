@@ -1,10 +1,10 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandEnchant;
 import net.minecraft.src.Enchantment;
 import net.minecraft.src.ICommandSender;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.NumberInvalidException;

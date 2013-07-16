@@ -1,0 +1,12 @@
+--- src-mods/src/client-client/ssp/Minecraft.java	2013-07-02 19:16:23.499278236 +0600
++++ src-mods/src/client-client/ssp/Minecraft.java	2013-06-30 04:24:24.572795946 +0600
+@@ -1773,6 +1875,9 @@
+                             if (Keyboard.getEventKey() == 20 && Keyboard.isKeyDown(61))
+                             {
+                                 renderEngine.refreshTextures();
++                                for (int i = 0; i < mods.size(); i++){
++                                    mods.get(i).refreshTextures();
++                                }
+                                 renderGlobal.loadRenderers();
+                             }
+ 

@@ -7,7 +7,7 @@ import net.minecraft.src.ssp.SSPOptions;
 
 public class EntityPlayerMP extends EntityPlayer implements ICrafting
 {
-    private StringTranslate translator;
+    private String translator;
 
     /**
      * The NetServerHandler assigned to this player by the ServerConfigurationManager.
@@ -31,9 +31,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
     /** entities added to this list will  be packet29'd to the player */
     public final List destroyedItemsNetCache = new LinkedList();
+    private float field_130068_bO;
 
     /** set to getHealth */
-    private int lastHealth;
+    private float lastHealth;
 
     /** set to foodStats.GetFoodLevel */
     private int lastFoodLevel;
@@ -72,18 +73,15 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
     public EntityPlayerMP(MinecraftServer par1MinecraftServer, World par2World, String par3Str, ItemInWorldManager par4ItemInWorldManager)
     {
-        super(par2World);
-        translator = new StringTranslate("en_US");
-        lastHealth = 0xfa0a1f01;
+        super(par2World, par3Str);
+        translator = "en_US";
+        field_130068_bO = 1.401298E-045F;
+        lastHealth = -1E+008F;
         lastFoodLevel = 0xfa0a1f01;
         wasHungry = true;
         lastExperience = 0xfa0a1f01;
         initialInvulnerability = 60;
-        renderDistance = 0;
-        chatVisibility = 0;
         chatColours = true;
-        currentWindowId = 0;
-        playerConqueredTheEnd = false;
         par4ItemInWorldManager.thisPlayerMP = this;
         theItemInWorldManager = par4ItemInWorldManager;
         renderDistance = par1MinecraftServer.getConfigurationManager().getViewDistance();
@@ -102,7 +100,6 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         mcServer = par1MinecraftServer;
         stepHeight = 0.0F;
-        username = par3Str;
         yOffset = 0.0F;
         setLocationAndAngles((double)i + 0.5D, k, (double)j + 0.5D, 0.0F, 0.0F);
 
@@ -111,9 +108,8 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
     public EntityPlayerMP(MinecraftServer par1MinecraftServer, String par3Str)
     {
-        super(net.minecraft.client.Minecraft.getMinecraft().theWorld);
+        super(Minecraft.getMinecraft().theWorld, par3Str);
         this.mcServer = par1MinecraftServer;
-        this.username = par3Str;
     }
 
     /**
@@ -180,6 +176,13 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         theItemInWorldManager.updateBlockRemoving();
         initialInvulnerability--;
         openContainer.detectAndSendChanges();
+
+        if (!worldObj.isRemote && !openContainer.canInteractWith(this))
+        {
+            closeScreen();
+            openContainer = inventoryContainer;
+        }
+
         int ai[];
 
         for (; !destroyedItemsNetCache.isEmpty(); playerNetServerHandler.sendPacketToPlayer(new Packet29DestroyEntity(ai)))
@@ -238,21 +241,6 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
     }
 
-    public void setEntityHealth(int par1)
-    {
-        super.setEntityHealth(par1);
-        Collection collection = getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
-        ScoreObjective scoreobjective;
-
-        for (Iterator iterator = collection.iterator(); iterator.hasNext(); getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[]
-                {
-                    this
-                })))
-        {
-            scoreobjective = (ScoreObjective)iterator.next();
-        }
-    }
-
     public void onUpdateEntity()
     {
         try
@@ -276,12 +264,27 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                 }
             }
 
-            if (getHealth() != lastHealth || lastFoodLevel != foodStats.getFoodLevel() || (foodStats.getSaturationLevel() == 0.0F) != wasHungry)
+            if (func_110143_aJ() != lastHealth || lastFoodLevel != foodStats.getFoodLevel() || (foodStats.getSaturationLevel() == 0.0F) != wasHungry)
             {
-                playerNetServerHandler.sendPacketToPlayer(new Packet8UpdateHealth(getHealth(), foodStats.getFoodLevel(), foodStats.getSaturationLevel()));
-                lastHealth = getHealth();
+                playerNetServerHandler.sendPacketToPlayer(new Packet8UpdateHealth(func_110143_aJ(), foodStats.getFoodLevel(), foodStats.getSaturationLevel()));
+                lastHealth = func_110143_aJ();
                 lastFoodLevel = foodStats.getFoodLevel();
                 wasHungry = foodStats.getSaturationLevel() == 0.0F;
+            }
+
+            if (func_110143_aJ() + func_110139_bj() != field_130068_bO)
+            {
+                field_130068_bO = func_110143_aJ() + func_110139_bj();
+                Collection collection = getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
+                ScoreObjective scoreobjective;
+
+                for (Iterator iterator = collection.iterator(); iterator.hasNext(); getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[]
+                        {
+                            this
+                        })))
+                {
+                    scoreobjective = (ScoreObjective)iterator.next();
+                }
             }
 
             if (experienceTotal != lastExperience)
@@ -304,8 +307,8 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void onDeath(DamageSource par1DamageSource)
     {
-        if (!net.minecraft.client.Minecraft.getMinecraft().enableSP || SSPOptions.getDeathMessages()){
-            mcServer.getConfigurationManager().sendChatMsg(field_94063_bt.func_94546_b());
+        if (!Minecraft.getMinecraft().enableSP || SSPOptions.getDeathMessages()){
+            mcServer.getConfigurationManager().sendChatMsg(func_110142_aN().func_94546_b());
         }
 
         if (!worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
@@ -322,18 +325,20 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             score = getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective);
         }
 
-        EntityLiving entityliving = func_94060_bK();
+        EntityLivingBase entitylivingbase = func_94060_bK();
 
-        if (entityliving != null)
+        if (entitylivingbase != null)
         {
-            entityliving.addToPlayerScore(this, scoreValue);
+            entitylivingbase.addToPlayerScore(this, scoreValue);
         }
+
+        addStat(StatList.deathsStat, 1);
     }
 
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {
@@ -396,7 +401,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
         else
         {
-            if (dimension == 1 && par1 == 0)
+            if (dimension == 0 && par1 == 1)
             {
                 triggerAchievement(AchievementList.theEnd);
                 ChunkCoordinates chunkcoordinates = mcServer.worldServerForDimension(par1).getEntrancePortalLocation();
@@ -415,7 +420,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
             mcServer.getConfigurationManager().transferPlayerToDimension(this, par1);
             lastExperience = -1;
-            lastHealth = -1;
+            lastHealth = -1F;
             lastFoodLevel = -1;
         }
     }
@@ -487,7 +492,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void mountEntity(Entity par1Entity)
     {
         super.mountEntity(par1Entity);
-        playerNetServerHandler.sendPacketToPlayer(new Packet39AttachEntity(this, ridingEntity));
+        playerNetServerHandler.sendPacketToPlayer(new Packet39AttachEntity(0, this, ridingEntity));
         playerNetServerHandler.setPlayerLocation(posX, posY, posZ, rotationYaw, rotationPitch);
     }
 
@@ -505,6 +510,18 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void updateFlyingState(double par1, boolean par3)
     {
         super.updateFallState(par1, par3);
+    }
+
+    /**
+     * Displays the GUI for editing a sign. Args: tileEntitySign
+     */
+    public void displayGUIEditSign(TileEntity par1TileEntity)
+    {
+        if (par1TileEntity instanceof TileEntitySign)
+        {
+            ((TileEntitySign)par1TileEntity).func_142010_a(this);
+            playerNetServerHandler.sendPacketToPlayer(new Packet133TileEditorOpen(0, par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord));
+        }
     }
 
     private void incrementWindowID()
@@ -655,6 +672,20 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
     }
 
+    public void func_110298_a(EntityHorse par1EntityHorse, IInventory par2IInventory)
+    {
+        if (openContainer != inventoryContainer)
+        {
+            closeScreen();
+        }
+
+        incrementWindowID();
+        playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(currentWindowId, 11, par2IInventory.getInvName(), par2IInventory.getSizeInventory(), par2IInventory.isInvNameLocalized(), par1EntityHorse.entityId));
+        openContainer = new ContainerHorseInventory(inventory, par2IInventory, par1EntityHorse);
+        openContainer.windowId = currentWindowId;
+        openContainer.addCraftingToCrafters(this);
+    }
+
     /**
      * Sends the contents of an inventory slot to the client-side Container. This doesn't have to match the actual
      * contents of that slot. Args: Container, slot number, slot contents
@@ -704,7 +735,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void closeScreen()
     {
         playerNetServerHandler.sendPacketToPlayer(new Packet101CloseWindow(openContainer.windowId));
-        closeInventory();
+        closeContainer();
     }
 
     /**
@@ -723,10 +754,32 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
     }
 
-    public void closeInventory()
+    /**
+     * Closes the container the player currently has open.
+     */
+    public void closeContainer()
     {
-        openContainer.onCraftGuiClosed(this);
+        openContainer.onContainerClosed(this);
         openContainer = inventoryContainer;
+    }
+
+    public void func_110430_a(float par1, float par2, boolean par3, boolean par4)
+    {
+        if (ridingEntity != null)
+        {
+            if (par1 >= -1F && par1 <= 1.0F)
+            {
+                moveStrafing = par1;
+            }
+
+            if (par2 >= -1F && par2 <= 1.0F)
+            {
+                moveForward = par2;
+            }
+
+            isJumping = par3;
+            setSneaking(par4);
+        }
     }
 
     /**
@@ -741,11 +794,6 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (!par1StatBase.isIndependent)
         {
-            for (; par2 > 100; par2 -= 100)
-            {
-                playerNetServerHandler.sendPacketToPlayer(new Packet200Statistic(par1StatBase.statId, 100));
-            }
-
             playerNetServerHandler.sendPacketToPlayer(new Packet200Statistic(par1StatBase.statId, par2));
         }
     }
@@ -769,7 +817,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void setPlayerHealthUpdated()
     {
-        lastHealth = 0xfa0a1f01;
+        lastHealth = -1E+008F;
     }
 
     /**
@@ -777,9 +825,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void addChatMessage(String par1Str)
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        String s = stringtranslate.translateKey(par1Str);
-        playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(s));
+        playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.func_111077_e(par1Str)));
     }
 
     /**
@@ -812,7 +858,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     {
         super.clonePlayer(par1EntityPlayer, par2);
         lastExperience = -1;
-        lastHealth = -1;
+        lastHealth = -1F;
         lastFoodLevel = -1;
         destroyedItemsNetCache.addAll(((EntityPlayerMP)par1EntityPlayer).destroyedItemsNetCache);
     }
@@ -823,9 +869,9 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(entityId, par1PotionEffect));
     }
 
-    protected void onChangedPotionEffect(PotionEffect par1PotionEffect)
+    protected void onChangedPotionEffect(PotionEffect par1PotionEffect, boolean par2)
     {
-        super.onChangedPotionEffect(par1PotionEffect);
+        super.onChangedPotionEffect(par1PotionEffect, par2);
         playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(entityId, par1PotionEffect));
     }
 
@@ -886,9 +932,9 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         playerNetServerHandler.sendPacketToPlayer(new Packet70GameEvent(3, par1EnumGameType.getID()));
     }
 
-    public void sendChatToPlayer(String par1Str)
+    public void sendChatToPlayer(ChatMessageComponent par1ChatMessageComponent)
     {
-        playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(par1Str));
+        playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(par1ChatMessageComponent));
     }
 
     /**
@@ -905,9 +951,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         {
             return true;
         }
+
+        if (mcServer.getConfigurationManager().areCommandsAllowed(username))
+        {
+            return mcServer.func_110455_j() >= par1;
+        }
         else
         {
-            return mcServer.getConfigurationManager().areCommandsAllowed(username);
+            return false;
         }
     }
 
@@ -924,11 +975,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
     public void updateClientInfo(Packet204ClientInfo par1Packet204ClientInfo)
     {
-        if (translator.getLanguageList().containsKey(par1Packet204ClientInfo.getLanguage()))
-        {
-            translator.setLanguage(par1Packet204ClientInfo.getLanguage(), false);
-        }
-
+        translator = par1Packet204ClientInfo.getLanguage();
         int i = 256 >> par1Packet204ClientInfo.getRenderDistance();
 
         if (i > 3 && i < 15)
@@ -945,11 +992,6 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
 
         setHideCape(1, !par1Packet204ClientInfo.getShowCape());
-    }
-
-    public StringTranslate getTranslator()
-    {
-        return translator;
     }
 
     public int getChatVisibility()

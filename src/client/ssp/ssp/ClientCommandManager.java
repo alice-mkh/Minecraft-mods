@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.CommandBase;
 import net.minecraft.src.CommandHandler;
 import net.minecraft.src.EntityPlayer;
@@ -13,6 +13,7 @@ import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.IAdminCommand;
 import net.minecraft.src.ICommand;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.PlayerNotFoundException;
 import net.minecraft.src.PlayerSelector;
 
@@ -52,7 +53,7 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
     @Override
     public void notifyAdmins(ICommandSender par1ICommandSender, int i, String par2Str, Object par3ArrayOfObj[])
     {
-        par1ICommandSender.sendChatToPlayer(par1ICommandSender.translateString(par2Str, par3ArrayOfObj));
+        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b(par2Str, par3ArrayOfObj));
     }
 
     /**

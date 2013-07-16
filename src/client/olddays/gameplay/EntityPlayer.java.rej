@@ -1,0 +1,90 @@
+--- src-mods/src/client/olddays/gameplay/EntityPlayer.java	2013-07-02 19:16:24.447278196 +0600
++++ src-mods/src/client/olddays/gameplay/EntityPlayer.java	2013-05-05 18:25:21.964732104 +0600
+@@ -129,6 +135,91 @@
++    private void combatOld(Entity par1Entity, int i, int j, int k){
++        if(i > 0)
++        {
++            i += k;
++            if(motionY < 0.0D && combat>0)
++            {
++                i++;
++            }
++            if (par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i)){
++                if (j > 0)
++                {
++                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
++                    motionX *= 0.59999999999999998D;
++                    motionZ *= 0.59999999999999998D;
++                    setSprinting(false);
++                }
++                if (k > 0)
++                {
++                    onEnchantmentCritical(par1Entity);
++                }
++                if (i >= 18)
++                {
++                    triggerAchievement(AchievementList.overkill);
++                }
++                setLastAttackingEntity(par1Entity);
++            }
++            ItemStack itemstack = getCurrentEquippedItem();
++            if(itemstack != null && (par1Entity instanceof EntityLiving))
++            {
++                itemstack.hitEntity((EntityLiving)par1Entity, this);
++                if(itemstack.stackSize <= 0)
++                {
++                    destroyCurrentEquippedItem();
++                }
++            }
++            if(par1Entity instanceof EntityLiving)
++            {
++                if(par1Entity.isEntityAlive())
++                {
++                    alertWolves((EntityLiving)par1Entity, true);
++                }
++                addStat(StatList.damageDealtStat, i);
++                int l = EnchantmentHelper.getFireAspectModifier(this);
++                if (l > 0)
++                {
++                    par1Entity.setFire(l * 4);
++                }
++            }
++            addExhaustion(0.3F);
++        }
+     }
+ 
+     public int getMaxHealth()
+@@ -1121,11 +1253,19 @@
+             par2 = 1 + par2 >> 1;
+         }
+ 
+-        par2 = applyArmorCalculations(par1DamageSource, par2);
++        if (armor<2){
++            par2 = applyArmorCalculations_old(par1DamageSource, par2);
++        }else{
++            par2 = applyArmorCalculations(par1DamageSource, par2);
++        }
+         par2 = applyPotionDamageCalculations(par1DamageSource, par2);
+         addExhaustion(par1DamageSource.getHungerDamage());
+         int i = getEntityHealth();
+-        setEntityHealth(getEntityHealth() - par2);
++        if (armor==2){
++            super.damageEntity(par1DamageSource, par2);
++        }else{
++            setEntityHealth(getEntityHealth() - par2);
++        }
+         field_94063_bt.func_94547_a(par1DamageSource, i, par2);
+     }
+ 
+@@ -1270,7 +1410,10 @@
+         {
+             j++;
+         }
+-
++        if (combat<2){
++            combatOld(par1Entity, i, j, k);
++            return;
++        }
+         if (i > 0 || k > 0)
+         {
+             boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);

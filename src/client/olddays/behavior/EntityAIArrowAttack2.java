@@ -9,14 +9,14 @@ public class EntityAIArrowAttack2 extends EntityAIBase
      * The entity (as a RangedAttackMob) the AI instance has been applied to.
      */
     private final IRangedAttackMob rangedAttackEntityHost;
-    private EntityLiving attackTarget;
+    private EntityLivingBase attackTarget;
 
     /**
      * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
      * maxRangedAttackTime.
      */
     private int rangedAttackTime;
-    private float entityMoveSpeed;
+    private double entityMoveSpeed;
     private int field_75318_f;
     private int field_96561_g;
 
@@ -27,17 +27,16 @@ public class EntityAIArrowAttack2 extends EntityAIBase
     private float field_96562_i;
     private float field_82642_h;
 
-    public EntityAIArrowAttack2(IRangedAttackMob par1IRangedAttackMob, float par2, int par3, float par4)
+    public EntityAIArrowAttack2(IRangedAttackMob par1IRangedAttackMob, double par2, int par3, float par4)
     {
         this(par1IRangedAttackMob, par2, par3, par3, par4);
     }
 
-    public EntityAIArrowAttack2(IRangedAttackMob par1IRangedAttackMob, float par2, int par3, int par4, float par5)
+    public EntityAIArrowAttack2(IRangedAttackMob par1IRangedAttackMob, double par2, int par3, int par4, float par5)
     {
         rangedAttackTime = -1;
-        field_75318_f = 0;
 
-        if (!(par1IRangedAttackMob instanceof EntityLiving))
+        if (!(par1IRangedAttackMob instanceof EntityLivingBase))
         {
             throw new IllegalArgumentException("ArrowAttackGoal requires Mob implements RangedAttackMob");
         }
@@ -61,15 +60,15 @@ public class EntityAIArrowAttack2 extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        EntityLiving entityliving = entityHost.getAttackTarget();
+        EntityLivingBase entitylivingbase = entityHost.getAttackTarget();
 
-        if (entityliving == null)
+        if (entitylivingbase == null)
         {
             return false;
         }
         else
         {
-            attackTarget = entityliving;
+            attackTarget = entitylivingbase;
             return true;
         }
     }

@@ -1,19 +1,12 @@
 package net.minecraft.src;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.client.Minecraft;
+import java.util.*;
+import org.apache.commons.io.Charsets;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.glu.Project;
 import net.minecraft.src.ssp.PlayerControllerDemo;
 
 public class GuiMainMenu extends GuiScreen
@@ -30,6 +23,7 @@ public class GuiMainMenu extends GuiScreen
         " *   * * *  ** *   *   * * * * *    * ",
         " *   * * *   * *** *** * * * * *    * "
     };
+    private static final ResourceLocation blackResource = new ResourceLocation("olddays/black.png");
     private LogoEffectRandomizer logoEffects[][];
     public static boolean replaceGuiSelectWorld = true;
 
@@ -53,16 +47,18 @@ public class GuiMainMenu extends GuiScreen
     /**
      * Texture allocated for the current viewport of the main menu's panorama background.
      */
-    private int viewportTexture;
+    private DynamicTexture viewportTexture;
     private boolean field_96141_q;
-    private static boolean field_96140_r = false;
-    private static boolean field_96139_s = false;
+    private static boolean field_96140_r;
+    private static boolean field_96139_s;
     private final Object field_104025_t = new Object();
     private String field_92025_p;
     private String field_104024_v;
-    private static final String titlePanoramaPaths[] =
+    private static final ResourceLocation field_110353_x = new ResourceLocation("texts/splashes.txt");
+    private static final ResourceLocation field_110352_y = new ResourceLocation("textures/gui/title/minecraft.png");
+    private static final ResourceLocation titlePanoramaPaths[] =
     {
-        "/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"
+        new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")
     };
     public static final String field_96138_a;
     private int field_92024_r;
@@ -71,12 +67,11 @@ public class GuiMainMenu extends GuiScreen
     private int field_92021_u;
     private int field_92020_v;
     private int field_92019_w;
+    private ResourceLocation field_110351_G;
+    private GuiButton field_130023_H;
 
     public GuiMainMenu()
     {
-        updateCounter = 0.0F;
-        updateCounter2 = 0.0F;
-        panoramaTimer = 0;
         field_96141_q = true;
         splashText = "missingno";
         BufferedReader bufferedreader = null;
@@ -84,7 +79,7 @@ public class GuiMainMenu extends GuiScreen
         try
         {
             ArrayList arraylist = new ArrayList();
-            bufferedreader = new BufferedReader(new InputStreamReader((net.minecraft.src.GuiMainMenu.class).getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
+            bufferedreader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().func_110442_L().func_110536_a(field_110353_x).func_110527_b(), Charsets.UTF_8));
 
             do
             {
@@ -97,7 +92,7 @@ public class GuiMainMenu extends GuiScreen
 
                 s1 = s1.trim();
 
-                if (s1.length() > 0)
+                if (!s1.isEmpty())
                 {
                     arraylist.add(s1);
                 }
@@ -138,11 +133,6 @@ public class GuiMainMenu extends GuiScreen
         {
             field_92025_p = (new StringBuilder()).append("").append(EnumChatFormatting.BOLD).append("Notice!").append(EnumChatFormatting.RESET).append(" Java 1.5 compatibility will be dropped in Minecraft 1.6").toString();
             field_104024_v = "http://tinyurl.com/javappc";
-        }
-
-        if (field_92025_p.length() == 0)
-        {
-            (new Thread(new RunnableTitleScreen(this), "1.6 Update Check Thread")).start();
         }
     }
 
@@ -189,7 +179,8 @@ public class GuiMainMenu extends GuiScreen
      */
     public void initGui()
     {
-        viewportTexture = mc.renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(256, 256, 2));
+        viewportTexture = new DynamicTexture(256, 256);
+        field_110351_G = mc.func_110434_K().func_110578_a("background", viewportTexture);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
 
@@ -214,33 +205,24 @@ public class GuiMainMenu extends GuiScreen
             splashText = "OOoooOOOoooo! Spooky!";
         }
 
-        StringTranslate stringtranslate = StringTranslate.getInstance();
+        byte byte0 = 24;
         int i = height / 4 + 48;
 
         if (mc.isDemo())
         {
-            addDemoButtons(i, 24, stringtranslate);
+            addDemoButtons(i, 24);
         }
         else
         {
-            addSingleplayerMultiplayerButtons(i, 24, stringtranslate);
-        }
-
-        func_96137_a(stringtranslate, i, 24);
-
-        if (mc.hideQuitButton)
-        {
-            buttonList.add(new GuiButton(0, width / 2 - 100, i + 72, stringtranslate.translateKey("menu.options")));
-        }
-        else
-        {
-            buttonList.add(new GuiButton(0, width / 2 - 100, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.options")));
-            buttonList.add(new GuiButton(4, width / 2 + 2, i + 72 + 12, 98, 20, stringtranslate.translateKey("menu.quit")));
+            addSingleplayerMultiplayerButtons(i, 24);
         }
         if (texturepacks && texturePackButton == null){
-            buttonList.add(new GuiButton(10, width / 2 - 100, i + 48, stringtranslate.translateKey("options.texture.pack")));
+            buttonList.add(new GuiButton(10, width / 2 - 100, i + 48, I18n.func_135053_a("options.resourcepack")));
         }
 
+        func_130020_g();
+        buttonList.add(new GuiButton(0, width / 2 - 100, i + 72 + 12, 98, 20, I18n.func_135053_a("menu.options")));
+        buttonList.add(new GuiButton(4, width / 2 + 2, i + 72 + 12, 98, 20, I18n.func_135053_a("menu.quit")));
         buttonList.add(new GuiButtonLanguage(5, width / 2 - 124, i + 72 + 12));
 
         synchronized (field_104025_t)
@@ -255,51 +237,53 @@ public class GuiMainMenu extends GuiScreen
         }
     }
 
-    private void func_96137_a(StringTranslate par1StringTranslate, int par2, int par3)
+    private void func_130020_g()
     {
         if (field_96141_q)
         {
             if (!field_96140_r)
             {
                 field_96140_r = true;
-                (new ThreadTitleScreen(this, par1StringTranslate, par2, par3)).start();
+                (new RunnableTitleScreen(this)).start();
             }
             else if (field_96139_s)
             {
-                func_98060_b(par1StringTranslate, par2, par3);
+                func_130022_h();
             }
         }
     }
 
-    private void func_98060_b(StringTranslate par1StringTranslate, int par2, int par3)
+    private void func_130022_h()
     {
         if (texturepacks){
-            buttonList.add(onlineButton = new GuiButton(3, width / 2 + 2, par2 + par3 * 2, 98, 20, par1StringTranslate.translateKey("menu.online")));
+            buttonList.add(field_130023_H = new GuiButton(3, width / 2 + 2, height / 4 + 96, 98, 20, I18n.func_135053_a("menu.online")));
             if (texturePackButton != null){
                 buttonList.remove(texturePackButton);
             }
-            buttonList.add(texturePackButton = new GuiButton(10, width / 2 - 100, par2 + par3 * 2, 98, 20, par1StringTranslate.translateKey("options.texture.pack")));
+            buttonList.add(texturePackButton = new GuiButton(10, width / 2 - 100, height / 4 + 96, 98, 20, I18n.func_135053_a("options.resourcepack")));
         }else{
-            buttonList.add(onlineButton = new GuiButton(3, width / 2 - 100, par2 + par3 * 2, par1StringTranslate.translateKey("menu.online")));
+            buttonList.add(field_130023_H = new GuiButton(3, width / 2 - 100, height / 4 + 96, I18n.func_135053_a("menu.online")));
         }
     }
 
     /**
      * Adds Singleplayer and Multiplayer buttons on Main Menu for players who have bought the game.
      */
-    private void addSingleplayerMultiplayerButtons(int par1, int par2, StringTranslate par3StringTranslate)
+    private void addSingleplayerMultiplayerButtons(int par1, int par2)
     {
-        buttonList.add(new GuiButton(1, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.singleplayer")));
-        buttonList.add(new GuiButton(2, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
+        buttonList.add(new GuiButton(1, width / 2 - 100, par1, I18n.func_135053_a("menu.singleplayer")));
+        buttonList.add(new GuiButton(2, width / 2 - 100, par1 + par2 * 1, I18n.func_135053_a("menu.multiplayer")));
+        buttonList.add(field_130023_H = new GuiButton(14, width / 2 - 100, par1 + par2 * 2, I18n.func_135053_a("menu.online")));
+        field_130023_H.drawButton = false;
     }
 
     /**
      * Adds Demo buttons on Main Menu for players who are playing Demo.
      */
-    private void addDemoButtons(int par1, int par2, StringTranslate par3StringTranslate)
+    private void addDemoButtons(int par1, int par2)
     {
-        buttonList.add(new GuiButton(11, width / 2 - 100, par1, par3StringTranslate.translateKey("menu.playdemo")));
-        buttonList.add(buttonResetDemo = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
+        buttonList.add(new GuiButton(11, width / 2 - 100, par1, I18n.func_135053_a("menu.playdemo")));
+        buttonList.add(buttonResetDemo = new GuiButton(12, width / 2 - 100, par1 + par2 * 1, I18n.func_135053_a("menu.resetdemo")));
         ISaveFormat isaveformat = mc.getSaveLoader();
         WorldInfo worldinfo = isaveformat.getWorldInfo("Demo_World");
 
@@ -321,7 +305,7 @@ public class GuiMainMenu extends GuiScreen
 
         if (par1GuiButton.id == 5)
         {
-            mc.displayGuiScreen(new GuiLanguage(this, mc.gameSettings));
+            mc.displayGuiScreen(new GuiLanguage(this, mc.gameSettings, mc.func_135016_M()));
         }
 
         if (par1GuiButton.id == 1)
@@ -334,9 +318,9 @@ public class GuiMainMenu extends GuiScreen
             mc.displayGuiScreen(new GuiMultiplayer(this));
         }
 
-        if (par1GuiButton.id == 3)
+        if (par1GuiButton.id == 14 && field_130023_H.drawButton)
         {
-            mc.displayGuiScreen(new GuiScreenOnlineServers(this));
+            func_140005_i();
         }
 
         if (par1GuiButton.id == 4)
@@ -346,7 +330,7 @@ public class GuiMainMenu extends GuiScreen
 
         if (par1GuiButton.id == 10)
         {
-            mc.displayGuiScreen(new GuiTexturePacks(this, mc.gameSettings));
+            mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect(this, mc.gameSettings));
         }
 
         if (par1GuiButton.id == 11)
@@ -371,6 +355,31 @@ public class GuiMainMenu extends GuiScreen
                 GuiYesNo guiyesno = GuiSelectWorld.getDeleteWorldScreen(this, worldinfo.getWorldName(), 12);
                 mc.displayGuiScreen(guiyesno);
             }
+        }
+    }
+
+    private void func_140005_i()
+    {
+        McoClient mcoclient = new McoClient(mc.func_110432_I());
+
+        try
+        {
+            if (mcoclient.func_140054_c().booleanValue())
+            {
+                mc.displayGuiScreen(new GuiScreenClientOutdated(this));
+            }
+            else
+            {
+                mc.displayGuiScreen(new GuiScreenOnlineServers(this));
+            }
+        }
+        catch (ExceptionMcoService exceptionmcoservice)
+        {
+            mc.getLogAgent().logSevere(exceptionmcoservice.toString());
+        }
+        catch (IOException ioexception)
+        {
+            mc.getLogAgent().logSevere(ioexception.getLocalizedMessage());
         }
     }
 
@@ -418,7 +427,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        GLU.gluPerspective(120F, 1.0F, 0.05F, 10F);
+        Project.gluPerspective(120F, 1.0F, 0.05F, 10F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -470,7 +479,7 @@ public class GuiMainMenu extends GuiScreen
                     GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
                 }
 
-                mc.renderEngine.bindTexture(titlePanoramaPaths[k]);
+                mc.func_110434_K().func_110577_a(titlePanoramaPaths[k]);
                 tessellator.startDrawingQuads();
                 tessellator.setColorRGBA_I(0xffffff, 255 / (j + 1));
                 float f3 = 0.0F;
@@ -503,8 +512,7 @@ public class GuiMainMenu extends GuiScreen
      */
     private void rotateAndBlurSkybox(float par1)
     {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, viewportTexture);
-        mc.renderEngine.resetBoundTexture();
+        mc.func_110434_K().func_110577_a(field_110351_G);
         GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, 256, 256);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -527,7 +535,6 @@ public class GuiMainMenu extends GuiScreen
 
         tessellator.draw();
         GL11.glColorMask(true, true, true, true);
-        mc.renderEngine.resetBoundTexture();
     }
 
     /**
@@ -587,8 +594,9 @@ public class GuiMainMenu extends GuiScreen
             drawGradientRect(0, 0, width, height, 0, 0x80000000);
         }
         if (!oldlogo){
-            mc.renderEngine.bindTexture("/title/mclogo.png");
+            mc.func_110434_K().func_110577_a(field_110352_y);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
             if ((double)updateCounter < 0.0001D)
             {
                 drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
@@ -659,104 +667,29 @@ public class GuiMainMenu extends GuiScreen
         }
     }
 
-    static Object func_104004_a(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.field_104025_t;
-    }
-
-    static String func_104005_a(GuiMainMenu par0GuiMainMenu, String par1Str)
-    {
-        return par0GuiMainMenu.field_92025_p = par1Str;
-    }
-
-    static String func_104013_b(GuiMainMenu par0GuiMainMenu, String par1Str)
-    {
-        return par0GuiMainMenu.field_104024_v = par1Str;
-    }
-
-    static int func_104006_a(GuiMainMenu par0GuiMainMenu, int par1)
-    {
-        return par0GuiMainMenu.field_92023_s = par1;
-    }
-
-    static String func_104023_b(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.field_92025_p;
-    }
-
-    static FontRenderer func_104022_c(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.fontRenderer;
-    }
-
-    static int func_104014_b(GuiMainMenu par0GuiMainMenu, int par1)
-    {
-        return par0GuiMainMenu.field_92024_r = par1;
-    }
-
-    static FontRenderer func_104007_d(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.fontRenderer;
-    }
-
-    static int func_104016_e(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.field_92023_s;
-    }
-
-    static int func_104015_f(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.field_92024_r;
-    }
-
-    static int func_104008_c(GuiMainMenu par0GuiMainMenu, int par1)
-    {
-        return par0GuiMainMenu.field_92022_t = par1;
-    }
-
-    static int func_104009_d(GuiMainMenu par0GuiMainMenu, int par1)
-    {
-        return par0GuiMainMenu.field_92021_u = par1;
-    }
-
-    static List func_104019_g(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.buttonList;
-    }
-
-    static int func_104011_e(GuiMainMenu par0GuiMainMenu, int par1)
-    {
-        return par0GuiMainMenu.field_92020_v = par1;
-    }
-
-    static int func_104018_h(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.field_92022_t;
-    }
-
-    static int func_104012_f(GuiMainMenu par0GuiMainMenu, int par1)
-    {
-        return par0GuiMainMenu.field_92019_w = par1;
-    }
-
-    static int func_104020_i(GuiMainMenu par0GuiMainMenu)
-    {
-        return par0GuiMainMenu.field_92021_u;
-    }
-
-    static Minecraft func_98058_a(GuiMainMenu par0GuiMainMenu)
+    static Minecraft func_110348_a(GuiMainMenu par0GuiMainMenu)
     {
         return par0GuiMainMenu.mc;
     }
 
-    static void func_98061_a(GuiMainMenu par0GuiMainMenu, StringTranslate par1StringTranslate, int par2, int par3)
+    static void func_130021_b(GuiMainMenu par0GuiMainMenu)
     {
-        par0GuiMainMenu.func_98060_b(par1StringTranslate, par2, par3);
+        par0GuiMainMenu.func_130022_h();
     }
 
-    static boolean func_98059_a(boolean par0)
+    static boolean func_110349_a(boolean par0)
     {
         return field_96139_s = par0;
+    }
+
+    static Minecraft func_130018_c(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.mc;
+    }
+
+    static Minecraft func_130019_d(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.mc;
     }
 
     static
@@ -787,7 +720,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glLoadIdentity();
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int k = 120 * scaledresolution.getScaleFactor();
-        GLU.gluPerspective(70F, (float)mc.displayWidth / (float)k, 0.05F, 100F);
+        Project.gluPerspective(70F, (float)mc.displayWidth / (float)k, 0.05F, 100F);
         GL11.glViewport(0, mc.displayHeight - k, mc.displayWidth, k);
         GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
         GL11.glPushMatrix();
@@ -822,10 +755,10 @@ public class GuiMainMenu extends GuiScreen
             GL11.glRotatef(15F, 1.0F, 0.0F, 0.0F);
             GL11.glScalef(0.89F, 1.0F, 0.4F);
             GL11.glTranslatef((float)(-minecraftLogo[0].length()) * 0.5F, (float)(-minecraftLogo.length) * 0.5F, 0.0F);
-            mc.renderEngine.bindTexture("/terrain.png");
+            mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
             if(l == 0)
             {
-                mc.renderEngine.bindTexture("/title/black.png");
+                mc.func_110434_K().func_110577_a(blackResource);
             }
             for(int i1 = 0; i1 < minecraftLogo.length; i1++)
             {

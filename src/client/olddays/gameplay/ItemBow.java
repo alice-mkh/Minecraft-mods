@@ -9,7 +9,7 @@ public class ItemBow extends Item
 
     public static final String bowPullIconNameArray[] =
     {
-        "bow_pull_0", "bow_pull_1", "bow_pull_2"
+        "pulling_0", "pulling_1", "pulling_2"
     };
     private Icon iconArray[];
 
@@ -164,12 +164,12 @@ public class ItemBow extends Item
 
     public void registerIcons(IconRegister par1IconRegister)
     {
-        super.registerIcons(par1IconRegister);
+        itemIcon = par1IconRegister.registerIcon((new StringBuilder()).append(func_111208_A()).append("_standby").toString());
         iconArray = new Icon[bowPullIconNameArray.length];
 
         for (int i = 0; i < iconArray.length; i++)
         {
-            iconArray[i] = par1IconRegister.registerIcon(bowPullIconNameArray[i]);
+            iconArray[i] = par1IconRegister.registerIcon((new StringBuilder()).append(func_111208_A()).append("_").append(bowPullIconNameArray[i]).toString());
         }
     }
 

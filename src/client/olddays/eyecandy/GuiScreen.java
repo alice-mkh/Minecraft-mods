@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -10,8 +9,6 @@ import org.lwjgl.opengl.GL11;
 public class GuiScreen extends Gui
 {
     public static boolean oldbg = false;
-
-    public static final boolean isMacOs;
 
     /** Reference to the Minecraft object. */
     protected Minecraft mc;
@@ -28,22 +25,16 @@ public class GuiScreen extends Gui
 
     /** The FontRenderer used by GuiScreen */
     protected FontRenderer fontRenderer;
-    public GuiParticle guiParticles;
 
     /** The button that was just pressed. */
     private GuiButton selectedButton;
     private int eventButton;
-    private long field_85043_c;
+    private long lastMouseEvent;
     private int field_92018_d;
 
     public GuiScreen()
     {
         buttonList = new ArrayList();
-        allowUserInput = false;
-        selectedButton = null;
-        eventButton = 0;
-        field_85043_c = 0L;
-        field_92018_d = 0;
     }
 
     /**
@@ -136,7 +127,11 @@ public class GuiScreen extends Gui
         }
     }
 
-    protected void func_85041_a(int i, int j, int k, long l)
+    /**
+     * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
+     * lastButtonClicked & timeSinceMouseClick.
+     */
+    protected void mouseClickMove(int i, int j, int k, long l)
     {
     }
 
@@ -153,7 +148,6 @@ public class GuiScreen extends Gui
      */
     public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3)
     {
-        guiParticles = new GuiParticle(par1Minecraft);
         mc = par1Minecraft;
         fontRenderer = par1Minecraft.fontRenderer;
         width = par2;
@@ -186,6 +180,12 @@ public class GuiScreen extends Gui
     {
         int i = (Mouse.getEventX() * width) / mc.displayWidth;
         int j = height - (Mouse.getEventY() * height) / mc.displayHeight - 1;
+        int k = Mouse.getEventButton();
+
+        if (Minecraft.field_142025_a && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
+        {
+            k = 1;
+        }
 
         if (Mouse.getEventButtonState())
         {
@@ -194,11 +194,11 @@ public class GuiScreen extends Gui
                 return;
             }
 
-            eventButton = Mouse.getEventButton();
-            field_85043_c = Minecraft.getSystemTime();
+            eventButton = k;
+            lastMouseEvent = Minecraft.getSystemTime();
             mouseClicked(i, j, eventButton);
         }
-        else if (Mouse.getEventButton() != -1)
+        else if (k != -1)
         {
             if (mc.gameSettings.touchscreen && --field_92018_d > 0)
             {
@@ -206,12 +206,12 @@ public class GuiScreen extends Gui
             }
 
             eventButton = -1;
-            mouseMovedOrUp(i, j, Mouse.getEventButton());
+            mouseMovedOrUp(i, j, k);
         }
-        else if (eventButton != -1 && field_85043_c > 0L)
+        else if (eventButton != -1 && lastMouseEvent > 0L)
         {
-            long l = Minecraft.getSystemTime() - field_85043_c;
-            func_85041_a(i, j, eventButton, l);
+            long l = Minecraft.getSystemTime() - lastMouseEvent;
+            mouseClickMove(i, j, eventButton, l);
         }
     }
 
@@ -229,11 +229,6 @@ public class GuiScreen extends Gui
             {
                 mc.toggleFullscreen();
                 return;
-            }
-
-            if (isMacOs && i == 28 && c == 0)
-            {
-                i = 29;
             }
 
             keyTyped(c, i);
@@ -282,7 +277,7 @@ public class GuiScreen extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        mc.renderEngine.bindTexture("/gui/background.png");
+        mc.func_110434_K().func_110577_a(field_110325_k);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32F;
         tessellator.startDrawingQuads();
@@ -308,17 +303,18 @@ public class GuiScreen extends Gui
 
     public static boolean isCtrlKeyDown()
     {
-        boolean flag = Keyboard.isKeyDown(28) && Keyboard.getEventCharacter() == 0;
-        return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || isMacOs && (flag || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
+        if (Minecraft.field_142025_a)
+        {
+            return Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220);
+        }
+        else
+        {
+            return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+        }
     }
 
     public static boolean isShiftKeyDown()
     {
         return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
-    }
-
-    static
-    {
-        isMacOs = Minecraft.getOs() == EnumOS.MACOS;
     }
 }

@@ -1,18 +1,23 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.CommandShowSeed;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.PlayerNotFoundException;
+import net.minecraft.src.World;
 
 public class CommandClientShowSeed extends CommandShowSeed
 {
     @Override
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
-        EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
-        par1ICommandSender.sendChatToPlayer("Seed: "+entityplayer.worldObj.getSeed());
+        World world = (par1ICommandSender instanceof EntityPlayer) ? ((EntityPlayer)par1ICommandSender).worldObj : Minecraft.getMinecraft().theWorld;
+        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b("commands.seed.success", new Object[]
+                {
+                    Long.valueOf(world.getSeed())
+                }));
     }
 
     /**

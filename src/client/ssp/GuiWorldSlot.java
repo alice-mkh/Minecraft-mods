@@ -87,12 +87,12 @@ class GuiWorldSlot extends GuiSlot
 
             if (saveformatcomparator.isHardcoreModeEnabled())
             {
-                s2 = (new StringBuilder()).append(EnumChatFormatting.DARK_RED).append(StatCollector.translateToLocal("gameMode.hardcore")).append(EnumChatFormatting.RESET).toString();
+                s2 = (new StringBuilder()).append(EnumChatFormatting.DARK_RED).append(I18n.func_135053_a("gameMode.hardcore")).append(EnumChatFormatting.RESET).toString();
             }
 
             if (saveformatcomparator.getCheatsEnabled())
             {
-                s2 = (new StringBuilder()).append(s2).append(", ").append(StatCollector.translateToLocal("selectWorld.cheats")).toString();
+                s2 = (new StringBuilder()).append(s2).append(", ").append(I18n.func_135053_a("selectWorld.cheats")).toString();
             }
         }
 

@@ -2,9 +2,9 @@ package net.minecraft.src.ssp;
 
 import java.util.List;
 import java.util.Random;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandWeather;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.WrongUsageException;
@@ -52,36 +52,11 @@ public class CommandClientWeather extends CommandWeather
     }
 
     /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
-    @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
-    {
-        if (par2ArrayOfStr.length == 1)
-        {
-            return getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[]
-                    {
-                        "clear", "rain", "thunder"
-                    });
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
      * Returns true if the given command sender is allowed to use this command.
      */
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return Minecraft.getMinecraft().theWorld.getWorldInfo().areCommandsAllowed();
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender)
-    {
-        return par1ICommandSender.translateString("commands.weather.usage", new Object[0]);
     }
 }

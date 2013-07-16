@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NetServerHandler;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet0KeepAlive;
@@ -90,7 +91,7 @@ public class NetServerHandlerSP extends NetServerHandler
     @Override
     public void sendPacketToPlayer(Packet par1Packet)
     {
-        par1Packet.processPacket(net.minecraft.client.Minecraft.getMinecraft().getNetHandler());
+        par1Packet.processPacket(Minecraft.getMinecraft().getNetHandler());
     }
 
     @Override
@@ -148,7 +149,7 @@ public class NetServerHandlerSP extends NetServerHandler
     @Override
     public void handleCloseWindow(Packet101CloseWindow par1Packet101CloseWindow)
     {
-        field_72574_e.closeInventory();
+        field_72574_e.closeContainer();
     }
 
     @Override
@@ -226,7 +227,7 @@ public class NetServerHandlerSP extends NetServerHandler
             !("MC|AdvCdm".equals(par1Packet250CustomPayload.channel)) &&
             !("MC|Beacon".equals(par1Packet250CustomPayload.channel)) &&
             !("MC|ItemName".equals(par1Packet250CustomPayload.channel))){
-            net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "serverCustomPayload", new Class[]{NetServerHandler.class, Packet250CustomPayload.class}, this, par1Packet250CustomPayload);
+            Minecraft.invokeModMethod("ModLoader", "serverCustomPayload", new Class[]{NetServerHandler.class, Packet250CustomPayload.class}, this, par1Packet250CustomPayload);
         }
     }
 }

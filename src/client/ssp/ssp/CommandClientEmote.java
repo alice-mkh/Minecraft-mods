@@ -1,9 +1,10 @@
 package net.minecraft.src.ssp;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.CommandServerEmote;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.WrongUsageException;
 
 public class CommandClientEmote extends CommandServerEmote
@@ -14,7 +15,10 @@ public class CommandClientEmote extends CommandServerEmote
         if (par2ArrayOfStr.length > 0)
         {
             String s = func_82360_a(par1ICommandSender, par2ArrayOfStr, 0);
-            Minecraft.getMinecraft().thePlayer.sendChatToPlayer("* "+par1ICommandSender.getCommandSenderName()+" "+s);
+            Minecraft.getMinecraft().thePlayer.sendChatToPlayer(ChatMessageComponent.func_111082_b("chat.type.emote", new Object[]
+                    {
+                        par1ICommandSender.getCommandSenderName(), s
+                    }));
             return;
         }
         else

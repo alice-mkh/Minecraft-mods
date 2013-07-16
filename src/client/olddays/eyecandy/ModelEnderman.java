@@ -11,8 +11,6 @@ public class ModelEnderman extends ModelBiped
     public ModelEnderman()
     {
         super(0.0F, -14F, 64, 32);
-        isCarrying = false;
-        isAttacking = false;
         float f = -14F;
         float f1 = 0.0F;
         bipedHeadwear = new ModelRenderer(this, 0, 16);

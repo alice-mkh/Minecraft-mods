@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -10,6 +9,10 @@ public class ItemRenderer
     public static boolean sway = true;
     public static boolean items2d = false;
     public static int hand = 2;
+
+    private static final ResourceLocation field_110930_b = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+    private static final ResourceLocation field_110931_c = new ResourceLocation("textures/map/map_background.png");
+    private static final ResourceLocation field_110929_d = new ResourceLocation("textures/misc/underwater.png");
 
     /** A reference to the Minecraft object. */
     private Minecraft mc;
@@ -30,34 +33,32 @@ public class ItemRenderer
 
     public ItemRenderer(Minecraft par1Minecraft)
     {
-        itemToRender = null;
-        equippedProgress = 0.0F;
-        prevEquippedProgress = 0.0F;
         renderBlocksInstance = new RenderBlocks();
         equippedItemSlot = -1;
         mc = par1Minecraft;
-        mapItemRenderer = new MapItemRenderer(par1Minecraft.fontRenderer, par1Minecraft.gameSettings, par1Minecraft.renderEngine);
+        mapItemRenderer = new MapItemRenderer(par1Minecraft.gameSettings, par1Minecraft.func_110434_K());
+    }
+
+    public void renderItem(EntityLivingBase par1EntityLivingBase, ItemStack par2ItemStack, int par3){
+        renderItem(par1EntityLivingBase, par2ItemStack, par3, false);
     }
 
     /**
      * Renders the item stack for being in an entity's hand Args: itemStack
      */
-    public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3){
-        renderItem(par1EntityLiving, par2ItemStack, par3, false);
-    }
-
-    public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3, boolean b)
+    public void renderItem(EntityLivingBase par1EntityLivingBase, ItemStack par2ItemStack, int par3, boolean b)
     {
         GL11.glPushMatrix();
+        TextureManager texturemanager = mc.func_110434_K();
 
-        if (par2ItemStack.getItemSpriteNumber() == 0 && Block.blocksList[par2ItemStack.itemID] != null && RenderBlocks.renderItemIn3d(Block.blocksList[par2ItemStack.itemID].getRenderType()))
+        if (par2ItemStack.getItemSpriteNumber() == 0 && par2ItemStack.itemID < Block.blocksList.length && Block.blocksList[par2ItemStack.itemID] != null && RenderBlocks.renderItemIn3d(Block.blocksList[par2ItemStack.itemID].getRenderType()))
         {
-            mc.renderEngine.bindTexture("/terrain.png");
-            renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), Minecraft.oldlighting ? par1EntityLiving.getBrightness(1.0F) : 1.0F);
+            texturemanager.func_110577_a(texturemanager.func_130087_a(0));
+            renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), Minecraft.oldlighting ? par1EntityLivingBase.getBrightness(1.0F) : 1.0F);
         }
         else
         {
-            Icon icon = par1EntityLiving.getItemIcon(par2ItemStack, par3);
+            Icon icon = par1EntityLivingBase.getItemIcon(par2ItemStack, par3);
 
             if (icon == null)
             {
@@ -65,15 +66,7 @@ public class ItemRenderer
                 return;
             }
 
-            if (par2ItemStack.getItemSpriteNumber() == 0)
-            {
-                mc.renderEngine.bindTexture("/terrain.png");
-            }
-            else
-            {
-                mc.renderEngine.bindTexture("/gui/items.png");
-            }
-
+            texturemanager.func_110577_a(texturemanager.func_130087_a(par2ItemStack.getItemSpriteNumber()));
             Tessellator tessellator = Tessellator.instance;
             float f = icon.getMinU();
             float f1 = icon.getMaxU();
@@ -94,13 +87,13 @@ public class ItemRenderer
                 GL11.glRotatef(335F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
             }
-            renderItemIn2D_old(tessellator, f1, f2, f, f3, icon.getSheetWidth(), icon.getSheetHeight(), 0.0625F, b);
+            renderItemIn2D_old(tessellator, f1, f2, f, f3, icon.getOriginX(), icon.getOriginY(), 0.0625F, b);
 
-            if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0)
+            if (par2ItemStack.hasEffect() && par3 == 0)
             {
                 GL11.glDepthFunc(GL11.GL_EQUAL);
                 GL11.glDisable(GL11.GL_LIGHTING);
-                mc.renderEngine.bindTexture("%blur%/misc/glint.png");
+                texturemanager.func_110577_a(field_110930_b);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
                 float f7 = 0.76F;
@@ -152,15 +145,15 @@ public class ItemRenderer
         par0Tessellator.addVertexWithUV(1.0D, 0.0D, 0.0F - par7, par3, par4);
         par0Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0F - par7, par1, par4);
         par0Tessellator.draw();
-        float f = (float)par5 * (par1 - par3);
-        float f1 = (float)par6 * (par4 - par2);
+        float f = (0.5F * (par1 - par3)) / (float)par5;
+        float f1 = (0.5F * (par4 - par2)) / (float)par6;
         par0Tessellator.startDrawingQuads();
         par0Tessellator.setNormal(-1F, 0.0F, 0.0F);
 
-        for (int i = 0; (float)i < f; i++)
+        for (int i = 0; i < par5; i++)
         {
-            float f2 = (float)i / f;
-            float f6 = (par1 + (par3 - par1) * f2) - 0.5F / (float)par5;
+            float f2 = (float)i / (float)par5;
+            float f6 = (par1 + (par3 - par1) * f2) - f;
             float f10 = f2;
             par0Tessellator.addVertexWithUV(f10, 0.0D, 0.0F - par7, f6, par4);
             par0Tessellator.addVertexWithUV(f10, 0.0D, 0.0D, f6, par4);
@@ -172,11 +165,11 @@ public class ItemRenderer
         par0Tessellator.startDrawingQuads();
         par0Tessellator.setNormal(1.0F, 0.0F, 0.0F);
 
-        for (int j = 0; (float)j < f; j++)
+        for (int j = 0; j < par5; j++)
         {
-            float f3 = (float)j / f;
-            float f7 = (par1 + (par3 - par1) * f3) - 0.5F / (float)par5;
-            float f11 = f3 + 1.0F / f;
+            float f3 = (float)j / (float)par5;
+            float f7 = (par1 + (par3 - par1) * f3) - f;
+            float f11 = f3 + 1.0F / (float)par5;
             par0Tessellator.addVertexWithUV(f11, 1.0D, 0.0F - par7, f7, par2);
             par0Tessellator.addVertexWithUV(f11, 1.0D, 0.0D, f7, par2);
             par0Tessellator.addVertexWithUV(f11, 0.0D, 0.0D, f7, par4);
@@ -187,11 +180,11 @@ public class ItemRenderer
         par0Tessellator.startDrawingQuads();
         par0Tessellator.setNormal(0.0F, 1.0F, 0.0F);
 
-        for (int k = 0; (float)k < f1; k++)
+        for (int k = 0; k < par6; k++)
         {
-            float f4 = (float)k / f1;
-            float f8 = (par4 + (par2 - par4) * f4) - 0.5F / (float)par6;
-            float f12 = f4 + 1.0F / f1;
+            float f4 = (float)k / (float)par6;
+            float f8 = (par4 + (par2 - par4) * f4) - f1;
+            float f12 = f4 + 1.0F / (float)par6;
             par0Tessellator.addVertexWithUV(0.0D, f12, 0.0D, par1, f8);
             par0Tessellator.addVertexWithUV(1.0D, f12, 0.0D, par3, f8);
             par0Tessellator.addVertexWithUV(1.0D, f12, 0.0F - par7, par3, f8);
@@ -202,10 +195,10 @@ public class ItemRenderer
         par0Tessellator.startDrawingQuads();
         par0Tessellator.setNormal(0.0F, -1F, 0.0F);
 
-        for (int l = 0; (float)l < f1; l++)
+        for (int l = 0; l < par6; l++)
         {
-            float f5 = (float)l / f1;
-            float f9 = (par4 + (par2 - par4) * f5) - 0.5F / (float)par6;
+            float f5 = (float)l / (float)par6;
+            float f9 = (par4 + (par2 - par4) * f5) - f1;
             float f13 = f5;
             par0Tessellator.addVertexWithUV(1.0D, f13, 0.0D, par3, f9);
             par0Tessellator.addVertexWithUV(0.0D, f13, 0.0D, par1, f9);
@@ -243,34 +236,29 @@ public class ItemRenderer
     {
         float f = prevEquippedProgress + (equippedProgress - prevEquippedProgress) * par1;
         EntityClientPlayerMP entityclientplayermp = mc.thePlayer;
-        float f1 = ((EntityPlayer)(entityclientplayermp)).prevRotationPitch + (((EntityPlayer)(entityclientplayermp)).rotationPitch - ((EntityPlayer)(entityclientplayermp)).prevRotationPitch) * par1;
+        float f1 = ((AbstractClientPlayer)(entityclientplayermp)).prevRotationPitch + (((AbstractClientPlayer)(entityclientplayermp)).rotationPitch - ((AbstractClientPlayer)(entityclientplayermp)).prevRotationPitch) * par1;
         GL11.glPushMatrix();
         GL11.glRotatef(f1, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(((EntityPlayer)(entityclientplayermp)).prevRotationYaw + (((EntityPlayer)(entityclientplayermp)).rotationYaw - ((EntityPlayer)(entityclientplayermp)).prevRotationYaw) * par1, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(((AbstractClientPlayer)(entityclientplayermp)).prevRotationYaw + (((AbstractClientPlayer)(entityclientplayermp)).rotationYaw - ((AbstractClientPlayer)(entityclientplayermp)).prevRotationYaw) * par1, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
-
-        if (entityclientplayermp instanceof EntityPlayerSP)
-        {
-            EntityPlayerSP entityplayersp = (EntityPlayerSP)entityclientplayermp;
-            float f2 = entityplayersp.prevRenderArmPitch + (entityplayersp.renderArmPitch - entityplayersp.prevRenderArmPitch) * par1;
-            float f4 = entityplayersp.prevRenderArmYaw + (entityplayersp.renderArmYaw - entityplayersp.prevRenderArmYaw) * par1;
-            if (sway){
-                GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationPitch - f2) * 0.1F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef((((EntityPlayer)(entityplayersp)).rotationYaw - f4) * 0.1F, 0.0F, 1.0F, 0.0F);
-            }
+        EntityPlayerSP entityplayersp = (EntityPlayerSP)entityclientplayermp;
+        float f2 = entityplayersp.prevRenderArmPitch + (entityplayersp.renderArmPitch - entityplayersp.prevRenderArmPitch) * par1;
+        float f3 = entityplayersp.prevRenderArmYaw + (entityplayersp.renderArmYaw - entityplayersp.prevRenderArmYaw) * par1;
+        if (sway){
+            GL11.glRotatef((((AbstractClientPlayer)(entityclientplayermp)).rotationPitch - f2) * 0.1F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef((((AbstractClientPlayer)(entityclientplayermp)).rotationYaw - f3) * 0.1F, 0.0F, 1.0F, 0.0F);
         }
-
         ItemStack itemstack = itemToRender;
-        float f3 = mc.theWorld.getLightBrightness(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ));
+        float f4 = mc.theWorld.getLightBrightness(MathHelper.floor_double(((AbstractClientPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((AbstractClientPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((AbstractClientPlayer)(entityclientplayermp)).posZ));
         if (!Minecraft.oldlighting){
-            f3 = 1.0F;
-            int i = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((EntityPlayer)(entityclientplayermp)).posZ), 0);
+            f4 = 1.0F;
+            int i = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(((AbstractClientPlayer)(entityclientplayermp)).posX), MathHelper.floor_double(((AbstractClientPlayer)(entityclientplayermp)).posY), MathHelper.floor_double(((AbstractClientPlayer)(entityclientplayermp)).posZ), 0);
             int k = i % 0x10000;
             int l = i / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)l / 1.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
+        GL11.glColor4f(f4, f4, f4, 1.0F);//NOT SURE ABOUT THIS
 
         if (itemstack != null)
         {
@@ -278,11 +266,11 @@ public class ItemRenderer
             float f8 = (float)(j >> 16 & 0xff) / 255F;
             float f13 = (float)(j >> 8 & 0xff) / 255F;
             float f19 = (float)(j & 0xff) / 255F;
-            GL11.glColor4f(f3 * f8, f3 * f13, f3 * f19, 1.0F);
+            GL11.glColor4f(f4 * f8, f4 * f13, f4 * f19, 1.0F);
         }
         else
         {
-            GL11.glColor4f(f3, f3, f3, 1.0F);
+            GL11.glColor4f(f4, f4, f4, 1.0F);
         }
 
         if (itemstack != null && itemstack.itemID == Item.map.itemID)
@@ -310,8 +298,7 @@ public class ItemRenderer
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(f9 * -85F, 0.0F, 0.0F, 1.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.thePlayer.skinUrl, mc.thePlayer.getTexture()));
-            mc.renderEngine.resetBoundTexture();
+            mc.func_110434_K().func_110577_a(entityclientplayermp.func_110306_p());
 
             for (f14 = 0; f14 < 2; f14++)
             {
@@ -342,7 +329,7 @@ public class ItemRenderer
             GL11.glTranslatef(-1F, -1F, 0.0F);
             float f31 = 0.015625F;
             GL11.glScalef(f31, f31, f31);
-            mc.renderEngine.bindTexture("/misc/mapbg.png");
+            mc.func_110434_K().func_110577_a(field_110931_c);
             Tessellator tessellator = Tessellator.instance;
             GL11.glNormal3f(0.0F, 0.0F, -1F);
             tessellator.startDrawingQuads();
@@ -356,7 +343,7 @@ public class ItemRenderer
 
             if (mapdata != null)
             {
-                mapItemRenderer.renderMap(mc.thePlayer, mc.renderEngine, mapdata);
+                mapItemRenderer.renderMap(mc.thePlayer, mc.func_110434_K(), mapdata);
             }
 
             GL11.glPopMatrix();
@@ -473,7 +460,7 @@ public class ItemRenderer
                 float f33 = (float)(i1 >> 16 & 0xff) / 255F;
                 float f36 = (float)(i1 >> 8 & 0xff) / 255F;
                 float f38 = (float)(i1 & 0xff) / 255F;
-                GL11.glColor4f(f3 * f33, f3 * f36, f3 * f38, 1.0F);
+                GL11.glColor4f(f4 * f33, f4 * f36, f4 * f38, 1.0F);
                 renderItem(entityclientplayermp, itemstack, 1, true);
             }
             else
@@ -499,8 +486,7 @@ public class ItemRenderer
             f24 = MathHelper.sin(MathHelper.sqrt_float(f12) * (float)Math.PI);
             GL11.glRotatef(f24 * 70F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-f18 * 20F, 0.0F, 0.0F, 1.0F);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTextureForDownloadableImage(mc.thePlayer.skinUrl, mc.thePlayer.getTexture()));
-            mc.renderEngine.resetBoundTexture();
+            mc.func_110434_K().func_110577_a(entityclientplayermp.func_110306_p());
             GL11.glTranslatef(-1F, 3.6F, 3.5F);
             GL11.glRotatef(120F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
@@ -533,7 +519,6 @@ public class ItemRenderer
 
         if (mc.thePlayer.isBurning())
         {
-            mc.renderEngine.bindTexture("/terrain.png");
             renderFireInFirstPerson(par1);
         }
 
@@ -542,7 +527,6 @@ public class ItemRenderer
             int i = MathHelper.floor_double(mc.thePlayer.posX);
             int j = MathHelper.floor_double(mc.thePlayer.posY);
             int k = MathHelper.floor_double(mc.thePlayer.posZ);
-            mc.renderEngine.bindTexture("/terrain.png");
             int l = mc.theWorld.getBlockId(i, j, k);
 
             if (mc.theWorld.isBlockNormalCube(i, j, k))
@@ -575,7 +559,6 @@ public class ItemRenderer
 
         if (mc.thePlayer.isInsideOfMaterial(Material.water))
         {
-            mc.renderEngine.bindTexture("/misc/water.png");
             renderWarpedTextureOverlay(par1);
         }
 
@@ -587,6 +570,7 @@ public class ItemRenderer
      */
     private void renderInsideOfBlock(float par1, Icon par2Icon)
     {
+        mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
         Tessellator tessellator = Tessellator.instance;
         float f = 0.1F;
         GL11.glColor4f(f, f, f, 0.5F);
@@ -616,6 +600,7 @@ public class ItemRenderer
      */
     private void renderWarpedTextureOverlay(float par1)
     {
+        mc.func_110434_K().func_110577_a(field_110929_d);
         Tessellator tessellator = Tessellator.instance;
         float f = mc.thePlayer.getBrightness(par1);
         GL11.glColor4f(f, f, f, 0.5F);
@@ -656,6 +641,7 @@ public class ItemRenderer
         {
             GL11.glPushMatrix();
             Icon icon = Block.fire.func_94438_c(1);
+            mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
             float f1 = icon.getMinU();
             float f2 = icon.getMaxU();
             float f3 = icon.getMinV();
@@ -746,11 +732,11 @@ public class ItemRenderer
         ModelBiped modelBipedMain = null;
         try{
             RenderPlayer r1 = (RenderPlayer)r;
-            modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 0));
+            modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 1));
         }catch(ClassCastException e){
             try{
-                net.minecraft.src.RenderPlayer2 r1 = (net.minecraft.src.RenderPlayer2)r;
-                modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 1));
+                RenderPlayer2 r1 = (RenderPlayer2)r;
+                modelBipedMain = ((ModelBiped)mod_OldDays.getField(r1.getClass(), r1, 2));
             }catch(ClassCastException e2){
                 return;
             }

@@ -1,6 +1,5 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerMP;
@@ -9,6 +8,7 @@ import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.ServerConfigurationManager;
@@ -42,7 +42,7 @@ public abstract class Mod{
         System.out.println("Packet received:");
         System.out.println(" Mod: "+getModName());
         System.out.println(" Direction: Client -> Server");
-        System.out.println(" Player: "+player.username);
+        System.out.println(" Player: "+player.getEntityName());
         System.out.println(" ID: "+packet.getId());
         String[] data = packet.getData();
         System.out.println(" Data: "+data.length+" strings");

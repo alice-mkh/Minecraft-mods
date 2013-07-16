@@ -14,11 +14,10 @@ public class EntityAIMate extends EntityAIBase
     int spawnBabyDelay;
 
     /** The speed the creature moves at during mating behavior. */
-    float moveSpeed;
+    double moveSpeed;
 
-    public EntityAIMate(EntityAnimal par1EntityAnimal, float par2)
+    public EntityAIMate(EntityAnimal par1EntityAnimal, double par2)
     {
-        spawnBabyDelay = 0;
         theAnimal = par1EntityAnimal;
         theWorld = par1EntityAnimal.worldObj;
         moveSpeed = par2;

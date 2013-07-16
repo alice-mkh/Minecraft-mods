@@ -7,13 +7,15 @@ public class ChestItemRenderHelper
 
     /** Instance of Chest's Tile Entity. */
     private TileEntityChest theChest;
+    private TileEntityChest field_142033_c;
 
     /** Instance of Ender Chest's Tile Entity. */
     private TileEntityEnderChest theEnderChest;
 
     public ChestItemRenderHelper()
     {
-        theChest = new TileEntityChest();
+        theChest = new TileEntityChest(0);
+        field_142033_c = new TileEntityChest(1);
         theEnderChest = new TileEntityEnderChest();
     }
 
@@ -24,11 +26,15 @@ public class ChestItemRenderHelper
     {
         if (par1Block.blockID == Block.enderChest.blockID)
         {
-            TileEntityRenderer.instance.renderTileEntityAt(theEnderChest, 0.0D, 0.0D, 0.0D, net.minecraft.client.Minecraft.oldlighting ? par3 : 0.0F);
+            TileEntityRenderer.instance.renderTileEntityAt(theEnderChest, 0.0D, 0.0D, 0.0D, Minecraft.oldlighting ? par3 : 0.0F);
+        }
+        else if (par1Block.blockID == Block.chestTrapped.blockID)
+        {
+            TileEntityRenderer.instance.renderTileEntityAt(field_142033_c, 0.0D, 0.0D, Minecraft.oldlighting ? par3 : 0.0D, 0.0F);
         }
         else
         {
-            TileEntityRenderer.instance.renderTileEntityAt(theChest, 0.0D, 0.0D, 0.0D, net.minecraft.client.Minecraft.oldlighting ? par3 : 0.0F);
+            TileEntityRenderer.instance.renderTileEntityAt(theChest, 0.0D, 0.0D, 0.0D, Minecraft.oldlighting ? par3 : 0.0F);
         }
     }
 }

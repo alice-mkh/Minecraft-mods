@@ -2,10 +2,12 @@ package net.minecraft.src;
 
 public class EntitySteve extends EntityCreature implements IMob{
     public int type;
+    public float animSpeed;
 
     public EntitySteve(World w){
         super(w);
         type = rand.nextInt(3);
+        animSpeed = (float)(Math.random() * 0.89999997615814209D + 0.10000000149011612D);
     }
 
     @Override
@@ -29,8 +31,9 @@ public class EntitySteve extends EntityCreature implements IMob{
     }*/
 
     @Override
-    public int getMaxHealth(){
-        return 5;
+    protected void func_110147_ax(){
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(5D);
     }
 
     public static class RenderMD3Steve extends RenderMD3{
@@ -39,8 +42,13 @@ public class EntitySteve extends EntityCreature implements IMob{
         }
 
         @Override
-        protected int getTextureIndex(EntityLiving e){
+        protected int getTextureIndex(Entity e){
             return ((EntitySteve)e).type;
+        }
+
+        @Override
+        protected float getSpeedMultiplier(Entity e){
+            return ((EntitySteve)e).animSpeed;
         }
     }
 }

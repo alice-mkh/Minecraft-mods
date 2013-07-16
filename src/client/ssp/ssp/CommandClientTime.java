@@ -1,8 +1,8 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandTime;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 
 public class CommandClientTime extends CommandTime
 {

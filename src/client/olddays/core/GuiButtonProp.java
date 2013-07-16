@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-
 public class GuiButtonProp extends GuiButtonOldDays{
     public OldDaysProperty prop;
     public boolean help;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.ssp.EntityPlayerSP2;
 
 public class OldDaysModule implements Comparable<OldDaysModule>{
@@ -43,20 +42,22 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
     }
 
     public void addSound(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/sound3/olddays/"+name+".ogg");
-        core.unpackSound("sound3/olddays", name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "assets/sound/olddays/"+name+".ogg");
+        core.unpackSound("sound/olddays", name+".ogg");
         if (sound.exists()){
-            mod_OldDays.getMinecraft().installResource("sound3/olddays/"+sound.getName(), sound);
+            String s = mod_OldDays.getMinecraft().getSomeFile().toURI().relativize(sound.toURI()).getPath();
+            mod_OldDays.getMinecraft().sndManager.addSound(s);
         }else{
             getPropertyById(id).noSounds = true;
         }
     }
 
     public void addMusic(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "resources/music/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "assets/music/"+name+".ogg");
         core.unpackSound("music", name+".ogg");
         if (sound.exists()){
-            mod_OldDays.getMinecraft().installResource("music/"+sound.getName(), sound);
+            String s = mod_OldDays.getMinecraft().getSomeFile().toURI().relativize(sound.toURI()).getPath();
+            mod_OldDays.getMinecraft().sndManager.addMusic(s);
         }else{
             getPropertyById(id).noSounds = true;
         }
@@ -94,7 +95,7 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
             List list = CraftingManager.getInstance().getRecipeList();
             for (int i = 0; i < list.size(); i++){
                 ItemStack stack = ((IRecipe)list.get(i)).getRecipeOutput();
-                if (stack == null){
+                if (stack == null || Item.itemsList[stack.itemID] == null){
                     continue;
                 }
                 String match = stack.toString();
@@ -141,7 +142,7 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, newIcon, x, y, "/textures/blocks/" + bl.getUnlocalizedName2() + ".png", b);
+        replaceIcon(i, newIcon, x, y, "textures/blocks/" + bl.getUnlocalizedName().substring(5) + ".png", b);
     }
 
     public void replaceItemIcon(Item it, String newIcon, int x, int y, boolean b){
@@ -151,9 +152,7 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
         }catch(NullPointerException e){
             return;
         }
-        String str = it.getUnlocalizedName();
-        str = str.substring(5);
-        replaceIcon(i, newIcon, x, y, "/textures/items/" + str + ".png", b);
+        replaceIcon(i, newIcon, x, y, "textures/items/" + it.getUnlocalizedName().substring(5) + ".png", b);
     }
 
     public void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){

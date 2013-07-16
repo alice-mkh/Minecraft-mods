@@ -21,7 +21,8 @@ public class EntityRana extends EntityCreature implements IMob{
     }*/
 
     @Override
-    public int getMaxHealth(){
-        return 5;
+    protected void func_110147_ax(){
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(5D);
     }
 }

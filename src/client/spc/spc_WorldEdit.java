@@ -6,8 +6,6 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import net.minecraft.client.Minecraft;
-
 /**
  * The plugin class for WorldEdit. It uses the WorldEditPlugin class to load
  * all the interfaces and variables found in WorldEdit.jar
@@ -38,17 +36,17 @@ public class spc_WorldEdit extends SPCPlugin {
    public int blocklefty;
    public int blockleftz;
 
-   public static File WORLDEDITJAR = new File(Minecraft.getMinecraftDir(),"bin/WorldEdit.jar");
-   public static File RHINOJAR = new File(Minecraft.getMinecraftDir(),"bin/rhino.jar");
+   public static File WORLDEDITJAR = new File(Minecraft.getMinecraft().mcDataDir,"WorldEdit.jar");
+   public static File RHINOJAR = new File(Minecraft.getMinecraft().mcDataDir,"rhino.jar");
 
    public static boolean CANINITIALISE = true;
 
    public WorldEditPlugin WEP;
 
    static {
-      if (!WORLDEDITJAR.exists()) { // Attempt to extract it from Minecraft.jar as noobs can't read instructions
-         PlayerHelper.extractFile(new File(Minecraft.getMinecraftDir(),"bin/Minecraft.jar"), "WorldEdit.jar", new File(Minecraft.getMinecraftDir(),"bin"));
-      }
+/*      if (!WORLDEDITJAR.exists()) { // Attempt to extract it from Minecraft.jar as noobs can't read instructions
+         PlayerHelper.extractFile(new File(Minecraft.getMinecraft().mcDataDir,"bin/Minecraft.jar"), "WorldEdit.jar", new File(Minecraft.getMinecraft().mcDataDir,""));
+      }*/
       if (!PlayerHelper.addToClasspath(WORLDEDITJAR)) {
          CANINITIALISE = false;
       }

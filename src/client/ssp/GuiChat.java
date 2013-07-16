@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import net.minecraft.src.ssp.EntityPlayerSP2;
@@ -37,11 +36,7 @@ public class GuiChat extends GuiScreen
     {
         field_73898_b = "";
         sentHistoryCursor = -1;
-        field_73897_d = false;
-        field_73905_m = false;
-        field_73903_n = 0;
         field_73904_o = new ArrayList();
-        clickedURI = null;
         defaultInputFieldText = "";
     }
 
@@ -49,11 +44,7 @@ public class GuiChat extends GuiScreen
     {
         field_73898_b = "";
         sentHistoryCursor = -1;
-        field_73897_d = false;
-        field_73905_m = false;
-        field_73903_n = 0;
         field_73904_o = new ArrayList();
-        clickedURI = null;
         defaultInputFieldText = "";
         defaultInputFieldText = par1Str;
     }
@@ -110,7 +101,7 @@ public class GuiChat extends GuiScreen
         {
             mc.displayGuiScreen(null);
         }
-        else if (par2 == 28)
+        else if (par2 == 28 || par2 == 156)
         {
             String s = inputField.getText().trim();
 

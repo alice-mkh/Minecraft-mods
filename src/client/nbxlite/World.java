@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.nbxlite.MetadataChunkBlock;
 import net.minecraft.src.nbxlite.chunkproviders.ChunkProviderBaseFinite;
 import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
@@ -138,7 +139,6 @@ public abstract class World implements IBlockAccess
     {
         lightingToUpdate = new ArrayList();
         lightingUpdatesCounter = 0;
-        scheduledUpdatesAreImmediate = false;
         loadedEntityList = new ArrayList();
         unloadedEntityList = new ArrayList();
         loadedTileEntityList = new ArrayList();
@@ -147,9 +147,7 @@ public abstract class World implements IBlockAccess
         playerEntities = new ArrayList();
         weatherEffects = new ArrayList();
         cloudColour = 0xffffffL;
-        skylightSubtracted = 0;
         updateLCG = (new Random()).nextInt();
-        lastLightningBolt = 0;
         rand = new Random();
         worldAccesses = new ArrayList();
         villageSiegeObj = new VillageSiege(this);
@@ -162,7 +160,6 @@ public abstract class World implements IBlockAccess
         activeChunkSet = new HashSet();
         ambientTickCountdown = rand.nextInt(12000);
         lightUpdateBlockList = new int[32768];
-        isRemote = false;
         saveHandler = par1ISaveHandler;
         theProfiler = par5Profiler;
         worldInfo = new WorldInfo(par4WorldSettings, par2Str);
@@ -196,7 +193,6 @@ public abstract class World implements IBlockAccess
     {
         lightingToUpdate = new ArrayList();
         lightingUpdatesCounter = 0;
-        scheduledUpdatesAreImmediate = false;
         loadedEntityList = new ArrayList();
         unloadedEntityList = new ArrayList();
         loadedTileEntityList = new ArrayList();
@@ -205,9 +201,7 @@ public abstract class World implements IBlockAccess
         playerEntities = new ArrayList();
         weatherEffects = new ArrayList();
         cloudColour = 0xffffffL;
-        skylightSubtracted = 0;
         updateLCG = (new Random()).nextInt();
-        lastLightningBolt = 0;
         rand = new Random();
         worldAccesses = new ArrayList();
         villageSiegeObj = new VillageSiege(this);
@@ -220,7 +214,6 @@ public abstract class World implements IBlockAccess
         activeChunkSet = new HashSet();
         ambientTickCountdown = rand.nextInt(12000);
         lightUpdateBlockList = new int[32768];
-        isRemote = false;
         saveHandler = par1ISaveHandler;
         theProfiler = par5Profiler;
         mapStorage = new MapStorage(par1ISaveHandler);
@@ -231,9 +224,9 @@ public abstract class World implements IBlockAccess
         {
             provider = par4WorldProvider;
         }
-        else if (worldInfo != null && worldInfo.getDimension() != 0)
+        else if (worldInfo != null && worldInfo.getVanillaDimension() != 0)
         {
-            provider = WorldProvider.getProviderForDimension(worldInfo.getDimension());
+            provider = WorldProvider.getProviderForDimension(worldInfo.getVanillaDimension());
         }
         else
         {
@@ -275,7 +268,7 @@ public abstract class World implements IBlockAccess
             }
 
             worldInfo.setServerInitialized(true);
-            if (!net.minecraft.client.Minecraft.getMinecraft().enableSP){
+            if (!Minecraft.getMinecraft().enableSP){
                 flag = true;
             }
         }
@@ -842,8 +835,8 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
-     * including the tile entity description packet if applicable. Args: x, y, z
+     * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it only
+     * if the ID or MD changes), including the tile entity description packet if applicable. Args: x, y, z
      */
     public void markBlockForUpdate(int par1, int par2, int par3)
     {
@@ -988,9 +981,9 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+     * Returns true if the given block will receive a scheduled tick in this tick. Args: X, Y, Z, blockID
      */
-    public boolean isBlockTickScheduled(int par1, int par2, int par3, int i)
+    public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int i)
     {
         return false;
     }
@@ -1357,7 +1350,7 @@ public abstract class World implements IBlockAccess
         if (isBounds(par1, par2, par3)){
             return provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
         }
-        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer != null && net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
         {
             float light = provider.lightBrightnessTable[getBlockLightValue(par1, par2, par3)];
             light += ((0.5F - light) * (0.7F * light)) + 0.5F;
@@ -1375,14 +1368,17 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * ray traces all blocks, including non-collideable ones
+     * Performs a raycast against all blocks in the world except liquids.
      */
-    public MovingObjectPosition rayTraceBlocks(Vec3 par1Vec3, Vec3 par2Vec3)
+    public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3)
     {
         return rayTraceBlocks_do_do(par1Vec3, par2Vec3, false, false);
     }
 
-    public MovingObjectPosition rayTraceBlocks_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
+    /**
+     * Performs a raycast against all blocks in the world, and optionally liquids.
+     */
+    public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3)
     {
         return rayTraceBlocks_do_do(par1Vec3, par2Vec3, par3, false);
     }
@@ -1704,7 +1700,7 @@ public abstract class World implements IBlockAccess
 
             getChunkFromChunkCoords(i, j).addEntity(par1Entity);
             loadedEntityList.add(par1Entity);
-            obtainEntitySkin(par1Entity);
+            onEntityAdded(par1Entity);
             return true;
         }
         else
@@ -1713,10 +1709,7 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Start the skin for this entity downloading, if necessary, and increment its reference counter
-     */
-    protected void obtainEntitySkin(Entity par1Entity)
+    protected void onEntityAdded(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
@@ -1724,10 +1717,7 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Decrement the reference counter for this entity's skin image data
-     */
-    protected void releaseEntitySkin(Entity par1Entity)
+    protected void onEntityRemoved(Entity par1Entity)
     {
         for (int i = 0; i < worldAccesses.size(); i++)
         {
@@ -1781,7 +1771,7 @@ public abstract class World implements IBlockAccess
         }
 
         loadedEntityList.remove(par1Entity);
-        releaseEntitySkin(par1Entity);
+        onEntityRemoved(par1Entity);
     }
 
     /**
@@ -2081,6 +2071,11 @@ public abstract class World implements IBlockAccess
         return provider.getMoonPhase(worldInfo.getWorldTime());
     }
 
+    public float func_130001_d()
+    {
+        return WorldProvider.field_111203_a[provider.getMoonPhase(worldInfo.getWorldTime())];
+    }
+
     /**
      * Return getCelestialAngle()*2*PI
      */
@@ -2245,7 +2240,7 @@ public abstract class World implements IBlockAccess
     {
     }
 
-    public void func_82740_a(int i, int j, int k, int l, int i1, int j1)
+    public void scheduleBlockUpdateWithPriority(int i, int j, int k, int l, int i1, int j1)
     {
     }
 
@@ -2313,7 +2308,7 @@ public abstract class World implements IBlockAccess
 
         for (int k = 0; k < unloadedEntityList.size(); k++)
         {
-            releaseEntitySkin((Entity)unloadedEntityList.get(k));
+            onEntityRemoved((Entity)unloadedEntityList.get(k));
         }
 
         unloadedEntityList.clear();
@@ -2365,7 +2360,7 @@ public abstract class World implements IBlockAccess
                 }
 
                 loadedEntityList.remove(l--);
-                releaseEntitySkin(entity2);
+                onEntityRemoved(entity2);
             }
 
             theProfiler.endSection();
@@ -2384,7 +2379,7 @@ public abstract class World implements IBlockAccess
 
             TileEntity tileentity = (TileEntity)iterator.next();
 
-            if (!tileentity.isInvalid() && tileentity.func_70309_m() && blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
+            if (!tileentity.isInvalid() && tileentity.hasWorldObj() && blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
             {
                 try
                 {
@@ -2505,13 +2500,14 @@ public abstract class World implements IBlockAccess
 
         if (par2 && par1Entity.addedToChunk)
         {
+            par1Entity.ticksExisted++;
+
             if (par1Entity.ridingEntity != null)
             {
                 par1Entity.updateRidden();
             }
             else
             {
-                par1Entity.ticksExisted++;
                 par1Entity.onUpdate();
             }
         }
@@ -2908,7 +2904,7 @@ public abstract class World implements IBlockAccess
                     double d4 = par2AxisAlignedBB.minY + (par2AxisAlignedBB.maxY - par2AxisAlignedBB.minY) * (double)f1;
                     double d5 = par2AxisAlignedBB.minZ + (par2AxisAlignedBB.maxZ - par2AxisAlignedBB.minZ) * (double)f2;
 
-                    if (rayTraceBlocks(getWorldVec3Pool().getVecFromPool(d3, d4, d5), par1Vec3) == null)
+                    if (clip(getWorldVec3Pool().getVecFromPool(d3, d4, d5), par1Vec3) == null)
                     {
                         i++;
                     }
@@ -3169,7 +3165,7 @@ public abstract class World implements IBlockAccess
         return Block.isNormalCube(getBlockId(par1, par2, par3));
     }
 
-    public boolean func_85174_u(int par1, int par2, int par3)
+    public boolean isBlockFullCube(int par1, int par2, int par3)
     {
         int i = getBlockId(par1, par2, par3);
 
@@ -3965,7 +3961,7 @@ public abstract class World implements IBlockAccess
 
         for (int i = 0; i < par1List.size(); i++)
         {
-            obtainEntitySkin((Entity)par1List.get(i));
+            onEntityAdded((Entity)par1List.get(i));
         }
     }
 
@@ -4300,7 +4296,7 @@ public abstract class World implements IBlockAccess
     {
         for (int i = 0; i < playerEntities.size(); i++)
         {
-            if (par1Str.equals(((EntityPlayer)playerEntities.get(i)).username))
+            if (par1Str.equals(((EntityPlayer)playerEntities.get(i)).getCommandSenderName()))
             {
                 return (EntityPlayer)playerEntities.get(i);
             }
@@ -4719,7 +4715,7 @@ public abstract class World implements IBlockAccess
     {
         if (getTotalWorldTime() % 600L == 0L)
         {
-            theCalendar.setTimeInMillis(System.currentTimeMillis());
+            theCalendar.setTimeInMillis(MinecraftServer.func_130071_aq());
         }
 
         return theCalendar;
@@ -4775,6 +4771,31 @@ public abstract class World implements IBlockAccess
     public ILogAgent getWorldLogAgent()
     {
         return worldLogAgent;
+    }
+
+    public float func_110746_b(double par1, double par3, double par5)
+    {
+        return func_110750_I(MathHelper.floor_double(par1), MathHelper.floor_double(par3), MathHelper.floor_double(par5));
+    }
+
+    public float func_110750_I(int par1, int par2, int par3)
+    {
+        float f = 0.0F;
+        boolean flag = difficultySetting == 3;
+
+        if (blockExists(par1, par2, par3))
+        {
+            float f1 = func_130001_d();
+            f += MathHelper.clamp_float((float)getChunkFromBlockCoords(par1, par3).field_111204_q / 3600000F, 0.0F, 1.0F) * (flag ? 1.0F : 0.75F);
+            f += f1 * 0.25F;
+        }
+
+        if (difficultySetting < 2)
+        {
+            f *= (float)difficultySetting / 2.0F;
+        }
+
+        return MathHelper.clamp_float(f, 0.0F, flag ? 1.5F : 1.0F);
     }
 
     private boolean isBounds(int x, int y, int z){

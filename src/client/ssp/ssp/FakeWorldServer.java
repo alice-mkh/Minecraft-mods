@@ -94,7 +94,7 @@ public class FakeWorldServer extends WorldServer
     }
 
     @Override
-    public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
+    public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6)
     {
     }
 
@@ -140,14 +140,6 @@ public class FakeWorldServer extends WorldServer
      */
     @Override
     public void updateEntityWithOptionalForce(Entity par1Entity, boolean par2)
-    {
-    }
-
-    /**
-     * direct call to super.updateEntityWithOptionalForce
-     */
-    @Override
-    public void uncheckedUpdateEntity(Entity par1Entity, boolean par2)
     {
     }
 
@@ -230,7 +222,7 @@ public class FakeWorldServer extends WorldServer
      * Start the skin for this entity downloading, if necessary, and increment its reference counter
      */
     @Override
-    protected void obtainEntitySkin(Entity par1Entity)
+    protected void onEntityAdded(Entity par1Entity)
     {
     }
 
@@ -238,7 +230,7 @@ public class FakeWorldServer extends WorldServer
      * Decrement the reference counter for this entity's skin image data
      */
     @Override
-    protected void releaseEntitySkin(Entity par1Entity)
+    protected void onEntityRemoved(Entity par1Entity)
     {
     }
 

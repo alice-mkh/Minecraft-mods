@@ -2,13 +2,14 @@ package net.minecraft.src;
 
 import java.util.*;
 
-public abstract class EntityPlayer extends EntityLiving implements ICommandSender
+public abstract class EntityPlayer extends EntityLivingBase implements ICommandSender
 {
     public static int armor = 3;
     public static int combat = 3;
     public static boolean sprint = true;
     public static int startitems = 0;
     public static boolean oldscore = false;
+    public static boolean alertWolves = false;
 
     /** Inventory of the player */
     public InventoryPlayer inventory;
@@ -30,10 +31,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * defined in the player's movementInput) it sets this to 7. If it's pressed and it's greater than 0 enable fly.
      */
     protected int flyToggleTimer;
-    public byte field_71098_bD;
     public float prevCameraYaw;
     public float cameraYaw;
-    public String username;
+    protected final String username;
 
     /**
      * Used by EntityPlayer to prevent too many xp orbs from getting absorbed at once.
@@ -106,29 +106,23 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public EntityFishHook fishEntity;
 
-    public EntityPlayer(World par1World)
+    public EntityPlayer(World par1World, String par2Str)
     {
         super(par1World);
         inventory = new InventoryPlayer(this);
         theInventoryEnderChest = new InventoryEnderChest();
         foodStats = new FoodStats();
-        flyToggleTimer = 0;
-        field_71098_bD = 0;
-        xpCooldown = 0;
         capabilities = new PlayerCapabilities();
         speedOnGround = 0.1F;
         speedInAir = 0.02F;
-        field_82249_h = 0;
-        fishEntity = null;
+        username = par2Str;
         inventoryContainer = new ContainerPlayer(inventory, !par1World.isRemote, this);
         openContainer = inventoryContainer;
         yOffset = 1.62F;
         ChunkCoordinates chunkcoordinates = par1World.getSpawnPoint();
         setLocationAndAngles((double)chunkcoordinates.posX + 0.5D, chunkcoordinates.posY + 1, (double)chunkcoordinates.posZ + 0.5D, 0.0F, 0.0F);
-        entityType = "humanoid";
         field_70741_aB = 180F;
         fireResistance = 20;
-        texture = "/mob/char.png";
         giveStartItems(startitems);
     }
 
@@ -151,81 +145,78 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         }
     }
 
-    protected int applyArmorCalculations_old(DamageSource damagesource, int i)
+    protected float applyArmorCalculations_old(DamageSource damagesource, float i)
     {
         if (!damagesource.isUnblockable() || armorblocksall)
         {
             int j = 25 - getTotalArmorValue();
-            int k = i * j + carryoverDamage;
+            float f = i * j + carryoverDamage;
             damageArmor(i);
-            i = k / 25;
-            carryoverDamage = k % 25;
+            i = f / 25F;
+            if (carryover){
+                carryoverDamage = f % 25F;
+            }
         }
         return i;
     }
 
-    private void combatOld(Entity par1Entity, int i, int j, int k){
-        if(i > 0)
+    protected void alertWolves(EntityLivingBase par1EntityLiving, boolean par2)
+    {
+        if (!alertWolves){
+            return;
+        }   
+        if ((par1EntityLiving instanceof EntityCreeper) || (par1EntityLiving instanceof EntityGhast))
         {
-            i += k;
-            if(motionY < 0.0D && combat>0)
-            {
-                i++;
-            }
-            if (par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i)){
-                if (j > 0)
-                {
-                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
-                    motionX *= 0.59999999999999998D;
-                    motionZ *= 0.59999999999999998D;
-                    setSprinting(false);
-                }
-                if (k > 0)
-                {
-                    onEnchantmentCritical(par1Entity);
-                }
-                if (i >= 18)
-                {
-                    triggerAchievement(AchievementList.overkill);
-                }
-                setLastAttackingEntity(par1Entity);
-            }
-            ItemStack itemstack = getCurrentEquippedItem();
-            if(itemstack != null && (par1Entity instanceof EntityLiving))
-            {
-                itemstack.hitEntity((EntityLiving)par1Entity, this);
-                if(itemstack.stackSize <= 0)
-                {
-                    destroyCurrentEquippedItem();
-                }
-            }
-            if(par1Entity instanceof EntityLiving)
-            {
-                if(par1Entity.isEntityAlive())
-                {
-                    alertWolves((EntityLiving)par1Entity, true);
-                }
-                addStat(StatList.damageDealtStat, i);
-                int l = EnchantmentHelper.getFireAspectModifier(this);
-                if (l > 0)
-                {
-                    par1Entity.setFire(l * 4);
-                }
-            }
-            addExhaustion(0.3F);
+            return;
         }
+
+        if (par1EntityLiving instanceof EntityWolf)
+        {
+            EntityWolf entitywolf = (EntityWolf)par1EntityLiving;
+
+            if (entitywolf.isTamed() && username.equals(entitywolf.getOwnerName()))
+            {
+                return;
+            }
+        }
+
+        if ((par1EntityLiving instanceof EntityPlayer) && !func_96122_a((EntityPlayer)par1EntityLiving))
+        {
+            return;
+        }
+
+        List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityWolf.class, AxisAlignedBB.getAABBPool().getAABB(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
+        Iterator iterator = list.iterator();
+
+        do
+        {
+            if (!iterator.hasNext())
+            {
+                break;
+            }
+
+            EntityWolf entitywolf1 = (EntityWolf)iterator.next();
+
+            if (entitywolf1.isTamed() && entitywolf1.getEntityToAttack() == null && username.equals(entitywolf1.getOwnerName()) && (!par2 || !entitywolf1.isSitting()))
+            {
+                entitywolf1.setSitting(false);
+                entitywolf1.setTarget(par1EntityLiving);
+            }
+        }
+        while (true);
     }
 
-    public int getMaxHealth()
+    protected void func_110147_ax()
     {
-        return 20;
+        super.func_110147_ax();
+        func_110140_aT().func_111150_b(SharedMonsterAttributes.field_111264_e).func_111128_a(1.0D);
     }
 
     protected void entityInit()
     {
         super.entityInit();
         dataWatcher.addObject(16, Byte.valueOf((byte)0));
-        dataWatcher.addObject(17, Byte.valueOf((byte)0));
+        dataWatcher.addObject(17, Float.valueOf(0.0F));
         dataWatcher.addObject(18, Integer.valueOf(0));
     }
 
@@ -515,7 +506,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     protected boolean isMovementBlocked()
     {
-        return getHealth() <= 0 || isPlayerSleeping();
+        return func_110143_aJ() <= 0.0F || isPlayerSleeping();
     }
 
     /**
@@ -531,9 +522,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public void mountEntity(Entity par1Entity)
     {
-        if (ridingEntity == par1Entity)
+        if (ridingEntity != null && par1Entity == null)
         {
-            unmountEntity(par1Entity);
+            if (!worldObj.isRemote)
+            {
+                func_110145_l(ridingEntity);
+            }
 
             if (ridingEntity != null)
             {
@@ -555,6 +549,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public void updateRidden()
     {
+        if (!worldObj.isRemote && isSneaking())
+        {
+            mountEntity(null);
+            setSneaking(false);
+            return;
+        }
+
         double d = posX;
         double d1 = posY;
         double d2 = posZ;
@@ -582,12 +583,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         yOffset = 1.62F;
         setSize(0.6F, 1.8F);
         super.preparePlayerToSpawn();
-        setEntityHealth(getMaxHealth());
+        setEntityHealth(func_110138_aP());
         deathTime = 0;
     }
 
     protected void updateEntityActionState()
     {
+        super.updateEntityActionState();
         updateArmSwingProgress();
     }
 
@@ -602,23 +604,29 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             flyToggleTimer--;
         }
 
-        if (worldObj.difficultySetting == 0 && getHealth() < getMaxHealth() && (ticksExisted % 20) * 12 == 0)
+        if (worldObj.difficultySetting == 0 && func_110143_aJ() < func_110138_aP() && worldObj.getGameRules().getGameRuleBooleanValue("naturalRegeneration") && (ticksExisted % 20) * 12 == 0)
         {
-            heal(1);
+            heal(1.0F);
         }
 
         inventory.decrementAnimations();
         prevCameraYaw = cameraYaw;
         super.onLivingUpdate();
-        landMovementFactor = capabilities.getWalkSpeed();
+        AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
+
+        if (!worldObj.isRemote)
+        {
+            attributeinstance.func_111128_a(capabilities.getWalkSpeed());
+        }
+
         jumpMovementFactor = speedInAir;
 
         if (isSprinting())
         {
-            landMovementFactor += (double)capabilities.getWalkSpeed() * 0.29999999999999999D;
             jumpMovementFactor += (double)speedInAir * 0.29999999999999999D;
         }
 
+        setAIMoveSpeed((float)attributeinstance.func_111126_e());
         float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
         float f1 = (float)Math.atan(-motionY * 0.20000000298023224D) * 15F;
 
@@ -627,12 +635,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             f = 0.1F;
         }
 
-        if (!onGround || getHealth() <= 0)
+        if (!onGround || func_110143_aJ() <= 0.0F)
         {
             f = 0.0F;
         }
 
-        if (onGround || getHealth() <= 0)
+        if (onGround || func_110143_aJ() <= 0.0F)
         {
             f1 = 0.0F;
         }
@@ -640,9 +648,20 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         cameraYaw += (f - cameraYaw) * 0.4F;
         cameraPitch += (f1 - cameraPitch) * 0.8F;
 
-        if (getHealth() > 0)
+        if (func_110143_aJ() > 0.0F)
         {
-            List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(1.0D, 0.5D, 1.0D));
+            AxisAlignedBB axisalignedbb = null;
+
+            if (ridingEntity != null && !ridingEntity.isDead)
+            {
+                axisalignedbb = boundingBox.func_111270_a(ridingEntity.boundingBox).expand(1.0D, 0.0D, 1.0D);
+            }
+            else
+            {
+                axisalignedbb = boundingBox.expand(1.0D, 0.5D, 1.0D);
+            }
+
+            List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
 
             if (list != null)
             {
@@ -771,6 +790,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public EntityItem dropPlayerItemWithRandomChoice(ItemStack par1ItemStack, boolean par2)
     {
         if (par1ItemStack == null)
+        {
+            return null;
+        }
+
+        if (par1ItemStack.stackSize == 0)
         {
             return null;
         }
@@ -953,6 +977,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     {
     }
 
+    public void func_110298_a(EntityHorse entityhorse, IInventory iinventory)
+    {
+    }
+
     public void displayGUIEnchantment(int i, int j, int k, String s)
     {
     }
@@ -987,7 +1015,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {
@@ -1001,7 +1029,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         entityAge = 0;
 
-        if (getHealth() <= 0)
+        if (func_110143_aJ() <= 0.0F)
         {
             return false;
         }
@@ -1015,21 +1043,21 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             if (worldObj.difficultySetting == 0)
             {
-                par2 = 0;
+                par2 = 0.0F;
             }
 
             if (worldObj.difficultySetting == 1)
             {
-                par2 = par2 / 2 + 1;
+                par2 = par2 / 2.0F + 1.0F;
             }
 
             if (worldObj.difficultySetting == 3)
             {
-                par2 = (par2 * 3) / 2;
+                par2 = (par2 * 3F) / 2.0F;
             }
         }
 
-        if (par2 == 0)
+        if (par2 == 0.0F)
         {
             return false;
         }
@@ -1046,78 +1074,31 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             alertWolves((EntityLiving)entity, false);
         }
 
-        addStat(StatList.damageTakenStat, par2);
+        addStat(StatList.damageTakenStat, Math.round(par2 * 10F));
         return super.attackEntityFrom(par1DamageSource, par2);
     }
 
     public boolean func_96122_a(EntityPlayer par1EntityPlayer)
     {
-        ScorePlayerTeam scoreplayerteam = getTeam();
-        ScorePlayerTeam scoreplayerteam1 = par1EntityPlayer.getTeam();
+        Team team = getTeam();
+        Team team1 = par1EntityPlayer.getTeam();
 
-        if (scoreplayerteam != scoreplayerteam1)
+        if (team == null)
         {
             return true;
         }
 
-        if (scoreplayerteam != null)
+        if (!team.func_142054_a(team1))
         {
-            return scoreplayerteam.func_96665_g();
+            return true;
         }
         else
         {
-            return true;
+            return team.func_96665_g();
         }
     }
 
-    /**
-     * Called when the player attack or gets attacked, it's alert all wolves in the area that are owned by the player to
-     * join the attack or defend the player.
-     */
-    protected void alertWolves(EntityLiving par1EntityLiving, boolean par2)
-    {
-        if ((par1EntityLiving instanceof EntityCreeper) || (par1EntityLiving instanceof EntityGhast))
-        {
-            return;
-        }
-
-        if (par1EntityLiving instanceof EntityWolf)
-        {
-            EntityWolf entitywolf = (EntityWolf)par1EntityLiving;
-
-            if (entitywolf.isTamed() && username.equals(entitywolf.getOwnerName()))
-            {
-                return;
-            }
-        }
-
-        if ((par1EntityLiving instanceof EntityPlayer) && !func_96122_a((EntityPlayer)par1EntityLiving))
-        {
-            return;
-        }
-
-        List list = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityWolf.class, AxisAlignedBB.getAABBPool().getAABB(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 4D, 16D));
-        Iterator iterator = list.iterator();
-
-        do
-        {
-            if (!iterator.hasNext())
-            {
-                break;
-            }
-
-            EntityWolf entitywolf1 = (EntityWolf)iterator.next();
-
-            if (entitywolf1.isTamed() && entitywolf1.getEntityToAttack() == null && username.equals(entitywolf1.getOwnerName()) && (!par2 || !entitywolf1.isSitting()))
-            {
-                entitywolf1.setSitting(false);
-                entitywolf1.setTarget(par1EntityLiving);
-            }
-        }
-        while (true);
-    }
-
-    protected void damageArmor(int par1)
+    protected void damageArmor(float par1)
     {
         if (armor<2){
             for(int j = 0; j < inventory.armorInventory.length; j++)
@@ -1126,7 +1107,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 {
                     continue;
                 }
-                inventory.armorInventory[j].damageItem(par1, inventory.player);
+                inventory.armorInventory[j].damageItem((int)par1, inventory.player);
                 if(inventory.armorInventory[j].stackSize == 0)
                 {
                     inventory.armorInventory[j] = null;
@@ -1194,32 +1175,36 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health
      * second with the reduced value. Args: damageAmount
      */
-    protected void damageEntity(DamageSource par1DamageSource, int par2)
+    protected void damageEntity(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {
             return;
         }
 
-        if (!par1DamageSource.isUnblockable() && isBlocking())
+        if (!par1DamageSource.isUnblockable() && isBlocking() && par2 > 0.0F)
         {
-            par2 = 1 + par2 >> 1;
+            par2 = (1.0F + par2) * 0.5F;
         }
 
-        if (armor<2){
-            par2 = applyArmorCalculations_old(par1DamageSource, par2);
-        }else{
-            par2 = applyArmorCalculations(par1DamageSource, par2);
-        }
+        par2 = applyArmorCalculations(par1DamageSource, par2);
         par2 = applyPotionDamageCalculations(par1DamageSource, par2);
-        addExhaustion(par1DamageSource.getHungerDamage());
-        int i = getHealth();
-        if (armor==2){
-            super.damageEntity(par1DamageSource, par2);
-        }else{
-            setEntityHealth(getHealth() - par2);
+        float f = par2;
+        par2 = Math.max(par2 - func_110139_bj(), 0.0F);
+        func_110149_m(func_110139_bj() - (f - par2));
+
+        if (par2 == 0.0F)
+        {
+            return;
         }
-        field_94063_bt.func_94547_a(par1DamageSource, i, par2);
+        else
+        {
+            addExhaustion(par1DamageSource.getHungerDamage());
+            float f1 = func_110143_aJ();
+            setEntityHealth(func_110143_aJ() - par2);
+            func_110142_aN().func_94547_a(par1DamageSource, f1, par2);
+            return;
+        }
     }
 
     /**
@@ -1270,21 +1255,34 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public boolean interactWith(Entity par1Entity)
     {
-        if (par1Entity.interact(this))
+        ItemStack itemstack = getCurrentEquippedItem();
+        ItemStack itemstack1 = itemstack == null ? null : itemstack.copy();
+
+        if (par1Entity.func_130002_c(this))
         {
+            if (itemstack != null && itemstack == getCurrentEquippedItem())
+            {
+                if (itemstack.stackSize <= 0 && !capabilities.isCreativeMode)
+                {
+                    destroyCurrentEquippedItem();
+                }
+                else if (itemstack.stackSize < itemstack1.stackSize && capabilities.isCreativeMode)
+                {
+                    itemstack.stackSize = itemstack1.stackSize;
+                }
+            }
+
             return true;
         }
 
-        ItemStack itemstack = getCurrentEquippedItem();
-
-        if (itemstack != null && (par1Entity instanceof EntityLiving))
+        if (itemstack != null && (par1Entity instanceof EntityLivingBase))
         {
             if (capabilities.isCreativeMode)
             {
-                itemstack = itemstack.copy();
+                itemstack = itemstack1;
             }
 
-            if (itemstack.interactWith((EntityLiving)par1Entity))
+            if (itemstack.func_111282_a(this, (EntityLivingBase)par1Entity))
             {
                 if (itemstack.stackSize <= 0 && !capabilities.isCreativeMode)
                 {
@@ -1338,61 +1336,47 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             return;
         }
 
-        int i = inventory.getDamageVsEntity(par1Entity);
+        float f = (float)func_110148_a(SharedMonsterAttributes.field_111264_e).func_111126_e();
+        int i = 0;
+        float f1 = 0.0F;
 
-        if (isPotionActive(Potion.damageBoost))
+        if (par1Entity instanceof EntityLivingBase)
         {
-            i += 3 << getActivePotionEffect(Potion.damageBoost).getAmplifier();
-        }
-
-        if (isPotionActive(Potion.weakness))
-        {
-            i -= 2 << getActivePotionEffect(Potion.weakness).getAmplifier();
-        }
-
-        int j = 0;
-        int k = 0;
-
-        if (par1Entity instanceof EntityLiving)
-        {
-            k = EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLiving)par1Entity);
-            j += EnchantmentHelper.getKnockbackModifier(this, (EntityLiving)par1Entity);
+            f1 = EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)par1Entity);
+            i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
         }
 
         if (isSprinting())
         {
-            j++;
+            i++;
         }
-        if (combat<2){
-            combatOld(par1Entity, i, j, k);
-            return;
-        }
-        if (i > 0 || k > 0)
-        {
-            boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLiving);
 
-            if (flag && i > 0)
+        if (f > 0.0F || f1 > 0.0F)
+        {
+            boolean flag = fallDistance > 0.0F && !onGround && !isOnLadder() && !isInWater() && !isPotionActive(Potion.blindness) && ridingEntity == null && (par1Entity instanceof EntityLivingBase);
+
+            if (flag && f > 0.0F)
             {
-                i += rand.nextInt(i / 2 + 2);
+                f *= 1.5F;
             }
 
-            i += k;
+            f += f1;
             boolean flag1 = false;
-            int l = EnchantmentHelper.getFireAspectModifier(this);
+            int j = EnchantmentHelper.getFireAspectModifier(this);
 
-            if ((par1Entity instanceof EntityLiving) && l > 0 && !par1Entity.isBurning())
+            if ((par1Entity instanceof EntityLivingBase) && j > 0 && !par1Entity.isBurning())
             {
                 flag1 = true;
                 par1Entity.setFire(1);
             }
 
-            boolean flag2 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i);
+            boolean flag2 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), f);
 
             if (flag2)
             {
-                if (j > 0)
+                if (i > 0)
                 {
-                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
+                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)i * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)i * 0.5F);
                     motionX *= 0.59999999999999998D;
                     motionZ *= 0.59999999999999998D;
                     setSprinting(false);
@@ -1403,21 +1387,21 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                     onCriticalHit(par1Entity);
                 }
 
-                if (k > 0)
+                if (f1 > 0.0F)
                 {
                     onEnchantmentCritical(par1Entity);
                 }
 
-                if (i >= 18)
+                if (f >= 18F)
                 {
                     triggerAchievement(AchievementList.overkill);
                 }
 
-                setLastAttackingEntity(par1Entity);
+                func_130011_c(par1Entity);
 
-                if (par1Entity instanceof EntityLiving)
+                if (par1Entity instanceof EntityLivingBase)
                 {
-                    EnchantmentThorns.func_92096_a(this, (EntityLiving)par1Entity, rand);
+                    EnchantmentThorns.func_92096_a(this, (EntityLivingBase)par1Entity, rand);
                 }
             }
 
@@ -1428,15 +1412,15 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             {
                 IEntityMultiPart ientitymultipart = ((EntityDragonPart)par1Entity).entityDragonObj;
 
-                if (ientitymultipart != null && (ientitymultipart instanceof EntityLiving))
+                if (ientitymultipart != null && (ientitymultipart instanceof EntityLivingBase))
                 {
-                    obj = (EntityLiving)ientitymultipart;
+                    obj = (EntityLivingBase)ientitymultipart;
                 }
             }
 
-            if (itemstack != null && (obj instanceof EntityLiving))
+            if (itemstack != null && (obj instanceof EntityLivingBase))
             {
-                itemstack.hitEntity((EntityLiving)obj, this);
+                itemstack.hitEntity((EntityLivingBase)obj, this);
 
                 if (itemstack.stackSize <= 0)
                 {
@@ -1444,18 +1428,17 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 }
             }
 
-            if (par1Entity instanceof EntityLiving)
+            if (par1Entity instanceof EntityLivingBase)
             {
-                if (par1Entity.isEntityAlive())
+                if(par1Entity.isEntityAlive())
                 {
                     alertWolves((EntityLiving)par1Entity, true);
                 }
+                addStat(StatList.damageDealtStat, Math.round(f * 10F));
 
-                addStat(StatList.damageDealtStat, i);
-
-                if (l > 0 && flag2)
+                if (j > 0 && flag2)
                 {
-                    par1Entity.setFire(l * 4);
+                    par1Entity.setFire(j * 4);
                 }
                 else if (flag1)
                 {
@@ -1488,11 +1471,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public void setDead()
     {
         super.setDead();
-        inventoryContainer.onCraftGuiClosed(this);
+        inventoryContainer.onContainerClosed(this);
 
         if (openContainer != null)
         {
-            openContainer.onCraftGuiClosed(this);
+            openContainer.onContainerClosed(this);
         }
     }
 
@@ -1502,11 +1485,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public boolean isEntityInsideOpaqueBlock()
     {
         return !sleeping && super.isEntityInsideOpaqueBlock();
-    }
-
-    public boolean func_71066_bF()
-    {
-        return false;
     }
 
     /**
@@ -1544,6 +1522,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             {
                 return EnumStatus.NOT_SAFE;
             }
+        }
+
+        if (isRiding())
+        {
+            mountEntity(null);
         }
 
         setSize(0.2F, 0.2F);
@@ -1866,6 +1849,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     }
 
     /**
+     * the movespeed used for the new AI system
+     */
+    public float getAIMoveSpeed()
+    {
+        return (float)func_110148_a(SharedMonsterAttributes.field_111263_d).func_111126_e();
+    }
+
+    /**
      * Adds a value to a movement statistic field - like run, walk, swin or climb.
      */
     public void addMovementStat(double par1, double par3, double par5)
@@ -1988,9 +1979,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     /**
      * This method gets called when the entity kills another one.
      */
-    public void onKillEntity(EntityLiving par1EntityLiving)
+    public void onKillEntity(EntityLivingBase par1EntityLivingBase)
     {
-        if (par1EntityLiving instanceof IMob)
+        if (par1EntityLivingBase instanceof IMob)
         {
             triggerAchievement(AchievementList.killEnemy);
         }
@@ -2052,17 +2043,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public ItemStack getCurrentArmor(int par1)
     {
         return inventory.armorItemInSlot(par1);
-    }
-
-    /**
-     * Makes entity wear random armor based on difficulty
-     */
-    protected void addRandomArmor()
-    {
-    }
-
-    protected void func_82162_bC()
-    {
     }
 
     /**
@@ -2167,7 +2147,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public boolean shouldHeal()
     {
-        return getHealth() > 0 && getHealth() < getMaxHealth();
+        return func_110143_aJ() > 0.0F && func_110143_aJ() < func_110138_aP();
     }
 
     /**
@@ -2193,9 +2173,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     }
 
     /**
-     * Returns true if the item the player is holding can harvest the block at the given coords. Args: x, y, z.
+     * Returns true if the given block can be mined with the current tool in adventure mode.
      */
-    public boolean canCurrentToolHarvestBlock(int par1, int par2, int par3)
+    public boolean isCurrentToolAdventureModeExempt(int par1, int par2, int par3)
     {
         if (capabilities.allowEdit)
         {
@@ -2208,7 +2188,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             Block block = Block.blocksList[i];
 
-            if (block.blockMaterial.isAlwaysHarvested())
+            if (block.blockMaterial.isAdventureModeExempt())
             {
                 return true;
             }
@@ -2236,7 +2216,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (par5ItemStack != null)
         {
-            return par5ItemStack.func_82835_x();
+            return par5ItemStack.canEditBlocks();
         }
         else
         {
@@ -2282,19 +2262,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return username;
     }
 
-    public boolean func_94062_bN()
-    {
-        return super.func_94062_bN();
-    }
-
-    public boolean func_94059_bO()
+    public boolean getAlwaysRenderNameTagForRender()
     {
         return true;
-    }
-
-    public boolean canPickUpLoot()
-    {
-        return false;
     }
 
     /**
@@ -2306,7 +2276,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         if (par2)
         {
             inventory.copyInventory(par1EntityPlayer.inventory);
-            health = par1EntityPlayer.health;
+            setEntityHealth(par1EntityPlayer.func_110143_aJ());
             foodStats = par1EntityPlayer.foodStats;
             experienceLevel = par1EntityPlayer.experienceLevel;
             experienceTotal = par1EntityPlayer.experienceTotal;
@@ -2357,17 +2327,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return username;
     }
 
-    public StringTranslate getTranslator()
+    public World func_130014_f_()
     {
-        return StringTranslate.getInstance();
-    }
-
-    /**
-     * Translates and formats the given string key with the given arguments.
-     */
-    public String translateString(String par1Str, Object par2ArrayOfObj[])
-    {
-        return getTranslator().translateKeyFormat(par1Str, par2ArrayOfObj);
+        return worldObj;
     }
 
     /**
@@ -2416,8 +2378,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             return false;
         }
 
-        ScorePlayerTeam scoreplayerteam = getTeam();
-        return scoreplayerteam == null || par1EntityPlayer == null || par1EntityPlayer.getTeam() != scoreplayerteam || !scoreplayerteam.func_98297_h();
+        Team team = getTeam();
+        return team == null || par1EntityPlayer == null || par1EntityPlayer.getTeam() != team || !team.func_98297_h();
     }
 
     public ItemStack[] getLastActiveItems()
@@ -2440,7 +2402,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return worldObj.getScoreboard();
     }
 
-    public ScorePlayerTeam getTeam()
+    public Team getTeam()
     {
         return getWorldScoreboard().getPlayersTeam(username);
     }
@@ -2450,7 +2412,22 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public String getTranslatedEntityName()
     {
-        return ScorePlayerTeam.func_96667_a(getTeam(), username);
+        return ScorePlayerTeam.formatPlayerName(getTeam(), username);
+    }
+
+    public void func_110149_m(float par1)
+    {
+        if (par1 < 0.0F)
+        {
+            par1 = 0.0F;
+        }
+
+        getDataWatcher().updateObject(17, Float.valueOf(par1));
+    }
+
+    public float func_110139_bj()
+    {
+        return getDataWatcher().func_111145_d(17);
     }
 
     /**

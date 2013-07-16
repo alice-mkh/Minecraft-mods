@@ -1,10 +1,10 @@
 package net.minecraft.src.ssp;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandServerTp;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NumberInvalidException;
 import net.minecraft.src.WrongUsageException;
 
@@ -38,7 +38,7 @@ public class CommandClientTp extends CommandServerTp
             p.setPositionAndUpdate(p.posX, p.posY, p.posZ);
             notifyAdmins(par1ICommandSender, "commands.tp.success", new Object[]
                     {
-                        p.username, p.username
+                        p.getEntityName(), p.getEntityName()
                     });
     }
         else

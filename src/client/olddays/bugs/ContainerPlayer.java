@@ -18,7 +18,6 @@ public class ContainerPlayer extends Container
     {
         craftMatrix = new InventoryCrafting(this, 2, 2);
         craftResult = new InventoryCraftResult();
-        isLocalWorld = false;
         isLocalWorld = par2;
         thePlayer = par3EntityPlayer;
         addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, craftMatrix, craftResult, 0, 144, 36));
@@ -62,11 +61,11 @@ public class ContainerPlayer extends Container
     }
 
     /**
-     * Callback for when the crafting gui is closed.
+     * Called when the container is closed.
      */
-    public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(EntityPlayer par1EntityPlayer)
     {
-        super.onCraftGuiClosed(par1EntityPlayer);
+        super.onContainerClosed(par1EntityPlayer);
 
         if (dropCrafting){
             for (int i = 0; i < 4; i++)

@@ -438,14 +438,14 @@ public class Group implements IBlockAccess{
 
         @Override
         public void onUpdate(){
-            if (tileEntity != null && !tileEntity.isInvalid() && tileEntity.func_70309_m()){
+            if (tileEntity != null && !tileEntity.isInvalid() && tileEntity.hasWorldObj()){
                 tileEntity.updateEntity();
             }
             if (last){
                 group.onUpdate();
             }
         }
-
+/*
         @Override
         public boolean interact(EntityPlayer par1EntityPlayer){
             System.out.println("Right click");
@@ -453,12 +453,12 @@ public class Group implements IBlockAccess{
         }
 
         @Override
-        public boolean attackEntityFrom(DamageSource source, int i){
+        public boolean attackEntityFrom(DamageSource source, float f){
             System.out.println("Left click");
             if (!source.getDamageType().equals("player")){
                 return false;
             }
             return true;
-        }
+        }*/
     }
 }

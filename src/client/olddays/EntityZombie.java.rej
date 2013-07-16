@@ -1,0 +1,11 @@
+--- src-mods/src/client/olddays/EntityZombie.java	2013-07-02 19:16:24.119278209 +0600
++++ src-mods/src/client/olddays/EntityZombie.java	2013-06-20 19:44:14.309515460 +0600
+@@ -208,7 +224,7 @@
+     {
+         ItemStack itemstack = getHeldItem();
+         float f = (float)(getMaxHealth() - func_110143_aJ()) / (float)getMaxHealth();
+-        int i = 3 + MathHelper.floor_float(f * 4F);
++        int i = pre15 ? 4 : (3 + MathHelper.floor_float(f * 4F));
+ 
+         if (itemstack != null)
+         {

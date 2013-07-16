@@ -162,7 +162,7 @@ public class OldWorldGenDungeons extends WorldGenerator
 
         if (tileentitymobspawner != null)
         {
-            tileentitymobspawner.func_98049_a().setMobID(pickMobSpawner(par2Random));
+            tileentitymobspawner.getSpawnerLogic().setMobID(pickMobSpawner(par2Random));
         }
         else
         {
@@ -236,7 +236,8 @@ public class OldWorldGenDungeons extends WorldGenerator
 
         if (i == 11)
         {
-            return Item.enchantedBook.func_92109_a(par1Random);
+//FIXME             return Item.enchantedBook.func_92109_a(par1Random);
+            return null;
         }
         else
         {

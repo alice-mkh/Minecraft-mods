@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 
 public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
     public static String version = "OFF";
@@ -52,8 +51,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     @Override
     public void initGui(){
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, stringtranslate.translateKey("menu.returnToGame"));
+        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, I18n.func_135053_a("menu.returnToGame"));
         buttonList.add(button);
         addCustomButtons();
         if (hasSearchField){

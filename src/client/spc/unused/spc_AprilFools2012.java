@@ -13,9 +13,6 @@ import java.net.URI;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import net.minecraft.client.Minecraft;
-
-
 public class spc_AprilFools2012 extends SPCPlugin {
 
    public boolean active;
@@ -23,7 +20,7 @@ public class spc_AprilFools2012 extends SPCPlugin {
    public File destfile;
 
    public spc_AprilFools2012() {
-      destfile = new File(Minecraft.getMinecraftDir(),"resources/sound/spcfools.mid");
+      destfile = new File(Minecraft.getMinecraft().mcDataDir,"resources/sound/spcfools.mid");
       /* Checked if April 1st 2012 - otherwise delete the sound file if it exists */
       /* if (System.currentTimeMillis() > 1333198800000L && System.currentTimeMillis() < 1333288799000L) {
          active = true;
@@ -38,7 +35,7 @@ public class spc_AprilFools2012 extends SPCPlugin {
       try {
          String filename = "SPCPatch.class";
          File destination = destfile.getParentFile();
-         if (PlayerHelper.extractFile(new File(Minecraft.getMinecraftDir(),"bin/Minecraft.jar"),filename,destination)) {
+         if (PlayerHelper.extractFile(new File(Minecraft.getMinecraft().mcDataDir,"bin/Minecraft.jar"),filename,destination)) {
             File destfile1 = new File(destination,filename);
             destfile1.renameTo(destfile);
          }
@@ -64,8 +61,8 @@ public class spc_AprilFools2012 extends SPCPlugin {
             if (!destfile.exists()) {
                setup();
             }
-            ph.mc.sndManager.addSound(destfile.getName(), destfile);
-            ph.mc.sndManager.playSoundFX("spcfools",1.0F,1.0F);
+//             ph.mc.sndManager.addSound(destfile.getName(), destfile);
+//             ph.mc.sndManager.playSoundFX("spcfools",1.0F,1.0F);
             return true;
          }
          if (args.length == 2 && (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("/help")) && args[1].equalsIgnoreCase("roll")) {

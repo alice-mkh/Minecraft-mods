@@ -5,8 +5,6 @@ import java.lang.reflect.Method;
 
 import com.sk89q.worldedit.WorldEdit;
 
-import net.minecraft.client.Minecraft;
-
 /**
  * This class is used to setup all the interfaces and core objects which 
  * WorldEdit loads from the JAR and uses. 
@@ -51,7 +49,7 @@ public class WorldEditPlugin {
     * and interfaces
     */
    public WorldEditPlugin() throws Exception {
-      localconfiguration = new SPCLocalConfiguration(Minecraft.getMinecraftDir());
+      localconfiguration = new SPCLocalConfiguration(Minecraft.getMinecraft().mcDataDir);
       localconfiguration.load();
       EntityPlayerSP player = PlayerHelper.PH.ep;
       serverinterface = new SPCServerInterface(player.worldObj);

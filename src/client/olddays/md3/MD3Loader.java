@@ -1,17 +1,16 @@
 package net.minecraft.src;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
-import net.minecraft.client.Minecraft;
 
 public class MD3Loader {
 
    public final MD3Model load(String var1) throws IOException {
-      DataInputStream var5 = new DataInputStream(MD3Loader.class.getResourceAsStream(var1));
+      InputStream var5 = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation(var1)).func_110527_b();
       ByteArrayOutputStream var2 = new ByteArrayOutputStream();
       byte[] var3 = new byte[4096];
 

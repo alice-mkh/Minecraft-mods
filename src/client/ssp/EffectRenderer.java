@@ -7,15 +7,17 @@ public class EffectRenderer
 {
     public static boolean fixParticles = true;
 
+    private static final ResourceLocation field_110737_b = new ResourceLocation("textures/particle/particles.png");
+
     /** Reference to the World object. */
     protected World worldObj;
     private List fxLayers[];
-    private RenderEngine renderer;
+    private TextureManager renderer;
 
     /** RNG. */
     private Random rand;
 
-    public EffectRenderer(World par1World, RenderEngine par2RenderEngine)
+    public EffectRenderer(World par1World, TextureManager par2TextureManager)
     {
         fxLayers = new List[4];
         rand = new Random();
@@ -25,7 +27,7 @@ public class EffectRenderer
             worldObj = par1World;
         }
 
-        renderer = par2RenderEngine;
+        renderer = par2TextureManager;
 
         for (int i = 0; i < 4; i++)
         {
@@ -87,17 +89,16 @@ public class EffectRenderer
             {
                 case 0:
                 default:
-                    renderer.bindTexture("/particles.png");
+                    renderer.func_110577_a(field_110737_b);
                     break;
                 case 1:
-                    renderer.bindTexture("/terrain.png");
+                    renderer.func_110577_a(TextureMap.field_110575_b);
                     break;
                 case 2:
-                    renderer.bindTexture("/gui/items.png");
+                    renderer.func_110577_a(TextureMap.field_110576_c);
                     break;
             }
 
-            Tessellator tessellator = Tessellator.instance;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             if (!fixParticles){
                 GL11.glDepthMask(false);
@@ -105,6 +106,7 @@ public class EffectRenderer
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+            Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawingQuads();
 
             for (int j = 0; j < fxLayers[i].size(); j++)
@@ -125,25 +127,27 @@ public class EffectRenderer
 
     public void renderLitParticles(Entity par1Entity, float par2)
     {
-        float f = MathHelper.cos(par1Entity.rotationYaw * 0.01745329F);
-        float f1 = MathHelper.sin(par1Entity.rotationYaw * 0.01745329F);
-        float f2 = -f1 * MathHelper.sin(par1Entity.rotationPitch * 0.01745329F);
-        float f3 = f * MathHelper.sin(par1Entity.rotationPitch * 0.01745329F);
-        float f4 = MathHelper.cos(par1Entity.rotationPitch * 0.01745329F);
+        float f = 0.01745329F;
+        float f1 = MathHelper.cos(par1Entity.rotationYaw * 0.01745329F);
+        float f2 = MathHelper.sin(par1Entity.rotationYaw * 0.01745329F);
+        float f3 = -f2 * MathHelper.sin(par1Entity.rotationPitch * 0.01745329F);
+        float f4 = f1 * MathHelper.sin(par1Entity.rotationPitch * 0.01745329F);
+        float f5 = MathHelper.cos(par1Entity.rotationPitch * 0.01745329F);
         byte byte0 = 3;
+        List list = fxLayers[byte0];
 
-        if (fxLayers[byte0].isEmpty())
+        if (list.isEmpty())
         {
             return;
         }
 
         Tessellator tessellator = Tessellator.instance;
 
-        for (int i = 0; i < fxLayers[byte0].size(); i++)
+        for (int i = 0; i < list.size(); i++)
         {
-            EntityFX entityfx = (EntityFX)fxLayers[byte0].get(i);
+            EntityFX entityfx = (EntityFX)list.get(i);
             tessellator.setBrightness(entityfx.getBrightnessForRender(par2));
-            entityfx.renderParticle(tessellator, par2, f, f4, f1, f2, f3);
+            entityfx.renderParticle(tessellator, par2, f1, f5, f2, f3, f4);
         }
     }
 
@@ -176,8 +180,7 @@ public class EffectRenderer
                     double d = (double)par1 + ((double)j + 0.5D) / (double)i;
                     double d1 = (double)par2 + ((double)k + 0.5D) / (double)i;
                     double d2 = (double)par3 + ((double)l + 0.5D) / (double)i;
-                    int i1 = rand.nextInt(6);
-                    addEffect((new EntityDiggingFX(worldObj, d, d1, d2, d - (double)par1 - 0.5D, d1 - (double)par2 - 0.5D, d2 - (double)par3 - 0.5D, block, i1, par5, renderer)).func_70596_a(par1, par2, par3));
+                    addEffect((new EntityDiggingFX(worldObj, d, d1, d2, d - (double)par1 - 0.5D, d1 - (double)par2 - 0.5D, d2 - (double)par3 - 0.5D, block, par5)).applyColourMultiplier(par1, par2, par3));
                 }
             }
         }
@@ -231,7 +234,7 @@ public class EffectRenderer
             d = (double)par1 + block.getBlockBoundsMaxX() + (double)f;
         }
 
-        addEffect((new EntityDiggingFX(worldObj, d, d1, d2, 0.0D, 0.0D, 0.0D, block, par4, worldObj.getBlockMetadata(par1, par2, par3), renderer)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+        addEffect((new EntityDiggingFX(worldObj, d, d1, d2, 0.0D, 0.0D, 0.0D, block, worldObj.getBlockMetadata(par1, par2, par3))).applyColourMultiplier(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
     }
 
     public String getStatistics()

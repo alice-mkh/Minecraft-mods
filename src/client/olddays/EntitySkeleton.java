@@ -21,26 +21,31 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     public EntitySkeleton(World par1World)
     {
         super(par1World);
-        aiArrowAttack = new EntityAIArrowAttack(this, 0.25F, 20, 60, 15F);
+        aiArrowAttack = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15F);
         oldAiArrowAttack = new EntityAIArrowAttack2(this, 0.25F, 20, 60, 10F);
-        aiAttackOnCollide = new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, 0.31F, false);
-        texture = "/mob/skeleton.png";
-        moveSpeed = 0.25F;
+        aiAttackOnCollide = new EntityAIAttackOnCollide(this, net.minecraft.src.EntityPlayer.class, 1.2D, false);
         helmet = Math.random() < 0.20000000298023224D;
         armor = Math.random() < 0.20000000298023224D;
         tasks.addTask(1, new EntityAISwimming(this));
         tasks.addTask(2, new EntityAIRestrictSun(this));
-        tasks.addTask(3, new EntityAIFleeSun(this, moveSpeed));
-        tasks.addTask(5, new EntityAIWander(this, moveSpeed));
+        tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
+        tasks.addTask(5, new EntityAIWander(this, 1.0D));
         tasks.addTask(6, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 8F));
         tasks.addTask(6, new EntityAILookIdle(this));
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 16F, 0, true));
+        targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityPlayer.class, 0, true));
 
         if (par1World != null && !par1World.isRemote)
         {
             setCombatTask();
         }
+    }
+
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 10D : 20D);
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25D);
     }
 
     protected void entityInit()
@@ -140,11 +145,6 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         return true;
     }
 
-    public int getMaxHealth()
-    {
-        return survivaltest ? 10 : 20;
-    }
-
     /**
      * Returns the sound this mob makes while it's alive.
      */
@@ -181,9 +181,9 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     {
         if (super.attackEntityAsMob(par1Entity))
         {
-            if (getSkeletonType() == 1 && (par1Entity instanceof EntityLiving))
+            if (getSkeletonType() == 1 && (par1Entity instanceof EntityLivingBase))
             {
-                ((EntityLiving)par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 200));
+                ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 200));
             }
 
             return true;
@@ -191,29 +191,6 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         else
         {
             return false;
-        }
-    }
-
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
-    public int getAttackStrength(Entity par1Entity)
-    {
-        if (getSkeletonType() == 1)
-        {
-            ItemStack itemstack = getHeldItem();
-            int i = 4;
-
-            if (itemstack != null)
-            {
-                i += itemstack.getDamageVsEntity(this);
-            }
-
-            return i;
-        }
-        else
-        {
-            return super.getAttackStrength(par1Entity);
         }
     }
 
@@ -269,6 +246,20 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         }
 
         super.onLivingUpdate();
+    }
+
+    /**
+     * Handles updating while being ridden by an entity
+     */
+    public void updateRidden()
+    {
+        super.updateRidden();
+
+        if (ridingEntity instanceof EntityCreature)
+        {
+            EntityCreature entitycreature = (EntityCreature)ridingEntity;
+            renderYawOffset = entitycreature.renderYawOffset;
+        }
     }
 
     /**
@@ -355,31 +346,16 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         setCurrentItemOrArmor(0, new ItemStack(Item.bow));
     }
 
-    /**
-     * Returns the texture's file path as a String.
-     */
-    public String getTexture()
+    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
-        if (getSkeletonType() == 1)
-        {
-            return "/mob/skeleton_wither.png";
-        }
-        else
-        {
-            return super.getTexture();
-        }
-    }
+        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
 
-    /**
-     * Initialize this creature.
-     */
-    public void initCreature()
-    {
         if ((worldObj.provider instanceof WorldProviderHell) && getRNG().nextInt(5) > 0)
         {
             tasks.addTask(4, aiAttackOnCollide);
             setSkeletonType(1);
             setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
+            func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(4D);
         }
         else if (!custom){
             setCurrentItemOrArmor(0, new ItemStack(Item.bow));
@@ -388,10 +364,10 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         {
             tasks.addTask(4, pre15 ? oldAiArrowAttack : aiArrowAttack);
             addRandomArmor();
-            func_82162_bC();
+            enchantEquipment();
         }
 
-        setCanPickUpLoot(rand.nextFloat() < pickUpLootProability[worldObj.difficultySetting]);
+        setCanPickUpLoot(rand.nextFloat() < 0.55F * worldObj.func_110746_b(posX, posY, posZ));
 
         if (getCurrentItemOrArmor(4) == null)
         {
@@ -404,6 +380,8 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
                 equipmentDropChances[4] = 0.0F;
             }
         }
+
+        return par1EntityLivingData;
     }
 
     /**
@@ -429,9 +407,9 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     /**
      * Attack the specified entity using a ranged attack.
      */
-    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving, float par2)
+    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
     {
-        EntityArrow entityarrow = new EntityArrow(worldObj, this, par1EntityLiving, 1.6F, pre15 ? 12F : (14 - worldObj.difficultySetting * 4));
+        EntityArrow entityarrow = new EntityArrow(worldObj, this, par1EntityLivingBase, 1.6F, pre15 ? 12F : (14 - worldObj.difficultySetting * 4));
         int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, getHeldItem());
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, getHeldItem());
         if (!pre15){
@@ -523,5 +501,13 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         {
             setCombatTask();
         }
+    }
+
+    /**
+     * Returns the Y Offset of this entity.
+     */
+    public double getYOffset()
+    {
+        return super.getYOffset() - 0.5D;
     }
 }

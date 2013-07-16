@@ -1,10 +1,11 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.CommandServerPublishLocal;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 
 public class CommandClientPublishLocal extends CommandServerPublishLocal
 {
@@ -13,14 +14,11 @@ public class CommandClientPublishLocal extends CommandServerPublishLocal
     {
         Minecraft.getMinecraft().quitAndStartServer();
         String s = MinecraftServer.getServer().shareToLAN(EnumGameType.SURVIVAL, false);
-        String s1 = "";
+        ChatMessageComponent c = ChatMessageComponent.func_111077_e("commands.publish.failed");
         if (s != null){
-            s1 = par1ICommandSender.translateString("commands.publish.started", new Object[]{s});
-        }else{
-            s1 = par1ICommandSender.translateString("commands.publish.failed", new Object[0]);
+            c = ChatMessageComponent.func_111082_b("commands.publish.started", new Object[]{s});
         }
-        System.out.println(s1);
-        par1ICommandSender.sendChatToPlayer(s1);
+        par1ICommandSender.sendChatToPlayer(c);
     }
 
     /**

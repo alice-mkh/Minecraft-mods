@@ -37,8 +37,8 @@ public class ODGameplay extends OldDaysModule{
                     set(GuiIngame.class, "fallbacktex", !hasTextures("olddays/icons.png")); break;
             case 3: set(ItemFood.class, "instant", InstantFood); break;
             case 4: set(ItemFood.class, "stacks", FoodStacking); break;
-            case 5: set(EntityLiving.class, "oldloot", OldDrops); break;
-            case 6: set(EntityLiving.class, "rareloot", RareLoot); break;
+            case 5: set(EntityLivingBase.class, "oldloot", OldDrops); break;
+            case 6: set(EntityLivingBase.class, "rareloot", RareLoot); break;
             case 7: set(EntityArrow.class, "olddamage", InstantBow);
                     set(ItemBow.class, "nocharging", InstantBow); break;
             case 8: set(ItemBow.class, "nodurability", !FiniteBow); break;
@@ -46,16 +46,16 @@ public class ODGameplay extends OldDaysModule{
                     set(EntityZombie.class, "defense", CombatSystem>=3);
                     setSwordDamage(CombatSystem<3); break;
             case 10:set(EntityPlayer.class, "armor", Armor);
-                    set(EntityLiving.class, "armorblocksall", Armor<=0);
+                    set(EntityLivingBase.class, "armorblocksall", Armor<=0);
                     setArmorDamage(Armor<2); break;
             case 11:set(GuiIngame.class, "nodebug", !AllowDebug); break;
             case 12:set(EntityPlayer.class, "sprint", AllowSprint); break;
-            case 13:set(EntityLiving.class, "jumpdelay", JumpDelay); break;
+            case 13:set(EntityLivingBase.class, "jumpdelay", JumpDelay); break;
             case 14:set(EntityPlayer.class, "startitems", StartItems); break;
             case 15:Item.sign.maxStackSize = SignStacking ? 16 : 1; break;
             case 16:Item.bucketEmpty.maxStackSize = BucketStacking ? 16 : 1; break;
             case 17:set(EntityPlayer.class, "oldscore", Score < 2);
-                    set(EntityLiving.class, "enablescore", Score == 1);
+                    set(EntityLivingBase.class, "enablescore", Score == 1);
                     set(GuiIngame.class, "score", Score == 1);
                     set(GuiGameOver.class, "oldScore", Score == 0); break;
             case 18:set(Explosion.class, "oldexplosion", OldExplosion); break;
@@ -86,13 +86,14 @@ public class ODGameplay extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.cake.blockID] = null;
-            BlockCake2 customcake = (BlockCake2)(new BlockCake2(92));
+            BlockCake2 customcake = (BlockCake2)(new BlockCake2(Block.cake.blockID));
             customcake.setHardness(0.5F);
             customcake.setStepSound(Block.soundClothFootstep);
             customcake.setUnlocalizedName("cake");
             customcake.disableStats();
+            customcake.func_111022_d("cake");
             Block.blocksList[Block.cake.blockID] = customcake;
-            mod_OldDays.setField(Block.class, null, 110, customcake);//Block: cake
+            mod_OldDays.setField(Block.class, null, 111, customcake);//Block: cake
         }catch (Exception exception){
             System.out.println(exception);
         }
@@ -133,7 +134,7 @@ public class ODGameplay extends OldDaysModule{
         mod_OldDays.setField(ItemArmor.class, Item.bootsIron, damageReduceAmount, b ? 3 : 2);
         mod_OldDays.setField(ItemArmor.class, Item.bootsGold, damageReduceAmount, b ? 3 : 1);
         mod_OldDays.setField(ItemArmor.class, Item.bootsDiamond, damageReduceAmount, 3);
-        int maxDamage = 170;
+        int maxDamage = 176;
         mod_OldDays.setField(Item.class, Item.helmetLeather, maxDamage, b ? 33 << 0 : 55);
         mod_OldDays.setField(Item.class, Item.helmetChain, maxDamage, b ? 33 << 1 : 165);
         mod_OldDays.setField(Item.class, Item.helmetIron, maxDamage, b ? 33 << 2 : 165);

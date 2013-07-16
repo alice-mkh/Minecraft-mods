@@ -3,9 +3,9 @@ package net.minecraft.src.nbxlite.gui;
 import java.util.List;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.I18n;
 import net.minecraft.src.mod_OldDays;
 import net.minecraft.src.ODNBXlite;
-import net.minecraft.src.StringTranslate;
 import net.minecraft.src.WorldInfo;
 
 public class GuiStructures extends GuiScreen{
@@ -23,7 +23,7 @@ public class GuiStructures extends GuiScreen{
     @Override
     public void initGui(){
         buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_OldDays.lang.get("continue")));
-        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, StringTranslate.getInstance().translateKey("gui.cancel")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.func_135053_a("gui.cancel")));
         for (int i = 0; i < buttons.length; i++){
             buttons[i] = new GuiButton(2 + i, width / 2 - 100, height / 6 + ((i + 1) * 21), 200, 20, "");
             buttonList.add(buttons[i]);

@@ -5,6 +5,8 @@ import org.lwjgl.opengl.GL12;
 
 public class TileEntityEnderChestRenderer extends TileEntitySpecialRenderer
 {
+    private static final ResourceLocation field_110637_a = new ResourceLocation("textures/entity/chest/ender.png");
+
     /** The Ender Chest Chest's model. */
     private ModelChest theEnderChestModel;
 
@@ -20,15 +22,15 @@ public class TileEntityEnderChestRenderer extends TileEntitySpecialRenderer
     {
         int i = 0;
 
-        if (par1TileEntityEnderChest.func_70309_m())
+        if (par1TileEntityEnderChest.hasWorldObj())
         {
             i = par1TileEntityEnderChest.getBlockMetadata();
         }
 
-        bindTextureByName("/item/enderchest.png");
+        func_110628_a(field_110637_a);
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        if (!net.minecraft.client.Minecraft.oldlighting){
+        if (!Minecraft.oldlighting){
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
         GL11.glTranslatef((float)par2, (float)par4 + 1.0F, (float)par6 + 1.0F);

@@ -6,12 +6,9 @@ public class BlockMushroom extends BlockFlower
 {
     public static boolean spreading = true;
 
-    private final String field_94374_a;
-
-    protected BlockMushroom(int par1, String par2Str)
+    protected BlockMushroom(int par1)
     {
         super(par1);
-        field_94374_a = par2Str;
         float f = 0.2F;
         setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
         setTickRandomly(true);
@@ -61,7 +58,7 @@ public class BlockMushroom extends BlockFlower
 
             if (par1World.isAirBlock(k, i1, k1) && canBlockStay(par1World, k, i1, k1))
             {
-                par1World.setBlock(k, i1, k1, blockID);
+                par1World.setBlock(k, i1, k1, blockID, 0, 2);
             }
         }
     }
@@ -126,14 +123,5 @@ public class BlockMushroom extends BlockFlower
         {
             return true;
         }
-    }
-
-    /**
-     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-     * is the only chance you get to register icons.
-     */
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        blockIcon = par1IconRegister.registerIcon(field_94374_a);
     }
 }

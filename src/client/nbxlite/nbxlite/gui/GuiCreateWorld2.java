@@ -2,7 +2,6 @@ package net.minecraft.src.nbxlite.gui;
 
 import java.util.List;
 import java.util.Random;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.src.*;
 
@@ -118,22 +117,21 @@ public class GuiCreateWorld2 extends GuiScreen
     @Override
     public void initGui()
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
         Keyboard.enableRepeatEvents(true);
         buttonList.clear();
-        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, stringtranslate.translateKey("selectWorld.create")));
-        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, stringtranslate.translateKey("gui.cancel")));
-        buttonList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, stringtranslate.translateKey("selectWorld.gameMode")));
-        buttonList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, stringtranslate.translateKey("selectWorld.moreWorldOptions")));
-        buttonList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapFeatures")));
+        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, I18n.func_135053_a("selectWorld.create")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.func_135053_a("gui.cancel")));
+        buttonList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, I18n.func_135053_a("selectWorld.gameMode")));
+        buttonList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, I18n.func_135053_a("selectWorld.moreWorldOptions")));
+        buttonList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, I18n.func_135053_a("selectWorld.mapFeatures")));
         buttonGenerateStructures.drawButton = false;
-        buttonList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, stringtranslate.translateKey("selectWorld.bonusItems")));
+        buttonList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, I18n.func_135053_a("selectWorld.bonusItems")));
         buttonBonusItems.drawButton = false;
-        buttonList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, stringtranslate.translateKey("selectWorld.mapType")));
+        buttonList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, I18n.func_135053_a("selectWorld.mapType")));
         buttonWorldType.drawButton = false;
-        buttonList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, stringtranslate.translateKey("selectWorld.allowCommands")));
+        buttonList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, I18n.func_135053_a("selectWorld.allowCommands")));
         buttonAllowCommands.drawButton = false;
-        buttonList.add(field_82289_B = new GuiButton(8, width / 2 + 5, 120, 150, 20, stringtranslate.translateKey("selectWorld.customizeType")));
+        buttonList.add(field_82289_B = new GuiButton(8, width / 2 + 5, 120, 150, 20, I18n.func_135053_a("selectWorld.customizeType")));
         field_82289_B.drawButton = false;
 
         int allowWorldTypes = nbxliteGui.allowWorldTypes();
@@ -199,42 +197,41 @@ public class GuiCreateWorld2 extends GuiScreen
 
     private void updateButtonText()
     {
-        StringTranslate var1 = StringTranslate.getInstance();
-        this.buttonGameMode.displayString = var1.translateKey("selectWorld.gameMode") + " " + var1.translateKey("selectWorld.gameMode." + this.gameMode);
-        this.gameModeDescriptionLine1 = var1.translateKey("selectWorld.gameMode." + this.gameMode + ".line1");
-        this.gameModeDescriptionLine2 = var1.translateKey("selectWorld.gameMode." + this.gameMode + ".line2");
-        this.buttonGenerateStructures.displayString = var1.translateKey("selectWorld.mapFeatures") + " ";
+        this.buttonGameMode.displayString = I18n.func_135053_a("selectWorld.gameMode") + " " + I18n.func_135053_a("selectWorld.gameMode." + this.gameMode);
+        this.gameModeDescriptionLine1 = I18n.func_135053_a("selectWorld.gameMode." + this.gameMode + ".line1");
+        this.gameModeDescriptionLine2 = I18n.func_135053_a("selectWorld.gameMode." + this.gameMode + ".line2");
+        this.buttonGenerateStructures.displayString = I18n.func_135053_a("selectWorld.mapFeatures") + " ";
 
         if (this.generateStructures)
         {
-            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + var1.translateKey("options.on");
+            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + I18n.func_135053_a("options.on");
         }
         else
         {
-            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + var1.translateKey("options.off");
+            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + I18n.func_135053_a("options.off");
         }
 
-        this.buttonBonusItems.displayString = var1.translateKey("selectWorld.bonusItems") + " ";
+        this.buttonBonusItems.displayString = I18n.func_135053_a("selectWorld.bonusItems") + " ";
 
         if (this.bonusItems && !this.isHardcore)
         {
-            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + var1.translateKey("options.on");
+            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + I18n.func_135053_a("options.on");
         }
         else
         {
-            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + var1.translateKey("options.off");
+            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + I18n.func_135053_a("options.off");
         }
 
-        this.buttonWorldType.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey(WorldType.worldTypes[this.worldTypeId].getTranslateName());
-        this.buttonAllowCommands.displayString = var1.translateKey("selectWorld.allowCommands") + " ";
+        this.buttonWorldType.displayString = I18n.func_135053_a("selectWorld.mapType") + " " + I18n.func_135053_a(WorldType.worldTypes[this.worldTypeId].getTranslateName());
+        this.buttonAllowCommands.displayString = I18n.func_135053_a("selectWorld.allowCommands") + " ";
 
         if (this.commandsAllowed && !this.isHardcore)
         {
-            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + var1.translateKey("options.on");
+            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + I18n.func_135053_a("options.on");
         }
         else
         {
-            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + var1.translateKey("options.off");
+            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + I18n.func_135053_a("options.off");
         }
     }
 
@@ -478,13 +475,11 @@ public class GuiCreateWorld2 extends GuiScreen
 
         if (moreOptions)
         {
-            StringTranslate stringtranslate = StringTranslate.getInstance();
-            moreWorldOptions.displayString = stringtranslate.translateKey("gui.done");
+            moreWorldOptions.displayString = I18n.func_135053_a("gui.done");
         }
         else
         {
-            StringTranslate stringtranslate1 = StringTranslate.getInstance();
-            moreWorldOptions.displayString = stringtranslate1.translateKey("selectWorld.moreWorldOptions");
+            moreWorldOptions.displayString = I18n.func_135053_a("selectWorld.moreWorldOptions");
         }
 
         nbxliteButton.drawButton = moreOptions && ODNBXlite.ShowGUI && !field_82289_B.drawButton;
@@ -542,22 +537,21 @@ public class GuiCreateWorld2 extends GuiScreen
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
         drawDefaultBackground();
-        drawCenteredString(fontRenderer, stringtranslate.translateKey("selectWorld.create"), width / 2, 20, 0xffffff);
+        drawCenteredString(fontRenderer, I18n.func_135053_a("selectWorld.create"), width / 2, 20, 0xffffff);
 
         if (moreOptions)
         {
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.allowCommands.info"), width / 2 - 150, 172, 0xa0a0a0);
+            drawString(fontRenderer, I18n.func_135053_a("selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
+            drawString(fontRenderer, I18n.func_135053_a("selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
+            drawString(fontRenderer, I18n.func_135053_a("selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
+            drawString(fontRenderer, I18n.func_135053_a("selectWorld.allowCommands.info"), width / 2 - 150, 172, 0xa0a0a0);
             textboxSeed.drawTextBox();
         }
         else
         {
-            drawString(fontRenderer, stringtranslate.translateKey("selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
-            drawString(fontRenderer, (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.resultFolder")).append(" ").append(folderName).toString(), width / 2 - 100, 85, 0xa0a0a0);
+            drawString(fontRenderer, I18n.func_135053_a("selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
+            drawString(fontRenderer, (new StringBuilder()).append(I18n.func_135053_a("selectWorld.resultFolder")).append(" ").append(folderName).toString(), width / 2 - 100, 85, 0xa0a0a0);
             textboxWorldName.drawTextBox();
             drawString(fontRenderer, gameModeDescriptionLine1, width / 2 - 100, 137, 0xa0a0a0);
             drawString(fontRenderer, gameModeDescriptionLine2, width / 2 - 100, 149, 0xa0a0a0);

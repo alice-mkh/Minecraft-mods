@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -10,6 +9,8 @@ public abstract class GuiContainer extends GuiScreen
 {
     public static boolean tooltips = true;
     public static boolean oldtooltips = false;
+
+    protected static final ResourceLocation field_110408_a = new ResourceLocation("textures/gui/container/inventory.png");
 
     /** Stacks renderer. Icons, stack size, health, etc... */
     protected static RenderItem itemRenderer = new RenderItem();
@@ -67,23 +68,6 @@ public abstract class GuiContainer extends GuiScreen
     {
         xSize = 176;
         ySize = 166;
-        clickedSlot = null;
-        isRightMouseClick = false;
-        draggedStack = null;
-        field_85049_r = 0;
-        field_85048_s = 0;
-        returningStackDestSlot = null;
-        returningStackTime = 0L;
-        returningStack = null;
-        field_92033_y = null;
-        field_92032_z = 0L;
-        field_94071_C = 0;
-        field_94067_D = 0;
-        field_94068_E = false;
-        field_94070_G = 0L;
-        field_94072_H = null;
-        field_94073_I = 0;
-        field_94075_K = null;
         inventorySlots = par1Container;
         field_94068_E = true;
     }
@@ -129,7 +113,7 @@ public abstract class GuiContainer extends GuiScreen
             Slot slot = (Slot)inventorySlots.inventorySlots.get(l);
             drawSlotInventory(slot);
 
-            if (isMouseOverSlot(slot, par1, par2))
+            if (isMouseOverSlot(slot, par1, par2) && slot.func_111238_b())
             {
                 theSlot = slot;
                 GL11.glDisable(GL11.GL_LIGHTING);
@@ -206,8 +190,8 @@ public abstract class GuiContainer extends GuiScreen
         GL11.glTranslatef(0.0F, 0.0F, 32F);
         zLevel = 200F;
         itemRenderer.zLevel = 200F;
-        itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, par1ItemStack, par2, par3);
-        itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, par1ItemStack, par2, par3 - (draggedStack != null ? 8 : 0), par4Str);
+        itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.func_110434_K(), par1ItemStack, par2, par3);
+        itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.func_110434_K(), par1ItemStack, par2, par3 - (draggedStack != null ? 8 : 0), par4Str);
         zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
@@ -371,7 +355,7 @@ public abstract class GuiContainer extends GuiScreen
                 return;
             }
 
-            if (Container.func_94527_a(par1Slot, itemstack1, true) && inventorySlots.func_94531_b(par1Slot))
+            if (Container.func_94527_a(par1Slot, itemstack1, true) && inventorySlots.canDragIntoSlot(par1Slot))
             {
                 itemstack = itemstack1.copy();
                 flag = true;
@@ -406,7 +390,7 @@ public abstract class GuiContainer extends GuiScreen
             if (icon != null)
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                mc.renderEngine.bindTexture("/gui/items.png");
+                mc.func_110434_K().func_110577_a(TextureMap.field_110576_c);
                 drawTexturedModelRectFromIcon(i, j, icon, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 flag1 = true;
@@ -421,8 +405,8 @@ public abstract class GuiContainer extends GuiScreen
             }
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
-            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j, s);
+            itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.func_110434_K(), itemstack, i, j);
+            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.func_110434_K(), itemstack, i, j, s);
         }
 
         itemRenderer.zLevel = 0.0F;
@@ -581,7 +565,11 @@ public abstract class GuiContainer extends GuiScreen
         field_94073_I = par3;
     }
 
-    protected void func_85041_a(int par1, int par2, int par3, long par4)
+    /**
+     * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
+     * lastButtonClicked & timeSinceMouseClick.
+     */
+    protected void mouseClickMove(int par1, int par2, int par3, long par4)
     {
         Slot slot = getSlotAtPosition(par1, par2);
         ItemStack itemstack = mc.thePlayer.inventory.getItemStack();
@@ -620,7 +608,7 @@ public abstract class GuiContainer extends GuiScreen
                 }
             }
         }
-        else if (field_94076_q && slot != null && itemstack != null && itemstack.stackSize > field_94077_p.size() && Container.func_94527_a(slot, itemstack, true) && slot.isItemValid(itemstack) && inventorySlots.func_94531_b(slot))
+        else if (field_94076_q && slot != null && itemstack != null && itemstack.stackSize > field_94077_p.size() && Container.func_94527_a(slot, itemstack, true) && slot.isItemValid(itemstack) && inventorySlots.canDragIntoSlot(slot))
         {
             field_94077_p.add(slot);
             func_94066_g();
@@ -868,7 +856,7 @@ public abstract class GuiContainer extends GuiScreen
         }
         else
         {
-            inventorySlots.onCraftGuiClosed(mc.thePlayer);
+            inventorySlots.onContainerClosed(mc.thePlayer);
             return;
         }
     }

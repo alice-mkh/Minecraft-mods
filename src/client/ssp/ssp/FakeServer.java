@@ -2,15 +2,15 @@ package net.minecraft.src.ssp;
 
 import java.io.*;
 import java.util.logging.Logger;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.CallableModded;
+// import net.minecraft.src.CallableModded;
 import net.minecraft.src.CrashReport;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ICommandManager;
 import net.minecraft.src.ILogAgent;
 import net.minecraft.src.IntegratedServer;
 import net.minecraft.src.IntegratedServerListenThread;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NetworkListenThread;
 import net.minecraft.src.PlayerUsageSnooper;
@@ -34,7 +34,7 @@ public class FakeServer extends IntegratedServer
     {
         super(par1Minecraft, par2Str, par3Str, par4WorldSettings);
         field_71348_o = false;
-        setServerOwner(par1Minecraft.session.username);
+        setServerOwner(par1Minecraft.func_110432_I().func_111285_a());
         setFolderName(par2Str);
         setWorldName(par3Str);
         setDemo(par1Minecraft.isDemo());
@@ -139,7 +139,7 @@ public class FakeServer extends IntegratedServer
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
         par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableTypeFake(this));
-        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableModded(mc));
+//         par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableModded(mc));
         return par1CrashReport;
     }
 
@@ -263,7 +263,7 @@ public class FakeServer extends IntegratedServer
     @Override
     public String[] getAllUsernames()
     {
-        return new String[]{mc.session.username};
+        return new String[]{mc.func_110432_I().func_111285_a()};
     }
 
     @Override

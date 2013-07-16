@@ -12,9 +12,7 @@ public class EntitySpider extends EntityMob
     public EntitySpider(World par1World)
     {
         super(par1World);
-        texture = "/mob/spider.png";
         setSize(1.4F, 0.9F);
-        moveSpeed = 0.8F;
     }
 
     @Override
@@ -42,20 +40,11 @@ public class EntitySpider extends EntityMob
         }
     }
 
-    public int getMaxHealth()
+    protected void func_110147_ax()
     {
-        if (survivaltest){
-            return 10;
-        }
-        return oldhealth ? 20 : 16;
-    }
-
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
-    public double getMountedYOffset()
-    {
-        return (double)height * 0.75D - 0.5D;
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 10D : (oldhealth ? 20D : 16D));
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.80000001192092896D);
     }
 
     /**
@@ -185,14 +174,6 @@ public class EntitySpider extends EntityMob
     }
 
     /**
-     * How large the spider should be scaled.
-     */
-    public float spiderScaleAmount()
-    {
-        return 1.0F;
-    }
-
-    /**
      * Get this Entity's EnumCreatureAttribute
      */
     public EnumCreatureAttribute getCreatureAttribute()
@@ -241,18 +222,39 @@ public class EntitySpider extends EntityMob
         dataWatcher.updateObject(16, Byte.valueOf(byte0));
     }
 
-    /**
-     * Initialize this creature.
-     */
-    public void initCreature()
+    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
     {
+        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
+
         if (worldObj.rand.nextInt(100) == 0 && jockeys)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(worldObj);
             entityskeleton.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
-            entityskeleton.initCreature();
+            entityskeleton.func_110161_a(null);
             worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }
+
+        if (par1EntityLivingData == null)
+        {
+            par1EntityLivingData = new SpiderEffectsGroupData();
+
+            if (worldObj.difficultySetting > 2 && worldObj.rand.nextFloat() < 0.1F * worldObj.func_110746_b(posX, posY, posZ))
+            {
+                ((SpiderEffectsGroupData)par1EntityLivingData).func_111104_a(worldObj.rand);
+            }
+        }
+
+        if (par1EntityLivingData instanceof SpiderEffectsGroupData)
+        {
+            int i = ((SpiderEffectsGroupData)par1EntityLivingData).field_111105_a;
+
+            if (i > 0 && Potion.potionTypes[i] != null)
+            {
+                addPotionEffect(new PotionEffect(i, 0x7fffffff));
+            }
+        }
+
+        return par1EntityLivingData;
     }
 }

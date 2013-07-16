@@ -39,8 +39,6 @@ public class BlockStairs extends Block
     protected BlockStairs(int par1, Block par2Block, int par3)
     {
         super(par1, par2Block.blockMaterial);
-        field_72156_cr = false;
-        field_72160_cs = 0;
         modelBlock = par2Block;
         modelBlockMetadata = par3;
         setHardness(par2Block.blockHardness);
@@ -489,7 +487,8 @@ public class BlockStairs extends Block
     }
 
     /**
-     * Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag
+     * Returns whether this block is collideable based on the arguments passed in \n@param par1 block metaData \n@param
+     * par2 whether the player right-clicked while holding a boat
      */
     public boolean canCollideCheck(int par1, boolean par2)
     {
@@ -556,9 +555,9 @@ public class BlockStairs extends Block
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
-        int i = MathHelper.floor_double((double)((par5EntityLiving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+        int i = MathHelper.floor_double((double)((par5EntityLivingBase.rotationYaw * 4F) / 360F) + 0.5D) & 3;
         int j = par1World.getBlockMetadata(par2, par3, par4) & 4;
         if (oldstairs){
             setOldMetadata(par1World, par2, par3, par4);

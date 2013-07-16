@@ -3,11 +3,12 @@ package net.minecraft.src.nbxlite;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
 public class RenderPainting2 extends Render
 {
+    private static final ResourceLocation field_110807_a = new ResourceLocation("textures/painting/paintings_kristoffer_zetterstrand.png");
+
     /** RNG. */
     private Random rand;
 
@@ -23,13 +24,18 @@ public class RenderPainting2 extends Render
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        loadTexture("/art/kz.png");
+        func_110777_b(par1EntityPainting);
         EnumArt enumart = par1EntityPainting.art;
         float f = 0.0625F;
         GL11.glScalef(f, f, f);
         func_77010_a(par1EntityPainting, enumart.sizeX, enumart.sizeY, enumart.offsetX, enumart.offsetY);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
+    }
+
+    protected ResourceLocation func_110806_a(EntityPainting par1EntityPainting)
+    {
+        return field_110807_a;
     }
 
     private void func_77010_a(EntityPainting par1EntityPainting, int par2, int par3, int par4, int par5)
@@ -137,6 +143,11 @@ public class RenderPainting2 extends Render
             float f2 = renderManager.worldObj.getLightBrightness(i, j, k);
             GL11.glColor3f(f2, f2, f2);
         }
+    }
+
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return func_110806_a((EntityPainting)par1Entity);
     }
 
     /**

@@ -16,10 +16,10 @@ class StructureStrongholdStart2 extends StructureStart
         components.add(componentstrongholdstairs2);
         componentstrongholdstairs2.buildComponent(componentstrongholdstairs2, components, random);
         StructureComponent structurecomponent;
-        for (ArrayList arraylist = componentstrongholdstairs2.field_75026_c; !arraylist.isEmpty(); structurecomponent.buildComponent(componentstrongholdstairs2, components, random))
+        for (List list = componentstrongholdstairs2.field_75026_c; !list.isEmpty(); structurecomponent.buildComponent(componentstrongholdstairs2, components, random))
         {
-            int k = random.nextInt(arraylist.size());
-            structurecomponent = (StructureComponent)arraylist.remove(k);
+            int k = random.nextInt(list.size());
+            structurecomponent = (StructureComponent)list.remove(k);
         }
 
         updateBoundingBox();

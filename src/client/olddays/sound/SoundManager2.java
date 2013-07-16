@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.lang.reflect.Field;
+import java.io.File;
 import java.util.Random;
 import paulscode.sound.SoundSystem;
 
@@ -30,6 +31,10 @@ public class SoundManager2 extends SoundManager{
     public static boolean splash = false;
     public static boolean swimming = true;
     public static boolean minecart = true;
+
+    public SoundManager2(ResourceManager m, GameSettings g, File f){
+        super(m, g, f);
+    }
 
     @Override
     public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6){
@@ -189,32 +194,32 @@ public class SoundManager2 extends SoundManager{
     @Override
     public void playRandomMusicIfReady()
     {
-        GameSettings options = (GameSettings)getField(5);
+        GameSettings options = (GameSettings)getField(7);
 
-        if (!(Boolean)getField(8) || options.musicVolume == 0.0F)
+        if (!(Boolean)getField(2) || options.musicVolume == 0.0F)
         {
             return;
         }
 
-        SoundSystem sndSystem = (SoundSystem)getField(0);
+        SoundSystem sndSystem = (SoundSystem)getField(1);
         if (!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming"))
         {
-            int ticksBeforeMusic = (Integer)getField(10);
+            int ticksBeforeMusic = (Integer)getField(12);
             if (ticksBeforeMusic > 0)
             {
-                setField(10, --ticksBeforeMusic);
+                setField(12, --ticksBeforeMusic);
                 return;
             }
 
-            SoundPoolEntry soundpoolentry = ((SoundPool)getField(3)).getRandomSound();
-            if (soundpoolentry.soundName.startsWith("calm4") && !calm4){
+            SoundPoolEntry soundpoolentry = ((SoundPool)getField(5)).getRandomSound();
+            if (soundpoolentry.func_110458_a().startsWith("calm4") && !calm4){
                 return;
             }
 
             if (soundpoolentry != null)
             {
-                setField(10, ((Random)getField(9)).nextInt(12000) + 12000);
-                sndSystem.backgroundMusic("BgMusic", soundpoolentry.soundUrl, soundpoolentry.soundName, false);
+                setField(12, ((Random)getField(11)).nextInt(12000) + 12000);
+                sndSystem.backgroundMusic("BgMusic", soundpoolentry.func_110457_b(), soundpoolentry.func_110458_a(), false);
                 sndSystem.setVolume("BgMusic", options.musicVolume);
                 sndSystem.play("BgMusic");
             }

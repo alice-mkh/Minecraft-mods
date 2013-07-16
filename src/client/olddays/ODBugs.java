@@ -20,7 +20,7 @@ public class ODBugs extends OldDaysModule{
             case 2: set(EntityBoat.class, "waterlift", WaterLifts); break;
             case 3: set(Entity.class, "toaster", LavaToasters); break;
             case 4: set(Entity.class, "waterladder", WaterLadders); break;
-            case 5: set(EntityLiving.class, "laddergaps", LadderGaps); break;
+            case 5: set(EntityLivingBase.class, "laddergaps", LadderGaps); break;
             case 6: set(BlockPistonBase.class, "dupe", PistonDupe); break;
             case 7: set(ContainerPlayer.class, "dropCrafting", !CraftingSlots); break;
             case 8: set(GuiInventory.class, "walking", InvWalking); break;

@@ -1,9 +1,9 @@
 package net.minecraft.src.nbxlite.gui;
 
 import org.lwjgl.input.Mouse;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.IScrollingGui;
 import net.minecraft.src.GuiButtonOldDays;

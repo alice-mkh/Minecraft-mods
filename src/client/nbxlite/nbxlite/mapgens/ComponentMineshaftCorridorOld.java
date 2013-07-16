@@ -293,7 +293,7 @@ public class ComponentMineshaftCorridorOld extends StructureComponent
 
             if (tileentitymobspawner != null)
             {
-                tileentitymobspawner.func_98049_a().setMobID("CaveSpider");
+                tileentitymobspawner.getSpawnerLogic().setMobID("CaveSpider");
             }
         }
 

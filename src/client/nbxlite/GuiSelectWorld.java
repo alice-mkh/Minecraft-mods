@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.lang.reflect.Method;
 import java.io.File;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.nbxlite.gui.*;
 import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 import net.minecraft.src.nbxlite.indev.McLevelImporter;
@@ -59,7 +58,6 @@ public class GuiSelectWorld extends GuiScreen
     public GuiSelectWorld(GuiScreen par1GuiScreen)
     {
         screenTitle = "Select world";
-        selected = false;
         localizedGameModeText = new String[3];
         parentScreen = par1GuiScreen;
     }
@@ -69,8 +67,7 @@ public class GuiSelectWorld extends GuiScreen
      */
     public void initGui()
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        screenTitle = stringtranslate.translateKey("selectWorld.title");
+        screenTitle = I18n.func_135053_a("selectWorld.title");
 
         try
         {
@@ -83,13 +80,13 @@ public class GuiSelectWorld extends GuiScreen
             return;
         }
 
-        localizedWorldText = stringtranslate.translateKey("selectWorld.world");
-        localizedMustConvertText = stringtranslate.translateKey("selectWorld.conversion");
-        localizedGameModeText[EnumGameType.SURVIVAL.getID()] = stringtranslate.translateKey("gameMode.survival");
-        localizedGameModeText[EnumGameType.CREATIVE.getID()] = stringtranslate.translateKey("gameMode.creative");
-        localizedGameModeText[EnumGameType.ADVENTURE.getID()] = stringtranslate.translateKey("gameMode.adventure");
+        localizedWorldText = I18n.func_135053_a("selectWorld.world");
+        localizedMustConvertText = I18n.func_135053_a("selectWorld.conversion");
+        localizedGameModeText[EnumGameType.SURVIVAL.getID()] = I18n.func_135053_a("gameMode.survival");
+        localizedGameModeText[EnumGameType.CREATIVE.getID()] = I18n.func_135053_a("gameMode.creative");
+        localizedGameModeText[EnumGameType.ADVENTURE.getID()] = I18n.func_135053_a("gameMode.adventure");
         worldSlotContainer = new GuiWorldSlot(this);
-        worldSlotContainer.registerScrollButtons(buttonList, 4, 5);
+        worldSlotContainer.registerScrollButtons(4, 5);
         initButtons();
     }
 
@@ -124,8 +121,7 @@ public class GuiSelectWorld extends GuiScreen
 
         if (s == null || MathHelper.stringNullOrLengthZero(s))
         {
-            StringTranslate stringtranslate = StringTranslate.getInstance();
-            s = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.world")).append(" ").append(par1 + 1).toString();
+            s = (new StringBuilder()).append(I18n.func_135053_a("selectWorld.world")).append(" ").append(par1 + 1).toString();
         }
 
         return s;
@@ -136,14 +132,13 @@ public class GuiSelectWorld extends GuiScreen
      */
     public void initButtons()
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.select")));
-        buttonList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, stringtranslate.translateKey("Play SMP")));
-        buttonList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, stringtranslate.translateKey("selectWorld.create")));
-        buttonList.add(buttonRename = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.rename")));
-        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.delete")));
-        buttonList.add(buttonRecreate = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, stringtranslate.translateKey("selectWorld.recreate")));
-        buttonList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, stringtranslate.translateKey("gui.cancel")));
+        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, I18n.func_135053_a("selectWorld.select")));
+        buttonList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, "Play SMP"));
+        buttonList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, I18n.func_135053_a("selectWorld.create")));
+        buttonList.add(buttonRename = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, I18n.func_135053_a("selectWorld.rename")));
+        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, I18n.func_135053_a("selectWorld.delete")));
+        buttonList.add(buttonRecreate = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, I18n.func_135053_a("selectWorld.recreate")));
+        buttonList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, I18n.func_135053_a("gui.cancel")));
         buttonSelect.enabled = false;
         buttonSelect2.enabled = false;
         buttonDelete.enabled = false;
@@ -320,6 +315,7 @@ public class GuiSelectWorld extends GuiScreen
                 s1 = (new StringBuilder()).append("World").append(par1).toString();
             }
             mc.launchIntegratedServer(s, s1, null);
+            mc.statFileWriter.readStat(StatList.loadWorldStat, 1);
         }
     }
 
@@ -367,11 +363,10 @@ public class GuiSelectWorld extends GuiScreen
      */
     public static GuiYesNo getDeleteWorldScreen(GuiScreen par0GuiScreen, String par1Str, int par2)
     {
-        StringTranslate stringtranslate = StringTranslate.getInstance();
-        String s = stringtranslate.translateKey("selectWorld.deleteQuestion");
-        String s1 = (new StringBuilder()).append("'").append(par1Str).append("' ").append(stringtranslate.translateKey("selectWorld.deleteWarning")).toString();
-        String s2 = stringtranslate.translateKey("selectWorld.deleteButton");
-        String s3 = stringtranslate.translateKey("gui.cancel");
+        String s = I18n.func_135053_a("selectWorld.deleteQuestion");
+        String s1 = (new StringBuilder()).append("'").append(par1Str).append("' ").append(I18n.func_135053_a("selectWorld.deleteWarning")).toString();
+        String s2 = I18n.func_135053_a("selectWorld.deleteButton");
+        String s3 = I18n.func_135053_a("gui.cancel");
         GuiYesNo guiyesno = new GuiYesNo(par0GuiScreen, s, s1, s2, s3, par2);
         return guiyesno;
     }

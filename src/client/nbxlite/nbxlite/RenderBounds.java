@@ -5,11 +5,13 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
 public class RenderBounds{
-    private static RenderEngine renderEngine;
+    private static ResourceLocation classicWater = new ResourceLocation("olddays/classic_water.png");
+    private static ResourceLocation classicLava = new ResourceLocation("olddays/classic_lava.png");
+
+    private static TextureManager renderEngine;
     private static Minecraft mc;
     private static World worldObj;
     private static ByteBuffer imageData;
@@ -165,7 +167,7 @@ public class RenderBounds{
             return;
         }
         mc = m;
-        renderEngine = mc.renderEngine;
+        renderEngine = mc.func_110434_K();
         worldObj = mc.theWorld;
         int id = ODNBXlite.SurrGroundType;
         if (ODNBXlite.SurrGroundHeight<=ODNBXlite.SurrWaterHeight || ODNBXlite.SurrWaterType==Block.lavaStill.blockID && ODNBXlite.SurrGroundType==Block.grass.blockID){
@@ -280,18 +282,19 @@ public class RenderBounds{
     private static void bindTexture(Block b, boolean side, boolean anim){
         if (!anim){
             if (b == Block.waterStill || b == Block.waterMoving){
-                renderEngine.bindTexture("/olddays/classic_water.png");
+                renderEngine.func_110577_a(classicWater);
                 return;
             }else if (b == Block.lavaStill || b == Block.lavaMoving){
-                renderEngine.bindTexture("/olddays/classic_lava.png");
+                renderEngine.func_110577_a(classicLava);
                 return;
             }
         }
         Icon icon = b.getBlockTextureFromSide(side ? 2 : 1);
         int prevWidth = width;
         int prevHeight = height;
-        width = (Integer)(mod_OldDays.getField(TextureStitched.class, icon, 7));
-        height = width;
+        width = icon.getOriginX();
+        height = icon.getOriginY();
+        /*
         if (imageData == null || prevWidth != width || prevHeight != height){
             imageData = ByteBuffer.allocateDirect(width * height * 4);
             System.gc();
@@ -316,6 +319,6 @@ public class RenderBounds{
             System.gc();
         }
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, emptyImage);
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);
+        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);*/
     }
 }

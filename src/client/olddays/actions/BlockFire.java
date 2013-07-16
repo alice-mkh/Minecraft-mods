@@ -41,6 +41,8 @@ public class BlockFire extends Block
         setBurnRate(Block.tallGrass.blockID, 60, 100);
         setBurnRate(Block.cloth.blockID, 30, 60);
         setBurnRate(Block.vine.blockID, 15, 100);
+        setBurnRate(Block.field_111034_cE.blockID, 5, 5);
+        setBurnRate(Block.field_111038_cB.blockID, 60, 20);
     }
 
     /**
@@ -579,7 +581,7 @@ public class BlockFire extends Block
     {
         iconArray = (new Icon[]
                 {
-                    par1IconRegister.registerIcon("fire_0"), par1IconRegister.registerIcon("fire_1")
+                    par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_layer_0").toString()), par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_layer_1").toString())
                 });
     }
 

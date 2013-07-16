@@ -22,7 +22,6 @@ public class EntityItem extends Entity
     public EntityItem(World par1World, double par2, double par4, double par6)
     {
         super(par1World);
-        age = 0;
         health = 5;
         hoverStart = (float)(Math.random() * Math.PI * 2D);
         setSize(0.25F, 0.25F);
@@ -52,7 +51,6 @@ public class EntityItem extends Entity
     public EntityItem(World par1World)
     {
         super(par1World);
-        age = 0;
         health = 5;
         hoverStart = (float)(Math.random() * Math.PI * 2D);
         setSize(0.25F, 0.25F);
@@ -234,7 +232,7 @@ public class EntityItem extends Entity
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {
@@ -334,9 +332,8 @@ public class EntityItem extends Entity
                 par1EntityPlayer.triggerAchievement(AchievementList.blazeRod);
             }
 
-            net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "onItemPickup",
-                                                           new Class[]{EntityPlayer.class, ItemStack.class}, 
-                                                           par1EntityPlayer, getEntityItem());
+            Minecraft.invokeModMethod("ModLoader", "onItemPickup",
+                                      new Class[]{EntityPlayer.class, ItemStack.class}, par1EntityPlayer, getEntityItem());
             playSound("random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             par1EntityPlayer.onItemPickup(this, i);
 

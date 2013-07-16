@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 
 public class GuiGameOver extends GuiScreen
@@ -29,19 +28,19 @@ public class GuiGameOver extends GuiScreen
         {
             if (mc.isIntegratedServerRunning() || mc.enableSP)
             {
-                buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
+                buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, I18n.func_135053_a("deathScreen.deleteWorld")));
             }
             else
             {
-                buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.leaveServer")));
+                buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, I18n.func_135053_a("deathScreen.leaveServer")));
             }
         }
         else
         {
-            buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 72, StatCollector.translateToLocal("deathScreen.respawn")));
-            buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96, StatCollector.translateToLocal("deathScreen.titleScreen")));
+            buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 72, I18n.func_135053_a("deathScreen.respawn")));
+            buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96, I18n.func_135053_a("deathScreen.titleScreen")));
 
-            if (mc.session == null)
+            if (mc.func_110432_I() == null)
             {
                 ((GuiButton)buttonList.get(1)).enabled = false;
             }
@@ -134,16 +133,16 @@ public class GuiGameOver extends GuiScreen
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
         boolean flag = mc.theWorld.getWorldInfo().isHardcoreModeEnabled();
-        String s = flag ? StatCollector.translateToLocal("deathScreen.title.hardcore") : StatCollector.translateToLocal("deathScreen.title");
+        String s = flag ? I18n.func_135053_a("deathScreen.title.hardcore") : I18n.func_135053_a("deathScreen.title");
         drawCenteredString(fontRenderer, s, width / 2 / 2, 30, 0xffffff);
         GL11.glPopMatrix();
 
         if (flag)
         {
-            drawCenteredString(fontRenderer, StatCollector.translateToLocal("deathScreen.hardcoreInfo"), width / 2, 144, 0xffffff);
+            drawCenteredString(fontRenderer, I18n.func_135053_a("deathScreen.hardcoreInfo"), width / 2, 144, 0xffffff);
         }
 
-        drawCenteredString(fontRenderer, (new StringBuilder()).append(StatCollector.translateToLocal("deathScreen.score")).append(": ").append(oldScore ? ": &e" : EnumChatFormatting.YELLOW).append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
+        drawCenteredString(fontRenderer, (new StringBuilder()).append(I18n.func_135053_a("deathScreen.score")).append(": ").append(oldScore ? ": &e" : EnumChatFormatting.YELLOW).append(mc.thePlayer.getScore()).toString(), width / 2, 100, 0xffffff);
         super.drawScreen(par1, par2, par3);
     }
 

@@ -31,9 +31,6 @@ public abstract class MobSpawnerBaseLogic
     {
         spawnDelay = 20;
         mobID = "Pig";
-        minecartToSpawn = null;
-        randomMinecart = null;
-        field_98284_d = 0.0D;
         minSpawnDelay = 200;
         maxSpawnDelay = 800;
         spawnCount = 4;
@@ -77,7 +74,7 @@ public abstract class MobSpawnerBaseLogic
 
     public void updateSpawner()
     {
-        if (net.minecraft.client.Minecraft.getMinecraft().enableSP){
+        if (Minecraft.getMinecraft().enableSP){
             field_98284_d = field_98287_c;
         }
         if (!canRun())
@@ -85,7 +82,7 @@ public abstract class MobSpawnerBaseLogic
             return;
         }
 
-        if (!net.minecraft.client.Minecraft.getMinecraft().enableSP)
+        if (!Minecraft.getMinecraft().enableSP)
         {
             double d = (float)getSpawnerX() + getSpawnerWorld().rand.nextFloat();
             double d1 = (float)getSpawnerY() + getSpawnerWorld().rand.nextFloat();
@@ -155,7 +152,7 @@ public abstract class MobSpawnerBaseLogic
                     continue;
                 }
 
-                entity = func_98265_a(entity);
+                func_98265_a(entity);
                 getSpawnerWorld().playAuxSFX(2004, getSpawnerX(), getSpawnerY(), getSpawnerZ(), 0);
 
                 if (entityliving != null)
@@ -199,7 +196,7 @@ public abstract class MobSpawnerBaseLogic
             for (; nbttagcompound.hasKey("Riding"); nbttagcompound = nbttagcompound1)
             {
                 nbttagcompound1 = nbttagcompound.getCompoundTag("Riding");
-                Entity entity1 = EntityList.createEntityByName(nbttagcompound1.getString("id"), getSpawnerWorld());
+                Entity entity1 = EntityList.createEntityByName(nbttagcompound1.getString("id"), par1Entity.worldObj);
 
                 if (entity1 != null)
                 {
@@ -214,16 +211,21 @@ public abstract class MobSpawnerBaseLogic
 
                     entity1.readFromNBT(nbttagcompound2);
                     entity1.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
-                    getSpawnerWorld().spawnEntityInWorld(entity1);
+
+                    if (par1Entity.worldObj != null)
+                    {
+                        par1Entity.worldObj.spawnEntityInWorld(entity1);
+                    }
+
                     entity.mountEntity(entity1);
                 }
 
                 entity = entity1;
             }
         }
-        else if ((par1Entity instanceof EntityLiving) && par1Entity.worldObj != null)
+        else if ((par1Entity instanceof EntityLivingBase) && par1Entity.worldObj != null)
         {
-            ((EntityLiving)par1Entity).initCreature();
+            ((EntityLiving)par1Entity).func_110161_a(null);
             getSpawnerWorld().spawnEntityInWorld(par1Entity);
         }
 

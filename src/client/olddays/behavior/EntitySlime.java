@@ -6,10 +6,6 @@ public class EntitySlime extends EntityLiving implements IMob
 {
     public static int slimeSpawn = 5;
 
-    private static final float spawnChances[] =
-    {
-        1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F
-    };
     public float field_70813_a;
     public float field_70811_b;
     public float field_70812_c;
@@ -20,8 +16,6 @@ public class EntitySlime extends EntityLiving implements IMob
     public EntitySlime(World par1World)
     {
         super(par1World);
-        slimeJumpDelay = 0;
-        texture = "/mob/slime.png";
         int i = 1 << rand.nextInt(3);
         yOffset = 0.0F;
         slimeJumpDelay = rand.nextInt(20) + 10;
@@ -39,14 +33,9 @@ public class EntitySlime extends EntityLiving implements IMob
         dataWatcher.updateObject(16, new Byte((byte)par1));
         setSize(0.6F * (float)par1, 0.6F * (float)par1);
         setPosition(posX, posY, posZ);
-        setEntityHealth(getMaxHealth());
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(par1 * par1);
+        setEntityHealth(func_110138_aP());
         experienceValue = par1;
-    }
-
-    public int getMaxHealth()
-    {
-        int i = getSlimeSize();
-        return i * i;
     }
 
     /**
@@ -205,7 +194,7 @@ public class EntitySlime extends EntityLiving implements IMob
     {
         int i = getSlimeSize();
 
-        if (!worldObj.isRemote && i > 1 && getHealth() <= 0)
+        if (!worldObj.isRemote && i > 1 && func_110143_aJ() <= 0.0F)
         {
             int j = 2 + rand.nextInt(3);
 
@@ -300,29 +289,16 @@ public class EntitySlime extends EntityLiving implements IMob
 
         Chunk chunk = worldObj.getChunkFromBlockCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-        if (slimeSpawn==2){
-            return (getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 16D;
-        }
-
-        if (slimeSpawn > 3 && worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
+        if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && rand.nextInt(4) != 1)
         {
             return false;
         }
 
-        if (slimeSpawn==3 || slimeSpawn==4)
-        {
-            if ((getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 40D)
-            {
-                return super.getCanSpawnHere();
-            }
-            return false;
-        }
-
-        if (slimeSpawn > 4 && (getSlimeSize() == 1 || worldObj.difficultySetting > 0))
+        if (getSlimeSize() == 1 || worldObj.difficultySetting > 0)
         {
             BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && (slimeSpawn > 5 || (rand.nextFloat() < 0.5F && rand.nextFloat() < spawnChances[worldObj.getMoonPhase()])) && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
+            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && rand.nextFloat() < 0.5F && rand.nextFloat() < worldObj.func_130001_d() && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
             {
                 return super.getCanSpawnHere();
             }

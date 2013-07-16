@@ -16,10 +16,10 @@ public class BlockLog2 extends BlockLog
      * Called when the block is placed in the world.
      */
     @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack stack)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase e, ItemStack stack)
     {
         if (rotate){
-            super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLiving, stack);
+            super.onBlockPlacedBy(par1World, par2, par3, par4, e, stack);
             return;
         }
         int i = par1World.getBlockMetadata(par2, par3, par4) & 3;

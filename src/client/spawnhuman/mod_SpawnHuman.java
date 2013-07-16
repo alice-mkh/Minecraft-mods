@@ -3,13 +3,12 @@ package net.minecraft.src;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.ssp.Mod;
 
 public class mod_SpawnHuman extends Mod{
     @Override
     public String getMcVersion(){
-        return "1.5.2";
+        return "1.6.2";
     }
 
     @Override
@@ -39,7 +38,7 @@ public class mod_SpawnHuman extends Mod{
         /*ModLoader.registerEntityID(EntityHuman.class, "human", ModLoader.getUniqueEntityId());*/
         Properties properties = new Properties();
         try{
-            File dir = new File(Minecraft.getMinecraftDir() + "/config/");
+            File dir = new File(Minecraft.getMinecraft().mcDataDir + "/config/");
             dir.mkdirs();
             File file = new File(dir, "SpawnHuman.properties");
             if(file.createNewFile()){
@@ -52,7 +51,7 @@ public class mod_SpawnHuman extends Mod{
                 properties.store(fileoutputstream,"Spawn human config");
                 fileoutputstream.close();
             }
-            properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraftDir()).append("/config/SpawnHuman.properties").toString()));
+            properties.load(new FileInputStream((new StringBuilder()).append(Minecraft.getMinecraft().mcDataDir).append("/config/SpawnHuman.properties").toString()));
             Health = Integer.parseInt(properties.getProperty("Health"));
             AllowInSurvival = Boolean.parseBoolean(properties.getProperty("AllowInSurvival"));
             SpawnEffect = Boolean.parseBoolean(properties.getProperty("SpawnEffect"));
@@ -73,7 +72,7 @@ public class mod_SpawnHuman extends Mod{
         newb[s.keyBindings.length] = key;
         s.keyBindings = newb;
         try{
-            File optionsFile = new File(Minecraft.getMinecraftDir(), "options.txt");
+            File optionsFile = new File(Minecraft.getMinecraft().mcDataDir, "options.txt");
             if (!optionsFile.exists()){
                 return;
             }

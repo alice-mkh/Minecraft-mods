@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.server.MinecraftServer;
+
 public class WorldInfo
 {
     public static boolean useNBXlite = false;
@@ -415,7 +417,7 @@ public class WorldInfo
         par1NBTTagCompound.setLong("Time", totalTime);
         par1NBTTagCompound.setLong("DayTime", worldTime);
         par1NBTTagCompound.setLong("SizeOnDisk", sizeOnDisk);
-        par1NBTTagCompound.setLong("LastPlayed", System.currentTimeMillis());
+        par1NBTTagCompound.setLong("LastPlayed", MinecraftServer.func_130071_aq());
         par1NBTTagCompound.setString("LevelName", levelName);
         par1NBTTagCompound.setInteger("version", saveVersion);
         par1NBTTagCompound.setInteger("rainTime", rainTime);
@@ -522,7 +524,11 @@ public class WorldInfo
         return playerTag;
     }
 
-    public int getDimension()
+    /**
+     * Returns vanilla MC dimension (-1,0,1). For custom dimension compatibility, always prefer
+     * WorldProvider.dimensionID accessed from World.provider.dimensionID
+     */
+    public int getVanillaDimension()
     {
         return dimension;
     }

@@ -3,9 +3,9 @@ package net.minecraft.src.ssp;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandHelp;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 
 public class CommandClientHelp extends CommandHelp
 {

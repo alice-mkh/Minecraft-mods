@@ -451,7 +451,11 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
             int i3 = k + rand.nextInt(16) + 8;
             int i4 = rand.nextInt(128);
             int k4 = l + rand.nextInt(16) + 8;
-            if (!(new OldWorldGenDungeons()).generate(worldObj, rand, i3, i4, k4));
+            if (ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_15){
+                (new OldWorldGenDungeons()).generate(worldObj, rand, i3, i4, k4);
+            }else{
+                (new WorldGenDungeons()).generate(worldObj, rand, i3, i4, k4);
+            }
         }
         biomegenbase.decorate(worldObj, rand, k, l);
         spawnAnimals(k, l);

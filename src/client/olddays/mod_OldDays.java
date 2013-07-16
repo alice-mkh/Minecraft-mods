@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -13,7 +14,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.ssp.Mod;
 import net.minecraft.src.ssp.Packet300Custom;
 
@@ -36,7 +36,7 @@ public class mod_OldDays extends Mod{
 
     @Override
     public String getMcVersion(){
-        return "1.5.2";
+        return "1.6.2";
     }
 
     @Override
@@ -392,7 +392,7 @@ public class mod_OldDays extends Mod{
         s.keyBindings = newb;
         keyBindings.add(key);
         try{
-            File optionsFile = new File(Minecraft.getMinecraftDir(), "options.txt");
+            File optionsFile = new File(getMinecraft().mcDataDir, "options.txt");
             if (!optionsFile.exists()){
                 return;
             }
@@ -434,15 +434,16 @@ public class mod_OldDays extends Mod{
 
     public boolean unpackSound(String dir, String name){
         try{
-            File file = new File(Minecraft.getMinecraftDir(),"resources/"+dir+"/"+name);
+            File file = new File(getMinecraft().mcDataDir,"assets/"+dir+"/"+name);
             if (file.exists()){
                 return true;
             }
-            DataInputStream stream = new DataInputStream(getClass().getResource("/olddays/sounds/"+name).openStream());
+            InputStream str = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("olddays/sounds/"+name)).func_110527_b();
+            DataInputStream stream = new DataInputStream(str);
             byte[] bytes = new byte[stream.available()];
             stream.readFully(bytes);
             stream.close();
-            (new File(Minecraft.getMinecraftDir(),"resources/"+dir)).mkdirs();
+            (new File(getMinecraft().mcDataDir,"assets/"+dir)).mkdirs();
             FileOutputStream stream2 = new FileOutputStream(file);
             stream2.write(bytes);
             stream2.close();

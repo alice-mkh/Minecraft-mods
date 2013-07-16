@@ -156,6 +156,7 @@ public class OldSpawnerAnimals
                             exception.printStackTrace();
                             return k;
                         }
+                        EntityLivingData entitylivingdata = null;
                         if ((entityliving instanceof EntityWolf || entityliving instanceof EntityOcelot || entityliving instanceof EntityEnderman) && world.rand.nextInt(10) != 0){
                             continue;
                         }
@@ -173,7 +174,7 @@ public class OldSpawnerAnimals
                         }
                         k++;
                         world.spawnEntityInWorld(entityliving);
-                        entityliving.initCreature();
+                        entitylivingdata = entityliving.func_110161_a(entitylivingdata);
                     }
 
                     l2++;
@@ -272,6 +273,7 @@ public class OldSpawnerAnimals
                             exception.printStackTrace();
                             return k;
                         }
+                        EntityLivingData entitylivingdata = null;
                         entityliving.setLocationAndAngles(f, f1, f2, world.rand.nextFloat() * 360F, 0.0F);
                         if(!entityliving.getCanSpawnHere())
                         {
@@ -282,6 +284,7 @@ public class OldSpawnerAnimals
                         }
                         k++;
                         world.spawnEntityInWorld(entityliving);
+                        entitylivingdata = entityliving.func_110161_a(entitylivingdata);
                     }
 
                     l2++;

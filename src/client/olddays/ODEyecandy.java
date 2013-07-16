@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.*;
-import net.minecraft.client.Minecraft;
 
 public class ODEyecandy extends OldDaysModule{
     public ODEyecandy(mod_OldDays c){
@@ -43,7 +42,7 @@ public class ODEyecandy extends OldDaysModule{
     public void callback (int i){
         switch (i){
             case 1: set(ModelBiped.class, "oldwalking", OldWalking); break;
-            case 2: set(RenderLiving.class, "bobbing", Bobbing); break;
+            case 2: set(RendererLivingEntity.class, "bobbing", Bobbing); break;
             case 3: set(EntityEnderman.class, "smoke", OldEndermen);
                     set(RenderEnderman2.class, "greeneyes", OldEndermen && hasTextures("olddays/enderman_eyes.png")); break;
             case 4: set(ItemRenderer.class, "sway", ItemSway); break;
@@ -54,7 +53,7 @@ public class ODEyecandy extends OldDaysModule{
                         Block.blocksList[Block.chest.blockID].setBlockBoundsBasedOnState(null, 0, 0, 0);
                         Block.blocksList[Block.chestTrapped.blockID].setBlockBoundsBasedOnState(null, 0, 0, 0);
                     }reload(); break;
-            case 7: set(RenderLiving.class, "labels", MobLabels); break;
+            case 7: set(RendererLivingEntity.class, "labels", MobLabels); break;
             case 8: set(RenderZombie2.class, "mobArmor", MobArmor);
                     set(RenderSkeleton2.class, "mobArmor", MobArmor);
                     set(RenderZombie2.class, "fallback", !hasTextures("olddays/plate.png"));
@@ -69,7 +68,7 @@ public class ODEyecandy extends OldDaysModule{
                     set(GuiContainer.class, "tooltips", Tooltips>0); break;
             case 13:set(BlockFence2.class, "connect", !OldFences);
                     reload(); break;
-            case 14:set(RenderLiving.class, "stick", Arrows); break;
+            case 14:set(RendererLivingEntity.class, "stick", Arrows); break;
             case 15:set(GuiIngame.class, "version", Version);
                     set(GuiMainMenu.class, "version", Version);
                     GuiOldDaysBase.version = Version; break;
@@ -83,11 +82,11 @@ public class ODEyecandy extends OldDaysModule{
                     set(RenderItemFrame2.class, "oldrotation", InvBlocks < 3); break;
             case 17:set(EntityDropParticleFX.class, "allow", Drops); break;
             case 18:set(ItemRenderer.class, "hand", Hand); break;
-            case 19:set(EntityLiving.class, "toolbreakanim", ToolBreaking); break;
-            case 20:set(RenderLiving.class, "oldlabels", Labels); break;
+            case 19:set(EntityLivingBase.class, "toolbreakanim", ToolBreaking); break;
+            case 20:set(RendererLivingEntity.class, "oldlabels", Labels); break;
             case 21:set(LoadingScreenRenderer.class, "smooth", SmoothLoading); break;
             case 22:set(GuiInventory.class, "oldcreative", OldCreativeInv); break;
-            case 23:set(EntityLiving.class, "oldswing", OldSwing);
+            case 23:set(EntityLivingBase.class, "oldswing", OldSwing);
                     set(Minecraft.class, "oldswing", OldSwing); break;
             case 24:set(Minecraft.class, "thirdperson", ThirdPerson >= 1);
                     set(EntityRenderer.class, "thirdPersonShoulder", ThirdPerson == 2);
@@ -95,7 +94,7 @@ public class ODEyecandy extends OldDaysModule{
                     set(EntityRenderer.class, "oldFaceView", ThirdPerson == 3);
                     set(EntityRenderer.class, "thirdPersonBobbing", ThirdPerson >= 4);
                     set(Minecraft.class, "oldthirdperson", ThirdPerson <= 4);
-                    set(RenderLiving.class, "oldHeadRotation", ThirdPerson <= 5);
+                    set(RendererLivingEntity.class, "oldHeadRotation", ThirdPerson <= 5);
                     if (ThirdPerson == 0 && Minecraft.getMinecraft().gameSettings.thirdPersonView > 0){
                         Minecraft.getMinecraft().gameSettings.thirdPersonView = 0;
                     }break;
@@ -148,35 +147,36 @@ public class ODEyecandy extends OldDaysModule{
     private void replaceBlocks(){
         try{
             Block.blocksList[Block.chest.blockID] = null;
-            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(54, 0));
+            BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(Block.chest.blockID, 0));
             customchest.setHardness(2.5F);
             customchest.setStepSound(Block.soundWoodFootstep);
             customchest.setUnlocalizedName("chest");
             Block.blocksList[Block.chest.blockID] = customchest;
-            mod_OldDays.setField(Block.class, null, 72, customchest);//Block: chest
+            mod_OldDays.setField(Block.class, null, 73, customchest);//Block: chest
             Block.blocksList[Block.chestTrapped.blockID] = null;
-            BlockChestOld customchest2 = (BlockChestOld)(new BlockChestOld(146, 1));
+            BlockChestOld customchest2 = (BlockChestOld)(new BlockChestOld(Block.chestTrapped.blockID, 1));
             customchest2.setHardness(2.5F);
             customchest2.setStepSound(Block.soundWoodFootstep);
             customchest2.setUnlocalizedName("chestTrap");
             Block.blocksList[Block.chestTrapped.blockID] = customchest2;
-            mod_OldDays.setField(Block.class, null, 164, customchest2);//Block: chestTrapped
+            mod_OldDays.setField(Block.class, null, 165, customchest2);//Block: chestTrapped
             Block.blocksList[Block.redstoneWire.blockID] = null;
             BlockRedstoneWireOld customwire = (BlockRedstoneWireOld)(new BlockRedstoneWireOld(Block.redstoneWire.blockID));
-            customwire.setHardness(0F);
+            customwire.setHardness(0.0F);
             customwire.setStepSound(Block.soundPowderFootstep);
             customwire.setUnlocalizedName("redstoneDust");
             customwire.disableStats();
+            customwire.func_111022_d("redstone_dust");
             Block.blocksList[Block.redstoneWire.blockID] = customwire;
-            mod_OldDays.setField(Block.class, null, 73, customwire);//Block: redstoneWire
+            mod_OldDays.setField(Block.class, null, 74, customwire);//Block: redstoneWire
             Block.blocksList[Block.fence.blockID] = null;
-            BlockFence2 customfence = (BlockFence2)(new BlockFence2(85, "wood", Material.wood));
+            BlockFence2 customfence = (BlockFence2)(new BlockFence2(Block.fence.blockID, "planks_oak", Material.wood));
             customfence.setHardness(2.0F);
             customfence.setResistance(5F);
             customfence.setStepSound(Block.soundWoodFootstep);
             customfence.setUnlocalizedName("fence");
             Block.blocksList[Block.fence.blockID] = customfence;
-            mod_OldDays.setField(Block.class, null, 103, customfence);//Block: fence
+            mod_OldDays.setField(Block.class, null, 104, customfence);//Block: fence
         }catch (Exception ex){
             System.out.println(ex);
         }

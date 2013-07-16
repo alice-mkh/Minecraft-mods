@@ -89,7 +89,6 @@ public abstract class EntityMinecart extends Entity
     public EntityMinecart(World par1World)
     {
         super(par1World);
-        isInReverse = false;
         preventEntitySpawning = true;
         setSize(0.98F, 0.7F);
         yOffset = height / 2.0F;
@@ -134,7 +133,7 @@ public abstract class EntityMinecart extends Entity
     {
         dataWatcher.addObject(17, new Integer(0));
         dataWatcher.addObject(18, new Integer(1));
-        dataWatcher.addObject(19, new Integer(0));
+        dataWatcher.addObject(19, new Float(0.0F));
         dataWatcher.addObject(20, new Integer(0));
         dataWatcher.addObject(21, new Integer(6));
         dataWatcher.addObject(22, Byte.valueOf((byte)0));
@@ -175,7 +174,7 @@ public abstract class EntityMinecart extends Entity
     public EntityMinecart(World par1World, double par2, double par4, double par6)
     {
         this(par1World);
-        setPosition(par2, par4 + (double)yOffset, par6);
+        setPosition(par2, par4, par6);
         motionX = 0.0D;
         motionY = 0.0D;
         motionZ = 0.0D;
@@ -195,7 +194,7 @@ public abstract class EntityMinecart extends Entity
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (worldObj.isRemote || isDead)
         {
@@ -210,10 +209,10 @@ public abstract class EntityMinecart extends Entity
         setRollingDirection(-getRollingDirection());
         setRollingAmplitude(10);
         setBeenAttacked();
-        setDamage(getDamage() + par2 * 10);
+        setDamage(getDamage() + par2 * 10F);
         boolean flag = (par1DamageSource.getEntity() instanceof EntityPlayer) && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
 
-        if (flag || getDamage() > 40)
+        if (flag || getDamage() > 40F)
         {
             if (riddenByEntity != null)
             {
@@ -253,7 +252,7 @@ public abstract class EntityMinecart extends Entity
     {
         setRollingDirection(-getRollingDirection());
         setRollingAmplitude(10);
-        setDamage(getDamage() + getDamage() * 10);
+        setDamage(getDamage() + getDamage() * 10F);
     }
 
     /**
@@ -292,9 +291,9 @@ public abstract class EntityMinecart extends Entity
             setRollingAmplitude(getRollingAmplitude() - 1);
         }
 
-        if (getDamage() > 0)
+        if (getDamage() > 0.0F)
         {
-            setDamage(getDamage() - 1);
+            setDamage(getDamage() - 1.0F);
         }
 
         if (posY < -64D)
@@ -571,16 +570,22 @@ public abstract class EntityMinecart extends Entity
         motionX = (d4 * d) / d2;
         motionZ = (d4 * d1) / d2;
 
-        if (riddenByEntity != null)
+        if (riddenByEntity != null && (riddenByEntity instanceof EntityLivingBase))
         {
-            double d7 = riddenByEntity.motionX * riddenByEntity.motionX + riddenByEntity.motionZ * riddenByEntity.motionZ;
-            double d10 = motionX * motionX + motionZ * motionZ;
+            double d7 = ((EntityLivingBase)riddenByEntity).moveForward;
 
-            if (d7 > 0.0001D && d10 < 0.01D)
+            if (d7 > 0.0D)
             {
-                motionX += riddenByEntity.motionX * 0.10000000000000001D;
-                motionZ += riddenByEntity.motionZ * 0.10000000000000001D;
-                flag1 = false;
+                double d10 = -Math.sin((riddenByEntity.rotationYaw * (float)Math.PI) / 180F);
+                double d12 = Math.cos((riddenByEntity.rotationYaw * (float)Math.PI) / 180F);
+                double d14 = motionX * motionX + motionZ * motionZ;
+
+                if (d14 < 0.01D)
+                {
+                    motionX += d10 * 0.10000000000000001D;
+                    motionZ += d12 * 0.10000000000000001D;
+                    flag1 = false;
+                }
             }
         }
 
@@ -604,11 +609,11 @@ public abstract class EntityMinecart extends Entity
 
         double d9 = 0.0D;
         double d11 = (double)par1 + 0.5D + (double)ai[0][0] * 0.5D;
-        double d12 = (double)par3 + 0.5D + (double)ai[0][2] * 0.5D;
-        double d13 = (double)par1 + 0.5D + (double)ai[1][0] * 0.5D;
-        double d14 = (double)par3 + 0.5D + (double)ai[1][2] * 0.5D;
-        d = d13 - d11;
-        d1 = d14 - d12;
+        double d13 = (double)par3 + 0.5D + (double)ai[0][2] * 0.5D;
+        double d15 = (double)par1 + 0.5D + (double)ai[1][0] * 0.5D;
+        double d16 = (double)par3 + 0.5D + (double)ai[1][2] * 0.5D;
+        d = d15 - d11;
+        d1 = d16 - d13;
 
         if (d == 0.0D)
         {
@@ -622,31 +627,21 @@ public abstract class EntityMinecart extends Entity
         }
         else
         {
-            double d15 = posX - d11;
-            double d17 = posZ - d12;
-            d9 = (d15 * d + d17 * d1) * 2D;
+            double d17 = posX - d11;
+            double d19 = posZ - d13;
+            d9 = (d17 * d + d19 * d1) * 2D;
         }
 
         posX = d11 + d * d9;
-        posZ = d12 + d1 * d9;
+        posZ = d13 + d1 * d9;
         setPosition(posX, posY + (double)yOffset, posZ);
-        double d16 = motionX;
-        double d18 = motionZ;
+        double d18 = motionX;
+        double d20 = motionZ;
 
         if (riddenByEntity != null)
         {
-            d16 *= 0.75D;
             d18 *= 0.75D;
-        }
-
-        if (d16 < -par4)
-        {
-            d16 = -par4;
-        }
-
-        if (d16 > par4)
-        {
-            d16 = par4;
+            d20 *= 0.75D;
         }
 
         if (d18 < -par4)
@@ -659,7 +654,17 @@ public abstract class EntityMinecart extends Entity
             d18 = par4;
         }
 
-        moveEntity(d16, 0.0D, d18);
+        if (d20 < -par4)
+        {
+            d20 = -par4;
+        }
+
+        if (d20 > par4)
+        {
+            d20 = par4;
+        }
+
+        moveEntity(d18, 0.0D, d20);
 
         if (ai[0][1] != 0 && MathHelper.floor_double(posX) - par1 == ai[0][0] && MathHelper.floor_double(posZ) - par3 == ai[0][2])
         {
@@ -675,13 +680,13 @@ public abstract class EntityMinecart extends Entity
 
         if (vec3_1 != null && vec3 != null)
         {
-            double d19 = (vec3.yCoord - vec3_1.yCoord) * 0.050000000000000003D;
+            double d21 = (vec3.yCoord - vec3_1.yCoord) * 0.050000000000000003D;
             double d5 = Math.sqrt(motionX * motionX + motionZ * motionZ);
 
             if (d5 > 0.0D)
             {
-                motionX = (motionX / d5) * (d5 + d19);
-                motionZ = (motionZ / d5) * (d5 + d19);
+                motionX = (motionX / d5) * (d5 + d21);
+                motionZ = (motionZ / d5) * (d5 + d21);
             }
 
             setPosition(posX, vec3_1.yCoord, posZ);
@@ -699,18 +704,16 @@ public abstract class EntityMinecart extends Entity
 
         if (flag)
         {
-            double d20 = Math.sqrt(motionX * motionX + motionZ * motionZ);
+            double d22 = Math.sqrt(motionX * motionX + motionZ * motionZ);
 
-            if (d20 > 0.01D)
+            if (d22 > 0.01D)
             {
-                double d21;
+                double d23 = 0.059999999999999998D;
                 if (boosters){
-                    d21 = 0.04D;
-                }else{
-                    d21 = 0.059999999999999998D;
+                    d23 = 0.04D;
                 }
-                motionX += (motionX / d20) * d21;
-                motionZ += (motionZ / d20) * d21;
+                motionX += (motionX / d22) * d23;
+                motionZ += (motionZ / d22) * d23;
             }
             else if (par9 == 1)
             {
@@ -944,7 +947,7 @@ public abstract class EntityMinecart extends Entity
             return;
         }
 
-        if ((par1Entity instanceof EntityLiving) && !(par1Entity instanceof EntityPlayer) && !(par1Entity instanceof EntityIronGolem) && getMinecartType() == 0 && motionX * motionX + motionZ * motionZ > 0.01D && riddenByEntity == null && par1Entity.ridingEntity == null)
+        if ((par1Entity instanceof EntityLivingBase) && !(par1Entity instanceof EntityPlayer) && !(par1Entity instanceof EntityIronGolem) && getMinecartType() == 0 && motionX * motionX + motionZ * motionZ > 0.01D && riddenByEntity == null && par1Entity.ridingEntity == null)
         {
             par1Entity.mountEntity(this);
         }
@@ -1058,18 +1061,18 @@ public abstract class EntityMinecart extends Entity
      * Sets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
      * 40.
      */
-    public void setDamage(int par1)
+    public void setDamage(float par1)
     {
-        dataWatcher.updateObject(19, Integer.valueOf(par1));
+        dataWatcher.updateObject(19, Float.valueOf(par1));
     }
 
     /**
      * Gets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
      * 40.
      */
-    public int getDamage()
+    public float getDamage()
     {
-        return dataWatcher.getWatchableObjectInt(19);
+        return dataWatcher.func_111145_d(19);
     }
 
     /**
@@ -1188,7 +1191,10 @@ public abstract class EntityMinecart extends Entity
         getDataWatcher().updateObject(22, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
-    public void func_96094_a(String par1Str)
+    /**
+     * Sets the minecart's name.
+     */
+    public void setMinecartName(String par1Str)
     {
         entityName = par1Str;
     }

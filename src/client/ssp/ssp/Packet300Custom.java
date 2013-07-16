@@ -1,7 +1,7 @@
 package net.minecraft.src.ssp;
 
 import java.io.*;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.NetServerHandler;
 import net.minecraft.src.Packet;
@@ -33,7 +33,7 @@ public class Packet300Custom extends Packet{
     public Packet300Custom(){}
 
     @Override
-    public void readPacketData(DataInputStream par1DataInputStream) throws IOException{
+    public void readPacketData(DataInput par1DataInputStream) throws IOException{
         modName = readString(par1DataInputStream, 999);
         modVersion = readString(par1DataInputStream, 999);
         mcVersion = readString(par1DataInputStream, 999);
@@ -46,7 +46,7 @@ public class Packet300Custom extends Packet{
     }
 
     @Override
-    public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException{
+    public void writePacketData(DataOutput par1DataOutputStream) throws IOException{
         writeString(modName, par1DataOutputStream);
         writeString(modVersion, par1DataOutputStream);
         writeString(mcVersion, par1DataOutputStream);

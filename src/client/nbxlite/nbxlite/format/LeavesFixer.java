@@ -3,14 +3,13 @@ package net.minecraft.src.nbxlite.format;
 import java.io.*;
 import java.util.*;
 import net.minecraft.src.*;
-import net.minecraft.client.Minecraft;
 
 public class LeavesFixer{
     public static void fixAllLeaves(String par1Str, IProgressUpdate par2IProgressUpdate){
         par2IProgressUpdate.setLoadingProgress(0);
         ArrayList overworldFiles = new ArrayList();
         ArrayList netherFiles = new ArrayList();
-        File overworldDir = new File(new File(Minecraft.getMinecraft().getMinecraftDir(), "saves"), par1Str);
+        File overworldDir = new File(new File(Minecraft.getMinecraft().mcDataDir, "saves"), par1Str);
         File netherDir = new File(overworldDir, "DIM-1");
         addRegionFilesToCollection(overworldDir, overworldFiles);
         if (netherDir.exists()){

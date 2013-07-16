@@ -85,7 +85,7 @@ public class BlockPistonBase extends Block
             return Block.pistonBase.blockIcon;
         }
 
-        if (par0Str == "piston_top")
+        if (par0Str == "piston_top_normal")
         {
             return Block.pistonBase.topIcon;
         }
@@ -95,7 +95,7 @@ public class BlockPistonBase extends Block
             return Block.pistonStickyBase.topIcon;
         }
 
-        if (par0Str == "piston_inner_top")
+        if (par0Str == "piston_inner")
         {
             return Block.pistonBase.innerTopIcon;
         }
@@ -112,8 +112,8 @@ public class BlockPistonBase extends Block
     public void registerIcons(IconRegister par1IconRegister)
     {
         blockIcon = par1IconRegister.registerIcon("piston_side");
-        topIcon = par1IconRegister.registerIcon(isSticky ? "piston_top_sticky" : "piston_top");
-        innerTopIcon = par1IconRegister.registerIcon("piston_inner_top");
+        topIcon = par1IconRegister.registerIcon(isSticky ? "piston_top_sticky" : "piston_top_normal");
+        innerTopIcon = par1IconRegister.registerIcon("piston_inner");
         bottomIcon = par1IconRegister.registerIcon("piston_bottom");
     }
 
@@ -145,9 +145,9 @@ public class BlockPistonBase extends Block
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
-        int i = determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
+        int i = determineOrientation(par1World, par2, par3, par4, par5EntityLivingBase);
         par1World.setBlockMetadataWithNotify(par2, par3, par4, i, 2);
 
         if (!par1World.isRemote)
@@ -503,6 +503,8 @@ public class BlockPistonBase extends Block
 
         if (isExtended(i))
         {
+            float f = 0.25F;
+
             switch (getOrientation(i))
             {
                 case 0:
@@ -586,11 +588,11 @@ public class BlockPistonBase extends Block
     /**
      * gets the way this piston should face for that entity that placed it.
      */
-    public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLiving par4EntityLiving)
+    public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLivingBase par4EntityLivingBase)
     {
-        if (MathHelper.abs((float)par4EntityLiving.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLiving.posZ - (float)par3) < 2.0F)
+        if (MathHelper.abs((float)par4EntityLivingBase.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLivingBase.posZ - (float)par3) < 2.0F)
         {
-            double d = (par4EntityLiving.posY + 1.8200000000000001D) - (double)par4EntityLiving.yOffset;
+            double d = (par4EntityLivingBase.posY + 1.8200000000000001D) - (double)par4EntityLivingBase.yOffset;
 
             if (d - (double)par2 > 2D)
             {
@@ -603,7 +605,7 @@ public class BlockPistonBase extends Block
             }
         }
 
-        int i = MathHelper.floor_double((double)((par4EntityLiving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+        int i = MathHelper.floor_double((double)((par4EntityLivingBase.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
         if (i == 0)
         {

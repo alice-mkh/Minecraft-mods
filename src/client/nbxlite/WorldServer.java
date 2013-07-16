@@ -10,10 +10,10 @@ public class WorldServer extends World
     private final MinecraftServer mcServer;
     private final EntityTracker theEntityTracker;
     private final PlayerManager thePlayerManager;
-    private Set field_73064_N;
+    private Set pendingTickListEntriesHashSet;
 
     /** All work to do in future ticks. */
-    private TreeSet pendingTickListEntries;
+    private TreeSet pendingTickListEntriesTreeSet;
     public ChunkProviderServer theChunkProviderServer;
 
     /** set by CommandServerSave{all,Off,On} */
@@ -23,6 +23,7 @@ public class WorldServer extends World
     private boolean allPlayersSleeping;
     private int updateEntityTick;
     private final Teleporter field_85177_Q = new Teleporter(this);
+    private final SpawnerAnimals field_135059_Q = new SpawnerAnimals();
     private ServerBlockEventList blockEventCache[] =
     {
         new ServerBlockEventList(null), new ServerBlockEventList(null)
@@ -34,7 +35,7 @@ public class WorldServer extends World
      */
     private int blockEventCacheIndex;
     private static final WeightedRandomChestContent bonusChestContent[];
-    private ArrayList field_94579_S;
+    private List pendingTickListEntriesThisTick;
 
     /** An IntHashMap of entity IDs (integers) to their Entity objects. */
     private IntHashMap entityIdMap;
@@ -47,9 +48,7 @@ public class WorldServer extends World
     public WorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler, ILogAgent par7ILogAgent)
     {
         super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler, par7ILogAgent);
-        updateEntityTick = 0;
-        blockEventCacheIndex = 0;
-        field_94579_S = new ArrayList();
+        pendingTickListEntriesThisTick = new ArrayList();
         mcServer = par1MinecraftServer;
         theEntityTracker = new EntityTracker(this);
         thePlayerManager = new PlayerManager(this, par1MinecraftServer.getConfigurationManager().getViewDistance());
@@ -59,14 +58,14 @@ public class WorldServer extends World
             entityIdMap = new IntHashMap();
         }
 
-        if (field_73064_N == null)
+        if (pendingTickListEntriesHashSet == null)
         {
-            field_73064_N = new HashSet();
+            pendingTickListEntriesHashSet = new HashSet();
         }
 
-        if (pendingTickListEntries == null)
+        if (pendingTickListEntriesTreeSet == null)
         {
-            pendingTickListEntries = new TreeSet();
+            pendingTickListEntriesTreeSet = new TreeSet();
         }
 
         worldScoreboard = new ServerScoreboard(par1MinecraftServer);
@@ -101,22 +100,13 @@ public class WorldServer extends World
 
         if (areAllPlayersAsleep())
         {
-            boolean flag = false;
-
-            if (spawnHostileMobs)
-            {
-                if (difficultySetting < 1)
-                {
-                    ;
-                }
-            }
-
-            if (!flag)
+            if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
             {
                 long l = worldInfo.getWorldTime() + 24000L;
                 worldInfo.setWorldTime(l - l % 24000L);
-                wakeAllPlayers();
             }
+
+            wakeAllPlayers();
         }
 
         theProfiler.startSection("mobSpawner");
@@ -125,7 +115,7 @@ public class WorldServer extends World
         {
             if (provider.dimensionId!=1){
                     if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                    SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.getWorldTotalTime() % 400L == 0L);
+                    field_135059_Q.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.getWorldTotalTime() % 400L == 0L);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
@@ -139,7 +129,7 @@ public class WorldServer extends World
                     }
                 }
             }else{
-                SpawnerAnimals.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, true);
+                field_135059_Q.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, true);
             }
         }
 
@@ -153,7 +143,12 @@ public class WorldServer extends World
         }
 
         worldInfo.incrementTotalWorldTime(worldInfo.getWorldTotalTime() + 1L);
-        worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
+
+        if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+        {
+            worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
+        }
+
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");
@@ -441,12 +436,12 @@ public class WorldServer extends World
     }
 
     /**
-     * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+     * Returns true if the given block will receive a scheduled tick in this tick. Args: X, Y, Z, blockID
      */
-    public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4)
+    public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int par4)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
-        return field_94579_S.contains(nextticklistentry);
+        return pendingTickListEntriesThisTick.contains(nextticklistentry);
     }
 
     /**
@@ -454,25 +449,27 @@ public class WorldServer extends World
      */
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5)
     {
-        func_82740_a(par1, par2, par3, par4, par5, 0);
+        scheduleBlockUpdateWithPriority(par1, par2, par3, par4, par5, 0);
     }
 
-    public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6)
+    public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
-        int i = 0;
+        byte byte0 = 0;
 
         if (scheduledUpdatesAreImmediate && par4 > 0)
         {
             if (Block.blocksList[par4].func_82506_l())
             {
-                if (checkChunksExist(nextticklistentry.xCoord - i, nextticklistentry.yCoord - i, nextticklistentry.zCoord - i, nextticklistentry.xCoord + i, nextticklistentry.yCoord + i, nextticklistentry.zCoord + i))
-                {
-                    int j = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
+                byte0 = 8;
 
-                    if (j == nextticklistentry.blockID && j > 0)
+                if (checkChunksExist(nextticklistentry.xCoord - byte0, nextticklistentry.yCoord - byte0, nextticklistentry.zCoord - byte0, nextticklistentry.xCoord + byte0, nextticklistentry.yCoord + byte0, nextticklistentry.zCoord + byte0))
+                {
+                    int i = getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
+
+                    if (i == nextticklistentry.blockID && i > 0)
                     {
-                        Block.blocksList[j].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
+                        Block.blocksList[i].updateTick(this, nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord, rand);
                     }
                 }
 
@@ -482,18 +479,18 @@ public class WorldServer extends World
             par5 = 1;
         }
 
-        if (checkChunksExist(par1 - i, par2 - i, par3 - i, par1 + i, par2 + i, par3 + i))
+        if (checkChunksExist(par1 - byte0, par2 - byte0, par3 - byte0, par1 + byte0, par2 + byte0, par3 + byte0))
         {
             if (par4 > 0)
             {
                 nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
-                nextticklistentry.func_82753_a(par6);
+                nextticklistentry.setPriority(par6);
             }
 
-            if (!field_73064_N.contains(nextticklistentry))
+            if (!pendingTickListEntriesHashSet.contains(nextticklistentry))
             {
-                field_73064_N.add(nextticklistentry);
-                pendingTickListEntries.add(nextticklistentry);
+                pendingTickListEntriesHashSet.add(nextticklistentry);
+                pendingTickListEntriesTreeSet.add(nextticklistentry);
             }
         }
     }
@@ -504,17 +501,17 @@ public class WorldServer extends World
     public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
-        nextticklistentry.func_82753_a(par6);
+        nextticklistentry.setPriority(par6);
 
         if (par4 > 0)
         {
             nextticklistentry.setScheduledTime((long)par5 + worldInfo.getWorldTotalTime());
         }
 
-        if (!field_73064_N.contains(nextticklistentry))
+        if (!pendingTickListEntriesHashSet.contains(nextticklistentry))
         {
-            field_73064_N.add(nextticklistentry);
-            pendingTickListEntries.add(nextticklistentry);
+            pendingTickListEntriesHashSet.add(nextticklistentry);
+            pendingTickListEntriesTreeSet.add(nextticklistentry);
         }
     }
 
@@ -551,9 +548,9 @@ public class WorldServer extends World
      */
     public boolean tickUpdates(boolean par1)
     {
-        int i = pendingTickListEntries.size();
+        int i = pendingTickListEntriesTreeSet.size();
 
-        if (i != field_73064_N.size())
+        if (i != pendingTickListEntriesHashSet.size())
         {
             throw new IllegalStateException("TickNextTick list out of synch");
         }
@@ -573,23 +570,23 @@ public class WorldServer extends World
                 break;
             }
 
-            NextTickListEntry nextticklistentry = (NextTickListEntry)pendingTickListEntries.first();
+            NextTickListEntry nextticklistentry = (NextTickListEntry)pendingTickListEntriesTreeSet.first();
 
             if (!par1 && nextticklistentry.scheduledTime > worldInfo.getWorldTotalTime())
             {
                 break;
             }
 
-            pendingTickListEntries.remove(nextticklistentry);
-            field_73064_N.remove(nextticklistentry);
-            field_94579_S.add(nextticklistentry);
+            pendingTickListEntriesTreeSet.remove(nextticklistentry);
+            pendingTickListEntriesHashSet.remove(nextticklistentry);
+            pendingTickListEntriesThisTick.add(nextticklistentry);
             j++;
         }
         while (true);
 
         theProfiler.endSection();
         theProfiler.startSection("ticking");
-        Iterator iterator = field_94579_S.iterator();
+        Iterator iterator = pendingTickListEntriesThisTick.iterator();
 
         do
         {
@@ -640,8 +637,8 @@ public class WorldServer extends World
         while (true);
 
         theProfiler.endSection();
-        field_94579_S.clear();
-        return !pendingTickListEntries.isEmpty();
+        pendingTickListEntriesThisTick.clear();
+        return !pendingTickListEntriesTreeSet.isEmpty();
     }
 
     public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2)
@@ -660,15 +657,15 @@ public class WorldServer extends World
 
             if (i1 == 0)
             {
-                iterator = pendingTickListEntries.iterator();
+                iterator = pendingTickListEntriesTreeSet.iterator();
             }
             else
             {
-                iterator = field_94579_S.iterator();
+                iterator = pendingTickListEntriesThisTick.iterator();
 
-                if (!field_94579_S.isEmpty())
+                if (!pendingTickListEntriesThisTick.isEmpty())
                 {
-                    System.out.println(field_94579_S.size());
+                    System.out.println(pendingTickListEntriesThisTick.size());
                 }
             }
 
@@ -685,7 +682,7 @@ public class WorldServer extends World
                 {
                     if (par2)
                     {
-                        field_73064_N.remove(nextticklistentry);
+                        pendingTickListEntriesHashSet.remove(nextticklistentry);
                         iterator.remove();
                     }
 
@@ -719,17 +716,6 @@ public class WorldServer extends World
             par1Entity.setDead();
         }
 
-        if (!(par1Entity.riddenByEntity instanceof EntityPlayer))
-        {
-            super.updateEntityWithOptionalForce(par1Entity, par2);
-        }
-    }
-
-    /**
-     * direct call to super.updateEntityWithOptionalForce
-     */
-    public void uncheckedUpdateEntity(Entity par1Entity, boolean par2)
-    {
         super.updateEntityWithOptionalForce(par1Entity, par2);
     }
 
@@ -778,14 +764,14 @@ public class WorldServer extends World
             entityIdMap = new IntHashMap();
         }
 
-        if (field_73064_N == null)
+        if (pendingTickListEntriesHashSet == null)
         {
-            field_73064_N = new HashSet();
+            pendingTickListEntriesHashSet = new HashSet();
         }
 
-        if (pendingTickListEntries == null)
+        if (pendingTickListEntriesTreeSet == null)
         {
-            pendingTickListEntries = new TreeSet();
+            pendingTickListEntriesTreeSet = new TreeSet();
         }
 
         createSpawnPosition(par1WorldSettings);
@@ -999,12 +985,9 @@ public class WorldServer extends World
         mapStorage.saveAllData();
     }
 
-    /**
-     * Start the skin for this entity downloading, if necessary, and increment its reference counter
-     */
-    protected void obtainEntitySkin(Entity par1Entity)
+    protected void onEntityAdded(Entity par1Entity)
     {
-        super.obtainEntitySkin(par1Entity);
+        super.onEntityAdded(par1Entity);
         entityIdMap.addKey(par1Entity.entityId, par1Entity);
         Entity aentity[] = par1Entity.getParts();
 
@@ -1017,12 +1000,9 @@ public class WorldServer extends World
         }
     }
 
-    /**
-     * Decrement the reference counter for this entity's skin image data
-     */
-    protected void releaseEntitySkin(Entity par1Entity)
+    protected void onEntityRemoved(Entity par1Entity)
     {
-        super.releaseEntitySkin(par1Entity);
+        super.onEntityRemoved(par1Entity);
         entityIdMap.removeObject(par1Entity.entityId);
         Entity aentity[] = par1Entity.getParts();
 

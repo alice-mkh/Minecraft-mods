@@ -11,10 +11,6 @@ public class BlockSapling extends BlockFlower
     {
         "oak", "spruce", "birch", "jungle"
     };
-    private static final String field_94370_b[] =
-    {
-        "sapling", "sapling_spruce", "sapling_birch", "sapling_jungle"
-    };
     private Icon saplingIcon[];
 
     protected BlockSapling(int par1)
@@ -202,11 +198,11 @@ public class BlockSapling extends BlockFlower
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        saplingIcon = new Icon[field_94370_b.length];
+        saplingIcon = new Icon[WOOD_TYPES.length];
 
         for (int i = 0; i < saplingIcon.length; i++)
         {
-            saplingIcon[i] = par1IconRegister.registerIcon(field_94370_b[i]);
+            saplingIcon[i] = par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_").append(WOOD_TYPES[i]).toString());
         }
     }
 }

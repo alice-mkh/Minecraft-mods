@@ -1,6 +1,5 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -10,6 +9,7 @@ import net.minecraft.src.EnumGameType;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.PlayerControllerMP;
 import net.minecraft.src.Session;
 import net.minecraft.src.Vec3;
@@ -175,13 +175,13 @@ public class PlayerController extends PlayerControllerMP
     {
         try{
             Object o = mc.playerClass.getDeclaredConstructor(new Class[]{Minecraft.class, World.class, Session.class, Integer.TYPE}).
-                       newInstance(new Object[]{mc, par1World, mc.session, par1World.provider.dimensionId});
+                       newInstance(new Object[]{mc, par1World, mc.func_110432_I(), par1World.provider.dimensionId});
             return (EntityPlayerSP2)o;
         }catch(Exception ex){
             ex.printStackTrace();
         }
         return null;
-//         return new EntityPlayerSP2(mc, par1World, mc.session, par1World.provider.dimensionId);
+//         return new EntityPlayerSP2(mc, par1World, mc.func_110432_I(), par1World.provider.dimensionId);
     }
 
     /**
@@ -286,4 +286,5 @@ public class PlayerController extends PlayerControllerMP
     public static void clickBlockCreative(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5)
     {
     }
+
 }

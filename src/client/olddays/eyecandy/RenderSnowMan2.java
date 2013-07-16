@@ -6,6 +6,8 @@ public class RenderSnowMan2 extends RenderLiving
 {
     public static boolean oldrotation = false;
 
+    private static final ResourceLocation field_110895_a = new ResourceLocation("textures/entity/snowman.png");
+
     /** A reference to the Snowman model in RenderSnowMan. */
     private ModelSnowMan snowmanModel;
 
@@ -16,7 +18,7 @@ public class RenderSnowMan2 extends RenderLiving
         setRenderPassModel(snowmanModel);
     }
 
-    protected void func_77093_a(EntitySnowman par1EntitySnowman, float par2)
+    protected void renderSnowmanPumpkin(EntitySnowman par1EntitySnowman, float par2)
     {
         super.renderEquippedItems(par1EntitySnowman, par2);
         ItemStack itemstack = new ItemStack(Block.pumpkin, 1);
@@ -39,9 +41,20 @@ public class RenderSnowMan2 extends RenderLiving
         }
     }
 
-    @Override
-    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    protected ResourceLocation func_110894_a(EntitySnowman par1EntitySnowman)
     {
-        func_77093_a((EntitySnowman)par1EntityLiving, par2);
+        return field_110895_a;
+    }
+
+    @Override
+    protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2)
+    {
+        renderSnowmanPumpkin((EntitySnowman)par1EntityLivingBase, par2);
+    }
+
+    @Override
+    protected ResourceLocation func_110775_a(Entity par1Entity)
+    {
+        return func_110894_a((EntitySnowman)par1Entity);
     }
 }

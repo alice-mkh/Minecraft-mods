@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
 
 public class GuiShareToLan extends GuiScreen
 {
@@ -24,7 +23,6 @@ public class GuiShareToLan extends GuiScreen
     public GuiShareToLan(GuiScreen par1GuiScreen)
     {
         gameMode = "survival";
-        allowCommands = false;
         parentScreen = par1GuiScreen;
         singleplayer = false;
     }
@@ -40,27 +38,25 @@ public class GuiShareToLan extends GuiScreen
     public void initGui()
     {
         buttonList.clear();
-        buttonList.add(new GuiButton(101, width / 2 - 155, height - 28, 150, 20, StatCollector.translateToLocal("lanServer.start")));
-        buttonList.add(new GuiButton(102, width / 2 + 5, height - 28, 150, 20, StatCollector.translateToLocal("gui.cancel")));
-        buttonList.add(buttonGameMode = new GuiButton(104, width / 2 - 155, 100, 150, 20, StatCollector.translateToLocal("selectWorld.gameMode")));
-        buttonList.add(buttonAllowCommandsToggle = new GuiButton(103, width / 2 + 5, 100, 150, 20, StatCollector.translateToLocal("selectWorld.allowCommands")));
+        buttonList.add(new GuiButton(101, width / 2 - 155, height - 28, 150, 20, I18n.func_135053_a("lanServer.start")));
+        buttonList.add(new GuiButton(102, width / 2 + 5, height - 28, 150, 20, I18n.func_135053_a("gui.cancel")));
+        buttonList.add(buttonGameMode = new GuiButton(104, width / 2 - 155, 100, 150, 20, I18n.func_135053_a("selectWorld.gameMode")));
+        buttonList.add(buttonAllowCommandsToggle = new GuiButton(103, width / 2 + 5, 100, 150, 20, I18n.func_135053_a("selectWorld.allowCommands")));
         func_74088_g();
     }
 
     private void func_74088_g()
     {
-        StringTranslate stringtranslate;
-        stringtranslate = StringTranslate.getInstance();
-        buttonGameMode.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.gameMode")).append(" ").append(stringtranslate.translateKey((new StringBuilder()).append("selectWorld.gameMode.").append(gameMode).toString())).toString();
-        buttonAllowCommandsToggle.displayString = (new StringBuilder()).append(stringtranslate.translateKey("selectWorld.allowCommands")).append(" ").toString();
+        buttonGameMode.displayString = (new StringBuilder()).append(I18n.func_135053_a("selectWorld.gameMode")).append(" ").append(I18n.func_135053_a((new StringBuilder()).append("selectWorld.gameMode.").append(gameMode).toString())).toString();
+        buttonAllowCommandsToggle.displayString = (new StringBuilder()).append(I18n.func_135053_a("selectWorld.allowCommands")).append(" ").toString();
 
         if (!(!allowCommands))
         {
-            buttonAllowCommandsToggle.displayString += stringtranslate.translateKey("options.on");
+            buttonAllowCommandsToggle.displayString += I18n.func_135053_a("options.on");
         }
         else
         {
-            buttonAllowCommandsToggle.displayString += stringtranslate.translateKey("options.off");
+            buttonAllowCommandsToggle.displayString += I18n.func_135053_a("options.off");
         }
     }
 
@@ -102,23 +98,21 @@ public class GuiShareToLan extends GuiScreen
                 mc.quitAndStartServer();
             }
             String s = mc.getIntegratedServer().shareToLAN(EnumGameType.getByName(gameMode), allowCommands);
-            String s1 = "";
+            ChatMessageComponent chatmessagecomponent;
 
-            if (!singleplayer){
-                if (s != null){
-                    s1 = mc.thePlayer.translateString("commands.publish.started", new Object[]{s});
-                }else{
-                    s1 = mc.thePlayer.translateString("commands.publish.failed", new Object[0]);
-                }
-            }else{
-                if (s != null){
-                    s1 = StringTranslate.getInstance().translateKeyFormat("commands.publish.started", new Object[]{s});
-                }else{
-                    s1 = StringTranslate.getInstance().translateKeyFormat("commands.publish.failed", new Object[0]);
-                }
+            if (s != null)
+            {
+                chatmessagecomponent = ChatMessageComponent.func_111082_b("commands.publish.started", new Object[]
+                        {
+                            s
+                        });
+            }
+            else
+            {
+                chatmessagecomponent = ChatMessageComponent.func_111066_d("commands.publish.failed");
             }
 
-            mc.ingameGUI.getChatGUI().printChatMessage(s1);
+            mc.ingameGUI.getChatGUI().printChatMessage(chatmessagecomponent.func_111068_a(true));
         }
     }
 
@@ -128,8 +122,8 @@ public class GuiShareToLan extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         drawDefaultBackground();
-        drawCenteredString(fontRenderer, StatCollector.translateToLocal("lanServer.title"), width / 2, 50, 0xffffff);
-        drawCenteredString(fontRenderer, StatCollector.translateToLocal("lanServer.otherPlayers"), width / 2, 82, 0xffffff);
+        drawCenteredString(fontRenderer, I18n.func_135053_a("lanServer.title"), width / 2, 50, 0xffffff);
+        drawCenteredString(fontRenderer, I18n.func_135053_a("lanServer.otherPlayers"), width / 2, 82, 0xffffff);
         super.drawScreen(par1, par2, par3);
     }
 }

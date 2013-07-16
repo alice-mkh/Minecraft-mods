@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-
 public class ODSounds extends OldDaysModule{
     public ODSounds(mod_OldDays c){
         super(c, 5, "Sounds");
@@ -32,7 +30,7 @@ public class ODSounds extends OldDaysModule{
         new OldDaysPropertyBool(this, 25,false, true, "Swimming");
         new OldDaysPropertyBool(this, 26,false, true, "Minecart");
         isLocal = true;
-        Minecraft.getMinecraft().setSoundClass(SoundManager2.class);
+        Minecraft.getMinecraft().setSoundManager(SoundManager2.class);
         addSound(1, "explode");
         addSound(3, "hurtflesh1");
         addSound(3, "hurtflesh2");

@@ -16,15 +16,15 @@ public class RenderManager
     public static double renderPosX;
     public static double renderPosY;
     public static double renderPosZ;
-    public RenderEngine renderEngine;
+    public TextureManager renderEngine;
     public ItemRenderer itemRenderer;
 
     /** Reference to the World object. */
     public World worldObj;
 
     /** Rendermanager's variable for the player */
-    public EntityLiving livingPlayer;
-    public EntityLiving field_96451_i;
+    public EntityLivingBase livingPlayer;
+    public EntityLivingBase field_96451_i;
     public float playerViewY;
     public float playerViewX;
 
@@ -33,13 +33,13 @@ public class RenderManager
     public double viewerPosX;
     public double viewerPosY;
     public double viewerPosZ;
-    public static boolean field_85095_o = false;
+    public static boolean field_85095_o;
 
     private RenderManager()
     {
         entityRenderMap = new HashMap();
+        entityRenderMap.put(net.minecraft.src.EntityCaveSpider.class, new RenderCaveSpider());
         entityRenderMap.put(net.minecraft.src.EntitySpider.class, new RenderSpider());
-        entityRenderMap.put(net.minecraft.src.EntityCaveSpider.class, new RenderSpider());
         entityRenderMap.put(net.minecraft.src.EntityPig.class, new RenderPig(new ModelPig(), new ModelPig(0.5F), 0.7F));
         entityRenderMap.put(net.minecraft.src.EntitySheep.class, new RenderSheep(new ModelSheep2(), new ModelSheep1(), 0.7F));
         entityRenderMap.put(net.minecraft.src.EntityCow.class, new RenderCow(new ModelCow(), 0.7F));
@@ -63,7 +63,6 @@ public class RenderManager
         entityRenderMap.put(net.minecraft.src.EntitySquid.class, new RenderSquid(new ModelSquid(), 0.7F));
         entityRenderMap.put(net.minecraft.src.EntityVillager.class, new RenderVillager());
         entityRenderMap.put(net.minecraft.src.EntityIronGolem.class, new RenderIronGolem());
-        entityRenderMap.put(net.minecraft.src.EntityLiving.class, new RenderLiving(new ModelBiped(), 0.5F));
         entityRenderMap.put(net.minecraft.src.EntityBat.class, new RenderBat());
         entityRenderMap.put(net.minecraft.src.EntityDragon.class, new RenderDragon());
         entityRenderMap.put(net.minecraft.src.EntityEnderCrystal.class, new RenderEnderCrystal());
@@ -71,6 +70,7 @@ public class RenderManager
         entityRenderMap.put(net.minecraft.src.Entity.class, new RenderEntity());
         entityRenderMap.put(net.minecraft.src.EntityPainting.class, new RenderPainting());
         entityRenderMap.put(net.minecraft.src.EntityItemFrame.class, new RenderItemFrame());
+        entityRenderMap.put(net.minecraft.src.EntityLeashKnot.class, new RenderLeashKnot());
         entityRenderMap.put(net.minecraft.src.EntityArrow.class, new RenderArrow());
         entityRenderMap.put(net.minecraft.src.EntitySnowball.class, new RenderSnowball(Item.snowball));
         entityRenderMap.put(net.minecraft.src.EntityEnderPearl.class, new RenderSnowball(Item.enderPearl));
@@ -91,8 +91,9 @@ public class RenderManager
         entityRenderMap.put(net.minecraft.src.EntityMinecart.class, new RenderMinecart());
         entityRenderMap.put(net.minecraft.src.EntityBoat.class, new RenderBoat());
         entityRenderMap.put(net.minecraft.src.EntityFishHook.class, new RenderFish());
+        entityRenderMap.put(net.minecraft.src.EntityHorse.class, new RenderHorse(new ModelHorse(), 0.75F));
         entityRenderMap.put(net.minecraft.src.EntityLightningBolt.class, new RenderLightningBolt());
-        net.minecraft.client.Minecraft.invokeModMethod("ModLoader", "addAllRenderers", new Class[]{Map.class}, entityRenderMap);
+        Minecraft.invokeModMethod("ModLoader", "addAllRenderers", new Class[]{Map.class}, entityRenderMap);
         Render render;
 
         for (Iterator iterator = entityRenderMap.values().iterator(); iterator.hasNext(); render.setRenderManager(this))
@@ -123,22 +124,22 @@ public class RenderManager
      * Caches the current frame's active render info, including the current World, RenderEngine, GameSettings and
      * FontRenderer settings, as well as interpolated player position, pitch and yaw.
      */
-    public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, EntityLiving par5EntityLiving, GameSettings par6GameSettings, float par7)
+    public void cacheActiveRenderInfo(World par1World, TextureManager par2TextureManager, FontRenderer par3FontRenderer, EntityLivingBase par4EntityLivingBase, EntityLivingBase par5EntityLivingBase, GameSettings par6GameSettings, float par7)
     {
         worldObj = par1World;
-        renderEngine = par2RenderEngine;
+        renderEngine = par2TextureManager;
         options = par6GameSettings;
-        livingPlayer = par4EntityLiving;
-        field_96451_i = par5EntityLiving;
+        livingPlayer = par4EntityLivingBase;
+        field_96451_i = par5EntityLivingBase;
         fontRenderer = par3FontRenderer;
 
-        if (par4EntityLiving.isPlayerSleeping())
+        if (par4EntityLivingBase.isPlayerSleeping())
         {
-            int i = par1World.getBlockId(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
+            int i = par1World.getBlockId(MathHelper.floor_double(par4EntityLivingBase.posX), MathHelper.floor_double(par4EntityLivingBase.posY), MathHelper.floor_double(par4EntityLivingBase.posZ));
 
             if (i == Block.bed.blockID)
             {
-                int j = par1World.getBlockMetadata(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
+                int j = par1World.getBlockMetadata(MathHelper.floor_double(par4EntityLivingBase.posX), MathHelper.floor_double(par4EntityLivingBase.posY), MathHelper.floor_double(par4EntityLivingBase.posZ));
                 int k = j & 3;
                 playerViewY = k * 90 + 180;
                 playerViewX = 0.0F;
@@ -146,8 +147,8 @@ public class RenderManager
         }
         else
         {
-            playerViewY = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par7;
-            playerViewX = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par7;
+            playerViewY = par4EntityLivingBase.prevRotationYaw + (par4EntityLivingBase.rotationYaw - par4EntityLivingBase.prevRotationYaw) * par7;
+            playerViewX = par4EntityLivingBase.prevRotationPitch + (par4EntityLivingBase.rotationPitch - par4EntityLivingBase.prevRotationPitch) * par7;
         }
 
         if (par6GameSettings.thirdPersonView == 2)
@@ -155,9 +156,9 @@ public class RenderManager
             playerViewY += 180F;
         }
 
-        viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par7;
-        viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par7;
-        viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par7;
+        viewerPosX = par4EntityLivingBase.lastTickPosX + (par4EntityLivingBase.posX - par4EntityLivingBase.lastTickPosX) * (double)par7;
+        viewerPosY = par4EntityLivingBase.lastTickPosY + (par4EntityLivingBase.posY - par4EntityLivingBase.lastTickPosY) * (double)par7;
+        viewerPosZ = par4EntityLivingBase.lastTickPosZ + (par4EntityLivingBase.posZ - par4EntityLivingBase.lastTickPosZ) * (double)par7;
     }
 
     /**
@@ -176,7 +177,7 @@ public class RenderManager
         double d1 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par2;
         double d2 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par2;
         float f = par1Entity.prevRotationYaw + (par1Entity.rotationYaw - par1Entity.prevRotationYaw) * par2;
-        if (!net.minecraft.client.Minecraft.oldlighting){
+        if (!Minecraft.oldlighting){
             int i = par1Entity.getBrightnessForRender(par2);
 
             if (par1Entity.isBurning())

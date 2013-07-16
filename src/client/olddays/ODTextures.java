@@ -38,7 +38,6 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 33,true,  false, "Food");
         new OldDaysPropertyBool(this, 34,true,  false, "Procedural");
         new OldDaysPropertyInt(this,  35,0,     2,     "MojangScreen", 2).setUseNames();
-//         new OldDaysPropertyBool(this, 36,false, false, "TerrainPng");
         isLocal = true;
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
@@ -52,7 +51,6 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
         getPropertyById(35).setFallback("olddays/mojang.png", "olddays/mojang2.png");
-//         getPropertyById(36).setFallback("terrain.png", "gui/items.png");
         replaceBlocks();
         prevProcedural = Procedural;
     }
@@ -100,10 +98,6 @@ public class ODTextures extends OldDaysModule{
             case 33:setFood(); break;
             case 34:refreshTextureFXes(true); break;
             case 35:setMojangScreen(); break;
-            case 36:if (!TerrainPng && core.getMinecraft().theWorld != null){
-                        core.getMinecraft().renderEngine.refreshTextureMaps();
-                        refreshTextureFXes(false);
-                    }refreshIconReplacements(); break;
         }
     }
 
@@ -142,7 +136,6 @@ public class ODTextures extends OldDaysModule{
     public static boolean Food = true;
     public static boolean Procedural = false;
     public static int MojangScreen;
-    public static boolean TerrainPng = false;
 
     private static boolean prevProcedural;
 
@@ -154,24 +147,27 @@ public class ODTextures extends OldDaysModule{
             customiron.setResistance(10F);
             customiron.setStepSound(Block.soundMetalFootstep);
             customiron.setUnlocalizedName("blockIron");
+            customiron.func_111022_d("iron_block");
             Block.blocksList[Block.blockIron.blockID] = customiron;
-            mod_OldDays.setField(Block.class, null, 60, customiron);//Block: blockIron
+            mod_OldDays.setField(Block.class, null, 61, customiron);//Block: blockIron
             Block.blocksList[Block.blockGold.blockID] = null;
             BlockOreStorageOld customgold = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockGold.blockID, "gold"));
             customgold.setHardness(3F);
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
             customgold.setUnlocalizedName("blockGold");
+            customgold.func_111022_d("gold_block");
             Block.blocksList[Block.blockGold.blockID] = customgold;
-            mod_OldDays.setField(Block.class, null, 59, customgold);//Block: blockGold
+            mod_OldDays.setField(Block.class, null, 60, customgold);//Block: blockGold
             Block.blocksList[Block.blockDiamond.blockID] = null;
             BlockOreStorageOld customdiamond = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockDiamond.blockID, "diamond"));
             customdiamond.setHardness(5F);
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
             customdiamond.setUnlocalizedName("blockDiamond");
+            customdiamond.func_111022_d("diamond_block");
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
-            mod_OldDays.setField(Block.class, null, 75, customdiamond);//Block: blockDiamond
+            mod_OldDays.setField(Block.class, null, 76, customdiamond);//Block: blockDiamond
         }catch (Exception ex){
             System.out.println(ex);
         }
@@ -181,7 +177,6 @@ public class ODTextures extends OldDaysModule{
     public void refreshTextures(){
         refreshTextureFXes(false);
         refreshIconReplacements();
-        copyTextureSheets();
     }
 
     private void refreshTextureFXes(boolean refreshBlocks){
@@ -192,20 +187,20 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         prevProcedural = Procedural;
-        if (!Procedural){
+        if (!Procedural || true){
             core.texman.removeTextureFXes();
             refreshIconReplacements();
             return;
         }
-        TextureMap blocks = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
-        TextureMap items = (TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
+        TextureMap blocks = null;//FIXME(TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
+        TextureMap items = null;//FIXME(TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
 
         if (blocks == null || items == null){
             return;
         }
 
         if (refreshBlocks){
-            core.getMinecraft().renderEngine.refreshTextures();
+//FIXME             core.getMinecraft().renderEngine.refreshTextures();
             refreshIconReplacements();
         }
 
@@ -214,9 +209,9 @@ public class ODTextures extends OldDaysModule{
         Icon origLava = BlockFluid.func_94424_b("lava");
         Icon origLavaFlow = BlockFluid.func_94424_b("lava_flow");
         Icon[] origFire = (Icon[])(core.getField(BlockFire.class, Block.fire, 2));
-        Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, 195)); //Block: blockIcon
-        Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, 176)); //Item: iconIndex
-        Icon origCompass = (Icon)(core.getField(Item.class, Item.compass, 176));
+        Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, "blockIcon")); //Block: blockIcon
+        Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, "iconIndex")); //Item: iconIndex
+        Icon origCompass = (Icon)(core.getField(Item.class, Item.compass, "iconIndex"));
 
         Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater);
         Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWaterFlow);
@@ -233,16 +228,15 @@ public class ODTextures extends OldDaysModule{
         core.setField(BlockFluid.class, Block.lavaStill, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFluid.class, Block.lavaMoving, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFire.class, Block.fire, 2, new Icon[]{fire0, fire1});
-        core.setField(Block.class, Block.portal, 195, portal);
-        core.setField(Item.class, Item.pocketSundial, 176, clock);
-        core.setField(Item.class, Item.compass, 176, compass);
+        core.setField(Block.class, Block.portal, "blockIcon", portal);
+        core.setField(Item.class, Item.pocketSundial, "iconIndex", clock);
+        core.setField(Item.class, Item.compass, "iconIndex", compass);
 
         mod_OldDays.texman.updateTextureFXes();
         System.gc();
     }
 
     private void refreshIconReplacements(){
-        copyTextureSheets();
         for (int i = 1; i < 34; i++){
             if (i <= 23 || i >= 29){
                 callback(i);
@@ -276,7 +270,7 @@ public class ODTextures extends OldDaysModule{
         int[] classic = new int[]{47, 33, 43, 39, 34, 35, 44, 45, 46, 38, 41, 40, 24, 36, 32, 45};
         Icon[] icons = null;
         try{
-            icons = (Icon[])(mod_OldDays.getField(BlockCloth.class, Block.cloth, 0));
+            icons = (Icon[])(mod_OldDays.getField(BlockColored.class, Block.cloth, 0));
         }catch(NullPointerException e){
             return;
         }
@@ -379,53 +373,6 @@ public class ODTextures extends OldDaysModule{
         setTextureHook("/armor/cloth_2_b.png", "/olddays/cloth_2.png", b);
         setTextureHook("/armor/cloth_1.png", "/olddays/cloth_empty.png", b);
         setTextureHook("/armor/cloth_2.png", "/olddays/cloth_empty.png", b);
-    }
-
-    private void copyTextureSheets(){
-        if (!TerrainPng || !hasTextures("terrain.png", "gui/items.png")){
-            return;
-        }
-        TerrainPngSupport.copyAll();
-    }
-
-    @Override
-    public void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){
-        if (TerrainPng && i != null){
-            if (!b || newIcon.length() <= 0 || !hasTextures(newIcon.substring(1))){
-                if (!(i instanceof TextureStitched)){
-                    return;
-                }
-                Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
-                boolean items = sheet.getTextureName().equals("items");
-                if (items && core.texman.copyIconFromSheet(i, "/gui/items.png", TerrainPngSupport.itemsIndexMap)){
-                    return;
-                }
-                if (!items && core.texman.copyIconFromSheet(i, "/terrain.png", TerrainPngSupport.terrainIndexMap)){
-                    return;
-                }
-            }
-        }
-        super.replaceIcon(i, newIcon, x, y, orig, b);
-    }
-
-    @Override
-    public void eraseIcon(Icon i, String orig, boolean b){
-        if (TerrainPng && i != null){
-            if (!b){
-                if (!(i instanceof TextureStitched)){
-                    return;
-                }
-                Texture sheet = (Texture)(mod_OldDays.getField(TextureStitched.class, i, 1));
-                boolean items = sheet.getTextureName().equals("items");
-                if (items && core.texman.copyIconFromSheet(i, "/gui/items.png", TerrainPngSupport.itemsIndexMap)){
-                    return;
-                }
-                if (!items && core.texman.copyIconFromSheet(i, "/terrain.png", TerrainPngSupport.terrainIndexMap)){
-                    return;
-                }
-            }
-        }
-        super.eraseIcon(i, orig, b);
     }
 
     private void setMojangScreen(){

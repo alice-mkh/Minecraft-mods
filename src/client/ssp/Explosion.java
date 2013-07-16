@@ -26,7 +26,6 @@ public class Explosion
 
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
-        isFlaming = false;
         isSmoking = true;
         field_77289_h = 16;
         explosionRNG = new Random();
@@ -264,7 +263,7 @@ public class Explosion
         return field_77288_k;
     }
 
-    public EntityLiving func_94613_c()
+    public EntityLivingBase func_94613_c()
     {
         if (exploder == null)
         {
@@ -276,9 +275,9 @@ public class Explosion
             return ((EntityTNTPrimed)exploder).getTntPlacedBy();
         }
 
-        if (exploder instanceof EntityLiving)
+        if (exploder instanceof EntityLivingBase)
         {
-            return (EntityLiving)exploder;
+            return (EntityLivingBase)exploder;
         }
         else
         {

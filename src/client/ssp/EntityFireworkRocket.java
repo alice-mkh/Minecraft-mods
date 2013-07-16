@@ -110,14 +110,14 @@ public class EntityFireworkRocket extends Entity
 
         fireworkAge++;
 
-        if ((worldObj.isRemote || net.minecraft.client.Minecraft.getMinecraft().enableSP) && fireworkAge % 2 < 2)
+        if ((worldObj.isRemote || Minecraft.getMinecraft().enableSP) && fireworkAge % 2 < 2)
         {
             worldObj.spawnParticle("fireworksSpark", posX, posY - 0.29999999999999999D, posZ, rand.nextGaussian() * 0.050000000000000003D, -motionY * 0.5D, rand.nextGaussian() * 0.050000000000000003D);
         }
 
         if (!worldObj.isRemote && fireworkAge > lifetime)
         {
-            if (net.minecraft.client.Minecraft.getMinecraft().enableSP){
+            if (Minecraft.getMinecraft().enableSP){
                 handleHealthUpdate((byte)17);
             }else{
                 worldObj.setEntityState(this, (byte)17);
@@ -128,7 +128,7 @@ public class EntityFireworkRocket extends Entity
 
     public void handleHealthUpdate(byte par1)
     {
-        if (par1 == 17 && (worldObj.isRemote || net.minecraft.client.Minecraft.getMinecraft().enableSP))
+        if (par1 == 17 && (worldObj.isRemote || Minecraft.getMinecraft().enableSP))
         {
             ItemStack itemstack = dataWatcher.getWatchableObjectItemStack(8);
             NBTTagCompound nbttagcompound = null;

@@ -19,7 +19,6 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     public EntityAnimal(World par1World)
     {
         super(par1World);
-        breeding = 0;
     }
 
     /**
@@ -177,19 +176,28 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (isEntityInvulnerable())
         {
             return false;
         }
-        else
+
+        fleeingTick = 60;
+
+        if (!isAIEnabled())
         {
-            fleeingTick = 60;
-            entityToAttack = null;
-            inLove = 0;
-            return super.attackEntityFrom(par1DamageSource, par2);
+            AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
+
+            if (attributeinstance.func_111127_a(field_110179_h) == null)
+            {
+                attributeinstance.func_111121_a(field_110181_i);
+            }
         }
+
+        entityToAttack = null;
+        inLove = 0;
+        return super.attackEntityFrom(par1DamageSource, par2);
     }
 
     /**
@@ -350,23 +358,20 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
                 }
             }
 
-            inLove = 600;
-            entityToAttack = null;
-
-            for (int i = 0; i < 7; i++)
-            {
-                double d = rand.nextGaussian() * 0.02D;
-                double d1 = rand.nextGaussian() * 0.02D;
-                double d2 = rand.nextGaussian() * 0.02D;
-                worldObj.spawnParticle("heart", (posX + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, posY + 0.5D + (double)(rand.nextFloat() * height), (posZ + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, d, d1, d2);
-            }
-
+            func_110196_bT();
             return true;
         }
         else
         {
             return super.interact(par1EntityPlayer);
         }
+    }
+
+    public void func_110196_bT()
+    {
+        inLove = 600;
+        entityToAttack = null;
+        worldObj.setEntityState(this, (byte)18);
     }
 
     /**
@@ -399,6 +404,24 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
         else
         {
             return isInLove() && par1EntityAnimal.isInLove();
+        }
+    }
+
+    public void handleHealthUpdate(byte par1)
+    {
+        if (par1 == 18)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                double d = rand.nextGaussian() * 0.02D;
+                double d1 = rand.nextGaussian() * 0.02D;
+                double d2 = rand.nextGaussian() * 0.02D;
+                worldObj.spawnParticle("heart", (posX + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, posY + 0.5D + (double)(rand.nextFloat() * height), (posZ + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, d, d1, d2);
+            }
+        }
+        else
+        {
+            super.handleHealthUpdate(par1);
         }
     }
 }

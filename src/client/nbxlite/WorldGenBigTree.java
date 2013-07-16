@@ -46,7 +46,6 @@ public class WorldGenBigTree extends WorldGenerator
     {
         super(par1);
         rand = new Random();
-        heightLimit = 0;
         heightAttenuation = 0.61799999999999999D;
         branchDensity = 1.0D;
         branchSlope = 0.38100000000000001D;

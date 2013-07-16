@@ -93,6 +93,7 @@ public final class SpawnerAnimalsBeta
                                     break;
                                 }
                             }
+                            EntityLivingData entitylivingdata = null;
 
                             ChunkPosition var41 = getRandomSpawningPointInChunk(var0, var10.chunkXPos * 16, var10.chunkZPos * 16);
                             int var42 = var41.x;
@@ -144,7 +145,7 @@ public final class SpawnerAnimalsBeta
                                                     {
                                                         ++var20;
                                                         var0.spawnEntityInWorld(var43);
-                                                        creatureSpecificInit(var43, var0, var27, var28, var29);
+                                                        entitylivingdata = var43.func_110161_a(entitylivingdata);
                                                         if(var20 >= var43.getMaxSpawnedInChunk())
                                                         {
                                                             continue label113;
@@ -176,11 +177,6 @@ public final class SpawnerAnimalsBeta
         {
             return world.isBlockNormalCube(i, j - 1, k) && !world.isBlockNormalCube(i, j, k) && !world.getBlockMaterial(i, j, k).isLiquid() && !world.isBlockNormalCube(i, j + 1, k);
         }
-    }
-
-    private static void creatureSpecificInit(EntityLiving entityliving, World world, float f, float f1, float f2)
-    {
-        entityliving.initCreature();
     }
 /*
     public static boolean performSleepSpawning(World world, List list)
@@ -240,6 +236,7 @@ public final class SpawnerAnimalsBeta
                             exception.printStackTrace();
                             return flag;
                         }
+                        EntityLivingData entitylivingdata = null;
                         entityliving.setLocationAndAngles(f, f1, f2, world.rand.nextFloat() * 360F, 0.0F);
                         if(entityliving.getCanSpawnHere())
                         {
@@ -256,7 +253,7 @@ public final class SpawnerAnimalsBeta
                                     }
                                     entityliving.setLocationAndAngles((float)chunkcoordinates.posX + 0.5F, chunkcoordinates.posY, (float)chunkcoordinates.posZ + 0.5F, 0.0F, 0.0F);
                                     world.spawnEntityInWorld(entityliving);
-                                    creatureSpecificInit(entityliving, world, (float)chunkcoordinates.posX + 0.5F, chunkcoordinates.posY, (float)chunkcoordinates.posZ + 0.5F);
+                                    entitylivingdata = entityliving.func_110161_a(entitylivingdata);
                                     entityplayer.wakeUpPlayer(true, false, false);
                                     entityliving.playLivingSound();
                                     flag = true;

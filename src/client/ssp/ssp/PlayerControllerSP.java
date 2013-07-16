@@ -1,9 +1,9 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
 
@@ -81,7 +81,7 @@ public class PlayerControllerSP extends PlayerController
     @Override
     public void clickBlock(int par1, int par2, int par3, int par4)
     {
-        if (!mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3))
+        if (!mc.thePlayer.isCurrentToolAdventureModeExempt(par1, par2, par3))
         {
             return;
         }
@@ -127,7 +127,7 @@ public class PlayerControllerSP extends PlayerController
         {
             int i = mc.theWorld.getBlockId(par1, par2, par3);
 
-            if (!mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3))
+            if (!mc.thePlayer.isCurrentToolAdventureModeExempt(par1, par2, par3))
             {
                 return;
             }

@@ -1,9 +1,9 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandGameMode;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.WrongUsageException;
 

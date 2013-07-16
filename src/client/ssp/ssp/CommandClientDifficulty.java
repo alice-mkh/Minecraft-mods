@@ -1,9 +1,9 @@
 package net.minecraft.src.ssp;
 
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.CommandDifficulty;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.WrongUsageException;
 

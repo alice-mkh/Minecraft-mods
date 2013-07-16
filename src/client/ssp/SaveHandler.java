@@ -15,7 +15,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     /**
      * The time in milliseconds when this field was initialized. Stored in the session lock file.
      */
-    private final long initializationTime = System.currentTimeMillis();
+    private final long initializationTime = MinecraftServer.func_130071_aq();
 
     /** The directory name of the world */
     private final String saveDirectoryName;
@@ -280,8 +280,8 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         {
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             par1EntityPlayer.writeToNBT(nbttagcompound);
-            File file = new File(playersDirectory, (new StringBuilder()).append(par1EntityPlayer.username).append(".dat.tmp").toString());
-            File file1 = new File(playersDirectory, (new StringBuilder()).append(par1EntityPlayer.username).append(".dat").toString());
+            File file = new File(playersDirectory, (new StringBuilder()).append(par1EntityPlayer.getCommandSenderName()).append(".dat.tmp").toString());
+            File file1 = new File(playersDirectory, (new StringBuilder()).append(par1EntityPlayer.getCommandSenderName()).append(".dat").toString());
             CompressedStreamTools.writeCompressed(nbttagcompound, new FileOutputStream(file));
 
             if (file1.exists())
@@ -293,7 +293,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception exception)
         {
-            MinecraftServer.getServer().getLogAgent().logWarning((new StringBuilder()).append("Failed to save player data for ").append(par1EntityPlayer.username).toString());
+            MinecraftServer.getServer().getLogAgent().logWarning((new StringBuilder()).append("Failed to save player data for ").append(par1EntityPlayer.getCommandSenderName()).toString());
         }
     }
 
@@ -302,7 +302,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
      */
     public NBTTagCompound readPlayerData(EntityPlayer par1EntityPlayer)
     {
-        NBTTagCompound nbttagcompound = getPlayerData(par1EntityPlayer.username);
+        NBTTagCompound nbttagcompound = getPlayerData(par1EntityPlayer.getCommandSenderName());
 
         if (nbttagcompound != null)
         {

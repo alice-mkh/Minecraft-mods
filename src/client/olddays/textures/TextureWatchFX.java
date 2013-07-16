@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.io.IOException;
-import net.minecraft.client.Minecraft;
 
 public class TextureWatchFX extends TextureFX
 {

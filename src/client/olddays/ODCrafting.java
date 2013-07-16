@@ -173,9 +173,9 @@ public class ODCrafting extends OldDaysModule{
         Block glowstone = Block.glowStone;
         removeRecipe("1xtile.lightgem@0");
         if (b){
-            addRecipe(new ItemStack(glowstone, 1), "###", "###", "###", '#', Item.lightStoneDust);
+            addRecipe(new ItemStack(glowstone, 1), "###", "###", "###", '#', Item.glowstone);
         }else{
-            addRecipe(new ItemStack(glowstone, 1), "##", "##", '#', Item.lightStoneDust);
+            addRecipe(new ItemStack(glowstone, 1), "##", "##", '#', Item.glowstone);
         }
     }
 
@@ -188,7 +188,7 @@ public class ODCrafting extends OldDaysModule{
             addRecipe(new ItemStack(cloth, 1), "##", "##", '#', Item.silk);
         }
         for (int i = 0; i < 16; i++){
-            addShapelessRecipe(new ItemStack(cloth, 1, BlockCloth.getDyeFromBlock(i)), new ItemStack(Item.dyePowder, 1, i), new ItemStack(Item.itemsList[cloth.blockID], 1, 0));
+            addShapelessRecipe(new ItemStack(cloth, 1, BlockColored.getDyeFromBlock(i)), new ItemStack(Item.dyePowder, 1, i), new ItemStack(Item.itemsList[cloth.blockID], 1, 0));
         }
     }
 

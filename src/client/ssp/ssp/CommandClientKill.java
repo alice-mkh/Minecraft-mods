@@ -1,10 +1,11 @@
 package net.minecraft.src.ssp;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.ChatMessageComponent;
 import net.minecraft.src.CommandKill;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.PlayerNotFoundException;
 
 public class CommandClientKill extends CommandKill
@@ -14,7 +15,7 @@ public class CommandClientKill extends CommandKill
     {
         EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
         entityplayer.attackEntityFrom(DamageSource.outOfWorld, 1000);
-        par1ICommandSender.sendChatToPlayer("Ouch. That look like it hurt.");
+        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111077_e("commands.kill.success"));
     }
 
     /**

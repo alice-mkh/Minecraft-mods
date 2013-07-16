@@ -10,14 +10,13 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
     public EntitySnowman(World par1World)
     {
         super(par1World);
-        texture = "/mob/snowman.png";
         setSize(0.4F, 1.8F);
         getNavigator().setAvoidsWater(true);
-        tasks.addTask(1, new EntityAIArrowAttack(this, 0.25F, 20, 10F));
-        tasks.addTask(2, new EntityAIWander(this, 0.2F));
+        tasks.addTask(1, new EntityAIArrowAttack(this, 1.25D, 20, 10F));
+        tasks.addTask(2, new EntityAIWander(this, 1.0D));
         tasks.addTask(3, new EntityAIWatchClosest(this, net.minecraft.src.EntityPlayer.class, 6F));
         tasks.addTask(4, new EntityAILookIdle(this));
-        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityLiving.class, 16F, 0, true, false, IMob.mobSelector));
+        targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, net.minecraft.src.EntityLiving.class, 0, true, false, IMob.mobSelector));
     }
 
     @Override
@@ -53,9 +52,11 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         return true;
     }
 
-    public int getMaxHealth()
+    protected void func_110147_ax()
     {
-        return 4;
+        super.func_110147_ax();
+        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(4D);
+        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.20000000298023224D);
     }
 
     /**
@@ -76,7 +77,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 
         if (isWet())
         {
-            attackEntityFrom(DamageSource.drown, 1);
+            attackEntityFrom(DamageSource.drown, 1.0F);
         }
 
         int i = MathHelper.floor_double(posX);
@@ -84,7 +85,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 
         if (worldObj.getBiomeGenForCoords(i, k).getFloatTemperature() > 1.0F)
         {
-            attackEntityFrom(DamageSource.onFire, 1);
+            attackEntityFrom(DamageSource.onFire, 1.0F);
         }
 
         for (int j = 0; j < 4; j++)
@@ -125,12 +126,12 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
     /**
      * Attack the specified entity using a ranged attack.
      */
-    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving, float par2)
+    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
     {
         EntitySnowball entitysnowball = new EntitySnowball(worldObj, this);
-        double d = par1EntityLiving.posX - posX;
-        double d1 = (par1EntityLiving.posY + (double)par1EntityLiving.getEyeHeight()) - 1.1000000238418579D - entitysnowball.posY;
-        double d2 = par1EntityLiving.posZ - posZ;
+        double d = par1EntityLivingBase.posX - posX;
+        double d1 = (par1EntityLivingBase.posY + (double)par1EntityLivingBase.getEyeHeight()) - 1.1000000238418579D - entitysnowball.posY;
+        double d2 = par1EntityLivingBase.posZ - posZ;
         float f = MathHelper.sqrt_double(d * d + d2 * d2) * 0.2F;
         entitysnowball.setThrowableHeading(d, d1 + (double)f, d2, 1.6F, 12F);
         playSound("random.bow", 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));

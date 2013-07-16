@@ -6,8 +6,8 @@ public class ChunkCache implements IBlockAccess
     private int chunkZ;
     private Chunk chunkArray[][];
 
-    /** set by !chunk.getAreLevelsEmpty */
-    private boolean hasExtendedLevels;
+    /** True if the chunk cache is empty. */
+    private boolean isEmpty;
 
     /** Reference to the World object. */
     private World worldObj;
@@ -20,7 +20,7 @@ public class ChunkCache implements IBlockAccess
         int i = par5 + par8 >> 4;
         int j = par7 + par8 >> 4;
         chunkArray = new Chunk[(i - chunkX) + 1][(j - chunkZ) + 1];
-        hasExtendedLevels = true;
+        isEmpty = true;
 
         for (int k = chunkX; k <= i; k++)
         {
@@ -43,7 +43,7 @@ public class ChunkCache implements IBlockAccess
 
                 if (chunk1 != null && !chunk1.getAreLevelsEmpty(par3, par6))
                 {
-                    hasExtendedLevels = false;
+                    isEmpty = false;
                 }
             }
         }
@@ -54,7 +54,7 @@ public class ChunkCache implements IBlockAccess
      */
     public boolean extendedLevelsInChunkCache()
     {
-        return hasExtendedLevels;
+        return isEmpty;
     }
 
     private boolean isBounds(int x, int y, int z){
@@ -139,7 +139,7 @@ public class ChunkCache implements IBlockAccess
         if (worldObj.provider.dimensionId == 1){
             return 0.22F + worldObj.provider.lightBrightnessTable[i] * 0.75F;
         }
-        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        if (Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
         {
             float light = worldObj.provider.lightBrightnessTable[i];
             light += ((0.5F - light) * (0.7F * light)) + 0.5F;
@@ -180,7 +180,7 @@ public class ChunkCache implements IBlockAccess
             if (worldObj.provider.dimensionId == 1){
                 return 0.22F + worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)] * 0.75F;
             }
-            if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+            if (Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
             {
                 float light = worldObj.provider.lightBrightnessTable[ODNBXlite.getLightInBounds2(par2)];
                 light += ((0.5F - light) * (0.7F * light)) + 0.5F;
@@ -194,7 +194,7 @@ public class ChunkCache implements IBlockAccess
         if (worldObj.provider.dimensionId == 1){
             return 0.22F + worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)] * 0.75F;
         }
-        if (net.minecraft.client.Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
+        if (Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.nightVision))
         {
             float light = worldObj.provider.lightBrightnessTable[getLightValue(par1, par2, par3)];
             light += ((0.5F - light) * (0.7F * light)) + 0.5F;
