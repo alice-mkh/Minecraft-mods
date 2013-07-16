@@ -5,7 +5,7 @@ import java.util.*;
 public abstract class EntityLiving extends EntityLivingBase
 {
     public static boolean indevai = false;
-    public static int nonewmobs = 13;
+    public static int nonewmobs = 14;
     public static boolean oldrange = false;
     public static boolean fastzombies = false;
 
@@ -38,6 +38,9 @@ public abstract class EntityLiving extends EntityLivingBase
     public static boolean allow(String id, int dim){
         if (dim!=0){
             return true;
+        }
+        if (nonewmobs<14 && id=="EntityHorse"){
+            return false;
         }
         if (nonewmobs<13 && id=="Bat"){
             return false;

@@ -157,7 +157,7 @@ public class OldSpawnerAnimals
                             return k;
                         }
                         EntityLivingData entitylivingdata = null;
-                        if ((entityliving instanceof EntityWolf || entityliving instanceof EntityOcelot || entityliving instanceof EntityEnderman) && world.rand.nextInt(10) != 0){
+                        if ((entityliving instanceof EntityWolf || entityliving instanceof EntityOcelot || entityliving instanceof EntityHorse || entityliving instanceof EntityEnderman) && world.rand.nextInt(10) != 0){
                             continue;
                         }
                         entityliving.setLocationAndAngles(f, f1, f2, world.rand.nextFloat() * 360F, 0.0F);
