@@ -11,6 +11,58 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
     public static boolean oldscore = false;
     public static boolean alertWolves = false;
 
+    private void combatOld(Entity par1Entity, float i, int j, float k){
+        if(i > 0)
+        {
+            i += k;
+            if(motionY < 0.0D && combat>0)
+            {
+                i++;
+            }
+            if (par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), i)){
+                if (j > 0)
+                {
+                    par1Entity.addVelocity(-MathHelper.sin((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F, 0.10000000000000001D, MathHelper.cos((rotationYaw * (float)Math.PI) / 180F) * (float)j * 0.5F);
+                    motionX *= 0.59999999999999998D;
+                    motionZ *= 0.59999999999999998D;
+                    setSprinting(false);
+                }
+                if (k > 0.0F)
+                {
+                    onEnchantmentCritical(par1Entity);
+                }
+                if (i >= 18.0F)
+                {
+                    triggerAchievement(AchievementList.overkill);
+                }
+                func_130011_c(par1Entity);
+            }
+            ItemStack itemstack = getCurrentEquippedItem();
+            if(itemstack != null && (par1Entity instanceof EntityLiving))
+            {
+                itemstack.hitEntity((EntityLiving)par1Entity, this);
+                if(itemstack.stackSize <= 0)
+                {
+                    destroyCurrentEquippedItem();
+                }
+            }
+            if(par1Entity instanceof EntityLivingBase)
+            {
+                if(par1Entity.isEntityAlive())
+                {
+                    alertWolves((EntityLivingBase)par1Entity, true);
+                }
+                addStat(StatList.damageDealtStat, Math.round(i * 10F));
+                int l = EnchantmentHelper.getFireAspectModifier(this);
+                if (l > 0)
+                {
+                    par1Entity.setFire(l * 4);
+                }
+            }
+            addExhaustion(0.3F);
+        }
+     }
+
     /** Inventory of the player */
     public InventoryPlayer inventory;
     private InventoryEnderChest theInventoryEnderChest;
@@ -1187,7 +1239,11 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
             par2 = (1.0F + par2) * 0.5F;
         }
 
-        par2 = applyArmorCalculations(par1DamageSource, par2);
+        if (armor<2){
+            par2 = applyArmorCalculations_old(par1DamageSource, par2);
+        }else{
+            par2 = applyArmorCalculations(par1DamageSource, par2);
+        }
         par2 = applyPotionDamageCalculations(par1DamageSource, par2);
         float f = par2;
         par2 = Math.max(par2 - func_110139_bj(), 0.0F);
@@ -1201,7 +1257,11 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
         {
             addExhaustion(par1DamageSource.getHungerDamage());
             float f1 = func_110143_aJ();
-            setEntityHealth(func_110143_aJ() - par2);
+            if (armor==2){
+                super.damageEntity(par1DamageSource, par2);
+            }else{
+                setEntityHealth(func_110143_aJ() - par2);
+            }
             func_110142_aN().func_94547_a(par1DamageSource, f1, par2);
             return;
         }
@@ -1349,6 +1409,11 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
         if (isSprinting())
         {
             i++;
+        }
+
+        if (combat<2){
+            combatOld(par1Entity, f, i, f1);
+            return;
         }
 
         if (f > 0.0F || f1 > 0.0F)
