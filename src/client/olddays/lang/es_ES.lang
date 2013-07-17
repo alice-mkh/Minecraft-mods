@@ -361,8 +361,7 @@ mobs.mobs.name=Mobs permitidos
  mobs.mobs13=1.2
  mobs.mobs13.desc=No hay murcielagos
  mobs.mobs14=1.4
-//FIXME
- mobs.mobs14.desc=No horses and new zombies
+ mobs.mobs14.desc=No hay caballos ni nuevos Zombies
  mobs.mobs15=1.6
  mobs.mobs15.desc=Normal
 mobs.slimes.name=Generación de slimes
@@ -1057,16 +1056,14 @@ release.features.structures6=Templos de la jungla y el desierto
 release.features.structures7=Nuevas plantas en villas
 release.features.structures8=Casas de brujas
 release.features.structures9=Carros en minas abandonadas
-//FIXME
-release.features.structures10=Nether fortress chests
+release.features.structures10=Cofres en fortalezas del Nether
 release.features.misc=Misceláneo
 release.features.misc1=Pozos del desierto
 release.features.misc2=Esmeraldas
 release.features.misc3=Troncos rotados en ramas
 release.features.misc4=Libros encantados en calabozos
 release.features.misc5=Cuarzo
-//FIXME
-release.features.misc6=Drier deserts
+release.features.misc6=Desiertos más secos
 
 structures.select=Seleccione estructuras
 structures.ravines=Barrancos
