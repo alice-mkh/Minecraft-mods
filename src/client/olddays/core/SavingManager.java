@@ -166,7 +166,7 @@ public class SavingManager{
                 }else if (name.equals("Vanilla")){
                     mode = 2;
                 }else{
-                    InputStream stream = getClass().getClassLoader().getResourceAsStream("olddays/presets/"+name);
+                    InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("olddays/presets/"+name)).func_110527_b();
                     properties.load(stream);
                 }
             }
@@ -239,25 +239,16 @@ public class SavingManager{
         ArrayList<String> presets = new ArrayList<String>();
         presets.add("OldDays");
         presets.add("Vanilla");
+        ResourceLocation resource = new ResourceLocation("olddays/presets/list");
         try{
-            String str = "";
-            try{
-                str = getClass().getResource("/olddays/presets").toString();
-                str = str.substring(9, str.lastIndexOf('!'));
-            }catch(Exception e2){
-                str = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-                str = str.substring(5);
-            }
-            str = str.replace("%20", " ").replace("%23", "#");
-            ZipFile jar = new ZipFile(str);
-            Enumeration<? extends ZipEntry> entries = jar.entries();
-            while (entries.hasMoreElements()){
-                ZipEntry entry = entries.nextElement();
-                String name = entry.toString();
-                if (!name.startsWith("olddays/presets/") || name.endsWith("olddays/presets/")){
-                    continue;
+            InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(resource).func_110527_b();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            while(true){
+                String str = reader.readLine();
+                if (str == null){
+                    break;
                 }
-                presets.add(name.replace("olddays/presets/", ""));
+                presets.add(str);
             }
         }catch(Exception e){
             e.printStackTrace();
