@@ -29,7 +29,6 @@ public class PageRelease extends Page{
         for (int i = 0; i < l; i++){
             featuresButtons[i] = new GuiButtonNBXlite(i, (width / 2 - 105) + leftmargin, 170);
             String name = mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1));
-//             name += " (" + mod_OldDays.lang.get("nbxlite.releasefeatures" + (i + 1)+".desc") + ")";
             featuresButtons[i].displayString = name;
             addButton(featuresButtons[i]);
             helpButtons[i] = new GuiButtonNBXlite(i + 100, (width / 2 + 66) + leftmargin, 20);
@@ -48,8 +47,8 @@ public class PageRelease extends Page{
             setY(featuresButtons[i], (i - 1) * 21);
             setY(helpButtons[i], (i - 1) * 21);
         }
-        setY(newOresButton, 149);
-        setY(weatherButton, newOresButton.drawButton ? 171 : 149);
+        setY(newOresButton, 169);
+        setY(weatherButton, newOresButton.drawButton ? 191 : 169);
         updateButtonPosition();
     }
 
@@ -148,12 +147,13 @@ public class PageRelease extends Page{
                 list.add("<-• §"+(featuresBiomes[j] ? "a" : "c")+mod_OldDays.lang.get(name+".features.biomes"+(j+1)));
             }
             list.add("");
-            boolean[] featuresMisc = new boolean[5];
+            boolean[] featuresMisc = new boolean[6];
             featuresMisc[0] = i >= ODNBXlite.FEATURES_12;
             featuresMisc[1] = i >= ODNBXlite.FEATURES_13;
             featuresMisc[2] = i >= ODNBXlite.FEATURES_132;
             featuresMisc[3] = i >= ODNBXlite.FEATURES_14;
             featuresMisc[4] = i >= ODNBXlite.FEATURES_15;
+            featuresMisc[5] = i >= ODNBXlite.FEATURES_16;
             list.add(mod_OldDays.lang.get(name+".features.misc"));
             int num2 = mod_OldDays.getDescriptionNumber(name+".features.misc");
             for (int j = 0; j < num2; j++){
@@ -161,7 +161,7 @@ public class PageRelease extends Page{
             }
         }
         if (col == 1){
-            boolean[] featuresStructures = new boolean[9];
+            boolean[] featuresStructures = new boolean[10];
             featuresStructures[0] = i >= ODNBXlite.FEATURES_10;
             featuresStructures[1] = i >= ODNBXlite.FEATURES_11;
             featuresStructures[2] = i >= ODNBXlite.FEATURES_11;
@@ -170,7 +170,8 @@ public class PageRelease extends Page{
             featuresStructures[5] = i >= ODNBXlite.FEATURES_13;
             featuresStructures[6] = i >= ODNBXlite.FEATURES_14;
             featuresStructures[7] = i >= ODNBXlite.FEATURES_14;
-            featuresStructures[8] = i >= ODNBXlite.FEATURES_14;
+            featuresStructures[8] = i >= ODNBXlite.FEATURES_15;
+            featuresStructures[9] = i >= ODNBXlite.FEATURES_16;
             list.add(mod_OldDays.lang.get(name+".features.structures"));
             int num = mod_OldDays.getDescriptionNumber(name+".features.structures");
             for (int j = 0; j < num; j++){
