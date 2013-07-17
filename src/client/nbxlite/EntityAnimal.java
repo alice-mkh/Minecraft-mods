@@ -319,6 +319,9 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
      */
     protected boolean canDespawn()
     {
+        if (this instanceof EntityHorse){
+            return despawn && !breeded && riddenByEntity == null && ((EntityHorse)this).func_142019_cb().isEmpty();
+        }
         return despawn && !breeded;
     }
 
