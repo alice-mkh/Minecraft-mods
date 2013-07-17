@@ -207,25 +207,37 @@ public class PageAlpha extends Page{
     private String[] getTooltip(int i, int col){
         String name = "biomeless";
         ArrayList<String> list = new ArrayList<String>();
-        boolean[] features = new boolean[13];
+        boolean[] features = new boolean[15];
         features[0] = i <= 0;
         features[1] = i <= 0;
-        features[2] = i >= 3;
-        features[3] = i >= 3;
-        features[4] = i >= 5;
-        features[5] = i >= 5 || i == 0;
+        features[2] = i >= 1;
+        features[3] = i >= 1;
+        features[4] = i >= 2;
+        features[5] = i >= 3;
         features[6] = i >= 5;
-        features[7] = i >= 6;
-        features[8] = i >= 6;
+        features[7] = i >= 5 || i == 0;
+        features[8] = i >= 5;
         features[9] = i >= 6;
         features[10] = i >= 6;
         features[11] = i >= 6;
         features[12] = i >= 6;
+        features[13] = i >= 6;
+        features[14] = i >= 6;
         int num = mod_OldDays.getDescriptionNumber(name+".feature");
         for (int j = 0; j < num; j++){
             list.add("<-• §"+(features[j] ? "a" : "c")+mod_OldDays.lang.get(name+".feature"+(j+1)));
         }
-        list.add("<-• "+mod_OldDays.lang.get(name+".trees.value"+(i+1)));
+        int trees = 0;
+        if (i == 2 || i == 3){
+            trees = 1;
+        }
+        if (i == 1 || i == 4 || i == 5){
+            trees = 2;
+        }
+        if (i > 5){
+            trees = 3;
+        }
+        list.add("<-• "+mod_OldDays.lang.get(name+".trees.value"+(trees+1)));
         return list.toArray(new String[list.size()]);
     }
 }
