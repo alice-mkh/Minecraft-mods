@@ -45,11 +45,14 @@ public class WorldProviderSurface extends WorldProvider
             return super.canCoordinateBeSpawn(par1, par2);
         }
         int i = worldObj.getFirstUncoveredBlock(par1, par2);
+        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420 && ODNBXlite.MapFeatures != ODNBXlite.FEATURES_INFDEV0618){
+            if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+                return i != Block.lavaStill.blockID;
+            }
+            return true;
+        }
         if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
             return i == Block.grass.blockID;
-        }
-        if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS && ODNBXlite.MapFeatures>=ODNBXlite.FEATURES_INFDEV0420 && ODNBXlite.MapFeatures != ODNBXlite.FEATURES_INFDEV0618){
-            return true;
         }
         if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES && ODNBXlite.MapFeatures==ODNBXlite.FEATURES_SKY){
             return i == 0 ? false : Block.blocksList[i].blockMaterial.isSolid();

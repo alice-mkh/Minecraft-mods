@@ -85,7 +85,11 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
                                 double d21 = d18 + (d19 - d18) * d20;
                                 int i5 = 0;
                                 if((l1 << 2) + i4 < 64)
-                                    i5 = Block.waterStill.blockID;
+                                    if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+                                        i5 = Block.lavaStill.blockID;
+                                    }else{
+                                        i5 = Block.waterStill.blockID;
+                                    }
                                 if(d21 > 0.0D)
                                     i5 = Block.stone.blockID;
                                 abyte0[k4] = (byte)i5;
@@ -111,12 +115,22 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
             {
                 double d2 = (i << 4) + l;
                 double d4 = (j << 4) + j1;
-                boolean flag = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && noiseSandGen.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > 0.0D;
+                double asd = 0.0D;
+                if(ODNBXlite.MapTheme==ODNBXlite.THEME_PARADISE)
+                {
+                    asd = -0.29999999999999999D;
+                }
+                boolean flag = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && noiseSandGen.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > asd;
                 boolean flag1 = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && noiseSandGen.generateNoise(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
                 int k2 = (int)(rockSandGen.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int l2 = l << 11 | j1 << 7 | 0x7f;
                 int i3 = -1;
-                int j3 = Block.grass.blockID;
+                int j3;
+                if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+                    j3 = Block.dirt.blockID;
+                }else{
+                    j3 = Block.grass.blockID;
+                }
                 int k3 = Block.dirt.blockID;
                 for(int l3 = 127; l3 >= 0; l3--)
                 {
@@ -133,19 +147,31 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
                             } else
                             if(l3 >= 60 && l3 <= 65)
                             {
-                                j3 = Block.grass.blockID;
+                                if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+                                    j3 = Block.dirt.blockID;
+                                }else{
+                                    j3 = Block.grass.blockID;
+                                }
                                 k3 = Block.dirt.blockID;
                                 if(flag1)
                                     j3 = 0;
                                 if(flag1)
                                     k3 = Block.gravel.blockID;
                                 if(flag)
-                                    j3 = Block.sand.blockID;
+                                    if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+                                        j3 = Block.grass.blockID;
+                                    }else{
+                                        j3 = Block.sand.blockID;
+                                    }
                                 if(flag)
                                     k3 = Block.sand.blockID;
                             }
                             if(l3 < 64 && j3 == 0)
-                                j3 = Block.waterStill.blockID;
+                                if (ODNBXlite.MapTheme==ODNBXlite.THEME_HELL){
+                                    j3 = Block.lavaStill.blockID;
+                                }else{
+                                    j3 = Block.waterStill.blockID;
+                                }
                             i3 = k2;
                             if(l3 >= 63)
                                 abyte0[l2] = (byte)j3;
@@ -271,7 +297,53 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
             int z2 = z1 + rand.nextInt(16);
             (new SuperOldWorldGenMinable(Block.oreDiamond.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
+        if (ODNBXlite.getFlag("newores")){
+            for(int i = 0; i < 8; i++)
+            {
+                int x2 = x1 + rand.nextInt(16);
+                int y2 = rand.nextInt(16);
+                int z2 = z1 + rand.nextInt(16);
+                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
+            }
+            for(int i = 0; i < 1; i++)
+            {
+                int x2 = x1 + rand.nextInt(16);
+                int y2 = rand.nextInt(16) + rand.nextInt(16);
+                int z2 = z1 + rand.nextInt(16);
+                (new SuperOldWorldGenMinable(Block.oreLapis.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
+            }
+            int max = 0;
+            detection: for(int i = x1; i < x1 + 16; i++){
+                for(int j = z1; j < z1 + 16; j++){
+                    int h = worldObj.getPrecipitationHeight(i, j);
+                    if (max < h){
+                        max = h;
+                    }
+                    if (max > 108){
+                        break detection;
+                    }
+                }
+            }
+            if (max > 108){
+                for (int i = 0; i < 3 + rand.nextInt(6); i++){
+                    int x2 = x1 + rand.nextInt(16);
+                    int y2 = rand.nextInt(28) + 4;
+                    int z2 = z1 + rand.nextInt(16);
+                    int id = worldObj.getBlockId(x2, y2, z2);
+                    if (id == Block.stone.blockID){
+                        worldObj.setBlock(x2, y2, z2, Block.oreEmerald.blockID);
+                    }
+                }
+            }
+        }
         int trees = (int)treeGen.func_806_a((double)x1 * 0.25D, (double)z1 * 0.25D) << 3;
+        if(ODNBXlite.MapTheme==ODNBXlite.THEME_WOODS)
+        {
+            if (trees < 0){
+                trees = 0;
+            }
+            trees += 20;
+        }
         WorldGenerator treegen = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0327 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
         for(int i = 0; i < trees; i++)
         {
