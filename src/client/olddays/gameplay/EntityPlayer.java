@@ -216,7 +216,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
     {
         if (!alertWolves){
             return;
-        }   
+        }
         if ((par1EntityLiving instanceof EntityCreeper) || (par1EntityLiving instanceof EntityGhast))
         {
             return;

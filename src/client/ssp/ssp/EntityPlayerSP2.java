@@ -61,6 +61,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     public static int combat = 3;
     public static boolean sprint = true;
     public static int startitems = 0;
+    public static boolean alertWolves = false;
 
     private MouseFilter field_71162_ch;
     private MouseFilter field_71160_ci;
@@ -606,7 +607,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             entity1 = ((EntityArrow)entity1).shootingEntity;
         }
 
-        if (entity1 instanceof EntityLiving)
+        if (alertWolves && entity1 instanceof EntityLiving)
         {
             alertWolves((EntityLiving)entity1, false);
         }
