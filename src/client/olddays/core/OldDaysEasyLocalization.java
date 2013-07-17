@@ -57,8 +57,8 @@ public class OldDaysEasyLocalization {
             ResourceLocation defaultLang = new ResourceLocation(modName + "/lang/" + DEFAULT_LANGUAGE + ".lang");
             InputStream langStream = Minecraft.getMinecraft().func_110442_L().func_110536_a(lang).func_110527_b();
             InputStream defaultLangStream = Minecraft.getMinecraft().func_110442_L().func_110536_a(defaultLang).func_110527_b();
-            BufferedReader langReader = new BufferedReader(new InputStreamReader(langStream));
-            BufferedReader defaultLangReader = new BufferedReader(new InputStreamReader(defaultLangStream));
+            BufferedReader langReader = new BufferedReader(new InputStreamReader(langStream, "UTF-8"));
+            BufferedReader defaultLangReader = new BufferedReader(new InputStreamReader(defaultLangStream, "UTF-8"));
 //             BufferedReader langStream = new BufferedReader(new InputStreamReader((OldDaysEasyLocalization.class).getResourceAsStream(
 //                             "/" + modName + "/lang/" + newLanguage + ".lang"), "UTF-8"));
 //             BufferedReader defaultLangStream = new BufferedReader(new InputStreamReader((OldDaysEasyLocalization.class).getResourceAsStream(
