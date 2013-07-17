@@ -855,7 +855,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     public void mountEntity(Entity par1Entity)
     {
         super.mountEntity(par1Entity);
-        if (func_110317_t()){
+        if (ridingEntity != null){
             GameSettings gamesettings = mc.gameSettings;
             mc.ingameGUI.func_110326_a(I18n.func_135052_a("mount.onboard", new Object[]
                     {
