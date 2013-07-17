@@ -6,6 +6,8 @@ public class RenderMinecart2 extends RenderMinecart
 {
     public static boolean oldrotation = false;
 
+    private static final ResourceLocation field_110804_g = new ResourceLocation("textures/entity/minecart.png");
+
     public RenderMinecart2()
     {
         super();
@@ -89,6 +91,7 @@ public class RenderMinecart2 extends RenderMinecart
             GL11.glColor4f(ff, ff, ff, 1.0F);
         }
 
+        func_110776_a(field_110804_g);
 //         loadTexture("/item/cart.png");
         GL11.glScalef(-1F, -1F, 1.0F);
         modelMinecart.render(par1EntityMinecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
