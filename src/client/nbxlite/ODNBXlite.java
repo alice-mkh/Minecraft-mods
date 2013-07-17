@@ -948,7 +948,7 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     private static WeightedRandomChestContent[] addToArray(WeightedRandomChestContent[] array, WeightedRandomChestContent... items){
-        List<WeightedRandomChestContent> list = Arrays.asList(array);
+        ArrayList<WeightedRandomChestContent> list = new ArrayList<WeightedRandomChestContent>(Arrays.asList(array));
         for (WeightedRandomChestContent w : items){
             list.add(w);
         }
