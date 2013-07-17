@@ -6,6 +6,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.ItemSword;
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
@@ -62,6 +63,9 @@ public class PlayerControllerCreative extends PlayerController
      */
     public static void clickBlockCreative(Minecraft par0Minecraft, PlayerController par1PlayerController, int par2, int par3, int par4, int par5)
     {
+        if (par0Minecraft.thePlayer.getHeldItem() != null && (par0Minecraft.thePlayer.getHeldItem().getItem() instanceof ItemSword)){
+            return;
+        }
         if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.thePlayer, par2, par3, par4, par5))
         {
             par1PlayerController.onPlayerDestroyBlock(par2, par3, par4, par5);
