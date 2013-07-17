@@ -504,7 +504,7 @@ public abstract class RendererLivingEntity extends Render
                 }
             }
         }
-        if (Minecraft.getMinecraft().gameSettings.showDebugInfo && labels){
+        if (Minecraft.getMinecraft().gameSettings.showDebugInfo && labels && par1EntityLivingBase instanceof EntityLiving){
             if (par1EntityLivingBase instanceof EntityEnderman){
                 renderLivingLabel(par1EntityLivingBase, Integer.toString(par1EntityLivingBase.entityId), par2, par4 + 1D, par6, 64);
             }else{
