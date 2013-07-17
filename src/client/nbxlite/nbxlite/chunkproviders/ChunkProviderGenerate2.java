@@ -8,9 +8,10 @@ public class ChunkProviderGenerate2
 {
     public ChunkProviderBaseFinite indevGen;
     public ChunkProviderBaseFinite classicGen;
-    public ChunkProviderBaseInfinite infdevGen;
-    public ChunkProviderBaseInfinite infdev2Gen;
-    public ChunkProviderBaseInfinite oldInfdevGen;
+    public ChunkProviderBaseInfinite infdev227Gen;
+    public ChunkProviderBaseInfinite infdev415Gen;
+    public ChunkProviderBaseInfinite infdev420Gen;
+    public ChunkProviderBaseInfinite infdev618Gen;
     public ChunkProviderBaseInfinite alphaGen;
     public ChunkProviderBaseInfinite betaGen;
     public ChunkProviderBaseInfinite betaGenSky;
@@ -18,9 +19,10 @@ public class ChunkProviderGenerate2
 
     public ChunkProviderGenerate2(World world, long l, boolean flag)
     {
-        infdevGen = new ChunkProviderGenerateInfdev(world, l, flag);
-        infdev2Gen = new ChunkProviderGenerateInfdev2(world, l, flag);
-        oldInfdevGen = new ChunkProviderGenerateOldInfdev(world, l, flag);
+        infdev227Gen = new ChunkProviderGenerateInfdev227(world, l, flag);
+        infdev415Gen = new ChunkProviderGenerateInfdev415(world, l, flag);
+        infdev420Gen = new ChunkProviderGenerateInfdev420(world, l, flag);
+        infdev618Gen = new ChunkProviderGenerateInfdev618(world, l, flag);
         indevGen = new ChunkProviderIndev(world, l);
         classicGen = new ChunkProviderClassic(world, l);
         alphaGen = new ChunkProviderGenerateAlpha(world, l, flag);
@@ -34,11 +36,11 @@ public class ChunkProviderGenerate2
             if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_ALPHA11201){
                 return alphaGen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0618){
-                return infdev2Gen;
+                return infdev618Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0420 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608){
-                return infdevGen;
+                return infdev420Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
-                return oldInfdevGen;
+                return infdev227Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){
                 return indevGen;
             }

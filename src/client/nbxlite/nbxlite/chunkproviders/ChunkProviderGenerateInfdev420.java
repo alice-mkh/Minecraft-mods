@@ -9,7 +9,7 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenBigTree;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
-public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
+public class ChunkProviderGenerateInfdev420 extends ChunkProviderBaseInfinite{
     private InfdevNoiseGeneratorOctaves terrainAlt1Generator;
     private InfdevNoiseGeneratorOctaves terrainAlt2Generator;
     private InfdevNoiseGeneratorOctaves terrainGenerator;
@@ -25,7 +25,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
 
-    public ChunkProviderGenerateInfdev(World world, long l, boolean flag){
+    public ChunkProviderGenerateInfdev420(World world, long l, boolean flag){
         super(world, l, flag);
         fixLight = true;
         terrainAlt1Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
@@ -301,7 +301,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(128);
             int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreCoal.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
+            (new SuperOldWorldGenMinable(Block.oreCoal.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
 
         for(int i = 0; i < 10; i++)
@@ -309,7 +309,7 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(64);
             int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreIron.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
+            (new SuperOldWorldGenMinable(Block.oreIron.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
 
         if(rand.nextInt(2) == 0)
@@ -317,14 +317,14 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(32);
             int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreGold.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
+            (new SuperOldWorldGenMinable(Block.oreGold.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
         if(rand.nextInt(8) == 0)
         {
             int x2 = x1 + rand.nextInt(16);
             int y2 = rand.nextInt(16);
             int z2 = z1 + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
+            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
         if (ODNBXlite.getFlag("newores")){
             for(int i = 0; i < 8; i++)
@@ -332,14 +332,14 @@ public class ChunkProviderGenerateInfdev extends ChunkProviderBaseInfinite{
                 int x2 = x1 + rand.nextInt(16);
                 int y2 = rand.nextInt(16);
                 int z2 = z1 + rand.nextInt(16);
-                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
+                (new SuperOldWorldGenMinable(Block.oreRedstone.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
             }
             for(int i = 0; i < 1; i++)
             {
                 int x2 = x1 + rand.nextInt(16);
                 int y2 = rand.nextInt(16) + rand.nextInt(16);
                 int z2 = z1 + rand.nextInt(16);
-                (new SuperOldWorldGenMinable(Block.oreLapis.blockID,0)).generate_infdev(worldObj, rand, x2, y2, z2);
+                (new SuperOldWorldGenMinable(Block.oreLapis.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
             }
             int max = 0;
             detection: for(int i = x1; i < x1 + 16; i++){

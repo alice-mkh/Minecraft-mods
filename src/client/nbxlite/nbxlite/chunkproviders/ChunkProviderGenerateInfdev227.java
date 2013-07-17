@@ -6,7 +6,7 @@ import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.noise.InfdevOldNoiseGeneratorOctaves;
 
-public class ChunkProviderGenerateOldInfdev extends ChunkProviderBaseInfinite{
+public class ChunkProviderGenerateInfdev227 extends ChunkProviderBaseInfinite{
     private InfdevOldNoiseGeneratorOctaves terrainAlt1Generator;
     private InfdevOldNoiseGeneratorOctaves terrainAlt2Generator;
     private InfdevOldNoiseGeneratorOctaves terrainGenerator;
@@ -14,7 +14,7 @@ public class ChunkProviderGenerateOldInfdev extends ChunkProviderBaseInfinite{
     private InfdevOldNoiseGeneratorOctaves rockSandGen;
     private InfdevOldNoiseGeneratorOctaves unknownGen;
 
-    protected ChunkProviderGenerateOldInfdev(World world, long l, boolean flag){
+    protected ChunkProviderGenerateInfdev227(World world, long l, boolean flag){
         super(world, l, flag);
         terrainAlt1Generator = new InfdevOldNoiseGeneratorOctaves(rand, 16);
         terrainAlt2Generator = new InfdevOldNoiseGeneratorOctaves(rand, 16);

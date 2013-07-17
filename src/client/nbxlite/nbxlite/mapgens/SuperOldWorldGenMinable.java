@@ -11,6 +11,11 @@ public class SuperOldWorldGenMinable extends WorldGenerator
     private int minableBlockId;
     private int numberOfBlocks;
 
+    public SuperOldWorldGenMinable(int i)
+    {
+        this(i, 0);
+    }
+
     public SuperOldWorldGenMinable(int i, int j)
     {
         minableBlockId = i;

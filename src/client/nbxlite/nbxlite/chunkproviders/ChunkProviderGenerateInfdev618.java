@@ -5,7 +5,7 @@ import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.InfdevNoiseGeneratorOctaves;
 import net.minecraft.src.nbxlite.mapgens.*;
 
-public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
+public class ChunkProviderGenerateInfdev618 extends ChunkProviderBaseInfinite
 {
     private Random rand;
     private InfdevNoiseGeneratorOctaves terrainAlt1Generator;
@@ -28,7 +28,7 @@ public class ChunkProviderGenerateInfdev2 extends ChunkProviderBaseInfinite
     public MapGenMineshaft mineshaftGenerator;
     private MapGenBase ravineGenerator;
 
-    public ChunkProviderGenerateInfdev2(World world, long l, boolean flag)
+    public ChunkProviderGenerateInfdev618(World world, long l, boolean flag)
     {
         super(world, l, flag);
         fixLight = true;
