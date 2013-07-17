@@ -9,13 +9,12 @@ import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
 
 public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
-    private InfdevNoiseGeneratorOctaves b;
-    private InfdevNoiseGeneratorOctaves c;
-    private InfdevNoiseGeneratorOctaves d;
-    private InfdevNoiseGeneratorOctaves e;
-    private InfdevNoiseGeneratorOctaves f;
-    private InfdevNoiseGeneratorOctaves g;
-    private World h;
+    private InfdevNoiseGeneratorOctaves terrainAlt1Generator;
+    private InfdevNoiseGeneratorOctaves terrainAlt2Generator;
+    private InfdevNoiseGeneratorOctaves terrainGenerator;
+    private InfdevNoiseGeneratorOctaves noiseSandGen;
+    private InfdevNoiseGeneratorOctaves rockSandGen;
+    private InfdevNoiseGeneratorOctaves treeGen;
     public MapGenStronghold2 strongholdGenerator;
     public MapGenVillage villageGenerator;
     public MapGenMineshaft mineshaftGenerator;
@@ -24,14 +23,13 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
     public ChunkProviderGenerateInfdev415(World world, long l, boolean flag){
         super(world, l, flag);
         fixLight = true;
-        h = world;
-        b = new InfdevNoiseGeneratorOctaves(rand, 16);
-        c = new InfdevNoiseGeneratorOctaves(rand, 16);
-        d = new InfdevNoiseGeneratorOctaves(rand, 8);
-        e = new InfdevNoiseGeneratorOctaves(rand, 4);
-        f = new InfdevNoiseGeneratorOctaves(rand, 4);
+        terrainAlt1Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
+        terrainAlt2Generator = new InfdevNoiseGeneratorOctaves(rand, 16);
+        terrainGenerator = new InfdevNoiseGeneratorOctaves(rand, 8);
+        noiseSandGen = new InfdevNoiseGeneratorOctaves(rand, 4);
+        rockSandGen = new InfdevNoiseGeneratorOctaves(rand, 4);
         new InfdevNoiseGeneratorOctaves(rand, 5);
-        g = new InfdevNoiseGeneratorOctaves(rand, 5);
+        treeGen = new InfdevNoiseGeneratorOctaves(rand, 5);
         if(flag)
         {
             strongholdGenerator = new MapGenStronghold2();
@@ -113,9 +111,9 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
             {
                 double d2 = (i << 4) + l;
                 double d4 = (j << 4) + j1;
-                boolean flag = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && e.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > 0.0D;
-                boolean flag1 = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && e.generateNoise(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
-                int k2 = (int)(f.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
+                boolean flag = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && noiseSandGen.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > 0.0D;
+                boolean flag1 = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && noiseSandGen.generateNoise(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                int k2 = (int)(rockSandGen.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int l2 = l << 11 | j1 << 7 | 0x7f;
                 int i3 = -1;
                 int j3 = Block.grass.blockID;
@@ -174,10 +172,10 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
             d4 *= 3D;
         double d5;
         double d9;
-        if((d5 = d.generateNoise((d1 * 684.41200000000003D) / 80D, (d2 * 684.41200000000003D) / 400D, (d3 * 684.41200000000003D) / 80D) / 2D) < -1D)
+        if((d5 = terrainGenerator.generateNoise((d1 * 684.41200000000003D) / 80D, (d2 * 684.41200000000003D) / 400D, (d3 * 684.41200000000003D) / 80D) / 2D) < -1D)
         {
             double d6;
-            if((d9 = (d6 = b.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D) - d4) < -10D)
+            if((d9 = (d6 = terrainAlt1Generator.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D) - d4) < -10D)
                 d9 = -10D;
             if(d9 > 10D)
                 d9 = 10D;
@@ -185,14 +183,14 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
         if(d5 > 1.0D)
         {
             double d7;
-            if((d9 = (d7 = c.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D) - d4) < -10D)
+            if((d9 = (d7 = terrainAlt2Generator.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D) - d4) < -10D)
                 d9 = -10D;
             if(d9 > 10D)
                 d9 = 10D;
         } else
         {
-            double d10 = b.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D - d4;
-            double d11 = c.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D - d4;
+            double d10 = terrainAlt1Generator.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D - d4;
+            double d11 = terrainAlt2Generator.generateNoise(d1 * 684.41200000000003D, d2 * 984.41200000000003D, d3 * 684.41200000000003D) / 512D - d4;
             if(d10 < -10D)
                 d10 = -10D;
             if(d10 > 10D)
@@ -227,64 +225,62 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
     }
 
     @Override
-    public void populate(IChunkProvider ichunkprovider, int i, int j){
-        rand.setSeed((long)i * 0x12f88dd3L + (long)j * 0x36d41eecL);
-        int ii = i;
-        int jj = j;
-        int a1 = i << 4;
-        i = j << 4;
+    public void populate(IChunkProvider ichunkprovider, int x, int z){
+        rand.setSeed((long)x * 0x12f88dd3L + (long)z * 0x36d41eecL);
+        int x1 = x << 4;
+        int z1 = z << 4;
         if(mapFeaturesEnabled)
         {
             if (ODNBXlite.Structures[2]){
-                strongholdGenerator.generateStructuresInChunk(worldObj, rand, ii, jj);
+                strongholdGenerator.generateStructuresInChunk(worldObj, rand, x, z);
             }
             if (ODNBXlite.Structures[1]){
-                villageGenerator.generateStructuresInChunk(worldObj, rand, ii, jj);
+                villageGenerator.generateStructuresInChunk(worldObj, rand, x, z);
             }
             if (ODNBXlite.Structures[3]){
-                mineshaftGenerator.generateStructuresInChunk(worldObj, rand, ii, jj);
+                mineshaftGenerator.generateStructuresInChunk(worldObj, rand, x, z);
             }
         }
-        for(j = 0; j < 20; j++)
+        for(int i = 0; i < 20; i++)
         {
-            int k = a1 + rand.nextInt(16);
-            int k1 = rand.nextInt(128);
-            int l2 = i + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreCoal.blockID)).generate_infdev(h, rand, k, k1, l2);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(128);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreCoal.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
 
-        for(j = 0; j < 10; j++)
+        for(int i = 0; i < 10; i++)
         {
-            int l = a1 + rand.nextInt(16);
-            int l1 = rand.nextInt(64);
-            int i3 = i + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreIron.blockID)).generate_infdev(h, rand, l, l1, i3);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(64);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreIron.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
 
         if(rand.nextInt(2) == 0)
         {
-            j = a1 + rand.nextInt(16);
-            int i1 = rand.nextInt(32);
-            int i2 = i + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreGold.blockID)).generate_infdev(h, rand, j, i1, i2);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(32);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreGold.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
         if(rand.nextInt(8) == 0)
         {
-            j = a1 + rand.nextInt(16);
-            int j1 = rand.nextInt(16);
-            int j2 = i + rand.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID)).generate_infdev(h, rand, j, j1, j2);
+            int x2 = x1 + rand.nextInt(16);
+            int y2 = rand.nextInt(16);
+            int z2 = z1 + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID)).generate_infdev(worldObj, rand, x2, y2, z2);
         }
-        j = (int)g.func_806_a((double)a1 * 0.25D, (double)i * 0.25D) << 3;
+        int trees = (int)treeGen.func_806_a((double)x1 * 0.25D, (double)z1 * 0.25D) << 3;
         WorldGenerator treegen = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0327 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
-        for(int k2 = 0; k2 < j; k2++)
+        for(int i = 0; i < trees; i++)
         {
-            int j3 = a1 + rand.nextInt(16) + 8;
-            int k3 = i + rand.nextInt(16) + 8;
+            int x2 = x1 + rand.nextInt(16) + 8;
+            int z2 = z1 + rand.nextInt(16) + 8;
             treegen.setScale(1.0D, 1.0D, 1.0D);
-            treegen.generate(h, rand, j3, h.getHeightValue(j3, k3), k3);
+            treegen.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
         }
-        spawnAnimals(ii * 16, jj * 16);
+        spawnAnimals(x * 16, z * 16);
     }
 
     @Override
