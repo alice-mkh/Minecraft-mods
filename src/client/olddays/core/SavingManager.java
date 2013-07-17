@@ -237,8 +237,6 @@ public class SavingManager{
 
     public String[] getDefaultPresets(){
         ArrayList<String> presets = new ArrayList<String>();
-        presets.add("OldDays");
-        presets.add("Vanilla");
         ResourceLocation resource = new ResourceLocation("olddays/presets/list");
         try{
             InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(resource).func_110527_b();
