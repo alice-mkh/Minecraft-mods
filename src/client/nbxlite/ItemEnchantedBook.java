@@ -156,4 +156,13 @@ public class ItemEnchantedBook extends Item
         getEnchantedItemStack_do(itemstack, new EnchantmentData(enchantment, i));
         return new WeightedRandomChestContent(itemstack, par2, par3, par4);
     }
+
+    public ItemStack func_92109_a(Random par1Random)
+    {
+        Enchantment enchantment = Enchantment.enchantmentsBookList[par1Random.nextInt(Enchantment.enchantmentsBookList.length)];
+        ItemStack itemstack = new ItemStack(itemID, 1, 0);
+        int i = MathHelper.getRandomIntegerInRange(par1Random, enchantment.getMinLevel(), enchantment.getMaxLevel());
+        getEnchantedItemStack_do(itemstack, new EnchantmentData(enchantment, i));
+        return itemstack;
+    }
 }

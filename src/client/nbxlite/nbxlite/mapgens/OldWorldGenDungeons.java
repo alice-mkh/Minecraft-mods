@@ -236,8 +236,7 @@ public class OldWorldGenDungeons extends WorldGenerator
 
         if (i == 11)
         {
-//FIXME             return Item.enchantedBook.func_92109_a(par1Random);
-            return null;
+            return Item.enchantedBook.func_92109_a(par1Random);
         }
         else
         {

@@ -7,6 +7,7 @@ public class StructureMineshaftPieces
 {
     private static final WeightedRandomChestContent mineshaftChestContents[];
     private static final WeightedRandomChestContent mineshaftChestContents_old[];
+    private static final WeightedRandomChestContent mineshaftChestContents_older[];
 
     private static StructureComponent getRandomComponent(List par0List, Random par1Random, int par2, int par3, int par4, int par5, int par6)
     {
@@ -73,7 +74,10 @@ public class StructureMineshaftPieces
 
     static WeightedRandomChestContent[] func_78816_a()
     {
-        return ODNBXlite.mineshaftSomeValue() ? mineshaftChestContents : mineshaftChestContents_old;
+        if (ODNBXlite.Generator < ODNBXlite.GEN_NEWBIOMES || ODNBXlite.MapFeatures > ODNBXlite.FEATURES_15){
+            return mineshaftChestContents;
+        }
+        return ODNBXlite.mineshaftSomeValue() ? mineshaftChestContents_old : mineshaftChestContents_older;
     }
 
     static
@@ -84,6 +88,11 @@ public class StructureMineshaftPieces
                     new WeightedRandomChestContent(Item.pumpkinSeeds.itemID, 0, 2, 4, 10), new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1)
                 });
         mineshaftChestContents_old = (new WeightedRandomChestContent[]
+                {
+                    new WeightedRandomChestContent(Item.ingotIron.itemID, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.itemID, 0, 1, 3, 5), new WeightedRandomChestContent(Item.redstone.itemID, 0, 4, 9, 5), new WeightedRandomChestContent(Item.dyePowder.itemID, 4, 4, 9, 5), new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 2, 3), new WeightedRandomChestContent(Item.coal.itemID, 0, 3, 8, 10), new WeightedRandomChestContent(Item.bread.itemID, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeIron.itemID, 0, 1, 1, 1), new WeightedRandomChestContent(Block.rail.blockID, 0, 4, 8, 1), new WeightedRandomChestContent(Item.melonSeeds.itemID, 0, 2, 4, 10),
+                    new WeightedRandomChestContent(Item.pumpkinSeeds.itemID, 0, 2, 4, 10)
+                });
+        mineshaftChestContents_older = (new WeightedRandomChestContent[]
                 {
                     new WeightedRandomChestContent(Item.ingotIron.itemID, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.itemID, 0, 1, 3, 5), new WeightedRandomChestContent(Item.redstone.itemID, 0, 4, 9, 5), new WeightedRandomChestContent(Item.dyePowder.itemID, 4, 4, 9, 5), new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 2, 3), new WeightedRandomChestContent(Item.coal.itemID, 0, 3, 8, 10), new WeightedRandomChestContent(Item.bread.itemID, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeIron.itemID, 0, 1, 1, 1), new WeightedRandomChestContent(Block.rail.blockID, 0, 4, 8, 1), new WeightedRandomChestContent(Item.melonSeeds.itemID, 0, 2, 4, 10)
                 });

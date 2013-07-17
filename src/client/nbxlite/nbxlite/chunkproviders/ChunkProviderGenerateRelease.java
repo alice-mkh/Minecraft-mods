@@ -429,7 +429,8 @@ public class ChunkProviderGenerateRelease extends ChunkProviderBaseInfinite{
                 }
             }
         }
-        if (!flag && rand.nextInt(4) == 0)
+        boolean lakes = biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills;
+        if ((lakes || ODNBXlite.MapFeatures<=ODNBXlite.FEATURES_15) && !flag && rand.nextInt(4) == 0)
         {
             int i1 = k + rand.nextInt(16) + 8;
             int j2 = rand.nextInt(128);

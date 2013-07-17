@@ -885,6 +885,10 @@ public class ODNBXlite extends OldDaysModule{
         return Generator==GEN_NEWBIOMES && MapFeatures<FEATURES_15;
     }
 
+    public static boolean noNetherFortressChests(){
+        return Generator==GEN_NEWBIOMES && MapFeatures<=FEATURES_15;
+    }
+
     public static void SetGenerator(){
         SetGenerator(Minecraft.getMinecraft().theWorld, Generator, MapFeatures, MapTheme, IndevMapType, SnowCovered);
     }
@@ -935,6 +939,78 @@ public class ODNBXlite extends OldDaysModule{
             EntityWolf.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
         }catch(Exception ex){}
         mod_OldDays.refreshConditionProperties();
+        setChestContent();
+    }
+
+    private static WeightedRandomChestContent[] addToArray(WeightedRandomChestContent[] array, WeightedRandomChestContent... items){
+        List<WeightedRandomChestContent> list = Arrays.asList(array);
+        for (WeightedRandomChestContent w : items){
+            list.add(w);
+        }
+        return list.toArray(new WeightedRandomChestContent[list.size()]);
+    }
+
+    private static void setChestContent(){
+        WeightedRandomChestContent[] pyramidsChestContents = new WeightedRandomChestContent[]{
+            new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 3, 3),
+            new WeightedRandomChestContent(Item.ingotIron.itemID, 0, 1, 5, 10),
+            new WeightedRandomChestContent(Item.ingotGold.itemID, 0, 2, 7, 15),
+            new WeightedRandomChestContent(Item.emerald.itemID, 0, 1, 3, 2),
+            new WeightedRandomChestContent(Item.bone.itemID, 0, 4, 6, 20),
+            new WeightedRandomChestContent(Item.rottenFlesh.itemID, 0, 3, 7, 16)
+        };
+        WeightedRandomChestContent[] villageChestContents = new WeightedRandomChestContent[]{
+            new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 3, 3),
+            new WeightedRandomChestContent(Item.ingotIron.itemID, 0, 1, 5, 10),
+            new WeightedRandomChestContent(Item.ingotGold.itemID, 0, 1, 3, 5),
+            new WeightedRandomChestContent(Item.bread.itemID, 0, 1, 3, 15),
+            new WeightedRandomChestContent(Item.appleRed.itemID, 0, 1, 3, 15),
+            new WeightedRandomChestContent(Item.pickaxeIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.swordIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.plateIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.helmetIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.legsIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.bootsIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Block.obsidian.blockID, 0, 3, 7, 5),
+            new WeightedRandomChestContent(Block.sapling.blockID, 0, 3, 7, 5)
+        };
+        WeightedRandomChestContent[] strongholdChestContents = new WeightedRandomChestContent[]{
+            new WeightedRandomChestContent(Item.enderPearl.itemID, 0, 1, 1, 10),
+            new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 3, 3),
+            new WeightedRandomChestContent(Item.ingotIron.itemID, 0, 1, 5, 10),
+            new WeightedRandomChestContent(Item.ingotGold.itemID, 0, 1, 3, 5),
+            new WeightedRandomChestContent(Item.redstone.itemID, 0, 4, 9, 5),
+            new WeightedRandomChestContent(Item.bread.itemID, 0, 1, 3, 15),
+            new WeightedRandomChestContent(Item.appleRed.itemID, 0, 1, 3, 15),
+            new WeightedRandomChestContent(Item.pickaxeIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.swordIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.plateIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.helmetIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.legsIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.bootsIron.itemID, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Item.appleGold.itemID, 0, 1, 1, 1)
+        };
+        if (Generator!=GEN_NEWBIOMES || MapFeatures>FEATURES_15){
+            pyramidsChestContents = addToArray(pyramidsChestContents,
+                new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3),
+                new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111216_cf.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111213_cg.itemID, 0, 1, 1, 1));
+            villageChestContents = addToArray(villageChestContents,
+                new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3),
+                new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111216_cf.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111213_cg.itemID, 0, 1, 1, 1));
+            strongholdChestContents = addToArray(strongholdChestContents,
+                new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111216_cf.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.field_111213_cg.itemID, 0, 1, 1, 1));
+        }
+        mod_OldDays.setField(ComponentScatteredFeatureJunglePyramid.class, null, 4, pyramidsChestContents);
+        mod_OldDays.setField(ComponentScatteredFeatureDesertPyramid.class, null, 1, pyramidsChestContents);
+        mod_OldDays.setField(ComponentVillageHouse2.class, null, 0, villageChestContents);
+        mod_OldDays.setField(ComponentStrongholdChestCorridor.class, null, 0, strongholdChestContents);
     }
 
     public static void setIndevBounds(int groundtype, int groundheight, int watertype, int waterheight){

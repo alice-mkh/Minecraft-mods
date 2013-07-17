@@ -8,12 +8,9 @@ RESULT_DIR=$DIR/result
 RESULT_DIR_2=$DIR/result2
 
 function find() {
-#    if [[ $1 == "World" ]]; then
-#        echo "yc" # A workaround for World.class, as it returns GuiCreateWorld.class instead
-#        exit 0
-#    fi
     for F in *.class; do
-        if [ -n "`strings $F | grep -E ^\!?$1.java`" ]; then
+        EXPR="^.?$1.java"
+        if [ -n "`strings $F | grep -E $EXPR`" ]; then
             echo ${F/%.class/}
             exit 0
         fi
@@ -68,8 +65,8 @@ ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon
         textures/blocks/olddays_iron_bottom.png textures/blocks/olddays_gold_side.png textures/blocks/olddays_gold_bottom.png
         textures/blocks/olddays_diamond_side.png textures/blocks/olddays_diamond_bottom.png olddays/clock.png olddays/compass.png
         olddays/mojang.png olddays/mojang2.png"
-CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2`
-       `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem`
+CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2` `find ComponentNetherBridgeCorridor`
+       `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem` `find ComponentNetherBridgeCorridor2`
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2 GuiButtonNBXlite
        `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper` `find ItemEnchantedBook`
        `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 RenderTntMinecart2 `find BlockGrass`
@@ -88,8 +85,8 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves` MovementInputFromOptionsCustom
         `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find TileEntityEnderChestRenderer` PathIndev `find BlockSnow`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay `find ItemEnchantedBook` IScrollingGui
-        `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget`
-        OldDaysTextureManager\$TextureHook `find ItemDye` EntityAIArrowAttack2 `find PathFinder` TextureFX TextureCompassFX
+        `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget` `find ComponentNetherBridgeCorridor2`
+        OldDaysTextureManager\$TextureHook `find ItemDye` EntityAIArrowAttack2 `find PathFinder` TextureFX TextureCompassFX `find ComponentNetherBridgeCorridor`
         TextureWaterFX TextureWaterFlowFX TextureLavaFX TextureLavaFlowFX TextureFlamesFX TexturePortalFX TextureWatchFX GuiScrolling
         `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` PathEntityIndev `find BlockSapling`
         `find EntityWaterMob` `find EntitySlime` ODMobs `find ComponentVillageField` `find ComponentVillageField2` PathPointIndev
