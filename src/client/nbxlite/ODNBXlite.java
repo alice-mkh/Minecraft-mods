@@ -16,7 +16,7 @@ public class ODNBXlite extends OldDaysModule{
         super(c, 8, "NBXlite");
         new OldDaysPropertyInt(this,   1, 0,     2,     "Gen", 2).setUseNames().setGUIRefresh().disableLoading();
         new OldDaysPropertyInt(this,   2, 0,     0,     "MapTheme", 3).setUseNames().disableLoading();
-        new OldDaysPropertyInt(this,   3, 0,     4,     "BiomelessFeatures", 4).setUseNames().disableLoading();
+        new OldDaysPropertyInt(this,   3, 0,     6,     "BiomelessFeatures", 6).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   4, 0,     5,     "BetaFeatures", 6).setUseNames().disableLoading();
         new OldDaysPropertyInt(this,   5, 0,     8,     "ReleaseFeatures", 8).setUseNames().disableLoading();
         new OldDaysPropertyFlags(this, 6,               "Flags").disableLoading();
@@ -43,7 +43,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond2(this, 27,-1,    2,     "Saplings", 2);
         new OldDaysPropertyBool(this,  28,true,  true,  "ShowGUI");
         new OldDaysPropertyInt(this,   29,4,     4,     "DefaultGenerator", 4).setUseNames();
-        new OldDaysPropertyInt(this,   30,4,     4,     "DefaultFeaturesBiomeless", 4).setUseNames();
+        new OldDaysPropertyInt(this,   30,4,     6,     "DefaultFeaturesBiomeless", 6).setUseNames();
         new OldDaysPropertyInt(this,   31,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
         new OldDaysPropertyInt(this,   32,8,     8,     "DefaultFeaturesRelease", 8).setUseNames();
         replaceBlocks();
@@ -146,7 +146,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int DefaultFiniteDepth = 32;
 
     public static boolean LeavesDecay(){
-        return Generator>GEN_BIOMELESS || MapFeatures!=FEATURES_INFDEV0420;
+        return Generator>GEN_BIOMELESS || (MapFeatures!=FEATURES_INFDEV0420 && MapFeatures!=FEATURES_INFDEV0415);
     }
 
     public static boolean OldHoes(){
@@ -189,10 +189,10 @@ public class ODNBXlite extends OldDaysModule{
 
     public static int Saplings(){
         if (Generator == GEN_BIOMELESS){
-            if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0227 || MapFeatures == FEATURES_INFDEV0608 || MapFeatures == FEATURES_INFDEV0618){
+            if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0227 || MapFeatures == FEATURES_INFDEV0327 || MapFeatures == FEATURES_INFDEV0608 || MapFeatures == FEATURES_INFDEV0618){
                 return 0;
             }
-            if (MapFeatures == FEATURES_INFDEV0420){
+            if (MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0415){
                 return 1;
             }
         }
@@ -447,6 +447,10 @@ public class ODNBXlite extends OldDaysModule{
                     result.append("0608");
                 }else if (feats==FEATURES_INFDEV0420){
                     result.append("0420");
+                }else if (feats==FEATURES_INFDEV0415){
+                    result.append("0415");
+                }else if (feats==FEATURES_INFDEV0327){
+                    result.append("0327");
                 }else if (feats==FEATURES_INFDEV0227){
                     result.append("0227");
                 }
@@ -527,6 +531,12 @@ public class ODNBXlite extends OldDaysModule{
                     }
                     if (gen.contains("0420")){
                         return FEATURES_INFDEV0420;
+                    }
+                    if (gen.contains("0415")){
+                        return FEATURES_INFDEV0415;
+                    }
+                    if (gen.contains("0327")){
+                        return FEATURES_INFDEV0327;
                     }
                     if (gen.contains("0227")){
                         return FEATURES_INFDEV0227;
@@ -1051,7 +1061,7 @@ public class ODNBXlite extends OldDaysModule{
             return 8F;
         }
         if (Generator == GEN_BIOMELESS){
-            if (MapFeatures == FEATURES_INFDEV0227 || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
+            if (MapFeatures == FEATURES_INFDEV0227 || MapFeatures == FEATURES_INFDEV0327 || MapFeatures == FEATURES_INFDEV0415 || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
                 return (MapTheme == THEME_PARADISE) ? 182F : 120F;
             }
             if (MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_CLASSIC){
@@ -1096,7 +1106,7 @@ public class ODNBXlite extends OldDaysModule{
                 return 0xc6deff;
             }
             if (Generator == GEN_BIOMELESS){
-                if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
+                if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0327 || MapFeatures == FEATURES_INFDEV0415 || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
                     return 0x99ccff;
                 }
                 if (MapFeatures == FEATURES_INFDEV0227){
@@ -1123,7 +1133,7 @@ public class ODNBXlite extends OldDaysModule{
                 if (MapFeatures == FEATURES_CLASSIC || MapFeatures == FEATURES_INDEV || MapFeatures == FEATURES_INFDEV0227){
                     return 0xffffff;
                 }
-                if (MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
+                if (MapFeatures == FEATURES_INFDEV0327 || MapFeatures == FEATURES_INFDEV0415 || MapFeatures == FEATURES_INFDEV0420 || MapFeatures == FEATURES_INFDEV0608){
                     return 0xb0d0ff;
                 }
                 return 0;
@@ -1346,6 +1356,8 @@ public class ODNBXlite extends OldDaysModule{
     public static final int FEATURES_CLASSIC = 4;
     public static final int FEATURES_INFDEV0608 = 5;
     public static final int FEATURES_INFDEV0618 = 6;
+    public static final int FEATURES_INFDEV0327 = 7;
+    public static final int FEATURES_INFDEV0415 = 8;
 
     public static final int FEATURES_ALPHA120 = 0;
     public static final int FEATURES_BETA10 = 1;
@@ -1377,6 +1389,8 @@ public class ODNBXlite extends OldDaysModule{
 
 
     public static int[] BIOMELESS_FEATURES = new int[]{ODNBXlite.FEATURES_INFDEV0227,
+                                                       ODNBXlite.FEATURES_INFDEV0327,
+                                                       ODNBXlite.FEATURES_INFDEV0415,
                                                        ODNBXlite.FEATURES_INFDEV0420,
                                                        ODNBXlite.FEATURES_INFDEV0608,
                                                        ODNBXlite.FEATURES_INFDEV0618,

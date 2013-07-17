@@ -39,6 +39,8 @@ public class ChunkProviderGenerate2
                 return infdev618Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0420 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608){
                 return infdev420Gen;
+            }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 || ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0327){
+                return infdev415Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0227){
                 return infdev227Gen;
             }else if (ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV){

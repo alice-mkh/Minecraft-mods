@@ -60,11 +60,11 @@ public class PageAlpha extends Page{
             setY(featuresButtons[i], (i - 1) * 21);
             setY(helpButtons[i], (i - 1) * 21);
         }
-        setY(themeButton, 85);
-        setY(newOresButton, 120);
-        setY(weatherButton, newOresButton.drawButton ? 142 : 120);
-        setY(snowButton, 164);
-        setY(fixBeachesButton, 185);
+        setY(themeButton, 127);
+        setY(newOresButton, 162);
+        setY(weatherButton, newOresButton.drawButton ? 184 : 162);
+        setY(snowButton, 206);
+        setY(fixBeachesButton, 228);
         updateButtonPosition();
     }
 
@@ -94,7 +94,7 @@ public class PageAlpha extends Page{
     @Override
     public void drawScreen(int i, int j, float f){
         super.drawScreen(i, j, f);
-        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 108 + scrollingGui.scrolling, 0xa0a0a0);
+        drawCenteredString(fontRenderer, mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1) + ".desc"), width / 2 + - 10 + leftmargin, height / 6 + 150 + scrollingGui.scrolling, 0xa0a0a0);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class PageAlpha extends Page{
         str.append(mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (features + 1)));
         str.append(", ");
         str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
-        if (features == 3 && ODNBXlite.SnowCovered){
+        if (features == 5 && ODNBXlite.SnowCovered){
             str.append(" (");
             str.append(I18n.func_135053_a("tile.snow.name"));
             str.append(")");
@@ -210,17 +210,17 @@ public class PageAlpha extends Page{
         boolean[] features = new boolean[13];
         features[0] = i <= 0;
         features[1] = i <= 0;
-        features[2] = i >= 1;
-        features[3] = i >= 1;
-        features[4] = i >= 3;
-        features[5] = i >= 3 || i == 0;
-        features[6] = i >= 3;
-        features[7] = i >= 4;
-        features[8] = i >= 4;
-        features[9] = i >= 4;
-        features[10] = i >= 4;
-        features[11] = i >= 4;
-        features[12] = i >= 4;
+        features[2] = i >= 3;
+        features[3] = i >= 3;
+        features[4] = i >= 5;
+        features[5] = i >= 5 || i == 0;
+        features[6] = i >= 5;
+        features[7] = i >= 6;
+        features[8] = i >= 6;
+        features[9] = i >= 6;
+        features[10] = i >= 6;
+        features[11] = i >= 6;
+        features[12] = i >= 6;
         int num = mod_OldDays.getDescriptionNumber(name+".feature");
         for (int j = 0; j < num; j++){
             list.add("<-• §"+(features[j] ? "a" : "c")+mod_OldDays.lang.get(name+".feature"+(j+1)));
