@@ -1,16 +1,14 @@
 package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public abstract class TextureFX extends TextureAtlasSprite{
     protected byte[] imageData;
     protected boolean anaglyphEnabled;
 //     private Texture tmp;
-    private int width = 16;
-    private int height = 16;
 
     public TextureFX(String str){
         super(str);
@@ -22,29 +20,28 @@ public abstract class TextureFX extends TextureAtlasSprite{
 
     @Override
     public void updateAnimation(){
-        /*if (textureSheet == null){
-            return;
-        }
-        FIXMEwidth = (Integer)(mod_OldDays.getField(TextureAtlasSprite.class, this, 7));
-        height = width;
-        if (tmp == null){
-            tmp = new Texture(getIconName(), 2, 16, 16, 10496, 6408, 9728, 9728, 0, null);
-        }
+//         if (tmp == null){
+//             tmp = new Texture(getIconName(), 2, 16, 16, 10496, 6408, 9728, 9728, 0, null);
+//         }
         anaglyphEnabled = Minecraft.getMinecraft().gameSettings.anaglyph;
         onTick();
-        tmp.getTextureData().put(imageData);
-        for (int i = 0; i <  width / 16; i++){
-            for (int j = 0; j < height / 16; j++){
-                tmp.getTextureData().position(0);
-                textureSheet.func_104062_b(originX + 16 * i, originY + 16 * j, tmp);
+        int[] data = new int[getOriginX() * getOriginY()];
+        for (int i = 0; i < data.length; i++){
+            data[i] = imageData[i << 2] << 24 | imageData[i << 2 + 1] << 16 | imageData[i << 2 + 2] << 8 | imageData[i << 2 + 3];
+        }
+//         tmp.getTextureData().put(imageData);
+        for (int i = 0; i <  getOriginX() / 16; i++){
+            for (int j = 0; j < getOriginY() / 16; j++){
+//                 tmp.getTextureData().position(0);
+//                 textureSheet.func_104062_b(originX + 16 * i, originY + 16 * j, tmp);
+                TextureUtil.func_110998_a(data, getOriginX(), getOriginY(), func_130010_a(), func_110967_i(), false, false);
             }
-        }*/
+        }
     }
 
     protected BufferedImage getImage(String str) throws IOException{
-/*FIXME        TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-        ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-        return ImageIO.read(texpack.getResourceAsStream(str));*/
-        return null;
+        ResourceLocation res = new ResourceLocation(str);
+        InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(res).func_110527_b();
+        return ImageIO.read(stream);
     }
 }

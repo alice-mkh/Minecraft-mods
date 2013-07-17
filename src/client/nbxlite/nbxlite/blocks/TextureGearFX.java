@@ -20,8 +20,8 @@ public class TextureGearFX extends TextureFX
         this.h = ((par2 << 1) - 1);
         tickCounter = 2;
         try{
-            getImage("/olddays/gear.png").getRGB(0, 0, 32, 32, gear, 0, 32);
-            getImage("/olddays/gearmiddle.png").getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
+            getImage("olddays/gear.png").getRGB(0, 0, 32, 32, gear, 0, 32);
+            getImage("olddays/gearmiddle.png").getRGB(0, 0, 16, 16, gearmiddle, 0, 16);
         }catch (IOException localIOException){
             localIOException.printStackTrace();
         }

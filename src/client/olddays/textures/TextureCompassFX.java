@@ -19,7 +19,7 @@ public class TextureCompassFX extends TextureFX
 
         try
         {
-            getImage("/olddays/compass.png").getRGB(0, 0, 16, 16, compassIconImageData, 0, 16);
+            getImage("olddays/compass.png").getRGB(0, 0, 16, 16, compassIconImageData, 0, 16);
         }
         catch (IOException ioexception)
         {

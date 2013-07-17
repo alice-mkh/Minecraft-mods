@@ -105,14 +105,14 @@ public class OldDaysTextureManager{
     }
 
     public Icon registerCustomIcon(IconRegister map, String par1Str, TextureAtlasSprite icon, Icon from){
-/*        if (par1Str == null || !(map instanceof TextureMap)){
+        if (par1Str == null || !(map instanceof TextureMap)){
             return icon;
         }
-        Map textureStitchedMap = (Map)(mod_OldDays.getField(TextureMap.class, (TextureMap)map, 9));
+        Map textureStitchedMap = (Map)(mod_OldDays.getField(TextureMap.class, (TextureMap)map, 4));
         if (textureStitchedMap == null){
             return icon;
         }
-        TextureAtlasSprite texturestitched = (TextureAtlasSprite)textureStitchedMap.get(par1Str);
+/*        TextureAtlasSprite texturestitched = (TextureAtlasSprite)textureStitchedMap.get(par1Str);
         if (texturestitched == null || texturestitched != icon)
         {
             textureStitchedMap.put(par1Str, icon);
