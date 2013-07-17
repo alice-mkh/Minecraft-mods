@@ -39,40 +39,40 @@ public abstract class EntityLiving extends EntityLivingBase
         if (dim!=0){
             return true;
         }
-        if (nonewmobs<14 && id=="EntityHorse"){
+        if (nonewmobs<14 && id.equals("EntityHorse")){
             return false;
         }
-        if (nonewmobs<13 && id=="Bat"){
+        if (nonewmobs<13 && id.equals("Bat")){
             return false;
         }
-        if (nonewmobs<12 && id=="Ozelot"){
+        if (nonewmobs<12 && id.equals("Ozelot")){
             return false;
         }
-        if (nonewmobs<11 && (id=="MushroomCow" || id=="Villager")){
+        if (nonewmobs<11 && (id.equals("MushroomCow") || id.equals("Villager"))){
             return false;
         }
-        if (nonewmobs<10 && id=="Enderman"){
+        if (nonewmobs<10 && id.equals("Enderman")){
             return false;
         }
-        if (nonewmobs<8 && id=="Wolf"){
+        if (nonewmobs<8 && id.equals("Wolf")){
             return false;
         }
-        if (nonewmobs<7 && id=="Squid"){
+        if (nonewmobs<7 && id.equals("Squid")){
             return false;
         }
-        if (nonewmobs<6 && id=="Chicken"){
+        if (nonewmobs<6 && id.equals("Chicken")){
             return false;
         }
-        if (nonewmobs<5 && id=="Slime"){
+        if (nonewmobs<5 && id.equals("Slime")){
             return false;
         }
-        if (nonewmobs<4 && id=="Cow"){
+        if (nonewmobs<4 && id.equals("Cow")){
             return false;
         }
-        if (nonewmobs<3 && (id=="Pig" || id=="Sheep" || id=="Zombie" || id=="Skeleton" || id=="Spider" || id=="Creeper")){
+        if (nonewmobs<3 && (id.equals("Pig") || id.equals("Sheep") || id.equals("Zombie") || id.equals("Skeleton") || id.equals("Spider") || id.equals("Creeper"))){
             return false;
         }
-        if ((nonewmobs != 1 && id == "Rana") || (nonewmobs != 2 && id == "Steve")){
+        if ((nonewmobs != 1 && id.equals("Rana")) || (nonewmobs != 2 && id.equals("Steve"))){
             return false;
         }
         return true;

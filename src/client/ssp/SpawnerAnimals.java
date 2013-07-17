@@ -388,7 +388,7 @@ public final class SpawnerAnimals
      */
     public static void performWorldGenSpawning(World par0World, BiomeGenBase par1BiomeGenBase, int par2, int par3, int par4, int par5, Random par6Random)
     {
-        List list = par1BiomeGenBase.getSpawnableList(EnumCreatureType.creature);
+        List list = getSpawnableList(par0World, par1BiomeGenBase, EnumCreatureType.creature);
 
         if (list.isEmpty())
         {
@@ -473,6 +473,19 @@ public final class SpawnerAnimals
             return null;
         }
         return (SpawnListEntry)WeightedRandom.getRandomItem(w.rand, list);
+    }
+
+    private static List getSpawnableList(World w, BiomeGenBase par1BiomeGenBase, EnumCreatureType par2EnumCreatureType){
+        List list2 = par1BiomeGenBase.getSpawnableList(par2EnumCreatureType);
+        List list = new ArrayList();
+        for (Object o : list2){
+            SpawnListEntry s = (SpawnListEntry)o;
+            String str = (String)(classToStringMapping.get(s.entityClass));
+            if (EntityLiving.allow(str, w.provider.dimensionId)){
+                list.add(s);
+            }
+        }
+        return list;
     }
 
     static{
