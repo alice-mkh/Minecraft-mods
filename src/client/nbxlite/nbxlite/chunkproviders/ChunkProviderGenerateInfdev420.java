@@ -1,6 +1,5 @@
 package net.minecraft.src.nbxlite.chunkproviders;
 
-import java.util.List;
 import java.util.Random;
 import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.InfdevNoiseGeneratorOctaves;
@@ -370,7 +369,7 @@ public class ChunkProviderGenerateInfdev420 extends ChunkProviderBaseInfinite{
         {
             trees = 0;
         }
-        Object treegen = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
+        WorldGenerator treegen = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0608 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
         if(rand.nextInt(100) == 0)
         {
             trees++;
@@ -383,8 +382,8 @@ public class ChunkProviderGenerateInfdev420 extends ChunkProviderBaseInfinite{
         {
             int x2 = x1 + rand.nextInt(16) + 8;
             int z2 = z1 + rand.nextInt(16) + 8;
-            ((WorldGenerator)treegen).setScale(1.0D, 1.0D, 1.0D);
-            ((WorldGenerator)treegen).generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
+            treegen.setScale(1.0D, 1.0D, 1.0D);
+            treegen.generate(worldObj, rand, x2, worldObj.getHeightValue(x2, z2), z2);
         }
         spawnAnimals(x * 16, z * 16);
     }

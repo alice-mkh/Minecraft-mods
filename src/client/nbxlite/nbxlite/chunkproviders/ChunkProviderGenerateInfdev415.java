@@ -1,15 +1,14 @@
 package net.minecraft.src.nbxlite.chunkproviders;
 
 import java.util.Random;
+import net.minecraft.src.*;
 import net.minecraft.src.nbxlite.noise.InfdevNoiseGeneratorOctaves;
+import net.minecraft.src.nbxlite.mapgens.MapGenStronghold2;
 import net.minecraft.src.nbxlite.mapgens.OldWorldGenBigTree;
+import net.minecraft.src.nbxlite.mapgens.OldWorldGenTrees;
 import net.minecraft.src.nbxlite.mapgens.SuperOldWorldGenMinable;
-import net.minecraft.src.Block;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.World;
 
 public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
-    private Random a;
     private InfdevNoiseGeneratorOctaves b;
     private InfdevNoiseGeneratorOctaves c;
     private InfdevNoiseGeneratorOctaves d;
@@ -17,25 +16,33 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
     private InfdevNoiseGeneratorOctaves f;
     private InfdevNoiseGeneratorOctaves g;
     private World h;
+    public MapGenStronghold2 strongholdGenerator;
+    public MapGenVillage villageGenerator;
+    public MapGenMineshaft mineshaftGenerator;
+    private MapGenBase ravineGenerator;
 
     public ChunkProviderGenerateInfdev415(World world, long l, boolean flag){
         super(world, l, flag);
         fixLight = true;
         h = world;
-        a = new Random(l);
-        new Random(l);
-        b = new InfdevNoiseGeneratorOctaves(a, 16);
-        c = new InfdevNoiseGeneratorOctaves(a, 16);
-        d = new InfdevNoiseGeneratorOctaves(a, 8);
-        e = new InfdevNoiseGeneratorOctaves(a, 4);
-        f = new InfdevNoiseGeneratorOctaves(a, 4);
-        new InfdevNoiseGeneratorOctaves(a, 5);
-        g = new InfdevNoiseGeneratorOctaves(a, 5);
+        b = new InfdevNoiseGeneratorOctaves(rand, 16);
+        c = new InfdevNoiseGeneratorOctaves(rand, 16);
+        d = new InfdevNoiseGeneratorOctaves(rand, 8);
+        e = new InfdevNoiseGeneratorOctaves(rand, 4);
+        f = new InfdevNoiseGeneratorOctaves(rand, 4);
+        new InfdevNoiseGeneratorOctaves(rand, 5);
+        g = new InfdevNoiseGeneratorOctaves(rand, 5);
+        if(flag)
+        {
+            strongholdGenerator = new MapGenStronghold2();
+            villageGenerator = new MapGenVillage();
+            mineshaftGenerator = new MapGenMineshaft();
+            ravineGenerator = new MapGenRavine();
+        }
     }
 
     @Override
     protected void generateTerrain(int i, int j, byte abyte0[]){
-        a.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         for(int k = 0; k < 4; k++)
         {
             for(int i1 = 0; i1 < 4; i1++)
@@ -45,10 +52,10 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
                 int i2 = (j << 2) + i1;
                 for(int j2 = 0; j2 < ad.length; j2++)
                 {
-                    ad[j2][0] = a(k1, j2, i2);
-                    ad[j2][1] = a(k1, j2, i2 + 1);
-                    ad[j2][2] = a(k1 + 1, j2, i2);
-                    ad[j2][3] = a(k1 + 1, j2, i2 + 1);
+                    ad[j2][0] = generateNoise(k1, j2, i2);
+                    ad[j2][1] = generateNoise(k1, j2, i2 + 1);
+                    ad[j2][2] = generateNoise(k1 + 1, j2, i2);
+                    ad[j2][3] = generateNoise(k1 + 1, j2, i2 + 1);
                 }
 
                 for(int l1 = 0; l1 < 32; l1++)
@@ -96,16 +103,19 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
             }
 
         }
+    }
 
+    @Override
+    protected void replaceBlocks(int i, int j, byte abyte0[]){
         for(int l = 0; l < 16; l++)
         {
             for(int j1 = 0; j1 < 16; j1++)
             {
                 double d2 = (i << 4) + l;
                 double d4 = (j << 4) + j1;
-                boolean flag = e.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + a.nextDouble() * 0.20000000000000001D > 0.0D;
-                boolean flag1 = e.generateNoise(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + a.nextDouble() * 0.20000000000000001D > 3D;
-                int k2 = (int)(f.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + a.nextDouble() * 0.25D);
+                boolean flag = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && e.generateNoise(d2 * 0.03125D, d4 * 0.03125D, 0.0D) + rand.nextDouble() * 0.20000000000000001D > 0.0D;
+                boolean flag1 = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0415 && e.generateNoise(d4 * 0.03125D, 109.0134D, d2 * 0.03125D) + rand.nextDouble() * 0.20000000000000001D > 3D;
+                int k2 = (int)(f.func_806_a(d2 * 0.03125D * 2D, d4 * 0.03125D * 2D) / 3D + 3D + rand.nextDouble() * 0.25D);
                 int l2 = l << 11 | j1 << 7 | 0x7f;
                 int i3 = -1;
                 int j3 = Block.grass.blockID;
@@ -157,7 +167,7 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
         }
     }
 
-    private double a(double d1, double d2, double d3)
+    private double generateNoise(double d1, double d2, double d3)
     {
         double d4;
         if((d4 = d2 * 4D - 64D) < 0.0D)
@@ -197,50 +207,92 @@ public class ChunkProviderGenerateInfdev415 extends ChunkProviderBaseInfinite{
         }
         return d9;
     }
+
+    @Override
+    protected void generateStructures(int i, int j, byte abyte0[]){
+        if(mapFeaturesEnabled){
+            if (ODNBXlite.Structures[0]){
+                ravineGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generate(this, worldObj, i, j, abyte0);
+            }
+        }
+    }
+
     @Override
     public void populate(IChunkProvider ichunkprovider, int i, int j){
-        a.setSeed((long)i * 0x12f88dd3L + (long)j * 0x36d41eecL);
+        rand.setSeed((long)i * 0x12f88dd3L + (long)j * 0x36d41eecL);
+        int ii = i;
+        int jj = j;
         int a1 = i << 4;
         i = j << 4;
+        if(mapFeaturesEnabled)
+        {
+            if (ODNBXlite.Structures[2]){
+                strongholdGenerator.generateStructuresInChunk(worldObj, rand, ii, jj);
+            }
+            if (ODNBXlite.Structures[1]){
+                villageGenerator.generateStructuresInChunk(worldObj, rand, ii, jj);
+            }
+            if (ODNBXlite.Structures[3]){
+                mineshaftGenerator.generateStructuresInChunk(worldObj, rand, ii, jj);
+            }
+        }
         for(j = 0; j < 20; j++)
         {
-            int k = a1 + a.nextInt(16);
-            int k1 = a.nextInt(128);
-            int l2 = i + a.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreCoal.blockID)).generate_infdev(h, a, k, k1, l2);
+            int k = a1 + rand.nextInt(16);
+            int k1 = rand.nextInt(128);
+            int l2 = i + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreCoal.blockID)).generate_infdev(h, rand, k, k1, l2);
         }
 
         for(j = 0; j < 10; j++)
         {
-            int l = a1 + a.nextInt(16);
-            int l1 = a.nextInt(64);
-            int i3 = i + a.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreIron.blockID)).generate_infdev(h, a, l, l1, i3);
+            int l = a1 + rand.nextInt(16);
+            int l1 = rand.nextInt(64);
+            int i3 = i + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreIron.blockID)).generate_infdev(h, rand, l, l1, i3);
         }
 
-        if(a.nextInt(2) == 0)
+        if(rand.nextInt(2) == 0)
         {
-            j = a1 + a.nextInt(16);
-            int i1 = a.nextInt(32);
-            int i2 = i + a.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreGold.blockID)).generate_infdev(h, a, j, i1, i2);
+            j = a1 + rand.nextInt(16);
+            int i1 = rand.nextInt(32);
+            int i2 = i + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreGold.blockID)).generate_infdev(h, rand, j, i1, i2);
         }
-        if(a.nextInt(8) == 0)
+        if(rand.nextInt(8) == 0)
         {
-            j = a1 + a.nextInt(16);
-            int j1 = a.nextInt(16);
-            int j2 = i + a.nextInt(16);
-            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID)).generate_infdev(h, a, j, j1, j2);
+            j = a1 + rand.nextInt(16);
+            int j1 = rand.nextInt(16);
+            int j2 = i + rand.nextInt(16);
+            (new SuperOldWorldGenMinable(Block.oreDiamond.blockID)).generate_infdev(h, rand, j, j1, j2);
         }
         j = (int)g.func_806_a((double)a1 * 0.25D, (double)i * 0.25D) << 3;
-        OldWorldGenBigTree treegen = new OldWorldGenBigTree();
+        WorldGenerator treegen = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INFDEV0327 ? new OldWorldGenTrees(false) : new OldWorldGenBigTree();
         for(int k2 = 0; k2 < j; k2++)
         {
-            int j3 = a1 + a.nextInt(16) + 8;
-            int k3 = i + a.nextInt(16) + 8;
+            int j3 = a1 + rand.nextInt(16) + 8;
+            int k3 = i + rand.nextInt(16) + 8;
             treegen.setScale(1.0D, 1.0D, 1.0D);
-            treegen.generate(h, a, j3, h.getHeightValue(j3, k3), k3);
+            treegen.generate(h, rand, j3, h.getHeightValue(j3, k3), k3);
         }
+        spawnAnimals(ii * 16, jj * 16);
+    }
 
+    @Override
+    public ChunkPosition findClosestStructure(World world, String s, int i, int j, int k){
+        if("Stronghold".equals(s) && strongholdGenerator != null){
+            return strongholdGenerator.getNearestInstance(world, i, j, k);
+        }else{
+            return null;
+        }
     }
 }
