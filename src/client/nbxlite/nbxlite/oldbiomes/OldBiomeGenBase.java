@@ -18,7 +18,7 @@ public class OldBiomeGenBase
     public static final OldBiomeGenBase seasonalForest = (new OldBiomeGenBase()).setColor(0x9be023).setBiomeName("Seasonal Forest");
     public static final OldBiomeGenBase forest = (new OldBiomeGenForest()).setColor(0x56621).setBiomeName("Forest").func_4124_a(0x4eba31);
     public static final OldBiomeGenBase savanna = (new OldBiomeGenDesert()).setColor(0xd9e023).setBiomeName("Savanna");
-    public static final OldBiomeGenBase shrubland = (new OldBiomeGenBase()).setColor(0xa1ad20).setBiomeName("Shrubland");
+    public static final OldBiomeGenBase shrubland = (new OldBiomeGenPlains()).setColor(0xa1ad20).setBiomeName("Shrubland");
     public static final OldBiomeGenBase taiga = (new OldBiomeGenTaiga()).setColor(0x2eb153).setBiomeName("Taiga").setEnableSnow().func_4124_a(0x7bb731);
     public static final OldBiomeGenBase desert = (new OldBiomeGenDesert()).setColor(0xfa9418).setBiomeName("Desert").setDisableRain();
     public static final OldBiomeGenBase plains = (new OldBiomeGenPlains()).setColor(0xffd910).setBiomeName("Plains");
