@@ -6551,7 +6551,7 @@ public class RenderBlocks
             renderFaceYPos(par1Block, par2, par3, par4, getBlockIcon(par1Block, blockAccess, par2, par3, par4, 1));
         }
 
-        float ff6 = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4) : 0;
+        float ff6 = Minecraft.oldlighting ? par1Block.getBlockBrightness(blockAccess, par2, par3, par4) : 1.0F;
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(i);
         }
