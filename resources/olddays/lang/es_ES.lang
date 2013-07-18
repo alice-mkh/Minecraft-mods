@@ -889,8 +889,7 @@ nbxlite.cloudheight.name=Altura de las nubes
 nbxlite.leavesdecay.name=Decaimiento de hojas
  nbxlite.leavesdecay.desc1=Determina si las hojas deben caer
  nbxlite.leavesdecay.desc2=cuando no hay troncos.
-//FIXME
- nbxlite.leavesdecay.desc3=§aAuto: §7Everywhere except 04.15 and 04.20 Infdev.
+ nbxlite.leavesdecay.desc3=§aAuto: §7Siempre exceptuando Infdev 04.15 y 04.20
  nbxlite.leavesdecay.desc4=§aCambiado muchas veces.
 nbxlite.oldspawning.name=Antigua generación de monstruos
  nbxlite.oldspawning.desc1=Cuando esté activado, los mundos
@@ -1017,12 +1016,10 @@ flag.weather=Clima
 
 biomeless.feature1=Muros de obsidiana
 biomeless.feature2=Pirámides de ladrillo
-//FIXME
-biomeless.feature3=3D noise
+biomeless.feature3="Ruido" en 3D
 biomeless.feature4=Ores
 biomeless.feature5=Playas
-//FIXME
-biomeless.feature6=Smooth noise
+biomeless.feature6="Ruido" más fluido
 biomeless.feature7=Cuevas
 biomeless.feature8=Flores
 biomeless.feature9=Hongos
