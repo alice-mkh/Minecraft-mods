@@ -171,7 +171,6 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             f *= 1.1F;
         }
 
-        
         AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
         f = (float)((double)f * ((attributeinstance.func_111126_e() / (double)capabilities.getWalkSpeed() + 1.0D) / 2D));
 
@@ -500,8 +499,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         if (!sprint){
             par1 = false;
         }
-        setFlag(3, par1);
-        sprintingTicksLeft = par1 ? 600 : 0;
+        super.setSprinting(par1);
     }
 
     /**
