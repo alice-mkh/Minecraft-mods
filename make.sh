@@ -167,7 +167,7 @@ for f in $MODS_LIST; do
     count=$count+1;
 done
 echo "ADD: WorldEdit.jar"
-cp -r "$ADDITIONAL_DIR/WorldEdit.jar" "$RESULT_DIR/client/spc/WorldEdit.jar"
+cp -r "$DIR/../lib/WorldEdit.jar" "$RESULT_DIR/client/spc/WorldEdit.jar"
 echo "SERVER:"
 count=1;
 for f2 in $MODS_LIST_SERVER; do
