@@ -1,4 +1,5 @@
 #!/bin/bash
+
 DIR=`pwd`/reobf
 #~/.minecraft/mcp1.3.2/reobf
 ORIG_DIR=$DIR/minecraft
@@ -7,11 +8,12 @@ ADDITIONAL_DIR=$DIR/additional
 RESULT_DIR=$DIR/result
 RESULT_DIR_2=$DIR/result2
 
-function find() {
+find()
+{
     for F in *.class; do
         EXPR="^.?$1.java"
         if [ -n "`strings $F | grep -E $EXPR`" ]; then
-            echo ${F/%.class/}
+            echo ${F%.class}
             exit 0
         fi
     done

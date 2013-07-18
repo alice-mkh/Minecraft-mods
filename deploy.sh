@@ -120,7 +120,8 @@ gameplay/ItemBow.java
 gameplay/ItemFood.java"
 ODDIRS="actions behavior bugs eyecandy gameplay"
 
-function copy() {
+copy()
+{
     mkdir -p $CC/ssp
     cp $SRCDIR/src/Minecraft.java $CC/ssp
     cp $SRCDIR/client/ClientBrandRetriever.java $CC/ssp
@@ -141,7 +142,8 @@ function copy() {
         cp $SRCDIR/src/$(basename $F) $CL/olddays/$F
     done
 }
-function move() {
+move()
+{
     mkdir -p $CC/ssp
     mv $SRCDIR/src/Minecraft.java $CC/ssp
     mv $SRCDIR/client/ClientBrandRetriever.java $CC/ssp
@@ -162,7 +164,8 @@ function move() {
         mv $SRCDIR/src/$(basename $F) $CL/olddays/$F
     done
 }
-function remove() {
+remove()
+{
     rm $SRCDIR/client/ClientBrandRetriever.java
     rm $SRCDIR/server/MinecraftServer.java
     for F in $CLSSP; do
@@ -176,7 +179,8 @@ function remove() {
     done
     rm $SRCDIR/src/Minecraft.java
 }
-function link() {
+link()
+{
     cd $SRCDIR/client
     ln -s ../../../../../$CC/ssp/ClientBrandRetriever.java
     cd ../server
@@ -186,6 +190,7 @@ function link() {
     ln -s ../../../../../$CL mods
     cd ../../../../..
 }
+if [ $1 ]; then
 if [ "$1" == "copy" ]; then
     copy
     exit 0
@@ -206,6 +211,7 @@ if [ "$1" == "update" ]; then
     move
     link
     exit 0
+fi
 fi
 cd ..
 ln -s $MODDIR/make.sh .

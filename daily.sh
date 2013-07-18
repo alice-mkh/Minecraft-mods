@@ -14,7 +14,7 @@ if [ ! -s $UPLOADDIR/changelog-latest ]; then
 fi
 notify-send -i document-properties "Daily Minecraft mod builds" "Starting building $VERSION"
 cd ..
-bash make.sh
+./make.sh
 mkdir -p $UPLOADDIR/$VERSION
 cp $UPLOADDIR/changelog-latest $UPLOADDIR/$VERSION/changelog
 cd reobf/result2/client
