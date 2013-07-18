@@ -23,7 +23,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
 
     public GuiContainerCreativeOld(EntityPlayer par1EntityPlayer)
     {
-        super(new ContainerCreativeOld(par1EntityPlayer));
+        super(new OldContainerCreative(par1EntityPlayer));
         currentScroll = 0.0F;
         isScrolling = false;
         par1EntityPlayer.openContainer = inventorySlots;
@@ -168,7 +168,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
 
         if (i != 0)
         {
-            int j = (((ContainerCreativeOld)inventorySlots).itemList.size() / 8 - 8) + 1;
+            int j = (((OldContainerCreative)inventorySlots).itemList.size() / 8 - 8) + 1;
 
             if (i > 0)
             {
@@ -192,7 +192,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
                 currentScroll = 1.0F;
             }
 
-            ((ContainerCreativeOld)inventorySlots).scrollTo(currentScroll);
+            ((OldContainerCreative)inventorySlots).scrollTo(currentScroll);
         }
     }
 
@@ -236,7 +236,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
                 currentScroll = 1.0F;
             }
 
-            ((ContainerCreativeOld)inventorySlots).scrollTo(currentScroll);
+            ((OldContainerCreative)inventorySlots).scrollTo(currentScroll);
         }
 
         super.drawScreen(par1, par2, par3);

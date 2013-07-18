@@ -2,12 +2,12 @@ package net.minecraft.src;
 
 import java.util.*;
 
-class ContainerCreativeOld extends Container
+class OldContainerCreative extends Container
 {
     /** the list of items in this container */
     public List itemList;
 
-    public ContainerCreativeOld(EntityPlayer par1EntityPlayer)
+    public OldContainerCreative(EntityPlayer par1EntityPlayer)
     {
         itemList = new ArrayList();
         Block ablock[] =

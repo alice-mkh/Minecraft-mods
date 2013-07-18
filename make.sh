@@ -48,7 +48,7 @@ CP[5]="`find ModelBiped` `find RendererLivingEntity` `find EntityEnderman` `find
        `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLivingBase` `find ItemRenderer`
        `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
        `find EntitySuspendFX` `find RenderItem` RenderItemFrame2 `find GuiScreen` EntityAIArrowAttack2
-       BlockChestOld BlockFence2 BlockRedstoneWireOld _ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
+       BlockChestOld BlockFence2 BlockRedstoneWireOld OldContainerCreative GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
        RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
 ADD[5]="olddays/enderman_eyes.png olddays/plate.png textures/blocks/olddays_chest_top.png textures/blocks/olddays_chest_side.png
         textures/blocks/olddays_chest_back_left.png textures/blocks/olddays_chest_back_right.png textures/blocks/olddays_chest_front.png
@@ -93,7 +93,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve
         `find ModelBiped` `find RendererLivingEntity` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem` GuiOldDaysSeparator
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer` `find GuiScreen`
-        BlockChestOld BlockRedstoneWireOld _ContainerCreativeOld GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev GuiButtonNBXlite
+        BlockChestOld BlockRedstoneWireOld OldContainerCreative GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev GuiButtonNBXlite
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
         SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
         `find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree` `find BlockGrass`
