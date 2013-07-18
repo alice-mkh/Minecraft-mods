@@ -145,67 +145,67 @@ public class ODActions extends OldDaysModule{
     }
 
     private void replaceTools(){
-        Item.itemsList[256 + Item.pickaxeWood.itemID] = null;
-        ItemPickaxe2 pickaxeWood = new ItemPickaxe2(Item.pickaxeWood.itemID, EnumToolMaterial.WOOD);
+        Item.itemsList[Item.pickaxeWood.itemID] = null;
+        ItemPickaxe2 pickaxeWood = new ItemPickaxe2(Item.pickaxeWood.itemID - 256, EnumToolMaterial.WOOD);
         pickaxeWood.setUnlocalizedName("pickaxeWood");
         pickaxeWood.func_111206_d("wood_pickaxe");
-        mod_OldDays.setField(Item.class, null, 18, pickaxeWood);//Item: pickaxeWood
-        Item.itemsList[256 + Item.pickaxeWood.itemID] = pickaxeWood;
-        Item.itemsList[256 + Item.pickaxeStone.itemID] = null;
-        ItemPickaxe2 pickaxeStone = new ItemPickaxe2(Item.pickaxeStone.itemID, EnumToolMaterial.STONE);
+        Item.pickaxeWood = pickaxeWood;
+        Item.itemsList[Item.pickaxeWood.itemID] = pickaxeWood;
+        Item.itemsList[Item.pickaxeStone.itemID] = null;
+        ItemPickaxe2 pickaxeStone = new ItemPickaxe2(Item.pickaxeStone.itemID - 256, EnumToolMaterial.STONE);
         pickaxeStone.setUnlocalizedName("pickaxeStone");
         pickaxeStone.func_111206_d("stone_pickaxe");
-        mod_OldDays.setField(Item.class, null, 22, pickaxeStone);//Item: pickaxeStone
-        Item.itemsList[256 + Item.pickaxeStone.itemID] = pickaxeStone;
-        Item.itemsList[256 + Item.pickaxeIron.itemID] = null;
-        ItemPickaxe2 pickaxeIron = new ItemPickaxe2(Item.pickaxeIron.itemID, EnumToolMaterial.IRON);
+        Item.pickaxeStone = pickaxeStone;
+        Item.itemsList[Item.pickaxeStone.itemID] = pickaxeStone;
+        Item.itemsList[Item.pickaxeIron.itemID] = null;
+        ItemPickaxe2 pickaxeIron = new ItemPickaxe2(Item.pickaxeIron.itemID - 256, EnumToolMaterial.IRON);
         pickaxeIron.setUnlocalizedName("pickaxeIron");
         pickaxeIron.func_111206_d("iron_pickaxe");
-        mod_OldDays.setField(Item.class, null, 5, pickaxeIron);//Item: pickaxeIron
-        Item.itemsList[256 + Item.pickaxeIron.itemID] = pickaxeIron;
-        Item.itemsList[256 + Item.pickaxeDiamond.itemID] = null;
-        ItemPickaxe2 pickaxeDiamond = new ItemPickaxe2(Item.pickaxeDiamond.itemID, EnumToolMaterial.EMERALD);
+        Item.pickaxeIron = pickaxeIron;
+        Item.itemsList[Item.pickaxeIron.itemID] = pickaxeIron;
+        Item.itemsList[Item.pickaxeDiamond.itemID] = null;
+        ItemPickaxe2 pickaxeDiamond = new ItemPickaxe2(Item.pickaxeDiamond.itemID - 256, EnumToolMaterial.EMERALD);
         pickaxeDiamond.setUnlocalizedName("pickaxeDiamond");
         pickaxeDiamond.func_111206_d("diamond_pickaxe");
-        mod_OldDays.setField(Item.class, null, 26, pickaxeDiamond);//Item: pickaxeDiamond
-        Item.itemsList[256 + Item.pickaxeDiamond.itemID] = pickaxeDiamond;
-        Item.itemsList[256 + Item.pickaxeGold.itemID] = null;
-        ItemPickaxe2 pickaxeGold = new ItemPickaxe2(Item.pickaxeGold.itemID, EnumToolMaterial.GOLD);
+        Item.pickaxeDiamond = pickaxeDiamond;
+        Item.itemsList[Item.pickaxeDiamond.itemID] = pickaxeDiamond;
+        Item.itemsList[Item.pickaxeGold.itemID] = null;
+        ItemPickaxe2 pickaxeGold = new ItemPickaxe2(Item.pickaxeGold.itemID - 256, EnumToolMaterial.GOLD);
         pickaxeGold.setUnlocalizedName("pickaxeGold");
         pickaxeGold.func_111206_d("gold_pickaxe");
-        mod_OldDays.setField(Item.class, null, 33, pickaxeGold);//Item: pickaxeGold
-        Item.itemsList[256 + Item.pickaxeGold.itemID] = pickaxeGold;
+        Item.pickaxeGold = pickaxeGold;
+        Item.itemsList[Item.pickaxeGold.itemID] = pickaxeGold;
 
-        Item.itemsList[256 + Item.axeWood.itemID] = null;
-        ItemAxe2 axeWood = new ItemAxe2(Item.axeWood.itemID, EnumToolMaterial.WOOD);
+        Item.itemsList[Item.axeWood.itemID] = null;
+        ItemAxe2 axeWood = new ItemAxe2(Item.axeWood.itemID - 256, EnumToolMaterial.WOOD);
         axeWood.setUnlocalizedName("hatchetWood");
         axeWood.func_111206_d("wood_axe");
-        mod_OldDays.setField(Item.class, null, 19, axeWood);//Item: axeWood
-        Item.itemsList[256 + Item.axeWood.itemID] = axeWood;
-        Item.itemsList[256 + Item.axeStone.itemID] = null;
-        ItemAxe2 axeStone = new ItemAxe2(Item.axeStone.itemID, EnumToolMaterial.STONE);
+        Item.axeWood = axeWood;
+        Item.itemsList[Item.axeWood.itemID] = axeWood;
+        Item.itemsList[Item.axeStone.itemID] = null;
+        ItemAxe2 axeStone = new ItemAxe2(Item.axeStone.itemID - 256, EnumToolMaterial.STONE);
         axeStone.setUnlocalizedName("hatchetStone");
         axeStone.func_111206_d("stone_axe");
-        mod_OldDays.setField(Item.class, null, 23, axeStone);//Item: axeStone
-        Item.itemsList[256 + Item.axeStone.itemID] = axeStone;
-        Item.itemsList[256 + Item.axeIron.itemID] = null;
-        ItemAxe2 axeIron = new ItemAxe2(Item.axeIron.itemID, EnumToolMaterial.IRON);
+        Item.axeStone = axeStone;
+        Item.itemsList[Item.axeStone.itemID] = axeStone;
+        Item.itemsList[Item.axeIron.itemID] = null;
+        ItemAxe2 axeIron = new ItemAxe2(Item.axeIron.itemID - 256, EnumToolMaterial.IRON);
         axeIron.setUnlocalizedName("hatchetIron");
         axeIron.func_111206_d("iron_axe");
-        mod_OldDays.setField(Item.class, null, 6, axeIron);//Item: axeIron
-        Item.itemsList[256 + Item.axeIron.itemID] = axeIron;
-        Item.itemsList[256 + Item.axeDiamond.itemID] = null;
-        ItemAxe2 axeDiamond = new ItemAxe2(Item.axeDiamond.itemID, EnumToolMaterial.EMERALD);
+        Item.axeIron = axeIron;
+        Item.itemsList[Item.axeIron.itemID] = axeIron;
+        Item.itemsList[Item.axeDiamond.itemID] = null;
+        ItemAxe2 axeDiamond = new ItemAxe2(Item.axeDiamond.itemID - 256, EnumToolMaterial.EMERALD);
         axeDiamond.setUnlocalizedName("hatchetDiamond");
         axeDiamond.func_111206_d("diamond_axe");
-        mod_OldDays.setField(Item.class, null, 27, axeDiamond);//Item: axeDiamond
-        Item.itemsList[256 + Item.axeDiamond.itemID] = axeDiamond;
-        Item.itemsList[256 + Item.axeGold.itemID] = null;
-        ItemAxe2 axeGold = new ItemAxe2(Item.axeGold.itemID, EnumToolMaterial.GOLD);
+        Item.axeDiamond = axeDiamond;
+        Item.itemsList[Item.axeDiamond.itemID] = axeDiamond;
+        Item.itemsList[Item.axeGold.itemID] = null;
+        ItemAxe2 axeGold = new ItemAxe2(Item.axeGold.itemID - 256, EnumToolMaterial.GOLD);
         axeGold.setUnlocalizedName("hatchetGold");
         axeGold.func_111206_d("gold_axe");
-        mod_OldDays.setField(Item.class, null, 34, axeGold);//Item: axeGold
-        Item.itemsList[256 + Item.axeGold.itemID] = axeGold;
+        Item.axeGold = axeGold;
+        Item.itemsList[Item.axeGold.itemID] = axeGold;
     }
 
     private void setToolDurability(int i){
