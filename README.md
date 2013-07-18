@@ -5,6 +5,7 @@ SSPC is a fork of simo_415's Single Player Commands 3.2.2.
 Everything in src/client/spc, bin/spc-* and bin-old/spc-* is licenced under GNU LGPLv3.
 
 To set this up:
+
 1.  Download MCP.
 
 2.  Decompile client using MCP.
