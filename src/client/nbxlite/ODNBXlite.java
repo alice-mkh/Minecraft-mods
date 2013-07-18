@@ -726,26 +726,31 @@ public class ODNBXlite extends OldDaysModule{
             mod_OldDays.setField(Block.class, null, 125, customvine);//Block: vine
             Item.itemsList[Block.vine.blockID] = null;
             Item.itemsList[Block.vine.blockID] = new ItemColored(Block.vine.blockID - 256, false);
-            Item.itemsList[256 + 34] = null;
+            Item.itemsList[256 + Item.hoeWood.itemID] = null;
             ItemHoe2 hoeWood = new ItemHoe2(Item.hoeWood.itemID, EnumToolMaterial.WOOD);
             hoeWood.setUnlocalizedName("hoeWood");
             hoeWood.func_111206_d("wood_hoe");
-            Item.itemsList[256 + 35] = null;
+            Item.itemsList[256 + Item.hoeWood.itemID] = hoeWood;
+            Item.itemsList[256 + Item.hoeStone.itemID] = null;
             ItemHoe2 hoeStone = new ItemHoe2(Item.hoeStone.itemID, EnumToolMaterial.STONE);
             hoeStone.setUnlocalizedName("hoeStone");
             hoeStone.func_111206_d("stone_hoe");
-            Item.itemsList[256 + 36] = null;
+            Item.itemsList[256 + Item.hoeStone.itemID] = hoeStone;
+            Item.itemsList[256 + Item.hoeIron.itemID] = null;
             ItemHoe2 hoeIron = new ItemHoe2(Item.hoeIron.itemID, EnumToolMaterial.IRON);
             hoeIron.setUnlocalizedName("hoeIron");
             hoeIron.func_111206_d("iron_hoe");
-            Item.itemsList[256 + 37] = null;
+            Item.itemsList[256 + Item.hoeIron.itemID] = hoeIron;
+            Item.itemsList[256 + Item.hoeDiamond.itemID] = null;
             ItemHoe2 hoeDiamond = new ItemHoe2(Item.hoeDiamond.itemID, EnumToolMaterial.EMERALD);
             hoeDiamond.setUnlocalizedName("hoeDiamond");
             hoeDiamond.func_111206_d("diamond_hoe");
-            Item.itemsList[256 + 38] = null;
+            Item.itemsList[256 + Item.hoeDiamond.itemID] = hoeDiamond;
+            Item.itemsList[256 + Item.hoeGold.itemID] = null;
             ItemHoe2 hoeGold = new ItemHoe2(Item.hoeGold.itemID, EnumToolMaterial.GOLD);
             hoeGold.setUnlocalizedName("hoeGold");
             hoeGold.func_111206_d("gold_hoe");
+            Item.itemsList[256 + Item.hoeGold.itemID] = hoeGold;
         }catch (Exception exception){
             System.out.println(exception);
         }
