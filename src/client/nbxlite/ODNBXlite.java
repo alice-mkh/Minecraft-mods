@@ -84,7 +84,8 @@ public class ODNBXlite extends OldDaysModule{
             case 15:setInWorldInfo("cloudheight", CloudHeight); break;
             case 16:((BlockLeaves2)Block.blocksList[Block.leaves.blockID]).setDecay(LeavesDecay); break;
             case 17:set(EntityAnimal.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
-                    set(EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
+                    set(EntityWolf.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES);
+                    set(EntityOcelot.class, "despawn", OldSpawning && Generator<GEN_NEWBIOMES); break;
             case 18:set(ItemHoe2.class, "oldhoes", OldHoes); break;
             case 19:set(RenderGlobal2.class, "texClouds", TexturedClouds); break;
             case 20:set(RenderGlobal2.class, "opaqueFlatClouds", OpaqueFlatClouds); break;
@@ -952,6 +953,7 @@ public class ODNBXlite extends OldDaysModule{
         try{
             EntityAnimal.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
             EntityWolf.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
+            EntityOcelot.despawn = OldSpawning && Generator<GEN_NEWBIOMES;
         }catch(Exception ex){}
         mod_OldDays.refreshConditionProperties();
         setChestContent();
