@@ -148,6 +148,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#setBlockData(com.sk89q.worldedit.Vector, int)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public void setBlockData(Vector pos, int data) {
       world.setBlockMetadataWithNotify(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),data, 3);
@@ -156,6 +157,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#setBlockType(com.sk89q.worldedit.Vector, int)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public boolean setBlockType(Vector pos, int type) {
       return world.setBlock(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),type);
@@ -164,6 +166,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#dropItem(com.sk89q.worldedit.Vector, com.sk89q.worldedit.blocks.BaseItemStack)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public void dropItem(Vector pos, BaseItemStack item) {
       // Create ItemStack
@@ -284,6 +287,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
     * @param items The items to set to the tile entity
     * @return True is returned if successfully set, false otherwise
     */
+   @SuppressWarnings("deprecation")
    private boolean setContainerItems(Vector pos, BaseItemStack items[]) {
       TileEntity tile = world.getBlockTileEntity(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
       if (tile == null) {
@@ -455,6 +459,7 @@ public class SPCLocalWorld extends com.sk89q.worldedit.LocalWorld {
    /**
     * @see com.sk89q.worldedit.LocalWorld#setBlockDataFast(com.sk89q.worldedit.Vector, int)
     */
+   @SuppressWarnings("deprecation")
    @Override
    public void setBlockDataFast(Vector pos, int type) {
       world.setBlock(pos.getBlockX(),pos.getBlockY(),pos.getBlockZ(),type);
