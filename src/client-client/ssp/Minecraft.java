@@ -452,6 +452,9 @@ public class Minecraft implements IPlayerUsage
         renderGlobal = new RenderGlobal(this);
         renderEngine.func_130088_a(TextureMap.field_110575_b, new TextureMap(0, "textures/blocks"));
         renderEngine.func_130088_a(TextureMap.field_110576_c, new TextureMap(1, "textures/items"));
+        for (int i = 0; i < mods.size(); i++){
+            mods.get(i).refreshTextures();
+        }
         GL11.glViewport(0, 0, displayWidth, displayHeight);
         effectRenderer = new EffectRenderer(theWorld, renderEngine);
         checkGLError("Post startup");
@@ -3219,6 +3222,9 @@ public class Minecraft implements IPlayerUsage
             }
             mods.add(mod);
             mod.load();
+            if (mod instanceof ResourceManagerReloadListener){
+                field_110451_am.func_110542_a((ResourceManagerReloadListener)mod);
+            }
             System.out.println("Loaded "+mod.getModName()+" "+mod.getModVersion()+" for Minecraft "+mod.getMcVersion());
         }
     }

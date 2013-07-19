@@ -59,33 +59,33 @@ public class ODTextures extends OldDaysModule{
     public void callback (int i){
         boolean fallback = !hasTextures("olddays/textures.png");
         switch(i){
-            case 1: replaceBlockIcon(Block.cobblestone, "/olddays/textures.png", Cobblestone, 0, Cobblestone < 2); break;
-            case 2: replaceBlockIcon(Block.cobblestoneMossy, "/olddays/textures.png", 2, 0, MossStone); break;
-            case 3: replaceBlockIcon(Block.stone, "/olddays/textures.png", 3, 0, Stone); setFurnace(); break;
-            case 4: replaceBlockIcon(Block.brick, "/olddays/textures.png", 6 + Brick, 0, Brick < 2); break;
-            case 5: replaceBlockIcon(Block.sand, "/olddays/textures.png", 11, 0, Sand); break;
-            case 6: replaceBlockIcon(Block.gravel, "/olddays/textures.png", Gravel == 0 ? 12 : 0, Gravel == 0 ? 0 : 4, Gravel < 2); break;
+            case 1: replaceBlockIcon(Block.cobblestone, "olddays/textures.png", Cobblestone, 0, Cobblestone < 2); break;
+            case 2: replaceBlockIcon(Block.cobblestoneMossy, "olddays/textures.png", 2, 0, MossStone); break;
+            case 3: replaceBlockIcon(Block.stone, "olddays/textures.png", 3, 0, Stone); setFurnace(); break;
+            case 4: replaceBlockIcon(Block.brick, "olddays/textures.png", 6 + Brick, 0, Brick < 2); break;
+            case 5: replaceBlockIcon(Block.sand, "olddays/textures.png", 11, 0, Sand); break;
+            case 6: replaceBlockIcon(Block.gravel, "olddays/textures.png", Gravel == 0 ? 12 : 0, Gravel == 0 ? 0 : 4, Gravel < 2); break;
             case 7: setDirt(); break;
             case 8: setGrass(); break;
-            case 9: replaceBlockIcon(Block.planks, "/olddays/textures.png", 4 + Planks, 0, Planks < 2); break;
-            case 10:replaceBlockIcon(Block.sapling, "/olddays/textures.png", 9 + Sapling, 0, Sapling < 2); break;
+            case 9: replaceBlockIcon(Block.planks, "olddays/textures.png", 4 + Planks, 0, Planks < 2); break;
+            case 10:replaceBlockIcon(Block.sapling, "olddays/textures.png", 9 + Sapling, 0, Sapling < 2); break;
             case 11:setCloth(); break;
-            case 12:replaceBlockIcon(Block.glowStone, "/olddays/textures.png", 1, 1, Glowstone); break;
+            case 12:replaceBlockIcon(Block.glowStone, "olddays/textures.png", 1, 1, Glowstone); break;
             case 13:setOreBlocks(); break;
-            case 14:replaceBlockIcon(Block.mobSpawner, "/olddays/textures.png", 0, 1, Spawner); break;
+            case 14:replaceBlockIcon(Block.mobSpawner, "olddays/textures.png", 0, 1, Spawner); break;
             case 15:setFurnace(); break;
             case 16:setDispenser(); break;
-            case 17:replaceBlockIcon(Block.web, "/olddays/textures.png", 8, 0, Web); break;
+            case 17:replaceBlockIcon(Block.web, "olddays/textures.png", 8, 0, Web); break;
             case 18:setPorkchop(); break;
-            case 19:replaceItemIcon(Item.axeWood, "/olddays/textures.png", 8, 3, Axes);
-                    replaceItemIcon(Item.axeStone, "/olddays/textures.png", 9, 3, Axes);
-                    replaceItemIcon(Item.axeIron, "/olddays/textures.png", 10, 3, Axes);
-                    replaceItemIcon(Item.axeDiamond, "/olddays/textures.png", 11, 3, Axes);
-                    replaceItemIcon(Item.axeGold, "/olddays/textures.png", 12, 3, Axes); break;
-            case 20:replaceItemIcon(Item.coal, "/olddays/textures.png", 4, 3, Coal); break;
-            case 21:replaceItemIcon(Item.flint, "/olddays/textures.png", 5, 3, Flint); break;
-            case 22:replaceItemIcon(Item.flintAndSteel, "/olddays/textures.png", 6, 3, FlintSteel); break;
-            case 23:replaceItemIcon(Item.feather, "/olddays/textures.png", 7, 3, Feather); break;
+            case 19:replaceItemIcon(Item.axeWood, "olddays/textures.png", 8, 3, Axes);
+                    replaceItemIcon(Item.axeStone, "olddays/textures.png", 9, 3, Axes);
+                    replaceItemIcon(Item.axeIron, "olddays/textures.png", 10, 3, Axes);
+                    replaceItemIcon(Item.axeDiamond, "olddays/textures.png", 11, 3, Axes);
+                    replaceItemIcon(Item.axeGold, "olddays/textures.png", 12, 3, Axes); break;
+            case 20:replaceItemIcon(Item.coal, "olddays/textures.png", 4, 3, Coal); break;
+            case 21:replaceItemIcon(Item.flint, "olddays/textures.png", 5, 3, Flint); break;
+            case 22:replaceItemIcon(Item.flintAndSteel, "olddays/textures.png", 6, 3, FlintSteel); break;
+            case 23:replaceItemIcon(Item.feather, "olddays/textures.png", 7, 3, Feather); break;
             case 24:setTextureHook("textures/entity/pig/pig.png", "olddays/pig.png", !Pigs && !fallback); break;
             case 25:setTextureHook("textures/entity/slime/slime.png", "olddays/slime.png", Slimes && !fallback); break;
             case 26:setTextureHook("textures/entity/steve.png", "olddays/char.png", Steve && !fallback); break;
@@ -93,7 +93,7 @@ public class ODTextures extends OldDaysModule{
             case 28:setTextureHook("textures/environment/moon_phases.png", "olddays/moon_phases.png", !Moon && !fallback); break;
             case 29:setArmorShape(); break;
             case 30:setCocoa(); break;
-            case 31:replaceBlockIcon(Block.netherrack, "/olddays/textures.png", 1, 4, Netherrack); break;
+            case 31:replaceBlockIcon(Block.netherrack, "olddays/textures.png", 1, 4, Netherrack); break;
             case 32:setArmor(LeatherArmor && !fallback); break;
             case 33:setFood(); break;
             case 34:refreshTextureFXes(true); break;
@@ -251,8 +251,8 @@ public class ODTextures extends OldDaysModule{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, "/olddays/textures.png", 15, 0, "/textures/blocks/grass_side.png", Dirt);*/
-        replaceBlockIcon(Block.dirt, "/olddays/textures.png", 14, 0, Dirt);
+        replaceIcon(i, "olddays/textures.png", 15, 0, "textures/blocks/grass_side.png", Dirt);*/
+        replaceBlockIcon(Block.dirt, "olddays/textures.png", 14, 0, Dirt);
     }
 
     private void setGrass(){
@@ -262,7 +262,7 @@ public class ODTextures extends OldDaysModule{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, "/olddays/textures.png", 13, 0, "/textures/blocks/grass_top.png", Grass);
+        replaceIcon(i, "olddays/textures.png", 13, 0, "textures/blocks/grass_top.png", Grass);
     }
 
     private void setCloth(){
@@ -280,14 +280,14 @@ public class ODTextures extends OldDaysModule{
         for (int i = 0; i < icons.length; i++){
             int x = (Wool == 0 ? classic[i] : beta[i]) % 16;
             int y = (Wool == 0 ? classic[i] : beta[i]) / 16;
-            replaceIcon(icons[i], "/olddays/textures.png", x, y, "/textures/blocks/cloth_" + i + ".png", Wool < 2);
+            replaceIcon(icons[i], "olddays/textures.png", x, y, "textures/blocks/wool_colored_" + ItemDye.field_94595_b[i] + ".png", Wool < 2);
         }
     }
 
     private void setOreBlocks(){
-        replaceBlockIcon(Block.blockIron, "/olddays/textures.png", 1, 3, OreBlocks < 2);
-        replaceBlockIcon(Block.blockGold, "/olddays/textures.png", 2, 3, OreBlocks < 2);
-        replaceBlockIcon(Block.blockDiamond, "/olddays/textures.png", 3, 3, OreBlocks < 2);
+        replaceBlockIcon(Block.blockIron, "olddays/textures.png", 1, 3, OreBlocks < 2);
+        replaceBlockIcon(Block.blockGold, "olddays/textures.png", 2, 3, OreBlocks < 2);
+        replaceBlockIcon(Block.blockDiamond, "olddays/textures.png", 3, 3, OreBlocks < 2);
         set(BlockOreStorageOld.class, "oldtextures", OreBlocks < 1 && hasTextures("olddays/textures.png"));
         reload();
     }
@@ -300,9 +300,9 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         if (Stone){
-            replaceIcon(i, "/olddays/textures.png", 3, 0, "/textures/blocks/furnace_top.png", Furnace);
+            replaceIcon(i, "olddays/textures.png", 3, 0, "textures/blocks/furnace_top.png", Furnace);
         }else{
-            replaceIcon(i, "/textures/blocks/stone.png", 0, 0, "/textures/blocks/furnace_top.png", Furnace);
+            replaceIcon(i, "textures/blocks/stone.png", 0, 0, "textures/blocks/furnace_top.png", Furnace);
         }
     }
 
@@ -313,12 +313,12 @@ public class ODTextures extends OldDaysModule{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, "/olddays/textures.png", 0, 3, "/textures/blocks/dispenser_front.png", Dispenser);
+        replaceIcon(i, "olddays/textures.png", 0, 3, "textures/blocks/dispenser_front_horizontal.png", Dispenser);
     }
 
     private void setArmorShape(){
         for (int i = 0; i < 4; i++){
-            eraseIcon(ItemArmor.func_94602_b(i), "/textures/items/" + ItemArmor.field_94603_a[i] + ".png", ArmorShape);
+            eraseIcon(ItemArmor.func_94602_b(i), "textures/items/" + ItemArmor.field_94603_a[i] + ".png", ArmorShape);
         }
     }
 
@@ -329,33 +329,33 @@ public class ODTextures extends OldDaysModule{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, "/olddays/textures.png", 15, 3, "/textures/items/dyePowder_brown.png", Cocoa);
+        replaceIcon(i, "olddays/textures.png", 15, 3, "textures/items/dye_powder_brown.png", Cocoa);
     }
 
     private void setPorkchop(){
-        replaceItemIcon(Item.porkCooked, "/olddays/textures.png", 0, 0, false);
+        replaceItemIcon(Item.porkCooked, "olddays/textures.png", 0, 0, false);
         if (Porkchop){
-            replaceItemIcon(Item.porkCooked, "/olddays/textures.png", 14, Food ? 3 : 4, Porkchop);
+            replaceItemIcon(Item.porkCooked, "olddays/textures.png", 14, Food ? 3 : 4, Porkchop);
         }else{
-            replaceItemIcon(Item.porkCooked, "/olddays/textures.png", 7, 4, Food);
+            replaceItemIcon(Item.porkCooked, "olddays/textures.png", 7, 4, Food);
         }
     }
 
     private void setFood(){
-        replaceItemIcon(Item.porkRaw, "/olddays/textures.png", 6, 4, Food);
+        replaceItemIcon(Item.porkRaw, "olddays/textures.png", 6, 4, Food);
         setPorkchop();
-        replaceItemIcon(Item.beefRaw, "/olddays/textures.png", 8, 4, Food);
-        replaceItemIcon(Item.beefCooked, "/olddays/textures.png", 9, 4, Food);
-        replaceItemIcon(Item.chickenRaw, "/olddays/textures.png", 10, 4, Food);
-        replaceItemIcon(Item.chickenCooked, "/olddays/textures.png", 11, 4, Food);
-        replaceItemIcon(Item.appleRed, "/olddays/textures.png", 12, 4, Food);
-        replaceItemIcon(Item.bread, "/olddays/textures.png", 13, 4, Food);
+        replaceItemIcon(Item.beefRaw, "olddays/textures.png", 8, 4, Food);
+        replaceItemIcon(Item.beefCooked, "olddays/textures.png", 9, 4, Food);
+        replaceItemIcon(Item.chickenRaw, "olddays/textures.png", 10, 4, Food);
+        replaceItemIcon(Item.chickenCooked, "olddays/textures.png", 11, 4, Food);
+        replaceItemIcon(Item.appleRed, "olddays/textures.png", 12, 4, Food);
+        replaceItemIcon(Item.bread, "olddays/textures.png", 13, 4, Food);
     }
 
     private void setArmor(boolean b){
         Item[] items = new Item[]{Item.helmetLeather, Item.plateLeather, Item.legsLeather, Item.bootsLeather};
         String[] overlayNames = (String[])(mod_OldDays.getField(ItemArmor.class, null, 1));
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < items.length; i++){
             Icon icon1 = null;
             Icon icon2 = null;
             try{
@@ -364,10 +364,8 @@ public class ODTextures extends OldDaysModule{
             }catch(NullPointerException e){
                 break;
             }
-            String str = items[i].getUnlocalizedName();
-            str = "/textures/items/" + str.substring(5) + ".png";
-             replaceIcon(icon1, "/olddays/textures.png", 2 + i, 4, "/textures/items/" + overlayNames[i] + ".png", b);
-             eraseIcon(icon2, str, !b);
+            replaceIcon(icon1, "olddays/textures.png", 2 + i, 4, "textures/items/" + overlayNames[i] + ".png", b);
+            eraseIcon(icon2, "textures/items/" + items[i].func_111208_A() + ".png", !b);
         }
         setTextureHook("textures/models/armor/leather_layer_1_overlay.png", "olddays/cloth_1.png", b);
         setTextureHook("textures/models/armor/leather_layer_2_overlay.png", "olddays/cloth_2.png", b);

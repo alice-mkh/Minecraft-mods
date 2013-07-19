@@ -142,7 +142,10 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, newIcon, x, y, "textures/blocks/" + bl.getUnlocalizedName().substring(5) + ".png", b);
+        if (i == null){
+            return;
+        }
+        replaceIcon(i, newIcon, x, y, "textures/blocks/" + i.getIconName() + ".png", b);
     }
 
     public void replaceItemIcon(Item it, String newIcon, int x, int y, boolean b){
@@ -152,7 +155,10 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
         }catch(NullPointerException e){
             return;
         }
-        replaceIcon(i, newIcon, x, y, "textures/items/" + it.getUnlocalizedName().substring(5) + ".png", b);
+        if (i == null){
+            return;
+        }
+        replaceIcon(i, newIcon, x, y, "textures/items/" + i.getIconName() + ".png", b);
     }
 
     public void replaceIcon(Icon i, String newIcon, int x, int y, String orig, boolean b){

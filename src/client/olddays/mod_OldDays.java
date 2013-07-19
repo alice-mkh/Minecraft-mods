@@ -17,7 +17,7 @@ import java.util.zip.ZipEntry;
 import net.minecraft.src.ssp.Mod;
 import net.minecraft.src.ssp.Packet300Custom;
 
-public class mod_OldDays extends Mod{
+public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
     public mod_OldDays(){
         texman = new OldDaysTextureManager(this);
         saveman = new SavingManager(this);
@@ -48,8 +48,13 @@ public class mod_OldDays extends Mod{
     public void load(){
         setUseTick(true, true);
         registerKey(keySettings = new KeyBinding(lang.get("OldDays Settings"), 35));
-        loadModules(this);
+        loadModules();
         saveman.loadAll();
+    }
+
+    @Override
+    public void func_110549_a(ResourceManager par1ResourceManager){
+        texman.changeResourcePack(par1ResourceManager);
     }
 
     @Override
@@ -72,7 +77,6 @@ public class mod_OldDays extends Mod{
         if (!worldExists){
             return;
         }
-        texman.onTick();
         for (int i = 0; i < modules.size(); i++){
             modules.get(i).onTick();
         }
@@ -212,13 +216,12 @@ public class mod_OldDays extends Mod{
 
     @Override
     public void onGUITick(GuiScreen gui){
-        texman.onTick();
         for (int i = 0; i < modules.size(); i++){
             modules.get(i).onGUITick(gui);
         }
     }
 
-    public static void loadModules(mod_OldDays core){
+    public void loadModules(){
         Class c = net.minecraft.src.mod_OldDays.class;
         String p = "";
         try{
@@ -263,7 +266,7 @@ public class mod_OldDays extends Mod{
             }
             OldDaysModule module = null;
             try{
-                module = ((OldDaysModule)c2.getDeclaredConstructor(c).newInstance(core));
+                module = ((OldDaysModule)c2.getDeclaredConstructor(c).newInstance(this));
             }catch(Exception ex){
                 System.out.println("OldDays: Failed to load module: "+ex);
                 ex.printStackTrace();

@@ -19,9 +19,6 @@ public class OldDaysTextureManager{
 //     protected ArrayList<TextureAtlasSprite> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
-/*    private Texture tmp;
-    private int tmpWidth;
-    private int tmpHeight;*/
 
     public OldDaysTextureManager(mod_OldDays olddays){
         core = olddays;
@@ -43,14 +40,12 @@ public class OldDaysTextureManager{
         textureHooks.add(new TextureHook(origname, newname, b));
         refreshTextureHooks();
     }
- 
-    public void onTick(){
-        if (currentpack==null || currentpack!=mod_OldDays.getMinecraft().gameSettings.skin){
-            currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
-            entryCache.clear();
-            core.refreshTextures();
-            setFallback(!hasEntry("olddays"));
-        }
+
+    public void changeResourcePack(ResourceManager res){
+        currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
+        entryCache.clear();
+        core.refreshTextures();
+        setFallback(!hasEntry("olddays"));
     }
 
     public void refreshTextureHooks(){
@@ -156,71 +151,49 @@ public class OldDaysTextureManager{
     }
 
     public void eraseIcon(Icon icon, String origIcon, boolean b){
-/*        if (icon == null){
+        if (icon == null || !(icon instanceof TextureAtlasSprite)){
             return;
         }
         if (b){
             replaceIcon(icon, "", 0, 0, origIcon, false);
             return;
         }
-        Texture sheet = (Texture)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 1));
-        int width = (Integer)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 7));
-        int height = (Integer)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 8));
-        Texture tex = getTempTexture(width, height, true);
-        sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tex);*/
+        int width = icon.getOriginX();
+        int height = icon.getOriginY();
+        int x = ((TextureAtlasSprite)icon).func_130010_a();
+        int y = ((TextureAtlasSprite)icon).func_110967_i();
+        int[] ints = new int[width * height];
+        boolean terrain = origIcon.split("/")[1].equals("blocks");
+        renderEngine.func_110577_a(terrain ? TextureMap.field_110575_b : TextureMap.field_110576_c);
+        TextureUtil.func_110998_a(ints, width, height, x, y, false, false);
     }
 
     public void replaceIcon(Icon icon, String newIcon, int x, int y, String origIcon, boolean b){
-/*        if (icon == null){
+        if (icon == null || !(icon instanceof TextureAtlasSprite)){
             return;
         }
-        b = b && newIcon.length() > 0 && hasEntry(newIcon.substring(1));
+        b = b && newIcon.length() > 0 && hasEntry(newIcon);
         if (!b){
             x = 0;
             y = 0;
             newIcon = origIcon;
         }
-        Texture sheet = (Texture)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 1));
-        int width = (Integer)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 7));
-        int height = (Integer)(mod_OldDays.getField(TextureAtlasSprite.class, icon, 8));
+        int width = icon.getOriginX();
+        int height = icon.getOriginY();
         int[] ints = new int[width * height];
         try{
-            TexturePackList packList = mod_OldDays.getMinecraft().texturePackList;
-            ITexturePack texpack = ((ITexturePack)mod_OldDays.getField(TexturePackList.class, packList, 6));
-            ImageIO.read(texpack.getResourceAsStream(newIcon)).getRGB(x * width, y * height, width, height, ints, 0, width);
+            ResourceLocation res = new ResourceLocation(newIcon);
+            ImageIO.read(Minecraft.getMinecraft().func_110442_L().func_110536_a(res).func_110527_b()).getRGB(x * width, y * height, width, height, ints, 0, width);
         }catch(Exception e){
             e.printStackTrace();
         }
-        Texture tex = getTempTexture(width, height, false);
-        tex.getTextureData().position(0);
-        for (int i = 0; i < ints.length; i++){
-            int color = ints[i];
-            tex.getTextureData().put((byte)(color >> 16 & 0xFF));
-            tex.getTextureData().put((byte)(color >> 8 & 0xFF));
-            tex.getTextureData().put((byte)(color & 0xFF));
-            tex.getTextureData().put((byte)(color >> 24 & 0xFF));
-        }
-        tex.getTextureData().clear();
-        sheet.func_104062_b(icon.getOriginX(), icon.getOriginY(), tex);*/
+        x = ((TextureAtlasSprite)icon).func_130010_a();
+        y = ((TextureAtlasSprite)icon).func_110967_i();
+        boolean terrain = origIcon.split("/")[1].equals("blocks");
+        renderEngine.func_110577_a(terrain ? TextureMap.field_110575_b : TextureMap.field_110576_c);
+        TextureUtil.func_110998_a(ints, width, height, x, y, false, false);
     }
-/*
-    private Texture getTempTexture(int width, int height, boolean erase){
-        if (tmp != null && width == tmpWidth && height == tmpHeight){
-            if (erase){
-                ByteBuffer b = tmp.getTextureData();
-                b.position(0);
-                b.put(new byte[width * height * 4]);
-                b.clear();
-            }
-            return tmp;
-        }
-        tmpWidth = width;
-        tmpHeight = height;
-        tmp = new Texture("", 2, width, height, 10496, GL11.GL_RGBA, 9728, 9728, 0, null);
-        System.gc();
-        return tmp;
-    }
-*/
+
     private class TextureHook{
         private ResourceLocation origname;
         private ResourceLocation newname;
