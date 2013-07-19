@@ -61,12 +61,12 @@ CP[6]="SoundManager2 ODSounds"
 ADD[6]="olddays/sounds"
 CP[7]="ODCrafting"
 CP[8]="BlockOreStorageOld TextureWaterFX TextureWaterFlowFX TextureLavaFX TextureLavaFlowFX TextureFlamesFX TexturePortalFX TextureWatchFX
-       TextureCompassFX ODTextures"
+       TextureCompassFX TextureGearFX ODTextures"
 ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png
         olddays/slime.png olddays/cloth_1.png olddays/cloth_2.png olddays/cloth_empty.png textures/blocks/olddays_iron_side.png
         textures/blocks/olddays_iron_bottom.png textures/blocks/olddays_gold_side.png textures/blocks/olddays_gold_bottom.png
         textures/blocks/olddays_diamond_side.png textures/blocks/olddays_diamond_bottom.png olddays/clock.png olddays/compass.png
-        olddays/mojang.png olddays/mojang2.png"
+        olddays/dial.png olddays/mojang.png olddays/mojang2.png"
 CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2` `find ComponentNetherBridgeCorridor`
        `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem` `find ComponentNetherBridgeCorridor2`
        `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2 GuiButtonNBXlite
@@ -90,7 +90,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntityAIPanic` `find EntityAITarget` `find ComponentNetherBridgeCorridor2`
         OldDaysTextureManager\$TextureHook `find ItemDye` EntityAIArrowAttack2 `find PathFinder` TextureFX TextureCompassFX `find ComponentNetherBridgeCorridor`
         TextureWaterFX TextureWaterFlowFX TextureLavaFX TextureLavaFlowFX TextureFlamesFX TexturePortalFX TextureWatchFX GuiScrolling
-        `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` PathEntityIndev `find BlockSapling`
+        `find EntityCreature` `find EntitySpider` `find EntityPig` `find EntityEnderman` PathEntityIndev `find BlockSapling` TextureGearFX
         `find EntityWaterMob` `find EntitySlime` ODMobs `find ComponentVillageField` `find ComponentVillageField2` PathPointIndev
         MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve
         `find ModelBiped` `find RendererLivingEntity` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem` GuiOldDaysSeparator
