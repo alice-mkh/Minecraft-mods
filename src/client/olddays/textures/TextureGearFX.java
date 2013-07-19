@@ -1,11 +1,6 @@
-package net.minecraft.src.nbxlite.blocks;
+package net.minecraft.src;
 
 import java.io.IOException;
-import net.minecraft.src.Block;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.TextureFX;
-import net.minecraft.src.ODNBXlite;
-import net.minecraft.src.mod_OldDays;
 
 public class TextureGearFX extends TextureFX
 {
@@ -25,6 +20,7 @@ public class TextureGearFX extends TextureFX
         }catch (IOException localIOException){
             localIOException.printStackTrace();
         }
+        imageDataInts = new int[256];
     }
 
     @Override
@@ -49,15 +45,7 @@ public class TextureGearFX extends TextureFX
                         n = gearmiddle[(i + (j << 4))];
                     }
                 }
-                int k1 = n >> 16 & 0xFF;
-                int m1 = n >> 8 & 0xFF;
-                int i1 = n & 0xFF;
-                int n1 = n >>> 24 > 128 ? 255 : 0;
-                int i2 = i + (j << 4);
-                imageData[(i2 << 2)] = (byte)k1;
-                imageData[((i2 << 2) + 1)] = (byte)m1;
-                imageData[((i2 << 2) + 2)] = (byte)i1;
-                imageData[((i2 << 2) + 3)] = (byte)n1;
+                imageDataInts[i + (j << 4)] = n;
             }
         }
     }

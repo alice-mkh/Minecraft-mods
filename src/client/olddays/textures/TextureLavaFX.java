@@ -9,7 +9,7 @@ public class TextureLavaFX extends TextureFX
 
     public TextureLavaFX()
     {
-        super("lava");
+        super("lava_still");
         field_76876_g = new float[256];
         field_76878_h = new float[256];
         field_76879_i = new float[256];

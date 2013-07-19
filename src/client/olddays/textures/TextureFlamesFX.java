@@ -7,7 +7,7 @@ public class TextureFlamesFX extends TextureFX
 
     public TextureFlamesFX(int par1)
     {
-        super("fire_"+par1);
+        super("fire_layer_"+par1);
         field_76869_g = new float[320];
         field_76870_h = new float[320];
     }

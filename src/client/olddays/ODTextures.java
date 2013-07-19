@@ -187,38 +187,38 @@ public class ODTextures extends OldDaysModule{
             return;
         }
         prevProcedural = Procedural;
-        if (!Procedural || true){
+        if (!Procedural){
             core.texman.removeTextureFXes();
             refreshIconReplacements();
             return;
         }
-        TextureMap blocks = null;//FIXME(TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 8));
-        TextureMap items = null;//FIXME(TextureMap)(core.getField(RenderEngine.class, core.getMinecraft().renderEngine, 9));
+        TextureMap blocks = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110575_b));
+        TextureMap items = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110576_c));
 
         if (blocks == null || items == null){
             return;
         }
 
         if (refreshBlocks){
-//FIXME             core.getMinecraft().renderEngine.refreshTextures();
+            Minecraft.getMinecraft().func_110434_K().func_110550_d();
             refreshIconReplacements();
         }
 
-        Icon origWater = BlockFluid.func_94424_b("water");
+        Icon origWater = BlockFluid.func_94424_b("water_still");
         Icon origWaterFlow = BlockFluid.func_94424_b("water_flow");
-        Icon origLava = BlockFluid.func_94424_b("lava");
+        Icon origLava = BlockFluid.func_94424_b("lava_still");
         Icon origLavaFlow = BlockFluid.func_94424_b("lava_flow");
         Icon[] origFire = (Icon[])(core.getField(BlockFire.class, Block.fire, 2));
-        Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, "blockIcon")); //Block: blockIcon
-        Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, "iconIndex")); //Item: iconIndex
-        Icon origCompass = (Icon)(core.getField(Item.class, Item.compass, "iconIndex"));
+        Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, 201)); //Block: blockIcon
+        Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, 182)); //Item: itemIcon
+        Icon origCompass = (Icon)(core.getField(Item.class, Item.compass, 182));
 
-        Icon water = core.texman.registerCustomIcon(blocks, "water", new TextureWaterFX(), origWater);
+        Icon water = core.texman.registerCustomIcon(blocks, "water_still", new TextureWaterFX(), origWater);
         Icon waterFlowing = core.texman.registerCustomIcon(blocks, "water_flow", new TextureWaterFlowFX(), origWaterFlow);
-        Icon lava = core.texman.registerCustomIcon(blocks, "lava", new TextureLavaFX(), origLava);
+        Icon lava = core.texman.registerCustomIcon(blocks, "lava_still", new TextureLavaFX(), origLava);
         Icon lavaFlowing = core.texman.registerCustomIcon(blocks, "lava_flow", new TextureLavaFlowFX(), origLavaFlow);
-        Icon fire0 = core.texman.registerCustomIcon(blocks, "fire_0", new TextureFlamesFX(0), origFire[0]);
-        Icon fire1 = core.texman.registerCustomIcon(blocks, "fire_1", new TextureFlamesFX(1), origFire[1]);
+        Icon fire0 = core.texman.registerCustomIcon(blocks, "fire_layer_0", new TextureFlamesFX(0), origFire[0]);
+        Icon fire1 = core.texman.registerCustomIcon(blocks, "fire_layer_1", new TextureFlamesFX(1), origFire[1]);
         Icon portal = core.texman.registerCustomIcon(blocks, "portal", new TexturePortalFX(), origPortal);
         Icon clock = core.texman.registerCustomIcon(blocks, "clock", new TextureWatchFX(), origClock);
         Icon compass = core.texman.registerCustomIcon(blocks, "compass", new TextureCompassFX(), origCompass);
@@ -228,9 +228,19 @@ public class ODTextures extends OldDaysModule{
         core.setField(BlockFluid.class, Block.lavaStill, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFluid.class, Block.lavaMoving, 0, new Icon[]{lava, lavaFlowing});
         core.setField(BlockFire.class, Block.fire, 2, new Icon[]{fire0, fire1});
-        core.setField(Block.class, Block.portal, "blockIcon", portal);
-        core.setField(Item.class, Item.pocketSundial, "iconIndex", clock);
-        core.setField(Item.class, Item.compass, "iconIndex", compass);
+        core.setField(Block.class, Block.portal, 201, portal);
+        core.setField(Item.class, Item.pocketSundial, 182, clock);
+        core.setField(Item.class, Item.compass, 182, compass);
+
+        try{
+            Block gear = Block.blocksList[ODNBXlite.gearId];
+            Icon gear1 = core.texman.registerCustomIcon(blocks, "olddays_gear_0", new TextureGearFX(0), gear.getBlockTextureFromSide(0));
+            Icon gear2 = core.texman.registerCustomIcon(blocks, "olddays_gear_1", new TextureGearFX(1), ((net.minecraft.src.nbxlite.blocks.BlockGear)gear).blockIcon2);
+            core.setField(Block.class, gear, 201, gear1);
+            ((net.minecraft.src.nbxlite.blocks.BlockGear)gear).blockIcon2 = gear2;
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
 
         mod_OldDays.texman.updateTextureFXes();
         System.gc();

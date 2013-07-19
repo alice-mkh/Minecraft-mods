@@ -13,7 +13,7 @@ public class TextureCompassFX extends TextureFX
 
     public TextureCompassFX()
     {
-        super("compass");
+        super("compass", true);
         compassIconImageData = new int[256];
         mc = Minecraft.getMinecraft();
 

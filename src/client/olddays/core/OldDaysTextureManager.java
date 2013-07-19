@@ -16,7 +16,7 @@ public class OldDaysTextureManager{
     private mod_OldDays core;
     private TextureManager renderEngine;
     protected ArrayList<TextureHook> textureHooks;
-//     protected ArrayList<TextureAtlasSprite> textureFXList;
+    protected ArrayList<TextureAtlasSprite> textureFXList;
     private String currentpack;
     private HashMap<String, Boolean> entryCache;
 
@@ -24,7 +24,7 @@ public class OldDaysTextureManager{
         core = olddays;
         renderEngine = mod_OldDays.getMinecraft().func_110434_K();
         textureHooks = new ArrayList<TextureHook>();
-//         textureFXList = new ArrayList<TextureAtlasSprite>();
+        textureFXList = new ArrayList<TextureAtlasSprite>();
         entryCache = new HashMap<String, Boolean>();
     }
 
@@ -107,7 +107,7 @@ public class OldDaysTextureManager{
         if (textureStitchedMap == null){
             return icon;
         }
-/*        TextureAtlasSprite texturestitched = (TextureAtlasSprite)textureStitchedMap.get(par1Str);
+        TextureAtlasSprite texturestitched = (TextureAtlasSprite)textureStitchedMap.get(par1Str);
         if (texturestitched == null || texturestitched != icon)
         {
             textureStitchedMap.put(par1Str, icon);
@@ -125,29 +125,26 @@ public class OldDaysTextureManager{
             try{
                 icon.copyFrom((TextureAtlasSprite)from);
             }catch(Exception e){}
-        }*/
+        }
         return icon;
     }
 
-    public Icon registerCustomIcon(IconRegister map, String par1Str, TextureAtlasSprite icon){
-        return registerCustomIcon(map, par1Str, icon, null);
-    }
-
     public void updateTextureFXes(){
-/*        for (TextureAtlasSprite fx : textureFXList){
+        for (TextureAtlasSprite fx : textureFXList){
             try{
+                boolean terrain = fx.getIconName().split("/")[1].equals("blocks");
+                renderEngine.func_110577_a(terrain ? TextureMap.field_110575_b : TextureMap.field_110576_c);
                 fx.updateAnimation();
             }catch(Exception e){
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 
     public void removeTextureFXes(){
-/*        renderEngine.refreshTextures();
         textureFXList.clear();
         System.gc();
-        renderEngine.func_110550_d();*/
+        renderEngine.func_110550_d();
     }
 
     public void eraseIcon(Icon icon, String origIcon, boolean b){

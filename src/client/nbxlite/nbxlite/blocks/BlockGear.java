@@ -17,7 +17,7 @@ import net.minecraft.src.Tessellator;
 
 public class BlockGear extends Block
 {
-    private Icon blockIcon2;
+    public Icon blockIcon2;
 
     public BlockGear(int par1)
     {
@@ -116,8 +116,8 @@ public class BlockGear extends Block
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        blockIcon = mod_OldDays.texman.registerCustomIcon(par1IconRegister, "olddays_gear_0", new TextureGearFX(0));
-        blockIcon2 = mod_OldDays.texman.registerCustomIcon(par1IconRegister, "olddays_gear_1", new TextureGearFX(1));
+        blockIcon = par1IconRegister.registerIcon("olddays_gear_0");
+        blockIcon2 = par1IconRegister.registerIcon("olddays_gear_1");
     }
 
     public static boolean renderBlockGear(RenderBlocks r, IBlockAccess blockAccess, BlockGear b, int i, int j, int k, Icon override){

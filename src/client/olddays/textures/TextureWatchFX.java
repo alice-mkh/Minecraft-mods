@@ -15,7 +15,7 @@ public class TextureWatchFX extends TextureFX
 
     public TextureWatchFX()
     {
-        super("clock");
+        super("clock", true);
         watchIconImageData = new int[256];
         dialImageData = new int[256];
         mc = Minecraft.getMinecraft();
@@ -23,7 +23,7 @@ public class TextureWatchFX extends TextureFX
         try
         {
             getImage("olddays/clock.png").getRGB(0, 0, 16, 16, watchIconImageData, 0, 16);
-            getImage("misc/dial.png").getRGB(0, 0, 16, 16, dialImageData, 0, 16);
+            getImage("olddays/dial.png").getRGB(0, 0, 16, 16, dialImageData, 0, 16);
         }
         catch (IOException ioexception)
         {

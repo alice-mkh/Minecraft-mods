@@ -10,7 +10,7 @@ public class TextureWaterFX extends TextureFX
 
     public TextureWaterFX()
     {
-        super("water");
+        super("water_still");
         red = new float[256];
         green = new float[256];
         blue = new float[256];
