@@ -141,7 +141,7 @@ public class WorldInfo
             if (useNBXlite){
                 mapFeaturesEnabled = ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES;
             }else{
-                mapFeaturesEnabled = true;
+                mapFeaturesEnabled = false;
             }
         }
 
