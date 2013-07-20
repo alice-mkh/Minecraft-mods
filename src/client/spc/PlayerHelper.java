@@ -1924,7 +1924,7 @@ public class PlayerHelper {
                if (tmp == null) {
                   continue;
                }
-               tmp.damageItem(-tmp.getItemDamage(), null);
+               tmp.damageItem(-tmp.getItemDamage(), ep);
                // ep.inventory.mainInventory[i].damageItem(-ep.inventory.mainInventory[i].getItemDamageForDisplay());
             }
             for (int i = 0; i < ep.inventory.armorInventory.length; i++) {
@@ -1932,14 +1932,14 @@ public class PlayerHelper {
                if (tmp == null) {
                   continue;
                }
-               tmp.damageItem(-tmp.getItemDamage(), null);
+               tmp.damageItem(-tmp.getItemDamage(), ep);
                // ep.inventory.armorInventory[i].damageItem(-ep.inventory.armorInventory[i].getItemDamageForDisplay());
             }
             return;
          }
          ItemStack tmp = ep.inventory.getCurrentItem();
          if (tmp != null) {
-            tmp.damageItem(-tmp.getItemDamage(), null);
+            tmp.damageItem(-tmp.getItemDamage(), ep);
             // ep.inventory.getCurrentItem().damageItem(-ep.inventory.getCurrentItem().getItemDamageForDisplay());
          }
 
