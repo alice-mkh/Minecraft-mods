@@ -43,7 +43,7 @@ public class FakeServerPlayerList extends IntegratedPlayerList
     @Override
     public String[] getAvailablePlayerDat()
     {
-        return new String[]{Minecraft.getMinecraft().thePlayer.getCommandSenderName()};
+        return new String[0];
     }
 
     @Override
