@@ -177,7 +177,7 @@ public class SoundManager2 extends SoundManager{
             return "nothing";
         }
         if (par1Str.startsWith("liquid.splash") && splash){
-            str = "random.splash";
+            str = "olddays.splash";
         }
         if (par1Str.startsWith("liquid.swim") && !swimming){
             return "nothing";

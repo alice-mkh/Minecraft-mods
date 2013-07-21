@@ -55,6 +55,7 @@ public class ODSounds extends OldDaysModule{
             addSound(20,"skeletonhurt"+i);
         }
         addSound(22,"ignite");
+        addSound(24,"splash");
     }
 
     @Override
