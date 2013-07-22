@@ -120,6 +120,8 @@ gameplay/ItemBow.java
 gameplay/ItemFood.java"
 ODDIRS="actions behavior bugs eyecandy gameplay"
 
+cd ..
+
 copy()
 {
     mkdir -p $CC/ssp
