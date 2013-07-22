@@ -148,6 +148,6 @@ fsutil hardlink create %cd%\jars\assets\char.png %cd%\src-mods\resources\char.pn
 %cd%\src-mods\build\ln.exe %cd%\src-mods\resources\olddays\ %cd%\jars\assets\olddays\
 %cd%\src-mods\build\ln.exe %cd%\src-mods\resources\textures\ %cd%\jars\assets\textures\
 %cd%\src-mods\build\wget.exe http://dev.bukkit.org/media/files/715/447/worldedit-5.5.7.jar -cO lib/WorldEdit.jar
-fsutil hardlink create %cd%\jars\WorldEdit.jar %cd%\lib\WorldEdit.jar^M
+fsutil hardlink create %cd%\jars\WorldEdit.jar %cd%\lib\WorldEdit.jar
 pause
 cls
