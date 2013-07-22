@@ -216,5 +216,5 @@ done
 echo "Packaging source code..."
 cd $DIR/../src-mods/src/client/spc
 zip $RESULT_DIR_2/client/spc-src.zip * -r > /dev/null
-cd $DIR/../src-mods/src
-zip $RESULT_DIR_2/client/src.zip client/nbxlite client/olddays client/spawnhuman client/ssp client-* server -r > /dev/null
+cd $DIR/../src-mods
+zip $RESULT_DIR_2/client/src.zip src/client/nbxlite src/client/olddays src/client/spawnhuman src/client/ssp src/client-* src/server build resources README.md -r > /dev/null
