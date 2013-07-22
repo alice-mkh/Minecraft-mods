@@ -214,7 +214,7 @@ if [ "$1" == "update" ]; then
 fi
 fi
 cd ..
-ln -s $MODDIR/make.sh .
+ln -s $MODDIR/build/make.sh .
 remove
 link
 for F in $MODDIR/resources/*; do
