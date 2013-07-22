@@ -318,11 +318,11 @@ public class WorldSSP2 extends WorldSSP
         }
 
         provider.worldChunkMgr.cleanupCache();
-        updateWeather();
         if (!ODNBXlite.getFlag("weather")){
             setRainStrength(0);
             worldInfo.setThunderTime(10000);
         }
+        updateWeather();
 
         if (isAllPlayersFullyAsleep())
         {
@@ -335,11 +335,14 @@ public class WorldSSP2 extends WorldSSP
 
             if (!flag)
             {
-                long l = worldInfo.getWorldTotalTime() + 24000L;
-                worldInfo.setWorldTime(l - l % 24000L);
-                func_82738_a(l - l % 24000L);
-                field_35467_J = 0D;
-                field_35468_K = 0D;
+                if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+                {
+                    long l = worldInfo.getWorldTotalTime() + 24000L;
+                    worldInfo.setWorldTime(l - l % 24000L);
+                    func_82738_a(l - l % 24000L);
+                    field_35467_J = 0D;
+                    field_35468_K = 0D;
+                }
                 wakeUpAllPlayers();
             }
         }
@@ -388,7 +391,12 @@ public class WorldSSP2 extends WorldSSP
                     nightPotionChanged = false;
                 }
             }
+        }else if(i != skylightSubtracted)
+        {
+            skylightSubtracted = i;
         }
+
+        worldInfo.incrementTotalWorldTime(worldInfo.getWorldTotalTime() + 1L);
 
         long l1 = worldInfo.getWorldTotalTime() + 1L;
 
@@ -398,8 +406,10 @@ public class WorldSSP2 extends WorldSSP
             saveWorld(false, null);
         }
 
-        worldInfo.setWorldTime(l1);
-        func_82738_a(getTotalWorldTime() + 1L);
+        if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+        {
+            worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
+        }
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");

@@ -1611,11 +1611,14 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
             if (!flag)
             {
-                long l = worldInfo.getWorldTotalTime() + 24000L;
-                worldInfo.setWorldTime(l - l % 24000L);
-                func_82738_a(l - l % 24000L);
-                field_35467_J = 0D;
-                field_35468_K = 0D;
+                if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+                {
+                    long l = worldInfo.getWorldTotalTime() + 24000L;
+                    worldInfo.setWorldTime(l - l % 24000L);
+                    func_82738_a(l - l % 24000L);
+                    field_35467_J = 0D;
+                    field_35468_K = 0D;
+                }
                 wakeUpAllPlayers();
             }
         }
@@ -1633,6 +1636,8 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             skylightSubtracted = i;
         }
 
+        worldInfo.incrementTotalWorldTime(worldInfo.getWorldTotalTime() + 1L);
+
         long l1 = worldInfo.getWorldTotalTime() + 1L;
 
         if (l1 % (long)autosavePeriod == 0L)
@@ -1641,8 +1646,10 @@ public class WorldSSP extends WorldClient implements IBlockAccess
             saveWorld(false, null);
         }
 
-        worldInfo.setWorldTime(l1);
-        func_82738_a(getTotalWorldTime() + 1L);
+        if (getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+        {
+            worldInfo.setWorldTime(worldInfo.getWorldTime() + 1L);
+        }
         theProfiler.endStartSection("tickPending");
         tickUpdates(false);
         theProfiler.endStartSection("tickTiles");
