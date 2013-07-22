@@ -38,6 +38,8 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyBool(this, 33,true,  false, "Food");
         new OldDaysPropertyBool(this, 34,true,  false, "Procedural");
         new OldDaysPropertyInt(this,  35,0,     2,     "MojangScreen", 2).setUseNames();
+//         new OldDaysPropertyBool(this, 36,true,  false, "Cows");
+        new OldDaysPropertyBool(this, 36,true,  false, "Charcoal");
         isLocal = true;
         for (int i = 1; i <= properties.size(); i++){
             if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
@@ -51,6 +53,7 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(28).setFallback("olddays/moon_phases.png");
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
         getPropertyById(35).setFallback("olddays/mojang.png", "olddays/mojang2.png");
+//         getPropertyById(36).setFallback("olddays/cow.png");
         replaceBlocks();
         prevProcedural = Procedural;
     }
@@ -98,6 +101,8 @@ public class ODTextures extends OldDaysModule{
             case 33:setFood(); break;
             case 34:refreshTextureFXes(true); break;
             case 35:setMojangScreen(); break;
+//             case 36:setTextureHook("textures/entity/cow/cow.png", "olddays/cow.png", Cows && !fallback); break;
+            case 36:set(ItemCoalOld.class, "oldCharcoal", Charcoal);
         }
     }
 
@@ -136,6 +141,8 @@ public class ODTextures extends OldDaysModule{
     public static boolean Food = true;
     public static boolean Procedural = false;
     public static int MojangScreen;
+//     public static boolean Cows;
+    public static boolean Charcoal;
 
     private static boolean prevProcedural;
 
@@ -168,6 +175,12 @@ public class ODTextures extends OldDaysModule{
             customdiamond.func_111022_d("diamond_block");
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
             mod_OldDays.setField(Block.class, null, 76, customdiamond);//Block: blockDiamond
+            Item.itemsList[Item.coal.itemID] = null;
+            Item coal = new ItemCoalOld(Item.coal.itemID - 256);
+            coal.setUnlocalizedName("coal");
+            coal.func_111206_d("coal");
+            Item.coal = coal;
+            Item.itemsList[Item.coal.itemID] = coal;
         }catch (Exception ex){
             System.out.println(ex);
         }
@@ -180,6 +193,9 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void refreshTextureFXes(boolean refreshBlocks){
+        if (true){
+            return;
+        }
         if (core.getField(BlockFluid.class, Block.waterStill, 0) == null){
             return;
         }
