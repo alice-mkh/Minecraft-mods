@@ -40,9 +40,10 @@ public class ODTextures extends OldDaysModule{
         new OldDaysPropertyInt(this,  35,0,     2,     "MojangScreen", 2).setUseNames();
 //         new OldDaysPropertyBool(this, 36,true,  false, "Cows");
         new OldDaysPropertyBool(this, 36,true,  false, "Charcoal");
+        new OldDaysPropertyBool(this, 37,true,  false, "Lapis");
         isLocal = true;
         for (int i = 1; i <= properties.size(); i++){
-            if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33)){
+            if (i != 15 && (i < 24 || i == 30 || i == 31 || i == 33 || i == 37)){
                 getPropertyById(i).setFallback("olddays/textures.png");
             }
         }
@@ -102,7 +103,8 @@ public class ODTextures extends OldDaysModule{
             case 34:refreshTextureFXes(true); break;
             case 35:setMojangScreen(); break;
 //             case 36:setTextureHook("textures/entity/cow/cow.png", "olddays/cow.png", Cows && !fallback); break;
-            case 36:set(ItemCoalOld.class, "oldCharcoal", Charcoal);
+            case 36:set(ItemCoalOld.class, "oldCharcoal", Charcoal); break;
+            case 37:replaceBlockIcon(Block.blockLapis, "olddays/textures.png", 15, 4, Lapis); break;
         }
     }
 
@@ -143,6 +145,7 @@ public class ODTextures extends OldDaysModule{
     public static int MojangScreen;
 //     public static boolean Cows;
     public static boolean Charcoal;
+    public static boolean Lapis;
 
     private static boolean prevProcedural;
 
@@ -263,8 +266,8 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void refreshIconReplacements(){
-        for (int i = 1; i < 34; i++){
-            if (i <= 23 || i >= 29){
+        for (int i = 1; i < 38; i++){
+            if (i <= 23 || (i >= 29 && i < 34) || i == 37){
                 callback(i);
             }
         }
