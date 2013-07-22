@@ -12,9 +12,9 @@ To set this up:
 
 3.  Clone this repository to **src-mods** directory.
 
-4.  Go to **src-mods** and run **deploy.sh** script.
+4.  Go to **src-mods/build** and run **deploy.sh** script.
 
 5.  It is ready. You may now recompile client and start it.
 
-To build a release, run **make.sh** script **in the MCP directory**. Not from src-mods!
+To build a release, run **make.sh** script **in the MCP directory**. Not from src-mods/build!
 Resulting zips will be in **reobf/result2**.
