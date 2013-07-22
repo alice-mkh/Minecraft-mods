@@ -12,9 +12,11 @@ To set this up:
 
 3.  Clone this repository to **src-mods** directory.
 
-4.  Go to **src-mods/build** and run **deploy.sh** script.
+4.  Go to **src-mods/build** and run **deploy.sh** script. (Or **deploy.bat** if you use Windows)
 
 5.  It is ready. You may now recompile client and start it.
 
 To build a release, run **make.sh** script **in the MCP directory**. Not from src-mods/build!
 Resulting zips will be in **reobf/result2**.
+
+build/ln.exe source code can be found here: https://github.com/neosmart/ln-win
