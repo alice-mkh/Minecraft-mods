@@ -140,14 +140,13 @@ del %SRC%\ItemFood.java
 Echo.
 Echo. * Linking src files
 Echo.
-%cd%\src-mods\build\ln.exe /s %MODSCL%\ssp\ClientBrandRetriever.java %CL%\ClientBrandRetriever.java
-%cd%\src-mods\build\ln.exe /s %MODSCS%\ssp\MinecraftServer.java %CS%\MinecraftServer.java
-%cd%\src-mods\build\ln.exe /s %MODSCL%\ssp\Minecraft.java %SRC%\Minecraft.java
-%cd%\src-mods\build\ln.exe /s %cd%\src-mods\src\client\ %cd%\src\minecraft\net\minecraft\src\mods\
-%cd%\src-mods\build\ln.exe /s %cd%\src-mods\resources\olddays\ %cd%\jars\assets\olddays\
-%cd%\src-mods\build\ln.exe /s %cd%\src-mods\resources\textures\ %cd%\jars\assets\textures\
-%cd%\src-mods\build\ln.exe /s %cd%\src-mods\resources\char.png %cd%\jars\assets\char.png
-%cd%\src-mods\build\ln.exe /s %cd%\src-mods\resources %cd%\reobf\additional
+fsutil hardlink create %CL%\ClientBrandRetriever.java %MODSCL%\ssp\ClientBrandRetriever.java
+fsutil hardlink create %CS%\MinecraftServer.java %MODSCS%\ssp\MinecraftServer.java
+fsutil hardlink create %SRC%\Minecraft.java %MODSCL%\ssp\Minecraft.java
+fsutil hardlink create %cd%\jars\assets\char.png %cd%\src-mods\resources\char.png
+%cd%\src-mods\build\ln.exe %cd%\src-mods\src\client\ %cd%\src\minecraft\net\minecraft\src\mods\
+%cd%\src-mods\build\ln.exe %cd%\src-mods\resources\olddays\ %cd%\jars\assets\olddays\
+%cd%\src-mods\build\ln.exe %cd%\src-mods\resources\textures\ %cd%\jars\assets\textures\
 %cd%\src-mods\build\wget.exe http://dev.bukkit.org/media/files/715/447/worldedit-5.5.7.jar -cO lib/WorldEdit.jar
 pause
 cls
