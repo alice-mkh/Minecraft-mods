@@ -28,61 +28,275 @@ sh recompile.sh
 sh reobfuscate.sh
 
 cd $ORIG_DIR
-MODS_LIST="old-days-actions old-days-bugs old-days-gameplay old-days-mobs old-days-eyecandy old-days-sounds old-days-crafting
-           old-days-textures old-days-nbxlite old-days old-days-allin1
-           spawn-human spc ssp"
-UNUSED[0]="spc_tester spc_WorldEditGUI spc_aprilfools1 spc_AprilFools2012"
-CP[1]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep`
-       `find BlockStairs` `find EntityBoat` `find ItemDye` `find BlockLeaves` `find BlockSnow`
-        BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2
-        EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions"
-CP[2]="`find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` `find EntityLivingBase`
+MODS_LIST="old-days-actions
+           old-days-bugs
+           old-days-gameplay
+           old-days-mobs
+           old-days-eyecandy
+           old-days-sounds
+           old-days-crafting
+           old-days-textures
+           old-days-nbxlite
+           old-days
+           old-days-allin1
+           spawn-human
+           spc
+           ssp"
+UNUSED[0]="spc_tester
+           spc_WorldEditGUI
+           spc_aprilfools1
+           spc_AprilFools2012"
+CP[1]="`find BlockFire`
+       `find BlockFlowing`
+       `find BlockMushroom`
+       `find BlockLeaves`
+       `find BlockSnow`
+       `find BlockStairs`
+       `find EntityBoat`
+       `find EntityItem`
+       `find EntitySheep`
+       `find ItemDye`
+       BlockFarmlandOld
+       BlockFence2
+       BlockLog2
+       BlockTNT2
+       EntityAIEatGrass2
+       EntityTNTPrimed2
+       ItemAxe2
+       ItemPickaxe2
+       ODActions"
+CP[2]="`find BlockPistonBase`
+       `find ContainerPlayer`
+       `find EntityBoat`
+       `find EntityLivingBase`
+       `find EntityMinecart`
        ODBugs"
-CP[3]="`find EntityXPOrb` `find FoodStats` `find ItemFood` `find EntityLivingBase` BlockCake2 MovementInputFromOptionsCustom
-       `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay"
+CP[3]="`find EntityArrow`
+       `find EntityLivingBase`
+       `find EntityPlayer`
+       `find EntityXPOrb`
+       `find EntityZombie`
+       `find FoodStats`
+       `find ItemBow`
+       `find ItemFood`
+       BlockCake2
+       MovementInputFromOptionsCustom
+       ODGameplay"
 ADD[3]="olddays/icons.png"
-CP[4]="`find EntityCreeper` `find EntitySkeleton` `find EntitySnowman` `find EntitySheep` `find EntityAIPanic` `find EntityAITarget` `find PathFinder`
-       `find EntityCreature` `find EntitySpider` `find EntityZombie` `find EntityPig` `find EntityEnderman` PathFinderIndev EntityAIArrowAttack2
-       `find EntityWaterMob` `find EntitySlime` `find EntityWolf` `find EntityLiving` `find EntityLivingBase` EntityAIEatGrass2 ODMobs PathIndev PathEntityIndev PathPointIndev
-       MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve"
+CP[4]="`find EntityAIPanic`
+       `find EntityAITarget`
+       `find EntityCreature`
+       `find EntityCreeper`
+       `find EntityEnderman`
+       `find EntityLiving`
+       `find EntityLivingBase`
+       `find EntitySlime`
+       `find EntitySkeleton`
+       `find EntitySnowman`
+       `find EntitySheep`
+       `find EntitySpider`
+       `find EntityPig`
+       `find EntityWaterMob`
+       `find EntityWolf`
+       `find EntityZombie`
+       `find PathFinder`
+       EntityAIArrowAttack2
+       EntityAIEatGrass2
+       EntityRana
+       EntitySteve
+       EntitySteve\$RenderMD3Steve
+       MD3Frame
+       MD3Loader
+       MD3Model
+       MD3Renderer
+       MD3Shader
+       MD3Surface
+       MD3Tag
+       ODMobs
+       PathEntityIndev
+       PathFinderIndev
+       PathIndev
+       PathPointIndev
+       RenderMD3"
 ADD[4]="olddays/md3"
-CP[5]="`find ModelBiped` `find RendererLivingEntity` `find EntityEnderman` `find TileEntityChestRenderer` `find TileEntityEnderChestRenderer`
-       `find EntityDiggingFX` `find RenderHelper` `find EntityPlayer` `find EntityLivingBase` `find ItemRenderer`
-       `find EntityDropParticleFX` `find LoadingScreenRenderer` `find EntityZombie` `find EntitySkeleton`
-       `find EntitySuspendFX` `find RenderItem` RenderItemFrame2 `find GuiScreen` EntityAIArrowAttack2
-       BlockChestOld BlockFence2 BlockRedstoneWireOld OldContainerCreative GuiContainerCreativeOld LogoEffectRandomizer ModelMobArmor
-       RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderPlayer2 RenderSnowMan2 ODEyecandy"
-ADD[5]="olddays/enderman_eyes.png olddays/plate.png textures/blocks/olddays_chest_top.png textures/blocks/olddays_chest_side.png
-        textures/blocks/olddays_chest_back_left.png textures/blocks/olddays_chest_back_right.png textures/blocks/olddays_chest_front.png
-        textures/blocks/olddays_chest_front_left.png textures/blocks/olddays_chest_front_right.png olddays/allitems.png
-        textures/blocks/olddays_chest_front_left_trap.png textures/blocks/olddays_chest_front_right_trap.png
-        textures/blocks/olddays_chest_front_trap.png olddays/black.png"
-CP[6]="SoundManager2 ODSounds"
+CP[5]="`find EntityDiggingFX`
+       `find EntityDropParticleFX`
+       `find EntityEnderman`
+       `find EntityLivingBase`
+       `find EntityPlayer`
+       `find EntitySkeleton`
+       `find EntitySuspendFX`
+       `find EntityZombie`
+       `find GuiScreen`
+       `find ItemRenderer`
+       `find LoadingScreenRenderer`
+       `find ModelBiped`
+       `find RendererLivingEntity`
+       `find RenderHelper`
+       `find RenderItem`
+       `find TileEntityChestRenderer`
+       `find TileEntityEnderChestRenderer`
+       BlockChestOld
+       BlockFence2
+       BlockRedstoneWireOld
+       EntityAIArrowAttack2
+       GuiContainerCreativeOld
+       ODEyecandy
+       OldContainerCreative
+       RenderItemFrame2
+       LogoEffectRandomizer
+       ModelMobArmor
+       RenderEnderman2
+       RenderMinecart2
+       RenderPlayer2
+       RenderSkeleton2
+       RenderSnowMan2
+       RenderTntMinecart2
+       RenderZombie2"
+ADD[5]="olddays/allitems.png
+        olddays/black.png
+        olddays/enderman_eyes.png
+        olddays/plate.png
+        textures/blocks/olddays_chest_top.png
+        textures/blocks/olddays_chest_side.png
+        textures/blocks/olddays_chest_back_left.png
+        textures/blocks/olddays_chest_back_right.png
+        textures/blocks/olddays_chest_front.png
+        textures/blocks/olddays_chest_front_left.png
+        textures/blocks/olddays_chest_front_right.png
+        textures/blocks/olddays_chest_front_left_trap.png
+        textures/blocks/olddays_chest_front_right_trap.png
+        textures/blocks/olddays_chest_front_trap.png"
+CP[6]="ODSounds
+       SoundManager2"
 ADD[6]="olddays/sounds"
 CP[7]="ODCrafting"
-CP[8]="BlockOreStorageOld TextureWaterFX TextureWaterFlowFX TextureLavaFX TextureLavaFlowFX TextureFlamesFX TexturePortalFX TextureWatchFX
-       TextureCompassFX TextureGearFX ODTextures"
-ADD[8]="olddays/textures.png olddays/char.png olddays/explosion.png olddays/moon_phases.png olddays/pig.png
-        olddays/slime.png olddays/cloth_1.png olddays/cloth_2.png olddays/cloth_empty.png textures/blocks/olddays_iron_side.png
-        textures/blocks/olddays_iron_bottom.png textures/blocks/olddays_gold_side.png textures/blocks/olddays_gold_bottom.png
-        textures/blocks/olddays_diamond_side.png textures/blocks/olddays_diamond_bottom.png olddays/clock.png olddays/compass.png
-        olddays/dial.png olddays/mojang.png olddays/mojang2.png"
-CP[9]="`find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find World` `find ComponentVillageField` `find ComponentVillageField2` `find ComponentNetherBridgeCorridor`
-       `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2` `find RenderItem` `find ComponentNetherBridgeCorridor2`
-       `find StructureStrongholdPieces` `find WorldGenBigTree` ComponentStrongholdStairsOld ComponentStrongholdCrossingOld GuiCreateFlatWorld2 GuiButtonNBXlite
-       `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find WorldServer` `find ChestItemRenderHelper` `find ItemEnchantedBook`
-       `find WorldProviderSurface` `find WorldGenTrees` WorldSSP2 ComponentMineshaftCorridorOld ODNBXlite nbxlite/ RenderMinecart2 RenderTntMinecart2 `find BlockGrass`
-       `find RenderManager` `find Chunk` `find TileEntityRenderer` `find EntityFX` `find EntityBreakingFX` `find TileEntityEnderChestRenderer` `find BlockSapling`
-       `find EntityDiggingFX` `find TileEntityChestRenderer` RenderEnderman2 RenderPlayer2 `find EntityPickupFX` RenderItemFrame2 `find RenderBiped` `find ItemRenderer`"
-ADD[9]="textures/blocks/olddays_grass_top.png textures/blocks/olddays_grass_side.png textures/blocks/olddays_leaves_fast.png
-        textures/blocks/olddays_leaves_fancy.png olddays/fluff.png olddays/gear.png olddays/gearmiddle.png
-        textures/blocks/olddays_gear_0.png textures/blocks/olddays_gear_1.png olddays/classic_water.png olddays/classic_lava.png"
-CP[10]="GuiOldDaysModules GuiOldDaysSettings mod_OldDays OldDaysModule OldDaysProperty OldDaysPropertyBool OldDaysPropertySet
-        GuiButtonOldDays OldDaysTextureManager\$TextureHook TextureFX GuiOldDaysSeparator GuiScrolling IScrollingGui
-        OldDaysPropertyInt OldDaysPropertyString OldDaysPropertyRGB OldDaysPropertyCond OldDaysPropertyFloat OldDaysTextureManager SavingManager
-        SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2 GuiOldDaysPresets"
-ADD[10]="olddays/lang olddays/presets"
-MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs`
+CP[8]="BlockOreStorageOld
+       ItemCoalOld
+       ODTextures
+       TextureCompassFX
+       TextureFlamesFX
+       TextureGearFX
+       TextureLavaFX
+       TextureLavaFlowFX
+       TexturePortalFX
+       TextureWatchFX
+       TextureWaterFX
+       TextureWaterFlowFX"
+ADD[8]="olddays/char.png
+        olddays/cloth_1.png
+        olddays/cloth_2.png
+        olddays/cloth_empty.png
+        olddays/clock.png
+        olddays/compass.png
+        olddays/dial.png
+        olddays/explosion.png
+        olddays/mojang.png
+        olddays/mojang2.png
+        olddays/moon_phases.png
+        olddays/pig.png
+        olddays/slime.png
+        olddays/textures.png
+        textures/blocks/olddays_diamond_bottom.png
+        textures/blocks/olddays_diamond_side.png
+        textures/blocks/olddays_gold_bottom.png
+        textures/blocks/olddays_gold_side.png
+        textures/blocks/olddays_iron_bottom.png
+        textures/blocks/olddays_iron_side.png"
+CP[9]="`find BiomeGenBase`
+       `find BlockFluid`
+       `find BlockGrass`
+       `find BlockSapling`
+       `find ChestItemRenderHelper`
+       `find Chunk`
+       `find ChunkCache`
+       `find ChunkProviderHell`
+       `find ComponentNetherBridgeCorridor`
+       `find ComponentNetherBridgeCorridor2`
+       `find ComponentStrongholdStairs2`
+       `find ComponentVillage`
+       `find ComponentVillageField`
+       `find ComponentVillageField2`
+       `find EntityAIMate`
+       `find EntityAnimal`
+       `find EntityBreakingFX`
+       `find EntityDiggingFX`
+       `find EntityFX`
+       `find EntityPickupFX`
+       `find EntityWolf`
+       `find ItemEnchantedBook`
+       `find ItemRenderer`
+       `find GenLayer`
+       `find RenderBiped`
+       `find RenderItem`
+       `find RenderManager`
+       `find StructureMineshaftPieces`
+       `find StructureStrongholdPieces`
+       `find TileEntityChestRenderer`
+       `find TileEntityEnderChestRenderer`
+       `find TileEntityRenderer`
+       `find World`
+       `find WorldChunkManager`
+       `find WorldChunkManagerHell`
+       `find WorldProviderSurface`
+       `find WorldGenBigTree`
+       `find WorldGenTrees`
+       `find WorldServer`
+       ComponentMineshaftCorridorOld
+       ComponentStrongholdCrossingOld
+       ComponentStrongholdStairsOld
+       GuiButtonNBXlite
+       GuiCreateFlatWorld2
+       ODNBXlite
+       RenderEnderman2
+       RenderItemFrame2
+       RenderMinecart2
+       RenderPlayer2
+       RenderTntMinecart2
+       WorldSSP2
+       nbxlite/"
+ADD[9]="olddays/classic_water.png
+        olddays/classic_lava.png
+        olddays/fluff.png
+        olddays/gear.png
+        olddays/gearmiddle.png
+        textures/blocks/olddays_gear_0.png
+        textures/blocks/olddays_gear_1.png
+        textures/blocks/olddays_grass_top.png
+        textures/blocks/olddays_grass_side.png
+        textures/blocks/olddays_leaves_fast.png
+        textures/blocks/olddays_leaves_fancy.png"
+CP[10]="GuiButtonOldDays
+        GuiButtonProp
+        GuiOldDaysBase
+        GuiOldDaysModules
+        GuiOldDaysPresets
+        GuiOldDaysSearch
+        GuiOldDaysSeparator
+        GuiOldDaysSettings
+        GuiScrolling
+        GuiTextFieldSearch
+        IScrollingGui
+        OldDaysEasyLocalization
+        OldDaysModule
+        OldDaysProperty
+        OldDaysPropertyBool
+        OldDaysPropertyCond
+        OldDaysPropertyCond2
+        OldDaysPropertyFloat
+        OldDaysPropertyInt
+        OldDaysPropertyRGB
+        OldDaysPropertySet
+        OldDaysPropertyString
+        OldDaysTextureManager
+        OldDaysTextureManager\$TextureHook
+        SavingManager
+        SMPManager
+        TextureFX
+        mod_OldDays"
+ADD[10]="olddays/lang
+         olddays/presets"
+MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` ItemCoalOld
         BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves` MovementInputFromOptionsCustom
         `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find TileEntityEnderChestRenderer` PathIndev `find BlockSnow`
@@ -109,14 +323,46 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         SMPManager OldDaysEasyLocalization GuiOldDaysBase GuiOldDaysSearch GuiTextFieldSearch GuiButtonProp OldDaysPropertyCond2"
 CP[11]="`find EntityLiving` `find EntityLivingBase` `find ItemRenderer`"
 ADD[11]="${ADD[1]} ${ADD[2]} ${ADD[3]} ${ADD[4]} ${ADD[5]} ${ADD[6]} ${ADD[7]} ${ADD[8]} ${ADD[9]} ${ADD[10]}"
-MV[12]="EntityHuman ModelHuman RenderHuman mod_SpawnHuman"
+MV[12]="EntityHuman
+        ModelHuman
+        RenderHuman
+        mod_SpawnHuman"
 ADD[12]="./char.png"
-MV[13]="CommandClientSPC EntityPlayerSPSPC PlayerHelper PlayerHelper\$1 SPCCheckVersion SPCCommand SPCEntity SPCEntityCamera SPCEntityInterface
-        SPCLocalConfiguration SPCLocalPlayer SPCLocalWorld SPCObjectHit SPCPlugin SPCPluginManager SPCPoint SPCServerInterface SPCVersion
-        SPCVersionInterface SPCWorld SPCWorldInterface Settings WorldEditPlugin mod_SSPC spc_WorldEdit spc_paint spc_path
-        spc_Elevators Group Group\$1 Group\$GroupBlock RenderGroup"
-MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
-        `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` `find EntityLivingBase` net/ ssp/ other"
+MV[13]="CommandClientSPC
+        EntityPlayerSPSPC
+        PlayerHelper
+        PlayerHelper\$1
+        Settings
+        SPCCheckVersion
+        SPCCommand
+        SPCEntity
+        SPCEntityCamera
+        SPCEntityInterface
+        SPCLocalConfiguration
+        SPCLocalPlayer
+        SPCLocalWorld
+        SPCObjectHit
+        SPCPlugin
+        SPCPluginManager
+        SPCPoint
+        SPCServerInterface
+        SPCVersion
+        SPCVersionInterface
+        SPCWorld
+        SPCWorldInterface
+        WorldEditPlugin
+        mod_SSPC
+        spc_WorldEdit
+        spc_paint
+        spc_path
+        spc_Elevators
+        Group
+        Group\$1
+        Group\$GroupBlock
+        RenderGroup"
+MV[14]="net/ ssp/ other"
+#MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
+#        `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` `find EntityLivingBase` net/ ssp/ other"
 
 cd $ORIG_DIR_SERVER
 
