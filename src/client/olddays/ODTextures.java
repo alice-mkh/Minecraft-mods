@@ -196,9 +196,6 @@ public class ODTextures extends OldDaysModule{
     }
 
     private void refreshTextureFXes(boolean refreshBlocks){
-        if (true){
-            return;
-        }
         if (core.getField(BlockFluid.class, Block.waterStill, 0) == null){
             return;
         }
@@ -208,7 +205,7 @@ public class ODTextures extends OldDaysModule{
         prevProcedural = Procedural;
         if (!Procedural){
             core.texman.removeTextureFXes();
-            refreshIconReplacements();
+//             refreshIconReplacements();
             return;
         }
         TextureMap blocks = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110575_b));
@@ -218,10 +215,10 @@ public class ODTextures extends OldDaysModule{
             return;
         }
 
-        if (refreshBlocks){
+/*        if (refreshBlocks){
             Minecraft.getMinecraft().func_110434_K().func_110550_d();
             refreshIconReplacements();
-        }
+        }*/
 
         Icon origWater = BlockFluid.func_94424_b("water_still");
         Icon origWaterFlow = BlockFluid.func_94424_b("water_flow");
@@ -309,7 +306,7 @@ public class ODTextures extends OldDaysModule{
         for (int i = 0; i < icons.length; i++){
             int x = (Wool == 0 ? classic[i] : beta[i]) % 16;
             int y = (Wool == 0 ? classic[i] : beta[i]) / 16;
-            replaceIcon(icons[i], "olddays/textures.png", x, y, "textures/blocks/wool_colored_" + ItemDye.field_94595_b[i] + ".png", Wool < 2);
+            replaceIcon(icons[i], "olddays/textures.png", x, y, "textures/blocks/wool_colored_" + ItemDye.field_94595_b[~i & 0xF] + ".png", Wool < 2);
         }
     }
 
