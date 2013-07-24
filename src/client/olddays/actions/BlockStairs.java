@@ -771,7 +771,7 @@ public class BlockStairs extends Block
         {
             if (par1World.getBlockMaterial(par2, par3 + 1, par4).isSolid())
             {
-                par1World.setBlock(par2, par3, par4, modelBlock.blockID, par1World.getBlockMetadata(par2, par3, par4), 2);
+                par1World.setBlock(par2, par3, par4, modelBlock.blockID, modelBlockMetadata, 2);
             }
             else
             {
