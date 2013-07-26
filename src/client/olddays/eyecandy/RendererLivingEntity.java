@@ -13,6 +13,33 @@ public abstract class RendererLivingEntity extends Render
     public static boolean oldlabels = false;
     public static boolean oldHeadRotation = false;
 
+    private float setBobbing(EntityLivingBase par1EntityLivingBase, float f5, float par9){
+        if (par1EntityLivingBase.ridingEntity != null && par1EntityLivingBase.ridingEntity instanceof EntityLivingBase){
+            return setBobbing((EntityLivingBase)par1EntityLivingBase.ridingEntity, f5, par9);
+        }
+        float bobStrength = 0F;
+        if (bobbing && !par1EntityLivingBase.isChild() &&
+            (par1EntityLivingBase instanceof EntityAgeable ||
+             par1EntityLivingBase instanceof EntityMob ||
+             par1EntityLivingBase instanceof EntityPlayer) &&
+           !(par1EntityLivingBase instanceof EntitySpider) &&
+           !(par1EntityLivingBase instanceof EntityHorse)){
+            bobStrength = 1F;
+        }else{
+            GL11.glTranslatef(0.0F, -24F * f5 - 0.0078125F, 0.0F);
+            float f7 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbYaw * (1.0F - par9);
+            if (par1EntityLivingBase.isChild()){
+                f7 *= 3F;
+            }
+            return f7;
+        }
+        float f7 = par1EntityLivingBase.field_70763_ax + (par1EntityLivingBase.field_70764_aw - par1EntityLivingBase.field_70763_ax) * par9;
+        float f32 = par1EntityLivingBase.field_70768_au + (par1EntityLivingBase.field_110154_aX - par1EntityLivingBase.field_70768_au) * par9;
+        float bob = -Math.abs(MathHelper.cos(f7 * 0.6662F)) * 5F * f32 * bobStrength - 23F;
+        GL11.glTranslatef(0.0F, bob * f5 - 0.0078125F, 0.0F);
+        return f7;
+    }
+
     private static final ResourceLocation field_110814_a = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     protected ModelBase mainModel;
 
@@ -115,33 +142,8 @@ public abstract class RendererLivingEntity extends Render
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1F, -1F, 1.0F);
             preRenderCallback(par1EntityLivingBase, par9);
-            if (!bobbing || par1EntityLivingBase.isChild()){
-                GL11.glTranslatef(0.0F, -24F * f5 - 0.0078125F, 0.0F);
-            }
             float f6 = par1EntityLivingBase.prevLimbYaw + (par1EntityLivingBase.limbYaw - par1EntityLivingBase.prevLimbYaw) * par9;
-            float f7;
-
-            if (bobbing && !par1EntityLivingBase.isChild()){
-                f7 = par1EntityLivingBase.field_70763_ax + (par1EntityLivingBase.field_70764_aw - par1EntityLivingBase.field_70763_ax) * par9;
-                float bobStrength = 0F;
-                if (par1EntityLivingBase instanceof EntityZombie || 
-                    par1EntityLivingBase instanceof EntitySkeleton || 
-                    par1EntityLivingBase instanceof EntityCreeper || 
-                    par1EntityLivingBase instanceof EntityPig || 
-                    par1EntityLivingBase instanceof EntitySheep || 
-                    par1EntityLivingBase instanceof EntityPlayer ||
-                    par1EntityLivingBase instanceof EntityOtherPlayerMP){
-                    bobStrength = 1.0F;
-                }
-                float f32 = par1EntityLivingBase.field_70768_au + (par1EntityLivingBase.field_110154_aX - par1EntityLivingBase.field_70768_au) * par9;
-                float bob = -Math.abs(MathHelper.cos(f7 * 0.6662F)) * 5F * f32 * bobStrength - 23F;
-                GL11.glTranslatef(0.0F, bob * f5 - 0.0078125F, 0.0F);
-            }else{
-                f7 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbYaw * (1.0F - par9);
-                if (par1EntityLivingBase.isChild()){
-                    f7 *= 3F;
-                }
-             }
+            float f7 = setBobbing(par1EntityLivingBase, f5, par9);
 
             if (f6 > 1.0F)
             {
