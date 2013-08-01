@@ -185,9 +185,9 @@ public class EntityRenderer
     private void setFog(){
         if (GLContext.getCapabilities().GL_NV_fog_distance){
             if(!oldFog){
-                GL11.glFogi(34138, 34139);
+                GL11.glFogi(org.lwjgl.opengl.NVFogDistance.GL_FOG_DISTANCE_MODE_NV, org.lwjgl.opengl.NVFogDistance.GL_EYE_RADIAL_NV);
             }else{
-                GL11.glFogi(34138, 34140);
+                GL11.glFogi(org.lwjgl.opengl.NVFogDistance.GL_FOG_DISTANCE_MODE_NV, org.lwjgl.opengl.NVFogDistance.GL_EYE_PLANE_ABSOLUTE_NV);
             }
         }
     }
