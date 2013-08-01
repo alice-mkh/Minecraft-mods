@@ -69,8 +69,7 @@ public class ODActions extends OldDaysModule{
     @Override
     public void catchKeyEvent(KeyBinding keybinding){
         if (keybinding==keyFog && minecraft.currentScreen==null && FogKey){
-            boolean flag = org.lwjgl.input.Keyboard.isKeyDown(42) || org.lwjgl.input.Keyboard.isKeyDown(54);
-            minecraft.gameSettings.setOptionValue(EnumOptions.RENDER_DISTANCE, flag ? -1 : 1);
+            minecraft.gameSettings.setOptionValue(EnumOptions.RENDER_DISTANCE, GuiScreen.isShiftKeyDown() ? -1 : 1);
         }
     }
 
