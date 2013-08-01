@@ -148,6 +148,7 @@ public class RenderGlobal implements IWorldAccess
     int frustumCheckOffset;
 
     public static boolean nbxlite = false;
+    public static boolean isTakingIsometricScreenshot = false;
 
     public RenderGlobal(Minecraft par1Minecraft)
     {

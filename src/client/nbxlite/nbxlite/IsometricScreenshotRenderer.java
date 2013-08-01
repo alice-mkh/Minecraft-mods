@@ -39,7 +39,7 @@ public class IsometricScreenshotRenderer{
         }else{
             width = (64 << (3 - mc.gameSettings.renderDistance)) + 16;
             length = width;
-            height = 128;
+            height = 256;
         }
         floatBuffer = BufferUtils.createFloatBuffer(16);
     }
@@ -58,6 +58,7 @@ public class IsometricScreenshotRenderer{
         File outputFile = getOutputFile();
         progressupdate.resetProgresAndWorkingMessage("Rendering");
         progressupdate.setLoadingProgress(0);
+        renderGlobal.isTakingIsometricScreenshot = true;
         try{
             boolean finite = ODNBXlite.isFinite();
             int i1 = (width * SCALE) + (length * SCALE);
@@ -99,9 +100,9 @@ public class IsometricScreenshotRenderer{
                     GL11.glMultMatrix(floatBuffer);
                     GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
                     if (finite){
-                        GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                        GL11.glTranslated(-width / 2.0D, -height / 2.0D, -length / 2.0D);
                     }else{
-                        GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
+                        GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -height / 2.0D, -mc.renderViewEntity.lastTickPosZ);
                     }
                     Frustrum frustrum = new Frustrum();
                     GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
@@ -124,8 +125,10 @@ public class IsometricScreenshotRenderer{
                     GL11.glShadeModel(GL11.GL_FLAT);
                     renderGlobal.renderSky(0.0F);
                     if (finite){
-                        GL11.glTranslatef(width / 2.0F, height / 2.0F, length / 2.0F);
+                        GL11.glTranslated(width / 2.0D, height / 2.0D, length / 2.0D);
                         GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
+                    }else{
+                        GL11.glTranslated(0, -mc.renderViewEntity.lastTickPosY + height / 2.0D, 0);
                     }
                     if (worldObj.provider.getCloudHeight() < height && mc.gameSettings.clouds){
                         GL11.glPushMatrix();
@@ -140,6 +143,8 @@ public class IsometricScreenshotRenderer{
                     GL11.glColorMask(false, false, false, false);
                     if (finite){
                         GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
+                    }else{
+                        GL11.glTranslated(0, mc.renderViewEntity.lastTickPosY - height / 2.0D, 0);
                     }
                     if (mc.gameSettings.ambientOcclusion != 0){
                         GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -149,7 +154,7 @@ public class IsometricScreenshotRenderer{
                     GL11.glShadeModel(GL11.GL_FLAT);
                     GL11.glColorMask(true, true, true, true);
                     if (finite){
-                        GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                        GL11.glTranslated(-width / 2.0D, -height / 2.0D, -length / 2.0D);
                     }
                     if (i11 > 0){
                         renderGlobal.renderAllRenderLists(1, 0.0F);
@@ -178,6 +183,7 @@ public class IsometricScreenshotRenderer{
         }catch (Throwable t){
             t.printStackTrace();
         }
+        renderGlobal.isTakingIsometricScreenshot = false;
     }
 
     private BufferedImage getImageFromByteBuffer(int width, int height){
