@@ -454,7 +454,7 @@ public class RenderGlobal implements IWorldAccess
                 }
             }
 
-            if (flag && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping()) && theWorld.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
+            if (flag && (entity1 != mc.renderViewEntity || mc.gameSettings.thirdPersonView != 0 || mc.renderViewEntity.isPlayerSleeping() || isTakingIsometricScreenshot) && theWorld.blockExists(MathHelper.floor_double(entity1.posX), 0, MathHelper.floor_double(entity1.posZ)))
             {
                 countEntitiesRendered++;
                 RenderManager.instance.renderEntity(entity1, par3);

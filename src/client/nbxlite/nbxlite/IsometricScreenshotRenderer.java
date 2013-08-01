@@ -108,7 +108,8 @@ public class IsometricScreenshotRenderer{
                     }else{
                         GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -height / 2.0D, -mc.renderViewEntity.lastTickPosZ);
                     }
-                    Frustrum frustrum = new Frustrum();
+                    Frustrum frustrum = new Frustrum2();
+                    renderGlobal.clipRenderersByFrustum(frustrum, 0.0F);
                     GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
                     renderGlobal.updateRenderers(mc.renderViewEntity, false);
                     mc.entityRenderer.setupFogPublic();
@@ -163,9 +164,11 @@ public class IsometricScreenshotRenderer{
                     if (i11 > 0){
                         renderGlobal.renderAllRenderLists(1, 0.0F);
                     }
+                    GL11.glColorMask(false, false, false, false);
                     if (finite && ODNBXlite.SurrGroundHeight >= 0 && worldObj.provider.dimensionId == 0){
                         net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F);
                     }
+                    GL11.glColorMask(true, true, true, true);
                     GL11.glDepthMask(true);
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glDisable(GL11.GL_FOG);
@@ -183,7 +186,6 @@ public class IsometricScreenshotRenderer{
             FileOutputStream stream = new FileOutputStream(outputFile);
             ImageIO.write(image, "png", stream);
             stream.close();
-            return;
         }catch (OutOfMemoryError e){
             String str = "Out of memory. Reduce render distance and try again.";
             if (finite){
