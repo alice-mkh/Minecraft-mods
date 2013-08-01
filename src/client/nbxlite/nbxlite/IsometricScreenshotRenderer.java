@@ -37,9 +37,9 @@ public class IsometricScreenshotRenderer{
             length = ODNBXlite.IndevWidthZ;
             height = ODNBXlite.IndevHeight;
         }else{
-            width = 64;
-            length = 64;
-            height = 256;
+            width = (64 << (3 - mc.gameSettings.renderDistance)) + 16;
+            length = width;
+            height = 128;
         }
         floatBuffer = BufferUtils.createFloatBuffer(16);
     }
@@ -59,6 +59,7 @@ public class IsometricScreenshotRenderer{
         progressupdate.resetProgresAndWorkingMessage("Rendering");
         progressupdate.setLoadingProgress(0);
         try{
+            boolean finite = ODNBXlite.isFinite();
             int i1 = (width * SCALE) + (length * SCALE);
             int i3 = (height * SCALE) + i1 / 2;
             BufferedImage image = new BufferedImage(i1, i3, 1);
@@ -97,9 +98,12 @@ public class IsometricScreenshotRenderer{
                     floatBuffer.flip();
                     GL11.glMultMatrix(floatBuffer);
                     GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
-                    GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                    if (finite){
+                        GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                    }else{
+                        GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
+                    }
                     Frustrum frustrum = new Frustrum();
-//                     renderGlobal.clipRenderersByFrustum(frustrum, 0.0F);
                     GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
                     renderGlobal.updateRenderers(mc.renderViewEntity, false);
                     mc.entityRenderer.setupFogPublic();
@@ -119,8 +123,10 @@ public class IsometricScreenshotRenderer{
                     renderGlobal.sortAndRender(mc.renderViewEntity, 0, 0.0F);
                     GL11.glShadeModel(GL11.GL_FLAT);
                     renderGlobal.renderSky(0.0F);
-                    GL11.glTranslatef(width / 2.0F, height / 2.0F, length / 2.0F);
-                    GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
+                    if (finite){
+                        GL11.glTranslatef(width / 2.0F, height / 2.0F, length / 2.0F);
+                        GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
+                    }
                     if (worldObj.provider.getCloudHeight() < height && mc.gameSettings.clouds){
                         GL11.glPushMatrix();
                         double temp = mc.renderViewEntity.lastTickPosY;
@@ -132,7 +138,9 @@ public class IsometricScreenshotRenderer{
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glColorMask(false, false, false, false);
-                    GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
+                    if (finite){
+                        GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
+                    }
                     if (mc.gameSettings.ambientOcclusion != 0){
                         GL11.glShadeModel(GL11.GL_SMOOTH);
                     }
@@ -140,11 +148,13 @@ public class IsometricScreenshotRenderer{
                     int i11 = renderGlobal.sortAndRender(mc.renderViewEntity, 1, 0.5F);
                     GL11.glShadeModel(GL11.GL_FLAT);
                     GL11.glColorMask(true, true, true, true);
-                    GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                    if (finite){
+                        GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                    }
                     if (i11 > 0){
                         renderGlobal.renderAllRenderLists(1, 0.0F);
                     }
-                    if (ODNBXlite.SurrGroundHeight >= 0 && worldObj.provider.dimensionId == 0){
+                    if (finite && ODNBXlite.SurrGroundHeight >= 0 && worldObj.provider.dimensionId == 0){
                         net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F);
                     }
                     GL11.glDepthMask(true);
