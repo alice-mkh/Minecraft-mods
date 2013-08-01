@@ -1386,13 +1386,6 @@ public class EntityRenderer
             renderglobal.drawBlockDamageTexture(Tessellator.instance, (EntityPlayer)entitylivingbase, par1);
             GL11.glDisable(GL11.GL_BLEND);
             mc.mcProfiler.endStartSection("weather");
-            if (snow){
-                if (oldSnow){
-                    renderSnowOld(par1);
-                }else{
-                    renderSnow(par1);
-                }
-            }
             renderRainSnow(par1);
             GL11.glDisable(GL11.GL_FOG);
 
@@ -1746,6 +1739,13 @@ public class EntityRenderer
      */
     protected void renderRainSnow(float par1)
     {
+        if (snow){
+            if (oldSnow){
+                renderSnowOld(par1);
+            }else{
+                renderSnow(par1);
+            }
+        }
         float f = mc.theWorld.getRainStrength(par1);
 
         if (f <= 0.0F)
@@ -2288,6 +2288,10 @@ public class EntityRenderer
 
     public void setupFogPublic(){
         setupFog(0, 0.0F);
+    }
+
+    public void renderRainSnowPublic(){
+        renderRainSnow(0.0F);
     }
 
     /**

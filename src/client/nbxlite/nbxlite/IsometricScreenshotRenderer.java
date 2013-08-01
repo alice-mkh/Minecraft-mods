@@ -1,26 +1,16 @@
 package net.minecraft.src;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Random;
 import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 
 public class IsometricScreenshotRenderer{
     public static boolean oldFog = true;
@@ -89,7 +79,7 @@ public class IsometricScreenshotRenderer{
                         byteBuffer = BufferUtils.createByteBuffer(dWidth * dHeight << 2);
                     }
                     GL11.glViewport(0, 0, dWidth, dHeight);
-                    mc.entityRenderer.updateFogColorPublic(0.0F);
+//                     mc.entityRenderer.updateFogColorPublic(0.0F);
                     GL11.glClear(16640);
                     GL11.glEnable(2884);
 //                     int farPlaneDistance = 256 >> mc.gameSettings.renderDistance;
@@ -112,9 +102,9 @@ public class IsometricScreenshotRenderer{
                     GL11.glMultMatrix(floatBuffer);
                     GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
-                    GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
                     Frustrum frustrum = new Frustrum();
-                    renderGlobal.clipRenderersByFrustum(frustrum, 0.0F);
+//                     renderGlobal.clipRenderersByFrustum(frustrum, 0.0F);
+                    GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
                     renderGlobal.updateRenderers(mc.renderViewEntity, false);
                     mc.entityRenderer.setupFogPublic();
                     GL11.glEnable(2912);
@@ -124,24 +114,39 @@ public class IsometricScreenshotRenderer{
                     GL11.glFogf(2916, 5000.0F + f3 * 8.0F);
                     RenderHelper.enableStandardItemLighting();
                     renderGlobal.renderEntities(mc.renderViewEntity.getPosition(0.0F), frustrum, 0.0F);
+                    mc.entityRenderer.renderRainSnowPublic();
                     RenderHelper.disableStandardItemLighting();
                     mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+                    if (mc.gameSettings.ambientOcclusion != 0){
+                        GL11.glShadeModel(GL11.GL_SMOOTH);
+                    }
                     renderGlobal.sortAndRender(mc.renderViewEntity, 0, 0.0F);
+                    GL11.glShadeModel(GL11.GL_FLAT);
 //                     renderGlobal.f();
-                    if (ODNBXlite.CloudHeight < height){
-                        renderGlobal.renderSky(0.0F);
+                    GL11.glTranslatef(width / 2.0F, height / 2.0F, length / 2.0F);
+                    GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
+                    if (worldObj.provider.getCloudHeight() < height){
+                        renderGlobal.renderClouds(0.0F);
                     }
                     GL11.glEnable(3042);
                     GL11.glBlendFunc(770, 771);
                     GL11.glColorMask(false, false, false, false);
+                    GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
+                    if (mc.gameSettings.ambientOcclusion != 0){
+                        GL11.glShadeModel(GL11.GL_SMOOTH);
+                    }
                     int i11 = renderGlobal.sortAndRender(mc.renderViewEntity, 1, 0.0F);
+                    GL11.glShadeModel(GL11.GL_FLAT);
+                    GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
                     GL11.glColorMask(true, true, true, true);
                     if (i11 > 0){
-                        renderGlobal.renderClouds(0.0F);
+                        renderGlobal.renderSky(0.0F);
                     }
-//                     if (ODNBXlite.SurrGroundHeight >= 0 && worldObj.provider.dimensionId == 0){
-//                         net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F);
-//                     }
+                    GL11.glTranslatef(-width / 2.0F, -height / 2.0F, -length / 2.0F);
+                    GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
+                    if (ODNBXlite.SurrGroundHeight >= 0 && worldObj.provider.dimensionId == 0){
+                        net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F);
+                    }
                     GL11.glDepthMask(true);
                     GL11.glDisable(3042);
                     GL11.glDisable(2912);
