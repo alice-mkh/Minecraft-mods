@@ -2282,6 +2282,14 @@ public class EntityRenderer
         return c;
     }
 
+    public void updateFogColorPublic(float f){
+        updateFogColor(f);
+    }
+
+    public void setupFogPublic(){
+        setupFog(0, 0.0F);
+    }
+
     /**
      * Get minecraft reference from the EntityRenderer
      */

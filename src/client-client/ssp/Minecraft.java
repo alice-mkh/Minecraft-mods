@@ -220,6 +220,7 @@ public class Minecraft implements IPlayerUsage
     private boolean profilingEnabled;
     public static boolean oldswing = false;
     public static boolean timecontrol = false;
+    public static boolean isom = true;
     public static boolean oldlighting = false;
     public static boolean indevShapeSize = false;
     public static boolean thirdperson = true;
@@ -1871,6 +1872,12 @@ public class Minecraft implements IPlayerUsage
 
         if (theWorld != null)
         {
+            if (isom && (!timecontrol || GuiScreen.isShiftKeyDown())){
+                if (Keyboard.isKeyDown(65)){
+                    IsometricScreenshotRenderer renderer = new IsometricScreenshotRenderer(loadingScreen, this);
+                    renderer.doRender();
+                }
+            }
             if (timecontrol && enableSP && currentScreen == null){
                 if(Keyboard.isKeyDown(64)){
                     ((WorldSSP)theWorld).field_35465_L -= 0.001D;
