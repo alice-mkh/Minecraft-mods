@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.*;
+import org.lwjgl.input.Keyboard;
 import net.minecraft.src.nbxlite.*;
 import net.minecraft.src.nbxlite.blocks.*;
 import net.minecraft.src.nbxlite.format.LeavesFixer;
@@ -9,7 +11,6 @@ import net.minecraft.src.nbxlite.format.SaveConverterMcRegion;
 import net.minecraft.src.nbxlite.indev.*;
 import net.minecraft.src.nbxlite.oldbiomes.OldBiomeGenBase;
 import net.minecraft.src.nbxlite.spawners.SpawnListEntryBeta;
-import java.util.zip.*;
 
 public class ODNBXlite extends OldDaysModule{
     public ODNBXlite(mod_OldDays c){
@@ -54,6 +55,7 @@ public class ODNBXlite extends OldDaysModule{
         Minecraft.getMinecraft().worldClass = WorldSSP2.class;
         set(ItemRenderer.class, "olddays", true);
         flags = new HashMap<String, Boolean>();
+        Minecraft.isom = true;
     }
 
     @Override
@@ -621,6 +623,10 @@ public class ODNBXlite extends OldDaysModule{
         Minecraft minecraft = mod_OldDays.getMinecraft();
         if (isFinite() && !minecraft.theWorld.isRemote){
             tickPushing(minecraft);
+        }
+        if ((!minecraft.timecontrol || GuiScreen.isShiftKeyDown()) && Keyboard.isKeyDown(65)){
+            IsometricScreenshotRenderer renderer = new IsometricScreenshotRenderer(minecraft);
+            renderer.doRender();
         }
         return true;
     }

@@ -1,4 +1,4 @@
-package net.minecraft.src;
+package net.minecraft.src.nbxlite;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.src.*;
 
 public class IsometricScreenshotRenderer{
     public static int SCALE = 16;
@@ -23,11 +24,12 @@ public class IsometricScreenshotRenderer{
     private int width;
     private int length;
     private int height;
+    private float maxCloudHeight;
     private ByteBuffer byteBuffer;
     private FloatBuffer floatBuffer;
 
-    public IsometricScreenshotRenderer(IProgressUpdate p, Minecraft m){
-        progressupdate = p;
+    public IsometricScreenshotRenderer(Minecraft m){
+        progressupdate = m.loadingScreen;
         mc = m;
         worldObj = mc.theWorld;
         renderGlobal = mc.renderGlobal;
@@ -36,10 +38,12 @@ public class IsometricScreenshotRenderer{
             width = ODNBXlite.IndevWidthX;
             length = ODNBXlite.IndevWidthZ;
             height = ODNBXlite.IndevHeight;
+            maxCloudHeight = height;
         }else{
             width = (64 << (3 - mc.gameSettings.renderDistance)) + 16;
             length = width;
             height = 256;
+            maxCloudHeight = 108.0F;
         }
         floatBuffer = BufferUtils.createFloatBuffer(16);
     }
@@ -59,8 +63,8 @@ public class IsometricScreenshotRenderer{
         progressupdate.resetProgresAndWorkingMessage("Rendering");
         progressupdate.setLoadingProgress(0);
         renderGlobal.isTakingIsometricScreenshot = true;
+        boolean finite = ODNBXlite.isFinite();
         try{
-            boolean finite = ODNBXlite.isFinite();
             int i1 = (width * SCALE) + (length * SCALE);
             int i3 = (height * SCALE) + i1 / 2;
             BufferedImage image = new BufferedImage(i1, i3, 1);
@@ -130,7 +134,7 @@ public class IsometricScreenshotRenderer{
                     }else{
                         GL11.glTranslated(0, -mc.renderViewEntity.lastTickPosY + height / 2.0D, 0);
                     }
-                    if (worldObj.provider.getCloudHeight() < height && mc.gameSettings.clouds){
+                    if (worldObj.provider.getCloudHeight() < maxCloudHeight && mc.gameSettings.clouds){
                         GL11.glPushMatrix();
                         double temp = mc.renderViewEntity.lastTickPosY;
                         mc.renderViewEntity.lastTickPosY = worldObj.provider.getCloudHeight() + 20;
@@ -180,6 +184,12 @@ public class IsometricScreenshotRenderer{
             ImageIO.write(image, "png", stream);
             stream.close();
             return;
+        }catch (OutOfMemoryError e){
+            String str = "Out of memory. Reduce render distance and try again.";
+            if (finite){
+                str = "Out of memory. The world is too large.";
+            }
+            mc.ingameGUI.getChatGUI().printChatMessage(str);
         }catch (Throwable t){
             t.printStackTrace();
         }
