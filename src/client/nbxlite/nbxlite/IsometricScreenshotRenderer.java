@@ -64,6 +64,12 @@ public class IsometricScreenshotRenderer{
         progressupdate.setLoadingProgress(0);
         renderGlobal.isTakingIsometricScreenshot = true;
         boolean finite = ODNBXlite.isFinite();
+        double posX = mc.renderViewEntity.lastTickPosX;
+        double posZ = mc.renderViewEntity.lastTickPosZ;
+        if (!finite){
+            mc.renderViewEntity.lastTickPosX = MathHelper.floor_double(posX / 16.0D) * 16 + 8;
+            mc.renderViewEntity.lastTickPosZ = MathHelper.floor_double(posZ / 16.0D) * 16 + 8;
+        }
         try{
             int i1 = (width * SCALE) + (length * SCALE);
             int i3 = (height * SCALE) + i1 / 2;
@@ -120,13 +126,13 @@ public class IsometricScreenshotRenderer{
                     renderGlobal.renderEntities(mc.renderViewEntity.getPosition(0.0F), frustrum, 0.0F);
                     mc.entityRenderer.renderRainSnowPublic();
                     RenderHelper.disableStandardItemLighting();
+                    renderGlobal.renderSky(0.0F);
                     mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
                     if (mc.gameSettings.ambientOcclusion != 0){
                         GL11.glShadeModel(GL11.GL_SMOOTH);
                     }
                     renderGlobal.sortAndRender(mc.renderViewEntity, 0, 0.0F);
                     GL11.glShadeModel(GL11.GL_FLAT);
-                    renderGlobal.renderSky(0.0F);
                     if (finite){
                         GL11.glTranslated(width / 2.0D, height / 2.0D, length / 2.0D);
                         GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
@@ -193,6 +199,10 @@ public class IsometricScreenshotRenderer{
             t.printStackTrace();
         }
         renderGlobal.isTakingIsometricScreenshot = false;
+        if (!finite){
+            mc.renderViewEntity.lastTickPosX = posX;
+            mc.renderViewEntity.lastTickPosZ = posZ;
+        }
     }
 
     private BufferedImage getImageFromByteBuffer(int width, int height){
