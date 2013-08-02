@@ -1,10 +1,12 @@
 package net.minecraft.src.nbxlite;
 
 import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import net.minecraft.src.*;
 
 public class RenderBounds{
@@ -14,9 +16,8 @@ public class RenderBounds{
     private static TextureManager renderEngine;
     private static Minecraft mc;
     private static World worldObj;
-    private static ByteBuffer imageData;
-    private static ByteBuffer sheetData;
-    private static int emptyImage = -1;
+    private static DynamicTexture temp;
+    private static IntBuffer sheetData;
     private static int width;
     private static int height;
 
@@ -279,46 +280,46 @@ public class RenderBounds{
 //         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private static void bindTexture(Block b, boolean side, boolean anim){
+    private static void bindTexture(Block block, boolean side, boolean anim){
         if (!anim){
-            if (b == Block.waterStill || b == Block.waterMoving){
+            if (block == Block.waterStill || block == Block.waterMoving){
                 renderEngine.func_110577_a(classicWater);
                 return;
-            }else if (b == Block.lavaStill || b == Block.lavaMoving){
+            }else if (block == Block.lavaStill || block == Block.lavaMoving){
                 renderEngine.func_110577_a(classicLava);
                 return;
             }
         }
-        Icon icon = b.getBlockTextureFromSide(side ? 2 : 1);
+        TextureAtlasSprite icon = (TextureAtlasSprite)(block.getBlockTextureFromSide(side ? 2 : 1));
         int prevWidth = width;
         int prevHeight = height;
         width = icon.getOriginX();
         height = icon.getOriginY();
-        /*
-        if (imageData == null || prevWidth != width || prevHeight != height){
-            imageData = ByteBuffer.allocateDirect(width * height * 4);
+        double u = icon.getMaxU() - icon.getMinU();
+        double v = icon.getMaxV() - icon.getMinV();
+        int sheetWidth = (int)((double)width / u);
+        int sheetHeight = (int)((double)height / v);
+        if (temp == null || prevWidth != width || prevHeight != height){
+            temp = new DynamicTexture(width, height);
             System.gc();
         }
         if (sheetData == null || prevWidth != width || prevHeight != height){
-            sheetData = ByteBuffer.allocateDirect(icon.getSheetWidth() * icon.getSheetHeight() * 4);
+            sheetData = BufferUtils.createIntBuffer(sheetWidth * sheetHeight);
             System.gc();
         }
-        renderEngine.bindTexture("/terrain.png");
-        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, sheetData);
-        imageData.clear();
+        renderEngine.func_110577_a(TextureMap.field_110575_b);
+        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL11.GL_UNSIGNED_BYTE, sheetData);
         sheetData.clear();
+        int[] data = temp.func_110565_c();
         for (int i = 0; i < height; i++){
-            int start = (((icon.getOriginY() + i) * icon.getSheetWidth()) + icon.getOriginX()) * 4;
-            sheetData.position(start).limit(start + width * 4);
-            imageData.put(sheetData);
+            int start = (((icon.func_110967_i() + i) * sheetWidth) + icon.func_130010_a());
+            sheetData.position(start).limit(start + width);
+            for (int j = 0; j < width; j++){
+                data[j + i * width] = sheetData.get();
+            }
             sheetData.clear();
         }
-        imageData.position(0).limit(width * height * 4);
-        if (emptyImage == -1 || prevWidth != width || prevHeight != height){
-            emptyImage = mc.renderEngine.allocateAndSetupTexture(new BufferedImage(width, height, 2));
-            System.gc();
-        }
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, emptyImage);
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, imageData);*/
+        temp.func_110564_a();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, temp.func_110552_b());
     }
 }
