@@ -159,12 +159,12 @@ public class IsometricScreenshotRenderer{
                         GL11.glShadeModel(GL11.GL_SMOOTH);
                     }
                     mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
-                    int i11 = renderGlobal.sortAndRender(mc.renderViewEntity, 1, 0.5F);
-                    GL11.glShadeModel(GL11.GL_FLAT);
-                    GL11.glColorMask(true, true, true, true);
                     if (finite){
                         GL11.glTranslated(-width / 2.0D, -height / 2.0D, -length / 2.0D);
                     }
+                    int i11 = renderGlobal.sortAndRender(mc.renderViewEntity, 1, 0.5F);
+                    GL11.glShadeModel(GL11.GL_FLAT);
+                    GL11.glColorMask(true, true, true, true);
                     if (i11 > 0){
                         renderGlobal.renderAllRenderLists(1, 0.0F);
                     }
