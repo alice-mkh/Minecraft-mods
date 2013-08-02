@@ -58,9 +58,9 @@ public class IsometricScreenshotRenderer{
     }
 
     public void doRender(){
-        progressupdate.displayProgressMessage("Grabbing large screenshot");
+        progressupdate.displayProgressMessage(mod_OldDays.lang.get("isom.grabbing"));
         File outputFile = getOutputFile();
-        progressupdate.resetProgresAndWorkingMessage("Rendering");
+        progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("isom.rendering"));
         progressupdate.setLoadingProgress(0);
         renderGlobal.isTakingIsometricScreenshot = true;
         boolean finite = ODNBXlite.isFinite();
@@ -73,11 +73,9 @@ public class IsometricScreenshotRenderer{
             int dHeight = mc.displayHeight;
             int total = (i1 / dWidth + 1) * (i3 / dHeight + 1);
             int progress = 0;
-
             for (int i8 = 0; i8 < i1; i8 += dWidth){
                 for (int i9 = 0; i9 < i3; i9 += dHeight){
                     progressupdate.setLoadingProgress(++progress * 100 / total);
-
                     float f1 = 0.0F;
                     int i12 = i9 - i3 / 2;
                     int i10 = i8 - i1 / 2;
@@ -177,19 +175,18 @@ public class IsometricScreenshotRenderer{
                     GL11.glReadPixels(0, 0, dWidth, dHeight, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, byteBuffer);
                     BufferedImage image2 = getImageFromByteBuffer(dWidth, dHeight);
                     graphics.drawImage(image2, i8, i9, null);
-
                 }
             }
             graphics.dispose();
-            progressupdate.resetProgresAndWorkingMessage("Saving as " + outputFile.toString());
+            progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("isom.saving") + outputFile.toString());
             progressupdate.setLoadingProgress(100);
             FileOutputStream stream = new FileOutputStream(outputFile);
             ImageIO.write(image, "png", stream);
             stream.close();
         }catch (OutOfMemoryError e){
-            String str = "Out of memory. Reduce render distance and try again.";
+            String str = mod_OldDays.lang.get("isom.outofmemory.inf");
             if (finite){
-                str = "Out of memory. The world is too large.";
+                str = mod_OldDays.lang.get("isom.outofmemory");
             }
             mc.ingameGUI.getChatGUI().printChatMessage(str);
         }catch (Throwable t){

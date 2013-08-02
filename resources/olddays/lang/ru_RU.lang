@@ -1114,3 +1114,9 @@ typeInland=Суша
 typeIsland=Остров
 typeFloating=Летающие острова
 typeFlat=Плоскость
+//FIXME
+isom.grabbing=Grabbing large screenshot
+isom.rendering=Rendering
+isom.saving=Saving as
+isom.outofmemory=Out of memory. The world is too large.
+isom.outofmemory.inf=Out of memory. Reduce render distance and try again.
