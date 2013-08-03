@@ -52,7 +52,8 @@ public class IsometricScreenshotRenderer{
         File file = null;
         int scrNumber = 0;
         do{
-            file = new File(mc.mcDataDir, "mc_map_" + decimalFormat.format(scrNumber++) + ".png");
+            File home = new File(System.getProperty("user.home", "."));
+            file = new File(home, "mc_map_" + decimalFormat.format(scrNumber++) + ".png");
         }while (file.exists());
         return file.getAbsoluteFile();
     }
@@ -136,26 +137,20 @@ public class IsometricScreenshotRenderer{
                     renderGlobal.sortAndRender(mc.renderViewEntity, 0, 0.0F);
                     GL11.glShadeModel(GL11.GL_FLAT);
                     if (finite){
-                        GL11.glTranslated(width / 2.0D, height / 2.0D, length / 2.0D);
-                        GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
-                    }else{
-                        GL11.glTranslated(0, -mc.renderViewEntity.lastTickPosY + height / 2.0D, 0);
+                        GL11.glTranslated(0, height / 2.0D, 0);
+                        GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, -mc.renderViewEntity.lastTickPosZ);
                     }
                     if (worldObj.provider.getCloudHeight() < maxCloudHeight && mc.gameSettings.clouds){
                         GL11.glPushMatrix();
-                        double temp = mc.renderViewEntity.lastTickPosY;
-                        mc.renderViewEntity.lastTickPosY = worldObj.provider.getCloudHeight() + 20;
                         renderGlobal.renderClouds(0.0F);
-                        mc.renderViewEntity.lastTickPosY = temp;
                         GL11.glPopMatrix();
                     }
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glColorMask(false, false, false, false);
                     if (finite){
-                        GL11.glTranslated(mc.renderViewEntity.lastTickPosX, mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
-                    }else{
-                        GL11.glTranslated(0, mc.renderViewEntity.lastTickPosY - height / 2.0D, 0);
+                        GL11.glTranslated(width / 2.0D, 0, length / 2.0D);
+                        GL11.glTranslated(mc.renderViewEntity.lastTickPosX, -mc.renderViewEntity.lastTickPosY, mc.renderViewEntity.lastTickPosZ);
                     }
                     if (mc.gameSettings.ambientOcclusion != 0){
                         GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -192,7 +187,7 @@ public class IsometricScreenshotRenderer{
                 }
             }
             graphics.dispose();
-            progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("isom.saving") + outputFile.toString());
+            progressupdate.resetProgresAndWorkingMessage(mod_OldDays.lang.get("isom.saving") + " " + outputFile.toString());
             progressupdate.setLoadingProgress(100);
             FileOutputStream stream = new FileOutputStream(outputFile);
             ImageIO.write(image, "png", stream);
