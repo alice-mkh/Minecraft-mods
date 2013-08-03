@@ -92,6 +92,7 @@ public class IsometricScreenshotRenderer{
                     mc.entityRenderer.updateFogColorPublic(0.0F);
                     GL11.glClear(16640);
                     GL11.glEnable(GL11.GL_CULL_FACE);
+                    mc.entityRenderer.setDistancePublic();
                     GL11.glMatrixMode(GL11.GL_PROJECTION);
                     GL11.glLoadIdentity();
                     GL11.glOrtho(0.0D, dWidth, 0.0D, dHeight, 10.0D, 10000.0D);
@@ -162,9 +163,9 @@ public class IsometricScreenshotRenderer{
                     if (finite){
                         GL11.glTranslated(-width / 2.0D, -height / 2.0D, -length / 2.0D);
                     }
-                    if (finite && ODNBXlite.SurrGroundHeight >= 0 && worldObj.provider.dimensionId == 0){
+                    if (finite && worldObj.provider.dimensionId == 0){
                         GL11.glColorMask(true, true, true, true);
-                        net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F);
+                        net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F, ODNBXlite.SurrGroundHeight >= 0);
                         mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
                         GL11.glColorMask(false, false, false, false);
                     }

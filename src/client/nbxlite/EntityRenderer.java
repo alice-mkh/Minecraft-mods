@@ -1314,7 +1314,7 @@ public class EntityRenderer
                 }
             }
             if (bounds && mc.theWorld.provider.dimensionId == 0){
-                net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, par1);
+                net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, par1, true);
             }
 
             GL11.glDisable(GL11.GL_BLEND);
@@ -2292,6 +2292,10 @@ public class EntityRenderer
 
     public void renderRainSnowPublic(){
         renderRainSnow(0.0F);
+    }
+
+    public void setDistancePublic(){
+        farPlaneDistance = (512 >> (mc.gameSettings.renderDistance << 1));
     }
 
     /**

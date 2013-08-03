@@ -162,7 +162,7 @@ public class RenderBounds{
         tessellator.draw();
     }
 
-    public static void renderBounds(Minecraft m, float f)
+    public static void renderBounds(Minecraft m, float f, boolean liquid)
     {
         if (ODNBXlite.SurrGroundType<=0 || ODNBXlite.SurrWaterType<=0){
             return;
@@ -210,7 +210,12 @@ public class RenderBounds{
         }
         bindTexture(Block.blocksList[ODNBXlite.SurrWaterType], false, anim);
         GL11.glEnable(GL11.GL_BLEND);
-        renderLiquidBounds(f, ff);
+        if (liquid){
+            renderLiquidBounds(f, ff);
+        }else{
+            Tessellator tessellator = Tessellator.instance;
+            tessellator.setTranslation(0, 0, 0);
+        }
         GL11.glRotatef(-90F, 0F, 0F, 1F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glDisable(GL11.GL_BLEND);
@@ -277,7 +282,6 @@ public class RenderBounds{
         }
         tessellator.draw();
         tessellator.setTranslation(0, 0, 0);
-//         GL11.glDisable(GL11.GL_BLEND);
     }
 
     private static void bindTexture(Block block, boolean side, boolean anim){
