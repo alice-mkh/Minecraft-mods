@@ -67,8 +67,8 @@ public class IsometricScreenshotRenderer{
         double posX = mc.renderViewEntity.lastTickPosX;
         double posZ = mc.renderViewEntity.lastTickPosZ;
         if (!finite){
-            mc.renderViewEntity.lastTickPosX = MathHelper.floor_double(posX / 16.0D) * 16 + 8;
-            mc.renderViewEntity.lastTickPosZ = MathHelper.floor_double(posZ / 16.0D) * 16 + 8;
+            posX -= MathHelper.floor_double(posX / 16.0D) * 16 + 8;
+            posZ -= MathHelper.floor_double(posZ / 16.0D) * 16 + 8;
         }
         try{
             int i1 = (width * SCALE) + (length * SCALE);
@@ -111,6 +111,7 @@ public class IsometricScreenshotRenderer{
                     if (finite){
                         GL11.glTranslated(-width / 2.0D, -height / 2.0D, -length / 2.0D);
                     }else{
+                        GL11.glTranslated(posX, 0, posZ);
                         GL11.glTranslated(-mc.renderViewEntity.lastTickPosX, -height / 2.0D, -mc.renderViewEntity.lastTickPosZ);
                     }
                     Frustrum frustrum = new Frustrum2();
@@ -177,6 +178,9 @@ public class IsometricScreenshotRenderer{
                     if (i11 > 0){
                         renderGlobal.renderAllRenderLists(1, 0.0F);
                     }
+                    if (!finite){
+                        GL11.glTranslated(-posX, 0, -posZ);
+                    }
                     GL11.glDepthMask(true);
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glDisable(GL11.GL_FOG);
@@ -202,11 +206,10 @@ public class IsometricScreenshotRenderer{
         }catch (Throwable t){
             t.printStackTrace();
         }
-        renderGlobal.isTakingIsometricScreenshot = false;
         if (!finite){
-            mc.renderViewEntity.lastTickPosX = posX;
-            mc.renderViewEntity.lastTickPosZ = posZ;
+
         }
+        renderGlobal.isTakingIsometricScreenshot = false;
     }
 
     private BufferedImage getImageFromByteBuffer(int width, int height){
