@@ -41,6 +41,9 @@ public class IsometricScreenshotRenderer{
             maxCloudHeight = height;
         }else{
             width = (64 << (3 - mc.gameSettings.renderDistance)) + 16;
+            if (width > 416){
+                width = 416;
+            }
             length = width;
             height = 256;
             maxCloudHeight = 108.0F;
