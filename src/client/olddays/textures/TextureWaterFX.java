@@ -11,50 +11,57 @@ public class TextureWaterFX extends TextureFX
     public TextureWaterFX()
     {
         super("water_still");
-        red = new float[256];
-        green = new float[256];
-        blue = new float[256];
-        alpha = new float[256];
         tickCounter = 0;
+        hd = true;
     }
 
+    @Override
+    protected void updateSize(){
+        super.updateSize();
+        red = new float[size * size];
+        green = new float[size * size];
+        blue = new float[size * size];
+        alpha = new float[size * size];
+    }
+
+    @Override
     public void onTick()
     {
         tickCounter++;
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int k = 0; k < 16; k++)
+            for (int k = 0; k < size; k++)
             {
                 float f = 0.0F;
 
                 for (int j1 = i - 1; j1 <= i + 1; j1++)
                 {
-                    int k1 = j1 & 0xf;
-                    int i2 = k & 0xf;
-                    f += red[k1 + i2 * 16];
+                    int k1 = j1 & (size - 1);
+                    int i2 = k & (size - 1);
+                    f += red[k1 + i2 * size];
                 }
 
-                green[i + k * 16] = f / 3.3F + blue[i + k * 16] * 0.8F;
+                green[i + k * size] = f / 3.3F + blue[i + k * size] * 0.8F;
             }
         }
 
-        for (int j = 0; j < 16; j++)
+        for (int j = 0; j < size; j++)
         {
-            for (int l = 0; l < 16; l++)
+            for (int l = 0; l < size; l++)
             {
-                blue[j + l * 16] += alpha[j + l * 16] * 0.05F;
+                blue[j + l * size] += alpha[j + l * size] * 0.05F;
 
-                if (blue[j + l * 16] < 0.0F)
+                if (blue[j + l * size] < 0.0F)
                 {
-                    blue[j + l * 16] = 0.0F;
+                    blue[j + l * size] = 0.0F;
                 }
 
-                alpha[j + l * 16] -= 0.1F;
+                alpha[j + l * size] -= 0.1F;
 
                 if (Math.random() < 0.050000000000000003D)
                 {
-                    alpha[j + l * 16] = 0.5F;
+                    alpha[j + l * size] = 0.5F;
                 }
             }
         }
@@ -63,7 +70,7 @@ public class TextureWaterFX extends TextureFX
         green = red;
         red = af;
 
-        for (int i1 = 0; i1 < 256; i1++)
+        for (int i1 = 0; i1 < size * size; i1++)
         {
             float f1 = red[i1];
 

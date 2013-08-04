@@ -12,23 +12,29 @@ public class TexturePortalFX extends TextureFX
     {
         super("portal");
         portalTickCounter = 0;
-        portalTextureData = new byte[32][1024];
+        hd = true;
+    }
+
+    @Override
+    protected void updateSize(){
+        super.updateSize();
+        portalTextureData = new byte[32][size * size * 4];
         Random random = new Random(100L);
 
         for (int i = 0; i < 32; i++)
         {
-            for (int j = 0; j < 16; j++)
+            for (int j = 0; j < size; j++)
             {
-                for (int k = 0; k < 16; k++)
+                for (int k = 0; k < size; k++)
                 {
                     float f = 0.0F;
 
                     for (int l = 0; l < 2; l++)
                     {
-                        float f1 = (float)(l * 16) * 0.5F;
-                        float f2 = (float)(l * 16) * 0.5F;
-                        float f3 = (((float)j - f1) / 16F) * 2.0F;
-                        float f4 = (((float)k - f2) / 16F) * 2.0F;
+                        float f1 = (float)(l * size) * 0.5F;
+                        float f2 = (float)(l * size) * 0.5F;
+                        float f3 = (((float)j - f1) / (float)size) * 2.0F;
+                        float f4 = (((float)k - f2) / (float)size) * 2.0F;
 
                         if (f3 < -1F)
                         {
@@ -62,7 +68,7 @@ public class TexturePortalFX extends TextureFX
                     int j1 = (int)(f * f * 200F + 55F);
                     int k1 = (int)(f * f * f * f * 255F);
                     int l1 = (int)(f * 100F + 155F);
-                    int i2 = k * 16 + j;
+                    int i2 = k * size + j;
                     portalTextureData[i][i2 * 4 + 0] = (byte)j1;
                     portalTextureData[i][i2 * 4 + 1] = (byte)k1;
                     portalTextureData[i][i2 * 4 + 2] = (byte)i1;
@@ -72,12 +78,13 @@ public class TexturePortalFX extends TextureFX
         }
     }
 
+    @Override
     public void onTick()
     {
         portalTickCounter++;
-        byte abyte0[] = portalTextureData[portalTickCounter & 0x1f];
+        byte abyte0[] = portalTextureData[portalTickCounter & 31];
 
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < size * size; i++)
         {
             int j = abyte0[i * 4 + 0] & 0xff;
             int k = abyte0[i * 4 + 1] & 0xff;

@@ -11,49 +11,56 @@ public class TextureLavaFlowFX extends TextureFX
     public TextureLavaFlowFX()
     {
         super("lava_flow");
-        field_76871_g = new float[256];
-        field_76874_h = new float[256];
-        field_76875_i = new float[256];
-        field_76872_j = new float[256];
         field_76873_k = 0;
         tile = 2;
+        hd = true;
     }
 
+    @Override
+    protected void updateSize(){
+        super.updateSize();
+        field_76871_g = new float[size * size];
+        field_76874_h = new float[size * size];
+        field_76875_i = new float[size * size];
+        field_76872_j = new float[size * size];
+    }
+
+    @Override
     public void onTick()
     {
         field_76873_k++;
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < 16; j++)
+            for (int j = 0; j < size; j++)
             {
                 float f = 0.0F;
-                int l = (int)(MathHelper.sin(((float)j * (float)Math.PI * 2.0F) / 16F) * 1.2F);
-                int i1 = (int)(MathHelper.sin(((float)i * (float)Math.PI * 2.0F) / 16F) * 1.2F);
+                int l = (int)(MathHelper.sin(((float)j * (float)Math.PI * 2.0F) / (float)size) * 1.2F);
+                int i1 = (int)(MathHelper.sin(((float)i * (float)Math.PI * 2.0F) / (float)size) * 1.2F);
 
                 for (int k1 = i - 1; k1 <= i + 1; k1++)
                 {
                     for (int i2 = j - 1; i2 <= j + 1; i2++)
                     {
-                        int k2 = k1 + l & 0xf;
-                        int i3 = i2 + i1 & 0xf;
-                        f += field_76871_g[k2 + i3 * 16];
+                        int k2 = k1 + l & (size - 1);
+                        int i3 = i2 + i1 & (size - 1);
+                        f += field_76871_g[k2 + i3 * size];
                     }
                 }
 
-                field_76874_h[i + j * 16] = f / 10F + ((field_76875_i[(i + 0 & 0xf) + (j + 0 & 0xf) * 16] + field_76875_i[(i + 1 & 0xf) + (j + 0 & 0xf) * 16] + field_76875_i[(i + 1 & 0xf) + (j + 1 & 0xf) * 16] + field_76875_i[(i + 0 & 0xf) + (j + 1 & 0xf) * 16]) / 4F) * 0.8F;
-                field_76875_i[i + j * 16] += field_76872_j[i + j * 16] * 0.01F;
+                field_76874_h[i + j * size] = f / 10F + ((field_76875_i[(i + 0 & (size - 1)) + (j + 0 & (size - 1)) * size] + field_76875_i[(i + 1 & (size - 1)) + (j + 0 & (size - 1)) * size] + field_76875_i[(i + 1 & (size - 1)) + (j + 1 & (size - 1)) * size] + field_76875_i[(i + 0 & (size - 1)) + (j + 1 & (size - 1)) * size]) / 4F) * 0.8F;
+                field_76875_i[i + j * size] += field_76872_j[i + j * size] * 0.01F;
 
-                if (field_76875_i[i + j * 16] < 0.0F)
+                if (field_76875_i[i + j * size] < 0.0F)
                 {
-                    field_76875_i[i + j * 16] = 0.0F;
+                    field_76875_i[i + j * size] = 0.0F;
                 }
 
-                field_76872_j[i + j * 16] -= 0.06F;
+                field_76872_j[i + j * size] -= 0.06F;
 
                 if (Math.random() < 0.0050000000000000001D)
                 {
-                    field_76872_j[i + j * 16] = 1.5F;
+                    field_76872_j[i + j * size] = 1.5F;
                 }
             }
         }
@@ -62,9 +69,9 @@ public class TextureLavaFlowFX extends TextureFX
         field_76874_h = field_76871_g;
         field_76871_g = af;
 
-        for (int k = 0; k < 256; k++)
+        for (int k = 0; k < size * size; k++)
         {
-            float f1 = field_76871_g[k - (field_76873_k / 3) * 16 & 0xff] * 2.0F;
+            float f1 = field_76871_g[k - (field_76873_k / 3) * size & ((size * size) - 1)] * 2.0F;
 
             if (f1 > 1.0F)
             {

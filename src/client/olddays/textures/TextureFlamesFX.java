@@ -8,18 +8,26 @@ public class TextureFlamesFX extends TextureFX
     public TextureFlamesFX(int par1)
     {
         super("fire_layer_"+par1);
-        field_76869_g = new float[320];
-        field_76870_h = new float[320];
+        hd = true;
     }
 
+    @Override
+    protected void updateSize(){
+        super.updateSize();
+        field_76869_g = new float[size * size * 5 / 4];
+        field_76870_h = new float[size * size * 5 / 4];
+    }
+
+    @Override
     public void onTick()
     {
-        for (int i = 0; i < 16; i++)
+        int size2 = size * 5 / 4;
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < 20; j++)
+            for (int j = 0; j < size2; j++)
             {
-                int k = 18;
-                float f = field_76869_g[i + ((j + 1) % 20) * 16] * (float)k;
+                int k = size * 9 / 8;
+                float f = field_76869_g[i + ((j + 1) % size2) * size] * (float)k;
 
                 for (int i1 = i - 1; i1 <= i + 1; i1++)
                 {
@@ -28,20 +36,20 @@ public class TextureFlamesFX extends TextureFX
                         int l1 = i1;
                         int j2 = j1;
 
-                        if (l1 >= 0 && j2 >= 0 && l1 < 16 && j2 < 20)
+                        if (l1 >= 0 && j2 >= 0 && l1 < size && j2 < size2)
                         {
-                            f += field_76869_g[l1 + j2 * 16];
+                            f += field_76869_g[l1 + j2 * size];
                         }
 
                         k++;
                     }
                 }
 
-                field_76870_h[i + j * 16] = f / ((float)k * 1.06F);
+                field_76870_h[i + j * size] = f / ((float)k * 1.06F);
 
-                if (j >= 19)
+                if (j >= (size2 - 1))
                 {
-                    field_76870_h[i + j * 16] = (float)(Math.random() * Math.random() * Math.random() * 4D + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
+                    field_76870_h[i + j * size] = (float)(Math.random() * Math.random() * Math.random() * (double)(size / 2) + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
                 }
             }
         }
@@ -50,7 +58,7 @@ public class TextureFlamesFX extends TextureFX
         field_76870_h = field_76869_g;
         field_76869_g = af;
 
-        for (int l = 0; l < 256; l++)
+        for (int l = 0; l < size * size; l++)
         {
             float f1 = field_76869_g[l] * 1.8F;
 

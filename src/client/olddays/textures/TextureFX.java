@@ -47,12 +47,6 @@ public abstract class TextureFX extends TextureAtlasSprite{
         }
     }
 
-    protected BufferedImage getImage(String str) throws IOException{
-        ResourceLocation res = new ResourceLocation(str);
-        InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(res).func_110527_b();
-        return ImageIO.read(stream);
-    }
-
     protected int[] getImageData(String str, int size){
         try{
             ResourceLocation res = new ResourceLocation(str);
