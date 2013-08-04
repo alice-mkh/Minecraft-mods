@@ -94,10 +94,7 @@ public class TexturePortalFX extends TextureFX
                 l = l1;
             }
 
-            imageData[i * 4 + 0] = (byte)j;
-            imageData[i * 4 + 1] = (byte)k;
-            imageData[i * 4 + 2] = (byte)l;
-            imageData[i * 4 + 3] = (byte)i1;
+            imageData[i] = i1 << 24 | j << 16 | k << 8 | l;
         }
     }
 }

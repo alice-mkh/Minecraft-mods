@@ -10,7 +10,6 @@ public class TextureFlamesFX extends TextureFX
         super("fire_layer_"+par1);
         field_76869_g = new float[320];
         field_76870_h = new float[320];
-        imageDataInts = new int[256];
     }
 
     public void onTick()
@@ -88,7 +87,7 @@ public class TextureFlamesFX extends TextureFX
                 k2 = j3;
             }
 
-            imageDataInts[l] = c << 24 | k1 << 16 | i2 << 8 | k2;
+            imageData[l] = c << 24 | k1 << 16 | i2 << 8 | k2;
         }
     }
 }

@@ -93,10 +93,7 @@ public class TextureWaterFX extends TextureFX
                 k2 = k3;
             }
 
-            imageData[i1 * 4 + 0] = (byte)l1;
-            imageData[i1 * 4 + 1] = (byte)j2;
-            imageData[i1 * 4 + 2] = (byte)k2;
-            imageData[i1 * 4 + 3] = (byte)l2;
+            imageData[i1] = l2 << 24 | l1 << 16 | j2 << 8 | k2;
         }
     }
 }

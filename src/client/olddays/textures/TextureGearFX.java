@@ -20,7 +20,6 @@ public class TextureGearFX extends TextureFX
         }catch (IOException localIOException){
             localIOException.printStackTrace();
         }
-        imageDataInts = new int[256];
     }
 
     @Override
@@ -45,7 +44,7 @@ public class TextureGearFX extends TextureFX
                         n = gearmiddle[(i + (j << 4))];
                     }
                 }
-                imageDataInts[i + (j << 4)] = n;
+                imageData[i + (j << 4)] = n;
             }
         }
     }

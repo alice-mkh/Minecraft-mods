@@ -16,21 +16,18 @@ public class TextureWatchFX extends TextureFX
     public TextureWatchFX()
     {
         super("clock", true);
-        watchIconImageData = new int[256];
-        dialImageData = new int[256];
         mc = Minecraft.getMinecraft();
-
-        try
-        {
-            getImage("olddays/clock.png").getRGB(0, 0, 16, 16, watchIconImageData, 0, 16);
-            getImage("olddays/dial.png").getRGB(0, 0, 16, 16, dialImageData, 0, 16);
-        }
-        catch (IOException ioexception)
-        {
-            ioexception.printStackTrace();
-        }
+        hd = true;
     }
 
+    @Override
+    protected void updateSize(){
+        super.updateSize();
+        watchIconImageData = getImageData("olddays/clock.png", size);
+        dialImageData = getImageData("olddays/dial.png", size);
+    }
+
+    @Override
     public void onTick()
     {
         double d = 0.0D;
@@ -68,7 +65,7 @@ public class TextureWatchFX extends TextureFX
         double d2 = Math.sin(field_76861_j);
         double d3 = Math.cos(field_76861_j);
 
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < size * size; i++)
         {
             int j = watchIconImageData[i] >> 24 & 0xff;
             int k = watchIconImageData[i] >> 16 & 0xff;
@@ -77,12 +74,12 @@ public class TextureWatchFX extends TextureFX
 
             if (k == i1 && l == 0 && i1 > 0)
             {
-                double d4 = -((double)(i % 16) / 15D - 0.5D);
-                double d5 = (double)(i / 16) / 15D - 0.5D;
+                double d4 = -((double)(i % size) / (double)(size - 1) - 0.5D);
+                double d5 = (double)(i / size) / (double)(size - 1) - 0.5D;
                 int i2 = k;
-                int j2 = (int)((d4 * d3 + d5 * d2 + 0.5D) * 16D);
-                int k2 = (int)(((d5 * d3 - d4 * d2) + 0.5D) * 16D);
-                int l2 = (j2 & 0xf) + (k2 & 0xf) * 16;
+                int j2 = (int)((d4 * d3 + d5 * d2 + 0.5D) * (double)size);
+                int k2 = (int)(((d5 * d3 - d4 * d2) + 0.5D) * (double)size);
+                int l2 = (j2 & (size - 1)) + (k2 & (size - 1)) * size;
                 j = dialImageData[l2] >> 24 & 0xff;
                 k = ((dialImageData[l2] >> 16 & 0xff) * i2) / 255;
                 l = ((dialImageData[l2] >> 8 & 0xff) * i2) / 255;
@@ -99,10 +96,7 @@ public class TextureWatchFX extends TextureFX
                 i1 = l1;
             }
 
-            imageData[i * 4 + 0] = (byte)k;
-            imageData[i * 4 + 1] = (byte)l;
-            imageData[i * 4 + 2] = (byte)i1;
-            imageData[i * 4 + 3] = (byte)j;
+            imageData[i] = j << 24 | k << 16 | l << 8 | i1;
         }
     }
 }

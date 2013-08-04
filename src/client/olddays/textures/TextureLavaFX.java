@@ -86,10 +86,7 @@ public class TextureLavaFX extends TextureFX
                 j2 = k3;
             }
 
-            imageData[k * 4 + 0] = (byte)j1;
-            imageData[k * 4 + 1] = (byte)l1;
-            imageData[k * 4 + 2] = (byte)j2;
-            imageData[k * 4 + 3] = -1;
+            imageData[k] = -1 << 24 | j1 << 16 | l1 << 8 | j2;
         }
     }
 }

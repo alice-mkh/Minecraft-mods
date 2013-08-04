@@ -16,6 +16,7 @@ public class TextureWaterFlowFX extends TextureFX
         field_76884_i = new float[256];
         field_76881_j = new float[256];
         tickCounter = 0;
+        tile = 2;
     }
 
     public void onTick()
@@ -93,10 +94,7 @@ public class TextureWaterFlowFX extends TextureFX
                 k2 = k3;
             }
 
-            imageData[i1 * 4 + 0] = (byte)l1;
-            imageData[i1 * 4 + 1] = (byte)j2;
-            imageData[i1 * 4 + 2] = (byte)k2;
-            imageData[i1 * 4 + 3] = (byte)l2;
+            imageData[i1] = l2 << 24 | l1 << 16 | j2 << 8 | k2;
         }
     }
 }
