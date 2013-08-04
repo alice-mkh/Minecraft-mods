@@ -12,7 +12,6 @@ public class TexturePortalFX extends TextureFX
     {
         super("portal");
         portalTickCounter = 0;
-        hd = true;
     }
 
     @Override

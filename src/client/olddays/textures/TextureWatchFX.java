@@ -17,7 +17,6 @@ public class TextureWatchFX extends TextureFX
     {
         super("clock", true);
         mc = Minecraft.getMinecraft();
-        hd = true;
     }
 
     @Override

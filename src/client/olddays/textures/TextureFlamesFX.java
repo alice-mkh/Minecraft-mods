@@ -8,7 +8,6 @@ public class TextureFlamesFX extends TextureFX
     public TextureFlamesFX(int par1)
     {
         super("fire_layer_"+par1);
-        hd = true;
     }
 
     @Override

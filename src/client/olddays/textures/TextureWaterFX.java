@@ -12,7 +12,6 @@ public class TextureWaterFX extends TextureFX
     {
         super("water_still");
         tickCounter = 0;
-        hd = true;
     }
 
     @Override

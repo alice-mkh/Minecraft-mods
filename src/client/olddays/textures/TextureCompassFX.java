@@ -12,7 +12,6 @@ public class TextureCompassFX extends TextureFX
     {
         super("compass", true);
         mc = Minecraft.getMinecraft();
-        hd = true;
     }
 
     @Override

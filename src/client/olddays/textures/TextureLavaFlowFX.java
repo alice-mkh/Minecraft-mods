@@ -13,7 +13,6 @@ public class TextureLavaFlowFX extends TextureFX
         super("lava_flow");
         field_76873_k = 0;
         tile = 2;
-        hd = true;
     }
 
     @Override

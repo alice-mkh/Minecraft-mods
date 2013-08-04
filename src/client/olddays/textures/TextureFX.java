@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 public abstract class TextureFX extends TextureAtlasSprite{
     protected int[] imageData;
     protected boolean anaglyphEnabled;
-    protected boolean hd;
     protected int size;
     private int prevSize;
     protected int tile;
@@ -16,7 +15,6 @@ public abstract class TextureFX extends TextureAtlasSprite{
     public TextureFX(String str, boolean items){
         super("textures/" + (items ? "items" : "blocks") + "/" + str);
         anaglyphEnabled = false;
-        hd = false;
         prevSize = 0;
         tile = 1;
     }
@@ -34,14 +32,14 @@ public abstract class TextureFX extends TextureAtlasSprite{
     @Override
     public void updateAnimation(){
         anaglyphEnabled = Minecraft.getMinecraft().gameSettings.anaglyph;
-        size = hd ? getOriginX() / tile : 16;
+        size = getOriginX() / tile;
         if (prevSize != size){
             updateSize();
         }
         prevSize = size;
         onTick();
-        for (int i = 0; i <  getOriginX() / size; i++){
-            for (int j = 0; j < getOriginY() / size; j++){
+        for (int i = 0; i < tile; i++){
+            for (int j = 0; j < tile; j++){
                 TextureUtil.func_110998_a(imageData, size, size, func_130010_a() + size * i, func_110967_i() + size * j, false, false);
             }
         }

@@ -10,7 +10,6 @@ public class TextureLavaFX extends TextureFX
     public TextureLavaFX()
     {
         super("lava_still");
-        hd = true;
     }
 
     @Override

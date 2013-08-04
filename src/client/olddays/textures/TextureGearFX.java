@@ -14,7 +14,6 @@ public class TextureGearFX extends TextureFX
         super("olddays_gear_" + par2);
         this.h = (par2 << 1) - 1;
         tickCounter = 2;
-        hd = true;
     }
 
     @Override

@@ -13,7 +13,6 @@ public class TextureWaterFlowFX extends TextureFX
         super("water_flow");
         tickCounter = 0;
         tile = 2;
-        hd = true;
     }
 
     @Override
