@@ -71,8 +71,22 @@ public class IsometricScreenshotRenderer{
         double posX = mc.renderViewEntity.lastTickPosX;
         double posZ = mc.renderViewEntity.lastTickPosZ;
         if (!finite){
-            posX -= MathHelper.floor_double(posX / 16.0D) * 16 + 8;
-            posZ -= MathHelper.floor_double(posZ / 16.0D) * 16 + 8;
+            System.out.println(posX+" "+posZ);
+            posX -= (MathHelper.floor_double(posX) >> 4) * 16 + 8;
+            posZ -= (MathHelper.floor_double(posZ) >> 4) * 16 + 8;
+            if (posX < 0){
+                posX += 16;
+                if (posX > 8){
+                    posX -= 8;
+                }
+            }
+            if (posZ < 0){
+                posZ += 16;
+                if (posZ > 8){
+                    posZ -= 8;
+                }
+            }
+            System.out.println(posX+" "+posZ);
         }
         try{
             int i1 = (width * SCALE) + (length * SCALE);

@@ -394,6 +394,20 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static int getLightInBounds(int par2){
+        return getLightInBounds(par2, true);
+    }
+
+    public static int getLightInBounds(int par2, boolean liquid){
+        if (!liquid){
+            int sky = 15;
+            if (par2<SurrGroundHeight){
+                sky = 0;
+            }
+            if (sky<0){
+                sky = 0;
+            }
+            return sky << 20;
+        }
         return getSkyLightInBounds(par2) << 20 | getBlockLightInBounds(par2) << 4;
     }
 
@@ -401,13 +415,27 @@ public class ODNBXlite extends OldDaysModule{
         return Math.max(getSkyLightInBounds2(par2), getBlockLightInBounds(par2));
     }
 
+    public static int getLightInBounds2(int par2, boolean liquid){
+        if (!liquid){
+            int sky = 15 - (Minecraft.getMinecraft().theWorld == null ? 0 : Minecraft.getMinecraft().theWorld.skylightSubtracted);
+            if (par2<SurrGroundHeight){
+                sky = 0;
+            }
+            if (sky<0){
+                sky = 0;
+            }
+            return sky;
+        }
+        return Math.max(getSkyLightInBounds2(par2), getBlockLightInBounds(par2));
+    }
+
     public static int getLightInBounds(EnumSkyBlock block, int par2){
         return block == EnumSkyBlock.Sky ? getSkyLightInBounds2(par2) : getBlockLightInBounds(par2);
     }
 
-    public static float getLightFloat(int par2){
+    public static float getLightFloat(int par2, boolean liquid){
         Minecraft mc = Minecraft.getMinecraft();
-        return mc.theWorld.provider.lightBrightnessTable[getLightInBounds2(par2)];
+        return mc.theWorld.provider.lightBrightnessTable[getLightInBounds2(par2, liquid)];
     }
 
     public static int getBlockIdInBounds(int par2){

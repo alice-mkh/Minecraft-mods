@@ -181,12 +181,12 @@ public class RenderBounds{
         float ff = 1.0F;
         if (!Minecraft.oldlighting){
             mc.entityRenderer.enableLightmap(f);
-            int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrGroundHeight);
+            int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrGroundHeight, liquid);
             int i1 = l % 0x10000;
             int j1 = l / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         }else{
-            ff = ODNBXlite.getLightFloat(ODNBXlite.SurrGroundHeight);
+            ff = ODNBXlite.getLightFloat(ODNBXlite.SurrGroundHeight, liquid);
         }
         boolean anim = ODNBXlite.MapFeatures==ODNBXlite.FEATURES_INDEV;
         GL11.glMatrixMode(GL11.GL_TEXTURE);
@@ -201,12 +201,12 @@ public class RenderBounds{
             renderBottomBounds(f);
         }
         if (!Minecraft.oldlighting){
-            int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight);
+            int l = ODNBXlite.getLightInBounds(ODNBXlite.SurrWaterHeight, liquid);
             int i1 = l % 0x10000;
             int j1 = l / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1 / 1.0F, (float)j1 / 1.0F);
         }else{
-            ff = ODNBXlite.getLightFloat(ODNBXlite.SurrWaterHeight);
+            ff = ODNBXlite.getLightFloat(ODNBXlite.SurrWaterHeight, liquid);
         }
         bindTexture(Block.blocksList[ODNBXlite.SurrWaterType], false, anim);
         GL11.glEnable(GL11.GL_BLEND);
