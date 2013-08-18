@@ -38,9 +38,9 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
                 func_130011_c(par1Entity);
             }
             ItemStack itemstack = getCurrentEquippedItem();
-            if(itemstack != null && (par1Entity instanceof EntityLiving))
+            if(itemstack != null && (par1Entity instanceof EntityLivingBase))
             {
-                itemstack.hitEntity((EntityLiving)par1Entity, this);
+                itemstack.hitEntity((EntityLivingBase)par1Entity, this);
                 if(itemstack.stackSize <= 0)
                 {
                     destroyCurrentEquippedItem();
