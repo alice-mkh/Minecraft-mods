@@ -437,7 +437,7 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
 
     public boolean unpackSound(String dir, String name){
         try{
-            File file = new File(getMinecraft().mcDataDir,"assets/"+dir+"/"+name);
+            File file = new File(getMinecraft().getSomeFile(),"assets/"+dir+"/"+name);
             if (file.exists()){
                 return true;
             }
@@ -446,7 +446,7 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
             byte[] bytes = new byte[stream.available()];
             stream.readFully(bytes);
             stream.close();
-            (new File(getMinecraft().mcDataDir,"assets/"+dir)).mkdirs();
+            (new File(getMinecraft().getSomeFile(),"assets/"+dir)).mkdirs();
             FileOutputStream stream2 = new FileOutputStream(file);
             stream2.write(bytes);
             stream2.close();
