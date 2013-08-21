@@ -1497,7 +1497,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
             {
                 if(par1Entity.isEntityAlive())
                 {
-                    alertWolves((EntityLiving)par1Entity, true);
+                    alertWolves((EntityLivingBase)par1Entity, true);
                 }
                 addStat(StatList.damageDealtStat, Math.round(f * 10F));
 
