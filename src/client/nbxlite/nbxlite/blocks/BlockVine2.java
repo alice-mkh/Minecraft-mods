@@ -14,6 +14,6 @@ public class BlockVine2 extends BlockVine
     @Override
     public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k)
     {
-        return ODNBXlite.GetFoliageColorAtCoords(iblockaccess, i, j, k, false, false);
+        return ODNBXlite.GetFoliageColorAtCoords(iblockaccess, i, j, k, false, false, false);
     }
 }

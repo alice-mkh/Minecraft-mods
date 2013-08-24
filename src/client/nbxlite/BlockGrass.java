@@ -117,7 +117,7 @@ public class BlockGrass extends Block
      */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        return ODNBXlite.GetGrassColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
+        return ODNBXlite.GetGrassColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true, false);
     }
 
     /**

@@ -20,7 +20,7 @@ public class BlockTallGrass2 extends BlockTallGrass
             return 0xffffff;
         }
         else{
-            return ODNBXlite.GetGrassColorAtCoords(iblockaccess, i, j, k, false, false);
+            return ODNBXlite.GetGrassColorAtCoords(iblockaccess, i, j, k, false, false, true);
         }
     }
 }

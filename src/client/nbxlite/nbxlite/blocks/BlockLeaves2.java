@@ -69,9 +69,9 @@ public class BlockLeaves2 extends BlockLeaves
         }
         if ((i & 3) == 3)
         {
-            return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, false);
+            return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, false, false);
         }
-        return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true);
+        return ODNBXlite.GetFoliageColorAtCoords(par1IBlockAccess, par2, par3, par4, true, true, false);
     }
 
     public void setDecay(boolean b){

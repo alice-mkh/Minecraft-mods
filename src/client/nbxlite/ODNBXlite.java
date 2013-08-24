@@ -795,7 +795,14 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
+    public static int GetFoliageColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex, boolean shift){
+        if (shift && Generator==GEN_OLDBIOMES || (Generator==GEN_NEWBIOMES && MapFeatures==FEATURES_BETA181)){
+            long seed = x * 0x2fc20f + z * 0x5d8875 + y;
+            seed = seed * seed * 0x285b825L + seed * 11L;
+            x = (int)((long)x + ((seed >> 14 & 31L) - 16L));
+            y = (int)((long)y + ((seed >> 19 & 31L) - 16L));
+            z = (int)((long)z + ((seed >> 24 & 31L) - 16L));
+        }
         if (Generator==GEN_BIOMELESS){
             if (tex && hasIcons(false, "olddays_leaves_fast", "olddays_leaves_fancy")){
                 return 0xffffff;
@@ -837,7 +844,14 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    public static int GetGrassColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex){
+    public static int GetGrassColorAtCoords(IBlockAccess iblockaccess, int x, int y, int z, boolean smooth, boolean tex, boolean shift){
+        if (shift && Generator==GEN_OLDBIOMES || (Generator==GEN_NEWBIOMES && MapFeatures==FEATURES_BETA181)){
+            long seed = x * 0x2fc20f + z * 0x5d8875 + y;
+            seed = seed * seed * 0x285b825L + seed * 11L;
+            x = (int)((long)x + ((seed >> 14 & 31L) - 16L));
+            y = (int)((long)y + ((seed >> 19 & 31L) - 16L));
+            z = (int)((long)z + ((seed >> 24 & 31L) - 16L));
+        }
         if(Generator==GEN_BIOMELESS){
             if (tex && hasIcons(false, "olddays_grass_top", "olddays_grass_side")){
                 return 0xffffff;
