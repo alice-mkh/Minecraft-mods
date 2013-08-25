@@ -3366,7 +3366,7 @@ public class Minecraft implements IPlayerUsage
         }
     }
 
-    public File getSomeFile(){
+    public File getAssetsDir(){
         return field_110446_Y;
     }
 

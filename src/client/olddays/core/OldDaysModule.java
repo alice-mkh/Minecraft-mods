@@ -42,7 +42,7 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
     }
 
     public void addSound(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "assets/sound/olddays/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().getAssetsDir(), "sound/olddays/"+name+".ogg");
         core.unpackSound("sound/olddays", name+".ogg");
         if (sound.exists()){
             String s = "olddays/"+name+".ogg";
@@ -53,7 +53,7 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
     }
 
     public void addMusic(int id, String name){
-        File sound = new File(mod_OldDays.getMinecraft().mcDataDir, "assets/music/"+name+".ogg");
+        File sound = new File(mod_OldDays.getMinecraft().getAssetsDir(), "music/"+name+".ogg");
         core.unpackSound("music", name+".ogg");
         if (sound.exists()){
             String s = name+".ogg";
