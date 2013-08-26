@@ -912,7 +912,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
         int i = MathHelper.floor_double(par1Entity.posX / 16D);
         int j = MathHelper.floor_double(par1Entity.posZ / 16D);
-        boolean flag = false;
+        boolean flag = par1Entity.field_98038_p;
 
         if (par1Entity instanceof EntityPlayer)
         {

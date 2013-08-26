@@ -12,6 +12,7 @@ import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityCrit2FX;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityHorse;
+import net.minecraft.src.EntityList;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityMinecartHopper;
 import net.minecraft.src.EntityPickupFX;
@@ -825,6 +826,20 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         posY -= 1.6200000047683716D;
         super.writeToNBT(par1NBTTagCompound);
         posY += 1.6200000047683716D;
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbttagcompound){
+        super.readEntityFromNBT(nbttagcompound);
+        if (nbttagcompound.hasKey("Riding")){
+            Entity entity = EntityList.createEntityFromNBT(nbttagcompound.getCompoundTag("Riding"), worldObj);
+            if (entity != null){
+                entity.field_98038_p = true;
+                worldObj.spawnEntityInWorld(entity);
+                mountEntity(entity);
+                entity.field_98038_p = false;
+            }
+        }
     }
 
     @Override
