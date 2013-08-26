@@ -64,20 +64,17 @@ public class RenderEnderman2 extends RenderLiving
             GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(-f, -f, f);
-            if (Minecraft.oldlighting){
-                float ff = par1EntityEnderman.getBrightness(par2);
-                GL11.glColor3f(ff, ff, ff);
-                GL11.glColor3f(ff, ff, ff);
-            }else{
+            float ff = Minecraft.oldlighting ? par1EntityEnderman.getBrightness(par2) : 1.0F;
+            if (!Minecraft.oldlighting){
                 int i = par1EntityEnderman.getBrightnessForRender(par2);
                 int j = i % 0x10000;
                 int k = i / 0x10000;
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             }
+            GL11.glColor4f(ff, ff, ff, 1.0F);
+            GL11.glColor4f(ff, ff, ff, 1.0F);
             func_110776_a(TextureMap.field_110575_b);
-            renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), 1.0F);
+            renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), ff);
             GL11.glPopMatrix();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         }
