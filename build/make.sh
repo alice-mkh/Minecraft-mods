@@ -45,7 +45,12 @@ MODS_LIST="old-days-actions
 UNUSED[0]="spc_tester
            spc_WorldEditGUI
            spc_aprilfools1
-           spc_AprilFools2012"
+           spc_AprilFools2012
+           spc_Elevators
+           Group
+           Group\$1
+           Group\$GroupBlock
+           RenderGroup"
 CP[1]="`find BlockFire`
        `find BlockFlowing`
        `find BlockMushroom`
@@ -354,12 +359,7 @@ MV[13]="CommandClientSPC
         mod_SSPC
         spc_WorldEdit
         spc_paint
-        spc_path
-        spc_Elevators
-        Group
-        Group\$1
-        Group\$GroupBlock
-        RenderGroup"
+        spc_path"
 MV[14]="net/ ssp/ other"
 #MV[14]="`find WorldInfo` `find GuiIngame` `find GuiContainer` `find GuiInventory` `find EntityRenderer` `find ItemRenderer`
 #        `find RenderBlocks` `find RenderGlobal` `find GuiMainMenu` `find EntityLiving` `find EntityLivingBase` net/ ssp/ other"
