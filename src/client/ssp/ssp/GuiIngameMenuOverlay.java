@@ -21,7 +21,7 @@ public class GuiIngameMenuOverlay extends GuiOverlay{
 
     @Override
     public boolean shouldBeAdded(){
-        return !Minecraft.getMinecraft().isMultiplayerWorld();
+        return Minecraft.getMinecraft().enableSP;
     }
 
     @Override
@@ -48,9 +48,6 @@ public class GuiIngameMenuOverlay extends GuiOverlay{
         switch (par1GuiButton.id){
             case 1:
                 mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
-                if (mc.isMultiplayerWorld()){
-                    mc.theWorld.sendQuittingDisconnectingPacket();
-                }
                 mc.changeWorld1(null);
                 mc.displayGuiScreen(new GuiMainMenu());
                 return false;
