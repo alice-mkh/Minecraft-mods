@@ -7,7 +7,6 @@ import java.util.*;
 import org.apache.commons.io.Charsets;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Project;
-import net.minecraft.src.ssp.PlayerControllerDemo;
 
 public class GuiMainMenu extends GuiScreen
 {
