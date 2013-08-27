@@ -198,6 +198,7 @@ if [ "$1" == "copy" ]; then
     exit 0
 fi
 if [ "$1" == "move" ]; then
+    cd ..
     move
     exit 0
 fi
