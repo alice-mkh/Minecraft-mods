@@ -335,14 +335,7 @@ public class GuiMainMenu extends GuiScreen
 
         if (par1GuiButton.id == 11)
         {
-            mc.enableSP = mc.useSP;
-            if (mc.enableSP){
-                mc.playerController = new PlayerControllerDemo(mc);
-                mc.startWorldSSP("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
-                mc.displayGuiScreen(null);
-            }else{
-                mc.launchIntegratedServer("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
-            }
+            mc.launchIntegratedServer("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
         }
 
         if (par1GuiButton.id == 12)
