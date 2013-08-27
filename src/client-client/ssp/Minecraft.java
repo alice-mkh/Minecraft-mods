@@ -40,6 +40,7 @@ import net.minecraft.src.ssp.ClientCommandManager;
 import net.minecraft.src.ssp.FakeServer;
 import net.minecraft.src.ssp.FakeServerPlayerList;
 import net.minecraft.src.ssp.EntityPlayerSP2;
+import net.minecraft.src.ssp.GuiGameOverOverlay;
 import net.minecraft.src.ssp.GuiIngameMenuOverlay;
 import net.minecraft.src.ssp.GuiMainMenuOverlay;
 import net.minecraft.src.ssp.Mod;
@@ -3379,6 +3380,7 @@ public class Minecraft implements IPlayerUsage
     }
 
     private void setupOverlays(){
+        new GuiGameOverOverlay();
         new GuiIngameMenuOverlay();
         new GuiMainMenuOverlay();
     }

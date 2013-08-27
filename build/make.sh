@@ -82,6 +82,7 @@ CP[3]="`find EntityArrow`
        `find EntityXPOrb`
        `find EntityZombie`
        `find FoodStats`
+       `find GuiGameOver`
        `find ItemBow`
        `find ItemFood`
        BlockCake2
@@ -316,7 +317,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer` `find GuiMainMenu`
         BlockChestOld BlockRedstoneWireOld OldContainerCreative GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev GuiButtonNBXlite
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
-        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
+        SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped` `find GuiGameOver`
         `find BiomeGenBase` `find BlockFluid` `find ChunkCache` `find ComponentVillage` `find WorldGenBigTree` `find BlockGrass`
         `find ChunkProviderHell` `find StructureMineshaftPieces` `find EntityAIMate` `find EntityAnimal` `find ComponentStrongholdStairs2`
         `find EntityWolf` `find GenLayer` `find WorldChunkManager` `find WorldChunkManagerHell` `find StructureStrongholdPieces`

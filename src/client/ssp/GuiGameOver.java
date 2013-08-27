@@ -26,7 +26,7 @@ public class GuiGameOver extends GuiScreen
 
         if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
         {
-            if (mc.isIntegratedServerRunning() || mc.enableSP)
+            if (mc.isIntegratedServerRunning())
             {
                 buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96, I18n.func_135053_a("deathScreen.deleteWorld")));
             }
@@ -65,10 +65,6 @@ public class GuiGameOver extends GuiScreen
      */
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        if (mc.enableSP){
-            actionPerformedSP(par1GuiButton);
-            return;
-        }
         switch (par1GuiButton.id)
         {
             case 1:
@@ -78,47 +74,6 @@ public class GuiGameOver extends GuiScreen
             case 2:
                 mc.theWorld.sendQuittingDisconnectingPacket();
                 mc.loadWorld(null);
-                mc.displayGuiScreen(new GuiMainMenu());
-                break;
-        }
-    }
-
-    /**
-     * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
-     */
-    protected void actionPerformedSP(GuiButton par1GuiButton)
-    {
-        switch (par1GuiButton.id)
-        {
-            default:
-                break;
-
-            case 1:
-                if (mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
-                {
-                    String s = mc.theWorld.getSaveHandler().getWorldDirectoryName();
-                    mc.exitToMainMenu("Deleting world");
-                    ISaveFormat isaveformat = mc.getSaveLoader();
-                    isaveformat.flushCache();
-                    isaveformat.deleteWorldDirectory(s);
-                    mc.displayGuiScreen(new GuiMainMenu());
-                }
-                else
-                {
-                    mc.thePlayer.respawnPlayer();
-                    mc.displayGuiScreen(null);
-                    return;
-                }
-
-                break;
-
-            case 2:
-                if (mc.isMultiplayerWorld())
-                {
-                    mc.theWorld.sendQuittingDisconnectingPacket();
-                }
-
-                mc.changeWorld1(null);
                 mc.displayGuiScreen(new GuiMainMenu());
                 break;
         }
