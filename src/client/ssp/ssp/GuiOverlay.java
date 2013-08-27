@@ -26,13 +26,17 @@ public class GuiOverlay{
         for (GuiOverlay overlay : list){
             if (overlay.guiClass.isInstance(gui) && overlay.shouldBeAdded()){
                 gui.overlays.add(overlay);
-                System.out.println("Adding overlay to "+gui.getClass().getName());
+                overlay.onAdded(gui);
             }
         }
     }
 
     public boolean shouldBeAdded(){
         return true;
+    }
+
+    public void onAdded(GuiScreen gui){
+        System.out.println("Added overlay to "+gui.getClass().getName());
     }
 
     public void initGui(List buttonList, int width, int height){
