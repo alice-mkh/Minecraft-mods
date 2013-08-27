@@ -50,6 +50,10 @@ public class GuiOverlay{
         getButtonById(buttonList, i).drawButton = show;
     }
 
+    protected void disableButton(List buttonList, int i, boolean enable){
+        getButtonById(buttonList, i).enabled = enable;
+    }
+
     protected void resizeButton(List buttonList, int i, int x, int y){
         GuiButton b = getButtonById(buttonList, i);
         try{
