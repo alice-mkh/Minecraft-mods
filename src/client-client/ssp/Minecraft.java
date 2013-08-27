@@ -40,7 +40,7 @@ import net.minecraft.src.ssp.ClientCommandManager;
 import net.minecraft.src.ssp.FakeServer;
 import net.minecraft.src.ssp.FakeServerPlayerList;
 import net.minecraft.src.ssp.EntityPlayerSP2;
-import net.minecraft.src.ssp.GuiIngameMenuSP;
+import net.minecraft.src.ssp.GuiIngameMenuOverlay;
 import net.minecraft.src.ssp.Mod;
 import net.minecraft.src.ssp.Packet300Custom;
 import net.minecraft.src.ssp.PlayerController;
@@ -277,6 +277,7 @@ public class Minecraft implements IPlayerUsage
         profilingEnabled = false;
         overrideMobSpawning = false;
         checkCompatibility("ModLoader");
+        setupOverlays();
     }
 
     private void startTimerHackThread()
@@ -1281,11 +1282,7 @@ public class Minecraft implements IPlayerUsage
             return;
         }
 
-        if (enableSP){
-            displayGuiScreen(new GuiIngameMenuSP());
-        }else{
-            displayGuiScreen(new GuiIngameMenu());
-        }
+        displayGuiScreen(new GuiIngameMenu());
 
         if (isSingleplayer() && !theIntegratedServer.getPublic())
         {
@@ -3378,5 +3375,9 @@ public class Minecraft implements IPlayerUsage
             ex.printStackTrace();
         }
         field_110451_am.func_110542_a(sndManager);
+    }
+
+    private void setupOverlays(){
+        new GuiIngameMenuOverlay();
     }
 }
