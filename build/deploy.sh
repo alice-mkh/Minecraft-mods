@@ -14,8 +14,8 @@ EntityPlayerMP.java
 Explosion.java
 GuiChat.java
 GuiCreateWorld.java
-GuiGameOver.java
 GuiMultiplayer.java
+GuiScreen.java
 GuiShareToLan.java
 GuiWorldSlot.java
 ISaveHandler.java
@@ -101,7 +101,6 @@ eyecandy/EntityDropParticleFX.java
 eyecandy/EntitySuspendFX.java
 eyecandy/GuiContainer.java
 eyecandy/GuiMainMenu.java
-eyecandy/GuiScreen.java
 eyecandy/ItemRenderer.java
 eyecandy/LoadingScreenRenderer.java
 eyecandy/ModelBiped.java
@@ -115,6 +114,7 @@ gameplay/EntityArrow.java
 gameplay/EntityPlayer.java
 gameplay/EntityXPOrb.java
 gameplay/FoodStats.java
+gameplay/GuiGameOver.java
 gameplay/GuiIngame.java
 gameplay/ItemBow.java
 gameplay/ItemFood.java"
