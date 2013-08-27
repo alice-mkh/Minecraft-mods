@@ -24,11 +24,15 @@ public class GuiOverlay{
 
     public static void addOverlays(GuiScreen gui){
         for (GuiOverlay overlay : list){
-            if (overlay.guiClass.isInstance(gui)){
+            if (overlay.guiClass.isInstance(gui) && shouldBeAdded()){
                 gui.overlays.add(overlay);
                 System.out.println("Adding overlay to "+gui.getClass().getName());
             }
         }
+    }
+
+    public boolean shouldBeAdded(){
+        return true;
     }
 
     public void initGui(List buttonList, int width, int height){
