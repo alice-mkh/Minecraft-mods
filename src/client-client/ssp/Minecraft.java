@@ -3116,6 +3116,7 @@ public class Minecraft implements IPlayerUsage
         EnumGameType type = theWorld.getWorldInfo().getGameType();
         boolean commands = theWorld.getWorldInfo().areCommandsAllowed();
         WorldSSP world = (WorldSSP)theWorld;
+        world.saveWorld(false, loadingScreen);
         changeWorld1(null);
         displayGuiScreen(null);
         enableSP = false;
@@ -3134,6 +3135,7 @@ public class Minecraft implements IPlayerUsage
         GuiScreen gui = currentScreen;
         String s1 = "";
         if (enableSP){
+            ((WorldSSP)world).saveWorld(false, loadingScreen);
             s1 = world.getWorldInfo().getWorldName();
             changeWorld1(null);
         }else{
