@@ -55,6 +55,19 @@ public class GuiScreen extends Gui
         }
     }
 
+    public void updateScreen2(){
+        boolean doMainUpdate = true;
+        for (GuiOverlay overlay : overlays){
+            doMainUpdate &= overlay.preUpdateScreen(this);
+        }
+        if (doMainUpdate){
+            updateScreen();
+        }
+        for (GuiOverlay overlay : overlays){
+            overlay.postUpdateScreen(this);
+        }
+    }
+
     public FontRenderer getFontRenderer(){
         return fontRenderer;
     }
@@ -132,7 +145,7 @@ public class GuiScreen extends Gui
                     mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
                     boolean b = true;
                     for (GuiOverlay overlay : overlays){
-                        b &= overlay.actionPerformed(guibutton);
+                        b &= overlay.actionPerformed(this, guibutton);
                     }
                     if (!b){
                         continue;

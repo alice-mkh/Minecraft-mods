@@ -24,7 +24,7 @@ public class GuiOverlay{
 
     public static void addOverlays(GuiScreen gui){
         for (GuiOverlay overlay : list){
-            if (overlay.guiClass.isInstance(gui) && shouldBeAdded()){
+            if (overlay.guiClass.isInstance(gui) && overlay.shouldBeAdded()){
                 gui.overlays.add(overlay);
                 System.out.println("Adding overlay to "+gui.getClass().getName());
             }
@@ -39,7 +39,7 @@ public class GuiOverlay{
         System.out.println("Initialized overlay for "+guiClass.getName());
     }
 
-    public boolean actionPerformed(GuiButton button){
+    public boolean actionPerformed(GuiScreen gui, GuiButton button){
         System.out.println("Pressed button "+button.id);
         return true;
     }
@@ -91,6 +91,12 @@ public class GuiOverlay{
     }
 
     public void postDrawScreen(GuiScreen gui, int x, int y, float f){}
+
+    public boolean preUpdateScreen(GuiScreen gui){
+        return true;
+    }
+
+    public void postUpdateScreen(GuiScreen gui){}
 
     static{
         list = new ArrayList<GuiOverlay>();

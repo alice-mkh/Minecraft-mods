@@ -1568,7 +1568,7 @@ public class Minecraft implements IPlayerUsage
             {
                 try
                 {
-                    currentScreen.updateScreen();
+                    currentScreen.updateScreen2();
                 }
                 catch (Throwable throwable1)
                 {
