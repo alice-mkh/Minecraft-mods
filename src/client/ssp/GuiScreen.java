@@ -5,9 +5,12 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.src.ssp.GuiOverlay;
 
 public class GuiScreen extends Gui
 {
+    public ArrayList<GuiOverlay> overlays;
+
     public static boolean oldbg = false;
 
     /** Reference to the Minecraft object. */
@@ -35,6 +38,25 @@ public class GuiScreen extends Gui
     public GuiScreen()
     {
         buttonList = new ArrayList();
+        overlays = new ArrayList<GuiOverlay>();
+        GuiOverlay.addOverlays(this);
+    }
+
+    public void drawScreen2(int par1, int par2, float par3){
+        boolean doMainDrawing = true;
+        for (GuiOverlay overlay : overlays){
+            doMainDrawing &= overlay.preDrawScreen(this, par1, par2, par3);
+        }
+        if (doMainDrawing){
+            drawScreen(par1, par2, par3);
+        }
+        for (GuiOverlay overlay : overlays){
+            overlay.postDrawScreen(this, par1, par2, par3);
+        }
+    }
+
+    public FontRenderer getFontRenderer(){
+        return fontRenderer;
     }
 
     /**
@@ -108,6 +130,13 @@ public class GuiScreen extends Gui
                 {
                     selectedButton = guibutton;
                     mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+                    boolean b = true;
+                    for (GuiOverlay overlay : overlays){
+                        b &= overlay.actionPerformed(guibutton);
+                    }
+                    if (!b){
+                        continue;
+                    }
                     actionPerformed(guibutton);
                 }
             }
@@ -154,6 +183,9 @@ public class GuiScreen extends Gui
         height = par3;
         buttonList.clear();
         initGui();
+        for (GuiOverlay overlay : overlays){
+            overlay.initGui(buttonList, width, height);
+        }
     }
 
     /**

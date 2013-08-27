@@ -1162,7 +1162,7 @@ public class EntityRenderer
 
             try
             {
-                mc.currentScreen.drawScreen(k, i1, par1);
+                mc.currentScreen.drawScreen2(k, i1, par1);
             }
             catch (Throwable throwable)
             {

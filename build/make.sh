@@ -132,7 +132,6 @@ CP[5]="`find EntityDiggingFX`
        `find EntitySkeleton`
        `find EntitySuspendFX`
        `find EntityZombie`
-       `find GuiScreen`
        `find ItemRenderer`
        `find LoadingScreenRenderer`
        `find ModelBiped`
@@ -313,7 +312,7 @@ MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityIt
         `find EntityWaterMob` `find EntitySlime` ODMobs `find ComponentVillageField` `find ComponentVillageField2` PathPointIndev
         MD3Tag MD3Frame MD3Surface MD3Renderer MD3Loader MD3Shader MD3Model RenderMD3 EntitySteve EntityRana EntitySteve\$RenderMD3Steve
         `find ModelBiped` `find RendererLivingEntity` `find TileEntityChestRenderer` `find EntitySuspendFX` `find RenderItem` GuiOldDaysSeparator
-        `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer` `find GuiScreen`
+        `find EntityDiggingFX` `find RenderHelper` `find EntityDropParticleFX` `find LoadingScreenRenderer`
         BlockChestOld BlockRedstoneWireOld OldContainerCreative GuiContainerCreativeOld LogoEffectRandomizer PathFinderIndev GuiButtonNBXlite
         ModelMobArmor RenderEnderman2 RenderMinecart2 RenderTntMinecart2 RenderZombie2 RenderSkeleton2 RenderSnowMan2 RenderItemFrame2 ODEyecandy
         SoundManager2 ODSounds ODCrafting BlockOreStorageOld ODTextures GuiCreateFlatWorld2 `find World` `find RenderBiped`
