@@ -3294,7 +3294,7 @@ public abstract class World implements IBlockAccess
     public void tick()
     {
         updateWeather();
-        if (!ODNBXlite.getFlag("weather")){
+        if (!ODNBXlite.getFlag("weather") && !mod_OldDays.isVanillaSMP()){
             setRainStrength(0);
             worldInfo.setThunderTime(10000);
         }
