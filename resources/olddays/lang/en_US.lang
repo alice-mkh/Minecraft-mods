@@ -1011,10 +1011,10 @@ flag.weather=Weather
 
 biomeless.feature1=Obsidian walls
 biomeless.feature2=Brick pyramids
-biomeless.feature3=3D noise
+biomeless.feature3=3D terrain shape
 biomeless.feature4=Ores
 biomeless.feature5=Beaches
-biomeless.feature6=Smooth noise
+biomeless.feature6=Smooth terrain
 biomeless.feature7=Caves
 biomeless.feature8=Flowers
 biomeless.feature9=Mushrooms

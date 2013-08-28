@@ -1016,10 +1016,12 @@ flag.weather=Clima
 
 biomeless.feature1=Muros de obsidiana
 biomeless.feature2=Pirámides de ladrillo
-biomeless.feature3="Ruido" en 3D
+//FIXME
+biomeless.feature3=3D terrain shape
 biomeless.feature4=Ores
 biomeless.feature5=Playas
-biomeless.feature6="Ruido" más fluido
+//FIXME
+biomeless.feature6=Smooth terrain
 biomeless.feature7=Cuevas
 biomeless.feature8=Flores
 biomeless.feature9=Hongos

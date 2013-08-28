@@ -1016,10 +1016,12 @@ flag.weather=Pogoda
 
 biomeless.feature1=Obsydianowe ściany
 biomeless.feature2=Ceglane piramidy
-biomeless.feature3=Szum 3D
+//FIXME
+biomeless.feature3=3D terrain shape
 biomeless.feature4=Rudy
 biomeless.feature5=Plaże
-biomeless.feature6=Gładki szum
+//FIXME Gładka zemia?
+biomeless.feature6=Smooth terrain
 biomeless.feature7=Jaskinie
 biomeless.feature8=Kwiaty
 biomeless.feature9=Grzyby
