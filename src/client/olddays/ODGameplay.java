@@ -23,6 +23,7 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyBool(this, 18,true,  false, "OldExplosion");
         new OldDaysPropertyBool(this, 19,true,  true,  "AllowSneak");
         replaceBlocks();
+        new GuiGameOverOldDaysOverlay();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class ODGameplay extends OldDaysModule{
             case 17:set(EntityPlayer.class, "oldscore", Score < 2);
                     set(EntityLivingBase.class, "enablescore", Score == 1);
                     set(GuiIngame.class, "score", Score == 1);
-                    set(GuiGameOver.class, "oldScore", Score == 0); break;
+                    set(GuiGameOverOldDaysOverlay.class, "oldScore", Score == 0); break;
             case 18:set(Explosion.class, "oldexplosion", OldExplosion); break;
             case 19:set(MovementInputFromOptionsCustom.class, "allowSneak", AllowSneak); break;
         }

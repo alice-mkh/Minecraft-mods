@@ -72,6 +72,22 @@ public class GuiScreen extends Gui
         return fontRenderer;
     }
 
+    @Override
+    public void drawCenteredString(FontRenderer par1FontRenderer, String par2Str, int par3, int par4, int par5){
+        for (GuiOverlay overlay : overlays){
+            par2Str = overlay.applyStringOverrides(par2Str, par3, par4, width, height);
+        }
+        super.drawCenteredString(par1FontRenderer, par2Str, par3, par4, par5);
+    }
+
+    @Override
+    public void drawString(FontRenderer par1FontRenderer, String par2Str, int par3, int par4, int par5){
+        for (GuiOverlay overlay : overlays){
+            par2Str = overlay.applyStringOverrides(par2Str, par3, par4, width, height);
+        }
+        super.drawString(par1FontRenderer, par2Str, par3, par4, par5);
+    }
+
     /**
      * Draws the screen and all the components in it.
      */

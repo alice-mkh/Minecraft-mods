@@ -100,6 +100,10 @@ public class GuiOverlay{
         return true;
     }
 
+    public String applyStringOverrides(String str, int x, int y, int width, int height){
+        return str;
+    }
+
     public void postUpdateScreen(GuiScreen gui){}
 
     static{
