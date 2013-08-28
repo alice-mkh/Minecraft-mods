@@ -32,23 +32,20 @@ public class TextureFlamesFX extends TextureFX
                 {
                     for (int j1 = j; j1 <= j + 1; j1++)
                     {
-                        int l1 = i1;
-                        int j2 = j1;
-
-                        if (l1 >= 0 && j2 >= 0 && l1 < size && j2 < size2)
+                        if (i1 >= 0 && j1 >= 0 && i1 < size && j1 < size2)
                         {
-                            f += field_76869_g[l1 + j2 * size];
+                            f += field_76869_g[i1 + j1 * size];
                         }
 
                         k++;
                     }
                 }
 
-                field_76870_h[i + j * size] = f / ((float)k * 1.06F);
+                field_76870_h[i + j * size] = f / ((float)k * (1.0F + 0.06F / size * 16.0F));
 
                 if (j >= (size2 - 1))
                 {
-                    field_76870_h[i + j * size] = (float)(Math.random() * Math.random() * Math.random() * (double)(size / 2) + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
+                    field_76870_h[i + j * size] = (float)(Math.random() * Math.random() * Math.random() * 4D + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
                 }
             }
         }
