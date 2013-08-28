@@ -44,6 +44,7 @@ public class OldDaysTextureManager{
     public void changeResourcePack(ResourceManager res){
         currentpack=mod_OldDays.getMinecraft().gameSettings.skin;
         entryCache.clear();
+        removeTextureFXes();
         core.refreshTextures();
         setFallback(!hasEntry("olddays"));
     }
