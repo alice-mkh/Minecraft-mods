@@ -56,9 +56,6 @@ public class GuiIngameMenuOverlay extends GuiOverlay{
                 mc.setIngameFocus();
                 mc.sndManager.resumeAllSounds(); //?
                 return false;
-            case 7:
-                mc.displayGuiScreen(new GuiShareToLan(gui).setUseSP());
-                return false;
         }
         return true;
     }
