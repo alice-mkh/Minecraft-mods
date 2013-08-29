@@ -14,7 +14,6 @@ EntityPlayerMP.java
 Explosion.java
 GuiChat.java
 GuiCreateWorld.java
-GuiMultiplayer.java
 GuiScreen.java
 GuiWorldSlot.java
 ISaveHandler.java

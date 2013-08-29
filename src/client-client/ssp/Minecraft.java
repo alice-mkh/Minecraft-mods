@@ -42,6 +42,7 @@ import net.minecraft.src.ssp.FakeServerPlayerList;
 import net.minecraft.src.ssp.EntityPlayerSP2;
 import net.minecraft.src.ssp.GuiGameOverOverlay;
 import net.minecraft.src.ssp.GuiIngameMenuOverlay;
+import net.minecraft.src.ssp.GuiMultiplayerOverlay;
 import net.minecraft.src.ssp.GuiMainMenuOverlay;
 import net.minecraft.src.ssp.GuiShareToLanOverlay;
 import net.minecraft.src.ssp.Mod;
@@ -3386,6 +3387,7 @@ public class Minecraft implements IPlayerUsage
         new GuiGameOverOverlay();
         new GuiIngameMenuOverlay();
         new GuiMainMenuOverlay();
+        new GuiMultiplayerOverlay();
         new GuiShareToLanOverlay();
     }
 }
