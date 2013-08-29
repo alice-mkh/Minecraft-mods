@@ -25,8 +25,6 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 18,false, true,  "Apples");
         new OldDaysPropertyBool(this, 19,true,  false, "OldBoneMeal");
         new OldDaysPropertyBool(this, 20,false, false, "SnowFallOnGlass");
-        replaceBlocks();
-        replaceTools();
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
 
@@ -102,7 +100,8 @@ public class ODActions extends OldDaysModule{
         mod_OldDays.setField(Material.class, Material.tnt, 35, !b);
     }
 
-    private void replaceBlocks(){
+    @Override
+    public void replaceBlocks(){
         try{
             Block.blocksList[Block.tnt.blockID] = null;
             BlockTNT2 customtnt = (BlockTNT2)(new BlockTNT2(Block.tnt.blockID));
@@ -143,7 +142,8 @@ public class ODActions extends OldDaysModule{
         }
     }
 
-    private void replaceTools(){
+    @Override
+    public void replaceTools(){
         Item.itemsList[Item.pickaxeWood.itemID] = null;
         ItemPickaxe2 pickaxeWood = new ItemPickaxe2(Item.pickaxeWood.itemID - 256, EnumToolMaterial.WOOD);
         pickaxeWood.setUnlocalizedName("pickaxeWood");

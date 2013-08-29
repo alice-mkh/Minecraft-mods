@@ -55,7 +55,6 @@ public class ODTextures extends OldDaysModule{
         getPropertyById(32).setFallback("olddays/textures.png", "olddays/cloth_1.png", "olddays/cloth_2.png");
         getPropertyById(35).setFallback("olddays/mojang.png", "olddays/mojang2.png");
 //         getPropertyById(36).setFallback("olddays/cow.png");
-        replaceBlocks();
         prevProcedural = Procedural;
     }
 
@@ -149,7 +148,8 @@ public class ODTextures extends OldDaysModule{
 
     private static boolean prevProcedural;
 
-    private void replaceBlocks(){
+    @Override
+    public void replaceBlocks(){
         try{
             Block.blocksList[Block.blockIron.blockID] = null;
             BlockOreStorageOld customiron = (BlockOreStorageOld)(new BlockOreStorageOld(Block.blockIron.blockID, "iron"));

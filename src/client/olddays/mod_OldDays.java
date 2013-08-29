@@ -49,7 +49,17 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
         setUseTick(true, true);
         registerKey(keySettings = new KeyBinding(lang.get("OldDays Settings"), 35));
         loadModules();
+        initModules();
         saveman.loadAll();
+    }
+
+    private void initModules(){
+        for (OldDaysModule module : modules){
+            module.replaceBlocks();
+        }
+        for (OldDaysModule module : modules){
+            module.replaceTools();
+        }
     }
 
     @Override

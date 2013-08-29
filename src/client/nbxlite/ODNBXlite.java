@@ -47,7 +47,6 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyInt(this,   30,4,     6,     "DefaultFeaturesBiomeless", 6).setUseNames();
         new OldDaysPropertyInt(this,   31,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
         new OldDaysPropertyInt(this,   32,8,     8,     "DefaultFeaturesRelease", 8).setUseNames();
-        replaceBlocks();
         registerGears();
         GuiSelectWorld.nbxlite = true;
         WorldInfo.useNBXlite = true;
@@ -729,7 +728,8 @@ public class ODNBXlite extends OldDaysModule{
         }
     }
 
-    private static void replaceBlocks(){
+    @Override
+    public void replaceBlocks(){
         try{
             Block.blocksList[Block.leaves.blockID] = null;
             BlockLeaves2 customleaves = (BlockLeaves2)(new BlockLeaves2(Block.leaves.blockID));
@@ -761,6 +761,14 @@ public class ODNBXlite extends OldDaysModule{
             mod_OldDays.setField(Block.class, null, 125, customvine);//Block: vine
             Item.itemsList[Block.vine.blockID] = null;
             Item.itemsList[Block.vine.blockID] = new ItemColored(Block.vine.blockID - 256, false);
+        }catch (Exception exception){
+            System.out.println(exception);
+        }
+    }
+
+    @Override
+    public void replaceTools(){
+        try{
             Item.itemsList[Item.hoeWood.itemID] = null;
             ItemHoe2 hoeWood = new ItemHoe2(Item.hoeWood.itemID - 256, EnumToolMaterial.WOOD);
             hoeWood.setUnlocalizedName("hoeWood");

@@ -22,7 +22,6 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyInt(this,  17,2,     2,     "Score", 2).setUseNames();
         new OldDaysPropertyBool(this, 18,true,  false, "OldExplosion");
         new OldDaysPropertyBool(this, 19,true,  true,  "AllowSneak");
-        replaceBlocks();
         new GuiGameOverOldDaysOverlay();
     }
 
@@ -84,7 +83,8 @@ public class ODGameplay extends OldDaysModule{
     public static boolean OldExplosion = true;
     public static boolean AllowSneak = true;
 
-    private void replaceBlocks(){
+    @Override
+    public void replaceBlocks(){
         try{
             Block.blocksList[Block.cake.blockID] = null;
             BlockCake2 customcake = (BlockCake2)(new BlockCake2(Block.cake.blockID));

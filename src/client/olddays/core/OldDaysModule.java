@@ -310,4 +310,8 @@ public class OldDaysModule implements Comparable<OldDaysModule>{
         }
         return 0;
     }
+
+    public void replaceBlocks(){};
+
+    public void replaceTools(){};
 }

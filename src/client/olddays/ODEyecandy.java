@@ -33,7 +33,6 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   26,false, false, "OldItems");
         new OldDaysPropertyBool(this,   27,false, false, "OldBackground");
         isLocal = true;
-        replaceBlocks();
         redstoneRenderID = 41;
         set(ItemRenderer.class, "olddays", true);
     }
@@ -144,7 +143,8 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean OldBackground;
     public static int redstoneRenderID;
 
-    private void replaceBlocks(){
+    @Override
+    public void replaceBlocks(){
         try{
             Block.blocksList[Block.chest.blockID] = null;
             BlockChestOld customchest = (BlockChestOld)(new BlockChestOld(Block.chest.blockID, 0));
