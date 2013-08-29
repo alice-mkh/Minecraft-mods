@@ -16,7 +16,6 @@ GuiChat.java
 GuiCreateWorld.java
 GuiMultiplayer.java
 GuiScreen.java
-GuiShareToLan.java
 GuiWorldSlot.java
 ISaveHandler.java
 NetClientHandler.java
@@ -114,7 +113,6 @@ gameplay/EntityArrow.java
 gameplay/EntityPlayer.java
 gameplay/EntityXPOrb.java
 gameplay/FoodStats.java
-gameplay/GuiGameOver.java
 gameplay/GuiIngame.java
 gameplay/ItemBow.java
 gameplay/ItemFood.java"
