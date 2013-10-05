@@ -11,6 +11,24 @@ public class StructureStrongholdPieces
     static int totalWeight;
     private static final StructureStrongholdStones strongholdStones = new StructureStrongholdStones(null);
 
+    public static void func_143046_a()
+    {
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdChestCorridor.class, "SHCC");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdCorridor.class, "SHFC");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdCrossing.class, "SH5C");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdCrossingOld.class, "SH5COld");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdLeftTurn.class, "SHLT");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdLibrary.class, "SHLi");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdPortalRoom.class, "SHPR");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdPrison.class, "SHPH");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdRightTurn.class, "SHRT");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdRoomCrossing.class, "SHRC");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdStairs.class, "SHSD");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdStairs2.class, "SHStart");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdStraight.class, "SHS");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentStrongholdStairsStraight.class, "SHSSD");
+    }
+
     /**
      * sets up Arrays with the Structure pieces and their weights
      */

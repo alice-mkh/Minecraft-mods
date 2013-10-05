@@ -22,7 +22,7 @@ public class OldDaysTextureManager{
 
     public OldDaysTextureManager(mod_OldDays olddays){
         core = olddays;
-        renderEngine = mod_OldDays.getMinecraft().func_110434_K();
+        renderEngine = mod_OldDays.getMinecraft().getTextureManager();
         textureHooks = new ArrayList<TextureHook>();
         textureFXList = new ArrayList<TextureAtlasSprite>();
         entryCache = new HashMap<String, Boolean>();
@@ -52,7 +52,7 @@ public class OldDaysTextureManager{
     public void refreshTextureHooks(){
         for (TextureHook hook : textureHooks){
             TextureObject tex = new SimpleTexture(hook.enabled ? hook.newname : hook.origname);
-            renderEngine.func_110579_a(hook.origname, tex);
+            renderEngine.loadTexture(hook.origname, tex);
         }
     }
 
@@ -69,13 +69,13 @@ public class OldDaysTextureManager{
     }
 
     public boolean hasEntry(String... str){
-        ResourcePackRepository repo = mod_OldDays.getMinecraft().func_110438_M();
-        List list = repo.func_110613_c();
+        ResourcePackRepository repo = mod_OldDays.getMinecraft().getResourcePackRepository();
+        List list = repo.getRepositoryEntries();
         if (list.size() == 0){
             return true;
         }
         for (Object o : list){
-            ResourcePack pack = ((ResourcePackRepositoryEntry)o).func_110514_c();
+            ResourcePack pack = ((ResourcePackRepositoryEntry)o).getResourcePack();
             for (String s : str){
                 if (entryCache.containsKey(s)){
                     if (!entryCache.get(s)){
@@ -83,7 +83,7 @@ public class OldDaysTextureManager{
                     }
                     continue;
                 }
-                boolean b = pack.func_110589_b(new ResourceLocation(s));
+                boolean b = pack.resourceExists(new ResourceLocation(s));
                 entryCache.put(s, b);
                 if (!b){
                     return false;
@@ -134,7 +134,7 @@ public class OldDaysTextureManager{
         for (TextureAtlasSprite fx : textureFXList){
             try{
                 boolean terrain = fx.getIconName().split("/")[1].equals("blocks");
-                renderEngine.func_110577_a(terrain ? TextureMap.field_110575_b : TextureMap.field_110576_c);
+                renderEngine.bindTexture(terrain ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture);
                 fx.updateAnimation();
             }catch(Exception e){
                 e.printStackTrace();
@@ -145,7 +145,7 @@ public class OldDaysTextureManager{
     public void removeTextureFXes(){
         textureFXList.clear();
         System.gc();
-        renderEngine.func_110550_d();
+        renderEngine.tick();
     }
 
     public void eraseIcon(Icon icon, String origIcon, boolean b){
@@ -156,14 +156,14 @@ public class OldDaysTextureManager{
             replaceIcon(icon, "", 0, 0, origIcon, false);
             return;
         }
-        int width = icon.getOriginX();
-        int height = icon.getOriginY();
-        int x = ((TextureAtlasSprite)icon).func_130010_a();
-        int y = ((TextureAtlasSprite)icon).func_110967_i();
+        int width = icon.getIconWidth();
+        int height = icon.getIconHeight();
+        int x = ((TextureAtlasSprite)icon).getOriginX();
+        int y = ((TextureAtlasSprite)icon).getOriginY();
         int[] ints = new int[width * height];
         boolean terrain = origIcon.split("/")[1].equals("blocks");
-        renderEngine.func_110577_a(terrain ? TextureMap.field_110575_b : TextureMap.field_110576_c);
-        TextureUtil.func_110998_a(ints, width, height, x, y, false, false);
+        renderEngine.bindTexture(terrain ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture);
+        TextureUtil.uploadTextureSub(ints, width, height, x, y, false, false);
     }
 
     public void replaceIcon(Icon icon, String newIcon, int x, int y, String origIcon, boolean b){
@@ -176,20 +176,20 @@ public class OldDaysTextureManager{
             y = 0;
             newIcon = origIcon;
         }
-        int width = icon.getOriginX();
-        int height = icon.getOriginY();
+        int width = icon.getIconWidth();
+        int height = icon.getIconHeight();
         int[] ints = new int[width * height];
         try{
             ResourceLocation res = new ResourceLocation(newIcon);
-            ImageIO.read(Minecraft.getMinecraft().func_110442_L().func_110536_a(res).func_110527_b()).getRGB(x * width, y * height, width, height, ints, 0, width);
+            ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(res).getInputStream()).getRGB(x * width, y * height, width, height, ints, 0, width);
         }catch(Exception e){
             e.printStackTrace();
         }
-        x = ((TextureAtlasSprite)icon).func_130010_a();
-        y = ((TextureAtlasSprite)icon).func_110967_i();
+        x = ((TextureAtlasSprite)icon).getOriginX();
+        y = ((TextureAtlasSprite)icon).getOriginY();
         boolean terrain = origIcon.split("/")[1].equals("blocks");
-        renderEngine.func_110577_a(terrain ? TextureMap.field_110575_b : TextureMap.field_110576_c);
-        TextureUtil.func_110998_a(ints, width, height, x, y, false, false);
+        renderEngine.bindTexture(terrain ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture);
+        TextureUtil.uploadTextureSub(ints, width, height, x, y, false, false);
     }
 
     private class TextureHook{
@@ -204,7 +204,7 @@ public class OldDaysTextureManager{
         }
 
         public boolean equals(String str1, String str2){
-            return origname.func_110623_a().equals(str1) && newname.func_110623_a().equals(str2);
+            return origname.getResourcePath().equals(str1) && newname.getResourcePath().equals(str2);
         }
     }
 }

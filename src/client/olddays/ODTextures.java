@@ -157,7 +157,7 @@ public class ODTextures extends OldDaysModule{
             customiron.setResistance(10F);
             customiron.setStepSound(Block.soundMetalFootstep);
             customiron.setUnlocalizedName("blockIron");
-            customiron.func_111022_d("iron_block");
+            customiron.setTextureName("iron_block");
             Block.blocksList[Block.blockIron.blockID] = customiron;
             mod_OldDays.setField(Block.class, null, 61, customiron);//Block: blockIron
             Block.blocksList[Block.blockGold.blockID] = null;
@@ -166,7 +166,7 @@ public class ODTextures extends OldDaysModule{
             customgold.setResistance(10F);
             customgold.setStepSound(Block.soundMetalFootstep);
             customgold.setUnlocalizedName("blockGold");
-            customgold.func_111022_d("gold_block");
+            customgold.setTextureName("gold_block");
             Block.blocksList[Block.blockGold.blockID] = customgold;
             mod_OldDays.setField(Block.class, null, 60, customgold);//Block: blockGold
             Block.blocksList[Block.blockDiamond.blockID] = null;
@@ -175,13 +175,13 @@ public class ODTextures extends OldDaysModule{
             customdiamond.setResistance(10F);
             customdiamond.setStepSound(Block.soundMetalFootstep);
             customdiamond.setUnlocalizedName("blockDiamond");
-            customdiamond.func_111022_d("diamond_block");
+            customdiamond.setTextureName("diamond_block");
             Block.blocksList[Block.blockDiamond.blockID] = customdiamond;
             mod_OldDays.setField(Block.class, null, 76, customdiamond);//Block: blockDiamond
             Item.itemsList[Item.coal.itemID] = null;
             Item coal = new ItemCoalOld(Item.coal.itemID - 256);
             coal.setUnlocalizedName("coal");
-            coal.func_111206_d("coal");
+            coal.setTextureName("coal");
             Item.coal = coal;
             Item.itemsList[Item.coal.itemID] = coal;
         }catch (Exception ex){
@@ -207,17 +207,17 @@ public class ODTextures extends OldDaysModule{
             core.texman.removeTextureFXes();
             return;
         }
-        TextureMap blocks = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110575_b));
-        TextureMap items = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110576_c));
+        TextureMap blocks = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture));
+        TextureMap items = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationItemsTexture));
 
         if (blocks == null || items == null){
             return;
         }
 
-        Icon origWater = BlockFluid.func_94424_b("water_still");
-        Icon origWaterFlow = BlockFluid.func_94424_b("water_flow");
-        Icon origLava = BlockFluid.func_94424_b("lava_still");
-        Icon origLavaFlow = BlockFluid.func_94424_b("lava_flow");
+        Icon origWater = BlockFluid.getFluidIcon("water_still");
+        Icon origWaterFlow = BlockFluid.getFluidIcon("water_flow");
+        Icon origLava = BlockFluid.getFluidIcon("lava_still");
+        Icon origLavaFlow = BlockFluid.getFluidIcon("lava_flow");
         Icon[] origFire = (Icon[])(core.getField(BlockFire.class, Block.fire, 2));
         Icon origPortal = (Icon)(core.getField(Block.class, Block.portal, 201)); //Block: blockIcon
         Icon origClock = (Icon)(core.getField(Item.class, Item.pocketSundial, 182)); //Item: itemIcon
@@ -304,7 +304,7 @@ public class ODTextures extends OldDaysModule{
         for (int i = 0; i < icons.length; i++){
             int x = (Wool == 0 ? classic[i] : beta[i]) % 16;
             int y = (Wool == 0 ? classic[i] : beta[i]) / 16;
-            replaceIcon(icons[i], "olddays/textures.png", x, y, "textures/blocks/wool_colored_" + ItemDye.field_94595_b[~i & 0xF] + ".png", Wool < 2);
+            replaceIcon(icons[i], "olddays/textures.png", x, y, "textures/blocks/wool_colored_" + ItemDye.dyeItemNames[~i & 0xF] + ".png", Wool < 2);
         }
     }
 
@@ -389,7 +389,7 @@ public class ODTextures extends OldDaysModule{
                 break;
             }
             replaceIcon(icon1, "olddays/textures.png", 2 + i, 4, "textures/items/" + overlayNames[i] + ".png", b);
-            eraseIcon(icon2, "textures/items/" + items[i].func_111208_A() + ".png", !b);
+            eraseIcon(icon2, "textures/items/" + items[i].getIconString() + ".png", !b);
         }
         setTextureHook("textures/models/armor/leather_layer_1_overlay.png", "olddays/cloth_1.png", b);
         setTextureHook("textures/models/armor/leather_layer_2_overlay.png", "olddays/cloth_2.png", b);

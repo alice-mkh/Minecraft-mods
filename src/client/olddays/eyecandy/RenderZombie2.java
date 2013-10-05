@@ -37,7 +37,7 @@ public class RenderZombie2 extends RenderBiped
         {
             if (par2 == 1)
             {
-                func_110776_a(fallback ? armorFallback : armorResource);
+                bindTexture(fallback ? armorFallback : armorResource);
                 GL11.glDisable(2884);
                 setRenderPassModel(armor);
                 armor.bipedHead.showModel = par1EntityZombie.helmet;
@@ -202,7 +202,7 @@ public class RenderZombie2 extends RenderBiped
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110863_a((EntityZombie)par1Entity);
     }

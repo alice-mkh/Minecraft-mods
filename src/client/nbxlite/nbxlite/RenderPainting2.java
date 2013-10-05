@@ -24,7 +24,7 @@ public class RenderPainting2 extends Render
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        func_110777_b(par1EntityPainting);
+        bindEntityTexture(par1EntityPainting);
         EnumArt enumart = par1EntityPainting.art;
         float f = 0.0625F;
         GL11.glScalef(f, f, f);
@@ -145,7 +145,7 @@ public class RenderPainting2 extends Render
         }
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110806_a((EntityPainting)par1Entity);
     }

@@ -163,7 +163,7 @@ public final class SpawnerAnimals
                                                             {
                                                                 ++var15;
                                                                 par1WorldServer.spawnEntityInWorld(var38);
-                                                                entitylivingdata = var38.func_110161_a(entitylivingdata);
+                                                                entitylivingdata = var38.onSpawnWithEgg(entitylivingdata);
 
                                                                 if (var15 >= var38.getMaxSpawnedInChunk())
                                                                 {
@@ -330,7 +330,7 @@ public final class SpawnerAnimals
                                                             {
                                                                 ++var15;
                                                                 par0WorldServer.spawnEntityInWorld(var38);
-                                                                entitylivingdata = var38.func_110161_a(entitylivingdata);
+                                                                entitylivingdata = var38.onSpawnWithEgg(entitylivingdata);
 
                                                                 if (var15 >= var38.getMaxSpawnedInChunk())
                                                                 {
@@ -439,7 +439,7 @@ public final class SpawnerAnimals
 
                         entityliving.setLocationAndAngles(f, f1, f2, par6Random.nextFloat() * 360F, 0.0F);
                         par0World.spawnEntityInWorld(entityliving);
-                        entitylivingdata = entityliving.func_110161_a(entitylivingdata);
+                        entitylivingdata = entityliving.onSpawnWithEgg(entitylivingdata);
                         flag = true;
                     }
 

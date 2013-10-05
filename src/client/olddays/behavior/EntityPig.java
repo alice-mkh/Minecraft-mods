@@ -41,11 +41,11 @@ public class EntityPig extends EntityAnimal
         return super.getCanSpawnHere() || survivaltest;
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 6D : 10D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(survivaltest ? 6D : 10D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
     }
 
     protected void updateAITasks()

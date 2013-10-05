@@ -14,8 +14,8 @@ public class EntityZombie extends EntityMob
     public boolean armor;
 
     protected static final Attribute field_110186_bp = (new RangedAttribute("zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).func_111117_a("Spawn Reinforcements Chance");
-    private static final UUID field_110187_bq;
-    private static final AttributeModifier field_110188_br;
+    private static final UUID babySpeedBoostUUID;
+    private static final AttributeModifier babySpeedBoostModifier;
 
     /**
      * Ticker used to determine the time remaining for this zombie to convert into a villager when cured.
@@ -48,13 +48,13 @@ public class EntityZombie extends EntityMob
         return super.getCanSpawnHere() || !burns;
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111265_b).func_111128_a(40D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.23000000417232513D);
-        func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(pre15 ? 4D : 3D);
-        func_110140_aT().func_111150_b(field_110186_bp).func_111128_a(rand.nextDouble() * 0.10000000149011612D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(40D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.23000000417232513D);
+        getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(pre15 ? 4D : 3D);
+        getAttributeMap().func_111150_b(field_110186_bp).setAttribute(rand.nextDouble() * 0.10000000149011612D);
     }
 
     protected void entityInit()
@@ -105,12 +105,12 @@ public class EntityZombie extends EntityMob
 
         if (worldObj != null && !worldObj.isRemote)
         {
-            AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
-            attributeinstance.func_111124_b(field_110188_br);
+            AttributeInstance attributeinstance = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+            attributeinstance.removeModifier(babySpeedBoostModifier);
 
             if (par1)
             {
-                attributeinstance.func_111121_a(field_110188_br);
+                attributeinstance.applyModifier(babySpeedBoostModifier);
             }
         }
     }
@@ -191,7 +191,7 @@ public class EntityZombie extends EntityMob
                 entitylivingbase = (EntityLivingBase)par1DamageSource.getEntity();
             }
 
-            if (entitylivingbase != null && worldObj.difficultySetting >= 3 && (double)rand.nextFloat() < func_110148_a(field_110186_bp).func_111126_e())
+            if (entitylivingbase != null && worldObj.difficultySetting >= 3 && (double)rand.nextFloat() < getEntityAttribute(field_110186_bp).getAttributeValue())
             {
                 int i = MathHelper.floor_double(posX);
                 int j = MathHelper.floor_double(posY);
@@ -218,9 +218,9 @@ public class EntityZombie extends EntityMob
 
                     worldObj.spawnEntityInWorld(entityzombie);
                     entityzombie.setAttackTarget(entitylivingbase);
-                    entityzombie.func_110161_a(null);
-                    func_110148_a(field_110186_bp).func_111121_a(new AttributeModifier("Zombie reinforcement caller charge", -0.05000000074505806D, 0));
-                    entityzombie.func_110148_a(field_110186_bp).func_111121_a(new AttributeModifier("Zombie reinforcement callee charge", -0.05000000074505806D, 0));
+                    entityzombie.onSpawnWithEgg(null);
+                    getEntityAttribute(field_110186_bp).applyModifier(new AttributeModifier("Zombie reinforcement caller charge", -0.05000000074505806D, 0));
+                    entityzombie.getEntityAttribute(field_110186_bp).applyModifier(new AttributeModifier("Zombie reinforcement callee charge", -0.05000000074505806D, 0));
                     break;
                 }
             }
@@ -421,7 +421,7 @@ public class EntityZombie extends EntityMob
             EntityZombie entityzombie = new EntityZombie(worldObj);
             entityzombie.copyLocationAndAnglesFrom(par1EntityLivingBase);
             worldObj.removeEntity(par1EntityLivingBase);
-            entityzombie.func_110161_a(null);
+            entityzombie.onSpawnWithEgg(null);
             entityzombie.setVillager(true);
 
             if (par1EntityLivingBase.isChild())
@@ -434,10 +434,10 @@ public class EntityZombie extends EntityMob
         }
     }
 
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
-        float f = worldObj.func_110746_b(posX, posY, posZ);
+        par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
+        float f = worldObj.getLocationTensionFactor(posX, posY, posZ);
         setCanPickUpLoot(rand.nextFloat() < 0.55F * f);
 
         if (this instanceof EntityPigZombie){
@@ -481,13 +481,13 @@ public class EntityZombie extends EntityMob
         }
 
         if (custom2){
-            func_110148_a(SharedMonsterAttributes.field_111266_c).func_111121_a(new AttributeModifier("Random spawn bonus", rand.nextDouble() * 0.05000000074505806D, 0));
-            func_110148_a(SharedMonsterAttributes.field_111265_b).func_111121_a(new AttributeModifier("Random zombie-spawn bonus", rand.nextDouble() * 1.5D, 2));
+            getEntityAttribute(SharedMonsterAttributes.knockbackResistance).applyModifier(new AttributeModifier("Random spawn bonus", rand.nextDouble() * 0.05000000074505806D, 0));
+            getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random zombie-spawn bonus", rand.nextDouble() * 1.5D, 2));
 
             if (rand.nextFloat() < f * 0.05F)
             {
-                func_110148_a(field_110186_bp).func_111121_a(new AttributeModifier("Leader zombie bonus", rand.nextDouble() * 0.25D + 0.5D, 0));
-                func_110148_a(SharedMonsterAttributes.field_111267_a).func_111121_a(new AttributeModifier("Leader zombie bonus", rand.nextDouble() * 3D + 1.0D, 2));
+                getEntityAttribute(field_110186_bp).applyModifier(new AttributeModifier("Leader zombie bonus", rand.nextDouble() * 0.25D + 0.5D, 0));
+                getEntityAttribute(SharedMonsterAttributes.maxHealth).applyModifier(new AttributeModifier("Leader zombie bonus", rand.nextDouble() * 3D + 1.0D, 2));
             }
         }
 
@@ -574,7 +574,7 @@ public class EntityZombie extends EntityMob
     {
         EntityVillager entityvillager = new EntityVillager(worldObj);
         entityvillager.copyLocationAndAnglesFrom(this);
-        entityvillager.func_110161_a(null);
+        entityvillager.onSpawnWithEgg(null);
         entityvillager.func_82187_q();
 
         if (isChild())
@@ -628,7 +628,7 @@ public class EntityZombie extends EntityMob
 
     static
     {
-        field_110187_bq = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
-        field_110188_br = new AttributeModifier(field_110187_bq, "Baby speed boost", 0.5D, 1);
+        babySpeedBoostUUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
+        babySpeedBoostModifier = new AttributeModifier(babySpeedBoostUUID, "Baby speed boost", 0.5D, 1);
     }
 }

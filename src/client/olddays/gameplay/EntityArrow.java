@@ -290,7 +290,7 @@ public class EntityArrow extends Entity implements IProjectile
         {
             EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
 
-            if (entityplayer.capabilities.disableDamage || (shootingEntity instanceof EntityPlayer) && !((EntityPlayer)shootingEntity).func_96122_a(entityplayer))
+            if (entityplayer.capabilities.disableDamage || (shootingEntity instanceof EntityPlayer) && !((EntityPlayer)shootingEntity).canAttackPlayer(entityplayer))
             {
                 movingobjectposition = null;
             }

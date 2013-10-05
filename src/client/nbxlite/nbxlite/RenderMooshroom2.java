@@ -32,7 +32,7 @@ public class RenderMooshroom2 extends RenderLiving
         }
         else
         {
-            func_110776_a(TextureMap.field_110575_b);
+            bindTexture(TextureMap.locationBlocksTexture);
             GL11.glEnable(GL11.GL_CULL_FACE);
             GL11.glPushMatrix();
             GL11.glScalef(1.0F, -1F, 1.0F);
@@ -70,7 +70,7 @@ public class RenderMooshroom2 extends RenderLiving
         renderLivingMooshroom((EntityMooshroom)par1EntityLivingBase, par2, par4, par6, par8, par9);
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110879_a((EntityMooshroom)par1Entity);
     }

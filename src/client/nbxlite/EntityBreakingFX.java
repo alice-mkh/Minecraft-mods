@@ -10,7 +10,7 @@ public class EntityBreakingFX extends EntityFX
     public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item, int par9)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        func_110125_a(par8Item.getIconFromDamage(par9));
+        setParticleIcon(par8Item.getIconFromDamage(par9));
         particleRed = particleGreen = particleBlue = 1.0F;
         particleGravity = Block.blockSnow.blockParticleGravity;
         particleScale /= 2.0F;

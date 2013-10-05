@@ -110,7 +110,11 @@ public class BlockStairs extends Block
         return par0 > 0 && (Block.blocksList[par0] instanceof BlockStairs);
     }
 
-    private boolean func_82540_f(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    /**
+     * returns true if the given block is a stairs block and is in the given direction of par5.  Parameters are
+     * IBlockAccess, x, y, z, direction
+     */
+    private boolean isBlockStairsDirection(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         int i = par1IBlockAccess.getBlockId(par2, par3, par4);
         return isBlockStairsID(i) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == par5;
@@ -162,12 +166,12 @@ public class BlockStairs extends Block
             {
                 int k2 = k1 & 3;
 
-                if (k2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                if (k2 == 3 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 + 1, i))
                 {
                     f5 = 0.5F;
                     flag = false;
                 }
-                else if (k2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                else if (k2 == 2 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 - 1, i))
                 {
                     f4 = 0.5F;
                     flag = false;
@@ -185,12 +189,12 @@ public class BlockStairs extends Block
             {
                 int l2 = l1 & 3;
 
-                if (l2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                if (l2 == 3 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 + 1, i))
                 {
                     f5 = 0.5F;
                     flag = false;
                 }
-                else if (l2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                else if (l2 == 2 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 - 1, i))
                 {
                     f4 = 0.5F;
                     flag = false;
@@ -208,12 +212,12 @@ public class BlockStairs extends Block
             {
                 int i3 = i2 & 3;
 
-                if (i3 == 1 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                if (i3 == 1 && !isBlockStairsDirection(par1IBlockAccess, par2 + 1, par3, par4, i))
                 {
                     f3 = 0.5F;
                     flag = false;
                 }
-                else if (i3 == 0 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                else if (i3 == 0 && !isBlockStairsDirection(par1IBlockAccess, par2 - 1, par3, par4, i))
                 {
                     f2 = 0.5F;
                     flag = false;
@@ -229,12 +233,12 @@ public class BlockStairs extends Block
             {
                 int j3 = j2 & 3;
 
-                if (j3 == 1 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                if (j3 == 1 && !isBlockStairsDirection(par1IBlockAccess, par2 + 1, par3, par4, i))
                 {
                     f3 = 0.5F;
                     flag = false;
                 }
-                else if (j3 == 0 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                else if (j3 == 0 && !isBlockStairsDirection(par1IBlockAccess, par2 - 1, par3, par4, i))
                 {
                     f2 = 0.5F;
                     flag = false;
@@ -279,13 +283,13 @@ public class BlockStairs extends Block
             {
                 int k2 = k1 & 3;
 
-                if (k2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                if (k2 == 3 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 - 1, i))
                 {
                     f4 = 0.0F;
                     f5 = 0.5F;
                     flag = true;
                 }
-                else if (k2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                else if (k2 == 2 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 + 1, i))
                 {
                     f4 = 0.5F;
                     f5 = 1.0F;
@@ -304,13 +308,13 @@ public class BlockStairs extends Block
                 f3 = 1.0F;
                 int l2 = l1 & 3;
 
-                if (l2 == 3 && !func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, i))
+                if (l2 == 3 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 - 1, i))
                 {
                     f4 = 0.0F;
                     f5 = 0.5F;
                     flag = true;
                 }
-                else if (l2 == 2 && !func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, i))
+                else if (l2 == 2 && !isBlockStairsDirection(par1IBlockAccess, par2, par3, par4 + 1, i))
                 {
                     f4 = 0.5F;
                     f5 = 1.0F;
@@ -329,11 +333,11 @@ public class BlockStairs extends Block
                 f5 = 0.5F;
                 int i3 = i2 & 3;
 
-                if (i3 == 1 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                if (i3 == 1 && !isBlockStairsDirection(par1IBlockAccess, par2 - 1, par3, par4, i))
                 {
                     flag = true;
                 }
-                else if (i3 == 0 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                else if (i3 == 0 && !isBlockStairsDirection(par1IBlockAccess, par2 + 1, par3, par4, i))
                 {
                     f2 = 0.5F;
                     f3 = 1.0F;
@@ -350,11 +354,11 @@ public class BlockStairs extends Block
             {
                 int j3 = j2 & 3;
 
-                if (j3 == 1 && !func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, i))
+                if (j3 == 1 && !isBlockStairsDirection(par1IBlockAccess, par2 - 1, par3, par4, i))
                 {
                     flag = true;
                 }
-                else if (j3 == 0 && !func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, i))
+                else if (j3 == 0 && !isBlockStairsDirection(par1IBlockAccess, par2 + 1, par3, par4, i))
                 {
                     f2 = 0.5F;
                     f3 = 1.0F;
@@ -513,7 +517,9 @@ public class BlockStairs extends Block
     }
 
     /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
+     * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a
+     * different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old
+     * metadata
      */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {

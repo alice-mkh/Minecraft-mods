@@ -90,7 +90,7 @@ public class FoodStats
 
             if (foodTimer >= 80)
             {
-                if (par1EntityPlayer.func_110143_aJ() > 10F || i >= 3 || par1EntityPlayer.func_110143_aJ() > 1.0F && i >= 2)
+                if (par1EntityPlayer.getHealth() > 10F || i >= 3 || par1EntityPlayer.getHealth() > 1.0F && i >= 2)
                 {
                     par1EntityPlayer.attackEntityFrom(DamageSource.starve, 1.0F);
                 }

@@ -8,8 +8,8 @@ public class EntityEnderman extends EntityMob
     public static boolean oldPicking = false;
     public static boolean oldhealth = false;
 
-    private static final UUID field_110192_bp;
-    private static final AttributeModifier field_110193_bq;
+    private static final UUID attackingSpeedBoostModifierUUID;
+    private static final AttributeModifier attackingSpeedBoostModifier;
     private static boolean carriableBlocks[];
     private static boolean carriableBlocksOld[];
 
@@ -17,9 +17,13 @@ public class EntityEnderman extends EntityMob
      * Counter to delay the teleportation of an enderman towards the currently attacked target
      */
     private int teleportDelay;
-    private int field_70826_g;
-    private Entity field_110194_bu;
-    private boolean field_104003_g;
+
+    /**
+     * A player must stare at an enderman for 5 ticks before it becomes aggressive. This field counts those ticks.
+     */
+    private int stareTimer;
+    private Entity lastEntityToAttack;
+    private boolean isAggressive;
 
     public EntityEnderman(World par1World)
     {
@@ -28,12 +32,12 @@ public class EntityEnderman extends EntityMob
         stepHeight = 1.0F;
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(oldhealth ? 20D : 40D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.30000001192092896D);
-        func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(7D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(oldhealth ? 20D : 40D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
+        getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(7D);
     }
 
     protected void entityInit()
@@ -76,23 +80,23 @@ public class EntityEnderman extends EntityMob
         {
             if (shouldAttackPlayer(entityplayer))
             {
-                field_104003_g = true;
+                isAggressive = true;
 
-                if (field_70826_g == 0)
+                if (stareTimer == 0)
                 {
                     worldObj.playSoundAtEntity(entityplayer, "mob.endermen.stare", 1.0F, 1.0F);
                 }
 
-                if (field_70826_g++ == 5)
+                if (stareTimer++ == 5)
                 {
-                    field_70826_g = 0;
+                    stareTimer = 0;
                     setScreaming(true);
                     return entityplayer;
                 }
             }
             else
             {
-                field_70826_g = 0;
+                stareTimer = 0;
             }
         }
 
@@ -138,18 +142,18 @@ public class EntityEnderman extends EntityMob
             attackEntityFrom(DamageSource.drown, 1.0F);
         }
 
-        if (field_110194_bu != entityToAttack)
+        if (lastEntityToAttack != entityToAttack)
         {
-            AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
-            attributeinstance.func_111124_b(field_110193_bq);
+            AttributeInstance attributeinstance = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+            attributeinstance.removeModifier(attackingSpeedBoostModifier);
 
             if (entityToAttack != null)
             {
-                attributeinstance.func_111121_a(field_110193_bq);
+                attributeinstance.applyModifier(attackingSpeedBoostModifier);
             }
         }
 
-        field_110194_bu = entityToAttack;
+        lastEntityToAttack = entityToAttack;
 
         if (!worldObj.isRemote && worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
         {
@@ -203,7 +207,7 @@ public class EntityEnderman extends EntityMob
             {
                 entityToAttack = null;
                 setScreaming(false);
-                field_104003_g = false;
+                isAggressive = false;
                 teleportRandomly();
             }
         }
@@ -212,11 +216,11 @@ public class EntityEnderman extends EntityMob
         {
             entityToAttack = null;
             setScreaming(false);
-            field_104003_g = false;
+            isAggressive = false;
             teleportRandomly();
         }
 
-        if (isScreaming() && !field_104003_g && rand.nextInt(100) == 0)
+        if (isScreaming() && !isAggressive && rand.nextInt(100) == 0)
         {
             setScreaming(false);
         }
@@ -455,12 +459,12 @@ public class EntityEnderman extends EntityMob
 
         if ((par1DamageSource instanceof EntityDamageSource) && (par1DamageSource.getEntity() instanceof EntityPlayer))
         {
-            field_104003_g = true;
+            isAggressive = true;
         }
 
         if (par1DamageSource instanceof EntityDamageSourceIndirect)
         {
-            field_104003_g = false;
+            isAggressive = false;
 
             for (int i = 0; i < 64; i++)
             {
@@ -490,8 +494,8 @@ public class EntityEnderman extends EntityMob
 
     static
     {
-        field_110192_bp = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
-        field_110193_bq = (new AttributeModifier(field_110192_bp, "Attacking speed boost", 6.1999998092651367D, 0)).func_111168_a(false);
+        attackingSpeedBoostModifierUUID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
+        attackingSpeedBoostModifier = (new AttributeModifier(attackingSpeedBoostModifierUUID, "Attacking speed boost", 6.1999998092651367D, 0)).setSaved(false);
         carriableBlocks = new boolean[256];
         carriableBlocks[Block.grass.blockID] = true;
         carriableBlocks[Block.dirt.blockID] = true;

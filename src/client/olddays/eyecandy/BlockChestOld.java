@@ -181,7 +181,7 @@ public class BlockChestOld extends BlockChest
         texSide = par1IconRegister.registerIcon("olddays_chest_side");
         texBackLeft = par1IconRegister.registerIcon("olddays_chest_back_left");
         texBackRight = par1IconRegister.registerIcon("olddays_chest_back_right");
-        if (isTrapped == 1){
+        if (chestType == 1){
             texFront = par1IconRegister.registerIcon("olddays_chest_front_trap");
             texFrontLeft = par1IconRegister.registerIcon("olddays_chest_front_left_trap");
             texFrontRight = par1IconRegister.registerIcon("olddays_chest_front_right_trap");

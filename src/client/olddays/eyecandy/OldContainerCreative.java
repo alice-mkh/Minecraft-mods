@@ -27,7 +27,7 @@ class OldContainerCreative extends Container
             Block.blockDiamond,
             Block.blockGold,
             Block.blockIron,
-            Block.field_111034_cE,
+            Block.coalBlock,
             Block.bedrock,
             Block.blockLapis,
             Block.brick,
@@ -124,10 +124,10 @@ class OldContainerCreative extends Container
             Block.oreNetherQuartz,
             Block.blockNetherQuartz,
             Block.stairsNetherQuartz,
-            Block.field_111032_cD,
-            Block.field_111039_cA,
-            Block.field_111038_cB,
-            Block.field_111031_cC
+            Block.hardenedClay,
+            Block.stainedClay,
+            Block.hay,
+            Block.carpet
         };
 
         for (int j2 = 0; j2 < ablock.length; j2++)

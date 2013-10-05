@@ -92,7 +92,7 @@ public class ODGameplay extends OldDaysModule{
             customcake.setStepSound(Block.soundClothFootstep);
             customcake.setUnlocalizedName("cake");
             customcake.disableStats();
-            customcake.func_111022_d("cake");
+            customcake.setTextureName("cake");
             Block.blocksList[Block.cake.blockID] = customcake;
             mod_OldDays.setField(Block.class, null, 111, customcake);//Block: cake
         }catch (Exception exception){

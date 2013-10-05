@@ -10,7 +10,7 @@ public class EntityDiggingFX extends EntityFX
     {
         super(par1World, par2, par4, par6, par8, par10, par12);
         blockInstance = par14Block;
-        func_110125_a(par14Block.getIcon(oldparticles ? 2 : 0, par15));
+        setParticleIcon(par14Block.getIcon(oldparticles ? 2 : 0, par15));
         particleGravity = par14Block.blockParticleGravity;
         particleRed = particleGreen = particleBlue = 0.6F;
         particleScale /= 2.0F;

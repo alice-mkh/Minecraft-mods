@@ -377,7 +377,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider
     }
 
     @Override
-    public void func_104112_b()
+    public void saveExtraData()
     {
     }
 }

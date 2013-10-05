@@ -251,7 +251,7 @@ public class GuiContainerCreativeOld extends InventoryEffectRenderer
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.func_110434_K().func_110577_a(bgResource);
+        mc.getTextureManager().bindTexture(bgResource);
         int j = guiLeft;
         int k = guiTop;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);

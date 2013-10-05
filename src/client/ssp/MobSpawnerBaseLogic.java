@@ -175,7 +175,7 @@ public abstract class MobSpawnerBaseLogic
         if (getRandomMinecart() != null)
         {
             NBTTagCompound nbttagcompound = new NBTTagCompound();
-            par1Entity.addEntityID(nbttagcompound);
+            par1Entity.writeToNBTOptional(nbttagcompound);
             NBTBase nbtbase;
 
             for (Iterator iterator = getRandomMinecart().field_98222_b.getTags().iterator(); iterator.hasNext(); nbttagcompound.setTag(nbtbase.getName(), nbtbase.copy()))
@@ -201,7 +201,7 @@ public abstract class MobSpawnerBaseLogic
                 if (entity1 != null)
                 {
                     NBTTagCompound nbttagcompound2 = new NBTTagCompound();
-                    entity1.addEntityID(nbttagcompound2);
+                    entity1.writeToNBTOptional(nbttagcompound2);
                     NBTBase nbtbase1;
 
                     for (Iterator iterator1 = nbttagcompound1.getTags().iterator(); iterator1.hasNext(); nbttagcompound2.setTag(nbtbase1.getName(), nbtbase1.copy()))
@@ -225,7 +225,7 @@ public abstract class MobSpawnerBaseLogic
         }
         else if ((par1Entity instanceof EntityLivingBase) && par1Entity.worldObj != null)
         {
-            ((EntityLiving)par1Entity).func_110161_a(null);
+            ((EntityLiving)par1Entity).onSpawnWithEgg(null);
             getSpawnerWorld().spawnEntityInWorld(par1Entity);
         }
 

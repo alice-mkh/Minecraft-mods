@@ -5,14 +5,36 @@ import java.util.Random;
 
 public class ComponentMineshaftCorridorOld extends StructureComponent
 {
-    private final boolean hasRails;
-    private final boolean hasSpiders;
+    private boolean hasRails;
+    private boolean hasSpiders;
     private boolean spawnerPlaced;
 
     /**
      * A count of the different sections of this mine. The space between ceiling supports.
      */
     private int sectionCount;
+
+    public ComponentMineshaftCorridorOld()
+    {
+    }
+
+    @Override
+    protected void func_143012_a(NBTTagCompound par1NBTTagCompound)
+    {
+        par1NBTTagCompound.setBoolean("hr", hasRails);
+        par1NBTTagCompound.setBoolean("sc", hasSpiders);
+        par1NBTTagCompound.setBoolean("hps", spawnerPlaced);
+        par1NBTTagCompound.setInteger("Num", sectionCount);
+    }
+
+    @Override
+    protected void func_143011_b(NBTTagCompound par1NBTTagCompound)
+    {
+        hasRails = par1NBTTagCompound.getBoolean("hr");
+        hasSpiders = par1NBTTagCompound.getBoolean("sc");
+        spawnerPlaced = par1NBTTagCompound.getBoolean("hps");
+        sectionCount = par1NBTTagCompound.getInteger("Num");
+    }
 
     public ComponentMineshaftCorridorOld(int par1, Random par2Random, StructureBoundingBox par3StructureBoundingBox, int par4)
     {

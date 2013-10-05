@@ -294,7 +294,7 @@ public class WorldClient extends World
         sendQueue.quitWithPacket(new Packet255KickDisconnect("Quitting"));
     }
 
-    public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart)
+    public IUpdatePlayerListBox getMinecartSoundUpdater(EntityMinecart par1EntityMinecart)
     {
         return new SoundUpdaterMinecart(mc.sndManager, par1EntityMinecart, mc.thePlayer);
     }

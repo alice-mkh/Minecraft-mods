@@ -7,12 +7,28 @@ public class ComponentNetherBridgeCorridor2 extends ComponentNetherBridgePiece
 {
     private boolean field_111020_b;
 
+    public ComponentNetherBridgeCorridor2()
+    {
+    }
+
     public ComponentNetherBridgeCorridor2(int par1, Random par2Random, StructureBoundingBox par3StructureBoundingBox, int par4)
     {
         super(par1);
         coordBaseMode = par4;
         boundingBox = par3StructureBoundingBox;
         field_111020_b = par2Random.nextInt(3) == 0 && !ODNBXlite.noNetherFortressChests();
+    }
+
+    protected void func_143011_b(NBTTagCompound par1NBTTagCompound)
+    {
+        super.func_143011_b(par1NBTTagCompound);
+        field_111020_b = par1NBTTagCompound.getBoolean("Chest");
+    }
+
+    protected void func_143012_a(NBTTagCompound par1NBTTagCompound)
+    {
+        super.func_143012_a(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("Chest", field_111020_b);
     }
 
     /**

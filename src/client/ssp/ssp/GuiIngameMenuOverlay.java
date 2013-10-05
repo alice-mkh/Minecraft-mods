@@ -33,7 +33,7 @@ public class GuiIngameMenuOverlay extends GuiOverlay{
     @Override
     public void initGui(List buttonList, int width, int height){
         updateCounter2 = 0;
-        renameButton(buttonList, 1, I18n.func_135053_a("menu.returnToMenu"));
+        renameButton(buttonList, 1, I18n.getString("menu.returnToMenu"));
         if (!SSPOptions.getShareButton()){
             resizeButton(buttonList, 0, 200, 20);
             hideButton(buttonList, 7, false);

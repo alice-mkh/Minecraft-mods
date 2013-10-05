@@ -41,11 +41,11 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         }
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 10D : 20D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(survivaltest ? 10D : 20D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
     }
 
     protected void entityInit()
@@ -346,16 +346,16 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
         setCurrentItemOrArmor(0, new ItemStack(Item.bow));
     }
 
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
+        par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
 
         if ((worldObj.provider instanceof WorldProviderHell) && getRNG().nextInt(5) > 0)
         {
             tasks.addTask(4, aiAttackOnCollide);
             setSkeletonType(1);
             setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
-            func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(4D);
+            getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(4D);
         }
         else if (!custom){
             setCurrentItemOrArmor(0, new ItemStack(Item.bow));
@@ -367,7 +367,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
             enchantEquipment();
         }
 
-        setCanPickUpLoot(rand.nextFloat() < 0.55F * worldObj.func_110746_b(posX, posY, posZ));
+        setCanPickUpLoot(rand.nextFloat() < 0.55F * worldObj.getLocationTensionFactor(posX, posY, posZ));
 
         if (getCurrentItemOrArmor(4) == null)
         {

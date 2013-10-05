@@ -417,7 +417,7 @@ public class WorldInfo
         par1NBTTagCompound.setLong("Time", totalTime);
         par1NBTTagCompound.setLong("DayTime", worldTime);
         par1NBTTagCompound.setLong("SizeOnDisk", sizeOnDisk);
-        par1NBTTagCompound.setLong("LastPlayed", MinecraftServer.func_130071_aq());
+        par1NBTTagCompound.setLong("LastPlayed", MinecraftServer.getSystemTimeMillis());
         par1NBTTagCompound.setString("LevelName", levelName);
         par1NBTTagCompound.setInteger("version", saveVersion);
         par1NBTTagCompound.setInteger("rainTime", rainTime);

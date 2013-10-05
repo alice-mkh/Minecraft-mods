@@ -25,7 +25,7 @@ public class RenderWolf2 extends RenderWolf
 
         if (par2 == 1 && par1EntityWolf.isTamed())
         {
-            func_110776_a(field_110918_h);
+            bindTexture(field_110918_h);
             float f1 = par1EntityWolf.getBrightness(par3);
             int i = par1EntityWolf.getCollarColor();
             GL11.glColor3f(f1 * EntitySheep.fleeceColorTable[i][0], f1 * EntitySheep.fleeceColorTable[i][1], f1 * EntitySheep.fleeceColorTable[i][2]);

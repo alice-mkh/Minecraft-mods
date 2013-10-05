@@ -8,7 +8,7 @@ import net.minecraft.src.ssp.Mod;
 public class mod_SpawnHuman extends Mod{
     @Override
     public String getMcVersion(){
-        return "1.6.2";
+        return "1.6.4";
     }
 
     @Override

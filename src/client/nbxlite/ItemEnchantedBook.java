@@ -74,9 +74,9 @@ public class ItemEnchantedBook extends Item
     }
 
     /**
-     * Returns the ItemStack of an enchanted version of this item.
+     * Adds an stored enchantment to an enchanted book ItemStack
      */
-    public void getEnchantedItemStack_do(ItemStack par1ItemStack, EnchantmentData par2EnchantmentData)
+    public void addEnchantment(ItemStack par1ItemStack, EnchantmentData par2EnchantmentData)
     {
         NBTTagList nbttaglist = func_92110_g(par1ItemStack);
         boolean flag = true;
@@ -128,7 +128,7 @@ public class ItemEnchantedBook extends Item
     public ItemStack getEnchantedItemStack(EnchantmentData par1EnchantmentData)
     {
         ItemStack itemstack = new ItemStack(this);
-        getEnchantedItemStack_do(itemstack, par1EnchantmentData);
+        addEnchantment(itemstack, par1EnchantmentData);
         return itemstack;
     }
 
@@ -153,7 +153,7 @@ public class ItemEnchantedBook extends Item
         Enchantment enchantment = Enchantment.enchantmentsBookList[par1Random.nextInt(Enchantment.enchantmentsBookList.length)];
         ItemStack itemstack = new ItemStack(itemID, 1, 0);
         int i = MathHelper.getRandomIntegerInRange(par1Random, enchantment.getMinLevel(), enchantment.getMaxLevel());
-        getEnchantedItemStack_do(itemstack, new EnchantmentData(enchantment, i));
+        addEnchantment(itemstack, new EnchantmentData(enchantment, i));
         return new WeightedRandomChestContent(itemstack, par2, par3, par4);
     }
 
@@ -162,7 +162,7 @@ public class ItemEnchantedBook extends Item
         Enchantment enchantment = Enchantment.enchantmentsBookList[par1Random.nextInt(Enchantment.enchantmentsBookList.length)];
         ItemStack itemstack = new ItemStack(itemID, 1, 0);
         int i = MathHelper.getRandomIntegerInRange(par1Random, enchantment.getMinLevel(), enchantment.getMaxLevel());
-        getEnchantedItemStack_do(itemstack, new EnchantmentData(enchantment, i));
+        addEnchantment(itemstack, new EnchantmentData(enchantment, i));
         return itemstack;
     }
 }

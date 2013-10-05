@@ -52,6 +52,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     private int renderDistance;
     private int chatVisibility;
     private boolean chatColours;
+    private long field_143005_bX;
 
     /**
      * The currently in use window ID. Incremented every time a window is opened.
@@ -82,6 +83,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         lastExperience = 0xfa0a1f01;
         initialInvulnerability = 60;
         chatColours = true;
+        field_143005_bX = 0L;
         par4ItemInWorldManager.thisPlayerMP = this;
         theItemInWorldManager = par4ItemInWorldManager;
         renderDistance = par1MinecraftServer.getConfigurationManager().getViewDistance();
@@ -121,7 +123,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (par1NBTTagCompound.hasKey("playerGameType"))
         {
-            if (MinecraftServer.getServer().func_104056_am())
+            if (MinecraftServer.getServer().getForceGamemode())
             {
                 theItemInWorldManager.setGameType(MinecraftServer.getServer().getGameType());
             }
@@ -239,6 +241,11 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                 }
             }
         }
+
+        if (field_143005_bX > 0L && mcServer.func_143007_ar() > 0 && MinecraftServer.getSystemTimeMillis() - field_143005_bX > (long)(mcServer.func_143007_ar() * 1000 * 60))
+        {
+            playerNetServerHandler.kickPlayerFromServer("You have been idle for too long!");
+        }
     }
 
     public void onUpdateEntity()
@@ -264,18 +271,18 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                 }
             }
 
-            if (func_110143_aJ() != lastHealth || lastFoodLevel != foodStats.getFoodLevel() || (foodStats.getSaturationLevel() == 0.0F) != wasHungry)
+            if (getHealth() != lastHealth || lastFoodLevel != foodStats.getFoodLevel() || (foodStats.getSaturationLevel() == 0.0F) != wasHungry)
             {
-                playerNetServerHandler.sendPacketToPlayer(new Packet8UpdateHealth(func_110143_aJ(), foodStats.getFoodLevel(), foodStats.getSaturationLevel()));
-                lastHealth = func_110143_aJ();
+                playerNetServerHandler.sendPacketToPlayer(new Packet8UpdateHealth(getHealth(), foodStats.getFoodLevel(), foodStats.getSaturationLevel()));
+                lastHealth = getHealth();
                 lastFoodLevel = foodStats.getFoodLevel();
                 wasHungry = foodStats.getSaturationLevel() == 0.0F;
             }
 
-            if (func_110143_aJ() + func_110139_bj() != field_130068_bO)
+            if (getHealth() + getAbsorptionAmount() != field_130068_bO)
             {
-                field_130068_bO = func_110143_aJ() + func_110139_bj();
-                Collection collection = getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
+                field_130068_bO = getHealth() + getAbsorptionAmount();
+                Collection collection = getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.health);
                 ScoreObjective scoreobjective;
 
                 for (Iterator iterator = collection.iterator(); iterator.hasNext(); getWorldScoreboard().func_96529_a(getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[]
@@ -297,7 +304,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking player");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Player being ticked");
-            func_85029_a(crashreportcategory);
+            addEntityCrashInfo(crashreportcategory);
             throw new ReportedException(crashreport);
         }
     }
@@ -316,7 +323,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             inventory.dropAllItems();
         }
 
-        Collection collection = worldObj.getScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96642_c);
+        Collection collection = worldObj.getScoreboard().func_96520_a(ScoreObjectiveCriteria.deathCount);
         Score score;
 
         for (Iterator iterator = collection.iterator(); iterator.hasNext(); score.func_96648_a())
@@ -356,7 +363,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         {
             Entity entity = par1DamageSource.getEntity();
 
-            if ((entity instanceof EntityPlayer) && !func_96122_a((EntityPlayer)entity))
+            if ((entity instanceof EntityPlayer) && !canAttackPlayer((EntityPlayer)entity))
             {
                 return false;
             }
@@ -365,7 +372,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             {
                 EntityArrow entityarrow = (EntityArrow)entity;
 
-                if ((entityarrow.shootingEntity instanceof EntityPlayer) && !func_96122_a((EntityPlayer)entityarrow.shootingEntity))
+                if ((entityarrow.shootingEntity instanceof EntityPlayer) && !canAttackPlayer((EntityPlayer)entityarrow.shootingEntity))
                 {
                     return false;
                 }
@@ -375,7 +382,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         return super.attackEntityFrom(par1DamageSource, par2);
     }
 
-    public boolean func_96122_a(EntityPlayer par1EntityPlayer)
+    public boolean canAttackPlayer(EntityPlayer par1EntityPlayer)
     {
         if (!mcServer.isPVPEnabled())
         {
@@ -383,7 +390,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
         else
         {
-            return super.func_96122_a(par1EntityPlayer);
+            return super.canAttackPlayer(par1EntityPlayer);
         }
     }
 
@@ -672,7 +679,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
     }
 
-    public void func_110298_a(EntityHorse par1EntityHorse, IInventory par2IInventory)
+    public void displayGUIHorse(EntityHorse par1EntityHorse, IInventory par2IInventory)
     {
         if (openContainer != inventoryContainer)
         {
@@ -763,7 +770,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         openContainer = inventoryContainer;
     }
 
-    public void func_110430_a(float par1, float par2, boolean par3, boolean par4)
+    public void setEntityActionState(float par1, float par2, boolean par3, boolean par4)
     {
         if (ridingEntity != null)
         {
@@ -825,7 +832,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void addChatMessage(String par1Str)
     {
-        playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.func_111077_e(par1Str)));
+        playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.createFromTranslationKey(par1Str)));
     }
 
     /**
@@ -952,7 +959,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             return true;
         }
 
-        if (mcServer.getConfigurationManager().areCommandsAllowed(username))
+        if (mcServer.getConfigurationManager().isPlayerOpped(username))
         {
             return mcServer.func_110455_j() >= par1;
         }
@@ -1014,5 +1021,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public ChunkCoordinates getPlayerCoordinates()
     {
         return new ChunkCoordinates(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 0.5D), MathHelper.floor_double(posZ));
+    }
+
+    public void func_143004_u()
+    {
+        field_143005_bX = MinecraftServer.getSystemTimeMillis();
     }
 }

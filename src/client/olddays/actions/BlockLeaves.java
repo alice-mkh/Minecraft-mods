@@ -17,7 +17,9 @@ public class BlockLeaves extends BlockLeavesBase
             "leaves_oak_opaque", "leaves_spruce_opaque", "leaves_birch_opaque", "leaves_jungle_opaque"
         }
     };
-    private int field_94394_cP;
+
+    /** 1 for fast graphic. 0 for fancy graphics. used in iconArray. */
+    private int iconType;
     private Icon iconArray[][];
     int adjacentTreeBlocks[];
 
@@ -95,7 +97,9 @@ public class BlockLeaves extends BlockLeavesBase
     }
 
     /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
+     * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a
+     * different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old
+     * metadata
      */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
@@ -363,21 +367,21 @@ public class BlockLeaves extends BlockLeavesBase
     {
         if ((par2 & 3) == 1)
         {
-            return iconArray[field_94394_cP][1];
+            return iconArray[iconType][1];
         }
 
         if ((par2 & 3) == 3)
         {
-            return iconArray[field_94394_cP][3];
+            return iconArray[iconType][3];
         }
 
         if ((par2 & 3) == 2)
         {
-            return iconArray[field_94394_cP][2];
+            return iconArray[iconType][2];
         }
         else
         {
-            return iconArray[field_94394_cP][0];
+            return iconArray[iconType][0];
         }
     }
 
@@ -387,7 +391,7 @@ public class BlockLeaves extends BlockLeavesBase
     public void setGraphicsLevel(boolean par1)
     {
         graphicsLevel = par1;
-        field_94394_cP = par1 ? 0 : 1;
+        iconType = par1 ? 0 : 1;
     }
 
     /**

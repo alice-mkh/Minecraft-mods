@@ -39,7 +39,7 @@ public class RenderGlobal2 extends RenderGlobal{
     public RenderGlobal2(Minecraft mc2){
         super(mc2);
         mc = mc2;
-        renderEngine = mc2.func_110434_K();
+        renderEngine = mc2.getTextureManager();
         floatBuffer = BufferUtils.createFloatBuffer(16);
         starGLCallList = ((Integer)mod_OldDays.getField(RenderGlobal.class, this, 19));
         setStars(oldstars);
@@ -90,7 +90,7 @@ public class RenderGlobal2 extends RenderGlobal{
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.disableStandardItemLighting();
             GL11.glDepthMask(false);
-            renderEngine.func_110577_a(field_110926_k);
+            renderEngine.bindTexture(field_110926_k);
             Tessellator tessellator = Tessellator.instance;
 
             for (int i = 0; i < 6; i++)
@@ -235,7 +235,7 @@ public class RenderGlobal2 extends RenderGlobal{
         GL11.glRotatef(worldObj.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
         if (ODNBXlite.DayNight>0){
             float f15 = 30F;
-            renderEngine.func_110577_a(field_110928_i);
+            renderEngine.bindTexture(field_110928_i);
             tessellator1.startDrawingQuads();
             tessellator1.addVertexWithUV(-f15, 100D, -f15, 0.0D, 0.0D);
             tessellator1.addVertexWithUV(f15, 100D, -f15, 1.0D, 0.0D);
@@ -243,7 +243,7 @@ public class RenderGlobal2 extends RenderGlobal{
             tessellator1.addVertexWithUV(-f15, 100D, f15, 0.0D, 1.0D);
             tessellator1.draw();
             f15 = 20F;
-            renderEngine.func_110577_a(field_110927_h);
+            renderEngine.bindTexture(field_110927_h);
             int i18 = worldObj.getMoonPhase();
             int l = i18 % 4;
             int i1 = (i18 / 4) % 2;
@@ -372,7 +372,7 @@ public class RenderGlobal2 extends RenderGlobal{
         byte byte0 = 32;
         int i = (opaqueFlatClouds ? 1024 : 256) / byte0;
         Tessellator tessellator = Tessellator.instance;
-        renderEngine.func_110577_a(field_110925_j);
+        renderEngine.bindTexture(field_110925_j);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3d = worldObj.getCloudColour(par1);
@@ -456,7 +456,7 @@ public class RenderGlobal2 extends RenderGlobal{
         d2 -= j * 2048;
         if (texClouds){
             OpenGlHelper.setActiveTexture(33985);
-            renderEngine.func_110577_a(fluffTexture);
+            renderEngine.bindTexture(fluffTexture);
             GL11.glTexGeni(8192, 9472, 9217);
             GL11.glTexGen(8192, 9473, a(1.0F, 0.0F, 0.0F, 0.0F));
             GL11.glTexGeni(8193, 9472, 9217);
@@ -472,7 +472,7 @@ public class RenderGlobal2 extends RenderGlobal{
             OpenGlHelper.setActiveTexture(33984);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
-        renderEngine.func_110577_a(field_110925_j);
+        renderEngine.bindTexture(field_110925_j);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3d = worldObj.getCloudColour(par1);

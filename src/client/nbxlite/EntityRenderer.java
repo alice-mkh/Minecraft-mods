@@ -26,8 +26,8 @@ public class EntityRenderer
 
     public float[] lightTable;
 
-    private static final ResourceLocation field_110924_q = new ResourceLocation("textures/environment/rain.png");
-    private static final ResourceLocation field_110923_r = new ResourceLocation("textures/environment/snow.png");
+    private static final ResourceLocation locationRainPng = new ResourceLocation("textures/environment/rain.png");
+    private static final ResourceLocation locationSnowPng = new ResourceLocation("textures/environment/snow.png");
     public static boolean anaglyphEnable;
 
     /** Anaglyph field (0=R, 1=GB) */
@@ -90,7 +90,7 @@ public class EntityRenderer
      */
     private final DynamicTexture lightmapTexture = new DynamicTexture(16, 16);
     private final int lightmapColors[];
-    private final ResourceLocation field_110922_T;
+    private final ResourceLocation locationLightMap;
 
     /** FOV modifier hand */
     private float fovModifierHand;
@@ -177,8 +177,8 @@ public class EntityRenderer
         fogColorBuffer = GLAllocation.createDirectFloatBuffer(16);
         mc = par1Minecraft;
         itemRenderer = new ItemRenderer(par1Minecraft);
-        field_110922_T = par1Minecraft.func_110434_K().func_110578_a("lightMap", lightmapTexture);
-        lightmapColors = lightmapTexture.func_110565_c();
+        locationLightMap = par1Minecraft.getTextureManager().getDynamicTextureLocation("lightMap", lightmapTexture);
+        lightmapColors = lightmapTexture.getTextureData();
         calculateLightTable();
     }
 
@@ -396,7 +396,7 @@ public class EntityRenderer
             f *= fovModifierHandPrev + (fovModifierHand - fovModifierHandPrev) * par1;
         }
 
-        if (entityplayer.func_110143_aJ() <= 0.0F)
+        if (entityplayer.getHealth() <= 0.0F)
         {
             float f1 = (float)entityplayer.deathTime + par1;
             f /= (1.0F - 500F / (f1 + 500F)) * 2.0F + 1.0F;
@@ -417,7 +417,7 @@ public class EntityRenderer
         EntityLivingBase entitylivingbase = mc.renderViewEntity;
         float f = (float)entitylivingbase.hurtTime - par1;
 
-        if (entitylivingbase.func_110143_aJ() <= 0.0F)
+        if (entitylivingbase.getHealth() <= 0.0F)
         {
             float f1 = (float)entitylivingbase.deathTime + par1;
             GL11.glRotatef(40F - 8000F / (f1 + 200F), 0.0F, 0.0F, 1.0F);
@@ -770,7 +770,7 @@ public class EntityRenderer
         GL11.glScalef(f, f, f);
         GL11.glTranslatef(8F, 8F, 8F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        mc.func_110434_K().func_110577_a(field_110922_T);
+        mc.getTextureManager().bindTexture(locationLightMap);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -880,7 +880,7 @@ public class EntityRenderer
 
         }
 
-        lightmapTexture.func_110564_a();
+        lightmapTexture.updateDynamicTexture();
         lightmapUpdateNeeded = false;
     }
 
@@ -890,7 +890,7 @@ public class EntityRenderer
             for (int i = 0; i < 256; i++){
                 lightmapColors[i] = 0xffffffff;
             }
-            lightmapTexture.func_110564_a();
+            lightmapTexture.updateDynamicTexture();
             lightmapUpdateNeeded = false;
             return;
         }
@@ -1030,7 +1030,7 @@ public class EntityRenderer
             lightmapColors[i] = c << 24 | j << 16 | k << 8 | l;
         }
 
-        lightmapTexture.func_110564_a();
+        lightmapTexture.updateDynamicTexture();
         lightmapUpdateNeeded = false;
     }
 
@@ -1284,7 +1284,7 @@ public class EntityRenderer
             mc.mcProfiler.endStartSection("prepareterrain");
             setupFog(0, par1);
             GL11.glEnable(GL11.GL_FOG);
-            mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+            mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
             RenderHelper.disableStandardItemLighting();
             mc.mcProfiler.endStartSection("terrain");
             renderglobal.sortAndRender(entitylivingbase, 0, par1);
@@ -1324,7 +1324,7 @@ public class EntityRenderer
             setupFog(0, par1);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_CULL_FACE);
-            mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+            mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
             if (mc.gameSettings.fancyGraphics)
             {
@@ -1557,7 +1557,7 @@ public class EntityRenderer
         GL11.glEnable(3042 /*GL_BLEND*/);
         GL11.glBlendFunc(770, 771);
         GL11.glAlphaFunc(516, 0.01F);
-        mc.func_110434_K().func_110577_a(new ResourceLocation("textures/environment/snow.png"));
+        mc.getTextureManager().bindTexture(new ResourceLocation("textures/environment/snow.png"));
         double d = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)f;
         double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)f;
         double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)f;
@@ -1612,7 +1612,7 @@ public class EntityRenderer
                         tessellator.draw();
                     }
                     byte0 = 1;
-                    mc.func_110434_K().func_110577_a(new ResourceLocation("textures/environment/snow.png"));
+                    mc.getTextureManager().bindTexture(new ResourceLocation("textures/environment/snow.png"));
                     tessellator.startDrawingQuads();
                 }
                 float f8 = ((float)(rendererUpdateCount & 0x1ff) + f) / 512F;
@@ -1663,7 +1663,7 @@ public class EntityRenderer
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        mc.func_110434_K().func_110577_a(new ResourceLocation("textures/environment/snow.png"));
+        mc.getTextureManager().bindTexture(new ResourceLocation("textures/environment/snow.png"));
         double var8 = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
         double var10 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
         double var12 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
@@ -1786,7 +1786,7 @@ public class EntityRenderer
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
-        mc.func_110434_K().func_110577_a(field_110923_r);
+        mc.getTextureManager().bindTexture(locationSnowPng);
         double d = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)par1;
         double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)par1;
         double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)par1;
@@ -1864,7 +1864,7 @@ public class EntityRenderer
                         }
 
                         byte0 = 0;
-                        mc.func_110434_K().func_110577_a(field_110924_q);
+                        mc.getTextureManager().bindTexture(locationRainPng);
                         tessellator.startDrawingQuads();
                     }
 
@@ -1894,7 +1894,7 @@ public class EntityRenderer
                     }
 
                     byte0 = 1;
-                    mc.func_110434_K().func_110577_a(new ResourceLocation("textures/environment/snow.png"));
+                    mc.getTextureManager().bindTexture(new ResourceLocation("textures/environment/snow.png"));
                     tessellator.startDrawingQuads();
                 }
 

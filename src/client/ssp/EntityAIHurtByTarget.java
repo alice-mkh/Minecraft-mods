@@ -36,7 +36,7 @@ public class EntityAIHurtByTarget extends EntityAITarget
 
         if (entityCallsForHelp)
         {
-            double d = func_111175_f();
+            double d = getTargetDistance();
             List list = taskOwner.worldObj.getEntitiesWithinAABB(taskOwner.getClass(), AxisAlignedBB.getAABBPool().getAABB(taskOwner.posX, taskOwner.posY, taskOwner.posZ, taskOwner.posX + 1.0D, taskOwner.posY + 1.0D, taskOwner.posZ + 1.0D).expand(d, pre15 ? 4D : 10D, d));
             Iterator iterator = list.iterator();
 
@@ -49,7 +49,7 @@ public class EntityAIHurtByTarget extends EntityAITarget
 
                 EntityCreature entitycreature = (EntityCreature)iterator.next();
 
-                if (taskOwner != entitycreature && entitycreature.getAttackTarget() == null && !entitycreature.func_142014_c(taskOwner.getAITarget()))
+                if (taskOwner != entitycreature && entitycreature.getAttackTarget() == null && !entitycreature.isOnSameTeam(taskOwner.getAITarget()))
                 {
                     entitycreature.setAttackTarget(taskOwner.getAITarget());
                 }

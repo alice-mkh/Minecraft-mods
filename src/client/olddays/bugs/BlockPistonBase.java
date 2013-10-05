@@ -78,7 +78,7 @@ public class BlockPistonBase extends Block
         }
     }
 
-    public static Icon func_94496_b(String par0Str)
+    public static Icon getPistonBaseIcon(String par0Str)
     {
         if (par0Str == "piston_side")
         {

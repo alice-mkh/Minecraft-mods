@@ -73,7 +73,7 @@ public class RenderEnderman2 extends RenderLiving
             }
             GL11.glColor4f(ff, ff, ff, 1.0F);
             GL11.glColor4f(ff, ff, ff, 1.0F);
-            func_110776_a(TextureMap.field_110575_b);
+            bindTexture(TextureMap.locationBlocksTexture);
             renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), ff);
             GL11.glPopMatrix();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -90,7 +90,7 @@ public class RenderEnderman2 extends RenderLiving
             return -1;
         }
 
-        func_110776_a(greeneyes ? customEyes : field_110840_a);
+        bindTexture(greeneyes ? customEyes : field_110840_a);
         float f = 1.0F;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -141,7 +141,7 @@ public class RenderEnderman2 extends RenderLiving
         renderEnderman((EntityEnderman)par1EntityLivingBase, par2, par4, par6, par8, par9);
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110838_a((EntityEnderman)par1Entity);
     }

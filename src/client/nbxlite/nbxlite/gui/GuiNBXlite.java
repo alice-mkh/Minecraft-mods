@@ -46,7 +46,7 @@ public class GuiNBXlite extends GuiScreen{
     public void initGui()
     {
         buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_OldDays.lang.get("continue")));
-        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.func_135053_a("gui.cancel")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.getString("gui.cancel")));
         genButtons = new GuiButton[GeneratorList.genlength + 1];
         for (int i = 0; i < genButtons.length; i++){
             genButtons[i] = new GuiButton(2 + i, width / 2 - 170, height / 6 + ((i + 1) * 21), 100, 20, "");

@@ -27,7 +27,7 @@ public abstract class RendererLivingEntity extends Render
             bobStrength = 1F;
         }else{
             GL11.glTranslatef(0.0F, -24F * f5 - 0.0078125F, 0.0F);
-            float f7 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbYaw * (1.0F - par9);
+            float f7 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbSwingAmount * (1.0F - par9);
             if (par1EntityLivingBase.isChild()){
                 f7 *= 3F;
             }
@@ -40,7 +40,7 @@ public abstract class RendererLivingEntity extends Render
         return f7;
     }
 
-    private static final ResourceLocation field_110814_a = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+    private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     protected ModelBase mainModel;
 
     /** The model to be used during the render passes. */
@@ -77,7 +77,7 @@ public abstract class RendererLivingEntity extends Render
         return par1 + par3 * f;
     }
 
-    public void func_130000_a(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
+    public void doRenderLiving(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -142,7 +142,7 @@ public abstract class RendererLivingEntity extends Render
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1F, -1F, 1.0F);
             preRenderCallback(par1EntityLivingBase, par9);
-            float f6 = par1EntityLivingBase.prevLimbYaw + (par1EntityLivingBase.limbYaw - par1EntityLivingBase.prevLimbYaw) * par9;
+            float f6 = par1EntityLivingBase.prevLimbSwingAmount + (par1EntityLivingBase.limbSwingAmount - par1EntityLivingBase.prevLimbSwingAmount) * par9;
             float f7 = setBobbing(par1EntityLivingBase, f5, par9);
 
             if (f6 > 1.0F)
@@ -175,7 +175,7 @@ public abstract class RendererLivingEntity extends Render
                 if ((j & 0xf) == 15)
                 {
                     float f9 = (float)par1EntityLivingBase.ticksExisted + par9;
-                    func_110776_a(field_110814_a);
+                    bindTexture(RES_ITEM_GLINT);
                     GL11.glEnable(GL11.GL_BLEND);
                     float f11 = 0.5F;
                     GL11.glColor4f(f11, f11, f11, 1.0F);
@@ -289,13 +289,13 @@ public abstract class RendererLivingEntity extends Render
      */
     protected void renderModel(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        func_110777_b(par1EntityLivingBase);
+        bindEntityTexture(par1EntityLivingBase);
 
         if (!par1EntityLivingBase.isInvisible())
         {
             mainModel.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
         }
-        else if (!par1EntityLivingBase.func_98034_c(Minecraft.getMinecraft().thePlayer))
+        else if (!par1EntityLivingBase.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer))
         {
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
@@ -339,10 +339,15 @@ public abstract class RendererLivingEntity extends Render
 
             GL11.glRotatef(f * getDeathMaxRotation(par1EntityLivingBase), 0.0F, 0.0F, 1.0F);
         }
-        else if ((par1EntityLivingBase.getEntityName().equals("Dinnerbone") || par1EntityLivingBase.getEntityName().equals("Grumm")) && (!(par1EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par1EntityLivingBase).getHideCape()))
+        else
         {
-            GL11.glTranslatef(0.0F, par1EntityLivingBase.height + 0.1F, 0.0F);
-            GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+            String s = EnumChatFormatting.func_110646_a(par1EntityLivingBase.getEntityName());
+
+            if ((s.equals("Dinnerbone") || s.equals("Grumm")) && (!(par1EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par1EntityLivingBase).getHideCape()))
+            {
+                GL11.glTranslatef(0.0F, par1EntityLivingBase.height + 0.1F, 0.0F);
+                GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+            }
         }
     }
 
@@ -517,7 +522,7 @@ public abstract class RendererLivingEntity extends Render
 
     protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase)
     {
-        return Minecraft.isGuiEnabled() && par1EntityLivingBase != renderManager.livingPlayer && !par1EntityLivingBase.func_98034_c(Minecraft.getMinecraft().thePlayer) && par1EntityLivingBase.riddenByEntity == null;
+        return Minecraft.isGuiEnabled() && par1EntityLivingBase != renderManager.livingPlayer && !par1EntityLivingBase.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer) && par1EntityLivingBase.riddenByEntity == null;
     }
 
     protected void func_96449_a(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, String par8Str, float par9, double par10)
@@ -597,6 +602,6 @@ public abstract class RendererLivingEntity extends Render
      */
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        func_130000_a((EntityLivingBase)par1Entity, par2, par4, par6, par8, par9);
+        doRenderLiving((EntityLivingBase)par1Entity, par2, par4, par6, par8, par9);
     }
 }

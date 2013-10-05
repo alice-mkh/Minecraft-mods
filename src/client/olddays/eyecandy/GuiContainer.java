@@ -190,8 +190,8 @@ public abstract class GuiContainer extends GuiScreen
         GL11.glTranslatef(0.0F, 0.0F, 32F);
         zLevel = 200F;
         itemRenderer.zLevel = 200F;
-        itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.func_110434_K(), par1ItemStack, par2, par3);
-        itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.func_110434_K(), par1ItemStack, par2, par3 - (draggedStack != null ? 8 : 0), par4Str);
+        itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.getTextureManager(), par1ItemStack, par2, par3);
+        itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.getTextureManager(), par1ItemStack, par2, par3 - (draggedStack != null ? 8 : 0), par4Str);
         zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
@@ -390,7 +390,7 @@ public abstract class GuiContainer extends GuiScreen
             if (icon != null)
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                mc.func_110434_K().func_110577_a(TextureMap.field_110576_c);
+                mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
                 drawTexturedModelRectFromIcon(i, j, icon, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 flag1 = true;
@@ -405,8 +405,8 @@ public abstract class GuiContainer extends GuiScreen
             }
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.func_110434_K(), itemstack, i, j);
-            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.func_110434_K(), itemstack, i, j, s);
+            itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.getTextureManager(), itemstack, i, j);
+            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.getTextureManager(), itemstack, i, j, s);
         }
 
         itemRenderer.zLevel = 0.0F;

@@ -9,7 +9,7 @@ public class RenderItem extends Render
     public static boolean oldrotation = false;
     public static boolean oldrendering = false;
 
-    private static final ResourceLocation field_110798_h = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+    private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     private RenderBlocks itemRenderBlocks;
 
     /** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
@@ -34,7 +34,7 @@ public class RenderItem extends Render
      */
     public void doRenderItem(EntityItem par1EntityItem, double par2, double par4, double par6, float par8, float par9)
     {
-        func_110777_b(par1EntityItem);
+        bindEntityTexture(par1EntityItem);
         random.setSeed(187L);
         ItemStack itemstack = par1EntityItem.getEntityItem();
 
@@ -178,7 +178,7 @@ public class RenderItem extends Render
 
     protected ResourceLocation func_110796_a(EntityItem par1EntityItem)
     {
-        return renderManager.renderEngine.func_130087_a(par1EntityItem.getEntityItem().getItemSpriteNumber());
+        return renderManager.renderEngine.getResourceLocation(par1EntityItem.getEntityItem().getItemSpriteNumber());
     }
 
     /**
@@ -190,9 +190,9 @@ public class RenderItem extends Render
 
         if (par2Icon == null)
         {
-            TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
-            ResourceLocation resourcelocation = texturemanager.func_130087_a(par1EntityItem.getEntityItem().getItemSpriteNumber());
-            par2Icon = ((TextureMap)texturemanager.func_110581_b(resourcelocation)).func_110572_b("missingno");
+            TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+            ResourceLocation resourcelocation = texturemanager.getResourceLocation(par1EntityItem.getEntityItem().getItemSpriteNumber());
+            par2Icon = ((TextureMap)texturemanager.getTexture(resourcelocation)).getAtlasSprite("missingno");
         }
 
         float f = par2Icon.getMinU();
@@ -246,21 +246,21 @@ public class RenderItem extends Render
 
                 if (itemstack.getItemSpriteNumber() == 0 && Block.blocksList[itemstack.itemID] != null)
                 {
-                    func_110776_a(TextureMap.field_110575_b);
+                    bindTexture(TextureMap.locationBlocksTexture);
                 }
                 else
                 {
-                    func_110776_a(TextureMap.field_110576_c);
+                    bindTexture(TextureMap.locationItemsTexture);
                 }
 
                 GL11.glColor4f(par5, par6, par7, 1.0F);
-                ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, par2Icon.getOriginX(), par2Icon.getOriginY(), f7);
+                ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, par2Icon.getIconWidth(), par2Icon.getIconHeight(), f7);
 
                 if (itemstack.hasEffect())
                 {
                     GL11.glDepthFunc(GL11.GL_EQUAL);
                     GL11.glDisable(GL11.GL_LIGHTING);
-                    renderManager.renderEngine.func_110577_a(field_110798_h);
+                    renderManager.renderEngine.bindTexture(RES_ITEM_GLINT);
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
                     float f12 = 0.76F;
@@ -333,7 +333,7 @@ public class RenderItem extends Render
 
         if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[i].getRenderType()))
         {
-            par2TextureManager.func_110577_a(TextureMap.field_110575_b);
+            par2TextureManager.bindTexture(TextureMap.locationBlocksTexture);
             Block block = Block.blocksList[i];
             GL11.glPushMatrix();
             GL11.glTranslatef(par4 - 2, par5 + 3, -3F + zLevel);
@@ -367,7 +367,7 @@ public class RenderItem extends Render
         else if (Item.itemsList[i].requiresMultipleRenderPasses())
         {
             GL11.glDisable(GL11.GL_LIGHTING);
-            par2TextureManager.func_110577_a(TextureMap.field_110576_c);
+            par2TextureManager.bindTexture(TextureMap.locationItemsTexture);
 
             for (int k = 0; k <= 1; k++)
             {
@@ -390,12 +390,12 @@ public class RenderItem extends Render
         else
         {
             GL11.glDisable(GL11.GL_LIGHTING);
-            ResourceLocation resourcelocation = par2TextureManager.func_130087_a(par3ItemStack.getItemSpriteNumber());
-            par2TextureManager.func_110577_a(resourcelocation);
+            ResourceLocation resourcelocation = par2TextureManager.getResourceLocation(par3ItemStack.getItemSpriteNumber());
+            par2TextureManager.bindTexture(resourcelocation);
 
             if (obj == null)
             {
-                obj = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(resourcelocation)).func_110572_b("missingno");
+                obj = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(resourcelocation)).getAtlasSprite("missingno");
             }
 
             int i1 = Item.itemsList[i].getColorFromItemStack(par3ItemStack, 0);
@@ -432,7 +432,7 @@ public class RenderItem extends Render
             GL11.glDepthFunc(GL11.GL_GREATER);
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDepthMask(false);
-            par2TextureManager.func_110577_a(field_110798_h);
+            par2TextureManager.bindTexture(RES_ITEM_GLINT);
             zLevel -= 50F;
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
@@ -553,7 +553,10 @@ public class RenderItem extends Render
         tessellator.draw();
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    /**
+     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+     */
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110796_a((EntityItem)par1Entity);
     }

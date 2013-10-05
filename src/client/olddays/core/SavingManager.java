@@ -166,7 +166,7 @@ public class SavingManager{
                 }else if (name.equals("Vanilla")){
                     mode = 2;
                 }else{
-                    InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("olddays/presets/"+name)).func_110527_b();
+                    InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("olddays/presets/"+name)).getInputStream();
                     properties.load(stream);
                 }
             }
@@ -239,7 +239,7 @@ public class SavingManager{
         ArrayList<String> presets = new ArrayList<String>();
         ResourceLocation resource = new ResourceLocation("olddays/presets/list");
         try{
-            InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(resource).func_110527_b();
+            InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(resource).getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             while(true){
                 String str = reader.readLine();

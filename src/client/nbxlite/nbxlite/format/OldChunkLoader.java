@@ -179,7 +179,7 @@ public class OldChunkLoader
                 Entity entity = (Entity)iterator.next();
                 chunk2.hasEntities = true;
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                if (entity.addEntityID(nbttagcompound1))
+                if (entity.writeToNBTOptional(nbttagcompound1))
                 {
                     nbttaglist.appendTag(nbttagcompound1);
                 }

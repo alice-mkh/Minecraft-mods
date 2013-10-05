@@ -147,7 +147,7 @@ public class IsometricScreenshotRenderer{
                     mc.entityRenderer.renderRainSnowPublic();
                     RenderHelper.disableStandardItemLighting();
                     renderGlobal.renderSky(0.0F);
-                    mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+                    mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
                     if (mc.gameSettings.ambientOcclusion != 0){
                         GL11.glShadeModel(GL11.GL_SMOOTH);
                     }
@@ -172,14 +172,14 @@ public class IsometricScreenshotRenderer{
                     if (mc.gameSettings.ambientOcclusion != 0){
                         GL11.glShadeModel(GL11.GL_SMOOTH);
                     }
-                    mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+                    mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
                     if (finite){
                         GL11.glTranslated(-width / 2.0D, -height / 2.0D, -length / 2.0D);
                     }
                     if (finite && worldObj.provider.dimensionId == 0){
                         GL11.glColorMask(true, true, true, true);
                         net.minecraft.src.nbxlite.RenderBounds.renderBounds(mc, 0.0F, ODNBXlite.SurrGroundHeight >= 0);
-                        mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+                        mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
                         GL11.glColorMask(false, false, false, false);
                     }
                     int i11 = renderGlobal.sortAndRender(mc.renderViewEntity, 1, 0.0F);

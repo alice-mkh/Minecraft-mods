@@ -8,12 +8,12 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 {
     public static boolean hidemodel = false;
 
-    private static final ResourceLocation field_110635_a = new ResourceLocation("textures/entity/chest/trapped_double.png");
-    private static final ResourceLocation field_110634_c = new ResourceLocation("textures/entity/chest/christmas_double.png");
-    private static final ResourceLocation field_110632_d = new ResourceLocation("textures/entity/chest/normal_double.png");
-    private static final ResourceLocation field_110633_e = new ResourceLocation("textures/entity/chest/trapped.png");
-    private static final ResourceLocation field_110630_f = new ResourceLocation("textures/entity/chest/christmas.png");
-    private static final ResourceLocation field_110631_g = new ResourceLocation("textures/entity/chest/normal.png");
+    private static final ResourceLocation RES_TRAPPED_DOUBLE = new ResourceLocation("textures/entity/chest/trapped_double.png");
+    private static final ResourceLocation RES_CHRISTMAS_DOUBLE = new ResourceLocation("textures/entity/chest/christmas_double.png");
+    private static final ResourceLocation RES_NORMAL_DOUBLE = new ResourceLocation("textures/entity/chest/normal_double.png");
+    private static final ResourceLocation RES_TRAPPED_SINGLE = new ResourceLocation("textures/entity/chest/trapped.png");
+    private static final ResourceLocation RES_CHRISTMAS_SINGLE = new ResourceLocation("textures/entity/chest/christmas.png");
+    private static final ResourceLocation RES_NORMAL_SINGLE = new ResourceLocation("textures/entity/chest/normal.png");
 
     /** The normal small chest model. */
     private ModelChest chestModel;
@@ -75,34 +75,34 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
         {
             modelchest = largeChestModel;
 
-            if (par1TileEntityChest.func_98041_l() == 1)
+            if (par1TileEntityChest.getChestType() == 1)
             {
-                func_110628_a(field_110635_a);
+                bindTexture(RES_TRAPPED_DOUBLE);
             }
             else if (isChristmas)
             {
-                func_110628_a(field_110634_c);
+                bindTexture(RES_CHRISTMAS_DOUBLE);
             }
             else
             {
-                func_110628_a(field_110632_d);
+                bindTexture(RES_NORMAL_DOUBLE);
             }
         }
         else
         {
             modelchest = chestModel;
 
-            if (par1TileEntityChest.func_98041_l() == 1)
+            if (par1TileEntityChest.getChestType() == 1)
             {
-                func_110628_a(field_110633_e);
+                bindTexture(RES_TRAPPED_SINGLE);
             }
             else if (isChristmas)
             {
-                func_110628_a(field_110630_f);
+                bindTexture(RES_CHRISTMAS_SINGLE);
             }
             else
             {
-                func_110628_a(field_110631_g);
+                bindTexture(RES_NORMAL_SINGLE);
             }
         }
 

@@ -79,7 +79,7 @@ public class GuiCreateWorld extends GuiScreen
         generatorOptionsToUse = "";
         parentGuiScreen = par1GuiScreen;
         seed = "";
-        localizedNewWorldText = I18n.func_135053_a("selectWorld.newWorld");
+        localizedNewWorldText = I18n.getString("selectWorld.newWorld");
     }
 
     /**
@@ -98,19 +98,19 @@ public class GuiCreateWorld extends GuiScreen
     {
         Keyboard.enableRepeatEvents(true);
         buttonList.clear();
-        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, I18n.func_135053_a("selectWorld.create")));
-        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.func_135053_a("gui.cancel")));
-        buttonList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, I18n.func_135053_a("selectWorld.gameMode")));
-        buttonList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, I18n.func_135053_a("selectWorld.moreWorldOptions")));
-        buttonList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, I18n.func_135053_a("selectWorld.mapFeatures")));
+        buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, I18n.getString("selectWorld.create")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.getString("gui.cancel")));
+        buttonList.add(buttonGameMode = new GuiButton(2, width / 2 - 75, 115, 150, 20, I18n.getString("selectWorld.gameMode")));
+        buttonList.add(moreWorldOptions = new GuiButton(3, width / 2 - 75, 187, 150, 20, I18n.getString("selectWorld.moreWorldOptions")));
+        buttonList.add(buttonGenerateStructures = new GuiButton(4, width / 2 - 155, 100, 150, 20, I18n.getString("selectWorld.mapFeatures")));
         buttonGenerateStructures.drawButton = false;
-        buttonList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, I18n.func_135053_a("selectWorld.bonusItems")));
+        buttonList.add(buttonBonusItems = new GuiButton(7, width / 2 + 5, 151, 150, 20, I18n.getString("selectWorld.bonusItems")));
         buttonBonusItems.drawButton = false;
-        buttonList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, I18n.func_135053_a("selectWorld.mapType")));
+        buttonList.add(buttonWorldType = new GuiButton(5, width / 2 + 5, 100, 150, 20, I18n.getString("selectWorld.mapType")));
         buttonWorldType.drawButton = false;
-        buttonList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, I18n.func_135053_a("selectWorld.allowCommands")));
+        buttonList.add(buttonAllowCommands = new GuiButton(6, width / 2 - 155, 151, 150, 20, I18n.getString("selectWorld.allowCommands")));
         buttonAllowCommands.drawButton = false;
-        buttonList.add(buttonCustomize = new GuiButton(8, width / 2 + 5, 120, 150, 20, I18n.func_135053_a("selectWorld.customizeType")));
+        buttonList.add(buttonCustomize = new GuiButton(8, width / 2 + 5, 120, 150, 20, I18n.getString("selectWorld.customizeType")));
         buttonCustomize.drawButton = false;
         textboxWorldName = new GuiTextField(fontRenderer, width / 2 - 100, 60, 200, 20);
         textboxWorldName.setFocused(true);
@@ -148,41 +148,41 @@ public class GuiCreateWorld extends GuiScreen
 
     private void updateButtonText()
     {
-        this.buttonGameMode.displayString = I18n.func_135053_a("selectWorld.gameMode") + " " + I18n.func_135053_a("selectWorld.gameMode." + this.gameMode);
-        this.gameModeDescriptionLine1 = I18n.func_135053_a("selectWorld.gameMode." + this.gameMode + ".line1");
-        this.gameModeDescriptionLine2 = I18n.func_135053_a("selectWorld.gameMode." + this.gameMode + ".line2");
-        this.buttonGenerateStructures.displayString = I18n.func_135053_a("selectWorld.mapFeatures") + " ";
+        this.buttonGameMode.displayString = I18n.getString("selectWorld.gameMode") + " " + I18n.getString("selectWorld.gameMode." + this.gameMode);
+        this.gameModeDescriptionLine1 = I18n.getString("selectWorld.gameMode." + this.gameMode + ".line1");
+        this.gameModeDescriptionLine2 = I18n.getString("selectWorld.gameMode." + this.gameMode + ".line2");
+        this.buttonGenerateStructures.displayString = I18n.getString("selectWorld.mapFeatures") + " ";
 
         if (this.generateStructures)
         {
-            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + I18n.func_135053_a("options.on");
+            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + I18n.getString("options.on");
         }
         else
         {
-            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + I18n.func_135053_a("options.off");
+            this.buttonGenerateStructures.displayString = this.buttonGenerateStructures.displayString + I18n.getString("options.off");
         }
 
-        this.buttonBonusItems.displayString = I18n.func_135053_a("selectWorld.bonusItems") + " ";
+        this.buttonBonusItems.displayString = I18n.getString("selectWorld.bonusItems") + " ";
 
         if (this.bonusItems && !this.isHardcore)
         {
-            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + I18n.func_135053_a("options.on");
+            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + I18n.getString("options.on");
         }
         else
         {
-            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + I18n.func_135053_a("options.off");
+            this.buttonBonusItems.displayString = this.buttonBonusItems.displayString + I18n.getString("options.off");
         }
 
-        this.buttonWorldType.displayString = I18n.func_135053_a("selectWorld.mapType") + " " + I18n.func_135053_a(WorldType.worldTypes[this.worldTypeId].getTranslateName());
-        this.buttonAllowCommands.displayString = I18n.func_135053_a("selectWorld.allowCommands") + " ";
+        this.buttonWorldType.displayString = I18n.getString("selectWorld.mapType") + " " + I18n.getString(WorldType.worldTypes[this.worldTypeId].getTranslateName());
+        this.buttonAllowCommands.displayString = I18n.getString("selectWorld.allowCommands") + " ";
 
         if (this.commandsAllowed && !this.isHardcore)
         {
-            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + I18n.func_135053_a("options.on");
+            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + I18n.getString("options.on");
         }
         else
         {
-            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + I18n.func_135053_a("options.off");
+            this.buttonAllowCommands.displayString = this.buttonAllowCommands.displayString + I18n.getString("options.off");
         }
     }
 
@@ -401,11 +401,11 @@ public class GuiCreateWorld extends GuiScreen
 
         if (moreOptions)
         {
-            moreWorldOptions.displayString = I18n.func_135053_a("gui.done");
+            moreWorldOptions.displayString = I18n.getString("gui.done");
         }
         else
         {
-            moreWorldOptions.displayString = I18n.func_135053_a("selectWorld.moreWorldOptions");
+            moreWorldOptions.displayString = I18n.getString("selectWorld.moreWorldOptions");
         }
     }
 
@@ -457,20 +457,20 @@ public class GuiCreateWorld extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         drawDefaultBackground();
-        drawCenteredString(fontRenderer, I18n.func_135053_a("selectWorld.create"), width / 2, 20, 0xffffff);
+        drawCenteredString(fontRenderer, I18n.getString("selectWorld.create"), width / 2, 20, 0xffffff);
 
         if (moreOptions)
         {
-            drawString(fontRenderer, I18n.func_135053_a("selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
-            drawString(fontRenderer, I18n.func_135053_a("selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
-            drawString(fontRenderer, I18n.func_135053_a("selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
-            drawString(fontRenderer, I18n.func_135053_a("selectWorld.allowCommands.info"), width / 2 - 150, 172, 0xa0a0a0);
+            drawString(fontRenderer, I18n.getString("selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
+            drawString(fontRenderer, I18n.getString("selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
+            drawString(fontRenderer, I18n.getString("selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
+            drawString(fontRenderer, I18n.getString("selectWorld.allowCommands.info"), width / 2 - 150, 172, 0xa0a0a0);
             textboxSeed.drawTextBox();
         }
         else
         {
-            drawString(fontRenderer, I18n.func_135053_a("selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
-            drawString(fontRenderer, (new StringBuilder()).append(I18n.func_135053_a("selectWorld.resultFolder")).append(" ").append(folderName).toString(), width / 2 - 100, 85, 0xa0a0a0);
+            drawString(fontRenderer, I18n.getString("selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
+            drawString(fontRenderer, (new StringBuilder()).append(I18n.getString("selectWorld.resultFolder")).append(" ").append(folderName).toString(), width / 2 - 100, 85, 0xa0a0a0);
             textboxWorldName.drawTextBox();
             drawString(fontRenderer, gameModeDescriptionLine1, width / 2 - 100, 137, 0xa0a0a0);
             drawString(fontRenderer, gameModeDescriptionLine2, width / 2 - 100, 149, 0xa0a0a0);
@@ -481,7 +481,7 @@ public class GuiCreateWorld extends GuiScreen
 
     public void func_82286_a(WorldInfo par1WorldInfo)
     {
-        localizedNewWorldText = I18n.func_135052_a("selectWorld.newWorld.copyOf", new Object[]
+        localizedNewWorldText = I18n.getStringParams("selectWorld.newWorld.copyOf", new Object[]
                 {
                     par1WorldInfo.getWorldName()
                 });

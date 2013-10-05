@@ -14,9 +14,21 @@ public abstract class EntityAITarget extends EntityAIBase
      * If true, EntityAI targets must be able to be seen (cannot be blocked by walls) to be suitable targets.
      */
     protected boolean shouldCheckSight;
-    private boolean field_75303_a;
-    private int field_75301_b;
-    private int field_75302_c;
+
+    /**
+     * When true, only entities that can be reached with minimal effort will be targetted.
+     */
+    private boolean nearbyOnly;
+
+    /**
+     * When nearbyOnly is true: 0 -> No target, but OK to search; 1 -> Nearby target found; 2 -> Target too far.
+     */
+    private int targetSearchStatus;
+
+    /**
+     * When nearbyOnly is true, this throttles target searching to avoid excessive pathfinding.
+     */
+    private int targetSearchDelay;
     private int field_75298_g;
 
     public EntityAITarget(EntityCreature par1EntityCreature, boolean par2)
@@ -28,7 +40,7 @@ public abstract class EntityAITarget extends EntityAIBase
     {
         taskOwner = par1EntityCreature;
         shouldCheckSight = par2;
-        field_75303_a = par3;
+        nearbyOnly = par3;
     }
 
     /**
@@ -48,7 +60,7 @@ public abstract class EntityAITarget extends EntityAIBase
             return false;
         }
 
-        double d = func_111175_f();
+        double d = getTargetDistance();
 
         if (taskOwner.getDistanceSqToEntity(entitylivingbase) > d * d)
         {
@@ -70,10 +82,10 @@ public abstract class EntityAITarget extends EntityAIBase
         return true;
     }
 
-    protected double func_111175_f()
+    protected double getTargetDistance()
     {
-        AttributeInstance attributeinstance = taskOwner.func_110148_a(SharedMonsterAttributes.field_111265_b);
-        return attributeinstance != null ? attributeinstance.func_111126_e() : 16D;
+        AttributeInstance attributeinstance = taskOwner.getEntityAttribute(SharedMonsterAttributes.followRange);
+        return attributeinstance != null ? attributeinstance.getAttributeValue() : 16D;
     }
 
     /**
@@ -81,8 +93,8 @@ public abstract class EntityAITarget extends EntityAIBase
      */
     public void startExecuting()
     {
-        field_75301_b = 0;
-        field_75302_c = 0;
+        targetSearchStatus = 0;
+        targetSearchDelay = 0;
         field_75298_g = 0;
     }
 
@@ -151,19 +163,19 @@ public abstract class EntityAITarget extends EntityAIBase
             return false;
         }
 
-        if (field_75303_a)
+        if (nearbyOnly)
         {
-            if (--field_75302_c <= 0)
+            if (--targetSearchDelay <= 0)
             {
-                field_75301_b = 0;
+                targetSearchStatus = 0;
             }
 
-            if (field_75301_b == 0)
+            if (targetSearchStatus == 0)
             {
-                field_75301_b = func_75295_a(par1EntityLivingBase) ? 1 : 2;
+                targetSearchStatus = canEasilyReach(par1EntityLivingBase) ? 1 : 2;
             }
 
-            if (field_75301_b == 2)
+            if (targetSearchStatus == 2)
             {
                 return false;
             }
@@ -172,9 +184,12 @@ public abstract class EntityAITarget extends EntityAIBase
         return true;
     }
 
-    private boolean func_75295_a(EntityLivingBase par1EntityLivingBase)
+    /**
+     * Checks to see if this entity can find a short path to the given target.
+     */
+    private boolean canEasilyReach(EntityLivingBase par1EntityLivingBase)
     {
-        field_75302_c = 10 + taskOwner.getRNG().nextInt(5);
+        targetSearchDelay = 10 + taskOwner.getRNG().nextInt(5);
         PathEntity pathentity = taskOwner.getNavigator().getPathToEntityLiving(par1EntityLivingBase);
 
         if (pathentity == null)

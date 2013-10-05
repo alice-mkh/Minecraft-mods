@@ -53,7 +53,7 @@ public class ClientCommandManager extends CommandHandler implements IAdminComman
     @Override
     public void notifyAdmins(ICommandSender par1ICommandSender, int i, String par2Str, Object par3ArrayOfObj[])
     {
-        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b(par2Str, par3ArrayOfObj));
+        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.createFromTranslationWithSubstitutions(par2Str, par3ArrayOfObj));
     }
 
     /**

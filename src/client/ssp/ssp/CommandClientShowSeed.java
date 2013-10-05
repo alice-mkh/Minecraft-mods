@@ -14,7 +14,7 @@ public class CommandClientShowSeed extends CommandShowSeed
     public void processCommand(ICommandSender par1ICommandSender, String par2ArrayOfStr[])
     {
         World world = (par1ICommandSender instanceof EntityPlayer) ? ((EntityPlayer)par1ICommandSender).worldObj : Minecraft.getMinecraft().theWorld;
-        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b("commands.seed.success", new Object[]
+        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.createFromTranslationWithSubstitutions("commands.seed.success", new Object[]
                 {
                     Long.valueOf(world.getSeed())
                 }));

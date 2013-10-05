@@ -30,6 +30,12 @@ public class MapGenStronghold2 extends MapGenStructure
     }
 
     @Override
+    public String func_143025_a()
+    {
+        return "Stronghold";
+    }
+
+    @Override
     protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
         if (!ranBiomeCheck)

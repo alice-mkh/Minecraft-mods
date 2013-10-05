@@ -194,7 +194,7 @@ public class GuiScrolling extends Gui{
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        mc.func_110434_K().func_110577_a(Gui.field_110325_k);
+        mc.getTextureManager().bindTexture(Gui.optionsBackground);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32F;
         tessellator.startDrawingQuads();

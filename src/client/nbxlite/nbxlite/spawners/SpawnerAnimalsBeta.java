@@ -145,7 +145,7 @@ public final class SpawnerAnimalsBeta
                                                     {
                                                         ++var20;
                                                         var0.spawnEntityInWorld(var43);
-                                                        entitylivingdata = var43.func_110161_a(entitylivingdata);
+                                                        entitylivingdata = var43.onSpawnWithEgg(entitylivingdata);
                                                         if(var20 >= var43.getMaxSpawnedInChunk())
                                                         {
                                                             continue label113;
@@ -253,7 +253,7 @@ public final class SpawnerAnimalsBeta
                                     }
                                     entityliving.setLocationAndAngles((float)chunkcoordinates.posX + 0.5F, chunkcoordinates.posY, (float)chunkcoordinates.posZ + 0.5F, 0.0F, 0.0F);
                                     world.spawnEntityInWorld(entityliving);
-                                    entitylivingdata = entityliving.func_110161_a(entitylivingdata);
+                                    entitylivingdata = entityliving.onSpawnWithEgg(entitylivingdata);
                                     entityplayer.wakeUpPlayer(true, false, false);
                                     entityliving.playLivingSound();
                                     flag = true;

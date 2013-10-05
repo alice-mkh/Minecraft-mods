@@ -81,7 +81,7 @@ public class RenderMinecart2 extends RenderMinecart
         if (block != null)
         {
             GL11.glPushMatrix();
-            func_110776_a(TextureMap.field_110575_b);
+            bindTexture(TextureMap.locationBlocksTexture);
             float f6 = 0.75F;
             GL11.glScalef(f6, f6, f6);
             GL11.glTranslatef(0.0F, (float)i / 16F, 0.0F);
@@ -91,7 +91,7 @@ public class RenderMinecart2 extends RenderMinecart
             GL11.glColor4f(ff, ff, ff, 1.0F);
         }
 
-        func_110776_a(field_110804_g);
+        bindTexture(field_110804_g);
 //         loadTexture("/item/cart.png");
         GL11.glScalef(-1F, -1F, 1.0F);
         modelMinecart.render(par1EntityMinecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

@@ -10,7 +10,7 @@ public class ItemDye extends Item
         "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink",
         "lime", "yellow", "lightBlue", "magenta", "orange", "white"
     };
-    public static final String field_94595_b[] =
+    public static final String dyeItemNames[] =
     {
         "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink",
         "lime", "yellow", "light_blue", "magenta", "orange", "white"
@@ -20,7 +20,7 @@ public class ItemDye extends Item
         0x1e1b1b, 0xb3312c, 0x3b511a, 0x51301a, 0x253192, 0x7b2fbe, 0x287697, 0xababab, 0x434343, 0xd88198,
         0x41cd34, 0xdecf2a, 0x6689d3, 0xc354cd, 0xeb8844, 0xf0f0f0
     };
-    private Icon field_94594_d[];
+    private Icon dyeIcons[];
 
     public static boolean oldBoneMeal = false;
 
@@ -38,7 +38,7 @@ public class ItemDye extends Item
     public Icon getIconFromDamage(int par1)
     {
         int i = MathHelper.clamp_int(par1, 0, 15);
-        return field_94594_d[i];
+        return dyeIcons[i];
     }
 
     /**
@@ -320,7 +320,10 @@ public class ItemDye extends Item
         }
     }
 
-    public boolean func_111207_a(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, EntityLivingBase par3EntityLivingBase)
+    /**
+     * Returns true if the item can be used on the given entity, e.g. shears on sheep.
+     */
+    public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, EntityLivingBase par3EntityLivingBase)
     {
         if (par3EntityLivingBase instanceof EntitySheep)
         {
@@ -354,11 +357,11 @@ public class ItemDye extends Item
 
     public void registerIcons(IconRegister par1IconRegister)
     {
-        field_94594_d = new Icon[field_94595_b.length];
+        dyeIcons = new Icon[dyeItemNames.length];
 
-        for (int i = 0; i < field_94595_b.length; i++)
+        for (int i = 0; i < dyeItemNames.length; i++)
         {
-            field_94594_d[i] = par1IconRegister.registerIcon((new StringBuilder()).append(func_111208_A()).append("_").append(field_94595_b[i]).toString());
+            dyeIcons[i] = par1IconRegister.registerIcon((new StringBuilder()).append(getIconString()).append("_").append(dyeItemNames[i]).toString());
         }
     }
 }

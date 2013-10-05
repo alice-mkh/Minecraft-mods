@@ -138,7 +138,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
         GL11.glTranslatef(0.0F, 0.0F, -200F);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         Tessellator tessellator = Tessellator.instance;
-        mc.func_110434_K().func_110577_a(Gui.field_110325_k);
+        mc.getTextureManager().bindTexture(Gui.optionsBackground);
         float f = 32F;
         tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(0x404040);

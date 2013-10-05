@@ -88,10 +88,10 @@ public class ItemFood extends Item
                 if (this.itemID==Item.appleGold.itemID){
                     par3EntityPlayer.heal(20);
                 }else if (this.itemID==Item.spiderEye.itemID || this.itemID==Item.rottenFlesh.itemID){
-                    if (par3EntityPlayer.func_110143_aJ() > 4){
+                    if (par3EntityPlayer.getHealth() > 4){
                         par3EntityPlayer.heal(-4);
                     }else{
-                        par3EntityPlayer.setEntityHealth(1);
+                        par3EntityPlayer.setHealth(1);
                     }
                 }else{
                     par3EntityPlayer.heal(healAmount);

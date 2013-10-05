@@ -47,7 +47,7 @@ public class RenderItemFrame2 extends Render
         if (oldrotation){
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
         }
-        renderManager.renderEngine.func_110577_a(TextureMap.field_110575_b);
+        renderManager.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         Block block = Block.planks;
         float f = 0.0625F;
         float f1 = 0.75F;
@@ -114,7 +114,7 @@ public class RenderItemFrame2 extends Render
         if (entityitem.getEntityItem().getItem() == Item.map)
         {
             float f6 = Minecraft.oldlighting ? par1EntityItemFrame.getBrightness(0) : 1.0F;
-            renderManager.renderEngine.func_110577_a(field_110789_a);
+            renderManager.renderEngine.bindTexture(field_110789_a);
             Tessellator tessellator = Tessellator.instance;
             GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
@@ -140,9 +140,9 @@ public class RenderItemFrame2 extends Render
         {
             if (entityitem.getEntityItem().getItem() == Item.compass)
             {
-                TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
-                texturemanager.func_110577_a(TextureMap.field_110576_c);
-                TextureAtlasSprite textureatlassprite1 = ((TextureMap)texturemanager.func_110581_b(TextureMap.field_110576_c)).func_110572_b(Item.compass.getIconIndex(entityitem.getEntityItem()).getIconName());
+                TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+                texturemanager.bindTexture(TextureMap.locationItemsTexture);
+                TextureAtlasSprite textureatlassprite1 = ((TextureMap)texturemanager.getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Item.compass.getIconIndex(entityitem.getEntityItem()).getIconName());
 
                 if (textureatlassprite1 instanceof TextureCompass)
                 {
@@ -167,9 +167,9 @@ public class RenderItemFrame2 extends Render
 
             if (entityitem.getEntityItem().getItem() == Item.compass)
             {
-                TextureAtlasSprite textureatlassprite = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110576_c)).func_110572_b(Item.compass.getIconIndex(entityitem.getEntityItem()).getIconName());
+                TextureAtlasSprite textureatlassprite = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Item.compass.getIconIndex(entityitem.getEntityItem()).getIconName());
 
-                if (textureatlassprite.func_110970_k() > 0)
+                if (textureatlassprite.getFrameCount() > 0)
                 {
                     textureatlassprite.updateAnimation();
                 }
@@ -179,7 +179,7 @@ public class RenderItemFrame2 extends Render
         GL11.glPopMatrix();
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110788_a((EntityItemFrame)par1Entity);
     }

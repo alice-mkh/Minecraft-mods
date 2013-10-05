@@ -92,7 +92,7 @@ public abstract class EntityMinecart extends Entity
         preventEntitySpawning = true;
         setSize(0.98F, 0.7F);
         yOffset = height / 2.0F;
-        field_82344_g = par1World == null ? null : par1World.func_82735_a(this);
+        field_82344_g = par1World == null ? null : par1World.getMinecartSoundUpdater(this);
     }
 
     /**
@@ -311,9 +311,9 @@ public abstract class EntityMinecart extends Entity
             {
                 if (minecraftserver.getAllowNether())
                 {
-                    if (ridingEntity == null && field_82153_h++ >= j)
+                    if (ridingEntity == null && portalCounter++ >= j)
                     {
-                        field_82153_h = j;
+                        portalCounter = j;
                         timeUntilPortal = getPortalCooldown();
                         byte byte0;
 
@@ -334,14 +334,14 @@ public abstract class EntityMinecart extends Entity
             }
             else
             {
-                if (field_82153_h > 0)
+                if (portalCounter > 0)
                 {
-                    field_82153_h -= 4;
+                    portalCounter -= 4;
                 }
 
-                if (field_82153_h < 0)
+                if (portalCounter < 0)
                 {
-                    field_82153_h = 0;
+                    portalCounter = 0;
                 }
             }
 
@@ -1072,7 +1072,7 @@ public abstract class EntityMinecart extends Entity
      */
     public float getDamage()
     {
-        return dataWatcher.func_111145_d(19);
+        return dataWatcher.getWatchableObjectFloat(19);
     }
 
     /**

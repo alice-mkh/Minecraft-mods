@@ -40,11 +40,11 @@ public class EntitySpider extends EntityMob
         }
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 10D : (oldhealth ? 20D : 16D));
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.80000001192092896D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(survivaltest ? 10D : (oldhealth ? 20D : 16D));
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.80000001192092896D);
     }
 
     /**
@@ -222,15 +222,15 @@ public class EntitySpider extends EntityMob
         dataWatcher.updateObject(16, Byte.valueOf(byte0));
     }
 
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
+        par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
 
         if (worldObj.rand.nextInt(100) == 0 && jockeys)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(worldObj);
             entityskeleton.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
-            entityskeleton.func_110161_a(null);
+            entityskeleton.onSpawnWithEgg(null);
             worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }
@@ -239,7 +239,7 @@ public class EntitySpider extends EntityMob
         {
             par1EntityLivingData = new SpiderEffectsGroupData();
 
-            if (worldObj.difficultySetting > 2 && worldObj.rand.nextFloat() < 0.1F * worldObj.func_110746_b(posX, posY, posZ))
+            if (worldObj.difficultySetting > 2 && worldObj.rand.nextFloat() < 0.1F * worldObj.getLocationTensionFactor(posX, posY, posZ))
             {
                 ((SpiderEffectsGroupData)par1EntityLivingData).func_111104_a(worldObj.rand);
             }

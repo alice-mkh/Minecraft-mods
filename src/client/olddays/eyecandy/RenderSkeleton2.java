@@ -26,7 +26,7 @@ public class RenderSkeleton2 extends RenderSkeleton
         {
             if (par2 == 1)
             {
-                func_110776_a(fallback ? armorFallback : armorResource);
+                bindTexture(fallback ? armorFallback : armorResource);
                 GL11.glDisable(2884);
                 setRenderPassModel(armor);
                 armor.bipedHead.showModel = par1EntitySkeleton.helmet;

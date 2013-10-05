@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class ComponentVillageField extends ComponentVillage
 {
-    private int averageGroundLevel;
-
     /** First crop type for this field. */
     private int cropTypeA;
 
@@ -19,16 +17,37 @@ public class ComponentVillageField extends ComponentVillage
     /** Fourth crop type for this field. */
     private int cropTypeD;
 
+    public ComponentVillageField()
+    {
+    }
+
     public ComponentVillageField(ComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        averageGroundLevel = -1;
         coordBaseMode = par5;
         boundingBox = par4StructureBoundingBox;
         cropTypeA = getRandomCrop(par3Random);
         cropTypeB = getRandomCrop(par3Random);
         cropTypeC = getRandomCrop(par3Random);
         cropTypeD = getRandomCrop(par3Random);
+    }
+
+    protected void func_143012_a(NBTTagCompound par1NBTTagCompound)
+    {
+        super.func_143012_a(par1NBTTagCompound);
+        par1NBTTagCompound.setInteger("CA", cropTypeA);
+        par1NBTTagCompound.setInteger("CB", cropTypeB);
+        par1NBTTagCompound.setInteger("CC", cropTypeC);
+        par1NBTTagCompound.setInteger("CD", cropTypeD);
+    }
+
+    protected void func_143011_b(NBTTagCompound par1NBTTagCompound)
+    {
+        super.func_143011_b(par1NBTTagCompound);
+        cropTypeA = par1NBTTagCompound.getInteger("CA");
+        cropTypeB = par1NBTTagCompound.getInteger("CB");
+        cropTypeC = par1NBTTagCompound.getInteger("CC");
+        cropTypeD = par1NBTTagCompound.getInteger("CD");
     }
 
     /**
@@ -70,16 +89,16 @@ public class ComponentVillageField extends ComponentVillage
      */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        if (averageGroundLevel < 0)
+        if (field_143015_k < 0)
         {
-            averageGroundLevel = getAverageGroundLevel(par1World, par3StructureBoundingBox);
+            field_143015_k = getAverageGroundLevel(par1World, par3StructureBoundingBox);
 
-            if (averageGroundLevel < 0)
+            if (field_143015_k < 0)
             {
                 return true;
             }
 
-            boundingBox.offset(0, ((averageGroundLevel - boundingBox.maxY) + 4) - 1, 0);
+            boundingBox.offset(0, ((field_143015_k - boundingBox.maxY) + 4) - 1, 0);
         }
 
         fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, 0, 0, false);

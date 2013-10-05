@@ -737,7 +737,7 @@ public class ODNBXlite extends OldDaysModule{
             customleaves.setLightOpacity(1);
             customleaves.setStepSound(Block.soundGrassFootstep);
             customleaves.setUnlocalizedName("leaves");
-            customleaves.func_111022_d("leaves");
+            customleaves.setTextureName("leaves");
             Block.blocksList[Block.leaves.blockID] = customleaves;
             mod_OldDays.setField(Block.class, null, 37, customleaves);//Block: leaves
             Item.itemsList[Block.leaves.blockID] = null;
@@ -756,7 +756,7 @@ public class ODNBXlite extends OldDaysModule{
             customvine.setHardness(0.2F);
             customvine.setStepSound(Block.soundGrassFootstep);
             customvine.setUnlocalizedName("vine");
-            customvine.func_111022_d("vine");
+            customvine.setTextureName("vine");
             Block.blocksList[Block.vine.blockID] = customvine;
             mod_OldDays.setField(Block.class, null, 125, customvine);//Block: vine
             Item.itemsList[Block.vine.blockID] = null;
@@ -772,31 +772,31 @@ public class ODNBXlite extends OldDaysModule{
             Item.itemsList[Item.hoeWood.itemID] = null;
             ItemHoe2 hoeWood = new ItemHoe2(Item.hoeWood.itemID - 256, EnumToolMaterial.WOOD);
             hoeWood.setUnlocalizedName("hoeWood");
-            hoeWood.func_111206_d("wood_hoe");
+            hoeWood.setTextureName("wood_hoe");
             Item.hoeWood = hoeWood;
             Item.itemsList[Item.hoeWood.itemID] = hoeWood;
             Item.itemsList[Item.hoeStone.itemID] = null;
             ItemHoe2 hoeStone = new ItemHoe2(Item.hoeStone.itemID - 256, EnumToolMaterial.STONE);
             hoeStone.setUnlocalizedName("hoeStone");
-            hoeStone.func_111206_d("stone_hoe");
+            hoeStone.setTextureName("stone_hoe");
             Item.hoeStone = hoeStone;
             Item.itemsList[Item.hoeStone.itemID] = hoeStone;
             Item.itemsList[Item.hoeIron.itemID] = null;
             ItemHoe2 hoeIron = new ItemHoe2(Item.hoeIron.itemID - 256, EnumToolMaterial.IRON);
             hoeIron.setUnlocalizedName("hoeIron");
-            hoeIron.func_111206_d("iron_hoe");
+            hoeIron.setTextureName("iron_hoe");
             Item.hoeIron = hoeIron;
             Item.itemsList[Item.hoeIron.itemID] = hoeIron;
             Item.itemsList[Item.hoeDiamond.itemID] = null;
             ItemHoe2 hoeDiamond = new ItemHoe2(Item.hoeDiamond.itemID - 256, EnumToolMaterial.EMERALD);
             hoeDiamond.setUnlocalizedName("hoeDiamond");
-            hoeDiamond.func_111206_d("diamond_hoe");
+            hoeDiamond.setTextureName("diamond_hoe");
             Item.hoeDiamond = hoeDiamond;
             Item.itemsList[Item.hoeDiamond.itemID] = hoeDiamond;
             Item.itemsList[Item.hoeGold.itemID] = null;
             ItemHoe2 hoeGold = new ItemHoe2(Item.hoeGold.itemID - 256, EnumToolMaterial.GOLD);
             hoeGold.setUnlocalizedName("hoeGold");
-            hoeGold.func_111206_d("gold_hoe");
+            hoeGold.setTextureName("gold_hoe");
             Item.hoeGold = hoeGold;
             Item.itemsList[Item.hoeGold.itemID] = hoeGold;
         }catch (Exception exception){
@@ -1077,19 +1077,19 @@ public class ODNBXlite extends OldDaysModule{
         if (Generator!=GEN_NEWBIOMES || MapFeatures>FEATURES_15){
             pyramidsChestContents = addToArray(pyramidsChestContents,
                 new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3),
-                new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111216_cf.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111213_cg.itemID, 0, 1, 1, 1));
+                new WeightedRandomChestContent(Item.horseArmorIron.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.horseArmorGold.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.horseArmorDiamond.itemID, 0, 1, 1, 1));
             villageChestContents = addToArray(villageChestContents,
                 new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3),
-                new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111216_cf.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111213_cg.itemID, 0, 1, 1, 1));
+                new WeightedRandomChestContent(Item.horseArmorIron.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.horseArmorGold.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.horseArmorDiamond.itemID, 0, 1, 1, 1));
             strongholdChestContents = addToArray(strongholdChestContents,
                 new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111216_cf.itemID, 0, 1, 1, 1),
-                new WeightedRandomChestContent(Item.field_111213_cg.itemID, 0, 1, 1, 1));
+                new WeightedRandomChestContent(Item.horseArmorIron.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.horseArmorGold.itemID, 0, 1, 1, 1),
+                new WeightedRandomChestContent(Item.horseArmorDiamond.itemID, 0, 1, 1, 1));
         }
         mod_OldDays.setField(ComponentScatteredFeatureJunglePyramid.class, null, 4, pyramidsChestContents);
         mod_OldDays.setField(ComponentScatteredFeatureDesertPyramid.class, null, 1, pyramidsChestContents);

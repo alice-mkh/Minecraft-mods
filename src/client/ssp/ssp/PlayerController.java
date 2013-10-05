@@ -175,13 +175,13 @@ public class PlayerController extends PlayerControllerMP
     {
         try{
             Object o = mc.playerClass.getDeclaredConstructor(new Class[]{Minecraft.class, World.class, Session.class, Integer.TYPE}).
-                       newInstance(new Object[]{mc, par1World, mc.func_110432_I(), par1World.provider.dimensionId});
+                       newInstance(new Object[]{mc, par1World, mc.getSession(), par1World.provider.dimensionId});
             return (EntityPlayerSP2)o;
         }catch(Exception ex){
             ex.printStackTrace();
         }
         return null;
-//         return new EntityPlayerSP2(mc, par1World, mc.func_110432_I(), par1World.provider.dimensionId);
+//         return new EntityPlayerSP2(mc, par1World, mc.getSession(), par1World.provider.dimensionId);
     }
 
     /**

@@ -174,7 +174,7 @@ public class OldSpawnerAnimals
                         }
                         k++;
                         world.spawnEntityInWorld(entityliving);
-                        entitylivingdata = entityliving.func_110161_a(entitylivingdata);
+                        entitylivingdata = entityliving.onSpawnWithEgg(entitylivingdata);
                     }
 
                     l2++;
@@ -284,7 +284,7 @@ public class OldSpawnerAnimals
                         }
                         k++;
                         world.spawnEntityInWorld(entityliving);
-                        entitylivingdata = entityliving.func_110161_a(entitylivingdata);
+                        entitylivingdata = entityliving.onSpawnWithEgg(entitylivingdata);
                     }
 
                     l2++;

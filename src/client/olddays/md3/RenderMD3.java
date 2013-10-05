@@ -35,7 +35,7 @@ public class RenderMD3 extends RenderLiving {
    }
 
    @Override
-   protected ResourceLocation func_110775_a(Entity e){
+   protected ResourceLocation getEntityTexture(Entity e){
         return null;//textures[getTextureIndex(e) % textures.length];
    }
 
@@ -51,7 +51,7 @@ public class RenderMD3 extends RenderLiving {
         GL11.glPushMatrix();
         float f5 = entity.prevRenderYawOffset + (entity.renderYawOffset - entity.prevRenderYawOffset) * f4;
         GL11.glTranslatef(f1, f2, f3);
-        func_110776_a(textures[getTextureIndex(entity) % textures.length]);
+        bindTexture(textures[getTextureIndex(entity) % textures.length]);
         GL11.glRotatef(-f5 + 180F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
         GL11.glScalef(0.02F, -0.02F, 0.02F);

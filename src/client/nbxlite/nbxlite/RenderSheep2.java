@@ -17,7 +17,7 @@ public class RenderSheep2 extends RenderSheep
     {
         if (par2 == 0 && !par1EntitySheep.getSheared())
         {
-            func_110776_a(field_110885_a);
+            bindTexture(field_110885_a);
             float f = ODNBXlite.oldLightEngine ? par1EntitySheep.getBrightness(par2) : 1.0F;
             int i = par1EntitySheep.getFleeceColor();
             GL11.glColor3f(f * EntitySheep.fleeceColorTable[i][0], f * EntitySheep.fleeceColorTable[i][1], f * EntitySheep.fleeceColorTable[i][2]);

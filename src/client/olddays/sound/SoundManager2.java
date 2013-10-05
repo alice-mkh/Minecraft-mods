@@ -212,14 +212,14 @@ public class SoundManager2 extends SoundManager{
             }
 
             SoundPoolEntry soundpoolentry = ((SoundPool)getField(5)).getRandomSound();
-            if (soundpoolentry.func_110458_a().startsWith("calm4") && !calm4){
+            if (soundpoolentry.getSoundName().startsWith("calm4") && !calm4){
                 return;
             }
 
             if (soundpoolentry != null)
             {
                 setField(12, ((Random)getField(11)).nextInt(12000) + 12000);
-                sndSystem.backgroundMusic("BgMusic", soundpoolentry.func_110457_b(), soundpoolentry.func_110458_a(), false);
+                sndSystem.backgroundMusic("BgMusic", soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false);
                 sndSystem.setVolume("BgMusic", options.musicVolume);
                 sndSystem.play("BgMusic");
             }

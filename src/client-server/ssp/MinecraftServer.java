@@ -95,7 +95,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
     /** Incremented every tick. */
     private int tickCounter;
-    protected Proxy field_110456_c;
+    protected Proxy serverProxy;
 
     /**
      * The task the server is currently working on(and will output on outputPercentRemaining).
@@ -123,6 +123,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
     /** Maximum build height. */
     private int buildLimit;
+    private int field_143008_E;
     private long lastSentPacketID;
     private long lastSentPacketSize;
     private long lastReceivedID;
@@ -155,16 +156,17 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     private long timeOfLastWarning;
     private String userMessage;
     private boolean startProfiling;
-    private boolean field_104057_T;
+    private boolean isGamemodeForced;
 
     public MinecraftServer(File par1File)
     {
         serverPort = -1;
         serverRunning = true;
-        field_110456_c = Proxy.NO_PROXY;
+        serverProxy = Proxy.NO_PROXY;
+        field_143008_E = 0;
         texturePack = "";
         mcServer = this;
-        usageSnooper = new PlayerUsageSnooper("server", this, func_130071_aq());
+        usageSnooper = new PlayerUsageSnooper("server", this, getSystemTimeMillis());
         anvilFile = par1File;
         commandManager = new ServerCommandManager();
         anvilConverterForAnvilFile = new AnvilSaveConverter(par1File);
@@ -176,7 +178,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     private void registerDispenseBehaviors()
     {
-        DispenserBehaviors.func_96467_a();
+        DispenserBehaviors.registerDispenserBehaviours();
     }
 
     /**
@@ -288,13 +290,13 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         getLogAgent().logInfo((new StringBuilder()).append("Preparing start region for level ").append(j).toString());
         WorldServer worldserver = worldServers[j];
         ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
-        long l = func_130071_aq();
+        long l = getSystemTimeMillis();
 
         for (int k = -192; k <= 192 && isServerRunning(); k += 16)
         {
             for (int i1 = -192; i1 <= 192 && isServerRunning(); i1 += 16)
             {
-                long l1 = func_130071_aq();
+                long l1 = getSystemTimeMillis();
 
                 if (l1 - l > 1000L)
                 {
@@ -454,11 +456,11 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         {
             if (this.startServer())
             {
-                long var1 = func_130071_aq();
+                long var1 = getSystemTimeMillis();
 
                 for (long var50 = 0L; this.serverRunning; this.serverIsRunning = true)
                 {
-                    long var5 = func_130071_aq();
+                    long var5 = getSystemTimeMillis();
                     long var7 = var5 - var1;
 
                     if (var7 > 2000L && var1 - this.timeOfLastWarning >= 15000L)
@@ -772,7 +774,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public String getMinecraftVersion()
     {
-        return "1.6.2";
+        return "1.6.4";
     }
 
     /**
@@ -851,16 +853,16 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.func_85056_g().addCrashSectionCallable("Profiler Position", new CallableIsServerModded(this));
+        par1CrashReport.getCategory().addCrashSectionCallable("Profiler Position", new CallableIsServerModded(this));
 
         if (worldServers != null && worldServers.length > 0 && worldServers[0] != null)
         {
-            par1CrashReport.func_85056_g().addCrashSectionCallable("Vec3 Pool Size", new CallableServerProfiler(this));
+            par1CrashReport.getCategory().addCrashSectionCallable("Vec3 Pool Size", new CallableServerProfiler(this));
         }
 
         if (serverConfigManager != null)
         {
-            par1CrashReport.func_85056_g().addCrashSectionCallable("Player Count", new CallableServerMemoryStats(this));
+            par1CrashReport.getCategory().addCrashSectionCallable("Player Count", new CallableServerMemoryStats(this));
         }
 
         return par1CrashReport;
@@ -1122,7 +1124,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         par1PlayerUsageSnooper.addData("players_seen", Integer.valueOf(serverConfigManager.getAvailablePlayerDat().length));
         par1PlayerUsageSnooper.addData("uses_auth", Boolean.valueOf(onlineMode));
         par1PlayerUsageSnooper.addData("gui_state", getGuiEnabled() ? "enabled" : "disabled");
-        par1PlayerUsageSnooper.addData("run_time", Long.valueOf(((func_130071_aq() - par1PlayerUsageSnooper.func_130105_g()) / 60L) * 1000L));
+        par1PlayerUsageSnooper.addData("run_time", Long.valueOf(((getSystemTimeMillis() - par1PlayerUsageSnooper.func_130105_g()) / 60L) * 1000L));
         par1PlayerUsageSnooper.addData("avg_tick_ms", Integer.valueOf((int)(MathHelper.average(tickTimeArray) * 9.9999999999999995E-007D)));
         par1PlayerUsageSnooper.addData("avg_sent_packet_count", Integer.valueOf((int)MathHelper.average(sentPacketCountArray)));
         par1PlayerUsageSnooper.addData("avg_sent_packet_size", Integer.valueOf((int)MathHelper.average(sentPacketSizeArray)));
@@ -1318,7 +1320,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         return new ChunkCoordinates(0, 0, 0);
     }
 
-    public World func_130014_f_()
+    public World getEntityWorld()
     {
         return worldServers[0];
     }
@@ -1331,31 +1333,48 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         return 16;
     }
 
-    public boolean func_96290_a(World par1World, int par2, int par3, int i, EntityPlayer entityplayer)
+    /**
+     * Returns true if a player does not have permission to edit the block at the given coordinates.
+     */
+    public boolean isBlockProtected(World par1World, int par2, int par3, int i, EntityPlayer entityplayer)
     {
         return false;
     }
 
     public abstract ILogAgent getLogAgent();
 
-    public void func_104055_i(boolean par1)
+    public void setForceGamemode(boolean par1)
     {
-        field_104057_T = par1;
+        isGamemodeForced = par1;
     }
 
-    public boolean func_104056_am()
+    public boolean getForceGamemode()
     {
-        return field_104057_T;
+        return isGamemodeForced;
     }
 
-    public Proxy func_110454_ao()
+    public Proxy getServerProxy()
     {
-        return field_110456_c;
+        return serverProxy;
     }
 
-    public static long func_130071_aq()
+    /**
+     * returns the difference, measured in milliseconds, between the current system time and midnight, January 1, 1970
+     * UTC.
+     */
+    public static long getSystemTimeMillis()
     {
         return System.currentTimeMillis();
+    }
+
+    public int func_143007_ar()
+    {
+        return field_143008_E;
+    }
+
+    public void func_143006_e(int par1)
+    {
+        field_143008_E = par1;
     }
 
     /**

@@ -168,7 +168,7 @@ public class RenderBounds{
             return;
         }
         mc = m;
-        renderEngine = mc.func_110434_K();
+        renderEngine = mc.getTextureManager();
         worldObj = mc.theWorld;
         int id = ODNBXlite.SurrGroundType;
         if (ODNBXlite.SurrGroundHeight<=ODNBXlite.SurrWaterHeight || ODNBXlite.SurrWaterType==Block.lavaStill.blockID && ODNBXlite.SurrGroundType==Block.grass.blockID){
@@ -287,18 +287,18 @@ public class RenderBounds{
     private static void bindTexture(Block block, boolean side, boolean anim){
         if (!anim){
             if (block == Block.waterStill || block == Block.waterMoving){
-                renderEngine.func_110577_a(classicWater);
+                renderEngine.bindTexture(classicWater);
                 return;
             }else if (block == Block.lavaStill || block == Block.lavaMoving){
-                renderEngine.func_110577_a(classicLava);
+                renderEngine.bindTexture(classicLava);
                 return;
             }
         }
         TextureAtlasSprite icon = (TextureAtlasSprite)(block.getBlockTextureFromSide(side ? 2 : 1));
         int prevWidth = width;
         int prevHeight = height;
-        width = icon.getOriginX();
-        height = icon.getOriginY();
+        width = icon.getIconWidth();
+        height = icon.getIconHeight();
         double u = icon.getMaxU() - icon.getMinU();
         double v = icon.getMaxV() - icon.getMinV();
         int sheetWidth = (int)((double)width / u);
@@ -311,19 +311,19 @@ public class RenderBounds{
             sheetData = BufferUtils.createIntBuffer(sheetWidth * sheetHeight);
             System.gc();
         }
-        renderEngine.func_110577_a(TextureMap.field_110575_b);
+        renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL11.GL_UNSIGNED_BYTE, sheetData);
         sheetData.clear();
-        int[] data = temp.func_110565_c();
+        int[] data = temp.getTextureData();
         for (int i = 0; i < height; i++){
-            int start = (((icon.func_110967_i() + i) * sheetWidth) + icon.func_130010_a());
+            int start = (((icon.getOriginY() + i) * sheetWidth) + icon.getOriginX());
             sheetData.position(start).limit(start + width);
             for (int j = 0; j < width; j++){
                 data[j + i * width] = sheetData.get();
             }
             sheetData.clear();
         }
-        temp.func_110564_a();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, temp.func_110552_b());
+        temp.updateDynamicTexture();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, temp.getGlTextureId());
     }
 }

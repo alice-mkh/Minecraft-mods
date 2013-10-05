@@ -508,7 +508,10 @@ public class EntityBoat extends Entity
         return 0.0F;
     }
 
-    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
+    /**
+     * First layer of player interaction
+     */
+    public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != par1EntityPlayer)
         {
@@ -536,7 +539,7 @@ public class EntityBoat extends Entity
      */
     public float getDamageTaken()
     {
-        return dataWatcher.func_111145_d(19);
+        return dataWatcher.getWatchableObjectFloat(19);
     }
 
     /**

@@ -12,7 +12,7 @@ public abstract class EntityCreature extends EntityLiving
     public double getRealMoveSpeed(){
         double base = super.getRealMoveSpeed();
         if (fleeingTick > 0 && isAIEnabled() && !newai()){
-            base *= field_110181_i.func_111164_d();
+            base *= field_110181_i.getAmount();
         }
         return base;
     }
@@ -191,8 +191,8 @@ public abstract class EntityCreature extends EntityLiving
                 fleeingTick--;
             }
             if (fleeingTick == 1){
-                AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
-                attributeinstance.func_111124_b(field_110181_i);
+                AttributeInstance attributeinstance = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+                attributeinstance.removeModifier(field_110181_i);
             }
         }
 
@@ -454,13 +454,16 @@ public abstract class EntityCreature extends EntityLiving
         }
     }
 
-    public void func_110171_b(int par1, int par2, int par3, int par4)
+    public void setHomeArea(int par1, int par2, int par3, int par4)
     {
         homePosition.set(par1, par2, par3);
         maximumHomeDistance = par4;
     }
 
-    public ChunkCoordinates func_110172_bL()
+    /**
+     * Returns the chunk coordinate object of the home position.
+     */
+    public ChunkCoordinates getHomePosition()
     {
         return homePosition;
     }
@@ -470,12 +473,15 @@ public abstract class EntityCreature extends EntityLiving
         return maximumHomeDistance;
     }
 
-    public void func_110177_bN()
+    public void detachHome()
     {
         maximumHomeDistance = -1F;
     }
 
-    public boolean func_110175_bO()
+    /**
+     * Returns whether a home area is defined for this entity.
+     */
+    public boolean hasHome()
     {
         return maximumHomeDistance != -1F;
     }
@@ -484,17 +490,17 @@ public abstract class EntityCreature extends EntityLiving
     {
         super.func_110159_bB();
 
-        if (func_110167_bD() && func_110166_bE() != null && func_110166_bE().worldObj == worldObj)
+        if (getLeashed() && getLeashedToEntity() != null && getLeashedToEntity().worldObj == worldObj)
         {
-            Entity entity = func_110166_bE();
-            func_110171_b((int)entity.posX, (int)entity.posY, (int)entity.posZ, 5);
+            Entity entity = getLeashedToEntity();
+            setHomeArea((int)entity.posX, (int)entity.posY, (int)entity.posZ, 5);
             float f = getDistanceToEntity(entity);
 
             if ((this instanceof EntityTameable) && ((EntityTameable)this).isSitting())
             {
                 if (f > 10F)
                 {
-                    func_110160_i(true, true);
+                    clearLeashed(true, true);
                 }
 
                 return;
@@ -526,15 +532,15 @@ public abstract class EntityCreature extends EntityLiving
 
             if (f > 10F)
             {
-                func_110160_i(true, true);
+                clearLeashed(true, true);
             }
         }
-        else if (!func_110167_bD() && field_110180_bt)
+        else if (!getLeashed() && field_110180_bt)
         {
             field_110180_bt = false;
             tasks.removeTask(field_110178_bs);
             getNavigator().setAvoidsWater(true);
-            func_110177_bN();
+            detachHome();
         }
     }
 
@@ -545,6 +551,6 @@ public abstract class EntityCreature extends EntityLiving
     static
     {
         field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
-        field_110181_i = (new AttributeModifier(field_110179_h, "Fleeing speed bonus", 2D, 2)).func_111168_a(false);
+        field_110181_i = (new AttributeModifier(field_110179_h, "Fleeing speed bonus", 2D, 2)).setSaved(false);
     }
 }

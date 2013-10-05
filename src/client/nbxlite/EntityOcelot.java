@@ -85,11 +85,11 @@ public class EntityOcelot extends EntityTameable
         return true;
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(10D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.30000001192092896D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(10D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
     }
 
     /**
@@ -219,7 +219,7 @@ public class EntityOcelot extends EntityTameable
                 aiSit.setSitting(!isSitting());
             }
         }
-        else if (aiTempt.func_75277_f() && itemstack != null && itemstack.itemID == Item.fishRaw.itemID && par1EntityPlayer.getDistanceSqToEntity(this) < 9D)
+        else if (aiTempt.isRunning() && itemstack != null && itemstack.itemID == Item.fishRaw.itemID && par1EntityPlayer.getDistanceSqToEntity(this) < 9D)
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
@@ -375,9 +375,9 @@ public class EntityOcelot extends EntityTameable
         }
     }
 
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
+        par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
 
         if (worldObj.rand.nextInt(7) == 0)
         {

@@ -11,7 +11,7 @@ import net.minecraft.src.ssp.WorldSSP;
 
 public class WorldSSP2 extends WorldSSP
 {
-    protected OldSpawnerAnimals animalSpawner;
+    protected OldSpawnerAnimals animalSpawner2;
     protected OldSpawnerMonsters monsterSpawner;
     protected OldSpawnerAnimals waterMobSpawner;
     protected OldSpawnerAnimals ambientMobSpawner;
@@ -109,7 +109,7 @@ public class WorldSSP2 extends WorldSSP
 
     public void turnOnOldSpawners()
     {
-        animalSpawner = new OldSpawnerAnimals(15, EnumCreatureType.creature);
+        animalSpawner2 = new OldSpawnerAnimals(15, EnumCreatureType.creature);
         monsterSpawner = new OldSpawnerMonsters(200, EnumCreatureType.monster);
         waterMobSpawner = new OldSpawnerAnimals(5, EnumCreatureType.waterCreature);
         ambientMobSpawner = new OldSpawnerAnimals(15, EnumCreatureType.ambient);
@@ -351,12 +351,12 @@ public class WorldSSP2 extends WorldSSP
         if (getGameRules().getGameRuleBooleanValue("doMobSpawning")){
             if (provider.dimensionId!=1){
                 if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                    field_135059_Q.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
+                    animalSpawner.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
                     if (spawnPeacefulMobs){
-                        animalSpawner.func_1150_a(this);
+                        animalSpawner2.func_1150_a(this);
                         waterMobSpawner.func_1150_a(this);
                         ambientMobSpawner.func_1150_a(this);
                     }
@@ -365,7 +365,7 @@ public class WorldSSP2 extends WorldSSP
                     }
                 }
             }else{
-                field_135059_Q.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
+                animalSpawner.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs);
             }
         }
         theProfiler.endStartSection("chunkSource");

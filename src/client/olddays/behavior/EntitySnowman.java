@@ -52,11 +52,11 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         return true;
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(4D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.20000000298023224D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(4D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.20000000298023224D);
     }
 
     /**

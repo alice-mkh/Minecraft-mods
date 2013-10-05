@@ -36,7 +36,7 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
 
     @Override
     public String getMcVersion(){
-        return "1.6.2";
+        return "1.6.4";
     }
 
     @Override
@@ -63,7 +63,7 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
     }
 
     @Override
-    public void func_110549_a(ResourceManager par1ResourceManager){
+    public void onResourceManagerReload(ResourceManager par1ResourceManager){
         texman.changeResourcePack(par1ResourceManager);
     }
 
@@ -451,7 +451,7 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
             if (file.exists()){
                 return true;
             }
-            InputStream str = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("olddays/sounds/"+name)).func_110527_b();
+            InputStream str = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("olddays/sounds/"+name)).getInputStream();
             DataInputStream stream = new DataInputStream(str);
             byte[] bytes = new byte[stream.available()];
             stream.readFully(bytes);

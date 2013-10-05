@@ -349,7 +349,7 @@ public class EntityItem extends Entity
      */
     public String getEntityName()
     {
-        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(getEntityItem().getItemName()).toString());
+        return StatCollector.translateToLocal((new StringBuilder()).append("item.").append(getEntityItem().getUnlocalizedName()).toString());
     }
 
     /**

@@ -12,7 +12,7 @@ public class RenderHuman extends RenderLiving{
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return mod_SpawnHuman.CustomTexture ? texture2 : texture1;
     }
@@ -55,7 +55,7 @@ public class RenderHuman extends RenderLiving{
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1F, -1F, 1.0F);
             preRenderCallback(par1EntityLiving, par9);
-            float f5 = par1EntityLiving.prevLimbYaw + (par1EntityLiving.limbYaw - par1EntityLiving.prevLimbYaw) * par9;
+            float f5 = par1EntityLiving.prevLimbSwingAmount + (par1EntityLiving.limbSwingAmount - par1EntityLiving.prevLimbSwingAmount) * par9;
             float f6 = par1EntityLiving.field_70763_ax + (par1EntityLiving.field_70764_aw - par1EntityLiving.field_70763_ax) * par9;
             float f32 = par1EntityLiving.field_70768_au + (par1EntityLiving.field_110154_aX - par1EntityLiving.field_70768_au) * par9;
             float bob = -Math.abs(MathHelper.cos(f6 * 0.6662F)) * 5F * f32 - 23F;

@@ -187,11 +187,11 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
 
         if (!isAIEnabled())
         {
-            AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
+            AttributeInstance attributeinstance = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 
-            if (attributeinstance.func_111127_a(field_110179_h) == null)
+            if (attributeinstance.getModifier(field_110179_h) == null)
             {
-                attributeinstance.func_111121_a(field_110181_i);
+                attributeinstance.applyModifier(field_110181_i);
             }
         }
 
@@ -320,9 +320,9 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals
     protected boolean canDespawn()
     {
         if (this instanceof EntityHorse){
-            return despawn && !breeded && !func_110167_bD() && riddenByEntity == null && ((EntityHorse)this).func_142019_cb().isEmpty();
+            return despawn && !breeded && !getLeashed() && riddenByEntity == null && ((EntityHorse)this).getOwnerName().isEmpty();
         }
-        return despawn && !breeded && !func_110167_bD();
+        return despawn && !breeded && !getLeashed();
     }
 
     /**

@@ -25,7 +25,7 @@ public abstract class Entity
 
     /** The entity we are currently riding */
     public Entity ridingEntity;
-    public boolean field_98038_p;
+    public boolean forceSpawn;
 
     /** Reference to the World object. */
     public World worldObj;
@@ -183,7 +183,7 @@ public abstract class Entity
 
     /** Whether the entity is inside a Portal */
     protected boolean inPortal;
-    protected int field_82153_h;
+    protected int portalCounter;
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
@@ -417,9 +417,9 @@ public abstract class Entity
             {
                 if (minecraftserver.getAllowNether())
                 {
-                    if (ridingEntity == null && field_82153_h++ >= j)
+                    if (ridingEntity == null && portalCounter++ >= j)
                     {
-                        field_82153_h = j;
+                        portalCounter = j;
                         timeUntilPortal = getPortalCooldown();
                         byte byte0;
 
@@ -440,14 +440,14 @@ public abstract class Entity
             }
             else
             {
-                if (field_82153_h > 0)
+                if (portalCounter > 0)
                 {
-                    field_82153_h -= 4;
+                    portalCounter -= 4;
                 }
 
-                if (field_82153_h < 0)
+                if (portalCounter < 0)
                 {
-                    field_82153_h = 0;
+                    portalCounter = 0;
                 }
             }
 
@@ -546,7 +546,7 @@ public abstract class Entity
     public void setFire(int par1)
     {
         int i = par1 * 20;
-        i = EnchantmentProtection.func_92093_a(this, i);
+        i = EnchantmentProtection.getFireTimeForEntity(this, i);
 
         if (fire < i)
         {
@@ -897,7 +897,7 @@ public abstract class Entity
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity tile collision");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
-            func_85029_a(crashreportcategory);
+            addEntityCrashInfo(crashreportcategory);
             throw new ReportedException(crashreport);
         }
 
@@ -967,7 +967,7 @@ public abstract class Entity
                         {
                             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Colliding entity with tile");
                             CrashReportCategory crashreportcategory = crashreport.makeCategory("Tile being collided with");
-                            CrashReportCategory.func_85068_a(crashreportcategory, k1, l1, i2, j2, worldObj.getBlockMetadata(k1, l1, i2));
+                            CrashReportCategory.addBlockCrashInfo(crashreportcategory, k1, l1, i2, j2, worldObj.getBlockMetadata(k1, l1, i2));
                             throw new ReportedException(crashreport);
                         }
                     }
@@ -1484,7 +1484,11 @@ public abstract class Entity
         return par1 < d * d;
     }
 
-    public boolean addNotRiddenEntityID(NBTTagCompound par1NBTTagCompound)
+    /**
+     * Like writeToNBTOptional but does not check if the entity is ridden. Used for saving ridden entities with their
+     * riders.
+     */
+    public boolean writeMountToNBT(NBTTagCompound par1NBTTagCompound)
     {
         String s = getEntityString();
 
@@ -1501,9 +1505,11 @@ public abstract class Entity
     }
 
     /**
-     * adds the ID of this entity to the NBT given
+     * Either write this entity to the NBT tag given and return true, or return false without doing anything. If this
+     * returns false the entity is not saved on disk. Ridden entities return false here as they are saved with their
+     * rider.
      */
-    public boolean addEntityID(NBTTagCompound par1NBTTagCompound)
+    public boolean writeToNBTOptional(NBTTagCompound par1NBTTagCompound)
     {
         String s = getEntityString();
 
@@ -1553,7 +1559,7 @@ public abstract class Entity
             {
                 NBTTagCompound nbttagcompound = new NBTTagCompound("Riding");
 
-                if (ridingEntity.addNotRiddenEntityID(nbttagcompound))
+                if (ridingEntity.writeMountToNBT(nbttagcompound))
                 {
                     par1NBTTagCompound.setTag("Riding", nbttagcompound);
                 }
@@ -1563,7 +1569,7 @@ public abstract class Entity
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Saving entity NBT");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being saved");
-            func_85029_a(crashreportcategory);
+            addEntityCrashInfo(crashreportcategory);
             throw new ReportedException(crashreport);
         }
     }
@@ -1619,7 +1625,7 @@ public abstract class Entity
             setRotation(rotationYaw, rotationPitch);
             readEntityFromNBT(par1NBTTagCompound);
 
-            if (func_142008_O())
+            if (shouldSetPosAfterLoading())
             {
                 setPosition(posX, posY, posZ);
             }
@@ -1628,12 +1634,12 @@ public abstract class Entity
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Loading entity NBT");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being loaded");
-            func_85029_a(crashreportcategory);
+            addEntityCrashInfo(crashreportcategory);
             throw new ReportedException(crashreport);
         }
     }
 
-    protected boolean func_142008_O()
+    protected boolean shouldSetPosAfterLoading()
     {
         return true;
     }
@@ -1656,7 +1662,7 @@ public abstract class Entity
      */
     protected abstract void writeEntityToNBT(NBTTagCompound nbttagcompound);
 
-    public void func_110123_P()
+    public void onChunkLoad()
     {
     }
 
@@ -1766,7 +1772,10 @@ public abstract class Entity
         return false;
     }
 
-    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
+    /**
+     * First layer of player interaction
+     */
+    public boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
         return false;
     }
@@ -2058,7 +2067,12 @@ public abstract class Entity
         return getFlag(5);
     }
 
-    public boolean func_98034_c(EntityPlayer par1EntityPlayer)
+    /**
+     * Only used by renderer in EntityLivingBase subclasses.\nDetermines if an entity is visible or not to a specfic
+     * player, if the entity is normally invisible.\nFor EntityLivingBase subclasses, returning false when invisible
+     * will render the entity semitransparent.
+     */
+    public boolean isInvisibleToPlayer(EntityPlayer par1EntityPlayer)
     {
         return isInvisible();
     }
@@ -2289,7 +2303,10 @@ public abstract class Entity
         return true;
     }
 
-    public boolean func_85031_j(Entity par1Entity)
+    /**
+     * Called when a player attacks an entity. If this returns true the attack will not happen.
+     */
+    public boolean hitByEntity(Entity par1Entity)
     {
         return false;
     }
@@ -2383,17 +2400,24 @@ public abstract class Entity
         worldObj.theProfiler.endSection();
     }
 
-    public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
+    /**
+     * Gets a block's resistance to this entity's explosion. Used to make rails immune to TNT minecarts' explosions and
+     * Wither skulls more destructive.
+     */
+    public float getBlockExplosionResistance(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
     {
         return par6Block.getExplosionResistance(this);
     }
 
-    public boolean func_96091_a(Explosion par1Explosion, World par2World, int par3, int i, int j, int k, float f)
+    public boolean shouldExplodeBlock(Explosion par1Explosion, World par2World, int par3, int i, int j, int k, float f)
     {
         return true;
     }
 
-    public int func_82143_as()
+    /**
+     * The number of iterations PathFinder.getSafePoint will execute before giving up.
+     */
+    public int getMaxSafePointTries()
     {
         return oldrange ? 4 : 3;
     }
@@ -2411,7 +2435,7 @@ public abstract class Entity
         return false;
     }
 
-    public void func_85029_a(CrashReportCategory par1CrashReportCategory)
+    public void addEntityCrashInfo(CrashReportCategory par1CrashReportCategory)
     {
         par1CrashReportCategory.addCrashSectionCallable("Entity Type", new CallableEntityType(this));
         par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(entityId));
@@ -2435,12 +2459,12 @@ public abstract class Entity
         return isBurning();
     }
 
-    public UUID func_110124_au()
+    public UUID getUniqueID()
     {
         return entityUniqueID;
     }
 
-    public boolean func_96092_aw()
+    public boolean isPushedByWater()
     {
         return true;
     }

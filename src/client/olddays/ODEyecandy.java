@@ -166,7 +166,7 @@ public class ODEyecandy extends OldDaysModule{
             customwire.setStepSound(Block.soundPowderFootstep);
             customwire.setUnlocalizedName("redstoneDust");
             customwire.disableStats();
-            customwire.func_111022_d("redstone_dust");
+            customwire.setTextureName("redstone_dust");
             Block.blocksList[Block.redstoneWire.blockID] = customwire;
             mod_OldDays.setField(Block.class, null, 74, customwire);//Block: redstoneWire
             Block.blocksList[Block.fence.blockID] = null;

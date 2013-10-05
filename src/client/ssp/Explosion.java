@@ -88,11 +88,11 @@ public class Explosion
                         if (j3 > 0)
                         {
                             Block block = Block.blocksList[j3];
-                            float f3 = exploder == null ? block.getExplosionResistance(exploder) : exploder.func_82146_a(this, worldObj, k2, l2, i3, block);
+                            float f3 = exploder == null ? block.getExplosionResistance(exploder) : exploder.getBlockExplosionResistance(this, worldObj, k2, l2, i3, block);
                             f1 -= (f3 + 0.3F) * f2;
                         }
 
-                        if (f1 > 0.0F && (exploder == null || exploder.func_96091_a(this, worldObj, k2, l2, i3, j3, f1)))
+                        if (f1 > 0.0F && (exploder == null || exploder.shouldExplodeBlock(this, worldObj, k2, l2, i3, j3, f1)))
                         {
                             hashset.add(new ChunkPosition(k2, l2, i3));
                         }
@@ -263,7 +263,10 @@ public class Explosion
         return field_77288_k;
     }
 
-    public EntityLivingBase func_94613_c()
+    /**
+     * Returns either the entity that placed the explosive block, the entity that caused the explosion or null.
+     */
+    public EntityLivingBase getExplosivePlacedBy()
     {
         if (exploder == null)
         {

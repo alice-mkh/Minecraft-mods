@@ -40,11 +40,11 @@ public class EntityCreeper extends EntityMob
         targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(survivaltest ? 10D : 20D);
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.25D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(survivaltest ? 10D : 20D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class EntityCreeper extends EntityMob
         if (!dark){
             return super.getBrightnessForRender(f);
         }
-        float f1 = (float)(10F - func_110143_aJ()) / 20F;
+        float f1 = (float)(10F - getHealth()) / 20F;
         float f2 = (MathHelper.cos((float)entityAge + f) * 0.5F + 0.5F);
         return (int)((f2 * f1 * 0.5F + 0.25F + f1 * 0.25F) * super.getBrightness(f) * 450F);
     }
@@ -152,7 +152,10 @@ public class EntityCreeper extends EntityMob
         return !survivaltest;
     }
 
-    public int func_82143_as()
+    /**
+     * The number of iterations PathFinder.getSafePoint will execute before giving up.
+     */
+    public int getMaxSafePointTries()
     {
         if (oldrange){
             return 4;
@@ -163,7 +166,7 @@ public class EntityCreeper extends EntityMob
         }
         else
         {
-            return 3 + (int)(func_110143_aJ() - 1.0F);
+            return 3 + (int)(getHealth() - 1.0F);
         }
     }
 

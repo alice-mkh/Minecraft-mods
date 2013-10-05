@@ -53,7 +53,7 @@ public class RenderSnowMan2 extends RenderLiving
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110894_a((EntitySnowman)par1Entity);
     }

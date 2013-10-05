@@ -23,7 +23,7 @@ public class GuiStructures extends GuiScreen{
     @Override
     public void initGui(){
         buttonList.add(new GuiButton(0, width / 2 - 155, height - 28, 150, 20, mod_OldDays.lang.get("continue")));
-        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.func_135053_a("gui.cancel")));
+        buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.getString("gui.cancel")));
         for (int i = 0; i < buttons.length; i++){
             buttons[i] = new GuiButton(2 + i, width / 2 - 100, height / 6 + ((i + 1) * 21), 200, 20, "");
             buttonList.add(buttons[i]);

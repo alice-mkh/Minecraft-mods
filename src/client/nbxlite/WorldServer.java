@@ -22,8 +22,12 @@ public class WorldServer extends World
     /** is false if there are no players */
     private boolean allPlayersSleeping;
     private int updateEntityTick;
-    private final Teleporter field_85177_Q = new Teleporter(this);
-    private final SpawnerAnimals field_135059_Q = new SpawnerAnimals();
+
+    /**
+     * the teleporter to use when the entity is being transferred into the dimension
+     */
+    private final Teleporter worldTeleporter = new Teleporter(this);
+    private final SpawnerAnimals animalSpawner = new SpawnerAnimals();
     private ServerBlockEventList blockEventCache[] =
     {
         new ServerBlockEventList(null), new ServerBlockEventList(null)
@@ -40,7 +44,7 @@ public class WorldServer extends World
     /** An IntHashMap of entity IDs (integers) to their Entity objects. */
     private IntHashMap entityIdMap;
 
-    protected OldSpawnerAnimals animalSpawner;
+    protected OldSpawnerAnimals animalSpawner2;
     protected OldSpawnerMonsters monsterSpawner;
     protected OldSpawnerAnimals waterMobSpawner;
     protected OldSpawnerAnimals ambientMobSpawner;
@@ -115,12 +119,12 @@ public class WorldServer extends World
         {
             if (provider.dimensionId!=1){
                     if (ODNBXlite.Generator==ODNBXlite.GEN_NEWBIOMES || !ODNBXlite.OldSpawning){
-                    field_135059_Q.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.getWorldTotalTime() % 400L == 0L);
+                    animalSpawner.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, worldInfo.getWorldTotalTime() % 400L == 0L);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_OLDBIOMES || provider.dimensionId!=0){
                     SpawnerAnimalsBeta.performSpawning(this, spawnHostileMobs, spawnPeacefulMobs);
                 } else if (ODNBXlite.Generator==ODNBXlite.GEN_BIOMELESS){
                     if (spawnPeacefulMobs){
-                        animalSpawner.func_1150_a(this);
+                        animalSpawner2.func_1150_a(this);
                         waterMobSpawner.func_1150_a(this);
                         ambientMobSpawner.func_1150_a(this);
                     }
@@ -129,7 +133,7 @@ public class WorldServer extends World
                     }
                 }
             }else{
-                field_135059_Q.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, true);
+                animalSpawner.findChunksForSpawning(this, spawnHostileMobs, spawnPeacefulMobs, true);
             }
         }
 
@@ -159,7 +163,7 @@ public class WorldServer extends World
         villageCollectionObj.tick();
         villageSiegeObj.tick();
         theProfiler.endStartSection("portalForcer");
-        field_85177_Q.removeStalePortalLocations(getTotalWorldTime());
+        worldTeleporter.removeStalePortalLocations(getTotalWorldTime());
         theProfiler.endSection();
         sendAndApplyBlockEvents();
     }
@@ -624,7 +628,7 @@ public class WorldServer extends World
                             i1 = -1;
                         }
 
-                        CrashReportCategory.func_85068_a(crashreportcategory, nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord, l, i1);
+                        CrashReportCategory.addBlockCrashInfo(crashreportcategory, nextticklistentry1.xCoord, nextticklistentry1.yCoord, nextticklistentry1.zCoord, l, i1);
                         throw new ReportedException(crashreport);
                     }
                 }
@@ -754,7 +758,7 @@ public class WorldServer extends World
      */
     public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
     {
-        return !mcServer.func_96290_a(this, par2, par3, par4, par1EntityPlayer);
+        return !mcServer.isBlockProtected(this, par2, par3, par4, par1EntityPlayer);
     }
 
     protected void initialize(WorldSettings par1WorldSettings)
@@ -962,7 +966,10 @@ public class WorldServer extends World
         chunkProvider.saveChunks(par1, par2IProgressUpdate);
     }
 
-    public void func_104140_m()
+    /**
+     * saves chunk data - currently only called during execution of the Save All command
+     */
+    public void saveChunkData()
     {
         if (!chunkProvider.canSave())
         {
@@ -970,7 +977,7 @@ public class WorldServer extends World
         }
         else
         {
-            chunkProvider.func_104112_b();
+            chunkProvider.saveExtraData();
             return;
         }
     }
@@ -1207,12 +1214,12 @@ public class WorldServer extends World
 
     public Teleporter getDefaultTeleporter()
     {
-        return field_85177_Q;
+        return worldTeleporter;
     }
 
     public void turnOnOldSpawners()
     {
-        animalSpawner = new OldSpawnerAnimals(15, EnumCreatureType.creature);
+        animalSpawner2 = new OldSpawnerAnimals(15, EnumCreatureType.creature);
         monsterSpawner = new OldSpawnerMonsters(200, EnumCreatureType.monster);
         waterMobSpawner = new OldSpawnerAnimals(5, EnumCreatureType.waterCreature);
         ambientMobSpawner = new OldSpawnerAnimals(15, EnumCreatureType.ambient);

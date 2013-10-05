@@ -34,7 +34,7 @@ public class FakeServer extends IntegratedServer
     {
         super(par1Minecraft, par2Str, par3Str, par4WorldSettings);
         field_71348_o = false;
-        setServerOwner(par1Minecraft.func_110432_I().func_111285_a());
+        setServerOwner(par1Minecraft.getSession().getUsername());
         setFolderName(par2Str);
         setWorldName(par3Str);
         setDemo(par1Minecraft.isDemo());
@@ -138,8 +138,8 @@ public class FakeServer extends IntegratedServer
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
-        par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableTypeFake(this));
-//         par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableModded(mc));
+        par1CrashReport.getCategory().addCrashSectionCallable("Type", new CallableTypeFake(this));
+//         par1CrashReport.getCategory().addCrashSectionCallable("Is Modded", new CallableModded(mc));
         return par1CrashReport;
     }
 
@@ -263,7 +263,7 @@ public class FakeServer extends IntegratedServer
     @Override
     public String[] getAllUsernames()
     {
-        return new String[]{mc.func_110432_I().func_111285_a()};
+        return new String[]{mc.getSession().getUsername()};
     }
 
     @Override

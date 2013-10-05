@@ -197,7 +197,7 @@ public class EntityFX extends Entity
     {
     }
 
-    public void func_110125_a(Icon par1Icon)
+    public void setParticleIcon(Icon par1Icon)
     {
         if (getFXLayer() == 1)
         {

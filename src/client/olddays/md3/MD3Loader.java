@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class MD3Loader {
 
    public final MD3Model load(String var1) throws IOException {
-      InputStream var5 = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation(var1)).func_110527_b();
+      InputStream var5 = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(var1)).getInputStream();
       ByteArrayOutputStream var2 = new ByteArrayOutputStream();
       byte[] var3 = new byte[4096];
 

@@ -15,7 +15,7 @@ public class RenderGroup extends Render{
             GL11.glNewList(b.list, GL11.GL_COMPILE);
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_LIGHTING);
-            func_110776_a(TextureMap.field_110575_b);
+            bindTexture(TextureMap.locationBlocksTexture);
             Tessellator tessellator1 = Tessellator.instance;
             tessellator1.startDrawingQuads();
             tessellator1.setTranslation(-b.x, -b.y, -b.z);
@@ -44,7 +44,7 @@ public class RenderGroup extends Render{
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return null;
     }

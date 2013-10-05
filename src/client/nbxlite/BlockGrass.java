@@ -82,10 +82,10 @@ public class BlockGrass extends Block
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        blockIcon = par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_side").toString());
-        iconGrassTop = par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_top").toString());
-        iconSnowSide = par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_side_snowed").toString());
-        iconGrassSideOverlay = par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_side_overlay").toString());
+        blockIcon = par1IconRegister.registerIcon((new StringBuilder()).append(getTextureName()).append("_side").toString());
+        iconGrassTop = par1IconRegister.registerIcon((new StringBuilder()).append(getTextureName()).append("_top").toString());
+        iconSnowSide = par1IconRegister.registerIcon((new StringBuilder()).append(getTextureName()).append("_side_snowed").toString());
+        iconGrassSideOverlay = par1IconRegister.registerIcon((new StringBuilder()).append(getTextureName()).append("_side_overlay").toString());
         iconGrassTopBiomeless = par1IconRegister.registerIcon("olddays_grass_top");
         iconGrassSideBiomeless = par1IconRegister.registerIcon("olddays_grass_side");
     }

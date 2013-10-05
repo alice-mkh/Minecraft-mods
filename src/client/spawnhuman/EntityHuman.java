@@ -9,15 +9,15 @@ public class EntityHuman extends EntityAnimal
     }
 
     @Override
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
+        super.applyEntityAttributes();
         if (mod_SpawnHuman.Health==0){
-            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(9999D);
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(9999D);
         }else{
-            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(mod_SpawnHuman.Health);
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(mod_SpawnHuman.Health);
         }
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(1.2D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1.2D);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class EntityHuman extends EntityAnimal
             double d3 = vec3d.yCoord - (double)i;
             float f2 = (float)((Math.atan2(d2, d1) * 180D) / 3.1415927410125732D) - 90F;
             float f3 = f2 - rotationYaw;
-            moveForward = (float)func_110148_a(SharedMonsterAttributes.field_111263_d).func_111126_e();
+            moveForward = (float)getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
             for(; f3 < -180F; f3 += 360F) { }
             for(; f3 >= 180F; f3 -= 360F) { }
             if(f3 > 10F)

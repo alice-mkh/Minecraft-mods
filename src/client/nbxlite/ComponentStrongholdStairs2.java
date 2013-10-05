@@ -8,6 +8,11 @@ public class ComponentStrongholdStairs2 extends ComponentStrongholdStairs
     public ComponentStrongholdPortalRoom strongholdPortalRoom;
     public List field_75026_c;
 
+    public ComponentStrongholdStairs2()
+    {
+        field_75026_c = new ArrayList();
+    }
+
     public ComponentStrongholdStairs2(int par1, Random par2Random, int par3, int par4)
     {
         super(0, par2Random, par3, par4);

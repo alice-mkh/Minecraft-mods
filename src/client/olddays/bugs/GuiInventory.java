@@ -80,7 +80,7 @@ public class GuiInventory extends InventoryEffectRenderer
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        fontRenderer.drawString(I18n.func_135053_a("container.crafting"), 86, 16, 0x404040);
+        fontRenderer.drawString(I18n.getString("container.crafting"), 86, 16, 0x404040);
     }
 
     /**
@@ -99,7 +99,7 @@ public class GuiInventory extends InventoryEffectRenderer
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.func_110434_K().func_110577_a(field_110408_a);
+        mc.getTextureManager().bindTexture(field_110408_a);
         int i = guiLeft;
         int j = guiTop;
         drawTexturedModalRect(i, j, 0, 0, xSize, ySize);

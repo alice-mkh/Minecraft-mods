@@ -33,7 +33,7 @@ public class RenderPlayer2 extends RendererLivingEntity
             if (item instanceof ItemArmor)
             {
                 ItemArmor itemarmor = (ItemArmor)item;
-                func_110776_a(RenderBiped.func_110857_a(itemarmor, par2));
+                bindTexture(RenderBiped.func_110857_a(itemarmor, par2));
                 ModelBiped modelbiped = par2 != 2 ? modelArmorChestplate : modelArmor;
                 modelbiped.bipedHead.showModel = par2 == 0;
                 modelbiped.bipedHeadwear.showModel = par2 == 0;
@@ -77,7 +77,7 @@ public class RenderPlayer2 extends RendererLivingEntity
 
             if (item instanceof ItemArmor)
             {
-                func_110776_a(RenderBiped.func_110858_a((ItemArmor)item, par2, "overlay"));
+                bindTexture(RenderBiped.func_110858_a((ItemArmor)item, par2, "overlay"));
                 float f = Minecraft.oldlighting ? par1AbstractClientPlayer.getBrightness(par3) : 1.0F;
                 GL11.glColor3f(f, f, f);
             }
@@ -113,7 +113,7 @@ public class RenderPlayer2 extends RendererLivingEntity
             d -= 0.125D;
         }
 
-        super.func_130000_a(par1AbstractClientPlayer, par2, d, par6, par8, par9);
+        super.doRenderLiving(par1AbstractClientPlayer, par2, d, par6, par8, par9);
         modelArmorChestplate.aimedBow = modelArmor.aimedBow = modelBipedMain.aimedBow = false;
         modelArmorChestplate.isSneak = modelArmor.isSneak = modelBipedMain.isSneak = false;
         modelArmorChestplate.heldItemRight = modelArmor.heldItemRight = modelBipedMain.heldItemRight = 0;
@@ -121,7 +121,7 @@ public class RenderPlayer2 extends RendererLivingEntity
 
     protected ResourceLocation func_110817_a(AbstractClientPlayer par1AbstractClientPlayer)
     {
-        return par1AbstractClientPlayer.func_110306_p();
+        return par1AbstractClientPlayer.getLocationSkin();
     }
 
     /**
@@ -169,9 +169,9 @@ public class RenderPlayer2 extends RendererLivingEntity
             GL11.glPopMatrix();
         }
 
-        if (par1AbstractClientPlayer.getCommandSenderName().equals("deadmau5") && par1AbstractClientPlayer.func_110309_l().func_110557_a())
+        if (par1AbstractClientPlayer.getCommandSenderName().equals("deadmau5") && par1AbstractClientPlayer.getTextureSkin().isTextureUploaded())
         {
-            func_110776_a(par1AbstractClientPlayer.func_110306_p());
+            bindTexture(par1AbstractClientPlayer.getLocationSkin());
 
             for (int i = 0; i < 2; i++)
             {
@@ -191,13 +191,13 @@ public class RenderPlayer2 extends RendererLivingEntity
             }
         }
 
-        boolean flag = par1AbstractClientPlayer.func_110310_o().func_110557_a();
+        boolean flag = par1AbstractClientPlayer.getTextureCape().isTextureUploaded();
         boolean flag1 = !par1AbstractClientPlayer.isInvisible();
         boolean flag2 = !par1AbstractClientPlayer.getHideCape();
 
         if (flag && flag1 && flag2)
         {
-            func_110776_a(par1AbstractClientPlayer.func_110303_q());
+            bindTexture(par1AbstractClientPlayer.getLocationCape());
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);
             double d = (par1AbstractClientPlayer.field_71091_bM + (par1AbstractClientPlayer.field_71094_bP - par1AbstractClientPlayer.field_71091_bM) * (double)par2) - (par1AbstractClientPlayer.prevPosX + (par1AbstractClientPlayer.posX - par1AbstractClientPlayer.prevPosX) * (double)par2);
@@ -458,12 +458,12 @@ public class RenderPlayer2 extends RendererLivingEntity
         renderPlayerSleep((AbstractClientPlayer)par1EntityLivingBase, par2, par4, par6);
     }
 
-    public void func_130000_a(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
+    public void doRenderLiving(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
     {
         func_130009_a((AbstractClientPlayer)par1EntityLivingBase, par2, par4, par6, par8, par9);
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110817_a((AbstractClientPlayer)par1Entity);
     }

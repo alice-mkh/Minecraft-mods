@@ -15,7 +15,7 @@ public class CommandClientKill extends CommandKill
     {
         EntityPlayer entityplayer = getCommandSenderAsPlayer2(par1ICommandSender);
         entityplayer.attackEntityFrom(DamageSource.outOfWorld, 1000);
-        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111077_e("commands.kill.success"));
+        par1ICommandSender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("commands.kill.success"));
     }
 
     /**

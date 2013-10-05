@@ -10,7 +10,7 @@ public abstract class EntityLiving extends EntityLivingBase
     public static boolean fastzombies = false;
 
     public double getRealMoveSpeed(){
-        double base = func_110148_a(SharedMonsterAttributes.field_111263_d).func_111126_e();
+        double base = getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
         if (isAIEnabled() && !newai()){
             if (this instanceof EntityAnimal ||
                 this instanceof EntityCreeper ||
@@ -111,8 +111,8 @@ public abstract class EntityLiving extends EntityLivingBase
 
     /** How long to keep a specific target entity */
     protected int numTicksToChaseTarget;
-    private boolean field_110169_bv;
-    private Entity field_110168_bw;
+    private boolean isLeashed;
+    private Entity leashedToEntity;
     private NBTTagCompound field_110170_bx;
 
     public EntityLiving(World par1World)
@@ -135,10 +135,10 @@ public abstract class EntityLiving extends EntityLivingBase
         }
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110140_aT().func_111150_b(SharedMonsterAttributes.field_111265_b).func_111128_a(16D);
+        super.applyEntityAttributes();
+        getAttributeMap().func_111150_b(SharedMonsterAttributes.followRange).setAttribute(16D);
     }
 
     public EntityLookHelper getLookHelper()
@@ -385,21 +385,21 @@ public abstract class EntityLiving extends EntityLivingBase
 
         par1NBTTagCompound.setTag("DropChances", nbttaglist1);
         par1NBTTagCompound.setString("CustomName", getCustomNameTag());
-        par1NBTTagCompound.setBoolean("CustomNameVisible", func_94062_bN());
-        par1NBTTagCompound.setBoolean("Leashed", field_110169_bv);
+        par1NBTTagCompound.setBoolean("CustomNameVisible", getAlwaysRenderNameTag());
+        par1NBTTagCompound.setBoolean("Leashed", isLeashed);
 
-        if (field_110168_bw != null)
+        if (leashedToEntity != null)
         {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound("Leash");
 
-            if (field_110168_bw instanceof EntityLivingBase)
+            if (leashedToEntity instanceof EntityLivingBase)
             {
-                nbttagcompound1.setLong("UUIDMost", field_110168_bw.func_110124_au().getMostSignificantBits());
-                nbttagcompound1.setLong("UUIDLeast", field_110168_bw.func_110124_au().getLeastSignificantBits());
+                nbttagcompound1.setLong("UUIDMost", leashedToEntity.getUniqueID().getMostSignificantBits());
+                nbttagcompound1.setLong("UUIDLeast", leashedToEntity.getUniqueID().getLeastSignificantBits());
             }
-            else if (field_110168_bw instanceof EntityHanging)
+            else if (leashedToEntity instanceof EntityHanging)
             {
-                EntityHanging entityhanging = (EntityHanging)field_110168_bw;
+                EntityHanging entityhanging = (EntityHanging)leashedToEntity;
                 nbttagcompound1.setInteger("X", entityhanging.xPosition);
                 nbttagcompound1.setInteger("Y", entityhanging.yPosition);
                 nbttagcompound1.setInteger("Z", entityhanging.zPosition);
@@ -420,10 +420,10 @@ public abstract class EntityLiving extends EntityLivingBase
 
         if (par1NBTTagCompound.hasKey("CustomName") && par1NBTTagCompound.getString("CustomName").length() > 0)
         {
-            func_94058_c(par1NBTTagCompound.getString("CustomName"));
+            setCustomNameTag(par1NBTTagCompound.getString("CustomName"));
         }
 
-        func_94061_f(par1NBTTagCompound.getBoolean("CustomNameVisible"));
+        setAlwaysRenderNameTag(par1NBTTagCompound.getBoolean("CustomNameVisible"));
 
         if (par1NBTTagCompound.hasKey("Equipment"))
         {
@@ -445,9 +445,9 @@ public abstract class EntityLiving extends EntityLivingBase
             }
         }
 
-        field_110169_bv = par1NBTTagCompound.getBoolean("Leashed");
+        isLeashed = par1NBTTagCompound.getBoolean("Leashed");
 
-        if (field_110169_bv && par1NBTTagCompound.hasKey("Leash"))
+        if (isLeashed && par1NBTTagCompound.hasKey("Leash"))
         {
             field_110170_bx = par1NBTTagCompound.getCompoundTag("Leash");
         }
@@ -837,7 +837,10 @@ public abstract class EntityLiving extends EntityLivingBase
         return currentTarget;
     }
 
-    public int func_82143_as()
+    /**
+     * The number of iterations PathFinder.getSafePoint will execute before giving up.
+     */
+    public int getMaxSafePointTries()
     {
         if (oldrange){
             return 4;
@@ -847,7 +850,7 @@ public abstract class EntityLiving extends EntityLivingBase
             return 3;
         }
 
-        int i = (int)(func_110143_aJ() - func_110138_aP() * 0.33F);
+        int i = (int)(getHealth() - getMaxHealth() * 0.33F);
         i -= (3 - worldObj.difficultySetting) * 4;
 
         if (i < 0)
@@ -874,9 +877,9 @@ public abstract class EntityLiving extends EntityLivingBase
         return equipment[par1];
     }
 
-    public ItemStack func_130225_q(int i)
+    public ItemStack func_130225_q(int par1)
     {
-        return equipment[i + 1];
+        return equipment[par1 + 1];
     }
 
     /**
@@ -934,7 +937,7 @@ public abstract class EntityLiving extends EntityLivingBase
      */
     protected void addRandomArmor()
     {
-        if (rand.nextFloat() < 0.15F * worldObj.func_110746_b(posX, posY, posZ))
+        if (rand.nextFloat() < 0.15F * worldObj.getLocationTensionFactor(posX, posY, posZ))
         {
             int i = rand.nextInt(2);
             float f = worldObj.difficultySetting != 3 ? 0.25F : 0.1F;
@@ -1128,7 +1131,7 @@ public abstract class EntityLiving extends EntityLivingBase
      */
     protected void enchantEquipment()
     {
-        float f = worldObj.func_110746_b(posX, posY, posZ);
+        float f = worldObj.getLocationTensionFactor(posX, posY, posZ);
 
         if (getHeldItem() != null && rand.nextFloat() < 0.25F * f)
         {
@@ -1146,9 +1149,9 @@ public abstract class EntityLiving extends EntityLivingBase
         }
     }
 
-    public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData)
+    public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
-        func_110148_a(SharedMonsterAttributes.field_111265_b).func_111121_a(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.050000000000000003D, 1));
+        getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.050000000000000003D, 1));
         return par1EntityLivingData;
     }
 
@@ -1181,7 +1184,7 @@ public abstract class EntityLiving extends EntityLivingBase
         persistenceRequired = true;
     }
 
-    public void func_94058_c(String par1Str)
+    public void setCustomNameTag(String par1Str)
     {
         dataWatcher.updateObject(10, par1Str);
     }
@@ -1196,19 +1199,19 @@ public abstract class EntityLiving extends EntityLivingBase
         return dataWatcher.getWatchableObjectString(10).length() > 0;
     }
 
-    public void func_94061_f(boolean par1)
+    public void setAlwaysRenderNameTag(boolean par1)
     {
         dataWatcher.updateObject(11, Byte.valueOf(((byte)(par1 ? 1 : 0))));
     }
 
-    public boolean func_94062_bN()
+    public boolean getAlwaysRenderNameTag()
     {
         return dataWatcher.getWatchableObjectByte(11) == 1;
     }
 
     public boolean getAlwaysRenderNameTagForRender()
     {
-        return func_94062_bN();
+        return getAlwaysRenderNameTag();
     }
 
     public void setEquipmentDropChance(int par1, float par2)
@@ -1226,35 +1229,38 @@ public abstract class EntityLiving extends EntityLivingBase
         canPickUpLoot = par1;
     }
 
-    public boolean func_104002_bU()
+    public boolean isNoDespawnRequired()
     {
         return persistenceRequired;
     }
 
-    public final boolean func_130002_c(EntityPlayer par1EntityPlayer)
+    /**
+     * First layer of player interaction
+     */
+    public final boolean interactFirst(EntityPlayer par1EntityPlayer)
     {
-        if (func_110167_bD() && func_110166_bE() == par1EntityPlayer)
+        if (getLeashed() && getLeashedToEntity() == par1EntityPlayer)
         {
-            func_110160_i(true, !par1EntityPlayer.capabilities.isCreativeMode);
+            clearLeashed(true, !par1EntityPlayer.capabilities.isCreativeMode);
             return true;
         }
 
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
 
-        if (itemstack != null && itemstack.itemID == Item.field_111214_ch.itemID && func_110164_bC())
+        if (itemstack != null && itemstack.itemID == Item.leash.itemID && allowLeashing())
         {
             if ((this instanceof EntityTameable) && ((EntityTameable)this).isTamed())
             {
                 if (par1EntityPlayer.getCommandSenderName().equalsIgnoreCase(((EntityTameable)this).getOwnerName()))
                 {
-                    func_110162_b(par1EntityPlayer, true);
+                    setLeashedToEntity(par1EntityPlayer, true);
                     itemstack.stackSize--;
                     return true;
                 }
             }
             else
             {
-                func_110162_b(par1EntityPlayer, true);
+                setLeashedToEntity(par1EntityPlayer, true);
                 itemstack.stackSize--;
                 return true;
             }
@@ -1266,7 +1272,7 @@ public abstract class EntityLiving extends EntityLivingBase
         }
         else
         {
-            return super.func_130002_c(par1EntityPlayer);
+            return super.interactFirst(par1EntityPlayer);
         }
     }
 
@@ -1282,17 +1288,17 @@ public abstract class EntityLiving extends EntityLivingBase
     {
         if (field_110170_bx != null)
         {
-            func_110165_bF();
+            recreateLeash();
         }
 
-        if (!field_110169_bv)
+        if (!isLeashed)
         {
             return;
         }
 
-        if (field_110168_bw == null || field_110168_bw.isDead)
+        if (leashedToEntity == null || leashedToEntity.isDead)
         {
-            func_110160_i(true, true);
+            clearLeashed(true, true);
             return;
         }
         else
@@ -1301,16 +1307,19 @@ public abstract class EntityLiving extends EntityLivingBase
         }
     }
 
-    public void func_110160_i(boolean par1, boolean par2)
+    /**
+     * Removes the leash from this entity. Second parameter tells whether to send a packet to surrounding players.
+     */
+    public void clearLeashed(boolean par1, boolean par2)
     {
-        if (field_110169_bv)
+        if (isLeashed)
         {
-            field_110169_bv = false;
-            field_110168_bw = null;
+            isLeashed = false;
+            leashedToEntity = null;
 
             if (!worldObj.isRemote && par2)
             {
-                dropItem(Item.field_111214_ch.itemID, 1);
+                dropItem(Item.leash.itemID, 1);
             }
 
             if (!worldObj.isRemote && par1 && (worldObj instanceof WorldServer))
@@ -1320,37 +1329,41 @@ public abstract class EntityLiving extends EntityLivingBase
         }
     }
 
-    public boolean func_110164_bC()
+    public boolean allowLeashing()
     {
-        return !func_110167_bD() && !(this instanceof IMob);
+        return !getLeashed() && !(this instanceof IMob);
     }
 
-    public boolean func_110167_bD()
+    public boolean getLeashed()
     {
-        return field_110169_bv;
+        return isLeashed;
     }
 
-    public Entity func_110166_bE()
+    public Entity getLeashedToEntity()
     {
-        return field_110168_bw;
+        return leashedToEntity;
     }
 
-    public void func_110162_b(Entity par1Entity, boolean par2)
+    /**
+     * Sets the entity to be leashed to.\nArgs:\n@param par1Entity: The entity to be tethered to.\n@param par2: Whether
+     * to send an attaching notification packet to surrounding players.
+     */
+    public void setLeashedToEntity(Entity par1Entity, boolean par2)
     {
-        field_110169_bv = true;
-        field_110168_bw = par1Entity;
+        isLeashed = true;
+        leashedToEntity = par1Entity;
 
         if (!worldObj.isRemote && par2 && (worldObj instanceof WorldServer))
         {
-            ((WorldServer)worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet39AttachEntity(1, this, field_110168_bw));
+            ((WorldServer)worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet39AttachEntity(1, this, leashedToEntity));
         }
     }
 
-    private void func_110165_bF()
+    private void recreateLeash()
     {
         label0:
         {
-            if (!field_110169_bv || field_110170_bx == null)
+            if (!isLeashed || field_110170_bx == null)
             {
                 break label0;
             }
@@ -1371,27 +1384,27 @@ public abstract class EntityLiving extends EntityLivingBase
 
                     entitylivingbase = (EntityLivingBase)iterator.next();
                 }
-                while (!entitylivingbase.func_110124_au().equals(uuid));
+                while (!entitylivingbase.getUniqueID().equals(uuid));
 
-                field_110168_bw = entitylivingbase;
+                leashedToEntity = entitylivingbase;
             }
             else if (field_110170_bx.hasKey("X") && field_110170_bx.hasKey("Y") && field_110170_bx.hasKey("Z"))
             {
                 int i = field_110170_bx.getInteger("X");
                 int j = field_110170_bx.getInteger("Y");
                 int k = field_110170_bx.getInteger("Z");
-                EntityLeashKnot entityleashknot = EntityLeashKnot.func_110130_b(worldObj, i, j, k);
+                EntityLeashKnot entityleashknot = EntityLeashKnot.getKnotForBlock(worldObj, i, j, k);
 
                 if (entityleashknot == null)
                 {
                     entityleashknot = EntityLeashKnot.func_110129_a(worldObj, i, j, k);
                 }
 
-                field_110168_bw = entityleashknot;
+                leashedToEntity = entityleashknot;
             }
             else
             {
-                func_110160_i(false, true);
+                clearLeashed(false, true);
             }
         }
         field_110170_bx = null;

@@ -9,6 +9,15 @@ public class StructureMineshaftPieces
     private static final WeightedRandomChestContent mineshaftChestContents_old[];
     private static final WeightedRandomChestContent mineshaftChestContents_older[];
 
+    public static void func_143048_a()
+    {
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentMineshaftCorridor.class, "MSCorridor");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentMineshaftCorridorOld.class, "MSCorridorOld");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentMineshaftCross.class, "MSCrossing");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentMineshaftRoom.class, "MSRoom");
+        MapGenStructureIO.func_143031_a(net.minecraft.src.ComponentMineshaftStairs.class, "MSStairs");
+    }
+
     private static StructureComponent getRandomComponent(List par0List, Random par1Random, int par2, int par3, int par4, int par5, int par6)
     {
         int i = par1Random.nextInt(100);
@@ -85,7 +94,7 @@ public class StructureMineshaftPieces
         mineshaftChestContents = (new WeightedRandomChestContent[]
                 {
                     new WeightedRandomChestContent(Item.ingotIron.itemID, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.itemID, 0, 1, 3, 5), new WeightedRandomChestContent(Item.redstone.itemID, 0, 4, 9, 5), new WeightedRandomChestContent(Item.dyePowder.itemID, 4, 4, 9, 5), new WeightedRandomChestContent(Item.diamond.itemID, 0, 1, 2, 3), new WeightedRandomChestContent(Item.coal.itemID, 0, 3, 8, 10), new WeightedRandomChestContent(Item.bread.itemID, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeIron.itemID, 0, 1, 1, 1), new WeightedRandomChestContent(Block.rail.blockID, 0, 4, 8, 1), new WeightedRandomChestContent(Item.melonSeeds.itemID, 0, 2, 4, 10),
-                    new WeightedRandomChestContent(Item.pumpkinSeeds.itemID, 0, 2, 4, 10), new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.field_111215_ce.itemID, 0, 1, 1, 1)
+                    new WeightedRandomChestContent(Item.pumpkinSeeds.itemID, 0, 2, 4, 10), new WeightedRandomChestContent(Item.saddle.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.horseArmorIron.itemID, 0, 1, 1, 1)
                 });
         mineshaftChestContents_old = (new WeightedRandomChestContent[]
                 {

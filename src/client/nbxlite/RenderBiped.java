@@ -70,7 +70,7 @@ public class RenderBiped extends RenderLiving
             if (item instanceof ItemArmor)
             {
                 ItemArmor itemarmor = (ItemArmor)item;
-                func_110776_a(func_110857_a(itemarmor, par2));
+                bindTexture(func_110857_a(itemarmor, par2));
                 ModelBiped modelbiped = par2 != 2 ? field_82423_g : field_82425_h;
                 modelbiped.bipedHead.showModel = par2 == 0;
                 modelbiped.bipedHeadwear.showModel = par2 == 0;
@@ -112,7 +112,7 @@ public class RenderBiped extends RenderLiving
 
             if (item instanceof ItemArmor)
             {
-                func_110776_a(func_110858_a((ItemArmor)item, par2, "overlay"));
+                bindTexture(func_110858_a((ItemArmor)item, par2, "overlay"));
             }
         }
     }
@@ -283,7 +283,10 @@ public class RenderBiped extends RenderLiving
         doRenderLiving((EntityLiving)par1EntityLivingBase, par2, par4, par6, par8, par9);
     }
 
-    protected ResourceLocation func_110775_a(Entity par1Entity)
+    /**
+     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+     */
+    protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return func_110856_a((EntityLiving)par1Entity);
     }

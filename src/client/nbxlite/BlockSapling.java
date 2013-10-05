@@ -202,7 +202,7 @@ public class BlockSapling extends BlockFlower
 
         for (int i = 0; i < saplingIcon.length; i++)
         {
-            saplingIcon[i] = par1IconRegister.registerIcon((new StringBuilder()).append(func_111023_E()).append("_").append(WOOD_TYPES[i]).toString());
+            saplingIcon[i] = par1IconRegister.registerIcon((new StringBuilder()).append(getTextureName()).append("_").append(WOOD_TYPES[i]).toString());
         }
     }
 }

@@ -6,9 +6,9 @@ public class EntitySlime extends EntityLiving implements IMob
 {
     public static int slimeSpawn = 5;
 
-    public float field_70813_a;
-    public float field_70811_b;
-    public float field_70812_c;
+    public float squishAmount;
+    public float squishFactor;
+    public float prevSquishFactor;
 
     /** the time between each jump of the slime */
     private int slimeJumpDelay;
@@ -33,8 +33,8 @@ public class EntitySlime extends EntityLiving implements IMob
         dataWatcher.updateObject(16, new Byte((byte)par1));
         setSize(0.6F * (float)par1, 0.6F * (float)par1);
         setPosition(posX, posY, posZ);
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(par1 * par1);
-        setEntityHealth(func_110138_aP());
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(par1 * par1);
+        setHealth(getMaxHealth());
         experienceValue = par1;
     }
 
@@ -90,8 +90,8 @@ public class EntitySlime extends EntityLiving implements IMob
             isDead = true;
         }
 
-        field_70811_b += (field_70813_a - field_70811_b) * 0.5F;
-        field_70812_c = field_70811_b;
+        squishFactor += (squishAmount - squishFactor) * 0.5F;
+        prevSquishFactor = squishFactor;
         boolean flag = onGround;
         super.onUpdate();
 
@@ -113,14 +113,14 @@ public class EntitySlime extends EntityLiving implements IMob
                 playSound(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             }
 
-            field_70813_a = -0.5F;
+            squishAmount = -0.5F;
         }
         else if (!onGround && flag)
         {
-            field_70813_a = 1.0F;
+            squishAmount = 1.0F;
         }
 
-        func_70808_l();
+        alterSquishAmount();
 
         if (worldObj.isRemote)
         {
@@ -169,9 +169,9 @@ public class EntitySlime extends EntityLiving implements IMob
         }
     }
 
-    protected void func_70808_l()
+    protected void alterSquishAmount()
     {
-        field_70813_a *= 0.6F;
+        squishAmount *= 0.6F;
     }
 
     /**
@@ -194,7 +194,7 @@ public class EntitySlime extends EntityLiving implements IMob
     {
         int i = getSlimeSize();
 
-        if (!worldObj.isRemote && i > 1 && func_110143_aJ() <= 0.0F)
+        if (!worldObj.isRemote && i > 1 && getHealth() <= 0.0F)
         {
             int j = 2 + rand.nextInt(3);
 
@@ -311,7 +311,7 @@ public class EntitySlime extends EntityLiving implements IMob
         {
             BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && (slimeSpawn > 5 || (rand.nextFloat() < 0.5F && rand.nextFloat() < worldObj.func_130001_d())) && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
+            if (biomegenbase == BiomeGenBase.swampland && posY > 50D && posY < 70D && (slimeSpawn > 5 || (rand.nextFloat() < 0.5F && rand.nextFloat() < worldObj.getCurrentMoonPhaseFactor())) && worldObj.getBlockLightValue(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) <= rand.nextInt(8))
             {
                 return super.getCanSpawnHere();
             }

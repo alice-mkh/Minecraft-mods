@@ -264,9 +264,9 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     }
 
     @Override
-    public void func_110298_a(EntityHorse par1EntityHorse, IInventory par2IInventory)
+    public void displayGUIHorse(EntityHorse par1EntityHorse, IInventory par2IInventory)
     {
-        realPlayer.func_110298_a(par1EntityHorse, par2IInventory);
+        realPlayer.displayGUIHorse(par1EntityHorse, par2IInventory);
     }
 
     @Override
@@ -331,8 +331,8 @@ public class EntityPlayerFakeMP extends EntityPlayerMP
     @Override
     public void addChatMessage(String par1Str)
     {
-        String var3 = I18n.func_135053_a(par1Str);
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat((ChatMessageComponent.func_111077_e(var3))));
+        String var3 = I18n.getString(par1Str);
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat((ChatMessageComponent.createFromTranslationKey(var3))));
     }
 
     /**

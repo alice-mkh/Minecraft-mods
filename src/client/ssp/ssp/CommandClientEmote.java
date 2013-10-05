@@ -15,7 +15,7 @@ public class CommandClientEmote extends CommandServerEmote
         if (par2ArrayOfStr.length > 0)
         {
             String s = func_82360_a(par1ICommandSender, par2ArrayOfStr, 0);
-            Minecraft.getMinecraft().thePlayer.sendChatToPlayer(ChatMessageComponent.func_111082_b("chat.type.emote", new Object[]
+            Minecraft.getMinecraft().thePlayer.sendChatToPlayer(ChatMessageComponent.createFromTranslationWithSubstitutions("chat.type.emote", new Object[]
                     {
                         par1ICommandSender.getCommandSenderName(), s
                     }));

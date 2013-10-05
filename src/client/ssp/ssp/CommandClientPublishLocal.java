@@ -14,9 +14,9 @@ public class CommandClientPublishLocal extends CommandServerPublishLocal
     {
         Minecraft.getMinecraft().quitAndStartServer();
         String s = MinecraftServer.getServer().shareToLAN(EnumGameType.SURVIVAL, false);
-        ChatMessageComponent c = ChatMessageComponent.func_111077_e("commands.publish.failed");
+        ChatMessageComponent c = ChatMessageComponent.createFromTranslationKey("commands.publish.failed");
         if (s != null){
-            c = ChatMessageComponent.func_111082_b("commands.publish.started", new Object[]{s});
+            c = ChatMessageComponent.createFromTranslationWithSubstitutions("commands.publish.started", new Object[]{s});
         }
         par1ICommandSender.sendChatToPlayer(c);
     }

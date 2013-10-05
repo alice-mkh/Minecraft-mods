@@ -245,7 +245,7 @@ public class PathFinder
                     break;
                 }
 
-                if (j++ >= par1Entity.func_82143_as())
+                if (j++ >= par1Entity.getMaxSafePointTries())
                 {
                     return null;
                 }

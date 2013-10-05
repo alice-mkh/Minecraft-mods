@@ -164,12 +164,12 @@ public class ItemBow extends Item
 
     public void registerIcons(IconRegister par1IconRegister)
     {
-        itemIcon = par1IconRegister.registerIcon((new StringBuilder()).append(func_111208_A()).append("_standby").toString());
+        itemIcon = par1IconRegister.registerIcon((new StringBuilder()).append(getIconString()).append("_standby").toString());
         iconArray = new Icon[bowPullIconNameArray.length];
 
         for (int i = 0; i < iconArray.length; i++)
         {
-            iconArray[i] = par1IconRegister.registerIcon((new StringBuilder()).append(func_111208_A()).append("_").append(bowPullIconNameArray[i]).toString());
+            iconArray[i] = par1IconRegister.registerIcon((new StringBuilder()).append(getIconString()).append("_").append(bowPullIconNameArray[i]).toString());
         }
     }
 

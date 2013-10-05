@@ -31,9 +31,9 @@ public class EntitySteve extends EntityCreature implements IMob{
     }*/
 
     @Override
-    protected void func_110147_ax(){
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(5D);
+    protected void applyEntityAttributes(){
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(5D);
     }
 
     public static class RenderMD3Steve extends RenderMD3{

@@ -5,8 +5,8 @@ import net.minecraft.src.nbxlite.oldbiomes.*;
 
 public class WorldChunkManagerHell extends WorldChunkManager
 {
-    /** The biome generator object. */
-    private BiomeGenBase biomeGenerator;
+    /** this is the sole biome to utilize for this world */
+    private BiomeGenBase biomeToUse;
     private float hellTemperature;
 
     /** The rainfall in the world */
@@ -15,7 +15,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
 
     public WorldChunkManagerHell(BiomeGenBase par1BiomeGenBase, float par2, float par3)
     {
-        biomeGenerator = par1BiomeGenBase;
+        biomeToUse = par1BiomeGenBase;
         hellTemperature = par2;
         rainfall = par3;
         oldField_4201_e = OldBiomeGenBase.hell;
@@ -57,7 +57,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
 
     public WorldChunkManagerHell(BiomeGenBase biomegenbase, float f, float f1, OldBiomeGenBase oldbiomegenbase)
     {
-        biomeGenerator = biomegenbase;
+        biomeToUse = biomegenbase;
         hellTemperature = f;
         rainfall = f1;
         oldField_4201_e = oldbiomegenbase;
@@ -68,7 +68,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
      */
     public BiomeGenBase getBiomeGenAt(int par1, int par2)
     {
-        return biomeGenerator;
+        return biomeToUse;
     }
 
     /**
@@ -81,7 +81,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
             par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
         }
 
-        Arrays.fill(par1ArrayOfBiomeGenBase, 0, par4 * par5, biomeGenerator);
+        Arrays.fill(par1ArrayOfBiomeGenBase, 0, par4 * par5, biomeToUse);
         return par1ArrayOfBiomeGenBase;
     }
 
@@ -124,7 +124,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
             par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
         }
 
-        Arrays.fill(par1ArrayOfBiomeGenBase, 0, par4 * par5, biomeGenerator);
+        Arrays.fill(par1ArrayOfBiomeGenBase, 0, par4 * par5, biomeToUse);
         return par1ArrayOfBiomeGenBase;
     }
 
@@ -143,7 +143,7 @@ public class WorldChunkManagerHell extends WorldChunkManager
      */
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {
-        if (par4List.contains(biomeGenerator))
+        if (par4List.contains(biomeToUse))
         {
             return new ChunkPosition((par1 - par3) + par5Random.nextInt(par3 * 2 + 1), 0, (par2 - par3) + par5Random.nextInt(par3 * 2 + 1));
         }
@@ -158,6 +158,6 @@ public class WorldChunkManagerHell extends WorldChunkManager
      */
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {
-        return par4List.contains(biomeGenerator);
+        return par4List.contains(biomeToUse);
     }
 }

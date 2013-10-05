@@ -44,18 +44,18 @@ public class EntityWolf extends EntityTameable
         setTamed(false);
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.30000001192092896D);
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
 
         if (isTamed())
         {
-            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20D);
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20D);
         }
         else
         {
-            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8D);
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8D);
         }
     }
 
@@ -89,13 +89,13 @@ public class EntityWolf extends EntityTameable
      */
     protected void updateAITick()
     {
-        dataWatcher.updateObject(18, Float.valueOf(func_110143_aJ()));
+        dataWatcher.updateObject(18, Float.valueOf(getHealth()));
     }
 
     protected void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(18, new Float(func_110143_aJ()));
+        dataWatcher.addObject(18, new Float(getHealth()));
         dataWatcher.addObject(19, new Byte((byte)0));
         dataWatcher.addObject(20, new Byte((byte)BlockColored.getBlockFromDye(1)));
     }
@@ -144,7 +144,7 @@ public class EntityWolf extends EntityTameable
 
         if (rand.nextInt(3) == 0)
         {
-            if (isTamed() && dataWatcher.func_111145_d(18) < 10F)
+            if (isTamed() && dataWatcher.getWatchableObjectFloat(18) < 10F)
             {
                 return "mob.wolf.whine";
             }
@@ -372,11 +372,11 @@ public class EntityWolf extends EntityTameable
 
         if (par1)
         {
-            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20D);
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20D);
         }
         else
         {
-            func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8D);
+            getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8D);
         }
     }
 
@@ -395,7 +395,7 @@ public class EntityWolf extends EntityTameable
                 {
                     ItemFood itemfood = (ItemFood)Item.itemsList[itemstack.itemID];
 
-                    if (itemfood.isWolfsFavoriteMeat() && dataWatcher.func_111145_d(18) < 20F)
+                    if (itemfood.isWolfsFavoriteMeat() && dataWatcher.getWatchableObjectFloat(18) < 20F)
                     {
                         if (!par1EntityPlayer.capabilities.isCreativeMode)
                         {
@@ -467,7 +467,7 @@ public class EntityWolf extends EntityTameable
                     }else{
                         aiSit.setSitting(true);
                     }
-                    setEntityHealth(20F);
+                    setHealth(20F);
                     setOwner(par1EntityPlayer.getCommandSenderName());
                     playTameEffect(true);
                     worldObj.setEntityState(this, (byte)7);
@@ -508,7 +508,7 @@ public class EntityWolf extends EntityTameable
 
         if (isTamed())
         {
-            return (0.55F - (20F - dataWatcher.func_111145_d(18)) * 0.02F) * (float)Math.PI;
+            return (0.55F - (20F - dataWatcher.getWatchableObjectFloat(18)) * 0.02F) * (float)Math.PI;
         }
         else
         {
@@ -682,12 +682,12 @@ public class EntityWolf extends EntityTameable
             }
         }
 
-        if ((par1EntityLivingBase instanceof EntityPlayer) && (par2EntityLivingBase instanceof EntityPlayer) && !((EntityPlayer)par2EntityLivingBase).func_96122_a((EntityPlayer)par1EntityLivingBase))
+        if ((par1EntityLivingBase instanceof EntityPlayer) && (par2EntityLivingBase instanceof EntityPlayer) && !((EntityPlayer)par2EntityLivingBase).canAttackPlayer((EntityPlayer)par1EntityLivingBase))
         {
             return false;
         }
 
-        return !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse)par1EntityLivingBase).func_110248_bS();
+        return !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse)par1EntityLivingBase).isTame();
     }
 
     public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
@@ -732,7 +732,7 @@ public class EntityWolf extends EntityTameable
         }
         if (!worldObj.isRemote)
         {
-            dataWatcher.updateObject(18, Float.valueOf(func_110143_aJ()));
+            dataWatcher.updateObject(18, Float.valueOf(getHealth()));
         }
     }
 

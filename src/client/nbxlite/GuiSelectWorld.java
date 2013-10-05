@@ -67,7 +67,7 @@ public class GuiSelectWorld extends GuiScreen
      */
     public void initGui()
     {
-        screenTitle = I18n.func_135053_a("selectWorld.title");
+        screenTitle = I18n.getString("selectWorld.title");
 
         try
         {
@@ -80,11 +80,11 @@ public class GuiSelectWorld extends GuiScreen
             return;
         }
 
-        localizedWorldText = I18n.func_135053_a("selectWorld.world");
-        localizedMustConvertText = I18n.func_135053_a("selectWorld.conversion");
-        localizedGameModeText[EnumGameType.SURVIVAL.getID()] = I18n.func_135053_a("gameMode.survival");
-        localizedGameModeText[EnumGameType.CREATIVE.getID()] = I18n.func_135053_a("gameMode.creative");
-        localizedGameModeText[EnumGameType.ADVENTURE.getID()] = I18n.func_135053_a("gameMode.adventure");
+        localizedWorldText = I18n.getString("selectWorld.world");
+        localizedMustConvertText = I18n.getString("selectWorld.conversion");
+        localizedGameModeText[EnumGameType.SURVIVAL.getID()] = I18n.getString("gameMode.survival");
+        localizedGameModeText[EnumGameType.CREATIVE.getID()] = I18n.getString("gameMode.creative");
+        localizedGameModeText[EnumGameType.ADVENTURE.getID()] = I18n.getString("gameMode.adventure");
         worldSlotContainer = new GuiWorldSlot(this);
         worldSlotContainer.registerScrollButtons(4, 5);
         initButtons();
@@ -121,7 +121,7 @@ public class GuiSelectWorld extends GuiScreen
 
         if (s == null || MathHelper.stringNullOrLengthZero(s))
         {
-            s = (new StringBuilder()).append(I18n.func_135053_a("selectWorld.world")).append(" ").append(par1 + 1).toString();
+            s = (new StringBuilder()).append(I18n.getString("selectWorld.world")).append(" ").append(par1 + 1).toString();
         }
 
         return s;
@@ -132,13 +132,13 @@ public class GuiSelectWorld extends GuiScreen
      */
     public void initButtons()
     {
-        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, I18n.func_135053_a("selectWorld.select")));
+        buttonList.add(buttonSelect = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, I18n.getString("selectWorld.select")));
         buttonList.add(buttonSelect2 = new GuiButton(-1, width / 2 - 209, height - 52, 50, 20, "Play SMP"));
-        buttonList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, I18n.func_135053_a("selectWorld.create")));
-        buttonList.add(buttonRename = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, I18n.func_135053_a("selectWorld.rename")));
-        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, I18n.func_135053_a("selectWorld.delete")));
-        buttonList.add(buttonRecreate = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, I18n.func_135053_a("selectWorld.recreate")));
-        buttonList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, I18n.func_135053_a("gui.cancel")));
+        buttonList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, I18n.getString("selectWorld.create")));
+        buttonList.add(buttonRename = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, I18n.getString("selectWorld.rename")));
+        buttonList.add(buttonDelete = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, I18n.getString("selectWorld.delete")));
+        buttonList.add(buttonRecreate = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, I18n.getString("selectWorld.recreate")));
+        buttonList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, I18n.getString("gui.cancel")));
         buttonSelect.enabled = false;
         buttonSelect2.enabled = false;
         buttonDelete.enabled = false;
@@ -363,10 +363,10 @@ public class GuiSelectWorld extends GuiScreen
      */
     public static GuiYesNo getDeleteWorldScreen(GuiScreen par0GuiScreen, String par1Str, int par2)
     {
-        String s = I18n.func_135053_a("selectWorld.deleteQuestion");
-        String s1 = (new StringBuilder()).append("'").append(par1Str).append("' ").append(I18n.func_135053_a("selectWorld.deleteWarning")).toString();
-        String s2 = I18n.func_135053_a("selectWorld.deleteButton");
-        String s3 = I18n.func_135053_a("gui.cancel");
+        String s = I18n.getString("selectWorld.deleteQuestion");
+        String s1 = (new StringBuilder()).append("'").append(par1Str).append("' ").append(I18n.getString("selectWorld.deleteWarning")).toString();
+        String s2 = I18n.getString("selectWorld.deleteButton");
+        String s3 = I18n.getString("gui.cancel");
         GuiYesNo guiyesno = new GuiYesNo(par0GuiScreen, s, s1, s2, s3, par2);
         return guiyesno;
     }

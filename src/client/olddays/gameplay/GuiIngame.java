@@ -18,9 +18,9 @@ public class GuiIngame extends Gui
     public static String version = "OFF";
     private static final ResourceLocation customArmorResource = new ResourceLocation("olddays/icons.png");
 
-    private static final ResourceLocation field_110329_b = new ResourceLocation("textures/misc/vignette.png");
-    private static final ResourceLocation field_110330_c = new ResourceLocation("textures/gui/widgets.png");
-    private static final ResourceLocation field_110328_d = new ResourceLocation("textures/misc/pumpkinblur.png");
+    private static final ResourceLocation vignetteTexPath = new ResourceLocation("textures/misc/vignette.png");
+    private static final ResourceLocation widgetsTexPath = new ResourceLocation("textures/gui/widgets.png");
+    private static final ResourceLocation pumpkinBlurTexPath = new ResourceLocation("textures/misc/pumpkinblur.png");
     private static final RenderItem itemRenderer = new RenderItem();
     private final Random rand = new Random();
     private final Minecraft mc;
@@ -94,12 +94,12 @@ public class GuiIngame extends Gui
         if (!mc.playerController.enableEverythingIsScrewedUpMode())
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            mc.func_110434_K().func_110577_a(field_110330_c);
+            mc.getTextureManager().bindTexture(widgetsTexPath);
             InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
             zLevel = -90F;
             drawTexturedModalRect(i / 2 - 91, j - 22, 0, 0, 182, 22);
             drawTexturedModalRect((i / 2 - 91 - 1) + inventoryplayer.currentItem * 20, j - 22 - 1, 0, 22, 24, 22);
-            mc.func_110434_K().func_110577_a(field_110324_m);
+            mc.getTextureManager().bindTexture(icons);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
             drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
@@ -154,11 +154,11 @@ public class GuiIngame extends Gui
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int j1 = i / 2 - 91;
 
-        if (mc.thePlayer.func_110317_t())
+        if (mc.thePlayer.isRidingHorse())
         {
             mc.mcProfiler.startSection("jumpBar");
-            mc.func_110434_K().func_110577_a(Gui.field_110324_m);
-            float f2 = mc.thePlayer.func_110319_bJ();
+            mc.getTextureManager().bindTexture(Gui.icons);
+            float f2 = mc.thePlayer.getHorseJumpPower();
             char c = '\266';
             int k3 = (int)(f2 * (float)(c + 1));
             int i5 = (j - 32) + 3;
@@ -174,7 +174,7 @@ public class GuiIngame extends Gui
         else if (mc.playerController.func_78763_f() && !hidexp)
         {
             mc.mcProfiler.startSection("expBar");
-            mc.func_110434_K().func_110577_a(Gui.field_110324_m);
+            mc.getTextureManager().bindTexture(Gui.icons);
             int i2 = mc.thePlayer.xpBarCap();
 
             if (i2 > 0)
@@ -253,11 +253,11 @@ public class GuiIngame extends Gui
 
             if (mc.theWorld.getTotalWorldTime() >= 0x1d6b4L)
             {
-                s1 = I18n.func_135053_a("demo.demoExpired");
+                s1 = I18n.getString("demo.demoExpired");
             }
             else
             {
-                s1 = I18n.func_135052_a("demo.remainingTime", new Object[]
+                s1 = I18n.getStringParams("demo.remainingTime", new Object[]
                         {
                             StringUtils.ticksToElapsedTime((int)(0x1d6b4L - mc.theWorld.getTotalWorldTime()))
                         });
@@ -445,7 +445,7 @@ public class GuiIngame extends Gui
                 }
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                mc.func_110434_K().func_110577_a(field_110324_m);
+                mc.getTextureManager().bindTexture(icons);
                 int j10 = 0;
                 byte byte1 = 0;
 
@@ -551,19 +551,19 @@ public class GuiIngame extends Gui
             flag = false;
         }
 
-        int i = MathHelper.ceiling_float_int(mc.thePlayer.func_110143_aJ());
+        int i = MathHelper.ceiling_float_int(mc.thePlayer.getHealth());
         int j = MathHelper.ceiling_float_int(mc.thePlayer.prevHealth);
         rand.setSeed(updateCounter * 0x4c627);
         boolean flag1 = false;
         FoodStats foodstats = mc.thePlayer.getFoodStats();
         int k = foodstats.getFoodLevel();
         int l = foodstats.getPrevFoodLevel();
-        AttributeInstance attributeinstance = mc.thePlayer.func_110148_a(SharedMonsterAttributes.field_111267_a);
+        AttributeInstance attributeinstance = mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth);
         int i1 = par1 / 2 - 91;
         int j1 = par1 / 2 + 91;
-        int k1 = par2 - (hidexp && !mc.thePlayer.func_110317_t() ? 32 : 39);
-        float f = (float)attributeinstance.func_111126_e();
-        float f1 = mc.thePlayer.func_110139_bj();
+        int k1 = par2 - (hidexp && !mc.thePlayer.isRidingHorse() ? 32 : 39);
+        float f = (float)attributeinstance.getAttributeValue();
+        float f1 = mc.thePlayer.getAbsorptionAmount();
         int l1 = MathHelper.ceiling_float_int((f + f1) / 2.0F / 10F);
         int i2 = Math.max(10 - (l1 - 2), 3);
         int j2 = k1 - (l1 - 1) * i2 - 10;
@@ -600,9 +600,9 @@ public class GuiIngame extends Gui
             if (i3 * 2 + 1 == k2)
             {
                 if (hidehunger && !fallbacktex){
-                    mc.func_110434_K().func_110577_a(customArmorResource);
+                    mc.getTextureManager().bindTexture(customArmorResource);
                     drawTexturedModalRect(k3, i4, 0, 0, 9, 9);
-                    mc.func_110434_K().func_110577_a(field_110324_m);
+                    mc.getTextureManager().bindTexture(icons);
                 }else{
                     drawTexturedModalRect(k3, i4, 25, 9, 9, 9);
                 }
@@ -757,8 +757,8 @@ public class GuiIngame extends Gui
         {
             mc.mcProfiler.endStartSection("mountHealth");
             EntityLivingBase entitylivingbase = (EntityLivingBase)entity;
-            int i5 = (int)Math.ceil(entitylivingbase.func_110143_aJ());
-            float f3 = entitylivingbase.func_110138_aP();
+            int i5 = (int)Math.ceil(entitylivingbase.getHealth());
+            float f3 = entitylivingbase.getMaxHealth();
             int k6 = (int)(f3 + 0.5F) / 2;
 
             if (k6 > 30)
@@ -862,7 +862,7 @@ public class GuiIngame extends Gui
         String s = BossStatus.bossName;
         fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, byte0 - 10, 0xffffff);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.func_110434_K().func_110577_a(field_110324_m);
+        mc.getTextureManager().bindTexture(icons);
     }
 
     private void renderPumpkinBlur(int par1, int par2)
@@ -872,7 +872,7 @@ public class GuiIngame extends Gui
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        mc.func_110434_K().func_110577_a(field_110328_d);
+        mc.getTextureManager().bindTexture(pumpkinBlurTexPath);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(0.0D, par2, -90D, 0.0D, 1.0D);
@@ -908,7 +908,7 @@ public class GuiIngame extends Gui
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
         GL11.glColor4f(prevVignetteBrightness, prevVignetteBrightness, prevVignetteBrightness, 1.0F);
-        mc.func_110434_K().func_110577_a(field_110329_b);
+        mc.getTextureManager().bindTexture(vignetteTexPath);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(0.0D, par3, -90D, 0.0D, 1.0D);
@@ -937,7 +937,7 @@ public class GuiIngame extends Gui
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
         Icon icon = Block.portal.getBlockTextureFromSide(1);
-        mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+        mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         float f = icon.getMinU();
         float f1 = icon.getMinV();
         float f2 = icon.getMaxU();
@@ -978,14 +978,14 @@ public class GuiIngame extends Gui
             GL11.glTranslatef(-(par2 + 8), -(par3 + 12), 0.0F);
         }
 
-        itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.func_110434_K(), itemstack, par2, par3);
+        itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, par2, par3);
 
         if (f > 0.0F)
         {
             GL11.glPopMatrix();
         }
 
-        itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.func_110434_K(), itemstack, par2, par3);
+        itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, par2, par3);
     }
 
     /**

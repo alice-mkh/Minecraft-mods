@@ -101,16 +101,16 @@ public abstract class EntityLivingBase extends Entity
         return 0;
     }
 
-    private static final UUID field_110156_b;
-    private static final AttributeModifier field_110157_c;
-    private BaseAttributeMap field_110155_d;
+    private static final UUID sprintingSpeedBoostModifierUUID;
+    private static final AttributeModifier sprintingSpeedBoostModifier;
+    private BaseAttributeMap attributeMap;
     private final CombatTracker _combatTracker = new CombatTracker(this);
     private final HashMap activePotionsMap = new HashMap();
     private final ItemStack previousEquipment[] = new ItemStack[5];
 
     /** Whether an arm swing is currently in progress. */
     public boolean isSwingInProgress;
-    public int field_110158_av;
+    public int swingProgressInt;
     public int arrowHitTimer;
     public float prevHealth;
 
@@ -132,8 +132,8 @@ public abstract class EntityLivingBase extends Entity
     public int attackTime;
     public float prevSwingProgress;
     public float swingProgress;
-    public float prevLimbYaw;
-    public float limbYaw;
+    public float prevLimbSwingAmount;
+    public float limbSwingAmount;
 
     /**
      * Only relevant when limbYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently
@@ -183,7 +183,11 @@ public abstract class EntityLivingBase extends Entity
 
     /** The score value of the Mob, the amount of points the mob is worth. */
     protected int scoreValue;
-    protected float field_110153_bc;
+
+    /**
+     * Damage taken in the last hit. Mobs are resistant to damage less than this for a short time after taking damage.
+     */
+    protected float lastDamage;
 
     /** used to check whether entity is jumping. */
     protected boolean isJumping;
@@ -201,7 +205,7 @@ public abstract class EntityLivingBase extends Entity
 
     /** The new Y position to be applied to the entity. */
     protected double newPosY;
-    protected double field_110152_bk;
+    protected double newPosZ;
 
     /** The new yaw rotation to be applied to the entity. */
     protected double newRotationYaw;
@@ -215,8 +219,10 @@ public abstract class EntityLivingBase extends Entity
     /** is only being set, has no uses as of MC 1.1 */
     private EntityLivingBase entityLivingToAttack;
     private int revengeTimer;
-    private EntityLivingBase field_110150_bn;
-    private int field_142016_bo;
+    private EntityLivingBase lastAttacker;
+
+    /** Holds the value of ticksExisted when setLastAttacker was last called. */
+    private int lastAttackerTime;
 
     /**
      * A factor used to determine how far this entity will move each tick if it is walking on land. Adjusted by speed,
@@ -234,8 +240,8 @@ public abstract class EntityLivingBase extends Entity
         maxHurtResistantTime = 20;
         jumpMovementFactor = 0.02F;
         potionsNeedUpdate = true;
-        func_110147_ax();
-        setEntityHealth(func_110138_aP());
+        applyEntityAttributes();
+        setHealth(getMaxHealth());
         preventEntitySpawning = true;
         field_70770_ap = (float)(Math.random() + 1.0D) * 0.01F;
         setPosition(posX, posY, posZ);
@@ -254,15 +260,15 @@ public abstract class EntityLivingBase extends Entity
         dataWatcher.addObject(6, Float.valueOf(1.0F));
     }
 
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        func_110140_aT().func_111150_b(SharedMonsterAttributes.field_111267_a);
-        func_110140_aT().func_111150_b(SharedMonsterAttributes.field_111266_c);
-        func_110140_aT().func_111150_b(SharedMonsterAttributes.field_111263_d);
+        getAttributeMap().func_111150_b(SharedMonsterAttributes.maxHealth);
+        getAttributeMap().func_111150_b(SharedMonsterAttributes.knockbackResistance);
+        getAttributeMap().func_111150_b(SharedMonsterAttributes.movementSpeed);
 
         if (!isAIEnabled() || !newai())
         {
-            func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.10000000149011612D);
+            getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.10000000149011612D);
         }
     }
 
@@ -380,7 +386,7 @@ public abstract class EntityLivingBase extends Entity
             hurtResistantTime--;
         }
 
-        if (func_110143_aJ() <= 0.0F)
+        if (getHealth() <= 0.0F)
         {
             onDeathUpdate();
         }
@@ -394,9 +400,9 @@ public abstract class EntityLivingBase extends Entity
             attackingPlayer = null;
         }
 
-        if (field_110150_bn != null && !field_110150_bn.isEntityAlive())
+        if (lastAttacker != null && !lastAttacker.isEntityAlive())
         {
-            field_110150_bn = null;
+            lastAttacker = null;
         }
 
         if (entityLivingToAttack != null && !entityLivingToAttack.isEntityAlive())
@@ -506,28 +512,28 @@ public abstract class EntityLivingBase extends Entity
         revengeTimer = ticksExisted;
     }
 
-    public EntityLivingBase func_110144_aD()
+    public EntityLivingBase getLastAttacker()
     {
-        return field_110150_bn;
+        return lastAttacker;
     }
 
-    public int func_142013_aG()
+    public int getLastAttackerTime()
     {
-        return field_142016_bo;
+        return lastAttackerTime;
     }
 
-    public void func_130011_c(Entity par1Entity)
+    public void setLastAttacker(Entity par1Entity)
     {
         if (par1Entity instanceof EntityLivingBase)
         {
-            field_110150_bn = (EntityLivingBase)par1Entity;
+            lastAttacker = (EntityLivingBase)par1Entity;
         }
         else
         {
-            field_110150_bn = null;
+            lastAttacker = null;
         }
 
-        field_142016_bo = ticksExisted;
+        lastAttackerTime = ticksExisted;
     }
 
     public int getAge()
@@ -540,12 +546,12 @@ public abstract class EntityLivingBase extends Entity
      */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setFloat("HealF", func_110143_aJ());
-        par1NBTTagCompound.setShort("Health", (short)(int)Math.ceil(func_110143_aJ()));
+        par1NBTTagCompound.setFloat("HealF", getHealth());
+        par1NBTTagCompound.setShort("Health", (short)(int)Math.ceil(getHealth()));
         par1NBTTagCompound.setShort("HurtTime", (short)hurtTime);
         par1NBTTagCompound.setShort("DeathTime", (short)deathTime);
         par1NBTTagCompound.setShort("AttackTime", (short)attackTime);
-        par1NBTTagCompound.setFloat("AbsorptionAmount", func_110139_bj());
+        par1NBTTagCompound.setFloat("AbsorptionAmount", getAbsorptionAmount());
         ItemStack aitemstack[] = getLastActiveItems();
         int i = aitemstack.length;
 
@@ -555,11 +561,11 @@ public abstract class EntityLivingBase extends Entity
 
             if (itemstack != null)
             {
-                field_110155_d.func_111148_a(itemstack.func_111283_C());
+                attributeMap.removeAttributeModifiers(itemstack.getAttributeModifiers());
             }
         }
 
-        par1NBTTagCompound.setTag("Attributes", SharedMonsterAttributes.func_111257_a(func_110140_aT()));
+        par1NBTTagCompound.setTag("Attributes", SharedMonsterAttributes.func_111257_a(getAttributeMap()));
         aitemstack = getLastActiveItems();
         i = aitemstack.length;
 
@@ -569,7 +575,7 @@ public abstract class EntityLivingBase extends Entity
 
             if (itemstack1 != null)
             {
-                field_110155_d.func_111147_b(itemstack1.func_111283_C());
+                attributeMap.applyAttributeModifiers(itemstack1.getAttributeModifiers());
             }
         }
 
@@ -592,11 +598,11 @@ public abstract class EntityLivingBase extends Entity
      */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        func_110149_m(par1NBTTagCompound.getFloat("AbsorptionAmount"));
+        setAbsorptionAmount(par1NBTTagCompound.getFloat("AbsorptionAmount"));
 
         if (par1NBTTagCompound.hasKey("Attributes") && worldObj != null && !worldObj.isRemote)
         {
-            SharedMonsterAttributes.func_111260_a(func_110140_aT(), par1NBTTagCompound.getTagList("Attributes"), worldObj != null ? worldObj.getWorldLogAgent() : null);
+            SharedMonsterAttributes.func_111260_a(getAttributeMap(), par1NBTTagCompound.getTagList("Attributes"), worldObj != null ? worldObj.getWorldLogAgent() : null);
         }
 
         if (par1NBTTagCompound.hasKey("ActiveEffects"))
@@ -613,7 +619,7 @@ public abstract class EntityLivingBase extends Entity
 
         if (par1NBTTagCompound.hasKey("HealF"))
         {
-            setEntityHealth(par1NBTTagCompound.getFloat("HealF"));
+            setHealth(par1NBTTagCompound.getFloat("HealF"));
         }
         else
         {
@@ -621,15 +627,15 @@ public abstract class EntityLivingBase extends Entity
 
             if (nbtbase == null)
             {
-                setEntityHealth(func_110138_aP());
+                setHealth(getMaxHealth());
             }
             else if (nbtbase.getId() == 5)
             {
-                setEntityHealth(((NBTTagFloat)nbtbase).data);
+                setHealth(((NBTTagFloat)nbtbase).data);
             }
             else if (nbtbase.getId() == 2)
             {
-                setEntityHealth(((NBTTagShort)nbtbase).data);
+                setHealth(((NBTTagShort)nbtbase).data);
             }
         }
 
@@ -838,7 +844,7 @@ public abstract class EntityLivingBase extends Entity
 
         if (!worldObj.isRemote)
         {
-            Potion.potionTypes[par1PotionEffect.getPotionID()].func_111185_a(this, func_110140_aT(), par1PotionEffect.getAmplifier());
+            Potion.potionTypes[par1PotionEffect.getPotionID()].applyAttributesModifiersToEntity(this, getAttributeMap(), par1PotionEffect.getAmplifier());
         }
     }
 
@@ -848,8 +854,8 @@ public abstract class EntityLivingBase extends Entity
 
         if (par2 && !worldObj.isRemote)
         {
-            Potion.potionTypes[par1PotionEffect.getPotionID()].func_111187_a(this, func_110140_aT(), par1PotionEffect.getAmplifier());
-            Potion.potionTypes[par1PotionEffect.getPotionID()].func_111185_a(this, func_110140_aT(), par1PotionEffect.getAmplifier());
+            Potion.potionTypes[par1PotionEffect.getPotionID()].removeAttributesModifiersFromEntity(this, getAttributeMap(), par1PotionEffect.getAmplifier());
+            Potion.potionTypes[par1PotionEffect.getPotionID()].applyAttributesModifiersToEntity(this, getAttributeMap(), par1PotionEffect.getAmplifier());
         }
     }
 
@@ -859,7 +865,7 @@ public abstract class EntityLivingBase extends Entity
 
         if (!worldObj.isRemote)
         {
-            Potion.potionTypes[par1PotionEffect.getPotionID()].func_111187_a(this, func_110140_aT(), par1PotionEffect.getAmplifier());
+            Potion.potionTypes[par1PotionEffect.getPotionID()].removeAttributesModifiersFromEntity(this, getAttributeMap(), par1PotionEffect.getAmplifier());
         }
     }
 
@@ -868,22 +874,22 @@ public abstract class EntityLivingBase extends Entity
      */
     public void heal(float par1)
     {
-        float f = func_110143_aJ();
+        float f = getHealth();
 
         if (f > 0.0F)
         {
-            setEntityHealth(f + par1);
+            setHealth(f + par1);
         }
     }
 
-    public final float func_110143_aJ()
+    public final float getHealth()
     {
-        return dataWatcher.func_111145_d(6);
+        return dataWatcher.getWatchableObjectFloat(6);
     }
 
-    public void setEntityHealth(float par1)
+    public void setHealth(float par1)
     {
-        dataWatcher.updateObject(6, Float.valueOf(MathHelper.clamp_float(par1, 0.0F, func_110138_aP())));
+        dataWatcher.updateObject(6, Float.valueOf(MathHelper.clamp_float(par1, 0.0F, getMaxHealth())));
     }
 
     /**
@@ -903,7 +909,7 @@ public abstract class EntityLivingBase extends Entity
 
         entityAge = 0;
 
-        if (func_110143_aJ() <= 0.0F)
+        if (getHealth() <= 0.0F)
         {
             return false;
         }
@@ -919,24 +925,24 @@ public abstract class EntityLivingBase extends Entity
             par2 *= 0.75F;
         }
 
-        limbYaw = 1.5F;
+        limbSwingAmount = 1.5F;
         boolean flag = true;
 
         if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F)
         {
-            if (par2 <= field_110153_bc)
+            if (par2 <= lastDamage)
             {
                 return false;
             }
 
-            damageEntity(par1DamageSource, par2 - field_110153_bc);
-            field_110153_bc = par2;
+            damageEntity(par1DamageSource, par2 - lastDamage);
+            lastDamage = par2;
             flag = false;
         }
         else
         {
-            field_110153_bc = par2;
-            prevHealth = func_110143_aJ();
+            lastDamage = par2;
+            prevHealth = getHealth();
             hurtResistantTime = maxHurtResistantTime;
             damageEntity(par1DamageSource, par2);
             hurtTime = maxHurtTime = 10;
@@ -997,7 +1003,7 @@ public abstract class EntityLivingBase extends Entity
             }
         }
 
-        if (func_110143_aJ() <= 0.0F)
+        if (getHealth() <= 0.0F)
         {
             if (flag)
             {
@@ -1119,7 +1125,7 @@ public abstract class EntityLivingBase extends Entity
      */
     public void knockBack(Entity par1Entity, float par2, double par3, double par5)
     {
-        if (rand.nextDouble() < func_110148_a(SharedMonsterAttributes.field_111266_c).func_111126_e())
+        if (rand.nextDouble() < getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue())
         {
             return;
         }
@@ -1189,7 +1195,7 @@ public abstract class EntityLivingBase extends Entity
      */
     public boolean isEntityAlive()
     {
-        return !isDead && func_110143_aJ() > 0.0F;
+        return !isDead && getHealth() > 0.0F;
     }
 
     /**
@@ -1337,8 +1343,8 @@ public abstract class EntityLivingBase extends Entity
         par2 = applyArmorCalculations(par1DamageSource, par2);
         par2 = applyPotionDamageCalculations(par1DamageSource, par2);
         float f = par2;
-        par2 = Math.max(par2 - func_110139_bj(), 0.0F);
-        func_110149_m(func_110139_bj() - (f - par2));
+        par2 = Math.max(par2 - getAbsorptionAmount(), 0.0F);
+        setAbsorptionAmount(getAbsorptionAmount() - (f - par2));
 
         if (par2 == 0.0F)
         {
@@ -1346,10 +1352,10 @@ public abstract class EntityLivingBase extends Entity
         }
         else
         {
-            float f1 = func_110143_aJ();
-            setEntityHealth(f1 - par2);
+            float f1 = getHealth();
+            setHealth(f1 - par2);
             func_110142_aN().func_94547_a(par1DamageSource, f1, par2);
-            func_110149_m(func_110139_bj() - par2);
+            setAbsorptionAmount(getAbsorptionAmount() - par2);
             return;
         }
     }
@@ -1381,9 +1387,9 @@ public abstract class EntityLivingBase extends Entity
         }
     }
 
-    public final float func_110138_aP()
+    public final float getMaxHealth()
     {
-        return (float)func_110148_a(SharedMonsterAttributes.field_111267_a).func_111126_e();
+        return (float)getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
     }
 
     /**
@@ -1428,9 +1434,9 @@ public abstract class EntityLivingBase extends Entity
      */
     public void swingItem()
     {
-        if (!isSwingInProgress || field_110158_av >= getArmSwingAnimationEnd() / 2 || field_110158_av < 0)
+        if (!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0)
         {
-            field_110158_av = -1;
+            swingProgressInt = -1;
             isSwingInProgress = true;
 
             if (worldObj instanceof WorldServer)
@@ -1444,7 +1450,7 @@ public abstract class EntityLivingBase extends Entity
     {
         if (par1 == 2)
         {
-            limbYaw = 1.5F;
+            limbSwingAmount = 1.5F;
             hurtResistantTime = maxHurtResistantTime;
             hurtTime = maxHurtTime = 10;
             attackedAtYaw = 0.0F;
@@ -1454,7 +1460,7 @@ public abstract class EntityLivingBase extends Entity
         else if (par1 == 3)
         {
             playSound(getDeathSound(), getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-            setEntityHealth(0.0F);
+            setHealth(0.0F);
             onDeath(DamageSource.generic);
         }
         else
@@ -1480,35 +1486,35 @@ public abstract class EntityLivingBase extends Entity
 
         if (isSwingInProgress)
         {
-            field_110158_av++;
+            swingProgressInt++;
 
-            if (field_110158_av >= i)
+            if (swingProgressInt >= i)
             {
-                field_110158_av = 0;
+                swingProgressInt = 0;
                 isSwingInProgress = false;
             }
         }
         else
         {
-            field_110158_av = 0;
+            swingProgressInt = 0;
         }
 
-        swingProgress = (float)field_110158_av / (float)i;
+        swingProgress = (float)swingProgressInt / (float)i;
     }
 
-    public AttributeInstance func_110148_a(Attribute par1Attribute)
+    public AttributeInstance getEntityAttribute(Attribute par1Attribute)
     {
-        return func_110140_aT().func_111151_a(par1Attribute);
+        return getAttributeMap().getAttributeInstance(par1Attribute);
     }
 
-    public BaseAttributeMap func_110140_aT()
+    public BaseAttributeMap getAttributeMap()
     {
-        if (field_110155_d == null)
+        if (attributeMap == null)
         {
-            field_110155_d = new ServersideAttributeMap();
+            attributeMap = new ServersideAttributeMap();
         }
 
-        return field_110155_d;
+        return attributeMap;
     }
 
     /**
@@ -1540,16 +1546,16 @@ public abstract class EntityLivingBase extends Entity
     public void setSprinting(boolean par1)
     {
         super.setSprinting(par1);
-        AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
+        AttributeInstance attributeinstance = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 
-        if (attributeinstance.func_111127_a(field_110156_b) != null)
+        if (attributeinstance.getModifier(sprintingSpeedBoostModifierUUID) != null)
         {
-            attributeinstance.func_111124_b(field_110157_c);
+            attributeinstance.removeModifier(sprintingSpeedBoostModifier);
         }
 
         if (par1)
         {
-            attributeinstance.func_111121_a(field_110157_c);
+            attributeinstance.applyModifier(sprintingSpeedBoostModifier);
         }
     }
 
@@ -1583,7 +1589,7 @@ public abstract class EntityLivingBase extends Entity
      */
     protected boolean isMovementBlocked()
     {
-        return func_110143_aJ() <= 0.0F;
+        return getHealth() <= 0.0F;
     }
 
     /**
@@ -1594,7 +1600,10 @@ public abstract class EntityLivingBase extends Entity
         setLocationAndAngles(par1, par3, par5, rotationYaw, rotationPitch);
     }
 
-    public void func_110145_l(Entity par1Entity)
+    /**
+     * Moves the entity to a position out of the way of its mount.
+     */
+    public void dismountEntity(Entity par1Entity)
     {
         double d = par1Entity.posX;
         double d1 = par1Entity.boundingBox.minY + (double)par1Entity.height;
@@ -1811,7 +1820,7 @@ public abstract class EntityLivingBase extends Entity
             motionZ *= f;
         }
 
-        prevLimbYaw = limbYaw;
+        prevLimbSwingAmount = limbSwingAmount;
         double d2 = posX - prevPosX;
         double d3 = posZ - prevPosZ;
         float f4 = MathHelper.sqrt_double(d2 * d2 + d3 * d3) * 4F;
@@ -1821,8 +1830,8 @@ public abstract class EntityLivingBase extends Entity
             f4 = 1.0F;
         }
 
-        limbYaw += (f4 - limbYaw) * 0.4F;
-        limbSwing += limbYaw;
+        limbSwingAmount += (f4 - limbSwingAmount) * 0.4F;
+        limbSwing += limbSwingAmount;
     }
 
     /**
@@ -1858,7 +1867,7 @@ public abstract class EntityLivingBase extends Entity
 
     public boolean attackEntityAsMob(Entity par1Entity)
     {
-        func_130011_c(par1Entity);
+        setLastAttacker(par1Entity);
         return false;
     }
 
@@ -1912,12 +1921,12 @@ public abstract class EntityLivingBase extends Entity
 
                 if (itemstack != null)
                 {
-                    field_110155_d.func_111148_a(itemstack.func_111283_C());
+                    attributeMap.removeAttributeModifiers(itemstack.getAttributeModifiers());
                 }
 
                 if (itemstack1 != null)
                 {
-                    field_110155_d.func_111147_b(itemstack1.func_111283_C());
+                    attributeMap.applyAttributeModifiers(itemstack1.getAttributeModifiers());
                 }
 
                 previousEquipment[j] = itemstack1 != null ? itemstack1.copy() : null;
@@ -2023,7 +2032,7 @@ public abstract class EntityLivingBase extends Entity
         {
             double d = posX + (newPosX - posX) / (double)newPosRotationIncrements;
             double d1 = posY + (newPosY - posY) / (double)newPosRotationIncrements;
-            double d2 = posZ + (field_110152_bk - posZ) / (double)newPosRotationIncrements;
+            double d2 = posZ + (newPosZ - posZ) / (double)newPosRotationIncrements;
             double d3 = MathHelper.wrapAngleTo180_double(newRotationYaw - (double)rotationYaw);
             rotationYaw += d3 / (double)newPosRotationIncrements;
             rotationPitch += (newRotationPitch - (double)rotationPitch) / (double)newPosRotationIncrements;
@@ -2163,7 +2172,7 @@ public abstract class EntityLivingBase extends Entity
         yOffset = 0.0F;
         newPosX = par1;
         newPosY = par3;
-        field_110152_bk = par5;
+        newPosZ = par5;
         newRotationYaw = par7;
         newRotationPitch = par8;
         newPosRotationIncrements = par9;
@@ -2331,7 +2340,7 @@ public abstract class EntityLivingBase extends Entity
      */
     protected void setBeenAttacked()
     {
-        velocityChanged = rand.nextDouble() >= func_110148_a(SharedMonsterAttributes.field_111266_c).func_111126_e();
+        velocityChanged = rand.nextDouble() >= getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
     }
 
     public float getRotationYawHead()
@@ -2347,12 +2356,12 @@ public abstract class EntityLivingBase extends Entity
         rotationYawHead = par1;
     }
 
-    public float func_110139_bj()
+    public float getAbsorptionAmount()
     {
         return field_110151_bq;
     }
 
-    public void func_110149_m(float par1)
+    public void setAbsorptionAmount(float par1)
     {
         if (par1 < 0.0F)
         {
@@ -2367,16 +2376,19 @@ public abstract class EntityLivingBase extends Entity
         return null;
     }
 
-    public boolean func_142014_c(EntityLivingBase par1EntityLivingBase)
+    public boolean isOnSameTeam(EntityLivingBase par1EntityLivingBase)
     {
-        return func_142012_a(par1EntityLivingBase.getTeam());
+        return isOnTeam(par1EntityLivingBase.getTeam());
     }
 
-    public boolean func_142012_a(Team par1Team)
+    /**
+     * Returns true if the entity is on a specific team.
+     */
+    public boolean isOnTeam(Team par1Team)
     {
         if (getTeam() != null)
         {
-            return getTeam().func_142054_a(par1Team);
+            return getTeam().isSameTeam(par1Team);
         }
         else
         {
@@ -2386,7 +2398,7 @@ public abstract class EntityLivingBase extends Entity
 
     static
     {
-        field_110156_b = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
-        field_110157_c = (new AttributeModifier(field_110156_b, "Sprinting speed boost", 0.30000001192092896D, 2)).func_111168_a(false);
+        sprintingSpeedBoostModifierUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
+        sprintingSpeedBoostModifier = (new AttributeModifier(sprintingSpeedBoostModifierUUID, "Sprinting speed boost", 0.30000001192092896D, 2)).setSaved(false);
     }
 }

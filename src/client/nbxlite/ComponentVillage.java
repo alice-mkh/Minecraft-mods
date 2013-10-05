@@ -5,16 +5,40 @@ import java.util.Random;
 
 abstract class ComponentVillage extends StructureComponent
 {
+    protected int field_143015_k;
+
     /** The number of villagers that have been spawned in this component. */
     private int villagersSpawned;
+    private boolean field_143014_b;
 
-    /** The starting piece of the village. */
-    protected ComponentVillageStartPiece startPiece;
+    public ComponentVillage()
+    {
+        field_143015_k = -1;
+    }
 
     protected ComponentVillage(ComponentVillageStartPiece par1ComponentVillageStartPiece, int par2)
     {
         super(par2);
-        startPiece = par1ComponentVillageStartPiece;
+        field_143015_k = -1;
+
+        if (par1ComponentVillageStartPiece != null)
+        {
+            field_143014_b = par1ComponentVillageStartPiece.inDesert;
+        }
+    }
+
+    protected void func_143012_a(NBTTagCompound par1NBTTagCompound)
+    {
+        par1NBTTagCompound.setInteger("HPos", field_143015_k);
+        par1NBTTagCompound.setInteger("VCount", villagersSpawned);
+        par1NBTTagCompound.setBoolean("Desert", field_143014_b);
+    }
+
+    protected void func_143011_b(NBTTagCompound par1NBTTagCompound)
+    {
+        field_143015_k = par1NBTTagCompound.getInteger("HPos");
+        villagersSpawned = par1NBTTagCompound.getInteger("VCount");
+        field_143014_b = par1NBTTagCompound.getBoolean("Desert");
     }
 
     /**
@@ -147,7 +171,7 @@ abstract class ComponentVillage extends StructureComponent
      */
     protected int getBiomeSpecificBlock(int par1, int par2)
     {
-        if (startPiece.inDesert && ODNBXlite.desertVillages())
+        if (field_143014_b && ODNBXlite.desertVillages())
         {
             if (par1 == Block.wood.blockID)
             {
@@ -188,7 +212,7 @@ abstract class ComponentVillage extends StructureComponent
      */
     protected int getBiomeSpecificBlockMetadata(int par1, int par2)
     {
-        if (startPiece.inDesert && ODNBXlite.desertVillages())
+        if (field_143014_b && ODNBXlite.desertVillages())
         {
             if (par1 == Block.wood.blockID)
             {

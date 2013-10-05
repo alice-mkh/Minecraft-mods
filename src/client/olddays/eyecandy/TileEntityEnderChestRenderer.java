@@ -27,7 +27,7 @@ public class TileEntityEnderChestRenderer extends TileEntitySpecialRenderer
             i = par1TileEntityEnderChest.getBlockMetadata();
         }
 
-        func_110628_a(field_110637_a);
+        bindTexture(field_110637_a);
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         if (!Minecraft.oldlighting){

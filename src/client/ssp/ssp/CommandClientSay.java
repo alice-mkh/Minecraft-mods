@@ -15,7 +15,7 @@ public class CommandClientSay extends CommandServerSay
         if (par2ArrayOfStr.length > 0 && par2ArrayOfStr[0].length() > 0)
         {
             String s = func_82361_a(par1ICommandSender, par2ArrayOfStr, 0, true);
-            Minecraft.getMinecraft().thePlayer.sendChatToPlayer(ChatMessageComponent.func_111082_b("chat.type.announcement", new Object[]
+            Minecraft.getMinecraft().thePlayer.sendChatToPlayer(ChatMessageComponent.createFromTranslationWithSubstitutions("chat.type.announcement", new Object[]
                     {
                         par1ICommandSender.getCommandSenderName(), s
                     }));

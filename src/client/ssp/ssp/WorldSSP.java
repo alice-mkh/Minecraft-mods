@@ -100,7 +100,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     /** true while the world is editing blocks */
     public boolean editingBlocks;
 
-    protected final SpawnerAnimals field_135059_Q = new SpawnerAnimals();
+    protected final SpawnerAnimals animalSpawner = new SpawnerAnimals();
 
     public WorldSSP(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler p, ILogAgent log)
     {
@@ -912,7 +912,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
     {
         int i = MathHelper.floor_double(par1Entity.posX / 16D);
         int j = MathHelper.floor_double(par1Entity.posZ / 16D);
-        boolean flag = par1Entity.field_98038_p;
+        boolean flag = par1Entity.forceSpawn;
 
         if (par1Entity instanceof EntityPlayer)
         {
@@ -1625,7 +1625,7 @@ public class WorldSSP extends WorldClient implements IBlockAccess
 
         theProfiler.startSection("mobSpawner");
         if (getGameRules().getGameRuleBooleanValue("doMobSpawning")){
-            field_135059_Q.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
+            animalSpawner.performSpawningSP(this, spawnHostileMobs, spawnPeacefulMobs && worldInfo.getWorldTotalTime() % 400L == 0L);
         }
         theProfiler.endStartSection("chunkSource");
         chunkProvider.unloadQueuedChunks();

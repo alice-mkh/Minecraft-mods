@@ -675,7 +675,7 @@ public abstract class BlockFluid extends Block
         }
     }
 
-    public static Icon func_94424_b(String par0Str)
+    public static Icon getFluidIcon(String par0Str)
     {
         if (par0Str == "water_still")
         {

@@ -703,7 +703,7 @@ public class PlayerHelper {
          if (Item.itemsList[i] == null) {
             ITEMNAMES.add(null);
          } else {
-            ITEMNAMES.add(I18n.func_135053_a((Item.itemsList[i].getUnlocalizedName())).toString().trim().toLowerCase());
+            ITEMNAMES.add(I18n.getString((Item.itemsList[i].getUnlocalizedName())).toString().trim().toLowerCase());
          }
       }
 
@@ -1579,16 +1579,16 @@ public class PlayerHelper {
             return;
          }
          if (split[1].equalsIgnoreCase("max")) {
-            ep.setEntityHealth(20);
+            ep.setHealth(20);
          } else if (split[1].equalsIgnoreCase("min")) {
-            ep.setEntityHealth(1);
+            ep.setHealth(1);
          } else if (split[1].equalsIgnoreCase("infinite") || split[1].equalsIgnoreCase("inf")) {
-            ep.setEntityHealth(Short.MAX_VALUE);
+            ep.setHealth(Short.MAX_VALUE);
          } else {
             sendError("Invalid health command: " + split[1]);
             return;
          }
-         sendMessage("Health set at " + split[1] + " (" + ep.func_110143_aJ() + ")");
+         sendMessage("Health set at " + split[1] + " (" + ep.getHealth() + ")");
 
          /*
           * Heal command - allows you to heal your player the specified number of half hearts.
@@ -1662,7 +1662,7 @@ public class PlayerHelper {
             } else {
                es.setLocationAndAngles(ep.posX + 3, ep.posY, ep.posZ + 3, ep.rotationYaw, 0F);
             }
-            es.func_110161_a(null);
+            es.onSpawnWithEgg(null);
             mc.theWorld.spawnEntityInWorld(es);
             if (et != null) {
                es.mountEntity(et);
@@ -1739,7 +1739,7 @@ public class PlayerHelper {
                } else {
                   es.setLocationAndAngles(ep.posX + r.nextInt(5), ep.posY, ep.posZ + r.nextInt(5), ep.rotationYaw, 0F);
                }
-               es.func_110161_a(null);
+               es.onSpawnWithEgg(null);
                mc.theWorld.spawnEntityInWorld(es);
             }
          } catch (Exception e) {
@@ -4256,7 +4256,7 @@ public class PlayerHelper {
             ep.motionX = 0;
             ep.motionY = 0;
             ep.motionZ = 0;
-            mc.renderViewEntity = new SPCEntityCamera(mc, mc.theWorld, mc.func_110432_I(), ep.dimension);
+            mc.renderViewEntity = new SPCEntityCamera(mc, mc.theWorld, mc.getSession(), ep.dimension);
             mc.renderViewEntity.setPositionAndRotation(ep.posX, ep.posY, ep.posZ, ep.rotationYaw, ep.rotationPitch);
             movecamera = true;
             moveplayer = false;
@@ -4268,7 +4268,7 @@ public class PlayerHelper {
       } else if (split[0].equalsIgnoreCase("freezecam")) {
          if (movecamera == true) {
             if (!(mc.renderViewEntity instanceof SPCEntityCamera)) {
-               SPCEntityCamera cam = new SPCEntityCamera(mc, mc.theWorld, mc.func_110432_I(), ep.dimension);
+               SPCEntityCamera cam = new SPCEntityCamera(mc, mc.theWorld, mc.getSession(), ep.dimension);
                freezecamyaw = ep.rotationYaw;
                freezecampitch = ep.rotationPitch;
                cam.setPositionAndRotation(ep.posX, ep.posY, ep.posZ, freezecamyaw, freezecampitch);
@@ -4613,7 +4613,7 @@ public class PlayerHelper {
             String list = "";
             for (int i = 0; i < Enchantment.enchantmentsList.length; i++) {
                if (Enchantment.enchantmentsList[i] != null) {
-                  list += I18n.func_135053_a(Enchantment.enchantmentsList[i].getName()).replace(' ', '_') + " (" + i + "), ";
+                  list += I18n.getString(Enchantment.enchantmentsList[i].getName()).replace(' ', '_') + " (" + i + "), ";
                }
             }
             sendMessage("Enchantments [name (id)]:");
@@ -4654,7 +4654,7 @@ public class PlayerHelper {
             }
             for (int i = 0; i < Enchantment.enchantmentsList.length; i++) {
                if (Enchantment.enchantmentsList[i] != null) {
-                  if (split[2].equalsIgnoreCase(I18n.func_135053_a(Enchantment.enchantmentsList[i].getName()).replace(' ', '_'))) {
+                  if (split[2].equalsIgnoreCase(I18n.getString(Enchantment.enchantmentsList[i].getName()).replace(' ', '_'))) {
                      e = Enchantment.enchantmentsList[i];
                   }
                }
@@ -4797,7 +4797,7 @@ public class PlayerHelper {
             String list = "";
             for (int i = 0; i < Potion.potionTypes.length; i++) {
                if (Potion.potionTypes[i] != null) {
-                  list += I18n.func_135053_a(Potion.potionTypes[i].getName()).replace(' ', '_') + " (" + i + "), ";
+                  list += I18n.getString(Potion.potionTypes[i].getName()).replace(' ', '_') + " (" + i + "), ";
                }
             }
             sendMessage("Potion effects [name (id)]: ");
@@ -4828,7 +4828,7 @@ public class PlayerHelper {
             if (p == null) {
                for (int i = 0; i < Potion.potionTypes.length; i++) {
                   if (Potion.potionTypes[i] != null) {
-                     if (split[2].equalsIgnoreCase(I18n.func_135053_a(Potion.potionTypes[i].getName()).replace(' ', '_'))) {
+                     if (split[2].equalsIgnoreCase(I18n.getString(Potion.potionTypes[i].getName()).replace(' ', '_'))) {
                         p = Potion.potionTypes[i];
                         break;
                      }
@@ -4842,7 +4842,7 @@ public class PlayerHelper {
             if (split[1].equalsIgnoreCase("remove")) {
                ep.removePotionEffect(p.id);
                ep.onNewPotionEffect(null);
-               sendMessage("Effect " + I18n.func_135053_a(Potion.potionTypes[p.id].getName()) + " was disabled");
+               sendMessage("Effect " + I18n.getString(Potion.potionTypes[p.id].getName()) + " was disabled");
                return;
             }
 
@@ -4867,7 +4867,7 @@ public class PlayerHelper {
             PotionEffect pe = new PotionEffect(p.id,duration,effect);
             ep.addPotionEffect(pe);
             p.performEffect(ep, duration);
-            sendMessage("Effect " + I18n.func_135053_a(Potion.potionTypes[p.id].getName()) + " enabled for " + duration + " at strength " + effect);
+            sendMessage("Effect " + I18n.getString(Potion.potionTypes[p.id].getName()) + " enabled for " + duration + " at strength " + effect);
          } else {
             sendError(ERRMSG_PARSE);
             return;
@@ -6736,7 +6736,7 @@ public class PlayerHelper {
 //       ep.setUsername(username);
 //       ep.skinUrl = (new StringBuilder()).append("http://s3.amazonaws.com/MinecraftSkins/").append(username).append(".png").toString();
       // ep.worldObj.loadDownloadableImageTexture(ep.skinUrl, null);
-      ep.func_110302_j();
+      ep.setupCustomSkin();
       ep.worldObj.onEntityAdded(ep);
 //       entity.updateCloak();
    }

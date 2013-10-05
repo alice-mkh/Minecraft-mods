@@ -172,8 +172,8 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             f *= 1.1F;
         }
 
-        AttributeInstance attributeinstance = func_110148_a(SharedMonsterAttributes.field_111263_d);
-        f = (float)((double)f * ((attributeinstance.func_111126_e() / (double)capabilities.getWalkSpeed() + 1.0D) / 2D));
+        AttributeInstance attributeinstance = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+        f = (float)((double)f * ((attributeinstance.getAttributeValue() / (double)capabilities.getWalkSpeed() + 1.0D) / 2D));
 
         if (isUsingItem() && getItemInUse().itemID == Item.bow.itemID)
         {
@@ -309,7 +309,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     }
 
     @Override
-    public void func_110298_a(EntityHorse par1EntityHorse, IInventory par2IInventory)
+    public void displayGUIHorse(EntityHorse par1EntityHorse, IInventory par2IInventory)
     {
         mc.displayGuiScreen(new GuiScreenHorseInventory(inventory, par2IInventory, par1EntityHorse));
     }
@@ -352,13 +352,13 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
      * Updates health locally.
      */
     @Override
-    public void setHealth(float par1)
+    public void setPlayerSPHealth(float par1)
     {
-        float f = func_110143_aJ() - par1;
+        float f = getHealth() - par1;
 
         if (f <= 0.0F)
         {
-            setEntityHealth(par1);
+            setHealth(par1);
 
             if (f < 0.0F)
             {
@@ -367,8 +367,8 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         }
         else
         {
-            field_110153_bc = f;
-            setEntityHealth(func_110143_aJ());
+            lastDamage = f;
+            setHealth(getHealth());
             hurtResistantTime = maxHurtResistantTime;
             damageEntity(DamageSource.generic, f);
             hurtTime = maxHurtTime = 10;
@@ -517,7 +517,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     @Override
     public void sendChatToPlayer(ChatMessageComponent par1ChatMessageComponent)
     {
-        mc.ingameGUI.getChatGUI().printChatMessage((par1ChatMessageComponent.func_111068_a(true)));
+        mc.ingameGUI.getChatGUI().printChatMessage((par1ChatMessageComponent.toStringWithFormatting(true)));
     }
 
     /**
@@ -543,7 +543,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             par2 = applyArmorCalculations(par1DamageSource, par2);
             par2 = applyPotionDamageCalculations(par1DamageSource, par2);
         }
-        setEntityHealth(func_110143_aJ() - par2);
+        setHealth(getHealth() - par2);
     }
 
     @Override
@@ -564,7 +564,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         entityAge = 0;
 
-        if (func_110143_aJ() <= 0)
+        if (getHealth() <= 0)
         {
             return false;
         }
@@ -619,7 +619,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
 
         entityAge = 0;
 
-        if (func_110143_aJ() <= 0)
+        if (getHealth() <= 0)
         {
             return false;
         }
@@ -629,24 +629,24 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             return false;
         }
 
-        limbYaw = 1.5F;
+        limbSwingAmount = 1.5F;
         boolean flag = true;
 
         if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F)
         {
-            if (par2 <= field_110153_bc)
+            if (par2 <= lastDamage)
             {
                 return false;
             }
 
-            damageEntity(par1DamageSource, par2 - field_110153_bc);
-            field_110153_bc = par2;
+            damageEntity(par1DamageSource, par2 - lastDamage);
+            lastDamage = par2;
             flag = false;
         }
         else
         {
-            field_110153_bc = par2;
-            prevHealth = func_110143_aJ();
+            lastDamage = par2;
+            prevHealth = getHealth();
             hurtResistantTime = maxHurtResistantTime;
             damageEntity(par1DamageSource, par2);
             hurtTime = maxHurtTime = 10;
@@ -705,7 +705,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
             }
         }
 
-        if (func_110143_aJ() <= 0)
+        if (getHealth() <= 0)
         {
             if (flag)
             {
@@ -725,11 +725,11 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     @Override
     public void heal(float par1)
     {
-        float f = func_110143_aJ();
+        float f = getHealth();
 
         if (f > 0.0F)
         {
-            setEntityHealth(f + par1);
+            setHealth(f + par1);
         }
     }
 
@@ -834,16 +834,16 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         if (nbttagcompound.hasKey("Riding")){
             Entity entity = EntityList.createEntityFromNBT(nbttagcompound.getCompoundTag("Riding"), worldObj);
             if (entity != null){
-                entity.field_98038_p = true;
+                entity.forceSpawn = true;
                 worldObj.spawnEntityInWorld(entity);
                 mountEntity(entity);
-                entity.field_98038_p = false;
+                entity.forceSpawn = false;
             }
         }
     }
 
     @Override
-    public boolean func_110317_t()
+    public boolean isRidingHorse()
     {
         return ridingEntity != null && (ridingEntity instanceof EntityHorse);
     }
@@ -851,16 +851,16 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
     @Override
     protected void func_110318_g()
     {
-        if (func_110317_t()){
-            ((EntityHorse)ridingEntity).func_110206_u((int)(func_110319_bJ() * 100F));
+        if (isRidingHorse()){
+            ((EntityHorse)ridingEntity).setJumpPower((int)(getHorseJumpPower() * 100F));
         }
     }
 
     @Override
     public void func_110322_i()
     {
-        if (func_110317_t()){
-            ((EntityHorse)ridingEntity).func_110199_f(this);
+        if (isRidingHorse()){
+            ((EntityHorse)ridingEntity).openGUI(this);
         }
     }
 
@@ -870,7 +870,7 @@ public class EntityPlayerSP2 extends EntityClientPlayerMP
         super.mountEntity(par1Entity);
         if (ridingEntity != null){
             GameSettings gamesettings = mc.gameSettings;
-            mc.ingameGUI.func_110326_a(I18n.func_135052_a("mount.onboard", new Object[]
+            mc.ingameGUI.func_110326_a(I18n.getStringParams("mount.onboard", new Object[]
                     {
                         GameSettings.getKeyDisplayString(gamesettings.keyBindSneak.keyCode)
                     }), false);

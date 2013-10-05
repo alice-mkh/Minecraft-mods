@@ -22,7 +22,7 @@ public class GuiGameOverOverlay extends GuiOverlay{
     @Override
     public void initGui(List buttonList, int width, int height){
         if (Minecraft.getMinecraft().theWorld.getWorldInfo().isHardcoreModeEnabled()){
-            renameButton(buttonList, 1, I18n.func_135053_a("deathScreen.deleteWorld"));
+            renameButton(buttonList, 1, I18n.getString("deathScreen.deleteWorld"));
         }
     }
 

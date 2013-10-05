@@ -243,7 +243,7 @@ public class GuiScreen extends Gui
         int j = height - (Mouse.getEventY() * height) / mc.displayHeight - 1;
         int k = Mouse.getEventButton();
 
-        if (Minecraft.field_142025_a && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
+        if (Minecraft.isRunningOnMac && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
         {
             k = 1;
         }
@@ -338,7 +338,7 @@ public class GuiScreen extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        mc.func_110434_K().func_110577_a(field_110325_k);
+        mc.getTextureManager().bindTexture(optionsBackground);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32F;
         tessellator.startDrawingQuads();
@@ -364,7 +364,7 @@ public class GuiScreen extends Gui
 
     public static boolean isCtrlKeyDown()
     {
-        if (Minecraft.field_142025_a)
+        if (Minecraft.isRunningOnMac)
         {
             return Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220);
         }

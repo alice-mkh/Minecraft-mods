@@ -43,7 +43,7 @@ public class CommandClientGameRule extends CommandGameRule
             if (gamerules1.hasRule(s1))
             {
                 String s3 = gamerules1.getGameRuleStringValue(s1);
-                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111066_d(s1).func_111079_a(" = ").func_111079_a(s3));
+                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.createFromText(s1).addText(" = ").addText(s3));
             }
             else
             {
@@ -59,7 +59,7 @@ public class CommandClientGameRule extends CommandGameRule
         if (par2ArrayOfStr.length == 0)
         {
             GameRules gamerules = func_82366_d();
-            par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111066_d(joinNiceString(gamerules.getRules())));
+            par1ICommandSender.sendChatToPlayer(ChatMessageComponent.createFromText(joinNiceString(gamerules.getRules())));
             return;
         }
         else

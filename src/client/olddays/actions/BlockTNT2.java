@@ -15,7 +15,7 @@ public class BlockTNT2 extends BlockTNT
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
      */
     @Override
-    public void func_94391_a(World par1World, int par2, int par3, int par4, int par5, EntityLivingBase l)
+    public void primeTnt(World par1World, int par2, int par3, int par4, int par5, EntityLivingBase l)
     {
         if (par1World.isRemote)
         {

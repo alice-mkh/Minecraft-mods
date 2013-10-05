@@ -91,7 +91,7 @@ public class NetClientHandlerSP extends NetClientHandler
                     {
                         ((TileEntityCommandBlock)tileentity).setCommand(s1);
                         mc.theWorld.markBlockForUpdate(j, l, j1);
-                        mc.thePlayer.sendChatToPlayer(ChatMessageComponent.func_111077_e("Command set: "+s1));
+                        mc.thePlayer.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("Command set: "+s1));
                     }
                 }
                 catch (Exception exception3)
@@ -101,7 +101,7 @@ public class NetClientHandlerSP extends NetClientHandler
             }
             else
             {
-                mc.thePlayer.sendChatToPlayer(ChatMessageComponent.func_111077_e("advMode.notAllowed"));
+                mc.thePlayer.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("advMode.notAllowed"));
             }
             return;
         }

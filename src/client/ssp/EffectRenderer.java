@@ -7,7 +7,7 @@ public class EffectRenderer
 {
     public static boolean fixParticles = true;
 
-    private static final ResourceLocation field_110737_b = new ResourceLocation("textures/particle/particles.png");
+    private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
 
     /** Reference to the World object. */
     protected World worldObj;
@@ -89,13 +89,13 @@ public class EffectRenderer
             {
                 case 0:
                 default:
-                    renderer.func_110577_a(field_110737_b);
+                    renderer.bindTexture(particleTextures);
                     break;
                 case 1:
-                    renderer.func_110577_a(TextureMap.field_110575_b);
+                    renderer.bindTexture(TextureMap.locationBlocksTexture);
                     break;
                 case 2:
-                    renderer.func_110577_a(TextureMap.field_110576_c);
+                    renderer.bindTexture(TextureMap.locationItemsTexture);
                     break;
             }
 

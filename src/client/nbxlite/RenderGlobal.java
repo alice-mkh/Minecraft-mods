@@ -8,10 +8,10 @@ import net.minecraft.src.ssp.WorldSSP;
 
 public class RenderGlobal implements IWorldAccess
 {
-    private static final ResourceLocation field_110927_h = new ResourceLocation("textures/environment/moon_phases.png");
-    private static final ResourceLocation field_110928_i = new ResourceLocation("textures/environment/sun.png");
-    private static final ResourceLocation field_110925_j = new ResourceLocation("textures/environment/clouds.png");
-    private static final ResourceLocation field_110926_k = new ResourceLocation("textures/environment/end_sky.png");
+    private static final ResourceLocation locationMoonPhasesPng = new ResourceLocation("textures/environment/moon_phases.png");
+    private static final ResourceLocation locationSunPng = new ResourceLocation("textures/environment/sun.png");
+    private static final ResourceLocation locationCloudsPng = new ResourceLocation("textures/environment/clouds.png");
+    private static final ResourceLocation locationEndSkyPng = new ResourceLocation("textures/environment/end_sky.png");
     public List tileEntities;
     private WorldClient theWorld;
 
@@ -163,7 +163,7 @@ public class RenderGlobal implements IWorldAccess
         prevSortY = -9999D;
         prevSortZ = -9999D;
         mc = par1Minecraft;
-        renderEngine = par1Minecraft.func_110434_K();
+        renderEngine = par1Minecraft.getTextureManager();
         byte byte0 = 34;
         byte byte1 = 32;
         glRenderListBase = GLAllocation.generateDisplayLists(byte0 * byte0 * byte1 * 3);
@@ -408,8 +408,8 @@ public class RenderGlobal implements IWorldAccess
         }
 
         theWorld.theProfiler.startSection("prepare");
-        TileEntityRenderer.instance.cacheActiveRenderInfo(theWorld, mc.func_110434_K(), mc.fontRenderer, mc.renderViewEntity, par3);
-        RenderManager.instance.cacheActiveRenderInfo(theWorld, mc.func_110434_K(), mc.fontRenderer, mc.renderViewEntity, mc.pointedEntityLiving, mc.gameSettings, par3);
+        TileEntityRenderer.instance.cacheActiveRenderInfo(theWorld, mc.getTextureManager(), mc.fontRenderer, mc.renderViewEntity, par3);
+        RenderManager.instance.cacheActiveRenderInfo(theWorld, mc.getTextureManager(), mc.fontRenderer, mc.renderViewEntity, mc.pointedEntityLiving, mc.gameSettings, par3);
         countEntitiesTotal = 0;
         countEntitiesRendered = 0;
         countEntitiesHidden = 0;
@@ -447,9 +447,9 @@ public class RenderGlobal implements IWorldAccess
             {
                 EntityLiving entityliving = (EntityLiving)entity1;
 
-                if (entityliving.func_110167_bD() && entityliving.func_110166_bE() != null)
+                if (entityliving.getLeashed() && entityliving.getLeashedToEntity() != null)
                 {
-                    Entity entity2 = entityliving.func_110166_bE();
+                    Entity entity2 = entityliving.getLeashedToEntity();
                     flag = par2ICamera.isBoundingBoxInFrustum(entity2.boundingBox);
                 }
             }
@@ -919,7 +919,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.disableStandardItemLighting();
             GL11.glDepthMask(false);
-            renderEngine.func_110577_a(field_110926_k);
+            renderEngine.bindTexture(locationEndSkyPng);
             Tessellator tessellator = Tessellator.instance;
 
             for (int i = 0; i < 6; i++)
@@ -1054,7 +1054,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(theWorld.getCelestialAngle(par1) * 360F, 1.0F, 0.0F, 0.0F);
         float f16 = 30F;
-        renderEngine.func_110577_a(field_110928_i);
+        renderEngine.bindTexture(locationSunPng);
         tessellator1.startDrawingQuads();
         tessellator1.addVertexWithUV(-f16, 100D, -f16, 0.0D, 0.0D);
         tessellator1.addVertexWithUV(f16, 100D, -f16, 1.0D, 0.0D);
@@ -1062,7 +1062,7 @@ public class RenderGlobal implements IWorldAccess
         tessellator1.addVertexWithUV(-f16, 100D, f16, 0.0D, 1.0D);
         tessellator1.draw();
         f16 = 20F;
-        renderEngine.func_110577_a(field_110927_h);
+        renderEngine.bindTexture(locationMoonPhasesPng);
         int l = theWorld.getMoonPhase();
         int i1 = l % 4;
         int j1 = (l / 4) % 2;
@@ -1164,7 +1164,7 @@ public class RenderGlobal implements IWorldAccess
         byte byte0 = 32;
         int i = 256 / byte0;
         Tessellator tessellator = Tessellator.instance;
-        renderEngine.func_110577_a(field_110925_j);
+        renderEngine.bindTexture(locationCloudsPng);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3 = theWorld.getCloudColour(par1);
@@ -1245,7 +1245,7 @@ public class RenderGlobal implements IWorldAccess
         int j = MathHelper.floor_double(d2 / 2048D);
         d1 -= i * 2048;
         d2 -= j * 2048;
-        renderEngine.func_110577_a(field_110925_j);
+        renderEngine.bindTexture(locationCloudsPng);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3 = theWorld.getCloudColour(par1);
@@ -1559,7 +1559,7 @@ public class RenderGlobal implements IWorldAccess
         if (!damagedBlocks.isEmpty())
         {
             GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
-            renderEngine.func_110577_a(TextureMap.field_110575_b);
+            renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);

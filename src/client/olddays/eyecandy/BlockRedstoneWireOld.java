@@ -24,10 +24,10 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
         Tessellator tessellator = Tessellator.instance;
 
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
-        Icon icon = BlockRedstoneWire.func_94409_b("cross");
-        Icon icon1 = BlockRedstoneWire.func_94409_b("line");
-        Icon icon2 = BlockRedstoneWire.func_94409_b("cross_overlay");
-        Icon icon3 = BlockRedstoneWire.func_94409_b("line_overlay");
+        Icon icon = BlockRedstoneWire.getRedstoneWireIcon("cross");
+        Icon icon1 = BlockRedstoneWire.getRedstoneWireIcon("line");
+        Icon icon2 = BlockRedstoneWire.getRedstoneWireIcon("cross_overlay");
+        Icon icon3 = BlockRedstoneWire.getRedstoneWireIcon("line_overlay");
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
         }

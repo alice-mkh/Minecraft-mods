@@ -51,7 +51,7 @@ public class GuiOldDaysBase extends GuiScreen implements IScrollingGui{
 
     @Override
     public void initGui(){
-        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, I18n.func_135053_a("menu.returnToGame"));
+        GuiButton button = new GuiButton(0, width / 2 - 75, height - 28, 150, 20, I18n.getString("menu.returnToGame"));
         buttonList.add(button);
         addCustomButtons();
         if (hasSearchField){

@@ -3,7 +3,7 @@
 @@ -208,7 +224,7 @@
      {
          ItemStack itemstack = getHeldItem();
-         float f = (float)(getMaxHealth() - func_110143_aJ()) / (float)getMaxHealth();
+         float f = (float)(getMaxHealth() - getHealth()) / (float)getMaxHealth();
 -        int i = 3 + MathHelper.floor_float(f * 4F);
 +        int i = pre15 ? 4 : (3 + MathHelper.floor_float(f * 4F));
  

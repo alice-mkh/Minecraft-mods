@@ -62,7 +62,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
 
             if (l == 100L)
             {
-                s = I18n.func_135053_a("demo.help.movement");
+                s = I18n.getString("demo.help.movement");
                 s = String.format(s, new Object[]
                         {
                             Keyboard.getKeyName(gamesettings.keyBindForward.keyCode), Keyboard.getKeyName(gamesettings.keyBindLeft.keyCode), Keyboard.getKeyName(gamesettings.keyBindBack.keyCode), Keyboard.getKeyName(gamesettings.keyBindRight.keyCode)
@@ -70,7 +70,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
             }
             else if (l == 175L)
             {
-                s = I18n.func_135053_a("demo.help.jump");
+                s = I18n.getString("demo.help.jump");
                 s = String.format(s, new Object[]
                         {
                             Keyboard.getKeyName(gamesettings.keyBindJump.keyCode)
@@ -78,7 +78,7 @@ public class PlayerControllerDemo extends PlayerControllerSP
             }
             else if (l == 250L)
             {
-                s = I18n.func_135053_a("demo.help.inventory");
+                s = I18n.getString("demo.help.inventory");
                 s = String.format(s, new Object[]
                         {
                             Keyboard.getKeyName(gamesettings.keyBindInventory.keyCode)

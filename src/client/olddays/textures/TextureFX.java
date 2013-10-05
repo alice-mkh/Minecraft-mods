@@ -32,7 +32,7 @@ public abstract class TextureFX extends TextureAtlasSprite{
     @Override
     public void updateAnimation(){
         anaglyphEnabled = Minecraft.getMinecraft().gameSettings.anaglyph;
-        size = getOriginX() / tile;
+        size = getIconWidth() / tile;
         if (prevSize != size){
             updateSize();
         }
@@ -40,7 +40,7 @@ public abstract class TextureFX extends TextureAtlasSprite{
         onTick();
         for (int i = 0; i < tile; i++){
             for (int j = 0; j < tile; j++){
-                TextureUtil.func_110998_a(imageData, size, size, func_130010_a() + size * i, func_110967_i() + size * j, false, false);
+                TextureUtil.uploadTextureSub(imageData, size, size, getOriginX() + size * i, getOriginY() + size * j, false, false);
             }
         }
     }
@@ -48,7 +48,7 @@ public abstract class TextureFX extends TextureAtlasSprite{
     protected int[] getImageData(String str, int size){
         try{
             ResourceLocation res = new ResourceLocation(str);
-            InputStream stream = Minecraft.getMinecraft().func_110442_L().func_110536_a(res).func_110527_b();
+            InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(res).getInputStream();
             BufferedImage image = ImageIO.read(stream);
             stream.close();
             int width = image.getWidth();
