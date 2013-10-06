@@ -7,12 +7,12 @@ public class TextureGearFX extends TextureFX
     private int tickCounter;
     private int[] gear;
     private int[] gearmiddle;
-    private int h;
+    private int unknown;
 
     public TextureGearFX(int par2)
     {
         super("olddays_gear_" + par2);
-        this.h = (par2 << 1) - 1;
+        unknown = (par2 << 1) - 1;
         tickCounter = 2;
     }
 
@@ -27,7 +27,7 @@ public class TextureGearFX extends TextureFX
     public void onTick()
     {
         int multiplier = size / 16;
-        tickCounter = (tickCounter + this.h & 63);
+        tickCounter = (tickCounter + unknown & 63);
         float f1 = MathHelper.cos(tickCounter / 64.0F * (float)Math.PI * 2.0F);
         float f2 = MathHelper.sin(tickCounter / 64.0F * (float)Math.PI * 2.0F);
         for (int i = 0; i < size; i++){
