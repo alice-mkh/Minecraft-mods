@@ -44,7 +44,7 @@ public class ODNBXlite extends OldDaysModule{
         new OldDaysPropertyCond2(this, 27,-1,    2,     "Saplings", 2);
         new OldDaysPropertyBool(this,  28,true,  true,  "ShowGUI");
         new OldDaysPropertyInt(this,   29,4,     4,     "DefaultGenerator", 4).setUseNames();
-        new OldDaysPropertyInt(this,   30,4,     6,     "DefaultFeaturesBiomeless", 6).setUseNames();
+        new OldDaysPropertyInt(this,   30,6,     6,     "DefaultFeaturesBiomeless", 6).setUseNames();
         new OldDaysPropertyInt(this,   31,5,     5,     "DefaultFeaturesBeta", 6).setUseNames();
         new OldDaysPropertyInt(this,   32,8,     8,     "DefaultFeaturesRelease", 8).setUseNames();
         registerGears();
