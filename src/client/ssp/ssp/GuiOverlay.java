@@ -14,12 +14,10 @@ public class GuiOverlay{
     public GuiOverlay(Class c){
         guiClass = c;
         list.add(this);
-        System.out.println("Registering overlay for "+c.getName());
     }
 
     public void unregisterOverlay(){
         list.remove(this);
-        System.out.println("Unregistering overlay for "+guiClass.getName());
     }
 
     public static void addOverlays(GuiScreen gui){
@@ -36,15 +34,12 @@ public class GuiOverlay{
     }
 
     public void onAdded(GuiScreen gui){
-        System.out.println("Added overlay to "+gui.getClass().getName());
     }
 
     public void initGui(List buttonList, int width, int height){
-        System.out.println("Initialized overlay for "+guiClass.getName());
     }
 
     public boolean actionPerformed(GuiScreen gui, GuiButton button){
-        System.out.println("Pressed button "+button.id);
         return true;
     }
 
