@@ -1,6 +1,7 @@
 Actions.Durability=0
 Actions.ShroomSpreading=false
 Actions.Stairs=0
+Actions.EggThrowing=0
 Bugs.InvWalking=true
 Gameplay.CombatSystem=0
 Gameplay.AllowDebug=false

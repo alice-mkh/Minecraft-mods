@@ -126,6 +126,13 @@ actions.oldbonemeal.name=Old bone meal
 actions.snowfallonglass.name=Snowfall on glass
  actions.snowfallonglass.desc1=Allows snow to fall on glass.
  actions.snowfallonglass.desc2=§aRemoved in Alpha 1.0.5.
+actions.eggthrowing.name=Egg throwing
+ actions.eggthrowing1=OFF
+ actions.eggthrowing1.desc=Eggs can not be thrown
+ actions.eggthrowing2=Beta 1.8.1
+ actions.eggthrowing2.desc=Eggs spawn adult chickens
+ actions.eggthrowing3=1.0
+ actions.eggthrowing3.desc=Default
 
 bugs.boosters.name=Boosters
  bugs.boosters.desc1=Allows boosting minecarts by

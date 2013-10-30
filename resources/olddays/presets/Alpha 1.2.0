@@ -1,5 +1,6 @@
 Actions.ShroomSpreading=false
 Actions.LessLavaFlow=true
+Actions.EggThrowing=0
 Bugs.Boosters=false
 Bugs.WaterLifts=false
 Bugs.LavaToasters=false

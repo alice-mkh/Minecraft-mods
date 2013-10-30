@@ -127,6 +127,14 @@ actions.oldbonemeal.name=Старая костная мука
 actions.snowfallonglass.name=Снег на стекле
  actions.snowfallonglass.desc1=Позволяет снегу падать на стекло.
  actions.snowfallonglass.desc2=§aУдалено в Альфе 1.0.5.
+//FIXME
+actions.eggthrowing.name=Egg throwing
+ actions.eggthrowing1=OFF
+ actions.eggthrowing1.desc=Eggs can not be thrown
+ actions.eggthrowing2=Beta 1.8.1
+ actions.eggthrowing2.desc=Eggs spawn adult chickens
+ actions.eggthrowing3=1.0
+ actions.eggthrowing3.desc=Default
 
 bugs.boosters.name=Бустеры
  bugs.boosters.desc1=Позволяет ускорять вагонетки

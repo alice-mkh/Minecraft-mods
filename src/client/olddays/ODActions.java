@@ -25,6 +25,7 @@ public class ODActions extends OldDaysModule{
         new OldDaysPropertyBool(this, 18,false, true,  "Apples");
         new OldDaysPropertyBool(this, 19,true,  false, "OldBoneMeal");
         new OldDaysPropertyBool(this, 20,false, false, "SnowFallOnGlass");
+        new OldDaysPropertyInt(this,  21,1,     2,     "EggThrowing", 2).setUseNames();
         registerKey(keyFog = new KeyBinding("Toggle Fog", 33));
     }
 
@@ -61,6 +62,8 @@ public class ODActions extends OldDaysModule{
             case 18:set(BlockLeaves.class, "apples", Apples); break;
             case 19:set(ItemDye.class, "oldBoneMeal", OldBoneMeal); break;
             case 20:set(BlockSnow.class, "snowOnGlass", SnowFallOnGlass); break;
+            case 21:set(ItemEgg2.class, "throwing", EggThrowing > 0);
+                    set(EntityEgg.class, "adult", EggThrowing < 2); break;
         }
     }
 
@@ -91,6 +94,7 @@ public class ODActions extends OldDaysModule{
     public static boolean Apples;
     public static boolean OldBoneMeal = true;
     public static boolean SnowFallOnGlass;
+    public static int EggThrowing;
     public KeyBinding keyFog;
 
     private static Block[] oldSpadeBlocks = (new Block[]{Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay, Block.tilledField});
@@ -205,6 +209,13 @@ public class ODActions extends OldDaysModule{
         axeGold.setTextureName("gold_axe");
         Item.axeGold = axeGold;
         Item.itemsList[Item.axeGold.itemID] = axeGold;
+
+        Item.itemsList[Item.egg.itemID] = null;
+        ItemEgg2 egg = new ItemEgg2(Item.egg.itemID - 256);
+        egg.setUnlocalizedName("egg");
+        egg.setTextureName("egg");
+        Item.egg = egg;
+        Item.itemsList[Item.egg.itemID] = egg;
     }
 
     private void setToolDurability(int i){

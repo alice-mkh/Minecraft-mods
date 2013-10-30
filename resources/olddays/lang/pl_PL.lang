@@ -128,6 +128,14 @@ actions.oldbonemeal.name=Stara mączka kostna
 actions.snowfallonglass.name=Śnieg na szkle
  actions.snowfallonglass.desc1=Pozwala na opady śniegu na blokach szkła.
  actions.snowfallonglass.desc2=§aUsunięte w Alphie 1.0.5.
+//FIXME
+actions.eggthrowing.name=Egg throwing
+ actions.eggthrowing1=OFF
+ actions.eggthrowing1.desc=Eggs can not be thrown
+ actions.eggthrowing2=Beta 1.8.1
+ actions.eggthrowing2.desc=Eggs spawn adult chickens
+ actions.eggthrowing3=1.0
+ actions.eggthrowing3.desc=Default
 
 bugs.boosters.name=Boostery
  bugs.boosters.desc1=Pozwala na przyśpieszenie wózków

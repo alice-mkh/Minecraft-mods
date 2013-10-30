@@ -76,6 +76,7 @@ actions/BlockFlowing.java
 actions/BlockLeaves.java
 actions/BlockMushroom.java
 actions/BlockStairs.java
+actions/EntityEgg.java
 actions/EntityItem.java
 actions/BlockSnow.java
 actions/ItemDye.java

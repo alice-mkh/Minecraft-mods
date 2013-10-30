@@ -128,6 +128,14 @@ actions.oldbonemeal.name=Antiguo polvo de hueso
 actions.snowfallonglass.name=Nieve en vidrio
  actions.snowfallonglass.desc1=Permite a la nieve caer en vidrio.
  actions.snowfallonglass.desc2=§aQuitado en Alpha 1.0.5.
+//FIXME
+actions.eggthrowing.name=Egg throwing
+ actions.eggthrowing1=OFF
+ actions.eggthrowing1.desc=Eggs can not be thrown
+ actions.eggthrowing2=Beta 1.8.1
+ actions.eggthrowing2.desc=Eggs spawn adult chickens
+ actions.eggthrowing3=1.0
+ actions.eggthrowing3.desc=Default
 
 bugs.boosters.name=Propulsores
  bugs.boosters.desc1=Permite impulsar carros

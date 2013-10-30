@@ -57,6 +57,7 @@ CP[1]="`find BlockFire`
        `find BlockLeaves`
        `find BlockSnow`
        `find BlockStairs`
+       `find EntityEgg`
        `find EntityBoat`
        `find EntityItem`
        `find EntitySheep`
@@ -68,6 +69,7 @@ CP[1]="`find BlockFire`
        EntityAIEatGrass2
        EntityTNTPrimed2
        ItemAxe2
+       ItemEgg2
        ItemPickaxe2
        ODActions"
 CP[2]="`find BlockPistonBase`
@@ -302,8 +304,8 @@ CP[10]="GuiButtonOldDays
         mod_OldDays"
 ADD[10]="olddays/lang
          olddays/presets"
-MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` ItemCoalOld
-        BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions
+MV[11]="`find BlockFire` `find BlockFlowing` `find BlockMushroom` `find EntityItem` `find EntitySheep` `find BlockStairs` ItemCoalOld ItemEgg2
+        BlockFence2 BlockFarmlandOld BlockLog2 BlockTNT2 EntityAIEatGrass2 EntityTNTPrimed2 ItemPickaxe2 ItemAxe2 ODActions `find EntityEgg`
         `find EntityMinecart` `find EntityBoat` `find BlockPistonBase` `find ContainerPlayer` ODBugs `find BlockLeaves` MovementInputFromOptionsCustom
         `find EntityXPOrb` `find FoodStats` `find ItemFood` BlockCake2 `find TileEntityEnderChestRenderer` PathIndev `find BlockSnow`
         `find EntityArrow` `find ItemBow` `find EntityPlayer` `find EntityZombie` ODGameplay `find ItemEnchantedBook` IScrollingGui

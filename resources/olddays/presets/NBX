@@ -1,4 +1,5 @@
 Actions.ShroomSpreading=false
+Actions.EggThrowing=2
 Bugs.CraftingSlots=true
 Gameplay.FiniteBow=true
 Gameplay.CombatSystem=0
