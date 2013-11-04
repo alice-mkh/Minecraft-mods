@@ -13,6 +13,12 @@ public class MapGenScatteredFeature2 extends MapGenScatteredFeature
     }
 
     @Override
+    public String func_143025_a()
+    {
+        return "Temple";
+    }
+
+    @Override
     protected boolean canSpawnStructureAtCoords(int par1, int par2)
     {
         byte byte0 = 32;
