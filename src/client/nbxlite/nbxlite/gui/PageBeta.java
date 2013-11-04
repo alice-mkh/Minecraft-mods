@@ -155,7 +155,7 @@ public class PageBeta extends Page{
     public static String getString(int features, boolean jungle){
         String str = mod_OldDays.lang.get("nbxlite.betafeatures" + (features + 1));
         if (jungle){
-            str += " (" + mod_OldDays.lang.get("flags.jungle") + ")";
+            str += " (" + mod_OldDays.lang.get("flag.jungle") + ")";
         }
         return str;
     }
