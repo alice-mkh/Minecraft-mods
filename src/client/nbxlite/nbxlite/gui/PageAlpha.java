@@ -181,18 +181,22 @@ public class PageAlpha extends Page{
         weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
-    @Override
-    public String getString(){
+    public static String getString(int features, int theme, boolean snow){
         StringBuilder str = new StringBuilder();
         str.append(mod_OldDays.lang.get("nbxlite.biomelessfeatures" + (features + 1)));
         str.append(", ");
         str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
-        if (features == 5 && ODNBXlite.SnowCovered){
+        if (features == 5 && snow){
             str.append(" (");
             str.append(I18n.getString("tile.snow.name"));
             str.append(")");
         }
         return str.toString();
+    }
+
+    @Override
+    public String getString(){
+        return getString(features, theme, ODNBXlite.SnowCovered);
     }
 
     private boolean canSnow(){

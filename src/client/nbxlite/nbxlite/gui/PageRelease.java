@@ -115,9 +115,13 @@ public class PageRelease extends Page{
         weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
+    public static String getString(int features){
+        return mod_OldDays.lang.get("nbxlite.releasefeatures" + (features + 1));
+    }
+
     @Override
     public String getString(){
-        return mod_OldDays.lang.get("nbxlite.releasefeatures" + (features + 1));
+        return getString(features);
     }
 
     private int getColumns(){

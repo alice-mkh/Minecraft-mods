@@ -244,17 +244,16 @@ public class PageFinite extends Page{
         weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
-    @Override
-    public String getString(){
+    public static String getString(int x, int y, int z, int type, int theme, boolean indev){
         StringBuilder str = new StringBuilder();
         str.append(mod_OldDays.lang.get("nbxlite.defaultgenerator" + (indev ? 2 : 1)));
         str.append(" (");
-        str.append(ODNBXlite.IndevWidthX);
+        str.append(x);
         str.append("x");
-        str.append(ODNBXlite.IndevWidthZ);
+        str.append(z);
         if (indev){
             str.append("x");
-            str.append(ODNBXlite.IndevHeight-32);
+            str.append(y - 32);
         }
         str.append("), ");
         if (indev){
@@ -263,5 +262,10 @@ public class PageFinite extends Page{
         }
         str.append(mod_OldDays.lang.get("nbxlite.maptheme" + (theme + 1)));
         return str.toString();
+    }
+
+    @Override
+    public String getString(){
+        return getString(ODNBXlite.IndevWidthX, ODNBXlite.IndevHeight, ODNBXlite.IndevWidthZ, type, theme, indev);
     }
 }

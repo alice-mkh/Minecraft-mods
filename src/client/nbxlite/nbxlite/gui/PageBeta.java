@@ -152,13 +152,17 @@ public class PageBeta extends Page{
         weather = ODNBXlite.getFlagFromString(w.flags, "weather");
     }
 
-    @Override
-    public String getString(){
+    public static String getString(int features, boolean jungle){
         String str = mod_OldDays.lang.get("nbxlite.betafeatures" + (features + 1));
         if (jungle){
             str += " (" + mod_OldDays.lang.get("betaJungle") + ")";
         }
         return str;
+    }
+
+    @Override
+    public String getString(){
+        return getString(features, jungle);
     }
 
     private boolean getDefaultWeather(){
