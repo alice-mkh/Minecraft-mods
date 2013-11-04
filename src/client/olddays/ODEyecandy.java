@@ -15,7 +15,7 @@ public class ODEyecandy extends OldDaysModule{
         new OldDaysPropertyBool(this,   8, false, false, "MobArmor").setRefreshOnFallback();
         new OldDaysPropertyInt(this,    9, 0,     3,     "MainMenu", 3).setUseNames();
         new OldDaysPropertyBool(this,   10,true,  false, "OldDigging");
-        new OldDaysPropertyBool(this,   11,true,  false, "OldWires");
+        new OldDaysPropertyInt(this,    11,0,     2,     "OldWires", 2).setUseNames();
         new OldDaysPropertyInt(this,    12,1,     2,     "Tooltips", 2).setUseNames();
         new OldDaysPropertyBool(this,   13,true,  false, "OldFences");
         new OldDaysPropertyBool(this,   14,true,  false, "Arrows");
@@ -61,7 +61,13 @@ public class ODEyecandy extends OldDaysModule{
                     set(GuiMainMenu.class, "oldlogo", MainMenu<1);
                     set(GuiMainMenu.class, "texturepacks", MainMenu<3); break;
             case 10:set(EntityDiggingFX.class, "oldparticles", OldDigging); break;
-            case 11:set(BlockRedstoneWireOld.class, "cross", OldWires);
+            case 11:set(BlockRedstoneWireOld.class, "cross", OldWires < 2);
+                    set(BlockRedstoneWireOld.class, "gradient", OldWires > 0);
+                    set(BlockRedstoneWireOld.class, "fallback", OldWires == 0 &&
+                                                                !hasTextures("textures/blocks/olddays_redstone_dust_cross.png") &&
+                                                                !hasTextures("textures/blocks/olddays_redstone_dust_cross_powered.png") &&
+                                                                !hasTextures("textures/blocks/olddays_redstone_dust_line.png") &&
+                                                                !hasTextures("textures/blocks/olddays_redstone_dust_line_powered.png"));
                     reload(); break;
             case 12:set(GuiContainer.class, "oldtooltips", Tooltips<2);
                     set(GuiContainer.class, "tooltips", Tooltips>0); break;
@@ -124,7 +130,7 @@ public class ODEyecandy extends OldDaysModule{
     public static boolean MobArmor;
     public static int MainMenu = 0;
     public static boolean OldDigging = true;
-    public static boolean OldWires = true;
+    public static int OldWires = 0;
     public static int Tooltips = 1;
     public static boolean OldFences = true;
     public static boolean Arrows = true;

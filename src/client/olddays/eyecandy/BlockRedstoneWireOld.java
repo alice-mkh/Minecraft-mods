@@ -5,6 +5,13 @@ import java.util.*;
 public class BlockRedstoneWireOld extends BlockRedstoneWire
 {
     public static boolean cross = false;
+    public static boolean gradient = true;
+    public static boolean fallback = false;
+
+    public Icon oldCross;
+    public Icon oldCrossPowered;
+    public Icon oldLine;
+    public Icon oldLinePowered;
 
     public BlockRedstoneWireOld(int par1)
     {
@@ -20,14 +27,92 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
         return cross ? ODEyecandy.redstoneRenderID : super.getRenderType();
     }
 
+    /**
+     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
+     * when first determining what to render.
+     */
+    @Override
+    public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        return (gradient || fallback) ? super.colorMultiplier(par1IBlockAccess, par2, par3, par4) : 0xffffff;
+    }
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        oldCross = par1IconRegister.registerIcon("olddays_redstone_dust_cross");
+        oldCrossPowered = par1IconRegister.registerIcon("olddays_redstone_dust_cross_powered");
+        oldLine = par1IconRegister.registerIcon("olddays_redstone_dust_line");
+        oldLinePowered = par1IconRegister.registerIcon("olddays_redstone_dust_line_powered");
+        super.registerIcons(par1IconRegister);
+    }
+
+    public static Icon getRedstoneWireIcon(String par0Str)
+    {
+        if (par0Str.equals("old_cross")){
+            return ((BlockRedstoneWireOld)Block.redstoneWire).oldCross;
+        }
+        if (par0Str.equals("old_line")){
+            return ((BlockRedstoneWireOld)Block.redstoneWire).oldLine;
+        }
+        if (par0Str.equals("old_cross_powered")){
+            return ((BlockRedstoneWireOld)Block.redstoneWire).oldCrossPowered;
+        }
+        if (par0Str.equals("old_line_powered")){
+            return ((BlockRedstoneWireOld)Block.redstoneWire).oldLinePowered;
+        }
+        return BlockRedstoneWire.getRedstoneWireIcon(par0Str);
+    }
+
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+    @Override
+    public Icon getIcon(int par1, int par2)
+    {
+        return (gradient || fallback) ? super.getIcon(par1, par2) : oldCross;
+    }
+
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     */
+    @Override
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+        if (gradient){
+            super.randomDisplayTick(par1World, par2, par3, par4, par5Random);
+            return;
+        }
+        if(par1World.getBlockMetadata(par2, par3, par4) > 0)
+        {
+            double d = (double)par2 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.20000000000000001D;
+            double d1 = (float)par3 + 0.0625F;
+            double d2 = (double)par4 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.20000000000000001D;
+            par1World.spawnParticle("reddust", d, d1, d2, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
     public static boolean renderBlockRedstoneWire(RenderBlocks r, IBlockAccess blockAccess, Block par1Block, int par2, int par3, int par4, Icon override){
         Tessellator tessellator = Tessellator.instance;
 
         int i = blockAccess.getBlockMetadata(par2, par3, par4);
-        Icon icon = BlockRedstoneWire.getRedstoneWireIcon("cross");
-        Icon icon1 = BlockRedstoneWire.getRedstoneWireIcon("line");
-        Icon icon2 = BlockRedstoneWire.getRedstoneWireIcon("cross_overlay");
-        Icon icon3 = BlockRedstoneWire.getRedstoneWireIcon("line_overlay");
+        Icon icon = getRedstoneWireIcon("cross");
+        Icon icon1 = getRedstoneWireIcon("line");
+        Icon icon2 = getRedstoneWireIcon("cross_overlay");
+        Icon icon3 = getRedstoneWireIcon("line_overlay");
+        if (!gradient){
+            boolean powered = i > 0;
+            if (fallback){
+                i = powered ? 15 : 0;
+            }else{
+                icon = getRedstoneWireIcon("old_cross" + (powered ? "_powered" : ""));
+                icon1 = getRedstoneWireIcon("old_line" + (powered ? "_powered" : ""));
+            }
+        }
         if (!Minecraft.oldlighting){
             tessellator.setBrightness(par1Block.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
         }
@@ -51,6 +136,12 @@ public class BlockRedstoneWireOld extends BlockRedstoneWire
         if (f4 < 0.0F)
         {
             f4 = 0.0F;
+        }
+
+        if (!gradient && !fallback){
+            f2 = 1.0F;
+            f3 = 1.0F;
+            f4 = 1.0F;
         }
 
         tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
