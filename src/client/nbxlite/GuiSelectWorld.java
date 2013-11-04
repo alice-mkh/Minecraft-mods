@@ -85,7 +85,18 @@ public class GuiSelectWorld extends GuiScreen
         localizedGameModeText[EnumGameType.SURVIVAL.getID()] = I18n.getString("gameMode.survival");
         localizedGameModeText[EnumGameType.CREATIVE.getID()] = I18n.getString("gameMode.creative");
         localizedGameModeText[EnumGameType.ADVENTURE.getID()] = I18n.getString("gameMode.adventure");
-        worldSlotContainer = new GuiWorldSlot(this);
+        if (nbxlite){
+            try{
+                Class c = GuiWorldSlotNBXlite.class;
+                Object o = c.getDeclaredConstructor(GuiSelectWorld.class).newInstance(this);
+                worldSlotContainer = (GuiWorldSlot)o;
+            }catch(Throwable t){
+                t.printStackTrace();
+                nbxlite = false;
+            }
+        }else{
+            worldSlotContainer = new GuiWorldSlot(this);
+        }
         worldSlotContainer.registerScrollButtons(4, 5);
         initButtons();
     }

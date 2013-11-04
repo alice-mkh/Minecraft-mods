@@ -14,6 +14,12 @@ class GuiWorldSlot extends GuiSlot
         parentWorldGui = par1GuiSelectWorld;
     }
 
+    public GuiWorldSlot(GuiSelectWorld par1GuiSelectWorld, int height)
+    {
+        super(par1GuiSelectWorld.mc, par1GuiSelectWorld.width, par1GuiSelectWorld.height, 32, par1GuiSelectWorld.height - 64, height);
+        parentWorldGui = par1GuiSelectWorld;
+    }
+
     /**
      * Gets the size of the current slot list.
      */
