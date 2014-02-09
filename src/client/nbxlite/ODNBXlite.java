@@ -154,7 +154,7 @@ public class ODNBXlite extends OldDaysModule{
     public static int DefaultFiniteDepth = 32;
 
     public static boolean LeavesDecay(){
-        return Generator>GEN_BIOMELESS || (MapFeatures!=FEATURES_INFDEV0420 && MapFeatures!=FEATURES_INFDEV0415);
+        return (Generator>GEN_BIOMELESS && MapFeatures!=FEATURES_ALPHA120) || MapFeatures==FEATURES_ALPHA11201 || MapFeatures==FEATURES_INFDEV0618;
     }
 
     public static boolean OldHoes(){
