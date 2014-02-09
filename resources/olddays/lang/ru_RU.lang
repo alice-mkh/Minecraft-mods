@@ -286,6 +286,11 @@ gameplay.oldexplosion.name=Старые взрывы
 gameplay.allowsneak.name=Приседание
  gameplay.allowsneak.desc1=Позволяет приседать.
  gameplay.allowsneak.desc2=§aДобавлено в Альфе 1.1.1.
+//FIXME
+gameplay.oldreachdistance.name=Старое расстояние дотягивания
+ gameplay.oldreachdistance.desc1=Равно 4 блокам в режиме
+ gameplay.oldreachdistance.desc2=выживания вместо 4.5.
+ gameplay.oldreachdistance.desc3=§aИзменено в 1.3.
 
 mobs.ai.name=ИИ мобов
  mobs.ai.desc1=Определяет основное поведение мобов.

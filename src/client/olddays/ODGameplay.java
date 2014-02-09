@@ -22,6 +22,7 @@ public class ODGameplay extends OldDaysModule{
         new OldDaysPropertyInt(this,  17,2,     2,     "Score", 2).setUseNames();
         new OldDaysPropertyBool(this, 18,true,  false, "OldExplosion");
         new OldDaysPropertyBool(this, 19,true,  true,  "AllowSneak");
+        new OldDaysPropertyBool(this, 20,true,  false, "OldReachDistance");
         new GuiGameOverOldDaysOverlay();
     }
 
@@ -60,6 +61,7 @@ public class ODGameplay extends OldDaysModule{
                     set(GuiGameOverOldDaysOverlay.class, "oldScore", Score == 0); break;
             case 18:set(Explosion.class, "oldexplosion", OldExplosion); break;
             case 19:set(MovementInputFromOptionsCustom.class, "allowSneak", AllowSneak); break;
+            case 20:set(net.minecraft.src.ssp.PlayerController.class, "oldreach", OldReachDistance); break;
         }
     }
 
@@ -82,6 +84,7 @@ public class ODGameplay extends OldDaysModule{
     public static int Score = 2;
     public static boolean OldExplosion = true;
     public static boolean AllowSneak = true;
+    public static boolean OldReachDistance = true;
 
     @Override
     public void replaceBlocks(){

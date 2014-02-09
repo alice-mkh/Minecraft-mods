@@ -168,15 +168,6 @@ public class PlayerControllerSP extends PlayerController
         }
     }
 
-    /**
-     * player reach distance = 4F
-     */
-    @Override
-    public float getBlockReachDistance()
-    {
-        return 4F;
-    }
-
     @Override
     public void updateController()
     {

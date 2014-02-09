@@ -17,6 +17,8 @@ import net.minecraft.src.World;
 
 public class PlayerController extends PlayerControllerMP
 {
+    public static boolean oldreach = false;
+
     /** A reference to the Minecraft object. */
     protected final Minecraft mc;
     public boolean isInTestMode;
@@ -103,7 +105,7 @@ public class PlayerController extends PlayerControllerMP
      */
     @Override
     public float getBlockReachDistance(){
-        return 4F;
+        return oldreach ? 4F : 5F;
     }
 
     /**

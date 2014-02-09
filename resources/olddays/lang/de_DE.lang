@@ -291,6 +291,10 @@ gameplay.oldexplosion.name=Old explosions
 gameplay.allowsneak.name=Sneaking
  gameplay.allowsneak.desc1=Allows to sneak.
  gameplay.allowsneak.desc2=§aAdded in Alpha 1.1.1.
+gameplay.oldreachdistance.name=Old reach distance
+ gameplay.oldreachdistance.desc1=Equals to 4 blocks in
+ gameplay.oldreachdistance.desc2=Survival mode instead of 4.5.
+ gameplay.oldreachdistance.desc3=§aChanged in 1.3.
 
 mobs.ai.name=Mob AI
  mobs.ai.desc1=Schaltet das generelle Mob-Verhalen.

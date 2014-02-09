@@ -174,7 +174,11 @@ ADD[5]="olddays/allitems.png
         textures/blocks/olddays_chest_front_right.png
         textures/blocks/olddays_chest_front_left_trap.png
         textures/blocks/olddays_chest_front_right_trap.png
-        textures/blocks/olddays_chest_front_trap.png"
+        textures/blocks/olddays_chest_front_trap.png
+        textures/blocks/olddays_redstone_dust_cross.png
+        textures/blocks/olddays_redstone_dust_cross_powered.png
+        textures/blocks/olddays_redstone_dust_line.png
+        textures/blocks/olddays_redstone_dust_line_powered.png"
 CP[6]="ODSounds
        SoundManager2"
 ADD[6]="olddays/sounds"

@@ -560,7 +560,7 @@ public class PlayerHelper {
       speed = 1.0D;
       gravity = 1.0D;
       timeschedule = null;
-      reachdistance = 4F;
+      reachdistance = -1;
       opened = false;
       prevx = -1;
       prevy = -1;
@@ -783,7 +783,7 @@ public class PlayerHelper {
       lastrift = s.getInteger("lastrift", -1);
       noClip = s.getBoolean("noclip", false);
       flying = s.getBoolean("fly", false);
-      reachdistance = s.getFloat("reachdistance", 4);
+      reachdistance = s.getFloat("reachdistance", -1);
       disablecommands = s.getBoolean("disablecommands", false);
       dropitems = s.getBoolean("harvestitems", true);
       mobsfrozen = s.getBoolean("mobsfrozen", false);
@@ -1656,7 +1656,7 @@ public class PlayerHelper {
             } catch (Exception e) {
                continue;
             }
-            MovingObjectPosition m = ep.rayTrace(reachdistance, 1.0F);
+            MovingObjectPosition m = ep.rayTrace(getReachDistance(), 1.0F);
             if (m != null) {
                es.setLocationAndAngles(m.blockX, m.blockY + 1, m.blockZ, -ep.rotationYaw, 0F);
             } else {
@@ -1733,7 +1733,7 @@ public class PlayerHelper {
                   continue;
                }
                EntityLiving es = (EntityLiving) creature.getConstructor(new Class[] { World.class }).newInstance(new Object[] { mc.theWorld });
-               MovingObjectPosition m = ep.rayTrace(reachdistance, 1.0F);
+               MovingObjectPosition m = ep.rayTrace(getReachDistance(), 1.0F);
                if (m != null) {
                   es.setLocationAndAngles(m.blockX, m.blockY + 1, m.blockZ, -ep.rotationYaw, 0F);
                } else {
@@ -2541,7 +2541,7 @@ public class PlayerHelper {
             sendMessage("Reach distance set at " + reachdistance);
          } catch (Exception e) {
             if (split[1].equalsIgnoreCase("reset")) {
-               reachdistance = 4F;
+               reachdistance = -1F;
                return;
             }
             sendError(ERRMSG_PARSE);
@@ -3322,7 +3322,7 @@ public class PlayerHelper {
             ep.mountEntity(null);
             return;
          }
-         // MovingObjectPosition m = ep.rayTrace(reachdistance, 1.0F);
+         // MovingObjectPosition m = ep.rayTrace(getReachDistance(), 1.0F);
          MovingObjectPosition m = mc.objectMouseOver;
          if (m == null) {
             sendError(ERRMSG_NPCNOTFOUND);
@@ -3341,7 +3341,7 @@ public class PlayerHelper {
           */
       } else if (split[0].equalsIgnoreCase("exterminate")) {
          int size = 4;
-         // MovingObjectPosition m = ep.rayTrace(reachdistance, 1.0F);
+         // MovingObjectPosition m = ep.rayTrace(getReachDistance(), 1.0F);
          MovingObjectPosition m = mc.objectMouseOver;
          if (m == null) {
             sendError(ERRMSG_NPCNOTFOUND);
@@ -3440,7 +3440,7 @@ public class PlayerHelper {
          }
 
          int x1, y1, z1, x2, y2, z2;
-         MovingObjectPosition target = ep.rayTrace(reachdistance, 1.0F);
+         MovingObjectPosition target = ep.rayTrace(getReachDistance(), 1.0F);
          if (target == null) {
             sendError("No block within range.");
             return;
@@ -5194,7 +5194,7 @@ public class PlayerHelper {
           * Gives the player a maximum stack of the block they are looking at
           */
       } else if (split[0].equalsIgnoreCase("pick")) {
-         MovingObjectPosition m = ep.rayTrace(reachdistance, 1.0F);
+         MovingObjectPosition m = ep.rayTrace(getReachDistance(), 1.0F);
          if (m == null) {
             return;
          }
@@ -5291,7 +5291,7 @@ public class PlayerHelper {
             sendError(ERRMSG_PARAM);
             return;
          }
-         MovingObjectPosition block = ep.rayTrace(reachdistance,1.0F);
+         MovingObjectPosition block = ep.rayTrace(getReachDistance(),1.0F);
          if (block == null) {
             sendError("No block within range.");
             return;
@@ -6961,5 +6961,12 @@ public class PlayerHelper {
      String[] desc = PH.CMDS.get(PH.commands.get(key));
      CommandClientSPC command = new CommandClientSPC(key, desc[1]);
      return command;
+   }
+
+   public float getReachDistance(){
+     if (reachdistance < 0){
+        return mc.playerController.getBlockReachDistance();
+     }
+     return reachdistance;
    }
 }

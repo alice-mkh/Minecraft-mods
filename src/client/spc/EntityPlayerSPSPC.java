@@ -294,7 +294,7 @@ public class EntityPlayerSPSPC extends EntityPlayerSP2{
     @Override
     public MovingObjectPosition rayTrace(double d, float f) {
         if (canRunSPC() && d == this.mc.playerController.getBlockReachDistance()) {
-            d = ph.reachdistance;
+            d = ph.getReachDistance();
         }
         return super.rayTrace(d, f);
     }

@@ -288,6 +288,11 @@ gameplay.oldexplosion.name=Stare eksplozje
 gameplay.allowsneak.name=Skradanie
  gameplay.allowsneak.desc1=Umożliwia skradanie.
  gameplay.allowsneak.desc2=§aDodane w Alphie 1.1.1.
+//FIXME
+gameplay.oldreachdistance.name=Old reach distance
+ gameplay.oldreachdistance.desc1=Equals to 4 blocks in
+ gameplay.oldreachdistance.desc2=Survival mode instead of 4.5.
+ gameplay.oldreachdistance.desc3=§aChanged in 1.3.
 
 mobs.ai.name=Inteligencja mobów
  mobs.ai.desc1=Ustawia ich ogólne zachowanie.
