@@ -24,12 +24,18 @@ rm unused.zip
 cd ..
 rm latest
 ln -s $VERSION latest
+matedialog --question --title "Daily Minecraft mod builds" --text "Is this version stable?"
+if [[ $? == "0" ]]; then
+    rm -rf stable-old
+    mv stable stable-old
+    cp -r $VERSION stable
+fi
 FILES=`ls -v | tail -12`
 mkdir temp
 for F in $FILES; do
     mv $F temp
 done
-rm -r `ls -I "[lt]*"`
+rm -r `ls -I "[lts]*"`
 cd temp
 for F in $FILES; do
     mv $F ..
