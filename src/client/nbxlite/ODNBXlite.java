@@ -56,10 +56,8 @@ public class ODNBXlite extends OldDaysModule{
         set(ItemRenderer.class, "olddays", true);
         flags = new HashMap<String, Boolean>();
         Minecraft.isom = true;
-        registerStructure(MapGenSkyStronghold.class, "Stronghold");
-        registerStructure(MapGenStronghold2.class, "Stronghold");
-        registerStructure(MapGenScatteredFeature2.class, "Temple");
-        registerStructure(MapGenScatteredFeature3.class, "Temple");
+        registerStructure(StructureStrongholdStart2.class, "Stronghold");
+        registerStructure(StructureScatteredFeatureStart2.class, "Temple");
     }
 
     @Override

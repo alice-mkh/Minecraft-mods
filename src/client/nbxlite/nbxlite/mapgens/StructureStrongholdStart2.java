@@ -7,7 +7,7 @@ import net.minecraft.src.StructureStart;
 import net.minecraft.src.StructureStrongholdPieces;
 import net.minecraft.src.World;
 
-class StructureStrongholdStart2 extends StructureStart
+public class StructureStrongholdStart2 extends StructureStart
 {
     public StructureStrongholdStart2(World world, Random random, int i, int j)
     {
