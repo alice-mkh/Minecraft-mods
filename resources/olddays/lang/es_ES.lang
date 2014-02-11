@@ -824,6 +824,12 @@ textures.mojangscreen.name=Pantalla de Mojang
  textures.mojangscreen2.desc=Logo más grande
  textures.mojangscreen3=Beta 1.8
  textures.mojangscreen3.desc=Por defecto
+//FIXME
+textures.charcoal.name=Old charcoal
+ textures.charcoal.desc1=Looks like regular coal
+ textures.charcoal.desc2=§aChanged in 1.6.
+textures.lapis.name=Old lapis lazuli block
+ textures.lapis.desc1=§aChanged in 1.6.
 
 nbxlite.gen.name=Generador
  nbxlite.gen.desc1=Fija el generador principal.

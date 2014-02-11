@@ -817,6 +817,11 @@ textures.mojangscreen.name=Mojang screen
  textures.mojangscreen2.desc=Larger logo
  textures.mojangscreen3=Beta 1.8
  textures.mojangscreen3.desc=Default screen
+textures.charcoal.name=Old charcoal
+ textures.charcoal.desc1=Looks like regular coal
+ textures.charcoal.desc2=§aChanged in 1.6.
+textures.lapis.name=Old lapis lazuli block
+ textures.lapis.desc1=§aChanged in 1.6.
 
 nbxlite.gen.name=Generator
  nbxlite.gen.desc1=Sets main terrain generation.

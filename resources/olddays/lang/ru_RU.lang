@@ -822,6 +822,11 @@ textures.mojangscreen.name=Экран Mojang
  textures.mojangscreen2.desc=Логотип побольше
  textures.mojangscreen3=Бета 1.8
  textures.mojangscreen3.desc=Стандартный экран
+textures.charcoal.name=Старый древесный  уголь
+ textures.charcoal.desc1=Выглядит как обычный уголь
+ textures.charcoal.desc2=§aИзменен в 1.6.
+textures.lapis.name=Старый блок лазурита
+ textures.lapis.desc1=§aИзменен в 1.6.
 
 nbxlite.gen.name=Генератор
  nbxlite.gen.desc1=Основная генерация.
