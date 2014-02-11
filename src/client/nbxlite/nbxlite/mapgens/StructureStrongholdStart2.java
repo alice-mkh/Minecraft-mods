@@ -9,8 +9,13 @@ import net.minecraft.src.World;
 
 public class StructureStrongholdStart2 extends StructureStart
 {
+    public StructureStrongholdStart2()
+    {
+    }
+
     public StructureStrongholdStart2(World world, Random random, int i, int j)
     {
+        super(i, j);
         StructureStrongholdPieces.prepareStructurePieces();
         ComponentStrongholdStairs2 componentstrongholdstairs2 = new ComponentStrongholdStairs2(0, random, (i << 4) + 2, (j << 4) + 2);
         components.add(componentstrongholdstairs2);
