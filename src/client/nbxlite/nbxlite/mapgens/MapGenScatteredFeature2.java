@@ -10,12 +10,6 @@ public class MapGenScatteredFeature2 extends MapGenScatteredFeature
 
     public MapGenScatteredFeature2()
     {
-        super();
-    }
-
-    public MapGenScatteredFeature2(Map par1Map)
-    {
-        super(par1Map);
     }
 
     @Override

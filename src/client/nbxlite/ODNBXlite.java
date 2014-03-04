@@ -1279,9 +1279,6 @@ public class ODNBXlite extends OldDaysModule{
     }
 
     public static boolean getFlag(String str){
-        if (str == null){
-            return false;
-        }
         if (flags.containsKey(str)){
             return flags.get(str);
         }
