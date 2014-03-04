@@ -33,6 +33,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.zip.*;
 import net.minecraft.src.ssp.ChunkProviderLoadOrGenerate;
@@ -3176,7 +3177,10 @@ public class Minecraft implements IPlayerUsage
             p = p.replace("ssp.", "");
         }
         String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
-        File file = new File(path.replace("%20", " ").replace("%23", "#")+p.replace(".", "/"));
+        try{
+            path = URLDecoder.decode(path, "UTF-8");
+        }catch(Exception e){}
+        File file = new File(path+p.replace(".", "/"));
         List classes = new ArrayList();
         if ((file.getName().endsWith(".zip") || file.getName().endsWith(".jar")) && !file.isDirectory()){
             try{

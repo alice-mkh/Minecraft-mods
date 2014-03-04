@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -238,7 +239,10 @@ public class mod_OldDays extends Mod implements ResourceManagerReloadListener{
             p = c.getPackage().getName()+".";
         }catch(Exception ex){}
         String path = c.getProtectionDomain().getCodeSource().getLocation().getPath();
-        File file = new File(path.replace("%20", " ").replace("%23", "#")+p.replace(".", "/"));
+        try{
+            path = URLDecoder.decode(path, "UTF-8");
+        }catch(Exception e){}
+        File file = new File(path+p.replace(".", "/"));
         ArrayList<String> classes = new ArrayList<String>();
         if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar") && !file.isDirectory()){
             try{
