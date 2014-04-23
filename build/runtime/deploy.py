@@ -14,7 +14,7 @@ def symlink(source, link_name):
         if csl(link_name, source, flags) == 0:
             raise ctypes.WinError()
 
-print("Gathering overwritten files list...")	
+print("Gathering overwritten files list...")
 delsrc = [line.strip() for line in open( 'src-mods/build/conf_deploy/deploy_src.txt' )]
 delserver = [line.strip() for line in open('src-mods/build/conf_deploy/deploy_server.txt')]
 delclient = [line.strip() for line in open('src-mods/build/conf_deploy/deploy_client.txt')]
@@ -27,8 +27,8 @@ for filename in delserver :
 for filename in delclient :
     os.remove('src/minecraft/net/minecraft/client/' + filename)
 
-print("Downloading worldedit...")	
-urllib.urlretrieve ('http://dev.bukkit.org/media/files/715/447/worldedit-5.5.7.jar', 'lib/WorldEdit.jar')
+print("Downloading worldedit...")
+urllib.urlretrieve('http://dev.bukkit.org/media/files/715/447/worldedit-5.5.7.jar', 'lib/WorldEdit.jar')
 
 print("Linking files and folder to the minecraft source directory...")
 links = [line.strip() for line in open( 'src-mods/build/conf_deploy/deploy_link.txt' )]
