@@ -21,11 +21,11 @@ delclient = [line.strip() for line in open('src-mods/build/conf_deploy/deploy_cl
 
 print("Deleting files...")
 for filename in delsrc :
-    os.remove( 'src/minecraft/net/minecraft/src/' + filename )
+    os.remove('src/minecraft/net/minecraft/src/' + filename)
 for filename in delserver :
-    os.remove( 'src/minecraft/net/minecraft/server/' + filename )
+    os.remove('src/minecraft/net/minecraft/server/' + filename)
 for filename in delclient :
-    os.remove( 'src/minecraft/net/minecraft/client/' + filename )
+    os.remove('src/minecraft/net/minecraft/client/' + filename)
 
 print("Downloading worldedit...")	
 urllib.urlretrieve ('http://dev.bukkit.org/media/files/715/447/worldedit-5.5.7.jar', 'lib/WorldEdit.jar')
