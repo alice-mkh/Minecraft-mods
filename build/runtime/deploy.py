@@ -35,12 +35,3 @@ links = [line.strip() for line in open( 'src-mods/build/conf_deploy/deploy_link.
 for link in links :
     Files = link.split()
     symlink( path + Files[0], path + Files[1])
-	
-# symlink( path + '/src-mods/src/client', path + '/src/minecraft/net/minecraft/src/mods')
-# symlink( path + '/src-mods/resources/olddays', path + '/jars/assets/olddays')
-# symlink( path + '/src-mods/resources/textures', path + '/jars/assets/textures')
-# symlink( path + '/src-mods/src/client-client/ssp/ClientBrandRetriever.java' , path + '/src/minecraft/net/minecraft/client/ClientBrandRetriever.java')
-# symlink( path + '/src-mods/src/client-server/ssp/MinecraftServer.java', path + '/src/minecraft/net/minecraft/server/MinecraftServer.java')
-# symlink( path + '/src-mods/src/client-client/ssp/Minecraft.java', path + '/src/minecraft/net/minecraft/src/Minecraft.java')
-# symlink( path + '/src-mods/resources/char.png', path + '/jars/assets/char.png')
-# symlink( path + '/lib/WorldEdit.jar', path + '/jars/WorldEdit.jar')
