@@ -3,4 +3,3 @@ pushd "%cd%" && cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\ge
 cd .. && cd ..
 runtime\bin\python\python_mcp src-mods\build\deploy.py %*
 pause
-exit /b
