@@ -18,5 +18,3 @@ To set this up:
 
 To build a release, run **make.sh** script **in the MCP directory**. Not from src-mods/build!
 Resulting zips will be in **reobf/result2**.
-
-build/ln.exe source code can be found here: https://github.com/neosmart/ln-win
