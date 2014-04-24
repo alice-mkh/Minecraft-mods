@@ -13,6 +13,7 @@ To set this up:
 3.  Clone this repository to **src-mods** directory.
 
 4.  Go to **src-mods/build** and run **deploy.sh** script. (Or **deploy.bat** if you use Windows)
+    * In Windows, Symlinks cannot be done without any administrator privileges, that meens you need to be an administrator ; the script will run automatically as administrator, or it will ask you your credentials.
 
 5.  It is ready. You may now recompile client and start it.
 
