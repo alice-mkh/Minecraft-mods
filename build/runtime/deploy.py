@@ -1,4 +1,4 @@
-import os, urllib
+import os, urllib, ctypes
 path = os.getcwd()
 
 def symlink(source, link_name):
@@ -6,7 +6,6 @@ def symlink(source, link_name):
     if callable(os_symlink):
         os_symlink(source, link_name)
     else:
-        import ctypes
         csl = ctypes.windll.kernel32.CreateSymbolicLinkW
         csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
         csl.restype = ctypes.c_ubyte
