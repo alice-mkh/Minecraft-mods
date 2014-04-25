@@ -1,15 +1,15 @@
 import os, shutil, linecache, zipfile
 
-currentpath = os.getcwd()
-RESULT_DIR  = "./reobf/result/"
-RESULT_DIR2 = "./reobf/result2/"
-additional  = "./reobf/additional/"
-reobf       = currentpath + "/reobf/minecraft/"
-conf_mv     = currentpath + '/src-mods/build/conf_make/make_mv_%s.txt'
-conf_cp     = currentpath + '/src-mods/build/conf_make/make_cp_%s.txt'
-conf_add    = currentpath + '/src-mods/build/conf_make/make_add_%s.txt'
-conf_unused = currentpath + '/src-mods/build/conf_make/make_unused.txt'
-conf_mods   = currentpath + '/src-mods/build/conf_make/make_mods_list.txt'
+currentpath = os.getcwd() # Get the current directory
+RESULT_DIR  = "./reobf/result/" # Where the resulting compiled classes will be
+RESULT_DIR2 = "./reobf/result2/" # Where the resulting zips will be
+additional  = "./reobf/additional/" # Where the additional resources are
+reobf       = currentpath + "/reobf/minecraft/" # Where the reobfuscate folder is
+conf_mv     = currentpath + '/src-mods/build/conf_make/make_mv_%s.txt' # Location of the config for moving classes (%s is the mod name, don't touch)
+conf_cp     = currentpath + '/src-mods/build/conf_make/make_cp_%s.txt' # Location of the config for copying classes (%s is the mod name, don't touch)
+conf_add    = currentpath + '/src-mods/build/conf_make/make_add_%s.txt' # Location of the config for adding resources (%s is the mod name, don't touch)
+conf_unused = currentpath + '/src-mods/build/conf_make/make_unused.txt' # Location of the config for unused classes
+conf_mods   = currentpath + '/src-mods/build/conf_make/make_mods_list.txt' # Location of the config for the mods list
 srcdir      = [
 				"src-mods/README.md",
 				"src-mods/src/client/nbxlite/", 
@@ -21,17 +21,25 @@ srcdir      = [
 				"src-mods/src/server/", 
 				"src-mods/resources/", 
 				"src-mods/build/"
-			  ]
+			  ] # List of files / folders to include in the source zip
 
+spcsrcdir   = [
+				"src-mods/src/client/spc"
+			  ] # List of files / folders to include in the spc source zip
+			  
 # Find a class in /reobf/minecraft/ that contains the provided string in the first two lines
 def find(classname):
 	if os.path.exists(reobf + classname + ".class") == True:
 		print("Find: " + classname + ".class" + " --> " + classname + ".java")
 		return reobf + classname + ".class"
 	for root, dirs, files in os.walk(reobf):
-		for file in files:
-			lines = linecache.getlines(reobf + file, 2)
-			if any(classname + ".java" in s for s in lines):
+		for fileName in files:
+			line = linecache.getline(reobf + fileName, 1)
+			if line.find(classname + ".java"):
+				print("Find: " + file + " --> " + classname + ".java")
+				return reobf + file
+			line = linecache.getline(reobf + fileName, 2)
+			if line.find(classname + ".java"):
 				print("Find: " + file + " --> " + classname + ".java")
 				return reobf + file
 	print("Not Found " + classname)
@@ -137,4 +145,4 @@ print("Packaging source code ...")
 zipsrc(srcdir, RESULT_DIR2 + "/client/src.zip")
 
 print("Packaging spc source code ...")
-zipsrc("src-mods/src/client/spc/", RESULT_DIR2 + "/client/spc-src.zip")
+zipsrc(spcsrcdir, RESULT_DIR2 + "/client/spc-src.zip")
