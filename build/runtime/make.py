@@ -48,8 +48,8 @@ if os.name is "nt":
 	os.system("runtime\\bin\\python\\python_mcp.exe runtime\\recompile.py")
 	os.system("runtime\\bin\\python\\python_mcp.exe runtime\\reobfuscate.py")
 else:
-	os.system("python runtime\\recompile.py")
-	os.system("python runtime\\reobfuscate.py")
+	os.system("python runtime/recompile.py")
+	os.system("python runtime/reobfuscate.py")
 
 for Unfile in [line.strip() for line in open('src-mods/build/conf_make/make_unused.txt')]:
 	if os.path.isdir(reobf + Unfile) == True:
@@ -88,25 +88,22 @@ for mod in [line.strip() for line in open('src-mods/build/conf_make/make_mods_li
 			copy("src-mods/resources/" + addfilename, RESULT_DIR + "/client/" + mod + "/assets/minecraft/" + addfilename)
 		
 print("Adding worldedit...")
-copy(currentpath + "/lib/worldedit.jar", RESULT_DIR + "/client/spc/worldedit.jar")
+copy(currentpath + "/lib/WorldEdit.jar", RESULT_DIR + "/client/spc/WorldEdit.jar")
 
-if os.path.isdir(RESULT_DIR2 + "/Client/") == False:
-	os.makedirs(os.path.dirname(RESULT_DIR2 + "/Client/"))
+if os.path.isdir(RESULT_DIR2 + "/client/") == False:
+	os.makedirs(os.path.dirname(RESULT_DIR2 + "/client/"))
 
 for mod in [line.strip() for line in open('src-mods/build/conf_make/make_mods_list.txt')]:
 	print("Packaging " + mod + ".zip ...")
-	zf = zipfile.ZipFile("%s.zip" % (RESULT_DIR2 + "/Client/" + mod), "w")
-	abs_src = os.path.abspath(RESULT_DIR + "/Client/" + mod)
-	for dirname, subdirs, files in os.walk(RESULT_DIR + "/Client/" + mod):
-		for filename in files:
-			absname = os.path.abspath(os.path.join(dirname, filename))
-			arcname = absname[len(abs_src) + 1:]
-			zf.write(absname, arcname)
-	zf.close()
+	mod_zip = zipfile.ZipFile(RESULT_DIR2 + "/client/" + mod + ".zip", "w" )
+	for dir_, _, files in os.walk(RESULT_DIR + "/client/" + mod + "/"):
+		for fileName in files:
+			filepath = (dir_ + "/" + fileName).replace(RESULT_DIR + "/client/" + mod, "")
+			mod_zip.write(dir_ + "/" + fileName, filepath, zipfile.ZIP_DEFLATED)
 	
 print("Packaging source code ...")
-src_zip = zipfile.ZipFile(RESULT_DIR2 + "/Client/src.zip", "w" )
-src_zip.write("src-mods/Readme.md", "Readme.md", zipfile.ZIP_DEFLATED )
+src_zip = zipfile.ZipFile(RESULT_DIR2 + "/client/src.zip", "w" )
+src_zip.write("src-mods/README.md", "README.md", zipfile.ZIP_DEFLATED )
 srcdir = ["src-mods/src/client/nbxlite/", "src-mods/src/client/olddays/", "src-mods/src/client/spawnhuman/", "src-mods/src/client/ssp/", "src-mods/src/client-client/", "src-mods/src/client-server/", "src-mods/src/server/", "src-mods/resources/", "src-mods/build/"]
 for dir in srcdir:
 	for dir_, _, files in os.walk(dir):
@@ -114,7 +111,7 @@ for dir in srcdir:
 			src_zip.write(dir_ + "/" + fileName, dir_.replace("src-mods/", "") + "/" + fileName, zipfile.ZIP_DEFLATED)
 
 print("Packaging spc source code ...")
-spc_src_zip = zipfile.ZipFile(RESULT_DIR2 + "/Client/spc-src.zip", "w" )
+spc_src_zip = zipfile.ZipFile(RESULT_DIR2 + "/client/spc-src.zip", "w" )
 for dir_, _, files in os.walk("src-mods/src/client/spc/"):
 	for fileName in files:
 		spc_src_zip.write(dir_ + "/" + fileName, dir_.replace("src-mods/", "") + "/" + fileName, zipfile.ZIP_DEFLATED)
