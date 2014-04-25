@@ -1,8 +1,8 @@
 import os, shutil, linecache, zipfile
 currentpath = os.getcwd()
 
-RESULT_DIR = "./result"
-RESULT_DIR2 = "./result2"
+RESULT_DIR = "./reobf/result"
+RESULT_DIR2 = "./reobf/result2"
 reobf = currentpath + "/reobf/minecraft/"
 
 def find(classname):
