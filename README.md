@@ -17,5 +17,5 @@ To set this up:
 
 5.  It is ready. You may now recompile client and start it.
 
-To build a release, run **make.sh** script **in the MCP directory**. Not from src-mods/build!
+To build a release, go to **src-mods/build** and run **make.sh** script. (Or **make.bat** if you use Windows)
 Resulting zips will be in **reobf/result2**.
