@@ -85,7 +85,7 @@ for mod in [line.strip() for line in open('src-mods/build/conf_make/make_mods_li
 	if os.path.exists('src-mods/build/conf_make/make_add_' + mod + '.txt'):
 		add = [line.strip() for line in open('src-mods/build/conf_make/make_add_' + mod + '.txt')]
 		for addfilename in add :
-			copy("src-mods/resources/" + addfilename, RESULT_DIR + "/client/" + mod + "/assets/minecraft/" + addfilename)
+			copy("reobf/additional/" + addfilename, RESULT_DIR + "/client/" + mod + "/assets/minecraft/" + addfilename)
 		
 print("Adding worldedit...")
 copy(currentpath + "/lib/WorldEdit.jar", RESULT_DIR + "/client/spc/WorldEdit.jar")
