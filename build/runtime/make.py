@@ -11,21 +11,21 @@ conf_add    = currentpath + '/src-mods/build/conf_make/make_add_%s.txt' # Locati
 conf_unused = currentpath + '/src-mods/build/conf_make/make_unused.txt' # Location of the config for unused classes
 conf_mods   = currentpath + '/src-mods/build/conf_make/make_mods_list.txt' # Location of the config for the mods list
 srcdir      = [
-				"src-mods/README.md",
-				"src-mods/src/client/nbxlite/", 
-				"src-mods/src/client/olddays/", 
-				"src-mods/src/client/spawnhuman/", 
-				"src-mods/src/client/ssp/", 
-				"src-mods/src/client-client/", 
-				"src-mods/src/client-server/", 
-				"src-mods/src/server/", 
-				"src-mods/resources/", 
-				"src-mods/build/"
-			  ] # List of files / folders to include in the source zip
+		"src-mods/README.md",
+		"src-mods/src/client/nbxlite/", 
+		"src-mods/src/client/olddays/", 
+		"src-mods/src/client/spawnhuman/", 
+		"src-mods/src/client/ssp/", 
+		"src-mods/src/client-client/", 
+		"src-mods/src/client-server/", 
+		"src-mods/src/server/", 
+		"src-mods/resources/", 
+		"src-mods/build/"
+	      ] # List of files / folders to include in the source zip
 
 spcsrcdir   = [
-				"src-mods/src/client/spc"
-			  ] # List of files / folders to include in the spc source zip
+		"src-mods/src/client/spc"
+	      ] # List of files / folders to include in the spc source zip
 			  
 # Find a class in /reobf/minecraft/ that contains the provided string in the first two lines
 def find(classname):
@@ -36,13 +36,13 @@ def find(classname):
 		for fileName in files:
 			line = linecache.getline(reobf + fileName, 1)
 			if line.find(classname + ".java"):
-				print("Find: " + file + " --> " + classname + ".java")
-				return reobf + file
+				print("Find: " + fileName + " --> " + classname + ".java")
+				return reobf + fileName
 			line = linecache.getline(reobf + fileName, 2)
 			if line.find(classname + ".java"):
-				print("Find: " + file + " --> " + classname + ".java")
-				return reobf + file
-	print("Not Found " + classname)
+				print("Find: " + fileName + " --> " + classname + ".java")
+				return reobf + fileName
+	print("Find : Not Found " + classname + ".class")
 	return
 
 # Universal copy function that automatically detect the type of the source and create automatically the folders for it
