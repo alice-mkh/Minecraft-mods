@@ -26,8 +26,14 @@ for filename in delserver :
 for filename in delclient :
     os.remove('src/minecraft/net/minecraft/client/' + filename)
 
+if os.path.isdir('lib/') == False:
+	os.makedirs(os.path.dirname('lib/'))
+	
 print("Downloading worldedit...")
 urllib.urlretrieve('http://dev.bukkit.org/media/files/715/447/worldedit-5.5.7.jar', 'lib/WorldEdit.jar')
+
+if os.path.isdir('reobf/') == False:
+	os.makedirs(os.path.dirname('reobf/'))
 
 print("Linking files and folder to the minecraft source directory...")
 links = [line.strip() for line in open( 'src-mods/build/conf_deploy/deploy_link.txt' )]
