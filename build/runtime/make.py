@@ -35,11 +35,11 @@ def find(classname):
 	for root, dirs, files in os.walk(reobf):
 		for fileName in files:
 			line = linecache.getline(reobf + fileName, 1)
-			if line.find(classname + ".java"):
+			if line.find(classname + ".java") is not -1:
 				print("Find: " + fileName + " --> " + classname + ".java")
 				return reobf + fileName
 			line = linecache.getline(reobf + fileName, 2)
-			if line.find(classname + ".java"):
+			if line.find(classname + ".java") is not -1:
 				print("Find: " + fileName + " --> " + classname + ".java")
 				return reobf + fileName
 	print("Find : Not Found " + classname + ".class")
