@@ -64,15 +64,15 @@ def move(src, dst):
 	shutil.move(src, dst)
 
 # Universal zip fonction that automatically detect the type of the source and write them into a zip file without the /src-mods/ folder
-def zipsrc(srcs, zip):
+def zipsrc(srcs, zip, replace):
 	src_zip = zipfile.ZipFile(zip, "w" )
 	for src in srcs:
 		if os.path.isdir(src):
 			for dir_, _, files in os.walk(src):
 				for fileName in files:
-					src_zip.write(dir_ + "/" + fileName, dir_.replace("src-mods", "") + "/" + fileName, zipfile.ZIP_DEFLATED)
+					src_zip.write(dir_ + "/" + fileName, dir_.replace(replace, "") + "/" + fileName, zipfile.ZIP_DEFLATED)
 		else:
-			src_zip.write(src, src.replace("src-mods/", ""), zipfile.ZIP_DEFLATED )
+			src_zip.write(src, src.replace(replace + "/", ""), zipfile.ZIP_DEFLATED )
 	
 # Detects the os and launches mcp scripts to get the latest deobfuscated code
 if os.name is "nt":
@@ -142,7 +142,7 @@ for mod in [line.strip() for line in open(conf_mods)]:
 	
 # Zip the sources files specified in the header of this script
 print("Packaging source code ...")
-zipsrc(srcdir, RESULT_DIR2 + "/client/src.zip")
+zipsrc(srcdir, RESULT_DIR2 + "/client/src.zip", "src-mods")
 
 print("Packaging spc source code ...")
-zipsrc(spcsrcdir, RESULT_DIR2 + "/client/spc-src.zip")
+zipsrc(spcsrcdir, RESULT_DIR2 + "/client/spc-src.zip", "src-mods/src/client/spc")
