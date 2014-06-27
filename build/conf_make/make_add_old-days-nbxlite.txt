@@ -1,0 +1,11 @@
+olddays/classic_water.png
+olddays/classic_lava.png
+olddays/fluff.png
+olddays/gear.png
+olddays/gearmiddle.png
+textures/blocks/olddays_gear_0.png
+textures/blocks/olddays_gear_1.png
+textures/blocks/olddays_grass_top.png
+textures/blocks/olddays_grass_side.png
+textures/blocks/olddays_leaves_fast.png
+textures/blocks/olddays_leaves_fancy.png

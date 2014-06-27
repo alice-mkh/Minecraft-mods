@@ -1,0 +1,9 @@
+/src-mods/src/client /src/minecraft/net/minecraft/src/mods
+/src-mods/resources/olddays /jars/assets/olddays
+/src-mods/resources/textures /jars/assets/textures
+/src-mods/resources /reobf/additional
+/src-mods/src/client-client/ssp/ClientBrandRetriever.java  /src/minecraft/net/minecraft/client/ClientBrandRetriever.java
+/src-mods/src/client-server/ssp/MinecraftServer.java /src/minecraft/net/minecraft/server/MinecraftServer.java
+/src-mods/src/client-client/ssp/Minecraft.java /src/minecraft/net/minecraft/src/Minecraft.java
+/src-mods/resources/char.png /jars/assets/char.png
+/lib/WorldEdit.jar /jars/WorldEdit.jar
